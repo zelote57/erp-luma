@@ -1,0 +1,892 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CD4C4379-ECC7-4EB1-9560-AE7515E81CF8}</ProjectGuid>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccProvider>
+    </SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>images\RetailPlus.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>RetailPlus</AssemblyName>
+    <AssemblyOriginatorKeyFile>AceSoft.RetailPlus.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>AceSoft.RetailPlus.Client</RootNamespace>
+    <StartupObject>AceSoft.RetailPlus.Client.MainModule</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <SignManifests>true</SignManifests>
+    <TargetZone>LocalIntranet</TargetZone>
+    <GenerateManifests>true</GenerateManifests>
+    <ManifestCertificateThumbprint>CE6C0EF9AF6D4ED173ADEFD194C83D45E920B4FA</ManifestCertificateThumbprint>
+    <ManifestKeyFile>RetailPlusClient_TemporaryKey.pfx</ManifestKeyFile>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SccAuxPath>
+    </SccAuxPath>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>c:\deploy\retailplusclient\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationVersion>3.0.3.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <HintPath>..\..\..\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.DataSetExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Management">
+      <Name>System.Management</Name>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Name>System.Web.Services</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\ClientLibrary\ClientLibrary.csproj">
+      <Name>ClientLibrary</Name>
+      <Project>{E7C7F8AC-A57A-47A4-84CD-A0DDB2FD9C53}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Company\Company Library.csproj">
+      <Name>Company Library</Name>
+      <Project>{810E3EE7-4E46-4DEC-85ED-2AAA53D5C531}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects Inventory\DataObjects Inventory.csproj">
+      <Project>{98B7F5B1-2F87-4E62-B2BF-926975D02C73}</Project>
+      <Name>DataObjects Inventory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects\DataObjects.csproj">
+      <Name>DataObjects</Name>
+      <Project>{75D37B92-76F5-4C25-AF1A-394619DE4835}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\DBConnection\DBConnection.csproj">
+      <Project>{18F0CB07-90C3-4DAC-9241-3F13052FBEED}</Project>
+      <Name>DBConnection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Forwarder\Forwarder.csproj">
+      <Project>{7E4248D7-594E-49F4-B093-F44CFE1A7B76}</Project>
+      <Name>Forwarder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeyBoardHook\KeyBoardHook.csproj">
+      <Name>KeyBoardHook</Name>
+      <Project>{9813D3AA-2725-4061-8FDA-4F937651D63C}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Logistics\AceSoft.csproj">
+      <Name>AceSoft</Name>
+      <Project>{A800354C-F064-4836-9178-1DC7B752822E}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Registration Key\Registration Key.csproj">
+      <Name>Registration Key</Name>
+      <Project>{C5619B46-0E57-4C27-A365-03164DF22CC6}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Report Library\Report Library.csproj">
+      <Name>Report Library</Name>
+      <Project>{E43FD0B2-AF54-49AD-9FCD-BC3B67EE16F9}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Security Library\Security Library.csproj">
+      <Name>Security Library</Name>
+      <Project>{88C68179-9BB1-4A08-92E7-7B003449A2AE}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AceSoft.RetailPlus.snk" />
+    <None Include="app.config" />
+    <BaseApplicationManifest Include="Properties\app.manifest" />
+    <None Include="ReportDataset.xsc">
+      <DependentUpon>ReportDataset.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataset.xss">
+      <DependentUpon>ReportDataset.xsd</DependentUpon>
+    </None>
+    <None Include="ReportDataset.xsx">
+      <DependentUpon>ReportDataset.xsd</DependentUpon>
+    </None>
+    <None Include="RetailPlusClient_TemporaryKey.pfx" />
+    <Compile Include="CRSReports\SI.cs">
+      <DependentUpon>SI.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CRSReports\DR.cs">
+      <DependentUpon>DR.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CRSReports\ORLX300PlusAmazon.cs">
+      <DependentUpon>ORLX300PlusAmazon.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CRSReports\ORLX300Plus.cs">
+      <DependentUpon>ORLX300Plus.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CRSReports\ORLX.cs">
+      <DependentUpon>ORLX.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CRSReports\DR_old.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DR_old.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CRSReports\EJournalReport.cs">
+      <DependentUpon>EJournalReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="CRSReports\OR.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OR.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Program.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Methods.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ReportDataset.cs">
+      <DependentUpon>ReportDataset.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ReportDataset.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportDataset.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Resolution.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SingleInstance.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Struct.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TaskBarWnd.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BalanceWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CashCountWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CashierReportWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CashPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ChangeAmountWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ChangePriceWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ChangeQuantityWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ChargeWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ChequesPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ContactAddWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ContactSelectWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ContactRewardWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ContactCreditWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ContactCreditTypeSelectWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\RewardPointPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PriceInquiryWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemReleaseWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemReleaseWnd.Designer.cs">
+      <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ItemVariationsRestoWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemMatrixPackageRestoWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemPackageRestoWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemSelectRestoWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ForwarderWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OrderTypeWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OrderTypeWnd.Designer.cs">
+      <DependentUpon>OrderTypeWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TerminalHistoryDateWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CreditCardPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CreditPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CreditsWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DebitPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DepositWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DisburseWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DiscountWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\EJournalReportWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\GroupReportWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\HelpWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\HourlyReportWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemMatrixPackageWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemPackageWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemSelectWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemVariationsWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LogInWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MainWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PaidOutWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PaymentsWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PLUReportWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ReportsWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ResumeTransactionWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SplashWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\TerminalReportWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\TransactionItemSelectWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\TransactionNoWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\TransactionReturnItemSelectWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\WaiterSelectWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\WithholdWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\XZReadReportWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowsController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="bin\Debug\images\blank_small_dark_yellow.jpg" />
+    <None Include="bin\Debug\images\Resume.GIF" />
+    <None Include="bin\Debug\images\blank_small_dark_red.jpg" />
+    <Content Include="bin\Debug\version.xml" />
+    <Content Include="images\adobe.ico" />
+    <Content Include="images\Background.jpg" />
+    <Content Include="images\Background1.jpg" />
+    <None Include="images\backspace_red_vertical.jpg" />
+    <Content Include="images\Balance.jpg" />
+    <None Include="images\blank_small_dark_yellow.jpg" />
+    <None Include="images\blank_medium_dark_green.jpg" />
+    <None Include="images\blank_medium_dark_red.jpg" />
+    <None Include="images\blank_small_dark_green.jpg" />
+    <None Include="images\blank_small_dark_red.jpg" />
+    <None Include="images\blank_tiny_dark_yellow.jpg" />
+    <Content Include="images\Cancel.jpg" />
+    <None Include="images\cancel_light-red.jpg" />
+    <None Include="images\cancel_dark_red.jpg" />
+    <Content Include="images\CashCount.jpg" />
+    <Content Include="images\CashierReport.jpg" />
+    <Content Include="images\CashPayment.jpg" />
+    <Content Include="images\ChangePrice.jpg" />
+    <Content Include="images\ChangeQuantity.jpg" />
+    <Content Include="images\charge.jpg" />
+    <Content Include="images\ChequesPayment.jpg" />
+    <None Include="images\close.gif" />
+    <Content Include="images\cmd1.jpg" />
+    <Content Include="images\cmd10.jpg" />
+    <Content Include="images\cmd11.jpg" />
+    <Content Include="images\cmd12.jpg" />
+    <Content Include="images\cmd13.jpg" />
+    <Content Include="images\cmd14.jpg" />
+    <Content Include="images\cmd15.jpg" />
+    <Content Include="images\cmd16.jpg" />
+    <Content Include="images\cmd17.jpg" />
+    <Content Include="images\cmd18.jpg" />
+    <Content Include="images\cmd19.jpg" />
+    <Content Include="images\cmd2.jpg" />
+    <Content Include="images\cmd20.jpg" />
+    <Content Include="images\cmd21.jpg" />
+    <Content Include="images\cmd22.jpg" />
+    <Content Include="images\cmd23.jpg" />
+    <Content Include="images\cmd24.jpg" />
+    <Content Include="images\cmd25.jpg" />
+    <Content Include="images\cmd26.jpg" />
+    <Content Include="images\cmd27.jpg" />
+    <Content Include="images\cmd28.jpg" />
+    <Content Include="images\cmd29.jpg" />
+    <Content Include="images\cmd3.jpg" />
+    <Content Include="images\cmd30.jpg" />
+    <Content Include="images\cmd31.jpg" />
+    <Content Include="images\cmd32.jpg" />
+    <Content Include="images\cmd4.jpg" />
+    <Content Include="images\cmd5.jpg" />
+    <Content Include="images\cmd6.jpg" />
+    <Content Include="images\cmd7.jpg" />
+    <Content Include="images\cmd8.jpg" />
+    <Content Include="images\cmd9.jpg" />
+    <Content Include="images\cmdMain01.jpg" />
+    <Content Include="images\cmdMain02.jpg" />
+    <Content Include="images\cmdMain03.jpg" />
+    <Content Include="images\cmdMain04.jpg" />
+    <Content Include="images\cmdMain05.jpg" />
+    <Content Include="images\cmdMain06.jpg" />
+    <Content Include="images\cmdMain07.jpg" />
+    <Content Include="images\cmdMain08.jpg" />
+    <Content Include="images\CompanyLogo.jpg" />
+    <Content Include="images\ContactSelect.jpg" />
+    <Content Include="images\CreditCardPayment.jpg" />
+    <Content Include="images\CreditPayment.jpg" />
+    <Content Include="images\Credits.jpg" />
+    <Content Include="images\DebitPayment.jpg" />
+    <Content Include="images\deposit.jpg" />
+    <Content Include="images\disburse.jpg" />
+    <Content Include="images\Discount.jpg" />
+    <Content Include="images\EJournalReport.jpg" />
+    <None Include="images\enter_dark_green.jpg" />
+    <Content Include="images\GroupReport.jpg" />
+    <Content Include="images\hdgen.ico" />
+    <Content Include="images\Header.jpg" />
+    <Content Include="images\help.jpg" />
+    <Content Include="images\HourlyReport.jpg" />
+    <Content Include="images\ItemMatrixPackages.jpg" />
+    <Content Include="images\ItemPackages.jpg" />
+    <Content Include="images\ItemSelect.jpg" />
+    <Content Include="images\ItemVariations.jpg" />
+    <Content Include="images\Login.jpg" />
+    <Content Include="images\MainIcon.jpg" />
+    <None Include="images\main_enter.jpg" />
+    <Content Include="images\Payments.jpg" />
+    <Content Include="images\print.gif" />
+    <Content Include="images\products\group1.GIF" />
+    <Content Include="images\products\group2.jpg" />
+    <Content Include="images\products\group3.jpg" />
+    <Content Include="images\products\group4.jpg" />
+    <Content Include="images\products\group5.jpg" />
+    <Content Include="images\products\group6.jpg" />
+    <Content Include="images\products\group7.jpg" />
+    <Content Include="images\products\group8.jpg" />
+    <Content Include="images\products\prod1.jpg" />
+    <Content Include="images\products\prod2.jpg" />
+    <Content Include="images\products\prod3.jpg" />
+    <Content Include="images\products\prod4.jpg" />
+    <Content Include="images\products\prod5.jpg" />
+    <Content Include="images\products\prod6.jpg" />
+    <Content Include="images\products\prod7.jpg" />
+    <Content Include="images\products\prod8.jpg" />
+    <Content Include="images\Report.jpg" />
+    <Content Include="images\Reports.jpg" />
+    <Content Include="images\Resume.GIF" />
+    <Content Include="images\ResumeTransaction.jpg" />
+    <Content Include="images\RetailPlus.ico" />
+    <Content Include="images\splash.JPG" />
+    <Content Include="images\Suspend.GIF" />
+    <Content Include="images\SuspendTransaction.jpg" />
+    <Content Include="images\TransactionItemSelect.jpg" />
+    <Content Include="images\TransactionNo.jpg" />
+    <Content Include="images\WaiterSelect.jpg" />
+    <Content Include="images\Withhold.jpg" />
+    <Content Include="images\XZReadReport.jpg" />
+    <Content Include="ReportDataset.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ReportDataset.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="version.xml" />
+    <EmbeddedResource Include="CRSReports\SI.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SI.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\DR.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DR.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\ORLX300PlusAmazon.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ORLX300PlusAmazon.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\ORLX300Plus.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ORLX300Plus.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\ORLX.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ORLX.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\DR_old.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DR_old.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\EJournalReport.resx">
+      <DependentUpon>EJournalReport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\EJournalReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>EJournalReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\OR.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>OR.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\BalanceWnd.resx">
+      <DependentUpon>BalanceWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CashCountWnd.resx">
+      <DependentUpon>CashCountWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CashierReportWnd.resx">
+      <DependentUpon>CashierReportWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CashPaymentWnd.resx">
+      <DependentUpon>CashPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ChangeAmountWnd.resx">
+      <DependentUpon>ChangeAmountWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ChangePriceWnd.resx">
+      <DependentUpon>ChangePriceWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ChangeQuantityWnd.resx">
+      <DependentUpon>ChangeQuantityWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ChargeWnd.resx">
+      <DependentUpon>ChargeWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ChequesPaymentWnd.resx">
+      <DependentUpon>ChequesPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ContactAddWnd.resx">
+      <DependentUpon>ContactAddWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ContactSelectWnd.resx">
+      <DependentUpon>ContactSelectWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ContactRewardWnd.resx">
+      <DependentUpon>ContactRewardWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ContactCreditWnd.resx">
+      <DependentUpon>ContactCreditWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ContactCreditTypeSelectWnd.resx">
+      <DependentUpon>ContactCreditTypeSelectWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\RewardPointPaymentWnd.resx">
+      <DependentUpon>RewardPointPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PriceInquiryWnd.resx">
+      <DependentUpon>PriceInquiryWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemReleaseWnd.resx">
+      <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemVariationsRestoWnd.resx">
+      <DependentUpon>ItemVariationsRestoWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemMatrixPackageRestoWnd.resx">
+      <DependentUpon>ItemMatrixPackageRestoWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemPackageRestoWnd.resx">
+      <DependentUpon>ItemPackageRestoWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemSelectRestoWnd.resx">
+      <DependentUpon>ItemSelectRestoWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ForwarderWnd.resx">
+      <DependentUpon>ForwarderWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OrderTypeWnd.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OrderTypeWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TerminalHistoryDateWnd.resx">
+      <DependentUpon>TerminalHistoryDateWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CreditCardPaymentWnd.resx">
+      <DependentUpon>CreditCardPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CreditPaymentWnd.resx">
+      <DependentUpon>CreditPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CreditsWnd.resx">
+      <DependentUpon>CreditsWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DebitPaymentWnd.resx">
+      <DependentUpon>DebitPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DepositWnd.resx">
+      <DependentUpon>DepositWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DisburseWnd.resx">
+      <DependentUpon>DisburseWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DiscountWnd.resx">
+      <DependentUpon>DiscountWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\EJournalReportWnd.resx">
+      <DependentUpon>EJournalReportWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\GroupReportWnd.resx">
+      <DependentUpon>GroupReportWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\HelpWnd.resx">
+      <DependentUpon>HelpWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\HourlyReportWnd.resx">
+      <DependentUpon>HourlyReportWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemMatrixPackageWnd.resx">
+      <DependentUpon>ItemMatrixPackageWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemPackageWnd.resx">
+      <DependentUpon>ItemPackageWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemSelectWnd.resx">
+      <DependentUpon>ItemSelectWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemVariationsWnd.resx">
+      <DependentUpon>ItemVariationsWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LogInWnd.resx">
+      <DependentUpon>LogInWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MainWnd.resx">
+      <DependentUpon>MainWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PaidOutWnd.resx">
+      <DependentUpon>PaidOutWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PaymentsWnd.resx">
+      <DependentUpon>PaymentsWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PLUReportWnd.resx">
+      <DependentUpon>PLUReportWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ReportsWnd.resx">
+      <DependentUpon>ReportsWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ResumeTransactionWnd.resx">
+      <DependentUpon>ResumeTransactionWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SplashWnd.resx">
+      <DependentUpon>SplashWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TerminalReportWnd.resx">
+      <DependentUpon>TerminalReportWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TransactionItemSelectWnd.resx">
+      <DependentUpon>TransactionItemSelectWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TransactionNoWnd.resx">
+      <DependentUpon>TransactionNoWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TransactionReturnItemSelectWnd.resx">
+      <DependentUpon>TransactionReturnItemSelectWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\WaiterSelectWnd.resx">
+      <DependentUpon>WaiterSelectWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\WithholdWnd.resx">
+      <DependentUpon>WithholdWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\XZReadReportWnd.resx">
+      <DependentUpon>XZReadReportWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+    <Service Include="{CF845C55-C321-4742-B673-E6212D061ED9}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="bin\Debug\version.xml">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

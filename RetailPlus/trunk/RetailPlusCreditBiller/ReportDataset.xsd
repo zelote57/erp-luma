@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ReportDataset" targetNamespace="http://tempuri.org/ReportDataset.xsd" xmlns:mstns="http://tempuri.org/ReportDataset.xsd" xmlns="http://tempuri.org/ReportDataset.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ReportDataset" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="ReportDataset" msprop:Generator_UserDSName="ReportDataset">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="CreditBillHeader" msprop:Generator_TableClassName="CreditBillHeaderDataTable" msprop:Generator_TableVarName="tableCreditBillHeader" msprop:Generator_TablePropName="CreditBillHeader" msprop:Generator_RowDeletingName="CreditBillHeaderRowDeleting" msprop:Generator_UserTableName="CreditBillHeader" msprop:Generator_RowChangingName="CreditBillHeaderRowChanging" msprop:Generator_RowEvHandlerName="CreditBillHeaderRowChangeEventHandler" msprop:Generator_RowDeletedName="CreditBillHeaderRowDeleted" msprop:Generator_RowEvArgName="CreditBillHeaderRowChangeEvent" msprop:Generator_RowChangedName="CreditBillHeaderRowChanged" msprop:Generator_RowClassName="CreditBillHeaderRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CreditBillHeaderID" msprop:Generator_ColumnVarNameInTable="columnCreditBillHeaderID" msprop:Generator_ColumnPropNameInRow="CreditBillHeaderID" msprop:Generator_ColumnPropNameInTable="CreditBillHeaderIDColumn" msprop:Generator_UserColumnName="CreditBillHeaderID" type="xs:long" minOccurs="0" />
+              <xs:element name="ContactName" msprop:Generator_ColumnVarNameInTable="columnContactName" msprop:Generator_ColumnPropNameInRow="ContactName" msprop:Generator_ColumnPropNameInTable="ContactNameColumn" msprop:Generator_UserColumnName="ContactName" type="xs:string" minOccurs="0" />
+              <xs:element name="CrediLimit" msprop:Generator_ColumnVarNameInTable="columnCrediLimit" msprop:Generator_ColumnPropNameInRow="CrediLimit" msprop:Generator_ColumnPropNameInTable="CrediLimitColumn" msprop:Generator_UserColumnName="CrediLimit" type="xs:decimal" default="0" minOccurs="0" />
+              <xs:element name="CurrMonthCreditAmt" msprop:Generator_ColumnVarNameInTable="columnCurrMonthCreditAmt" msprop:Generator_ColumnPropNameInRow="CurrMonthCreditAmt" msprop:Generator_ColumnPropNameInTable="CurrMonthCreditAmtColumn" msprop:Generator_UserColumnName="CurrMonthCreditAmt" type="xs:decimal" default="0" minOccurs="0" />
+              <xs:element name="CurrMonthAmountPaid" msprop:Generator_ColumnVarNameInTable="columnCurrMonthAmountPaid" msprop:Generator_ColumnPropNameInRow="CurrMonthAmountPaid" msprop:Generator_ColumnPropNameInTable="CurrMonthAmountPaidColumn" msprop:Generator_UserColumnName="CurrMonthAmountPaid" type="xs:decimal" default="0" minOccurs="0" />
+              <xs:element name="TotalBillCharges" msprop:Generator_ColumnVarNameInTable="columnTotalBillCharges" msprop:Generator_ColumnPropNameInRow="TotalBillCharges" msprop:Generator_ColumnPropNameInTable="TotalBillChargesColumn" msprop:Generator_UserColumnName="TotalBillCharges" type="xs:decimal" default="0" minOccurs="0" />
+              <xs:element name="CurrentDueAmount" msprop:Generator_ColumnVarNameInTable="columnCurrentDueAmount" msprop:Generator_ColumnPropNameInRow="CurrentDueAmount" msprop:Generator_ColumnPropNameInTable="CurrentDueAmountColumn" msprop:Generator_UserColumnName="CurrentDueAmount" type="xs:decimal" default="0" minOccurs="0" />
+              <xs:element name="MinimumAmountDue" msprop:Generator_ColumnVarNameInTable="columnMinimumAmountDue" msprop:Generator_ColumnPropNameInRow="MinimumAmountDue" msprop:Generator_ColumnPropNameInTable="MinimumAmountDueColumn" msprop:Generator_UserColumnName="MinimumAmountDue" type="xs:decimal" default="0" minOccurs="0" />
+              <xs:element name="Prev1MoCurrentDueAmount" msprop:Generator_ColumnVarNameInTable="columnPrev1MoCurrentDueAmount" msprop:Generator_ColumnPropNameInRow="Prev1MoCurrentDueAmount" msprop:Generator_ColumnPropNameInTable="Prev1MoCurrentDueAmountColumn" msprop:Generator_UserColumnName="Prev1MoCurrentDueAmount" type="xs:decimal" default="0" minOccurs="0" />
+              <xs:element name="BillingDate" msprop:Generator_ColumnVarNameInTable="columnBillingDate" msprop:Generator_ColumnPropNameInRow="BillingDate" msprop:Generator_ColumnPropNameInTable="BillingDateColumn" msprop:Generator_UserColumnName="BillingDate" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CreditBillDetail" msprop:Generator_TableClassName="CreditBillDetailDataTable" msprop:Generator_TableVarName="tableCreditBillDetail" msprop:Generator_TablePropName="CreditBillDetail" msprop:Generator_RowDeletingName="CreditBillDetailRowDeleting" msprop:Generator_UserTableName="CreditBillDetail" msprop:Generator_RowChangingName="CreditBillDetailRowChanging" msprop:Generator_RowEvHandlerName="CreditBillDetailRowChangeEventHandler" msprop:Generator_RowDeletedName="CreditBillDetailRowDeleted" msprop:Generator_RowEvArgName="CreditBillDetailRowChangeEvent" msprop:Generator_RowChangedName="CreditBillDetailRowChanged" msprop:Generator_RowClassName="CreditBillDetailRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CreditBillHeaderID" msprop:Generator_ColumnVarNameInTable="columnCreditBillHeaderID" msprop:Generator_ColumnPropNameInRow="CreditBillHeaderID" msprop:Generator_ColumnPropNameInTable="CreditBillHeaderIDColumn" msprop:Generator_UserColumnName="CreditBillHeaderID" type="xs:long" minOccurs="0" />
+              <xs:element name="TransactionDate" msprop:Generator_ColumnVarNameInTable="columnTransactionDate" msprop:Generator_ColumnPropNameInRow="TransactionDate" msprop:Generator_ColumnPropNameInTable="TransactionDateColumn" msprop:Generator_UserColumnName="TransactionDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" msprop:Generator_UserColumnName="Description" type="xs:string" minOccurs="0" />
+              <xs:element name="Amount" msprop:Generator_ColumnVarNameInTable="columnAmount" msprop:Generator_ColumnPropNameInRow="Amount" msprop:Generator_ColumnPropNameInTable="AmountColumn" msprop:Generator_UserColumnName="Amount" type="xs:double" default="0" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

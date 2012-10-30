@@ -1,0 +1,116 @@
+/* _lcid="1033" _version="11.0.5510" _LocalBinding */
+/*
+	Copyright (c) Microsoft Corporation.  All rights reserved.
+*/
+.ms-SrvMenuUI
+{
+	display:none;
+}
+.ms-MenuUIPopupBody
+{
+	border-style:none;
+	font-family:Verdana, sans-serif; 
+	font-size:66.67%; 
+	margin:0px;
+	padding:0px;
+}
+.ms-MenuUIPopupBody TABLE
+{
+	color:#003399;
+	font-size:100%;
+	width:100%;
+}
+.ms-MenuUIPopupBody IMG
+{
+	height:16px;
+	width:16px;
+}
+.ms-MenuUI
+{
+	background-color:#FAFAFA;
+	border:1px solid #2254B1;
+	cursor:hand;
+}
+.ms-MenuUIItemTableCell
+{
+	padding:2px;
+}
+.ms-MenuUIItemTableCellHover
+{
+	padding:1px;
+}
+.ms-MenuUIItemTableHover
+{
+	background-color:#FEE197;
+	border:1px solid #2254B1;
+}
+.ms-MenuUIIcon, .ms-MenuUIIconRtL
+{
+	height:16px;
+	width:24px;
+}
+.ms-MenuUIIcon
+{
+	padding:
+		0px 
+		6px 
+		0px 
+		2px; 
+}
+.ms-MenuUIIconRtL
+{
+	padding:
+		0px 
+		2px 
+		0px 
+		6px; 
+}
+.ms-MenuUILabel, .ms-MenuUILabelRtL
+{
+	width:100%;
+}
+.ms-MenuUILabel
+{
+	padding:
+		2px 
+		0px 
+		3px 
+		6px; 
+}
+.ms-MenuUILabelRtL
+{
+	padding:
+		2px 
+		6px 
+		3px 
+		0px; 
+}
+.ms-MenuUISubmenuArrow
+{
+	height:16px;
+	width:16px;
+}
+.ms-MenuUISeparator, .ms-MenuUISeparatorRtL
+{
+	background-color:#6A8CCB;
+	font-size:1px;
+	height:1px;
+	line-height:1px;
+	width:100%;
+}
+.ms-MenuUISeparator
+{
+	margin:
+		0px 
+		0px 
+		0px 
+		32px; 
+}
+.ms-MenuUISeparatorRtL
+{
+	margin:
+		0px 
+		32px 
+		0px 
+		0px; 
+}

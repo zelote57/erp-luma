@@ -1,0 +1,4006 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AF86DA73-653C-42EA-B9BA-074135F25F9D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RetailPlus</RootNamespace>
+    <AssemblyName>AceSoft.RetailPlus.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource">
+      <HintPath>..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Web">
+      <HintPath>..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="Microsoft.Vbe.Interop, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminFiles\Company\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Company\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Company\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Company\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Reports\_Format\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Reports\_Format\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Reports\_Format\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Reports\_Format\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Reports\_Format\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Reports\_Format\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\_AccessRights.ascx.cs">
+      <DependentUpon>_accessrights.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\_AccessRights.ascx.designer.cs">
+      <DependentUpon>_accessrights.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessGroup\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_AccessRights.ascx.cs">
+      <DependentUpon>_accessrights.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_AccessRights.ascx.designer.cs">
+      <DependentUpon>_accessrights.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_Account.ascx.cs">
+      <DependentUpon>_account.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_Account.ascx.designer.cs">
+      <DependentUpon>_account.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Security\_AccessUser\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Terminals\_updaterewards.ascx.cs">
+      <DependentUpon>_updaterewards.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Terminals\_updaterewards.ascx.designer.cs">
+      <DependentUpon>_updaterewards.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Terminals\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Terminals\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Terminals\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Terminals\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\Terminals\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\Terminals\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminFiles\_menu.ascx.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminFiles\_menu.ascx.designer.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+    </Compile>
+    <Content Include="App_Code\AssemblyInfo.cs" />
+    <Compile Include="Datasets\ReportDataset.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportDataset.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_closeinventorydetailed.ascx.cs">
+      <DependentUpon>_closeinventorydetailed.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_closeinventorydetailed.ascx.designer.cs">
+      <DependentUpon>_closeinventorydetailed.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Cancel.ascx.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Cancel.ascx.designer.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Post.ascx.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Post.ascx.designer.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_BranchTransfer\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_changetax.ascx.cs">
+      <DependentUpon>_changetax.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_changetax.ascx.designer.cs">
+      <DependentUpon>_changetax.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_customercredit\_CustomerCreditBill.cs">
+      <DependentUpon>_CustomerCreditBill.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\PurchaseReturn.cs">
+      <DependentUpon>PurchaseReturn.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_customercredit\_CustomerCreditListWCredit1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_CustomerCreditListWCredit.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_products\_ProductsReportPricesForWeighingScale.cs">
+      <DependentUpon>_ProductsReportPricesForWeighingScale.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionsReport.cs">
+      <DependentUpon>_DatedReportSalesTransactionsReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Test.aspx.cs">
+      <DependentUpon>Test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_Processing.ascx.cs">
+      <DependentUpon>_Processing.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountCategory\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountCategory\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountCategory\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountCategory\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountCategory\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountCategory\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountCategory\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountCategory\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountSummary\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountSummary\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountSummary\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountSummary\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountSummary\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountSummary\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountSummary\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_AccountSummary\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_BankDeposits\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_BankDeposits\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_BankDeposits\_Details.ascx.cs">
+      <DependentUpon>_Details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_BankDeposits\_Details.ascx.designer.cs">
+      <DependentUpon>_Details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_BankDeposits\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_BankDeposits\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_BankDeposits\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_BankDeposits\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_BankDeposits\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_BankDeposits\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Bank\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Bank\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Bank\_Details.ascx.cs">
+      <DependentUpon>_Details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Bank\_Details.ascx.designer.cs">
+      <DependentUpon>_Details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Bank\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Bank\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Bank\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Bank\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Bank\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Bank\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_BalanceSheet.ascx.cs">
+      <DependentUpon>_BalanceSheet.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_BalanceSheet.ascx.designer.cs">
+      <DependentUpon>_BalanceSheet.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_GeneralLedger.ascx.cs">
+      <DependentUpon>_GeneralLedger.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_GeneralLedger.ascx.designer.cs">
+      <DependentUpon>_GeneralLedger.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_Reports.ascx.cs">
+      <DependentUpon>_Reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_Reports.ascx.designer.cs">
+      <DependentUpon>_Reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_ChartOfAccounts\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_GJournals\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_GJournals\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_GJournals\_Details.ascx.cs">
+      <DependentUpon>_Details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_GJournals\_Details.ascx.designer.cs">
+      <DependentUpon>_Details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_GJournals\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_GJournals\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_GJournals\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_GJournals\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_GJournals\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_GJournals\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Menu.ascx.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Menu.ascx.designer.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Payments\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Payments\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Payments\_Details.ascx.cs">
+      <DependentUpon>_Details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Payments\_Details.ascx.designer.cs">
+      <DependentUpon>_Details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Payments\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Payments\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Payments\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Payments\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Payments\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Payments\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Reports.ascx.cs">
+      <DependentUpon>_Reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Reports.ascx.designer.cs">
+      <DependentUpon>_Reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Setup\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Setup\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Setup\_LinkAccountsAP.ascx.cs">
+      <DependentUpon>_LinkAccountsAP.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Setup\_LinkAccountsAP.ascx.designer.cs">
+      <DependentUpon>_LinkAccountsAP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Setup\_PostingDates.ascx.cs">
+      <DependentUpon>_postingdates.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Setup\_PostingDates.ascx.designer.cs">
+      <DependentUpon>_postingdates.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralLedger\_Setup\_ProductFinancialSetup.ascx.cs">
+      <DependentUpon>_ProductFinancialSetup.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneralLedger\_Setup\_ProductFinancialSetup.ascx.designer.cs">
+      <DependentUpon>_ProductFinancialSetup.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GenericError.aspx.cs">
+      <DependentUpon>GenericError.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GenericError.aspx.designer.cs">
+      <DependentUpon>GenericError.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_closeinventory.ascx.cs">
+      <DependentUpon>_closeinventory.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_closeinventory.ascx.designer.cs">
+      <DependentUpon>_closeinventory.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Branch\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Branch\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Branch\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Branch\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Branch\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Branch\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Branch\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Branch\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Branch\_Synchronize.ascx.cs">
+      <DependentUpon>_Synchronize.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Branch\_Synchronize.ascx.designer.cs">
+      <DependentUpon>_Synchronize.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Branch\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Branch\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_invadjustment.ascx.cs">
+      <DependentUpon>_invadjustment.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_invadjustment.ascx.designer.cs">
+      <DependentUpon>_invadjustment.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Menu.ascx.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Menu.ascx.designer.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_StockType\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_StockType\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_StockType\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_StockType\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_StockType\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_StockType\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_StockType\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_StockType\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_StockType\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_StockType\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Stock\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Stock\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_AddItem.ascx.cs">
+      <DependentUpon>_additem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_AddItem.ascx.designer.cs">
+      <DependentUpon>_additem.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_Transfer.ascx.cs">
+      <DependentUpon>_transfer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_Transfer.ascx.designer.cs">
+      <DependentUpon>_transfer.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_Upload.ascx.cs">
+      <DependentUpon>_upload.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_Stock\_Upload.ascx.designer.cs">
+      <DependentUpon>_upload.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Cancel.ascx.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Cancel.ascx.designer.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Post.ascx.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Post.ascx.designer.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferIn\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Cancel.ascx.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Cancel.ascx.designer.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Post.ascx.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Post.ascx.designer.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_TransferOut\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_VariationsMatrix\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_VariationsMatrix\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\_VariationsMatrix\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_VariationsMatrix\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_CardType\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_CardType\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_CardType\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_CardType\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_CardType\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_CardType\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_CardType\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_CardType\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_CardType\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_CardType\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ChargeType\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ChargeType\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ChargeType\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ChargeType\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ChargeType\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ChargeType\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ChargeType\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ChargeType\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ChargeType\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ChargeType\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactGroup\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Contact\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Department\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Department\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Department\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Department\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Department\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Department\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Department\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Department\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Department\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Department\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Discount\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Discount\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Discount\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Discount\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Discount\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Discount\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Discount\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Discount\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Menu.ascx.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Menu.ascx.designer.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Position\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Position\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Position\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Position\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Position\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Position\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Position\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Position\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Position\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Position\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Charges\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Charges\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Charges\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Charges\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Charges\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Charges\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Charges\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Charges\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_UnitsMatrix\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_UnitsMatrix\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_UnitsMatrix\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_UnitsMatrix\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_UnitsMatrix\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_UnitsMatrix\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_UnitsMatrix\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_UnitsMatrix\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_VariationsMatrix\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_VariationsMatrix\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_VariationsMatrix\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_VariationsMatrix\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_VariationsMatrix\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_VariationsMatrix\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_VariationsMatrix\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_VariationsMatrix\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_VariationsMatrix\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_VariationsMatrix\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Variations\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Variations\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Variations\_Details.ascx.cs">
+      <DependentUpon>_Details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Variations\_Details.ascx.designer.cs">
+      <DependentUpon>_Details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Variations\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Variations\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Variations\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Variations\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Variations\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductGroup\_Variations\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Charges\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Charges\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Charges\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Charges\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Charges\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Charges\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Charges\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Charges\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Variations\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Variations\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Variations\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Variations\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Variations\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Variations\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Variations\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ProductSubGroup\_Variations\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_changerewardpoints.ascx.cs">
+      <DependentUpon>_changerewardpoints.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_changerewardpoints.ascx.designer.cs">
+      <DependentUpon>_changerewardpoints.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_changeprice.ascx.cs">
+      <DependentUpon>_changeprice.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_changeprice.ascx.designer.cs">
+      <DependentUpon>_changeprice.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Compose.ascx.cs">
+      <DependentUpon>_compose.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Compose.ascx.designer.cs">
+      <DependentUpon>_compose.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_easyinsertvariation.ascx.cs">
+      <DependentUpon>_easyinsertvariation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_easyinsertvariation.ascx.designer.cs">
+      <DependentUpon>_easyinsertvariation.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Finance.ascx.cs">
+      <DependentUpon>_Finance.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Finance.ascx.designer.cs">
+      <DependentUpon>_Finance.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_listdetailed.ascx.cs">
+      <DependentUpon>_listdetailed.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_listdetailed.ascx.designer.cs">
+      <DependentUpon>_listdetailed.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_MatrixPackage\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_MatrixPackage\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_MatrixPackage\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_MatrixPackage\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_MatrixPackage\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_MatrixPackage\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_MatrixPackage\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_MatrixPackage\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Package\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Package\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Package\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Package\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Package\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Package\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Package\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Package\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Synchronize.ascx.cs">
+      <DependentUpon>_Synchronize.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Synchronize.ascx.designer.cs">
+      <DependentUpon>_Synchronize.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_UnitsMatrix\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_UnitsMatrix\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_UnitsMatrix\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_UnitsMatrix\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_UnitsMatrix\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_UnitsMatrix\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_UnitsMatrix\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_UnitsMatrix\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_VariationsMatrix\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_VariationsMatrix\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_VariationsMatrix\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_VariationsMatrix\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_VariationsMatrix\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_VariationsMatrix\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_VariationsMatrix\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_VariationsMatrix\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_VariationsMatrix\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_VariationsMatrix\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Variations\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Variations\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Variations\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Variations\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Variations\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Variations\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Variations\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_Variations\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Promo\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Promo\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Promo\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Promo\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Promo\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Promo\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Promo\_Stuff.ascx.cs">
+      <DependentUpon>_stuff.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Promo\_Stuff.ascx.designer.cs">
+      <DependentUpon>_stuff.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Promo\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Promo\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Unit\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Unit\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Unit\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Unit\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Unit\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Unit\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Unit\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Unit\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Unit\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Unit\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Variation\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Variation\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Variation\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Variation\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Variation\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Variation\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Variation\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Variation\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_Variation\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Variation\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PurchasesAndPayables\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Cancel.ascx.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Cancel.ascx.designer.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Post.ascx.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Post.ascx.designer.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_DebitMemo\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Menu.ascx.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Menu.ascx.designer.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Cancel.ascx.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Cancel.ascx.designer.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Post.ascx.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Post.ascx.designer.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_PO\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Cancel.ascx.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Cancel.ascx.designer.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Post.ascx.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Post.ascx.designer.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Returns\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Vendor\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Vendor\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Vendor\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Vendor\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Vendor\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Vendor\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Vendor\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Vendor\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Vendor\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurchasesAndPayables\_Vendor\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BalanceSheet.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BalanceSheet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\ChartOfAccountsDetails.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChartOfAccountsDetails.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\ChartOfAccountsSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChartOfAccountsSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_ClosingInventory.ascx.cs">
+      <DependentUpon>_ClosingInventory.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_ClosingInventory.ascx.designer.cs">
+      <DependentUpon>_ClosingInventory.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_ClosingInventory.cs">
+      <DependentUpon>_ClosingInventory.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_InventoryAnalyst.cs">
+      <DependentUpon>_InventoryAnalyst.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_inventoryanalyst.ascx.cs">
+      <DependentUpon>_inventoryanalyst.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_inventoryanalyst.ascx.designer.cs">
+      <DependentUpon>_inventoryanalyst.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_productshistory\_producthistoryreportmovement.cs">
+      <DependentUpon>_producthistoryreportmovement.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\CreditMemoReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CreditMemoReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\DebitMemoReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DebitMemoReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\GeneralLedger.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralLedger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\InvAdjustmentReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InvAdjustmentReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\MatrixPackagePrice.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MatrixPackagePrice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\MatrixPackagePriceFake.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MatrixPackagePriceFake.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\POReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>POReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\POReportSellingPrice.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>POReportSellingPrice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_ProductBranchInventoryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductBranchInventoryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\ProductHistoryRepor.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductHistoryRepor.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SalesReturn.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SalesReturn.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SOReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SOReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SOReportQuotation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SOReportQuotation.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SOReportSellingPrice.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SOReportSellingPrice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SummarizedSalesTransactionPerDay.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SummarizedSalesTransactionPerDay.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\TransactionReports.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransactionReports.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\TransferInReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransferInReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\TransferInReportSellingPrice.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransferInReportSellingPrice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\TransferOutReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransferOutReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\TransferOutReportSellingPrice.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransferOutReportSellingPrice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\TransferOutReportSellingPriceWithCost.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransferOutReportSellingPriceWithCost.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\TrialBalance.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_agentscommisionreport.ascx.cs">
+      <DependentUpon>_agentscommisionreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_agentscommisionreport.ascx.designer.cs">
+      <DependentUpon>_agentscommisionreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\AgentsCommisionReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AgentsCommisionReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\AgentsCommisionReportDetailed.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AgentsCommisionReportDetailed.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\AgentsCommisionReportSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AgentsCommisionReportSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_agentssalesreport.ascx.cs">
+      <DependentUpon>_agentssalesreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_agentssalesreport.ascx.designer.cs">
+      <DependentUpon>_agentssalesreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\AgentsSalesReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AgentsSalesReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\AgentsSalesReportDetailed.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AgentsSalesReportDetailed.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\AgentsSalesReportSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AgentsSalesReportSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_ContactsReport.ascx.cs">
+      <DependentUpon>_contactsreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_ContactsReport.ascx.designer.cs">
+      <DependentUpon>_contactsreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_ContactsReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ContactsReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_customercredit\_CustomerCredit.ascx.cs">
+      <DependentUpon>_customercredit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_customercredit\_CustomerCredit.ascx.designer.cs">
+      <DependentUpon>_customercredit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_customercredit\_CustomerCredit.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_CustomerCredit.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReport.ascx.cs">
+      <DependentUpon>_datedreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReport.ascx.designer.cs">
+      <DependentUpon>_datedreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportCashSalesDaily.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportCashSalesDaily.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportCashSalesMonthly.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportCashSalesMonthly.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportChequeSalesDaily.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportChequeSalesDaily.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportChequeSalesMonthly.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportChequeSalesMonthly.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportCreditCardSalesDaily.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportCreditCardSalesDaily.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportCreditCardSalesMonthly.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportCreditCardSalesMonthly.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportDisburse.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportDisburse.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportPaidOut.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportPaidOut.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportROC.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportROC.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCashier.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSalesTransactionPerCashier.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCashierPerCustomer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSalesTransactionPerCashierPerCustomer.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSalesTransactionPerCustomer.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerDay.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSalesTransactionPerDay.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerItem.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSalesTransactionPerItem.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerMonth.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSalesTransactionPerMonth.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerTerminal.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSalesTransactionPerTerminal.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerWeek.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSalesTransactionPerWeek.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_default.ascx.cs">
+      <DependentUpon>_default.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_default.ascx.designer.cs">
+      <DependentUpon>_default.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReportExpired1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductInventoryReportExpired.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_generalledger.ascx.cs">
+      <DependentUpon>_generalledger.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_generalledger.ascx.designer.cs">
+      <DependentUpon>_generalledger.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReportForReorder.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductInventoryReportForReorder.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_LeastSalableItemsReport.ascx.cs">
+      <DependentUpon>_leastsalableitemsreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_LeastSalableItemsReport.ascx.designer.cs">
+      <DependentUpon>_leastsalableitemsreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_productshistory\_LeastSalableItemsReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_LeastSalableItemsReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_productshistory\_LeastSalableItemsReportGrouped.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_LeastSalableItemsReportGrouped.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_LoginLogoutReport.ascx.cs">
+      <DependentUpon>_loginlogoutreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_LoginLogoutReport.ascx.designer.cs">
+      <DependentUpon>_loginlogoutreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_LoginLogoutReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_LoginLogoutReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_Menu.ascx.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_Menu.ascx.designer.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_MostSalableItemsReport.ascx.cs">
+      <DependentUpon>_mostsalableitemsreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_MostSalableItemsReport.ascx.designer.cs">
+      <DependentUpon>_mostsalableitemsreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_productshistory\_MostSalableItemsReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_MostSalableItemsReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_productshistory\_MostSalableItemsReportGrouped.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_MostSalableItemsReportGrouped.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReportOverStock.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductInventoryReportOverStock.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_ProductBranchInventoryReport.ascx.cs">
+      <DependentUpon>_ProductBranchInventoryReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_ProductBranchInventoryReport.ascx.designer.cs">
+      <DependentUpon>_ProductBranchInventoryReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_productshistory\_ProductHistoryReport.ascx.cs">
+      <DependentUpon>_producthistoryreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_productshistory\_ProductHistoryReport.ascx.designer.cs">
+      <DependentUpon>_producthistoryreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReport.ascx.cs">
+      <DependentUpon>_productinventoryreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReport.ascx.designer.cs">
+      <DependentUpon>_productinventoryreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductInventoryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReportPhysicalCount.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductInventoryReportPhysicalCount.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReportQTYINOUT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductInventoryReportQTYINOUT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReportSummarized.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductInventoryReportSummarized.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReportSummarizedQTYINOUT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductInventoryReportSummarizedQTYINOUT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_productshistory\_producthistoryreportprice.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_producthistoryreportprice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_products\_ProductsReportPriceSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductsReportPriceSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_products\_ProductsReport.ascx.cs">
+      <DependentUpon>_productsreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_products\_ProductsReport.ascx.designer.cs">
+      <DependentUpon>_productsreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_products\_ProductsReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductsReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_PurchasesAndPayables.ascx.cs">
+      <DependentUpon>_purchasesandpayables.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_PurchasesAndPayables.ascx.designer.cs">
+      <DependentUpon>_purchasesandpayables.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_PurchasesAndPayablesPostedDebitMemo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_PurchasesAndPayablesPostedDebitMemo.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_PurchasesAndPayablesPostedPO.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_PurchasesAndPayablesPostedPO.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_PurchasesAndPayablesPostedPOReturns.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_PurchasesAndPayablesPostedPOReturns.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_PurchasesAndPayablesPurchaseAnalysis.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_PurchasesAndPayablesPurchaseAnalysis.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_salesandreceivables.ascx.cs">
+      <DependentUpon>_salesandreceivables.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_salesandreceivables.ascx.designer.cs">
+      <DependentUpon>_salesandreceivables.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_SalesAndReceivablesPostedCreditMemo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_SalesAndReceivablesPostedCreditMemo.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_SalesAndReceivablesPostedSO.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_SalesAndReceivablesPostedSO.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_SalesAndReceivablesPostedSOReturns.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_SalesAndReceivablesPostedSOReturns.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_SalesAndReceivablesSalesAnalysis.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_SalesAndReceivablesSalesAnalysis.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesPerDay.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSalesPerDay.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesPerHour.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSalesPerHour.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActual.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSummarizedPerDayWithActual.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActualEffective.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSummarizedPerDayWithActualEffective.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithEffective.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DatedReportSummarizedPerDayWithEffective.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_StockTransactionReport.ascx.cs">
+      <DependentUpon>_stocktransactionreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_StockTransactionReport.ascx.designer.cs">
+      <DependentUpon>_stocktransactionreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_StockTransactionReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_StockTransactionReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_TerminalReport.ascx.cs">
+      <DependentUpon>_terminalreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_TerminalReport.ascx.designer.cs">
+      <DependentUpon>_terminalreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_TerminalReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_TerminalReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReportTotalStock.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductInventoryReportTotalStock.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReportTotalStockWithSupplier.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProductInventoryReportTotalStockWithSupplier.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_TransactionReport.ascx.cs">
+      <DependentUpon>_transactionreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_TransactionReport.ascx.designer.cs">
+      <DependentUpon>_transactionreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_TransactionReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_TransactionReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Cancel.ascx.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Cancel.ascx.designer.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Post.ascx.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Post.ascx.designer.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_CreditMemo\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Customer\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Customer\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Customer\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Customer\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Customer\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Customer\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Customer\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Customer\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Customer\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Customer\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Menu.ascx.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Menu.ascx.designer.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Cancel.ascx.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Cancel.ascx.designer.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Post.ascx.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Post.ascx.designer.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_Returns\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SalesJournals\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SalesJournals\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SalesJournals\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SalesJournals\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SalesJournals\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SalesJournals\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Cancel.ascx.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Cancel.ascx.designer.cs">
+      <DependentUpon>_cancel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Post.ascx.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Post.ascx.designer.cs">
+      <DependentUpon>_post.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SalesAndReceivables\_SO\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="_Expiry.ascx.cs">
+      <DependentUpon>_Expiry.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_Expiry.ascx.designer.cs">
+      <DependentUpon>_Expiry.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="_HorizontalNavBar.ascx.cs">
+      <DependentUpon>_HorizontalNavBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_HorizontalNavBar.ascx.designer.cs">
+      <DependentUpon>_HorizontalNavBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="_HorizontalNavBarCorner.ascx.cs">
+      <DependentUpon>_HorizontalNavBarCorner.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_HorizontalNavBarCorner.ascx.designer.cs">
+      <DependentUpon>_HorizontalNavBarCorner.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="_LargeHeading.ascx.cs">
+      <DependentUpon>_LargeHeading.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_LargeHeading.ascx.designer.cs">
+      <DependentUpon>_LargeHeading.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="_Login.ascx.cs">
+      <DependentUpon>_Login.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_Login.ascx.designer.cs">
+      <DependentUpon>_Login.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="_Menu.ascx.cs">
+      <DependentUpon>_Menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_Menu.ascx.designer.cs">
+      <DependentUpon>_Menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="_PageHeader.ascx.cs">
+      <DependentUpon>_PageHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_PageHeader.ascx.designer.cs">
+      <DependentUpon>_PageHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="_PageLevelError.ascx.cs">
+      <DependentUpon>_PageLevelError.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_PageLevelError.ascx.designer.cs">
+      <DependentUpon>_PageLevelError.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="_RightBodySectionSearch.ascx.cs">
+      <DependentUpon>_RightBodySectionSearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_RightBodySectionSearch.ascx.designer.cs">
+      <DependentUpon>_RightBodySectionSearch.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="_SiteTitle.ascx.cs">
+      <DependentUpon>_SiteTitle.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_SiteTitle.ascx.designer.cs">
+      <DependentUpon>_SiteTitle.ascx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="backuppos.cmd" />
+    <None Include="Datasets\ReportDataset.xsc">
+      <DependentUpon>ReportDataset.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\ReportDataset.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>ReportDataset.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Datasets\ReportDataset.xss">
+      <DependentUpon>ReportDataset.xsd</DependentUpon>
+    </None>
+    <None Include="iisreset.cmd" />
+    <None Include="MasterFiles\_Product\_Variations\_easyinsert.ascx.cs.exclude" />
+    <None Include="MasterFiles\_Product\_Variations\_easyinsert.ascx.exclude" />
+    <None Include="User Guide - Backend.pdf" />
+    <None Include="vwd.webinfo" />
+    <None Include="_layouts\images\Thumbs.db" />
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AdminFiles\Company\default.aspx" />
+    <Content Include="AdminFiles\Company\_details.ascx" />
+    <Content Include="AdminFiles\default.aspx" />
+    <Content Include="AdminFiles\Reports\_Format\default.aspx" />
+    <Content Include="AdminFiles\Reports\_Format\_details.ascx" />
+    <Content Include="AdminFiles\Reports\_Format\_update.ascx" />
+    <Content Include="AdminFiles\Security\_AccessGroup\default.aspx" />
+    <Content Include="AdminFiles\Security\_AccessGroup\_accessrights.ascx" />
+    <Content Include="AdminFiles\Security\_AccessGroup\_details.ascx" />
+    <Content Include="AdminFiles\Security\_AccessGroup\_insert.ascx" />
+    <Content Include="AdminFiles\Security\_AccessGroup\_list.ascx" />
+    <Content Include="AdminFiles\Security\_AccessGroup\_update.ascx" />
+    <Content Include="AdminFiles\Security\_AccessUser\default.aspx" />
+    <Content Include="AdminFiles\Security\_AccessUser\_accessrights.ascx" />
+    <Content Include="AdminFiles\Security\_AccessUser\_account.ascx" />
+    <Content Include="AdminFiles\Security\_AccessUser\_details.ascx" />
+    <Content Include="AdminFiles\Security\_AccessUser\_insert.ascx" />
+    <Content Include="AdminFiles\Security\_AccessUser\_list.ascx" />
+    <Content Include="AdminFiles\Security\_AccessUser\_update.ascx" />
+    <Content Include="AdminFiles\Terminals\_updaterewards.ascx" />
+    <Content Include="AdminFiles\Terminals\default.aspx" />
+    <Content Include="AdminFiles\Terminals\_list.ascx" />
+    <Content Include="AdminFiles\Terminals\_update.ascx" />
+    <Content Include="AdminFiles\_menu.ascx" />
+    <Content Include="Inventory\_BranchTransfer\_reports.ascx" />
+    <Content Include="Inventory\_closeinventorydetailed.ascx" />
+    <Content Include="Inventory\_BranchTransfer\default.aspx" />
+    <Content Include="Inventory\_BranchTransfer\_cancel.ascx" />
+    <Content Include="Inventory\_BranchTransfer\_details.ascx" />
+    <Content Include="Inventory\_BranchTransfer\_insert.ascx" />
+    <Content Include="Inventory\_BranchTransfer\_list.ascx" />
+    <Content Include="Inventory\_BranchTransfer\_post.ascx" />
+    <Content Include="Inventory\_BranchTransfer\_update.ascx" />
+    <Content Include="MasterFiles\_Product\_changetax.ascx" />
+    <Content Include="Test.aspx" />
+    <Content Include="_layouts\images\loading.gif" />
+    <Content Include="_Processing.ascx" />
+    <Content Include="Default.aspx" />
+    <Content Include="GeneralLedger\default.aspx" />
+    <Content Include="GeneralLedger\_AccountCategory\default.aspx" />
+    <Content Include="GeneralLedger\_AccountCategory\_insert.ascx" />
+    <Content Include="GeneralLedger\_AccountCategory\_list.ascx" />
+    <Content Include="GeneralLedger\_AccountCategory\_update.ascx" />
+    <Content Include="GeneralLedger\_AccountSummary\default.aspx" />
+    <Content Include="GeneralLedger\_AccountSummary\_insert.ascx" />
+    <Content Include="GeneralLedger\_AccountSummary\_list.ascx" />
+    <Content Include="GeneralLedger\_AccountSummary\_update.ascx" />
+    <Content Include="GeneralLedger\_BankDeposits\default.aspx" />
+    <Content Include="GeneralLedger\_BankDeposits\_Details.ascx" />
+    <Content Include="GeneralLedger\_BankDeposits\_insert.ascx" />
+    <Content Include="GeneralLedger\_BankDeposits\_list.ascx" />
+    <Content Include="GeneralLedger\_BankDeposits\_update.ascx" />
+    <Content Include="GeneralLedger\_Bank\default.aspx" />
+    <Content Include="GeneralLedger\_Bank\_Details.ascx" />
+    <Content Include="GeneralLedger\_Bank\_insert.ascx" />
+    <Content Include="GeneralLedger\_Bank\_list.ascx" />
+    <Content Include="GeneralLedger\_Bank\_update.ascx" />
+    <Content Include="GeneralLedger\_ChartOfAccounts\default.aspx" />
+    <Content Include="GeneralLedger\_ChartOfAccounts\_BalanceSheet.ascx" />
+    <Content Include="GeneralLedger\_ChartOfAccounts\_GeneralLedger.ascx" />
+    <Content Include="GeneralLedger\_ChartOfAccounts\_insert.ascx" />
+    <Content Include="GeneralLedger\_ChartOfAccounts\_list.ascx" />
+    <Content Include="GeneralLedger\_ChartOfAccounts\_Reports.ascx" />
+    <Content Include="GeneralLedger\_ChartOfAccounts\_update.ascx" />
+    <Content Include="GeneralLedger\_GJournals\default.aspx" />
+    <Content Include="GeneralLedger\_GJournals\_Details.ascx" />
+    <Content Include="GeneralLedger\_GJournals\_insert.ascx" />
+    <Content Include="GeneralLedger\_GJournals\_list.ascx" />
+    <Content Include="GeneralLedger\_GJournals\_update.ascx" />
+    <Content Include="GeneralLedger\_menu.ascx" />
+    <Content Include="GeneralLedger\_Payments\default.aspx" />
+    <Content Include="GeneralLedger\_Payments\_Details.ascx" />
+    <Content Include="GeneralLedger\_Payments\_insert.ascx" />
+    <Content Include="GeneralLedger\_Payments\_list.ascx" />
+    <Content Include="GeneralLedger\_Payments\_update.ascx" />
+    <Content Include="GeneralLedger\_Reports.ascx" />
+    <Content Include="GeneralLedger\_Setup\default.aspx" />
+    <Content Include="GeneralLedger\_Setup\_LinkAccountsAP.ascx" />
+    <Content Include="GeneralLedger\_Setup\_postingdates.ascx" />
+    <Content Include="GeneralLedger\_Setup\_ProductFinancialSetup.ascx" />
+    <Content Include="GenericError.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Home.aspx" />
+    <Content Include="Inventory\_closeinventory.ascx" />
+    <Content Include="Inventory\default.aspx" />
+    <Content Include="Inventory\_Branch\default.aspx" />
+    <Content Include="Inventory\_Branch\_details.ascx" />
+    <Content Include="Inventory\_Branch\_insert.ascx" />
+    <Content Include="Inventory\_Branch\_list.ascx" />
+    <Content Include="Inventory\_Branch\_Synchronize.ascx" />
+    <Content Include="Inventory\_Branch\_update.ascx" />
+    <Content Include="Inventory\_invadjustment.ascx" />
+    <Content Include="Inventory\_list.ascx" />
+    <Content Include="Inventory\_menu.ascx" />
+    <Content Include="Inventory\_StockType\default.aspx" />
+    <Content Include="Inventory\_StockType\_details.ascx" />
+    <Content Include="Inventory\_StockType\_insert.ascx" />
+    <Content Include="Inventory\_StockType\_list.ascx" />
+    <Content Include="Inventory\_StockType\_update.ascx" />
+    <Content Include="Inventory\_Stock\default.aspx" />
+    <Content Include="Inventory\_Stock\_additem.ascx" />
+    <Content Include="Inventory\_Stock\_details.ascx" />
+    <Content Include="Inventory\_Stock\_insert.ascx" />
+    <Content Include="Inventory\_Stock\_list.ascx" />
+    <Content Include="Inventory\_Stock\_reports.ascx" />
+    <Content Include="Inventory\_Stock\_transfer.ascx" />
+    <Content Include="Inventory\_Stock\_upload.ascx" />
+    <Content Include="Inventory\_TransferIn\default.aspx" />
+    <Content Include="Inventory\_TransferIn\_cancel.ascx" />
+    <Content Include="Inventory\_TransferIn\_details.ascx" />
+    <Content Include="Inventory\_TransferIn\_insert.ascx" />
+    <Content Include="Inventory\_TransferIn\_list.ascx" />
+    <Content Include="Inventory\_TransferIn\_post.ascx" />
+    <Content Include="Inventory\_TransferIn\_reports.ascx" />
+    <Content Include="Inventory\_TransferIn\_update.ascx" />
+    <Content Include="Inventory\_TransferOut\default.aspx" />
+    <Content Include="Inventory\_TransferOut\_cancel.ascx" />
+    <Content Include="Inventory\_TransferOut\_details.ascx" />
+    <Content Include="Inventory\_TransferOut\_insert.ascx" />
+    <Content Include="Inventory\_TransferOut\_list.ascx" />
+    <Content Include="Inventory\_TransferOut\_post.ascx" />
+    <Content Include="Inventory\_TransferOut\_reports.ascx" />
+    <Content Include="Inventory\_TransferOut\_update.ascx" />
+    <Content Include="Inventory\_VariationsMatrix\default.aspx" />
+    <Content Include="Inventory\_VariationsMatrix\_list.ascx" />
+    <Content Include="MasterFiles\default.aspx" />
+    <Content Include="MasterFiles\_CardType\default.aspx" />
+    <Content Include="MasterFiles\_CardType\_details.ascx" />
+    <Content Include="MasterFiles\_CardType\_insert.ascx" />
+    <Content Include="MasterFiles\_CardType\_list.ascx" />
+    <Content Include="MasterFiles\_CardType\_update.ascx" />
+    <Content Include="MasterFiles\_ChargeType\default.aspx" />
+    <Content Include="MasterFiles\_ChargeType\_details.ascx" />
+    <Content Include="MasterFiles\_ChargeType\_insert.ascx" />
+    <Content Include="MasterFiles\_ChargeType\_list.ascx" />
+    <Content Include="MasterFiles\_ChargeType\_update.ascx" />
+    <Content Include="MasterFiles\_ContactGroup\default.aspx" />
+    <Content Include="MasterFiles\_ContactGroup\_details.ascx" />
+    <Content Include="MasterFiles\_ContactGroup\_insert.ascx" />
+    <Content Include="MasterFiles\_ContactGroup\_list.ascx" />
+    <Content Include="MasterFiles\_ContactGroup\_update.ascx" />
+    <Content Include="MasterFiles\_Contact\default.aspx" />
+    <Content Include="MasterFiles\_Contact\_details.ascx" />
+    <Content Include="MasterFiles\_Contact\_insert.ascx" />
+    <Content Include="MasterFiles\_Contact\_list.ascx" />
+    <Content Include="MasterFiles\_Contact\_update.ascx" />
+    <Content Include="MasterFiles\_Department\default.aspx" />
+    <Content Include="MasterFiles\_Department\_details.ascx" />
+    <Content Include="MasterFiles\_Department\_insert.ascx" />
+    <Content Include="MasterFiles\_Department\_list.ascx" />
+    <Content Include="MasterFiles\_Department\_update.ascx" />
+    <Content Include="MasterFiles\_Discount\default.aspx" />
+    <Content Include="MasterFiles\_Discount\_insert.ascx" />
+    <Content Include="MasterFiles\_Discount\_list.ascx" />
+    <Content Include="MasterFiles\_Discount\_update.ascx" />
+    <Content Include="MasterFiles\_menu.ascx" />
+    <Content Include="MasterFiles\_Position\default.aspx" />
+    <Content Include="MasterFiles\_Position\_details.ascx" />
+    <Content Include="MasterFiles\_Position\_insert.ascx" />
+    <Content Include="MasterFiles\_Position\_list.ascx" />
+    <Content Include="MasterFiles\_Position\_update.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\default.aspx" />
+    <Content Include="MasterFiles\_ProductGroup\_Charges\default.aspx" />
+    <Content Include="MasterFiles\_ProductGroup\_Charges\_insert.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_Charges\_list.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_Charges\_update.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_details.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_insert.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_list.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_UnitsMatrix\default.aspx" />
+    <Content Include="MasterFiles\_ProductGroup\_UnitsMatrix\_insert.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_UnitsMatrix\_list.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_UnitsMatrix\_update.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_update.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_VariationsMatrix\default.aspx" />
+    <Content Include="MasterFiles\_ProductGroup\_VariationsMatrix\_details.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_VariationsMatrix\_insert.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_VariationsMatrix\_list.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_VariationsMatrix\_update.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_Variations\default.aspx" />
+    <Content Include="MasterFiles\_ProductGroup\_Variations\_Details.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_Variations\_insert.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_Variations\_list.ascx" />
+    <Content Include="MasterFiles\_ProductGroup\_Variations\_update.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\default.aspx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_Charges\default.aspx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_Charges\_insert.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_Charges\_list.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_Charges\_update.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_details.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_insert.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_list.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\default.aspx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\_insert.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\_list.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_UnitsMatrix\_update.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_update.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\default.aspx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_details.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_insert.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_list.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_VariationsMatrix\_update.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_Variations\default.aspx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_Variations\_insert.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_Variations\_list.ascx" />
+    <Content Include="MasterFiles\_ProductSubGroup\_Variations\_update.ascx" />
+    <Content Include="MasterFiles\_Product\_changerewardpoints.ascx" />
+    <Content Include="MasterFiles\_Product\default.aspx" />
+    <Content Include="MasterFiles\_Product\_changeprice.ascx" />
+    <Content Include="MasterFiles\_Product\_compose.ascx" />
+    <Content Include="MasterFiles\_Product\_details.ascx" />
+    <Content Include="MasterFiles\_Product\_easyinsertvariation.ascx" />
+    <Content Include="MasterFiles\_Product\_Finance.ascx" />
+    <Content Include="MasterFiles\_Product\_insert.ascx" />
+    <Content Include="MasterFiles\_Product\_list.ascx" />
+    <Content Include="MasterFiles\_Product\_listdetailed.ascx" />
+    <Content Include="MasterFiles\_Product\_MatrixPackage\default.aspx" />
+    <Content Include="MasterFiles\_Product\_MatrixPackage\_insert.ascx" />
+    <Content Include="MasterFiles\_Product\_MatrixPackage\_list.ascx" />
+    <Content Include="MasterFiles\_Product\_MatrixPackage\_update.ascx" />
+    <Content Include="MasterFiles\_Product\_Package\default.aspx" />
+    <Content Include="MasterFiles\_Product\_Package\_insert.ascx" />
+    <Content Include="MasterFiles\_Product\_Package\_list.ascx" />
+    <Content Include="MasterFiles\_Product\_Package\_update.ascx" />
+    <Content Include="MasterFiles\_Product\_Synchronize.ascx" />
+    <Content Include="MasterFiles\_Product\_UnitsMatrix\default.aspx" />
+    <Content Include="MasterFiles\_Product\_UnitsMatrix\_insert.ascx" />
+    <Content Include="MasterFiles\_Product\_UnitsMatrix\_list.ascx" />
+    <Content Include="MasterFiles\_Product\_UnitsMatrix\_update.ascx" />
+    <Content Include="MasterFiles\_Product\_update.ascx" />
+    <Content Include="MasterFiles\_Product\_VariationsMatrix\default.aspx" />
+    <Content Include="MasterFiles\_Product\_VariationsMatrix\_details.ascx" />
+    <Content Include="MasterFiles\_Product\_VariationsMatrix\_insert.ascx" />
+    <Content Include="MasterFiles\_Product\_VariationsMatrix\_list.ascx" />
+    <Content Include="MasterFiles\_Product\_VariationsMatrix\_update.ascx" />
+    <Content Include="MasterFiles\_Product\_Variations\default.aspx" />
+    <Content Include="MasterFiles\_Product\_Variations\_insert.ascx" />
+    <Content Include="MasterFiles\_Product\_Variations\_list.ascx" />
+    <Content Include="MasterFiles\_Product\_Variations\_update.ascx" />
+    <Content Include="MasterFiles\_Promo\default.aspx" />
+    <Content Include="MasterFiles\_Promo\_insert.ascx" />
+    <Content Include="MasterFiles\_Promo\_list.ascx" />
+    <Content Include="MasterFiles\_Promo\_stuff.ascx" />
+    <Content Include="MasterFiles\_Promo\_update.ascx" />
+    <Content Include="MasterFiles\_Unit\default.aspx" />
+    <Content Include="MasterFiles\_Unit\_details.ascx" />
+    <Content Include="MasterFiles\_Unit\_insert.ascx" />
+    <Content Include="MasterFiles\_Unit\_list.ascx" />
+    <Content Include="MasterFiles\_Unit\_update.ascx" />
+    <Content Include="MasterFiles\_Variation\default.aspx" />
+    <Content Include="MasterFiles\_Variation\_details.ascx" />
+    <Content Include="MasterFiles\_Variation\_insert.ascx" />
+    <Content Include="MasterFiles\_Variation\_list.ascx" />
+    <Content Include="MasterFiles\_Variation\_update.ascx" />
+    <Content Include="menu.css" />
+    <Content Include="ont.css" />
+    <Content Include="ows.css" />
+    <Content Include="PurchasesAndPayables\default.aspx" />
+    <Content Include="PurchasesAndPayables\_DebitMemo\default.aspx" />
+    <Content Include="PurchasesAndPayables\_DebitMemo\_cancel.ascx" />
+    <Content Include="PurchasesAndPayables\_DebitMemo\_details.ascx" />
+    <Content Include="PurchasesAndPayables\_DebitMemo\_insert.ascx" />
+    <Content Include="PurchasesAndPayables\_DebitMemo\_list.ascx" />
+    <Content Include="PurchasesAndPayables\_DebitMemo\_post.ascx" />
+    <Content Include="PurchasesAndPayables\_DebitMemo\_reports.ascx" />
+    <Content Include="PurchasesAndPayables\_DebitMemo\_update.ascx" />
+    <Content Include="PurchasesAndPayables\_menu.ascx" />
+    <Content Include="PurchasesAndPayables\_PO\default.aspx" />
+    <Content Include="PurchasesAndPayables\_PO\_cancel.ascx" />
+    <Content Include="PurchasesAndPayables\_PO\_details.ascx" />
+    <Content Include="PurchasesAndPayables\_PO\_insert.ascx" />
+    <Content Include="PurchasesAndPayables\_PO\_list.ascx" />
+    <Content Include="PurchasesAndPayables\_PO\_post.ascx" />
+    <Content Include="PurchasesAndPayables\_PO\_reports.ascx" />
+    <Content Include="PurchasesAndPayables\_PO\_update.ascx" />
+    <Content Include="PurchasesAndPayables\_Returns\default.aspx" />
+    <Content Include="PurchasesAndPayables\_Returns\_cancel.ascx" />
+    <Content Include="PurchasesAndPayables\_Returns\_details.ascx" />
+    <Content Include="PurchasesAndPayables\_Returns\_insert.ascx" />
+    <Content Include="PurchasesAndPayables\_Returns\_list.ascx" />
+    <Content Include="PurchasesAndPayables\_Returns\_post.ascx" />
+    <Content Include="PurchasesAndPayables\_Returns\_reports.ascx" />
+    <Content Include="PurchasesAndPayables\_Returns\_update.ascx" />
+    <Content Include="PurchasesAndPayables\_Vendor\default.aspx" />
+    <Content Include="PurchasesAndPayables\_Vendor\_details.ascx" />
+    <Content Include="PurchasesAndPayables\_Vendor\_insert.ascx" />
+    <Content Include="PurchasesAndPayables\_Vendor\_list.ascx" />
+    <Content Include="PurchasesAndPayables\_Vendor\_update.ascx" />
+    <Content Include="Reports\_ClosingInventory.ascx" />
+    <Content Include="Reports\_inventoryanalyst.ascx" />
+    <Content Include="Reports\default.aspx" />
+    <Content Include="Reports\_agentscommisionreport.ascx" />
+    <Content Include="Reports\_agentssalesreport.ascx" />
+    <Content Include="Reports\_contactsreport.ascx" />
+    <Content Include="Reports\_customercredit\_customercredit.ascx" />
+    <Content Include="Reports\_datedsalesreport\_datedreport.ascx" />
+    <Content Include="Reports\_default.ascx" />
+    <Content Include="Reports\_generalledger.ascx" />
+    <Content Include="Reports\_leastsalableitemsreport.ascx" />
+    <Content Include="Reports\_loginlogoutreport.ascx" />
+    <Content Include="Reports\_menu.ascx" />
+    <Content Include="Reports\_mostsalableitemsreport.ascx" />
+    <Content Include="Reports\_ProductBranchInventoryReport.ascx" />
+    <Content Include="Reports\_productshistory\_producthistoryreport.ascx" />
+    <Content Include="Reports\_inventory\_productinventoryreport.ascx" />
+    <Content Include="Reports\_products\_productsreport.ascx" />
+    <Content Include="Reports\_purchasesandpayables.ascx" />
+    <Content Include="Reports\_salesandreceivables.ascx" />
+    <Content Include="Reports\_stocktransactionreport.ascx" />
+    <Content Include="Reports\_terminalreport.ascx" />
+    <Content Include="Reports\_transactionreport.ascx" />
+    <Content Include="SalesAndReceivables\default.aspx" />
+    <Content Include="SalesAndReceivables\_CreditMemo\default.aspx" />
+    <Content Include="SalesAndReceivables\_CreditMemo\_cancel.ascx" />
+    <Content Include="SalesAndReceivables\_CreditMemo\_details.ascx" />
+    <Content Include="SalesAndReceivables\_CreditMemo\_insert.ascx" />
+    <Content Include="SalesAndReceivables\_CreditMemo\_list.ascx" />
+    <Content Include="SalesAndReceivables\_CreditMemo\_post.ascx" />
+    <Content Include="SalesAndReceivables\_CreditMemo\_reports.ascx" />
+    <Content Include="SalesAndReceivables\_CreditMemo\_update.ascx" />
+    <Content Include="SalesAndReceivables\_Customer\default.aspx" />
+    <Content Include="SalesAndReceivables\_Customer\_details.ascx" />
+    <Content Include="SalesAndReceivables\_Customer\_insert.ascx" />
+    <Content Include="SalesAndReceivables\_Customer\_list.ascx" />
+    <Content Include="SalesAndReceivables\_Customer\_update.ascx" />
+    <Content Include="SalesAndReceivables\_menu.ascx" />
+    <Content Include="SalesAndReceivables\_Returns\default.aspx" />
+    <Content Include="SalesAndReceivables\_Returns\_cancel.ascx" />
+    <Content Include="SalesAndReceivables\_Returns\_details.ascx" />
+    <Content Include="SalesAndReceivables\_Returns\_insert.ascx" />
+    <Content Include="SalesAndReceivables\_Returns\_list.ascx" />
+    <Content Include="SalesAndReceivables\_Returns\_post.ascx" />
+    <Content Include="SalesAndReceivables\_Returns\_reports.ascx" />
+    <Content Include="SalesAndReceivables\_Returns\_update.ascx" />
+    <Content Include="SalesAndReceivables\_SalesJournals\default.aspx" />
+    <Content Include="SalesAndReceivables\_SalesJournals\_details.ascx" />
+    <Content Include="SalesAndReceivables\_SalesJournals\_list.ascx" />
+    <Content Include="SalesAndReceivables\_SO\default.aspx" />
+    <Content Include="SalesAndReceivables\_SO\_cancel.ascx" />
+    <Content Include="SalesAndReceivables\_SO\_details.ascx" />
+    <Content Include="SalesAndReceivables\_SO\_insert.ascx" />
+    <Content Include="SalesAndReceivables\_SO\_list.ascx" />
+    <Content Include="SalesAndReceivables\_SO\_post.ascx" />
+    <Content Include="SalesAndReceivables\_SO\_reports.ascx" />
+    <Content Include="SalesAndReceivables\_SO\_update.ascx" />
+    <Content Include="sps.css" />
+    <Content Include="_Expiry.ascx" />
+    <Content Include="_HorizontalNavBar.ascx" />
+    <Content Include="_HorizontalNavBarCorner.ascx" />
+    <Content Include="_LargeHeading.ascx" />
+    <Content Include="_layouts\images\add.GIF" />
+    <Content Include="_layouts\images\ADDCOL.GIF" />
+    <Content Include="_layouts\images\admin.ico" />
+    <Content Include="_layouts\images\adobe.ico" />
+    <Content Include="_layouts\images\ANNOUNCE.GIF" />
+    <Content Include="_layouts\images\AUTDEACT.GIF" />
+    <Content Include="_layouts\images\AUTDEACT.jpg" />
+    <Content Include="_layouts\images\back.GIF" />
+    <Content Include="_layouts\images\blank.gif" />
+    <Content Include="_layouts\images\cancel.GIF" />
+    <Content Include="_layouts\images\CHECK.GIF" />
+    <Content Include="_layouts\images\Check2.gif" />
+    <Content Include="_layouts\images\chprice.gif" />
+    <Content Include="_layouts\images\company_logo.gif" />
+    <Content Include="_layouts\images\company_logo1.gif" />
+    <Content Include="_layouts\images\cornerbl.gif" />
+    <Content Include="_layouts\images\cornerbRTL.gif" />
+    <Content Include="_layouts\images\cornertop.gif" />
+    <Content Include="_layouts\images\cornertopRTL.gif" />
+    <Content Include="_layouts\images\dbbackup.ico" />
+    <Content Include="_layouts\images\DELITEM.GIF" />
+    <Content Include="_layouts\images\DLMAX.GIF" />
+    <Content Include="_layouts\images\DLMIN.GIF" />
+    <Content Include="_layouts\images\dot_rule.gif" />
+    <Content Include="_layouts\images\EDIT.GIF" />
+    <Content Include="_layouts\images\empty.gif" />
+    <Content Include="_layouts\images\Error.gif" />
+    <Content Include="_layouts\images\genorder.GIF" />
+    <Content Include="_layouts\images\home.gif" />
+    <Content Include="_layouts\images\icongo01.gif" />
+    <Content Include="_layouts\images\IMPITEM.GIF" />
+    <Content Include="_layouts\images\invadj.gif" />
+    <Content Include="_layouts\images\inventory.gif" />
+    <Content Include="_layouts\images\issuegrn.GIF" />
+    <Content Include="_layouts\images\masterfiles.gif" />
+    <Content Include="_layouts\images\navgradp.gif" />
+    <Content Include="_layouts\images\newuser.GIF" />
+    <Content Include="_layouts\images\post.GIF" />
+    <Content Include="_layouts\images\pricehist.gif" />
+    <Content Include="_layouts\images\print.gif" />
+    <Content Include="_layouts\images\print_over.gif" />
+    <Content Include="_layouts\images\processing.gif" />
+    <Content Include="_layouts\images\prodhist.gif" />
+    <Content Include="_layouts\images\prodtagact.gif" />
+    <Content Include="_layouts\images\prodtaginact.gif" />
+    <Content Include="_layouts\images\quickadd.gif" />
+    <Content Include="_layouts\images\rbs.ico" />
+    <Content Include="_layouts\images\rbs_logo.gif" />
+    <Content Include="_layouts\images\rbs_logo1.gif" />
+    <Content Include="_layouts\images\reports.gif" />
+    <Content Include="_layouts\images\save.gif" />
+    <Content Include="_layouts\images\saveitem.gif" />
+    <Content Include="_layouts\images\settings.gif" />
+    <Content Include="_layouts\images\spshome.gif" />
+    <Content Include="_layouts\images\spsnews.gif" />
+    <Content Include="_layouts\images\spssearch.gif" />
+    <Content Include="_layouts\images\spssearch2.gif" />
+    <Content Include="_layouts\images\tabdisp.gif" />
+    <Content Include="_layouts\images\tabfinance.gif" />
+    <Content Include="_layouts\images\tabgen.gif" />
+    <Content Include="_layouts\images\tabpage.gif" />
+    <Content Include="_layouts\images\tabpub.gif" />
+    <Content Include="_layouts\images\tabsec.gif" />
+    <Content Include="_layouts\images\tabsrch.gif" />
+    <Content Include="_layouts\images\toolgradp.gif" />
+    <Content Include="_layouts\images\topgrad.gif" />
+    <Content Include="_layouts\images\trans.gif" />
+    <Content Include="_layouts\images\UNCHECK.GIF" />
+    <Content Include="_layouts\images\unitmatrix.GIF" />
+    <Content Include="_layouts\images\variations.gif" />
+    <Content Include="_layouts\images\varmatrix.GIF" />
+    <Content Include="_layouts\images\vgradp.gif" />
+    <Content Include="_Login.ascx" />
+    <Content Include="_Menu.ascx" />
+    <Content Include="_PageHeader.ascx" />
+    <Content Include="_PageLevelError.ascx" />
+    <Content Include="_RightBodySectionSearch.ascx" />
+    <Content Include="_Scripts\backgo.js" />
+    <Content Include="_Scripts\calendar.htm" />
+    <Content Include="_Scripts\calendar.js" />
+    <Content Include="_Scripts\ComputeMargin.js" />
+    <Content Include="_Scripts\ComputeMarginPO.js" />
+    <Content Include="_Scripts\ComputeMarginTransferIn.js" />
+    <Content Include="_Scripts\ConfirmDelete.js" />
+    <Content Include="_Scripts\dd_tooltip.js" />
+    <Content Include="_Scripts\disablerightclick.js" />
+    <Content Include="_Scripts\DocumentScripts.js" />
+    <Content Include="_Scripts\GeneralLedger.js" />
+    <Content Include="_Scripts\InvAdjustment.js" />
+    <Content Include="_Scripts\Inventory.js" />
+    <Content Include="_Scripts\ajax\jquery-1.6.2.js" />
+    <Content Include="_Scripts\PurchasesAndPayables.js" />
+    <Content Include="_Scripts\RateTotal.js" />
+    <Content Include="_Scripts\SalesAndReceivables.js" />
+    <Content Include="_Scripts\SelectAll.js" />
+    <Content Include="_Scripts\sexpcollapse.js" />
+    <Content Include="_Scripts\TransferIn.js" />
+    <Content Include="_Scripts\TransferOut.js" />
+    <Content Include="_SiteTitle.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\BalanceSheet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BalanceSheet.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ChartOfAccountsDetails.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ChartOfAccountsDetails.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ChartOfAccountsSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ChartOfAccountsSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_customercredit\_CustomerCreditBill.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_CustomerCreditBill.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PurchaseReturn.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PurchaseReturn.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_customercredit\_CustomerCreditListWCredit.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_CustomerCreditListWCredit1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_products\_ProductsReportPricesForWeighingScale.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductsReportPricesForWeighingScale.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_ClosingInventory.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ClosingInventory.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_InventoryAnalyst.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_InventoryAnalyst.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_productshistory\_producthistoryreportmovement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_producthistoryreportmovement.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\CreditMemoReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CreditMemoReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\DebitMemoReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DebitMemoReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\GeneralLedger.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GeneralLedger.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\InvAdjustmentReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>InvAdjustmentReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\MatrixPackagePrice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MatrixPackagePrice.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\MatrixPackagePriceFake.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MatrixPackagePriceFake.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\POReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>POReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\POReportSellingPrice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>POReportSellingPrice.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_ProductBranchInventoryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductBranchInventoryReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ProductHistoryRepor.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ProductHistoryRepor.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SalesReturn.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SalesReturn.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SOReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SOReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SOReportQuotation.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SOReportQuotation.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SOReportSellingPrice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SOReportSellingPrice.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SummarizedSalesTransactionPerDay.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SummarizedSalesTransactionPerDay.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\TransactionReports.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TransactionReports.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\TransferInReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TransferInReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\TransferInReportSellingPrice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TransferInReportSellingPrice.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\TransferOutReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TransferOutReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\TransferOutReportSellingPrice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TransferOutReportSellingPrice.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\TransferOutReportSellingPriceWithCost.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TransferOutReportSellingPriceWithCost.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\TrialBalance.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TrialBalance.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\AgentsCommisionReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AgentsCommisionReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\AgentsCommisionReportDetailed.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AgentsCommisionReportDetailed.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\AgentsCommisionReportSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AgentsCommisionReportSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\AgentsSalesReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AgentsSalesReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\AgentsSalesReportDetailed.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AgentsSalesReportDetailed.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\AgentsSalesReportSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AgentsSalesReportSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_ContactsReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ContactsReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_customercredit\_CustomerCredit.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_CustomerCredit.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportCashSalesDaily.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportCashSalesDaily.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportCashSalesMonthly.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportCashSalesMonthly.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportChequeSalesDaily.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportChequeSalesDaily.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportChequeSalesMonthly.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportChequeSalesMonthly.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportCreditCardSalesDaily.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportCreditCardSalesDaily.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportCreditCardSalesMonthly.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportCreditCardSalesMonthly.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportDisburse.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportDisburse.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportPaidOut.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportPaidOut.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportROC.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportROC.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCashier.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerCashier.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCashierPerCustomer.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerCashierPerCustomer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomer.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerCustomer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerDay.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerDay.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerItem.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerItem.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerMonth.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerMonth.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerTerminal.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerTerminal.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerWeek.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerWeek.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportExpired.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReportExpired1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportForReorder.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReportForReorder.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_productshistory\_LeastSalableItemsReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_LeastSalableItemsReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_productshistory\_LeastSalableItemsReportGrouped.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_LeastSalableItemsReportGrouped.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_LoginLogoutReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_LoginLogoutReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_productshistory\_MostSalableItemsReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_MostSalableItemsReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_productshistory\_MostSalableItemsReportGrouped.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_MostSalableItemsReportGrouped.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportOverStock.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReportOverStock.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportPhysicalCount.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReportPhysicalCount.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportQTYINOUT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReportQTYINOUT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportSummarized.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReportSummarized.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportSummarizedQTYINOUT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReportSummarizedQTYINOUT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_productshistory\_producthistoryreportprice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_producthistoryreportprice.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_products\_ProductsReportPriceSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductsReportPriceSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_products\_ProductsReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductsReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_PurchasesAndPayablesPostedDebitMemo.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_PurchasesAndPayablesPostedDebitMemo.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_PurchasesAndPayablesPostedPO.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_PurchasesAndPayablesPostedPO.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_PurchasesAndPayablesPostedPOReturns.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_PurchasesAndPayablesPostedPOReturns.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_PurchasesAndPayablesPurchaseAnalysis.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_PurchasesAndPayablesPurchaseAnalysis.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_SalesAndReceivablesPostedCreditMemo.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_SalesAndReceivablesPostedCreditMemo.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_SalesAndReceivablesPostedSO.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_SalesAndReceivablesPostedSO.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_SalesAndReceivablesPostedSOReturns.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_SalesAndReceivablesPostedSOReturns.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_SalesAndReceivablesSalesAnalysis.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_SalesAndReceivablesSalesAnalysis.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesPerDay.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesPerDay.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesPerHour.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesPerHour.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActual.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSummarizedPerDayWithActual.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActualEffective.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSummarizedPerDayWithActualEffective.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithEffective.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSummarizedPerDayWithEffective.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_StockTransactionReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_StockTransactionReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_TerminalReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_TerminalReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportTotalStock.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReportTotalStock.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportTotalStockWithSupplier.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReportTotalStockWithSupplier.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_TransactionReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_TransactionReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionsReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionsReport.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\company\Company Library.csproj">
+      <Project>{810E3EE7-4E46-4DEC-85ED-2AAA53D5C531}</Project>
+      <Name>Company Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects Accounts\DataObjects Accounts.csproj">
+      <Project>{4CBAE4B5-2073-43AB-9EC4-981D2CA31DCC}</Project>
+      <Name>DataObjects Accounts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects Inventory\DataObjects Inventory.csproj">
+      <Project>{98B7F5B1-2F87-4E62-B2BF-926975D02C73}</Project>
+      <Name>DataObjects Inventory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects Sales\DataObjects Sales.csproj">
+      <Project>{8B8665AF-61C0-4290-A18C-8DF9345DD064}</Project>
+      <Name>DataObjects Sales</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\dataobjects\DataObjects.csproj">
+      <Project>{75D37B92-76F5-4C25-AF1A-394619DE4835}</Project>
+      <Name>DataObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\dbconnection\DBConnection.csproj">
+      <Project>{18F0CB07-90C3-4DAC-9241-3F13052FBEED}</Project>
+      <Name>DBConnection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\logistics\AceSoft.csproj">
+      <Project>{A800354C-F064-4836-9178-1DC7B752822E}</Project>
+      <Name>AceSoft</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\registration key\Registration Key.csproj">
+      <Project>{C5619B46-0E57-4C27-A365-03164DF22CC6}</Project>
+      <Name>Registration Key</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\report library\Report Library.csproj">
+      <Project>{E43FD0B2-AF54-49AD-9FCD-BC3B67EE16F9}</Project>
+      <Name>Report Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\security library\Security Library.csproj">
+      <Project>{88C68179-9BB1-4A08-92E7-7B003449A2AE}</Project>
+      <Name>Security Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\weblibrary\WebLibrary.csproj">
+      <Project>{2B244CBF-51A8-46FC-9983-3837462A5535}</Project>
+      <Name>WebLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GeneralLedger\_FundTransfers\" />
+    <Folder Include="Inventory\_Transfer\" />
+    <Folder Include="temp\html\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>3806</DevelopmentServerPort>
+          <DevelopmentServerVPath>/RetailPlus</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

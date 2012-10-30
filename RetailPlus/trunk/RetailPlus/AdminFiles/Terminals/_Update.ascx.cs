@@ -1,0 +1,255 @@
+using AceSoft.RetailPlus.Security;
+using AceSoft.RetailPlus.Data;
+
+namespace AceSoft.RetailPlus.Security._Terminals
+{
+	using System;
+	using System.Data;
+	using System.Drawing;
+	using System.Web;
+	using System.Web.UI.WebControls;
+	using System.Web.UI.HtmlControls;
+	
+	public partial  class __Update : System.Web.UI.UserControl
+	{
+		
+		#region Web Form Designer generated code
+		override protected void OnInit(EventArgs e)
+		{
+			//
+			// CODEGEN: This call is required by the ASP.NET Web Form Designer.
+			//
+			InitializeComponent();
+			base.OnInit(e);
+		}
+		
+		///		Required method for Designer support - do not modify
+		///		the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
+			this.imgSaveBack.Click += new System.Web.UI.ImageClickEventHandler(this.imgSaveBack_Click);
+			this.imgCancel.Click += new System.Web.UI.ImageClickEventHandler(this.imgCancel_Click);
+
+		}
+		#endregion
+
+		#region Web Form Methods
+
+		protected void Page_Load(object sender, System.EventArgs e)
+		{
+			if (!IsPostBack)
+			{
+				lblReferrer.Text = Request.UrlReferrer.ToString();
+				if (Visible)
+				{
+					LoadOptions();
+					LoadRecord();
+				}
+			}
+		}
+		
+		private void imgSave_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+		{
+			SaveRecord();
+			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);
+			Response.Redirect("Default.aspx" + stParam);	
+		}
+
+		private void cmdSave_Click(object sender, System.EventArgs e)
+		{
+			SaveRecord();
+			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);
+			Response.Redirect("Default.aspx" + stParam);			
+		}
+
+		private void imgSaveBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+		{
+			SaveRecord();
+			Response.Redirect(lblReferrer.Text);
+		}
+
+		protected void cmdSaveBack_Click(object sender, System.EventArgs e)
+		{
+			SaveRecord();
+			Response.Redirect(lblReferrer.Text);
+		}
+
+		private void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+		{
+			Response.Redirect(lblReferrer.Text);
+		}
+
+		protected void cmdCancel_Click(object sender, System.EventArgs e)
+		{
+			Response.Redirect(lblReferrer.Text);
+		}
+
+
+		#endregion
+
+		#region Private Methods
+
+		private void LoadOptions()
+		{
+            foreach(string strTerminalReceiptType in Enum.GetNames(typeof(TerminalReceiptType)))
+            {
+                TerminalReceiptType itemTerminalReceiptType = (TerminalReceiptType)Enum.Parse(typeof(TerminalReceiptType), strTerminalReceiptType);
+                cboReceiptType.Items.Add(new ListItem(strTerminalReceiptType, itemTerminalReceiptType.ToString("d")));
+            }
+			
+            Data.Discount clsDiscount = new Data.Discount();
+            cboDiscountCode.DataTextField = "DiscountType";
+            cboDiscountCode.DataValueField = "DiscountCode";
+            cboDiscountCode.DataSource = clsDiscount.DataList("DiscountCode", SortOption.Ascending).DefaultView;
+            cboDiscountCode.DataBind();
+            cboDiscountCode.SelectedIndex = cboDiscountCode.Items.Count - 1;
+            clsDiscount.CommitAndDispose();
+		}
+
+		private void LoadRecord()
+		{
+
+			Int32 TerminalID = Convert.ToInt32(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
+			Terminal clsTerminal = new Terminal();
+			TerminalDetails clsDetails = clsTerminal.Details(TerminalID);
+			clsTerminal.CommitAndDispose();
+
+            lblBranchID.Text = clsDetails.BranchID.ToString();
+			lblTerminalID.Text = clsDetails.TerminalID.ToString();
+			txtTerminalNo.Text = clsDetails.TerminalNo;
+			txtTerminalCode.Text = clsDetails.TerminalCode;
+			txtTerminalName.Text = clsDetails.TerminalName;
+			txtStatus.Text = clsDetails.Status.ToString("G");
+			txtDateCreated.Text = clsDetails.DateCreated.ToString("yyyy-MM-dd HH:mm");
+			txtMachineSerialNo.Text = clsDetails.MachineSerialNo;
+			txtAccreditationNo.Text = clsDetails.AccreditationNo;
+
+			chkIsPrinterAutoCutter.Checked = clsDetails.IsPrinterAutoCutter;
+			cboAutoPrint.SelectedIndex = cboAutoPrint.Items.IndexOf(cboAutoPrint.Items.FindByValue(clsDetails.AutoPrint.ToString("d")));
+			chkIsVATInclusive.Checked = clsDetails.IsVATInclusive;
+
+			txtPrinterName.Text = clsDetails.PrinterName;
+			txtTurretName.Text = clsDetails.TurretName;
+			txtCashDrawerName.Text = clsDetails.CashDrawerName;
+
+			chkItemVoidConfirmation.Checked = clsDetails.ItemVoidConfirmation;
+			chkEnableEVAT.Checked = clsDetails.EnableEVAT;
+			txtMaxReceiptWidth.Text = clsDetails.MaxReceiptWidth.ToString();
+
+			cboFormBehaviour.SelectedIndex = cboFormBehaviour.Items.IndexOf(cboFormBehaviour.Items.FindByValue(clsDetails.FORM_Behavior));
+
+			txtMarqueeMessage.Text = clsDetails.MarqueeMessage;
+			
+			if (Session["UserName"].ToString().ToLower() == "admin")
+			{
+				txtMachineSerialNo.ReadOnly = false;
+				txtAccreditationNo.ReadOnly = false;
+			}
+
+            // Added May 6, 2009.
+            txtVAT.Text = clsDetails.VAT.ToString("##.#0");
+            txtEVAT.Text = clsDetails.EVAT.ToString("##.#0");
+            txtLocalTax.Text = clsDetails.LocalTax.ToString("##.#0");
+            chkShowItemMoreThanZeroQty.Checked = clsDetails.ShowItemMoreThanZeroQty;
+            chkShowOnlyPackedTransactions.Checked = clsDetails.ShowOnlyPackedTransactions;
+            chkShowOneTerminalSuspendedTransactions.Checked = clsDetails.ShowOneTerminalSuspendedTransactions;
+            cboReceiptType.SelectedIndex = cboReceiptType.Items.IndexOf(cboReceiptType.Items.FindByValue(clsDetails.ReceiptType.ToString("d")));
+            txtSalesInvoicePrinterName.Text = clsDetails.SalesInvoicePrinterName;
+            chkCashCountBeforeReport.Checked = clsDetails.CashCountBeforeReport;
+            chkPreviewTerminalReport.Checked = clsDetails.PreviewTerminalReport;
+
+            // Added May 6, 2009.
+            chkIsPrinterDotmatrix.Checked = clsDetails.IsPrinterDotMatrix;
+            chkIsChargeEditable.Checked = clsDetails.IsChargeEditable;
+            chkIsDiscountEditable.Checked = clsDetails.IsDiscountEditable;
+            chkCheckCutOffTime.Checked = clsDetails.CheckCutOffTime;
+            txtStartCutOffTime.Text = clsDetails.StartCutOffTime;
+            txtEndCutOffTime.Text = clsDetails.EndCutOffTime;
+            chkWithRestaurantFeatures.Checked = clsDetails.WithRestaurantFeatures;
+            cboDiscountCode.SelectedIndex = cboDiscountCode.Items.IndexOf(cboDiscountCode.Items.FindByValue(clsDetails.SeniorCitizenDiscountCode));
+            chkIsTouchScreen.Checked = clsDetails.IsTouchScreen;
+            chkWillContinueSelectionVariation.Checked = clsDetails.WillContinueSelectionVariation;
+            chkWillContinueSelectionProduct.Checked = clsDetails.WillContinueSelectionProduct;
+            chkWillPrintGrandTotal.Checked = clsDetails.WillPrintGrandTotal;
+            chkReservedAndCommit.Checked = clsDetails.ReservedAndCommit;
+
+            // Added Oct 17, 2011
+            chkShowCustomerSelection.Checked = clsDetails.ShowCustomerSelection;
+		}
+
+		private void SaveRecord()
+		{
+			TerminalDetails clsDetails = new TerminalDetails();
+
+            clsDetails.BranchID = Convert.ToInt32(lblBranchID.Text);
+			clsDetails.TerminalID = Convert.ToInt32(lblTerminalID.Text);
+			clsDetails.TerminalNo = txtTerminalNo.Text;
+			clsDetails.TerminalCode = txtTerminalCode.Text;
+			clsDetails.TerminalName = txtTerminalName.Text;
+			clsDetails.Status = 0; 
+			clsDetails.DateCreated = Convert.ToDateTime(txtDateCreated.Text);
+			clsDetails.MachineSerialNo = txtMachineSerialNo.Text;
+			clsDetails.AccreditationNo = txtAccreditationNo.Text;
+			clsDetails.IsPrinterAutoCutter = Convert.ToBoolean(chkIsPrinterAutoCutter.Checked);
+			clsDetails.AutoPrint = (PrintingPreference) Enum.Parse(typeof(PrintingPreference), cboAutoPrint.SelectedItem.Value);
+			clsDetails.IsVATInclusive = Convert.ToBoolean(chkIsVATInclusive.Checked);
+			clsDetails.PrinterName = txtPrinterName.Text;
+			clsDetails.TurretName = txtTurretName.Text;
+			clsDetails.CashDrawerName = txtCashDrawerName.Text;
+			clsDetails.ItemVoidConfirmation = Convert.ToBoolean(chkItemVoidConfirmation.Checked);
+			clsDetails.EnableEVAT = Convert.ToBoolean(chkEnableEVAT.Checked);
+			clsDetails.MaxReceiptWidth = Convert.ToInt16(txtMaxReceiptWidth.Text);
+			clsDetails.FORM_Behavior = cboFormBehaviour.SelectedItem.Value;
+			clsDetails.MarqueeMessage = txtMarqueeMessage.Text;
+
+            // Added May 6, 2009.
+            clsDetails.VAT = Convert.ToDecimal(txtVAT.Text);
+            clsDetails.EVAT = Convert.ToDecimal(txtEVAT.Text);
+            clsDetails.LocalTax = Convert.ToDecimal(txtLocalTax.Text);
+            clsDetails.ShowItemMoreThanZeroQty = chkShowItemMoreThanZeroQty.Checked;
+            clsDetails.ShowOnlyPackedTransactions = chkShowOnlyPackedTransactions.Checked;
+            clsDetails.ShowOneTerminalSuspendedTransactions = chkShowOneTerminalSuspendedTransactions.Checked;
+            clsDetails.ReceiptType = (TerminalReceiptType)Enum.Parse(typeof(TerminalReceiptType), cboReceiptType.SelectedItem.Value);
+            clsDetails.SalesInvoicePrinterName = txtSalesInvoicePrinterName.Text;
+            clsDetails.CashCountBeforeReport = chkCashCountBeforeReport.Checked;
+            clsDetails.PreviewTerminalReport = chkPreviewTerminalReport.Checked;
+
+            // Added May 6, 2009.
+            clsDetails.IsPrinterDotMatrix = chkIsPrinterDotmatrix.Checked;
+            clsDetails.IsChargeEditable = chkIsChargeEditable.Checked;
+            clsDetails.IsDiscountEditable = chkIsDiscountEditable.Checked;
+            clsDetails.CheckCutOffTime = chkCheckCutOffTime.Checked;
+            clsDetails.StartCutOffTime = txtStartCutOffTime.Text;
+            clsDetails.EndCutOffTime = txtEndCutOffTime.Text;
+            clsDetails.WithRestaurantFeatures = chkWithRestaurantFeatures.Checked;
+            clsDetails.SeniorCitizenDiscountCode = cboDiscountCode.SelectedItem.Value;
+
+            // Added May 21, 2009
+            clsDetails.IsTouchScreen = chkIsTouchScreen.Checked;
+
+            // Added June 1, 2010
+            clsDetails.WillContinueSelectionVariation = chkWillContinueSelectionVariation.Checked;
+            
+            // Added June 15, 2010
+            clsDetails.WillContinueSelectionProduct = chkWillContinueSelectionProduct.Checked;
+
+            // Added Sep 21, 2010
+            clsDetails.WillPrintGrandTotal = chkWillPrintGrandTotal.Checked;
+
+            // Added Apr 12, 2011
+            clsDetails.ReservedAndCommit = chkReservedAndCommit.Checked;
+
+            // Added Oct 17, 2011
+            clsDetails.ShowCustomerSelection = chkShowCustomerSelection.Checked;
+
+			Terminal clsTerminal = new Terminal();
+			clsTerminal.Update(clsDetails);
+			clsTerminal.CommitAndDispose();
+		}
+
+
+		#endregion
+	}
+}
+

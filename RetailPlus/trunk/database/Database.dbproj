@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <PostUpgradeAddToSCC>;C:\RetailPlus\RetailPlus\database\Database.dbproj;C:\RetailPlus\RetailPlus\database\Connections.txt;C:\RetailPlus\RetailPlus\database\Scripts\Post-Deployment\Script.PostDeployment.sql;C:\RetailPlus\RetailPlus\database\Scripts\Pre-Deployment\Script.PreDeployment.sql</PostUpgradeAddToSCC>
+    <SccProvider>
+    </SccProvider>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccProjectName>
+    </SccProjectName>
+    <PreviousProjectVersion>4.0</PreviousProjectVersion>
+    <UpgradedFromDBP>True</UpgradedFromDBP>
+    <Name>dbpProjectName</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.0</ProjectVersion>
+    <ProjectGuid>{67cbc824-a49e-4e9b-a947-360f3dfe65c3}</ProjectGuid>
+    <DSP>Microsoft.Data.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <ShowWizard>False</ShowWizard>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <IncludeSchemaNameInFileName>False</IncludeSchemaNameInFileName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchema</DefaultFileStructure>
+    <DeployToDatabaseAddToServerExplorer>True</DeployToDatabaseAddToServerExplorer>
+    <DeployToScript>True</DeployToScript>
+    <CatalogPropertiesFile>Properties\Database.sqlsettings</CatalogPropertiesFile>
+    <LoadSqlClrTypes>True</LoadSqlClrTypes>
+    <AllowServerObjects>True</AllowServerObjects>
+    <DAC>True</DAC>
+    <AllowDatabaseObjects>True</AllowDatabaseObjects>
+    <DacApplicationGuid>{67cbc824-a49e-4e9b-a947-360f3dfe65c3}</DacApplicationGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>.\sql\release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetConnectionString>
+    </TargetConnectionString>
+    <TargetDatabase>
+    </TargetDatabase>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <SuppressWarnings>
+    </SuppressWarnings>
+    <DeploymentConfigFile>Properties\Database.sqldeployment</DeploymentConfigFile>
+    <SqlCommandVariablesFile>Properties\Database.sqlcmdvars</SqlCommandVariablesFile>
+    <DeployToDatabase>False</DeployToDatabase>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>.\sql\debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetConnectionString>
+    </TargetConnectionString>
+    <TargetDatabase>
+    </TargetDatabase>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <SuppressWarnings>
+    </SuppressWarnings>
+    <DeploymentConfigFile>Properties\Database.sqldeployment</DeploymentConfigFile>
+    <SqlCommandVariablesFile>Properties\Database.sqlcmdvars</SqlCommandVariablesFile>
+    <DeployToDatabase>False</DeployToDatabase>
+    <ValidatePolicy>False</ValidatePolicy>
+  </PropertyGroup>
+  <!--Import the settings-->
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\TeamData\Microsoft.Data.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="acc_scripts" />
+    <Folder Include="acc_scripts\ver 5 below support" />
+    <Folder Include="client_update_scripts" />
+    <Folder Include="inv_scripts" />
+    <Folder Include="inv_scripts\ver 5 below support" />
+    <Folder Include="pos_scripts" />
+    <Folder Include="pos_scripts\ver 5 below support" />
+    <Folder Include="sales_scripts" />
+    <Folder Include="Properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <NotInBuild Include="acc_scripts\accounts.sql" />
+    <NotInBuild Include="acc_scripts\accounts_access.sql" />
+    <NotInBuild Include="acc_scripts\accounts_proc.sql" />
+    <NotInBuild Include="acc_scripts\ver 5 below support\v_1.0.0.1.sql" />
+    <NotInBuild Include="acc_scripts\ver 5 below support\v_1.0.0.2.sql" />
+    <NotInBuild Include="All.sql" />
+    <NotInBuild Include="client_update_scripts\7newlife_20090811_update.sql" />
+    <NotInBuild Include="client_update_scripts\abot_makati_20090911.sql" />
+    <NotInBuild Include="client_update_scripts\abot_san_juan_20090911.sql" />
+    <NotInBuild Include="client_update_scripts\abotpasay_20090422.sql" />
+    <NotInBuild Include="client_update_scripts\accounts_proc.sql" />
+    <NotInBuild Include="client_update_scripts\adding_new_terminal.sql" />
+    <NotInBuild Include="client_update_scripts\aplaya_fix_20090121.sql" />
+    <NotInBuild Include="client_update_scripts\aplaya_fix_20090213.sql" />
+    <NotInBuild Include="client_update_scripts\aplaya_update_20090318.sql" />
+    <NotInBuild Include="client_update_scripts\dodo_20090118_fix.sql" />
+    <NotInBuild Include="client_update_scripts\dodo_20090322_update.sql" />
+    <NotInBuild Include="client_update_scripts\GenericsProduct.sql" />
+    <NotInBuild Include="client_update_scripts\groupcheck.sql" />
+    <NotInBuild Include="client_update_scripts\hortaleza_20091322_update.sql" />
+    <NotInBuild Include="client_update_scripts\kingskebab_update_20090526.sql" />
+    <NotInBuild Include="client_update_scripts\molokai_fix_20090212.sql" />
+    <NotInBuild Include="client_update_scripts\molokai_fix_20090213.sql" />
+    <NotInBuild Include="client_update_scripts\molokai_fix_20110701.sql" />
+    <NotInBuild Include="client_update_scripts\molokai_update_20090430.sql" />
+    <NotInBuild Include="client_update_scripts\mpc_update_20090318.sql" />
+    <NotInBuild Include="client_update_scripts\mpc_update_20090702.sql" />
+    <NotInBuild Include="client_update_scripts\muranggamot_20090403_update.sql" />
+    <NotInBuild Include="client_update_scripts\procListForPayment.sql" />
+    <NotInBuild Include="client_update_scripts\procSyncQuantityProductHistory.sql" />
+    <NotInBuild Include="client_update_scripts\producthistorycheck.sql" />
+    <NotInBuild Include="client_update_scripts\producthistoryprocedure.sql" />
+    <NotInBuild Include="client_update_scripts\producthistoryprocedure_with_update.sql" />
+    <NotInBuild Include="client_update_scripts\sample_items_grocery.sql" />
+    <NotInBuild Include="client_update_scripts\sample_items_pharma.sql" />
+    <NotInBuild Include="client_update_scripts\sample_procedure.sql" />
+    <NotInBuild Include="client_update_scripts\sync_quantitybyMatrix.sql" />
+    <NotInBuild Include="client_update_scripts\tgp_20090511_update.sql" />
+    <NotInBuild Include="client_update_scripts\zero_out_product_qty.sql" />
+    <NotInBuild Include="hw_plaza.sql" />
+    <NotInBuild Include="inv_scripts\inventory.sql" />
+    <NotInBuild Include="inv_scripts\inventory_access.sql" />
+    <NotInBuild Include="inv_scripts\inventory_proc.sql" />
+    <NotInBuild Include="inv_scripts\ver 5 below support\v_1.0.0.1.sql" />
+    <NotInBuild Include="inv_scripts\ver 5 below support\v_1.0.0.2.sql" />
+    <NotInBuild Include="inv_scripts\ver 5 below support\v_1.0.0.3.sql" />
+    <NotInBuild Include="inv_scripts\ver 5 below support\v_1.0.0.4.sql" />
+    <NotInBuild Include="pos_scripts\CONSTANTS.sql" />
+    <NotInBuild Include="pos_scripts\RetailPlus.sql" />
+    <NotInBuild Include="pos_scripts\retailplus_access.sql" />
+    <NotInBuild Include="pos_scripts\retailplus_event.sql" />
+    <NotInBuild Include="pos_scripts\retailplus_proc.sql" />
+    <NotInBuild Include="pos_scripts\retailplus_proc_old.sql" />
+    <NotInBuild Include="pos_scripts\retailplus_trigger.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\Rebirth Transaction.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20071123.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20071210.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080130.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080207.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080213.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080218.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080313.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20080426.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20081128_packer.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20081201_cashcount.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20081209_OSprinter.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20081218_OSPrinted.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20081226_TotalStockReport.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\update_20090111_erp.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_1.0.3.24.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_1.0.3.25.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_1.0.3.26.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_1.0.3.27.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_1.0.3.28.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.0.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.1.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.2.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.3.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.4.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.5.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.6.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.7.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.8.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.81.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.0.9.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\V_2.0.1.1.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.1.2.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.1.3.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\V_2.0.1.4.sql" />
+    <NotInBuild Include="pos_scripts\ver 5 below support\v_2.0.1.5.sql" />
+    <NotInBuild Include="sales_scripts\sales.sql" />
+    <NotInBuild Include="sales_scripts\sales_access.sql" />
+    <NotInBuild Include="sales_scripts\sales_proc.sql" />
+    <NotInBuild Include="test.sql" />
+    <NotInBuild Include="credit.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="tester.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="testing.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <BuildContributorArgument Include="OutDir=$(OutDir)" />
+  </ItemGroup>
+</Project>

@@ -61,7 +61,8 @@ namespace AceSoft.RetailPlus
 		CloseInventory					= 42,
 		GeneralJournals                 = 43,
 		Positions                       = 44,
-		Departments                     = 45
+		Departments                     = 45,
+        RewardMembers                   = 46
 	}
 
 	public enum HorizontalNavID
@@ -74,7 +75,8 @@ namespace AceSoft.RetailPlus
 		AdministrationFiles = 5,
 		GeneralLedger		= 6,
 		PurchasesAndPayables= 7,
-		SalesAndReceivables	= 8
+		SalesAndReceivables	= 8,
+        Rewards             = 9
 	}
 	
 }

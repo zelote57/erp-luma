@@ -17,9 +17,9 @@
 							<div id="Menu_0_0">
 								<table width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnavtableone1">
 									<tr>
-										<td class="Ms-pvnavtopl1"><img src="../_layouts/images/trans.gif" alt=""></td>
+										<td class="Ms-pvnavtopl1"><img src="../_layouts/images/trans.gif" alt="" /></td>
 										<td class="Ms-pvnavtopc1"></td>
-										<td class="Ms-pvnavtopr1"><img src="../_layouts/images/trans.gif" alt=""></td>
+										<td class="Ms-pvnavtopr1"><img src="../_layouts/images/trans.gif" alt="" /></td>
 									</tr>
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>

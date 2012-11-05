@@ -490,7 +490,18 @@ namespace AceSoft.RetailPlus.Data
             if (clsContactColumns.DepartmentName) stSQL+= "tblDepartments.DepartmentName, ";
             if (clsContactColumns.PositionID) stSQL+= "tblContacts.PositionID, ";
             if (clsContactColumns.PositionName) stSQL+= "tblPositions.PositionName, ";
-            
+            if (clsContactColumns.RewardDetails)
+            {
+                stSQL += "tblContactRewards.RewardCardNo, " +
+                        "tblContactRewards.RewardActive, " +
+                        "tblContactRewards.RewardPoints, " +
+                        "tblContactRewards.RewardAwardDate, " +
+                        "tblContactRewards.TotalPurchases, " +
+                        "tblContactRewards.RedeemedPoints, " +
+                        "tblContactRewards.RewardCardStatus, " +
+                        "tblContactRewards.ExpiryDate, " +
+                        "tblContactRewards.BirthDate,";
+            }
             stSQL += "tblContacts.ContactID ";
             stSQL += "FROM tblContacts ";
 
@@ -502,6 +513,9 @@ namespace AceSoft.RetailPlus.Data
 
             if (clsContactColumns.PositionName)
                 stSQL += "INNER JOIN tblPositions ON tblContacts.PositionID = tblPositions.PositionID ";
+
+            if (clsContactColumns.RewardDetails)
+                stSQL += "INNER JOIN tblContactRewards ON tblContacts.ContactID = tblContactRewards.CustomerID ";
 
             return stSQL;
         }
@@ -1341,6 +1355,9 @@ namespace AceSoft.RetailPlus.Data
                     if (SearchColumns.ContactName)
                     { if (SQLSearch == string.Empty) SQLSearch += "ContactName LIKE @SearchKey "; else SQLSearch += "OR ContactName LIKE @SearchKey "; }
 
+                    if (SearchColumns.RewardDetails)
+                    { if (SQLSearch == string.Empty) SQLSearch += "RewardCardNo LIKE @SearchKey "; else SQLSearch += "OR RewardCardNo LIKE @SearchKey "; }
+
                     if (SQLSearch != string.Empty) SQL += "AND (" + SQLSearch + ") ";
                 }
 
@@ -1370,6 +1387,13 @@ namespace AceSoft.RetailPlus.Data
                 MySqlParameter prmBothCategory = new MySqlParameter("@BothCategory",MySqlDbType.Int16);
                 prmBothCategory.Value = ContactGroupCategory.BOTH.ToString("d");
                 cmd.Parameters.Add(prmBothCategory);
+
+                if (SearchKey != string.Empty)
+                {
+                    MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey", MySqlDbType.String);
+                    prmSearchKey.Value = SearchKey;
+                    cmd.Parameters.Add(prmSearchKey);
+                }
 
                 System.Data.DataTable dt = new System.Data.DataTable("tblContacts");
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);

@@ -10,23 +10,23 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using AceSoft.RetailPlus.Security;
 
-namespace AceSoft.RetailPlus.SalesAndReceivables
+namespace AceSoft.RetailPlus.Rewards
 {
 	public partial class _Default : System.Web.UI.Page
 	{
 
 		protected void Page_Load(object sender, System.EventArgs e)
 		{
-			const string defaultHeading = "Sales & Receivables";
+			const string defaultHeading = "Rewards";
 			string stHeading = defaultHeading;
 
-			const string defaultTitle = "RetailPlus Sales & Receivables Management";
+			const string defaultTitle = "RetailPlus Rewards Management";
 			SiteTitle.Title = defaultTitle;
 
 			const SearchCategoryID defaultSearchIndex = SearchCategoryID.NotApplicable;
 			SearchCategoryID SearchIndex = defaultSearchIndex;
 
-			HorizontalNavBar.PageNavigatorid = HorizontalNavID.SalesAndReceivables;
+			HorizontalNavBar.PageNavigatorid = HorizontalNavID.Rewards;
 			
 			if (Request.QueryString["task"]!=null)
 			{
@@ -36,22 +36,22 @@ namespace AceSoft.RetailPlus.SalesAndReceivables
                     case "postedso":
                         stHeading = "Posted Sales Orders Report";
                         SearchIndex = SearchCategoryID.NotApplicable;
-                        ctrlSalesAndReceivables.Visible = true;
+                        //ctrlSalesAndReceivables.Visible = true;
                         break;
                     case "postedsoreturns":
                         stHeading = "Posted Sales Returns Report";
                         SearchIndex = SearchCategoryID.NotApplicable;
-                        ctrlSalesAndReceivables.Visible = true;
+                        //ctrlSalesAndReceivables.Visible = true;
                         break;
                     case "postedcreditmemo":
                         stHeading = "Posted Sales Credit Memo Report";
                         SearchIndex = SearchCategoryID.NotApplicable;
-                        ctrlSalesAndReceivables.Visible = true;
+                        //ctrlSalesAndReceivables.Visible = true;
                         break;
                     case "salesanalysis":
                         stHeading = "Sales Analysis Reports";
                         SearchIndex = SearchCategoryID.NotApplicable;
-                        ctrlSalesAndReceivables.Visible = true;
+                        //ctrlSalesAndReceivables.Visible = true;
                         break;				
 					default:	
 						break;
@@ -67,10 +67,10 @@ namespace AceSoft.RetailPlus.SalesAndReceivables
 			AccessRights clsAccessRights = new AccessRights(); 
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SalesAndReceivablesMenu);
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.RewardCardIssuance);
             clsAccessRights.CommitAndDispose();
 
-			if (clsDetails.Read==false)
+            if (clsDetails.Read==false)
 				Server.Transfer("/RetailPlus/Home.aspx");
 		}
 

@@ -2770,12 +2770,12 @@ namespace AceSoft.RetailPlus.Data
 			if (clsProductColumns.RIDMaxThreshold) stSQL += "tblProducts." + ProductColumnNames.RIDMaxThreshold + ", ";
 			if (clsProductColumns.RIDReorderQty) stSQL += "tblProducts.RIDMaxThreshold - tblProducts.Quantity AS RIDReorderQty, ";
 			if (clsProductColumns.BranchID) stSQL += "tblBranchInventory." + ProductColumnNames.BranchID + ", ";
-			if (clsProductColumns.BranchQuantityIN) stSQL += "tblBranchInventory." + ProductColumnNames.BranchQuantityIN.Replace("Branch", string.Empty) + " AS BranchQuantityIN, ";
-			if (clsProductColumns.BranchQuantityOUT) stSQL += "tblBranchInventory." + ProductColumnNames.BranchQuantityOUT.Replace("Branch", string.Empty) + " AS BranchQuantityOUT, ";
-			if (clsProductColumns.BranchQuantity) stSQL += "tblBranchInventory." + ProductColumnNames.BranchQuantity.Replace("Branch", string.Empty) + " AS BranchQuantity, ";
-			if (clsProductColumns.BranchQuantity) stSQL += "fnProductQuantityConvert(tblBranchInventory.ProductID, tblBranchInventory." + ProductColumnNames.BranchQuantity.Replace("Branch", string.Empty) + ", tblProducts.BaseUnitID) AS ConvertedBranchQuantity, ";
-			if (clsProductColumns.BranchActualQuantity) stSQL += "tblBranchInventory." + ProductColumnNames.BranchActualQuantity.Replace("Branch", string.Empty) + " AS BranchActualQuantity, ";
-			if (clsProductColumns.BranchActualQuantity) stSQL += "fnProductQuantityConvert(tblBranchInventory.ProductID, tblBranchInventory." + ProductColumnNames.BranchActualQuantity.Replace("Branch", string.Empty) + ", tblProducts.BaseUnitID) AS ConvertedBranchActualQuantity, ";
+            if (clsProductColumns.BranchQuantityIN) stSQL += "tblBranchInventory." + ProductColumnNames.BranchQuantityIN.Replace("Branch", string.Empty) + " AS BranchQuantityIN, "; else stSQL += "0 AS BranchQuantityIN, ";
+            if (clsProductColumns.BranchQuantityOUT) stSQL += "tblBranchInventory." + ProductColumnNames.BranchQuantityOUT.Replace("Branch", string.Empty) + " AS BranchQuantityOUT, "; else stSQL += "0 AS BranchQuantityOUT, ";
+            if (clsProductColumns.BranchQuantity) stSQL += "tblBranchInventory." + ProductColumnNames.BranchQuantity.Replace("Branch", string.Empty) + " AS BranchQuantity, "; else stSQL += "0 AS BranchQuantity, ";
+            if (clsProductColumns.BranchQuantity) stSQL += "fnProductQuantityConvert(tblBranchInventory.ProductID, tblBranchInventory." + ProductColumnNames.BranchQuantity.Replace("Branch", string.Empty) + ", tblProducts.BaseUnitID) AS ConvertedBranchQuantity, "; else stSQL += "0 AS ConvertedBranchQuantity, ";
+            if (clsProductColumns.BranchActualQuantity) stSQL += "tblBranchInventory." + ProductColumnNames.BranchActualQuantity.Replace("Branch", string.Empty) + " AS BranchActualQuantity, "; else stSQL += "0 AS BranchActualQuantity, ";
+            if (clsProductColumns.BranchActualQuantity) stSQL += "fnProductQuantityConvert(tblBranchInventory.ProductID, tblBranchInventory." + ProductColumnNames.BranchActualQuantity.Replace("Branch", string.Empty) + ", tblProducts.BaseUnitID) AS ConvertedBranchActualQuantity, "; else stSQL += "0 AS ConvertedBranchActualQuantity, ";
 			if (clsProductColumns.RewardPoints) stSQL += "tblProducts." + ProductColumnNames.RewardPoints + ", ";
 			if (clsProductColumns.SequenceNo) stSQL += "tblProducts." + ProductColumnNames.SequenceNo + ", ";
 

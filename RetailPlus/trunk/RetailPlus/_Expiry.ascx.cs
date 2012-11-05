@@ -56,6 +56,10 @@ namespace AceSoft.RetailPlus
             {
                 Response.Redirect(Constants.ROOT_DIRECTORY + "");
             }
+            else if (Session["AccessUserDetails"] == null)
+            {
+                Response.Redirect(Constants.ROOT_DIRECTORY + "");
+            }
         }
 
 		#region Web Form Designer generated code

@@ -52,7 +52,10 @@ namespace AceSoft.RetailPlus
 			NavHome.Visible = clsDetails.Read; 
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.MasterFilesMenu); 
-			NavMasterFiles.Visible = clsDetails.Read; 
+			NavMasterFiles.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.RewardCardIssuance);
+            NavRewards.Visible = clsDetails.Read; 
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.GeneralLedgerMenu); 
 			NavGeneralLedger.Visible = clsDetails.Read;
@@ -82,6 +85,7 @@ namespace AceSoft.RetailPlus
 				case HorizontalNavID.Home:				
 					NavHome.Attributes.Add("class","Ms-phnavmidc0Sel");
 					NavMasterFiles.Attributes.Add("class","Ms-phnavmidc1");
+                    NavRewards.Attributes.Add("class", "Ms-phnavmidc1");
 					NavGeneralLedger.Attributes.Add("class","Ms-phnavmidc1");
 					NavPurchasesAndPayables.Attributes.Add("class","Ms-phnavmidc1");
 					NavSalesAndReceivables.Attributes.Add("class","Ms-phnavmidc1");
@@ -92,6 +96,7 @@ namespace AceSoft.RetailPlus
 				case HorizontalNavID.MasterFiles:
 					NavHome.Attributes.Add("class","Ms-phnavmidc1");
 					NavMasterFiles.Attributes.Add("class","Ms-phnavmidc0Sel");
+                    NavRewards.Attributes.Add("class", "Ms-phnavmidc1");
 					NavGeneralLedger.Attributes.Add("class","Ms-phnavmidc1");
 					NavPurchasesAndPayables.Attributes.Add("class","Ms-phnavmidc1");
 					NavSalesAndReceivables.Attributes.Add("class","Ms-phnavmidc1");
@@ -99,9 +104,21 @@ namespace AceSoft.RetailPlus
 					NavReports.Attributes.Add("class","Ms-phnavmidc1"); 
 					NavAdministrationFiles.Attributes.Add("class","Ms-phnavmidc1");
 					break;
+                case HorizontalNavID.Rewards:
+                    NavHome.Attributes.Add("class", "Ms-phnavmidc1");
+                    NavMasterFiles.Attributes.Add("class", "Ms-phnavmidc1");
+                    NavRewards.Attributes.Add("class", "Ms-phnavmidc0Sel");
+                    NavGeneralLedger.Attributes.Add("class", "Ms-phnavmidc1");
+                    NavPurchasesAndPayables.Attributes.Add("class", "Ms-phnavmidc1");
+                    NavSalesAndReceivables.Attributes.Add("class", "Ms-phnavmidc1");
+                    NavInventory.Attributes.Add("class", "Ms-phnavmidc1");
+                    NavReports.Attributes.Add("class", "Ms-phnavmidc1");
+                    NavAdministrationFiles.Attributes.Add("class", "Ms-phnavmidc1");
+                    break;
 				case HorizontalNavID.GeneralLedger:
 					NavHome.Attributes.Add("class","Ms-phnavmidc1");
 					NavMasterFiles.Attributes.Add("class","Ms-phnavmidc1");
+                    NavRewards.Attributes.Add("class", "Ms-phnavmidc1");
 					NavGeneralLedger.Attributes.Add("class","Ms-phnavmidc0Sel");
 					NavPurchasesAndPayables.Attributes.Add("class","Ms-phnavmidc1");
 					NavSalesAndReceivables.Attributes.Add("class","Ms-phnavmidc1");
@@ -112,6 +129,7 @@ namespace AceSoft.RetailPlus
 				case HorizontalNavID.PurchasesAndPayables:
 					NavHome.Attributes.Add("class","Ms-phnavmidc1");
 					NavMasterFiles.Attributes.Add("class","Ms-phnavmidc1");
+                    NavRewards.Attributes.Add("class", "Ms-phnavmidc1");
 					NavGeneralLedger.Attributes.Add("class","Ms-phnavmidc1");
 					NavPurchasesAndPayables.Attributes.Add("class","Ms-phnavmidc0Sel");
 					NavSalesAndReceivables.Attributes.Add("class","Ms-phnavmidc1");
@@ -122,6 +140,7 @@ namespace AceSoft.RetailPlus
 				case HorizontalNavID.SalesAndReceivables:
 					NavHome.Attributes.Add("class","Ms-phnavmidc1");
 					NavMasterFiles.Attributes.Add("class","Ms-phnavmidc1");
+                    NavRewards.Attributes.Add("class", "Ms-phnavmidc1");
 					NavGeneralLedger.Attributes.Add("class","Ms-phnavmidc1");
 					NavPurchasesAndPayables.Attributes.Add("class","Ms-phnavmidc1");
 					NavSalesAndReceivables.Attributes.Add("class","Ms-phnavmidc0Sel");
@@ -132,6 +151,7 @@ namespace AceSoft.RetailPlus
 				case HorizontalNavID.Inventory:
 					NavHome.Attributes.Add("class","Ms-phnavmidc1");
 					NavMasterFiles.Attributes.Add("class","Ms-phnavmidc1");
+                    NavRewards.Attributes.Add("class", "Ms-phnavmidc1");
 					NavGeneralLedger.Attributes.Add("class","Ms-phnavmidc1");
 					NavPurchasesAndPayables.Attributes.Add("class","Ms-phnavmidc1");
 					NavSalesAndReceivables.Attributes.Add("class","Ms-phnavmidc1");
@@ -142,6 +162,7 @@ namespace AceSoft.RetailPlus
 				case HorizontalNavID.AdministrationFiles:
 					NavHome.Attributes.Add("class","Ms-phnavmidc1");
 					NavMasterFiles.Attributes.Add("class","Ms-phnavmidc1");
+                    NavRewards.Attributes.Add("class", "Ms-phnavmidc1");
 					NavGeneralLedger.Attributes.Add("class","Ms-phnavmidc1");
 					NavPurchasesAndPayables.Attributes.Add("class","Ms-phnavmidc1");
 					NavSalesAndReceivables.Attributes.Add("class","Ms-phnavmidc1");
@@ -152,6 +173,7 @@ namespace AceSoft.RetailPlus
 				case HorizontalNavID.Reports:
 					NavHome.Attributes.Add("class","Ms-phnavmidc1");
 					NavMasterFiles.Attributes.Add("class","Ms-phnavmidc1");
+                    NavRewards.Attributes.Add("class", "Ms-phnavmidc1");
 					NavGeneralLedger.Attributes.Add("class","Ms-phnavmidc1");
 					NavPurchasesAndPayables.Attributes.Add("class","Ms-phnavmidc1");
 					NavSalesAndReceivables.Attributes.Add("class","Ms-phnavmidc1");
@@ -162,6 +184,7 @@ namespace AceSoft.RetailPlus
 				default:
 					NavHome.Attributes.Add("class","Ms-phnavmidc1");
 					NavMasterFiles.Attributes.Add("class","Ms-phnavmidc1");
+                    NavRewards.Attributes.Add("class", "Ms-phnavmidc1");
 					NavGeneralLedger.Attributes.Add("class","Ms-phnavmidc1");
 					NavPurchasesAndPayables.Attributes.Add("class","Ms-phnavmidc1");
 					NavSalesAndReceivables.Attributes.Add("class","Ms-phnavmidc1");

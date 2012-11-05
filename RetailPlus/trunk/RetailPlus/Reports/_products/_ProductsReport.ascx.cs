@@ -221,6 +221,10 @@ namespace AceSoft.RetailPlus.Reports
             clsProductColumns.RIDMinThreshold = true;
             clsProductColumns.RIDMaxThreshold = true;
             clsProductColumns.RID = true;
+            //clsProductColumns.BranchActualQuantity = true;
+            //clsProductColumns.BranchQuantity = true;
+            //clsProductColumns.BranchQuantityIN = true;
+            //clsProductColumns.BranchQuantityOUT = true;
             #endregion
 
             ProductDetails clsSearchKey = new ProductDetails();

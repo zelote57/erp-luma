@@ -601,38 +601,38 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = "CALL procProductMovementSelect(@lngProductID, @dteStartTransactionDate, @dteEndTransactionDate);";
 
-                //cmd.Parameters.AddWithValue("@lngProductID", ProductID);
-                //cmd.Parameters.AddWithValue("@dteStartTransactionDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                //cmd.Parameters.AddWithValue("@dteEndTransactionDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@lngProductID", ProductID);
+                cmd.Parameters.AddWithValue("@dteStartTransactionDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@dteEndTransactionDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                SQL = "SELECT " +
-                        "ProductID, " +
-                        "ProductCode, " +
-                        "ProductDescription, " +
-                        "MatrixID, " +
-                        "MatrixDescription,  " +
-                        "QuantityFrom, " +
-                        "Quantity, " +
-                        "QuantityTo, " +
-                        "matrixQuantity, " +
-                        "UnitCode, " +
-                        "Remarks, " +
-                        "TransactionDate, " +
-                        "TransactionNo, " +
-                        "CreatedBy " +
-                    "FROM tblProductMovement " +
-                    "WHERE QuantityMovementType = 0 ";
+                //SQL = "SELECT " +
+                //        "ProductID, " +
+                //        "ProductCode, " +
+                //        "ProductDescription, " +
+                //        "MatrixID, " +
+                //        "MatrixDescription,  " +
+                //        "QuantityFrom, " +
+                //        "Quantity, " +
+                //        "QuantityTo, " +
+                //        "matrixQuantity, " +
+                //        "UnitCode, " +
+                //        "Remarks, " +
+                //        "TransactionDate, " +
+                //        "TransactionNo, " +
+                //        "CreatedBy " +
+                //    "FROM tblProductMovement " +
+                //    "WHERE QuantityMovementType = 0 ";
 
-                if (ProductID != 0)
-                { SQL += "AND ProductID = @lngProductID "; cmd.Parameters.AddWithValue("@lngProductID", ProductID); }
+                //if (ProductID != 0)
+                //{ SQL += "AND ProductID = @lngProductID "; cmd.Parameters.AddWithValue("@lngProductID", ProductID); }
 
-                if (StartDate != DateTime.MinValue)
-                { SQL += "AND TransactionDate >= @dteStartTransactionDate "; cmd.Parameters.AddWithValue("@dteStartTransactionDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss")); }
+                //if (StartDate != DateTime.MinValue)
+                //{ SQL += "AND TransactionDate >= @dteStartTransactionDate "; cmd.Parameters.AddWithValue("@dteStartTransactionDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss")); }
 
-                if (StartDate != DateTime.MinValue)
-                { SQL += "AND TransactionDate <= @dteEndTransactionDate "; cmd.Parameters.AddWithValue("@dteEndTransactionDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss")); }
+                //if (StartDate != DateTime.MinValue)
+                //{ SQL += "AND TransactionDate <= @dteEndTransactionDate "; cmd.Parameters.AddWithValue("@dteEndTransactionDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss")); }
 
-                SQL += "ORDER BY TransactionDate DESC ";
+                //SQL += "ORDER BY TransactionDate DESC ";
 
                 cmd.Connection = GetConnection();
                 cmd.Transaction = mTransaction;

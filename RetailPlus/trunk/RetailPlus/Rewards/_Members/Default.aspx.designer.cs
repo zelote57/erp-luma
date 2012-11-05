@@ -7,117 +7,135 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus {
+namespace AceSoft.RetailPlus.Rewards._Members {
     
     
-    public partial class @__Menu {
+    public partial class _Default {
         
         /// <summary>
-        /// mnuMasterFiles control.
+        /// frmDefaultID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuMasterFiles;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlForm frmDefaultID;
+                
         /// <summary>
-        /// Menu_0_0 control.
+        /// ctrlProcessing control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Menu_0_0;
+        protected global::AceSoft.RetailPlus.@__Processing ctrlProcessing;
         
         /// <summary>
-        /// lnkProducts control.
+        /// PageHeader control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkProducts;
+        protected global::AceSoft.RetailPlus.@__PageHeader PageHeader;
         
         /// <summary>
-        /// lnkContact control.
+        /// HorizontalNavBar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkContact;
+        protected global::AceSoft.RetailPlus.@__HorizontalNavBar HorizontalNavBar;
         
         /// <summary>
-        /// lnkRewards control.
+        /// ctrlExpiry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkRewards;
+        protected global::AceSoft.RetailPlus.@__Expiry ctrlExpiry;
         
         /// <summary>
-        /// lnkInventoryList control.
+        /// SiteTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkInventoryList;
+        protected global::AceSoft.RetailPlus.@__SiteTitle SiteTitle;
         
         /// <summary>
-        /// lnkStock control.
+        /// LargeHeading control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkStock;
+        protected global::AceSoft.RetailPlus.@__LargeHeading LargeHeading;
         
         /// <summary>
-        /// lnkUpload control.
+        /// RightBodySectionSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkUpload;
+        protected global::AceSoft.RetailPlus.@__RightBodySectionSearch RightBodySectionSearch;
         
         /// <summary>
-        /// lnkSynchronize control.
+        /// ctrlMenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkSynchronize;
+        protected global::AceSoft.RetailPlus.Rewards.@__Menu ctrlMenu;
         
         /// <summary>
-        /// lnkProductAdd control.
+        /// PageLevelError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkProductAdd;
+        protected global::AceSoft.RetailPlus.@__PageLevelError PageLevelError;
         
         /// <summary>
-        /// lnkAccessUserAdd control.
+        /// ctrlList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkAccessUserAdd;
+        protected global::AceSoft.RetailPlus.Rewards._Members.@__List ctrlList;
         
         /// <summary>
-        /// lnkReceiptFormatEdit control.
+        /// ctrlInsert control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkReceiptFormatEdit;
+        protected global::AceSoft.RetailPlus.Rewards._Members.@__Insert ctrlInsert;
+        
+        /// <summary>
+        /// ctrlUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Rewards._Members.@__Update ctrlUpdate;
+        
+        /// <summary>
+        /// ctrlDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Rewards._Members.@__Details ctrlDetails;
     }
 }

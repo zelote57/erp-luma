@@ -7,117 +7,117 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus {
+namespace AceSoft.RetailPlus.Rewards._Members {
     
     
-    public partial class @__Menu {
+    public partial class @__List {
         
         /// <summary>
-        /// mnuMasterFiles control.
+        /// imgAdd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuMasterFiles;
+        protected global::System.Web.UI.WebControls.ImageButton imgAdd;
         
         /// <summary>
-        /// Menu_0_0 control.
+        /// cmdAdd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Menu_0_0;
+        protected global::System.Web.UI.WebControls.LinkButton cmdAdd;
         
         /// <summary>
-        /// lnkProducts control.
+        /// lblSeparator1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkProducts;
+        protected global::System.Web.UI.WebControls.Label lblSeparator1;
         
         /// <summary>
-        /// lnkContact control.
+        /// imgDelete control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkContact;
+        protected global::System.Web.UI.WebControls.ImageButton imgDelete;
         
         /// <summary>
-        /// lnkRewards control.
+        /// cmdDelete control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkRewards;
+        protected global::System.Web.UI.WebControls.LinkButton cmdDelete;
         
         /// <summary>
-        /// lnkInventoryList control.
+        /// lblSeparator2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkInventoryList;
+        protected global::System.Web.UI.WebControls.Label lblSeparator2;
         
         /// <summary>
-        /// lnkStock control.
+        /// idEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkStock;
+        protected global::System.Web.UI.WebControls.ImageButton idEdit;
         
         /// <summary>
-        /// lnkUpload control.
+        /// cmdEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkUpload;
+        protected global::System.Web.UI.WebControls.LinkButton cmdEdit;
         
         /// <summary>
-        /// lnkSynchronize control.
+        /// lblDataCount1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkSynchronize;
+        protected global::System.Web.UI.WebControls.Label lblDataCount1;
         
         /// <summary>
-        /// lnkProductAdd control.
+        /// cboCurrentPage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkProductAdd;
+        protected global::System.Web.UI.WebControls.DropDownList cboCurrentPage;
         
         /// <summary>
-        /// lnkAccessUserAdd control.
+        /// lblDataCount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkAccessUserAdd;
+        protected global::System.Web.UI.WebControls.Label lblDataCount;
         
         /// <summary>
-        /// lnkReceiptFormatEdit control.
+        /// lstItem control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkReceiptFormatEdit;
+        protected global::System.Web.UI.WebControls.DataList lstItem;
     }
 }

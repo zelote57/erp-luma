@@ -40,10 +40,11 @@ namespace AceSoft.RetailPlus.MasterFiles
 			AccessRights clsAccessRights = new AccessRights(); 
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.MasterFilesMenu); 
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.MasterFilesMenu);
+            clsAccessRights.CommitAndDispose();
+
 			if (clsDetails.Read==false)
 				Server.Transfer(Constants.ROOT_DIRECTORY + "/Home.aspx");
-			clsAccessRights.CommitAndDispose();
 		}
 
 		#region Web Form Designer generated code

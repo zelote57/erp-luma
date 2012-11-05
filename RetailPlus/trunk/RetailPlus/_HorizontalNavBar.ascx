@@ -46,6 +46,28 @@
 				</tr>
 			</table>
 		</td>
+        <td runat="server" id="NavRewards">
+			<table cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-phnavtableone1">
+				<tr>
+					<td class="Ms-phnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif"></td>
+					<td class="Ms-phnavtopc1"></td>
+					<td class="Ms-phnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif"></td>
+				</tr>
+				<tr>
+					<td class="Ms-phnavmidl1"></td>
+					<td nowrap>
+						<a id="A1" href="/RetailPlus/Rewards/Default.aspx" target="_self" title="Rewards" accesskey="W">
+							Rewards</a></td>
+					<td class="Ms-phnavmidr1"></td>
+				</tr>
+				<tr>
+					<td class="Ms-phnavbotl1" background="/RetailPlus/_layouts/images/trans.gif"></td>
+					<td class="Ms-phnavbotc1"></td>
+					<td class="Ms-phnavbotr1" background="/RetailPlus/_layouts/images/trans.gif">
+					</td>
+				</tr>
+			</table>
+		</td>
 		<td runat="server" id="NavGeneralLedger">
 			<table cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-phnavtableone1">
 				<tr>

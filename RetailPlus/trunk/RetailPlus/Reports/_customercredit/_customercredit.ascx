@@ -5,10 +5,10 @@
 <ContentTemplate>
     <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	    <tr>
-		    <td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		    <td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 	    </tr>
 	    <tr>
-		    <td><img src="../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
+		    <td><img src="../../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
 		    <td>
 			    <table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				    <tr>
@@ -16,7 +16,7 @@
 						    <table cellpadding="1" cellspacing="0" border="0">
 							    <tr>
 								    <td class="ms-toolbar" nowrap="nowrap">
-									    <asp:imagebutton id="imgView" accessKey="V" tabIndex="1" height="16" width="16" border="0" ToolTip="View Report" ImageUrl="../../_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
+									    <asp:imagebutton id="imgView" accessKey="V" tabIndex="1" height="16" width="16" border="0" ToolTip="View Report" ImageUrl="~/_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
 								    </td>
 								    <td class="ms-toolbar" nowrap="nowrap" width="100">
 									    <asp:Label ID="Label2" Runat="server">Report Options</asp:Label>
@@ -56,13 +56,13 @@
 					    <td class="ms-toolbar">
 						    <table cellspacing="0" cellpadding="1" border="0">
 							    <tr>
-								    <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgBack" accessKey="B" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
+								    <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgBack" accessKey="B" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="~/_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
 								    <td nowrap="nowrap"><asp:linkbutton id="cmdBack" accessKey="B" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" OnClick="cmdBack_Click">Back to previous window</asp:linkbutton></td>
 							    </tr>
 						    </table>
 					    </td>
 					    <td class="ms-toolbar" align="right" nowrap="nowrap" id="align032" width="99%" >
-						    <img src="../_layouts/images/blank.gif" width="1" height="1" alt="">
+						    <img src="../../_layouts/images/blank.gif" width="1" height="1" alt="">
 					    </td>
 				    </tr>
 			    </table>
@@ -70,7 +70,7 @@
 		    </td>
 	    </tr>
 	    <tr>
-		    <td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
+		    <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
 		    <td>
 			    <table cellpadding="0" cellspacing="0" border="0" width="100%">
 				    <tr>
@@ -90,10 +90,10 @@
                                         <asp:textbox id="txtCustomerGroup" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                         <asp:imagebutton id="imgCustomerGroup" ToolTip="Execute search" 
                                             style="CURSOR: hand; width: 16px;" accessKey="P" 
-                                            ImageUrl="../_layouts/images/SPSSearch2.gif" runat="server" 
+                                            ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
                                             CausesValidation="False" onclick="imgCustomerGroupSearch_Click"></asp:imagebutton>
 								    </td>
-								    <td width="99%" id="Td1" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
+								    <td width="99%" id="Td1" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								    </td>
 							    </tr>
                                 </asp:PlaceHolder>
@@ -109,10 +109,10 @@
                                         <asp:textbox id="txtContactName" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                         <asp:imagebutton id="imgContactNameSearch" ToolTip="Execute search" 
                                             style="CURSOR: hand; width: 16px;" accessKey="P" 
-                                            ImageUrl="../_layouts/images/SPSSearch2.gif" runat="server" 
+                                            ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
                                             CausesValidation="False" onclick="imgContactNameSearch_Click"></asp:imagebutton>
 								    </td>
-								    <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
+								    <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								    </td>
 							    </tr>
 						    </table>
@@ -128,10 +128,10 @@
 				    </tr>
 			    </table>
 		    </td>
-		    <td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
+		    <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
 	    </tr>
 	    <tr>
-		    <td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		    <td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 	    </tr>
     </table>
     </ContentTemplate>

@@ -37,6 +37,14 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkRewards" runat="server" title="Display Customers with Rewards">
+													Rewards</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
 									<TR>
 										<TD class="Ms-pvnavmidl1"></TD>
 										<TD class="Ms-pvtbbutton">

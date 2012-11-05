@@ -27,6 +27,8 @@ namespace AceSoft.RetailPlus
                 lnkProductAdd.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("add", Session.SessionID);
 
                 lnkContact.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Contact/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
+                lnkRewards.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/_Members/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
+
                 lnkInventoryList.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
                 lnkStock.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_Stock/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
 
@@ -50,6 +52,7 @@ namespace AceSoft.RetailPlus
 
             clsDetails = clsAccessRights.Details(clsAccessUserDetails.UID, (Int16)AccessTypes.Contacts); 
 			lnkContact.Visible = clsDetails.Read;
+            lnkRewards.Visible = clsDetails.Read;
 
             clsDetails = clsAccessRights.Details(clsAccessUserDetails.UID, (Int16)AccessTypes.InventoryList); 
 			lnkInventoryList.Visible = clsDetails.Read;

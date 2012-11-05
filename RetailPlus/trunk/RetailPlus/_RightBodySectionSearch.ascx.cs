@@ -80,6 +80,10 @@ namespace AceSoft.RetailPlus
 					cboSearchID.Items.Add(new ListItem("Transfer Out","TransferOut"));
 					cboSearchID.Items.Add(new ListItem("Inv Adjustment","InvAdjustment"));
 					cboSearchID.Items.Add(new ListItem("Close Inventory","CloseInventory"));
+                    cboSearchID.Items.Add(new ListItem("General Journals", "GeneralJournals"));
+                    cboSearchID.Items.Add(new ListItem("Positions", "Positions"));
+                    cboSearchID.Items.Add(new ListItem("Departments", "Departments"));
+                    cboSearchID.Items.Add(new ListItem("Reward Members", "RewardMembers"));
 			
 					cboSearchID.SelectedIndex  = Convert.ToInt16(mSearchIDSelectedItem);
 				}
@@ -260,6 +264,9 @@ namespace AceSoft.RetailPlus
 					case SearchCategoryID.CloseInventory:
 						Response.Redirect(Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam);
 						break;
+                    case SearchCategoryID.RewardMembers:
+                        Response.Redirect(Constants.ROOT_DIRECTORY + "/Rewards/_Members/Default.aspx" + stParam);
+                        break;
 					default:
 						break;
 				}

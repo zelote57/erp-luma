@@ -33,26 +33,11 @@ namespace AceSoft.RetailPlus.Rewards
 				string task = Common.Decrypt(Request.QueryString["task"].ToString(),Session.SessionID);
 				switch(task)
 				{
-                    case "postedso":
-                        stHeading = "Posted Sales Orders Report";
+                    case "redeemrewards":
+                        stHeading = "Redeem Rewards";
                         SearchIndex = SearchCategoryID.NotApplicable;
-                        //ctrlSalesAndReceivables.Visible = true;
-                        break;
-                    case "postedsoreturns":
-                        stHeading = "Posted Sales Returns Report";
-                        SearchIndex = SearchCategoryID.NotApplicable;
-                        //ctrlSalesAndReceivables.Visible = true;
-                        break;
-                    case "postedcreditmemo":
-                        stHeading = "Posted Sales Credit Memo Report";
-                        SearchIndex = SearchCategoryID.NotApplicable;
-                        //ctrlSalesAndReceivables.Visible = true;
-                        break;
-                    case "salesanalysis":
-                        stHeading = "Sales Analysis Reports";
-                        SearchIndex = SearchCategoryID.NotApplicable;
-                        //ctrlSalesAndReceivables.Visible = true;
-                        break;				
+                        ctrlRedeemRewards.Visible = true;
+                        break;		
 					default:	
 						break;
 				}

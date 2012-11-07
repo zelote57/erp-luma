@@ -19,8 +19,8 @@ namespace AceSoft.RetailPlus.Rewards
 
                 lnkMembers.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/_Members/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
                 lnkRewardPrograms.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/_Members/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
-                lnkCheckRewardPoints.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/_Members/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
-                lnkRewardsReddem.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/_Members/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
+                lnkCheckRewardPoints.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/_Members/Default.aspx?task=" + Common.Encrypt("listwithrewards", Session.SessionID);
+                lnkRewardsReddem.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/Default.aspx?task=" + Common.Encrypt("redeemrewards", Session.SessionID);
 				
             }
 		}

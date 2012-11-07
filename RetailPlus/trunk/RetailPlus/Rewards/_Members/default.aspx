@@ -6,6 +6,7 @@
 <%@ Register TagPrefix="CTRL" TagName="HorizontalNavBar" Src="../../_HorizontalNavBar.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="PageHeader" Src="../../_PageHeader.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlList" Src="_List.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlListWithRewards" Src="_ListWithRewards.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlDetails" Src="_Details.ascx" %>
 <%@ Page language="c#" Inherits="AceSoft.RetailPlus.Rewards._Members._Default" Codebehind="Default.aspx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
@@ -110,6 +111,7 @@
 							<tr id="TopRow">
 								<td class="ms-tztop" id="TopCell" vAlign="top" width="100%">
 									<CTRL:ctrlList id="ctrlList" runat="server" Visible="False"></CTRL:ctrlList>
+                                    <CTRL:ctrlListWithRewards id="ctrlListWithRewards" runat="server" Visible="False"></CTRL:ctrlListWithRewards>
 									<CTRL:ctrlInsert id="ctrlInsert" runat="server" Visible="False"></CTRL:ctrlInsert>
 									<CTRL:ctrlUpdate id="ctrlUpdate" runat="server" Visible="False"></CTRL:ctrlUpdate>
 									<CTRL:ctrlDetails id="ctrlDetails" runat="server" Visible="False"></CTRL:ctrlDetails></td>

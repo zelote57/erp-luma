@@ -1,4 +1,4 @@
-<%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Rewards._Members.__List" Codebehind="_List.ascx.cs" %>
+<%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Rewards._Members.__ListWithRewards" Codebehind="_listwithrewards.ascx.cs" %>
 <script language="JavaScript" src="../../_Scripts/sExpCollapse.js"></script>
 <script language="JavaScript" src="../../_Scripts/SelectAll.js"></script>
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
@@ -122,11 +122,11 @@
                             <TH class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByRewardExpiryDate" runat="server">Reward Expiry Date</asp:hyperlink></TH>
                             <TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByRewardPoints" runat="server"></asp:hyperlink></TH>
+								<asp:hyperlink id="SortByRewardPoints" runat="server">Reward Points</asp:hyperlink></TH>
                             <TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByRewardRedeemedPoints" runat="server"></asp:hyperlink></TH>
+								<asp:hyperlink id="SortByRewardRedeemedPoints" runat="server">Redeemed Points</asp:hyperlink></TH>
                             <TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByRewardTotalPurchases" runat="server"></asp:hyperlink></TH>
+								<asp:hyperlink id="SortByRewardTotalPurchases" runat="server">Total Purchases</asp:hyperlink></TH>
                             <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 						</TR>
 					</table>
@@ -177,14 +177,14 @@
 								<asp:Label ID="lblRewardExpiryDate" Runat="server"></asp:Label>
 							</TD>
                             <TD class="ms-vb-user">
-								<asp:Label ID="lblRewardPoints" Runat="server" Visible="false"></asp:Label>
+								<asp:Label ID="lblRewardPoints" Runat="server"></asp:Label>
 							</TD>
                             <TD class="ms-vb-user">
 
-								<asp:Label ID="lblRewardRedeemedPoints" Runat="server" Visible="false"></asp:Label>
+								<asp:Label ID="lblRewardRedeemedPoints" Runat="server"></asp:Label>
 							</TD>
                             <TD class="ms-vb-user">
-								<asp:Label ID="lblRewardTotalPurchases" Runat="server" Visible="false"></asp:Label>
+								<asp:Label ID="lblRewardTotalPurchases" Runat="server"></asp:Label>
 							</TD>
 							<TD class="ms-vb2">
 								<A class="DropDown" id="anchorDown" href="" runat="server">

@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="CTRL" TagName="ctrlExpiry" Src="../_Expiry.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlProcessing" Src="../_Processing.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlMenu" Src="_Menu.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlRedeemRewards" Src="_redeemrewards.ascx" %>
 <%@ Page language="c#" Inherits="AceSoft.RetailPlus.Rewards._Default" Codebehind="Default.aspx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register TagPrefix="CTRL" TagName="PageHeader" Src="../_PageHeader.ascx" %>
@@ -10,6 +11,7 @@
 <%@ Register TagPrefix="CTRL" TagName="SiteTitle" Src="../_SiteTitle.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="RightBodySectionSearch" Src="../_RightBodySectionSearch.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="PageLevelError" Src="../_PageLevelError.ascx" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
 	<HEAD>
@@ -106,7 +108,8 @@
 					<TD class="ms-bodyareaframe" vAlign="top" width="100%"><CTRL:PAGELEVELERROR id="PageLevelError" runat="server"></CTRL:PAGELEVELERROR>
 						<table class="ms-tztable" id="ZoneTable" cellSpacing="0" cellPadding="0" width="100%" border="0">
 							<tr id="TopRow">
-								<td class="ms-tztop" id="TopCell" vAlign="top" width="100%"></td>
+								<td class="ms-tztop" id="TopCell" vAlign="top" width="100%">
+                                    <CTRL:ctrlRedeemRewards id="ctrlRedeemRewards" runat="server" Visible="False"></CTRL:ctrlRedeemRewards></td>
 							</tr>
 						</TABLE>
 					</TD>

@@ -52,7 +52,12 @@ namespace AceSoft.RetailPlus.Rewards._Members
 						stHeading = "Reward Members List";		
 						SearchIndex = SearchCategoryID.RewardMembers;
 						ctrlList.Visible = true;
-						break;					
+						break;
+                    case "listwithrewards":
+                        stHeading = "Reward Members List";
+                        SearchIndex = SearchCategoryID.RewardMembers;
+                        ctrlListWithRewards.Visible = true;
+                        break;	
 					default:	
 						break;
 				}

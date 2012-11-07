@@ -318,6 +318,20 @@
     <Compile Include="Rewards\Default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Rewards\_Members\_listwithrewards.ascx.cs">
+      <DependentUpon>_listwithrewards.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Rewards\_Members\_listwithrewards.ascx.designer.cs">
+      <DependentUpon>_listwithrewards.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Rewards\_redeemrewards.ascx.cs">
+      <DependentUpon>_redeemrewards.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Rewards\_redeemrewards.ascx.designer.cs">
+      <DependentUpon>_redeemrewards.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Rewards\_Members\Default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3147,6 +3161,8 @@
     <None Include="vwd.webinfo" />
     <None Include="_layouts\images\Thumbs.db" />
     <Content Include="Rewards\default.aspx" />
+    <Content Include="Rewards\_Members\_listwithrewards.ascx" />
+    <Content Include="Rewards\_redeemrewards.ascx" />
     <Content Include="Rewards\_Members\default.aspx" />
     <Content Include="Rewards\_Members\_details.ascx" />
     <Content Include="Rewards\_Members\_insert.ascx" />

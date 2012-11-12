@@ -42,6 +42,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>..\packages\AjaxControlToolkit.4.1.60919\lib\40\AjaxControlToolkit.dll</HintPath>
+    </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Engine">
       <HintPath>..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
     </Reference>
@@ -54,9 +57,15 @@
     <Reference Include="CrystalDecisions.Web">
       <HintPath>..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.Web.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\AjaxControlToolkit.4.1.60919\lib\40\SanitizerProviders\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
     <Reference Include="Microsoft.Vbe.Interop, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
-    <Reference Include="MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.4.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="SanitizerProviders">
+      <HintPath>..\packages\AjaxControlToolkit.4.1.60919\lib\40\SanitizerProviders\SanitizerProviders.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -3157,6 +3166,7 @@
     <None Include="iisreset.cmd" />
     <None Include="MasterFiles\_Product\_Variations\_easyinsert.ascx.cs.exclude" />
     <None Include="MasterFiles\_Product\_Variations\_easyinsert.ascx.exclude" />
+    <Content Include="packages.config" />
     <None Include="User Guide - Backend.pdf" />
     <None Include="vwd.webinfo" />
     <None Include="_layouts\images\Thumbs.db" />

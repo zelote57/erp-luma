@@ -2,6 +2,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <script language="JavaScript" src="../_Scripts/DocumentScripts.js"></script>
 <script language="JavaScript" src="../_Scripts/ComputeMargin.js"></script>
+<script language="JavaScript" src="../_Scripts/Rewards.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
 		<td colSpan="3"><IMG height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
@@ -85,7 +86,7 @@
                                 <td nowrap style="PADDING-TOP: 8px">
                                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" >
                                         <ContentTemplate >
-                                            <asp:TextBox ID="txtCurrentRewardPoints" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled">0</asp:TextBox>
+                                            <asp:TextBox ID="txtCurrentRewardPoints" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-numeric-disabled">0</asp:TextBox>
                                         </ContentTemplate>
                                         <Triggers> 
                                             <asp:AsyncPostBackTrigger ControlID="cboCustomer" EventName="SelectedIndexChanged" />
@@ -104,7 +105,7 @@
                                 <td nowrap style="PADDING-TOP: 8px">
                                     <asp:UpdatePanel ID="UpdatePanel5" runat="server" >
                                         <ContentTemplate >
-                                            <asp:TextBox ID="txtRedeemRewardPoints" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-numeric">0</asp:TextBox>
+                                            <asp:TextBox ID="txtRedeemRewardPoints" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-numeric-required" onkeyup="ComputeRedeemRewards()" onkeypress="AllNum()">0</asp:TextBox>
                                         </ContentTemplate>
                                         <Triggers> 
                                             <asp:AsyncPostBackTrigger ControlID="cboCustomer" EventName="SelectedIndexChanged" />
@@ -123,7 +124,7 @@
                                 <td nowrap style="PADDING-TOP: 8px">
                                     <asp:UpdatePanel ID="UpdatePanel7" runat="server" >
                                         <ContentTemplate >
-                                            <asp:TextBox ID="txtNewRewardPoints" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled">0</asp:TextBox>
+                                            <asp:TextBox ID="txtNewRewardPoints" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-numeric-disabled">0</asp:TextBox>
                                         </ContentTemplate>
                                         <Triggers> 
                                             <asp:AsyncPostBackTrigger ControlID="cboCustomer" EventName="SelectedIndexChanged" />
@@ -134,6 +135,13 @@
                                             <asp:AsyncPostBackTrigger ControlID="cmdRedeemRewards" EventName="Click" />
                                         </Triggers> 
                                     </asp:UpdatePanel>
+                                </td>
+                            </tr>
+                            <tr >
+                                <td nowrap style="PADDING-TOP: 8px"><label>Enter remarks</label></td>
+                                <td style="PADDING-TOP: 8px"> : </td>
+                                <td nowrap style="PADDING-TOP: 8px">
+                                    <asp:TextBox ID="txtRemarks" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-long-required" TextMode="MultiLine"></asp:TextBox>
                                 </td>
                             </tr>
                         </table>

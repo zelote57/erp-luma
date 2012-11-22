@@ -66,7 +66,7 @@ namespace AceSoft.RetailPlus
         }
 
         public const string ALL = "ALL";
-
+        public const string PLEASE_SELECT = "Please Select";
         public const long ZERO = 0;
         public const string ZERO_STRING = "0";
 

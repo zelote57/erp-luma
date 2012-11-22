@@ -51,7 +51,7 @@ namespace AceSoft.RetailPlus.Rewards._Members
 					case "list":
 						stHeading = "Reward Members List";		
 						SearchIndex = SearchCategoryID.RewardMembers;
-						ctrlList.Visible = true;
+                        ctrlListWithRewards.Visible = true;
 						break;
                     case "listwithrewards":
                         stHeading = "Reward Members List";

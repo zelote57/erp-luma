@@ -9,7 +9,7 @@
 		<td width="170" style="PADDING-RIGHT: 2px">
 			<div id="mnuInventory" runat="server">
 				<table id="SPSWC_NavBar" width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnav" DisplayType="v1">
-					<tr>
+					<tr>che
 						<td class="ms-navheader">Rewards</td>
 					</tr>
 					<tr>
@@ -71,8 +71,7 @@
 						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkCheckRewardPoints" runat="server" ToolTip="Easily check reward points">
-								<li>
-									Check Reward Points</li></asp:HyperLink>
+								<li>Check Reward Points</li></asp:HyperLink>
 						</td>
 					</tr>
                     <tr>

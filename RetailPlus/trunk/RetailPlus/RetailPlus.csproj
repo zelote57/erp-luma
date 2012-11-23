@@ -70,11 +70,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DataVisualization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -319,6 +321,13 @@
     </Compile>
     <Compile Include="Inventory\_BranchTransfer\_Update.ascx.designer.cs">
       <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Rewards\_rewardsdefault.ascx.cs">
+      <DependentUpon>_rewardsdefault.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Rewards\_rewardsdefault.ascx.designer.cs">
+      <DependentUpon>_rewardsdefault.ascx</DependentUpon>
     </Compile>
     <Compile Include="Rewards\Default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
@@ -3170,6 +3179,7 @@
     <None Include="User Guide - Backend.pdf" />
     <None Include="vwd.webinfo" />
     <None Include="_layouts\images\Thumbs.db" />
+    <Content Include="Rewards\_rewardsdefault.ascx" />
     <Content Include="Rewards\default.aspx" />
     <Content Include="Rewards\_Members\_listwithrewards.ascx" />
     <Content Include="Rewards\_redeemrewards.ascx" />

@@ -27,20 +27,27 @@ namespace AceSoft.RetailPlus.Rewards
 			SearchCategoryID SearchIndex = defaultSearchIndex;
 
 			HorizontalNavBar.PageNavigatorid = HorizontalNavID.Rewards;
-			
-			if (Request.QueryString["task"]!=null)
+
+			if (Request.QueryString["task"] != null)
 			{
-				string task = Common.Decrypt(Request.QueryString["task"].ToString(),Session.SessionID);
-				switch(task)
+				ctrlRewardsDefault.Visible = false;
+				string task = Common.Decrypt(Request.QueryString["task"].ToString(), Session.SessionID);
+				switch (task)
 				{
-                    case "redeemrewards":
-                        stHeading = "Redeem Rewards";
-                        SearchIndex = SearchCategoryID.NotApplicable;
-                        ctrlRedeemRewards.Visible = true;
-                        break;		
-					default:	
+					case "redeemrewards":
+						stHeading = "Redeem Rewards";
+						SearchIndex = SearchCategoryID.NotApplicable;
+						ctrlRedeemRewards.Visible = true;
+						break;
+					default:
 						break;
 				}
+			}
+			else
+			{
+				stHeading = "Rewards";
+				SearchIndex = SearchCategoryID.NotApplicable;
+				ctrlRewardsDefault.Visible = true;
 			}
 			LargeHeading.Text = stHeading;
 			RightBodySectionSearch.SearchIDSelectedItem = SearchIndex;
@@ -53,9 +60,9 @@ namespace AceSoft.RetailPlus.Rewards
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.RewardCardIssuance);
-            clsAccessRights.CommitAndDispose();
+			clsAccessRights.CommitAndDispose();
 
-            if (clsDetails.Read==false)
+			if (clsDetails.Read==false)
 				Server.Transfer("/RetailPlus/Home.aspx");
 		}
 

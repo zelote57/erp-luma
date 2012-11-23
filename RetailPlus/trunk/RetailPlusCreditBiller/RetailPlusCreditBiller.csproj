@@ -53,7 +53,6 @@
     <ApplicationIcon>admin.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="crdb_adoplus, Version=14.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86" />
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />

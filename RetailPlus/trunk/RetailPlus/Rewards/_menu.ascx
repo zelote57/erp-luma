@@ -9,7 +9,7 @@
 		<td width="170" style="PADDING-RIGHT: 2px">
 			<div id="mnuInventory" runat="server">
 				<table id="SPSWC_NavBar" width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnav" DisplayType="v1">
-					<tr>che
+					<tr>
 						<td class="ms-navheader">Rewards</td>
 					</tr>
 					<tr>

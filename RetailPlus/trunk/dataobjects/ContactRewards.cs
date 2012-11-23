@@ -19,15 +19,15 @@ namespace AceSoft.RetailPlus.Data
 	public struct ContactRewardDetails
 	{
 		public long ContactID;
-        public string RewardCardNo;
-        public bool RewardActive;
-        public decimal RewardPoints;
-        public DateTime RewardAwardDate;
-        public decimal TotalPurchases;
-        public decimal RedeemedPoints;
-        public RewardCardStatus RewardCardStatus;
-        public DateTime ExpiryDate;
-        public DateTime BirthDate;
+		public string RewardCardNo;
+		public bool RewardActive;
+		public decimal RewardPoints;
+		public DateTime RewardAwardDate;
+		public decimal TotalPurchases;
+		public decimal RedeemedPoints;
+		public RewardCardStatus RewardCardStatus;
+		public DateTime ExpiryDate;
+		public DateTime BirthDate;
 	}
 
 	
@@ -66,7 +66,7 @@ namespace AceSoft.RetailPlus.Data
 			
 		}
 
-        public ContactReward(MySqlConnection Connection, MySqlTransaction Transaction)
+		public ContactReward(MySqlConnection Connection, MySqlTransaction Transaction)
 		{
 			mConnection = Connection;
 			mTransaction = Transaction;
@@ -110,28 +110,28 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try  
 			{
-                string SQL = "CALL procContactRewardModify(@lngCustomerID, @strRewardCardNo, @intRewardActive, @decRewardPoints, @dteRewardAwardDate, @intRewardCardStatus, @dteExpiryDate, @dteBirthDate);";
+				string SQL = "CALL procContactRewardModify(@lngCustomerID, @strRewardCardNo, @intRewardActive, @decRewardPoints, @dteRewardAwardDate, @intRewardCardStatus, @dteExpiryDate, @dteBirthDate);";
 
-                MySqlConnection cn = GetConnection();
+				MySqlConnection cn = GetConnection();
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+				MySqlCommand cmd = new MySqlCommand();
+				cmd.Connection = cn;
+				cmd.Transaction = mTransaction;
+				cmd.CommandType = System.Data.CommandType.Text;
+				cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@lngCustomerID", Details.ContactID);
-                cmd.Parameters.AddWithValue("@strRewardCardNo", Details.RewardCardNo);
-                cmd.Parameters.AddWithValue("@intRewardActive", Convert.ToInt16(Details.RewardActive));
-                cmd.Parameters.AddWithValue("@decRewardPoints", Convert.ToDecimal(0)); // not working if decimal
-                cmd.Parameters.AddWithValue("@dteRewardAwardDate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@intRewardCardStatus", Details.RewardCardStatus.ToString("d"));
-                cmd.Parameters.AddWithValue("@dteExpiryDate", Details.ExpiryDate.ToString("yyyy-MM-dd"));
-                cmd.Parameters.AddWithValue("@dteBirthDate", Details.BirthDate.ToString("yyyy-MM-dd"));
+				cmd.Parameters.AddWithValue("@lngCustomerID", Details.ContactID);
+				cmd.Parameters.AddWithValue("@strRewardCardNo", Details.RewardCardNo);
+				cmd.Parameters.AddWithValue("@intRewardActive", Convert.ToInt16(Details.RewardActive));
+				cmd.Parameters.AddWithValue("@decRewardPoints", Convert.ToDecimal(0)); // not working if decimal
+				cmd.Parameters.AddWithValue("@dteRewardAwardDate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+				cmd.Parameters.AddWithValue("@intRewardCardStatus", Details.RewardCardStatus.ToString("d"));
+				cmd.Parameters.AddWithValue("@dteExpiryDate", Details.ExpiryDate.ToString("yyyy-MM-dd"));
+				cmd.Parameters.AddWithValue("@dteBirthDate", Details.BirthDate.ToString("yyyy-MM-dd"));
 
 				bool bolRetValue = false;
-                if (cmd.ExecuteNonQuery() > 0) bolRetValue = true;
-                return bolRetValue;
+				if (cmd.ExecuteNonQuery() > 0) bolRetValue = true;
+				return bolRetValue;
 			}
 
 			catch (Exception ex)
@@ -152,7 +152,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                return Insert(Details);
+				return Insert(Details);
 			}
 
 			catch (Exception ex)
@@ -181,7 +181,7 @@ namespace AceSoft.RetailPlus.Data
 				string SQL=	"DELETE FROM tblContacts WHERE ContactID IN (" + IDs + ");";
 				  
 				MySqlConnection cn = GetConnection();
-	 			
+				
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.Connection = cn;
 				cmd.Transaction = mTransaction;
@@ -211,22 +211,22 @@ namespace AceSoft.RetailPlus.Data
 
 		#endregion
 
-        private string SQLSelect()
-        {
-            string stSQL = "SELECT " +
-                                "CustomerID, " +
-                                "RewardCardNo, " +
-                                "RewardActive, " +
-                                "RewardPoints, " +
-                                "RewardAwardDate, " +
-                                "TotalPurchases, " +
-                                "RedeemedPoints, " +
-                                "RewardCardStatus, " +
-                                "ExpiryDate, " +
-                                "BirthDate " +
-                            "FROM tblContactRewards ";
-            return stSQL;
-        }
+		private string SQLSelect()
+		{
+			string stSQL = "SELECT " +
+								"CustomerID, " +
+								"RewardCardNo, " +
+								"RewardActive, " +
+								"RewardPoints, " +
+								"RewardAwardDate, " +
+								"TotalPurchases, " +
+								"RedeemedPoints, " +
+								"RewardCardStatus, " +
+								"ExpiryDate, " +
+								"BirthDate " +
+							"FROM tblContactRewards ";
+			return stSQL;
+		}
 
 		#region Details
 
@@ -237,7 +237,7 @@ namespace AceSoft.RetailPlus.Data
 				string SQL=	SQLSelect() + "WHERE CustomerID = @ContactID;";
 				  
 				MySqlConnection cn = GetConnection();
-	 			
+				
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.Connection = cn;
 				cmd.Transaction = mTransaction;
@@ -253,15 +253,15 @@ namespace AceSoft.RetailPlus.Data
 				while (myReader.Read()) 
 				{
 					Details.ContactID = myReader.GetInt64("CustomerID");
-                    Details.RewardCardNo = "" + myReader["RewardCardNo"].ToString();
+					Details.RewardCardNo = "" + myReader["RewardCardNo"].ToString();
 					Details.RewardActive = myReader.GetBoolean("RewardActive");
-                    Details.RewardPoints = myReader.GetDecimal("RewardPoints");
-                    Details.RewardAwardDate = myReader.GetDateTime("RewardAwardDate");
-                    Details.TotalPurchases = myReader.GetDecimal("TotalPurchases");
-                    Details.RedeemedPoints = myReader.GetDecimal("RedeemedPoints");
-                    Details.RewardCardStatus = (RewardCardStatus)Enum.Parse(typeof(RewardCardStatus), myReader.GetString("RewardCardStatus"));
-                    Details.ExpiryDate = myReader.GetDateTime("ExpiryDate");
-                    Details.BirthDate = myReader.GetDateTime("BirthDate");
+					Details.RewardPoints = myReader.GetDecimal("RewardPoints");
+					Details.RewardAwardDate = myReader.GetDateTime("RewardAwardDate");
+					Details.TotalPurchases = myReader.GetDecimal("TotalPurchases");
+					Details.RedeemedPoints = myReader.GetDecimal("RedeemedPoints");
+					Details.RewardCardStatus = (RewardCardStatus)Enum.Parse(typeof(RewardCardStatus), myReader.GetString("RewardCardStatus"));
+					Details.ExpiryDate = myReader.GetDateTime("ExpiryDate");
+					Details.BirthDate = myReader.GetDateTime("BirthDate");
 				}
 
 				myReader.Close();
@@ -287,39 +287,39 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                string SQL = SQLSelect() + "WHERE RewardCardNo = @RewardCardNo;";
+				string SQL = SQLSelect() + "WHERE RewardCardNo = @RewardCardNo;";
 
-                MySqlConnection cn = GetConnection();
+				MySqlConnection cn = GetConnection();
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+				MySqlCommand cmd = new MySqlCommand();
+				cmd.Connection = cn;
+				cmd.Transaction = mTransaction;
+				cmd.CommandType = System.Data.CommandType.Text;
+				cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@RewardCardNo", RewardCardNo);
+				cmd.Parameters.AddWithValue("@RewardCardNo", RewardCardNo);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
 
-                ContactRewardDetails Details = new ContactRewardDetails();
+				ContactRewardDetails Details = new ContactRewardDetails();
 
-                while (myReader.Read())
-                {
-                    Details.ContactID = myReader.GetInt64("CustomerID");
-                    Details.RewardCardNo = "" + myReader["RewardCardNo"].ToString();
-                    Details.RewardActive = myReader.GetBoolean("RewardActive");
-                    Details.RewardPoints = myReader.GetDecimal("RewardPoints");
-                    Details.RewardAwardDate = myReader.GetDateTime("RewardAwardDate");
-                    Details.TotalPurchases = myReader.GetDecimal("TotalPurchases");
-                    Details.RedeemedPoints = myReader.GetDecimal("RedeemedPoints");
-                    Details.RewardCardStatus = (RewardCardStatus)Enum.Parse(typeof(RewardCardStatus), myReader.GetString("RewardCardStatus"));
-                    Details.ExpiryDate = myReader.GetDateTime("ExpiryDate");
-                    Details.BirthDate = myReader.GetDateTime("BirthDate");
-                }
+				while (myReader.Read())
+				{
+					Details.ContactID = myReader.GetInt64("CustomerID");
+					Details.RewardCardNo = "" + myReader["RewardCardNo"].ToString();
+					Details.RewardActive = myReader.GetBoolean("RewardActive");
+					Details.RewardPoints = myReader.GetDecimal("RewardPoints");
+					Details.RewardAwardDate = myReader.GetDateTime("RewardAwardDate");
+					Details.TotalPurchases = myReader.GetDecimal("TotalPurchases");
+					Details.RedeemedPoints = myReader.GetDecimal("RedeemedPoints");
+					Details.RewardCardStatus = (RewardCardStatus)Enum.Parse(typeof(RewardCardStatus), myReader.GetString("RewardCardStatus"));
+					Details.ExpiryDate = myReader.GetDateTime("ExpiryDate");
+					Details.BirthDate = myReader.GetDateTime("BirthDate");
+				}
 
-                myReader.Close();
+				myReader.Close();
 
-                return Details;
+				return Details;
 			}
 
 			catch (Exception ex)
@@ -383,9 +383,9 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				string SQL = SQLSelect() + "WHERE 1=1 AND deleted = '0' " +
-					            "AND (ContactCode LIKE @SearchKey " +
-					            "OR ContactName LIKE @SearchKey) " +
-					            "ORDER BY " + SortField;
+								"AND (ContactCode LIKE @SearchKey " +
+								"OR ContactName LIKE @SearchKey) " +
+								"ORDER BY " + SortField;
 
 				if (SortOrder == SortOption.Ascending)
 					SQL += " ASC";
@@ -423,115 +423,144 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}		
 
-        public DataTable ListAsDataTable(string SortField, SortOption SortOrder)
-        {
-            string SQL = SQLSelect() + "WHERE ORDER BY " + SortField;
+		public DataTable ListAsDataTable(string SortField, SortOption SortOrder)
+		{
+			string SQL = SQLSelect() + "WHERE ORDER BY " + SortField;
 
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
+			if (SortOrder == SortOption.Ascending)
+				SQL += " ASC";
+			else
+				SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
+			MySqlConnection cn = GetConnection();
 
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
+			MySqlCommand cmd = new MySqlCommand();
+			cmd.Connection = cn;
+			cmd.Transaction = mTransaction;
+			cmd.CommandType = System.Data.CommandType.Text;
+			cmd.CommandText = SQL;
 
-            System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+			System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
+			MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+			adapter.Fill(dt);
 
-            return dt;
-        }
-        public DataTable SearchAsDataTable(string SearchKey, string SortField, SortOption SortOrder)
-        {
-            string SQL = SQLSelect() + "WHERE (RewardCardNo LIKE @SearchKey or RewardActive LIKE @SearchKey) ";
+			return dt;
+		}
+		public DataTable SearchAsDataTable(string SearchKey, string SortField, SortOption SortOrder)
+		{
+			string SQL = SQLSelect() + "WHERE (RewardCardNo LIKE @SearchKey or RewardActive LIKE @SearchKey) ";
 
-            SQL += "ORDER BY " + SortField;
+			SQL += "ORDER BY " + SortField;
 
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
+			if (SortOrder == SortOption.Ascending)
+				SQL += " ASC";
+			else
+				SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
+			MySqlConnection cn = GetConnection();
 
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
+			MySqlCommand cmd = new MySqlCommand();
+			cmd.Connection = cn;
+			cmd.Transaction = mTransaction;
+			cmd.CommandType = System.Data.CommandType.Text;
+			cmd.CommandText = SQL;
 
-            cmd.Parameters.AddWithValue("@SearchKey", SearchKey + "%");
+			cmd.Parameters.AddWithValue("@SearchKey", SearchKey + "%");
 
-            System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+			System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
+			MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+			adapter.Fill(dt);
 
-            return dt;
-        }
+			return dt;
+		}
+
+		public DataTable ActiveStatisticsReport(DateTime StartDate, DateTime EndDate)
+		{
+			string SQL = "SELECT " +
+								"CALD.CalDate RewardAwardDate " +
+								",SUM(IF(RewardActive=0,1,0)) NoOfInActiveRewards " +
+								",SUM(IF(RewardActive=1,1,0)) NoOfActiveRewards " +
+							"FROM tblCalDate CALD " +
+							"LEFT OUTER JOIN tblContactRewards CREW ON CALD.CalDate = DATE_FORMAT(CREW.RewardAwardDate, '%Y-%m-%d') " +
+							"WHERE " +
+								"CALD.CalDate BETWEEN DATE_FORMAT('" + StartDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d')  AND " +
+								"DATE_FORMAT('" + EndDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d') " +
+							"GROUP BY CALD.CalDate " +
+							"ORDER BY CALD.CalDate";
+
+			MySqlConnection cn = GetConnection();
+
+			MySqlCommand cmd = new MySqlCommand();
+			cmd.Connection = cn;
+			cmd.Transaction = mTransaction;
+			cmd.CommandType = System.Data.CommandType.Text;
+			cmd.CommandText = SQL;
+
+			System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
+			MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+			adapter.Fill(dt);
+
+			return dt;
+		}
 
 		#endregion
 
 		#region Public Modifiers
 
-        public void AddPurchase(long ContactID, decimal Amount)
-        {
-            try
-            {
-                string SQL = "CALL procContactRewardsAddPurchase(@ContactID, @Amount);";
+		public void AddPurchase(long ContactID, decimal Amount)
+		{
+			try
+			{
+				string SQL = "CALL procContactRewardsAddPurchase(@ContactID, @Amount);";
 
-                MySqlConnection cn = GetConnection();
+				MySqlConnection cn = GetConnection();
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+				MySqlCommand cmd = new MySqlCommand();
+				cmd.Connection = cn;
+				cmd.Transaction = mTransaction;
+				cmd.CommandType = System.Data.CommandType.Text;
+				cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@ContactID", ContactID);
-                cmd.Parameters.AddWithValue("@Amount", Amount);
+				cmd.Parameters.AddWithValue("@ContactID", ContactID);
+				cmd.Parameters.AddWithValue("@Amount", Amount);
 
-                cmd.ExecuteNonQuery();
-            }
+				cmd.ExecuteNonQuery();
+			}
 
-            catch (Exception ex)
-            {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
+			catch (Exception ex)
+			{
+				TransactionFailed = true;
+				if (IsInTransaction)
+				{
+					mTransaction.Rollback();
+					mTransaction.Dispose();
+					mConnection.Close();
+					mConnection.Dispose();
+				}
 
-                throw ex;
-            }
-        }
+				throw ex;
+			}
+		}
 		public void AddPoints(long ContactID, decimal RewardPoint)
 		{
 			try 
 			{
-                string SQL = "CALL procContactRewardsAddPoint(@ContactID, @RewardPoint);";
+				string SQL = "CALL procContactRewardsAddPoint(@ContactID, @RewardPoint);";
 				  
 				MySqlConnection cn = GetConnection();
-	 			
+				
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.Connection = cn;
 				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-                cmd.Parameters.AddWithValue("@ContactID", ContactID);
-                cmd.Parameters.AddWithValue("@RewardPoint", RewardPoint);
+				cmd.Parameters.AddWithValue("@ContactID", ContactID);
+				cmd.Parameters.AddWithValue("@RewardPoint", RewardPoint);
 
 				cmd.ExecuteNonQuery();
 
-                
+				
 			}
 
 			catch (Exception ex)
@@ -548,24 +577,24 @@ namespace AceSoft.RetailPlus.Data
 				throw ex;
 			}	
 		}
-        public void DeductPoints(long ContactID, decimal RewardPoint)
+		public void DeductPoints(long ContactID, decimal RewardPoint)
 		{
 			try 
 			{
-                string SQL = "CALL procContactRewardsDeductPoint(@ContactID, @RewardPoint);";
+				string SQL = "CALL procContactRewardsDeductPoint(@ContactID, @RewardPoint);";
 
-                MySqlConnection cn = GetConnection();
+				MySqlConnection cn = GetConnection();
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+				MySqlCommand cmd = new MySqlCommand();
+				cmd.Connection = cn;
+				cmd.Transaction = mTransaction;
+				cmd.CommandType = System.Data.CommandType.Text;
+				cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@ContactID", ContactID);
-                cmd.Parameters.AddWithValue("@RewardPoint", RewardPoint);
+				cmd.Parameters.AddWithValue("@ContactID", ContactID);
+				cmd.Parameters.AddWithValue("@RewardPoint", RewardPoint);
 
-                cmd.ExecuteNonQuery();
+				cmd.ExecuteNonQuery();
 			}
 
 			catch (Exception ex)
@@ -583,48 +612,48 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public void AddMovement(long lngCustomerID, DateTime dteRewardDate, decimal decRewardPointsBefore, decimal decRewardPointsAdjustment, decimal decRewardPointsAfter, DateTime dteRewardExpiryDate, string strRewardReason, string strTerminalNo, string strCashierName, string strTransactionNo)
-        {
-            try
-            {
-                string SQL = "CALL procContactRewardsMovementInsert(@lngCustomerID, @dteRewardDate, @decRewardPointsBefore, @decRewardPointsAdjustment, @decRewardPointsAfter, @dteRewardExpiryDate, @strRewardReason, @strTerminalNo, @strCashierName, @strTransactionNo);";
+		public void AddMovement(long lngCustomerID, DateTime dteRewardDate, decimal decRewardPointsBefore, decimal decRewardPointsAdjustment, decimal decRewardPointsAfter, DateTime dteRewardExpiryDate, string strRewardReason, string strTerminalNo, string strCashierName, string strTransactionNo)
+		{
+			try
+			{
+				string SQL = "CALL procContactRewardsMovementInsert(@lngCustomerID, @dteRewardDate, @decRewardPointsBefore, @decRewardPointsAdjustment, @decRewardPointsAfter, @dteRewardExpiryDate, @strRewardReason, @strTerminalNo, @strCashierName, @strTransactionNo);";
 
-                MySqlConnection cn = GetConnection();
+				MySqlConnection cn = GetConnection();
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+				MySqlCommand cmd = new MySqlCommand();
+				cmd.Connection = cn;
+				cmd.Transaction = mTransaction;
+				cmd.CommandType = System.Data.CommandType.Text;
+				cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@lngCustomerID", lngCustomerID);
-                cmd.Parameters.AddWithValue("@dteRewardDate", dteRewardDate);
-                cmd.Parameters.AddWithValue("@decRewardPointsBefore", decRewardPointsBefore);
-                cmd.Parameters.AddWithValue("@decRewardPointsAdjustment", decRewardPointsAdjustment);
-                cmd.Parameters.AddWithValue("@decRewardPointsAfter", decRewardPointsAfter);
-                cmd.Parameters.AddWithValue("@dteRewardExpiryDate", dteRewardExpiryDate);
-                cmd.Parameters.AddWithValue("@strRewardReason", strRewardReason);
-                cmd.Parameters.AddWithValue("@strTerminalNo", strTerminalNo);
-                cmd.Parameters.AddWithValue("@strCashierName", strCashierName);
-                cmd.Parameters.AddWithValue("@strTransactionNo", strTransactionNo);
+				cmd.Parameters.AddWithValue("@lngCustomerID", lngCustomerID);
+				cmd.Parameters.AddWithValue("@dteRewardDate", dteRewardDate);
+				cmd.Parameters.AddWithValue("@decRewardPointsBefore", decRewardPointsBefore);
+				cmd.Parameters.AddWithValue("@decRewardPointsAdjustment", decRewardPointsAdjustment);
+				cmd.Parameters.AddWithValue("@decRewardPointsAfter", decRewardPointsAfter);
+				cmd.Parameters.AddWithValue("@dteRewardExpiryDate", dteRewardExpiryDate);
+				cmd.Parameters.AddWithValue("@strRewardReason", strRewardReason);
+				cmd.Parameters.AddWithValue("@strTerminalNo", strTerminalNo);
+				cmd.Parameters.AddWithValue("@strCashierName", strCashierName);
+				cmd.Parameters.AddWithValue("@strTransactionNo", strTransactionNo);
 
-                cmd.ExecuteNonQuery();
-            }
+				cmd.ExecuteNonQuery();
+			}
 
-            catch (Exception ex)
-            {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
+			catch (Exception ex)
+			{
+				TransactionFailed = true;
+				if (IsInTransaction)
+				{
+					mTransaction.Rollback();
+					mTransaction.Dispose();
+					mConnection.Close();
+					mConnection.Dispose();
+				}
 
-                throw ex;
-            }
-        }
+				throw ex;
+			}
+		}
 
 		#endregion
 	}

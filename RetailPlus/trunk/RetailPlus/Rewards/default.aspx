@@ -3,6 +3,7 @@
 <%@ Register TagPrefix="CTRL" TagName="ctrlProcessing" Src="../_Processing.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlMenu" Src="_Menu.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlRedeemRewards" Src="_redeemrewards.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlRewardsDefault" Src="_rewardsdefault.ascx" %>
 <%@ Page language="c#" Inherits="AceSoft.RetailPlus.Rewards._Default" Codebehind="Default.aspx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register TagPrefix="CTRL" TagName="PageHeader" Src="../_PageHeader.ascx" %>
@@ -28,8 +29,8 @@
 	</HEAD>
 	<BODY id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
 		<FORM id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">
-		    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
-		    <CTRL:ctrlProcessing id="ctrlProcessing" runat="server" ></CTRL:ctrlProcessing>
+			<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
+			<CTRL:ctrlProcessing id="ctrlProcessing" runat="server" ></CTRL:ctrlProcessing>
 			<table class="ms-main" height="100%" cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<TR>
 					<TD width="100%" colspan="3">
@@ -109,7 +110,8 @@
 						<table class="ms-tztable" id="ZoneTable" cellSpacing="0" cellPadding="0" width="100%" border="0">
 							<tr id="TopRow">
 								<td class="ms-tztop" id="TopCell" vAlign="top" width="100%">
-                                    <CTRL:ctrlRedeemRewards id="ctrlRedeemRewards" runat="server" Visible="False"></CTRL:ctrlRedeemRewards></td>
+									<CTRL:ctrlRewardsDefault id="ctrlRewardsDefault" runat="server" Visible="False"></CTRL:ctrlRewardsDefault>
+									<CTRL:ctrlRedeemRewards id="ctrlRedeemRewards" runat="server" Visible="False"></CTRL:ctrlRedeemRewards></td>
 							</tr>
 						</TABLE>
 					</TD>

@@ -115,20 +115,20 @@ namespace AceSoft.RetailPlus.Client
 			appsplash.prgBar.Value = 100;
 			appsplash.lblStatus.Text = "Checking terminal if demo is expired... ";
 			appsplash.Refresh();
-			if (IsDemoExpired())
-			{
-				string stHDSeriano = Key.GetHDSerialNo();
-				MessageBox.Show(
-					"This copy has been expired. Please contact your nearest software distributor" + Environment.NewLine + 
-					"Or call RBS Sales @: "+  Environment.NewLine +
-					"          Philippines: +63918.939.0926" + Environment.NewLine +
-					"          Philippines: +63920.946.8513" + Environment.NewLine + 
-					"          Singapore: +658213.5368" + Environment.NewLine + 
-					"Or email sales@myretailplus.com" + Environment.NewLine + 
-					"Your HD Serial No. is: " + stHDSeriano, "RetailPlus™ Demo Version", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-				Application.Exit();
-				return;
-			}
+            //if (IsDemoExpired())
+            //{
+            //    string stHDSeriano = Key.GetHDSerialNo();
+            //    MessageBox.Show(
+            //        "This copy has been expired. Please contact your nearest software distributor" + Environment.NewLine + 
+            //        "Or call RBS Sales @: "+  Environment.NewLine +
+            //        "          Philippines: +63918.939.0926" + Environment.NewLine +
+            //        "          Philippines: +632.998.7722" + Environment.NewLine + 
+            //        "          Singapore: +658.6519601" + Environment.NewLine + 
+            //        "Or email sales@myretailplus.com" + Environment.NewLine + 
+            //        "Your HD Serial No. is: " + stHDSeriano, "RetailPlus™ Demo Version", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            //    Application.Exit();
+            //    return;
+            //}
 
 			appsplash.lblStatus.Text += "DONE!";
 			appsplash.Refresh();

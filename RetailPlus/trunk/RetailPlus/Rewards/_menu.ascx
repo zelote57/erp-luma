@@ -35,7 +35,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="ms-navheader">Rewards Programs</td>
+						<td class="ms-navheader">Reports</td>
 					</tr>
 					<tr>
 						<td>
@@ -49,8 +49,8 @@
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
-											<asp:HyperLink id="lnkRewardPrograms" runat="server" title="Display list of Reward Programs">
-													 Reward Programs</asp:HyperLink>
+											<asp:HyperLink id="lnkRewardsMovement" runat="server" title="Print rewards movement report">
+													 Reward History</asp:HyperLink>
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>

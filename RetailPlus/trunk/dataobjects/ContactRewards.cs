@@ -474,34 +474,7 @@ namespace AceSoft.RetailPlus.Data
 			return dt;
 		}
 
-		public DataTable ActiveStatisticsReport(DateTime StartDate, DateTime EndDate)
-		{
-			string SQL = "SELECT " +
-								"CALD.CalDate RewardAwardDate " +
-								",SUM(IF(RewardActive=0,1,0)) NoOfInActiveRewards " +
-								",SUM(IF(RewardActive=1,1,0)) NoOfActiveRewards " +
-							"FROM tblCalDate CALD " +
-							"LEFT OUTER JOIN tblContactRewards CREW ON CALD.CalDate = DATE_FORMAT(CREW.RewardAwardDate, '%Y-%m-%d') " +
-							"WHERE " +
-								"CALD.CalDate BETWEEN DATE_FORMAT('" + StartDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d')  AND " +
-								"DATE_FORMAT('" + EndDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d') " +
-							"GROUP BY CALD.CalDate " +
-							"ORDER BY CALD.CalDate";
-
-			MySqlConnection cn = GetConnection();
-
-			MySqlCommand cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-
-			System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
-			MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-			adapter.Fill(dt);
-
-			return dt;
-		}
+		
 
 		#endregion
 
@@ -656,5 +629,79 @@ namespace AceSoft.RetailPlus.Data
 		}
 
 		#endregion
-	}
+
+        #region reports
+
+        public DataTable ActiveStatisticsReport(DateTime StartDate, DateTime EndDate)
+        {
+            string SQL = "SELECT " +
+                                "CALD.CalDate RewardAwardDate " +
+                                ",SUM(IF(RewardActive=0,1,0)) NoOfInActiveRewards " +
+                                ",SUM(IF(RewardActive=1,1,0)) NoOfActiveRewards " +
+                            "FROM tblCalDate CALD " +
+                            "LEFT OUTER JOIN tblContactRewards CREW ON CALD.CalDate = DATE_FORMAT(CREW.RewardAwardDate, '%Y-%m-%d') " +
+                            "WHERE " +
+                                "CALD.CalDate BETWEEN DATE_FORMAT('" + StartDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d')  AND " +
+                                "DATE_FORMAT('" + EndDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d') " +
+                            "GROUP BY CALD.CalDate " +
+                            "ORDER BY CALD.CalDate";
+
+            MySqlConnection cn = GetConnection();
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = cn;
+            cmd.Transaction = mTransaction;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            adapter.Fill(dt);
+
+            return dt;
+        }
+
+        public DataTable RewardsMovement(DateTime StartDate, DateTime EndDate, Int64 CustomerID = Constants.ZERO)
+        {
+            MySqlCommand cmd = new MySqlCommand();
+
+            string SQL = "SELECT " +
+                                "RewardDate " +
+                                ",RewardPointsBefore " +
+                                ",RewardPointsAdjustment " +
+                                ",RewardPointsAfter " +
+                                ",RewardReason " +
+                                ",TerminalNo " +
+                                ",CashierName " +
+                                ",TransactionNo " +
+                            "FROM tblContactRewardsMovement " +
+                            "WHERE " +
+                                "RewardDate BETWEEN DATE_FORMAT('" + StartDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d')  AND " +
+                                "DATE_FORMAT('" + EndDate.ToString("yyyy-MM-dd") + "', '%Y-%m-%d') ";
+
+            if (CustomerID != Constants.ZERO)
+            {
+                SQL += "AND CustomerID = @CustomerID ";
+                cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
+            }
+                            
+            SQL += "ORDER BY CustomerID, RewardDate";
+
+            MySqlConnection cn = GetConnection();
+            
+            cmd.Connection = cn;
+            cmd.Transaction = mTransaction;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            System.Data.DataTable dt = new System.Data.DataTable("tblContactRewardsMovement");
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            adapter.Fill(dt);
+
+            return dt;
+        }
+
+        #endregion
+
+    }
 }

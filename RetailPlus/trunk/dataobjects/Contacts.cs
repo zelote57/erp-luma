@@ -1391,7 +1391,7 @@ namespace AceSoft.RetailPlus.Data
                 if (SearchKey != string.Empty)
                 {
                     MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey", MySqlDbType.String);
-                    prmSearchKey.Value = SearchKey;
+                    prmSearchKey.Value = "%" + SearchKey + "%";
                     cmd.Parameters.Add(prmSearchKey);
                 }
 

@@ -112,13 +112,22 @@ namespace AceSoft.RetailPlus.Rewards {
         protected global::AceSoft.RetailPlus.@__PageLevelError PageLevelError;
         
         /// <summary>
-        /// ctrlRewardsDefault control.
+        /// ctrlDefault control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.Rewards.@__RewardsDefault ctrlRewardsDefault;
+        protected global::AceSoft.RetailPlus.Rewards.@__Default ctrlDefault;
+        
+        /// <summary>
+        /// ctrlReports control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Rewards.@__Reports ctrlReports;
         
         /// <summary>
         /// ctrlRedeemRewards control.

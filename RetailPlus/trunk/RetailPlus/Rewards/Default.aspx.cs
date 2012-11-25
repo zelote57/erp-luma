@@ -30,7 +30,7 @@ namespace AceSoft.RetailPlus.Rewards
 
 			if (Request.QueryString["task"] != null)
 			{
-				ctrlRewardsDefault.Visible = false;
+                ctrlDefault.Visible = false;
 				string task = Common.Decrypt(Request.QueryString["task"].ToString(), Session.SessionID);
 				switch (task)
 				{
@@ -39,6 +39,11 @@ namespace AceSoft.RetailPlus.Rewards
 						SearchIndex = SearchCategoryID.NotApplicable;
 						ctrlRedeemRewards.Visible = true;
 						break;
+                    case "rewardsmovement":
+                        stHeading = "Rewards History";
+						SearchIndex = SearchCategoryID.NotApplicable;
+						ctrlReports.Visible = true;
+                        break;
 					default:
 						break;
 				}
@@ -47,7 +52,7 @@ namespace AceSoft.RetailPlus.Rewards
 			{
 				stHeading = "Rewards";
 				SearchIndex = SearchCategoryID.NotApplicable;
-				ctrlRewardsDefault.Visible = true;
+				ctrlDefault.Visible = true;
 			}
 			LargeHeading.Text = stHeading;
 			RightBodySectionSearch.SearchIDSelectedItem = SearchIndex;

@@ -3,7 +3,8 @@
 <%@ Register TagPrefix="CTRL" TagName="ctrlProcessing" Src="../_Processing.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlMenu" Src="_Menu.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlRedeemRewards" Src="_redeemrewards.ascx" %>
-<%@ Register TagPrefix="CTRL" TagName="ctrlRewardsDefault" Src="_rewardsdefault.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlReports" Src="_reports.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlDefault" Src="_default.ascx" %>
 <%@ Page language="c#" Inherits="AceSoft.RetailPlus.Rewards._Default" Codebehind="Default.aspx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register TagPrefix="CTRL" TagName="PageHeader" Src="../_PageHeader.ascx" %>
@@ -110,7 +111,8 @@
 						<table class="ms-tztable" id="ZoneTable" cellSpacing="0" cellPadding="0" width="100%" border="0">
 							<tr id="TopRow">
 								<td class="ms-tztop" id="TopCell" vAlign="top" width="100%">
-									<CTRL:ctrlRewardsDefault id="ctrlRewardsDefault" runat="server" Visible="False"></CTRL:ctrlRewardsDefault>
+									<CTRL:ctrlDefault id="ctrlDefault" runat="server" Visible="False"></CTRL:ctrlDefault>
+                                    <CTRL:ctrlReports id="ctrlReports" runat="server" Visible="False"></CTRL:ctrlReports>
 									<CTRL:ctrlRedeemRewards id="ctrlRedeemRewards" runat="server" Visible="False"></CTRL:ctrlRedeemRewards></td>
 							</tr>
 						</TABLE>

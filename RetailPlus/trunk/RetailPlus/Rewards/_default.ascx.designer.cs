@@ -10,7 +10,7 @@
 namespace AceSoft.RetailPlus.Rewards {
     
     
-    public partial class @__RewardsDefault {
+    public partial class @__Default {
         
         /// <summary>
         /// lblReferrer control.

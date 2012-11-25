@@ -20,18 +20,43 @@ namespace AceSoft.RetailPlus
 		protected void Page_Load(object sender, System.EventArgs e)
 		{
 			const string defaultHeading = "Home";
+            string stHeading = defaultHeading;
+
 			const string defaultTitle = "Welcome to RetailPlus System";
-			const SearchCategoryID defaultAllSourcesIndex = SearchCategoryID.NotApplicable;
-			
-			LargeHeading.Text = defaultHeading;
+
+            const SearchCategoryID defaultSearchIndex = SearchCategoryID.NotApplicable;
+            SearchCategoryID SearchIndex = defaultSearchIndex;
 
 			SiteTitle.Title = defaultTitle;
 
 			HorizontalNavBar.PageNavigatorid = HorizontalNavID.Home;
 
-			RightBodySectionSearch.SearchIDSelectedItem = defaultAllSourcesIndex;
+            if (Request.QueryString["task"] != null)
+            {
+                ctrlHome.Visible = false;
+                string task = Common.Decrypt(Request.QueryString["task"].ToString(), Session.SessionID);
+                switch (task)
+                {
+                    case "redeemrewards":
+                        //stHeading = "Redeem Rewards";
+                        //SearchIndex = SearchCategoryID.NotApplicable;
+                        //ctrlRedeemRewards.Visible = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                stHeading = "Home";
+                SearchIndex = SearchCategoryID.NotApplicable;
+                ctrlHome.Visible = true;
+            }
 
-			PageLevelError.Visible = false;	
+            LargeHeading.Text = stHeading;
+            RightBodySectionSearch.SearchIDSelectedItem = SearchIndex;
+
+			PageLevelError.Visible = false;
 
 		}
 

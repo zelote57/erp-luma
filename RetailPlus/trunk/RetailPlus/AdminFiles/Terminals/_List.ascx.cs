@@ -100,7 +100,7 @@ namespace AceSoft.RetailPlus.Security._Terminals
 				lblMaxReceiptWidth.Text = dr["MaxReceiptWidth"].ToString();
 
 				CheckBox chkIsPrinterAutoCutter = (CheckBox) e.Item.FindControl("chkIsPrinterAutoCutter");
-				chkIsPrinterAutoCutter.Checked = Convert.ToBoolean(Convert.ToInt16(dr["IsPrinterAutoCutter"].ToString()));
+				chkIsPrinterAutoCutter.Checked = Convert.ToBoolean(dr["IsPrinterAutoCutter"]);
 
 				CheckBox chkAutoPrint = (CheckBox) e.Item.FindControl("chkAutoPrint");
 				chkAutoPrint.Checked = Convert.ToBoolean(Convert.ToInt16(dr["AutoPrint"].ToString()));
@@ -112,10 +112,10 @@ namespace AceSoft.RetailPlus.Security._Terminals
 				lblCashDrawerName.Text = dr["CashDrawerName"].ToString();
 
 				CheckBox chkItemVoidConfirmation = (CheckBox) e.Item.FindControl("chkItemVoidConfirmation");
-				chkItemVoidConfirmation.Checked =Convert.ToBoolean(Convert.ToInt16(dr["ItemVoidConfirmation"].ToString()));
+				chkItemVoidConfirmation.Checked =Convert.ToBoolean(dr["ItemVoidConfirmation"]);
 				
 				CheckBox chkEnableEVAT = (CheckBox) e.Item.FindControl("chkEnableEVAT");
-				chkEnableEVAT.Checked =Convert.ToBoolean(Convert.ToInt16(dr["EnableEVAT"].ToString()));
+				chkEnableEVAT.Checked =Convert.ToBoolean(dr["EnableEVAT"]);
 
 				Label lblFormBehavior = (Label) e.Item.FindControl("lblFormBehavior");
 				lblFormBehavior.Text = dr["Form_Behavior"].ToString();

@@ -6168,5 +6168,13 @@ ALTER TABLE tblContactRewards MODIFY `RewardCardStatus` INT (1) NOT NULL DEFAULT
 ALTER TABLE tblContactCreditCardInfo MODIFY `CreditType` INT (1) NOT NULL DEFAULT 0;
 ALTER TABLE tblContactCreditCardInfo MODIFY `CreditCardStatus` INT (1) NOT NULL DEFAULT 0;
 
+ALTER TABLE tblBranchInventory ADD `QuantityIN` DECIMAL(18,3) NOT NULL DEFAULT 0; 
+ALTER TABLE tblBranchInventory ADD `QuantityOUT` DECIMAL(18,3) NOT NULL DEFAULT 0; 
+ALTER TABLE tblBranchInventory ADD `ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0; 
+ALTER TABLE tblBranchInventory DROP `ProductCode`; 
+
+ALTER TABLE tblBranchInventoryMatrix ADD `QuantityIN` DECIMAL(18,3) NOT NULL DEFAULT 0; 
+ALTER TABLE tblBranchInventoryMatrix ADD `QuantityOUT` DECIMAL(18,3) NOT NULL DEFAULT 0; 
+ALTER TABLE tblBranchInventoryMatrix ADD `ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0; 
 
 /*********************************  v_4.0.0.2.sql END  *******************************************************/ 

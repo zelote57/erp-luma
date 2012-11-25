@@ -1834,7 +1834,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public System.Data.DataTable HourlyReport(int BranchID, string TerminalNo)
+		public System.Data.DataTable HourlyReport(int BranchID, string TerminalNo = Constants.ALL)
 		{
             MySqlDataReader myReader = HourlyReportPrivate(DateTime.MinValue, DateTime.MinValue, BranchID, TerminalNo);
 			

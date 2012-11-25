@@ -634,11 +634,11 @@ namespace AceSoft.RetailPlus.Security
 				}
 				if (SearchKey != "" && SearchKey != string.Empty)
 				{
-					SQL += "AND (UserName LIKE @SearchKey " +
-								"OR Name LIKE @SearchKey " +
-								"OR Address1 LIKE @SearchKey " +
-								"OR CountryName LIKE @SearchKey " +
-								"OR GroupName LIKE @SearchKey) " +
+                    SQL += "AND (UserName LIKE @SearchKey " +
+                                "OR Name LIKE @SearchKey " +
+                                "OR Address1 LIKE @SearchKey " +
+                                "OR CountryName LIKE @SearchKey " +
+                                "OR GroupName LIKE @SearchKey) ";
 					cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
 				}
 

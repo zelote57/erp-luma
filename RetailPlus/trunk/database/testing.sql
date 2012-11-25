@@ -3,6 +3,9 @@ update tblContactRewards set RewardActive = 0
 where DATE_FORMAT(RewardAwardDate, '%Y-%m-%d') = '2012-01-07'
 limit 2;
 
+update tblContactRewards set RewardActive = 0 
+where DATE_FORMAT(RewardAwardDate, '%Y-%m-%d') = '2012-01-08'
+limit 2;
 
 SELECT 
 	CALD.CalDate RewardAwardDate
@@ -29,3 +32,6 @@ WHERE
 GROUP BY 
 	DATE_FORMAT(CREW.RewardAwardDate, '%Y-%m-%d')
 ORDER BY DATE_FORMAT(CREW.RewardAwardDate, '%Y-%m-%d');
+
+
+

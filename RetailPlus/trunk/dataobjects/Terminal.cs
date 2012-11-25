@@ -271,142 +271,45 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-                MySqlParameter prmTerminalID = new MySqlParameter("@TerminalID",MySqlDbType.Int32);
-                prmTerminalID.Value = Details.TerminalID;
-                cmd.Parameters.Add(prmTerminalID);
-
-                MySqlParameter prmIsPrinterAutoCutter = new MySqlParameter("@IsPrinterAutoCutter",MySqlDbType.Int16);			
-                prmIsPrinterAutoCutter.Value = Convert.ToInt16(Details.IsPrinterAutoCutter);
-				cmd.Parameters.Add(prmIsPrinterAutoCutter);
-
-				MySqlParameter prmAutoPrint = new MySqlParameter("@AutoPrint",MySqlDbType.Int16);	
-				prmAutoPrint.Value = Details.AutoPrint.ToString("d");
-				cmd.Parameters.Add(prmAutoPrint);
-
-                MySqlParameter prmIsVATInclusive = new MySqlParameter("@IsVATInclusive",MySqlDbType.Int16);	
-				prmIsVATInclusive.Value = Convert.ToInt16(Details.IsVATInclusive);
-				cmd.Parameters.Add(prmIsVATInclusive);
-
-				MySqlParameter prmPrinterName = new MySqlParameter("@PrinterName",MySqlDbType.String);			
-				prmPrinterName.Value = Details.PrinterName;
-				cmd.Parameters.Add(prmPrinterName);
-
-				MySqlParameter prmTurretName = new MySqlParameter("@TurretName",MySqlDbType.String);			
-				prmTurretName.Value = Details.TurretName;
-				cmd.Parameters.Add(prmTurretName);
-
-				MySqlParameter prmCashDrawerName = new MySqlParameter("@CashDrawerName",MySqlDbType.String);			
-				prmCashDrawerName.Value = Details.CashDrawerName;
-				cmd.Parameters.Add(prmCashDrawerName);
-
-				MySqlParameter prmMaxReceiptWidth = new MySqlParameter("@MaxReceiptWidth",MySqlDbType.Int32);			
-				prmMaxReceiptWidth.Value = Details.MaxReceiptWidth;
-				cmd.Parameters.Add(prmMaxReceiptWidth);
-				
-				MySqlParameter prmItemVoidConfirmation= new MySqlParameter("@ItemVoidConfirmation",MySqlDbType.Int16);
-                prmItemVoidConfirmation.Value = Convert.ToInt16(Details.ItemVoidConfirmation);
-				cmd.Parameters.Add(prmItemVoidConfirmation);
-
-				MySqlParameter prmEnableEVAT = new MySqlParameter("@EnableEVAT",MySqlDbType.String);			
-                prmEnableEVAT.Value = Convert.ToInt16(Details.EnableEVAT);
-				cmd.Parameters.Add(prmEnableEVAT);
-
-				MySqlParameter prmFORM_Behavior = new MySqlParameter("@FORM_Behavior",MySqlDbType.Int16);
-				prmFORM_Behavior.Value = Details.FORM_Behavior;
-				cmd.Parameters.Add(prmFORM_Behavior);
-
-				MySqlParameter prmMarqueeMessage = new MySqlParameter("@MarqueeMessage",MySqlDbType.String);
-				prmMarqueeMessage.Value = Details.MarqueeMessage;
-				cmd.Parameters.Add(prmMarqueeMessage);
-
-				MySqlParameter prmMachineSerialNo = new MySqlParameter("@MachineSerialNo",MySqlDbType.String);
-				prmMachineSerialNo.Value = Details.MachineSerialNo;
-				cmd.Parameters.Add(prmMachineSerialNo);
-
-				MySqlParameter prmAccreditationNo = new MySqlParameter("@AccreditationNo",MySqlDbType.String);
-				prmAccreditationNo.Value = Details.AccreditationNo;
-				cmd.Parameters.Add(prmAccreditationNo);
-
-                MySqlParameter prmVAT = new MySqlParameter("@VAT", System.Data.DbType.Decimal);
-                prmVAT.Value = Details.VAT;
-                cmd.Parameters.Add(prmVAT);
-
-                MySqlParameter prmEVAT = new MySqlParameter("@EVAT", System.Data.DbType.Decimal);
-                prmEVAT.Value = Details.EVAT;
-                cmd.Parameters.Add(prmEVAT);
-
-                MySqlParameter prmLocalTax = new MySqlParameter("@LocalTax", System.Data.DbType.Decimal);
-                prmLocalTax.Value = Details.LocalTax;
-                cmd.Parameters.Add(prmLocalTax);
-
-                MySqlParameter prmShowItemMoreThanZeroQty = new MySqlParameter("@ShowItemMoreThanZeroQty",MySqlDbType.Int16);
-                prmShowItemMoreThanZeroQty.Value = Convert.ToInt16(Details.ShowItemMoreThanZeroQty);
-                cmd.Parameters.Add(prmShowItemMoreThanZeroQty);
-
-                MySqlParameter prmShowOnlyPackedTransactions = new MySqlParameter("@ShowOnlyPackedTransactions",MySqlDbType.Int16);
-                prmShowOnlyPackedTransactions.Value = Convert.ToInt16(Details.ShowOnlyPackedTransactions);
-                cmd.Parameters.Add(prmShowOnlyPackedTransactions);
-
-                MySqlParameter prmShowOneTerminalSuspendedTransactions = new MySqlParameter("@ShowOneTerminalSuspendedTransactions",MySqlDbType.Int16);
-                prmShowOneTerminalSuspendedTransactions.Value = Convert.ToInt16(Details.ShowOneTerminalSuspendedTransactions);
-                cmd.Parameters.Add(prmShowOneTerminalSuspendedTransactions);
-
-                MySqlParameter prmReceiptType = new MySqlParameter("@ReceiptType",MySqlDbType.Int16);
-                prmReceiptType.Value = Convert.ToInt16(Details.ReceiptType.ToString("d"));
-                cmd.Parameters.Add(prmReceiptType);
-
-                MySqlParameter prmSalesInvoicePrinterName = new MySqlParameter("@SalesInvoicePrinterName",MySqlDbType.String);
-                prmSalesInvoicePrinterName.Value = Details.SalesInvoicePrinterName;
-                cmd.Parameters.Add(prmSalesInvoicePrinterName);
-
-                MySqlParameter prmCashCountBeforeReport = new MySqlParameter("@CashCountBeforeReport",MySqlDbType.Int16);
-                prmCashCountBeforeReport.Value = Convert.ToInt16(Details.CashCountBeforeReport);
-                cmd.Parameters.Add(prmCashCountBeforeReport);
-
-                MySqlParameter prmPreviewTerminalReport = new MySqlParameter("@PreviewTerminalReport",MySqlDbType.Int16);
-                prmPreviewTerminalReport.Value = Convert.ToInt16(Details.PreviewTerminalReport);
-                cmd.Parameters.Add(prmPreviewTerminalReport);
-
-                MySqlParameter prmIsPrinterDotMatrix = new MySqlParameter("@IsPrinterDotMatrix",MySqlDbType.Int16);
-                prmIsPrinterDotMatrix.Value = Convert.ToInt16(Details.IsPrinterDotMatrix);
-                cmd.Parameters.Add(prmIsPrinterDotMatrix);
-
-                MySqlParameter prmIsChargeEditable = new MySqlParameter("@IsChargeEditable",MySqlDbType.Int16);
-                prmIsChargeEditable.Value = Convert.ToInt16(Details.IsChargeEditable);
-                cmd.Parameters.Add(prmIsChargeEditable);
-
-                MySqlParameter prmIsDiscountEditable = new MySqlParameter("@IsDiscountEditable",MySqlDbType.Int16);
-                prmIsDiscountEditable.Value = Convert.ToInt16(Details.IsDiscountEditable);
-                cmd.Parameters.Add(prmIsDiscountEditable);
-
-                MySqlParameter prmCheckCutOffTime = new MySqlParameter("@CheckCutOffTime",MySqlDbType.Int16);
-                prmCheckCutOffTime.Value = Convert.ToInt16(Details.CheckCutOffTime);
-                cmd.Parameters.Add(prmCheckCutOffTime);
-
-                MySqlParameter prmStartCutOffTime = new MySqlParameter("@StartCutOffTime",MySqlDbType.String);
-                prmStartCutOffTime.Value = Details.StartCutOffTime;
-                cmd.Parameters.Add(prmStartCutOffTime);
-
-                MySqlParameter prmEndCutOffTime = new MySqlParameter("@EndCutOffTime",MySqlDbType.String);
-                prmEndCutOffTime.Value = Details.EndCutOffTime;
-                cmd.Parameters.Add(prmEndCutOffTime);
-
-                MySqlParameter prmWithRestaurantFeatures = new MySqlParameter("@WithRestaurantFeatures",MySqlDbType.Int16);
-                prmWithRestaurantFeatures.Value = Convert.ToInt16(Details.WithRestaurantFeatures);
-                cmd.Parameters.Add(prmWithRestaurantFeatures);
-
+                cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("@TerminalID", Details.TerminalID);
+                cmd.Parameters.AddWithValue("@IsPrinterAutoCutter", Details.IsPrinterAutoCutter);
+                cmd.Parameters.AddWithValue("@AutoPrint", Details.AutoPrint.ToString("d"));
+                cmd.Parameters.AddWithValue("@IsVATInclusive", Details.IsVATInclusive);
+                cmd.Parameters.AddWithValue("@PrinterName", Details.PrinterName);
+                cmd.Parameters.AddWithValue("@TurretName", Details.TurretName);
+                cmd.Parameters.AddWithValue("@CashDrawerName", Details.CashDrawerName);
+                cmd.Parameters.AddWithValue("@MaxReceiptWidth", Details.MaxReceiptWidth);
+                cmd.Parameters.AddWithValue("@ItemVoidConfirmation", Details.ItemVoidConfirmation);
+				cmd.Parameters.AddWithValue("@EnableEVAT", Details.EnableEVAT);
+                cmd.Parameters.AddWithValue("@FORM_Behavior", Details.FORM_Behavior);
+                cmd.Parameters.AddWithValue("@MarqueeMessage", Details.MarqueeMessage);
+                cmd.Parameters.AddWithValue("@MachineSerialNo", Details.MachineSerialNo);
+                cmd.Parameters.AddWithValue("@AccreditationNo", Details.AccreditationNo);
+                cmd.Parameters.AddWithValue("@VAT", Details.VAT);
+                cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
+                cmd.Parameters.AddWithValue("@LocalTax", Details.LocalTax);
+                cmd.Parameters.AddWithValue("@ShowItemMoreThanZeroQty", Details.ShowItemMoreThanZeroQty);
+                cmd.Parameters.AddWithValue("@ShowOnlyPackedTransactions", Details.ShowOnlyPackedTransactions);
+                cmd.Parameters.AddWithValue("@ShowOneTerminalSuspendedTransactions", Details.ShowOneTerminalSuspendedTransactions);
+                cmd.Parameters.AddWithValue("@ReceiptType", Details.ReceiptType.ToString("d"));
+                cmd.Parameters.AddWithValue("@SalesInvoicePrinterName", Details.SalesInvoicePrinterName);
+                cmd.Parameters.AddWithValue("@CashCountBeforeReport", Details.CashCountBeforeReport);
+                cmd.Parameters.AddWithValue("@PreviewTerminalReport", Details.PreviewTerminalReport);
+                cmd.Parameters.AddWithValue("@IsPrinterDotMatrix", Details.IsPrinterDotMatrix);
+                cmd.Parameters.AddWithValue("@IsChargeEditable", Details.IsChargeEditable);
+                cmd.Parameters.AddWithValue("@IsDiscountEditable", Details.IsDiscountEditable);
+                cmd.Parameters.AddWithValue("@CheckCutOffTime", Details.CheckCutOffTime);
+                cmd.Parameters.AddWithValue("@StartCutOffTime", Details.StartCutOffTime);
+                cmd.Parameters.AddWithValue("@EndCutOffTime", Details.EndCutOffTime);
+                cmd.Parameters.AddWithValue("@WithRestaurantFeatures", Details.WithRestaurantFeatures);
                 cmd.Parameters.AddWithValue("@SeniorCitizenDiscountCode", Details.SeniorCitizenDiscountCode);
-
-                cmd.Parameters.AddWithValue("@IsTouchScreen", Convert.ToInt16(Details.IsTouchScreen));
-                cmd.Parameters.AddWithValue("@WillContinueSelectionVariation", Convert.ToInt16(Details.WillContinueSelectionVariation));
-                cmd.Parameters.AddWithValue("@WillContinueSelectionProduct", Convert.ToInt16(Details.WillContinueSelectionProduct));
-                cmd.Parameters.AddWithValue("@WillPrintGrandTotal", Convert.ToInt16(Details.WillPrintGrandTotal));
-                cmd.Parameters.AddWithValue("@ReservedAndCommit", Convert.ToInt16(Details.ReservedAndCommit));
-                cmd.Parameters.AddWithValue("@ShowCustomerSelection", Convert.ToInt16(Details.ShowCustomerSelection));
+                cmd.Parameters.AddWithValue("@IsTouchScreen", Details.IsTouchScreen);
+                cmd.Parameters.AddWithValue("@WillContinueSelectionVariation", Details.WillContinueSelectionVariation);
+                cmd.Parameters.AddWithValue("@WillContinueSelectionProduct", Details.WillContinueSelectionProduct);
+                cmd.Parameters.AddWithValue("@WillPrintGrandTotal", Details.WillPrintGrandTotal);
+                cmd.Parameters.AddWithValue("@ReservedAndCommit", Details.ReservedAndCommit);
+                cmd.Parameters.AddWithValue("@ShowCustomerSelection", Details.ShowCustomerSelection);
 
                 base.ExecuteNonQuery(cmd);
 			}

@@ -21,6 +21,7 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -322,12 +323,25 @@
     <Compile Include="Inventory\_BranchTransfer\_Update.ascx.designer.cs">
       <DependentUpon>_update.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Rewards\_rewardsdefault.ascx.cs">
-      <DependentUpon>_rewardsdefault.ascx</DependentUpon>
+    <Compile Include="Reports\_rewards\_rewardsmovement.cs">
+      <DependentUpon>_rewardsmovement.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Rewards\_reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Rewards\_rewardsdefault.ascx.designer.cs">
-      <DependentUpon>_rewardsdefault.ascx</DependentUpon>
+    <Compile Include="Rewards\_reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Rewards\_default.ascx.cs">
+      <DependentUpon>_default.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Rewards\_default.ascx.designer.cs">
+      <DependentUpon>_default.ascx</DependentUpon>
     </Compile>
     <Compile Include="Rewards\Default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
@@ -432,6 +446,13 @@
     <Compile Include="Test.aspx.cs">
       <DependentUpon>Test.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_Home.ascx.cs">
+      <DependentUpon>_Home.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="_Home.ascx.designer.cs">
+      <DependentUpon>_Home.ascx</DependentUpon>
     </Compile>
     <Compile Include="_Processing.ascx.cs">
       <DependentUpon>_Processing.ascx</DependentUpon>
@@ -3179,7 +3200,8 @@
     <None Include="User Guide - Backend.pdf" />
     <None Include="vwd.webinfo" />
     <None Include="_layouts\images\Thumbs.db" />
-    <Content Include="Rewards\_rewardsdefault.ascx" />
+    <Content Include="Rewards\_reports.ascx" />
+    <Content Include="Rewards\_default.ascx" />
     <Content Include="Rewards\default.aspx" />
     <Content Include="Rewards\_Members\_listwithrewards.ascx" />
     <Content Include="Rewards\_redeemrewards.ascx" />
@@ -3227,6 +3249,7 @@
     <Content Include="Inventory\_BranchTransfer\_update.ascx" />
     <Content Include="MasterFiles\_Product\_changetax.ascx" />
     <Content Include="Test.aspx" />
+    <Content Include="_Home.ascx" />
     <Content Include="_layouts\images\loading.gif" />
     <Content Include="_Processing.ascx" />
     <Content Include="Default.aspx" />
@@ -3951,6 +3974,10 @@
     <EmbeddedResource Include="Reports\_PurchasesAndPayablesPurchaseAnalysis.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_PurchasesAndPayablesPurchaseAnalysis.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_rewards\_rewardsmovement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_rewardsmovement.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_SalesAndReceivablesPostedCreditMemo.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

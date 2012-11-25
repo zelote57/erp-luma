@@ -113,11 +113,19 @@ namespace AceSoft.RetailPlus.Rewards
 		}
 		protected void imgRedeemRewards_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
-			SaveRecord(); 
+            if (SaveRecord())
+            {
+                string stParam = "?task=" + Common.Encrypt("redeemrewards", Session.SessionID);
+                Response.Redirect("Default.aspx" + stParam);
+            }
 		}
 		protected void cmdRedeemRewards_Click(object sender, EventArgs e)
 		{
-			SaveRecord(); 
+            if (SaveRecord())
+            {
+                string stParam = "?task=" + Common.Encrypt("redeemrewards", Session.SessionID);
+                Response.Redirect("Default.aspx" + stParam);
+            }
 		}
 
 		#endregion
@@ -196,7 +204,7 @@ namespace AceSoft.RetailPlus.Rewards
 			if (cboProductCode.Items.Count == 0) cboProductCode.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT, Constants.ZERO_STRING));
 			cboProductCode.SelectedIndex = 0;
 		}
-		private void SaveRecord()
+		private bool SaveRecord()
 		{
 			long lngCustomerID = long.Parse(cboCustomer.SelectedItem.Value);
             decimal decCurrentRewardPoints = (txtCurrentRewardPoints.Text.Trim() == string.Empty) ? 0 : Decimal.Parse(txtCurrentRewardPoints.Text); 
@@ -208,7 +216,7 @@ namespace AceSoft.RetailPlus.Rewards
 				if (decRedeemRewardPoints < 0 || decRedeemRewardPoints > decCurrentRewardPoints || txtRedeemRewardPoints.Enabled==false)
 				{
 					// Cannot be negative or less than current reward points or expired
-					return;
+					return false;
 				}
 
 				RetailPlus.Security.AccessUserDetails clsAccessUserDetails = (RetailPlus.Security.AccessUserDetails) Session["AccessUserDetails"];
@@ -236,8 +244,10 @@ namespace AceSoft.RetailPlus.Rewards
                 txtRedeemRewardPoints.Text = "0";
                 txtNewRewardPoints.Text = decNewRewardPoints.ToString();
                 txtRemarks.Text = string.Empty;
+
+                return true;
 			}
-			
+            return false;
 		}
 
 		#endregion

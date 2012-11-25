@@ -7,6 +7,7 @@
 <%@ Register TagPrefix="CTRL" TagName="SiteTitle" Src="_SiteTitle.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="RightBodySectionSearch" Src="_RightBodySectionSearch.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="PageLevelError" Src="_PageLevelError.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlHome" Src="_Home.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
 	<HEAD>
@@ -99,7 +100,9 @@
 					<TD class="ms-bodyareaframe" vAlign="top" width="100%"><CTRL:PAGELEVELERROR id="PageLevelError" runat="server"></CTRL:PAGELEVELERROR>
 						<TABLE class="ms-tztable" id="ZoneTable" cellSpacing="0" cellPadding="0" width="100%" border="0">
 							<tr id="TopRow">
-								<td class="ms-tztop" id="TopCell" vAlign="top" width="100%"></td>
+								<td class="ms-tztop" id="TopCell" vAlign="top" width="100%">
+                                    <CTRL:ctrlHome id="ctrlHome" runat="server" Visible="False"></CTRL:ctrlHome>
+                                </td>
 							</tr>
 						</TABLE>
 					</TD>

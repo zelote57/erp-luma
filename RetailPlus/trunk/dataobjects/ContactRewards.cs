@@ -634,10 +634,35 @@ namespace AceSoft.RetailPlus.Data
 
         public DataTable ActiveStatisticsReport(DateTime StartDate, DateTime EndDate)
         {
-            string SQL = "SELECT " +
+            string SQL = "SELECT  SUM(IF(RewardActive=0,1,0)) TotalNoOfInActiveRewards " +
+                                ",SUM(IF(RewardActive=1,1,0)) TotalNoOfActiveRewards " +
+                            "FROM tblContactRewards CREW ";
+
+            MySqlConnection cn = GetConnection();
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = cn;
+            cmd.Transaction = mTransaction;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+
+            Int32 intTotalNoOfInActiveRewards = 0;
+            Int32 intTotalNoOfActiveRewards = 0;
+            while (myReader.Read())
+            {
+                intTotalNoOfInActiveRewards = myReader.GetInt32("TotalNoOfInActiveRewards");
+                intTotalNoOfActiveRewards = myReader.GetInt32("TotalNoOfActiveRewards");
+            }
+            myReader.Close();
+
+            SQL = "SELECT " +
                                 "CALD.CalDate RewardAwardDate " +
                                 ",SUM(IF(RewardActive=0,1,0)) NoOfInActiveRewards " +
                                 ",SUM(IF(RewardActive=1,1,0)) NoOfActiveRewards " +
+                                "," + intTotalNoOfInActiveRewards + " TotalNoOfInActiveRewards " +
+                                "," + intTotalNoOfActiveRewards + " TotalNoOfActiveRewards " +
                             "FROM tblCalDate CALD " +
                             "LEFT OUTER JOIN tblContactRewards CREW ON CALD.CalDate = DATE_FORMAT(CREW.RewardAwardDate, '%Y-%m-%d') " +
                             "WHERE " +
@@ -646,11 +671,6 @@ namespace AceSoft.RetailPlus.Data
                             "GROUP BY CALD.CalDate " +
                             "ORDER BY CALD.CalDate";
 
-            MySqlConnection cn = GetConnection();
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 

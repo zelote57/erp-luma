@@ -323,12 +323,6 @@
     <Compile Include="Inventory\_BranchTransfer\_Update.ascx.designer.cs">
       <DependentUpon>_update.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Reports\_rewards\_rewardsmovement.cs">
-      <DependentUpon>_rewardsmovement.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Rewards\_reports.ascx.cs">
       <DependentUpon>_reports.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3975,10 +3969,6 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_PurchasesAndPayablesPurchaseAnalysis.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\_rewards\_rewardsmovement.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>_rewardsmovement.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Reports\_SalesAndReceivablesPostedCreditMemo.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_SalesAndReceivablesPostedCreditMemo.cs</LastGenOutput>
@@ -4093,6 +4083,7 @@
   <ItemGroup>
     <Folder Include="GeneralLedger\_FundTransfers\" />
     <Folder Include="Inventory\_Transfer\" />
+    <Folder Include="Reports\_rewards\" />
     <Folder Include="temp\html\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

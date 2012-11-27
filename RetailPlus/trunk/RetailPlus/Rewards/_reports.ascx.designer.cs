@@ -103,6 +103,15 @@ namespace AceSoft.RetailPlus.Rewards {
         protected global::System.Web.UI.WebControls.Label lblReferrer;
         
         /// <summary>
+        /// holderSelectCustomer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder holderSelectCustomer;
+        
+        /// <summary>
         /// cboContactName control.
         /// </summary>
         /// <remarks>
@@ -148,15 +157,6 @@ namespace AceSoft.RetailPlus.Rewards {
         protected global::System.Web.UI.WebControls.TextBox txtStartTransactionDate;
         
         /// <summary>
-        /// txtStartTime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStartTime;
-        
-        /// <summary>
         /// txtEndTransactionDate control.
         /// </summary>
         /// <remarks>
@@ -164,15 +164,6 @@ namespace AceSoft.RetailPlus.Rewards {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEndTransactionDate;
-        
-        /// <summary>
-        /// txtEndTime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEndTime;
         
         /// <summary>
         /// Label3 control.

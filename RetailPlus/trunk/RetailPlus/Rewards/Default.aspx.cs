@@ -39,10 +39,15 @@ namespace AceSoft.RetailPlus.Rewards
 						SearchIndex = SearchCategoryID.NotApplicable;
 						ctrlRedeemRewards.Visible = true;
 						break;
-                    case "rewardsmovement":
+                    case ReportTypes.RewardsHistory:
                         stHeading = "Rewards History";
 						SearchIndex = SearchCategoryID.NotApplicable;
 						ctrlReports.Visible = true;
+                        break;
+                    case ReportTypes.RewardsSummary:
+                        stHeading = "Rewards Summary";
+                        SearchIndex = SearchCategoryID.NotApplicable;
+                        ctrlReports.Visible = true;
                         break;
 					default:
 						break;

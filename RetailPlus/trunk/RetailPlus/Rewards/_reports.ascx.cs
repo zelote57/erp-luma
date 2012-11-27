@@ -38,10 +38,31 @@ namespace AceSoft.RetailPlus.Rewards
 		private void LoadOptions()
 		{
             cboReportType.Items.Clear();
-            //cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION, ReportTypes.REPORT_SELECTION));
+            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION, ReportTypes.REPORT_SELECTION));
             //cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
             cboReportType.Items.Add(new ListItem(ReportTypes.RewardsHistory, ReportTypes.RewardsHistory));
-            cboReportType.SelectedIndex = 0;
+            cboReportType.Items.Add(new ListItem(ReportTypes.RewardsSummary, ReportTypes.RewardsSummary));
+
+            if (Request.QueryString["task"] == null)
+            { 
+                cboReportType.SelectedIndex = 0; 
+            }
+            else
+            {
+                string task = Common.Decrypt(Request.QueryString["task"].ToString(), Session.SessionID);
+                switch (task)
+                {
+                    case ReportTypes.RewardsHistory:
+                        cboReportType.SelectedIndex = 1;
+                        break;
+                    case ReportTypes.RewardsSummary:
+                        cboReportType.SelectedIndex = 2;
+                        break;
+                    default:
+                        cboReportType.SelectedIndex = 0;
+                        break;
+                }
+            }
 
             Customer clsCustomer = new Customer();
 			cboContactName.DataTextField = "ContactName";
@@ -55,6 +76,7 @@ namespace AceSoft.RetailPlus.Rewards
             txtStartTransactionDate.Text = Common.ToShortDateString(DateTime.Now.AddDays(-1));
             txtEndTransactionDate.Text = Common.ToShortDateString(DateTime.Now);
 
+            cboReportType_SelectedIndexChanged(null, null);
 		}
 
         private ReportDocument getReportDocument()
@@ -69,6 +91,8 @@ namespace AceSoft.RetailPlus.Rewards
                 return null;
             else if (strReportType == ReportTypes.RewardsHistory)
                 rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_rewards/_rewardsmovement.rpt"));
+            else if (strReportType == ReportTypes.RewardsSummary)
+                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_rewards/_rewardssummary.rpt"));
             else return null;
 
             return rpt;
@@ -92,7 +116,7 @@ namespace AceSoft.RetailPlus.Rewards
                 case ExportFormatType.WordForWindows: strFileExtensionName = ".doc"; exportop.ExportFormatType = ExportFormatType.WordForWindows; break;
                 case ExportFormatType.Excel: strFileExtensionName = ".xls"; exportop.ExportFormatType = ExportFormatType.Excel; break;
             }
-            string strFileName = "cuscred_" + Session["UserName"].ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + strFileExtensionName;
+            string strFileName = "rewards_" + Session["UserName"].ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + strFileExtensionName;
             if (System.IO.File.Exists(strPath + strFileName))
                 System.IO.File.Delete(strPath + strFileName);
 
@@ -172,11 +196,31 @@ namespace AceSoft.RetailPlus.Rewards
             { EndTransactionDate = Convert.ToDateTime(txtEndTransactionDate.Text); }
             catch { }
 
+            ContactReward clsContactReward;
             switch (cboReportType.SelectedValue)
             {
                 case ReportTypes.RewardsHistory:
                     #region RewardsHistory
-                    ContactReward clsContactReward = new ContactReward();
+                    clsContactReward = new ContactReward();
+                    dt = clsContactReward.RewardsMovement(StartTransactionDate, EndTransactionDate, long.Parse(cboContactName.SelectedItem.Value));
+                    clsContactReward.CommitAndDispose();
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.RewardsMovement.NewRow();
+
+                        foreach (DataColumn dc in rptds.RewardsMovement.Columns)
+                            drNew[dc] = dr[dc.ColumnName];
+
+                        rptds.RewardsMovement.Rows.Add(drNew);
+                    }
+
+                    break;
+                    #endregion
+
+                case ReportTypes.RewardsSummary:
+                    #region RewardsHistory
+                    clsContactReward = new ContactReward();
                     dt = clsContactReward.RewardsMovement(StartTransactionDate, EndTransactionDate, long.Parse(cboContactName.SelectedItem.Value));
                     clsContactReward.CommitAndDispose();
 
@@ -336,7 +380,28 @@ namespace AceSoft.RetailPlus.Rewards
 
         protected void cboReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            switch (cboReportType.SelectedValue)
+            {
+                case ReportTypes.RewardsHistory:
+                    #region RewardsHistory
+                    holderSelectCustomer.Visible = true;
+                    holderTranDate.Visible = true;
+                    break;
+                    #endregion
+
+                case ReportTypes.RewardsSummary:
+                    #region RewardsSummary
+                    holderSelectCustomer.Visible = false;
+                    holderTranDate.Visible = false;
+                    break;
+                    #endregion
+
+                default:
+                    holderSelectCustomer.Visible = false;
+                    holderTranDate.Visible = false;
+                    break;
+
+            }
         }
 
         #endregion

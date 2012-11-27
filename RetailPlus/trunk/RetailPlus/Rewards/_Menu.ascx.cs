@@ -18,10 +18,12 @@ namespace AceSoft.RetailPlus.Rewards
 				ManageSecurity();
 
                 lnkMembers.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/_Members/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
-                lnkRewardsMovement.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/Default.aspx?task=" + Common.Encrypt("rewardsmovement", Session.SessionID);
+                
                 lnkCheckRewardPoints.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/_Members/Default.aspx?task=" + Common.Encrypt("listwithrewards", Session.SessionID);
                 lnkRewardsReddem.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/Default.aspx?task=" + Common.Encrypt("redeemrewards", Session.SessionID);
-				
+
+                lnkRewardsMovement.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/Default.aspx?task=" + Common.Encrypt(ReportTypes.RewardsHistory, Session.SessionID);
+                lnkRewardsSummary.NavigateUrl = Constants.ROOT_DIRECTORY + "/Rewards/Default.aspx?task=" + Common.Encrypt(ReportTypes.RewardsSummary, Session.SessionID);
             }
 		}
 
@@ -35,7 +37,8 @@ namespace AceSoft.RetailPlus.Rewards
 			lnkMembers.Visible = clsDetails.Read;
             lnkRewardsMovement.Visible = clsDetails.Read;
             lnkCheckRewardPoints.Visible = clsDetails.Read; 
-            lnkRewardsReddem.Visible = clsDetails.Read; 
+            lnkRewardsReddem.Visible = clsDetails.Read;
+            lnkRewardsSummary.Visible = clsDetails.Read; 
 
 			clsAccessRights.CommitAndDispose();
 		}

@@ -76,25 +76,26 @@
 				    <tr>
 					    <td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	10px" colspan="3">
 						    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                
-							    <tr>
-								    <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
-									    <label>Filter by Customer</label>
-								    </td>
-								    <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
-								    <td style="HEIGHT: 15px" colspan="3">
-									    <asp:dropdownlist id="cboContactName" CssClass="ms-long" runat="server"></asp:dropdownlist>
-								    </td>
-                                    <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
-                                        <asp:textbox id="txtContactName" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
-                                        <asp:imagebutton id="imgContactNameSearch" ToolTip="Execute search" 
-                                            style="CURSOR: hand; width: 16px;" accessKey="P" 
-                                            ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
-                                            CausesValidation="False" onclick="imgContactNameSearch_Click"></asp:imagebutton>
-								    </td>
-								    <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
-								    </td>
-							    </tr>
+                                <asp:PlaceHolder ID="holderSelectCustomer" runat="server" Visible="true">
+							        <tr>
+								        <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+									        <label>Filter by Customer</label>
+								        </td>
+								        <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
+								        <td style="HEIGHT: 15px" colspan="3">
+									        <asp:dropdownlist id="cboContactName" CssClass="ms-long" runat="server"></asp:dropdownlist>
+								        </td>
+                                        <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+                                            <asp:textbox id="txtContactName" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
+                                            <asp:imagebutton id="imgContactNameSearch" ToolTip="Execute search" 
+                                                style="CURSOR: hand; width: 16px;" accessKey="P" 
+                                                ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
+                                                CausesValidation="False" onclick="imgContactNameSearch_Click"></asp:imagebutton>
+								        </td>
+								        <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+								        </td>
+							        </tr>
+                                </asp:PlaceHolder>
                                 <asp:PlaceHolder ID="holderTranDate" runat="server" Visible="true">
 				                    <tr>
 					                    <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
@@ -103,7 +104,6 @@
 					                    <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 					                    <td nowrap="nowrap">
 						                    <asp:TextBox id="txtStartTransactionDate" ondblclick="ontime(this)" accessKey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" Width="100px"></asp:TextBox>
-						                    <asp:TextBox ID="txtStartTime" runat="server" AccessKey="I" BorderStyle="Groove" CssClass="ms-short" MaxLength="5" Width="65px">00:00</asp:TextBox>
 					                    </td>
 					                    <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
 					                    <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
@@ -112,7 +112,6 @@
 					                    <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 					                    <td nowrap="nowrap">
 						                    <asp:TextBox id="txtEndTransactionDate" ondblclick="ontime(this)" accessKey="E" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" Width="100px"></asp:TextBox>
-                                            <asp:TextBox ID="txtEndTime" runat="server" AccessKey="M" BorderStyle="Groove" CssClass="ms-short" MaxLength="5" Width="65px">23:59</asp:TextBox>
                                             &nbsp;&nbsp;
                                             <asp:Label id="Label3" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
 						                    <asp:Label id="Label4" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>

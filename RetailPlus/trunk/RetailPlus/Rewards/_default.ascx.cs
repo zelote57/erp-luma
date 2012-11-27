@@ -61,17 +61,37 @@ namespace AceSoft.RetailPlus.Rewards
             DataTable dtActiveStatisticsReport = clsContactReward.ActiveStatisticsReport(DateTime.Now.AddMonths(-1), DateTime.Now);
             clsContactReward.CommitAndDispose();
 
-            Chart1.DataSource = dtActiveStatisticsReport.DefaultView;
-            Chart1.Series["Series1"].XValueMember = "RewardAwardDate";
-            Chart1.Series["Series1"].YValueMembers = "NoOfActiveRewards";
+            if (dtActiveStatisticsReport.Rows.Count == 0)
+            {
+                Chart1.Visible = false;
+            }
+            else
+            {
+                Chart1.Visible = true; 
+                Chart1.DataSource = dtActiveStatisticsReport.DefaultView;
 
-            Chart1.Series["Series2"].XValueMember = "RewardAwardDate";
-            Chart1.Series["Series2"].YValueMembers = "NoOfInActiveRewards";
+                Chart1.Series["Series1"].XValueMember = "RewardAwardDate";
+                Chart1.Series["Series1"].YValueMembers = "TotalNoOfActiveRewards";
 
-            Chart1.ChartAreas["ChartArea1"].AxisX.MajorGrid.LineWidth = 0;
-            Chart1.ChartAreas["ChartArea1"].AxisY.MajorGrid.LineWidth = 0;
+                Chart1.Series["Series2"].XValueMember = "RewardAwardDate";
+                Chart1.Series["Series2"].YValueMembers = "NoOfActiveRewards";
 
-            Chart1.DataBind();
+                Chart1.Series["Series3"].XValueMember = "RewardAwardDate";
+                Chart1.Series["Series3"].YValueMembers = "TotalNoOfInActiveRewards";
+
+                Chart1.Series["Series4"].XValueMember = "RewardAwardDate";
+                Chart1.Series["Series4"].YValueMembers = "NoOfInActiveRewards";
+
+                Chart1.ChartAreas["ChartArea1"].AxisX.MajorGrid.LineWidth = 0;
+                Chart1.ChartAreas["ChartArea1"].AxisY.MajorGrid.LineWidth = 0;
+                
+                Chart1.Series["Series1"].LegendText = "Total No. Of ActiveRewards";
+                Chart1.Series["Series2"].LegendText = "No. Of New ActiveRewards";
+                Chart1.Series["Series3"].LegendText = "Total No. Of InActiveRewards";
+                Chart1.Series["Series4"].LegendText = "No. Of InActiveRewards";
+
+                Chart1.DataBind();
+            }
         }
        
         #endregion

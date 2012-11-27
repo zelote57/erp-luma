@@ -40,6 +40,15 @@ namespace AceSoft.RetailPlus.Rewards {
         protected global::System.Web.UI.WebControls.HyperLink lnkRewardsMovement;
         
         /// <summary>
+        /// lnkRewardsSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkRewardsSummary;
+        
+        /// <summary>
         /// lnkCheckRewardPoints control.
         /// </summary>
         /// <remarks>

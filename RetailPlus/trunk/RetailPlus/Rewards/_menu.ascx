@@ -54,6 +54,14 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkRewardsSummary" runat="server" title="Print rewards summary report">
+													 Reward Summary</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
 								</table>
 								<IMG height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="126">
 							</div>

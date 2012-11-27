@@ -6177,4 +6177,10 @@ ALTER TABLE tblBranchInventoryMatrix ADD `QuantityIN` DECIMAL(18,3) NOT NULL DEF
 ALTER TABLE tblBranchInventoryMatrix ADD `QuantityOUT` DECIMAL(18,3) NOT NULL DEFAULT 0; 
 ALTER TABLE tblBranchInventoryMatrix ADD `ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0; 
 
+CREATE TABLE tblCalDate(
+	`CalDate` Date,
+    INDEX `IX_tblCalDate`(`CalDate`)
+);
+
+
 /*********************************  v_4.0.0.2.sql END  *******************************************************/ 

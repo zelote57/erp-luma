@@ -62,6 +62,7 @@ namespace AceSoft.RetailPlus
         public const string RecieveOnAccount = "Recieve-On-Account";
 
         public const string RewardsHistory = "Rewards History";
+        public const string RewardsSummary = "Rewards Summary";
 
         public const string REPORT_SELECTION_SEPARATOR = "---------------------------------------------";
         public const string REPORT_SELECTION = "Select Report Type";

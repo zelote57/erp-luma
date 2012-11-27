@@ -31,22 +31,24 @@
                                                 BackSecondaryColor="#B6D6EC" Height="450px" Width="850px">
                                         <Legends>
                                                 <asp:Legend TitleFont="Microsoft Sans Serif, 8pt, style=Bold" BackColor="Transparent"
-                                                        Font="Trebuchet MS, 8.25pt, style=Bold" IsTextAutoFit="False" Enabled="False"
-                                                        Name="Series1">
+                                                        Font="Trebuchet MS, 7.25pt" IsTextAutoFit="true" Enabled="true"
+                                                        Name="Series1Legend" Docking="Bottom" LegendStyle="Table" IsDockedInsideChartArea ="false"
+                                                        Title="Active Members vs. New members vs. Inactive Members">
                                                 </asp:Legend>
                                         </Legends>
                                         <BorderSkin SkinStyle="Emboss" backcolor="Olive" bordercolor="Olive"></BorderSkin>
-                                        <Titles>
-                                            <asp:Title Text="New Members vs. InActive Members"> </asp:Title>
-                                        </Titles>
                                         <series>
                                             <asp:Series Name="Series1" CustomProperties="DrawingStyle=Cylinder, MaxPixelPointWidth=50" ShadowOffset="2" xvaluetype="Auto" IsValueShownAsLabel="true" IsVisibleInLegend="true"
-                                                Font="Trebuchet MS, 6.25pt, style=Bold" ChartArea="ChartArea1"></asp:Series>
-                                            <asp:Series CustomProperties="DrawingStyle=Cylinder, MaxPixelPointWidth=50" Name="Series2" ShadowOffset="2" xvaluetype="Auto" IsValueShownAsLabel="true" IsVisibleInLegend="true"
-                                                Font="Trebuchet MS, 6.25pt, style=Bold" ChartArea="ChartArea1"></asp:Series>
+                                                Font="Trebuchet MS, 6.25pt, style=Bold" ChartArea="ChartArea1" Legend="Series1Legend"></asp:Series>
+                                            <asp:Series Name="Series2" CustomProperties="DrawingStyle=Cylinder, MaxPixelPointWidth=50" ShadowOffset="2" xvaluetype="Auto" IsValueShownAsLabel="true" IsVisibleInLegend="true"
+                                                Font="Trebuchet MS, 6.25pt, style=Bold" ChartArea="ChartArea1" Legend="Series1Legend"></asp:Series>
+                                            <asp:Series Name="Series3" CustomProperties="DrawingStyle=Cylinder, MaxPixelPointWidth=50" ShadowOffset="2" xvaluetype="Auto" IsValueShownAsLabel="true" IsVisibleInLegend="true"
+                                                Font="Trebuchet MS, 6.25pt, style=Bold" ChartArea="ChartArea1" Legend="Series1Legend"></asp:Series>
+                                            <asp:Series Name="Series4" CustomProperties="DrawingStyle=Cylinder, MaxPixelPointWidth=50" ShadowOffset="2" xvaluetype="Auto" IsValueShownAsLabel="true" IsVisibleInLegend="true"
+                                                Font="Trebuchet MS, 6.25pt, style=Bold" ChartArea="ChartArea1" Legend="Series1Legend"></asp:Series>
                                         </series>
                                         <ChartAreas>
-                                            <asp:ChartArea Name="ChartArea1" BackGradientStyle="TopBottom" BackSecondaryColor="#B6D6EC" BorderDashStyle="Solid" BorderWidth="2">
+                                            <asp:ChartArea Name="ChartArea1" BackGradientStyle="TopBottom" BackSecondaryColor="#B6D6EC" BorderDashStyle="Solid" BorderWidth="2" >
                                                     <AxisY IsLabelAutoFit="False" IsStartedFromZero="False" Minimum="0" LineWidth="0" LineColor="Transparent">
                                                         <LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" Format="#,###" />
                                                     </AxisY>

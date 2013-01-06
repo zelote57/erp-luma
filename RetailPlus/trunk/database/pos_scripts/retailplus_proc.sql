@@ -4758,7 +4758,7 @@ END;
 GO
 delimiter ;
 
-CALL procProductBranchInventoryCopyAllItems();
+-- CALL procProductBranchInventoryCopyAllItems();
 
 /**************************************************************
 	procContactCreditModify
@@ -5057,6 +5057,10 @@ BEGIN
 END;
 GO
 delimiter ;
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSetupCalendarDate
+GO
 
 delimiter GO
 CREATE PROCEDURE procSetupCalendarDate(IN strYear VARCHAR(4))

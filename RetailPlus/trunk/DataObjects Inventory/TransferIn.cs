@@ -297,16 +297,15 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.Clear();
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("TransferIn");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
                 Int64 iID = 0;
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    iID = myReader.GetInt64(0);
+                    iID = Int64.Parse(dr[0].ToString());
                 }
-
-                myReader.Close();
 
                 return iID;
             }
@@ -793,15 +792,16 @@ namespace AceSoft.RetailPlus.Data
                 clsChartOfAccount.UpdateCredit(clsTransferInDetails.ChartOfAccountIDAPTracking, clsTransferInDetails.Deposit);
                 clsChartOfAccount.UpdateDebit(clsTransferInDetails.ChartOfAccountIDAPVDeposit, clsTransferInDetails.Deposit);
 
-                TransferInItem clsTransferInItem = new TransferInItem(mConnection, mTransaction);
-                MySqlDataReader myReader = clsTransferInItem.List(TransferInID, "TransferInItemID", SortOption.Ascending);
-                while (myReader.Read())
-                {
-                    int iChartOfAccountIDTransferIn = myReader.GetInt16("ChartOfAccountIDTransferIn");
-                    int iChartOfAccountIDTaxTransferIn = myReader.GetInt16("ChartOfAccountIDTaxTransferIn");
+                TransferInItem clsTransferInItem = new TransferInItem();
+                System.Data.DataTable dt = clsTransferInItem.ListAsDataTable(TransferInID, "TransferInItemID", SortOption.Ascending);
 
-                    decimal decVAT = myReader.GetDecimal("VAT");
-                    decimal decVATABLEAmount = myReader.GetDecimal("Amount") - decVAT;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    int iChartOfAccountIDTransferIn = Int16.Parse(dr["ChartOfAccountIDTransferIn"].ToString());
+                    int iChartOfAccountIDTaxTransferIn = Int16.Parse(dr["ChartOfAccountIDTaxTransferIn"].ToString());
+
+                    decimal decVAT = decimal.Parse(dr["VAT"].ToString());
+                    decimal decVATABLEAmount = decimal.Parse(dr["Amount"].ToString()) - decVAT;
 
                     // update purchase as debit
                     clsChartOfAccount.UpdateDebit(iChartOfAccountIDTransferIn, decVATABLEAmount);
@@ -809,7 +809,7 @@ namespace AceSoft.RetailPlus.Data
                     clsChartOfAccount.UpdateDebit(iChartOfAccountIDTaxTransferIn, decVAT);
 
                 }
-                myReader.Close();
+                
 
             }
 
@@ -848,22 +848,22 @@ namespace AceSoft.RetailPlus.Data
             MatrixPackagePriceHistoryDetails clsMatrixPackagePriceHistoryDetails;
             ProductPackagePriceHistoryDetails clsProductPackagePriceHistoryDetails;
 
-            MySqlDataReader myReader = clsTransferInItem.List(TransferInID, "TransferInItemID", SortOption.Ascending);
-
-            while (myReader.Read())
+            System.Data.DataTable dt = clsTransferInItem.ListAsDataTable(TransferInID, "TransferInItemID", SortOption.Ascending);
+            
+            foreach(System.Data.DataRow dr in dt.Rows)
             {
-                long lngProductID = myReader.GetInt64("ProductID");
-                int intProductUnitID = myReader.GetInt16("ProductUnitID");
+                long lngProductID = long.Parse(dr["ProductID"].ToString());
+                int intProductUnitID = int.Parse(dr["ProductUnitID"].ToString());
 
-                decimal decItemQuantity = myReader.GetDecimal("Quantity");
-                decimal decQuantity = clsProductUnit.GetBaseUnitValue(lngProductID, intProductUnitID, decItemQuantity);
+                decimal decItemQuantity = decimal.Parse(dr["Quantity"].ToString());
+                decimal decQuantity = new ProductUnit().GetBaseUnitValue(lngProductID, intProductUnitID, decItemQuantity);
 
-                long lngVariationMatrixID = myReader.GetInt64("VariationMatrixID");
-                string strMatrixDescription = "" + myReader["MatrixDescription"].ToString();
-                string strProductCode = "" + myReader["ProductCode"].ToString();
-                decimal decUnitCost = myReader.GetDecimal("UnitCost");
-                decimal decItemCost = myReader.GetDecimal("Amount");
-                decimal decVAT = myReader.GetDecimal("VAT");
+                long lngVariationMatrixID = long.Parse(dr["VariationMatrixID"].ToString()); 
+                string strMatrixDescription = "" + dr["MatrixDescription"].ToString();
+                string strProductCode = "" + dr["ProductCode"].ToString();
+                decimal decUnitCost = decimal.Parse(dr["UnitCost"].ToString());
+                decimal decItemCost = decimal.Parse(dr["Amount"].ToString());
+                decimal decVAT = decimal.Parse(dr["VAT"].ToString());
 
                 /*******************************************
 				 * Add in the Purchase Price History
@@ -873,7 +873,7 @@ namespace AceSoft.RetailPlus.Data
                     // Update MatrixPackagePriceHistory first to get the history
                     clsMatrixPackagePriceHistoryDetails = new MatrixPackagePriceHistoryDetails();
                     clsMatrixPackagePriceHistoryDetails.UID = clsTransferInDetails.TransferrerID;
-                    clsMatrixPackagePriceHistoryDetails.PackageID = clsMatrixPackage.GetPackageID(lngVariationMatrixID, intProductUnitID);
+                    clsMatrixPackagePriceHistoryDetails.PackageID = new MatrixPackage().GetPackageID(lngVariationMatrixID, intProductUnitID);
                     clsMatrixPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
                     clsMatrixPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
                     clsMatrixPackagePriceHistoryDetails.Price = -1;
@@ -889,7 +889,7 @@ namespace AceSoft.RetailPlus.Data
                     // Update ProductPackagePriceHistory first to get the history
                     clsProductPackagePriceHistoryDetails = new ProductPackagePriceHistoryDetails();
                     clsProductPackagePriceHistoryDetails.UID = clsTransferInDetails.TransferrerID;
-                    clsProductPackagePriceHistoryDetails.PackageID = clsProductPackage.GetPackageID(lngProductID, intProductUnitID);
+                    clsProductPackagePriceHistoryDetails.PackageID = new ProductPackage().GetPackageID(lngProductID, intProductUnitID);
                     clsProductPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
                     clsProductPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
                     clsProductPackagePriceHistoryDetails.Price = -1;
@@ -945,7 +945,7 @@ namespace AceSoft.RetailPlus.Data
 				 * Added April 28, 2010 4:20PM
                  * Update Selling Information when TransferIn is posted
 				 * ****************************************/
-                clsProduct.UpdateSellingIncludingAllMatrixWithSameQuantityAndUnit(lngProductID, clsTransferInDetails.SupplierID, intProductUnitID, myReader.GetDecimal("SellingPrice"));
+                clsProduct.UpdateSellingIncludingAllMatrixWithSameQuantityAndUnit(lngProductID, clsTransferInDetails.SupplierID, intProductUnitID, decimal.Parse(dr["SellingPrice"].ToString()));
                 //if (lngVariationMatrixID != 0)
                 //{
                 //    clsProductVariationsMatrix.UpdateSellingWithSameQuantityAndUnit(lngVariationMatrixID, clsPODetails.SupplierID, intProductUnitID, decimal.Parse(myReader["SellingPrice");
@@ -965,7 +965,6 @@ namespace AceSoft.RetailPlus.Data
                 ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(mConnection, mTransaction);
                 clsProductPurchasePriceHistory.AddToList(clsProductPurchasePriceHistoryDetails);
             }
-            myReader.Close();
 
         }
         public void Cancel(long TransferInID, DateTime CancelledDate, string Remarks, long CancelledByID)

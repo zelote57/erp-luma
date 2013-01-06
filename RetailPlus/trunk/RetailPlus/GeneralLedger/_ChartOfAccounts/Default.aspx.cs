@@ -52,7 +52,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
                     case "chartofaccountsreport":
                         stHeading = "Chart of Accounts Reports";
                         SearchIndex = SearchCategoryID.NotApplicable;
-                        ctrlReports.Visible = true;
+                        ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                         break;
                     case "balancesheetreport":
                         stHeading = "Balance Sheet Report";

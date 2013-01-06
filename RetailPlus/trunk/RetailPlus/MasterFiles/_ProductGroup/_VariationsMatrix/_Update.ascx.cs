@@ -123,10 +123,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsProductGroupDetails.BaseUnitID.ToString()));
 			txtProductPrice.Text = clsProductGroupDetails.Price.ToString("#,##0.#0");
 			txtPurchasePrice.Text = clsProductGroupDetails.PurchasePrice.ToString("#,##0.#0");
-			if (clsProductGroupDetails.IncludeInSubtotalDiscount == 0)
-				chkIncludeInSubtotalDiscount.Checked = false;
-			else
-				chkIncludeInSubtotalDiscount.Checked = true;
+            chkIncludeInSubtotalDiscount.Checked = clsProductGroupDetails.IncludeInSubtotalDiscount;
 			txtVAT.Text = clsProductGroupDetails.VAT.ToString("#,##0.#0");
 			txtEVAT.Text = clsProductGroupDetails.EVAT.ToString("#,##0.#0");
 			txtLocalTax.Text = clsProductGroupDetails.LocalTax.ToString("#,##0.#0");
@@ -145,10 +142,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
             catch { decMargin = 1; }
             decMargin = decMargin * 100;
             txtMargin.Text = decMargin.ToString("#,##0.#0");
-			if (clsBaseDetails.IncludeInSubtotalDiscount == 0)
-				chkIncludeInSubtotalDiscount.Checked = false;
-			else
-				chkIncludeInSubtotalDiscount.Checked = true;
+            chkIncludeInSubtotalDiscount.Checked = clsBaseDetails.IncludeInSubtotalDiscount;
 			txtVAT.Text = clsBaseDetails.VAT.ToString("#,##0.#0");
 			txtEVAT.Text = clsBaseDetails.EVAT.ToString("#,##0.#0");
 			txtLocalTax.Text = clsBaseDetails.LocalTax.ToString("#,##0.#0");
@@ -194,7 +188,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
 			clsBaseDetails.UnitID = Convert.ToInt32(cboUnit.SelectedItem.Value);
 			clsBaseDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
 			clsBaseDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
-			clsBaseDetails.IncludeInSubtotalDiscount = Convert.ToInt16(chkIncludeInSubtotalDiscount.Checked);
+			clsBaseDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(chkIncludeInSubtotalDiscount.Checked);
 			clsBaseDetails.VAT = Convert.ToDecimal(txtVAT.Text);
 			clsBaseDetails.EVAT = Convert.ToDecimal(txtEVAT.Text);
 			clsBaseDetails.LocalTax = Convert.ToDecimal(txtLocalTax.Text);

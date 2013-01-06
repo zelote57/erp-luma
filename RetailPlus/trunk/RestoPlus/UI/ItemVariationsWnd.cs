@@ -485,7 +485,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			mDetails.Amount = (mDetails.Quantity * mDetails.Price) - (mDetails.Quantity * mDetails.Discount);
 			mDetails.PurchasePrice = Convert.ToDecimal(dgItems[iRow, 10].ToString());
 			mDetails.PurchaseAmount = mDetails.Quantity * mDetails.PurchasePrice;
-			mDetails.IncludeInSubtotalDiscount = Convert.ToInt16(dgItems[iRow, 11].ToString());
+			mDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(dgItems[iRow, 11].ToString());
 		}
 
 		private void LoadOptions()

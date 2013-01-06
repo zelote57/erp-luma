@@ -1731,6 +1731,110 @@ namespace AceSoft.RetailPlus.Data
             return dt;
         }
 
+        public DataTable CustomersWithRewards(ContactColumns clsContactColumns, long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, Int32 Limit, string CustomerCode_RewardCardNo, DateTime RewardExpiryDateFrom, DateTime RewardExpiryDateTo, Constants.DateSelectionString BirthDate = Constants.DateSelectionString.ALL, Int16 RewardCardStatus = -1, string SortField = "ContactCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+
+                // enable this to include joining to table tblContactGroup
+                clsContactColumns.ContactGroupName = true;
+
+                string SQL = SQLSelect(clsContactColumns);
+
+                SQL += "WHERE (tblContactGroup.ContactGroupCategory = @CustomerCategory OR tblContactGroup.ContactGroupCategory = @BothCategory) ";
+                cmd.Parameters.AddWithValue("@CustomerCategory", ContactGroupCategory.CUSTOMER.ToString("d"));
+                cmd.Parameters.AddWithValue("@BothCategory", ContactGroupCategory.BOTH.ToString("d"));
+
+                if (SequenceNoStart != Constants.ZERO)
+                {
+                    if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
+                        SQL += "AND tblContacts.ContactID < " + SequenceNoStart.ToString() + " ";
+                    else
+                        SQL += "AND tblContacts.ContactID > " + SequenceNoStart.ToString() + " ";
+                }
+
+                if (CustomerCode_RewardCardNo != string.Empty)
+                {
+                    SQL += "AND (RewardCardNo LIKE @CustomerCode_RewardCardNo OR ContactCode LIKE @CustomerCode_RewardCardNo OR ContactName LIKE @CustomerCode_RewardCardNo) ";
+                    cmd.Parameters.AddWithValue("@CustomerCode_RewardCardNo", CustomerCode_RewardCardNo);
+                }
+                if (RewardCardStatus != -1)
+                {
+                    SQL += "AND RewardCardStatus = @RewardCardStatus ";
+                    cmd.Parameters.AddWithValue("@RewardCardStatus", RewardCardStatus);
+                }
+                if (RewardExpiryDateFrom != DateTime.MinValue)
+                {
+                    SQL += "AND ExpiryDate >= @RewardExpiryDateFrom ";
+                    cmd.Parameters.AddWithValue("@RewardExpiryDateFrom", RewardExpiryDateFrom.ToString("yyyy-MM-dd"));
+                }
+                if (RewardExpiryDateFrom != DateTime.MinValue)
+                {
+                    SQL += "AND ExpiryDate <= @RewardExpiryDateTo ";
+                    cmd.Parameters.AddWithValue("@RewardExpiryDateTo", RewardExpiryDateTo.ToString("yyyy-MM-dd"));
+                }
+                if (BirthDate != Constants.DateSelectionString.ALL)
+                {
+                    
+                    switch (BirthDate)
+                    {
+                        case Constants.DateSelectionString.Today:
+                            SQL += "AND BirthDate = @BirthDate ";
+                            cmd.Parameters.AddWithValue("@BirthDate", DateTime.Now.ToString("yyyy-MM-dd"));
+                            break;
+                        case Constants.DateSelectionString.CurrentMonth:
+                            SQL += "AND MONTH(BirthDate) = @BirthDate ";
+                            cmd.Parameters.AddWithValue("@BirthDate", DateTime.Now.Month);
+                            break;
+                        case Constants.DateSelectionString.PreviousMonth:
+                            SQL += "AND MONTH(BirthDate) = @BirthDate ";
+                            cmd.Parameters.AddWithValue("@BirthDate", DateTime.Now.AddMonths(-1).Month);
+                            break;
+                        case Constants.DateSelectionString.NextMonth:
+                            SQL += "AND MONTH(BirthDate) = @BirthDate ";
+                            cmd.Parameters.AddWithValue("@BirthDate", DateTime.Now.AddMonths(1).Month);
+                            break;
+                    }
+                    
+                }
+
+                SQL += "ORDER BY " + SortField + " ";
+
+                if (SortOrder != System.Data.SqlClient.SortOrder.Descending) SQL += "ASC ";
+                else SQL += "DESC ";
+
+                if (Limit != 0)
+                    SQL += "LIMIT " + Limit + " ";
+
+                MySqlConnection cn = GetConnection();
+
+                cmd.Connection = cn;
+                cmd.Transaction = mTransaction;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                System.Data.DataTable dt = new System.Data.DataTable("tblContacts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                TransactionFailed = true;
+                if (IsInTransaction)
+                {
+                    mTransaction.Rollback();
+                    mTransaction.Dispose();
+                    mConnection.Close();
+                    mConnection.Dispose();
+                }
+
+                throw ex;
+            }
+        }
+
 		#endregion
 
 		#region Public Modifiers

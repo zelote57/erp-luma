@@ -65,7 +65,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 					case "reports":
 						stHeading = "Stock Transaction Report";
 						SearchIndex = SearchCategoryID.StockTrans;
-						ctrlReports.Visible = true;
+                        ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
 						break;
 					default:	
 						break;

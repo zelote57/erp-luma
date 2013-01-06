@@ -71,7 +71,7 @@
 				</tr>
 				<tr>
 					<td colspan="3" height="2" align=center>
-				        <cr:crystalreportviewer id="CRViewer" runat="server" hascrystallogo="False" ToolPanelView="None" HasToggleGroupTreeButton="false" HasToggleParameterPanelButton="false" ></cr:crystalreportviewer>        
+				        <cr:crystalreportviewer id="CRViewer" runat="server" hascrystallogo="False" ToolPanelView="None" HasToggleGroupTreeButton="false" HasToggleParameterPanelButton="false" BestFitPage="True" HasExportButton="False" HasPrintButton="True" PrintMode="Pdf" PageZoomFactor="100" RenderingDPI="100"></cr:crystalreportviewer>        
 				    </td>
 				</tr>
 			</table>

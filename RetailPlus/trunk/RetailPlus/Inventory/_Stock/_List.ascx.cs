@@ -123,7 +123,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
                 lblStockTypeID.Text = dr["StockTypeID"].ToString();
 
                 Label lblStockDirection = (Label)e.Item.FindControl("lblStockDirection");
-                StockDirections stockdirection = (StockDirections)Enum.Parse(typeof(StockDirections), dr["StockDirection"].ToString());
+                StockDirections stockdirection = (StockDirections)Enum.Parse(typeof(StockDirections), Convert.ToInt16(dr["StockDirection"]).ToString());
                 lblStockDirection.Text = stockdirection.ToString("G");
 
                 Label lblStockDate = (Label)e.Item.FindControl("lblStockDate");
@@ -133,7 +133,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
                 lblRemarks.Text = dr["Remarks"].ToString();
 
                 ImageButton imgTransactionTag = (ImageButton)e.Item.FindControl("imgTransactionTag");
-                if (dr["Active"].ToString() == "1")
+                if (Convert.ToBoolean(dr["Active"]))
                 {
                     imgTransactionTag.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/prodtagact.gif";
                     imgTransactionTag.ToolTip = "Close this transaction to prevent user for adding new items.";

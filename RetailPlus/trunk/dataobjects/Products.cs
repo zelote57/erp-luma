@@ -35,10 +35,10 @@ namespace AceSoft.RetailPlus.Data
 		public string UnitCode;
 		public string UnitName;
 		public DateTime DateCreated;
-		public Int16 Deleted;
+		public bool Deleted;
 		public decimal Price;
 		public decimal PurchasePrice;
-		public Int16 IncludeInSubtotalDiscount;
+		public bool IncludeInSubtotalDiscount;
 		public decimal VAT;
 		public decimal EVAT;
 		public decimal LocalTax;
@@ -490,17 +490,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				Int64 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				myReader.Close();
+                Int64 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int64.Parse(dr[0].ToString());
+                }
 
 				ProductPackageDetails clsProductPackageDetails = new ProductPackageDetails();
 				clsProductPackageDetails.ProductID = iID;
@@ -2328,35 +2327,35 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandText = SQL;
 				cmd.Parameters.AddWithValue("@lngProductID", ProductID);
 
-				MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
 				decimal decRetValue = 0;
 				decimal decIDC;
 				decimal decQuantity;
-				while (myReader.Read())
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{ 
-					decQuantity = myReader.GetDecimal("Quantity");
+					decQuantity = decimal.Parse(dr["Quantity"].ToString());
 					if (decQuantity == 0)
 						decIDC = 0;
-					else if (myReader.GetDecimal("RIDMinThreshold") == 0)
+					else if (decimal.Parse(dr["RIDMinThreshold"].ToString()) == 0)
 						decIDC = decQuantity;
 					else
-                        decIDC = decimal.Round(decQuantity / myReader.GetDecimal("RIDMinThreshold"));
+                        decIDC = decimal.Round(decQuantity / decimal.Parse(dr["RIDMinThreshold"].ToString()));
 
-					if (myReader.GetDecimal("RIDMinThreshold") != 0) 
+					if (decimal.Parse(dr["RIDMinThreshold"].ToString()) != 0) 
 					{
-						if (myReader.GetDecimal("RID") > 0)
+						if (decimal.Parse(dr["RID"].ToString()) > 0)
 						{
-							if (myReader.GetDecimal("RID") > decIDC)
-								decRetValue = decimal.Round((myReader.GetDecimal("RID") * myReader.GetDecimal("RIDMinThreshold")) - decQuantity);
+							if (decimal.Parse(dr["RID"].ToString()) > decIDC)
+								decRetValue = decimal.Round((decimal.Parse(dr["RID"].ToString()) * decimal.Parse(dr["RIDMinThreshold"].ToString())) - decQuantity);
 							else
 								decRetValue = 0;
 						}
 					}
 					else {decRetValue = 0;}
 				}
-
-				myReader.Close();
 
 				return decRetValue;
 			}
@@ -2829,16 +2828,16 @@ namespace AceSoft.RetailPlus.Data
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@ProductID", ProductID);
                     cmd.Parameters.AddWithValue("@BarCode", BarCode1);
-                    MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-                    while (myReader.Read())
+                    System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    adapter.Fill(dt);
+                    foreach(System.Data.DataRow dr in dt.Rows)
                     {
-                        if (myReader.GetInt64("ProductCount") > 0)
+                        if (Int64.Parse(dr["ProductCount"].ToString()) > 0)
                         {
-                            myReader.Close();
                             return true;
                         }
                     }
-                    myReader.Close();
                 }
 
                 if (BarCode2 != string.Empty && BarCode2 != null)
@@ -2846,16 +2845,16 @@ namespace AceSoft.RetailPlus.Data
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@ProductID", ProductID);
                     cmd.Parameters.AddWithValue("@BarCode", BarCode2);
-                    MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-                    while (myReader.Read())
+                    System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    adapter.Fill(dt);
+                    foreach (System.Data.DataRow dr in dt.Rows)
                     {
-                        if (myReader.GetInt64("ProductCount") > 0)
+                        if (Int64.Parse(dr["ProductCount"].ToString()) > 0)
                         {
-                            myReader.Close();
                             return true;
                         }
                     }
-                    myReader.Close();
                 }
 
                 if (BarCode3 != string.Empty && BarCode3 != null)
@@ -2863,16 +2862,16 @@ namespace AceSoft.RetailPlus.Data
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@ProductID", ProductID);
                     cmd.Parameters.AddWithValue("@BarCode", BarCode3);
-                    MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-                    while (myReader.Read())
+                    System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    adapter.Fill(dt);
+                    foreach (System.Data.DataRow dr in dt.Rows)
                     {
-                        if (myReader.GetInt64("ProductCount") > 0)
+                        if (Int64.Parse(dr["ProductCount"].ToString()) > 0)
                         {
-                            myReader.Close();
                             return true;
                         }
                     }
-                    myReader.Close();
                 }
 
                 return boRetValue;
@@ -2912,14 +2911,13 @@ namespace AceSoft.RetailPlus.Data
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
 
-				MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-
-				while (myReader.Read())
+                System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
-					bolRetValue = myReader.GetBoolean("WillPrintProductComposition");
+					bolRetValue = bool.Parse(dr["WillPrintProductComposition"].ToString());
 				}
-
-				myReader.Close();
 			}
 
 			catch (Exception ex)
@@ -2956,15 +2954,15 @@ namespace AceSoft.RetailPlus.Data
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
 
-				MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				int iRetValue = 1;
-				while (myReader.Read())
+                int iRetValue = 1;
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
-					iRetValue = myReader.GetInt32("BaseUnitID");
+					iRetValue = Int32.Parse(dr["BaseUnitID"].ToString());
 				}
-
-				myReader.Close();
 
 				return iRetValue;
 			}
@@ -2988,7 +2986,7 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				string SQL =	SQLSelect() + "WHERE a.ProductId = @ProductID AND a.deleted=0;";
-				  
+
 				MySqlConnection cn = GetConnection();
 				
 				MySqlCommand cmd = new MySqlCommand();
@@ -3001,10 +2999,12 @@ namespace AceSoft.RetailPlus.Data
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				ProductDetails Details = SetDetails(myReader);
-                
+				ProductDetails Details = SetDetails(dt);
+
 				return Details;
 			}
 
@@ -3027,7 +3027,7 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				string SQL = SQLSelect() + "WHERE (BarCode = @BarCode OR BarCode2 = @BarCode OR BarCode3 = @BarCode);";
-				  
+
 				MySqlConnection cn = GetConnection();
 				
 				MySqlCommand cmd = new MySqlCommand();
@@ -3040,10 +3040,12 @@ namespace AceSoft.RetailPlus.Data
 				prmBarCode.Value = BarCode;
 				cmd.Parameters.Add(prmBarCode);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				ProductDetails Details = SetDetails(myReader);
-                
+				ProductDetails Details = SetDetails(dt);
+
 				return Details;
 			}
 
@@ -3077,10 +3079,12 @@ namespace AceSoft.RetailPlus.Data
 
 				cmd.Parameters.AddWithValue("@ProductCode", ProductCode);
 
-				MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				ProductDetails Details = SetDetails(myReader);
-                
+				ProductDetails Details = SetDetails(dt);
+
 				return Details;
 			}
 
@@ -3117,9 +3121,11 @@ namespace AceSoft.RetailPlus.Data
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
 
-				MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				ProductDetails Details = SetDetails(myReader);
+				ProductDetails Details = SetDetails(dt);
                 
 				return Details;
 			}
@@ -3156,9 +3162,11 @@ namespace AceSoft.RetailPlus.Data
 				prmBarCode.Value = BarCode;
 				cmd.Parameters.Add(prmBarCode);
 
-				MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				ProductDetails Details = SetDetails(myReader);
+				ProductDetails Details = SetDetails(dt);
                 
 				return Details;
 			}
@@ -3193,9 +3201,11 @@ namespace AceSoft.RetailPlus.Data
 
 				cmd.Parameters.AddWithValue("@ProductCode", ProductCode);
 
-				MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				ProductDetails Details = SetDetails(myReader);
+				ProductDetails Details = SetDetails(dt);
                 
 				return Details;
 			}
@@ -3240,13 +3250,13 @@ namespace AceSoft.RetailPlus.Data
 					Details.BaseUnitCode = "" + myReader["UnitCode"].ToString();
 					Details.BaseUnitName = "" + myReader["UnitName"].ToString();
 					Details.DateCreated = myReader.GetDateTime("DateCreated");
-					Details.Deleted = myReader.GetInt16("Deleted");
+					Details.Deleted = myReader.GetBoolean("Deleted");
 					Details.Active = myReader.GetBoolean("Active");
 					Details.Price = myReader.GetDecimal("Price");
 					Details.WSPrice = myReader.GetDecimal("WSPrice");
 					Details.PurchasePrice = myReader.GetDecimal("PurchasePrice");
 					Details.PercentageCommision = myReader.GetDecimal("PercentageCommision");
-					Details.IncludeInSubtotalDiscount = myReader.GetInt16("IncludeInSubtotalDiscount");
+					Details.IncludeInSubtotalDiscount = myReader.GetBoolean("IncludeInSubtotalDiscount");
 					Details.VAT = myReader.GetDecimal("VAT");
 					Details.EVAT = myReader.GetDecimal("EVAT");
 					Details.LocalTax = myReader.GetDecimal("LocalTax");
@@ -3300,6 +3310,90 @@ namespace AceSoft.RetailPlus.Data
 				throw ex;
 			}
 		}
+        private ProductDetails SetDetails(System.Data.DataTable dt)
+        {
+            try
+            {
+                ProductDetails Details = new ProductDetails();
+                Details.ProductID = 0;
+
+                foreach(System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.ProductID = Int64.Parse(dr["ProductID"].ToString());
+                    Details.ProductCode = "" + dr["ProductCode"].ToString();
+                    Details.BarCode = "" + dr["BarCode"].ToString();
+                    Details.BarCode2 = "" + dr["BarCode2"].ToString();
+                    Details.BarCode3 = "" + dr["BarCode3"].ToString();
+                    Details.ProductDesc = "" + dr["ProductDesc"].ToString();
+                    Details.ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString());
+                    Details.ProductGroupCode = "" + dr["ProductGroupCode"].ToString();
+                    Details.ProductGroupName = "" + dr["ProductGroupName"].ToString();
+                    Details.ProductSubGroupID = Int64.Parse(dr["ProductSubGroupID"].ToString());
+                    Details.ProductSubGroupCode = dr["ProductSubGroupCode"].ToString();
+                    Details.ProductSubGroupName = dr["ProductSubGroupName"].ToString();
+                    Details.BaseUnitID = Int32.Parse(dr["BaseUnitID"].ToString());
+                    Details.BaseUnitCode = dr["UnitCode"].ToString();
+                    Details.BaseUnitName = dr["UnitName"].ToString();
+                    Details.DateCreated = DateTime.Parse(dr["DateCreated"].ToString());
+                    Details.Deleted = Boolean.Parse(dr["Deleted"].ToString());
+                    Details.Active = Boolean.Parse(dr["Active"].ToString());
+                    Details.Price = Decimal.Parse(dr["Price"].ToString());
+                    Details.WSPrice = Decimal.Parse(dr["WSPrice"].ToString());
+                    Details.PurchasePrice = Decimal.Parse(dr["PurchasePrice"].ToString());
+                    Details.PercentageCommision = Decimal.Parse(dr["PercentageCommision"].ToString());
+                    Details.IncludeInSubtotalDiscount = Boolean.Parse(dr["IncludeInSubtotalDiscount"].ToString());
+                    Details.VAT = Decimal.Parse(dr["VAT"].ToString());
+                    Details.EVAT = Decimal.Parse(dr["EVAT"].ToString());
+                    Details.LocalTax = Decimal.Parse(dr["LocalTax"].ToString());
+                    Details.Quantity = Decimal.Parse(dr["Quantity"].ToString());
+                    Details.MainQuantity = Decimal.Parse(dr["MainQuantity"].ToString());
+                    Details.ConvertedMainQuantity = dr["ConvertedMainQuantity"].ToString();
+                    Details.MinThreshold = Decimal.Parse(dr["MinThreshold"].ToString());
+                    Details.MaxThreshold = Decimal.Parse(dr["MaxThreshold"].ToString());
+                    Details.RID = Int64.Parse(dr["RID"].ToString());
+                    Details.SupplierID = Int64.Parse(dr["SupplierID"].ToString());
+                    Details.SupplierCode = dr["SupplierCode"].ToString();
+                    Details.SupplierName = dr["SupplierName"].ToString();
+                    Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
+
+                    /*** Added for Financial Information  ***/
+                    /*** January 12, 2009 ***/
+                    Details.ChartOfAccountIDPurchase = Int32.Parse(dr["ChartOfAccountIDPurchase"].ToString());
+                    Details.ChartOfAccountIDSold = Int32.Parse(dr["ChartOfAccountIDSold"].ToString());
+                    Details.ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString());
+                    Details.ChartOfAccountIDTaxPurchase = Int32.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
+                    Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
+
+                    Details.IsItemSold = Boolean.Parse(dr["IsItemSold"].ToString());
+                    Details.WillPrintProductComposition = Boolean.Parse(dr["WillPrintProductComposition"].ToString());
+
+                    /*** Inventory Tracking ***/
+                    /*** May 10, 2010 ***/
+                    Details.QuantityIN = Decimal.Parse(dr["QuantityIN"].ToString());
+                    Details.QuantityOUT = Decimal.Parse(dr["QuantityOUT"].ToString());
+
+                    Details.ActualQuantity = Decimal.Parse(dr["ActualQuantity"].ToString());
+
+                    Details.RewardPoints = Decimal.Parse(dr["RewardPoints"].ToString());
+                }
+
+                return Details;
+            }
+
+            catch (Exception ex)
+            {
+                TransactionFailed = true;
+                if (IsInTransaction)
+                {
+                    mTransaction.Rollback();
+                    mTransaction.Dispose();
+                    mConnection.Close();
+                    mConnection.Dispose();
+                }
+
+                throw ex;
+            }
+        }
 
 		#endregion
 
@@ -5037,7 +5131,7 @@ namespace AceSoft.RetailPlus.Data
 					clsBaseDetails.Price = Convert.ToDecimal(clsProductSubGroupBaseVariationsMatrixList["Price"]);
 					clsBaseDetails.WSPrice = Convert.ToDecimal(clsProductSubGroupBaseVariationsMatrixList["WSPrice"]);
 					clsBaseDetails.PurchasePrice = Convert.ToDecimal(clsProductSubGroupBaseVariationsMatrixList["PurchasePrice"]);
-					clsBaseDetails.IncludeInSubtotalDiscount = Convert.ToInt16(clsProductSubGroupBaseVariationsMatrixList["IncludeInSubtotalDiscount"]);
+					clsBaseDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(clsProductSubGroupBaseVariationsMatrixList["IncludeInSubtotalDiscount"]);
 					clsBaseDetails.VAT = Convert.ToDecimal(clsProductSubGroupBaseVariationsMatrixList["VAT"]);
 					clsBaseDetails.EVAT = Convert.ToDecimal(clsProductSubGroupBaseVariationsMatrixList["EVAT"]);
 					clsBaseDetails.LocalTax = Convert.ToDecimal(clsProductSubGroupBaseVariationsMatrixList["LocalTax"]);

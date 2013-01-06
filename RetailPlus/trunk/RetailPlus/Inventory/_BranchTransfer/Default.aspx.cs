@@ -34,7 +34,9 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
                 if (strUnparsedTask.ToLower() == "reportfromposted")
                 {
                     stHeading = "Branch Transfer Report";
-                    //ctrlReports.Visible = true;
+                    //ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
+                    //ctrlProcessing.Visible = false;
+                    //ctrlProcessing.Dispose();
                 }
                 else
                 {
@@ -74,7 +76,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
                         case "reports":
                             stHeading = "Branch Transfer Report";
                             SearchIndex = SearchCategoryID.NotApplicable;
-                            ctrlReports.Visible = true;
+                            ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                             break;
                         case "cancel":
                             stHeading = "Cancel Branch Transfer";

@@ -7711,7 +7711,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				Details.PromoApplied = Convert.ToDecimal(dgItems[iRow, 31].ToString());
 				Details.PurchasePrice = Convert.ToDecimal(dgItems[iRow, 32].ToString());
 				Details.PurchaseAmount = Convert.ToDecimal(dgItems[iRow, 33].ToString());
-				Details.IncludeInSubtotalDiscount = Convert.ToInt16(dgItems[iRow, 34].ToString());
+				Details.IncludeInSubtotalDiscount = Convert.ToBoolean(dgItems[iRow, 34].ToString());
 				Details.OrderSlipPrinter = (OrderSlipPrinter) Enum.Parse(typeof(OrderSlipPrinter), dgItems[iRow, 35].ToString());
 				Details.OrderSlipPrinted = Convert.ToBoolean(dgItems[iRow, 36].ToString());
 				Details.PercentageCommision = Convert.ToDecimal(dgItems[iRow, 37].ToString());

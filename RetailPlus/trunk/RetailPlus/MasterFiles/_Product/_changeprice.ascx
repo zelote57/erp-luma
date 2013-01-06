@@ -176,7 +176,7 @@
 			                            </table>
 		                            </HeaderTemplate>
 		                            <ItemTemplate>
-			                            <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblItemTemplate">
+			                            <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 				                            <colgroup>
 					                            <col width="10">
 					                            <col width="10">
@@ -288,7 +288,7 @@
 			                            </table>
 		                            </HeaderTemplate>
 		                            <ItemTemplate>
-			                            <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblItemTemplate">
+			                            <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 				                            <colgroup>
 					                            <col width="4%">
 					                            <col width="95%" align="left">
@@ -355,7 +355,7 @@
 			                                                </table>
 		                                                </HeaderTemplate>
 		                                                <ItemTemplate>
-	                                                        <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblItemTemplate">
+	                                                        <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 		                                                        <colgroup>
 					                                                <col width="4%">
 					                                                <col width="15%" align="left">

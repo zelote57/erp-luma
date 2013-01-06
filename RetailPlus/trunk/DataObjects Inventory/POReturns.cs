@@ -302,17 +302,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				Int64 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				myReader.Close();
+                Int64 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int64.Parse(dr[0].ToString());
+                }
 
 				return iID;
 			}
@@ -799,14 +798,15 @@ namespace AceSoft.RetailPlus.Data
                 clsChartOfAccount.UpdateCredit(clsPOReturnDetails.ChartOfAccountIDAPVDeposit, clsPOReturnDetails.Deposit);
 
                 POReturnItems clsPOReturnItems = new POReturnItems(mConnection, mTransaction);
-                MySqlDataReader myReader = clsPOReturnItems.List(DebitMemoID, string.Empty, SortOption.Ascending);
-                while (myReader.Read())
-                {
-                    int iChartOfAccountIDPurchase = myReader.GetInt16("ChartOfAccountIDPurchase");
-                    int iChartOfAccountIDTaxPurchase = myReader.GetInt16("ChartOfAccountIDTaxPurchase");
+                System.Data.DataTable dt = clsPOReturnItems.ListAsDataTable(DebitMemoID);
 
-                    decimal decVAT = myReader.GetDecimal("VAT");
-                    decimal decVATABLEAmount = myReader.GetDecimal("Amount") - decVAT;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    int iChartOfAccountIDPurchase = Int16.Parse(dr["ChartOfAccountIDPurchase"].ToString());
+                    int iChartOfAccountIDTaxPurchase = Int16.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
+
+                    decimal decVAT = decimal.Parse(dr["VAT"].ToString());
+                    decimal decVATABLEAmount = decimal.Parse(dr["Amount"].ToString()) - decVAT;
 
                     // update purchase as debit
                     clsChartOfAccount.UpdateCredit(iChartOfAccountIDPurchase, decVATABLEAmount);
@@ -814,7 +814,6 @@ namespace AceSoft.RetailPlus.Data
                     clsChartOfAccount.UpdateCredit(iChartOfAccountIDTaxPurchase, decVAT);
 
                 }
-                myReader.Close();
 
             }
 

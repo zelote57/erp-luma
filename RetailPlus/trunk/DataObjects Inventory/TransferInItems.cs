@@ -338,16 +338,15 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.Clear();
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("TransferInItem");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
                 Int64 iID = 0;
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    iID = myReader.GetInt64(0);
+                    iID = Int64.Parse(dr[0].ToString());
                 }
-
-                myReader.Close();
 
                 TransferIn clsTransferIn = new TransferIn(Connection, Transaction);
                 clsTransferIn.SynchronizeAmount(Details.TransferInID);

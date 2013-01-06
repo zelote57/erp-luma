@@ -36,7 +36,7 @@ namespace AceSoft.RetailPlus.GeneralLedger
                     case "reports":
 						stHeading = "Reports Window";		
 						SearchIndex = SearchCategoryID.NotApplicable;
-						ctrlReports.Visible = true;
+						ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
 						break;					
 					default:	
 						break;

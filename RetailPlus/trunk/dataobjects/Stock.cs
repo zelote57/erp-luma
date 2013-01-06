@@ -162,17 +162,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				Int64 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				myReader.Close();
+                Int64 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int64.Parse(dr[0].ToString());
+                }
 
 				return iID;
 			}
@@ -418,27 +417,27 @@ namespace AceSoft.RetailPlus.Data
 				prmStockID.Value = StockID;
 				cmd.Parameters.Add(prmStockID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("Stock");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 				
 				StockDetails Details = new StockDetails();
 
-				while (myReader.Read()) 
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
 					Details.StockID = StockID;
-                    Details.BranchID = myReader.GetInt32("BranchID");
-					Details.TransactionNo = "" + myReader["TransactionNo"].ToString();
-					Details.StockTypeID = myReader.GetInt16("StockTypeID");
-					Details.StockTypeCode = "" + myReader["StockTypeCode"].ToString();
-					Details.StockTypeDescription = "" + myReader["StockTypeDescription"].ToString();
-                    Details.StockDirection = (StockDirections)Enum.Parse(typeof(StockDirections), myReader.GetString("StockDirection"));
-					Details.StockDate = myReader.GetDateTime("StockDate");
-					Details.SupplierID = myReader.GetInt64("SupplierID");
-					Details.SupplierCode = "" + myReader["SupplierCode"].ToString();
-					Details.SupplierName = "" + myReader["SupplierName"].ToString();
-					Details.Remarks = "" + myReader["Remarks"].ToString();
+                    Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
+					Details.TransactionNo = "" + dr["TransactionNo"].ToString();
+					Details.StockTypeID = Int16.Parse(dr["StockTypeID"].ToString());
+					Details.StockTypeCode = "" + dr["StockTypeCode"].ToString();
+					Details.StockTypeDescription = "" + dr["StockTypeDescription"].ToString();
+                    Details.StockDirection = (StockDirections)Enum.Parse(typeof(StockDirections), Convert.ToInt16(dr["StockDirection"]).ToString());
+					Details.StockDate = DateTime.Parse(dr["StockDate"].ToString());
+                    Details.SupplierID = Int64.Parse(dr["SupplierID"].ToString());
+					Details.SupplierCode = "" + dr["SupplierCode"].ToString();
+					Details.SupplierName = "" + dr["SupplierName"].ToString();
+					Details.Remarks = "" + dr["Remarks"].ToString();
 				}
-
-				myReader.Close();
 
 				return Details;
 			}

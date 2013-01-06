@@ -54,7 +54,7 @@ namespace AceSoft.RetailPlus.Data
         public Int16 PromoInPercent; //32
 
         public PromoTypes PromoType; //34
-        public Int16 IncludeInSubtotalDiscount;
+        public bool IncludeInSubtotalDiscount;
         public OrderSlipPrinter OrderSlipPrinter;
         public bool OrderSlipPrinted;
         public decimal PercentageCommision;
@@ -654,7 +654,7 @@ namespace AceSoft.RetailPlus.Data
                     itemDetails.PromoApplied = myReader.GetDecimal("PromoApplied");
                     itemDetails.PurchasePrice = myReader.GetDecimal("PurchasePrice");
                     itemDetails.PurchaseAmount = myReader.GetDecimal("PurchaseAmount");
-                    itemDetails.IncludeInSubtotalDiscount = myReader.GetInt16("IncludeInSubtotalDiscount");
+                    itemDetails.IncludeInSubtotalDiscount = myReader.GetBoolean("IncludeInSubtotalDiscount");
                     itemDetails.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), myReader.GetString("OrderSlipPrinter"));
                     itemDetails.OrderSlipPrinted = myReader.GetBoolean("OrderSlipPrinted");
                     itemDetails.PercentageCommision = myReader.GetDecimal("PercentageCommision");

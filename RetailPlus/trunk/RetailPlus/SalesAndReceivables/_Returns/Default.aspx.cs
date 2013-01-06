@@ -33,7 +33,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
                  if (strUnparsedTask.ToLower() == "reportfromposted")
                  {
                      stHeading = "Sales Return Report";
-                     ctrlReports.Visible = true;
+                     ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                  }
                  else
                  {
@@ -73,7 +73,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
                          case "reports":
                              stHeading = "Sales Return Report";
                              SearchIndex = SearchCategoryID.SalesReturns;
-                             ctrlReports.Visible = true;
+                             ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                              break;
                          case "cancel":
                              stHeading = "Cancel Sales Return";

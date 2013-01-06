@@ -22,7 +22,7 @@ namespace AceSoft.RetailPlus.Data
 		public string BaseUnitName;
 		public decimal Price;
 		public decimal PurchasePrice;
-		public Int16 IncludeInSubtotalDiscount;
+		public bool IncludeInSubtotalDiscount;
 		public decimal VAT;
 		public decimal EVAT;
 		public decimal LocalTax;
@@ -187,17 +187,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				Int64 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				myReader.Close();
+                Int64 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int64.Parse(dr[0].ToString());
+                }
 
 				return iID;
 			}
@@ -752,34 +751,34 @@ namespace AceSoft.RetailPlus.Data
 				prmProductGroupID.Value = ProductGroupID;
 				cmd.Parameters.Add(prmProductGroupID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProductGroup");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 				
 				ProductGroupDetails Details = new ProductGroupDetails();
 
-				while (myReader.Read()) 
-				{
-					Details.ProductGroupID = ProductGroupID;
-					Details.ProductGroupCode = "" + myReader["ProductGroupCode"].ToString();
-					Details.ProductGroupName = "" + myReader["ProductGroupName"].ToString();
-					Details.BaseUnitID = myReader.GetInt32("BaseUnitID");
-					Details.BaseUnitName = "" + myReader["BaseUnitName"].ToString();
-					Details.Price = myReader.GetDecimal("Price");
-					Details.PurchasePrice = myReader.GetDecimal("PurchasePrice");
-					Details.IncludeInSubtotalDiscount = myReader.GetInt16("IncludeInSubtotalDiscount");
-					Details.VAT = myReader.GetDecimal("VAT");
-					Details.EVAT = myReader.GetDecimal("EVAT");
-					Details.LocalTax = myReader.GetDecimal("LocalTax");
-                    Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), myReader.GetString("OrderSlipPrinter"));
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString());
+                    Details.ProductGroupCode = "" + dr["ProductGroupCode"].ToString();
+                    Details.ProductGroupName = "" + dr["ProductGroupName"].ToString();
+                    Details.BaseUnitID = Int32.Parse(dr["BaseUnitID"].ToString());
+                    Details.BaseUnitName = "" + dr["BaseUnitName"].ToString();
+                    Details.Price = decimal.Parse(dr["Price"].ToString());
+                    Details.PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
+                    Details.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
+                    Details.VAT = decimal.Parse(dr["VAT"].ToString());
+                    Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
+                    Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
+                    Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
                     /*** Added for Financial Information  ***/
                     /*** March 07, 2009 ***/
-                    Details.ChartOfAccountIDPurchase = myReader.GetInt32("ChartOfAccountIDPurchase");
-                    Details.ChartOfAccountIDSold = myReader.GetInt32("ChartOfAccountIDSold");
-                    Details.ChartOfAccountIDInventory = myReader.GetInt32("ChartOfAccountIDInventory");
-                    Details.ChartOfAccountIDTaxPurchase = myReader.GetInt32("ChartOfAccountIDTaxPurchase");
-                    Details.ChartOfAccountIDTaxSold = myReader.GetInt32("ChartOfAccountIDTaxSold");
-				}
-
-				myReader.Close();
+                    Details.ChartOfAccountIDPurchase = Int32.Parse(dr["ChartOfAccountIDPurchase"].ToString());
+                    Details.ChartOfAccountIDSold = Int32.Parse(dr["ChartOfAccountIDSold"].ToString());
+                    Details.ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString());
+                    Details.ChartOfAccountIDTaxPurchase = Int32.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
+                    Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
+                }
 
 				return Details;
 			}
@@ -817,34 +816,34 @@ namespace AceSoft.RetailPlus.Data
 				prmProductGroupCode.Value = ProductGroupCode;
 				cmd.Parameters.Add(prmProductGroupCode);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				ProductGroupDetails Details = new ProductGroupDetails();
+				System.Data.DataTable dt = new System.Data.DataTable("tblProductGroup");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				while (myReader.Read()) 
+                ProductGroupDetails Details = new ProductGroupDetails();
+
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
-					Details.ProductGroupID = myReader.GetInt64("ProductGroupID");
-					Details.ProductGroupCode = "" + myReader["ProductGroupCode"].ToString();
-					Details.ProductGroupName = "" + myReader["ProductGroupName"].ToString();
-					Details.BaseUnitID = myReader.GetInt32("BaseUnitID");
-					Details.BaseUnitName = "" + myReader["BaseUnitName"].ToString();
-					Details.Price = myReader.GetDecimal("Price");
-					Details.PurchasePrice = myReader.GetDecimal("PurchasePrice");
-					Details.IncludeInSubtotalDiscount = myReader.GetInt16("IncludeInSubtotalDiscount");
-					Details.VAT = myReader.GetDecimal("VAT");
-					Details.EVAT = myReader.GetDecimal("EVAT");
-					Details.LocalTax = myReader.GetDecimal("LocalTax");
-                    Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), myReader.GetString("OrderSlipPrinter"));
+					Details.ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString());
+					Details.ProductGroupCode = "" + dr["ProductGroupCode"].ToString();
+					Details.ProductGroupName = "" + dr["ProductGroupName"].ToString();
+					Details.BaseUnitID = Int32.Parse(dr["BaseUnitID"].ToString());
+					Details.BaseUnitName = "" + dr["BaseUnitName"].ToString();
+					Details.Price = decimal.Parse(dr["Price"].ToString());
+					Details.PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
+					Details.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
+					Details.VAT = decimal.Parse(dr["VAT"].ToString());
+					Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
+					Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
+                    Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
                     /*** Added for Financial Information  ***/
                     /*** March 07, 2009 ***/
-                    Details.ChartOfAccountIDPurchase = myReader.GetInt32("ChartOfAccountIDPurchase");
-                    Details.ChartOfAccountIDSold = myReader.GetInt32("ChartOfAccountIDSold");
-                    Details.ChartOfAccountIDInventory = myReader.GetInt32("ChartOfAccountIDInventory");
-                    Details.ChartOfAccountIDTaxPurchase = myReader.GetInt32("ChartOfAccountIDTaxPurchase");
-                    Details.ChartOfAccountIDTaxSold = myReader.GetInt32("ChartOfAccountIDTaxSold");
+                    Details.ChartOfAccountIDPurchase = Int32.Parse(dr["ChartOfAccountIDPurchase"].ToString());
+                    Details.ChartOfAccountIDSold = Int32.Parse(dr["ChartOfAccountIDSold"].ToString());
+                    Details.ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString());
+                    Details.ChartOfAccountIDTaxPurchase = Int32.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
+                    Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
 				}
-
-				myReader.Close();
 
 				return Details;
 			}

@@ -36,7 +36,7 @@
 						<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 							<TR>
 								<td class="ms-toolbar" nowrap align="left" style="height: 24px">
-                                    &nbsp;<asp:Button id="cmdView" runat="server" Text="Go" onclick="cmdView_Click"></asp:Button>
+                                    &nbsp;<asp:Button id="cmdView" runat="server" Text="Go" onclick="cmdView_Click" OnClientClick="NewWindow();"></asp:Button>
 								</td>
 							</TR>
 						</TABLE>

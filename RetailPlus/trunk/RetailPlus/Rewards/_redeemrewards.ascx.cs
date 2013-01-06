@@ -77,6 +77,7 @@ namespace AceSoft.RetailPlus.Rewards
 					Data.ContactRewardDetails clsContactRewardDetails = clsContactReward.Details(lngCustomerID);
 					clsContactReward.CommitAndDispose();
 
+                    txtRewardCardNo.Text = clsContactRewardDetails.RewardCardNo;
 					txtCurrentRewardPoints.Text = clsContactRewardDetails.RewardPoints.ToString();
 					txtRedeemRewardPoints.Enabled = (DateTime.Now > clsContactRewardDetails.ExpiryDate) ? true : false;
 					txtRedeemRewardPoints.Text = (DateTime.Now > clsContactRewardDetails.ExpiryDate) ? "0" : txtRedeemRewardPoints.Text;
@@ -174,7 +175,7 @@ namespace AceSoft.RetailPlus.Rewards
             cboCustomer.DataValueField = "ContactID";
 
 			string SearchKey = "%" + txtCustomer.Text;
-			cboCustomer.DataSource = clsContact.Customers(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 20, false, null, System.Data.SqlClient.SortOrder.Ascending).DefaultView;
+			cboCustomer.DataSource = clsContact.Customers(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 20, false, "ContactName", System.Data.SqlClient.SortOrder.Ascending).DefaultView;
 			cboCustomer.DataBind();
 			clsContact.CommitAndDispose();
 

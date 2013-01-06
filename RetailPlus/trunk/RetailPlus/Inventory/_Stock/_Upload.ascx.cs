@@ -179,7 +179,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									clsProductGroupDetails.BaseUnitID = UnitID;
 									clsProductGroupDetails.Price = Convert.ToDecimal(reader.GetAttribute("Price"));
 									clsProductGroupDetails.PurchasePrice = Convert.ToDecimal(reader.GetAttribute("PurchasePrice"));
-									clsProductGroupDetails.IncludeInSubtotalDiscount = Convert.ToInt16(reader.GetAttribute("IncludeInSubtotalDiscount"));
+									clsProductGroupDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(reader.GetAttribute("IncludeInSubtotalDiscount"));
 									clsProductGroupDetails.VAT = Convert.ToDecimal(reader.GetAttribute("VAT"));
 									clsProductGroupDetails.EVAT = Convert.ToDecimal(reader.GetAttribute("EVAT"));
 									clsProductGroupDetails.LocalTax = Convert.ToDecimal(reader.GetAttribute("LocalTax"));
@@ -198,7 +198,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									clsProductSubGroupDetails.BaseUnitID = UnitID;
 									clsProductSubGroupDetails.Price = Convert.ToDecimal(reader.GetAttribute("Price"));
 									clsProductSubGroupDetails.PurchasePrice = Convert.ToDecimal(reader.GetAttribute("PurchasePrice"));
-									clsProductSubGroupDetails.IncludeInSubtotalDiscount = Convert.ToInt16(reader.GetAttribute("IncludeInSubtotalDiscount"));
+									clsProductSubGroupDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(reader.GetAttribute("IncludeInSubtotalDiscount"));
 									clsProductSubGroupDetails.VAT = Convert.ToDecimal(reader.GetAttribute("VAT"));
 									clsProductSubGroupDetails.EVAT = Convert.ToDecimal(reader.GetAttribute("EVAT"));
 									clsProductSubGroupDetails.LocalTax = Convert.ToDecimal(reader.GetAttribute("LocalTax"));
@@ -220,7 +220,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									clsProductDetails.BaseUnitID = UnitID;
 									clsProductDetails.Price = Convert.ToDecimal(reader.GetAttribute("Price")); 
 									clsProductDetails.PurchasePrice = Convert.ToDecimal(reader.GetAttribute("PurchasePrice")); 
-									clsProductDetails.IncludeInSubtotalDiscount = Convert.ToInt16(reader.GetAttribute("IncludeInSubtotalDiscount")); 
+									clsProductDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(reader.GetAttribute("IncludeInSubtotalDiscount")); 
 									clsProductDetails.VAT = Convert.ToDecimal(reader.GetAttribute("VAT")); 
 									clsProductDetails.EVAT = Convert.ToDecimal(reader.GetAttribute("EVAT")); 
 									clsProductDetails.LocalTax = Convert.ToDecimal(reader.GetAttribute("LocalTax")); 
@@ -241,7 +241,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									clsBaseDetails.UnitID = UnitID;
 									clsBaseDetails.Price = Convert.ToDecimal(reader.GetAttribute("Price"));
 									clsBaseDetails.PurchasePrice = Convert.ToDecimal(reader.GetAttribute("PurchasePrice"));
-									clsBaseDetails.IncludeInSubtotalDiscount = Convert.ToInt16(reader.GetAttribute("IncludeInSubtotalDiscount"));
+									clsBaseDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(reader.GetAttribute("IncludeInSubtotalDiscount"));
 									clsBaseDetails.Quantity = 0;
 									clsBaseDetails.VAT = Convert.ToDecimal(reader.GetAttribute("VAT"));
 									clsBaseDetails.EVAT = Convert.ToDecimal(reader.GetAttribute("EVAT"));

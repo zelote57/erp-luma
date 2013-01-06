@@ -33,7 +33,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
                  if (strUnparsedTask.ToLower() == "reportfromposted")
                  {
                      stHeading = "Credit Memo Report";
-                     ctrlReports.Visible = true;
+                     ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                  }
                  else
                  {
@@ -73,7 +73,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
                          case "reports":
                              stHeading = "Credit Memo Report";
                              SearchIndex = SearchCategoryID.SalesCreditMemo;
-                             ctrlReports.Visible = true;
+                             ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                              break;
                          case "cancel":
                              stHeading = "Cancel Credit Memo";

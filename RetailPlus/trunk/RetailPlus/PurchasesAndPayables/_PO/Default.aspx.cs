@@ -34,7 +34,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 if (strUnparsedTask.ToLower() == "reportfromposted")
                 {
                     stHeading = "Purchase Order Report";
-                    ctrlReports.Visible = true;
+                    ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                         case "reports":
                             stHeading = "Purchase Order Report";
                             SearchIndex = SearchCategoryID.NotApplicable;
-                            ctrlReports.Visible = true;
+                            ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                             break;
                         case "cancel":
                             stHeading = "Cancel Purchase Order";

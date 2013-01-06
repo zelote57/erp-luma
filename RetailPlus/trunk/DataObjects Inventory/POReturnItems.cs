@@ -909,7 +909,49 @@ namespace AceSoft.RetailPlus.Data
 				throw ex;
 			}	
 		}
-		
+        public System.Data.DataTable ListAsDataTable(long DebitMemoID, string SortField = "DebitMemoItemID", SortOption SortOrder = SortOption.Desscending)
+        {
+            try
+            {
+                string SQL = SQLSelect() + "WHERE DebitMemoID = @DebitMemoID ORDER BY " + SortField;
+
+                if (SortOrder == SortOption.Ascending)
+                    SQL += " ASC";
+                else
+                    SQL += " DESC";
+
+                MySqlConnection cn = GetConnection();
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = cn;
+                cmd.Transaction = mTransaction;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                MySqlParameter prmReturnID = new MySqlParameter("@DebitMemoID", System.Data.DbType.Int64);
+                prmReturnID.Value = DebitMemoID;
+                cmd.Parameters.Add(prmReturnID);
+
+                System.Data.DataTable dt = new System.Data.DataTable("POReturnItems");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                TransactionFailed = true;
+                if (IsInTransaction)
+                {
+                    mTransaction.Rollback();
+                    mTransaction.Dispose();
+                    mConnection.Close();
+                    mConnection.Dispose();
+                }
+
+                throw ex;
+            }
+        }
 		public MySqlDataReader List(POReturnItemStatus POReturnItemstatus, string SortField, SortOption SortOrder)
 		{
 			try

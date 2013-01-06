@@ -39,7 +39,7 @@ namespace AceSoft.RetailPlus.Data
 		public string UnitName;
 		public decimal Price;
 		public decimal PurchasePrice;
-		public Int16 IncludeInSubtotalDiscount;
+		public bool IncludeInSubtotalDiscount;
 		public decimal VAT;
 		public decimal EVAT;
 		public decimal LocalTax;
@@ -191,17 +191,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				Int64 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
-				
-				myReader.Close();								
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
+
+                Int64 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int64.Parse(dr[0].ToString());
+                }							
 
 				return iID;
 			}
@@ -785,7 +784,7 @@ namespace AceSoft.RetailPlus.Data
 					Details.UnitName = "" + myReader["UnitName"].ToString();
 					Details.Price = myReader.GetDecimal("Price");
 					Details.PurchasePrice = myReader.GetDecimal("PurchasePrice");
-					Details.IncludeInSubtotalDiscount = myReader.GetInt16("IncludeInSubtotalDiscount");
+					Details.IncludeInSubtotalDiscount = myReader.GetBoolean("IncludeInSubtotalDiscount");
 					Details.VAT = myReader.GetDecimal("VAT");
 					Details.EVAT = myReader.GetDecimal("EVAT");
 					Details.LocalTax = myReader.GetDecimal("LocalTax");

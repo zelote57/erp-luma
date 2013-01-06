@@ -56,6 +56,70 @@
 		</TD>
 		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
 	</TR>
+    <TR>
+		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td class="ms-authoringcontrols">
+		    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellSpacing="0" cellPadding="0" border="0" width="100%">
+				<tr>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						&nbsp;<label>Reward Status</label>&nbsp;
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap>
+						<asp:dropdownlist id="cboRewardCardStatus" CssClass="ms-short" runat="server"></asp:dropdownlist>
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</TD>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						<label>Birth Date</label>
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap>
+						<asp:dropdownlist id="cboBirthDate" CssClass="ms-short" runat="server"></asp:dropdownlist>
+					</td>
+					<td width="99%" id="align05" noWrap align="left">&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						&nbsp;<label>Reward Expiry Date From</label>&nbsp;
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap>
+						<asp:TextBox id="txtRewardExpiryDateFrom" accessKey="S" ToolTip="Double click to select date from Calendar" ondblclick="ontime(this)" CssClass="ms-short" runat="server" MaxLength="10" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</TD>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						<label>Reward Expiry Date To</label>
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap>
+						<asp:TextBox id="txtRewardExpiryDateTo" accessKey="E" ToolTip="Double click to select date from Calendar" ondblclick="ontime(this)" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10"></asp:TextBox>
+					</td>
+					<td width="99%" id="Td1" noWrap align="left">&nbsp;
+						<asp:Label id="Label4" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
+						<asp:Label id="Label5" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>
+					</td>
+				</tr>
+				<tr>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						&nbsp;<label>Reward Card No or Customer Code or Customer Name</label>&nbsp;
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap colspan=5>
+						<asp:TextBox id="txtSearch" CssClass="ms-long" Width="100%" runat="server" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td width="99%" noWrap align="left">&nbsp;
+					    <asp:ImageButton accessKey="s" style="CURSOR: hand" id="cmdSearch" ImageUrl="../../_layouts/images/icongo01.gif" border="0" ToolTip="Execute search" runat="server" causesvalidation="false" onclick="cmdSearch_Click"></asp:ImageButton>
+					</td>
+				</tr>
+			</table>
+		</TD>
+	</TR>
+	<tr>
+	    <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td class="ms-sectionline" height="2" style="MARGIN-BOTTOM: 5px"><img alt="" src="../../_layouts/images/empty.gif"></td>
+		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+	</tr>
 	<tr>
 		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
 		<TD>
@@ -132,7 +196,7 @@
 					</table>
 				</HeaderTemplate>
 				<ItemTemplate>
-					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblItemTemplate">
+					<TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 						<colgroup>
 							<col width="10">
 							<col width="10">

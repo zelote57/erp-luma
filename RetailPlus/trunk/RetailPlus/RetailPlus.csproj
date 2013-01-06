@@ -3194,7 +3194,6 @@
     <None Include="Datasets\ReportDataset.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>ReportDataset.Designer.cs</LastGenOutput>
     </None>
     <None Include="Datasets\ReportDataset.xss">
       <DependentUpon>ReportDataset.xsd</DependentUpon>

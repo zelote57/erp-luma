@@ -116,6 +116,15 @@ namespace AceSoft.RetailPlus
         public const string C_RESTOPLUS_CUSTOMER_ORDERS = "CUSTOMER ORDERS";
 
         public const string C_FE_DEFAULT_DECIMAL_FORMAT = "#,##0.##0";
+
+        public enum DateSelectionString
+        {
+            ALL = 0,
+            Today = 1,
+            NextMonth = 2,
+            CurrentMonth = 3,
+            PreviousMonth = 4,
+        }
     }
 
     

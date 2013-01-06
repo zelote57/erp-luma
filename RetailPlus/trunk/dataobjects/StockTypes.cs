@@ -126,17 +126,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				short iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt16(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				myReader.Close();
+                Int16 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int16.Parse(dr[0].ToString());
+                }
 
 				return iID;
 			}
@@ -288,19 +287,19 @@ namespace AceSoft.RetailPlus.Data
 				prmStockTypeID.Value = StockTypeID;
 				cmd.Parameters.Add(prmStockTypeID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("StockType");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 				
 				StockTypesDetails Details = new StockTypesDetails();
 
-				while (myReader.Read()) 
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
 					Details.StockTypeID = StockTypeID;
-					Details.StockTypeCode = "" + myReader["StockTypeCode"].ToString();
-					Details.Description = "" + myReader["Description"].ToString();
-                    Details.StockDirection = (StockDirections)Enum.Parse(typeof(StockDirections), myReader.GetString("StockDirection"));
+					Details.StockTypeCode = "" + dr["StockTypeCode"].ToString();
+					Details.Description = "" + dr["Description"].ToString();
+                    Details.StockDirection = (StockDirections)Enum.Parse(typeof(StockDirections), Convert.ToInt16(dr["StockDirection"]).ToString());
 				}
-
-				myReader.Close();
 
 				return Details;
 			}

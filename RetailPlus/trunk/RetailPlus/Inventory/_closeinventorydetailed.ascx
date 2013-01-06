@@ -138,7 +138,7 @@
 					        </table>
 				        </HeaderTemplate>
 				        <ItemTemplate>
-					        <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0">
+					        <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 						        <COLGROUP>
 							        <col width="2%">
 							        <col width="18%">
@@ -184,7 +184,7 @@
 						            <TD class="ms-alternating" colspan="11">
 						                <asp:datalist id="lstVariationMatrix" runat="server" Width="100%" ShowFooter="False" CellPadding="0" OnItemDataBound="lstVariationMatrix_ItemDataBound" OnItemCommand="lstVariationMatrix_ItemCommand">
 		                                    <ItemTemplate>
-			                                    <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblItemTemplate">
+			                                    <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 				                                    <colgroup>
 					                                    <col width="2%">
 							                            <col width="28%">

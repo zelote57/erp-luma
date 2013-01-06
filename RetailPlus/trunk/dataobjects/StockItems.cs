@@ -177,17 +177,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				Int64 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				myReader.Close();
+                Int64 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int64.Parse(dr[0].ToString());
+                }
 
 				return iID;
 			}
@@ -293,28 +292,26 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				MySqlDataReader myReader = List(StockID, "StockItemID", SortOption.Ascending);
+				System.Data.DataTable dt = ListAsDataTable(StockID, "StockItemID", SortOption.Ascending);
 				
 				ArrayList items = new ArrayList();
 
-				while (myReader.Read()) 
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{
 					StockItemDetails itemDetails = new StockItemDetails();
 
-					itemDetails.StockItemID = myReader.GetInt64("StockItemID");
+                    itemDetails.StockItemID = Int64.Parse(dr["StockItemID"].ToString());
 					itemDetails.StockID = StockID;
-					itemDetails.ProductID = myReader.GetInt64("ProductID");
-					itemDetails.VariationMatrixID = myReader.GetInt64("VariationMatrixID");
-					itemDetails.ProductUnitID = myReader.GetInt32("ProductUnitID");
-					itemDetails.StockTypeID = myReader.GetInt16("StockTypeID");
-					itemDetails.StockDate = myReader.GetDateTime("StockDate");
-					itemDetails.Quantity = myReader.GetDecimal("Quantity");
-					itemDetails.Remarks = "" + myReader["Remarks"].ToString();
-                    itemDetails.PurchasePrice = myReader.GetDecimal("PurchasePrice");
+					itemDetails.ProductID = Int64.Parse(dr["ProductID"].ToString());
+					itemDetails.VariationMatrixID = Int64.Parse(dr["VariationMatrixID"].ToString());
+					itemDetails.ProductUnitID = Int32.Parse(dr["ProductUnitID"].ToString());
+					itemDetails.StockTypeID = Int16.Parse(dr["StockTypeID"].ToString());
+					itemDetails.StockDate = DateTime.Parse(dr["StockDate"].ToString());
+					itemDetails.Quantity = decimal.Parse(dr["Quantity"].ToString());
+					itemDetails.Remarks = "" + dr["Remarks"].ToString();
+                    itemDetails.PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
 					items.Add(itemDetails);
 				}
-
-				myReader.Close();
 
 				StockItemDetails[] StockItems = new StockItemDetails[0];
 
@@ -456,7 +453,51 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 		
+        public System.Data.DataTable ListAsDataTable(Int64 StockID, string SortField = "StockItemID", SortOption SortOrder = SortOption.Ascending)
+		{
+			try
+			{
+				string SQL = SQLSelect() + "AND StockID = @StockID " +
+								"ORDER BY " + SortField; 
 
+				
+				if (SortOrder == SortOption.Ascending)
+					SQL += " ASC";
+				else
+					SQL += " DESC";
+
+				MySqlConnection cn = GetConnection();
+
+				MySqlCommand cmd = new MySqlCommand();
+				cmd.Connection = cn;
+				cmd.Transaction = mTransaction;
+				cmd.CommandType = System.Data.CommandType.Text;
+				cmd.CommandText = SQL;
+				
+				MySqlParameter prmStockID = new MySqlParameter("@StockID",MySqlDbType.Int64);
+				prmStockID.Value = StockID;
+				cmd.Parameters.Add(prmStockID);
+
+                System.Data.DataTable dt = new System.Data.DataTable("StockItems");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
+				
+				return dt;			
+			}
+			catch (Exception ex)
+			{
+				TransactionFailed = true;
+				if (IsInTransaction)
+				{
+					mTransaction.Rollback();
+					mTransaction.Dispose(); 
+					mConnection.Close();
+					mConnection.Dispose();
+				}
+
+				throw ex;
+			}	
+		}
         //public MySqlDataReader ProductHistoryReport(long ProductID, DateTime StartDate, DateTime EndDate)
         //{
         //    try

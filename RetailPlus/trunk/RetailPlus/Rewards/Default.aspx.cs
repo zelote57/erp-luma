@@ -30,35 +30,39 @@ namespace AceSoft.RetailPlus.Rewards
 
 			if (Request.QueryString["task"] != null)
 			{
-                ctrlDefault.Visible = false;
-				string task = Common.Decrypt(Request.QueryString["task"].ToString(), Session.SessionID);
-				switch (task)
-				{
-					case "redeemrewards":
-						stHeading = "Redeem Rewards";
-						SearchIndex = SearchCategoryID.NotApplicable;
-						ctrlRedeemRewards.Visible = true;
-						break;
-                    case ReportTypes.RewardsHistory:
-                        stHeading = "Rewards History";
-						SearchIndex = SearchCategoryID.NotApplicable;
-						ctrlReports.Visible = true;
-                        break;
-                    case ReportTypes.RewardsSummary:
-                        stHeading = "Rewards Summary";
-                        SearchIndex = SearchCategoryID.NotApplicable;
-                        ctrlReports.Visible = true;
-                        break;
-					default:
-						break;
-				}
+                if (Request.QueryString["task"].ToString() == "dashboard")
+			    {
+				    stHeading = "Rewards";
+				    SearchIndex = SearchCategoryID.NotApplicable;
+				    ctrlDefault.Visible = true;
+			    }
+                else
+                {
+                    ctrlDefault.Visible = false;
+				    string task = Common.Decrypt(Request.QueryString["task"].ToString(), Session.SessionID);
+				    switch (task)
+				    {
+					    case "redeemrewards":
+						    stHeading = "Redeem Rewards";
+						    SearchIndex = SearchCategoryID.NotApplicable;
+						    ctrlRedeemRewards.Visible = true;
+						    break;
+                        case ReportTypes.RewardsHistory:
+                            stHeading = "Rewards History";
+						    SearchIndex = SearchCategoryID.NotApplicable;
+						    ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
+                            break;
+                        case ReportTypes.RewardsSummary:
+                            stHeading = "Rewards Summary";
+                            SearchIndex = SearchCategoryID.NotApplicable;
+                            ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
+                            break;
+					    default:
+						    break;
+				    }
+                }
 			}
-			else
-			{
-				stHeading = "Rewards";
-				SearchIndex = SearchCategoryID.NotApplicable;
-				ctrlDefault.Visible = true;
-			}
+
 			LargeHeading.Text = stHeading;
 			RightBodySectionSearch.SearchIDSelectedItem = SearchIndex;
 		}

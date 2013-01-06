@@ -121,17 +121,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				Int32 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt32(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("ProdUnit");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				myReader.Close();
+                Int32 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int32.Parse(dr[0].ToString());
+                }
 
 				return iID;
 			}
@@ -249,7 +248,8 @@ namespace AceSoft.RetailPlus.Data
 								"ProductUnitName " +
 							"FROM tblProductUnit " +
 							"WHERE ProductUnitID = @ProductUnitID;";
-				  
+
+                mConnection = null;
 				MySqlConnection cn = GetConnection();
 	 			
 				MySqlCommand cmd = new MySqlCommand();
@@ -262,20 +262,19 @@ namespace AceSoft.RetailPlus.Data
 				prmProductUnitID.Value = ProductUnitID;
 				cmd.Parameters.Add(prmProductUnitID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProducts");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 				
 				ProductUnitDetails Details = new ProductUnitDetails();
-
-				while (myReader.Read()) 
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{
 					Details.ProductUnitID = ProductUnitID;
-					Details.ProductUnitCode = myReader.GetString(1);
-					Details.ProductUnitName = myReader.GetString(2);
+					Details.ProductUnitCode = "" + dr["ProductUnitCode"].ToString();
+                    Details.ProductUnitName = "" + dr["ProductUnitName"].ToString();
 				}
-
-				myReader.Close();
-
-				return Details;
+				
+                return Details;
 			}
 
 			catch (Exception ex)
@@ -449,48 +448,49 @@ namespace AceSoft.RetailPlus.Data
 				MySqlConnection cn = GetConnection();
 	 			
 				Product clsProduct = new Product(cn, mTransaction);
-				Int32 BaseUnitID = clsProduct.Details(ProductID).BaseUnitID;
+				Int32 BaseUnitID = new Product().Details(ProductID).BaseUnitID;
 				
 				Int32 origUnitIDToConvert = UnitIDToConvert;
 
 				decimal ConvertedUnit = Quantity;
 
-				while (BaseUnitID != UnitIDToConvert)
-				{
-					string SQL=	"SELECT " +
-									"BaseUnitID, " +
-									"BottomUnitValue, " +
-									"BaseUnitValue " +
-								"FROM tblProductUnitMatrix " +
-								"WHERE ProductID = @ProductID " +
-								"AND BottomUnitID = @UnitIDToConvert ";
-				  
-					MySqlCommand cmd = new MySqlCommand();
-					cmd.Connection = cn;
-					cmd.Transaction = mTransaction;
-					cmd.CommandType = System.Data.CommandType.Text;
-					cmd.CommandText = SQL;
+                while (BaseUnitID != UnitIDToConvert)
+                {
+                    string SQL = "SELECT " +
+                                    "BaseUnitID, " +
+                                    "BottomUnitValue, " +
+                                    "BaseUnitValue " +
+                                "FROM tblProductUnitMatrix " +
+                                "WHERE ProductID = @ProductID " +
+                                "AND BottomUnitID = @UnitIDToConvert ";
 
-					MySqlParameter prmProductID = new MySqlParameter("@ProductID",System.Data.DbType.Int64);
-					prmProductID.Value = ProductID;
-					cmd.Parameters.Add(prmProductID);
+                    MySqlCommand cmd = new MySqlCommand();
+                    cmd.Connection = cn;
+                    cmd.Transaction = mTransaction;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = SQL;
 
-					MySqlParameter prmUnitIDToConvert = new MySqlParameter("@UnitIDToConvert",System.Data.DbType.Int32);
-					prmUnitIDToConvert.Value = UnitIDToConvert;
-					cmd.Parameters.Add(prmUnitIDToConvert);
+                    MySqlParameter prmProductID = new MySqlParameter("@ProductID", System.Data.DbType.Int64);
+                    prmProductID.Value = ProductID;
+                    cmd.Parameters.Add(prmProductID);
 
-					MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                    MySqlParameter prmUnitIDToConvert = new MySqlParameter("@UnitIDToConvert", System.Data.DbType.Int32);
+                    prmUnitIDToConvert.Value = UnitIDToConvert;
+                    cmd.Parameters.Add(prmUnitIDToConvert);
 
-					int iCtr = 0;
-					while (myReader.Read()) 
-					{
-						iCtr++;
-						UnitIDToConvert = myReader.GetInt32("BaseUnitID");
-						ConvertedUnit = myReader.GetDecimal("BaseUnitValue") * ConvertedUnit / myReader.GetDecimal("BottomUnitValue");
-					}
-					myReader.Close();
-					if (iCtr==0) break;
-				}
+                    System.Data.DataTable dt = new System.Data.DataTable("tblProductUnit");
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    adapter.Fill(dt);
+
+                    int iCtr = 0;
+                    foreach(System.Data.DataRow dr in dt.Rows)
+                    {
+                        iCtr++;
+                        UnitIDToConvert = Int32.Parse(dr["BaseUnitID"].ToString());
+                        ConvertedUnit = Decimal.Parse(dr["BaseUnitValue"].ToString()) * ConvertedUnit / Decimal.Parse(dr["BottomUnitValue"].ToString());
+                    }
+                    if (iCtr == 0) break;
+                }
 
 				return ConvertedUnit;
 			}

@@ -35,7 +35,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                  if (strUnparsedTask.ToLower() == "reportfromposted")
                  {
                      stHeading = "Purchase Return Report";
-                     ctrlReports.Visible = true;
+                     ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                  }
                  else
                  {
@@ -75,7 +75,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                          case "reports":
                              stHeading = "Purchase Return Report";
                              SearchIndex = SearchCategoryID.PurchaseReturns;
-                             ctrlReports.Visible = true;
+                             ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                              break;
                          case "cancel":
                              stHeading = "Cancel Purchase Return";

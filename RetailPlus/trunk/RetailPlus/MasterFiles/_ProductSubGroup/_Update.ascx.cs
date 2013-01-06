@@ -132,10 +132,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 			cboProductSubGroupUnit.SelectedIndex = cboProductSubGroupUnit.Items.IndexOf( cboProductSubGroupUnit.Items.FindByValue(clsDetails.BaseUnitID.ToString()));
 			txtProductPrice.Text = clsDetails.Price.ToString("#,##0.#0");
 			txtPurchasePrice.Text = clsDetails.PurchasePrice.ToString("#,##0.#0");
-			if (clsDetails.IncludeInSubtotalDiscount == 0)
-				chkIncludeInSubtotalDiscount.Checked = false;
-			else
-				chkIncludeInSubtotalDiscount.Checked = true;
+            chkIncludeInSubtotalDiscount.Checked = clsDetails.IncludeInSubtotalDiscount;
 			txtVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
 			txtEVAT.Text = clsDetails.EVAT.ToString("#,##0.#0");
 			txtLocalTax.Text = clsDetails.LocalTax.ToString("#,##0.#0");
@@ -151,7 +148,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 			clsDetails.BaseUnitID = Convert.ToInt32(cboProductSubGroupUnit.SelectedItem.Value);
 			clsDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
 			clsDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
-			clsDetails.IncludeInSubtotalDiscount = Convert.ToInt16(chkIncludeInSubtotalDiscount.Checked);
+			clsDetails.IncludeInSubtotalDiscount = chkIncludeInSubtotalDiscount.Checked;
 			clsDetails.VAT = Convert.ToDecimal(txtVAT.Text);
 			clsDetails.EVAT = Convert.ToDecimal(txtEVAT.Text);
 			clsDetails.LocalTax = Convert.ToDecimal(txtLocalTax.Text);

@@ -199,7 +199,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
             discreteParam.Value = chkIncludePurchasePrice.Checked;
             currentValues = new ParameterValues();
             currentValues.Add(discreteParam);
-            paramField.ApplyCurrentValues(currentValues);
+            paramField.ApplyCurrentValues(currentValues);            
 		}
 
 		#endregion

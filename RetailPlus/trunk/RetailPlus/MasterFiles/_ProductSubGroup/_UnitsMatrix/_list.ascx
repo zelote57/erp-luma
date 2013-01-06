@@ -123,7 +123,7 @@
 					</table>
 				</HeaderTemplate>
 				<ItemTemplate>
-					<TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0">
+					<TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 						<COLGROUP>
 							<col width="10">
 							<col width="10">

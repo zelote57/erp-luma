@@ -68,7 +68,9 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 					case "reports":
 						stHeading = "Transfer Out Report";
 						SearchIndex = SearchCategoryID.TransferOut;
-						ctrlReports.Visible = true;
+						ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
+                        ctrlProcessing.Visible = false;
+                        ctrlProcessing.Dispose();
 						break;
 					case "cancel":
 						stHeading = "Cancel Transfer Out";

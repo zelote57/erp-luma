@@ -1,7 +1,7 @@
 <%@ Reference Page="~/adminfiles/security/_accessgroup/default.aspx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlMenu" Src="../../MasterFiles/_Menu.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlExpiry" Src="../../_Expiry.ascx" %>
-<%@ Register TagPrefix="CTRL" TagName="ctrlProcessing" Src="./../_Processing.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlProcessing" Src="../../_Processing.ascx" %>
 <%@ Page language="c#" Inherits="AceSoft.RetailPlus.MasterFiles._Position._Default" Codebehind="Default.aspx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlDetails" Src="_Details.ascx" %>

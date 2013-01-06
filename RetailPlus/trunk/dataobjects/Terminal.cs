@@ -200,17 +200,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int16 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt16("TerminalID");
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				myReader.Close();
+                Int16 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int16.Parse(dr[0].ToString());
+                }
 
                 TerminalReport clsTerminalReport = new TerminalReport(base.Connection, base.Transaction);
 				clsTerminalReport.Insert(Details.BranchID, iID, CompanyDetails.TerminalNo);

@@ -124,10 +124,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsProductBaseMatrixDetails.UnitID.ToString()));
 			txtProductPrice.Text = clsProductBaseMatrixDetails.Price.ToString("#,##0.#0");
 			txtPurchasePrice.Text = clsProductBaseMatrixDetails.PurchasePrice.ToString("#,##0.#0");
-			if (clsProductBaseMatrixDetails.IncludeInSubtotalDiscount == 0)
-				chkIncludeInSubtotalDiscount.Checked = false;
-			else
-				chkIncludeInSubtotalDiscount.Checked = true;
+            chkIncludeInSubtotalDiscount.Checked = clsProductBaseMatrixDetails.IncludeInSubtotalDiscount;
 			txtVAT.Text = clsProductBaseMatrixDetails.VAT.ToString("#,##0.#0");
 			txtEVAT.Text = clsProductBaseMatrixDetails.EVAT.ToString("#,##0.#0");
 			txtLocalTax.Text = clsProductBaseMatrixDetails.LocalTax.ToString("#,##0.#0");

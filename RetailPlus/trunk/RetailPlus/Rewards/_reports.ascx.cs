@@ -23,6 +23,7 @@ namespace AceSoft.RetailPlus.Rewards
 			{
 				lblReferrer.Text = Request.UrlReferrer.ToString();
 				LoadOptions();
+                GenerateHTML();
                 Session["ReportDocument"] = null;
             }
         }
@@ -265,43 +266,53 @@ namespace AceSoft.RetailPlus.Rewards
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
-            switch (cboReportType.SelectedValue)
-            {
-                case ReportTypes.RewardsHistory:
-                    #region RewardsHistory
+            paramField = Report.DataDefinition.ParameterFields["CustomerName"];
+            discreteParam = new ParameterDiscreteValue();
+            discreteParam.Value = cboContactName.SelectedItem.Text;
+            currentValues = new ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-                    paramField = Report.DataDefinition.ParameterFields["CustomerName"];
-			        discreteParam = new ParameterDiscreteValue();
-			        discreteParam.Value = cboContactName.SelectedItem.Text;
-			        currentValues = new ParameterValues();
-			        currentValues.Add(discreteParam);
-			        paramField.ApplyCurrentValues(currentValues);
+            paramField = Report.DataDefinition.ParameterFields["RewardCardNo"];
+            discreteParam = new ParameterDiscreteValue();
+            discreteParam.Value = cboContactName.SelectedItem.Text;
+            currentValues = new ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-                    paramField = Report.DataDefinition.ParameterFields["RewardCardNo"];
-			        discreteParam = new ParameterDiscreteValue();
-			        discreteParam.Value = cboContactName.SelectedItem.Text;
-			        currentValues = new ParameterValues();
-			        currentValues.Add(discreteParam);
-			        paramField.ApplyCurrentValues(currentValues);
+            DateTime StartTransactionDate = DateTime.MinValue;
+            try
+            { StartTransactionDate = Convert.ToDateTime(txtStartTransactionDate.Text); }
+            catch { }
+            paramField = Report.DataDefinition.ParameterFields["StartTransactionDate"];
+            discreteParam = new ParameterDiscreteValue();
+            discreteParam.Value = StartTransactionDate;
+            currentValues = new ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-                    paramField = Report.DataDefinition.ParameterFields["StartTransactionDate"];
-			        discreteParam = new ParameterDiscreteValue();
-			        discreteParam.Value = DateTime.Parse(txtStartTransactionDate.Text);
-			        currentValues = new ParameterValues();
-			        currentValues.Add(discreteParam);
-			        paramField.ApplyCurrentValues(currentValues);
+            DateTime EndTransactionDate = DateTime.MinValue;
+            try
+            { EndTransactionDate = Convert.ToDateTime(txtEndTransactionDate.Text); }
+            catch { }
+            paramField = Report.DataDefinition.ParameterFields["EndTransactionDate"];
+            discreteParam = new ParameterDiscreteValue();
+            discreteParam.Value = EndTransactionDate;
+            currentValues = new ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-                    paramField = Report.DataDefinition.ParameterFields["EndTransactionDate"];
-			        discreteParam = new ParameterDiscreteValue();
-			        discreteParam.Value = DateTime.Parse(txtEndTransactionDate.Text);
-			        currentValues = new ParameterValues();
-			        currentValues.Add(discreteParam);
-			        paramField.ApplyCurrentValues(currentValues);
+            //switch (cboReportType.SelectedValue)
+            //{
+            //    case ReportTypes.RewardsHistory:
+            //        #region RewardsHistory
 
-                    break;
-                    #endregion
+                    
 
-            }
+            //        break;
+            //        #endregion
+
+            //}
 		}
 
 		#endregion

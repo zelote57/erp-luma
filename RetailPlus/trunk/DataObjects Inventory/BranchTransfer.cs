@@ -687,23 +687,23 @@ namespace AceSoft.RetailPlus.Data
 			Inventory clsInventory = new Inventory(mConnection, mTransaction);
             InventoryDetails clsInventoryDetails;
 
-			MySqlDataReader myReader = clsBranchTransferItem.List(BranchTransferID, "BranchTransferItemID", SortOption.Ascending);
+			System.Data.DataTable dt = clsBranchTransferItem.ListAsDataTable(BranchTransferID, "BranchTransferItemID", SortOption.Ascending);
 
-			while (myReader.Read())
+            foreach (System.Data.DataRow dr in dt.Rows)
 			{
-				long lngProductID = myReader.GetInt64("ProductID");
-				int intProductUnitID = myReader.GetInt16("ProductUnitID");
+				long lngProductID = Int64.Parse(dr["ProductID"].ToString());
+				int intProductUnitID = Int16.Parse(dr["ProductUnitID"].ToString());
 
-				decimal decItemQuantity = myReader.GetDecimal("Quantity");
+				decimal decItemQuantity = decimal.Parse(dr["Quantity"].ToString());
                 decimal decQuantity = clsProductUnit.GetBaseUnitValue(lngProductID, intProductUnitID, decItemQuantity);
 				
-				long lngVariationMatrixID = myReader.GetInt64("VariationMatrixID");
-				string strMatrixDescription = "" + myReader["MatrixDescription"].ToString();
-				string strProductCode = "" + myReader["ProductCode"].ToString();
-                string strProductUnitCode = "" + myReader["ProductUnitCode"].ToString();
-				decimal decUnitCost = myReader.GetDecimal("UnitCost");
-				decimal decItemCost = myReader.GetDecimal("Amount");
-				decimal decVAT = myReader.GetDecimal("VAT");
+				long lngVariationMatrixID = Int64.Parse(dr["VariationMatrixID"].ToString());
+				string strMatrixDescription = "" + dr["MatrixDescription"].ToString();
+				string strProductCode = "" + dr["ProductCode"].ToString();
+                string strProductUnitCode = "" + dr["ProductUnitCode"].ToString();
+				decimal decUnitCost = decimal.Parse(dr["UnitCost"].ToString());
+				decimal decItemCost = decimal.Parse(dr["Amount"].ToString());
+                decimal decVAT = decimal.Parse(dr["VAT"].ToString());
 
 				/*******************************************
 				 * Subtract BranchIDFrom then Add to BranchIDTo -- Inventory
@@ -740,7 +740,6 @@ namespace AceSoft.RetailPlus.Data
                 clsInventory.Insert(clsInventoryDetails);
 
 			}
-			myReader.Close();
 
 		}
 		public void Cancel(long BranchTransferID, DateTime CancelledDate, string Remarks, long CancelledByID)
@@ -1005,49 +1004,49 @@ namespace AceSoft.RetailPlus.Data
 				prmBranchTransferID.Value = BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				System.Data.DataTable dt = new System.Data.DataTable("Stock");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 				
 				BranchTransferDetails Details = new BranchTransferDetails();
 
-				while (myReader.Read()) 
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
 					Details.BranchTransferID = BranchTransferID;
-					Details.BranchTransferNo = "" + myReader["BranchTransferNo"].ToString();
-					Details.BranchTransferDate = myReader.GetDateTime("BranchTransferDate");
-					Details.RequiredDeliveryDate = myReader.GetDateTime("RequiredDeliveryDate");
-					Details.BranchIDFrom = myReader.GetInt16("BranchIDFrom");
-                    Details.BranchCodeFrom = "" + myReader["BranchCodeFrom"].ToString();
-                    Details.BranchNameFrom = "" + myReader["BranchNameFrom"].ToString();
-                    Details.BranchAddressFrom = "" + myReader["BranchAddressFrom"].ToString();
-                    Details.BranchIDTo = myReader.GetInt16("BranchIDTo");
-                    Details.BranchCodeTo = "" + myReader["BranchCodeTo"].ToString();
-                    Details.BranchNameTo = "" + myReader["BranchNameTo"].ToString();
-                    Details.BranchAddressTo = "" + myReader["BranchAddressTo"].ToString();
-					Details.TransferrerID = myReader.GetInt64("TransferrerID");
-                    Details.TransferrerName = "" + myReader["TransferrerName"].ToString();
-                    Details.RequestedBy = "" + myReader["RequestedBy"].ToString();
-					Details.SubTotal = myReader.GetDecimal("SubTotal");
-					Details.Discount = myReader.GetDecimal("Discount");
-                    Details.DiscountApplied = myReader.GetDecimal("DiscountApplied");
-                    Details.DiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), myReader.GetString("DiscountType"));
-					Details.VAT = myReader.GetDecimal("VAT");
-					Details.VatableAmount = myReader.GetDecimal("VatableAmount");
-                    Details.EVAT = myReader.GetDecimal("EVAT");
-                    Details.EVatableAmount = myReader.GetDecimal("EVatableAmount");
-                    Details.LocalTax = myReader.GetDecimal("LocalTax");
-                    Details.Status = (BranchTransferStatus)Enum.Parse(typeof(BranchTransferStatus), myReader.GetString("Status"));
-                    Details.Remarks = "" + myReader["Remarks"].ToString();
-                    Details.ReceivedBy = "" + myReader["ReceivedBy"].ToString();
-                    Details.DeliveryDate = myReader.GetDateTime("DeliveryDate");
-                    Details.UnpaidAmount = myReader.GetDecimal("UnpaidAmount");
-                    Details.PaidAmount = myReader.GetDecimal("PaidAmount");
-                    Details.PaymentStatus = (BranchTransferPaymentStatus)Enum.Parse(typeof(BranchTransferPaymentStatus), myReader.GetString("PaymentStatus"));
-                    Details.Freight = myReader.GetDecimal("Freight");
-                    Details.Deposit = myReader.GetDecimal("Deposit");
-                    Details.TotalItemDiscount = myReader.GetDecimal("TotalItemDiscount");
+					Details.BranchTransferNo = "" + dr["BranchTransferNo"].ToString();
+					Details.BranchTransferDate = DateTime.Parse(dr["BranchTransferDate"].ToString());
+					Details.RequiredDeliveryDate = DateTime.Parse(dr["RequiredDeliveryDate"].ToString());
+                    Details.BranchIDFrom = Int16.Parse(dr["BranchIDFrom"].ToString());
+                    Details.BranchCodeFrom = "" + dr["BranchCodeFrom"].ToString();
+                    Details.BranchNameFrom = "" + dr["BranchNameFrom"].ToString();
+                    Details.BranchAddressFrom = "" + dr["BranchAddressFrom"].ToString();
+                    Details.BranchIDTo = Int16.Parse(dr["BranchIDTo"].ToString());
+                    Details.BranchCodeTo = "" + dr["BranchCodeTo"].ToString();
+                    Details.BranchNameTo = "" + dr["BranchNameTo"].ToString();
+                    Details.BranchAddressTo = "" + dr["BranchAddressTo"].ToString();
+					Details.TransferrerID = Int64.Parse(dr["TransferrerID"].ToString());
+                    Details.TransferrerName = "" + dr["TransferrerName"].ToString();
+                    Details.RequestedBy = "" + dr["RequestedBy"].ToString();
+					Details.SubTotal = decimal.Parse(dr["SubTotal"].ToString());
+					Details.Discount = decimal.Parse(dr["Discount"].ToString());
+                    Details.DiscountApplied = decimal.Parse(dr["DiscountApplied"].ToString());
+                    Details.DiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), Convert.ToInt16(dr["DiscountType"]).ToString());
+					Details.VAT = decimal.Parse(dr["VAT"].ToString());
+					Details.VatableAmount = decimal.Parse(dr["VatableAmount"].ToString());
+                    Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
+                    Details.EVatableAmount = decimal.Parse(dr["EVatableAmount"].ToString());
+                    Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
+                    Details.Status = (BranchTransferStatus)Enum.Parse(typeof(BranchTransferStatus), Convert.ToInt16(dr["Status"]).ToString());
+                    Details.Remarks = "" + dr["Remarks"].ToString();
+                    Details.ReceivedBy = "" + dr["ReceivedBy"].ToString();
+                    Details.DeliveryDate = DateTime.Parse(dr["DeliveryDate"].ToString());
+                    Details.UnpaidAmount = decimal.Parse(dr["UnpaidAmount"].ToString());
+                    Details.PaidAmount = decimal.Parse(dr["PaidAmount"].ToString());
+                    Details.PaymentStatus = (BranchTransferPaymentStatus)Enum.Parse(typeof(BranchTransferPaymentStatus), Convert.ToInt16(dr["PaymentStatus"]).ToString());
+                    Details.Freight = decimal.Parse(dr["Freight"].ToString());
+                    Details.Deposit = decimal.Parse(dr["Deposit"].ToString());
+                    Details.TotalItemDiscount = decimal.Parse(dr["TotalItemDiscount"].ToString());
 				}
-
-				myReader.Close();
 
 				return Details;
 			}

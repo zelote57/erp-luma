@@ -661,7 +661,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 clsBranchProductDetails.DateCreated = DateTime.Now;
                                 clsBranchProductDetails.Price = Convert.ToDecimal(xmlReader.GetAttribute("Price"));
                                 clsBranchProductDetails.PurchasePrice = Convert.ToDecimal(xmlReader.GetAttribute("PurchasePrice"));
-                                clsBranchProductDetails.IncludeInSubtotalDiscount = Convert.ToInt16(xmlReader.GetAttribute("IncludeInSubtotalDiscount"));
+                                clsBranchProductDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(xmlReader.GetAttribute("IncludeInSubtotalDiscount"));
                                 clsBranchProductDetails.VAT = Convert.ToDecimal(xmlReader.GetAttribute("VAT"));
                                 clsBranchProductDetails.EVAT = Convert.ToDecimal(xmlReader.GetAttribute("EVAT"));
                                 clsBranchProductDetails.LocalTax = Convert.ToDecimal(xmlReader.GetAttribute("LocalTax"));
@@ -894,7 +894,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             clsBranchProductDetails.DateCreated = DateTime.Now;
                             clsBranchProductDetails.Price = Convert.ToDecimal(xmlReader.GetAttribute("Price"));
                             clsBranchProductDetails.PurchasePrice = Convert.ToDecimal(xmlReader.GetAttribute("PurchasePrice"));
-                            clsBranchProductDetails.IncludeInSubtotalDiscount = Convert.ToInt16(xmlReader.GetAttribute("IncludeInSubtotalDiscount"));
+                            clsBranchProductDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(xmlReader.GetAttribute("IncludeInSubtotalDiscount"));
                             clsBranchProductDetails.VAT = Convert.ToDecimal(xmlReader.GetAttribute("VAT"));
                             clsBranchProductDetails.EVAT = Convert.ToDecimal(xmlReader.GetAttribute("EVAT"));
                             clsBranchProductDetails.LocalTax = Convert.ToDecimal(xmlReader.GetAttribute("LocalTax"));

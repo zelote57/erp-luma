@@ -78,6 +78,23 @@ namespace AceSoft.RetailPlus.Monitor
 			Console.WriteLine(ConsoleMonitor() + "");
 
 			Data.Billing clsBilling = new Data.Billing();
+
+            // check cut off date
+            DateTime dteCreditCutOffDate = clsBilling.getCreditCutOffDate();
+            if (dteCreditCutOffDate >= DateTime.Now)
+            {
+                clsBilling.CommitAndDispose();
+                Console.WriteLine(ConsoleMonitor() + "Will not process credit bill. Next processing date must be after CreditCutOffDate: [" + dteCreditCutOffDate.ToString("dd-MM-yyyy") + "]. System will only process after cut-off-date. ");
+                return;
+            }
+
+            DateTime dteCreditPurcEndDateToProcess = clsBilling.getCreditPurcEndDateToProcess();
+            if (dteCreditPurcEndDateToProcess >= DateTime.Now)
+            {
+                clsBilling.CommitAndDispose();
+                Console.WriteLine(ConsoleMonitor() + "Will not process credit bill. CreditPurcEndDateToProcess: " + dteCreditPurcEndDateToProcess.ToString("dd-MM-yyyy") + " is lower than current date. ");
+                return;
+            }
 			clsBilling.ProcessCurrentBill();
 
 			List<Data.BillingDetails> lstBillingDetails = clsBilling.List();

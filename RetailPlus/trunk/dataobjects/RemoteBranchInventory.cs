@@ -175,16 +175,15 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.Clear();
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-                Int16 iID = 0;
-
-                while (myReader.Read())
+                Int64 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    iID = myReader.GetInt16(0);
+                    iID = Int64.Parse(dr[0].ToString());
                 }
-
-                myReader.Close();
 
                 return iID;
             }

@@ -34,7 +34,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
                 if (strUnparsedTask.ToLower() == "reportfromposted")
                 {
                     stHeading = "Sales Order Report";
-                    ctrlReports.Visible = true;
+                    ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
                         case "reports":
                             stHeading = "Sales Order Report";
                             SearchIndex = SearchCategoryID.SalesOrders;
-                            ctrlReports.Visible = true;
+                            ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                             break;
                         case "cancel":
                             stHeading = "Cancel Sales Order";

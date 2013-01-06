@@ -497,7 +497,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                     clsDetails.BaseUnitID = Data.Unit.DEFAULT_UNIT_ID;
                     clsDetails.Price = 0;
                     clsDetails.PurchasePrice = 0;
-                    clsDetails.IncludeInSubtotalDiscount = 1;
+                    clsDetails.IncludeInSubtotalDiscount = true;
                     clsDetails.VAT = Constants.DEFAULTS_VAT;
                     clsDetails.EVAT = 0;
                     clsDetails.LocalTax = 0;
@@ -1413,7 +1413,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                                         clsProductDetails.DateCreated = DateTime.Now;
                                         clsProductDetails.Price = Convert.ToDecimal(xmlReader.GetAttribute("Price"));
                                         clsProductDetails.PurchasePrice = Convert.ToDecimal(xmlReader.GetAttribute("PurchasePrice"));
-                                        clsProductDetails.IncludeInSubtotalDiscount = Convert.ToInt16(xmlReader.GetAttribute("IncludeInSubtotalDiscount"));
+                                        clsProductDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(xmlReader.GetAttribute("IncludeInSubtotalDiscount"));
                                         clsProductDetails.VAT = Convert.ToDecimal(xmlReader.GetAttribute("VAT"));
                                         clsProductDetails.EVAT = Convert.ToDecimal(xmlReader.GetAttribute("EVAT"));
                                         clsProductDetails.LocalTax = Convert.ToDecimal(xmlReader.GetAttribute("LocalTax"));

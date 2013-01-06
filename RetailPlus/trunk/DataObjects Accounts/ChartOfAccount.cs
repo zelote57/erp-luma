@@ -144,17 +144,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				Int32 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt32(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("ChartOfAccount");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				myReader.Close();
+                Int32 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int32.Parse(dr[0].ToString());
+                }
 
 				return iID;
 			}
@@ -324,30 +323,30 @@ namespace AceSoft.RetailPlus.Data
 				prmChartOfAccountID.Value = ChartOfAccountID;
 				cmd.Parameters.Add(prmChartOfAccountID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("ChartOfAccount");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 				
 				ChartOfAccountDetails Details = new ChartOfAccountDetails();
 
-				while (myReader.Read()) 
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{
 					Details.ChartOfAccountID = ChartOfAccountID;
-					Details.ChartOfAccountCode = "" + myReader["ChartOfAccountCode"].ToString();
-					Details.ChartOfAccountName = "" + myReader["ChartOfAccountName"].ToString();
-                    Details.Debit = myReader.GetDecimal("Debit");
-                    Details.Credit = myReader.GetDecimal("Credit");
-					Details.AccountCategoryID = myReader.GetInt32("AccountCategoryID");
-					Details.AccountCategoryCode = "" + myReader["AccountCategoryCode"].ToString();
-					Details.AccountCategoryName = "" + myReader["AccountCategoryName"].ToString();
-					Details.AccountSummaryID = myReader.GetInt32("AccountSummaryID");
-					Details.AccountSummaryCode = "" + myReader["AccountSummaryCode"].ToString();
-					Details.AccountSummaryName = "" + myReader["AccountSummaryName"].ToString();
-                    Details.AccountClassificationID = myReader.GetInt16("AccountClassificationID");
-                    Details.AccountClassificationCode = "" + myReader["AccountClassificationCode"].ToString();
-                    Details.AccountClassificationName = "" + myReader["AccountClassificationName"].ToString();
-                    Details.AccountClassificationType = (AccountClassificationType)Enum.Parse(typeof(AccountClassificationType), myReader.GetString("AccountClassificationType"));
+					Details.ChartOfAccountCode = "" + dr["ChartOfAccountCode"].ToString();
+					Details.ChartOfAccountName = "" + dr["ChartOfAccountName"].ToString();
+                    Details.Debit = decimal.Parse(dr["Debit"].ToString());
+                    Details.Credit = decimal.Parse(dr["Credit"].ToString());
+					Details.AccountCategoryID = Int32.Parse(dr["AccountCategoryID"].ToString());
+					Details.AccountCategoryCode = "" + dr["AccountCategoryCode"].ToString();
+					Details.AccountCategoryName = "" + dr["AccountCategoryName"].ToString();
+					Details.AccountSummaryID = Int32.Parse(dr["AccountSummaryID"].ToString());
+					Details.AccountSummaryCode = "" + dr["AccountSummaryCode"].ToString();
+					Details.AccountSummaryName = "" + dr["AccountSummaryName"].ToString();
+                    Details.AccountClassificationID = Int16.Parse(dr["AccountClassificationID"].ToString());
+                    Details.AccountClassificationCode = "" + dr["AccountClassificationCode"].ToString();
+                    Details.AccountClassificationName = "" + dr["AccountClassificationName"].ToString();
+                    Details.AccountClassificationType = (AccountClassificationType)Enum.Parse(typeof(AccountClassificationType), dr["AccountClassificationType"].ToString());
 				}
-
-				myReader.Close();
 
 				return Details;
 			}

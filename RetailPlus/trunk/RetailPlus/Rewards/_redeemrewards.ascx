@@ -45,10 +45,30 @@
                                             <asp:DropDownList ID="cboCustomer" runat="server" AutoPostBack="True" CssClass="ms-long" OnSelectedIndexChanged="cboCustomer_SelectedIndexChanged"> </asp:DropDownList>
                                             <asp:TextBox ID="txtCustomer" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short"></asp:TextBox>
                                             <asp:ImageButton ID="cmdCustomer" runat="server" ImageUrl="../_layouts/images/SPSSearch2.gif" ToolTip="Execute search" CausesValidation="False" Style="cursor: hand" OnClick="cmdCustomer_Click" />
+                                            <label class="ms-error">Enter Customer or Reward Card No to search</label>
                                         </ContentTemplate>
                                         <Triggers> 
                                             <asp:AsyncPostBackTrigger ControlID="cboCustomer" EventName="SelectedIndexChanged" />
                                             <asp:AsyncPostBackTrigger ControlID="cmdCustomer" EventName="Click" />    
+                                            <asp:AsyncPostBackTrigger ControlID="imgRedeemRewards" EventName="Click" />
+                                            <asp:AsyncPostBackTrigger ControlID="cmdRedeemRewards" EventName="Click" />
+                                        </Triggers> 
+                                    </asp:UpdatePanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td nowrap><label>Reward Card No</label></td>
+                                <td> : </td>
+                                <td nowrap>
+                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" >
+                                        <ContentTemplate >
+                                            <asp:TextBox ID="txtRewardCardNo" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-long-disabled"></asp:TextBox>
+                                        </ContentTemplate>
+                                        <Triggers> 
+                                            <asp:AsyncPostBackTrigger ControlID="cboCustomer" EventName="SelectedIndexChanged" />
+                                            <asp:AsyncPostBackTrigger ControlID="cmdCustomer" EventName="Click" />    
+                                            <asp:AsyncPostBackTrigger ControlID="cboProductCode" EventName="SelectedIndexChanged" />
+                                            <asp:AsyncPostBackTrigger ControlID="cmdProductCode" EventName="Click" />
                                             <asp:AsyncPostBackTrigger ControlID="imgRedeemRewards" EventName="Click" />
                                             <asp:AsyncPostBackTrigger ControlID="cmdRedeemRewards" EventName="Click" />
                                         </Triggers> 

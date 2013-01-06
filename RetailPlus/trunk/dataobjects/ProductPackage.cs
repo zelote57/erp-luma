@@ -304,12 +304,12 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@UnitID", Details.UnitID);
                 cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-                while (myReader.Read())
-                { Details.PackageID = myReader.GetInt64("PackageID"); }
-
-                myReader.Close();
+                foreach(System.Data.DataRow dr in dt.Rows)
+                { Details.PackageID = Int64.Parse(dr["PackageID"].ToString()); }
 
                 Update(Details, pvtUID, pvtChangeDate, pvtHistoryRemarks);
             }
@@ -801,16 +801,16 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
                 cmd.Parameters.AddWithValue("@UnitID", UnitID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
                 long lngRetValue = 0;
 
-                while (myReader.Read())
+                foreach(System.Data.DataRow dr in dt.Rows)
                 {
-                    lngRetValue = myReader.GetInt64("PackageID");
+                    lngRetValue = Int64.Parse(dr["PackageID"].ToString());
                 }
-
-                myReader.Close();
 
                 return lngRetValue;
             }
@@ -851,9 +851,11 @@ namespace AceSoft.RetailPlus.Data
                 prmPackageID.Value = PackageID;
                 cmd.Parameters.Add(prmPackageID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-                ProductPackageDetails clsDetails = setDetails(myReader);
+                ProductPackageDetails clsDetails = setDetails(dt);
 
                 return clsDetails;
 			}
@@ -895,9 +897,11 @@ namespace AceSoft.RetailPlus.Data
                 prmProductID.Value = ProductID;
                 cmd.Parameters.Add(prmProductID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-                ProductPackageDetails clsDetails = setDetails(myReader);
+                ProductPackageDetails clsDetails = setDetails(dt);
 
                 return clsDetails;
 			}
@@ -944,9 +948,11 @@ namespace AceSoft.RetailPlus.Data
                 prmUnitID.Value = UnitID;
                 cmd.Parameters.Add(prmUnitID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-                ProductPackageDetails clsDetails = setDetails(myReader);
+                ProductPackageDetails clsDetails = setDetails(dt);
 
                 return clsDetails;
             }
@@ -993,9 +999,11 @@ namespace AceSoft.RetailPlus.Data
                 prmBarCode.Value = BarCode;
                 cmd.Parameters.Add(prmBarCode);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-                ProductPackageDetails clsDetails = setDetails(myReader);
+                ProductPackageDetails clsDetails = setDetails(dt);
 
                 return clsDetails;
             }
@@ -1037,9 +1045,11 @@ namespace AceSoft.RetailPlus.Data
                 prmBarCode.Value = BarCode;
                 cmd.Parameters.Add(prmBarCode);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-                ProductPackageDetails clsDetails = setDetails(myReader);
+                ProductPackageDetails clsDetails = setDetails(dt);
 
                 return clsDetails;
             }
@@ -1081,6 +1091,31 @@ namespace AceSoft.RetailPlus.Data
             }
 
             myReader.Close();
+
+            return clsDetails;
+        }
+
+        private ProductPackageDetails setDetails(System.Data.DataTable dt)
+        {
+            ProductPackageDetails clsDetails = new ProductPackageDetails(); ;
+
+            foreach(System.Data.DataRow dr in dt.Rows)
+            {
+                clsDetails.PackageID = Convert.ToInt64(dr[ProductPackageColumnNames.PackageID].ToString());
+                clsDetails.ProductID = Convert.ToInt64(dr[ProductPackageColumnNames.ProductID].ToString());
+                clsDetails.UnitID = Convert.ToInt32(dr[ProductPackageColumnNames.UnitID].ToString());
+                clsDetails.UnitCode = "" + dr[ProductPackageColumnNames.UnitCode].ToString();
+                clsDetails.UnitName = "" + dr[ProductPackageColumnNames.UnitName].ToString();
+                clsDetails.Price = Convert.ToDecimal(dr[ProductPackageColumnNames.Price].ToString());
+                clsDetails.PurchasePrice = Convert.ToDecimal(dr[ProductPackageColumnNames.PurchasePrice].ToString());
+                clsDetails.Quantity = Convert.ToDecimal(dr[ProductPackageColumnNames.Quantity].ToString());
+                clsDetails.VAT = Convert.ToDecimal(dr[ProductPackageColumnNames.VAT].ToString());
+                clsDetails.EVAT = Convert.ToDecimal(dr[ProductPackageColumnNames.EVAT].ToString());
+                clsDetails.LocalTax = Convert.ToDecimal(dr[ProductPackageColumnNames.LocalTax].ToString());
+                clsDetails.BarCode1 = "" + dr[ProductPackageColumnNames.BarCode1].ToString();
+                clsDetails.BarCode2 = "" + dr[ProductPackageColumnNames.BarCode2].ToString();
+                clsDetails.BarCode3 = "" + dr[ProductPackageColumnNames.BarCode3].ToString();
+            }
 
             return clsDetails;
         }
@@ -1437,16 +1472,18 @@ namespace AceSoft.RetailPlus.Data
 				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
-				
-				myReader.Read();
 
-				int recCtr = myReader.GetInt32(0);
+                System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-				myReader.Close();
+                int iRetValue = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iRetValue = int.Parse(dr[0].ToString());
+                }
 
-				return recCtr;
+				return iRetValue;
 			}
 			catch (Exception ex)
 			{

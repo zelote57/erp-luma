@@ -43,7 +43,7 @@
                                         <asp:ListItem Value="2">SUPPLIER</asp:ListItem>
                                         <asp:ListItem Selected="True" Value="3">BOTH</asp:ListItem>
                                     </asp:DropDownList>
-									<asp:Button id="cmdView" runat="server" Text="Go" onclick="cmdView_Click"></asp:Button>
+									<asp:Button id="cmdView" runat="server" Text="Go" onclick="cmdView_Click" OnClientClick="NewWindow();"></asp:Button>
 								</td>
 							</TR>
 						</TABLE>

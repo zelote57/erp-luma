@@ -13,6 +13,12 @@ function OpenProductsDialog()
 	}
 }
 
+function openNewWin(url) {
+
+    var x = window.open(url, 'RetailPlus', 'toolbar=0,location=0,menubar=0');
+    x.focus();
+}
+
 function AllNum()
 {
 	if (window.event.keyCode != 46)	//46 is for .

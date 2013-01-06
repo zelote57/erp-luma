@@ -56,7 +56,7 @@
 				<tr>
 					<td class="Ms-phnavmidl1"></td>
 					<td nowrap>
-						<a id="A1" href="/RetailPlus/Rewards/Default.aspx" target="_self" title="Rewards" accesskey="W">
+						<a id="A1" href="/RetailPlus/Rewards/Default.aspx?task=dashboard" target="_self" title="Rewards" accesskey="W">
 							Rewards</a></td>
 					<td class="Ms-phnavmidr1"></td>
 				</tr>

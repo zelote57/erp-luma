@@ -21,6 +21,7 @@ namespace AceSoft.RetailPlus.Rewards._Members
             if (!IsPostBack && Visible)
             {
                 ManageSecurity();
+                LoadOptions();
                 LoadList();
                 cmdDelete.Attributes.Add("onClick", "return confirm_delete();");
                 imgDelete.Attributes.Add("onClick", "return confirm_delete();");
@@ -163,10 +164,33 @@ namespace AceSoft.RetailPlus.Rewards._Members
             }
         }
 
+        protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            LoadList();
+        }
+
         #endregion
 
 		#region Private Methods
 
+        private void LoadOptions()
+        {
+            cboRewardCardStatus.Items.Clear();
+
+            foreach (RewardCardStatus selection in Enum.GetValues(typeof(RewardCardStatus)))
+            {
+                cboRewardCardStatus.Items.Add(new ListItem(selection.ToString("G"), selection.ToString("d")));
+            }
+            cboRewardCardStatus.Items.Insert(0, new ListItem(Constants.ALL, Constants.ALL));
+            cboRewardCardStatus.SelectedIndex = 0;
+
+            foreach (Constants.DateSelectionString selection in Enum.GetValues(typeof(Constants.DateSelectionString)))
+            {
+                cboBirthDate.Items.Add(new ListItem(selection.ToString("G"), selection.ToString("d")));
+            }
+            cboBirthDate.SelectedIndex = 0;
+            
+        }
 		private void ManageSecurity()
 		{
 			Int64 UID = Convert.ToInt64(Session["UID"]);
@@ -187,16 +211,16 @@ namespace AceSoft.RetailPlus.Rewards._Members
 		}
 		private void LoadSortFieldOptions(DataListItemEventArgs e)
 		{
-			string stParam = null;		
+			string stParam = null;
 
-			SortOption sortoption = SortOption.Ascending;
+            System.Data.SqlClient.SortOrder sortoption = System.Data.SqlClient.SortOrder.Ascending;
 			if (Request.QueryString["sortoption"]!=null)
-				sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);
+                sortoption = (System.Data.SqlClient.SortOrder)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);
 
-			if (sortoption == SortOption.Ascending)
-				stParam += "?sortoption=" + Common.Encrypt(SortOption.Desscending.ToString("G"), Session.SessionID);
-			else if (sortoption == SortOption.Desscending)
-				stParam += "?sortoption=" + Common.Encrypt(SortOption.Ascending.ToString("G"), Session.SessionID);
+            if (sortoption == System.Data.SqlClient.SortOrder.Ascending)
+                stParam += "?sortoption=" + Common.Encrypt(System.Data.SqlClient.SortOrder.Descending.ToString("G"), Session.SessionID);
+            else if (sortoption == System.Data.SqlClient.SortOrder.Descending)
+                stParam += "?sortoption=" + Common.Encrypt(System.Data.SqlClient.SortOrder.Ascending.ToString("G"), Session.SessionID);
 
 			System.Collections.Specialized.NameValueCollection querystrings = Request.QueryString;;
 			foreach(string querystring in querystrings.AllKeys)
@@ -233,26 +257,7 @@ namespace AceSoft.RetailPlus.Rewards._Members
             clsContactColumns.ContactID = true;
             clsContactColumns.ContactCode = true;
             clsContactColumns.ContactName = true;
-            //clsContactColumns.ContactGroupID = true;
-            //clsContactColumns.ContactGroupName = true;
-            //clsContactColumns.ModeOfTerms = true;
-            //clsContactColumns.Terms = true;
-            //clsContactColumns.Address = true;
-            //clsContactColumns.BusinessName = true;
-            //clsContactColumns.TelephoneNo = true;
-            //clsContactColumns.Remarks = true;
-            //clsContactColumns.Debit = true;
-            //clsContactColumns.Credit = true;
-            //clsContactColumns.CreditLimit = true;
-            //clsContactColumns.IsCreditAllowed = true;
-            //clsContactColumns.DateCreated = true;
-            //clsContactColumns.Deleted = true;
-            //clsContactColumns.DepartmentID = true;
-            //clsContactColumns.DepartmentName = true;
-            //clsContactColumns.PositionID = true;
-            //clsContactColumns.PositionName = true;
             clsContactColumns.RewardDetails = true;
-            //clsContactColumns.CreditDetails = true;
 
             ContactColumns clsSearchColumns = new ContactColumns();
             clsSearchColumns.ContactCode = true;
@@ -263,16 +268,26 @@ namespace AceSoft.RetailPlus.Rewards._Members
 			if (Request.QueryString["sortfield"]!=null)
 			{	SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID);	}
 			
-			SortOption sortoption = SortOption.Ascending;
+			System.Data.SqlClient.SortOrder sortoption = System.Data.SqlClient.SortOrder.Ascending;
 			if (Request.QueryString["sortoption"]!=null)
-			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
+			{	sortoption = (System.Data.SqlClient.SortOrder) Enum.Parse(typeof(System.Data.SqlClient.SortOrder), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
             string SearchKey = string.Empty;
 			if (Request.QueryString["Search"]!=null)
 			{
                 SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
+                txtSearch.Text = SearchKey;
 			}
-            PageData.DataSource = clsContact.Customers(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 0, false, null, System.Data.SqlClient.SortOrder.Ascending).DefaultView;
+
+            string strSearch = txtSearch.Text.Trim();
+
+            Constants.DateSelectionString BirthDate = (Constants.DateSelectionString)Enum.Parse(typeof(Constants.DateSelectionString), cboBirthDate.SelectedItem.Value);
+            
+            DateTime dteRewardExpiryDateFrom = !DateTime.TryParse(txtRewardExpiryDateFrom.Text, out dteRewardExpiryDateFrom) ? dteRewardExpiryDateFrom : DateTime.MinValue;            
+            DateTime dteRewardExpiryDateTo = !DateTime.TryParse(txtRewardExpiryDateTo.Text, out dteRewardExpiryDateTo) ? dteRewardExpiryDateTo : DateTime.MinValue;
+            Int16 intRewardCardStatus = (cboRewardCardStatus.SelectedItem.Value == Constants.ALL) ? Int16.Parse("-1") : Int16.Parse(cboRewardCardStatus.SelectedItem.Value);
+
+            PageData.DataSource = clsContact.CustomersWithRewards(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, 0, strSearch, dteRewardExpiryDateFrom, dteRewardExpiryDateTo, BirthDate, intRewardCardStatus, SortField, sortoption).DefaultView;
 
 			clsContact.CommitAndDispose();
 

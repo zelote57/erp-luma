@@ -792,16 +792,16 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
                 cmd.Parameters.AddWithValue("@UnitID", UnitID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("MatrixPackage");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
                 long lngRetValue = 0;
 
-                while (myReader.Read())
+                foreach(System.Data.DataRow dr in dt.Rows)
                 {
-                    lngRetValue = myReader.GetInt64("PackageID");
+                    lngRetValue = Int64.Parse(dr["PackageID"].ToString());
                 }
-
-                myReader.Close();
 
                 return lngRetValue;
             }

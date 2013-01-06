@@ -68,7 +68,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
 					case "reports":
 						stHeading = "Transfer In Report";
 						SearchIndex = SearchCategoryID.NotApplicable;
-						ctrlReports.Visible = true;
+						ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
 						break;
 					case "cancel":
 						stHeading = "Cancel Transfer In";

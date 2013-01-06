@@ -119,7 +119,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup
 			clsDetails.BaseUnitID = Convert.ToInt32(cboProductGroupUnit.SelectedItem.Value);
 			clsDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
 			clsDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
-			clsDetails.IncludeInSubtotalDiscount = Convert.ToInt16(chkIncludeInSubtotalDiscount.Checked);
+			clsDetails.IncludeInSubtotalDiscount = chkIncludeInSubtotalDiscount.Checked;
 			clsDetails.VAT = Convert.ToDecimal(txtVAT.Text);
 			clsDetails.EVAT = Convert.ToDecimal(txtEVAT.Text);
 			clsDetails.LocalTax = Convert.ToDecimal(txtLocalTax.Text);

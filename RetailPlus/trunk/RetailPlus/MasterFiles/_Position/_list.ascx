@@ -112,7 +112,7 @@
 					</table>
 				</HeaderTemplate>
 				<ItemTemplate>
-					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblItemTemplate">
+					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblItemTemplate" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 						<colgroup>
 							<col width="10">
 							<col width="10">

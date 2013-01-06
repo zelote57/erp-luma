@@ -34,7 +34,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
                 if (strUnparsedTask.ToLower() == "reportfromposted")
                 {
                     stHeading = "Purchase Debit Memo Report";
-                    ctrlReports.Visible = true;
+                    ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
                         case "reports":
                             stHeading = "Purchase Debit Memo Report";
                             SearchIndex = SearchCategoryID.PurchaseDebitMemo;
-                            ctrlReports.Visible = true;
+                            ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
                             break;
                         case "cancel":
                             stHeading = "Cancel Purchase Debit Memo";

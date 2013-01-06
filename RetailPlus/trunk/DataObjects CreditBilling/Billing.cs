@@ -199,6 +199,91 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public DateTime getCreditPurcEndDateToProcess()
+        {
+            try
+            {
+                string SQL = "SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'CreditPurcEndDateToProcess'";
+
+                MySqlConnection cn = GetConnection();
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = cn;
+                cmd.Transaction = mTransaction;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                System.Data.DataTable dt = new System.Data.DataTable("Billing");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
+
+                DateTime dteRetValue = DateTime.MaxValue;
+
+                foreach(System.Data.DataRow dr in dt.Rows)
+                {
+                    dteRetValue = DateTime.Parse(dr["ConfigValue"].ToString());
+                }
+
+                return dteRetValue;
+            }
+
+            catch (Exception ex)
+            {
+                TransactionFailed = true;
+                if (IsInTransaction)
+                {
+                    mTransaction.Rollback();
+                    mTransaction.Dispose();
+                    mConnection.Close();
+                    mConnection.Dispose();
+                }
+
+                throw ex;
+            }
+        }
+
+        public DateTime getCreditCutOffDate()
+        {
+            try
+            {
+                string SQL = "SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'CreditCutOffDate'";
+
+                MySqlConnection cn = GetConnection();
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = cn;
+                cmd.Transaction = mTransaction;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                System.Data.DataTable dt = new System.Data.DataTable("Billing");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
+
+                DateTime dteRetValue = DateTime.MaxValue;
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    dteRetValue = DateTime.Parse(dr["ConfigValue"].ToString());
+                }
+
+                return dteRetValue;
+            }
+
+            catch (Exception ex)
+            {
+                TransactionFailed = true;
+                if (IsInTransaction)
+                {
+                    mTransaction.Rollback();
+                    mTransaction.Dispose();
+                    mConnection.Close();
+                    mConnection.Dispose();
+                }
+
+                throw ex;
+            }
+        }
 
         private BillingDetails setDetails(System.Data.DataRow dr)
         {

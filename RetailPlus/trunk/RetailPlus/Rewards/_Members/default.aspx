@@ -26,6 +26,7 @@
 		<LINK href="../../menu.css" type="text/css" rel="stylesheet">
 		<LINK href="../../ows.css" type="text/css" rel="stylesheet">
 		<LINK href="../../sps.css" type="text/css" rel="stylesheet">
+        <script language="JavaScript" src="../../_Scripts/Calendar.js"></script>
 	</HEAD>
 	<BODY id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
 		<FORM id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">

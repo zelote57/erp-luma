@@ -421,7 +421,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                     clsDetails.BaseUnitID = Data.Unit.DEFAULT_UNIT_ID;
                     clsDetails.Price = 0;
                     clsDetails.PurchasePrice = 0;
-                    clsDetails.IncludeInSubtotalDiscount = 1;
+                    clsDetails.IncludeInSubtotalDiscount = true;
                     clsDetails.VAT = Constants.DEFAULTS_VAT;
                     clsDetails.EVAT = 0;
                     clsDetails.LocalTax = 0;

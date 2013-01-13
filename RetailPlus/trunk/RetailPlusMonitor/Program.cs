@@ -46,16 +46,16 @@ namespace AceSoft.RetailPlus.Monitor
                     string strDB = dr["db"].ToString();
                     int iTime = int.Parse(dr["Time"].ToString());
                     string strInfo = dr["Info"].ToString();
-                    if (strInfo.ToUpper() != "SHOW PROCESSLIST" && strDB == "pos")
+                    if (strInfo.ToUpper() != "SHOW PROCESSLIST" || strDB == "pos")
                     {
                         WriteProcessToMonitor("      id:" + iID.ToString() + "  host:" + strHost + "  Time:" + iTime.ToString() + "  Info:" + strInfo);
-                        if (iTime > 60)
+                        if (iTime > Constants.C_DEFAULT_MYSQL_PROCESS_TIMEOUT && strDB == "pos")
                         {
-                            WriteProcessToMonitor("      status not ok... killing process id: " + iID.ToString());
+                            WriteProcessToMonitor("          status not ok... killing process id: " + iID.ToString());
                             clsDatabase.killProcess(iID);
                             WriteProcessToMonitor("      done.");
                         }
-                        else { WriteProcessToMonitor("      status ok"); }
+                        else { WriteProcessToMonitor("          status ok"); }
                     }
                 }
                 clsDatabase.CommitAndDispose();

@@ -134,7 +134,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Setup
             ProductSubGroup clsSubGroup = new ProductSubGroup(clsChartOfAccount.Connection, clsChartOfAccount.Transaction);
             System.Data.DataTable dtProductSubGroup = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, new ProductSubGroupDetails(), 0, System.Data.SqlClient.SortOrder.Ascending, 0, ProductSubGroupColumnNames.ProductSubGroupID, System.Data.SqlClient.SortOrder.Ascending);
 
-            Product clsProduct = new Product(clsChartOfAccount.Connection, clsChartOfAccount.Transaction);
+            Products clsProduct = new Products(clsChartOfAccount.Connection, clsChartOfAccount.Transaction);
             System.Data.DataTable dtProduct = clsProduct.ListAsDataTable("ProductID", SortOption.Ascending);
 
             clsChartOfAccount.CommitAndDispose();
@@ -218,7 +218,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Setup
             ProductGroup clsProductGroup = new ProductGroup();
             clsProductGroup.GetConnection();
             ProductSubGroup clsProductSubGroup = new ProductSubGroup(clsProductGroup.Connection, clsProductGroup.Transaction);
-            Product clsProduct = new Product(clsProductGroup.Connection,clsProductGroup.Transaction);
+            Products clsProduct = new Products(clsProductGroup.Connection,clsProductGroup.Transaction);
 
             if (lProductGroupID == 0)
             {

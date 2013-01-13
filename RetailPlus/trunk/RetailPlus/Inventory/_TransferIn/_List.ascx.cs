@@ -21,8 +21,17 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
 			if (!IsPostBack)
 				if (Visible)
 				{
+                    cboStatus.Items.Clear();
+                    cboStatus.Items.Add(new ListItem("Show " + TransferInStatus.Open.ToString("G").ToUpper() + " Transfers", TransferInStatus.Open.ToString("d")));
+                    cboStatus.Items.Add(new ListItem("Show " + TransferInStatus.Posted.ToString("G").ToUpper() + " Transfers", TransferInStatus.Posted.ToString("d")));
+                    cboStatus.Items.Add(new ListItem("Show " + TransferInStatus.Cancelled.ToString("G").ToUpper() + " Transfers", TransferInStatus.Cancelled.ToString("d")));
+                    cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(TransferInStatus.Open.ToString("d")));
+
                     try
-                    { lblStatus.Text = Request.QueryString["status"].ToString(); }
+                    {
+                        lblStatus.Text = Request.QueryString["status"].ToString();
+                        cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(Request.QueryString["status"].ToString()));
+                    }
                     catch { }
 
 					ManageSecurity();
@@ -340,31 +349,9 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
             try { if (txtPostingEndDate.Text != string.Empty) dtePostingEndDate = Convert.ToDateTime(txtPostingEndDate.Text + " " + txtPostingEndTime.Text); }
             catch { }
 
-			if (txtSearch.Text==String.Empty)
-			{
-                if (lblStatus.Text == string.Empty)
-                {
-                    PageData.DataSource = clsTransferIn.ListAsDataTable(TransferInStatus.Open, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SortField, sortoption).DefaultView; 
-                }
-                else
-                { 
-                    TransferInStatus status = (TransferInStatus)Enum.Parse(typeof(TransferInStatus), Common.Decrypt(lblStatus.Text, Session.SessionID));
-                    PageData.DataSource = clsTransferIn.ListAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SortField, sortoption).DefaultView; 
-                }
-			}
-			else
-			{						
-				string SearchKey = txtSearch.Text;
-                if (lblStatus.Text == string.Empty)
-                {
-                    PageData.DataSource = clsTransferIn.SearchAsDataTable(TransferInStatus.Open, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
-                }
-                else
-                {
-                    TransferInStatus status = (TransferInStatus)Enum.Parse(typeof(TransferInStatus), Common.Decrypt(lblStatus.Text, Session.SessionID));
-                    PageData.DataSource = clsTransferIn.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
-                }
-			}
+            string SearchKey = txtSearch.Text;
+            TransferInStatus status = (TransferInStatus)Enum.Parse(typeof(TransferInStatus), cboStatus.SelectedItem.Value);
+            PageData.DataSource = clsTransferIn.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
 
 			clsTransferIn.CommitAndDispose();
 

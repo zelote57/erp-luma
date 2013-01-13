@@ -134,7 +134,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
             cboProductUnit.DataSource = clsUnitMatrix.ListAsDataTable(ProductID, "a.MatrixID", SortOption.Ascending).DefaultView;
             cboProductUnit.DataBind();
 
-            Product clsProduct = new Product(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
+            Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
             ProductDetails clsDetails = clsProduct.Details(ProductID);
             clsProductVariationMatrix.CommitAndDispose();
             cboProductUnit.Items.Insert(0, new ListItem(clsDetails.BaseUnitCode, clsDetails.BaseUnitID.ToString()));
@@ -173,7 +173,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
         {
             DataClass clsDataClass = new DataClass();
 
-            Data.Product clsProduct = new Data.Product();
+            Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
             string stSearchKey = txtProductCode.Text;
@@ -453,7 +453,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
         {
             SOReturnItemDetails clsDetails = new SOReturnItemDetails();
 
-            Product clsProducts = new Product();
+            Products clsProducts = new Products();
             ProductDetails clsProductDetails = clsProducts.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
 
             Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);

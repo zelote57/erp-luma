@@ -20,8 +20,17 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			if (!IsPostBack)
 				if (Visible)
 				{
+                    cboStatus.Items.Clear();
+                    cboStatus.Items.Add(new ListItem("Show " + POStatus.Open.ToString("G").ToUpper() + " POs", POStatus.Open.ToString("d")));
+                    cboStatus.Items.Add(new ListItem("Show " + POStatus.Posted.ToString("G").ToUpper() + " POs", POStatus.Posted.ToString("d")));
+                    cboStatus.Items.Add(new ListItem("Show " + POStatus.Cancelled.ToString("G").ToUpper() + " POs", POStatus.Cancelled.ToString("d")));
+                    cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(POStatus.Open.ToString("d")));
+
                     try
-                    {   lblStatus.Text = Request.QueryString["status"].ToString();  }
+                    {
+                        lblStatus.Text = Request.QueryString["status"].ToString();
+                        cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(Request.QueryString["status"].ToString()));
+                    }
                     catch { }
 
 					ManageSecurity();
@@ -115,7 +124,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 HtmlInputCheckBox chkList = (HtmlInputCheckBox)e.Item.FindControl("chkList");
                 chkList.Value = dr["POID"].ToString();
 
-                POStatus status = (POStatus)Enum.Parse(typeof(POStatus), dr["Status"].ToString());
+                POStatus status = (POStatus)Enum.Parse(typeof(POStatus), dr["POReturnStatus"].ToString());
                 if (status == POStatus.Posted || status == POStatus.Cancelled)
                 {
                     chkList.Attributes.Add("disabled", "false");
@@ -340,31 +349,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             try { if (txtPostingEndDate.Text != string.Empty) dtePostingEndDate = Convert.ToDateTime(txtPostingEndDate.Text + " " + txtPostingEndTime.Text); }
             catch { }
 
-			if (txtSearch.Text==string.Empty)
-			{
-                if (lblStatus.Text == string.Empty )
-                {
-                    PageData.DataSource = clsPO.ListAsDataTable(POStatus.Open, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SortField, sortoption).DefaultView; 
-                }
-                else
-                {
-                    POStatus status = (POStatus)Enum.Parse(typeof(POStatus), Common.Decrypt(lblStatus.Text, Session.SessionID));
-                    PageData.DataSource = clsPO.ListAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SortField, sortoption).DefaultView; 
-                }
-			}
-			else
-			{
-                string SearchKey = txtSearch.Text;
-                if (lblStatus.Text == string.Empty)
-                {
-                    PageData.DataSource = clsPO.SearchAsDataTable(POStatus.Open, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
-                }
-                else
-                {
-                    POStatus status = (POStatus)Enum.Parse(typeof(POStatus), Common.Decrypt(lblStatus.Text, Session.SessionID));
-                    PageData.DataSource = clsPO.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
-                }
-			}
+            string SearchKey = txtSearch.Text;
+            POStatus status = (POStatus)Enum.Parse(typeof(POStatus), cboStatus.SelectedItem.Value);
+            PageData.DataSource = clsPO.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
 
 			clsPO.CommitAndDispose();
 

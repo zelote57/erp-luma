@@ -152,7 +152,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			cboProductUnit.DataBind();
 			clsUnitMatrix.CommitAndDispose();
 
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			ProductDetails clsDetails = new ProductDetails();
 			clsDetails = clsProduct.Details(ProductID);
 			clsProduct.CommitAndDispose();
@@ -179,7 +179,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		{
 			DataClass clsDataClass = new DataClass();
 
-			Data.Product clsProduct = new Data.Product();
+			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
 
@@ -287,10 +287,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		private void LoadRecord()
 		{
 			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			ProductDetails clsDetails = clsProduct.Details(iID);
 
-			Contact clsContact = new Contact(clsProduct.Connection, clsProduct.Transaction);
+			Contacts clsContact = new Contacts(clsProduct.Connection, clsProduct.Transaction);
 			ContactDetails clsContactDetails = clsContact.Details(clsDetails.SupplierID);
 
 			clsProduct.CommitAndDispose();

@@ -2403,7 +2403,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				
 				mclsTerminalDetails.CashCountBeforeReport = true; //this should always be true for touch screens
 
-				Data.Contact clsContact = new Data.Contact(clsTerminal.Connection, clsTerminal.Transaction);
+				Data.Contacts clsContact = new Data.Contacts(clsTerminal.Connection, clsTerminal.Transaction);
 				mclsContactDetails = clsContact.Details(Constants.C_RETAILPLUS_CUSTOMERID);
 
 				Cursor.Current = Cursors.WaitCursor;
@@ -2662,7 +2662,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						if (result == DialogResult.OK && oldQuantity != Details.Quantity)
 						{
-							Data.Product clsProduct = new Data.Product();
+							Data.Products clsProduct = new Data.Products();
 							clsProduct.GetConnection();
 
 							if (mboIsRefund == false )
@@ -2705,14 +2705,14 @@ namespace AceSoft.RetailPlus.Client.UI
 									Data.ProductUnit clsProductUnit = new Data.ProductUnit(clsProduct.Connection, clsProduct.Transaction);
 									decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
 
-									clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_RETURN_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+									clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_RETURN_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 								}
 								else 
 								{
 									Data.ProductUnit clsProductUnit = new Data.ProductUnit(clsProduct.Connection, clsProduct.Transaction);
 									decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
 
-									clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_CHANGE_QTY), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+									clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_CHANGE_QTY), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 									// remove the ff codes for a change in Jul 26, 2011
 									// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
 									// if (Details.VariationsMatrixID != 0)
@@ -3404,7 +3404,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				{
 					string strContactCardNo = txtBarCode.Text.Replace(Constants.SWIPE_REWARD_CARD, "").Trim();
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					// check using reward card info
 					mclsContactDetails = clsContact.DetailsByRewardCardNo(strContactCardNo);
 					if (mclsContactDetails.ContactID == 0) 
@@ -4176,7 +4176,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						Data.Deposit clsDeposit = new Data.Deposit();
 						clsDeposit.Insert(clsDepositDetails);
 
-						Data.Contact clsContact = new Data.Contact(clsDeposit.Connection, clsDeposit.Transaction);
+						Data.Contacts clsContact = new Data.Contacts(clsDeposit.Connection, clsDeposit.Transaction);
 						clsContact.AddDebit(clsDepositDetails.ContactID, clsDepositDetails.Amount);
 
 						InsertAuditLog(clsDeposit.Connection, clsDeposit.Transaction, AccessTypes.Deposit, "Deposit: type='" + clsDepositDetails.PaymentType.ToString("G") + "' amount='" + clsDepositDetails.Amount.ToString(",##0.#0") + "'");
@@ -4728,7 +4728,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							return;
 						}
 					}
-					Data.Product clsProduct = new Data.Product();
+					Data.Products clsProduct = new Data.Products();
 					Data.ProductDetails clsProductDetails = clsProduct.Details(stBarcode);
 					txtBarCode.Text = "";
 
@@ -5142,7 +5142,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						return;
 					}
 				}
-				Data.Product clsProduct = new Data.Product();
+				Data.Products clsProduct = new Data.Products();
 				Data.ProductDetails details = clsProduct.Details(stBarcode);
 				clsProduct.CommitAndDispose();
 				if (details.ProductID != 0)
@@ -5601,7 +5601,7 @@ namespace AceSoft.RetailPlus.Client.UI
 									PrintReportFooterSection(true, TransactionStatus.Refund, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails );
 							}
 
-							Data.Product clsProduct = new Data.Product(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
+							Data.Products clsProduct = new Data.Products(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
 							Data.ProductUnit clsProductUnit = new Data.ProductUnit(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
 							Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
 
@@ -5629,7 +5629,7 @@ namespace AceSoft.RetailPlus.Client.UI
 										if (mclsTerminalDetails.ReservedAndCommit == false)
 										{
 											// Jul 26, 2011
-											clsProduct.AddQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_REFUND_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+											clsProduct.AddQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_REFUND_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 
 											// remove the ff codes for a change in Jul 26, 2011
 											// clsProduct.AddQuantity(lProductID, decNewQuantity);
@@ -5652,7 +5652,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							//UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
 							UpdateCashierReport(clsSalesTransactions.Connection, clsSalesTransactions.Transaction, TransactionStatus.Closed, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
-							Data.Product clsProduct = new Data.Product(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
+							Data.Products clsProduct = new Data.Products(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
 							Data.ProductUnit clsProductUnit = new Data.ProductUnit(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
 							Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
 
@@ -5682,7 +5682,7 @@ namespace AceSoft.RetailPlus.Client.UI
 										if (mclsTerminalDetails.ReservedAndCommit == false)
 										{
 											// Jul 26, 2011
-											clsProduct.AddQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RETURN_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+											clsProduct.AddQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RETURN_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 
 											// remove the ff codes for a change in Jul 26, 2011
 											// clsProduct.AddQuantity(lProductID, decNewQuantity);
@@ -5707,7 +5707,7 @@ namespace AceSoft.RetailPlus.Client.UI
 										if (mclsTerminalDetails.ReservedAndCommit == false)
 										{
 											// Jul 26, 2011
-											clsProduct.SubtractQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + decPrice.ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+											clsProduct.SubtractQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + decPrice.ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 											// remove the ff codes for a change in Jul 26, 2011
 											// clsProduct.SubtractQuantity(lProductID, decNewQuantity);
 											// 
@@ -5721,14 +5721,14 @@ namespace AceSoft.RetailPlus.Client.UI
 									{
 										if (mclsTerminalDetails.RewardPointsDetails.EnableRewardPoints == true)
 										{
-											if (dr["Barcode"].ToString() == Data.Product.DEFAULT_ADVANTAGE_CARD_MEMBERSHIP_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Product.DEFAULT_ADVANTAGE_CARD_RENEWAL_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Product.DEFAULT_ADVANTAGE_CARD_REPLACEMENT_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Product.DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Product.DEFAULT_CREDIT_CARD_RENEWAL_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Product.DEFAULT_SUPER_CARD_MEMBERSHIP_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Product.DEFAULT_SUPER_CARD_RENEWAL_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Product.DEFAULT_SUPER_CARD_REPLACEMENT_FEE_BARCODE)
+											if (dr["Barcode"].ToString() == Data.Products.DEFAULT_ADVANTAGE_CARD_MEMBERSHIP_FEE_BARCODE ||
+												dr["Barcode"].ToString() == Data.Products.DEFAULT_ADVANTAGE_CARD_RENEWAL_FEE_BARCODE ||
+												dr["Barcode"].ToString() == Data.Products.DEFAULT_ADVANTAGE_CARD_REPLACEMENT_FEE_BARCODE ||
+												dr["Barcode"].ToString() == Data.Products.DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE ||
+												dr["Barcode"].ToString() == Data.Products.DEFAULT_CREDIT_CARD_RENEWAL_FEE_BARCODE ||
+												dr["Barcode"].ToString() == Data.Products.DEFAULT_SUPER_CARD_MEMBERSHIP_FEE_BARCODE ||
+												dr["Barcode"].ToString() == Data.Products.DEFAULT_SUPER_CARD_RENEWAL_FEE_BARCODE ||
+												dr["Barcode"].ToString() == Data.Products.DEFAULT_SUPER_CARD_REPLACEMENT_FEE_BARCODE)
 												mclsTerminalDetails.RewardPointsDetails.EnableRewardPoints = false;
 										}
 									}
@@ -6496,7 +6496,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 							if (!this.CreateTransaction()) return;
 
-							txtBarCode.Text = Data.Product.DEFAULT_CREDIT_PAYMENT_BARCODE;
+							txtBarCode.Text = Data.Products.DEFAULT_CREDIT_PAYMENT_BARCODE;
 							ReadBarCode();
 							int iRow = dgItems.CurrentRowIndex;
 
@@ -6686,7 +6686,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Issuing reward card no to " + clsContactDetails.ContactName);
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
 					clsContact.CommitAndDispose();
 
@@ -6722,7 +6722,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER, clsContactDetails);
 						if (!this.CreateTransaction()) return;
 
-						txtBarCode.Text = Data.Product.DEFAULT_ADVANTAGE_CARD_MEMBERSHIP_FEE_BARCODE;
+						txtBarCode.Text = Data.Products.DEFAULT_ADVANTAGE_CARD_MEMBERSHIP_FEE_BARCODE;
 						ReadBarCode();
 						int iRow = dgItems.CurrentRowIndex;
 						
@@ -6779,7 +6779,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Renewing reward card.");
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
 					clsContact.CommitAndDispose();
 
@@ -6812,7 +6812,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER, clsContactDetails);
 						if (!this.CreateTransaction()) return;
 
-						txtBarCode.Text = Data.Product.DEFAULT_ADVANTAGE_CARD_RENEWAL_FEE_BARCODE;
+						txtBarCode.Text = Data.Products.DEFAULT_ADVANTAGE_CARD_RENEWAL_FEE_BARCODE;
 						ReadBarCode();
 						int iRow = dgItems.CurrentRowIndex;
 
@@ -6868,7 +6868,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Replacing reward card...");
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
 					clsContact.CommitAndDispose();
 
@@ -6905,7 +6905,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER, clsContactDetails);
 						if (!this.CreateTransaction()) return;
 
-						txtBarCode.Text = Data.Product.DEFAULT_ADVANTAGE_CARD_REPLACEMENT_FEE_BARCODE;
+						txtBarCode.Text = Data.Products.DEFAULT_ADVANTAGE_CARD_REPLACEMENT_FEE_BARCODE;
 						ReadBarCode();
 						int iRow = dgItems.CurrentRowIndex;
 
@@ -6961,7 +6961,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Reactivating lost reward card...");
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
 					clsContact.CommitAndDispose();
 
@@ -7042,7 +7042,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Declaring reward card as LOST.");
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
 					clsContact.CommitAndDispose();
 
@@ -7154,7 +7154,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Issuing credit card no to " + clsContactDetails.ContactName);
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
 					clsContact.CommitAndDispose();
 
@@ -7192,7 +7192,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER, clsContactDetails);
 						if (!this.CreateTransaction()) return;
 
-						txtBarCode.Text = Data.Product.DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE;
+						txtBarCode.Text = Data.Products.DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE;
 						ReadBarCode();
 						int iRow = dgItems.CurrentRowIndex;
 
@@ -7249,7 +7249,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Renewing credit card.");
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
 					clsContact.CommitAndDispose();
 
@@ -7284,7 +7284,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER, clsContactDetails);
 						if (!this.CreateTransaction()) return;
 
-						txtBarCode.Text = Data.Product.DEFAULT_CREDIT_CARD_RENEWAL_FEE_BARCODE;
+						txtBarCode.Text = Data.Products.DEFAULT_CREDIT_CARD_RENEWAL_FEE_BARCODE;
 						ReadBarCode();
 						int iRow = dgItems.CurrentRowIndex;
 
@@ -7340,7 +7340,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Replacing credit card...");
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
 					clsContact.CommitAndDispose();
 
@@ -7379,7 +7379,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER, clsContactDetails);
 						if (!this.CreateTransaction()) return;
 
-						txtBarCode.Text = Data.Product.DEFAULT_CREDIT_CARD_REPLACEMENT_FEE_BARCODE;
+						txtBarCode.Text = Data.Products.DEFAULT_CREDIT_CARD_REPLACEMENT_FEE_BARCODE;
 						ReadBarCode();
 						int iRow = dgItems.CurrentRowIndex;
 
@@ -7435,7 +7435,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Reactivating lost credit card...");
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
 					clsContact.CommitAndDispose();
 
@@ -7518,7 +7518,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Declaring credit card as lost.");
 
-					Data.Contact clsContact = new Data.Contact();
+					Data.Contacts clsContact = new Data.Contacts();
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
 					clsContact.CommitAndDispose();
 
@@ -8090,7 +8090,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				// Added May 7, 2011 to Cater Reserved and Commit functionality
 				if (mclsTerminalDetails.ReservedAndCommit == true)
 				{
-					Data.Product clsProduct = new Data.Product(pvtConnection, pvtTransaction);
+					Data.Products clsProduct = new Data.Products(pvtConnection, pvtTransaction);
 					Data.ProductUnit clsProductUnit = new Data.ProductUnit(pvtConnection, pvtTransaction);
 					Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(pvtConnection, pvtTransaction);
 					decimal decNewQuantity = 0;
@@ -8102,7 +8102,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
 
-							clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_VOID_ITEM) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+							clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_VOID_ITEM) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 							// remove the ff codes for a change in Jul 26, 2011
 							// clsProduct.SubtractQuantity(Details.ProductID, decNewQuantity);
 							// 
@@ -8113,7 +8113,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
 
-							clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_REFUND_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+							clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_REFUND_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 							// remove the ff codes for a change in Jul 26, 2011
 							// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
 							// 
@@ -8128,7 +8128,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
 
-							clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RETURN_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+							clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RETURN_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 							// remove the ff codes for a change in Jul 26, 2011
 							// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
 							// 
@@ -8140,7 +8140,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
 
-							clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_VOID_ITEM) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+							clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_VOID_ITEM) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 							// remove the ff codes for a change in Jul 26, 2011
 							// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
 							// 
@@ -8152,7 +8152,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
 
-							clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_VOID_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+							clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_VOID_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 							// remove the ff codes for a change in Jul 26, 2011
 							// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
 							// 
@@ -8164,7 +8164,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
 
-							clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+							clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 							// remove the ff codes for a change in Jul 26, 2011
 							// clsProduct.SubtractQuantity(Details.ProductID, decNewQuantity);
 							// 
@@ -8824,7 +8824,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mclsSalesTransactionDetails.OrderType == OrderTypes.Delivery)
 			{
-				Data.Contact clsContact = new Data.Contact();
+				Data.Contacts clsContact = new Data.Contacts();
 				Data.ContactDetails clsContactDetails = clsContact.Details(mclsSalesTransactionDetails.CustomerID);
 				clsContact.CommitAndDispose();
 
@@ -8878,7 +8878,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				Data.ProductComposition clsProductComposition = new Data.ProductComposition();
 				clsProductComposition.GetConnection();
-				Data.Product clsProduct = new Data.Product(clsProductComposition.Connection, clsProductComposition.Transaction);
+				Data.Products clsProduct = new Data.Products(clsProductComposition.Connection, clsProductComposition.Transaction);
 				Data.SalesTransactionItems clsSalesTransactionItems = new Data.SalesTransactionItems(clsProductComposition.Connection, clsProductComposition.Transaction);
 
 				// print order slip items in each printer
@@ -9125,7 +9125,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
 					Data.SalesTransactionDetails clsSalesTransactionDetails = clsSalesTransactions.Details(lblTransNo.Text, mclsTerminalDetails.TerminalNo, Constants.TerminalBranchID);
 
-					Data.Contact clsContact = new Data.Contact(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
+					Data.Contacts clsContact = new Data.Contacts(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
 					Data.ContactDetails clsContactDetails = clsContact.Details(clsSalesTransactionDetails.CustomerID);
 
 					if (clsSalesTransactionDetails.isExist)
@@ -9307,7 +9307,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
 					Data.SalesTransactionDetails clsSalesTransactionDetails = clsSalesTransactions.Details(lblTransNo.Text, mclsTerminalDetails.TerminalNo, Constants.TerminalBranchID);
 
-					Data.Contact clsContact = new Data.Contact(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
+					Data.Contacts clsContact = new Data.Contacts(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
 					Data.ContactDetails clsContactDetails = clsContact.Details(clsSalesTransactionDetails.CustomerID);
 
 					if (clsSalesTransactionDetails.isExist)
@@ -9485,7 +9485,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
 					Data.SalesTransactionDetails clsSalesTransactionDetails = clsSalesTransactions.Details(lblTransNo.Text, mclsTerminalDetails.TerminalNo, Constants.TerminalBranchID);
 
-					Data.Contact clsContact = new Data.Contact(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
+					Data.Contacts clsContact = new Data.Contacts(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
 					Data.ContactDetails clsContactDetails = clsContact.Details(clsSalesTransactionDetails.CustomerID);
 
 					if (clsSalesTransactionDetails.isExist)
@@ -10063,7 +10063,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(clsTerminalReport.Connection, clsTerminalReport.Transaction);
 				mclsSalesTransactionDetails.TransactionID = clsSalesTransactions.Insert(mclsSalesTransactionDetails);
 
-				Data.Contact clsContact = new Data.Contact(clsTerminalReport.Connection, clsTerminalReport.Transaction);
+				Data.Contacts clsContact = new Data.Contacts(clsTerminalReport.Connection, clsTerminalReport.Transaction);
 				Data.ContactDetails clsContactDetails = clsContact.Details(mclsSalesTransactionDetails.CustomerID);
 				mclsSalesTransactionDetails.RewardCardActive = clsContactDetails.RewardDetails.RewardActive;
 				mclsSalesTransactionDetails.RewardCardNo = clsContactDetails.RewardDetails.RewardCardNo;
@@ -10097,7 +10097,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(pvtConnection, pvtTransaction);
 				mclsSalesTransactionDetails = clsSalesTransactions.Details(stTransactionNo, pstrTerminalNo, Constants.TerminalBranchID);
 
-				Data.Contact clsContact = new Data.Contact(pvtConnection, pvtTransaction);
+				Data.Contacts clsContact = new Data.Contacts(pvtConnection, pvtTransaction);
 				Data.ContactDetails clsContactDetails = clsContact.Details(mclsSalesTransactionDetails.CustomerID);
 				mclsSalesTransactionDetails.RewardCardNo = clsContactDetails.RewardDetails.RewardCardNo;
 				mclsSalesTransactionDetails.RewardCardExpiry = clsContactDetails.RewardDetails.ExpiryDate;
@@ -10628,7 +10628,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					clsDepositDetails.Remarks = "Added during refund of transaction #: " + mclsSalesTransactionDetails.TransactionNo;
 					
 					clsDeposit.Insert(clsDepositDetails);
-					Data.Contact clsContact = new Data.Contact(clsDeposit.Connection, clsDeposit.Transaction);
+					Data.Contacts clsContact = new Data.Contacts(clsDeposit.Connection, clsDeposit.Transaction);
 					clsContact.AddDebit(clsDepositDetails.ContactID, clsDepositDetails.Amount);
 				}
 
@@ -11464,7 +11464,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					mstrToPrint += "Transaction #      :" + mclsSalesTransactionDetails.TransactionNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 20) + Environment.NewLine;
 					if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID)
 					{
-						Data.Contact clsContact = new Data.Contact();
+						Data.Contacts clsContact = new Data.Contacts();
 						Data.ContactDetails clsGuarantorContactDetails = clsContact.Details(mclsContactDetails.CreditDetails.GuarantorID);
 						clsContact.CommitAndDispose();
 						mstrToPrint += CenterString(clsGuarantorContactDetails.ContactCode, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
@@ -14521,7 +14521,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				long lngProductSubGroupID = 0;
 				try { lngProductSubGroupID = long.Parse(lblItems.Tag.ToString()); }
 				catch { }
-				Product clsProduct = new Product();
+				Products clsProduct = new Products();
 				System.Data.DataTable dtProduct = clsProduct.ListAsDataTable(clsProductColumns, Constants.TerminalBranchID, ProductListFilterType.ShowActiveOnly, lngSequenceNoStart, SequenceSortOrder,
 					clsSearchColumns, string.Empty, Constants.ZERO, Constants.ZERO, string.Empty, lngProductSubGroupID, string.Empty, Constants.C_RESTOPLUS_MAX_PRODUCTS + 1, mclsTerminalDetails.ShowItemMoreThanZeroQty, true, "SequenceNo", SortOption.Ascending);
 				clsProduct.CommitAndDispose();

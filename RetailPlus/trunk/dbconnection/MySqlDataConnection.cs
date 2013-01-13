@@ -12,6 +12,7 @@ namespace AceSoft.RetailPlus
         MySqlTransaction mTransaction;
         bool IsInTransaction = false;
         bool TransactionFailed = false;
+        bool IsNewInstance = false;
 
         public MySqlConnection Connection
         {
@@ -29,16 +30,27 @@ namespace AceSoft.RetailPlus
         }
 
         public POSConnection(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-		}
+        {
+            mConnection = Connection;
+            mTransaction = Transaction;
+
+            GetConnection();
+        }
+
+        //public POSConnection(out MySqlConnection Connection, out MySqlTransaction Transaction)
+        //{
+
+        //    mConnection = Connection;
+        //    mTransaction = Transaction;
+
+        //    GetConnection();
+        //}
 
         public void CommitAndDispose()
         {
             if (!TransactionFailed)
             {
-                if (IsInTransaction)
+                if (IsInTransaction && IsNewInstance)
                 {
                     mTransaction.Commit();
                     mTransaction.Dispose();
@@ -48,15 +60,16 @@ namespace AceSoft.RetailPlus
             }
         }
 
-        public MySqlConnection GetConnection()
+        public MySqlConnection GetConnection(string ServerIP = "", string DBPort = "", string DBName = "")
         {
-            if (mConnection == null)
+            if (mConnection == null || mConnection.State != System.Data.ConnectionState.Open)
             {
-                mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());
+                mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString(ServerIP, DBPort, DBName));
                 mConnection.Open();
 
                 mTransaction = (MySqlTransaction)mConnection.BeginTransaction();
                 IsInTransaction = true;
+                IsNewInstance = true;
             }
 
             return mConnection;
@@ -66,8 +79,7 @@ namespace AceSoft.RetailPlus
         {
             try
             {
-                MySqlConnection cn = GetConnection();
-                cmd.Connection = cn;
+                cmd.Connection = GetConnection();
 
                 MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
 
@@ -87,12 +99,36 @@ namespace AceSoft.RetailPlus
             }
         }
 
+        public int ExecuteNonQuery(string SQL)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = GetConnection();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                return cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                TransactionFailed = true;
+                if (IsInTransaction)
+                {
+                    mTransaction.Rollback();
+                    mTransaction.Dispose();
+                    mConnection.Close();
+                    mConnection.Dispose();
+                }
+                throw ex;
+            }
+        }
         public int ExecuteNonQuery(MySqlCommand cmd)
         {
             try
             {
-                MySqlConnection cn = GetConnection();
-                cmd.Connection = cn;
+                cmd.Connection = GetConnection();
 
                 return cmd.ExecuteNonQuery();
 
@@ -115,10 +151,30 @@ namespace AceSoft.RetailPlus
         {
             try
             {
-                MySqlConnection cn = GetConnection();
-                cmd.Connection = cn;
+                cmd.Connection = GetConnection();
 
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                return adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                TransactionFailed = true;
+                if (IsInTransaction)
+                {
+                    mTransaction.Rollback();
+                    mTransaction.Dispose();
+                    mConnection.Close();
+                    mConnection.Dispose();
+                }
+                throw ex;
+            }
+        }
+
+        public int MySqlDataAdapterFill(string SQL, System.Data.DataTable dt)
+        {
+            try
+            {
+                MySqlDataAdapter adapter = new MySqlDataAdapter(SQL, GetConnection());
                 return adapter.Fill(dt);
             }
             catch (Exception ex)

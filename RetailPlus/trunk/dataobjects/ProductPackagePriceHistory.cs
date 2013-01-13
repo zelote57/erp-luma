@@ -36,69 +36,22 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class ProductPackagePriceHistory
-	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
-		#region Constrcutors and Destructors
+	public class ProductPackagePriceHistory : POSConnection
+    {
+		#region Constructors and Destructors
 
 		public ProductPackagePriceHistory()
-		{
-			
-		}
+            : base(null, null)
+        {
+        }
 
-		public ProductPackagePriceHistory(MySqlConnection Connection, MySqlTransaction Transaction)
+        public ProductPackagePriceHistory(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
 
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
 		}
-
 
 		#endregion
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
-
 		
 		#region Insert and Update
 
@@ -108,11 +61,11 @@ namespace AceSoft.RetailPlus.Data
 			{
                 string SQL = "CALL procProductPackagePriceHistoryInsert(@UID, @PackageID, @ChangeDate, @PurchasePriceNow, @SellingPriceNow, @VAT, @EVAT, @LocalTax, @Remarks);";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -126,18 +79,18 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@LocalTax", Details.LocalTax);
                 cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -154,28 +107,28 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	"DELETE FROM tblProductPackagePriceHistory WHERE PackageID IN (" + IDs + ");";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -232,32 +185,32 @@ namespace AceSoft.RetailPlus.Data
         //        else
         //            SQL += " DESC";
 
-        //        MySqlConnection cn = GetConnection();
+        //        
         //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.Connection = cn;
-        //        cmd.Transaction = mTransaction;
+        //        
+        //        
         //        cmd.CommandType = System.Data.CommandType.Text;
         //        cmd.CommandText = SQL;
 
         //        cmd.Parameters.AddWithValue("@StartChangeDate", StartChangeDate.ToString("yyyy-MM-dd HH:mm:ss"));
         //        cmd.Parameters.AddWithValue("@EndChangeDate", EndChangeDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-        //        System.Data.DataTable dtRetValue = new System.Data.DataTable("ProductPackagePriceHistorys");
-        //        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-        //        adapter.Fill(dtRetValue);
+        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //        base.MySqlDataAdapterFill(cmd, dt);
+        //        
 
-        //        return dtRetValue;
+        //        return dt;
 
         //    }
         //    catch (Exception ex)
         //    {
-        //        TransactionFailed = true;
-        //        if (IsInTransaction)
+        //        
+        //        
         //        {
-        //            mTransaction.Rollback();
-        //            mTransaction.Dispose();
-        //            mConnection.Close();
-        //            mConnection.Dispose();
+        //            
+        //            
+        //            
+        //            
         //        }
 
         //        throw ex;
@@ -274,31 +227,31 @@ namespace AceSoft.RetailPlus.Data
         //        else
         //            SQL += " DESC";
 
-        //        MySqlConnection cn = GetConnection();
+        //        
         //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.Connection = cn;
-        //        cmd.Transaction = mTransaction;
+        //        
+        //        
         //        cmd.CommandType = System.Data.CommandType.Text;
         //        cmd.CommandText = SQL;
 
         //        cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-        //        System.Data.DataTable dtRetValue = new System.Data.DataTable("ProductPackagePriceHistorys");
-        //        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-        //        adapter.Fill(dtRetValue);
+        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //        base.MySqlDataAdapterFill(cmd, dt);
+        //        
 
-        //        return dtRetValue;	
+        //        return dt;	
 
         //    }
         //    catch (Exception ex)
         //    {
-        //        TransactionFailed = true;
-        //        if (IsInTransaction)
+        //        
+        //        
         //        {
-        //            mTransaction.Rollback();
-        //            mTransaction.Dispose();
-        //            mConnection.Close();
-        //            mConnection.Dispose();
+        //            
+        //            
+        //            
+        //            
         //        }
 
         //        throw ex;
@@ -333,32 +286,18 @@ namespace AceSoft.RetailPlus.Data
                     SQL += " ASC";
                 else
                     SQL += " DESC";
-
-                MySqlConnection cn = GetConnection();
                 
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                System.Data.DataTable dtRetValue = new System.Data.DataTable("ProductPackagePriceHistorys");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dtRetValue);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                return dtRetValue;
+                return dt;
 
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }

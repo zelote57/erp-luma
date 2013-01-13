@@ -28,7 +28,7 @@
                                 <td nowrap>
                                     <asp:Chart ID="Chart1" runat="server" runat="server" BorderlineColor="Black" 
                                                 BorderlineDashStyle="Solid" BackColor="#B6D6EC" BackGradientStyle="TopBottom" 
-                                                BackSecondaryColor="#B6D6EC" Height="350px" Width="650px">
+                                                BackSecondaryColor="#B6D6EC" Height="350px" Width="650px" Visible="false">
                                         <Legends>
                                                 <asp:Legend TitleFont="Microsoft Sans Serif, 8pt, style=Bold" BackColor="Transparent"
                                                         Font="Trebuchet MS, 7.25pt" IsTextAutoFit="true" Enabled="true"

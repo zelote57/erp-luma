@@ -78,7 +78,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
         }
         protected void cboProductCode_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            Product clsProduct = new Product();
+            Products clsProduct = new Products();
             int intProductBaseUnitID = 0;
             decimal decCommision = 0;
             try { 
@@ -194,7 +194,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsSearchKeys.ProductSubGroupID = long.Parse(cboProductSubGroup.SelectedItem.Value);
             clsSearchKeys.ProductGroupID = long.Parse(cboProductGroup.SelectedItem.Value);
 
-            Data.Product clsProduct = new Data.Product();
+            Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
             cboProductCode.DataSource = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending);
@@ -222,7 +222,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 return; 
             }
 
-            Product clsProduct = new Product();
+            Products clsProduct = new Products();
             clsProduct.UpdateRewardPoints(lngProductGroupID, lngProductSubGroupID, lngProductID, decRewardPoints);
             clsProduct.CommitAndDispose();
 

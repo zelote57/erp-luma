@@ -260,7 +260,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Payments
 		{
 			long payeeid = Convert.ToInt64(cboPayee.SelectedItem.Value);
 
-			Data.Contact clsContact = new Data.Contact();
+			Data.Contacts clsContact = new Data.Contacts();
 			Data.ContactDetails clsDetails = clsContact.Details(payeeid);
 			clsContact.CommitAndDispose();
 			
@@ -330,7 +330,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Payments
             cboBank.SelectedIndex = 0;
             cboBank_SelectedIndexChanged(null, null);
 
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
 			cboPayee.DataTextField = "ContactCode";
 			cboPayee.DataValueField = "ContactID";
 			cboPayee.DataSource = clsDataClass.DataReaderToDataTable(clsContact.Suppliers(null, 0, "ContactName", SortOption.Ascending)).DefaultView;

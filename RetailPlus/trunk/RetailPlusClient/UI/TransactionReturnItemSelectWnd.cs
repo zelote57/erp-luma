@@ -797,7 +797,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 
 				}
-
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 				
 				if (dgItems.VisibleRowCount > 0)

@@ -75,8 +75,8 @@
 	</TR>
 	<TR>
 		<TD></TD>
-		<TD><asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Transfer Start Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtTransferStartDate"></asp:CompareValidator><asp:Label
-                ID="lblStatus" runat="server" CssClass="ms-error" Visible="False"></asp:Label></TD>
+		<TD><asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Transfer Start Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtTransferStartDate"></asp:CompareValidator>
+        <asp:Label ID="lblStatus" runat="server" CssClass="ms-error" Visible="False"></asp:Label></TD>
 	</TR>
 	<TR>
 		<TD></TD>

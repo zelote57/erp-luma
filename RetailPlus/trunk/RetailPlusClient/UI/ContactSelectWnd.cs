@@ -459,7 +459,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void LoadContactData()
 		{	
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
 
 			try
 			{
@@ -472,7 +472,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					dt = clsContact.CustomersDataTable(searchkey, 100, mboHasCreditOnly, "ContactName", SortOption.Ascending);
 
 				clsContact.CommitAndDispose();
-				
+
+                this.dgStyle.MappingName = dt.TableName;
 				dgContacts.DataSource = dt;
 				dgContacts.Select(0);
 				dgContacts.CurrentRowIndex=0;

@@ -129,10 +129,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		private void LoadRecord()
 		{
 			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			ProductDetails clsDetails = clsProduct.Details(iID);
 
-			Contact clsContact = new Contact(clsProduct.Connection, clsProduct.Transaction);
+			Contacts clsContact = new Contacts(clsProduct.Connection, clsProduct.Transaction);
 			ContactDetails clsContactDetails = clsContact.Details(clsDetails.SupplierID);
 
 			clsProduct.CommitAndDispose();
@@ -170,7 +170,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             int iChartOfAccountIDTaxPurchase = Convert.ToInt32(cboChartOfAccountIDTaxPurchase.SelectedItem.Value);
             int iChartOfAccountIDTaxSold = Convert.ToInt32(cboChartOfAccountIDTaxSold.SelectedItem.Value);
 
-            Product clsProduct = new Product();
+            Products clsProduct = new Products();
             clsProduct.UpdateFinancialInformation(iID, iChartOfAccountIDPurchase, iChartOfAccountIDSold, iChartOfAccountIDInventory, iChartOfAccountIDTaxPurchase, iChartOfAccountIDTaxSold);
             clsProduct.CommitAndDispose();
 		}

@@ -77,7 +77,7 @@ namespace AceSoft.RetailPlus.Reports
 
             txtProductCode.Text = strProductCode;
 
-			Data.Product clsProduct = new Data.Product();
+			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
             cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowActiveAndInactive, txtProductCode.Text, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending);
@@ -362,7 +362,7 @@ namespace AceSoft.RetailPlus.Reports
             {
                 case ReportTypes.ProductHistoryMovement:
                     #region Product History Movement
-                    Product clsProduct = new Product();
+                    Products clsProduct = new Products();
                     ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
                     clsProduct.CommitAndDispose();
 
@@ -469,7 +469,7 @@ namespace AceSoft.RetailPlus.Reports
 		{
 			DataClass clsDataClass = new DataClass();
 
-			Data.Product clsProduct = new Data.Product();
+			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
             cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowActiveAndInactive, txtProductCode.Text, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending);

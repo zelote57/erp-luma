@@ -140,11 +140,14 @@
 				</tr>
 				<tr>
 					<td style="PADDING-BOTTOM:2px" nowrap>
-						<label>TransferIn No/Vendor/Remarks</label>&nbsp;
+						<label>TransferIn No/Remarks</label>&nbsp;
 					</td>
 					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
-					<td nowrap colspan=5>
+					<td nowrap colspan=4>
 						<asp:TextBox id="txtSearch" CssClass="ms-long" Width="100%" runat="server" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td nowrap >
+						<asp:DropDownList id="cboStatus" CssClass="ms-short" Width="100%" runat="server"></asp:DropDownList>
 					</td>
 					<td width="99%" noWrap align="left">&nbsp;
 					    <asp:ImageButton accessKey="s" style="CURSOR: hand" id="cmdSearch" ImageUrl="../../_layouts/images/icongo01.gif" border="0" ToolTip="Execute search" runat="server" causesvalidation="false" onclick="cmdSearch_Click"></asp:ImageButton>

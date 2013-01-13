@@ -679,7 +679,7 @@ namespace AceSoft.RetailPlus.Data
 
 			BranchTransferItem clsBranchTransferItem = new BranchTransferItem(mConnection, mTransaction);
             ProductUnit clsProductUnit = new ProductUnit(mConnection, mTransaction);
-            Product clsProduct = new Product(mConnection, mTransaction);
+            Products clsProduct = new Products(mConnection, mTransaction);
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(mConnection, mTransaction);
             ProductPackage clsProductPackage = new ProductPackage(mConnection, mTransaction);
             MatrixPackage clsMatrixPackage = new MatrixPackage(mConnection, mTransaction);
@@ -708,8 +708,8 @@ namespace AceSoft.RetailPlus.Data
 				/*******************************************
 				 * Subtract BranchIDFrom then Add to BranchIDTo -- Inventory
 				 * ****************************************/
-                clsProduct.SubtractQuantity(clsBranchTransferDetails.BranchIDFrom, lngProductID, lngVariationMatrixID, decQuantity, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_PURCHASE) + " @ " + decUnitCost.ToString("#,##0.#0") + "/" + strProductUnitCode, DateTime.Now, clsBranchTransferDetails.BranchTransferNo, clsBranchTransferDetails.TransferrerName);
-                clsProduct.AddQuantity(clsBranchTransferDetails.BranchIDTo, lngProductID, lngVariationMatrixID, decQuantity, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_PURCHASE) + " @ " + decUnitCost.ToString("#,##0.#0") + "/" + strProductUnitCode, DateTime.Now, clsBranchTransferDetails.BranchTransferNo, clsBranchTransferDetails.TransferrerName);
+                clsProduct.SubtractQuantity(clsBranchTransferDetails.BranchIDFrom, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_PURCHASE) + " @ " + decUnitCost.ToString("#,##0.#0") + "/" + strProductUnitCode, DateTime.Now, clsBranchTransferDetails.BranchTransferNo, clsBranchTransferDetails.TransferrerName);
+                clsProduct.AddQuantity(clsBranchTransferDetails.BranchIDTo, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_PURCHASE) + " @ " + decUnitCost.ToString("#,##0.#0") + "/" + strProductUnitCode, DateTime.Now, clsBranchTransferDetails.BranchTransferNo, clsBranchTransferDetails.TransferrerName);
 
 				/*******************************************
 				 * Add to Inventory Analysis

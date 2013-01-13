@@ -22,6 +22,19 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 			if (!IsPostBack)
 				if (Visible)
 				{
+                    cboStatus.Items.Clear();
+                    cboStatus.Items.Add(new ListItem("Show " + DebitMemoStatus.Open.ToString("G").ToUpper() + " Memos", DebitMemoStatus.Open.ToString("d")));
+                    cboStatus.Items.Add(new ListItem("Show " + DebitMemoStatus.Posted.ToString("G").ToUpper() + " Memos", DebitMemoStatus.Posted.ToString("d")));
+                    cboStatus.Items.Add(new ListItem("Show " + DebitMemoStatus.Cancelled.ToString("G").ToUpper() + " Memos", DebitMemoStatus.Cancelled.ToString("d")));
+                    cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(DebitMemoStatus.Open.ToString("d")));
+
+                    try
+                    {
+                        lblStatus.Text = Request.QueryString["status"].ToString();
+                        cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(Request.QueryString["status"].ToString()));
+                    }
+                    catch { }
+
 					ManageSecurity();
 					LoadList();
 					cmdDelete.Attributes.Add("onClick", "return confirm_cancel();");
@@ -184,6 +197,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 
             }
         }
+        protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            LoadList();
+        }
 
 		#endregion
 
@@ -318,15 +335,25 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
-			{
-				PageData.DataSource = clsDebitMemos.ListAsDataTable(SortField, sortoption).DefaultView;
-			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsDebitMemos.SearchAsDataTable(SearchKey, SortField, sortoption).DefaultView;
-			}
+            DateTime dteOrderStartDate = DateTime.MinValue;
+            try { if (txtOrderStartDate.Text != string.Empty) dteOrderStartDate = Convert.ToDateTime(txtOrderStartDate.Text + " " + txtOrderStartTime.Text); }
+            catch { }
+
+            DateTime dteOrderEndDate = DateTime.MinValue;
+            try { if (txtOrderEndDate.Text != string.Empty) dteOrderEndDate = Convert.ToDateTime(txtOrderEndDate.Text + " " + txtOrderEndTime.Text); }
+            catch { }
+
+            DateTime dtePostingStartDate = DateTime.MinValue;
+            try { if (txtPostingStartDate.Text != string.Empty) dtePostingStartDate = Convert.ToDateTime(txtPostingStartDate.Text + " " + txtPostingStartTime.Text); }
+            catch { }
+
+            DateTime dtePostingEndDate = DateTime.MinValue;
+            try { if (txtPostingEndDate.Text != string.Empty) dtePostingEndDate = Convert.ToDateTime(txtPostingEndDate.Text + " " + txtPostingEndTime.Text); }
+            catch { }
+
+            string SearchKey = txtSearch.Text;
+            DebitMemoStatus status = (DebitMemoStatus)Enum.Parse(typeof(DebitMemoStatus), cboStatus.SelectedItem.Value);
+            PageData.DataSource = clsDebitMemos.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
 
 			clsDebitMemos.CommitAndDispose();
 

@@ -478,7 +478,7 @@ namespace AceSoft.RetailPlus.Data
 
 			ClosingItem clsClosingItem = new ClosingItem(Connection, Transaction);
 			ProductUnit clsProductUnit = new ProductUnit(Connection, Transaction);
-			Product clsProduct = new Product(Connection, Transaction);
+			Products clsProduct = new Products(Connection, Transaction);
 			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(Connection, Transaction);
 
 			Inventory clsInventory = new Inventory(Connection, Transaction);
@@ -512,7 +512,7 @@ namespace AceSoft.RetailPlus.Data
                 //if (VariationMatrixID != 0)
                 //{ clsProductVariationsMatrix.AddQuantity(VariationMatrixID, Quantity);}
                 // July 26, 2011: change the above codes to the following
-                clsProduct.AddQuantity(clsClosingDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_PURCHASE) + " @ " + decUnitCost.ToString("#,##0.#0"), DateTime.Now, clsClosingDetails.ClosingNo, clsClosingDetails.TransferredByID.ToString());
+                clsProduct.AddQuantity(clsClosingDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_PURCHASE) + " @ " + decUnitCost.ToString("#,##0.#0"), DateTime.Now, clsClosingDetails.ClosingNo, clsClosingDetails.TransferredByID.ToString());
 
 				/*******************************************
 				 * Add to Inventory Analysis
@@ -615,7 +615,7 @@ namespace AceSoft.RetailPlus.Data
 
 				ClosingDetails clsClosingDetails = Details(ClosingID);
 				
-				Product clsProduct = new Product(Connection, Transaction);
+				Products clsProduct = new Products(Connection, Transaction);
 				System.Data.DataTable dt = clsProduct.ForReorder(clsClosingDetails.SupplierID);
 
 				ClosingItem clsClosingItem = new ClosingItem(Connection, Transaction);

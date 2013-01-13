@@ -168,7 +168,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
             ContactColumns clsContactSearchColumns = new ContactColumns();
 
-            Contact clsContact = new Contact(clsProductGroup.Connection, clsProductGroup.Transaction);
+            Contacts clsContact = new Contacts(clsProductGroup.Connection, clsProductGroup.Transaction);
             cboSupplier.DataTextField = "ContactName";
             cboSupplier.DataValueField = "ContactID";
             cboSupplier.DataSource = clsContact.Suppliers(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, clsContactSearchColumns, string.Empty, 0, false, "ContactName", System.Data.SqlClient.SortOrder.Ascending).DefaultView;
@@ -195,7 +195,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		private void LoadRecord()
 		{
 			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			ProductDetails clsDetails = clsProduct.Details(iID);
 			clsProduct.CommitAndDispose();
 
@@ -271,7 +271,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsDetails.UpdatedOn = DateTime.Now;
             clsDetails.RID = Convert.ToInt64(txtRID.Text);
 
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			clsProduct.Update(clsDetails);
 
             // Aug 26, 2011 : Lemu 

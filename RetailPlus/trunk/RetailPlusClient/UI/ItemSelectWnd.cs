@@ -586,7 +586,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsSearchKeys.ProductDesc = strSearchKey;
                 }
                 
-                Product clsProduct = new Product();
+                Products clsProduct = new Products();
 
                 System.Data.DataTable dt;
                 //if (mboShowInActiveProducts == false)
@@ -610,6 +610,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
 				clsProduct.CommitAndDispose();
 
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 				dgItems.Select(0);
 				dgItems.CurrentRowIndex=0;

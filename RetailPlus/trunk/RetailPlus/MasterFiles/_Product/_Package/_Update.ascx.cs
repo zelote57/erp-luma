@@ -110,7 +110,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 			cboUnit.DataSource = clsUnit.ListAsDataTable(Convert.ToInt64(lblProductID.Text),"MatrixID",SortOption.Ascending).DefaultView;
 			cboUnit.DataBind();
 
-            Product clsProduct = new Product(clsUnit.Connection, clsUnit.Transaction);
+            Products clsProduct = new Products(clsUnit.Connection, clsUnit.Transaction);
 			ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
             clsUnit.CommitAndDispose();
 
@@ -123,7 +123,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 			ProductPackage clsProductPackage = new ProductPackage();
 			ProductPackageDetails clsDetails = clsProductPackage.Details(Convert.ToInt64(lblPackageID.Text));
 
-            Product clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+            Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
             ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
             clsProductPackage.CommitAndDispose();
 

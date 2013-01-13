@@ -111,7 +111,7 @@ namespace AceSoft.RetailPlus.Rewards._Members
         private void LoadRecord()
         {
             Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"], Session.SessionID));
-            Contact clsContact = new Contact();
+            Contacts clsContact = new Contacts();
             ContactDetails clsDetails = clsContact.Details(iID);
 
             clsContact.CommitAndDispose();
@@ -138,7 +138,7 @@ namespace AceSoft.RetailPlus.Rewards._Members
         }
         private void SaveRecord()
         {
-            Contact clsContact = new Contact();
+            Contacts clsContact = new Contacts();
             ContactDetails clsDetails = new ContactDetails();
 
             clsDetails.ContactID = Convert.ToInt32(lblContactID.Text);

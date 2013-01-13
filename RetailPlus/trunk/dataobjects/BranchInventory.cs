@@ -59,68 +59,22 @@ namespace AceSoft.RetailPlus.Data
          "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
          "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
          "FF52834EAFB5A7A1FDFD5851A3")]
-    public class BranchInventory
+    public class BranchInventory : POSConnection
     {
-        MySqlConnection mConnection;
-        MySqlTransaction mTransaction;
-        bool IsInTransaction = false;
-        bool TransactionFailed = false;
+		#region Constructors and Destructors
 
-        public MySqlConnection Connection
+		public BranchInventory()
+            : base(null, null)
         {
-            get { return mConnection; }
         }
 
-        public MySqlTransaction Transaction
-        {
-            get { return mTransaction; }
-        }
+        public BranchInventory(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
+		{
 
+		}
 
-        #region Constructors and Destructors
-
-        public BranchInventory()
-        {
-
-        }
-
-        public BranchInventory(MySqlConnection Connection, MySqlTransaction Transaction)
-        {
-            mConnection = Connection;
-            mTransaction = Transaction;
-
-        }
-
-        public void CommitAndDispose()
-        {
-            if (!TransactionFailed)
-            {
-                if (IsInTransaction)
-                {
-                    mTransaction.Commit();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-            }
-        }
-
-        public MySqlConnection GetConnection()
-        {
-            if (mConnection == null)
-            {
-                mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());
-                mConnection.Open();
-
-                mTransaction = (MySqlTransaction)mConnection.BeginTransaction();
-                IsInTransaction = true;
-            }
-
-            return mConnection;
-        }
-
-
-        #endregion
+		#endregion
 
         #region Insert and Update
 
@@ -132,30 +86,30 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = "CALL procProductBranchInventoryInsert(@lngProductID);";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@lngProductID", ProductID);
 
-                if (cmd.ExecuteNonQuery() > 0) boRetValue = true;
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
 
                 return boRetValue;
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
                 throw ex;
@@ -176,17 +130,17 @@ namespace AceSoft.RetailPlus.Data
         //    else
         //        SQL += " DESC";
 
-        //    MySqlConnection cn = GetConnection();
+        //    
 
         //    MySqlCommand cmd = new MySqlCommand();
-        //    cmd.Connection = cn;
-        //    cmd.Transaction = mTransaction;
+        //    
+        //    
         //    cmd.CommandType = System.Data.CommandType.Text;
         //    cmd.CommandText = SQL;
 
         //    System.Data.DataTable dt = new System.Data.DataTable("tblBranch");
-        //    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-        //    adapter.Fill(dt);
+        //    base.MySqlDataAdapterFill(cmd, dt);
+        //    
 
         //    return dt;
         //}
@@ -211,27 +165,27 @@ namespace AceSoft.RetailPlus.Data
         //        else
         //            SQL += " DESC";
 
-        //        MySqlConnection cn = GetConnection();
+        //        
 
         //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.Connection = cn;
-        //        cmd.Transaction = mTransaction;
+        //        
+        //        
         //        cmd.CommandType = System.Data.CommandType.Text;
         //        cmd.CommandText = SQL;
 
-        //        MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+        //        
 
-        //        return myReader;
+        //        return base.ExecuteReader(cmd);
         //    }
         //    catch (Exception ex)
         //    {
-        //        TransactionFailed = true;
-        //        if (IsInTransaction)
+        //        
+        //        
         //        {
-        //            mTransaction.Rollback();
-        //            mTransaction.Dispose(); 
-        //            mConnection.Close();
-        //            mConnection.Dispose();
+        //            
+        //            
+        //            
+        //            
         //        }
 
         //        throw ex;
@@ -258,11 +212,11 @@ namespace AceSoft.RetailPlus.Data
         //        else
         //            SQL += " DESC";
 
-        //        MySqlConnection cn = GetConnection();
+        //        
 
         //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.Connection = cn;
-        //        cmd.Transaction = mTransaction;
+        //        
+        //        
         //        cmd.CommandType = System.Data.CommandType.Text;
         //        cmd.CommandText = SQL;
 
@@ -270,19 +224,19 @@ namespace AceSoft.RetailPlus.Data
         //        prmSearchKey.Value = "%" + SearchKey + "%";
         //        cmd.Parameters.Add(prmSearchKey);
 
-        //        MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+        //        
 
-        //        return myReader;			
+        //        return base.ExecuteReader(cmd);			
         //    }
         //    catch (Exception ex)
         //    {
-        //        TransactionFailed = true;
-        //        if (IsInTransaction)
+        //        
+        //        
         //        {
-        //            mTransaction.Rollback();
-        //            mTransaction.Dispose(); 
-        //            mConnection.Close();
-        //            mConnection.Dispose();
+        //            
+        //            
+        //            
+        //            
         //        }
 
         //        throw ex;
@@ -306,11 +260,11 @@ namespace AceSoft.RetailPlus.Data
                 else SQL += "DESC ";
             }
 
-            MySqlConnection cn = GetConnection();
+            
 
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
+            
+            
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
@@ -318,8 +272,8 @@ namespace AceSoft.RetailPlus.Data
             if (ProductID != 0) cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
             System.Data.DataTable dt = new System.Data.DataTable("tblBranch");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            base.MySqlDataAdapterFill(cmd, dt);
+            
 
             return dt;
         }
@@ -360,11 +314,11 @@ namespace AceSoft.RetailPlus.Data
                 else SQL += "DESC ";
             }
 
-            MySqlConnection cn = GetConnection();
+            
 
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
+            
+            
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
@@ -372,8 +326,8 @@ namespace AceSoft.RetailPlus.Data
             if (ProductID != 0) cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
             System.Data.DataTable dt = new System.Data.DataTable("tblBranch");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            base.MySqlDataAdapterFill(cmd, dt);
+            
 
             return dt;
         }

@@ -13,65 +13,18 @@ namespace AceSoft.RetailPlus.Data
     /// <summary>
     /// This is an inherited class from contact
     /// </summary>
-    public class Customer : Contact
+    public class Customer : Contacts
     {
-        MySqlConnection mConnection;
-        MySqlTransaction mTransaction;
-        bool IsInTransaction = false;
-        bool TransactionFailed = false;
-
-        public new MySqlConnection Connection
+        public Customer()
+            : base(null, null)
         {
-            get { return mConnection; }
         }
 
-        public new MySqlTransaction Transaction
-        {
-            get { return mTransaction; }
-        }
-
-		#region Constructors and Destructors
-
-		public Customer()
+        public Customer(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
-
-        public Customer(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-		}
-
-        new public void CommitAndDispose()
-        {
-            if (!TransactionFailed)
-            {
-                if (IsInTransaction)
-                {
-                    mTransaction.Commit();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-            }
-        }
-
-        new public MySqlConnection GetConnection()
-        {
-            if (mConnection == null)
-            {
-                mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());
-                mConnection.Open();
-
-                mTransaction = (MySqlTransaction)mConnection.BeginTransaction();
-                IsInTransaction = true;
-            }
-
-            return mConnection;
-        } 
-
-		#endregion
 
         #region DataTables
 
@@ -79,11 +32,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.CommandText = "CALL procGetRewardPointsReport(@lngCustomerID, @dteTransactionDateFrom, @dteTransactionDateTo)";
 
@@ -100,22 +49,13 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.Add(prmTransactionDateTo);
 
                 System.Data.DataTable dt = new System.Data.DataTable("tblContacts");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }

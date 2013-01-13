@@ -38,7 +38,7 @@ namespace AceSoft.RetailPlus.Reports
 		{
 			DataClass clsDataClass = new DataClass();
 
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
 
 			cboContactCode.DataTextField = "ContactCode";
 			cboContactCode.DataValueField = "ContactCode";
@@ -161,7 +161,7 @@ namespace AceSoft.RetailPlus.Reports
 
 			ReportDataset rptds = new ReportDataset();
 
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
             MySqlDataReader myreader = clsContact.AdvanceSearch(enumContactGroupCategory, cboContactCode.SelectedItem.Value, cboContactName.SelectedItem.Value, Convert.ToInt16(cboDeleted.SelectedItem.Value), Convert.ToInt32(cboGroup.SelectedItem.Value), false, "ContactID", SortOption.Ascending);
 			clsContact.CommitAndDispose();
 

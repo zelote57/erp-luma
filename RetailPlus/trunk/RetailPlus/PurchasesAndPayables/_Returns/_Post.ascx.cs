@@ -134,7 +134,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 			cboProductUnit.DataSource = clsUnitMatrix.ListAsDataTable(ProductID,"a.MatrixID",SortOption.Ascending).DefaultView;
 			cboProductUnit.DataBind();
 
-            Product clsProduct = new Product(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
+            Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
 			ProductDetails clsDetails = clsProduct.Details(ProductID);
 
             ProductPackage clsProductPackage = new ProductPackage(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
@@ -182,7 +182,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 		{
 			DataClass clsDataClass = new DataClass();
 
-			Data.Product clsProduct = new Data.Product();
+			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
 
@@ -198,7 +198,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                 Data.ProductPackageDetails clsProductPackageDetails = clsProductPackage.DetailsByBarCode(txtProductCode.Text);
                 if (clsProductPackageDetails.PackageID != 0)
                 {
-                    clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+                    clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     Data.ProductDetails clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID);
 
                     cboProductCode.Items.Add(new ListItem(clsProductDetails.ProductCode, clsProductDetails.ProductID.ToString()));
@@ -428,11 +428,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                     clsDetails.Quantity = 0;
                     clsDetails.MinThreshold = 0;
                     clsDetails.MaxThreshold = 0;
-                    clsDetails.SupplierID = Contact.DEFAULT_SUPPLIER_ID;
+                    clsDetails.SupplierID = Contacts.DEFAULT_SUPPLIER_ID;
                     clsDetails.IsItemSold = true;
                     clsDetails.WillPrintProductComposition = false;
 
-                    Product clsProduct = new Product();
+                    Products clsProduct = new Products();
                     long id = clsProduct.Insert(clsDetails);
                     clsDetails.ProductID = id;
 
@@ -514,7 +514,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
             if (clsDetails.PackageID == 0)
             {
                 ProductUnit clsProductUnit = new ProductUnit(clsProductPackage.Connection, clsProductPackage.Transaction);
-                Product clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+                Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                 ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
                 decimal decBaseUnitValue = clsProductUnit.GetBaseUnitValue(long.Parse(cboProductCode.SelectedItem.Value), int.Parse(cboProductUnit.SelectedItem.Value), 1);
 
@@ -650,7 +650,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 		{
 			POReturnItemDetails clsDetails = new POReturnItemDetails();
 
-			Product clsProducts = new Product();
+			Products clsProducts = new Products();
 			ProductDetails clsProductDetails = clsProducts.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);

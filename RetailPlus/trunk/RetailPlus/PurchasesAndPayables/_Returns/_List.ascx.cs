@@ -21,6 +21,19 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 		{
             if (!IsPostBack && Visible)
 			{
+                cboStatus.Items.Clear();
+                cboStatus.Items.Add(new ListItem("Show " + POReturnStatus.Open.ToString("G").ToUpper() + " Returns", POReturnStatus.Open.ToString("d")));
+                cboStatus.Items.Add(new ListItem("Show " + POReturnStatus.Posted.ToString("G").ToUpper() + " Returns", POReturnStatus.Posted.ToString("d")));
+                cboStatus.Items.Add(new ListItem("Show " + POReturnStatus.Cancelled.ToString("G").ToUpper() + " Returns", POReturnStatus.Cancelled.ToString("d")));
+                cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(POReturnStatus.Open.ToString("d")));
+
+                try
+                {
+                    lblStatus.Text = Request.QueryString["status"].ToString();
+                    cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(Request.QueryString["status"].ToString()));
+                }
+                catch { }
+
 				ManageSecurity();
 				LoadList();
 				cmdDelete.Attributes.Add("onClick", "return confirm_cancel();");
@@ -103,6 +116,18 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                 HtmlInputCheckBox chkList = (HtmlInputCheckBox)e.Item.FindControl("chkList");
                 chkList.Value = dr["DebitMemoID"].ToString();
 
+                POReturnStatus status = (POReturnStatus)Enum.Parse(typeof(POReturnStatus), dr["POReturnStatus"].ToString());
+                if (status == POReturnStatus.Posted || status == POReturnStatus.Cancelled)
+                {
+                    chkList.Attributes.Add("disabled", "false");
+                    ImageButton imgItemDelete = (ImageButton)e.Item.FindControl("imgItemDelete");
+                    ImageButton imgItemEdit = (ImageButton)e.Item.FindControl("imgItemEdit");
+                    ImageButton imgItemPost = (ImageButton)e.Item.FindControl("imgItemPost");
+                    imgItemDelete.Enabled = false; imgItemDelete.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    imgItemEdit.Enabled = false; imgItemEdit.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    imgItemPost.Enabled = false; imgItemPost.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                }
+
                 HyperLink lnkReturnNo = (HyperLink)e.Item.FindControl("lnkReturnNo");
                 lnkReturnNo.Text = dr["MemoNo"].ToString();
                 Common Common = new Common();
@@ -161,6 +186,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                     break;
 
             }
+        }
+        protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            LoadList();
         }
 
 		#endregion
@@ -297,15 +326,25 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
-			{
-				PageData.DataSource = clsPOReturns.ListAsDataTable(POReturnStatus.Open, SortField, sortoption).DefaultView;
-			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsPOReturns.SearchAsDataTable(POReturnStatus.Open, SearchKey, SortField, sortoption).DefaultView;
-			}
+            DateTime dteOrderStartDate = DateTime.MinValue;
+            try { if (txtOrderStartDate.Text != string.Empty) dteOrderStartDate = Convert.ToDateTime(txtOrderStartDate.Text + " " + txtOrderStartTime.Text); }
+            catch { }
+
+            DateTime dteOrderEndDate = DateTime.MinValue;
+            try { if (txtOrderEndDate.Text != string.Empty) dteOrderEndDate = Convert.ToDateTime(txtOrderEndDate.Text + " " + txtOrderEndTime.Text); }
+            catch { }
+
+            DateTime dtePostingStartDate = DateTime.MinValue;
+            try { if (txtPostingStartDate.Text != string.Empty) dtePostingStartDate = Convert.ToDateTime(txtPostingStartDate.Text + " " + txtPostingStartTime.Text); }
+            catch { }
+
+            DateTime dtePostingEndDate = DateTime.MinValue;
+            try { if (txtPostingEndDate.Text != string.Empty) dtePostingEndDate = Convert.ToDateTime(txtPostingEndDate.Text + " " + txtPostingEndTime.Text); }
+            catch { }
+
+            string SearchKey = txtSearch.Text;
+            POReturnStatus status = (POReturnStatus)Enum.Parse(typeof(POReturnStatus), cboStatus.SelectedItem.Value);
+            PageData.DataSource = clsPOReturns.SearchAsDataTable(status, dteOrderStartDate, dteOrderEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
 
 			clsPOReturns.CommitAndDispose();
 

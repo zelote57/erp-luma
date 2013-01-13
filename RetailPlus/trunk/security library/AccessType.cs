@@ -45,68 +45,22 @@ namespace AceSoft.RetailPlus.Security
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class AccessType
+	public class AccessType : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
 		#region Constructors and Destructors
 
 		public AccessType()
-		{
-			
-		}
+            : base(null, null)
+        {
+        }
 
-		public AccessType(MySqlConnection Connection, MySqlTransaction Transaction)
+        public AccessType(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
 
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
 		}
-
 
 		#endregion
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
 
 		#region Streams
 
@@ -134,17 +88,12 @@ namespace AceSoft.RetailPlus.Security
             else
                 SQL += " DESC;";
 
-            MySqlConnection cn = GetConnection();
-
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
-            System.Data.DataTable dt = new System.Data.DataTable("sysAccessTypes");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            System.Data.DataTable dt = new System.Data.DataTable(this.GetType().FullName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
 
@@ -159,20 +108,15 @@ namespace AceSoft.RetailPlus.Security
                 SQL += " ASC;";
             else
                 SQL += " DESC;";
-
-            MySqlConnection cn = GetConnection();
-
+            
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
             cmd.Parameters.AddWithValue("@Category", Category);
 
-            System.Data.DataTable dt = new System.Data.DataTable("sysAccessTypes");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            System.Data.DataTable dt = new System.Data.DataTable(this.GetType().FullName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
 
@@ -190,31 +134,17 @@ namespace AceSoft.RetailPlus.Security
                 else
                     SQL += " DESC;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                System.Data.DataTable dt = new System.Data.DataTable("tblAccessTypes");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                System.Data.DataTable dt = new System.Data.DataTable(this.GetType().FullName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 return dt;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }				

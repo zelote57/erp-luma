@@ -57,7 +57,7 @@ namespace AceSoft.RetailPlus.Client
 		{
 			Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
 			Int64 iRetValue = clsSalesTransactions.Insert(Details);
-			clsSalesTransactions.CommitAndDispose();
+            clsSalesTransactions.CommitAndDispose();
 			return iRetValue;
 		}
 	}

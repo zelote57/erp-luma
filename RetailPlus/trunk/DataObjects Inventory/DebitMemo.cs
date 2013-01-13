@@ -606,7 +606,7 @@ namespace AceSoft.RetailPlus.Data
             ProductUnit clsProductUnit = new ProductUnit(mConnection, mTransaction);
 
             ProductDetails clsProductDetails = new ProductDetails();
-            Product clsProduct = new Product(mConnection, mTransaction);
+            Products clsProduct = new Products(mConnection, mTransaction);
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(mConnection, mTransaction);
             ProductPackage clsProductPackage = new ProductPackage(mConnection, mTransaction);
             MatrixPackage clsMatrixPackage = new MatrixPackage(mConnection, mTransaction);
@@ -1365,6 +1365,65 @@ namespace AceSoft.RetailPlus.Data
                 throw ex;
             }
         }
+
+        public System.Data.DataTable SearchAsDataTable(DebitMemoStatus status, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder)
+        {
+            try
+            {
+                if (SortField == string.Empty || SortField == null) SortField = "DebitMemoID";
+
+                string SQL = SQLSelect() + "AND DebitMemoStatus = @Status " +
+                                "AND (MemoNo LIKE @SearchKey or MemoDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
+                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredPostingDate LIKE @SearchKey) ";
+                
+                if (OrderStartDate != DateTime.MinValue) SQL += "AND MemoDate >= @OrderStartDate ";
+                if (OrderEndDate != DateTime.MinValue) SQL += "AND MemoDate <= @OrderEndDate ";
+                if (PostingStartDate != DateTime.MinValue) SQL += "AND PostingDate >= @PostingStartDate ";
+                if (PostingEndDate != DateTime.MinValue) SQL += "AND PostingDate <= @PostingEndDate ";
+
+                SQL += "ORDER BY " + SortField;
+
+                if (SortOrder == SortOption.Ascending)
+                    SQL += " ASC";
+                else
+                    SQL += " DESC";
+
+                MySqlConnection cn = GetConnection();
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = cn;
+                cmd.Transaction = mTransaction;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@Status", status.ToString("d"));
+                cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
+
+                if (OrderStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderStartDate", OrderStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                if (OrderEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderEndDate", OrderEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                System.Data.DataTable dt = new System.Data.DataTable("PO");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                TransactionFailed = true;
+                if (IsInTransaction)
+                {
+                    mTransaction.Rollback();
+                    mTransaction.Dispose();
+                    mConnection.Close();
+                    mConnection.Dispose();
+                }
+
+                throw ex;
+            }
+        }	
 
         #endregion
 

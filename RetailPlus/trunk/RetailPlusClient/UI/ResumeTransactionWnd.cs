@@ -457,6 +457,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 clsTransactions.CommitAndDispose();
 
+                this.dgStyle.MappingName = dt.TableName;
                 dgItems.DataSource = dt;
                 dgItems.Select(0);
                 dgItems.CurrentRowIndex = 0;

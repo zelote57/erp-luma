@@ -71,7 +71,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
         }
         protected void cboCustomer_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            Data.Contact clsContact = new Data.Contact();
+            Data.Contacts clsContact = new Data.Contacts();
             Data.ContactDetails clsDetails = clsContact.Details(Convert.ToInt64(cboCustomer.SelectedItem.Value));
             clsContact.CommitAndDispose();
 
@@ -99,7 +99,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
         {
             DataClass clsDataClass = new DataClass();
 
-            Contact clsContact = new Contact();
+            Contacts clsContact = new Contacts();
             cboCustomer.DataTextField = "ContactName";
             cboCustomer.DataValueField = "ContactID";
             cboCustomer.DataSource = clsContact.CustomersDataTable(null, 0, "ContactName", SortOption.Ascending).DefaultView;

@@ -193,7 +193,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
             ContactColumns clsContactSearchColumns = new ContactColumns();
 
-			Contact clsContact = new Contact(clsProductGroup.Connection , clsProductGroup.Transaction);
+			Contacts clsContact = new Contacts(clsProductGroup.Connection , clsProductGroup.Transaction);
 			cboSupplier.DataTextField = "ContactName";
 			cboSupplier.DataValueField = "ContactID";
             cboSupplier.DataSource = clsContact.Suppliers(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, clsContactSearchColumns, string.Empty, 0, false, "ContactName", System.Data.SqlClient.SortOrder.Ascending).DefaultView;
@@ -241,7 +241,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsDetails.IsItemSold = Convert.ToBoolean(chkIsItemSold.Checked);
             clsDetails.WillPrintProductComposition = Convert.ToBoolean(chkWillPrintProductComposition.Checked);
             
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			Int64 id = clsProduct.Insert(clsDetails);
 			clsDetails.ProductID = id;
 

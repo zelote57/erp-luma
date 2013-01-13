@@ -114,66 +114,20 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class TerminalReport
+	public class TerminalReport : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
 		#region Constructors & Destructors
 
 		public TerminalReport()
+            : base(null, null)
+        {
+        }
+
+        public TerminalReport(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
-
-		public TerminalReport(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
-
 
 		#endregion
 
@@ -259,11 +213,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	SQLSelect() +  "WHERE TerminalNo = @TerminalNo;";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -271,7 +221,7 @@ namespace AceSoft.RetailPlus.Data
 				prmTerminalNo.Value = TerminalNo;
 				cmd.Parameters.Add(prmTerminalNo);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				TerminalReportDetails Details = new TerminalReportDetails();
 
@@ -352,15 +302,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -374,11 +315,11 @@ namespace AceSoft.RetailPlus.Data
 					        "FROM tblTerminalReport " +
 					        "WHERE TerminalNo = @TerminalNo;";
         				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -386,7 +327,7 @@ namespace AceSoft.RetailPlus.Data
 				prmTerminalNo.Value = TerminalNo;
 				cmd.Parameters.Add(prmTerminalNo);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				string stEndingTransactioNo = null;
 
@@ -402,15 +343,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -425,11 +357,11 @@ namespace AceSoft.RetailPlus.Data
                     "WHERE TerminalNo = @TerminalNo " +
                     "ORDER BY DateLastInitialized DESC LIMIT 1;";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -437,7 +369,7 @@ namespace AceSoft.RetailPlus.Data
                 prmTerminalNo.Value = TerminalNo;
                 cmd.Parameters.Add(prmTerminalNo);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 
                 DateTime dteRetValue = DateTime.MinValue;
 
@@ -453,15 +385,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }
@@ -476,11 +399,11 @@ namespace AceSoft.RetailPlus.Data
 					"AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
 				//							"ORDER BY DateLastInitialized DESC ";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -492,7 +415,7 @@ namespace AceSoft.RetailPlus.Data
 				prmProcessingDate.Value = ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmProcessingDate);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				DateTime dteRetValue = DateTime.MinValue;
 
@@ -508,15 +431,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -533,11 +447,11 @@ namespace AceSoft.RetailPlus.Data
 					            "BeginningBalance	= BeginningBalance + @BeginningBalance " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -557,20 +471,11 @@ namespace AceSoft.RetailPlus.Data
 				prmTerminalNo.Value = TerminalNo;
 				cmd.Parameters.Add(prmTerminalNo);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}
 		}
@@ -583,11 +488,11 @@ namespace AceSoft.RetailPlus.Data
 					"ZReadCount = ZReadCount + 1 " +
 					"WHERE TerminalNo = @TerminalNo;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -595,20 +500,11 @@ namespace AceSoft.RetailPlus.Data
 				prmTerminalNo.Value = CompanyDetails.TerminalNo;
 				cmd.Parameters.Add(prmTerminalNo);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}
 		}
@@ -621,11 +517,11 @@ namespace AceSoft.RetailPlus.Data
 					"XReadCount = XReadCount + 1 " +
 					"WHERE TerminalNo = @TerminalNo;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -633,20 +529,11 @@ namespace AceSoft.RetailPlus.Data
 				prmTerminalNo.Value = CompanyDetails.TerminalNo;
 				cmd.Parameters.Add(prmTerminalNo);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}
 		}
@@ -657,11 +544,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procTerminalReportIncrementBatchCounter(@TerminalNo);";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -669,20 +552,11 @@ namespace AceSoft.RetailPlus.Data
                 prmTerminalNo.Value = CompanyDetails.TerminalNo;
                 cmd.Parameters.Add(prmTerminalNo);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }
@@ -738,11 +612,7 @@ namespace AceSoft.RetailPlus.Data
                                     "@PromotionalItems, " +
                                     "@CreditSalesTax);";
 
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -934,20 +804,11 @@ namespace AceSoft.RetailPlus.Data
 				prmTerminalNo.Value = Details.TerminalNo;
 				cmd.Parameters.Add(prmTerminalNo);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -996,11 +857,11 @@ namespace AceSoft.RetailPlus.Data
         //            "NoOfTotalTransactions				=  NoOfTotalTransactions				+  @NoOfTotalTransactions " +
         //            "WHERE TerminalNo = @TerminalNo;";
 
-        //        MySqlConnection cn = GetConnection();
+        //        
 
         //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.Connection = cn;
-        //        cmd.Transaction = mTransaction;
+        //        
+        //        
         //        cmd.CommandType = System.Data.CommandType.Text;
         //        cmd.CommandText = SQL;
 
@@ -1156,18 +1017,18 @@ namespace AceSoft.RetailPlus.Data
         //        prmTerminalNo.Value = Details.TerminalNo;
         //        cmd.Parameters.Add(prmTerminalNo);
 
-        //        cmd.ExecuteNonQuery();
+        //        base.ExecuteNonQuery(cmd);
         //    }
 
         //    catch (Exception ex)
         //    {
-        //        TransactionFailed = true;
-        //        if (IsInTransaction)
+        //        
+        //        
         //        {
-        //            mTransaction.Rollback();
-        //            mTransaction.Dispose();
-        //            mConnection.Close();
-        //            mConnection.Dispose();
+        //            
+        //            
+        //            
+        //            
         //        }
 
         //        throw ex;
@@ -1180,11 +1041,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL = "";
 
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				
 				MySqlParameter prmTotalWithHold = new MySqlParameter("@TotalWithHold",MySqlDbType.Decimal);
@@ -1243,20 +1100,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.Add(prmTerminalNo);
 
 				cmd.CommandText = SQL;
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -1266,12 +1114,8 @@ namespace AceSoft.RetailPlus.Data
 			try 
 			{
 				string SQL = "";
-
-				MySqlConnection cn = GetConnection();
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				
 				MySqlParameter prmTotalDisburse = new MySqlParameter("@TotalDisburse",MySqlDbType.Decimal);
@@ -1330,20 +1174,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.Add(prmTerminalNo);
 
 				cmd.CommandText = SQL;
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -1353,12 +1188,8 @@ namespace AceSoft.RetailPlus.Data
 			try 
 			{
 				string SQL = "";
-
-				MySqlConnection cn = GetConnection();
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				
 				MySqlParameter prmTotalPaidOut = new MySqlParameter("@TotalPaidOut",MySqlDbType.Decimal);
@@ -1417,20 +1248,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.Add(prmTerminalNo);
 
 				cmd.CommandText = SQL;
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -1441,11 +1263,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL = "";
 
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				
 				MySqlParameter prmTotalDeposit = new MySqlParameter("@TotalDeposit",MySqlDbType.Decimal);
@@ -1515,20 +1333,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.Add(prmTerminalNo);
 
 				cmd.CommandText = SQL;
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -1544,11 +1353,11 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = "INSERT INTO tblTerminalReport (BranchID, TerminalID, TerminalNo, DateLastInitialized) " +
                     "VALUES (@BranchID, @TerminalID, @TerminalNo, @DateLastInitialized);";
 				
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1568,21 +1377,12 @@ namespace AceSoft.RetailPlus.Data
 				prmDateLastInitialized.Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmDateLastInitialized);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -1595,11 +1395,7 @@ namespace AceSoft.RetailPlus.Data
 					    "TerminalNo		=	@TerminalNo " +
 					    "WHERE TerminalID	=	@TerminalID;";
 				
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1611,21 +1407,12 @@ namespace AceSoft.RetailPlus.Data
 				prmTerminalID.Value = TerminalID;
 				cmd.Parameters.Add(prmTerminalID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -1640,12 +1427,8 @@ namespace AceSoft.RetailPlus.Data
 			try 
 			{
                 string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy);";
-
-				MySqlConnection cn = GetConnection();
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1665,22 +1448,13 @@ namespace AceSoft.RetailPlus.Data
                 prmInitializedBy.Value = pvtInitializedBy;
                 cmd.Parameters.Add(prmInitializedBy);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				UpdateZReadCount();
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -1690,11 +1464,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy);";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1714,22 +1484,13 @@ namespace AceSoft.RetailPlus.Data
                 prmInitializedBy.Value = pvtInitializedBy;
                 cmd.Parameters.Add(prmInitializedBy);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 UpdateZReadCount();
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }
@@ -1742,12 +1503,8 @@ namespace AceSoft.RetailPlus.Data
 					"COUNT(TerminalNo) AS RecordCount " +
 					"FROM tblTerminalReport " +
 					"WHERE DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') < DATE_FORMAT(@CuttOfDateTime, '%Y-%m-%d %H:%i') ";
-				  
-				MySqlConnection cn = GetConnection();
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1755,7 +1512,7 @@ namespace AceSoft.RetailPlus.Data
 				prmCuttOfDateTime.Value = CuttOfDateTime.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmCuttOfDateTime);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				bool boRetValue = true;
 
@@ -1771,15 +1528,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 
@@ -1796,11 +1544,11 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	SQLSelect();
 				
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				
 				if (TerminalNo != null)
@@ -1814,22 +1562,11 @@ namespace AceSoft.RetailPlus.Data
 
 				cmd.CommandText = SQL;
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
-				
-				return myReader;
+				return base.ExecuteReader(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -1985,10 +1722,6 @@ namespace AceSoft.RetailPlus.Data
                         "GROUP BY DATE(TransactionDate), HOUR(TransactionDate) " +
                         "ORDER BY TransactionDate";
 
-                MySqlConnection cn = GetConnection();
-
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -2012,21 +1745,10 @@ namespace AceSoft.RetailPlus.Data
                 prmTransactionStatusCreditPayment.Value = (Int16)TransactionStatus.CreditPayment;
                 cmd.Parameters.Add(prmTransactionStatusCreditPayment);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
-
-                return myReader;
+                return base.ExecuteReader(cmd);
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }
@@ -2052,11 +1774,7 @@ namespace AceSoft.RetailPlus.Data
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE TerminalNo = @TerminalNo AND BranchID = @BranchID) " +
                             "GROUP BY ProductGroup";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -2096,21 +1814,10 @@ namespace AceSoft.RetailPlus.Data
 				prmTransactionStatusCreditPayment.Value = (Int16) TransactionStatus.CreditPayment;
 				cmd.Parameters.Add(prmTransactionStatusCreditPayment);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
-				
-				return myReader;			
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -2168,12 +1875,8 @@ namespace AceSoft.RetailPlus.Data
                                     "OR TransactionStatus = @TransactionStatusRefund " +
                                     "OR TransactionStatus = @TransactionStatusCreditPayment) " +
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE TerminalNo = @TerminalNo AND BranchID = @BranchID)";
-
-				MySqlConnection cn = GetConnection();
-
+				
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -2209,8 +1912,8 @@ namespace AceSoft.RetailPlus.Data
 				prmTransactionStatusCreditPayment.Value = (Int16) TransactionStatus.CreditPayment;
 				cmd.Parameters.Add(prmTransactionStatusCreditPayment);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
-				
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
+
 				ArrayList items = new ArrayList();
                 
 				while (myReader.Read())
@@ -2272,7 +1975,7 @@ namespace AceSoft.RetailPlus.Data
 
                     for (int iCtr = 0; iCtr < Transactions.Length;iCtr++)
                     {
-                        SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems(cn, mTransaction);
+                        SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems(base.Connection, base.Transaction);
                         Transactions[iCtr].TransactionItems = clsSalesTransactionItems.Details(Transactions[iCtr].TransactionID, Transactions[iCtr].TransactionDate);
                     }
 				}
@@ -2281,13 +1984,6 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mConnection.Close();
-					mConnection.Dispose();
-				}
 				throw ex;
 			}	
 		}

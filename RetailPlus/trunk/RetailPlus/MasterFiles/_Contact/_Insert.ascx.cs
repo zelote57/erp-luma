@@ -130,7 +130,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact
             clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
             clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
 
-            Contact clsContact = new Contact();
+            Contacts clsContact = new Contacts();
             Int64 id = clsContact.Insert(clsDetails);
             clsContact.CommitAndDispose();
 

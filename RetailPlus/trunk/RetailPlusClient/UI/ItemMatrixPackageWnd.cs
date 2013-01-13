@@ -405,7 +405,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					clsData.DataReaderToDataTable(clsMatrixPackage.List(mItemDetails.VariationsMatrixID,"a.PackageID",SortOption.Ascending));
 				clsMatrixPackage.CommitAndDispose();
 				
-				dt.TableName = "tblMatrixPackage";
+				//dt.TableName = "tblMatrixPackage";
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 				dgItems.Select(0);
 				dgItems.CurrentRowIndex=0;

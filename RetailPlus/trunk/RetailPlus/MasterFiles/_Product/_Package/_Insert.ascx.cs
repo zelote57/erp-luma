@@ -111,7 +111,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 			cboUnit.DataBind();
 			cboUnit.SelectedIndex = cboUnit.Items.Count - 1;
 
-            Product clsProduct = new Product(clsUnit.Connection, clsUnit.Transaction);
+            Products clsProduct = new Products(clsUnit.Connection, clsUnit.Transaction);
 			ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
             clsUnit.CommitAndDispose();	
 

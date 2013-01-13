@@ -51,7 +51,7 @@ namespace AceSoft.RetailPlus.Reports
             clsContactColumns.ContactName = true;
             clsContactColumns.ContactCode = true;
 
-            Data.Contact clsContact = new Data.Contact();
+            Data.Contacts clsContact = new Data.Contacts();
             cboSupplier.DataTextField = Data.ContactColumnNames.ContactName;
             cboSupplier.DataValueField = Data.ContactColumnNames.ContactID;
             cboSupplier.DataSource = clsContact.Suppliers(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, txtSupplier.Text, 100, false, Data.ContactColumnNames.ContactName, System.Data.SqlClient.SortOrder.Ascending).DefaultView;

@@ -109,7 +109,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			cboUnit.SelectedIndex = cboUnit.Items.Count - 1;
 			clsUnit.CommitAndDispose();	
 
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
 			cboUnit.Items.Add(new ListItem(clsProductDetails.BaseUnitName, clsProductDetails.BaseUnitID.ToString()));
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsProductDetails.BaseUnitID.ToString()));
@@ -190,7 +190,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			clsBaseDetails.Description = stringVariationDesc;
 			clsProductVariationsMatrix.UpdateVariationDesc(clsBaseDetails);
 
-            Product clsProduct = new Product(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
+            Products clsProduct = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
             ProductDetails clsProductDetails = clsProduct.Details(clsBaseDetails.ProductID);
 
             InvAdjustmentDetails clsInvAdjustmentDetails = new InvAdjustmentDetails();

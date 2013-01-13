@@ -397,7 +397,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				System.Data.DataTable dt = clsData.DataReaderToDataTable(clsProductPackage.List(mDetails.ProductID,"ProductDesc",SortOption.Ascending));
 				clsProductPackage.CommitAndDispose();
 				
-				dt.TableName = "tblProductPackage";
+				//dt.TableName = "tblProductPackage";
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 				dgItems.Select(0);
 				dgItems.CurrentRowIndex=0;

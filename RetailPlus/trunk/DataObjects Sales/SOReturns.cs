@@ -634,7 +634,7 @@ namespace AceSoft.RetailPlus.Data
 
 			SOReturnItems clsSOReturnItems = new SOReturnItems(Connection, Transaction);
 			ProductUnit clsProductUnit = new ProductUnit(Connection, Transaction);
-			Product clsProduct = new Product(Connection, Transaction);
+			Products clsProduct = new Products(Connection, Transaction);
 			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(Connection, Transaction);
 
 			Inventory clsInventory = new Inventory(Connection, Transaction);
@@ -661,7 +661,7 @@ namespace AceSoft.RetailPlus.Data
 				// clsProduct.AddQuantity(ProductID, Quantity);
 				// if (VariationMatrixID != 0){ clsProductVariationsMatrix.AddQuantity(VariationMatrixID, Quantity); }
                 // July 28, 2011: change the above codes to the following
-                clsProduct.AddQuantity(clsSOReturnDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_SALES_RETURN), DateTime.Now, clsSOReturnDetails.CNNo, clsSOReturnDetails.SellerName);
+                clsProduct.AddQuantity(clsSOReturnDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_SALES_RETURN), DateTime.Now, clsSOReturnDetails.CNNo, clsSOReturnDetails.SellerName);
 
 				/*******************************************
 				 * Add to Inventory Analysis

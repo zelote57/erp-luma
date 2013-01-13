@@ -463,7 +463,9 @@ namespace AceSoft.RetailPlus.Client
 					while (clsFTP.Files.DownloadComplete == false)
 					{ System.Threading.Thread.Sleep(1000); }
 				}
-				catch { MessageBox.Show("Sorry cannot find the VERSION.XML file which contain the latest version of RetailPlus FE System." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); clsFTP.Disconnect(); return clsVersion; }
+				catch { 
+                    // MessageBox.Show("Sorry cannot find the VERSION.XML file which contain the latest version of RetailPlus FE System." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); clsFTP.Disconnect(); return clsVersion; 
+                }
 				clsFTP.Disconnect();
 
 				string strVersion = string.Empty;

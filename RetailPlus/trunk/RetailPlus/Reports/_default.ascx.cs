@@ -93,7 +93,7 @@ namespace AceSoft.RetailPlus.Reports
 
             DataClass clsDataClass = new DataClass();
 
-            Data.Product clsProduct = new Data.Product();
+            Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
 
@@ -216,7 +216,7 @@ namespace AceSoft.RetailPlus.Reports
             string SubGroupName = string.Empty;
             if (cboSubGroup.SelectedItem.Value != Constants.ZERO_STRING) SubGroupName = cboSubGroup.SelectedItem.Text;
 
-            Product clsProduct = new Product();
+            Products clsProduct = new Products();
             System.Data.DataTable dtProductInventoryReport = clsProduct.InventoryReport(ProductGroupName, SubGroupName, txtProductCode.Text);
 
             ProductVariationsMatrix clsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
@@ -400,7 +400,7 @@ namespace AceSoft.RetailPlus.Reports
         {
             DataClass clsDataClass = new DataClass();
 
-            Data.Product clsProduct = new Data.Product();
+            Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
 

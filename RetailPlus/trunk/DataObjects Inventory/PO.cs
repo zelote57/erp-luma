@@ -886,7 +886,7 @@ namespace AceSoft.RetailPlus.Data
 
 			POItem clsPOItem = new POItem(mConnection, mTransaction);
             ProductUnit clsProductUnit = new ProductUnit(mConnection, mTransaction);
-            Product clsProduct = new Product(mConnection, mTransaction);
+            Products clsProduct = new Products(mConnection, mTransaction);
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(mConnection, mTransaction);
             ProductPackage clsProductPackage = new ProductPackage(mConnection, mTransaction);
             MatrixPackage clsMatrixPackage = new MatrixPackage(mConnection, mTransaction);
@@ -959,7 +959,7 @@ namespace AceSoft.RetailPlus.Data
                 //clsProduct.AddQuantity(lngProductID, decQuantity);
                 //if (lngVariationMatrixID != 0) { clsProductVariationsMatrix.AddQuantity(lngVariationMatrixID, decQuantity); }
                 // July 26, 2011: change the above codes to the following
-                clsProduct.AddQuantity(clsPODetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_PURCHASE) + " @ " + decUnitCost.ToString("#,##0.#0") + "/" + strProductUnitCode, DateTime.Now, clsPODetails.PONo, clsPODetails.PurchaserName);
+                clsProduct.AddQuantity(clsPODetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_PURCHASE) + " @ " + decUnitCost.ToString("#,##0.#0") + "/" + strProductUnitCode, DateTime.Now, clsPODetails.PONo, clsPODetails.PurchaserName);
 
                 /*******************************************
 				 * Update Purchasing Information
@@ -1102,7 +1102,7 @@ namespace AceSoft.RetailPlus.Data
 
 				PODetails clsPODetails = Details(POID);
 				
-				Product clsProduct = new Product(Connection, Transaction);
+				Products clsProduct = new Products(Connection, Transaction);
 				System.Data.DataTable dt = clsProduct.ForReorder(clsPODetails.SupplierID);
 
 				POItem clsPOItem = new POItem(Connection, Transaction);
@@ -1242,7 +1242,7 @@ namespace AceSoft.RetailPlus.Data
 
                 PODetails clsPODetails = Details(POID);
 
-                Product clsProduct = new Product(Connection, Transaction);
+                Products clsProduct = new Products(Connection, Transaction);
                 // Aug 26, 2011  :Lemu
                 // Insert UpdateProductReorderOverStockPerSupplier to update the MinThreshold & MaxThreshold using RID before getting the for stocking
                 clsProduct.UpdateProductReorderOverStockPerSupplier(clsPODetails.SupplierID, RID, IDC_StartDate, IDC_EndDate);
@@ -2145,8 +2145,8 @@ namespace AceSoft.RetailPlus.Data
 
                 if (OrderStartDate != DateTime.MinValue) SQL += "AND PODate >= @OrderStartDate ";
                 if (OrderEndDate != DateTime.MinValue) SQL += "AND PODate <= @OrderEndDate ";
-                if (PostingStartDate != DateTime.MinValue) SQL += "AND PODate >= @PostingStartDate ";
-                if (PostingEndDate != DateTime.MinValue) SQL += "AND PODate <= @PostingEndDate ";
+                if (PostingStartDate != DateTime.MinValue) SQL += "AND DeliveryDate >= @PostingStartDate ";
+                if (PostingEndDate != DateTime.MinValue) SQL += "AND DeliveryDate <= @PostingEndDate ";
 
                 SQL += "ORDER BY " + SortField;
 

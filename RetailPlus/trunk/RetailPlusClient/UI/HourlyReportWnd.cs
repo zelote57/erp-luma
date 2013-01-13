@@ -587,6 +587,7 @@ namespace AceSoft.RetailPlus.Client.UI
             lblReportHeader3.Text = GetReceiptFormatParameter(clsDetails.ReportHeader3);
             lblReportHeader4.Text = GetReceiptFormatParameter(clsDetails.ReportHeader4);
 
+            this.dgStyle.MappingName = mdtHourlyReport.TableName;
             dgHourlyReport.DataSource = mdtHourlyReport;
             decimal TotalTranCount = 0;
             decimal TotalAmount = 0;

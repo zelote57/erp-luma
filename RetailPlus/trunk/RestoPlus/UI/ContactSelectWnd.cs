@@ -471,7 +471,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void LoadContactData()
 		{	
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
 
 			try
 			{

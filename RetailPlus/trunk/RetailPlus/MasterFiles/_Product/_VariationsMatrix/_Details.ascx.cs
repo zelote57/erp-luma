@@ -107,7 +107,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			cboUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List(Convert.ToInt64(lblProductID.Text),"MatrixID",SortOption.Ascending)).DefaultView;
 			cboUnit.DataBind();
 
-			Product clsProduct = new Product(clsProductVariation.Connection, clsProductVariation.Transaction);
+			Products clsProduct = new Products(clsProductVariation.Connection, clsProductVariation.Transaction);
 			ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
 			cboUnit.Items.Add(new ListItem(clsDetails.BaseUnitName, clsDetails.BaseUnitID.ToString()));
 			clsProductVariation.CommitAndDispose();

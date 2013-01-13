@@ -141,7 +141,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
             cboProductUnit.DataSource = clsUnitMatrix.ListAsDataTable(ProductID, "a.MatrixID", SortOption.Ascending).DefaultView;
             cboProductUnit.DataBind();
 
-            Product clsProduct = new Product(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
+            Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
             ProductDetails clsDetails = clsProduct.Details(ProductID);
             ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
             System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(ProductID, "PurchasePrice", SortOption.Ascending);
@@ -248,7 +248,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
         {
             DataClass clsDataClass = new DataClass();
 
-            Data.Product clsProduct = new Data.Product();
+            Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
 
@@ -264,7 +264,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                 Data.ProductPackageDetails clsProductPackageDetails = clsProductPackage.DetailsByBarCode(txtProductCode.Text);
                 if (clsProductPackageDetails.PackageID != 0)
                 {
-                    clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+                    clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     Data.ProductDetails clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID);
 
                     cboProductCode.Items.Add(new ListItem(clsProductDetails.ProductCode, clsProductDetails.ProductID.ToString()));
@@ -504,11 +504,11 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                     clsDetails.Quantity = 0;
                     clsDetails.MinThreshold = 0;
                     clsDetails.MaxThreshold = 0;
-                    clsDetails.SupplierID = Contact.DEFAULT_SUPPLIER_ID;
+                    clsDetails.SupplierID = Contacts.DEFAULT_SUPPLIER_ID;
                     clsDetails.IsItemSold = true;
                     clsDetails.WillPrintProductComposition = false;
 
-                    Product clsProduct = new Product();
+                    Products clsProduct = new Products();
                     long id = clsProduct.Insert(clsDetails);
                     clsDetails.ProductID = id;
 
@@ -590,7 +590,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
             if (clsDetails.PackageID == 0)
             {
                 ProductUnit clsProductUnit = new ProductUnit(clsProductPackage.Connection, clsProductPackage.Transaction);
-                Product clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+                Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                 ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
                 decimal decBaseUnitValue = clsProductUnit.GetBaseUnitValue(long.Parse(cboProductCode.SelectedItem.Value), int.Parse(cboProductUnit.SelectedItem.Value), 1);
 
@@ -748,7 +748,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
 		{
 			TransferInItemDetails clsDetails = new TransferInItemDetails();
 
-			Product clsProducts = new Product();
+			Products clsProducts = new Products();
 			ProductDetails clsProductDetails = clsProducts.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
@@ -1251,7 +1251,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                 TransferInItem clsTransferInItem = new TransferInItem(clsTransferIn.Connection, clsTransferIn.Transaction);
                 TransferInItemDetails clsTransferInItemDetails;
 
-                Contact clsContact = new Contact(clsTransferIn.Connection, clsTransferIn.Transaction);
+                Contacts clsContact = new Contacts(clsTransferIn.Connection, clsTransferIn.Transaction);
                 ContactDetails clsContactDetails;
 
                 ContactGroup clsContactGroup = new ContactGroup(clsTransferIn.Connection, clsTransferIn.Transaction);
@@ -1266,7 +1266,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                 ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup(clsTransferIn.Connection, clsTransferIn.Transaction);
                 ProductSubGroupDetails clsProductSubGroupDetails;
 
-                Product clsProduct = new Product(clsTransferIn.Connection, clsTransferIn.Transaction);
+                Products clsProduct = new Products(clsTransferIn.Connection, clsTransferIn.Transaction);
                 ProductDetails clsProductDetails;
 
                 ProductVariation clsProductVariation = new ProductVariation(clsTransferIn.Connection, clsTransferIn.Transaction);
@@ -1306,7 +1306,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                                     clsContactDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), clsTransferInDetails.SupplierModeOfTerms.ToString());
                                     clsContactDetails.Terms = clsTransferInDetails.SupplierTerms;
                                     clsContactDetails.Remarks = "Added in from Imported TransferIn #";
-                                    clsContactDetails.ContactGroupID = int.Parse(Contact.DEFAULT_SUPPLIER_ID.ToString("d"));
+                                    clsContactDetails.ContactGroupID = int.Parse(Contacts.DEFAULT_SUPPLIER_ID.ToString("d"));
                                     clsContactDetails.DateCreated = DateTime.Now;
                                     clsTransferInDetails.SupplierID = clsContact.Insert(clsContactDetails);
                                 }

@@ -363,7 +363,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 if (strGroupCode != string.Empty)
                 {
-                    Product clsProduct = new Product();
+                    Products clsProduct = new Products();
                     System.Data.DataTable dt;
                     if (mboShowInActiveProducts == false)
                     { dt = clsProduct.SearchSaleableDataTableByGroup(strGroupCode, string.Empty, "ProductCode", SortOption.Ascending, 0, mboShowItemMoreThanZeroQty); }

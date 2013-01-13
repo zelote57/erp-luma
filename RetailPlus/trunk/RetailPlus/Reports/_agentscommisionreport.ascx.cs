@@ -39,7 +39,7 @@ namespace AceSoft.RetailPlus.Reports
 		{
 			DataClass clsDataClass = new DataClass();
 
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
 
 			cboContactCode.DataTextField = "ContactName";
 			cboContactCode.DataValueField = "ContactID";
@@ -253,7 +253,7 @@ namespace AceSoft.RetailPlus.Reports
 
             if (cboContactCode.SelectedItem.Value != "0")
             {
-                Contact clsContact = new Contact();
+                Contacts clsContact = new Contacts();
                 ContactDetails clsContactDetails = clsContact.Details(long.Parse(cboContactCode.SelectedValue));
                 clsContact.CommitAndDispose();
 

@@ -55,68 +55,22 @@ namespace AceSoft.RetailPlus.Security
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class AccessRights
+	public class AccessRights : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-		
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
 		#region Contructors and Destructors
 		
 		public AccessRights()
-		{
-			
-		}
+            : base(null, null)
+        {
+        }
 
-		public AccessRights(MySqlConnection Connection, MySqlTransaction Transaction)
+        public AccessRights(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
 
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
 		}
 
 		#endregion
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
-
 
 		#region DataList
 
@@ -133,28 +87,14 @@ namespace AceSoft.RetailPlus.Security
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 				
-				return myReader;			
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}	
 		}
@@ -193,10 +133,7 @@ namespace AceSoft.RetailPlus.Security
 		}
         public System.Data.DataTable DataList(string Category, long UID, string SortField, SortOption SortOrder)
         {
-            if (mConnection == null)
-                GetConnection();
-
-            AccessType clsAccessType = new AccessType(mConnection, mTransaction);
+            AccessType clsAccessType = new AccessType(base.Connection, base.Transaction);
             System.Data.DataTable dtAccessType = clsAccessType.DataList(Category, "Category, SequenceNo", SortOption.Ascending);
 
             System.Data.DataTable dt = new System.Data.DataTable("sysAccessRights");
@@ -237,18 +174,14 @@ namespace AceSoft.RetailPlus.Security
                                 "FROM sysAccessRights a INNER JOIN sysAccessTypes b ON a.TranTypeID = b.TypeID " +
 							"WHERE UID = @UID AND TranTypeID = @TranTypeID AND Enabled=1 ";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
                 cmd.Parameters.AddWithValue("@UID", UID);
 				cmd.Parameters.AddWithValue("@TranTypeID", TranTypeID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				AllowedRights rights = new AllowedRights();
 
@@ -265,14 +198,6 @@ namespace AceSoft.RetailPlus.Security
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}		
 		}
@@ -288,11 +213,7 @@ namespace AceSoft.RetailPlus.Security
 				string SQL ="SELECT COUNT(*) FROM sysAccessRights " +
 							"WHERE UID = @UID AND TranTypeID = @TranTypeID";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -304,7 +225,7 @@ namespace AceSoft.RetailPlus.Security
 				prmTranTypeID.Value = TranTypeID;
 				cmd.Parameters.Add(prmTranTypeID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				bool existing = false;
 				
@@ -320,14 +241,6 @@ namespace AceSoft.RetailPlus.Security
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}	
 		}
@@ -364,12 +277,8 @@ namespace AceSoft.RetailPlus.Security
 				SQL	=	"INSERT INTO sysAccessRights " +
 						"(UID, TranTypeID, AllowRead, AllowWrite) " +
 						"VALUES (@UID, @TranTypeID, @Read, @Write)";
-				 
-				MySqlConnection cn = GetConnection();
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -395,19 +304,11 @@ namespace AceSoft.RetailPlus.Security
 					prmWrite.Value = "0";
 				cmd.Parameters.Add(prmWrite);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}	
 		}
@@ -419,17 +320,13 @@ namespace AceSoft.RetailPlus.Security
 				string SQL = string.Empty;
 
 				SQL	=	"UPDATE sysAccessRights SET " +
-						"AllowRead	 = @Read, " +
-						"AllowWrite = @Write " +
+						    "AllowRead	 = @Read, " +
+						    "AllowWrite = @Write " +
 						"WHERE 1=1 " +
-						"AND UID = @UID " +
-						"AND TranTypeID = @TranTypeID";
+						    "AND UID = @UID " +
+						    "AND TranTypeID = @TranTypeID";
 				
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -455,19 +352,11 @@ namespace AceSoft.RetailPlus.Security
 				prmTranTypeID.Value = Details.TranTypeID;
 				cmd.Parameters.Add(prmTranTypeID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}	
 		}
@@ -495,14 +384,6 @@ namespace AceSoft.RetailPlus.Security
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}	
 		}

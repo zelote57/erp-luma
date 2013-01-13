@@ -518,7 +518,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					clsData.DataReaderToDataTable(clsProductVariationsMatrix.Search(mDetails.ProductID,searchkey,"a.Description",SortOption.Ascending, 100, mboShowItemMoreThanZeroQty));
 				clsProductVariationsMatrix.CommitAndDispose();
 				
-				dt.TableName = "tblProductVariationsMatrix";
+				//dt.TableName = "tblProductVariationsMatrix";
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 				dgItems.Select(0);
 				dgItems.CurrentRowIndex=0;

@@ -77,7 +77,7 @@ namespace AceSoft.RetailPlus.Reports
             cboBranch.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             cboBranch.SelectedIndex = 0;
 
-            Contact clsContact = new Contact(clsBranch.Connection, clsBranch.Transaction);
+            Contacts clsContact = new Contacts(clsBranch.Connection, clsBranch.Transaction);
             cboContact.DataTextField = "ContactName";
             cboContact.DataValueField = "ContactID";
             cboContact.DataSource = clsContact.SuppliersAsDataTable(txtContactCode.Text, 100).DefaultView;
@@ -264,7 +264,7 @@ namespace AceSoft.RetailPlus.Reports
             clsSearchKey.ProductCode = txtProductCode.Text;
             #endregion
 
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
             System.Data.DataTable dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKey, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 0, false, ProductColumnNames.ProductCode, SortOption.Ascending);
 			clsProduct.CommitAndDispose();
 
@@ -459,7 +459,7 @@ namespace AceSoft.RetailPlus.Reports
 
         protected void imgContactCodeSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            Contact clsContact = new Contact();
+            Contacts clsContact = new Contacts();
             cboContact.DataTextField = "ContactName";
             cboContact.DataValueField = "ContactID";
             cboContact.DataSource = clsContact.SuppliersAsDataTable(txtContactCode.Text, 100).DefaultView;

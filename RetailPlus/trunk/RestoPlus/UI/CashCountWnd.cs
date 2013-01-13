@@ -749,7 +749,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			ArrayList arrCashCountDetails = new ArrayList();				
 			CashCountDetails clsDetails;
-			CashCount clsCashCount = new CashCount();
+			CashCounts clsCashCount = new CashCounts();
 			
 			foreach(System.Data.DataRow dr in dt.Rows)
 			{
@@ -805,7 +805,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{	
 			try
 			{
-				Data.Denomination clsDenomination = new Data.Denomination();
+				Data.Denominations clsDenomination = new Data.Denominations();
 
 				System.Data.DataTable dt = clsDenomination.ListForCashCount("DenominationID", SortOption.Ascending);
 

@@ -36,7 +36,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 			
 			if (Request.QueryString["task"]!=null)
 			{
-                Product clsProduct = new Product();
+                Products clsProduct = new Products();
                 ProductDetails clsDetails = new ProductDetails();
 
                 Int64 id = Convert.ToInt64(Common.Decrypt(Request.QueryString["prodid"].ToString(), Session.SessionID));

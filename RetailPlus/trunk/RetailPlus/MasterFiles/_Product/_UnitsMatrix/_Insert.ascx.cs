@@ -107,7 +107,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
 
 			if (clsUnitDetails.BottomUnitName == null)
 			{
-				Product clsProduct = new Product();
+				Products clsProduct = new Products();
 				ProductDetails clsDetails = new ProductDetails();
 				clsDetails = clsProduct.Details(prodid);
 				clsProduct.CommitAndDispose();
@@ -151,7 +151,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
             clsProductPackageDetails = clsProductPackage.DetailsByProductIDAndUnitID(Convert.ToInt64(lblProductID.Text), Convert.ToInt32(cboBottomUnit.SelectedItem.Value));
             if (clsProductPackageDetails.PackageID == 0)
             {
-                Product clsProduct = new Product(clsUnitMatrix.Connection, clsUnitMatrix.Transaction);
+                Products clsProduct = new Products(clsUnitMatrix.Connection, clsUnitMatrix.Transaction);
                 ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
 
                 Terminal clsTerminal = new Terminal(clsUnitMatrix.Connection, clsUnitMatrix.Transaction);

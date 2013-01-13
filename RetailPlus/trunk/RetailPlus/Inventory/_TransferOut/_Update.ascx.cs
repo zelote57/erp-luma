@@ -75,7 +75,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 		}
 		protected void cboSupplier_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			Data.Contact clsContact = new Data.Contact();
+			Data.Contacts clsContact = new Data.Contacts();
 			Data.ContactDetails clsDetails = clsContact.Details(Convert.ToInt64(cboSupplier.SelectedItem.Value));
 			clsContact.CommitAndDispose();
 			
@@ -102,7 +102,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 		{
 			DataClass clsDataClass = new DataClass();
 
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
 			cboSupplier.DataTextField = "ContactName";
 			cboSupplier.DataValueField = "ContactID";
 			cboSupplier.DataSource = clsDataClass.DataReaderToDataTable(clsContact.Suppliers(null, 0, "ContactName", SortOption.Ascending)).DefaultView;

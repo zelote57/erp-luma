@@ -267,7 +267,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             //Contact clsContact = new Contact(clsStock.Connection, clsStock.Transaction);
             //ContactDetails clsPODetails = clsContact.Details(clsPODetails.SupplierID);
 
-            Product clsProduct = new Product(clsPO.Connection, clsPO.Transaction);
+            Products clsProduct = new Products(clsPO.Connection, clsPO.Transaction);
             ProductDetails clsProductDetails;
 
             ProductVariation clsProductVariation = new ProductVariation(clsPO.Connection, clsPO.Transaction);

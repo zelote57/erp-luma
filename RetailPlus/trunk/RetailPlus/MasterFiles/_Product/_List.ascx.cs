@@ -288,7 +288,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 		private void LoadList()
 		{	
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			DataClass clsDataClass = new DataClass();
 			Common Common = new Common();
 
@@ -365,7 +365,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			}
 			if (boRetValue)
 			{
-				Product clsProduct = new Product();
+				Products clsProduct = new Products();
 				clsProduct.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsProduct.CommitAndDispose();
 

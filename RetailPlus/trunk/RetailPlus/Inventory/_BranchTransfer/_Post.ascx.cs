@@ -138,7 +138,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			cboProductUnit.DataSource = clsUnitMatrix.ListAsDataTable(ProductID,"a.MatrixID",SortOption.Ascending).DefaultView;
 			cboProductUnit.DataBind();
 
-            Product clsProduct = new Product(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
+            Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
 			ProductDetails clsDetails = clsProduct.Details(ProductID);
             ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
             System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(ProductID, "PurchasePrice", SortOption.Ascending);
@@ -214,7 +214,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 		{
 			DataClass clsDataClass = new DataClass();
 
-			Data.Product clsProduct = new Data.Product();
+			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
 
@@ -421,7 +421,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
             if (clsDetails.PackageID == 0)
             {
                 ProductUnit clsProductUnit = new ProductUnit(clsProductPackage.Connection, clsProductPackage.Transaction);
-                Product clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+                Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                 ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
                 decimal decBaseUnitValue = clsProductUnit.GetBaseUnitValue(long.Parse(cboProductCode.SelectedItem.Value), int.Parse(cboProductUnit.SelectedItem.Value), 1);
 
@@ -517,7 +517,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 		{
 			BranchTransferItemDetails clsDetails = new BranchTransferItemDetails();
 
-			Product clsProducts = new Product();
+			Products clsProducts = new Products();
 			ProductDetails clsProductDetails = clsProducts.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);

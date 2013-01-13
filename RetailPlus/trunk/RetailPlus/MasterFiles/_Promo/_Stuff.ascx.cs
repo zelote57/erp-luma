@@ -52,7 +52,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 
 		private void LoadOptions()
 		{
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
 			cboContact.DataTextField = "ContactName";
 			cboContact.DataValueField = "ContactID";
             cboContact.DataSource = clsContact.CustomersDataTable(txtContactCode.Text).DefaultView;
@@ -270,7 +270,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 		protected void cboProductSubGroup_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			DataClass clsDataClass = new DataClass();
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 
 			cboProducts.DataTextField = "ProductCode";
 			cboProducts.DataValueField = "ProductID";
@@ -320,7 +320,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 
         protected void imgContactCodeSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            Contact clsContact = new Contact();
+            Contacts clsContact = new Contacts();
             cboContact.DataTextField = "ContactName";
             cboContact.DataValueField = "ContactID";
             cboContact.DataSource = clsContact.CustomersDataTable(txtContactCode.Text).DefaultView;

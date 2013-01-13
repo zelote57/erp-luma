@@ -72,7 +72,7 @@ namespace AceSoft.RetailPlus.Inventory
             clsSearchColumns.BarCode = true;
             clsSearchColumns.ProductCode = true;
 
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
             PageData.DataSource = clsProduct.ListAsDataTable(clsProductColumns, 0, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending).DefaultView;
             //PageData.DataSource = clsProduct.SearchDataTable(ProductListFilterType.ShowActiveAndInactive, SearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending).DefaultView;
             clsProduct.CommitAndDispose();
@@ -253,7 +253,7 @@ namespace AceSoft.RetailPlus.Inventory
 			}
 			if (boRetValue)
 			{
-				Product clsProduct = new Product();
+				Products clsProduct = new Products();
 				clsProduct.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsProduct.CommitAndDispose();
 			}

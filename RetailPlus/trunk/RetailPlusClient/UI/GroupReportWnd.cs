@@ -757,6 +757,7 @@ namespace AceSoft.RetailPlus.Client.UI
             lblReportHeader3.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportHeader3);
             lblReportHeader4.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportHeader4);
 
+            this.dgStyle.MappingName = mdtGroupReport.TableName;
             dgGroupReport.DataSource = mdtGroupReport;
             decimal TotalTranCount = 0;
             decimal TotalAmount = 0;

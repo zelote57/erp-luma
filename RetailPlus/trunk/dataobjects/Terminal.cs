@@ -202,8 +202,8 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
 
                 Int16 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)
@@ -841,7 +841,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				MySqlDataReader myReader = base.ExecuteReader(cmd);
 
-                return myReader;
+                return base.ExecuteReader(cmd);
 			}
 			catch (Exception ex)
 			{

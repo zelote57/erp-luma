@@ -38,66 +38,20 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class CashCount
-	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
+	public class CashCounts : POSConnection
+    {
 		#region Constructors and Destructors
 
-		public CashCount()
+		public CashCounts()
+            : base(null, null)
+        {
+        }
+
+        public CashCounts(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
-
-		public CashCount(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
-
 
 		#endregion
 
@@ -127,11 +81,11 @@ namespace AceSoft.RetailPlus.Data
 								"@DenominationCount" +
 							");";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -163,7 +117,7 @@ namespace AceSoft.RetailPlus.Data
 				prmAmount.Value = Details.DenominationCount;
 				cmd.Parameters.Add(prmAmount);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				SQL = "SELECT LAST_INSERT_ID();";
 				
@@ -171,8 +125,8 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
 
                 Int64 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)
@@ -185,13 +139,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -203,7 +157,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				if (Details.Length > 0)
 				{
-					MySqlConnection cn = GetConnection();
+					
 					Int64 CashierID = Details[0].CashierID;
 					string TerminalNo =Details[0].TerminalNo;
                     int BranchID = Details[0].BranchID;
@@ -214,20 +168,20 @@ namespace AceSoft.RetailPlus.Data
 						Insert(details);	
 						Amount += details.DenominationAmount;
 					}
-					CashierReport clsCashierReport = new CashierReport(cn, mTransaction);
+					CashierReport clsCashierReport = new CashierReport(base.Connection, base.Transaction);
                     clsCashierReport.UpdateCashCount(BranchID, CashierID, TerminalNo, Amount);
 				}
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -244,28 +198,28 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	"DELETE FROM tblCashCount WHERE CashCountID IN (" + IDs + ");";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -296,11 +250,11 @@ namespace AceSoft.RetailPlus.Data
 							"INNER JOIN tblDenomination b ON a.DenominationID = b.DenominationID " +
 							"WHERE CashCountID = @CashCountID ";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -308,7 +262,7 @@ namespace AceSoft.RetailPlus.Data
 				prmCashCountID.Value = CashCountID;
 				cmd.Parameters.Add(prmCashCountID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				CashCountDetails Details = new CashCountDetails();
 
@@ -335,13 +289,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -379,20 +333,10 @@ namespace AceSoft.RetailPlus.Data
 			{
                 CashCountDetails clsCashCountDetails = new CashCountDetails();
 
-                MySqlDataReader myReader = List(clsCashCountDetails, string.Empty, SortOption.Ascending);
-
-                return myReader;		
+                return List(clsCashCountDetails, string.Empty, SortOption.Ascending);
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}	
 		}
@@ -405,20 +349,10 @@ namespace AceSoft.RetailPlus.Data
                 clsCashCountDetails.CashierID = CashierID;
                 clsCashCountDetails.TerminalNo = TerminalNo;
 
-				MySqlDataReader myReader = List(clsCashCountDetails, string.Empty, SortOption.Ascending);
-				
-				return myReader;			
+                return List(clsCashCountDetails, string.Empty, SortOption.Ascending);
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}	
 		}
@@ -472,27 +406,15 @@ namespace AceSoft.RetailPlus.Data
                         SQL += " DESC";
                 }
 
-                MySqlConnection cn = GetConnection();
-
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                
 
-                return myReader;
+                return base.ExecuteReader(cmd);
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                    mTransaction.Rollback();
-
-                mTransaction.Dispose();
-                mConnection.Close();
-                mConnection.Dispose();
-
                 throw ex;
             }
         }
@@ -547,16 +469,16 @@ namespace AceSoft.RetailPlus.Data
                         SQL += " DESC";
                 }
 
-                MySqlConnection cn = GetConnection();
+                
 
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("tblCashCount");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
 
                 return dt;
             }

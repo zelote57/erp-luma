@@ -502,7 +502,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					dt.Rows.Add(dr);
 
 				}
-
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 				
 				if (dgItems.VisibleRowCount > 0)

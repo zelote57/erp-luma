@@ -121,7 +121,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             {
                 if (cboProductCode.SelectedItem.Value != Constants.ZERO_STRING)
                 {
-                    Product clsProduct = new Product();
+                    Products clsProduct = new Products();
                     ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
                     clsProduct.CommitAndDispose();
                     txtVAT.Text = clsProductDetails.VAT.ToString("#,##0.#0");
@@ -222,7 +222,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsSearchKeys.ProductSubGroupID = long.Parse(cboProductSubGroup.SelectedItem.Value);
             clsSearchKeys.ProductGroupID = long.Parse(cboProductGroup.SelectedItem.Value);
 
-            Data.Product clsProduct = new Data.Product();
+            Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
             cboProductCode.DataSource = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending);
@@ -271,7 +271,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             }
             if (lngProductID != 0)
             {
-                Product clsProduct = new Product();
+                Products clsProduct = new Products();
                 clsProduct.ChangeTax(0, 0, lngProductID, decVAT, decEVAT, decLocalTax);
                 clsProduct.CommitAndDispose();
             }

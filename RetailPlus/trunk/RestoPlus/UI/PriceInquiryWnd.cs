@@ -279,14 +279,14 @@ namespace AceSoft.RetailPlus.Client.UI
 				case Keys.Enter:
 					if (txtBarCode.Text.Trim() != string.Empty)
 					{
-						Data.Product clsProduct = new Data.Product();
+						Data.Products clsProduct = new Data.Products();
 						Data.ProductDetails clsProductDetails = clsProduct.Details(txtBarCode.Text.Trim());
 						if (clsProductDetails.ProductID == 0)
 						{
 							string strContactCardNo = txtBarCode.Text.Trim();
 							
 
-							Data.Contact clsContact = new Data.Contact(clsProduct.Connection, clsProduct.Transaction);
+							Data.Contacts clsContact = new Data.Contacts(clsProduct.Connection, clsProduct.Transaction);
 							Data.ContactDetails clsContactDetails = clsContact.DetailsByRewardCardNo(strContactCardNo);
 							if (clsContactDetails.ContactID == 0)
 							{

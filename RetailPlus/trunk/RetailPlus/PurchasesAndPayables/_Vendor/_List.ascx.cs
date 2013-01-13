@@ -122,7 +122,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
             switch (e.CommandName)
             {
                 case "imgItemDelete":
-                    Contact clsContact = new Contact();
+                    Contacts clsContact = new Contacts();
                     clsContact.Delete(chkList.Value);
                     clsContact.CommitAndDispose();
 
@@ -187,7 +187,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
 		}
 		private void LoadList()
 		{	
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
 
 			string SortField = "ContactID";
 			if (Request.QueryString["sortfield"]!=null)
@@ -257,7 +257,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
 			}
 			if (boRetValue)
 			{
-				Contact clsContact = new Contact();
+				Contacts clsContact = new Contacts();
 				clsContact.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsContact.CommitAndDispose();
 			}

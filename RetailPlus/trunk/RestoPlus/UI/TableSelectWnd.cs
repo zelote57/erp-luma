@@ -284,7 +284,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				ContactColumns clsSearchColumns = new ContactColumns();
 
-				Contact clsContact = new Contact();
+				Contacts clsContact = new Contacts();
 				System.Data.DataTable dtContact = clsContact.Customers(clsContactColumns, lngSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, 0, false, string.Empty, SequenceSortOrder);
 
 				int iRow = 0;
@@ -400,7 +400,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			{
 				ProductButton cmdTable = (ProductButton)sender;
 
-				Data.Contact clsContact = new Contact();
+				Data.Contacts clsContact = new Contacts();
 				mDetails = clsContact.Details(long.Parse(cmdTable.Tag.ToString()));
 				clsContact.CommitAndDispose();
 

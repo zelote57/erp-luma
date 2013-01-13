@@ -257,7 +257,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				string searchkey = "" + txtSearch.Text;
                 System.Data.DataTable dt = clsAccessUser.Waiters(searchkey, 100, "Name", SortOption.Ascending);
                 clsAccessUser.CommitAndDispose();
-				
+
+                this.dgStyle.MappingName = dt.TableName;
 				dgWaiter.DataSource = dt;
 				dgWaiter.Select(0);
 				dgWaiter.CurrentRowIndex=0;

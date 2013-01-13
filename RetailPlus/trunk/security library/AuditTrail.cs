@@ -42,68 +42,23 @@ namespace AceSoft.RetailPlus.Security
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class AuditTrail
+	public class AuditTrail : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
+		
 		#region Constructors and Destructors
 
 		public AuditTrail()
-		{
-			
-		}
+            : base(null, null)
+        {
+        }
 
-		public AuditTrail(MySqlConnection Connection, MySqlTransaction Transaction)
+        public AuditTrail(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
 
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
 		}
-
 
 		#endregion
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-							
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
 
 		#region Insert and Update
 
@@ -115,11 +70,11 @@ namespace AceSoft.RetailPlus.Security
 				string SQL="INSERT INTO sysAuditTrail ( ActivityDate, User, Activity, IPAddress, Remarks ) " +
 							"VALUES ( @ActivityDate, @User, @Activity, @IPAddress, @Remarks );";
 
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -131,19 +86,11 @@ namespace AceSoft.RetailPlus.Security
 
                 //cmd.Parameters.AddWithValue("@ActivityDate", Details.ActivityDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-				cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}	
 		}
@@ -197,14 +144,6 @@ namespace AceSoft.RetailPlus.Security
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}	
 		}
@@ -220,28 +159,14 @@ namespace AceSoft.RetailPlus.Security
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
-				
-				return myReader;
+				return base.ExecuteReader(cmd);
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-
 				throw ex;
 			}	
 		}
@@ -261,32 +186,18 @@ namespace AceSoft.RetailPlus.Security
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
 				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
-
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 				
-				return myReader;			
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-				
 				throw ex;
 			}	
 		}
@@ -317,11 +228,7 @@ namespace AceSoft.RetailPlus.Security
 
                 if (limit != 0) SQL += " LIMIT " + limit.ToString() + " ";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -331,20 +238,10 @@ namespace AceSoft.RetailPlus.Security
                 cmd.Parameters.AddWithValue("@Activity", Activity);
                 cmd.Parameters.AddWithValue("@Remarks", Remarks);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
-				
-				return myReader;			
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
-
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
-				
 				throw ex;
 			}	
 		}
@@ -381,14 +278,6 @@ namespace AceSoft.RetailPlus.Security
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                    mTransaction.Rollback();
-
-                mTransaction.Dispose();
-                mConnection.Close();
-                mConnection.Dispose();
-
                 throw ex;
             }	
         }			

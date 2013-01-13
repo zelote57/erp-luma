@@ -216,7 +216,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		{
 			Common Common = new Common();
 			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			ProductDetails clsDetails = clsProduct.Details(iID);
 			clsProduct.CommitAndDispose();
 
@@ -285,7 +285,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			clsDetails.MaxThreshold = Convert.ToDecimal(txtMaxThreshold.Text);
 			clsDetails.SupplierID = Convert.ToInt64(cboSupplier.SelectedItem.Value); 
 
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			clsProduct.Update(clsDetails);
 			clsProduct.CommitAndDispose();
 		}

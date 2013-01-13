@@ -115,7 +115,7 @@ namespace AceSoft.RetailPlus.Inventory
                 imgChangePrice.Visible = true;
                 imgEditNow.Visible = true;
 
-                Product clsProduct = new Product();
+                Products clsProduct = new Products();
                 ProductDetails clsProductDetails = clsProduct.Details(int.Parse(cboBranch.SelectedItem.Value), Convert.ToInt64(cboProductCode.SelectedValue));
 
                 txtProductCode.Text = cboProductCode.SelectedItem.Text;
@@ -158,7 +158,7 @@ namespace AceSoft.RetailPlus.Inventory
         {
             DataClass clsDataClass = new DataClass();
 
-            Data.Product clsProduct = new Data.Product();
+            Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
 
@@ -279,7 +279,7 @@ namespace AceSoft.RetailPlus.Inventory
             Security.AccessUserDetails clsDetails = (Security.AccessUserDetails)Session["AccessUserDetails"];
             DateTime dteChangeDate = DateTime.Now;
 
-            Product clsProduct = new Product();
+            Products clsProduct = new Products();
             clsProduct.GetConnection();
 
             InvAdjustment clsInvAdjustment = new InvAdjustment(clsProduct.Connection, clsProduct.Transaction);
@@ -318,9 +318,9 @@ namespace AceSoft.RetailPlus.Inventory
                     // clsProduct.UpdateInvDetails(lngProductID, decQuantityBefore, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text));
 
                     if (decQuantityBefore > decQuantityNow)
-                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
                     else if (decQuantityBefore < decQuantityNow)
-                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
                 }
             }
             else
@@ -389,9 +389,9 @@ namespace AceSoft.RetailPlus.Inventory
                     // clsProduct.UpdateInvDetails(lngProductID, decQuantityBefore, decMinThresholdNow, decMaxThresholdNow);
 
                     if (decQuantityBefore > decQuantityNow)
-                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
                     else if (decQuantityBefore < decQuantityNow)
-                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
                 }
             }
             clsProduct.CommitAndDispose();

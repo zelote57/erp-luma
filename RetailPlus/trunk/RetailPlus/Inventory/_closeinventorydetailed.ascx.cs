@@ -228,7 +228,7 @@ namespace AceSoft.RetailPlus.Inventory
                 case "imgProductTag":
                     {
                         ImageButton imgProductTag = (ImageButton)e.Item.FindControl("imgProductTag");
-                        Product clsProduct = new Product();
+                        Products clsProduct = new Products();
 
                         if (imgProductTag.ToolTip == "Tag this product as INACTIVE.")
                             clsProduct.TagInactive(long.Parse(chkList.Value));
@@ -251,7 +251,7 @@ namespace AceSoft.RetailPlus.Inventory
                             Response.Write(stScript);
                             break;
                         }
-                        Product clsProduct = new Product();
+                        Products clsProduct = new Products();
                         clsProduct.UpdateActualQuantity(int.Parse(cboBranch.SelectedItem.Value), long.Parse(chkList.Value), decimal.Parse(txtActualQuantity.Text));
                         clsProduct.CommitAndDispose();
                     }
@@ -386,7 +386,7 @@ namespace AceSoft.RetailPlus.Inventory
                 {
                     AccessUserDetails clsAccessUserDetails = (AccessUserDetails)Session["AccessUserDetails"];
 
-                    Product clsProduct = new Product(clsERPConfig.Connection, clsERPConfig.Transaction);
+                    Products clsProduct = new Products(clsERPConfig.Connection, clsERPConfig.Transaction);
                     clsProduct.CloseInventory(int.Parse(cboBranch.SelectedItem.Value), clsAccessUserDetails.UID, DateTime.Parse(txtClosingDate.Text), Constants.CLOSE_INVENTORY_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsERPConfig.get_LastClosingNo(), true);
                     clsERPConfig.CommitAndDispose();
                     boRetValue = true;
@@ -414,7 +414,7 @@ namespace AceSoft.RetailPlus.Inventory
         {
             bool boRetValue = false;
 
-            Product clsProduct = new Product();
+            Products clsProduct = new Products();
             boRetValue = clsProduct.UpdateActualQuantity(int.Parse(cboBranch.SelectedItem.Value), 0, 0);
             clsProduct.CommitAndDispose();
             boRetValue = true;
@@ -607,7 +607,7 @@ namespace AceSoft.RetailPlus.Inventory
 
         private void LoadList()
         {
-            Product clsProduct = new Product();
+            Products clsProduct = new Products();
             Common Common = new Common();
 
             string SortField = "ProductCode";

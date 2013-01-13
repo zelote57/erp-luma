@@ -216,7 +216,7 @@ namespace AceSoft.RetailPlus.Reports
                 
                 case ReportTypes.CustomerCreditListWCredit:
                     #region  Customers List With Credit
-                    Contact clsContact = new Contact();
+                    Contacts clsContact = new Contacts();
 			        myreader = clsContact.CustomerAdvanceSearch(null, cboContactName.Text, cboCustomerGroup.SelectedValue, true, "ContactID", SortOption.Ascending);
 			        clsContact.CommitAndDispose();
 

@@ -100,7 +100,7 @@ namespace AceSoft.RetailPlus.Rewards
 			{
 				if (cboProductCode.SelectedItem.Value != Constants.ZERO_STRING)
 				{
-					Product clsProduct = new Product();
+					Products clsProduct = new Products();
 					ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
 					clsProduct.CommitAndDispose();
 					txtRedeemRewardPoints.Text = clsProductDetails.RewardPoints.ToString("#,##0.#0");
@@ -158,7 +158,7 @@ namespace AceSoft.RetailPlus.Rewards
 		}
 		private void LoadMembers()
 		{
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
 			DataClass clsDataClass = new DataClass();
 			ContactColumns clsContactColumns = new ContactColumns();
 			clsContactColumns.ContactID = true;
@@ -195,7 +195,7 @@ namespace AceSoft.RetailPlus.Rewards
 			clsSearchKeys.BarCode3 = strSearchKey;
 			clsSearchKeys.ProductCode = strSearchKey;
 
-			Data.Product clsProduct = new Data.Product();
+			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
 			cboProductCode.DataSource = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending);

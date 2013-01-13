@@ -28,72 +28,23 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class Position
-	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-        public const string DEFAULT_ALL_POSITIONS = "All Positions";
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
+	public class Position : POSConnection
+    {
 		#region Constructors and Destructors
 
 		public Position()
-		{
-			
-		}
+            : base(null, null)
+        {
+        }
 
-		public Position(MySqlConnection Connection, MySqlTransaction Transaction)
+        public Position(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
 
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
 		}
-
 
 		#endregion
 
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
-
-		
 		#region Insert and Update
 
 		public Int16 Insert(PositionDetails Details)
@@ -102,11 +53,11 @@ namespace AceSoft.RetailPlus.Data
 			{
                 string SQL = "CALL procPositionInsert(@PositionCode, @PositionName);";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -118,7 +69,7 @@ namespace AceSoft.RetailPlus.Data
                 prmPositionName.Value = Details.PositionName;
                 cmd.Parameters.Add(prmPositionName);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
 				SQL = "SELECT LAST_INSERT_ID();";
 				
@@ -126,8 +77,8 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
 
                 Int16 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)
@@ -140,13 +91,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -158,11 +109,11 @@ namespace AceSoft.RetailPlus.Data
 			{
                 string SQL = "CALL procPositionUpdate(@PositionID, @PositionCode, @PositionName);";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -170,18 +121,18 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@PositionCode", Details.PositionCode);
                 cmd.Parameters.AddWithValue("@PositionName", Details.PositionName);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -208,28 +159,28 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	"DELETE FROM tblPositions WHERE PositionID IN (" + IDs + ");";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -246,17 +197,17 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	SQLSelect() + "WHERE PositionID = @PositionID;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@PositionID", PositionID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				PositionDetails Details = new PositionDetails();
 
@@ -274,13 +225,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -291,17 +242,17 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	SQLSelect() + "WHERE PositionName = @PositionName;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@PositionName", PositionName);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				PositionDetails Details = new PositionDetails();
 
@@ -319,13 +270,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -349,27 +300,27 @@ namespace AceSoft.RetailPlus.Data
                 if (Limit != 0)
                     SQL += "LIMIT " + Limit + " ";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 				
-				return myReader;			
+				
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -390,29 +341,29 @@ namespace AceSoft.RetailPlus.Data
                 if (Limit != 0)
                     SQL += "LIMIT " + Limit + " ";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("tblPositions");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
                 throw ex;
@@ -435,29 +386,29 @@ namespace AceSoft.RetailPlus.Data
                 if (Limit != 0)
                     SQL += "LIMIT " + Limit + " ";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 				
-				return myReader;			
+				
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -479,31 +430,31 @@ namespace AceSoft.RetailPlus.Data
                 if (Limit != 0)
                     SQL += "LIMIT " + Limit + " ";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
 
                 System.Data.DataTable dt = new System.Data.DataTable("tblPositions");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
                 throw ex;

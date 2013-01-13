@@ -14,72 +14,27 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class Transaction
+	public class Transaction : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection SQLConnection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction SQLTransaction
-		{
-			get { return mTransaction;	}
-		}
-
-
+		
 		#region Constructors & Destructors
 
 		public Transaction()
+            : base(null, null)
+        {
+        }
+
+        public Transaction(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
-
-		public Transaction(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
-
 
 		#endregion
 
 		#region Public Modifiers
 
-		public string LastTransactionNo()
+		public string CreateTransactionNo()
 		{
 			try
 			{
@@ -89,11 +44,11 @@ namespace AceSoft.RetailPlus.Data
 							"WHERE 1 = 1 " +
 							"AND TerminalNo = @TerminalNo;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -101,7 +56,7 @@ namespace AceSoft.RetailPlus.Data
 				prmTerminalNo.Value = CompanyDetails.TerminalNo;
 				cmd.Parameters.Add(prmTerminalNo);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				string stRetValue = String.Empty;
 				Int32 iLen = 15;
@@ -135,22 +90,13 @@ namespace AceSoft.RetailPlus.Data
 
 				cmd.Parameters.Add(prmTerminalNo);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return stRetValue;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}

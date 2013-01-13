@@ -173,11 +173,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
                 Session.Timeout = 60 * 60 * 30;
 
-                Product clsProduct = new Product();
+                Products clsProduct = new Products();
                 ProductDetails[] arrProductDetails = clsProduct.List();
 
                 ContactGroup clsContactGroup = new ContactGroup(clsProduct.Connection, clsProduct.Transaction);
-                Contact clsContact = new Contact(clsProduct.Connection, clsProduct.Transaction);
+                Contacts clsContact = new Contacts(clsProduct.Connection, clsProduct.Transaction);
                 Data.Unit clsUnit = new Data.Unit(clsProduct.Connection, clsProduct.Transaction);
                 Data.ProductGroup clsProductGroup = new Data.ProductGroup(clsProduct.Connection, clsProduct.Transaction);
                 Data.ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup(clsProduct.Connection, clsProduct.Transaction);
@@ -187,12 +187,12 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 clsBranchInventory.GetConnectionToBranch(clsBranchDetails.DBIP, clsBranchDetails.DBPort);
 
                 ContactGroup clsBranchContactGroup = new ContactGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
-                Contact clsBranchContact = new Contact(clsBranchInventory.Connection, clsBranchInventory.Transaction);
+                Contacts clsBranchContact = new Contacts(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 Data.Unit clsBranchUnit = new Data.Unit(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 Data.ProductGroup clsBranchProductGroup = new Data.ProductGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 Data.ProductSubGroup clsBranchProductSubGroup = new Data.ProductSubGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 Data.Variation clsBranchVariation = new Variation(clsBranchInventory.Connection, clsBranchInventory.Transaction);
-                Product clsBranchProduct = new Product(clsBranchInventory.Connection, clsBranchInventory.Transaction);
+                Products clsBranchProduct = new Products(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 ProductDetails clsBranchProductDetails;
 
                 foreach (ProductDetails clsProductDetails in arrProductDetails)
@@ -268,12 +268,12 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             clsBranchInventory = new RemoteBranchInventory();
                             clsBranchInventory.GetConnectionToBranch(clsBranchDetails.DBIP);
                             clsBranchContactGroup = new ContactGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
-                            clsBranchContact = new Contact(clsBranchInventory.Connection, clsBranchInventory.Transaction);
+                            clsBranchContact = new Contacts(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                             clsBranchUnit = new Data.Unit(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                             clsBranchProductGroup = new Data.ProductGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                             clsBranchProductSubGroup = new Data.ProductSubGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                             clsBranchVariation = new Variation(clsBranchInventory.Connection, clsBranchInventory.Transaction);
-                            clsBranchProduct = new Product(clsBranchInventory.Connection, clsBranchInventory.Transaction);
+                            clsBranchProduct = new Products(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                         }
                     }
                 }
@@ -313,11 +313,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
                 Session.Timeout = 60 * 60 * 30;
 
-                Product clsProduct = new Product();
+                Products clsProduct = new Products();
                 clsProduct.GetConnection();
                 ProductDetails clsProductDetails;
                 ContactGroup clsContactGroup = new ContactGroup(clsProduct.Connection, clsProduct.Transaction);
-                Contact clsContact = new Contact(clsProduct.Connection, clsProduct.Transaction);
+                Contacts clsContact = new Contacts(clsProduct.Connection, clsProduct.Transaction);
                 Data.Unit clsUnit = new Data.Unit(clsProduct.Connection, clsProduct.Transaction);
                 Data.ProductGroup clsProductGroup = new Data.ProductGroup(clsProduct.Connection, clsProduct.Transaction);
                 Data.ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup(clsProduct.Connection, clsProduct.Transaction);
@@ -326,11 +326,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 RemoteBranchInventory clsBranchInventory = new RemoteBranchInventory();
                 clsBranchInventory.GetConnectionToBranch(clsBranchDetails.DBIP, clsBranchDetails.DBPort);
 
-                Product clsBranchProduct = new Product(clsBranchInventory.Connection, clsBranchInventory.Transaction);
+                Products clsBranchProduct = new Products(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 ProductDetails[] arrBranchProductDetails = clsBranchProduct.List();
 
                 ContactGroup clsBranchContactGroup = new ContactGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
-                Contact clsBranchContact = new Contact(clsBranchInventory.Connection, clsBranchInventory.Transaction);
+                Contacts clsBranchContact = new Contacts(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 Data.Unit clsBranchUnit = new Data.Unit(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 Data.ProductGroup clsBranchProductGroup = new Data.ProductGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 Data.ProductSubGroup clsBranchProductSubGroup = new Data.ProductSubGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
@@ -406,10 +406,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                     lblError.Text += "<div class=ms-alternating> ERROR INSERTING ITEM: " + clsProductDetails.ProductCode + " err: " + exProduct.Message + ".</div><br><br>";
                                     if (clsProduct.Connection.State == ConnectionState.Closed)
                                     {
-                                        clsProduct = new Product();
+                                        clsProduct = new Products();
                                         clsProduct.GetConnection();
                                         clsContactGroup = new ContactGroup(clsProduct.Connection, clsProduct.Transaction);
-                                        clsContact = new Contact(clsProduct.Connection, clsProduct.Transaction);
+                                        clsContact = new Contacts(clsProduct.Connection, clsProduct.Transaction);
                                         clsUnit = new Data.Unit(clsProduct.Connection, clsProduct.Transaction);
                                         clsProductGroup = new Data.ProductGroup(clsProduct.Connection, clsProduct.Transaction);
                                         clsProductSubGroup = new Data.ProductSubGroup(clsProduct.Connection, clsProduct.Transaction);
@@ -424,10 +424,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                         lblError.Text += "<div class=ms-alternating> ERROR INSERTING ITEM: " + clsProductDetails.ProductCode + " err: " + exProducts.Message + ".</div><br><br>";
                         if (clsProduct.Connection.State == ConnectionState.Closed)
                         {
-                            clsProduct = new Product();
+                            clsProduct = new Products();
                             clsProduct.GetConnection();
                             clsContactGroup = new ContactGroup(clsProduct.Connection, clsProduct.Transaction);
-                            clsContact = new Contact(clsProduct.Connection, clsProduct.Transaction);
+                            clsContact = new Contacts(clsProduct.Connection, clsProduct.Transaction);
                             clsUnit = new Data.Unit(clsProduct.Connection, clsProduct.Transaction);
                             clsProductGroup = new Data.ProductGroup(clsProduct.Connection, clsProduct.Transaction);
                             clsProductSubGroup = new Data.ProductSubGroup(clsProduct.Connection, clsProduct.Transaction);
@@ -450,10 +450,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
         {
             DateTime dteProcessingDate = DateTime.Now;
 
-            Product clsProduct = new Product();
+            Products clsProduct = new Products();
             ProductDetails[] arrProductDetails = clsProduct.List();
 
-            Contact clsContact = new Contact(clsProduct.Connection, clsProduct.Transaction);
+            Contacts clsContact = new Contacts(clsProduct.Connection, clsProduct.Transaction);
             ContactDetails clsContactDetails ;
 
             ContactGroup clsContactGroup = new ContactGroup(clsProduct.Connection, clsProduct.Transaction);
@@ -590,7 +590,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 RemoteBranchInventory clsBranchInventory = new RemoteBranchInventory();
                 clsBranchInventory.GetConnectionToBranch(clsBranchDetails.DBIP);
 
-                Contact clsBranchContact = new Contact(clsBranchInventory.Connection, clsBranchInventory.Transaction);
+                Contacts clsBranchContact = new Contacts(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 ContactDetails clsBranchContactDetails;
 
                 ContactGroup clsBranchContactGroup = new ContactGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
@@ -606,7 +606,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 ProductSubGroupDetails clsBranchProductSubGroupDetails;
 
                 //Data.Variation clsBranchVariation = new Variation(clsBranchInventory.Connection, clsBranchInventory.Transaction);
-                Product clsBranchProduct = new Product(clsBranchInventory.Connection, clsBranchInventory.Transaction);
+                Products clsBranchProduct = new Products(clsBranchInventory.Connection, clsBranchInventory.Transaction);
                 ProductDetails clsBranchProductDetails;
 
                 ProductVariation clsBranchProductVariation = new ProductVariation(clsBranchInventory.Connection, clsBranchInventory.Transaction);
@@ -823,7 +823,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             RemoteBranchInventory clsBranchInventory = new RemoteBranchInventory();
             clsBranchInventory.GetConnectionToBranch(clsBranchDetails.DBIP);
 
-            Contact clsBranchContact = new Contact(clsBranchInventory.Connection, clsBranchInventory.Transaction);
+            Contacts clsBranchContact = new Contacts(clsBranchInventory.Connection, clsBranchInventory.Transaction);
             ContactDetails clsBranchContactDetails;
 
             ContactGroup clsBranchContactGroup = new ContactGroup(clsBranchInventory.Connection, clsBranchInventory.Transaction);
@@ -839,7 +839,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             ProductSubGroupDetails clsBranchProductSubGroupDetails;
 
             //Data.Variation clsBranchVariation = new Variation(clsBranchInventory.Connection, clsBranchInventory.Transaction);
-            Product clsBranchProduct = new Product(clsBranchInventory.Connection, clsBranchInventory.Transaction);
+            Products clsBranchProduct = new Products(clsBranchInventory.Connection, clsBranchInventory.Transaction);
             ProductDetails clsBranchProductDetails;
 
             ProductVariation clsBranchProductVariation = new ProductVariation(clsBranchInventory.Connection, clsBranchInventory.Transaction);

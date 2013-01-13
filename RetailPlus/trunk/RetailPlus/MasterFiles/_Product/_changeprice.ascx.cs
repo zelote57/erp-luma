@@ -79,7 +79,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
             if (cboProductCode.SelectedItem.Value != Constants.ZERO_STRING)
             {
-                Product clsProduct = new Product();
+                Products clsProduct = new Products();
                 try
                 {
                     ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedValue));
@@ -157,7 +157,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsSearchKeys.BarCode3 = strSearchKey;
             clsSearchKeys.ProductCode = strSearchKey;
 
-            Data.Product clsProduct = new Data.Product();
+            Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
             cboProductCode.DataSource = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending);
@@ -471,7 +471,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 if (boIsFirstRecord == true)
                 {
                     TextBox txtCommision = (TextBox)e.FindControl("txtCommision");
-                    Product clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+                    Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     clsProduct.UpdateCommision(long.Parse(cboProductCode.SelectedValue), Convert.ToDecimal(txtCommision.Text));
 
                     ProductDetails clsProductDetails = clsProduct.Details(long.Parse(lblProductID.Text));
@@ -532,7 +532,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 if (boIsFirstRecord == true)
                 {
                     TextBox txtCommision = (TextBox)e.FindControl("txtCommision");
-                    Product clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+                    Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     clsProduct.UpdateCommision(long.Parse(cboProductCode.SelectedValue), Convert.ToDecimal(txtCommision.Text));
 
                     ProductDetails clsProductDetails = clsProduct.Details(long.Parse(lblProductID.Text));
@@ -620,7 +620,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 foreach (DataListItem e in lstProductPackages.Items)
                 {
                     TextBox txtCommision = (TextBox)e.FindControl("txtCommision");
-                    Product clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+                    Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     clsProduct.UpdateCommision(long.Parse(cboProductCode.SelectedValue), Convert.ToDecimal(txtCommision.Text));
                     break;
                 }

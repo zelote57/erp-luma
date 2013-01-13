@@ -36,7 +36,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Variations
 			
 			if (Request.QueryString["task"]!=null)
 			{
-                Product clsProduct = new Product();
+                Products clsProduct = new Products();
                 ProductDetails clsDetails = new ProductDetails();
 
                 long id = long.Parse(Common.Decrypt(Request.QueryString["prodid"].ToString(), Session.SessionID));

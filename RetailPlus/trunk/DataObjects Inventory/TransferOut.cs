@@ -836,7 +836,7 @@ namespace AceSoft.RetailPlus.Data
 
             TransferOutItem clsTransferOutItem = new TransferOutItem(Connection, Transaction);
             ProductUnit clsProductUnit = new ProductUnit(Connection, Transaction);
-            Product clsProduct = new Product(mConnection, mTransaction);
+            Products clsProduct = new Products(mConnection, mTransaction);
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(mConnection, mTransaction);
             ProductPackage clsProductPackage = new ProductPackage(mConnection, mTransaction);
             MatrixPackage clsMatrixPackage = new MatrixPackage(mConnection, mTransaction);
@@ -909,7 +909,7 @@ namespace AceSoft.RetailPlus.Data
                 //    clsProductVariationsMatrix.AddQuantity(lngVariationMatrixID, decQuantity);
                 //}
                 // July 26, 2011: change the above codes to the following
-                clsProduct.SubtractQuantity(clsTransferOutDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_TRANSFER_IN), DateTime.Now, clsTransferOutDetails.TransferOutNo, clsTransferOutDetails.TransferrerName);
+                clsProduct.SubtractQuantity(clsTransferOutDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_TRANSFER_IN), DateTime.Now, clsTransferOutDetails.TransferOutNo, clsTransferOutDetails.TransferrerName);
 
                 ///*******************************************
                 // * Update Purchasing Information
@@ -1040,7 +1040,7 @@ namespace AceSoft.RetailPlus.Data
 
                 TransferOutDetails clsTransferOutDetails = Details(TransferOutID);
 
-                Product clsProduct = new Product(Connection, Transaction);
+                Products clsProduct = new Products(Connection, Transaction);
                 System.Data.DataTable dt = clsProduct.ForReorder(clsTransferOutDetails.SupplierID);
 
                 TransferOutItem clsTransferOutItem = new TransferOutItem(Connection, Transaction);

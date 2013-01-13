@@ -66,7 +66,8 @@
 	<TR>
 		<TD></TD>
 		<TD>
-			<asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Order Start Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtOrderStartDate"></asp:CompareValidator></TD>
+			<asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Order Start Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtOrderStartDate"></asp:CompareValidator>
+            <asp:Label ID="lblStatus" runat="server" CssClass="ms-error" Visible="False"></asp:Label></TD>
 	</TR>
 	<TR>
 		<TD></TD>
@@ -135,6 +136,21 @@
 					<td width="99%" id="Td1" noWrap align="left">&nbsp;
 						<asp:Label id="Label4" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
 						<asp:Label id="Label5" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>
+					</td>
+				</tr>
+                <tr>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						<label>Transfer Out No/Remarks</label>&nbsp;
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap colspan=4>
+						<asp:TextBox id="txtSearch" CssClass="ms-long" Width="100%" runat="server" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td nowrap >
+						<asp:DropDownList id="cboStatus" CssClass="ms-short" Width="100%" runat="server"></asp:DropDownList>
+					</td>
+					<td width="99%" noWrap align="left">&nbsp;
+					    <asp:ImageButton accessKey="s" style="CURSOR: hand" id="cmdSearch" ImageUrl="../../_layouts/images/icongo01.gif" border="0" ToolTip="Execute search" runat="server" causesvalidation="false" onclick="cmdSearch_Click"></asp:ImageButton>
 					</td>
 				</tr>
 			</table>

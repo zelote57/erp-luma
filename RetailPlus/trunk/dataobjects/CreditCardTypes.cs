@@ -28,69 +28,22 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class CardType
-	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
+	public class CardType : POSConnection
+    {
 		#region Constructors and Destructors
 
 		public CardType()
-		{
-			
-		}
+            : base(null, null)
+        {
+        }
 
-		public CardType(MySqlConnection Connection, MySqlTransaction Transaction)
+        public CardType(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
 
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
 		}
-
 
 		#endregion
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
-
 		
 		#region Insert and Update
 
@@ -100,11 +53,11 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL = "INSERT INTO tblCardTypes (CardTypeCode, CardTypeName) VALUES (@CardTypeCode, @CardTypeName);";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -116,14 +69,14 @@ namespace AceSoft.RetailPlus.Data
 				prmCardTypeName.Value = Details.CardTypeName;
 				cmd.Parameters.Add(prmCardTypeName);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				SQL = "SELECT LAST_INSERT_ID();";
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				Int16 iID = 0;
 
@@ -139,13 +92,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -160,11 +113,11 @@ namespace AceSoft.RetailPlus.Data
 							"CardTypeName = @CardTypeName " +  
 							"WHERE CardTypeID = @CardTypeID;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -180,18 +133,18 @@ namespace AceSoft.RetailPlus.Data
 				prmCardTypeID.Value = Details.CardTypeID;
 				cmd.Parameters.Add(prmCardTypeID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -208,28 +161,28 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	"DELETE FROM tblCardTypes WHERE CardTypeID IN (" + IDs + ");";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -251,17 +204,17 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblCardTypes " +
 							"WHERE CardTypeID = @CardTypeID;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@CardTypeID", CardTypeID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				CardTypeDetails Details = new CardTypeDetails();
 
@@ -279,13 +232,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -301,17 +254,17 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblCardTypes " +
 							"WHERE CardTypeName = @CardTypeName;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@CardTypeName", CardTypeName);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				CardTypeDetails Details = new CardTypeDetails();
 
@@ -329,13 +282,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -361,27 +314,27 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 				
-				return myReader;			
+				
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -430,11 +383,11 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -442,19 +395,19 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 				
-				return myReader;			
+				
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	

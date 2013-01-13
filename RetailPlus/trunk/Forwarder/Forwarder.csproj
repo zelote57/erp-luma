@@ -115,6 +115,10 @@
       <Project>{75D37B92-76F5-4C25-AF1A-394619DE4835}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\dbconnection\DBConnection.csproj">
+      <Project>{18F0CB07-90C3-4DAC-9241-3F13052FBEED}</Project>
+      <Name>DBConnection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logistics\AceSoft.csproj">
       <Name>AceSoft</Name>
       <Project>{A800354C-F064-4836-9178-1DC7B752822E}</Project>

@@ -748,7 +748,7 @@ namespace AceSoft.RetailPlus.Data
 
 			SOItem clsSOItem = new SOItem(mConnection, mTransaction);
 			ProductUnit clsProductUnit = new ProductUnit(mConnection, mTransaction);
-			Product clsProduct = new Product(mConnection, mTransaction);
+			Products clsProduct = new Products(mConnection, mTransaction);
 			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(mConnection, mTransaction);
 			ProductPackage clsProductPackage = new ProductPackage(mConnection, mTransaction);
 			MatrixPackage clsMatrixPackage = new MatrixPackage(mConnection, mTransaction);
@@ -821,7 +821,7 @@ namespace AceSoft.RetailPlus.Data
 				// clsProduct.SubtractQuantity(lngProductID, decQuantity);
 				// if (lngVariationMatrixID != 0) { clsProductVariationsMatrix.SubtractQuantity(lngVariationMatrixID, decQuantity); }
 				// July 28, 2011: change the above codes to the following
-				clsProduct.SubtractQuantity(clsSODetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_WHOLESALE), DateTime.Now, clsSODetails.SONo, clsSODetails.SellerName);
+				clsProduct.SubtractQuantity(clsSODetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_WHOLESALE), DateTime.Now, clsSODetails.SONo, clsSODetails.SellerName);
 
 				/*******************************************
 				 * Update Selling Information
@@ -928,7 +928,7 @@ namespace AceSoft.RetailPlus.Data
 
 				SODetails clsSODetails = Details(SOID);
 
-				Product clsProduct = new Product(Connection, Transaction);
+				Products clsProduct = new Products(Connection, Transaction);
 				System.Data.DataTable dt = clsProduct.ForReorder(clsSODetails.CustomerID);
 
 				SOItem clsSOItem = new SOItem(Connection, Transaction);

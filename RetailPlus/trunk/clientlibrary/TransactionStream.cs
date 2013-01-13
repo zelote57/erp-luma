@@ -88,12 +88,12 @@ namespace AceSoft.RetailPlus.Client
 		{
 			try
 			{
-				string stTransactionNo = GetTransactionNo();
+                //string stTransactionNo = GetTransactionNo();
 				
-				Details.TransactionNo = stTransactionNo;
+                //Details.TransactionNo = stTransactionNo;
 				
 				IsInTransaction = true;
-				return stTransactionNo;
+                return Details.TransactionNo;
 			}
 			catch(Exception ex)
 			{
@@ -319,7 +319,7 @@ namespace AceSoft.RetailPlus.Client
 		private string GetTransactionNo()
 		{
 			AceSoft.RetailPlus.Data.Transaction clsTransaction = new AceSoft.RetailPlus.Data.Transaction();
-			string stRetValue = clsTransaction.LastTransactionNo();
+			string stRetValue = clsTransaction.CreateTransactionNo();
 			clsTransaction.CommitAndDispose();
 			return stRetValue;
 

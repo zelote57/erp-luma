@@ -380,11 +380,11 @@ namespace AceSoft.RetailPlus.Client.UI
 			clsDetails.BusinessName = txtBusinessName.Text;
 			clsDetails.TelephoneNo = txtTelNo.Text;
 			if (mstCaption == "Please enter customer name for deposit.")
-			{	clsDetails.Remarks = Data.Contact.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
+			{	clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
             else if (mstCaption=="Quickly add new customer")
-            {   clsDetails.Remarks = Data.Contact.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
+            {   clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
 			else
-			{	clsDetails.Remarks = Data.Contact.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
+			{	clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
 			clsDetails.Debit = 0;
 			clsDetails.Credit = 0;
 			clsDetails.IsCreditAllowed = 0;
@@ -392,7 +392,7 @@ namespace AceSoft.RetailPlus.Client.UI
             clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
             clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
 
-			Data.Contact clsContact = new Data.Contact();
+			Data.Contacts clsContact = new Data.Contacts();
 			clsDetails.ContactID = clsContact.Insert(clsDetails);
 			clsContact.CommitAndDispose();
 

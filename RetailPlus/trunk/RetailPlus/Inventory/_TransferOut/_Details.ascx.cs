@@ -251,10 +251,10 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
             Branch clsBranch = new Branch(clsTransferOut.Connection, clsTransferOut.Transaction);
             BranchDetails clsBranchDetails;
 
-            Contact clsContact = new Contact(clsTransferOut.Connection, clsTransferOut.Transaction);
+            Contacts clsContact = new Contacts(clsTransferOut.Connection, clsTransferOut.Transaction);
             ContactDetails clsContactDetails;
 
-            Product clsProduct = new Product(clsTransferOut.Connection, clsTransferOut.Transaction);
+            Products clsProduct = new Products(clsTransferOut.Connection, clsTransferOut.Transaction);
             ProductDetails clsProductDetails;
 
             ProductVariation clsProductVariation = new ProductVariation(clsTransferOut.Connection, clsTransferOut.Transaction);

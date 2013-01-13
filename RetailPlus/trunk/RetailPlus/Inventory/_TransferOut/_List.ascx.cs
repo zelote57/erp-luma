@@ -21,6 +21,19 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 			if (!IsPostBack)
 				if (Visible)
 				{
+                    cboStatus.Items.Clear();
+                    cboStatus.Items.Add(new ListItem("Show " + TransferOutStatus.Open.ToString("G").ToUpper() + " Transfers", TransferOutStatus.Open.ToString("d")));
+                    cboStatus.Items.Add(new ListItem("Show " + TransferOutStatus.Posted.ToString("G").ToUpper() + " Transfers", TransferOutStatus.Posted.ToString("d")));
+                    cboStatus.Items.Add(new ListItem("Show " + TransferOutStatus.Cancelled.ToString("G").ToUpper() + " Transfers", TransferOutStatus.Cancelled.ToString("d")));
+                    cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(TransferOutStatus.Open.ToString("d")));
+
+                    try
+                    {
+                        lblStatus.Text = Request.QueryString["status"].ToString();
+                        cboStatus.SelectedIndex = cboStatus.Items.IndexOf(cboStatus.Items.FindByValue(Request.QueryString["status"].ToString()));
+                    }
+                    catch { }
+
 					ManageSecurity();
 					LoadList();
 					cmdDelete.Attributes.Add("onClick", "return confirm_cancel();");
@@ -174,6 +187,11 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 			LoadList();
 		}
 
+        protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            LoadList();
+        }
+
 		#endregion
 
 		#region Private Methods
@@ -310,31 +328,25 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
-			{
-                if (Request.QueryString["status"] == null)
-                { 
-                    PageData.DataSource = clsTransferOut.ListAsDataTable(TransferOutStatus.Open, SortField, sortoption).DefaultView; 
-                }
-                else
-                { 
-                    TransferOutStatus status = (TransferOutStatus)Enum.Parse(typeof(TransferOutStatus), Common.Decrypt((string)Request.QueryString["status"], Session.SessionID));
-                    PageData.DataSource = clsTransferOut.ListAsDataTable(status, SortField, sortoption).DefaultView; 
-                }
-			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-                if (Request.QueryString["status"] == null)
-                { 
-                    PageData.DataSource = clsTransferOut.SearchAsDataTable(TransferOutStatus.Open, SearchKey, SortField, sortoption).DefaultView; 
-                }
-                else
-                {
-                    TransferOutStatus status = (TransferOutStatus)Enum.Parse(typeof(TransferOutStatus), Common.Decrypt((string)Request.QueryString["status"], Session.SessionID));
-                    PageData.DataSource = clsTransferOut.SearchAsDataTable(status, SearchKey, SortField, sortoption).DefaultView; 
-                }
-			}
+            DateTime dteTransferStartDate = DateTime.MinValue;
+            try { if (txtOrderStartDate.Text != string.Empty) dteTransferStartDate = Convert.ToDateTime(txtOrderStartDate.Text + " " + txtOrderStartTime.Text); }
+            catch { }
+
+            DateTime dteTransferEndDate = DateTime.MinValue;
+            try { if (txtOrderEndDate.Text != string.Empty) dteTransferEndDate = Convert.ToDateTime(txtOrderEndDate.Text + " " + txtOrderEndTime.Text); }
+            catch { }
+
+            DateTime dtePostingStartDate = DateTime.MinValue;
+            try { if (txtPostingStartDate.Text != string.Empty) dtePostingStartDate = Convert.ToDateTime(txtPostingStartDate.Text + " " + txtPostingStartTime.Text); }
+            catch { }
+
+            DateTime dtePostingEndDate = DateTime.MinValue;
+            try { if (txtPostingEndDate.Text != string.Empty) dtePostingEndDate = Convert.ToDateTime(txtPostingEndDate.Text + " " + txtPostingEndTime.Text); }
+            catch { }
+
+            string SearchKey = txtSearch.Text;
+            TransferOutStatus status = (TransferOutStatus)Enum.Parse(typeof(TransferOutStatus), cboStatus.SelectedItem.Value);
+            PageData.DataSource = clsTransferOut.SearchAsDataTable(status, dteTransferStartDate, dteTransferEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView;
 
 			clsTransferOut.CommitAndDispose();
 

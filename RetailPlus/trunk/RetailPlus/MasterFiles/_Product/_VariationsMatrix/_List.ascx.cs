@@ -306,7 +306,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 				ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
                 clsProductVariationsMatrix.GetConnection();
 
-                Product clsProduct = new Product(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
+                Products clsProduct = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
                 ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
 
                 string[] strIDs = stIDs.Substring(0,stIDs.Length-1).Split(',');
@@ -337,7 +337,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 
                     // Aug 1, 2011 : Lemu
                     // Replaced clsProductVariationsMatrix.SynchronizeQuantity(Convert.ToInt64(lblProductID.Text));
-                    clsProduct.SubtractQuantity(Constants.BRANCH_ID_MAIN, clsProductDetails.ProductID, clsBaseDetails.MatrixID, clsBaseDetails.Quantity, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_PRODUCT_VARIATION_DELETE) + " : " + clsBaseDetails.Description, clsInvAdjustmentDetails.InvAdjustmentDate, "SYS-VARDEL" + clsInvAdjustmentDetails.InvAdjustmentDate.ToString("yyyyMMddHHmmss"), clsAccessUserDetails.Name);
+                    clsProduct.SubtractQuantity(Constants.BRANCH_ID_MAIN, clsProductDetails.ProductID, clsBaseDetails.MatrixID, clsBaseDetails.Quantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_PRODUCT_VARIATION_DELETE) + " : " + clsBaseDetails.Description, clsInvAdjustmentDetails.InvAdjustmentDate, "SYS-VARDEL" + clsInvAdjustmentDetails.InvAdjustmentDate.ToString("yyyyMMddHHmmss"), clsAccessUserDetails.Name);
 
                     clsProductVariationsMatrix.Delete(long.Parse(ID));
                 }

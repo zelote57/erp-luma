@@ -841,7 +841,7 @@ namespace AceSoft.RetailPlus.Data
 
 			POReturnItems clsPOReturnItems = new POReturnItems(Connection, Transaction);
 			ProductUnit clsProductUnit = new ProductUnit(Connection, Transaction);
-			Product clsProduct = new Product(Connection, Transaction);
+			Products clsProduct = new Products(Connection, Transaction);
 			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(Connection, Transaction);
 
 			Inventory clsInventory = new Inventory(Connection, Transaction);
@@ -868,7 +868,7 @@ namespace AceSoft.RetailPlus.Data
                 // clsProduct.SubtractQuantity(ProductID, Quantity);
                 // if (VariationMatrixID != 0) { clsProductVariationsMatrix.SubtractQuantity(VariationMatrixID, Quantity);}
                 // July 26, 2011: change the above codes to the following
-                clsProduct.SubtractQuantity(clsPOReturnDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Product.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_PURCHASE_RETURN), DateTime.Now, clsPOReturnDetails.MemoNo, clsPOReturnDetails.PurchaserName);
+                clsProduct.SubtractQuantity(clsPOReturnDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_PURCHASE_RETURN), DateTime.Now, clsPOReturnDetails.MemoNo, clsPOReturnDetails.PurchaserName);
 
 				/*******************************************
 				 * Add to Inventory Analysis
@@ -1609,7 +1609,65 @@ namespace AceSoft.RetailPlus.Data
 
                 throw ex;
             }
-        }		
+        }
+        public System.Data.DataTable SearchAsDataTable(POReturnStatus status, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder)
+        {
+            try
+            {
+                if (SortField == string.Empty || SortField == null) SortField = "DebitMemoID";
+
+                string SQL = SQLSelect() + "AND POReturnStatus = @Status " +
+                                "AND (MemoNo LIKE @SearchKey or MemoDate LIKE @SearchKey or SupplierCode LIKE @SearchKey " +
+                                        "or SupplierContact LIKE @SearchKey or BranchCode LIKE @SearchKey or RequiredPostingDate LIKE @SearchKey) ";
+
+                if (OrderStartDate != DateTime.MinValue) SQL += "AND MemoDate >= @OrderStartDate ";
+                if (OrderEndDate != DateTime.MinValue) SQL += "AND MemoDate <= @OrderEndDate ";
+                if (PostingStartDate != DateTime.MinValue) SQL += "AND PostingDate >= @PostingStartDate ";
+                if (PostingEndDate != DateTime.MinValue) SQL += "AND PostingDate <= @PostingEndDate ";
+
+                SQL += "ORDER BY " + SortField;
+                
+                if (SortOrder == SortOption.Ascending)
+                    SQL += " ASC";
+                else
+                    SQL += " DESC";
+
+                MySqlConnection cn = GetConnection();
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = cn;
+                cmd.Transaction = mTransaction;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@Status", status.ToString("d"));
+                cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
+
+                if (OrderStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderStartDate", OrderStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                if (OrderEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@OrderEndDate", OrderEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                System.Data.DataTable dt = new System.Data.DataTable("PO");
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                TransactionFailed = true;
+                if (IsInTransaction)
+                {
+                    mTransaction.Rollback();
+                    mTransaction.Dispose();
+                    mConnection.Close();
+                    mConnection.Dispose();
+                }
+
+                throw ex;
+            }
+        }	
 
 		#endregion
 

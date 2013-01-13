@@ -179,7 +179,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgStyle.HeaderBackColor = System.Drawing.Color.DarkOrange;
             this.dgStyle.HeaderFont = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dgStyle.HeaderForeColor = System.Drawing.Color.White;
-            this.dgStyle.MappingName = "tblDenomination";
+            this.dgStyle.MappingName = "tblDenominationsasasasas";
             this.dgStyle.PreferredColumnWidth = 180;
             this.dgStyle.PreferredRowHeight = 30;
             this.dgStyle.RowHeadersVisible = false;
@@ -749,7 +749,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
             ArrayList arrCashCountDetails = new ArrayList();
             CashCountDetails clsDetails;
-            CashCount clsCashCount = new CashCount();
+            CashCounts clsCashCount = new CashCounts();
 
             foreach (System.Data.DataRow dr in dt.Rows)
             {
@@ -770,7 +770,6 @@ namespace AceSoft.RetailPlus.Client.UI
                 CashCountDetails[] arrDetails = new CashCountDetails[arrCashCountDetails.Count];
                 arrCashCountDetails.CopyTo(arrDetails);
 
-                clsCashCount.GetConnection();
                 Terminal clsTerminal = new Terminal(clsCashCount.Connection, clsCashCount.Transaction);
                 clsTerminal.UpdateIsCashCountInitialized(Constants.TerminalBranchID, CompanyDetails.TerminalNo, mCashierID, true);
 
@@ -806,11 +805,13 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             try
             {
-                Data.Denomination clsDenomination = new Data.Denomination();
+                Data.Denominations clsDenomination = new Data.Denominations();
 
                 System.Data.DataTable dt = clsDenomination.ListForCashCount("DenominationID", SortOption.Ascending);
 
                 clsDenomination.CommitAndDispose();
+
+                this.dgStyle.MappingName = dt.TableName;
                 dgCashCount.DataSource = dt;
                 dgCashCount.Select(0);
             }

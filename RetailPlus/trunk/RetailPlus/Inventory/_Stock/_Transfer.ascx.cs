@@ -181,10 +181,10 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 			StockItem clsStockItem = new StockItem(clsStock.Connection, clsStock.Transaction);
 			DataTable dtaStockItemList = clsDataClass.DataReaderToDataTable(clsStockItem.List(Convert.ToInt64(lblStockID.Text), "StockItemID",SortOption.Ascending));
 			
-			Contact clsContact = new Contact(clsStock.Connection, clsStock.Transaction);
+			Contacts clsContact = new Contacts(clsStock.Connection, clsStock.Transaction);
 			ContactDetails clsContactDetails = clsContact.Details(clsStockDetails.SupplierID);
 			
-			Product clsProduct = new Product(clsStock.Connection, clsStock.Transaction);
+			Products clsProduct = new Products(clsStock.Connection, clsStock.Transaction);
 			ProductDetails clsProductDetails;
 
 			ProductVariation clsProductVariation = new ProductVariation(clsStock.Connection, clsStock.Transaction);

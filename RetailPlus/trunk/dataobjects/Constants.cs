@@ -125,6 +125,8 @@ namespace AceSoft.RetailPlus
             CurrentMonth = 3,
             PreviousMonth = 4,
         }
+
+        public const Int32 C_DEFAULT_MYSQL_PROCESS_TIMEOUT = 90;
     }
 
     

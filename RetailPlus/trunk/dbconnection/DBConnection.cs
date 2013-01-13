@@ -47,27 +47,30 @@ namespace AceSoft.RetailPlus
             return DBPort;
         } 
 
-		public static string ConnectionString()
-		{
-            return "Server=" + DBConnection.ServerIP() + ";Port=" + DBConnection.DBPort().ToString() + ";Database=" + DBConnection.DBName() + ";Uid=POSUser;Pwd=pospwd; Encrypt = true";
-            //return "Data Source=" + DBConnection.DBName() + ";Password=pospwd;User ID=POSUser;Location=" + DBConnection.ServerIP() + ";Port=" + DBConnection.DBPort().ToString() + ";Extended Properties=";
-		} 
+        //public static string ConnectionString()
+        //{
+        //    return "Server=" + DBConnection.ServerIP() + ";Port=" + DBConnection.DBPort().ToString() + ";Database=" + DBConnection.DBName() + ";Uid=POSUser;Pwd=pospwd; Encrypt = true";
+        //    //return "Data Source=" + DBConnection.DBName() + ";Password=pospwd;User ID=POSUser;Location=" + DBConnection.ServerIP() + ";Port=" + DBConnection.DBPort().ToString() + ";Extended Properties=";
+        //} 
 
-		public static string ConnectionString(string ServerIP)
-		{
-            return "Server=" + ServerIP + ";Port=" + DBConnection.DBPort().ToString() + ";Database=" + DBConnection.DBName() + ";Uid=POSUser;Pwd=pospwd; Encrypt = true";
-            //return "Data Source=" + DBConnection.DBName() + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + DBConnection.DBPort().ToString() + ";Extended Properties=";
-		}
+        //public static string ConnectionString(string ServerIP)
+        //{
+        //    return "Server=" + ServerIP + ";Port=" + DBConnection.DBPort().ToString() + ";Database=" + DBConnection.DBName() + ";Uid=POSUser;Pwd=pospwd; Encrypt = true";
+        //    //return "Data Source=" + DBConnection.DBName() + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + DBConnection.DBPort().ToString() + ";Extended Properties=";
+        //}
 
-        public static string ConnectionString(string ServerIP, string Port)
-		{
-            return "Server=" + ServerIP + ";Port=" + Port + ";Database=" + DBConnection.DBName() + ";Uid=POSUser;Pwd=pospwd; Encrypt = true";
-            //return "Data Source=" + DBConnection.DBName() + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + clsPort + ";Extended Properties=";
-		}
+        //public static string ConnectionString(string ServerIP, string Port)
+        //{
+        //    return "Server=" + ServerIP + ";Port=" + Port + ";Database=" + DBConnection.DBName() + ";Uid=POSUser;Pwd=pospwd; Encrypt = true";
+        //    //return "Data Source=" + DBConnection.DBName() + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + clsPort + ";Extended Properties=";
+        //}
 
-        public static string ConnectionString(string ServerIP, string Port, string DBName)
+        public static string ConnectionString(string ServerIP = null, string Port = null, string DBName = null)
         {
-            return "Server=" + ServerIP + ";Port=" + Port + ";Database=" + DBName + ";Uid=POSUser;Pwd=pospwd; Encrypt = true";
+            return "Server=" + (ServerIP == null || ServerIP == "" ? DBConnection.ServerIP() : ServerIP) +
+                ";Port=" + (Port == null || Port == "" ? DBConnection.DBPort().ToString() : Port) +
+                ";Database=" + (DBName == null || DBName == "" ? DBConnection.DBName() : DBName) +
+                    ";Uid=POSUser;Pwd=pospwd; Encrypt = true";
             //return "Data Source=" + clsDBName + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + clsPort + ";Extended Properties=";
         }
 	}

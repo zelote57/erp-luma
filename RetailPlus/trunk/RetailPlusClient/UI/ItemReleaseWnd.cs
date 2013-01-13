@@ -187,6 +187,7 @@ namespace AceSoft.RetailPlus.Client.UI
             ItemDataTable.Columns.Add("ScannedQty");
             ItemDataTable.Columns.Add("ScannedAmt");
 
+            this.dgStyle.MappingName = ItemDataTable.TableName;
             dgItems.DataSource = ItemDataTable;
             
             dgStyle.GridColumnStyles["ItemNo"].Width = 65;

@@ -108,7 +108,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._MatrixPackage
 			cboUnit.SelectedIndex = cboUnit.Items.Count - 1;
 			clsUnit.CommitAndDispose();	
 
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
 			cboUnit.Items.Add(new ListItem(clsDetails.BaseUnitName, clsDetails.BaseUnitID.ToString()));
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsDetails.BaseUnitID.ToString()));

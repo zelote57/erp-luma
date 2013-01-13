@@ -123,7 +123,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									reader.Close();
 									return;
 								}
-								Contact clsContact = new Contact(clsStock.Connection, clsStock.Transaction);
+								Contacts clsContact = new Contacts(clsStock.Connection, clsStock.Transaction);
 								ContactID = clsContact.Details(reader.GetAttribute("ContactCode")).ContactID;
 								if (ContactID == 0)
 								{
@@ -205,7 +205,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									ProductSubGroupID = clsProductSubGroup.Insert(clsProductSubGroupDetails);
 								}
 
-								Product clsProduct = new Product(clsStock.Connection, clsStock.Transaction);
+								Products clsProduct = new Products(clsStock.Connection, clsStock.Transaction);
 								ProductID = clsProduct.Details(reader.GetAttribute("BarCode")).ProductID;
 								if (ProductID == 0) 
 								{
@@ -227,7 +227,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									clsProductDetails.Quantity = 0;
 									clsProductDetails.MinThreshold = Convert.ToDecimal(reader.GetAttribute("MinThreshold"));
 									clsProductDetails.MaxThreshold = Convert.ToDecimal(reader.GetAttribute("MaxThreshold"));
-									clsProductDetails.SupplierID = Contact.DEFAULT_SUPPLIER_ID;
+									clsProductDetails.SupplierID = Contacts.DEFAULT_SUPPLIER_ID;
 									ProductID = clsProduct.Insert(clsProductDetails);
 								}
 

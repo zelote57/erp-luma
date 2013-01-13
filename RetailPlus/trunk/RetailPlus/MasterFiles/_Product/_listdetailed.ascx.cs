@@ -276,7 +276,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 case "imgProductTag":
                     {
                         ImageButton imgProductTag = (ImageButton) e.Item.FindControl("imgProductTag");
-                        Product clsProduct = new Product();
+                        Products clsProduct = new Products();
 
                         if (imgProductTag.ToolTip == "Tag this product as INACTIVE.")
                             clsProduct.TagInactive(long.Parse(chkList.Value));
@@ -479,7 +479,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		}
 		private void LoadList()
 		{	
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
 			Common Common = new Common();
 
 			string SortField = "ProductDesc";
@@ -595,7 +595,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			}
 			if (boRetValue)
 			{
-				Product clsProduct = new Product();
+				Products clsProduct = new Products();
 				clsProduct.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsProduct.CommitAndDispose();
 

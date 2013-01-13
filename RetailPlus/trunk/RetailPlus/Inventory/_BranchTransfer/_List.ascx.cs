@@ -355,32 +355,6 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
             BranchTransferStatus status = (BranchTransferStatus)Enum.Parse(typeof(BranchTransferStatus), cboStatus.SelectedItem.Value);
             PageData.DataSource = clsBranchTransfer.SearchAsDataTable(status, dteTransferStartDate, dteTransferEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
 
-            //if (txtSearch.Text==string.Empty)
-            //{
-            //    if (lblStatus.Text == string.Empty )
-            //    {
-            //        PageData.DataSource = clsBranchTransfer.ListAsDataTable(BranchTransferStatus.Open, dteTransferStartDate, dteTransferEndDate, dtePostingStartDate, dtePostingEndDate, SortField, sortoption).DefaultView; 
-            //    }
-            //    else
-            //    {
-            //        BranchTransferStatus status = (BranchTransferStatus)Enum.Parse(typeof(BranchTransferStatus), Common.Decrypt(lblStatus.Text, Session.SessionID));
-            //        PageData.DataSource = clsBranchTransfer.ListAsDataTable(status, dteTransferStartDate, dteTransferEndDate, dtePostingStartDate, dtePostingEndDate, SortField, sortoption).DefaultView; 
-            //    }
-            //}
-            //else
-            //{
-            //    string SearchKey = txtSearch.Text;
-            //    if (lblStatus.Text == string.Empty)
-            //    {
-            //        PageData.DataSource = clsBranchTransfer.SearchAsDataTable(BranchTransferStatus.Open, dteTransferStartDate, dteTransferEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
-            //    }
-            //    else
-            //    {
-            //        BranchTransferStatus status = (BranchTransferStatus)Enum.Parse(typeof(BranchTransferStatus), Common.Decrypt(lblStatus.Text, Session.SessionID));
-            //        PageData.DataSource = clsBranchTransfer.SearchAsDataTable(status, dteTransferStartDate, dteTransferEndDate, dtePostingStartDate, dtePostingEndDate, SearchKey, SortField, sortoption).DefaultView; 
-            //    }
-            //}
-
 			clsBranchTransfer.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;

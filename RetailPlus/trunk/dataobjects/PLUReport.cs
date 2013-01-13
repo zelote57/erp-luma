@@ -37,68 +37,22 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class PLUReport
-	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
+	public class PLUReport : POSConnection
+    {
 		#region Constructors and Destructors
 
 		public PLUReport()
+            : base(null, null)
+        {
+        }
+
+        public PLUReport(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
 
-		public PLUReport(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		
 		#endregion
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
-
 
 		#region Insert and Update
 
@@ -122,11 +76,11 @@ namespace AceSoft.RetailPlus.Data
                                     "@OrderSlipPrinter);"; 
 
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -154,14 +108,14 @@ namespace AceSoft.RetailPlus.Data
                 prmOrderSlipPrinter.Value = (int)Details.OrderSlipPrinter;
                 cmd.Parameters.Add(prmOrderSlipPrinter);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				SQL = "SELECT LAST_INSERT_ID();";
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				Int64 iID = 0;
 
@@ -177,13 +131,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -198,30 +152,30 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				MySqlConnection cn = GetConnection();
+				
 				MySqlCommand cmd = new MySqlCommand();
 				string SQL;
 
 				SQL=	"DELETE FROM tblPLUReport WHERE TerminalNo = '" + TerminalNo + "';";
 				cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -266,11 +220,11 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -278,43 +232,36 @@ namespace AceSoft.RetailPlus.Data
 				prmTerminalNo.Value = TerminalNo;
 				cmd.Parameters.Add(prmTerminalNo);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 
-                System.Data.DataTable dt = new System.Data.DataTable("tblPLUReport");
 
-				dt.Columns.Add("TerminalNo");
-                dt.Columns.Add("OrderSlipPrinter");
-				dt.Columns.Add("ProductCode");
-				dt.Columns.Add("Quantity");
-				dt.Columns.Add("Amount");
+                //System.Data.DataTable dt = new System.Data.DataTable("tblPLUReport");
 
-				while (myReader.Read())
-				{
-					System.Data.DataRow dr = dt.NewRow();
+                //dt.Columns.Add("TerminalNo");
+                //dt.Columns.Add("OrderSlipPrinter");
+                //dt.Columns.Add("ProductCode");
+                //dt.Columns.Add("Quantity");
+                //dt.Columns.Add("Amount");
 
-					dr["TerminalNo"] = "" + myReader["TerminalNo"].ToString();
-                    dr["OrderSlipPrinter"] = myReader.GetInt16("OrderSlipPrinter").ToString();
-					dr["ProductCode"] = "" + myReader["ProductCode"].ToString();
-					dr["Quantity"] = myReader.GetDecimal("Quantity").ToString("#,##0.#0");
-					dr["Amount"] = myReader.GetDecimal("Amount").ToString("#,##0.#0");
-					dt.Rows.Add(dr);
-				}
+                //while (myReader.Read())
+                //{
+                //    System.Data.DataRow dr = dt.NewRow();
 
-				myReader.Close();
+                //    dr["TerminalNo"] = "" + myReader["TerminalNo"].ToString();
+                //    dr["OrderSlipPrinter"] = myReader.GetInt16("OrderSlipPrinter").ToString();
+                //    dr["ProductCode"] = "" + myReader["ProductCode"].ToString();
+                //    dr["Quantity"] = myReader.GetDecimal("Quantity").ToString("#,##0.#0");
+                //    dr["Amount"] = myReader.GetDecimal("Amount").ToString("#,##0.#0");
+                //    dt.Rows.Add(dr);
+                //}
+
+                //myReader.Close();
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
 				return dt;				
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
 				throw ex;
 			}	
 		}
@@ -331,11 +278,11 @@ namespace AceSoft.RetailPlus.Data
 //				else
 //					SQL += " DESC";
 //
-//				MySqlConnection cn = GetConnection();
+//				
 //
 //				MySqlCommand cmd = new MySqlCommand();
-//				cmd.Connection = cn;
-//				cmd.Transaction = mTransaction;
+//				
+//				
 //				cmd.CommandType = System.Data.CommandType.Text;
 //				cmd.CommandText = SQL;
 //				
@@ -343,7 +290,7 @@ namespace AceSoft.RetailPlus.Data
 //				prmTerminalNo.Value = TerminalNo;
 //				cmd.Parameters.Add(prmTerminalNo);
 //
-//				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+//				
 //				
 //				System.Data.DataTable dt = new System.Data.DataTable("tblCompositionList");
 //
@@ -369,13 +316,13 @@ namespace AceSoft.RetailPlus.Data
 //			}
 //			catch (Exception ex)
 //			{
-//				TransactionFailed = true;
-//				if (IsInTransaction)
+//				
+//				
 //				{
-//					mTransaction.Rollback();
-//					mTransaction.Dispose(); 
-//					mConnection.Close();
-//					mConnection.Dispose();
+//					
+//					
+//					
+//					
 //				}
 //
 //				throw ex;

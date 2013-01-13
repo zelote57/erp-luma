@@ -527,14 +527,14 @@ namespace AceSoft.RetailPlus.Client.UI
                 try
                 {
                     string Month = txtValidityDates.Text.Substring(0, 2);
-                    string Year = txtValidityDates.Text.Substring(2, 2);
+                    string Year = "20" + txtValidityDates.Text.Substring(2, 2);
                     string Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Convert.ToInt32(Month)).ToString();
-                    ValidityDate = Convert.ToDateTime(Month + "/" + Day + "/" + Year);
+                    ValidityDate = new DateTime(int.Parse(Year), int.Parse(Month), int.Parse(Day));
                 }
                 catch
                 {
                     txtValidityDates.Focus();
-                    MessageBox.Show("Please type a valid Validity Date. Format must be mmddyy", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please type a valid Validity Date. Format must be mmyy", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
                 if (ValidityDate < DateTime.Now)

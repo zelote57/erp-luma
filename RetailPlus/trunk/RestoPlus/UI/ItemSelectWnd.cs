@@ -548,7 +548,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			{
 				string SearchKey = "%" + txtSearch.Text;
 
-				Product clsProduct = new Product();
+				Products clsProduct = new Products();
 
 				System.Data.DataTable dt;
 				//if (mboShowInActiveProducts == false)

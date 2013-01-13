@@ -603,6 +603,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				System.Data.DataTable dt = clsTransactions.ListForPaymentDataTable(mclsCustomerDetails.ContactID);
 
 				clsTransactions.CommitAndDispose();
+
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 
 				if (dt.Rows.Count > 0)
@@ -729,6 +731,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 					itemIndex++;
 				}
+
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 				if (dt.Rows.Count > 0)
 				{
@@ -794,6 +798,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 					itemIndex++;
 				}
+
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 				if (dt.Rows.Count > 0)
 				{
@@ -861,6 +867,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 					itemIndex++;
 				}
+
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 				if (dt.Rows.Count > 0)
 				{
@@ -935,6 +943,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 					itemIndex++;
 				}
+
+                this.dgStyle.MappingName = dt.TableName;
 				dgItems.DataSource = dt;
 				if (dt.Rows.Count > 0)
 				{

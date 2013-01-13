@@ -28,66 +28,20 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class ProductGroupVariation
-	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
+	public class ProductGroupVariation : POSConnection
+    {
 		#region Constructors and Destructors
 
 		public ProductGroupVariation()
+            : base(null, null)
+        {
+        }
+
+        public ProductGroupVariation(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
-
-		public ProductGroupVariation(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
-
 
 		#endregion
 
@@ -100,10 +54,10 @@ namespace AceSoft.RetailPlus.Data
 				string SQL = "INSERT INTO tblProductGroupVariations (GroupID, VariationID) VALUES (@GroupID, @VariationID);";
 
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
+				
 				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
@@ -116,7 +70,7 @@ namespace AceSoft.RetailPlus.Data
 				prmVariationID.Value = Details.VariationID;
 				cmd.Parameters.Add(prmVariationID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				SQL = "SELECT LAST_INSERT_ID();";
 				
@@ -124,8 +78,8 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
 
                 Int32 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)
@@ -138,13 +92,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -160,10 +114,10 @@ namespace AceSoft.RetailPlus.Data
 					"WHERE GroupID = @GroupID " +
 					"AND VariationID = @VarIDToUpdate;";
 				 
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
+				
 				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
@@ -180,7 +134,7 @@ namespace AceSoft.RetailPlus.Data
 				prmVarIDToUpdate.Value = VarIDToUpdate;
 				cmd.Parameters.Add(prmVarIDToUpdate);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				SQL = "UPDATE tblProductGroupVariationsMatrix a, tblProductGroupBaseVariationsMatrix b SET " + 
 					"VariationID = @VariationID " +
@@ -189,7 +143,7 @@ namespace AceSoft.RetailPlus.Data
 					"AND VariationID = @VarIDToUpdate;";
 				  
 				cmd = new MySqlCommand();
-				cmd.Connection = cn;
+				
 				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
@@ -206,19 +160,19 @@ namespace AceSoft.RetailPlus.Data
 				prmVarIDToUpdate.Value = VarIDToUpdate;
 				cmd.Parameters.Add(prmVarIDToUpdate);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 				
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-					mTransaction.Rollback();
+				
+				
+					
 
-				mTransaction.Dispose(); 
-				mConnection.Close();
-				mConnection.Dispose();
+				
+				
+				
 
 				throw ex;
 			}	
@@ -235,10 +189,10 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	"DELETE FROM tblProductGroupVariations WHERE GroupID = @GroupID AND VariationID IN (" + IDs + ");";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
+				
 				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
@@ -247,20 +201,20 @@ namespace AceSoft.RetailPlus.Data
 				prmGroupID.Value = GroupID;
 				cmd.Parameters.Add(prmGroupID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -290,10 +244,10 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC;";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
+				
 				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
@@ -302,19 +256,19 @@ namespace AceSoft.RetailPlus.Data
 				prmGroupID.Value = GroupID;
 				cmd.Parameters.Add(prmGroupID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 				
-				return myReader;			
+				
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -340,11 +294,11 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC;";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -356,19 +310,19 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey +"%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 				
-				return myReader;			
+				
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -388,10 +342,10 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC;";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
+				
 					
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
@@ -400,19 +354,19 @@ namespace AceSoft.RetailPlus.Data
 				prmGroupID.Value = GroupID;
 				cmd.Parameters.Add(prmGroupID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				
 			
-				return myReader;			
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;

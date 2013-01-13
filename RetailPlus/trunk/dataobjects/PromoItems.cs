@@ -35,65 +35,20 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class PromoItems
-	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
+	public class PromoItems : POSConnection
+    {
 		#region Constructors and Destructors
 
 		public PromoItems()
+            : base(null, null)
+        {
+        }
+
+        public PromoItems(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
-
-		public PromoItems(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			this.mConnection = Connection;
-			this.mTransaction = Transaction;
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-				IsInTransaction = true;
-			}
-
-			return mConnection;
-		} 
-
 
 		#endregion
 
@@ -124,11 +79,11 @@ namespace AceSoft.RetailPlus.Data
 									"@PromoValue, " +
 									"@InPercent);";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -168,7 +123,7 @@ namespace AceSoft.RetailPlus.Data
 				prmInPercent.Value = Details.InPercent;
 				cmd.Parameters.Add(prmInPercent);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				SQL = "SELECT LAST_INSERT_ID();";
 				
@@ -176,8 +131,8 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
 
                 Int64 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)
@@ -190,13 +145,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose();
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -218,11 +173,11 @@ namespace AceSoft.RetailPlus.Data
 							"WHERE PromoItemsID = @PromoItemsID;";
 							
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -266,18 +221,18 @@ namespace AceSoft.RetailPlus.Data
 				prmPromoItemsID.Value = Details.PromoItemsID;
 				cmd.Parameters.Add(prmPromoItemsID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -293,29 +248,29 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				MySqlConnection cn = GetConnection();
+				
 				MySqlCommand cmd;
 
 				string SQL=	"DELETE FROM tblPromoItems WHERE PromoItemsID IN (" + IDs + ");";
 				cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -345,11 +300,11 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblPromoItems " +
 							"WHERE PromoItemsID = @PromoItemsID;"; 
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -357,7 +312,7 @@ namespace AceSoft.RetailPlus.Data
 				prmPromoItemsID.Value = PromoItemsID;
 				cmd.Parameters.Add(prmPromoItemsID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				PromoItemsDetails Details = new PromoItemsDetails();
 
@@ -382,13 +337,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -418,11 +373,11 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') >= CURRENT_DATE " +
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') <= CURRENT_DATE;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -430,7 +385,7 @@ namespace AceSoft.RetailPlus.Data
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				PromoItemsDetails clsDetails = new PromoItemsDetails();
 
@@ -454,13 +409,13 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -505,11 +460,11 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC;";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -517,19 +472,19 @@ namespace AceSoft.RetailPlus.Data
 				prmPromoID.Value = PromoID;
 				cmd.Parameters.Add(prmPromoID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 				
-				return myReader;			
+				
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -573,11 +528,11 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -589,19 +544,19 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
 				
-				return myReader;			
+				
+				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
 				throw ex;
@@ -622,9 +577,9 @@ namespace AceSoft.RetailPlus.Data
 
 			bool boHasPromo = false;
 
-			MySqlConnection cn = GetConnection();
+			
 
-			Data.Product clsProduct = new Data.Product(cn, mTransaction);
+			Data.Products clsProduct = new Data.Products(base.Connection, base.Transaction);
 			Data.ProductDetails clsProductDetails = clsProduct.Details(ProductID);
 
 			Int64 ProductSubGroupID = clsProductDetails.ProductSubGroupID;
@@ -639,12 +594,12 @@ namespace AceSoft.RetailPlus.Data
 							"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			MySqlCommand cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
-			MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+			MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 			
 			while (myReader.Read())
 			{
@@ -694,8 +649,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -742,8 +697,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -789,8 +744,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -835,8 +790,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -880,8 +835,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -927,8 +882,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -973,8 +928,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1018,8 +973,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1064,8 +1019,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1109,8 +1064,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1153,8 +1108,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1200,8 +1155,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1246,8 +1201,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1291,8 +1246,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1335,8 +1290,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1381,8 +1336,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1426,8 +1381,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1470,8 +1425,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1515,8 +1470,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1562,8 +1517,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			
@@ -1609,8 +1564,8 @@ namespace AceSoft.RetailPlus.Data
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 				  
 			cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
+			
+			
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 			

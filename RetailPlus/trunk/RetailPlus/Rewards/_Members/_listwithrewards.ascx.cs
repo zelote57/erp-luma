@@ -151,7 +151,7 @@ namespace AceSoft.RetailPlus.Rewards._Members
             switch (e.CommandName)
             {
                 case "imgItemDelete":
-                    Contact clsContact = new Contact();
+                    Contacts clsContact = new Contacts();
                     clsContact.Delete(chkList.Value);
                     clsContact.CommitAndDispose();
 
@@ -251,7 +251,7 @@ namespace AceSoft.RetailPlus.Rewards._Members
 		}
 		private void LoadList()
 		{	
-			Contact clsContact = new Contact();
+			Contacts clsContact = new Contacts();
 			DataClass clsDataClass = new DataClass();
             ContactColumns clsContactColumns = new ContactColumns();
             clsContactColumns.ContactID = true;
@@ -339,7 +339,7 @@ namespace AceSoft.RetailPlus.Rewards._Members
 			}
 			if (boRetValue)
 			{
-				Contact clsContact = new Contact();
+				Contacts clsContact = new Contacts();
 				clsContact.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsContact.CommitAndDispose();
 			}

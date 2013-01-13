@@ -634,7 +634,7 @@ namespace AceSoft.RetailPlus.Data
 
             CreditMemoItems clsCreditMemoItems = new CreditMemoItems(Connection, Transaction);
             ProductUnit clsProductUnit = new ProductUnit(Connection, Transaction);
-            Product clsProduct = new Product(Connection, Transaction);
+            Products clsProduct = new Products(Connection, Transaction);
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(Connection, Transaction);
 
             Inventory clsInventory = new Inventory(Connection, Transaction);

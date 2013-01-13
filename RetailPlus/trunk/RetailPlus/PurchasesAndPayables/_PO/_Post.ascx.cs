@@ -141,7 +141,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             cboProductUnit.DataSource = clsUnitMatrix.ListAsDataTable(ProductID, "a.MatrixID", SortOption.Ascending).DefaultView;
             cboProductUnit.DataBind();
 
-            Product clsProduct = new Product(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
+            Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
             ProductDetails clsDetails = clsProduct.Details(ProductID);
             ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
             System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(ProductID, "PurchasePrice", SortOption.Ascending);
@@ -257,7 +257,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		{
 			DataClass clsDataClass = new DataClass();
 
-			Data.Product clsProduct = new Data.Product();
+			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
 
@@ -273,7 +273,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 Data.ProductPackageDetails clsProductPackageDetails = clsProductPackage.DetailsByBarCode(txtProductCode.Text);
                 if (clsProductPackageDetails.PackageID != 0)
                 {
-                    clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+                    clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     Data.ProductDetails clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID);
 
                     cboProductCode.Items.Add(new ListItem(clsProductDetails.ProductCode, clsProductDetails.ProductID.ToString()));
@@ -549,11 +549,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                     clsDetails.Quantity = 0;
                     clsDetails.MinThreshold = 0;
                     clsDetails.MaxThreshold = 0;
-                    clsDetails.SupplierID = Contact.DEFAULT_SUPPLIER_ID;
+                    clsDetails.SupplierID = Contacts.DEFAULT_SUPPLIER_ID;
                     clsDetails.IsItemSold = true;
                     clsDetails.WillPrintProductComposition = false;
 
-                    Product clsProduct = new Product();
+                    Products clsProduct = new Products();
                     long id = clsProduct.Insert(clsDetails);
                     clsDetails.ProductID = id;
 
@@ -635,7 +635,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             if (clsDetails.PackageID == 0)
             {
                 ProductUnit clsProductUnit = new ProductUnit(clsProductPackage.Connection, clsProductPackage.Transaction);
-                Product clsProduct = new Product(clsProductPackage.Connection, clsProductPackage.Transaction);
+                Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                 ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
                 decimal decBaseUnitValue = clsProductUnit.GetBaseUnitValue(long.Parse(cboProductCode.SelectedItem.Value), int.Parse(cboProductUnit.SelectedItem.Value), 1);
 
@@ -809,7 +809,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		{
 			POItemDetails clsDetails = new POItemDetails();
 
-			Product clsProducts = new Product();
+			Products clsProducts = new Products();
 			ProductDetails clsProductDetails = clsProducts.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
@@ -1259,7 +1259,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
                 if (lngProductID != 0)
                 {
-                    Product clsProduct = new Product();
+                    Products clsProduct = new Products();
                     txtQuantity.Text = clsProduct.getReorderQtyByRID(lngProductID, Convert.ToDateTime(txtIDCStartDate.Text + " 00:00:00"), Convert.ToDateTime(txtIDCEndDate.Text + " 23:59:59")).ToString("#,##0.##0");
                     clsProduct.CommitAndDispose();
 
@@ -1322,10 +1322,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             Branch clsBranch = new Branch(clsPO.Connection, clsPO.Transaction);
             BranchDetails clsBranchDetails;
 
-            Contact clsContact = new Contact(clsPO.Connection, clsPO.Transaction);
+            Contacts clsContact = new Contacts(clsPO.Connection, clsPO.Transaction);
             ContactDetails clsContactDetails;
 
-            Product clsProduct = new Product(clsPO.Connection, clsPO.Transaction);
+            Products clsProduct = new Products(clsPO.Connection, clsPO.Transaction);
             ProductDetails clsProductDetails;
 
             ProductVariation clsProductVariation = new ProductVariation(clsPO.Connection, clsPO.Transaction);
@@ -1539,7 +1539,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 POItem clsPOItem = new POItem(clsPO.Connection, clsPO.Transaction);
                 POItemDetails clsPOItemDetails;
 
-                Contact clsContact = new Contact(clsPO.Connection, clsPO.Transaction);
+                Contacts clsContact = new Contacts(clsPO.Connection, clsPO.Transaction);
                 ContactDetails clsContactDetails;
 
                 ContactGroup clsContactGroup = new ContactGroup(clsPO.Connection, clsPO.Transaction);
@@ -1554,7 +1554,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup(clsPO.Connection, clsPO.Transaction);
                 ProductSubGroupDetails clsProductSubGroupDetails;
 
-                Product clsProduct = new Product(clsPO.Connection, clsPO.Transaction);
+                Products clsProduct = new Products(clsPO.Connection, clsPO.Transaction);
                 ProductDetails clsProductDetails;
 
                 ProductVariation clsProductVariation = new ProductVariation(clsPO.Connection, clsPO.Transaction);
@@ -1594,7 +1594,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                                     clsContactDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), clsPODetails.SupplierModeOfTerms.ToString());
                                     clsContactDetails.Terms = clsPODetails.SupplierTerms;
                                     clsContactDetails.Remarks = "Added in from Imported PO #";
-                                    clsContactDetails.ContactGroupID = int.Parse(Contact.DEFAULT_SUPPLIER_ID.ToString("d"));
+                                    clsContactDetails.ContactGroupID = int.Parse(Contacts.DEFAULT_SUPPLIER_ID.ToString("d"));
                                     clsContactDetails.DateCreated = DateTime.Now;
                                     clsPODetails.SupplierID = clsContact.Insert(clsContactDetails);
                                 }

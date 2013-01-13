@@ -58,7 +58,7 @@ namespace AceSoft.RetailPlus.Reports
             cboSubGroup.Items.Insert(0, new ListItem(Constants.ALL,Constants.ZERO_STRING));
             cboSubGroup.SelectedIndex = 0;
 
-            Contact clsContact = new Contact(clsProductGroup.Connection, clsProductGroup.Transaction);
+            Contacts clsContact = new Contacts(clsProductGroup.Connection, clsProductGroup.Transaction);
             cboSupplier.DataTextField = "ContactName";
             cboSupplier.DataValueField = "ContactID";
             cboSupplier.DataSource = clsContact.SuppliersAsDataTable(string.Empty, 0, "ContactName", SortOption.Ascending);
@@ -173,7 +173,7 @@ namespace AceSoft.RetailPlus.Reports
             try { dteIDCStartDate = Convert.ToDateTime(txtStartTransactionDate.Text + " " + txtStartTime.Text);}catch{}
             try { dteIDCEndDate = Convert.ToDateTime(txtEndTransactionDate.Text + " " + txtEndTime.Text);}catch{}
 
-			Product clsProduct = new Product();
+			Products clsProduct = new Products();
             
             if (cboSupplier.SelectedItem.Text == Constants.ALL)
             { 
@@ -195,7 +195,7 @@ namespace AceSoft.RetailPlus.Reports
             }
             clsProduct.CommitAndDispose();
 
-            clsProduct = new Product();
+            clsProduct = new Products();
             System.Data.DataTable dt = (clsProduct.SearchDataTable(ProductListFilterType.ShowActiveOnly, string.Empty, long.Parse(cboSupplier.SelectedValue),
                                             long.Parse(cboGroup.SelectedItem.Value), string.Empty, long.Parse(cboSubGroup.SelectedItem.Value), string.Empty, 0, false, false, string.Empty, SortOption.Ascending));
             clsProduct.CommitAndDispose();

@@ -117,7 +117,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 			cboStockTypes.DataBind();
 			cboStockTypes.SelectedIndex = cboStockTypes.Items.Count - 1;
 
-            Contact clsContact = new Contact(clsStockTypes.Connection, clsStockTypes.Transaction);
+            Contacts clsContact = new Contacts(clsStockTypes.Connection, clsStockTypes.Transaction);
 			cboSupplier.DataTextField = "ContactName";
 			cboSupplier.DataValueField = "ContactID";
 			cboSupplier.DataSource = clsDataClass.DataReaderToDataTable(clsContact.Suppliers(null, 0, "ContactName", SortOption.Ascending)).DefaultView;

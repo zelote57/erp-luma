@@ -63,6 +63,100 @@
 		</TD>
 		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
 	</TR>
+    <TR>
+		<TD></TD>
+		<TD><asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Order Start Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtOrderStartDate"></asp:CompareValidator><asp:Label
+                ID="lblStatus" runat="server" CssClass="ms-error" Visible="False"></asp:Label></TD>
+	</TR>
+	<TR>
+		<TD></TD>
+		<TD><asp:CompareValidator id="CompareValidator2" CssClass="ms-error" runat="server" ErrorMessage="'Order End Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtOrderEndDate"></asp:CompareValidator></TD>
+	</TR>
+	<TR>
+		<TD></TD>
+		<TD><asp:CompareValidator id="CompareValidator3" CssClass="ms-error" runat="server" ErrorMessage="'Posting Start Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtPostingStartDate"></asp:CompareValidator></TD>
+	</TR>
+	<TR>
+		<TD></TD>
+		<TD><asp:CompareValidator id="CompareValidator4" CssClass="ms-error" runat="server" ErrorMessage="'Posting End Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtPostingEndDate"></asp:CompareValidator></TD>
+	</TR>
+    <TR>
+		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td class="ms-authoringcontrols">
+		    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellSpacing="0" cellPadding="0" border="0" width="100%">
+				<tr>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						<label>
+                            Order Start &nbsp;Date</label>&nbsp;
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap>
+						<asp:TextBox id="txtOrderStartDate" accessKey="S" ToolTip="Double click to select date from Calendar" ondblclick="ontime(this)" CssClass="ms-short" runat="server" MaxLength="10" BorderStyle="Groove"></asp:TextBox>
+						<asp:TextBox id="txtOrderStartTime" accessKey="I" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="5" Width="46px">00:00</asp:TextBox>
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</TD>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						<label>
+                            Order End Date</label>
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap>
+						<asp:TextBox id="txtOrderEndDate" accessKey="E" ToolTip="Double click to select date from Calendar" ondblclick="ontime(this)" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10"></asp:TextBox>
+						<asp:TextBox id="txtOrderEndTime" accessKey="M" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="5" Width="46px">23:59</asp:TextBox>
+					</td>
+					<td width="99%" id="align05" noWrap align="left">&nbsp;
+						<asp:Label id="Label3" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
+						<asp:Label id="Label2" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>
+					</td>
+				</tr>
+				<tr>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						<label>
+                            Posting Start &nbsp;Date</label>&nbsp;
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap>
+						<asp:TextBox id="txtPostingStartDate" accessKey="S" ToolTip="Double click to select date from Calendar" ondblclick="ontime(this)" CssClass="ms-short" runat="server" MaxLength="10" BorderStyle="Groove"></asp:TextBox>
+						<asp:TextBox id="txtPostingStartTime" accessKey="I" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="5" Width="46px">00:00</asp:TextBox>
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</TD>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						<label>
+                            Posting End Date</label>
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap>
+						<asp:TextBox id="txtPostingEndDate" accessKey="E" ToolTip="Double click to select date from Calendar" ondblclick="ontime(this)" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10"></asp:TextBox>
+						<asp:TextBox id="txtPostingEndTime" accessKey="M" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="5" Width="46px">23:59</asp:TextBox>
+					</td>
+					<td width="99%" id="Td1" noWrap align="left">&nbsp;
+						<asp:Label id="Label4" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
+						<asp:Label id="Label5" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>
+					</td>
+				</tr>
+				<tr>
+					<td style="PADDING-BOTTOM:2px" nowrap>
+						<label>Memo No /Vendor /Remarks</label>&nbsp;
+					</td>
+					<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+					<td nowrap colspan=4>
+						<asp:TextBox id="txtSearch" CssClass="ms-long" Width="100%" runat="server" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td nowrap >
+						<asp:DropDownList id="cboStatus" CssClass="ms-short" Width="100%" runat="server"></asp:DropDownList>
+					</td>
+					<td width="99%" noWrap align="left">&nbsp;
+					    <asp:ImageButton accessKey="s" style="CURSOR: hand" id="cmdSearch" ImageUrl="../../_layouts/images/icongo01.gif" border="0" ToolTip="Execute search" runat="server" causesvalidation="false" onclick="cmdSearch_Click"></asp:ImageButton>
+					</td>
+				</tr>
+			</table>
+		</TD>
+	</TR>
+	<tr>
+	    <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td class="ms-sectionline" height="2" style="MARGIN-BOTTOM: 5px"><img alt="" src="../../_layouts/images/empty.gif"></td>
+		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+	</tr>
 	<tr>
 		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
 		<TD>

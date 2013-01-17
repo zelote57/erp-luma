@@ -52,71 +52,57 @@ namespace AceSoft.RetailPlus.Data
          "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
          "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
          "FF52834EAFB5A7A1FDFD5851A3")]
-    public class Billing
+    public class Billing : POSConnection
     {
-        MySqlConnection mConnection;
-        MySqlTransaction mTransaction;
-        bool IsInTransaction = false;
-        bool TransactionFailed = false;
-
-        public MySqlConnection Connection
-        {
-            get { return mConnection; }
-        }
-
-        public MySqlTransaction Transaction
-        {
-            get { return mTransaction; }
-        }
-
-
         #region Constructors and Destructors
 
-        public Billing()
+		public Billing()
+            : base(null, null)
         {
-
         }
 
-        public Billing(MySqlConnection Connection, MySqlTransaction Transaction)
-        {
-            mConnection = Connection;
-            mTransaction = Transaction;
+        public Billing(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
+		{
 
-        }
+		}
 
-        public void CommitAndDispose()
-        {
-            if (!TransactionFailed)
-            {
-                if (IsInTransaction)
-                {
-                    mTransaction.Commit();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-            }
-        }
-
-        public MySqlConnection GetConnection()
-        {
-            if (mConnection == null)
-            {
-                mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());
-                mConnection.Open();
-
-                mTransaction = (MySqlTransaction)mConnection.BeginTransaction();
-            }
-
-            IsInTransaction = true;
-            return mConnection;
-        }
-
-
-        #endregion
+		#endregion
 
         #region Insert and Update
 
+        public void SetBillinAsPrinted(long ContactID, DateTime BillingDate, string BillingFile)
+        {
+            try
+            {
+                string SQL = "UPDATE tblCreditBillHeader SET " +
+                                "IsBillPrinted = 1, BillingFile = @BillingFile " +
+                            "WHERE ContactID = @ContactID AND BillingDate = @BillingDate;";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                MySqlParameter prmBillingFile = new MySqlParameter("@BillingFile", MySqlDbType.String);
+                prmBillingFile.Value = BillingFile;
+                cmd.Parameters.Add(prmBillingFile);
+
+                MySqlParameter prmContactID = new MySqlParameter("@ContactID", MySqlDbType.Int64);
+                prmContactID.Value = ContactID;
+                cmd.Parameters.Add(prmContactID);
+
+                MySqlParameter prmBillingDate = new MySqlParameter("@BillingDate", MySqlDbType.Date);
+                prmBillingDate.Value = BillingDate.ToString("yyyy-MM-dd");
+                cmd.Parameters.Add(prmBillingDate);
+
+                base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
        
         #endregion
 
@@ -143,17 +129,13 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = SQLSelect() + "WHERE tblContacts.ContactID = @CustomerID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 
                 BillingDetails Details = new BillingDetails();
 
@@ -175,7 +157,7 @@ namespace AceSoft.RetailPlus.Data
 
                     Details.BillingDate = myReader.GetDateTime("BillingDate");
 
-                    Customer clsCustomer = new Customer(mConnection, mTransaction);
+                    Customer clsCustomer = new Customer(base.Connection, base.Transaction);
                     Details.CustomerDetails = clsCustomer.Details(Details.ContactID);
                 }
 
@@ -186,15 +168,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }
@@ -205,17 +178,12 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'CreditPurcEndDateToProcess'";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("Billing");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MaxValue;
 
@@ -229,15 +197,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }
@@ -248,17 +207,12 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'CreditCutOffDate'";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("Billing");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MaxValue;
 
@@ -272,15 +226,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }
@@ -308,7 +253,7 @@ namespace AceSoft.RetailPlus.Data
 
                 Details.BillingDate = Convert.ToDateTime(dr["BillingDate"]);
 
-                Customer clsCustomer = new Customer(mConnection, mTransaction);
+                Customer clsCustomer = new Customer(base.Connection, base.Transaction);
                 Details.CustomerDetails = clsCustomer.Details(Details.ContactID);
 
                 return Details;
@@ -338,17 +283,12 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
-
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
-            System.Data.DataTable dt = new System.Data.DataTable("CreditBillHeader");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            System.Data.DataTable dt = new System.Data.DataTable("CreditBillHeaders");
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
         }
@@ -367,19 +307,40 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
-
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
             cmd.Parameters.AddWithValue("@CreditBillHeaderID", CreditBillHeaderID);
 
-            System.Data.DataTable dt = new System.Data.DataTable("CreditBillDetail");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            System.Data.DataTable dt = new System.Data.DataTable("CreditBillDetails");
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            return dt;
+        }
+
+        public System.Data.DataTable ListBillingDateAsDataTable(Int64 CustomerID, string SortField = "BillingDate", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Descending)
+        {
+            string SQL = "SELECT DISTINCT DATE_FORMAT(BillingDate, '%Y-%m-%d') BillingDate, BillingFile FROM tblCreditBillHeader ";
+
+            if (CustomerID != 0)
+                SQL += "WHERE ContactID = @CustomerID ";
+
+            SQL += "ORDER BY " + SortField;
+
+            if (SortOrder == System.Data.SqlClient.SortOrder.Ascending)
+                SQL += " ASC";
+            else
+                SQL += " DESC";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
+
+            System.Data.DataTable dt = new System.Data.DataTable("tblBillings");
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
         }
@@ -398,17 +359,12 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
-
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
-            System.Data.DataTable dt = new System.Data.DataTable("Billing");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            System.Data.DataTable dt = new System.Data.DataTable("Billings");
+            base.MySqlDataAdapterFill(cmd, dt);
 
             List<BillingDetails> lstRetValue = new List<BillingDetails>();
             foreach (DataRow dr in dt.Rows)
@@ -428,29 +384,16 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procProcessCreditBills();";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
                 throw ex;
             }
         }

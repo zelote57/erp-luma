@@ -55,64 +55,64 @@ namespace AceSoft.RetailPlus
         {
             //LoadMembers();
         }
-        private void LoadMembers()
-        {
-            DateTime DateFrom = Convert.ToDateTime(DateTime.Today.ToShortDateString() + " 00:00");
-            DateTime DateTo = Convert.ToDateTime(DateTime.Today.ToShortDateString() + " 23:59");
+        //private void LoadMembers()
+        //{
+        //    DateTime DateFrom = Convert.ToDateTime(DateTime.Today.ToShortDateString() + " 00:00");
+        //    DateTime DateTo = Convert.ToDateTime(DateTime.Today.ToShortDateString() + " 23:59");
 
-            Data.TerminalReport clsTerminalReport = new Data.TerminalReport();
-            System.Data.DataTable dtHourlyReport = clsTerminalReport.HourlyReport(Constants.TerminalBranchID, Constants.ALL);
+        //    Data.TerminalReport clsTerminalReport = new Data.TerminalReport();
+        //    System.Data.DataTable dtHourlyReport = clsTerminalReport.HourlyReport(Constants.TerminalBranchID, Constants.ALL);
 
-            SalesTransactionItems clsSalesTransactionItemsMost = new SalesTransactionItems(clsTerminalReport.Connection, clsTerminalReport.Transaction);
-            System.Data.DataTable dtMostSaleable = clsSalesTransactionItemsMost.MostSalableItems(DateFrom, DateTo, 10);
+        //    SalesTransactionItems clsSalesTransactionItemsMost = new SalesTransactionItems(clsTerminalReport.Connection, clsTerminalReport.Transaction);
+        //    System.Data.DataTable dtMostSaleable = clsSalesTransactionItemsMost.MostSalableItems(DateFrom, DateTo, 10);
 
-            clsTerminalReport.CommitAndDispose();
+        //    clsTerminalReport.CommitAndDispose();
 
-            if (dtHourlyReport.Rows.Count == 0)
-            {
-                Chart1.Visible = false;
-            }
-            else
-            {
-                Chart1.Visible = true;
-                Chart1.DataSource = dtHourlyReport.DefaultView;
-                Chart1.Series["Series1"].XValueMember = "Time";
-                Chart1.Series["Series1"].YValueMembers = "TranCount";
+        //    if (dtHourlyReport.Rows.Count == 0)
+        //    {
+        //        Chart1.Visible = false;
+        //    }
+        //    else
+        //    {
+        //        Chart1.Visible = true;
+        //        Chart1.DataSource = dtHourlyReport.DefaultView;
+        //        Chart1.Series["Series1"].XValueMember = "Time";
+        //        Chart1.Series["Series1"].YValueMembers = "TranCount";
 
-                Chart1.Series["Series2"].XValueMember = "TransactionDate";
-                Chart1.Series["Series2"].YValueMembers = "Amount";
+        //        Chart1.Series["Series2"].XValueMember = "TransactionDate";
+        //        Chart1.Series["Series2"].YValueMembers = "Amount";
 
-                Chart1.Series["Series3"].XValueMember = "Time";
-                Chart1.Series["Series3"].YValueMembers = "Discount";
+        //        Chart1.Series["Series3"].XValueMember = "Time";
+        //        Chart1.Series["Series3"].YValueMembers = "Discount";
 
-                Chart1.ChartAreas["ChartArea1"].AxisX.MajorGrid.LineWidth = 0;
-                Chart1.ChartAreas["ChartArea1"].AxisY.MajorGrid.LineWidth = 0;
+        //        Chart1.ChartAreas["ChartArea1"].AxisX.MajorGrid.LineWidth = 0;
+        //        Chart1.ChartAreas["ChartArea1"].AxisY.MajorGrid.LineWidth = 0;
 
-                Chart1.Series["Series1"].LegendText = "No. Of Transactions";
-                Chart1.Series["Series2"].LegendText = "Sales Amount";
-                Chart1.Series["Series3"].LegendText = "Discounts";
+        //        Chart1.Series["Series1"].LegendText = "No. Of Transactions";
+        //        Chart1.Series["Series2"].LegendText = "Sales Amount";
+        //        Chart1.Series["Series3"].LegendText = "Discounts";
 
-                Chart1.DataBind();
-            }
+        //        Chart1.DataBind();
+        //    }
 
-            if (dtMostSaleable.Rows.Count == 0)
-            {
-                Chart2.Visible = false;
-            }
-            else
-            {
-                Chart2.DataSource = dtMostSaleable.DefaultView;
-                Chart2.Series["Series1"].XValueMember = "ProductCode";
-                Chart2.Series["Series1"].YValueMembers = "Count";
-                Chart2.Series["Series1"].Label = "#PERCENT{P0}";
-                Chart2.Series["Series1"].LegendText = "#VALX : #VALY";
+        //    if (dtMostSaleable.Rows.Count == 0)
+        //    {
+        //        Chart2.Visible = false;
+        //    }
+        //    else
+        //    {
+        //        Chart2.DataSource = dtMostSaleable.DefaultView;
+        //        Chart2.Series["Series1"].XValueMember = "ProductCode";
+        //        Chart2.Series["Series1"].YValueMembers = "Count";
+        //        Chart2.Series["Series1"].Label = "#PERCENT{P0}";
+        //        Chart2.Series["Series1"].LegendText = "#VALX : #VALY";
 
-                Chart2.ChartAreas["ChartArea1"].AxisX.MajorGrid.LineWidth = 0;
-                Chart2.ChartAreas["ChartArea1"].AxisY.MajorGrid.LineWidth = 0;
+        //        Chart2.ChartAreas["ChartArea1"].AxisX.MajorGrid.LineWidth = 0;
+        //        Chart2.ChartAreas["ChartArea1"].AxisY.MajorGrid.LineWidth = 0;
 
-                Chart2.DataBind();
-            }
-        }
+        //        Chart2.DataBind();
+        //    }
+        //}
        
         #endregion
         

@@ -116,6 +116,9 @@ namespace AceSoft.RetailPlus.Monitor
 				if (strOR != "")
 				{
 					Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] Bill createad @ " + strOR);
+                    clsBilling = new Data.Billing();
+                    clsBilling.SetBillinAsPrinted(clsBillingDetails.ContactID, clsBillingDetails.BillingDate, strOR);
+                    clsBilling.CommitAndDispose();
 				}
 
 				Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] Done.");
@@ -232,18 +235,22 @@ namespace AceSoft.RetailPlus.Monitor
 			string strRetValue = "";
 			try
 			{
-				DateTime logdate = DateTime.Now;
-				string logsdir = System.Configuration.ConfigurationManager.AppSettings["logsdir"].ToString();
+                string logsdir = System.Configuration.ConfigurationManager.AppSettings["billingdir"].ToString();
 
-				if (!Directory.Exists(logsdir + logdate.ToString("MMM")))
+				if (!Directory.Exists(logsdir))
 				{
-					Directory.CreateDirectory(logsdir + logdate.ToString("MMM"));
+					Directory.CreateDirectory(logsdir);
 				}
-				string logFile = logsdir + logdate.ToString("MMM") + "/OR_" + clsBillingDetails.ContactID.ToString() + logdate.ToString("yyyyMMdd") + ".pdf";
-				
+                string logFile = logsdir + "OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".pdf";
+
+                if (File.Exists(logFile))
+                {
+                    File.Move(logFile,logFile + ".old");
+                }
+
 				rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile);
 
-				strRetValue = logFile;
+                strRetValue = "OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".pdf";
 			}
 			catch { }
 

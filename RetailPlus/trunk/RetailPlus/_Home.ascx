@@ -6,16 +6,16 @@
 <script language="JavaScript" src="_Scripts/Rewards.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><IMG height="10" alt="" src="_layouts/images/blank.gif" width="1">
+            <asp:Label ID="lblReferrer" runat="server" Visible="False"></asp:Label></td>
 	</tr>
-	<tr>
+	<%--<tr>
 		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="_layouts/images/blank.gif" /></td>
 	</tr>
 	<tr>
-        <td class="ms-sectionline" colSpan="3" height="1">
-            <asp:Label ID="lblReferrer" runat="server" Visible="False"></asp:Label></td>
+        <td class="ms-sectionline" colSpan="3" height="1"></td>
     </tr>
-    <TR>
+    <TR >
         <td class="ms-authoringcontrols" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px" vAlign="top" colSpan="3">
             <table class="ms-authoringcontrols" cellSpacing="0" cellPadding="0" width="100%" border="0">
                 <tr>
@@ -59,7 +59,7 @@
                                     </asp:Chart>
                                     <asp:Chart ID="Chart2" runat="server" runat="server" BorderlineColor="#B6D6EC" 
                                                 BorderlineDashStyle="Solid" BackColor="#B6D6EC" BackGradientStyle="TopBottom" 
-                                                BackSecondaryColor="#B6D6EC" Height="350px" Width="600px">
+                                                BackSecondaryColor="#B6D6EC" Height="350px" Width="600px" Visible="false">
                                         <Legends>
                                                 <asp:Legend TitleFont="Microsoft Sans Serif, 8pt, style=Bold" BackColor="Transparent"
                                                         Font="Trebuchet MS, 7.25pt" IsTextAutoFit="true" Enabled="true"
@@ -104,7 +104,7 @@
     </TR>
 	<tr>
 		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="_layouts/images/blank.gif"></td>
-	</tr>
+	</tr>--%>
 	<tr>
 		<td colSpan="3"><IMG height="10" alt="" src="_layouts/images/blank.gif" width="1"></td>
 	</tr>

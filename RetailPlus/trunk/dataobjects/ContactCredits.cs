@@ -27,7 +27,7 @@ namespace AceSoft.RetailPlus.Data
         public decimal CreditPaid;
         public CreditCardStatus CreditCardStatus;
         public DateTime ExpiryDate;
-
+        public DateTime LastBillingDate;
         public bool CreditActive;
         public decimal CreditLimit;
 	}

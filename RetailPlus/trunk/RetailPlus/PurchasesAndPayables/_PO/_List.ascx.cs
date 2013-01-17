@@ -124,7 +124,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 HtmlInputCheckBox chkList = (HtmlInputCheckBox)e.Item.FindControl("chkList");
                 chkList.Value = dr["POID"].ToString();
 
-                POStatus status = (POStatus)Enum.Parse(typeof(POStatus), dr["POReturnStatus"].ToString());
+                POStatus status = (POStatus)Enum.Parse(typeof(POStatus), dr["Status"].ToString());
                 if (status == POStatus.Posted || status == POStatus.Cancelled)
                 {
                     chkList.Attributes.Add("disabled", "false");

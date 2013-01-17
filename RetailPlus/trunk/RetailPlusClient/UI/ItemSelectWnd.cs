@@ -33,7 +33,8 @@ namespace AceSoft.RetailPlus.Client.UI
         private bool mboShowInActiveProducts;
         private TerminalDetails mclsTerminalDetails;
         private System.Windows.Forms.PictureBox imgIcon;
-		private System.ComponentModel.Container components = null;
+        private Timer tmrSearch;
+        private System.ComponentModel.IContainer components;
 
 		public DialogResult Result
 		{
@@ -102,6 +103,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		/// </summary>
 		private void InitializeComponent()
 		{
+            this.components = new System.ComponentModel.Container();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.lblHeader = new System.Windows.Forms.Label();
             this.dgItems = new System.Windows.Forms.DataGrid();
@@ -117,9 +119,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Price = new System.Windows.Forms.DataGridTextBoxColumn();
             this.VAT = new System.Windows.Forms.DataGridTextBoxColumn();
             this.LocalTax = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.Quantity = new AceSoft.RetailPlus.Client.UI.DataGridQuantityTextBoxColumn();
             this.MinThreshold = new System.Windows.Forms.DataGridTextBoxColumn();
             this.imgIcon = new System.Windows.Forms.PictureBox();
+            this.tmrSearch = new System.Windows.Forms.Timer(this.components);
+            this.Quantity = new AceSoft.RetailPlus.Client.UI.DataGridQuantityTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.SuspendLayout();
@@ -314,17 +317,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.LocalTax.ReadOnly = true;
             this.LocalTax.Width = 0;
             // 
-            // Quantity
-            // 
-            this.Quantity.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.Quantity.Format = "";
-            this.Quantity.FormatInfo = null;
-            this.Quantity.HeaderText = "Qty";
-            this.Quantity.MappingName = "Quantity";
-            this.Quantity.NullText = "0";
-            this.Quantity.ReadOnly = true;
-            this.Quantity.Width = 0;
-            // 
             // MinThreshold
             // 
             this.MinThreshold.Format = "";
@@ -344,6 +336,22 @@ namespace AceSoft.RetailPlus.Client.UI
             this.imgIcon.TabStop = false;
             this.imgIcon.Click += new System.EventHandler(this.imgIcon_Click);
             // 
+            // tmrSearch
+            // 
+            this.tmrSearch.Interval = 500;
+            this.tmrSearch.Tick += new System.EventHandler(this.tmrSearch_Tick);
+            // 
+            // Quantity
+            // 
+            this.Quantity.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Quantity.Format = "";
+            this.Quantity.FormatInfo = null;
+            this.Quantity.HeaderText = "Qty";
+            this.Quantity.MappingName = "Quantity";
+            this.Quantity.NullText = "0";
+            this.Quantity.ReadOnly = true;
+            this.Quantity.Width = 0;
+            // 
             // ItemSelectWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
@@ -362,8 +370,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.ItemSelectWnd_Load);
-            this.Resize += new System.EventHandler(this.ItemSelectWnd_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ItemSelectWnd_KeyDown);
+            this.Resize += new System.EventHandler(this.ItemSelectWnd_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.ResumeLayout(false);
@@ -399,29 +407,29 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                     this.Hide();
 					break;
-				
-				case Keys.Up:
-					dt = (System.Data.DataTable) dgItems.DataSource;
-					if (dgItems.CurrentRowIndex > 0) 
-					{
-						index = dgItems.CurrentRowIndex;
-						dgItems.CurrentRowIndex -= 1;
-						dgItems.Select(dgItems.CurrentRowIndex);
-						dgItems.UnSelect(index);
-					}
-					break;
 
-				case Keys.Down:
-					dt = (System.Data.DataTable) dgItems.DataSource;
-					if (dgItems.CurrentRowIndex < dt.Rows.Count-1) 
-					{
-						index = dgItems.CurrentRowIndex;				
+                case Keys.Up:
+                    dt = (System.Data.DataTable)dgItems.DataSource;
+                    if (dgItems.CurrentRowIndex > 0)
+                    {
+                        index = dgItems.CurrentRowIndex;
+                        dgItems.CurrentRowIndex -= 1;
+                        dgItems.Select(dgItems.CurrentRowIndex);
+                        dgItems.UnSelect(index);
+                    }
+                    break;
 
-						dgItems.CurrentRowIndex += 1;
-						dgItems.Select(dgItems.CurrentRowIndex);
-						dgItems.UnSelect(index);
-					}
-					break;
+                case Keys.Down:
+                    dt = (System.Data.DataTable)dgItems.DataSource;
+                    if (dgItems.CurrentRowIndex < dt.Rows.Count - 1)
+                    {
+                        index = dgItems.CurrentRowIndex;
+
+                        dgItems.CurrentRowIndex += 1;
+                        dgItems.Select(dgItems.CurrentRowIndex);
+                        dgItems.UnSelect(index);
+                    }
+                    break;
 			}
 		}
 		
@@ -452,7 +460,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void txtSearch_TextChanged(object sender, System.EventArgs e)
 		{
-			LoadItemData();
+            tmrSearch.Enabled = false;
+            tmrSearch.Enabled = true;
+//            LoadItemData();
 		}
 
         private void dgItems_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -560,6 +570,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsProductColumns.MainQuantity = true;
                 clsProductColumns.Price = true;
                 clsProductColumns.IncludeAllPackages = true;
+                clsProductColumns.MinThreshold = true;
 
                 string strSearchKey = Constants.MaskProductSearch + txtSearch.Text;
                 Data.ProductDetails clsSearchKeys = new Data.ProductDetails();
@@ -628,6 +639,12 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         #endregion
+
+        private void tmrSearch_Tick(object sender, EventArgs e)
+        {
+            LoadItemData();
+            tmrSearch.Enabled = false;
+        }
 
     }
 

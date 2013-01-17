@@ -506,17 +506,12 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            
-
             MySqlCommand cmd = new MySqlCommand();
-            
-            
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
             System.Data.DataTable dt = new System.Data.DataTable("tblBranch");
             base.MySqlDataAdapterFill(cmd, dt);
-            
 
             return dt;
         }

@@ -638,7 +638,7 @@ namespace AceSoft.RetailPlus.Data
 
 		#endregion
 
-        public MySqlConnection GetConnectionToBranch(string ServerIP, string DBPort, string DBName)
+        public MySqlConnection GetConnectionToBranch(string ServerIP = "", string DBPort = "", string DBName = "")
         {
             return base.GetConnection(ServerIP, DBPort, DBName);
         }

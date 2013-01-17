@@ -7,108 +7,144 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus {
+namespace AceSoft.RetailPlus.Credits._Customers {
     
     
-    public partial class @__HorizontalNavBar {
+    public partial class _Default {
         
         /// <summary>
-        /// NavHome control.
+        /// frmDefaultID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NavHome;
+        protected global::System.Web.UI.HtmlControls.HtmlForm frmDefaultID;
         
         /// <summary>
-        /// NavMasterFiles control.
+        /// ToolkitScriptManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NavMasterFiles;
+        protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
         
         /// <summary>
-        /// NavRewards control.
+        /// ctrlProcessing control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NavRewards;
+        protected global::AceSoft.RetailPlus.@__Processing ctrlProcessing;
         
         /// <summary>
-        /// NavCredits control.
+        /// PageHeader control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NavCredits;
+        protected global::AceSoft.RetailPlus.@__PageHeader PageHeader;
         
         /// <summary>
-        /// NavGeneralLedger control.
+        /// HorizontalNavBar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NavGeneralLedger;
+        protected global::AceSoft.RetailPlus.@__HorizontalNavBar HorizontalNavBar;
         
         /// <summary>
-        /// NavPurchasesAndPayables control.
+        /// ctrlExpiry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NavPurchasesAndPayables;
+        protected global::AceSoft.RetailPlus.@__Expiry ctrlExpiry;
         
         /// <summary>
-        /// NavSalesAndReceivables control.
+        /// SiteTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NavSalesAndReceivables;
+        protected global::AceSoft.RetailPlus.@__SiteTitle SiteTitle;
         
         /// <summary>
-        /// NavInventory control.
+        /// LargeHeading control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NavInventory;
+        protected global::AceSoft.RetailPlus.@__LargeHeading LargeHeading;
         
         /// <summary>
-        /// NavReports control.
+        /// RightBodySectionSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NavReports;
+        protected global::AceSoft.RetailPlus.@__RightBodySectionSearch RightBodySectionSearch;
         
         /// <summary>
-        /// NavAdministrationFiles control.
+        /// ctrlMenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NavAdministrationFiles;
+        protected global::AceSoft.RetailPlus.Credits.@__Menu ctrlMenu;
         
         /// <summary>
-        /// ctrlHorizontalNavBarCorner control.
+        /// PageLevelError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AceSoft.RetailPlus.___HorizontalNavBarCorner ctrlHorizontalNavBarCorner;
+        protected global::AceSoft.RetailPlus.@__PageLevelError PageLevelError;
+        
+        /// <summary>
+        /// ctrlList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Credits._Customers.@__List ctrlList;
+        
+        /// <summary>
+        /// ctrlInsert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Credits._Customers.@__Insert ctrlInsert;
+        
+        /// <summary>
+        /// ctrlUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Credits._Customers.@__Update ctrlUpdate;
+        
+        /// <summary>
+        /// ctrlDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Credits._Customers.@__Details ctrlDetails;
     }
 }

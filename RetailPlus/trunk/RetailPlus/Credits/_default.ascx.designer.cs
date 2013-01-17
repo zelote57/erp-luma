@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus {
+namespace AceSoft.RetailPlus.Credits {
     
     
-    public partial class @__Home {
+    public partial class @__Default {
         
         /// <summary>
         /// lblReferrer control.

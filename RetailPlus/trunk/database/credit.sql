@@ -85,6 +85,8 @@ CREATE TABLE tblCreditBillDetail (
 	UNIQUE `PK_tblCreditBillDetail`(`CreditBillDetailID`)
 );
 
+ALTER TABLE tblCreditBillHeader ADD BillingFile VARCHAR(120);
+
 /**
 
 

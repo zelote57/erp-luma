@@ -44,6 +44,8 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public class ProductGroup : POSConnection
     {
+        public const long DEFAULT_GROUP_ID = 1;
+
 		#region Constructors and Destructors
 
 		public ProductGroup()

@@ -1,6 +1,6 @@
 using AceSoft.RetailPlus.Security;
 
-namespace AceSoft.RetailPlus.Rewards._Members
+namespace AceSoft.RetailPlus.Credits._Customers
 {
 	using System;
 	using System.Data;
@@ -10,7 +10,7 @@ namespace AceSoft.RetailPlus.Rewards._Members
 	using System.Web.UI.HtmlControls;
 	using AceSoft.RetailPlus.Data; 
 
-	public partial  class __ListWithRewards : System.Web.UI.UserControl
+	public partial  class __List : System.Web.UI.UserControl
 	{
 		protected PagedDataSource PageData = new PagedDataSource();
 
@@ -117,31 +117,36 @@ namespace AceSoft.RetailPlus.Rewards._Members
                 lnkContactName.Text = dr["ContactName"].ToString();
                 lnkContactName.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(chkList.Value, Session.SessionID);
 
-                Label lblBirthDate = (Label)e.Item.FindControl("lblBirthDate");
-                lblBirthDate.Text = Convert.ToDateTime(dr["BirthDate"].ToString()).ToString("dd-MMM-yyyy");
+                Label lblCreditType = (Label)e.Item.FindControl("lblCreditType");
+                lblCreditType.Text = Enum.Parse(typeof(CreditType), dr["CreditType"].ToString()).ToString();
 
-                Label lblRewardCardNo = (Label)e.Item.FindControl("lblRewardCardNo");
-                lblRewardCardNo.Text = dr["RewardCardNo"].ToString();
+                Label lblCreditCardNo = (Label)e.Item.FindControl("lblCreditCardNo");
+                lblCreditCardNo.Text = dr["CreditCardNo"].ToString();
 
-                Label lblRewardCardStatus = (Label)e.Item.FindControl("lblRewardCardStatus");
-                lblRewardCardStatus.Text = Enum.Parse(typeof(RewardCardStatus), dr["RewardCardStatus"].ToString()).ToString();
+                Label lblCreditCardStatus = (Label)e.Item.FindControl("lblCreditCardStatus");
+                lblCreditCardStatus.Text = Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString()).ToString();
 
-                if (Convert.ToBoolean(dr["RewardActive"].ToString()))
-                {
-                    lblRewardCardStatus.Text += "(Active)";
-                }else {lblRewardCardStatus.Text += "(InActive)";}
+                Label lblExpiryDate = (Label)e.Item.FindControl("lblExpiryDate");
+                lblExpiryDate.Text = Convert.ToDateTime(dr["ExpiryDate"].ToString()).ToString("dd-MMM-yyyy");
 
-                Label lblRewardExpiryDate = (Label)e.Item.FindControl("lblRewardExpiryDate");
-                lblRewardExpiryDate.Text = Convert.ToDateTime(dr["ExpiryDate"].ToString()).ToString("dd-MMM-yyyy");
+                decimal decCreditLimit = Convert.ToDecimal(dr["CreditLimit"].ToString());
+                decimal decCredit = Convert.ToDecimal(dr["Credit"].ToString());
+                decimal decAvailableCredit = decCreditLimit - decCredit;
 
-                Label lblRewardPoints = (Label)e.Item.FindControl("lblRewardPoints");
-                lblRewardPoints.Text = dr["RewardPoints"].ToString();
+                Label lblCreditLimit = (Label)e.Item.FindControl("lblCreditLimit");
+                lblCreditLimit.Text = decCreditLimit.ToString("#,##0.#");
 
-                Label lblRewardRedeemedPoints = (Label)e.Item.FindControl("lblRewardRedeemedPoints");
-                lblRewardRedeemedPoints.Text = dr["RedeemedPoints"].ToString();
+                Label lblCredit = (Label)e.Item.FindControl("lblCredit");
+                lblCredit.Text = decCredit.ToString("#,##0.#");
 
-                Label lblRewardTotalPurchases = (Label)e.Item.FindControl("lblRewardTotalPurchases");
-                lblRewardTotalPurchases.Text = dr["TotalPurchases"].ToString();
+                Label lblAvailableCredit = (Label)e.Item.FindControl("lblAvailableCredit");
+                lblAvailableCredit.Text = decAvailableCredit.ToString("#,##0.#");
+
+                Label lblTotalPurchases = (Label)e.Item.FindControl("lblTotalPurchases");
+                lblTotalPurchases.Text = Convert.ToDecimal(dr["TotalPurchases"].ToString()).ToString("#,##0.#");
+
+                Label lblLastBillingDate = (Label)e.Item.FindControl("lblLastBillingDate");
+                lblLastBillingDate.Text = Convert.ToDateTime(dr["LastBillingDate"].ToString()).ToString("dd-MMM-yyyy");
             }
         }
         protected void lstItem_ItemCommand(object sender, DataListCommandEventArgs e)
@@ -175,20 +180,21 @@ namespace AceSoft.RetailPlus.Rewards._Members
 
         private void LoadOptions()
         {
-            cboRewardCardStatus.Items.Clear();
-
-            foreach (RewardCardStatus selection in Enum.GetValues(typeof(RewardCardStatus)))
+            cboCreditCardStatus.Items.Clear();
+            foreach (CreditCardStatus selection in Enum.GetValues(typeof(CreditCardStatus)))
             {
-                cboRewardCardStatus.Items.Add(new ListItem(selection.ToString("G"), selection.ToString("d")));
+                cboCreditCardStatus.Items.Add(new ListItem(selection.ToString("G"), selection.ToString("d")));
             }
-            cboRewardCardStatus.Items.Insert(0, new ListItem(Constants.ALL, Constants.ALL));
-            cboRewardCardStatus.SelectedIndex = 0;
+            cboCreditCardStatus.Items.Insert(0, new ListItem(Constants.ALL, Constants.ALL));
+            cboCreditCardStatus.SelectedIndex = 0;
 
-            foreach (Constants.DateSelectionString selection in Enum.GetValues(typeof(Constants.DateSelectionString)))
+            cboCreditType.Items.Clear();
+            foreach (CreditType selection in Enum.GetValues(typeof(CreditType)))
             {
-                cboBirthDate.Items.Add(new ListItem(selection.ToString("G"), selection.ToString("d")));
+                cboCreditType.Items.Add(new ListItem(selection.ToString("G"), selection.ToString("d")));
             }
-            cboBirthDate.SelectedIndex = 0;
+            cboCreditType.Items.Insert(0, new ListItem(Constants.ALL, Constants.ALL));
+            cboCreditType.SelectedIndex = 0;
             
         }
 		private void ManageSecurity()
@@ -231,23 +237,25 @@ namespace AceSoft.RetailPlus.Rewards._Members
 
 			HyperLink SortByContactCode = (HyperLink) e.Item.FindControl("SortByContactCode");
 			HyperLink SortByContactName = (HyperLink) e.Item.FindControl("SortByContactName");
-            HyperLink SortByBirthDate = (HyperLink)e.Item.FindControl("SortByBirthDate");
-			HyperLink SortByRewardCardNo = (HyperLink) e.Item.FindControl("SortByRewardCardNo");
-            HyperLink SortByRewardCardStatus = (HyperLink)e.Item.FindControl("SortByRewardCardNo");
-            HyperLink SortByRewardExpiryDate = (HyperLink)e.Item.FindControl("SortByRewardExpiryDate");
-            HyperLink SortByRewardPoints = (HyperLink)e.Item.FindControl("SortByRewardPoints");
-            HyperLink SortByRewardRedeemedPoints = (HyperLink)e.Item.FindControl("SortByRewardRedeemedPoints");
-            HyperLink SortByRewardTotalPurchases = (HyperLink)e.Item.FindControl("SortByRewardTotalPurchases");
+            HyperLink SortByCreditType = (HyperLink)e.Item.FindControl("SortByCreditType");
+            HyperLink SortByCreditCardNo = (HyperLink)e.Item.FindControl("SortByCreditCardNo");
+            HyperLink SortByCreditCardStatus = (HyperLink)e.Item.FindControl("SortByCreditCardStatus");
+            HyperLink SortByExpiryDate = (HyperLink)e.Item.FindControl("SortByExpiryDate");
+            HyperLink SortByCreditLimit = (HyperLink)e.Item.FindControl("SortByCreditLimit");
+            HyperLink SortByCredit = (HyperLink)e.Item.FindControl("SortByCredit");
+            HyperLink SortByTotalPurchases = (HyperLink)e.Item.FindControl("SortByTotalPurchases");
+            HyperLink SortByLastBillingDate = (HyperLink)e.Item.FindControl("SortByLastBillingDate");
 
 			SortByContactCode.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ContactCode", Session.SessionID);
 			SortByContactName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ContactName", Session.SessionID);
-            SortByBirthDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("BirthDate", Session.SessionID);
-            SortByRewardCardNo.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RewardCardNo", Session.SessionID);
-            SortByRewardCardStatus.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RewardCardStatus", Session.SessionID);
-            SortByRewardExpiryDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ExpiryDate", Session.SessionID);
-            SortByRewardPoints.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RewardPoints", Session.SessionID);
-            SortByRewardRedeemedPoints.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RedeemedPoints", Session.SessionID);
-            SortByRewardTotalPurchases.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("TotalPurchases", Session.SessionID);
+            SortByCreditType.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("CreditType", Session.SessionID);
+            SortByCreditCardNo.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("CreditCardNo", Session.SessionID);
+            SortByCreditCardStatus.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("CreditCardStatus", Session.SessionID);
+            SortByExpiryDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ExpiryDate", Session.SessionID);
+            SortByCreditLimit.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("CreditLimit", Session.SessionID);
+            SortByCredit.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("Credit", Session.SessionID);
+            SortByTotalPurchases.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("TotalPurchases", Session.SessionID);
+            SortByLastBillingDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("LastBillingDate", Session.SessionID);
 		}
 		private void LoadList()
 		{	
@@ -257,12 +265,12 @@ namespace AceSoft.RetailPlus.Rewards._Members
             clsContactColumns.ContactID = true;
             clsContactColumns.ContactCode = true;
             clsContactColumns.ContactName = true;
-            clsContactColumns.RewardDetails = true;
+            clsContactColumns.CreditDetails = true;
 
             ContactColumns clsSearchColumns = new ContactColumns();
             clsSearchColumns.ContactCode = true;
             clsSearchColumns.ContactName = true;
-            clsSearchColumns.RewardDetails = true;
+            clsSearchColumns.CreditDetails = true;
 
 			string SortField = "ContactID";
 			if (Request.QueryString["sortfield"]!=null)
@@ -281,13 +289,13 @@ namespace AceSoft.RetailPlus.Rewards._Members
 
             string strSearch = txtSearch.Text.Trim();
 
-            Constants.DateSelectionString BirthDate = (Constants.DateSelectionString)Enum.Parse(typeof(Constants.DateSelectionString), cboBirthDate.SelectedItem.Value);
-            
-            DateTime dteRewardExpiryDateFrom = DateTime.TryParse(txtRewardExpiryDateFrom.Text, out dteRewardExpiryDateFrom) ? dteRewardExpiryDateFrom : DateTime.MinValue;            
-            DateTime dteRewardExpiryDateTo = DateTime.TryParse(txtRewardExpiryDateTo.Text, out dteRewardExpiryDateTo) ? dteRewardExpiryDateTo : DateTime.MinValue;
-            Int16 intRewardCardStatus = (cboRewardCardStatus.SelectedItem.Value == Constants.ALL) ? Int16.Parse("-1") : Int16.Parse(cboRewardCardStatus.SelectedItem.Value);
+            Int16 intCreditType = (cboCreditType.SelectedItem.Value == Constants.ALL) ? Int16.Parse("-1") : Int16.Parse(cboCreditType.SelectedItem.Value);
 
-            PageData.DataSource = clsContact.CustomersWithRewards(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, 0, strSearch, dteRewardExpiryDateFrom, dteRewardExpiryDateTo, BirthDate, intRewardCardStatus, SortField, sortoption).DefaultView;
+            DateTime dteExpiryDateFrom = DateTime.TryParse(txtExpiryDateFrom.Text, out dteExpiryDateFrom) ? dteExpiryDateFrom : DateTime.MinValue;
+            DateTime dteExpiryDateTo = DateTime.TryParse(txtExpiryDateTo.Text, out dteExpiryDateTo) ? dteExpiryDateTo : DateTime.MinValue;
+            Int16 intCreditCardStatus = (cboCreditCardStatus.SelectedItem.Value == Constants.ALL) ? Int16.Parse("-1") : Int16.Parse(cboCreditCardStatus.SelectedItem.Value);
+
+            PageData.DataSource = clsContact.CustomersWithCredits(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, 0, strSearch, dteExpiryDateFrom, dteExpiryDateTo, intCreditCardStatus, intCreditType, SortField, sortoption).DefaultView;
 
 			clsContact.CommitAndDispose();
 

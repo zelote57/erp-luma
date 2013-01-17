@@ -124,6 +124,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
                 Session.Timeout = 60 * 60 * 30;
                 RemoteBranchInventory clsBranchInventory = new RemoteBranchInventory();
                 clsBranchInventory.GetConnectionToBranch(clsBranchDetails.DBIP);
+
                 string[] InsertStatements = clsBranchInventory.GetInsertList(clsBranchDetails.BranchID);
                 clsBranchInventory.CommitAndDispose();
 

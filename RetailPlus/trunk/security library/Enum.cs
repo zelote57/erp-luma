@@ -264,6 +264,7 @@ namespace AceSoft.RetailPlus
         All,
         Administrators,
         Cashiers,
-        Waiters
+        Waiters,
+        Bagger
     }
 }

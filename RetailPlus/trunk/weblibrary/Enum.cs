@@ -76,7 +76,8 @@ namespace AceSoft.RetailPlus
 		GeneralLedger		= 6,
 		PurchasesAndPayables= 7,
 		SalesAndReceivables	= 8,
-        Rewards             = 9
+        Rewards             = 9,
+        Credits             = 10
 	}
 	
 }

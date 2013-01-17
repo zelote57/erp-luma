@@ -255,6 +255,62 @@
       <DependentUpon>_menu.ascx</DependentUpon>
     </Compile>
     <Content Include="App_Code\AssemblyInfo.cs" />
+    <Compile Include="Credits\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Customers\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Customers\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Customers\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Customers\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Customers\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Customers\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Customers\_list.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Customers\_list.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Customers\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Customers\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_default.ascx.cs">
+      <DependentUpon>_default.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_default.ascx.designer.cs">
+      <DependentUpon>_default.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Menu.ascx.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Menu.ascx.designer.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Datasets\ReportDataset.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3201,6 +3257,14 @@
     <None Include="iisreset.cmd" />
     <None Include="MasterFiles\_Product\_Variations\_easyinsert.ascx.cs.exclude" />
     <None Include="MasterFiles\_Product\_Variations\_easyinsert.ascx.exclude" />
+    <Content Include="Credits\default.aspx" />
+    <Content Include="Credits\_Customers\default.aspx" />
+    <Content Include="Credits\_Customers\_details.ascx" />
+    <Content Include="Credits\_Customers\_insert.ascx" />
+    <Content Include="Credits\_Customers\_list.ascx" />
+    <Content Include="Credits\_Customers\_update.ascx" />
+    <Content Include="Credits\_default.ascx" />
+    <Content Include="Credits\_menu.ascx" />
     <Content Include="packages.config" />
     <None Include="User Guide - Backend.pdf" />
     <None Include="vwd.webinfo" />
@@ -4061,6 +4125,10 @@
     <ProjectReference Include="..\DataObjects Accounts\DataObjects Accounts.csproj">
       <Project>{4CBAE4B5-2073-43AB-9EC4-981D2CA31DCC}</Project>
       <Name>DataObjects Accounts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects CreditBilling\DataObjects CreditBilling.csproj">
+      <Project>{FC841185-222E-41F4-9059-D5A28613FA05}</Project>
+      <Name>DataObjects CreditBilling</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataObjects Inventory\DataObjects Inventory.csproj">
       <Project>{98B7F5B1-2F87-4E62-B2BF-926975D02C73}</Project>

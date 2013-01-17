@@ -30,6 +30,8 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public class Position : POSConnection
     {
+        public const string DEFAULT_ALL_POSITIONS = "All Positions";
+
 		#region Constructors and Destructors
 
 		public Position()

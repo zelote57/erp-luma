@@ -527,7 +527,12 @@ namespace AceSoft.RetailPlus.Security
 
 				string SQL = SQLSelect(clsAccessGroupTypes) + "WHERE deleted = '0' ";
 
-				if (clsAccessGroupTypes != AccessGroupTypes.All)
+                if (clsAccessGroupTypes == AccessGroupTypes.Waiters || clsAccessGroupTypes == AccessGroupTypes.Bagger)
+                {
+                    SQL += "AND c.GroupName IN ('Waiters','Bagger') ";
+                    cmd.Parameters.AddWithValue("@GroupName", clsAccessGroupTypes.ToString("G"));
+                }
+				else if (clsAccessGroupTypes != AccessGroupTypes.All)
 				{
 					SQL += "AND c.GroupName = @GroupName ";
 					cmd.Parameters.AddWithValue("@GroupName", clsAccessGroupTypes.ToString("G"));

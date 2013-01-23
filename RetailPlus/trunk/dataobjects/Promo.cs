@@ -279,7 +279,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPromoID = new MySqlParameter("@PromoID",System.Data.DbType.Int32);
+				MySqlParameter prmPromoID = new MySqlParameter("@PromoID",MySqlDbType.Int32);
 				prmPromoID.Value = PromoID;
 				cmd.Parameters.Add(prmPromoID);
 

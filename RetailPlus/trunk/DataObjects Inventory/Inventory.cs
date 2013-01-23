@@ -491,7 +491,7 @@ namespace AceSoft.RetailPlus.Data
 				prmReferenceNo.Value = Details.ReferenceNo;
 				cmd.Parameters.Add(prmReferenceNo);
 
-				MySqlParameter prmContactID = new MySqlParameter("@ContactID",System.Data.DbType.Int64);			
+				MySqlParameter prmContactID = new MySqlParameter("@ContactID",MySqlDbType.Int64);						
 				prmContactID.Value = Details.ContactID;
 				cmd.Parameters.Add(prmContactID);
 								 
@@ -499,7 +499,7 @@ namespace AceSoft.RetailPlus.Data
 				prmContactCode.Value = Details.ContactCode;
 				cmd.Parameters.Add(prmContactCode);
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",System.Data.DbType.Int64);
+				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
 				prmProductID.Value = Details.ProductID;
 				cmd.Parameters.Add(prmProductID);
 								 
@@ -507,7 +507,7 @@ namespace AceSoft.RetailPlus.Data
 				prmProductCode.Value = Details.ProductCode;
 				cmd.Parameters.Add(prmProductCode);
 
-				MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",System.Data.DbType.Int64);			
+				MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",MySqlDbType.Int64);						
 				prmVariationMatrixID.Value = Details.VariationMatrixID;
 				cmd.Parameters.Add(prmVariationMatrixID);
 
@@ -515,19 +515,19 @@ namespace AceSoft.RetailPlus.Data
 				prmMatrixDescription.Value = Details.MatrixDescription;
 				cmd.Parameters.Add(prmMatrixDescription);
 		 
-				MySqlParameter prmSoldQuantity = new MySqlParameter("@SoldQuantity",System.Data.DbType.Decimal);			
+				MySqlParameter prmSoldQuantity = new MySqlParameter("@SoldQuantity",MySqlDbType.Decimal);			
 				prmSoldQuantity.Value = Details.SoldQuantity;
 				cmd.Parameters.Add(prmSoldQuantity);
 					
-				MySqlParameter prmSoldCost = new MySqlParameter("@SoldCost",System.Data.DbType.Decimal);			
+				MySqlParameter prmSoldCost = new MySqlParameter("@SoldCost",MySqlDbType.Decimal);			
 				prmSoldCost.Value = Details.SoldCost;
 				cmd.Parameters.Add(prmSoldCost);
 
-				MySqlParameter prmSoldVAT = new MySqlParameter("@SoldVAT",System.Data.DbType.Decimal);			
+				MySqlParameter prmSoldVAT = new MySqlParameter("@SoldVAT",MySqlDbType.Decimal);			
 				prmSoldVAT.Value = Details.SoldVAT;
 				cmd.Parameters.Add(prmSoldVAT);
 
-				MySqlParameter prmInventoryID = new MySqlParameter("@InventoryID",System.Data.DbType.Int64);			
+				MySqlParameter prmInventoryID = new MySqlParameter("@InventoryID",MySqlDbType.Int64);						
 				prmInventoryID.Value = Details.InventoryID;
 				cmd.Parameters.Add(prmInventoryID);
 
@@ -666,7 +666,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmInventoryID = new MySqlParameter("@InventoryID",System.Data.DbType.Int64);
+				MySqlParameter prmInventoryID = new MySqlParameter("@InventoryID",MySqlDbType.Int64);			
 				prmInventoryID.Value = InventoryID;
 				cmd.Parameters.Add(prmInventoryID);
 

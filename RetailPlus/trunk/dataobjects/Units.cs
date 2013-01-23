@@ -213,7 +213,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmUnitID = new MySqlParameter("@UnitID",System.Data.DbType.Int32);
+				MySqlParameter prmUnitID = new MySqlParameter("@UnitID",MySqlDbType.Int32);
 				prmUnitID.Value = UnitID;
 				cmd.Parameters.Add(prmUnitID);
 

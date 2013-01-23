@@ -343,7 +343,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmBankDepositID = new MySqlParameter("@BankDepositID",System.Data.DbType.Int64);
+				MySqlParameter prmBankDepositID = new MySqlParameter("@BankDepositID",MySqlDbType.Int64);			
 				prmBankDepositID.Value = BankDepositID;
 				cmd.Parameters.Add(prmBankDepositID);
 

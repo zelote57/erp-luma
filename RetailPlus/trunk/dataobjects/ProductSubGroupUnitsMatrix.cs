@@ -214,7 +214,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int64);
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int64);			
 				prmMatrixID.Value = MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
@@ -336,7 +336,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmSubGroupID = new MySqlParameter("@SubGroupID",System.Data.DbType.Int64);
+				MySqlParameter prmSubGroupID = new MySqlParameter("@SubGroupID",MySqlDbType.Int64);			
 				prmSubGroupID.Value = SubGroupID;
 				cmd.Parameters.Add(prmSubGroupID);
 

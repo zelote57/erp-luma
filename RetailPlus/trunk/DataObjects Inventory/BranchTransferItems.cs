@@ -205,11 +205,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",System.Data.DbType.Int64);
+				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);			
 				prmBranchTransferID.Value = Details.BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",System.Data.DbType.Int64);
+				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
 				prmProductID.Value = Details.ProductID;
 				cmd.Parameters.Add(prmProductID);
 								 
@@ -233,19 +233,19 @@ namespace AceSoft.RetailPlus.Data
 				prmProductUnitCode.Value = Details.ProductUnitCode;
 				cmd.Parameters.Add(prmProductUnitCode);	
 
-				MySqlParameter prmQuantity = new MySqlParameter("@Quantity",System.Data.DbType.Decimal);			
+				MySqlParameter prmQuantity = new MySqlParameter("@Quantity",MySqlDbType.Decimal);			
 				prmQuantity.Value = Details.Quantity;
 				cmd.Parameters.Add(prmQuantity);
 
-				MySqlParameter prmUnitCost = new MySqlParameter("@UnitCost",System.Data.DbType.Decimal);			
+				MySqlParameter prmUnitCost = new MySqlParameter("@UnitCost",MySqlDbType.Decimal);			
 				prmUnitCost.Value = Details.UnitCost;
 				cmd.Parameters.Add(prmUnitCost);
 					
-				MySqlParameter prmDiscount = new MySqlParameter("@Discount",System.Data.DbType.Decimal);			
+				MySqlParameter prmDiscount = new MySqlParameter("@Discount",MySqlDbType.Decimal);			
 				prmDiscount.Value = Details.Discount;
 				cmd.Parameters.Add(prmDiscount);
 
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", System.Data.DbType.Decimal);
+                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
                 prmDiscountApplied.Value = Details.DiscountApplied;
                 cmd.Parameters.Add(prmDiscountApplied);
 
@@ -253,27 +253,27 @@ namespace AceSoft.RetailPlus.Data
 				prmDiscountType.Value = (int) Details.DiscountType;
 				cmd.Parameters.Add(prmDiscountType);
 
-				MySqlParameter prmAmount = new MySqlParameter("@Amount",System.Data.DbType.Decimal);			
+				MySqlParameter prmAmount = new MySqlParameter("@Amount",MySqlDbType.Decimal);			
 				prmAmount.Value = Details.Amount;
 				cmd.Parameters.Add(prmAmount);
 								 
-				MySqlParameter prmVAT = new MySqlParameter("@VAT",System.Data.DbType.Decimal);			
+				MySqlParameter prmVAT = new MySqlParameter("@VAT",MySqlDbType.Decimal);			
 				prmVAT.Value = Details.VAT;
 				cmd.Parameters.Add(prmVAT);			 
 
-				MySqlParameter prmVatableAmount = new MySqlParameter("@VatableAmount",System.Data.DbType.Decimal);			
+				MySqlParameter prmVatableAmount = new MySqlParameter("@VatableAmount",MySqlDbType.Decimal);			
 				prmVatableAmount.Value = Details.VatableAmount;
 				cmd.Parameters.Add(prmVatableAmount);
 
-				MySqlParameter prmEVAT = new MySqlParameter("@EVAT",System.Data.DbType.Decimal);			
+				MySqlParameter prmEVAT = new MySqlParameter("@EVAT",MySqlDbType.Decimal);			
 				prmEVAT.Value = Details.EVAT;
 				cmd.Parameters.Add(prmEVAT);			 
 
-				MySqlParameter prmEVatableAmount = new MySqlParameter("@EVatableAmount",System.Data.DbType.Decimal);			
+				MySqlParameter prmEVatableAmount = new MySqlParameter("@EVatableAmount",MySqlDbType.Decimal);			
 				prmEVatableAmount.Value = Details.EVatableAmount;
 				cmd.Parameters.Add(prmEVatableAmount);
 
-				MySqlParameter prmLocalTax = new MySqlParameter("@LocalTax",System.Data.DbType.Decimal);			
+				MySqlParameter prmLocalTax = new MySqlParameter("@LocalTax",MySqlDbType.Decimal);			
 				prmLocalTax.Value = Details.LocalTax;
 				cmd.Parameters.Add(prmLocalTax);
 
@@ -281,7 +281,7 @@ namespace AceSoft.RetailPlus.Data
                 prmisVATInclusive.Value = Convert.ToInt16(Details.isVATInclusive);
                 cmd.Parameters.Add(prmisVATInclusive);
 
-				MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",System.Data.DbType.Int64);			
+				MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",MySqlDbType.Int64);						
 				prmVariationMatrixID.Value = Details.VariationMatrixID;
 				cmd.Parameters.Add(prmVariationMatrixID);
 
@@ -388,11 +388,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",System.Data.DbType.Int64);
+				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);			
 				prmBranchTransferID.Value = Details.BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",System.Data.DbType.Int64);
+				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
 				prmProductID.Value = Details.ProductID;
 				cmd.Parameters.Add(prmProductID);
 								 
@@ -416,19 +416,19 @@ namespace AceSoft.RetailPlus.Data
 				prmProductUnitCode.Value = Details.ProductUnitCode;
 				cmd.Parameters.Add(prmProductUnitCode);	
 
-				MySqlParameter prmQuantity = new MySqlParameter("@Quantity",System.Data.DbType.Decimal);			
+				MySqlParameter prmQuantity = new MySqlParameter("@Quantity",MySqlDbType.Decimal);			
 				prmQuantity.Value = Details.Quantity;
 				cmd.Parameters.Add(prmQuantity);
 
-				MySqlParameter prmUnitCost = new MySqlParameter("@UnitCost",System.Data.DbType.Decimal);			
+				MySqlParameter prmUnitCost = new MySqlParameter("@UnitCost",MySqlDbType.Decimal);			
 				prmUnitCost.Value = Details.UnitCost;
 				cmd.Parameters.Add(prmUnitCost);
 					
-				MySqlParameter prmDiscount = new MySqlParameter("@Discount",System.Data.DbType.Decimal);			
+				MySqlParameter prmDiscount = new MySqlParameter("@Discount",MySqlDbType.Decimal);			
 				prmDiscount.Value = Details.Discount;
 				cmd.Parameters.Add(prmDiscount);
 
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", System.Data.DbType.Decimal);
+                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
                 prmDiscountApplied.Value = Details.DiscountApplied;
                 cmd.Parameters.Add(prmDiscountApplied);
 
@@ -436,27 +436,27 @@ namespace AceSoft.RetailPlus.Data
                 prmDiscountType.Value = (int)Details.DiscountType;
                 cmd.Parameters.Add(prmDiscountType);
 
-				MySqlParameter prmAmount = new MySqlParameter("@Amount",System.Data.DbType.Decimal);			
+				MySqlParameter prmAmount = new MySqlParameter("@Amount",MySqlDbType.Decimal);			
 				prmAmount.Value = Details.Amount;
 				cmd.Parameters.Add(prmAmount);
 								 
-				MySqlParameter prmVAT = new MySqlParameter("@VAT",System.Data.DbType.Decimal);			
+				MySqlParameter prmVAT = new MySqlParameter("@VAT",MySqlDbType.Decimal);			
 				prmVAT.Value = Details.VAT;
 				cmd.Parameters.Add(prmVAT);			 
 
-				MySqlParameter prmVatableAmount = new MySqlParameter("@VatableAmount",System.Data.DbType.Decimal);			
+				MySqlParameter prmVatableAmount = new MySqlParameter("@VatableAmount",MySqlDbType.Decimal);			
 				prmVatableAmount.Value = Details.VatableAmount;
 				cmd.Parameters.Add(prmVatableAmount);
 
-				MySqlParameter prmEVAT = new MySqlParameter("@EVAT",System.Data.DbType.Decimal);			
+				MySqlParameter prmEVAT = new MySqlParameter("@EVAT",MySqlDbType.Decimal);			
 				prmEVAT.Value = Details.EVAT;
 				cmd.Parameters.Add(prmEVAT);			 
 
-				MySqlParameter prmEVatableAmount = new MySqlParameter("@EVatableAmount",System.Data.DbType.Decimal);			
+				MySqlParameter prmEVatableAmount = new MySqlParameter("@EVatableAmount",MySqlDbType.Decimal);			
 				prmEVatableAmount.Value = Details.EVatableAmount;
 				cmd.Parameters.Add(prmEVatableAmount);
 
-				MySqlParameter prmLocalTax = new MySqlParameter("@LocalTax",System.Data.DbType.Decimal);			
+				MySqlParameter prmLocalTax = new MySqlParameter("@LocalTax",MySqlDbType.Decimal);			
 				prmLocalTax.Value = Details.LocalTax;
 				cmd.Parameters.Add(prmLocalTax);
 
@@ -464,7 +464,7 @@ namespace AceSoft.RetailPlus.Data
                 prmisVATInclusive.Value = Convert.ToInt16(Details.isVATInclusive);
                 cmd.Parameters.Add(prmisVATInclusive);
 
-				MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",System.Data.DbType.Int64);			
+				MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",MySqlDbType.Int64);						
 				prmVariationMatrixID.Value = Details.VariationMatrixID;
 				cmd.Parameters.Add(prmVariationMatrixID);
 
@@ -528,7 +528,7 @@ namespace AceSoft.RetailPlus.Data
 				prmBranchTransferItemStatus.Value = BranchTransferItemStatus.Posted.ToString("d");
 				cmd.Parameters.Add(prmBranchTransferItemStatus);
 
-				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",System.Data.DbType.Int64);
+				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);			
 				prmBranchTransferID.Value = BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
@@ -570,7 +570,7 @@ namespace AceSoft.RetailPlus.Data
 				prmBranchTransferItemStatus.Value = BranchTransferItemStatus.Cancelled.ToString("d");
 				cmd.Parameters.Add(prmBranchTransferItemStatus);
 
-				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",System.Data.DbType.Int64);
+				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);			
 				prmBranchTransferID.Value = BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
@@ -689,7 +689,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmBranchTransferItemID = new MySqlParameter("@BranchTransferItemID",System.Data.DbType.Int64);
+				MySqlParameter prmBranchTransferItemID = new MySqlParameter("@BranchTransferItemID",MySqlDbType.Int64);			
 				prmBranchTransferItemID.Value = BranchTransferItemID;
 				cmd.Parameters.Add(prmBranchTransferItemID);
 

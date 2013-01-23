@@ -1268,7 +1268,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmCreditChargeAmount = new MySqlParameter("@CreditChargeAmount", System.Data.DbType.Decimal);
+				MySqlParameter prmCreditChargeAmount = new MySqlParameter("@CreditChargeAmount",MySqlDbType.Decimal);
 				prmCreditChargeAmount.Value = CreditChargeAmount;
 				cmd.Parameters.Add(prmCreditChargeAmount);
 
@@ -1310,7 +1310,7 @@ namespace AceSoft.RetailPlus.Data
 			cmd.CommandType = System.Data.CommandType.Text;
 			cmd.CommandText = SQL;
 
-			MySqlParameter prmSubTotal = new MySqlParameter("@SubTotal", System.Data.DbType.Decimal);
+			MySqlParameter prmSubTotal = new MySqlParameter("@SubTotal",MySqlDbType.Decimal);
 			prmSubTotal.Value = SubTotal;
 			cmd.Parameters.Add(prmSubTotal);
 
@@ -1402,7 +1402,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmSubTotal = new MySqlParameter("@SubTotal", System.Data.DbType.Double);
+				MySqlParameter prmSubTotal = new MySqlParameter("@SubTotal",MySqlDbType.Decimal);
 				prmSubTotal.Value = SubTotal;
 				cmd.Parameters.Add(prmSubTotal);
 
@@ -1445,7 +1445,7 @@ namespace AceSoft.RetailPlus.Data
 				prmCustomerName.Value = details.ContactName;
 				cmd.Parameters.Add(prmCustomerName);
 
-				MySqlParameter prmSubTotal = new MySqlParameter("@SubTotal", System.Data.DbType.Double);
+				MySqlParameter prmSubTotal = new MySqlParameter("@SubTotal",MySqlDbType.Decimal);
 				prmSubTotal.Value = SubTotal;
 				cmd.Parameters.Add(prmSubTotal);
 
@@ -1732,7 +1732,7 @@ namespace AceSoft.RetailPlus.Data
 				prmTransactionStatus.Value = TransactionStatus.Void.ToString("d");
 				cmd.Parameters.Add(prmTransactionStatus);
 
-				MySqlParameter prmSubTotal = new MySqlParameter("@SubTotal", System.Data.DbType.Double);
+				MySqlParameter prmSubTotal = new MySqlParameter("@SubTotal",MySqlDbType.Decimal);
 				prmSubTotal.Value = SubTotal;
 				cmd.Parameters.Add(prmSubTotal);
 

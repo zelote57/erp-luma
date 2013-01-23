@@ -179,7 +179,7 @@ namespace AceSoft.RetailPlus.Data
 				prmClosingDate.Value = Details.ClosingDate.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmClosingDate);
 
-				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",System.Data.DbType.Int64);			
+				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);						
 				prmSupplierID.Value = Details.SupplierID;
 				cmd.Parameters.Add(prmSupplierID);
 								 
@@ -215,23 +215,23 @@ namespace AceSoft.RetailPlus.Data
 				prmBranchID.Value = Details.BranchID;
 				cmd.Parameters.Add(prmBranchID);				 
 				
-				MySqlParameter prmTransferredByID = new MySqlParameter("@TransferredByID",System.Data.DbType.Int64);			
+				MySqlParameter prmTransferredByID = new MySqlParameter("@TransferredByID",MySqlDbType.Int64);						
 				prmTransferredByID.Value = Details.TransferredByID;
 				cmd.Parameters.Add(prmTransferredByID);
 								 
-				MySqlParameter prmClosingSubTotal = new MySqlParameter("@ClosingSubTotal",System.Data.DbType.Decimal);			
+				MySqlParameter prmClosingSubTotal = new MySqlParameter("@ClosingSubTotal",MySqlDbType.Decimal);			
 				prmClosingSubTotal.Value = Details.ClosingSubTotal;
 				cmd.Parameters.Add(prmClosingSubTotal);
 				
-				MySqlParameter prmClosingDiscount = new MySqlParameter("@ClosingDiscount",System.Data.DbType.Decimal);			
+				MySqlParameter prmClosingDiscount = new MySqlParameter("@ClosingDiscount",MySqlDbType.Decimal);			
 				prmClosingDiscount.Value = Details.ClosingDiscount;
 				cmd.Parameters.Add(prmClosingDiscount);
 
-				MySqlParameter prmClosingVAT = new MySqlParameter("@ClosingVAT",System.Data.DbType.Decimal);			
+				MySqlParameter prmClosingVAT = new MySqlParameter("@ClosingVAT",MySqlDbType.Decimal);			
 				prmClosingVAT.Value = Details.ClosingVAT;
 				cmd.Parameters.Add(prmClosingVAT);
 
-				MySqlParameter prmClosingVatableAmount = new MySqlParameter("@ClosingVatableAmount",System.Data.DbType.Decimal);			
+				MySqlParameter prmClosingVatableAmount = new MySqlParameter("@ClosingVatableAmount",MySqlDbType.Decimal);			
 				prmClosingVatableAmount.Value = Details.ClosingVatableAmount;
 				cmd.Parameters.Add(prmClosingVatableAmount);
 								 
@@ -320,7 +320,7 @@ namespace AceSoft.RetailPlus.Data
 				prmClosingDate.Value = Details.ClosingDate.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmClosingDate);
 
-				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",System.Data.DbType.Int64);			
+				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);						
 				prmSupplierID.Value = Details.SupplierID;
 				cmd.Parameters.Add(prmSupplierID);
 								 
@@ -356,23 +356,23 @@ namespace AceSoft.RetailPlus.Data
 				prmBranchID.Value = Details.BranchID;
 				cmd.Parameters.Add(prmBranchID);				 
 				
-				MySqlParameter prmTransferredByID = new MySqlParameter("@TransferredByID",System.Data.DbType.Int64);			
+				MySqlParameter prmTransferredByID = new MySqlParameter("@TransferredByID",MySqlDbType.Int64);						
 				prmTransferredByID.Value = Details.TransferredByID;
 				cmd.Parameters.Add(prmTransferredByID);
 								 
-//				MySqlParameter prmClosingSubTotal = new MySqlParameter("@ClosingSubTotal",System.Data.DbType.Decimal);			
+//				MySqlParameter prmClosingSubTotal = new MySqlParameter("@ClosingSubTotal",MySqlDbType.Decimal);			
 //				prmClosingSubTotal.Value = Details.ClosingSubTotal;
 //				cmd.Parameters.Add(prmClosingSubTotal);
 //				
-//				MySqlParameter prmClosingDiscount = new MySqlParameter("@ClosingDiscount",System.Data.DbType.Decimal);			
+//				MySqlParameter prmClosingDiscount = new MySqlParameter("@ClosingDiscount",MySqlDbType.Decimal);			
 //				prmClosingDiscount.Value = Details.ClosingDiscount;
 //				cmd.Parameters.Add(prmClosingDiscount);
 //
-//				MySqlParameter prmClosingVAT = new MySqlParameter("@ClosingVAT",System.Data.DbType.Decimal);			
+//				MySqlParameter prmClosingVAT = new MySqlParameter("@ClosingVAT",MySqlDbType.Decimal);			
 //				prmClosingVAT.Value = Details.ClosingVAT;
 //				cmd.Parameters.Add(prmClosingVAT);
 //
-//				MySqlParameter prmClosingVatableAmount = new MySqlParameter("@ClosingVatableAmount",System.Data.DbType.Decimal);			
+//				MySqlParameter prmClosingVatableAmount = new MySqlParameter("@ClosingVatableAmount",MySqlDbType.Decimal);			
 //				prmClosingVatableAmount.Value = Details.ClosingVatableAmount;
 //				cmd.Parameters.Add(prmClosingVatableAmount);
 //								 
@@ -384,7 +384,7 @@ namespace AceSoft.RetailPlus.Data
 				prmClosingRemarks.Value = Details.ClosingRemarks;
 				cmd.Parameters.Add(prmClosingRemarks);
 
-				MySqlParameter prmClosingID = new MySqlParameter("@ClosingID",System.Data.DbType.Int64);			
+				MySqlParameter prmClosingID = new MySqlParameter("@ClosingID",MySqlDbType.Int64);						
 				prmClosingID.Value = Details.ClosingID;
 				cmd.Parameters.Add(prmClosingID);
 
@@ -436,7 +436,7 @@ namespace AceSoft.RetailPlus.Data
 				prmClosingStatus.Value = ClosingStatus.Posted.ToString("d");
 				cmd.Parameters.Add(prmClosingStatus);
 
-				MySqlParameter prmClosingID = new MySqlParameter("@ClosingID",System.Data.DbType.Int64);			
+				MySqlParameter prmClosingID = new MySqlParameter("@ClosingID",MySqlDbType.Int64);						
 				prmClosingID.Value = ClosingID;
 				cmd.Parameters.Add(prmClosingID);
 
@@ -567,7 +567,7 @@ namespace AceSoft.RetailPlus.Data
 				prmCancelledRemarks.Value = Remarks;
 				cmd.Parameters.Add(prmCancelledRemarks);
 
-				MySqlParameter prmCancelledByID = new MySqlParameter("@CancelledByID",System.Data.DbType.Int64);			
+				MySqlParameter prmCancelledByID = new MySqlParameter("@CancelledByID",MySqlDbType.Int64);						
 				prmCancelledByID.Value = CancelledByID;
 				cmd.Parameters.Add(prmCancelledByID);
 
@@ -575,7 +575,7 @@ namespace AceSoft.RetailPlus.Data
 				prmClosingStatus.Value = ClosingStatus.Cancelled.ToString("d");
 				cmd.Parameters.Add(prmClosingStatus);
 
-				MySqlParameter prmClosingID = new MySqlParameter("@ClosingID",System.Data.DbType.Int64);			
+				MySqlParameter prmClosingID = new MySqlParameter("@ClosingID",MySqlDbType.Int64);						
 				prmClosingID.Value = ClosingID;
 				cmd.Parameters.Add(prmClosingID);
 
@@ -1080,7 +1080,7 @@ namespace AceSoft.RetailPlus.Data
 				prmClosingStatus.Value = postatus.ToString("d");
 				cmd.Parameters.Add(prmClosingStatus);
 
-				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",System.Data.DbType.Int64);			
+				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);						
 				prmSupplierID.Value = SupplierID;
 				cmd.Parameters.Add(prmSupplierID);
 
@@ -1287,7 +1287,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmClosingID = new MySqlParameter("@ClosingID",System.Data.DbType.Int64);			
+				MySqlParameter prmClosingID = new MySqlParameter("@ClosingID",MySqlDbType.Int64);						
 				prmClosingID.Value = ClosingID;
 				cmd.Parameters.Add(prmClosingID);
 

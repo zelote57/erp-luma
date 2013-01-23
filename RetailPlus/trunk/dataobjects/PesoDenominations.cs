@@ -382,7 +382,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmDenominationID = new MySqlParameter("@DenominationID",System.Data.DbType.Int32);
+				MySqlParameter prmDenominationID = new MySqlParameter("@DenominationID",MySqlDbType.Int32);
 				prmDenominationID.Value = DenominationID;
 				cmd.Parameters.Add(prmDenominationID);
 

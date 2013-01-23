@@ -217,7 +217,7 @@ namespace AceSoft.RetailPlus.Security
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmUID = new MySqlParameter("@UID",System.Data.DbType.Int64);			
+				MySqlParameter prmUID = new MySqlParameter("@UID",MySqlDbType.Int64);						
 				prmUID.Value = UID;
 				cmd.Parameters.Add(prmUID);
 
@@ -282,7 +282,7 @@ namespace AceSoft.RetailPlus.Security
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmUID = new MySqlParameter("@UID",System.Data.DbType.Int64);			
+				MySqlParameter prmUID = new MySqlParameter("@UID",MySqlDbType.Int64);						
 				prmUID.Value = Details.UID;
 				cmd.Parameters.Add(prmUID);
 
@@ -344,7 +344,7 @@ namespace AceSoft.RetailPlus.Security
 					prmWrite.Value = "0";
 				cmd.Parameters.Add(prmWrite);
 
-				MySqlParameter prmUID = new MySqlParameter("@UID",System.Data.DbType.Int64);			
+				MySqlParameter prmUID = new MySqlParameter("@UID",MySqlDbType.Int64);						
 				prmUID.Value = Details.UID;
 				cmd.Parameters.Add(prmUID);
 

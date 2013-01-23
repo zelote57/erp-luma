@@ -261,7 +261,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmCompositionID = new MySqlParameter("@CompositionID",System.Data.DbType.Int64);
+				MySqlParameter prmCompositionID = new MySqlParameter("@CompositionID",MySqlDbType.Int64);			
 				prmCompositionID.Value = CompositionID;
 				cmd.Parameters.Add(prmCompositionID);
 
@@ -354,7 +354,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",System.Data.DbType.Int64);			
+				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",MySqlDbType.Int64);						
 				prmMainProductID.Value = MainProductID;
 				cmd.Parameters.Add(prmMainProductID);
 
@@ -433,7 +433,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",System.Data.DbType.Int64);			
+				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",MySqlDbType.Int64);						
 				prmMainProductID.Value = MainProductID;
 				cmd.Parameters.Add(prmMainProductID);
 
@@ -529,7 +529,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",System.Data.DbType.Int64);			
+				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",MySqlDbType.Int64);						
 				prmMainProductID.Value = MainProductID;
 				cmd.Parameters.Add(prmMainProductID);
 

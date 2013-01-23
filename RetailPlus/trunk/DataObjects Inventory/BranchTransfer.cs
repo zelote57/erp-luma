@@ -192,7 +192,7 @@ namespace AceSoft.RetailPlus.Data
                 prmBranchIDTo.Value = Details.BranchIDTo;
                 cmd.Parameters.Add(prmBranchIDTo);
 
-				MySqlParameter prmTransferrerID = new MySqlParameter("@TransferrerID",System.Data.DbType.Int64);			
+				MySqlParameter prmTransferrerID = new MySqlParameter("@TransferrerID",MySqlDbType.Int64);						
 				prmTransferrerID.Value = Details.TransferrerID;
 				cmd.Parameters.Add(prmTransferrerID);
 
@@ -309,7 +309,7 @@ namespace AceSoft.RetailPlus.Data
                 prmRemarks.Value = Details.Remarks;
                 cmd.Parameters.Add(prmRemarks);
 
-				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",System.Data.DbType.Int64);			
+				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);						
 				prmBranchTransferID.Value = Details.BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
@@ -348,7 +348,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", System.Data.DbType.Decimal);
+                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
                 prmDiscountApplied.Value = DiscountApplied;
                 cmd.Parameters.Add(prmDiscountApplied);
 
@@ -394,7 +394,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", System.Data.DbType.Decimal);
+                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
                 prmDiscountApplied.Value = DiscountApplied;
                 cmd.Parameters.Add(prmDiscountApplied);
 
@@ -439,7 +439,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmFreight = new MySqlParameter("@Freight", System.Data.DbType.Decimal);
+                MySqlParameter prmFreight = new MySqlParameter("@Freight",MySqlDbType.Decimal);
                 prmFreight.Value = Freight;
                 cmd.Parameters.Add(prmFreight);
 
@@ -480,7 +480,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDeposit = new MySqlParameter("@Deposit", System.Data.DbType.Decimal);
+                MySqlParameter prmDeposit = new MySqlParameter("@Deposit",MySqlDbType.Decimal);
                 prmDeposit.Value = Deposit;
                 cmd.Parameters.Add(prmDeposit);
 
@@ -536,7 +536,7 @@ namespace AceSoft.RetailPlus.Data
 				prmStatus.Value = BranchTransferStatus.Posted.ToString("d");
 				cmd.Parameters.Add(prmStatus);
 
-				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",System.Data.DbType.Int64);			
+				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);						
 				prmBranchTransferID.Value = BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
@@ -769,7 +769,7 @@ namespace AceSoft.RetailPlus.Data
 				prmCancelledRemarks.Value = Remarks;
 				cmd.Parameters.Add(prmCancelledRemarks);
 
-				MySqlParameter prmCancelledByID = new MySqlParameter("@CancelledByID",System.Data.DbType.Int64);			
+				MySqlParameter prmCancelledByID = new MySqlParameter("@CancelledByID",MySqlDbType.Int64);						
 				prmCancelledByID.Value = CancelledByID;
 				cmd.Parameters.Add(prmCancelledByID);
 
@@ -777,7 +777,7 @@ namespace AceSoft.RetailPlus.Data
 				prmStatus.Value = BranchTransferStatus.Cancelled.ToString("d");
 				cmd.Parameters.Add(prmStatus);
 
-				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",System.Data.DbType.Int64);			
+				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);						
 				prmBranchTransferID.Value = BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
@@ -866,7 +866,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmPaidAmount = new MySqlParameter("@PaidAmount", System.Data.DbType.Decimal);
+                MySqlParameter prmPaidAmount = new MySqlParameter("@PaidAmount",MySqlDbType.Decimal);
                 prmPaidAmount.Value = PaidAmount;
                 cmd.Parameters.Add(prmPaidAmount);
 
@@ -1314,7 +1314,7 @@ namespace AceSoft.RetailPlus.Data
 				prmStatus.Value = branchtransferstatus.ToString("d");
 				cmd.Parameters.Add(prmStatus);
 
-				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",System.Data.DbType.Int64);			
+				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);						
 				prmSupplierID.Value = SupplierID;
 				cmd.Parameters.Add(prmSupplierID);
 

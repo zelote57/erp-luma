@@ -286,7 +286,7 @@ namespace AceSoft.RetailPlus.Data
 //				cmd.CommandType = System.Data.CommandType.Text;
 //				cmd.CommandText = SQL;
 //				
-//				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",System.Data.DbType.Int64);			
+//				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.Int64);						
 //				prmTerminalNo.Value = TerminalNo;
 //				cmd.Parameters.Add(prmTerminalNo);
 //

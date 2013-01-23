@@ -474,7 +474,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", System.Data.DbType.Decimal);
+				MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
 				prmDiscountApplied.Value = DiscountApplied;
 				cmd.Parameters.Add(prmDiscountApplied);
 
@@ -520,7 +520,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", System.Data.DbType.Decimal);
+				MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
 				prmDiscountApplied.Value = DiscountApplied;
 				cmd.Parameters.Add(prmDiscountApplied);
 
@@ -599,7 +599,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmDeposit = new MySqlParameter("@Deposit", System.Data.DbType.Decimal);
+				MySqlParameter prmDeposit = new MySqlParameter("@Deposit",MySqlDbType.Decimal);
 				prmDeposit.Value = Deposit;
 				cmd.Parameters.Add(prmDeposit);
 
@@ -1100,7 +1100,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPaidAmount = new MySqlParameter("@PaidAmount", System.Data.DbType.Decimal);
+				MySqlParameter prmPaidAmount = new MySqlParameter("@PaidAmount",MySqlDbType.Decimal);
 				prmPaidAmount.Value = PaidAmount;
 				cmd.Parameters.Add(prmPaidAmount);
 

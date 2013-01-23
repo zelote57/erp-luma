@@ -177,28 +177,27 @@ namespace AceSoft.RetailPlus.Reports
 		private void SetDataSource(ReportDocument Report)
 		{
 			ReportDataset rptds = new ReportDataset();
-            MySqlDataReader myreader;
+            DataTable dt;
 
             switch (cboReportType.SelectedValue)
             {
                 case ReportTypes.CustomerCredit:
                     #region Customer Credit
                     Customer clsCustomer = new Customer();
-                    myreader = clsCustomer.AdvanceSearch(null, cboContactName.SelectedItem.Text, 2, 0, false, "ContactName", SortOption.Ascending);
-                    clsCustomer.CommitAndDispose();
+                    dt = clsCustomer.CustomersDataTable(cboContactName.SelectedItem.Text);
 
-                    while (myreader.Read())
+                    foreach (DataRow dr in dt.Rows)
                     {
                         DataRow drNew = rptds.CustomerDetails.NewRow();
 
                         foreach (DataColumn dc in rptds.CustomerDetails.Columns)
-                            drNew[dc] = myreader[dc.ColumnName];
+                            drNew[dc] = dr[dc.ColumnName];
 
                         rptds.CustomerDetails.Rows.Add(drNew);
                     }
 
                     SalesTransactions clsSalesTransactions = new SalesTransactions(clsCustomer.Connection, clsCustomer.Transaction);
-                    DataTable dt = clsSalesTransactions.ListForPaymentDataTable(Convert.ToInt64(cboContactName.SelectedItem.Value));
+                    dt = clsSalesTransactions.ListForPaymentDataTable(Convert.ToInt64(cboContactName.SelectedItem.Value));
                     clsCustomer.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -217,9 +216,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.CustomerCreditListWCredit:
                     #region  Customers List With Credit
                     Contacts clsContact = new Contacts();
-			        myreader = clsContact.CustomerAdvanceSearch(null, cboContactName.Text, cboCustomerGroup.SelectedValue, true, "ContactID", SortOption.Ascending);
-			        clsContact.CommitAndDispose();
-
+                    MySqlDataReader myreader = clsContact.CustomerAdvanceSearch(null, cboContactName.Text, cboCustomerGroup.SelectedValue, true, "ContactID", SortOption.Ascending);
 			        while(myreader.Read())
 			        {
 				        DataRow drNew = rptds.Contacts.NewRow();
@@ -229,6 +226,8 @@ namespace AceSoft.RetailPlus.Reports
 				
 				        rptds.Contacts.Rows.Add(drNew);
 			        }
+                    myreader.Close();
+                    clsContact.CommitAndDispose();
                     break;
                     #endregion
                 

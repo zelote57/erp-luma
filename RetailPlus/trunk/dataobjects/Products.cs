@@ -540,11 +540,11 @@ namespace AceSoft.RetailPlus.Data
 				prmProductDesc.Value = Details.ProductDesc;
 				cmd.Parameters.Add(prmProductDesc);
 
-				MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",System.Data.DbType.Int64);			
+				MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);						
 				prmProductSubGroupID.Value = Details.ProductSubGroupID;
 				cmd.Parameters.Add(prmProductSubGroupID);
 
-				MySqlParameter prmBaseUnitID = new MySqlParameter("@BaseUnitID",System.Data.DbType.Int32);			
+				MySqlParameter prmBaseUnitID = new MySqlParameter("@BaseUnitID",MySqlDbType.Int32);			
 				prmBaseUnitID.Value = Details.BaseUnitID;
 				cmd.Parameters.Add(prmBaseUnitID);
 
@@ -1731,7 +1731,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmActualQuantity = new MySqlParameter("@ActualQuantity", System.Data.DbType.Decimal);
+				MySqlParameter prmActualQuantity = new MySqlParameter("@ActualQuantity",MySqlDbType.Decimal);
 				prmActualQuantity.Value = ActualQuantity;
 				cmd.Parameters.Add(prmActualQuantity);
 
@@ -2797,7 +2797,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",System.Data.DbType.Int64);
+				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
 

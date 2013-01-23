@@ -207,7 +207,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmProductUnitID = new MySqlParameter("@ProductUnitID",System.Data.DbType.Int32);
+				MySqlParameter prmProductUnitID = new MySqlParameter("@ProductUnitID",MySqlDbType.Int32);
 				prmProductUnitID.Value = ProductUnitID;
 				cmd.Parameters.Add(prmProductUnitID);
 
@@ -408,11 +408,11 @@ namespace AceSoft.RetailPlus.Data
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.CommandText = SQL;
 
-                    MySqlParameter prmProductID = new MySqlParameter("@ProductID", System.Data.DbType.Int64);
+                    MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
                     prmProductID.Value = ProductID;
                     cmd.Parameters.Add(prmProductID);
 
-                    MySqlParameter prmUnitIDToConvert = new MySqlParameter("@UnitIDToConvert", System.Data.DbType.Int32);
+                    MySqlParameter prmUnitIDToConvert = new MySqlParameter("@UnitIDToConvert",MySqlDbType.Int32);
                     prmUnitIDToConvert.Value = UnitIDToConvert;
                     cmd.Parameters.Add(prmUnitIDToConvert);
 

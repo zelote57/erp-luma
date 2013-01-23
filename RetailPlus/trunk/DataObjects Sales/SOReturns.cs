@@ -357,7 +357,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", System.Data.DbType.Decimal);
+                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
                 prmDiscountApplied.Value = DiscountApplied;
                 cmd.Parameters.Add(prmDiscountApplied);
 
@@ -403,7 +403,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", System.Data.DbType.Decimal);
+                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
                 prmDiscountApplied.Value = DiscountApplied;
                 cmd.Parameters.Add(prmDiscountApplied);
 
@@ -448,7 +448,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmFreight = new MySqlParameter("@Freight", System.Data.DbType.Decimal);
+                MySqlParameter prmFreight = new MySqlParameter("@Freight",MySqlDbType.Decimal);
                 prmFreight.Value = Freight;
                 cmd.Parameters.Add(prmFreight);
 
@@ -489,7 +489,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDeposit = new MySqlParameter("@Deposit", System.Data.DbType.Decimal);
+                MySqlParameter prmDeposit = new MySqlParameter("@Deposit",MySqlDbType.Decimal);
                 prmDeposit.Value = Deposit;
                 cmd.Parameters.Add(prmDeposit);
 
@@ -715,7 +715,7 @@ namespace AceSoft.RetailPlus.Data
 				prmCancelledRemarks.Value = Remarks;
 				cmd.Parameters.Add(prmCancelledRemarks);
 
-				MySqlParameter prmCancelledByID = new MySqlParameter("@CancelledByID",System.Data.DbType.Int64);			
+				MySqlParameter prmCancelledByID = new MySqlParameter("@CancelledByID",MySqlDbType.Int64);						
 				prmCancelledByID.Value = CancelledByID;
 				cmd.Parameters.Add(prmCancelledByID);
 
@@ -723,7 +723,7 @@ namespace AceSoft.RetailPlus.Data
 				prmSOReturnStatus.Value = SOReturnStatus.Cancelled.ToString("d");
 				cmd.Parameters.Add(prmSOReturnStatus);
 
-				MySqlParameter prmCreditMemoID = new MySqlParameter("@CreditMemoID",System.Data.DbType.Int64);			
+				MySqlParameter prmCreditMemoID = new MySqlParameter("@CreditMemoID",MySqlDbType.Int64);						
 				prmCreditMemoID.Value = CreditMemoID;
 				cmd.Parameters.Add(prmCreditMemoID);
 
@@ -1133,7 +1133,7 @@ namespace AceSoft.RetailPlus.Data
 				prmSOReturnStatus.Value = SOReturnStatus.ToString("d");
 				cmd.Parameters.Add(prmSOReturnStatus);
 
-				MySqlParameter prmCustomerID = new MySqlParameter("@CustomerID",System.Data.DbType.Int64);			
+				MySqlParameter prmCustomerID = new MySqlParameter("@CustomerID",MySqlDbType.Int64);						
 				prmCustomerID.Value = CustomerID;
 				cmd.Parameters.Add(prmCustomerID);
 

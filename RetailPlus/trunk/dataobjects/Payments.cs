@@ -574,7 +574,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",System.Data.DbType.Int64);
+				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);			
 				prmTransactionID.Value = TransactionID;
 				cmd.Parameters.Add(prmTransactionID);
 
@@ -641,7 +641,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",System.Data.DbType.Int64);
+				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);			
 				prmTransactionID.Value = TransactionID;
 				cmd.Parameters.Add(prmTransactionID);
 
@@ -714,7 +714,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",System.Data.DbType.Int64);
+				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);			
 				prmTransactionID.Value = TransactionID;
 				cmd.Parameters.Add(prmTransactionID);
 
@@ -787,7 +787,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",System.Data.DbType.Int64);
+				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);			
 				prmTransactionID.Value = TransactionID;
 				cmd.Parameters.Add(prmTransactionID);
 
@@ -857,7 +857,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",System.Data.DbType.Int64);
+				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);			
 				prmTransactionID.Value = TransactionID;
 				cmd.Parameters.Add(prmTransactionID);
 

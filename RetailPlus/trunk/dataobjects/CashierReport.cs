@@ -182,7 +182,7 @@ namespace AceSoft.RetailPlus.Data
 				prmTerminalNo.Value = TerminalNo;
 				cmd.Parameters.Add(prmTerminalNo);
 
-				MySqlParameter prmCashierID = new MySqlParameter("@CashierID",System.Data.DbType.Int64);
+				MySqlParameter prmCashierID = new MySqlParameter("@CashierID",MySqlDbType.Int64);			
 				prmCashierID.Value = CashierID;
 				cmd.Parameters.Add(prmCashierID);
 

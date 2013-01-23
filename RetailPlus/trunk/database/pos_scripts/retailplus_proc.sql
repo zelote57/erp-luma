@@ -2600,7 +2600,12 @@ GO
 create procedure procSyncContactCredit()
 BEGIN
 	
-	UPDATE tblContacts SET Credit = (SELECT SUM(Amount - AmountPaid) FROM tblCreditPayment WHERE tblCreditPayment.ContactID = tblContacts.ContactID AND Amount > AmountPaid);
+	UPDATE tblContacts, (SELECT ContactID, SUM(Amount) - SUM(AmountPaid) Credit 
+						 FROM tblCreditPayment GROUP BY ContactID 
+						) tblCreditPayment
+	SET 
+		tblContacts.Credit = tblCreditPayment.Credit
+	WHERE tblContacts.ContactID = tblCreditPayment.ContactID;
 
 END;
 GO

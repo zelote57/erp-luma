@@ -237,7 +237,7 @@ namespace AceSoft.RetailPlus.Data
                 prmOrderSlipPrinter.Value = (int) Details.OrderSlipPrinter;
                 cmd.Parameters.Add(prmOrderSlipPrinter);
                 
-				MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",System.Data.DbType.Int64);			
+				MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);						
 				prmProductGroupID.Value = Details.ProductGroupID;
 				cmd.Parameters.Add(prmProductGroupID);
 				

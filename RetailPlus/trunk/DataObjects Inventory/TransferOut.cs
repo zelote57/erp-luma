@@ -529,7 +529,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", System.Data.DbType.Decimal);
+                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
                 prmDiscountApplied.Value = DiscountApplied;
                 cmd.Parameters.Add(prmDiscountApplied);
 
@@ -537,7 +537,7 @@ namespace AceSoft.RetailPlus.Data
                 prmDiscountType.Value = Convert.ToInt16(DiscountType.ToString("d"));
                 cmd.Parameters.Add(prmDiscountType);
 
-                MySqlParameter prmDiscount2Applied = new MySqlParameter("@Discount2Applied", System.Data.DbType.Decimal);
+                MySqlParameter prmDiscount2Applied = new MySqlParameter("@Discount2Applied",MySqlDbType.Decimal);
                 prmDiscount2Applied.Value = Discount2Applied;
                 cmd.Parameters.Add(prmDiscount2Applied);
 
@@ -545,7 +545,7 @@ namespace AceSoft.RetailPlus.Data
                 prmDiscount2Type.Value = Convert.ToInt16(Discount2Type.ToString("d"));
                 cmd.Parameters.Add(prmDiscount2Type);
 
-                MySqlParameter prmDiscount3Applied = new MySqlParameter("@Discount3Applied", System.Data.DbType.Decimal);
+                MySqlParameter prmDiscount3Applied = new MySqlParameter("@Discount3Applied",MySqlDbType.Decimal);
                 prmDiscount3Applied.Value = Discount3Applied;
                 cmd.Parameters.Add(prmDiscount3Applied);
 
@@ -591,7 +591,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", System.Data.DbType.Decimal);
+                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
                 prmDiscountApplied.Value = DiscountApplied;
                 cmd.Parameters.Add(prmDiscountApplied);
 
@@ -636,7 +636,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmFreight = new MySqlParameter("@Freight", System.Data.DbType.Decimal);
+                MySqlParameter prmFreight = new MySqlParameter("@Freight",MySqlDbType.Decimal);
                 prmFreight.Value = Freight;
                 cmd.Parameters.Add(prmFreight);
 
@@ -677,7 +677,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDeposit = new MySqlParameter("@Deposit", System.Data.DbType.Decimal);
+                MySqlParameter prmDeposit = new MySqlParameter("@Deposit",MySqlDbType.Decimal);
                 prmDeposit.Value = Deposit;
                 cmd.Parameters.Add(prmDeposit);
 
@@ -1212,7 +1212,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmPaidAmount = new MySqlParameter("@PaidAmount", System.Data.DbType.Decimal);
+                MySqlParameter prmPaidAmount = new MySqlParameter("@PaidAmount",MySqlDbType.Decimal);
                 prmPaidAmount.Value = PaidAmount;
                 cmd.Parameters.Add(prmPaidAmount);
 

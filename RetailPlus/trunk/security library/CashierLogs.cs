@@ -274,7 +274,7 @@ namespace AceSoft.RetailPlus.Security
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmCashierLogsID = new MySqlParameter("@CashierLogsID",System.Data.DbType.Int64);
+				MySqlParameter prmCashierLogsID = new MySqlParameter("@CashierLogsID",MySqlDbType.Int64);			
 				prmCashierLogsID.Value = CashierLogsID;
 				cmd.Parameters.Add(prmCashierLogsID);
 

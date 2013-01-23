@@ -364,11 +364,11 @@ namespace AceSoft.RetailPlus.Data
 				prmDescription.Value = Details.Description;
 				cmd.Parameters.Add(prmDescription);
 
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int64);			
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int64);						
 				prmMatrixID.Value = Details.MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
-				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",System.Data.DbType.Int32);			
+				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",MySqlDbType.Int32);			
 				prmVariationID.Value = Details.VariationID;
 				cmd.Parameters.Add(prmVariationID);
 
@@ -685,11 +685,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int64);
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int64);			
 				prmMatrixID.Value = MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
-				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",System.Data.DbType.Int32);
+				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",MySqlDbType.Int32);
 				prmVariationID.Value = VariationID;
 				cmd.Parameters.Add(prmVariationID);
 
@@ -752,11 +752,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int64);
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int64);			
 				prmMatrixID.Value = MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
-				MySqlParameter prmGroupID = new MySqlParameter("@GroupID",System.Data.DbType.Int64);
+				MySqlParameter prmGroupID = new MySqlParameter("@GroupID",MySqlDbType.Int64);			
 				prmGroupID.Value = GroupID;
 				cmd.Parameters.Add(prmGroupID);
 
@@ -819,7 +819,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int64);			
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int64);						
 				prmMatrixID.Value = ProductGroupBaseVariationsMatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
@@ -983,11 +983,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int64);			
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int64);						
 				prmMatrixID.Value = MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
-				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",System.Data.DbType.Int32);			
+				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",MySqlDbType.Int32);			
 				prmVariationID.Value = VariationID;
 				cmd.Parameters.Add(prmVariationID);
 

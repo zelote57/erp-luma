@@ -151,7 +151,7 @@ namespace AceSoft.RetailPlus.Data
                 prmBankCode.Value = Details.BankCode;
                 cmd.Parameters.Add(prmBankCode);
 
-				MySqlParameter prmChequeDate = new MySqlParameter("@ChequeDate",System.Data.DbType.Date);
+                MySqlParameter prmChequeDate = new MySqlParameter("@ChequeDate",MySqlDbType.Date);
 				prmChequeDate.Value = Details.ChequeDate.ToString("yyyy-MM-dd");
 				cmd.Parameters.Add(prmChequeDate);
 
@@ -159,7 +159,7 @@ namespace AceSoft.RetailPlus.Data
 				prmChequeNo.Value = Details.ChequeNo;
 				cmd.Parameters.Add(prmChequeNo);
 
-				MySqlParameter prmPayeeID = new MySqlParameter("@PayeeID",System.Data.DbType.Int64);
+				MySqlParameter prmPayeeID = new MySqlParameter("@PayeeID",MySqlDbType.Int64);			
 				prmPayeeID.Value = Details.PayeeID;
 				cmd.Parameters.Add(prmPayeeID);
 
@@ -179,11 +179,11 @@ namespace AceSoft.RetailPlus.Data
 				prmStatus.Value = Details.Status.ToString("d");
 				cmd.Parameters.Add(prmStatus);
 
-				MySqlParameter prmTotalDebitAmount = new MySqlParameter("@TotalDebitAmount",System.Data.DbType.Decimal);			
+				MySqlParameter prmTotalDebitAmount = new MySqlParameter("@TotalDebitAmount",MySqlDbType.Decimal);			
 				prmTotalDebitAmount.Value = Details.TotalDebitAmount;
 				cmd.Parameters.Add(prmTotalDebitAmount);
 
-				MySqlParameter prmTotalCreditAmount = new MySqlParameter("@TotalCreditAmount",System.Data.DbType.Decimal);			
+				MySqlParameter prmTotalCreditAmount = new MySqlParameter("@TotalCreditAmount",MySqlDbType.Decimal);			
 				prmTotalCreditAmount.Value = Details.TotalCreditAmount;
 				cmd.Parameters.Add(prmTotalCreditAmount);
      
@@ -256,7 +256,7 @@ namespace AceSoft.RetailPlus.Data
                 prmBankCode.Value = Details.BankCode;
                 cmd.Parameters.Add(prmBankCode);
 
-				MySqlParameter prmChequeDate = new MySqlParameter("@ChequeDate",System.Data.DbType.Date);
+				MySqlParameter prmChequeDate = new MySqlParameter("@ChequeDate",MySqlDbType.Date);
 				prmChequeDate.Value = Details.ChequeDate.ToString("yyyy-MM-dd");
 				cmd.Parameters.Add(prmChequeDate);
 
@@ -264,7 +264,7 @@ namespace AceSoft.RetailPlus.Data
 				prmChequeNo.Value = Details.ChequeNo;
 				cmd.Parameters.Add(prmChequeNo);
 
-				MySqlParameter prmPayeeID = new MySqlParameter("@PayeeID",System.Data.DbType.Int64);
+				MySqlParameter prmPayeeID = new MySqlParameter("@PayeeID",MySqlDbType.Int64);			
 				prmPayeeID.Value = Details.PayeeID;
 				cmd.Parameters.Add(prmPayeeID);
 
@@ -284,15 +284,15 @@ namespace AceSoft.RetailPlus.Data
 				prmStatus.Value = Details.Status.ToString("d");
 				cmd.Parameters.Add(prmStatus);
 
-				MySqlParameter prmTotalDebitAmount = new MySqlParameter("@TotalDebitAmount",System.Data.DbType.Decimal);			
+				MySqlParameter prmTotalDebitAmount = new MySqlParameter("@TotalDebitAmount",MySqlDbType.Decimal);			
 				prmTotalDebitAmount.Value = Details.TotalDebitAmount;
 				cmd.Parameters.Add(prmTotalDebitAmount);
 
-				MySqlParameter prmTotalCreditAmount = new MySqlParameter("@TotalCreditAmount",System.Data.DbType.Decimal);			
+				MySqlParameter prmTotalCreditAmount = new MySqlParameter("@TotalCreditAmount",MySqlDbType.Decimal);			
 				prmTotalCreditAmount.Value = Details.TotalCreditAmount;
 				cmd.Parameters.Add(prmTotalCreditAmount);
 
-				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",System.Data.DbType.Int64);	
+				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",MySqlDbType.Int64);				
 				prmPaymentID.Value = Details.PaymentID;
 				cmd.Parameters.Add(prmPaymentID);
 
@@ -399,7 +399,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",System.Data.DbType.Int64);
+				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",MySqlDbType.Int64);			
 				prmPaymentID.Value = PaymentID;
 				cmd.Parameters.Add(prmPaymentID);
 
@@ -552,7 +552,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPostingDate = new MySqlParameter("@PostingDate",System.Data.DbType.Date);
+				MySqlParameter prmPostingDate = new MySqlParameter("@PostingDate",MySqlDbType.Date);
 				prmPostingDate.Value = PostingDate.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmPostingDate);
 
@@ -560,7 +560,7 @@ namespace AceSoft.RetailPlus.Data
 				prmStatus.Value = AccountPaymentsStatus.Posted.ToString("d");
 				cmd.Parameters.Add(prmStatus);
 
-				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",System.Data.DbType.Int64);	
+				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",MySqlDbType.Int64);				
 				prmPaymentID.Value = PaymentID;
 				cmd.Parameters.Add(prmPaymentID);
 

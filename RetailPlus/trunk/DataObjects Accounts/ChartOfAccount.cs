@@ -840,7 +840,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmAmount = new MySqlParameter("@Amount",System.Data.DbType.Decimal);			
+				MySqlParameter prmAmount = new MySqlParameter("@Amount",MySqlDbType.Decimal);			
 				prmAmount.Value = Amount;
 				cmd.Parameters.Add(prmAmount);
 
@@ -881,7 +881,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmAmount = new MySqlParameter("@Amount",System.Data.DbType.Decimal);			
+				MySqlParameter prmAmount = new MySqlParameter("@Amount",MySqlDbType.Decimal);			
 				prmAmount.Value = Amount;
 				cmd.Parameters.Add(prmAmount);
 

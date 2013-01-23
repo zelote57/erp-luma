@@ -116,15 +116,15 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmGJournalID = new MySqlParameter("@GJournalID",System.Data.DbType.Int64);
+				MySqlParameter prmGJournalID = new MySqlParameter("@GJournalID",MySqlDbType.Int64);			
 				prmGJournalID.Value = Details.GJournalID;
 				cmd.Parameters.Add(prmGJournalID);
 
-				MySqlParameter prmChartOfAccountID = new MySqlParameter("@ChartOfAccountID",System.Data.DbType.Int64);
+				MySqlParameter prmChartOfAccountID = new MySqlParameter("@ChartOfAccountID",MySqlDbType.Int64);			
 				prmChartOfAccountID.Value = Details.ChartOfAccountID;
 				cmd.Parameters.Add(prmChartOfAccountID);
 
-				MySqlParameter prmAmount = new MySqlParameter("@Amount",System.Data.DbType.Decimal);			
+				MySqlParameter prmAmount = new MySqlParameter("@Amount",MySqlDbType.Decimal);			
 				prmAmount.Value = Details.Amount;
 				cmd.Parameters.Add(prmAmount);
      
@@ -182,19 +182,19 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmGJournalID = new MySqlParameter("@GJournalID",System.Data.DbType.Int64);
+				MySqlParameter prmGJournalID = new MySqlParameter("@GJournalID",MySqlDbType.Int64);			
 				prmGJournalID.Value = Details.GJournalID;
 				cmd.Parameters.Add(prmGJournalID);
 
-				MySqlParameter prmChartOfAccountID = new MySqlParameter("@ChartOfAccountID",System.Data.DbType.Int64);
+				MySqlParameter prmChartOfAccountID = new MySqlParameter("@ChartOfAccountID",MySqlDbType.Int64);			
 				prmChartOfAccountID.Value = Details.ChartOfAccountID;
 				cmd.Parameters.Add(prmChartOfAccountID);
 
-				MySqlParameter prmAmount = new MySqlParameter("@Amount",System.Data.DbType.Decimal);			
+				MySqlParameter prmAmount = new MySqlParameter("@Amount",MySqlDbType.Decimal);			
 				prmAmount.Value = Details.Amount;
 				cmd.Parameters.Add(prmAmount);
 
-				MySqlParameter prmGJournalCreditID = new MySqlParameter("@GJournalCreditID",System.Data.DbType.Int64);	
+				MySqlParameter prmGJournalCreditID = new MySqlParameter("@GJournalCreditID",MySqlDbType.Int64);				
 				prmGJournalCreditID.Value = Details.GJournalCreditID;
 				cmd.Parameters.Add(prmGJournalCreditID);
 
@@ -283,7 +283,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmGJournalCreditID = new MySqlParameter("@GJournalCreditID",System.Data.DbType.Int64);
+				MySqlParameter prmGJournalCreditID = new MySqlParameter("@GJournalCreditID",MySqlDbType.Int64);			
 				prmGJournalCreditID.Value = GJournalCreditID;
 				cmd.Parameters.Add(prmGJournalCreditID);
 
@@ -400,7 +400,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmGJournalID = new MySqlParameter("@GJournalID",System.Data.DbType.Int64);
+				MySqlParameter prmGJournalID = new MySqlParameter("@GJournalID",MySqlDbType.Int64);			
 				prmGJournalID.Value = GJournalID;
 				cmd.Parameters.Add(prmGJournalID);
 
@@ -508,7 +508,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmGJournalID = new MySqlParameter("@GJournalID",System.Data.DbType.Int64);
+				MySqlParameter prmGJournalID = new MySqlParameter("@GJournalID",MySqlDbType.Int64);			
 				prmGJournalID.Value = GJournalID;
 				cmd.Parameters.Add(prmGJournalID);
 

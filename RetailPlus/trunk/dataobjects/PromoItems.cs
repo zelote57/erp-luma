@@ -308,7 +308,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPromoItemsID = new MySqlParameter("@PromoItemsID",System.Data.DbType.Int32);
+				MySqlParameter prmPromoItemsID = new MySqlParameter("@PromoItemsID",MySqlDbType.Int32);
 				prmPromoItemsID.Value = PromoItemsID;
 				cmd.Parameters.Add(prmPromoItemsID);
 
@@ -381,7 +381,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",System.Data.DbType.Int64);
+				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
 

@@ -184,7 +184,7 @@ namespace AceSoft.RetailPlus.Data
 				prmDatePaid.Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmDatePaid);
 
-				MySqlParameter prmBasePaymentsID = new MySqlParameter("@BasePaymentsID",System.Data.DbType.Int64);			
+				MySqlParameter prmBasePaymentsID = new MySqlParameter("@BasePaymentsID",MySqlDbType.Int64);						
 				prmBasePaymentsID.Value = Details.BasePaymentsID;
 				cmd.Parameters.Add(prmBasePaymentsID);
 

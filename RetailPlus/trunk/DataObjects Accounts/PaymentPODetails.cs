@@ -119,15 +119,15 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",System.Data.DbType.Int64);
+				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",MySqlDbType.Int64);			
 				prmPaymentID.Value = Details.PaymentID;
 				cmd.Parameters.Add(prmPaymentID);
 
-				MySqlParameter prmPOID = new MySqlParameter("@POID",System.Data.DbType.Int64);
+				MySqlParameter prmPOID = new MySqlParameter("@POID",MySqlDbType.Int64);			
 				prmPOID.Value = Details.POID;
 				cmd.Parameters.Add(prmPOID);
 
-				MySqlParameter prmAmount = new MySqlParameter("@Amount",System.Data.DbType.Decimal);			
+				MySqlParameter prmAmount = new MySqlParameter("@Amount",MySqlDbType.Decimal);			
 				prmAmount.Value = Details.Amount;
 				cmd.Parameters.Add(prmAmount);
 
@@ -290,7 +290,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPaymentDetailID = new MySqlParameter("@PaymentDetailID",System.Data.DbType.Int64);
+				MySqlParameter prmPaymentDetailID = new MySqlParameter("@PaymentDetailID",MySqlDbType.Int64);			
 				prmPaymentDetailID.Value = PaymentDetailID;
 				cmd.Parameters.Add(prmPaymentDetailID);
 
@@ -388,7 +388,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",System.Data.DbType.Int64);
+				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",MySqlDbType.Int64);			
 				prmPaymentID.Value = PaymentID;
 				cmd.Parameters.Add(prmPaymentID);
 
@@ -477,7 +477,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",System.Data.DbType.Int64);
+				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",MySqlDbType.Int64);			
 				prmPaymentID.Value = PaymentID;
 				cmd.Parameters.Add(prmPaymentID);
 

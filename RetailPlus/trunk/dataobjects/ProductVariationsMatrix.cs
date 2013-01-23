@@ -708,7 +708,7 @@ namespace AceSoft.RetailPlus.Data
 				prmMatrixID.Value = MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
-				MySqlParameter prmUnitID = new MySqlParameter("@UnitID",System.Data.DbType.Int32);			
+				MySqlParameter prmUnitID = new MySqlParameter("@UnitID",MySqlDbType.Int32);			
 				prmUnitID.Value = UnitID;
 				cmd.Parameters.Add(prmUnitID);
 
@@ -834,11 +834,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int64);
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int64);			
 				prmMatrixID.Value = MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",System.Data.DbType.Int64);
+				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
 
@@ -877,7 +877,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",System.Data.DbType.Int64);
+				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
 
@@ -920,7 +920,7 @@ namespace AceSoft.RetailPlus.Data
 				prmDescription.Value = Description;
 				cmd.Parameters.Add(prmDescription);
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",System.Data.DbType.Int64);
+				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
 				prmProductID.Value = ProductID;
 				cmd.Parameters.Add(prmProductID);
 
@@ -959,7 +959,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int64);
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int64);			
 				prmMatrixID.Value = MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
@@ -1828,11 +1828,11 @@ namespace AceSoft.RetailPlus.Data
 				prmDescription.Value = Details.Description;
 				cmd.Parameters.Add(prmDescription);
 
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int32);			
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int32);			
 				prmMatrixID.Value = Details.MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
-				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",System.Data.DbType.Int32);			
+				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",MySqlDbType.Int32);			
 				prmVariationID.Value = Details.VariationID;
 				cmd.Parameters.Add(prmVariationID);
 
@@ -1873,11 +1873,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int32);
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int32);
 				prmMatrixID.Value = MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
-				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",System.Data.DbType.Int32);
+				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",MySqlDbType.Int32);
 				prmVariationID.Value = VariationID;
 				cmd.Parameters.Add(prmVariationID);
 
@@ -2514,11 +2514,11 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",System.Data.DbType.Int32);			
+				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int32);			
 				prmMatrixID.Value = MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
-				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",System.Data.DbType.Int32);			
+				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",MySqlDbType.Int32);			
 				prmVariationID.Value = VariationID;
 				cmd.Parameters.Add(prmVariationID);
 

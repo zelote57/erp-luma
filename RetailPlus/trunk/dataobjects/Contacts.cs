@@ -866,12 +866,12 @@ namespace AceSoft.RetailPlus.Data
 
                 if (ContactCode != null && ContactCode != string.Empty && ContactCode != "" && ContactCode != "0" && ContactName != Constants.ALL)
 				{
-					SQL += " AND a.ContactCode = @ContactCode";
+					SQL += " AND a.ContactCode = @ContactCode ";
                     cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
 				}
                 if (ContactName != null && ContactName != string.Empty && ContactName != "" && ContactName != "0" && ContactName != Constants.ALL)
 				{
-					SQL += " AND a.ContactName = @ContactName";
+					SQL += " AND a.ContactName = @ContactName ";
                     cmd.Parameters.AddWithValue("@ContactName", ContactName);
 				}
 				
@@ -934,12 +934,12 @@ namespace AceSoft.RetailPlus.Data
 
                 if (ContactCode != null && ContactCode != string.Empty && ContactCode != "" && ContactCode != "0")
                 {
-                    SQL += " AND a.ContactCode = @ContactCode";
+                    SQL += " AND a.ContactCode = @ContactCode ";
                     cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
                 }
                 if (ContactName != null && ContactName != string.Empty && ContactName != "" && ContactName != "0")
                 {
-                    SQL += " AND a.ContactName = @ContactName";
+                    SQL += " AND a.ContactName = @ContactName ";
                     cmd.Parameters.AddWithValue("@ContactName", ContactName);
                 }
 
@@ -994,7 +994,7 @@ namespace AceSoft.RetailPlus.Data
 
 				if (ContactCode != null && ContactCode != string.Empty && ContactCode != "" && ContactCode != "0")
 				{
-					SQL += " AND a.ContactCode = @ContactCode";
+					SQL += " AND a.ContactCode = @ContactCode ";
 
 					MySqlParameter prmContactCode = new MySqlParameter("@ContactCode",MySqlDbType.String);
 					prmContactCode.Value = ContactCode;
@@ -1002,7 +1002,7 @@ namespace AceSoft.RetailPlus.Data
 				}
 				if (ContactName != null && ContactName != string.Empty && ContactName != "" && ContactName != "0")
 				{
-					SQL += " AND a.ContactName = @ContactName";
+					SQL += " AND a.ContactName = @ContactName ";
 
 					MySqlParameter prmContactName = new MySqlParameter("@ContactName",MySqlDbType.String);
 					prmContactName.Value = ContactName;

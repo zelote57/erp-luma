@@ -221,7 +221,7 @@ namespace AceSoft.RetailPlus.Credits._Customers
 
             System.Data.SqlClient.SortOrder sortoption = System.Data.SqlClient.SortOrder.Ascending;
 			if (Request.QueryString["sortoption"]!=null)
-                sortoption = (System.Data.SqlClient.SortOrder)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);
+                sortoption = (System.Data.SqlClient.SortOrder)Enum.Parse(typeof(System.Data.SqlClient.SortOrder), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);
 
             if (sortoption == System.Data.SqlClient.SortOrder.Ascending)
                 stParam += "?sortoption=" + Common.Encrypt(System.Data.SqlClient.SortOrder.Descending.ToString("G"), Session.SessionID);

@@ -116,15 +116,15 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",System.Data.DbType.Int64);
+				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",MySqlDbType.Int64);			
 				prmPaymentID.Value = Details.PaymentID;
 				cmd.Parameters.Add(prmPaymentID);
 
-				MySqlParameter prmChartOfAccountID = new MySqlParameter("@ChartOfAccountID",System.Data.DbType.Int64);
+				MySqlParameter prmChartOfAccountID = new MySqlParameter("@ChartOfAccountID",MySqlDbType.Int64);			
 				prmChartOfAccountID.Value = Details.ChartOfAccountID;
 				cmd.Parameters.Add(prmChartOfAccountID);
 
-				MySqlParameter prmAmount = new MySqlParameter("@Amount",System.Data.DbType.Decimal);			
+				MySqlParameter prmAmount = new MySqlParameter("@Amount",MySqlDbType.Decimal);			
 				prmAmount.Value = Details.Amount;
 				cmd.Parameters.Add(prmAmount);
      
@@ -182,19 +182,19 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",System.Data.DbType.Int64);
+				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",MySqlDbType.Int64);			
 				prmPaymentID.Value = Details.PaymentID;
 				cmd.Parameters.Add(prmPaymentID);
 
-				MySqlParameter prmChartOfAccountID = new MySqlParameter("@ChartOfAccountID",System.Data.DbType.Int64);
+				MySqlParameter prmChartOfAccountID = new MySqlParameter("@ChartOfAccountID",MySqlDbType.Int64);			
 				prmChartOfAccountID.Value = Details.ChartOfAccountID;
 				cmd.Parameters.Add(prmChartOfAccountID);
 
-				MySqlParameter prmAmount = new MySqlParameter("@Amount",System.Data.DbType.Decimal);			
+				MySqlParameter prmAmount = new MySqlParameter("@Amount",MySqlDbType.Decimal);			
 				prmAmount.Value = Details.Amount;
 				cmd.Parameters.Add(prmAmount);
 
-				MySqlParameter prmPaymentCreditID = new MySqlParameter("@PaymentCreditID",System.Data.DbType.Int64);	
+				MySqlParameter prmPaymentCreditID = new MySqlParameter("@PaymentCreditID",MySqlDbType.Int64);				
 				prmPaymentCreditID.Value = Details.PaymentCreditID;
 				cmd.Parameters.Add(prmPaymentCreditID);
 
@@ -283,7 +283,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPaymentCreditID = new MySqlParameter("@PaymentCreditID",System.Data.DbType.Int64);
+				MySqlParameter prmPaymentCreditID = new MySqlParameter("@PaymentCreditID",MySqlDbType.Int64);			
 				prmPaymentCreditID.Value = PaymentCreditID;
 				cmd.Parameters.Add(prmPaymentCreditID);
 
@@ -400,7 +400,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",System.Data.DbType.Int64);
+				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",MySqlDbType.Int64);			
 				prmPaymentID.Value = PaymentID;
 				cmd.Parameters.Add(prmPaymentID);
 
@@ -508,7 +508,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",System.Data.DbType.Int64);
+				MySqlParameter prmPaymentID = new MySqlParameter("@PaymentID",MySqlDbType.Int64);			
 				prmPaymentID.Value = PaymentID;
 				cmd.Parameters.Add(prmPaymentID);
 

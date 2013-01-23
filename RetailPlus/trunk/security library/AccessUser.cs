@@ -174,7 +174,7 @@ namespace AceSoft.RetailPlus.Security
 				prmState.Value = Details.State;
 				cmdDetails.Parameters.Add(prmState);
 
-				MySqlParameter prmCountryID = new MySqlParameter("@CountryID",System.Data.DbType.Int32);
+				MySqlParameter prmCountryID = new MySqlParameter("@CountryID",MySqlDbType.Int32);
 				prmCountryID.Value = Details.CountryID;
 				cmdDetails.Parameters.Add(prmCountryID);
 
@@ -202,7 +202,7 @@ namespace AceSoft.RetailPlus.Security
 				prmEmailAddress.Value = Details.EmailAddress;
 				cmdDetails.Parameters.Add(prmEmailAddress);
 
-				MySqlParameter prmGroupID = new MySqlParameter("@GroupID",System.Data.DbType.Int32);
+				MySqlParameter prmGroupID = new MySqlParameter("@GroupID",MySqlDbType.Int32);
 				prmGroupID.Value = Details.GroupID;
 				cmdDetails.Parameters.Add(prmGroupID);
 
@@ -292,7 +292,7 @@ namespace AceSoft.RetailPlus.Security
 				prmState.Value = Details.State;
 				cmdDetails.Parameters.Add(prmState);
 
-				MySqlParameter prmCountryID = new MySqlParameter("@CountryID",System.Data.DbType.Int32);
+				MySqlParameter prmCountryID = new MySqlParameter("@CountryID",MySqlDbType.Int32);
 				prmCountryID.Value = Details.CountryID;
 				cmdDetails.Parameters.Add(prmCountryID);
 
@@ -320,12 +320,12 @@ namespace AceSoft.RetailPlus.Security
 				prmEmailAddress.Value = Details.EmailAddress;
 				cmdDetails.Parameters.Add(prmEmailAddress);
 
-				MySqlParameter prmGroupID = new MySqlParameter("@GroupID",System.Data.DbType.Int32);
+				MySqlParameter prmGroupID = new MySqlParameter("@GroupID",MySqlDbType.Int32);
 				prmGroupID.Value = Details.GroupID;
 				cmdDetails.Parameters.Add(prmGroupID);
 
 				if (Details.PageSize == 0) Details.PageSize = 10;
-				MySqlParameter prmPageSize = new MySqlParameter("@PageSize",System.Data.DbType.Int32);
+				MySqlParameter prmPageSize = new MySqlParameter("@PageSize",MySqlDbType.Int32);
 				prmPageSize.Value = Details.PageSize;
 				cmdDetails.Parameters.Add(prmPageSize);
 
@@ -386,7 +386,7 @@ namespace AceSoft.RetailPlus.Security
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmUID = new MySqlParameter("@UID",System.Data.DbType.Int64);
+				MySqlParameter prmUID = new MySqlParameter("@UID",MySqlDbType.Int64);			
 				prmUID.Value = UID;
 				cmd.Parameters.Add(prmUID);
 
@@ -947,7 +947,7 @@ namespace AceSoft.RetailPlus.Security
 				prmUID.Value = UID;
 				cmd.Parameters.Add(prmUID);
 
-				MySqlParameter prmGroupID = new MySqlParameter("@GroupID",System.Data.DbType.Int32);
+				MySqlParameter prmGroupID = new MySqlParameter("@GroupID",MySqlDbType.Int32);
 				prmGroupID.Value = GroupID;
 				cmd.Parameters.Add(prmGroupID);
 

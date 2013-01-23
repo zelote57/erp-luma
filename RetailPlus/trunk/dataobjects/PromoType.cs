@@ -220,7 +220,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmPromoTypeID = new MySqlParameter("@PromoTypeID",System.Data.DbType.Int32);
+				MySqlParameter prmPromoTypeID = new MySqlParameter("@PromoTypeID",MySqlDbType.Int32);
 				prmPromoTypeID.Value = PromoTypeID;
 				cmd.Parameters.Add(prmPromoTypeID);
 

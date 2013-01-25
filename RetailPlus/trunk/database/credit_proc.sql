@@ -96,7 +96,7 @@ BEGIN
 	/** Put the credit details for each contacts *****/
 	-- Insert the Credit Details
 	INSERT INTO tblCreditBillDetail(CreditBillHeaderID ,TransactionDate ,Description ,Amount ,TransactionTypeID ,TransactionRefID)
-	SELECT CreditBillHeaderID ,CreditDate ,CONCAT('Trn#:' ,CONVERT(TransactionNo, UNSIGNED INTEGER),' @ Ter#:',TerminalNo) 'Description'
+	SELECT CreditBillHeaderID ,CreditDate ,CONCAT('Credit: Trn#:' ,CONVERT(TransactionNo, UNSIGNED INTEGER),' @ Ter#:',TerminalNo) 'Description'
 			,SUM(Amount) CurrMonthCreditAmt ,1 tblCreditPaymentTransactionTypeID ,TransactionID TransactionRefID
 	FROM tblCreditBillHeader CBH
 	INNER JOIN tblCreditPayment CRP on CRP.ContactID = CBH.ContactID
@@ -105,7 +105,7 @@ BEGIN
 		AND CRP.TransactionID NOT IN (SELECT TransactionRefID FROM tblCreditBillDetail 
 																 WHERE TransactionTypeID = 1
 																	AND CONVERT(CreditDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess)
-	GROUP BY CreditBillHeaderID ,CreditDate;
+	GROUP BY CreditBillHeaderID ,TransactionNo ,CreditDate;
 
 
 
@@ -115,17 +115,18 @@ BEGIN
 	FROM
 		(
 			SELECT CreditBillHeaderID, TransactionDate
-					,CONCAT('Trn#:' ,CONVERT(TransactionNo, UNSIGNED INTEGER),' @ Ter#:',TerminalNo) 'Description'
+					,CONCAT('Payment: Trn#:' ,CONVERT(TransactionNo, UNSIGNED INTEGER),' @ Ter#:',TerminalNo) 'Description'
 					,-SUM(Subtotal) CurrMonthCreditAmt ,2 tblCreditPaymentTransactionTypeID ,Trx.TransactionID TransactionRefID
 			FROM tblTransactions Trx 
 				INNER JOIN tblTransactionItems TrxD ON Trx.TransactionID = TrxD.TransactionID
-				INNER JOIN tblCreditBillHeader CBH ON CBH.ContactID = Trx.CustomerID
+				INNER JOIN tblCreditBillHeader CBH ON CBH.ContactID = Trx.CustomerID AND CBH.CreditBillID = lngCreditBillID
 			WHERE TrxD.ProductID = 1 
 				AND TransactionStatus = 1
 				AND CONVERT(Trx.TransactionDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess
 				AND Trx.TransactionID NOT IN (SELECT TransactionRefID FROM tblCreditBillDetail 
 																		 WHERE TransactionTypeID = 2
 																			AND CONVERT(TransactionDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess)
+			GROUP BY TransactionNo
 		) Payments WHERE CreditBillHeaderID <> 0;
 
 
@@ -212,6 +213,7 @@ BEGIN
 			FROM tblCreditBillHeader CBH 
 			INNER JOIN tblContacts CON ON CBH.ContactID = CON.ContactID
 			WHERE CBH.CreditBillID = lngCreditBillID AND CBH.CurrMonthAmountPaid < CBH.Prev1MoMinimumAmountDue
+				AND (Prev1MoCurrentDueAmount * decCreditLatePenaltyCharge) > 0
 	) CBH, (SELECT @rownum:=0) r) CBH, (SELECT MAX(TransactionNo) TransactionNo  FROM tblTransactions) r;
 	INSERT INTO tblCreditPayment(TransactionID, ContactID, GuarantorID, CreditType, 
 								CreditBefore, Amount, CreditAfter, CreditExpiryDate, 
@@ -230,7 +232,8 @@ BEGIN
 					INNER JOIN tblTransactions TRX ON CBH.ContactID = TRX.CustomerID 
 												   AND CONVERT(TRX.TransactionDate, DATE) = dteCreditCutOffDate
 												   AND TRX.CashierName = 'Credit Biller-LPC'
-					WHERE CBH.CreditBillID = lngCreditBillID AND CBH.CurrMonthAmountPaid < CBH.Prev1MoMinimumAmountDue;
+					WHERE CBH.CreditBillID = lngCreditBillID AND CBH.CurrMonthAmountPaid < CBH.Prev1MoMinimumAmountDue
+						AND (Prev1MoCurrentDueAmount * decCreditLatePenaltyCharge) > 0;
 	/****
 	UPDATE tblCreditBillDetail CBD
 	INNER JOIN
@@ -248,7 +251,8 @@ BEGIN
 			,((Prev1MoCurrentDueAmount - CurrMonthAmountPaid) * decCreditFinanceCharge) CurrMonthCreditAmt 
 			,3 tblCreditPaymentTransactionTypeID ,0 TransactionRefID
 	FROM tblCreditBillHeader CBH
-	WHERE CBH.CreditBillID = lngCreditBillID AND Prev1MoCurrentDueAmount > 0;
+	WHERE CBH.CreditBillID = lngCreditBillID AND Prev1MoCurrentDueAmount > 0
+		AND ((Prev1MoCurrentDueAmount - CurrMonthAmountPaid) * decCreditFinanceCharge) > 0;
 
 	-- update the TotalBillCharges, MinimumAmountDue, CurrentDueAmount
 	UPDATE tblCreditBillHeader AS CBH 
@@ -287,7 +291,8 @@ BEGIN
 			SELECT CBH.ContactID ,CON.ContactName ,((Prev1MoCurrentDueAmount - CurrMonthAmountPaid) * decCreditFinanceCharge) FinanceCharge
 			FROM tblCreditBillHeader CBH
 			INNER JOIN tblContacts CON ON CBH.ContactID = CON.ContactID
-			WHERE CBH.CreditBillID = lngCreditBillID AND CBH.Prev1MoCurrentDueAmount > 0
+			WHERE CBH.CreditBillID = lngCreditBillID AND CBH.Prev1MoCurrentDueAmount > 0 
+				AND ((Prev1MoCurrentDueAmount - CurrMonthAmountPaid) * decCreditFinanceCharge) > 0
 	) CBH, (SELECT @rownum:=0) r) CBH, (SELECT MAX(TransactionNo) TransactionNo  FROM tblTransactions) r;
 	INSERT INTO tblCreditPayment(TransactionID, ContactID, GuarantorID, CreditType, 
 								CreditBefore, Amount, CreditAfter, CreditExpiryDate, 
@@ -307,7 +312,8 @@ BEGIN
 					INNER JOIN tblTransactions TRX ON CBH.ContactID = TRX.CustomerID 
 												   AND CONVERT(TRX.TransactionDate, DATE) = dteCreditCutOffDate
 												   AND TRX.CashierName = 'Credit Biller-FC'
-					WHERE CBH.CreditBillID = lngCreditBillID AND CBH.Prev1MoCurrentDueAmount > 0;
+					WHERE CBH.CreditBillID = lngCreditBillID AND CBH.Prev1MoCurrentDueAmount > 0 
+						AND (Prev1MoCurrentDueAmount - CurrMonthAmountPaid) * decCreditFinanceCharge > 0;
 
 	-- insert the 60Days Charges
 
@@ -343,12 +349,12 @@ BEGIN
 
 	/** end-Update the header with the details *****/
 	-- IF dteCurrDate >= dteCreditCutOffDate THEN
-		UPDATE sysCreditConfig SET ConfigValue = DATE_ADD(dteCreditPurcStartDateToProcess, INTERVAL 1 MONTH) WHERE ConfigName = 'CreditPurcStartDateToProcess';
-		UPDATE sysCreditConfig SET ConfigValue = DATE_ADD(dteCreditPurcEndDateToProcess, INTERVAL 1 MONTH) WHERE ConfigName = 'CreditPurcEndDateToProcess';
-		UPDATE sysCreditConfig SET ConfigValue = dteNextCreditCutOffDate WHERE ConfigName = 'CreditCutOffDate';
+	--	UPDATE sysCreditConfig SET ConfigValue = DATE_ADD(dteCreditPurcStartDateToProcess, INTERVAL 1 MONTH) WHERE ConfigName = 'CreditPurcStartDateToProcess';
+	--	UPDATE sysCreditConfig SET ConfigValue = DATE_ADD(dteCreditPurcEndDateToProcess, INTERVAL 1 MONTH) WHERE ConfigName = 'CreditPurcEndDateToProcess';
+	--	UPDATE sysCreditConfig SET ConfigValue = dteNextCreditCutOffDate WHERE ConfigName = 'CreditCutOffDate';
 	-- END IF;
 
-	UPDATE tblCreditBillheader SET IsBillPrinted = 1 WHERE CurrentDueAmount = 0;
+	-- UPDATE tblCreditBillheader SET IsBillPrinted = 1 WHERE CurrentDueAmount = 0;
 	/*******************************
 		
 		truncate table tbltransactions;
@@ -364,6 +370,59 @@ BEGIN
 		SELECT * FROM tblCreditBillDetail;
 
 	*******************************/
+END;
+GO
+delimiter ;
+
+
+
+/**************************************************************
+	procProductQuantityConvert
+	Lemuel E. Aceron
+	CALL procProcessCreditBillsClose();
+	01-Feb-2013	Create this procedure
+				Separate this procedure from existing procProcessCreditBills
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProcessCreditBillsClose
+GO
+
+create procedure procProcessCreditBillsClose(
+	 ) 
+BEGIN
+	
+	DECLARE dteCreditPurcStartDateToProcess DATE;
+	DECLARE dteCreditPurcEndDateToProcess DATE;
+	DECLARE dteNextCreditCutOffDate DATE;	
+	DECLARE bolCreditUseLastDayCutOffDate TINYINT default 1;	
+	DECLARE dteCreditCutOffDate DATE;
+
+	SET bolCreditUseLastDayCutOffDate = (SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'CreditUseLastDayCutOffDate');
+	SET dteCreditCutOffDate = (SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'CreditCutOffDate');
+	SET dteNextCreditCutOffDate = (SELECT DATE_ADD(dteCreditCutOffDate, INTERVAL 1 MONTH));
+	
+	-- IF DAY(dteCreditCutOffDate) >= 28 then
+	IF bolCreditUseLastDayCutOffDate = 1 OR ISNULL(bolCreditUseLastDayCutOffDate) THEN
+		SET dteCreditCutOffDate = (SELECT LAST_DAY(dteCreditCutOffDate));
+		SET dteNextCreditCutOffDate = (SELECT LAST_DAY(dteNextCreditCutOffDate));
+	END IF;
+
+	/** Put the credit paramateres to be process *****/
+	SELECT CreditPurcStartDateToProcess ,CreditPurcEndDateToProcess
+			INTO  dteCreditPurcStartDateToProcess ,dteCreditPurcEndDateToProcess
+	FROM tblCreditBills WHERE CreditCutOffDate = dteCreditCutOffDate;
+	/** end-Put the credit paramateres to be process *****/
+
+
+	/** end-Update the header with the details *****/
+	-- IF dteCurrDate >= dteCreditCutOffDate THEN
+		UPDATE sysCreditConfig SET ConfigValue = DATE_ADD(dteCreditPurcStartDateToProcess, INTERVAL 1 MONTH) WHERE ConfigName = 'CreditPurcStartDateToProcess';
+		UPDATE sysCreditConfig SET ConfigValue = DATE_ADD(dteCreditPurcEndDateToProcess, INTERVAL 1 MONTH) WHERE ConfigName = 'CreditPurcEndDateToProcess';
+		UPDATE sysCreditConfig SET ConfigValue = dteNextCreditCutOffDate WHERE ConfigName = 'CreditCutOffDate';
+	-- END IF;
+
+
 END;
 GO
 delimiter ;

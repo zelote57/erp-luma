@@ -379,7 +379,6 @@ namespace AceSoft.RetailPlus.Data
 
         public void ProcessCurrentBill()
         {
-            // Added August 2, 2009 to monitor if product still has/have variations
             try
             {
                 string SQL = "CALL procProcessCreditBills();";
@@ -398,5 +397,24 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public void CloseCurrentBill()
+        {
+            try
+            {
+                string SQL = "CALL procProcessCreditBillsClose();";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                base.ExecuteNonQuery(cmd);
+
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

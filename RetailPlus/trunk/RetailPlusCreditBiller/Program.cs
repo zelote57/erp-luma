@@ -63,7 +63,7 @@ namespace AceSoft.RetailPlus.Monitor
 		private static void WriteProcessToMonitor(string ProcessToWrite)
 		{
 			Event clsEvent = new Event();
-			clsEvent.AddEvent(ProcessToWrite);
+			clsEvent.AddEventLn(ProcessToWrite);
 			Console.WriteLine(ConsoleMonitor() + ProcessToWrite);
 		}
 		private static string ConsoleMonitor()
@@ -74,7 +74,7 @@ namespace AceSoft.RetailPlus.Monitor
 		private static void ProcessCreditBill()
 		{
 			Event clsEvent = new Event();
-			clsEvent.AddEvent("");
+			clsEvent.AddEventLn("");
 			Console.WriteLine(ConsoleMonitor() + "");
 
 			Data.Billing clsBilling = new Data.Billing();
@@ -84,7 +84,7 @@ namespace AceSoft.RetailPlus.Monitor
             if (dteCreditCutOffDate >= DateTime.Now)
             {
                 clsBilling.CommitAndDispose();
-                Console.WriteLine(ConsoleMonitor() + "Will not process credit bill. Next processing date must be after CreditCutOffDate: [" + dteCreditCutOffDate.ToString("dd-MM-yyyy") + "]. System will only process after cut-off-date. ");
+                WriteProcessToMonitor("Will not process credit bill. Next processing date must be after CreditCutOffDate: [" + dteCreditCutOffDate.ToString("dd-MM-yyyy") + "]. System will only process after cut-off-date. ");
                 return;
             }
 
@@ -92,37 +92,46 @@ namespace AceSoft.RetailPlus.Monitor
             if (dteCreditPurcEndDateToProcess >= DateTime.Now)
             {
                 clsBilling.CommitAndDispose();
-                Console.WriteLine(ConsoleMonitor() + "Will not process credit bill. CreditPurcEndDateToProcess: " + dteCreditPurcEndDateToProcess.ToString("dd-MM-yyyy") + " is lower than current date. ");
+                WriteProcessToMonitor("Will not process credit bill. CreditPurcEndDateToProcess: " + dteCreditPurcEndDateToProcess.ToString("dd-MM-yyyy") + " is lower than current date. ");
                 return;
             }
+            WriteProcessToMonitor("Processing credit bill for cut-off: " + dteCreditCutOffDate.ToString("dd-MM-yyyy") + "]. ");
 			clsBilling.ProcessCurrentBill();
-
+            
 			List<Data.BillingDetails> lstBillingDetails = clsBilling.List();
 			clsBilling.CommitAndDispose();
 
 			foreach (Data.BillingDetails clsBillingDetails in lstBillingDetails)
 			{
-				Console.WriteLine(ConsoleMonitor() + "Processing credit of " + clsBillingDetails.CustomerDetails.ContactName + "...");
+				WriteProcessToMonitor("Processing credit of " + clsBillingDetails.CustomerDetails.ContactName + "...");
 
-				Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] CrediLimit                : " + clsBillingDetails.CrediLimit.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
-				Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] Credit                    : " + clsBillingDetails.CurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
-				Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] CurrentDueAmount          : " + clsBillingDetails.CurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
-				Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] TotalBillCharges          : " + clsBillingDetails.TotalBillCharges.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
-				Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] CurrMonthAmountPaid       : " + clsBillingDetails.CurrMonthAmountPaid.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
-				Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] MinimumAmountDue          : " + clsBillingDetails.MinimumAmountDue.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
-				Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] Prev1MoCurrentDueAmount   : " + clsBillingDetails.Prev1MoCurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
+				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] CrediLimit                : " + clsBillingDetails.CrediLimit.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
+				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Credit                    : " + clsBillingDetails.CurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
+				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] CurrentDueAmount          : " + clsBillingDetails.CurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
+				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] TotalBillCharges          : " + clsBillingDetails.TotalBillCharges.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
+				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] CurrMonthAmountPaid       : " + clsBillingDetails.CurrMonthAmountPaid.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
+				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] MinimumAmountDue          : " + clsBillingDetails.MinimumAmountDue.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
+				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Prev1MoCurrentDueAmount   : " + clsBillingDetails.Prev1MoCurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
 
 				string strOR = PrintCreditBill(clsBillingDetails);
 				if (strOR != "")
 				{
-					Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] Bill createad @ " + strOR);
+					WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Bill createad @ " + strOR);
                     clsBilling = new Data.Billing();
                     clsBilling.SetBillinAsPrinted(clsBillingDetails.ContactID, clsBillingDetails.BillingDate, strOR);
                     clsBilling.CommitAndDispose();
 				}
 
-				Console.WriteLine(ConsoleMonitor() + "[" + clsBillingDetails.CustomerDetails.ContactName + "] Done.");
+				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Done.");
 			}
+
+            WriteProcessToMonitor("Closing current cut-off date...");
+
+            clsBilling = new Data.Billing();
+            clsBilling.CloseCurrentBill();
+            clsBilling.CommitAndDispose();
+
+            WriteProcessToMonitor("Done.");
 		}
 
 		protected static string PrintCreditBill(Data.BillingDetails clsBillingDetails)
@@ -245,7 +254,7 @@ namespace AceSoft.RetailPlus.Monitor
 
                 if (File.Exists(logFile))
                 {
-                    File.Move(logFile,logFile + ".old");
+                    MoveCreditBillToNextFile(logFile, 1);
                 }
 
 				rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile);
@@ -263,6 +272,19 @@ namespace AceSoft.RetailPlus.Monitor
 			
 			return strRetValue;
 		}
+
+        private static void MoveCreditBillToNextFile(string logFile, Int32 iCtr)
+        {
+            if (File.Exists(logFile + "_" + iCtr.ToString() + ".old"))
+            {
+                MoveCreditBillToNextFile(logFile, iCtr + 1 );
+            }
+            else
+            {
+                File.Move(logFile, logFile + "_" + iCtr.ToString() + ".old");
+            }
+        }
+
 		#endregion
 
 	}

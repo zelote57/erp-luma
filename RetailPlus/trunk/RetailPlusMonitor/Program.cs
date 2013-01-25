@@ -81,7 +81,7 @@ namespace AceSoft.RetailPlus.Monitor
         private static void WriteProcessToMonitor(string ProcessToWrite)
         {
             Event clsEvent = new Event();
-            clsEvent.AddEvent(ProcessToWrite);
+            clsEvent.AddEventLn(ProcessToWrite);
             Console.WriteLine(ConsoleMonitor() + ProcessToWrite);
         }
         private static string ConsoleMonitor()

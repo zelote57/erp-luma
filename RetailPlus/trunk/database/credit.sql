@@ -11,9 +11,10 @@ CREATE TABLE sysCreditConfig (
 	UNIQUE `PK_sysCreditConfig`(`ConfigName`)
 );
 
-INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('CreditPurcStartDateToProcess',	'2012-06-10');
-INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('CreditPurcEndDateToProcess',		'2012-07-09');
-INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('CreditCutOffDate',				'2012-06-28');
+INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('CreditPurcStartDateToProcess',	'2013-01-10');
+INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('CreditPurcEndDateToProcess',		'2013-02-09');
+INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('CreditCutOffDate',				'2013-02-28');
+INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('BillingDate',					'2013-02-10');
 INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('CreditUseLastDayCutOffDate',		'1');
 INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('CreditFinanceCharge',			'0.030');
 INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('CreditMinimumPercentageDue',		'0.100');
@@ -29,6 +30,7 @@ CREATE TABLE tblCreditBills (
 	`CreditBillID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`CreditPurcStartDateToProcess` DATE NOT NULL,
 	`CreditPurcEndDateToProcess` DATE NOT NULL,
+	`BillingDate` DATE NOT NULL,
 	`CreditCutOffDate` DATE NOT NULL,
 	`CreditFinanceCharge` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`CreditMinimumPercentageDue` DECIMAL(10,3) NOT NULL DEFAULT 0,
@@ -54,6 +56,7 @@ CREATE TABLE tblCreditBillHeader (
 	`RunningCreditAmt` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`CurrMonthCreditAmt` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`CurrMonthAmountPaid` DECIMAL(10,3) NOT NULL DEFAULT 0,
+	`BillingDate` DATE NOT NULL,
 	`TotalBillCharges` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`CurrentDueAmount` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`MinimumAmountDue` DECIMAL(10,3) NOT NULL DEFAULT 0,
@@ -61,7 +64,6 @@ CREATE TABLE tblCreditBillHeader (
 	`Prev1MoMinimumAmountDue` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`Prev1MoCurrMonthAmountPaid` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`Prev2MoCurrentDueAmount` DECIMAL(10,3) NOT NULL DEFAULT 0,
-	`BillingDate` DATE NOT NULL,
 	`CreatedOn` DATETIME NOT NULL,
 	`CreatedByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CreatedByName` VARCHAR(100) NOT NULL,

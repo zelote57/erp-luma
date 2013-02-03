@@ -79,15 +79,22 @@ namespace AceSoft.RetailPlus.Monitor
 
 			Data.Billing clsBilling = new Data.Billing();
 
-            // check cut off date
-            DateTime dteCreditCutOffDate = clsBilling.getCreditCutOffDate();
-            if (dteCreditCutOffDate >= DateTime.Now)
+            // check billingdate
+            DateTime dteBillingDate = clsBilling.getBillingDate();
+            if (dteBillingDate == DateTime.MinValue)
             {
                 clsBilling.CommitAndDispose();
-                WriteProcessToMonitor("Will not process credit bill. Next processing date must be after CreditCutOffDate: [" + dteCreditCutOffDate.ToString("dd-MM-yyyy") + "]. System will only process after cut-off-date. ");
+                WriteProcessToMonitor("Will not process credit bill. There is no BillingDate set in the database. Please contact your System Administrator.");
+                return;
+            }
+            else if (dteBillingDate >= DateTime.Now)
+            {
+                clsBilling.CommitAndDispose();
+                WriteProcessToMonitor("Will not process credit bill. Next processing date must be after BillingDate: [" + dteBillingDate.ToString("dd-MM-yyyy") + "]. System will only process after billing date. ");
                 return;
             }
 
+            // Check PurchaseEndDate if lower than today then do not execute.
             DateTime dteCreditPurcEndDateToProcess = clsBilling.getCreditPurcEndDateToProcess();
             if (dteCreditPurcEndDateToProcess >= DateTime.Now)
             {
@@ -95,7 +102,7 @@ namespace AceSoft.RetailPlus.Monitor
                 WriteProcessToMonitor("Will not process credit bill. CreditPurcEndDateToProcess: " + dteCreditPurcEndDateToProcess.ToString("dd-MM-yyyy") + " is lower than current date. ");
                 return;
             }
-            WriteProcessToMonitor("Processing credit bill for cut-off: " + dteCreditCutOffDate.ToString("dd-MM-yyyy") + "]. ");
+            WriteProcessToMonitor("Processing credit bill for BillingDate: [" + dteBillingDate.ToString("dd-MM-yyyy") + "]. ");
 			clsBilling.ProcessCurrentBill();
             
 			List<Data.BillingDetails> lstBillingDetails = clsBilling.List();
@@ -112,6 +119,7 @@ namespace AceSoft.RetailPlus.Monitor
 				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] CurrMonthAmountPaid       : " + clsBillingDetails.CurrMonthAmountPaid.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
 				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] MinimumAmountDue          : " + clsBillingDetails.MinimumAmountDue.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
 				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Prev1MoCurrentDueAmount   : " + clsBillingDetails.Prev1MoCurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
+                WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Prev2MoCurrentDueAmount   : " + clsBillingDetails.Prev2MoCurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
 
 				string strOR = PrintCreditBill(clsBillingDetails);
 				if (strOR != "")
@@ -125,7 +133,7 @@ namespace AceSoft.RetailPlus.Monitor
 				WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Done.");
 			}
 
-            WriteProcessToMonitor("Closing current cut-off date...");
+            WriteProcessToMonitor("Closing current billing date...");
 
             clsBilling = new Data.Billing();
             clsBilling.CloseCurrentBill();
@@ -175,7 +183,7 @@ namespace AceSoft.RetailPlus.Monitor
 
 			paramField = rpt.DataDefinition.ParameterFields["PaymentDueDate"];
 			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-			discreteParam.Value = DateTime.Today;
+            discreteParam.Value = clsBillingDetails.CreditCutOffDate;
 			currentValues = new CrystalDecisions.Shared.ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);

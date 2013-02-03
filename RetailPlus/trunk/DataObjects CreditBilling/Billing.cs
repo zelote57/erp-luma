@@ -36,6 +36,7 @@ namespace AceSoft.RetailPlus.Data
         public decimal Prev1MoCurrMonthAmountPaid;
         public decimal Prev2MoCurrentDueAmount;
 
+        public DateTime CreditCutOffDate;
         public DateTime BillingDate;
 
         public Data.ContactDetails CustomerDetails;
@@ -113,10 +114,10 @@ namespace AceSoft.RetailPlus.Data
 
         private string SQLSelect()
         {
-            string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,ContactID ,CreditLimit ,RunningCreditAmt ,CurrMonthCreditAmt ,CurrMonthAmountPaid ,TotalBillCharges ,CurrentDueAmount ,MinimumAmountDue ,Prev1MoCurrentDueAmount ,Prev1MoMinimumAmountDue ,Prev1MoCurrMonthAmountPaid ,Prev2MoCurrentDueAmount ,CreditCutOffDate BillingDate ,CreditCutOffDate " +
+            string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,ContactID ,CreditLimit ,RunningCreditAmt ,CurrMonthCreditAmt ,CurrMonthAmountPaid ,TotalBillCharges ,CurrentDueAmount ,MinimumAmountDue ,Prev1MoCurrentDueAmount ,Prev1MoMinimumAmountDue ,Prev1MoCurrMonthAmountPaid ,Prev2MoCurrentDueAmount ,CBL.BillingDate ,CreditCutOffDate " +
                             "FROM tblCreditBillHeader CBH " +
                             "INNER JOIN tblCreditBills CBL ON CBH.CreditBillID = CBL.CreditBillID " +
-                            "WHERE IsBillPrinted = 0 AND CreditCutOffDate = (SELECT MAX(CreditCutOffDate) FROM tblCreditBills) ";
+                            "WHERE IsBillPrinted = 0 AND CBL.BillingDate = (SELECT MAX(BillingDate) FROM tblCreditBills) ";
 
             return stSQL;
         }
@@ -155,6 +156,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.Prev1MoCurrMonthAmountPaid = myReader.GetDecimal("Prev1MoCurrMonthAmountPaid");
                     Details.Prev2MoCurrentDueAmount = myReader.GetDecimal("Prev2MoCurrentDueAmount");
 
+                    Details.CreditCutOffDate = myReader.GetDateTime("CreditCutOffDate");
                     Details.BillingDate = myReader.GetDateTime("BillingDate");
 
                     Customer clsCustomer = new Customer(base.Connection, base.Transaction);
@@ -201,11 +203,11 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public DateTime getCreditCutOffDate()
+        public DateTime getBillingDate()
         {
             try
             {
-                string SQL = "SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'CreditCutOffDate'";
+                string SQL = "SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'BillingDate'";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -214,7 +216,7 @@ namespace AceSoft.RetailPlus.Data
                 System.Data.DataTable dt = new System.Data.DataTable("Billing");
                 base.MySqlDataAdapterFill(cmd, dt);
 
-                DateTime dteRetValue = DateTime.MaxValue;
+                DateTime dteRetValue = DateTime.MinValue;
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
@@ -251,6 +253,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.Prev1MoCurrMonthAmountPaid = Convert.ToDecimal(dr["Prev1MoCurrMonthAmountPaid"]);
                 Details.Prev2MoCurrentDueAmount = Convert.ToDecimal(dr["Prev2MoCurrentDueAmount"]);
 
+                Details.CreditCutOffDate = Convert.ToDateTime(dr["CreditCutOffDate"]);
                 Details.BillingDate = Convert.ToDateTime(dr["BillingDate"]);
 
                 Customer clsCustomer = new Customer(base.Connection, base.Transaction);
@@ -350,7 +353,7 @@ namespace AceSoft.RetailPlus.Data
             string SQL = SQLSelect();
 
             if (ContactID != 0)
-                SQL += "WHERE ContactID = @ContactID ";
+                SQL += "AND ContactID = @ContactID ";
 
             SQL += "ORDER BY " + SortField;
 

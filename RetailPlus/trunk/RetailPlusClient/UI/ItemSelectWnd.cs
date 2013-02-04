@@ -338,7 +338,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // tmrSearch
             // 
-            this.tmrSearch.Interval = 500;
+            this.tmrSearch.Interval = 300;
             this.tmrSearch.Tick += new System.EventHandler(this.tmrSearch_Tick);
             // 
             // Quantity

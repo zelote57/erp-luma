@@ -236,16 +236,16 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.ProductHistoryMovement:
                     #region Product History Movement
                     StockItem clsStockItem = new StockItem();
-                    MySqlDataReader myreader = clsStockItem.ProductMovementReport(lngProductID, DateFrom, DateTo);
+                    System.Data.DataTable dtProductHistoryMovement = clsStockItem.ProductMovementReport(lngProductID, DateFrom, DateTo);
                     clsStockItem.CommitAndDispose();
-                    while (myreader.Read())
+                    foreach (DataRow dr in dtProductHistoryMovement.Rows)
                     {
-                        DataRow drProductMovement = rptds.ProductMovement.NewRow();
+                        DataRow drNew = rptds.ProductMovement.NewRow();
 
                         foreach (DataColumn dc in rptds.ProductMovement.Columns)
-                            drProductMovement[dc] = myreader[dc.ColumnName];
+                            drNew[dc] = dr[dc.ColumnName];
 
-                        rptds.ProductMovement.Rows.Add(drProductMovement);
+                        rptds.ProductMovement.Rows.Add(drNew);
                     }
                     break;
                     #endregion

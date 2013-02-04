@@ -138,7 +138,7 @@ namespace AceSoft.RetailPlus.Reports
                             break;
                         case "producthistory":
                             stHeading = "Product History Report";
-                            ctrlProductHistoryReport.Visible = true;
+                            ctrlProductHistoryReport.Visible = true;    //ctrlProcessing.Visible = false;     ctrlProcessing.Dispose();
                             break;
                         case "agentscommision":
                             stHeading = "Agents Commision Report";

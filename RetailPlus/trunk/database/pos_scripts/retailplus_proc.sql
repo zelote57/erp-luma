@@ -3719,9 +3719,10 @@ BEGIN
 						UnitCode,
 						Remarks,
 						TransactionDate,
-						TransactionNo
+						TransactionNo,
+						CreatedBy
 					FROM tblProductMovement
-					WHERE 1=1 ';
+					WHERE QuantityMovementType = 0 ';
 	
 	IF (lngProductID <> 0) THEN
 		SET @strSQL = CONCAT(@strSQL,'AND ProductID = ', lngProductID,' ');
@@ -3736,6 +3737,8 @@ BEGIN
 		SET @strSQL = CONCAT(@strSQL,'AND TransactionDate <= ''', dteEndTransactionDate,''' ');
 	END IF;
 	
+	SET @strSQL = CONCAT(@strSQL,'ORDER BY TransactionDate DESC, QuantityTo ASC ');
+
 	PREPARE stmt FROM @strSQL;
 	EXECUTE stmt;
 	DEALLOCATE PREPARE stmt;

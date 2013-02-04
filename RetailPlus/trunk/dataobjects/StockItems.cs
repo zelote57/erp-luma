@@ -589,13 +589,13 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public MySqlDataReader ProductMovementReport(long ProductID, DateTime StartDate, DateTime EndDate)
+        public System.Data.DataTable ProductMovementReport(long ProductID, DateTime StartDate, DateTime EndDate)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
 
-                string SQL = "CALL procProductMovementSelect(@lngProductID, @dteStartTransactionDate, @dteEndTransactionDate);";
+                string SQL = "procProductMovementSelect"; //  "procProductMovementSelect(@lngProductID, @dteStartTransactionDate, @dteEndTransactionDate);";
 
                 cmd.Parameters.AddWithValue("@lngProductID", ProductID);
                 cmd.Parameters.AddWithValue("@dteStartTransactionDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -634,19 +634,14 @@ namespace AceSoft.RetailPlus.Data
                 
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.CommandText = SQL;
-                
 
-                return base.ExecuteReader(cmd);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
             }
             catch (Exception ex)
-            {
-                
-                
-                {
-                    
-                    
-                    
-                }
+            {              
                 throw ex;
             }
         }

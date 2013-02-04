@@ -750,13 +750,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
                 throw ex;
             }
         }
@@ -825,13 +818,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
                 throw ex;
             }
         }
@@ -916,13 +902,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
                 throw ex;
             }
         }
@@ -933,11 +912,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procGenerateSalesPerItem(@SessionID, @TransactionNo, @CustomerName, @CashierName, @TerminalNo, @StartTransactionDate, @EndTransactionDate);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -962,7 +937,7 @@ namespace AceSoft.RetailPlus.Data
                     "FROM tblSalesPerItem " +
                     "WHERE SessionID = @SessionID " +
                     "GROUP BY ProductGroup, ProductCode " +
-                    "ORDER BY Quantity DESC ";
+                    "ORDER BY SUM(Quantity) DESC ";
                 if (Limit != 0) SQL += "LIMIT " + Limit.ToString() + ";";
 
                 cmd.CommandText = SQL;
@@ -972,7 +947,7 @@ namespace AceSoft.RetailPlus.Data
 
                 System.Data.DataTable dt = new System.Data.DataTable("MostSalableItems");
                 base.MySqlDataAdapterFill(cmd, dt);
-                
+
 
                 SQL = "DELETE FROM tblSalesPerItem WHERE SessionID = @SessionID;";
                 cmd.CommandText = SQL;
@@ -985,15 +960,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1004,11 +970,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procGenerateSalesPerItemWithZeroSales(@SessionID, @TransactionNo, @CustomerName, @CashierName, @TerminalNo, @StartTransactionDate, @EndTransactionDate);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1033,7 +995,7 @@ namespace AceSoft.RetailPlus.Data
                     "FROM tblSalesPerItem " +
                     "WHERE SessionID = @SessionID " +
                     "GROUP BY ProductGroup, ProductCode " +
-                    "ORDER BY Quantity ASC ";
+                    "ORDER BY SUM(Quantity) ASC ";
                 if (Limit != 0) SQL += "LIMIT " + Limit.ToString() + ";";
 
                 cmd.CommandText = SQL;
@@ -1055,20 +1017,11 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
 
-        public MySqlDataReader ProductHistoryReport(long ProductID, DateTime StartDate, DateTime EndDate)
+        public System.Data.DataTable ProductHistoryReport(long ProductID, DateTime StartDate, DateTime EndDate)
         {
             try
             {
@@ -1123,27 +1076,16 @@ namespace AceSoft.RetailPlus.Data
 
                 SQL += "ORDER BY TransactionDate DESC ";
 
-                
-
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                
+                System.Data.DataTable dt = new System.Data.DataTable("tblProductHistoryReport");
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                return base.ExecuteReader(cmd);
-
+                return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
                 throw ex;
             }
         }
@@ -1154,11 +1096,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procGenerateAllAgentsCommision(@SessionID, @StartTransactionDate, @EndTransactionDate);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1210,15 +1148,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1229,11 +1158,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procGenerateAgentsCommision(@SessionID, @AgentID, @StartTransactionDate, @EndTransactionDate);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1280,15 +1205,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1313,11 +1229,7 @@ namespace AceSoft.RetailPlus.Data
                                 "TransactionItemStatus			=	@TransactionItemStatus " +
                             "WHERE TransactionItemsID		=	@TransactionItemsID;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1333,14 +1245,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1360,11 +1264,7 @@ namespace AceSoft.RetailPlus.Data
                                 "TransactionItemStatus			=	@TransactionItemStatus " +
                              "WHERE TransactionItemsID		=	@TransactionItemsID;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1380,14 +1280,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1407,11 +1299,7 @@ namespace AceSoft.RetailPlus.Data
                                 "TransactionItemStatus			=	@TransactionItemStatus " +
                             "WHERE TransactionID			=	@TransactionID;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1427,14 +1315,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1454,11 +1334,7 @@ namespace AceSoft.RetailPlus.Data
                                 "TransactionItemStatus			=	@TransactionItemStatus " +
                             "WHERE TransactionID			=	@TransactionID;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1474,14 +1350,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1492,11 +1360,7 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = "DELETE FROM tblTransactionItems " +
                             "WHERE TransactionItemsID		=	@TransactionItemsID;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1508,14 +1372,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1527,11 +1383,7 @@ namespace AceSoft.RetailPlus.Data
                                 "TransactionItemStatus			=	@TransactionItemStatus " +
                             "WHERE TransactionID			=	@TransactionID;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1547,14 +1399,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }

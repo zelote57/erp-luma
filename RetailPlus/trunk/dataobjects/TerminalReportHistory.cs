@@ -46,11 +46,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procUpdateTerminalReportBatchCounter(@TerminalNo, @DateLastInitialized);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -63,15 +59,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -82,11 +69,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procUpdateTerminalReportMallForwarderFileName(@TerminalNo, @DateLastInitialized, @MallFileName);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -100,15 +83,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -119,11 +93,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procUpdateTerminalReportIsMallFileUploadComplete(@TerminalNo, @DateLastInitialized, @IsMallFileUploadComplete);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -137,15 +107,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -316,12 +277,7 @@ namespace AceSoft.RetailPlus.Data
 					        "ORDER BY DateLastInitialized DESC " +
 					        "LIMIT 1 ";
 							
-				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -340,15 +296,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -361,12 +308,8 @@ namespace AceSoft.RetailPlus.Data
 					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
 					        "ORDER BY DateLastInitialized DESC " +
 					        "LIMIT 1 ";
-						
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -389,15 +332,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -409,11 +343,7 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = SQLSelect() + "WHERE TerminalNo = @TerminalNo " +
                             "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(@DateLastInitialized, '%Y-%m-%d %H:%i') ";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -436,15 +366,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -456,13 +377,8 @@ namespace AceSoft.RetailPlus.Data
 				string SQL=	SQLSelect() + "WHERE TerminalNo = @TerminalNo " +
 					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
 					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i');";
-							
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -489,15 +405,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -509,11 +416,7 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = SQLSelect() + "WHERE TerminalNo = @TerminalNo " +
                             "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') > DATE_FORMAT(@DateLastInitialized, '%Y-%m-%d %H:%i') LIMIT 1";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -536,15 +439,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -559,12 +453,8 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	SQLSelect() + "WHERE DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
 					"AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i');";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -603,15 +493,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -621,79 +502,6 @@ namespace AceSoft.RetailPlus.Data
 	
 		#region Streams : Report
 
-        //public System.Data.DataTable SummarizedDailySalesReport(int BranchID = 0, bool WithTF = false, string TerminalNo, DateTime DateFrom, DateTime DateTo)
-        //{
-        //    try
-        //    {
-        //        MySqlCommand cmd = new MySqlCommand();
-
-        //        string SQL = "SELECT " +
-        //                        "QuantitySold, " +
-        //                        "GrossSales, " +
-        //                        "TotalDiscount, " +
-        //                        "TotalCharge, " +
-        //                        "DailySales, " +
-        //                        "VAT, " +
-        //                        "LocalTax, " +
-        //                        "TotalCharge AS 'ServiceCharge', " +
-        //                        "(DateLastInitialized) 'DateLastInitialized', " +
-        //                        "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
-        //                        "TerminalNo " +
-        //                    "FROM  tblTerminalReportHistory " + 
-        //                    "WHERE 1=1 ";
-        //        if (TerminalNo != null  && TerminalNo != "")
-        //        {
-        //            SQL += "AND TerminalNo = @TerminalNo ";
-					
-        //        }
-        //        MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-        //        prmTerminalNo.Value = TerminalNo;
-        //        cmd.Parameters.Add(prmTerminalNo);
-
-        //        if (DateFrom != DateTime.MinValue) 
-        //        {
-        //            SQL += "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') ";
-        //            MySqlParameter prmDateFrom = new MySqlParameter("@DateFrom",MySqlDbType.DateTime);
-        //            prmDateFrom.Value = DateFrom.ToString("yyyy-MM-dd HH:mm:ss");
-        //            cmd.Parameters.Add(prmDateFrom);
-        //        }
-        //        if (DateTo != DateTime.MinValue)
-        //        {
-        //            SQL += "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') ";
-        //            MySqlParameter prmDateTo = new MySqlParameter("@DateTo",MySqlDbType.DateTime);
-        //            prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
-        //            cmd.Parameters.Add(prmDateTo);
-        //        }
-				
-        //        SQL += "ORDER BY TerminalNo, DateLastInitialized ";
-
-        //        
-
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-        //        base.MySqlDataAdapterFill(cmd, dt);
-        //        
-
-        //        return dt;		
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw ex;
-        //    }	
-        //}
         public System.Data.DataTable SummarizedDailySalesReport(int BranchID = 0, bool WithTF = false, string TerminalNo = "", DateTime? DateFrom = null, DateTime? DateTo = null)
         {
             try
@@ -713,7 +521,7 @@ namespace AceSoft.RetailPlus.Data
                                 "LocalTax - (LocalTax * TrustFund/100) 'LocalTax', " +
                                 "TotalCharge - (TotalCharge * TrustFund/100) AS 'ServiceCharge', " +
                                 "DateLastInitialized, " +
-                                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE BranchID = @BranchID AND TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
+                                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE " + (BranchID != 0? "BranchID = @BranchID AND ":"") + "TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
                                 "TerminalNo " +
                             "FROM  tblTerminalReportHistory " +
                             "WHERE 1=1 ";
@@ -730,7 +538,7 @@ namespace AceSoft.RetailPlus.Data
 					            "LocalTax, " +
 					            "TotalCharge AS 'ServiceCharge', " +
 					            "(DateLastInitialized) 'DateLastInitialized', " +
-                                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
+                                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE " + (BranchID != 0 ? "BranchID = @BranchID AND " : "") + "TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
 					            "TerminalNo " +
 					        "FROM  tblTerminalReportHistory " + 
 					        "WHERE 1=1 ";
@@ -765,30 +573,16 @@ namespace AceSoft.RetailPlus.Data
 
                 SQL += "ORDER BY TerminalNo, DateLastInitialized ";
 
-                
-
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -817,11 +611,7 @@ namespace AceSoft.RetailPlus.Data
                                 "GROUP BY DATE(TransactionDate), HOUR(TransactionDate) " +
                                 "ORDER BY TerminalNo, TransactionDate";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -860,56 +650,80 @@ namespace AceSoft.RetailPlus.Data
 				MySqlParameter prmDateTo = new MySqlParameter("@DateTo",MySqlDbType.DateTime);
 				prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmDateTo);
-
-				
 				
 				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
 
 		public System.Data.DataTable HourlyReport(int BranchID, string TerminalNo, DateTime DateFrom, DateTime DateTo)
 		{
-			MySqlDataReader myReader = HourlyReportPrivate(TerminalNo, DateFrom, DateTo, BranchID);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblHourlyReport");
+            string SQL = "SELECT BranchID" +
+                                        "TerminalNo, " +
+                                        "DATE(TransactionDate) 'TransactionDate', " +
+                                        "HOUR(TransactionDate) 'Time', " +
+                                        "COUNT(SubTotal) 'TranCount', " +
+                                        "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, SubTotal - Discount)) 'Amount', " +
+                                        "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, VAT)) 'VAT', " +
+                                        "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, Discount)) 'Discount' " +
+                                "FROM  tblTransactions " +
+                                "WHERE BranchID = @BranchID " +
+                                        "AND TerminalNo = @TerminalNo " +
+                                        "AND (TransactionStatus = @TransactionStatusClosed " +
+                                        "OR TransactionStatus = @TransactionStatusVoid " +
+                                        "OR TransactionStatus = @TransactionStatusReprinted " +
+                                        "OR TransactionStatus = @TransactionStatusRefund " +
+                                        "OR TransactionStatus = @TransactionStatusCreditPayment) " +
+                                        "AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
+                                        "AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') " +
+                                "GROUP BY DATE(TransactionDate), HOUR(TransactionDate) " +
+                                "ORDER BY TerminalNo, TransactionDate";
 
-			dt.Columns.Add("TerminalNo");
-			dt.Columns.Add("TransactionDate");
-			dt.Columns.Add("Time");
-			dt.Columns.Add("TranCount");
-			dt.Columns.Add("Amount");
-			dt.Columns.Add("VAT");
-			dt.Columns.Add("Discount");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-				
-				dr["TerminalNo"] = "" + myReader["TerminalNo"].ToString();
-				dr["TransactionDate"] = myReader.GetDateTime("TransactionDate");
-				dr["Time"] = myReader.GetInt64("Time").ToString("0#") + ":00";
-				dr["TranCount"] = myReader.GetInt32("TranCount").ToString("#,##0");
-				dr["Amount"] = myReader.GetDecimal("Amount").ToString("#,##0.#0");
-				dr["VAT"] = myReader.GetDecimal("VAT").ToString("#,##0.#0");
-				dr["Discount"] = myReader.GetDecimal("Discount").ToString("#,##0.#0");
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            MySqlParameter prmBranchID = new MySqlParameter("@TerminalNo", MySqlDbType.Int32);
+            prmBranchID.Value = BranchID;
+            cmd.Parameters.Add(prmBranchID);
+
+            MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo", MySqlDbType.String);
+            prmTerminalNo.Value = TerminalNo;
+            cmd.Parameters.Add(prmTerminalNo);
+
+            MySqlParameter prmTransactionStatusClosed = new MySqlParameter("@TransactionStatusClosed", MySqlDbType.Int16);
+            prmTransactionStatusClosed.Value = (Int16)TransactionStatus.Closed;
+            cmd.Parameters.Add(prmTransactionStatusClosed);
+
+            MySqlParameter prmTransactionStatusVoid = new MySqlParameter("@TransactionStatusVoid", MySqlDbType.Int16);
+            prmTransactionStatusVoid.Value = (Int16)TransactionStatus.Void;
+            cmd.Parameters.Add(prmTransactionStatusVoid);
+
+            MySqlParameter prmTransactionStatusReprinted = new MySqlParameter("@TransactionStatusReprinted", MySqlDbType.Int16);
+            prmTransactionStatusReprinted.Value = (Int16)TransactionStatus.Reprinted;
+            cmd.Parameters.Add(prmTransactionStatusReprinted);
+
+            MySqlParameter prmTransactionStatusRefund = new MySqlParameter("@TransactionStatusRefund", MySqlDbType.Int16);
+            prmTransactionStatusRefund.Value = (Int16)TransactionStatus.Refund;
+            cmd.Parameters.Add(prmTransactionStatusRefund);
+
+            MySqlParameter prmTransactionStatusCreditPayment = new MySqlParameter("@TransactionStatusCreditPayment", MySqlDbType.Int16);
+            prmTransactionStatusCreditPayment.Value = (Int16)TransactionStatus.CreditPayment;
+            cmd.Parameters.Add(prmTransactionStatusCreditPayment);
+
+            MySqlParameter prmDateFrom = new MySqlParameter("@DateFrom", MySqlDbType.DateTime);
+            prmDateFrom.Value = DateFrom.ToString("yyyy-MM-dd HH:mm:ss");
+            cmd.Parameters.Add(prmDateFrom);
+
+            MySqlParameter prmDateTo = new MySqlParameter("@DateTo", MySqlDbType.DateTime);
+            prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
+            cmd.Parameters.Add(prmDateTo);
+
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
 			return dt;
 		}
@@ -928,11 +742,7 @@ namespace AceSoft.RetailPlus.Data
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
 					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -948,14 +758,15 @@ namespace AceSoft.RetailPlus.Data
 				prmProcessingDate.Value = ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmProcessingDate);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				DateTime dteRetValue = DateTime.MinValue;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read())
-				{
-					dteRetValue = myReader.GetDateTime("DateLastInitialized");
-				}
+                DateTime dteRetValue = DateTime.MinValue;
+
+                foreach(System.Data.DataRow dr in dt.Rows)
+                {
+                    dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                }
 				
 				return dteRetValue;
 
@@ -963,15 +774,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -986,11 +788,7 @@ namespace AceSoft.RetailPlus.Data
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
 					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1006,31 +804,21 @@ namespace AceSoft.RetailPlus.Data
 				prmProcessingDate.Value = ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmProcessingDate);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				DateTime dteRetValue = DateTime.MinValue;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read())
-				{
-                    if (myReader["DateLastInitialized"].ToString() != "")
-					    dteRetValue = myReader.GetDateTime("DateLastInitialized");
-				}
-				
-				return dteRetValue;
+                DateTime dteRetValue = DateTime.MinValue;
 
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                }
+
+                return dteRetValue;
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -1045,11 +833,7 @@ namespace AceSoft.RetailPlus.Data
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
                             "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') > DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1065,31 +849,22 @@ namespace AceSoft.RetailPlus.Data
                 prmProcessingDate.Value = ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss");
                 cmd.Parameters.Add(prmProcessingDate);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MinValue;
 
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    if (myReader["DateLastInitialized"].ToString() != "")
-                        dteRetValue = myReader.GetDateTime("DateLastInitialized");
+                    dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
                 }
 
                 return dteRetValue;
-
+                
             }
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1104,41 +879,28 @@ namespace AceSoft.RetailPlus.Data
                             "WHERE TerminalNo = @TerminalNo " +
                             "AND IsMallFileUploadComplete = 0 ";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MinValue;
 
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    if (myReader["DateLastInitialized"].ToString() != "")
-                        dteRetValue = myReader.GetDateTime("DateLastInitialized");
+                    dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
                 }
 
                 return dteRetValue;
-
+                
             }
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1156,6 +918,7 @@ namespace AceSoft.RetailPlus.Data
                              "ORDER BY DateLastInitialized DESC ";
 
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
@@ -1174,27 +937,14 @@ namespace AceSoft.RetailPlus.Data
                 prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
                 cmd.Parameters.Add(prmDateTo);
 
-                
-                
-
                 System.Data.DataTable dt = new System.Data.DataTable("DatesLastInitialized");
                 base.MySqlDataAdapterFill(cmd, dt);
                 
-
                 return dt;
             }
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -1228,27 +978,14 @@ namespace AceSoft.RetailPlus.Data
                 prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
                 cmd.Parameters.Add(prmDateTo);
 
-                
-                
-
                 System.Data.DataTable dt = new System.Data.DataTable("DatesLastInitialized");
                 base.MySqlDataAdapterFill(cmd, dt);
                 
-
                 return dt;
             }
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }

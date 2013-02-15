@@ -474,7 +474,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     clsProduct.UpdateCommision(long.Parse(cboProductCode.SelectedValue), Convert.ToDecimal(txtCommision.Text));
 
-                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(lblProductID.Text));
+                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
                     clsProductDetails.BarCode = txtBarCode1.Text;
                     clsProductDetails.BarCode2 = txtBarCode2.Text;
                     clsProductDetails.BarCode3 = txtBarCode3.Text;
@@ -535,7 +535,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     clsProduct.UpdateCommision(long.Parse(cboProductCode.SelectedValue), Convert.ToDecimal(txtCommision.Text));
 
-                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(lblProductID.Text));
+                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
                     clsProductDetails.BarCode = txtBarCode1.Text;
                     clsProductDetails.BarCode2 = txtBarCode2.Text;
                     clsProductDetails.BarCode3 = txtBarCode3.Text;

@@ -98,7 +98,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SalesJournals
 				Label lblDiscount = (Label) e.Item.FindControl("lblDiscount");
 				lblDiscount.Text = Convert.ToDecimal(dr["Discount"].ToString()).ToString("#,##0.#0");
 
-				if (dr["InPercent"].ToString() == "1")
+                if (Convert.ToBoolean(dr["InPercent"].ToString()))
 				{
 					Label lblPercent = (Label) e.Item.FindControl("lblPercent");
 					lblPercent.Visible = true;

@@ -9168,14 +9168,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						/****************************sales transaction items*****************************/
 						Data.SalesTransactionItems clsSalesTransactionItems = new Data.SalesTransactionItems(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
-						MySqlDataReader myreader = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
+						System.Data.DataTable dt = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
 
-						while (myreader.Read())
+						foreach(System.Data.DataRow dr in dt.Rows)
 						{
 							drNew = rptds.SalesTransactionItems.NewRow();
 
 							foreach (System.Data.DataColumn dc in rptds.SalesTransactionItems.Columns)
-								drNew[dc] = myreader[dc.ColumnName];
+								drNew[dc] = dr[dc.ColumnName];
 
 							rptds.SalesTransactionItems.Rows.Add(drNew);
 						}
@@ -9349,14 +9349,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						/****************************sales transaction items*****************************/
 						Data.SalesTransactionItems clsSalesTransactionItems = new Data.SalesTransactionItems(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
-						MySqlDataReader myreader = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
+						System.Data.DataTable dt = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
 
-						while (myreader.Read())
+                        foreach (System.Data.DataRow dr in dt.Rows)
 						{
 							drNew = rptds.SalesTransactionItems.NewRow();
 
 							foreach (System.Data.DataColumn dc in rptds.SalesTransactionItems.Columns)
-								drNew[dc] = myreader[dc.ColumnName];
+								drNew[dc] = dr[dc.ColumnName];
 
 							rptds.SalesTransactionItems.Rows.Add(drNew);
 						}
@@ -9527,14 +9527,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						/****************************sales transaction items*****************************/
 						Data.SalesTransactionItems clsSalesTransactionItems = new Data.SalesTransactionItems(clsSalesTransactions.Connection, clsSalesTransactions.Transaction);
-						MySqlDataReader myreader = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
+						System.Data.DataTable dt = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
 
-						while (myreader.Read())
+                        foreach (System.Data.DataRow dr in dt.Rows)
 						{
 							drNew = rptds.SalesTransactionItems.NewRow();
 
 							foreach (System.Data.DataColumn dc in rptds.SalesTransactionItems.Columns)
-								drNew[dc] = myreader[dc.ColumnName];
+								drNew[dc] = dr[dc.ColumnName];
 
 							rptds.SalesTransactionItems.Rows.Add(drNew);
 						}

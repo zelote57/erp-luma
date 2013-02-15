@@ -111,7 +111,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 				chkList.Value = dr[ProductColumnNames.ProductID].ToString();
 
                 ImageButton imgProductTag = (ImageButton)e.Item.FindControl("imgProductTag");
-                if (dr[ProductColumnNames.Active].ToString() == "1")
+                if (Boolean.Parse(dr[ProductColumnNames.Active].ToString()))
                 {
                     imgProductTag.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/prodtagact.gif";
                     imgProductTag.ToolTip = "Tag this product as INACTIVE."; 
@@ -500,9 +500,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
             string SearchKey = string.Empty;
             if (Request.QueryString["Search"] != null)
-            { SearchKey = Common.Decrypt((string)Request.QueryString["search"], Session.SessionID); }
+            { SearchKey = Server.UrlDecode(Common.Decrypt((string)Request.QueryString["search"], Session.SessionID)); }
             else if (Session["Search"] != null)
-            { SearchKey = Common.Decrypt(Session["Search"].ToString(), Session.SessionID); }
+            { SearchKey = Server.UrlDecode(Common.Decrypt(Session["Search"].ToString(), Session.SessionID)); }
 
             try { Session.Remove("Search"); } catch { }
             if (SearchKey == null) { SearchKey = string.Empty; }
@@ -533,6 +533,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsSearchKeys.BarCode = SearchKey;
             clsSearchKeys.BarCode2 = SearchKey;
             clsSearchKeys.BarCode3 = SearchKey;
+            clsSearchKeys.ProductCode = SearchKey;
 
             System.Data.DataTable dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, clsProductListFilterType, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, SortField, SortOption.Ascending);
 

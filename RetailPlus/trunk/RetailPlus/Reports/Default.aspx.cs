@@ -72,10 +72,10 @@ namespace AceSoft.RetailPlus.Reports
                         //    stHeading = "Over Stock Items";
                         //    ctrlOverStock.Visible = true;
                         //    break;
-                        //case "pricehistory":
-                        //    stHeading = "Product Price History Report";
-                        //    ctrlProductHistoryReport.Visible = true;
-                        //    break;
+                        case "pricehistory":
+                            stHeading = "Product Price History Report";
+                            ctrlProductHistoryReport.Visible = true;
+                            break;
                         case "products":
                             stHeading = "View Products Report";
                             ctrlProducts.Visible = true;

@@ -162,18 +162,18 @@ namespace AceSoft.RetailPlus.Reports
 			ReportDataset rptds = new ReportDataset();
 
 			Contacts clsContact = new Contacts();
-            MySqlDataReader myreader = clsContact.AdvanceSearch(enumContactGroupCategory, cboContactCode.SelectedItem.Value, cboContactName.SelectedItem.Value, Convert.ToInt16(cboDeleted.SelectedItem.Value), Convert.ToInt32(cboGroup.SelectedItem.Value), false, "ContactID", SortOption.Ascending);
+            System.Data.DataTable dt = clsContact.AdvanceSearchDataTable(enumContactGroupCategory, cboContactCode.SelectedItem.Value, cboContactName.SelectedItem.Value, Convert.ToInt16(cboDeleted.SelectedItem.Value), Convert.ToInt32(cboGroup.SelectedItem.Value), false, "ContactID", SortOption.Ascending);
 			clsContact.CommitAndDispose();
 
-			while(myreader.Read())
-			{
-				DataRow drNew = rptds.Contacts.NewRow();
-				
-				foreach (DataColumn dc in rptds.Contacts.Columns)
-					drNew[dc] = "" + myreader[dc.ColumnName]; 
-				
-				rptds.Contacts.Rows.Add(drNew);
-			}
+            foreach (DataRow dr in dt.Rows)
+            {
+                DataRow drNew = rptds.Contacts.NewRow();
+
+                foreach (DataColumn dc in rptds.Contacts.Columns)
+                    drNew[dc] = dr[dc.ColumnName];
+
+                rptds.Contacts.Rows.Add(drNew);
+            }
 
 			Report.SetDataSource(rptds); 
 			SetParameters(Report);

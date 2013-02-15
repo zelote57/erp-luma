@@ -82,6 +82,14 @@
 								<td>
 									<asp:TextBox id="txtTerminalNo" accessKey="O" CssClass="ms-short" runat="server" MaxLength="15" BorderStyle="Groove">01</asp:TextBox>
 								</td>
+                                <TD class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</TD>
+								<td style="PADDING-BOTTOM:2px" nowrap>
+									<label>Select Branch</label>&nbsp;
+								</td>
+								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+								<td>
+									<asp:dropdownlist id="cboBranch" CssClass="ms-short" runat="server"></asp:dropdownlist>
+								</td>
 								<td width="99%" id="align02" noWrap align="right"><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 								</td>
 							</tr>

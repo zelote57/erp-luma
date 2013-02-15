@@ -110,32 +110,21 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int64 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				myReader.Close();
+                Int64 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int64.Parse(dr[0].ToString());
+                }
 
 				return iID;
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -299,40 +288,29 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				MySqlDataReader myReader = List(ProductID, "InvenrotyID", SortOption.Ascending);
+                System.Data.DataTable dt = ListAsDataTable(ProductID, "InventoryID", SortOption.Ascending);
 				
 				ProductInventoryDetails Details = new ProductInventoryDetails();
 
-				while (myReader.Read()) 
+				foreach (System.Data.DataRow dr in dt.Rows)
 				{
-					Details.InventoryID = myReader.GetInt64("InventoryID");
-					Details.ProductID = myReader.GetInt64("ProductID");
-					Details.ProductCode = "" + myReader["ProductCode"].ToString();
-					Details.VariationMatrixID = myReader.GetInt64("VariationMatrixID");
-					Details.VariationMatrixDescription = "" + myReader["VariationMatrixDescription"].ToString();
-					Details.ProductUnitID = myReader.GetInt32("ProductUnitID");
-					Details.UnitName = "" + myReader["UnitName"].ToString();
-					Details.Quantity = myReader.GetInt32("Quantity");
-					Details.MinThreshold = myReader.GetInt32("MinThreshold");
-					Details.MaxThreshold = myReader.GetInt32("MaxThreshold");
+					Details.InventoryID = Int64.Parse(dr["InventoryID"].ToString());
+					Details.ProductID = Int64.Parse(dr["ProductID"].ToString());
+					Details.ProductCode = "" + dr["ProductCode"].ToString();
+					Details.VariationMatrixID = Int64.Parse(dr["VariationMatrixID"].ToString());
+					Details.VariationMatrixDescription = "" + dr["VariationMatrixDescription"].ToString();
+					Details.ProductUnitID = Int32.Parse(dr["ProductUnitID"].ToString());
+					Details.UnitName = "" + dr["UnitName"].ToString();
+					Details.Quantity = Int32.Parse(dr["Quantity"].ToString());
+					Details.MinThreshold = Int32.Parse(dr["MinThreshold"].ToString());
+                    Details.MaxThreshold = Int32.Parse(dr["MaxThreshold"].ToString());
 				}
-
-				myReader.Close();
 
 				return Details;
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -398,6 +376,51 @@ namespace AceSoft.RetailPlus.Data
 				throw ex;
 			}	
 		}
+
+        public System.Data.DataTable ListAsDataTable(Int64 ProductID, string SortField, SortOption SortOrder)
+        {
+            try
+            {
+                string SQL = "SELECT " +
+                                    "InventoryID, " +
+                                    "a.ProductID, " +
+                                    "b.ProductCode, " +
+                                    "a.VariationMatrixID, " +
+                                    "c.Description as VariationMatrixDescription, " +
+                                    "a.ProductUnitID, " +
+                                    "d.UnitName, " +
+                                    "a.Quantity, " +
+                                    "MinThreshold, " +
+                                    "MaxThreshold " +
+                            "FROM tblInventory a " +
+                            "INNER JOIN tblProducts b ON a.ProductID = b.ProductID " +
+                            "LEFT OUTER JOIN  tblProductBaseVariationsMatrix c ON a.VariationMatrixID = c.MatrixID " +
+                            "INNER JOIN tblUnit d ON a.ProductUnitID = d.ProductUnitID " +
+                            "WHERE a.ProductID = @ProductID ORDER BY " + SortField;
+
+                if (SortOrder == SortOption.Ascending)
+                    SQL += " ASC";
+                else
+                    SQL += " DESC";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                MySqlParameter prmProductID = new MySqlParameter("@ProductID", MySqlDbType.Int32);
+                prmProductID.Value = ProductID;
+                cmd.Parameters.Add(prmProductID);
+
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 		
 		public MySqlDataReader ListReport(Int64 ProductID, int ProductUnitID, int VariationMatrixID)
 		{
@@ -427,11 +450,7 @@ namespace AceSoft.RetailPlus.Data
 				if (VariationMatrixID != 0)
 					SQL += " AND a.VariationMatrixID = @VariationMatrixID";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -447,21 +466,10 @@ namespace AceSoft.RetailPlus.Data
 				prmVariationMatrixID.Value = VariationMatrixID;
 				cmd.Parameters.Add(prmVariationMatrixID);
 				
-				
-				
 				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -496,11 +504,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -511,22 +515,11 @@ namespace AceSoft.RetailPlus.Data
 				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
-
-				
 				
 				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}		

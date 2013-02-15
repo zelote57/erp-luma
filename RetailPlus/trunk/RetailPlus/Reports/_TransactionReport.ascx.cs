@@ -38,6 +38,15 @@ namespace AceSoft.RetailPlus.Reports
 		{
             try
             {
+                Branch clsBranch = new Branch();
+                cboBranch.DataTextField = "BranchCode";
+                cboBranch.DataValueField = "BranchID";
+                cboBranch.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
+                cboBranch.DataBind();
+                clsBranch.CommitAndDispose();
+                if (cboBranch.Items.Count == 0) cboBranch.Items.Add(new ListItem(Constants.ALL, Constants.ZERO_STRING));
+                cboBranch.SelectedIndex = 0;
+                
                 if (Request.QueryString["task"].ToString().ToLower() == "transaction" && Request.QueryString["tranno"].ToString() != null)
                 {
                     txtTransactionNo.Text = Request.QueryString["tranno"].ToString();
@@ -140,7 +149,7 @@ namespace AceSoft.RetailPlus.Reports
 
 			/****************************sales transaction *****************************/
 			SalesTransactions clsSalesTransactions = new SalesTransactions();
-			SalesTransactionDetails clsDetails = clsSalesTransactions.Details(txtTransactionNo.Text, txtTerminalNo.Text, 0);
+			SalesTransactionDetails clsDetails = clsSalesTransactions.Details(txtTransactionNo.Text, txtTerminalNo.Text, int.Parse(cboBranch.SelectedItem.Value));
 			clsSalesTransactions.CommitAndDispose();
 
 			if (clsDetails.isExist == true )
@@ -179,15 +188,15 @@ namespace AceSoft.RetailPlus.Reports
 
 				/****************************sales transaction items*****************************/
 				SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems();
-				MySqlDataReader myreader = clsSalesTransactionItems.List(clsDetails.TransactionID, clsDetails.TransactionDate,"TransactionItemsID",SortOption.Ascending);
+				System.Data.DataTable dt = clsSalesTransactionItems.List(clsDetails.TransactionID, clsDetails.TransactionDate,"TransactionItemsID",SortOption.Ascending);
 				clsSalesTransactionItems.CommitAndDispose();
 
-				while(myreader.Read())
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{
 					drNew = rptds.TransactionItems.NewRow();
 				
 					foreach (DataColumn dc in rptds.TransactionItems.Columns)
-						drNew[dc] = myreader[dc.ColumnName]; 
+                        drNew[dc] = dr[dc.ColumnName]; 
 				
 					rptds.TransactionItems.Rows.Add(drNew);
 				}

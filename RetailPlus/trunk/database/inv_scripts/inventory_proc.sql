@@ -447,18 +447,41 @@ DROP PROCEDURE IF EXISTS procProductUpdateInvDetails
 GO
 
 create procedure procProductUpdateInvDetails(
+	IN pvtBranchID INT(4),
 	IN pvtProductID BIGINT(20),
 	IN pvtQuantityNow DECIMAL(18,3), 
 	IN pvtMinThresholdNow DECIMAL(18,3), 
-	IN pvtMaxThresholdNow DECIMAL(18,3))
+	IN pvtMaxThresholdNow DECIMAL(18,3),
+	IN strRemarks VARCHAR(100),
+	IN dteTransactionDate DateTime,
+	IN strTransactionNo VARCHAR(100),
+	IN pvtAdjustedBy VARCHAR(120))
 BEGIN
+	
+	DECLARE strProductCode VARCHAR(30) DEFAULT '';
+	DECLARE strProductDesc VARCHAR(50) DEFAULT '';
+	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
+	DECLARE decProductQuantity, decMatrixQuantity DECIMAL(18,3) DEFAULT 0;
 
-	UPDATE tblProducts SET
+	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
+	SELECT ProductCode, ProductDesc, Quantity, UnitCode INTO strProductCode, strProductDesc, decProductQuantity, strUnitCode FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE ProductID = pvtProductID;
+	
+	-- Insert to product movement history
+	CALL procProductMovementInsert(pvtProductID, strProductCode, strProductDesc, 0, '', 
+									decProductQuantity, pvtQuantityNow - decProductQuantity, pvtQuantityNow, 0, 
+									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, pvtAdjustedBy, pvtBranchID, pvtBranchID, 0);
+	
+	UPDATE tblBranchInventory SET
 		Quantity	= pvtQuantityNow,
+		QuantityIN  = pvtQuantityNow +  QuantityOut
+	WHERE ProductID = pvtProductID AND BranchID = pvtBranchID;
+			
+	UPDATE tblProducts SET
+		Quantity	= (SELECT IFNULL(SUM(Quantity),0) FROM tblBranchInventory WHERE ProductID = pvtProductID),
 		MinThreshold= pvtMinThresholdNow,
 		MaxThreshold= pvtmaxThresholdNow
 	WHERE ProductID = pvtproductID;
-	
+
 END;
 GO
 delimiter ;
@@ -475,18 +498,46 @@ DROP PROCEDURE IF EXISTS procProductBaseVariationUpdateInvDetails
 GO
 
 create procedure procProductBaseVariationUpdateInvDetails(
+	IN pvtBranchID INT(4),
+	IN pvtProductID BIGINT,
 	IN pvtMatrixID BIGINT(20),
 	IN pvtQuantityNow DECIMAL(18,3), 
 	IN pvtMinThresholdNow DECIMAL(18,3), 
-	IN pvtMaxThresholdNow DECIMAL(18,3))
+	IN pvtMaxThresholdNow DECIMAL(18,3),
+	IN strRemarks VARCHAR(100),
+	IN dteTransactionDate DateTime,
+	IN strTransactionNo VARCHAR(100),
+	IN pvtAdjustedBy VARCHAR(120))
 BEGIN
+	
+	DECLARE strProductCode VARCHAR(30) DEFAULT '';
+	DECLARE strProductDesc VARCHAR(50) DEFAULT '';
+	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
+	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
+	DECLARE decProductQuantity, decMatrixQuantity DECIMAL(18,3) DEFAULT 0;
+
+	-- Set the value of strMatrixDescription, decMatrixQuantity
+	SELECT Description, Quantity INTO strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND MatrixID = pvtMatrixID AND ProductID = pvtProductID;
+
+	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
+	SELECT ProductCode, ProductDesc, Quantity, UnitCode INTO strProductCode, strProductDesc, decProductQuantity, strUnitCode FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE ProductID = pvtProductID;
+	
+	-- Insert to product movement history
+	CALL procProductMovementInsert(pvtProductID, strProductCode, strProductDesc, pvtMatrixID, strMatrixDescription, 
+									decProductQuantity, pvtQuantityNow - decMatrixQuantity, pvtQuantityNow, decMatrixQuantity, 
+									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, pvtAdjustedBy, pvtBranchID, pvtBranchID, 0);
+
+	UPDATE tblBranchInventoryMatrix SET
+		Quantity	= pvtQuantityNow,
+		QuantityIN  = pvtQuantityNow +  QuantityOut
+	WHERE MatrixID = pvtMatrixID AND ProductID = pvtProductID AND BranchID = pvtBranchID;
 
 	UPDATE tblProductBaseVariationsMatrix SET
-		Quantity	= pvtQuantityNow,
+		Quantity	= (SELECT IFNULL(SUM(Quantity),0) FROM tblBranchInventoryMatrix WHERE MatrixID = pvtMatrixID AND ProductID = pvtProductID),
 		MinThreshold= pvtMinThresholdNow,
 		MaxThreshold= pvtmaxThresholdNow
-	WHERE MatrixID = pvtMatrixID;
-	
+	WHERE MatrixID = pvtMatrixID AND ProductID = pvtProductID;
+
 END;
 GO
 delimiter ;

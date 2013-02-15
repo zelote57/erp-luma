@@ -399,8 +399,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 
 			cboProductCode_SelectedIndexChanged(null, null);
 
-			txtQuantity.Text = "1";
-			txtDiscount.Text = "0";
+            txtQuantity.Text = "1";
+            txtPrice.Text = "0.00";
+            txtDiscount.Text = "0";
+
 			txtRemarks.Text = "";
 			ComputeItemAmount();
 			lblDebitMemoItemID.Text = "0";

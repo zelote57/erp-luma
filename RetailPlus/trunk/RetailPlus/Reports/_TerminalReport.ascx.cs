@@ -131,15 +131,15 @@ namespace AceSoft.RetailPlus.Reports
 			ReportDataset rptds = new ReportDataset();
 
 			Data.TerminalReport clsTerminalReport = new Data.TerminalReport();
-			MySqlDataReader myreader = clsTerminalReport.List(txtTerminalNo.Text);
+			System.Data.DataTable dt = clsTerminalReport.List(txtTerminalNo.Text);
 			clsTerminalReport.CommitAndDispose();
 
-			while (myreader.Read())
+			foreach(System.Data.DataRow dr in dt.Rows)
 			{
 				DataRow drNew = rptds.TerminalReport.NewRow();
 				
 				foreach (DataColumn dc in rptds.TerminalReport.Columns)
-					drNew[dc] = myreader[dc.ColumnName]; 
+					drNew[dc] = dr[dc.ColumnName]; 
 				
 				rptds.TerminalReport.Rows.Add(drNew);
 			}

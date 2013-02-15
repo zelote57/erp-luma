@@ -148,6 +148,9 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 		}
         private void Print()
         {
+            Session.Remove("tranno");
+            Session.Add("tranno", lblTransactionNo.Text);
+
             Common Common = new Common();
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("stocktransaction", Session.SessionID) + "&tranno=" + Common.Encrypt(lblTransactionNo.Text, Session.SessionID);
             Response.Redirect("Default.aspx" + stParam);

@@ -130,12 +130,12 @@
 					                            <col width="10">
 					                            <col width="10">
 					                            <col width="10">
-					                            <col width="15%" align="left">
+					                            <col width="10%" align="left">
                                                 <col width="10%" align="left">
                                                 <col width="10%" align="left">
-                                                <col width="16%" align="left">
-                                                <col width="16%" align="left">
-                                                <col width="8%" align="left">
+                                                <col width="13%" align="left">
+                                                <col width="13%" align="left">
+                                                <col width="9%" align="left">
                                                 <col width="8%" align="left">
                                                 <col width="8%" align="left">
                                                 <col width="8%" align="left">
@@ -182,12 +182,12 @@
 					                            <col width="10">
 					                            <col width="10">
 					                            <col width="10">
-					                            <col width="15%" align="left">
+					                            <col width="10%" align="left">
                                                 <col width="10%" align="left">
                                                 <col width="10%" align="left">
-                                                <col width="16%" align="left">
-                                                <col width="16%" align="left">
-                                                <col width="8%" align="left">
+                                                <col width="13%" align="left">
+                                                <col width="13%" align="left">
+                                                <col width="9%" align="left">
                                                 <col width="8%" align="left">
                                                 <col width="8%" align="left">
                                                 <col width="8%" align="left">
@@ -315,12 +315,12 @@
 			                                                <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 				                                                <colgroup>
 					                                                <col width="4%">
-					                                                <col width="15%" align="left">
+					                                                <col width="10%" align="left">
                                                                     <col width="10%" align="left">
                                                                     <col width="10%" align="left">
-                                                                    <col width="16%" align="left">
-                                                                    <col width="16%" align="left">
-                                                                    <col width="8%" align="left">
+                                                                    <col width="11%" align="left">
+                                                                    <col width="11%" align="left">
+                                                                    <col width="9%" align="left">
                                                                     <col width="8%" align="left">
                                                                     <col width="8%" align="left">
                                                                     <col width="8%" align="left">
@@ -358,12 +358,12 @@
 	                                                        <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 		                                                        <colgroup>
 					                                                <col width="4%">
-					                                                <col width="15%" align="left">
+					                                                <col width="10%" align="left">
                                                                     <col width="10%" align="left">
                                                                     <col width="10%" align="left">
-                                                                    <col width="16%" align="left">
-                                                                    <col width="16%" align="left">
-                                                                    <col width="8%" align="left">
+                                                                    <col width="11%" align="left">
+                                                                    <col width="11%" align="left">
+                                                                    <col width="9%" align="left">
                                                                     <col width="8%" align="left">
                                                                     <col width="8%" align="left">
                                                                     <col width="8%" align="left">

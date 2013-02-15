@@ -129,6 +129,7 @@ namespace AceSoft.RetailPlus
             try
             {
                 cmd.Connection = GetConnection();
+                cmd.CommandTimeout = 180;
 
                 return cmd.ExecuteNonQuery();
 

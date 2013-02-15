@@ -713,20 +713,25 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public void UpdateInvDetails(long ProductID, decimal QuantityNow, decimal MinThresholdNow, decimal MaxThresholdNow)
+        public void UpdateInvDetails(int BranchID, long ProductID, decimal QuantityNow, decimal MinThresholdNow, decimal MaxThresholdNow, string Remarks, DateTime TransactionDate, string TransactionNo, string AdjustedBy)
 		{
 			try
 			{
-				string SQL = "CALL procProductUpdateInvDetails(@ProductID, @QuantityNow, @MinThresholdNow, @MaxThresholdNow);";
+                string SQL = "CALL procProductUpdateInvDetails(@BranchID, @ProductID, @QuantityNow, @MinThresholdNow, @MaxThresholdNow, @strRemarks, @dteTransactionDate, @strTransactionNo, @AdjustedBy);";
 
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
 				cmd.Parameters.AddWithValue("@ProductID", ProductID);
 				cmd.Parameters.AddWithValue("@QuantityNow", QuantityNow);
 				cmd.Parameters.AddWithValue("@MinThresholdNow", MinThresholdNow);
 				cmd.Parameters.AddWithValue("@MaxThresholdNow", MaxThresholdNow);
+                cmd.Parameters.AddWithValue("@strRemarks", Remarks);
+                cmd.Parameters.AddWithValue("@dteTransactionDate", TransactionDate);
+                cmd.Parameters.AddWithValue("@strTransactionNo", TransactionNo);
+                cmd.Parameters.AddWithValue("@AdjustedBy", AdjustedBy);
 
 				base.ExecuteNonQuery(cmd);
 			}

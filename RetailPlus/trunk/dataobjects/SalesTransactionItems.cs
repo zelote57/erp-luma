@@ -286,11 +286,7 @@ namespace AceSoft.RetailPlus.Data
                                 "@PercentageCommision," +
                                 "@Commision);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -343,30 +339,20 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.Clear();
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 Int64 iID = 0;
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    iID = myReader.GetInt64(0);
+                    iID = Int64.Parse(dr[0].ToString());
                 }
-
-                myReader.Close();
 
                 return iID;
             }
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -415,11 +401,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Commision                  =   @Commision " +
                             "WHERE TransactionItemsID		=	@TransactionItemsID; ";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -471,14 +453,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -491,11 +465,7 @@ namespace AceSoft.RetailPlus.Data
                                 "OrderSlipPrinted           =   @OrderSlipPrinted " +
                             "WHERE TransactionItemsID		=	@TransactionItemsID; ";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -507,14 +477,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -526,11 +488,7 @@ namespace AceSoft.RetailPlus.Data
                                 "PaxNo           =   @PaxNo " +
                             "WHERE TransactionItemsID		=	@TransactionItemsID; ";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -542,14 +500,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -564,57 +514,57 @@ namespace AceSoft.RetailPlus.Data
             {
                 
                 SalesTransactionItems clsItems = new SalesTransactionItems(base.Connection, base.Transaction);
-                MySqlDataReader myReader = clsItems.List(TransactionID, TransactionDate, "TransactionItemsID", SortOption.Ascending);
+                System.Data.DataTable  dt = clsItems.List(TransactionID, TransactionDate, "TransactionItemsID", SortOption.Ascending);
 
                 ArrayList items = new ArrayList();
-
+                
                 int itemno = 1;
-                while (myReader.Read())
+                foreach(System.Data.DataRow dr in dt.Rows)
                 {
                     Data.SalesTransactionItemDetails itemDetails = new Data.SalesTransactionItemDetails();
 
                     itemDetails.ItemNo = itemno.ToString();
-                    itemDetails.TransactionItemsID = myReader.GetInt64("TransactionItemsID");
-                    itemDetails.TransactionID = myReader.GetInt64("TransactionID");
-                    itemDetails.ProductID = myReader.GetInt64("ProductID");
-                    itemDetails.ProductCode = "" + myReader["ProductCode"].ToString();
-                    itemDetails.BarCode = "" + myReader["BarCode"].ToString();
-                    itemDetails.Description = "" + myReader["Description"].ToString();
-                    itemDetails.ProductUnitID = myReader.GetInt32("ProductUnitID");
-                    itemDetails.ProductUnitCode = "" + myReader["ProductUnitCode"].ToString();
-                    itemDetails.Quantity = myReader.GetDecimal("Quantity");
-                    itemDetails.Price = myReader.GetDecimal("Price");
-                    itemDetails.Discount = myReader.GetDecimal("Discount");
-                    itemDetails.ItemDiscount = myReader.GetDecimal("ItemDiscount");
-                    itemDetails.ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), myReader.GetString("ItemDiscountType"));
-                    itemDetails.Amount = myReader.GetDecimal("Amount");
-                    itemDetails.VAT = myReader.GetDecimal("VAT");
-                    itemDetails.EVAT = myReader.GetDecimal("EVAT");
-                    itemDetails.LocalTax = myReader.GetDecimal("LocalTax");
-                    itemDetails.VariationsMatrixID = myReader.GetInt64("VariationsMatrixID");
-                    itemDetails.MatrixDescription = "" + myReader["MatrixDescription"].ToString();
-                    itemDetails.ProductGroup = "" + myReader["ProductGroup"].ToString();
-                    itemDetails.ProductSubGroup = "" + myReader["ProductSubGroup"].ToString();
+                    itemDetails.TransactionItemsID = Int64.Parse(dr["TransactionItemsID"].ToString());
+                    itemDetails.TransactionID = Int64.Parse(dr["TransactionID"].ToString());
+                    itemDetails.ProductID = Int64.Parse(dr["ProductID"].ToString());
+                    itemDetails.ProductCode = "" + dr["ProductCode"].ToString();
+                    itemDetails.BarCode = "" + dr["BarCode"].ToString();
+                    itemDetails.Description = "" + dr["Description"].ToString();
+                    itemDetails.ProductUnitID = Int32.Parse(dr["ProductUnitID"].ToString());
+                    itemDetails.ProductUnitCode = "" + dr["ProductUnitCode"].ToString();
+                    itemDetails.Quantity = decimal.Parse(dr["Quantity"].ToString());
+                    itemDetails.Price = decimal.Parse(dr["Price"].ToString());
+                    itemDetails.Discount = decimal.Parse(dr["Discount"].ToString());
+                    itemDetails.ItemDiscount = decimal.Parse(dr["ItemDiscount"].ToString());
+                    itemDetails.ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["ItemDiscountType"].ToString());
+                    itemDetails.Amount = decimal.Parse(dr["Amount"].ToString());
+                    itemDetails.VAT = decimal.Parse(dr["VAT"].ToString());
+                    itemDetails.EVAT = decimal.Parse(dr["EVAT"].ToString());
+                    itemDetails.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
+                    itemDetails.VariationsMatrixID = Int64.Parse(dr["VariationsMatrixID"].ToString());
+                    itemDetails.MatrixDescription = "" + dr["MatrixDescription"].ToString();
+                    itemDetails.ProductGroup = "" + dr["ProductGroup"].ToString();
+                    itemDetails.ProductSubGroup = "" + dr["ProductSubGroup"].ToString();
                     itemDetails.TransactionDate = TransactionDate;
-                    itemDetails.TransactionItemStatus = (TransactionItemStatus)Enum.Parse(typeof(TransactionItemStatus), myReader.GetString("TransactionItemStatus"));
-                    itemDetails.DiscountCode = "" + myReader["DiscountCode"].ToString();
-                    itemDetails.DiscountRemarks = "" + myReader["DiscountRemarks"].ToString();
-                    itemDetails.ProductPackageID = myReader.GetInt64("ProductPackageID");
-                    itemDetails.MatrixPackageID = myReader.GetInt64("MatrixPackageID");
-                    itemDetails.PackageQuantity = myReader.GetDecimal("PackageQuantity");
-                    itemDetails.PromoQuantity = myReader.GetDecimal("PromoQuantity");
-                    itemDetails.PromoValue = myReader.GetDecimal("PromoValue");
-                    itemDetails.PromoInPercent = myReader.GetInt16("PromoInPercent");
-                    itemDetails.PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoType"));
-                    itemDetails.PromoApplied = myReader.GetDecimal("PromoApplied");
-                    itemDetails.PurchasePrice = myReader.GetDecimal("PurchasePrice");
-                    itemDetails.PurchaseAmount = myReader.GetDecimal("PurchaseAmount");
-                    itemDetails.IncludeInSubtotalDiscount = myReader.GetBoolean("IncludeInSubtotalDiscount");
-                    itemDetails.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), myReader.GetString("OrderSlipPrinter"));
-                    itemDetails.OrderSlipPrinted = myReader.GetBoolean("OrderSlipPrinted");
-                    itemDetails.PercentageCommision = myReader.GetDecimal("PercentageCommision");
-                    itemDetails.Commision = myReader.GetDecimal("Commision");
-                    itemDetails.PaxNo = myReader.GetInt32("PaxNo");
+                    itemDetails.TransactionItemStatus = (TransactionItemStatus)Enum.Parse(typeof(TransactionItemStatus), dr["TransactionItemStatus"].ToString());
+                    itemDetails.DiscountCode = "" + dr["DiscountCode"].ToString();
+                    itemDetails.DiscountRemarks = "" + dr["DiscountRemarks"].ToString();
+                    itemDetails.ProductPackageID = Int64.Parse(dr["ProductPackageID"].ToString());
+                    itemDetails.MatrixPackageID = Int64.Parse(dr["MatrixPackageID"].ToString());
+                    itemDetails.PackageQuantity = decimal.Parse(dr["PackageQuantity"].ToString());
+                    itemDetails.PromoQuantity = decimal.Parse(dr["PromoQuantity"].ToString());
+                    itemDetails.PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    itemDetails.PromoInPercent = Int16.Parse(dr["PromoInPercent"].ToString());
+                    itemDetails.PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoType"].ToString());
+                    itemDetails.PromoApplied = decimal.Parse(dr["PromoApplied"].ToString());
+                    itemDetails.PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
+                    itemDetails.PurchaseAmount = decimal.Parse(dr["PurchaseAmount"].ToString());
+                    itemDetails.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
+                    itemDetails.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
+                    itemDetails.OrderSlipPrinted = bool.Parse(dr["OrderSlipPrinted"].ToString());
+                    itemDetails.PercentageCommision = decimal.Parse(dr["PercentageCommision"].ToString());
+                    itemDetails.Commision = decimal.Parse(dr["Commision"].ToString());
+                    itemDetails.PaxNo = Int32.Parse(dr["PaxNo"].ToString());
 
                     if (itemDetails.TransactionItemStatus == TransactionItemStatus.Return)
                     {
@@ -638,8 +588,6 @@ namespace AceSoft.RetailPlus.Data
                     itemno++;
                 }
 
-                myReader.Close();
-
                 SalesTransactionItemDetails[] TransactionItems = new SalesTransactionItemDetails[0];
 
                 if (items != null)
@@ -661,18 +609,14 @@ namespace AceSoft.RetailPlus.Data
 
         #region Streams
 
-        public MySqlDataReader SalesPerItem(string TransactionNo, string CustomerName, string CashierName, string TerminalNo,
+        public System.Data.DataTable SalesPerItem(string TransactionNo, string CustomerName, string CashierName, string TerminalNo,
             DateTime StartTransactionDate, DateTime EndTransactionDate, TransactionStatus Status, PaymentTypes PaymentType, SaleperItemFilterType pvtSaleperItemFilterType)
         {
             try
             {
                 string SQL = "CALL procGenerateSalesPerItem(@SessionID, @TransactionNo, @CustomerName, @CashierName, @TerminalNo, @StartTransactionDate, @EndTransactionDate);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -738,7 +682,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandText = SQL;
                 cmd.Parameters.Clear();
                 cmd.Parameters.Add(prmSessionID);
-                
+
+                System.Data.DataTable dt = new System.Data.DataTable("SalesTransactionPerItem");
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 SQL = "DELETE FROM tblSalesPerItem WHERE SessionID = @SessionID;";
                 cmd.CommandText = SQL;
@@ -746,25 +692,21 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.Add(prmSessionID);
                 base.ExecuteNonQuery(cmd);
 
-                return base.ExecuteReader(cmd);
+                return dt;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public MySqlDataReader SalesPerItemByGroup(string ProductGroupName, string TransactionNo, string CustomerName, string CashierName, string TerminalNo,
+        public System.Data.DataTable SalesPerItemByGroup(string ProductGroupName, string TransactionNo, string CustomerName, string CashierName, string TerminalNo,
             DateTime StartTransactionDate, DateTime EndTransactionDate, TransactionStatus Status, PaymentTypes PaymentType, SaleperItemFilterType pvtSaleperItemFilterType)
         {
             try
             {
                 string SQL = "CALL procGenerateSalesPerItemByGroup(@SessionID, @ProductGroupName, @TransactionNo, @CustomerName, @CashierName, @TerminalNo, @StartTransactionDate, @EndTransactionDate);";
-
                 
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -805,7 +747,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandText = SQL;
                 cmd.Parameters.Clear();
                 cmd.Parameters.Add(prmSessionID);
-                
+
+                System.Data.DataTable dt = new System.Data.DataTable("SalesTransactionPerItem");
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 SQL = "DELETE FROM tblSalesPerItem WHERE SessionID = @SessionID;";
 
@@ -814,14 +758,14 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.Add(prmSessionID);
                 base.ExecuteNonQuery(cmd);
 
-                return base.ExecuteReader(cmd);
+                return dt;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public MySqlDataReader List(Int64 TransactionID, DateTime TransactionDate, string SortField, SortOption SortOrder)
+        public System.Data.DataTable List(Int64 TransactionID, DateTime TransactionDate, string SortField, SortOption SortOrder)
         {
             try
             {
@@ -876,11 +820,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -896,9 +836,10 @@ namespace AceSoft.RetailPlus.Data
                 prmTransactionItemStatus.Value = TransactionItemStatus.Trash.ToString("d");
                 cmd.Parameters.Add(prmTransactionItemStatus);
 
-                
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                return base.ExecuteReader(cmd);
+                return dt;
             }
             catch (Exception ex)
             {

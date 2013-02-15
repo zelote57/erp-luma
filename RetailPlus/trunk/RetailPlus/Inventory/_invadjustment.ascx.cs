@@ -130,7 +130,7 @@ namespace AceSoft.RetailPlus.Inventory
                 txtMaxThreshold.Text = clsProductDetails.MaxThreshold.ToString("#,##0.#0");
 
                 ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
-                lstVariationMatrix.DataSource = clsProductVariationsMatrix.BaseListAsDataTable(Convert.ToInt64(cboProductCode.SelectedValue), "MatriXID", SortOption.Ascending).DefaultView;
+                lstVariationMatrix.DataSource = clsProductVariationsMatrix.BaseListAsDataPerBranch(int.Parse(cboBranch.SelectedItem.Value), Convert.ToInt64(cboProductCode.SelectedValue), "MatriXID", SortOption.Ascending).DefaultView;
                 lstVariationMatrix.DataBind();
 
                 clsProduct.CommitAndDispose();
@@ -315,12 +315,17 @@ namespace AceSoft.RetailPlus.Inventory
                     // - Do not update the quantity of product. Update the MinThreshold & MaxThreshold only.
                     //   Use AddQuantity or SubtractQuantity to include in ProductMovement Report
                     // remove this again due to inventory per branch
-                    // clsProduct.UpdateInvDetails(lngProductID, decQuantityBefore, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text));
-
+                    // re-use this again. AddQty does not tally
                     if (decQuantityBefore > decQuantityNow)
-                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
                     else if (decQuantityBefore < decQuantityNow)
-                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+
+                    //if (decQuantityBefore > decQuantityNow)
+                    //{ clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    //else if (decQuantityBefore < decQuantityNow)
+                    //{ clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+            
                 }
             }
             else
@@ -372,7 +377,11 @@ namespace AceSoft.RetailPlus.Inventory
                         clsInvAdjustment.Insert(clsInvAdjustmentDetails);
 
                         bolContinue = true;
-                        clsProductVariationsMatrix.UpdateInvDetails(long.Parse(chkMatrixID.Value), decimal.Parse(txtQuantityNowMatrix.Text), decimal.Parse(txtMaxThresholdMatrix.Text), decimal.Parse(txtMaxThresholdMatrix.Text));
+                        if (decQuantityBeforeMatrix > decQuantityNowMatrix)
+                        { clsProductVariationsMatrix.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, long.Parse(chkMatrixID.Value), decimal.Parse(txtQuantityNowMatrix.Text), decimal.Parse(txtMaxThresholdMatrix.Text), decimal.Parse(txtMaxThresholdMatrix.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                        else if (decQuantityBeforeMatrix < decQuantityNowMatrix)
+                        { clsProductVariationsMatrix.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, long.Parse(chkMatrixID.Value), decimal.Parse(txtQuantityNowMatrix.Text), decimal.Parse(txtMaxThresholdMatrix.Text), decimal.Parse(txtMaxThresholdMatrix.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+
                     }
 
                     decQuantityNow += decimal.Parse(txtQuantityNowMatrix.Text);
@@ -388,13 +397,21 @@ namespace AceSoft.RetailPlus.Inventory
                     // remove this again due to inventory per branch
                     // clsProduct.UpdateInvDetails(lngProductID, decQuantityBefore, decMinThresholdNow, decMaxThresholdNow);
 
+                    //if (decQuantityBefore > decQuantityNow)
+                    //{ clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    //else if (decQuantityBefore < decQuantityNow)
+                    //{ clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+
+                    // re-use this again. AddQty does not tally
                     if (decQuantityBefore > decQuantityNow)
-                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
                     else if (decQuantityBefore < decQuantityNow)
-                    { clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+
                 }
             }
             clsProduct.CommitAndDispose();
+
 		}
 
 		#endregion

@@ -99,7 +99,6 @@ namespace AceSoft.RetailPlus.Data
 
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 Int16 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)

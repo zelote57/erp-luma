@@ -1498,6 +1498,10 @@ BEGIN
 
 	UPDATE tblProductBasevariationsMatrix SET Quantity = 0;
 
+	UPDATE tblBranchInventory SET Quantity = 0;
+
+	UPDATE tblBranchInventoryMatrix SET Quantity = 0;
+
 END;
 GO
 delimiter ;
@@ -1518,75 +1522,10 @@ BEGIN
 
 	UPDATE tblProducts SET Quantity = 0;
 
-	DROP TABLE IF EXISTS tblProductVariationsMatrix;
-
-	/*****************************
-	**	tblMatrixPackage
-	*****************************/
-	DROP TABLE IF EXISTS tblMatrixPackage;
-	CREATE TABLE tblMatrixPackage (
-	`PackageID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`MatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductBaseVariationsMatrix(`MatrixID`),
-	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-	`Price` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`PurchasePrice` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`Quantity` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`VAT` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`EVAT` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`LocalTax` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	INDEX `IX_tblMatrixPackage`(`PackageID`,`MatrixID`),
-	UNIQUE `PK_tblMatrixPackage`(`MatrixID`,`UnitID`,`Quantity`),
-	INDEX `IX1_tblMatrixPackage`(`MatrixID`),
-	INDEX `IX2_tblMatrixPackage`(`UnitID`),
-	FOREIGN KEY (`UnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT
-	);
-
-	/*****************************
-	**	tblProductBaseVariationsMatrix
-	*****************************/
-	DROP TABLE IF EXISTS tblProductBaseVariationsMatrix;
-	CREATE TABLE tblProductBaseVariationsMatrix (
-	`MatrixID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProducts(`ProductID`),
-	`Description` VARCHAR(255) NOT NULL,
-	`UnitID` INT(3) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-	`Price` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`PurchasePrice` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`IncludeInSubtotalDiscount` TINYINT(1) NOT NULL DEFAULT 1,
-	`Quantity` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`ActualQuantity` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`VAT` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`EVAT` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`LocalTax` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`MinThreshold` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`MaxThreshold` DECIMAL(18,2) NOT NULL DEFAULT 0,
-	`SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
-	`Deleted` TINYINT(1) NOT NULL DEFAULT 0,
-	INDEX `IX_tblProductBaseVariationsMatrix`(`MatrixID`,`ProductID`),
-	UNIQUE `PK_tblProductBaseVariationsMatrix`(`ProductID`,`Description`),
-	INDEX `IX1_tblProductBaseVariationsMatrix`(`ProductID`),
-	FOREIGN KEY (`ProductID`) REFERENCES tblProducts(`ProductID`) ON DELETE RESTRICT,
-	INDEX `IX2_tblProductBaseVariationsMatrix`(`UnitID`),
-	FOREIGN KEY (`UnitID`) REFERENCES tblUnit(`UnitID`) ON DELETE RESTRICT,
-	INDEX `IX3_tblProductBaseVariationsMatrix`(`SupplierID`),
-	FOREIGN KEY (`SupplierID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRICT
-	);
-
-	/*****************************
-	**	tblProductVariationsMatrix
-	*****************************/
-	DROP TABLE IF EXISTS tblProductVariationsMatrix;
-	CREATE TABLE tblProductVariationsMatrix (
-	`MatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductBaseVariationsMatrix(`MatrixID`),
-	`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductVariations(`VariationID`),
-	`Description` VARCHAR(150) NOT NULL,
-	INDEX `IX_tblProductVariationsMatrix`(`MatrixID`,`VariationID`),
-	UNIQUE `PK_tblProductVariationsMatrix`(`MatrixID`, `VariationID`, `Description`),
-	INDEX `IX1_tblProductVariationsMatrix`(`MatrixID`),
-	FOREIGN KEY (`MatrixID`) REFERENCES tblProductBaseVariationsMatrix(`MatrixID`) ON DELETE RESTRICT,
-	INDEX `IX2_tblProductVariationsMatrix`(`VariationID`),
-	FOREIGN KEY (`VariationID`) REFERENCES tblProductVariations(`VariationID`) ON DELETE RESTRICT
-	);
+	TRUNCATE TABLE tblBranchInventoryMatrix;
+	TRUNCATE TABLE tblProductVariationsMatrix;
+	TRUNCATE TABLE tblProductBaseVariationsMatrix;
+	TRUNCATE TABLE tblMatrixPackage;
 	
 END;
 GO
@@ -1615,7 +1554,7 @@ delimiter ;
 /*********************************
 	procProductSynchronizeQuantity
 	Lemuel E. Aceron
-	CALL procProductSynchronizeQuantity(1);
+	CALL procProductSynchronizeQuantity(11);
 	
 	Oct 01, 2009 : Lemu
 	Create this procedure
@@ -1641,9 +1580,10 @@ BEGIN
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
 	DECLARE decProductQuantity, decProductActualQuantity, decMinThreshold, decMaxThreshold DECIMAL(18,3) DEFAULT 0;
 	DECLARE decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE lngMatrixID BIGINT DEFAULT 0;
 	DECLARE strRemarks VARCHAR(100);
 	DECLARE intBranchID INT(4) DEFAULT 1;
-		
+	
 	-- STEP 1: check if there is an existing variation
 
 	-- STEP 1.a: Set the value of lngMatrixVariationCount
@@ -1653,10 +1593,10 @@ BEGIN
 	
 	-- STEP 1.b: compare if there is a count
 	IF (lngMatrixVariationCount <> 0) THEN 
-		
+
 		-- STEP 2: get the total Quantity of all Matrix
 		SET decMatrixTotalQuantity = 0;
-		SELECT SUM(Quantity) INTO decMatrixTotalQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID; 
+		SELECT SUM(Quantity) INTO decMatrixTotalQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID;
 	
 		-- STEP 3: Set the value of strProductCode, strProductDesc, decProductQuantity, decProductActualQuantity, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold
 		SELECT ProductCode, ProductDesc, Quantity, ActualQuantity, BaseUnitID, UnitCode, MinThreshold, MaxThreshold INTO 
@@ -1693,7 +1633,6 @@ BEGIN
 		WHERE ProductID = lngProductID;
 	
 	END IF;
-	
 	
 	
 END;
@@ -3143,8 +3082,9 @@ BEGIN
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
 	DECLARE done INT DEFAULT 0;
 	DECLARE lngCtr, lngCount bigint DEFAULT 0;
-	DECLARE curItems CURSOR FOR SELECT ProductID, Quantity, ActualQuantity, ProductCode, ProductDesc, a.BaseUnitID, UnitCode, a.MinThreshold, a.MaxThreshold, PurchasePrice FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID
-									WHERE Quantity <> ActualQuantity ; 
+	DECLARE curItems CURSOR FOR SELECT ProductID, Quantity, ActualQuantity, ProductCode, ProductDesc, a.BaseUnitID, UnitCode, a.MinThreshold, a.MaxThreshold, PurchasePrice 
+								FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID
+								WHERE Quantity <> ActualQuantity ; 
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 	
 	SELECT COUNT(*) INTO lngCount FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE Quantity <> ActualQuantity;
@@ -3315,7 +3255,8 @@ BEGIN
 		--			 Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
 		SELECT ProductCode, ProductDesc, c.Quantity, c.ActualQuantity, BaseUnitID, UnitCode, MinThreshold, MaxThreshold INTO 
 				strProductCode, strProductDesc, decProductQuantity, decProductActualQuantity, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold
-		FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID INNER JOIN tblBranchInventory c ON a.ProductID = c.ProductID WHERE a.ProductID = lngProductID AND BranchID = intBranchID;
+		FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
+		INNER JOIN tblBranchInventory c ON a.ProductID = c.ProductID WHERE a.ProductID = lngProductID AND BranchID = intBranchID;
 		
 		
 		-- STEP 3: IF Matrix Total Quantity is not equal to Product Quantity
@@ -3562,7 +3503,7 @@ BEGIN
 		WHERE MatrixID	= lngMatrixID  
 			AND ProductID = lngProductID 
 			AND BranchID = intBranchID;
-	ELSE
+	ELSEIF lngMatrixID <> 0 THEN
 		INSERT INTO tblBranchInventoryMatrix (BranchID , ProductID, MatrixID, Quantity, QuantityIN) VALUES (intBranchID, lngProductID, lngMatrixID, decQuantity, decQuantity);
 	END IF;
 	
@@ -3613,10 +3554,14 @@ BEGIN
 	
 	/*********** subtract from main ***********/
 	-- Set the value of strMatrixDescription, decMatrixQuantity
-	SELECT Description, Quantity INTO strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND MatrixID = lngMatrixID AND ProductID = lngProductID;
+	SELECT Description, Quantity 
+		INTO strMatrixDescription, decMatrixQuantity 
+	FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND MatrixID = lngMatrixID AND ProductID = lngProductID;
 
 	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-	SELECT ProductCode, ProductDesc, Quantity, UnitCode INTO strProductCode, strProductDesc, decProductQuantity, strUnitCode FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE ProductID = lngProductID;
+	SELECT ProductCode, ProductDesc, Quantity, UnitCode 
+		INTO strProductCode, strProductDesc, decProductQuantity, strUnitCode 
+	FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE ProductID = lngProductID;
 	
 	-- Insert to product movement history
 	CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
@@ -3647,8 +3592,7 @@ BEGIN
 									decProductQuantity, -1 * decQuantity, decProductQuantity - decQuantity, decMatrixQuantity, 
 									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, strCreatedBy, intBranchID, intBranchID, 1);
 
-	-- Subtract the quantity from Product table
-	-- Add the quantity to BranchInventory table
+	-- Subtract the quantity from BranchInventory table
 	IF EXISTS(SELECT ProductID FROM tblBranchInventory WHERE ProductID = lngProductID AND BranchID = intBranchID) THEN
 		UPDATE tblBranchInventory SET 
 			Quantity	= Quantity - decQuantity, QuantityOut	= QuantityOut + decQuantity, ActualQuantity = ActualQuantity - decQuantity
@@ -3658,14 +3602,14 @@ BEGIN
 		INSERT INTO tblBranchInventory (BranchID , ProductID, Quantity, QuantityIN) VALUES (intBranchID, lngProductID, -decQuantity, -decQuantity);
 	END IF;
 	
-	-- Subtract the quantity from Matrix table
+	-- Subtract the quantity from BranchInventoryMatrix table
 	IF EXISTS(SELECT ProductID FROM tblBranchInventoryMatrix WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID ) THEN
 		UPDATE tblBranchInventoryMatrix SET 
 			Quantity	= Quantity - decQuantity, QuantityOut	= QuantityOut + decQuantity, ActualQuantity = ActualQuantity - decQuantity
 		WHERE MatrixID	= lngMatrixID 
 			AND ProductID = lngProductID
 			AND BranchID = intBranchID;
-	ELSE
+	ELSEIF lngMatrixID <> 0 THEN
 		INSERT INTO tblBranchInventoryMatrix (BranchID , ProductID, MatrixID, Quantity, QuantityIN) VALUES (intBranchID, lngProductID, lngMatrixID, -decQuantity, -decQuantity);
 	END IF;
 		
@@ -4611,6 +4555,11 @@ BEGIN
 		IF NOT EXISTS(SELECT ProductID FROM tblBranchInventory WHERE ProductID = lngProductID AND BranchID = intBranchID) THEN
 			INSERT INTO tblBranchInventory(BranchID, ProductID)VALUES (intBranchID, lngProductID);
 		END IF;
+
+		INSERT INTO tblBranchInventoryMatrix(BranchID, ProductID, MatrixID, Quantity, QuantityIn)
+		SELECT intBranchID, lngProductID, MatrixID, Quantity, QuantityIn FROM tblProductBaseVariationsMatrix 
+										 WHERE ProductID = lngProductID 
+												AND MatrixID NOT IN (SELECT DISTINCT MatrixID FROM tblBranchInventoryMatrix WHERE ProductID = lngProductID AND BranchID = intBranchID);
 		
 		SET intBranchID = 0;
 	END LOOP curBranches;

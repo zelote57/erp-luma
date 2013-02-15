@@ -195,7 +195,7 @@ namespace AceSoft.RetailPlus.Inventory
                 }
 
                 ImageButton imgProductTag = (ImageButton)e.Item.FindControl("imgProductTag");
-                if (dr["Active"].ToString() == "1")
+                if (Convert.ToBoolean(dr["Active"].ToString()))
                 {
                     imgProductTag.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/prodtagact.gif";
                     imgProductTag.ToolTip = "Tag this product as INACTIVE.";

@@ -181,20 +181,18 @@ namespace AceSoft.RetailPlus.Security
                 cmd.Parameters.AddWithValue("@UID", UID);
 				cmd.Parameters.AddWithValue("@TranTypeID", TranTypeID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblAccess");
+                base.MySqlDataAdapterFill(cmd, dt);
 				
 				AllowedRights rights = new AllowedRights();
 
-				while (myReader.Read())
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{
-					rights.Read = myReader.GetBoolean("Read");
-					rights.Write  = myReader.GetBoolean("Write");
+                    rights.Read = Convert.ToBoolean(Int16.Parse(dr["Read"].ToString()));
+                    rights.Write = Convert.ToBoolean(Int16.Parse(dr["Write"].ToString()));
 				}
-			
-				myReader.Close();
 
 				return rights;
-
 			}
 			catch (Exception ex)
 			{

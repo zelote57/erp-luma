@@ -897,7 +897,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL = "SELECT Count(MatrixID) FROM tblMatrixPackage WHERE MatrixID = @MatrixID "; 
+                string SQL = "SELECT Count(MatrixID) MatrixIDCount FROM tblMatrixPackage WHERE MatrixID = @MatrixID "; 
 				
 
 				MySqlCommand cmd = new MySqlCommand();
@@ -910,12 +910,16 @@ namespace AceSoft.RetailPlus.Data
 				prmMatrixID.Value = MatrixID;
 				cmd.Parameters.Add(prmMatrixID);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblPackage");
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                int iRetValue = myReader.GetInt32(0);
+                int iRetValue = 0;
 
-				myReader.Close();
-
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iRetValue = Int32.Parse(dr["MatrixIDCount"].ToString());
+                }
+                
                 return iRetValue;
 			}
 			catch (Exception ex)

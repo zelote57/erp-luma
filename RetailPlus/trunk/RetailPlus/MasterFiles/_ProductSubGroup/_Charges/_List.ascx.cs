@@ -147,7 +147,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Charges
 
 				HtmlInputCheckBox chkInPercent = (HtmlInputCheckBox) e.Item.FindControl("chkInPercent");
 				chkInPercent.Disabled = true;
-				if (dr["InPercent"].ToString() == "1")
+                if (Convert.ToBoolean(dr["InPercent"].ToString()))
 					chkInPercent.Checked = true;
 				else
 					chkInPercent.Checked = false;

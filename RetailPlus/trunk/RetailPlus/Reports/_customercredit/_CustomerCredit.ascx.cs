@@ -215,19 +215,21 @@ namespace AceSoft.RetailPlus.Reports
                 
                 case ReportTypes.CustomerCreditListWCredit:
                     #region  Customers List With Credit
+
                     Contacts clsContact = new Contacts();
-                    MySqlDataReader myreader = clsContact.CustomerAdvanceSearch(null, cboContactName.Text, cboCustomerGroup.SelectedValue, true, "ContactID", SortOption.Ascending);
-			        while(myreader.Read())
-			        {
-				        DataRow drNew = rptds.Contacts.NewRow();
-				
-				        foreach (DataColumn dc in rptds.Contacts.Columns)
-					        drNew[dc] = myreader[dc.ColumnName]; 
-				
-				        rptds.Contacts.Rows.Add(drNew);
-			        }
-                    myreader.Close();
+                    dt = clsContact.CustomerAdvanceSearch(null, cboContactName.Text, cboCustomerGroup.SelectedValue, true, "ContactID", SortOption.Ascending);
                     clsContact.CommitAndDispose();
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.Contacts.NewRow();
+
+                        foreach (DataColumn dc in rptds.Contacts.Columns)
+                            drNew[dc] = dr[dc.ColumnName];
+
+                        rptds.Contacts.Rows.Add(drNew);
+                    }
+                    
                     break;
                     #endregion
                 

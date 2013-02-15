@@ -58,6 +58,24 @@ namespace AceSoft.RetailPlus.Reports
             clsAccessRights.CommitAndDispose();
 
             cboReportType.SelectedIndex = 0;
+            try
+            {
+                if (Common.Decrypt(Request.QueryString["task"].ToString().ToLower(), Session.SessionID) == "producthistory")
+                {
+                    cboReportType.SelectedIndex = cboReportType.Items.IndexOf(cboReportType.Items.FindByValue(ReportTypes.ProductHistoryMovement));
+                    cboReportType_SelectedIndexChanged(null, null);
+                }
+            }
+            catch {}
+            try
+            {
+                if (Common.Decrypt(Request.QueryString["task"].ToString().ToLower(), Session.SessionID) == "pricehistory")
+                {
+                    cboReportType.SelectedIndex = cboReportType.Items.IndexOf(cboReportType.Items.FindByValue(ReportTypes.ProductHistoryPrice));
+                    cboReportType_SelectedIndexChanged(null, null);
+                }
+            }
+            catch { }
 
 			txtStartDate.Text = DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd");
 			txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");

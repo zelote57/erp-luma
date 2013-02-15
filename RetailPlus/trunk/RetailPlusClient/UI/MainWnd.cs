@@ -4336,7 +4336,10 @@ namespace AceSoft.RetailPlus.Client.UI
 						clsItemDetails.PercentageCommision = clsProductDetails.PercentageCommision;
 						clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
 
-						if (clsProductPackageDetails.PackageID != 0)
+                        Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
+                        int variationsCtr = clsProductVariationsMatrix.CountVariations(clsItemDetails.ProductID);
+
+                        if (clsProductPackageDetails.PackageID != 0 && variationsCtr == 0)
 						{
 							if (!mboIsInTransaction)
 							{
@@ -4357,9 +4360,6 @@ namespace AceSoft.RetailPlus.Client.UI
 						}
 						else
 						{
-							Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
-							int variationsCtr = clsProductVariationsMatrix.CountVariations(clsItemDetails.ProductID);
-
 							#region variationsCtr = 0
 							if (variationsCtr == 0)
 							{
@@ -8783,18 +8783,17 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						/****************************sales transaction items*****************************/
 						Data.SalesTransactionItems clsSalesTransactionItems = new Data.SalesTransactionItems(mConnection, mTransaction);
-						MySqlDataReader myreader = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
+						System.Data.DataTable dt = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
 
-						while (myreader.Read())
+                        foreach (System.Data.DataRow dr in dt.Rows)
 						{
 							drNew = rptds.SalesTransactionItems.NewRow();
 
 							foreach (System.Data.DataColumn dc in rptds.SalesTransactionItems.Columns)
-								drNew[dc] = myreader[dc.ColumnName];
+								drNew[dc] = dr[dc.ColumnName];
 
 							rptds.SalesTransactionItems.Rows.Add(drNew);
 						}
-                        myreader.Close();
 					}
 
 					clsSalesTransactions.CommitAndDispose();
@@ -8965,18 +8964,17 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						/****************************sales transaction items*****************************/
 						Data.SalesTransactionItems clsSalesTransactionItems = new Data.SalesTransactionItems(mConnection, mTransaction);
-						MySqlDataReader myreader = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
+						System.Data.DataTable dt = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
 
-						while (myreader.Read())
+                        foreach (System.Data.DataRow dr in dt.Rows)
 						{
 							drNew = rptds.SalesTransactionItems.NewRow();
 
 							foreach (System.Data.DataColumn dc in rptds.SalesTransactionItems.Columns)
-								drNew[dc] = myreader[dc.ColumnName];
+								drNew[dc] = dr[dc.ColumnName];
 
 							rptds.SalesTransactionItems.Rows.Add(drNew);
 						}
-                        myreader.Close();
 					}
 
 					clsSalesTransactions.CommitAndDispose();
@@ -9146,18 +9144,17 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						/****************************sales transaction items*****************************/
 						Data.SalesTransactionItems clsSalesTransactionItems = new Data.SalesTransactionItems(mConnection, mTransaction);
-						MySqlDataReader myreader = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
+						System.Data.DataTable dt = clsSalesTransactionItems.List(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, "TransactionItemsID", SortOption.Ascending);
 
-						while (myreader.Read())
+                        foreach (System.Data.DataRow dr in dt.Rows)
 						{
 							drNew = rptds.SalesTransactionItems.NewRow();
 
 							foreach (System.Data.DataColumn dc in rptds.SalesTransactionItems.Columns)
-								drNew[dc] = myreader[dc.ColumnName];
+								drNew[dc] = dr[dc.ColumnName];
 
 							rptds.SalesTransactionItems.Rows.Add(drNew);
 						}
-                        myreader.Close();
 					}
 
 					clsSalesTransactions.CommitAndDispose();

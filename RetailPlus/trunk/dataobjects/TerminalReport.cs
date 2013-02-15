@@ -356,12 +356,8 @@ namespace AceSoft.RetailPlus.Data
                     "FROM tblTerminalReport " +
                     "WHERE TerminalNo = @TerminalNo " +
                     "ORDER BY DateLastInitialized DESC LIMIT 1;";
-
-                
-
+            
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -369,15 +365,15 @@ namespace AceSoft.RetailPlus.Data
                 prmTerminalNo.Value = TerminalNo;
                 cmd.Parameters.Add(prmTerminalNo);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MinValue;
 
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    dteRetValue = myReader.GetDateTime("DateLastInitialized");
+                    dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
                 }
-                myReader.Close();
 
                 return dteRetValue;
 
@@ -398,12 +394,8 @@ namespace AceSoft.RetailPlus.Data
 					"WHERE TerminalNo = @TerminalNo " +
 					"AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
 				//							"ORDER BY DateLastInitialized DESC ";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -415,17 +407,17 @@ namespace AceSoft.RetailPlus.Data
 				prmProcessingDate.Value = ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmProcessingDate);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				DateTime dteRetValue = DateTime.MinValue;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read())
-				{
-					dteRetValue = myReader.GetDateTime("DateLastInitialized");
-				}
-                myReader.Close();
+                DateTime dteRetValue = DateTime.MinValue;
 
-				return dteRetValue;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                }
+
+                return dteRetValue;
 
 			}
 
@@ -446,12 +438,8 @@ namespace AceSoft.RetailPlus.Data
 					            "CashInDrawer		= CashInDrawer + @CashInDrawer, " +
 					            "BeginningBalance	= BeginningBalance + @BeginningBalance " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -487,12 +475,8 @@ namespace AceSoft.RetailPlus.Data
 				string SQL=	"UPDATE tblTerminalReport SET " +
 					"ZReadCount = ZReadCount + 1 " +
 					"WHERE TerminalNo = @TerminalNo;";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -517,11 +501,7 @@ namespace AceSoft.RetailPlus.Data
 					"XReadCount = XReadCount + 1 " +
 					"WHERE TerminalNo = @TerminalNo;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1353,11 +1333,7 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = "INSERT INTO tblTerminalReport (BranchID, TerminalID, TerminalNo, DateLastInitialized) " +
                     "VALUES (@BranchID, @TerminalID, @TerminalNo, @DateLastInitialized);";
 				
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1512,16 +1488,16 @@ namespace AceSoft.RetailPlus.Data
 				prmCuttOfDateTime.Value = CuttOfDateTime.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmCuttOfDateTime);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				bool boRetValue = true;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read())
+                bool boRetValue = true;
+
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{
-					if (myReader.GetInt64("RecordCount") > 0)
+					if (Int64.Parse(dr["RecordCount"].ToString()) > 0)
 						boRetValue = false;
 				}
-				myReader.Close();
 
 				return boRetValue;
 			}
@@ -1538,17 +1514,13 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string TerminalNo)
+		public System.Data.DataTable List(string TerminalNo)
 		{
 			try
 			{
 				string SQL=	SQLSelect();
 				
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				
 				if (TerminalNo != null)
@@ -1562,7 +1534,10 @@ namespace AceSoft.RetailPlus.Data
 
 				cmd.CommandText = SQL;
 
-				return base.ExecuteReader(cmd);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+				return dt;
 			}
 
 			catch (Exception ex)
@@ -1573,106 +1548,49 @@ namespace AceSoft.RetailPlus.Data
 
 		public System.Data.DataTable HourlyReport(int BranchID, string TerminalNo = Constants.ALL)
 		{
-            MySqlDataReader myReader = HourlyReportPrivate(DateTime.MinValue, DateTime.MinValue, BranchID, TerminalNo);
+            MySqlCommand cmd = HourlyReportPrivate(DateTime.MinValue, DateTime.MinValue, BranchID, TerminalNo);
 			
-			System.Data.DataTable dt = new System.Data.DataTable("tblHourlyReport");
-
-			dt.Columns.Add("TransactionDate");
-			dt.Columns.Add("Time");
-			dt.Columns.Add("TranCount");
-			dt.Columns.Add("Amount");
-			dt.Columns.Add("Discount");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-				
-				dr["TransactionDate"] = myReader.GetDateTime("TransactionDate");
-				dr["Time"] = myReader.GetInt64("Time").ToString("0#") + ":00";
-				dr["TranCount"] = myReader.GetInt32("TranCount").ToString("#,##0");
-				dr["Amount"] = myReader.GetDecimal("Amount").ToString("#,##0.#0");
-				dr["Discount"] = myReader.GetDecimal("Discount").ToString("#,##0.#0");
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
+			string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
 			return dt;
 		}
 
         public System.Data.DataTable HourlyReport(DateTime? StartDateTimeOfTransaction = null, DateTime? UptoDateTimeOfTransaction = null, int BranchID = 0, string TerminalNo = Constants.ALL)
         {
-            MySqlDataReader myReader = HourlyReportPrivate(StartDateTimeOfTransaction, UptoDateTimeOfTransaction, BranchID, TerminalNo);
+            MySqlCommand cmd = HourlyReportPrivate(StartDateTimeOfTransaction, UptoDateTimeOfTransaction, BranchID, TerminalNo);
 
-            System.Data.DataTable dt = new System.Data.DataTable("tblHourlyReport");
-
-            dt.Columns.Add("TransactionDate");
-            dt.Columns.Add("Time");
-            dt.Columns.Add("TranCount");
-            dt.Columns.Add("Amount");
-            dt.Columns.Add("Discount");
-
-            while (myReader.Read())
-            {
-                System.Data.DataRow dr = dt.NewRow();
-
-                dr["TransactionDate"] = myReader.GetDateTime("TransactionDate");
-                dr["Time"] = myReader.GetInt64("Time").ToString("0#") + ":00";
-                dr["TranCount"] = myReader.GetInt32("TranCount").ToString("#,##0");
-                dr["Amount"] = myReader.GetDecimal("Amount").ToString("#,##0.#0");
-                dr["Discount"] = myReader.GetDecimal("Discount").ToString("#,##0.#0");
-
-                dt.Rows.Add(dr);
-            }
-
-            myReader.Close();
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
         }
 
 		public System.Data.DataTable GroupReport(int BranchID, string TerminalNo)
 		{
-			decimal TotalAmount = 0;
+            MySqlCommand cmd = GroupReportPrivate(TerminalNo, BranchID);
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
-			MySqlDataReader myReader = GroupReportPrivate(TerminalNo, BranchID);
-			while (myReader.Read())
+            decimal TotalAmount = 0;
+			foreach(System.Data.DataRow dr in dt.Rows)
 			{
-				TotalAmount += myReader.GetDecimal("Amount");
+				TotalAmount += decimal.Parse(dr["Amount"].ToString());
 			}
-			myReader.Close();
 
-            myReader = GroupReportPrivate(TerminalNo, BranchID);
-
-			System.Data.DataTable dt = new System.Data.DataTable("tblGroupReport");
-
-			dt.Columns.Add("ProductGroup");
-			dt.Columns.Add("TranCount");
-			dt.Columns.Add("Amount");
-			dt.Columns.Add("Percentage");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-				//				TransactionItemStatus status = (TransactionItemStatus) Enum.Parse(typeof (TransactionItemStatus), "" + myReader["TransactionItemStatus");
-
-				dr["ProductGroup"] = "" + myReader["ProductGroup"].ToString();
-				dr["TranCount"] = myReader.GetDecimal("TranCount").ToString("#,##0");
-				dr["Amount"] = myReader.GetDecimal("Amount").ToString("#,##0.#0");
-				decimal percent = 0;
-				if (myReader.GetDecimal("Amount") != 0)
-					percent = (myReader.GetDecimal("Amount") / TotalAmount) * 100;
-				dr["Percentage"] = percent.ToString("#,##0.#0") + "%";
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
+            if (TotalAmount != 0)
+            {
+                foreach (System.Data.DataRow dr in dt.Rows)
+			    {
+				    decimal percent = (decimal.Parse(dr["Amount"].ToString()) / TotalAmount) * 100;
+				    dr["Percentage"] = percent.ToString("#,##0.#0") + "%";
+			    }
+            }
 
 			return dt;
 		}
 
-        private MySqlDataReader HourlyReportPrivate(DateTime? StartDateTimeOfTransaction = null, DateTime? UptoDateTimeOfTransaction = null, int BranchID = 0, string TerminalNo = Constants.ALL)
+        private MySqlCommand HourlyReportPrivate(DateTime? StartDateTimeOfTransaction = null, DateTime? UptoDateTimeOfTransaction = null, int BranchID = 0, string TerminalNo = Constants.ALL)
         {
             try
             {
@@ -1745,14 +1663,14 @@ namespace AceSoft.RetailPlus.Data
                 prmTransactionStatusCreditPayment.Value = (Int16)TransactionStatus.CreditPayment;
                 cmd.Parameters.Add(prmTransactionStatusCreditPayment);
 
-                return base.ExecuteReader(cmd);
+                return cmd;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-		private MySqlDataReader GroupReportPrivate(string TerminalNo, int BranchID)
+        private MySqlCommand GroupReportPrivate(string TerminalNo, int BranchID)
 		{
 			try
 			{
@@ -1760,7 +1678,8 @@ namespace AceSoft.RetailPlus.Data
                                     "a.ProductGroup, " +
                                     "TransactionItemStatus, " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Quantity, a.Quantity))) 'TranCount', " +
-                                    "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Amount, a.Amount))) 'Amount' " +
+                                    "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Amount, a.Amount))) 'Amount', " +
+                                    "'0%' AS Percentage " +
                             "FROM  tblTransactionItems a " +
                                     "INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID " +
                                     "WHERE 1=1 " +
@@ -1814,7 +1733,7 @@ namespace AceSoft.RetailPlus.Data
 				prmTransactionStatusCreditPayment.Value = (Int16) TransactionStatus.CreditPayment;
 				cmd.Parameters.Add(prmTransactionStatusCreditPayment);
 
-				return base.ExecuteReader(cmd);			
+				return cmd;			
 			}
 			catch (Exception ex)
 			{

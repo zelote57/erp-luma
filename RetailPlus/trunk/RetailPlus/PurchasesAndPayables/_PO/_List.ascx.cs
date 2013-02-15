@@ -287,21 +287,21 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		private void LoadSortFieldOptions(DataListItemEventArgs e)
 		{
 			Common Common = new Common();
-			string stParam = null;		
+            string stParam = "?task=" + Common.Encrypt("list", Session.SessionID) + "&status=" + cboStatus.SelectedIndex.ToString();
 
 			SortOption sortoption = SortOption.Ascending;
 			if (Request.QueryString["sortoption"]!=null)
 				sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);
 
 			if (sortoption == SortOption.Ascending)
-				stParam += "?sortoption=" + Common.Encrypt(SortOption.Desscending.ToString("G"), Session.SessionID);
+                stParam += "&sortoption=" + Common.Encrypt(SortOption.Desscending.ToString("G"), Session.SessionID);
 			else if (sortoption == SortOption.Desscending)
-				stParam += "?sortoption=" + Common.Encrypt(SortOption.Ascending.ToString("G"), Session.SessionID);
+				stParam += "&sortoption=" + Common.Encrypt(SortOption.Ascending.ToString("G"), Session.SessionID);
 
 			System.Collections.Specialized.NameValueCollection querystrings = Request.QueryString;;
 			foreach(string querystring in querystrings.AllKeys)
 			{
-				if (querystring.ToLower() != "sortfield" && querystring.ToLower() != "sortoption") 
+                if (querystring.ToLower() != "sortfield" && querystring.ToLower() != "sortoption" && querystring.ToLower() != "task" && querystring.ToLower() != "status") 
 					stParam += "&" + querystring + "=" + querystrings[querystring].ToString();
 			}
 
@@ -318,6 +318,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			SortByReqDeliveryDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RequiredDeliveryDate", Session.SessionID);
 			SortByBranchCode.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("BranchID", Session.SessionID);
 			SortByPOSubTotal.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("SubTotal", Session.SessionID);
+            this.Visible = true;
 		}
 		private void LoadList()
 		{	

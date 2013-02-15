@@ -320,6 +320,7 @@ namespace AceSoft.RetailPlus.Reports
 
 		private void SetDataSource(ReportDocument Report)
 		{
+            string strProductGroup = cboProductGroup.SelectedItem.Text == Constants.ALL ? string.Empty : cboProductGroup.SelectedItem.Text;
             string TransactionNo = txtTransactionNo.Text;
             string CustomerName = cboContactName.SelectedItem.Text == Constants.ALL ? string.Empty : cboContactName.SelectedItem.Text;
             string CashierName = cboCashierName.SelectedItem.Text == Constants.ALL ? string.Empty : cboCashierName.SelectedItem.Text;
@@ -545,29 +546,29 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SalesTransactionPerItem:
                     #region Sales Transaction Per Item
 
-                    MySqlDataReader myreader;
                     SaleperItemFilterType enumSaleperItemFilterType = SaleperItemFilterType.ShowBothPositiveAndNegative;
                     if (rdoShowPositiveOnly.Checked) enumSaleperItemFilterType = SaleperItemFilterType.ShowPositiveOnly;
                     if (rdoShowNegativeOnly.Checked) enumSaleperItemFilterType = SaleperItemFilterType.ShowNegativeOnly;
 
 					clsSalesTransactionItems = new SalesTransactionItems();
                     if (cboProductGroup.Text == Constants.ALL)
-					    myreader = clsSalesTransactionItems.SalesPerItem(TransactionNo, CustomerName, CashierName,
-                            TerminalNo, StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
+                        dt = clsSalesTransactionItems.SalesPerItem(TransactionNo + "%", CustomerName + "%", CashierName + "%",
+                            TerminalNo + "%", StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
                     else
-                        myreader = clsSalesTransactionItems.SalesPerItemByGroup(cboProductGroup.SelectedItem.Value, TransactionNo, CustomerName, CashierName,
-                            TerminalNo, StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
+                        dt = clsSalesTransactionItems.SalesPerItemByGroup(strProductGroup + "%", TransactionNo + "%", CustomerName + "%", CashierName + "%",
+                            TerminalNo + "%", StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
 
 					clsSalesTransactionItems.CommitAndDispose();
-					while(myreader.Read())
-					{
-						DataRow drSalesTransactionPerItem = rptds.SalesTransactionPerItem.NewRow();
 
-						foreach (DataColumn dc in rptds.SalesTransactionPerItem.Columns)
-							drSalesTransactionPerItem[dc] = myreader[dc.ColumnName]; 
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.SalesTransactionPerItem.NewRow();
 
-						rptds.SalesTransactionPerItem.Rows.Add(drSalesTransactionPerItem);
-					}
+                        foreach (DataColumn dc in rptds.SalesTransactionPerItem.Columns)
+                            drNew[dc] = dr[dc.ColumnName];
+
+                        rptds.SalesTransactionPerItem.Rows.Add(drNew);
+                    }
 					break;
                     #endregion
 

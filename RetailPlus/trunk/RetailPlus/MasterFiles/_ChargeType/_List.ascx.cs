@@ -116,12 +116,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ChargeType
 				lblChargeAmount.Text = Convert.ToDecimal(dr["ChargeAmount"].ToString()).ToString("#,##0.#0");
 
 				HtmlInputCheckBox chkInPercent = (HtmlInputCheckBox) e.Item.FindControl("chkInPercent");
-				chkInPercent.Disabled = true;
-				if (dr["InPercent"].ToString() == "1")
-					chkInPercent.Checked = true;
-				else
-					chkInPercent.Checked = false;
-
+                chkInPercent.Checked = Convert.ToBoolean(dr["InPercent"].ToString());
 				//For anchor
 				//				HtmlGenericControl divExpCollAsst = (HtmlGenericControl) e.Item.FindControl("divExpCollAsst");
 

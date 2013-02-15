@@ -712,7 +712,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             cboProductUnit.Items.Add(new ListItem("No Unit", "0")); 
 
 			txtQuantity.Text = "1";
+            txtRID.Text = "0";
+            txtPrice.Text = "0.00";
 			txtDiscount.Text = "0";
+            txtSellingQuantity.Text = "0";
+            txtMargin.Text = "10";
+            txtSellingPrice.Text = "0";
+            txtOldSellingPrice.Text = "0";
+            txtOldSellingPrice.Text = "0";
+
 			txtRemarks.Text = "";
 			ComputeItemAmount();
 			lblPOItemID.Text = "0";

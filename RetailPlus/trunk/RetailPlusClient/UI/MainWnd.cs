@@ -7319,7 +7319,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				Details.PackageQuantity = Convert.ToDecimal(dgItems[iRow, 26].ToString());
 				Details.PromoQuantity = Convert.ToDecimal(dgItems[iRow, 27].ToString());
 				Details.PromoValue = Convert.ToDecimal(dgItems[iRow, 28].ToString());
-				Details.PromoInPercent = Convert.ToInt16(dgItems[iRow, 29].ToString());
+                Details.PromoInPercent = Convert.ToBoolean(dgItems[iRow, 29].ToString());
 				Details.PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dgItems[iRow, 30].ToString());
 				Details.PromoApplied = Convert.ToDecimal(dgItems[iRow, 31].ToString());
 				Details.PurchasePrice = Convert.ToDecimal(dgItems[iRow, 32].ToString());
@@ -7510,7 +7510,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				Details.PromoValue = PromoValue;
 				Details.PromoQuantity = PromoQuantity;
-				Details.PromoInPercent = Convert.ToInt16(PromoInPercent);
+                Details.PromoInPercent = PromoInPercent;
 				Details.PromoType = PromoType;
 				Details.PromoApplied = 0;
 

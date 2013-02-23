@@ -51,7 +51,7 @@ namespace AceSoft.RetailPlus.Data
         public Int64 ProductPackageID; //27
         public Int64 MatrixPackageID; //28
 
-        public Int16 PromoInPercent; //32
+        public bool PromoInPercent; //32
 
         public PromoTypes PromoType; //34
         public bool IncludeInSubtotalDiscount;
@@ -554,7 +554,7 @@ namespace AceSoft.RetailPlus.Data
                     itemDetails.PackageQuantity = decimal.Parse(dr["PackageQuantity"].ToString());
                     itemDetails.PromoQuantity = decimal.Parse(dr["PromoQuantity"].ToString());
                     itemDetails.PromoValue = decimal.Parse(dr["PromoValue"].ToString());
-                    itemDetails.PromoInPercent = Int16.Parse(dr["PromoInPercent"].ToString());
+                    itemDetails.PromoInPercent = bool.Parse(dr["PromoInPercent"].ToString());
                     itemDetails.PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoType"].ToString());
                     itemDetails.PromoApplied = decimal.Parse(dr["PromoApplied"].ToString());
                     itemDetails.PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());

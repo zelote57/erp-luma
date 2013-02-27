@@ -39,9 +39,9 @@ namespace AceSoft.RetailPlus.Data
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
-                myReader.Close();
+
+                System.Data.DataTable dt = new System.Data.DataTable("sysAccessUsers");
+                base.MySqlDataAdapterFill(cmd, dt);
 
 				return true;			
 			}
@@ -57,31 +57,17 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "SHOW PROCESSLIST;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("ProcessList");
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -94,11 +80,7 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = "kill " + Process + ";";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -109,15 +91,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -128,11 +101,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "SELECT DateLastInitialized FROM tblTerminalReport WHERE TerminalNo = @TerminalNo;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -140,29 +109,19 @@ namespace AceSoft.RetailPlus.Data
                 prmTerminalNo.Value = CompanyDetails.TerminalNo;
                 cmd.Parameters.Add(prmTerminalNo);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblTerminalReport");
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dtDateLastInitialized = DateTime.MinValue;
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    dtDateLastInitialized = myReader.GetDateTime("DateLastInitialized");
+                    dtDateLastInitialized = DateTime.Parse( dr["DateLastInitialized"].ToString());
                 }
-                myReader.Close();
 
                 return dtDateLastInitialized;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }		

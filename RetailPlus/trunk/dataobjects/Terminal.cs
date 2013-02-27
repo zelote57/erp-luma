@@ -401,7 +401,6 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = "CALL procTerminalVersionUpdate(@BranchID, @TerminalNo, @Version);";
 
                 MySqlCommand cmd = new MySqlCommand();
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 

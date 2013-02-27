@@ -3228,7 +3228,7 @@ BEGIN
 	SELECT MatrixID, Description, Quantity INTO lngMatrixID, strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID ORDER BY MatrixID DESC LIMIT 1;
 	/********** end update main product **********/
 	
-	SELECT a.MatrixID, Description, b.Quantity INTO lngMatrixID, strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND BranchID = intBranchID ORDER BY MatrixID DESC LIMIT 1;
+	SELECT a.MatrixID, Description, b.Quantity INTO lngMatrixID, strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID AND a.ProductID = b.ProductID WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND BranchID = intBranchID ORDER BY MatrixID DESC LIMIT 1;
 	
 	IF (ISNULL(lngMatrixID)) THEN SET lngMatrixID = 0; END IF; 
 	IF (ISNULL(strMatrixDescription)) THEN SET strMatrixDescription = ''; END IF;
@@ -3249,7 +3249,7 @@ BEGIN
 		/********** end update main product **********/
 		
 		-- STEP 2.a: get the total Quantity of all Matrix
-		SELECT SUM(b.Quantity) INTO decMatrixTotalQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID AND a.ProductID = lngProductID AND BranchID = intBranchID; 
+		SELECT SUM(b.Quantity) INTO decMatrixTotalQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID AND a.ProductID = b.ProductID AND a.ProductID = lngProductID AND BranchID = intBranchID; 
 		
 		-- STEP 2.b: get the Quantity of product
 		--			 Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
@@ -3476,7 +3476,7 @@ BEGIN
 	/*********** end add to main ***********/	
 
 	-- Set the value of strMatrixDescription, decMatrixQuantity
-	SELECT a.Description, b.Quantity INTO strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID WHERE Deleted = 0 AND a.MatrixID = lngMatrixID AND a.ProductID = lngProductID AND BranchID = intBranchID;
+	SELECT a.Description, b.Quantity INTO strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID AND a.ProductID = b.ProductID WHERE Deleted = 0 AND a.MatrixID = lngMatrixID AND a.ProductID = lngProductID AND BranchID = intBranchID;
 
 	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
 	SELECT a.ProductCode, a.ProductDesc, c.Quantity, b.UnitCode INTO strProductCode, strProductDesc, decProductQuantity, strUnitCode FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID INNER JOIN tblBranchInventory c ON a.ProductID = c.ProductID WHERE a.ProductID = lngProductID AND BranchID = intBranchID;
@@ -3582,7 +3582,7 @@ BEGIN
 	/*********** end subtract from main ***********/
 
 	-- Set the value of strMatrixDescription, decMatrixQuantity
-	SELECT a.Description, b.Quantity INTO strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID WHERE Deleted = 0 AND a.MatrixID = lngMatrixID AND a.ProductID = lngProductID AND BranchID = intBranchID;
+	SELECT a.Description, b.Quantity INTO strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID AND a.ProductID = b.ProductID WHERE Deleted = 0 AND a.MatrixID = lngMatrixID AND a.ProductID = lngProductID AND BranchID = intBranchID;
 	
 	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
 	SELECT a.ProductCode, a.ProductDesc, c.Quantity, b.UnitCode INTO strProductCode, strProductDesc, decProductQuantity, strUnitCode FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID INNER JOIN tblBranchInventory c ON a.ProductID = c.ProductID WHERE a.ProductID = lngProductID AND BranchID = intBranchID;

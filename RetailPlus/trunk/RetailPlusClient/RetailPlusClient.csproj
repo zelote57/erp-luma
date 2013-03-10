@@ -188,7 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AceSoft.RetailPlus.snk" />
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <BaseApplicationManifest Include="Properties\app.manifest" />
     <None Include="ReportDataset.xsc">
       <DependentUpon>ReportDataset.xsd</DependentUpon>

@@ -6218,3 +6218,5 @@ ALTER TABLE tblTransactions ADD PARTITION (
 			SUBPARTITION sDec2014) ) ;
 
 /*********************************  v_4.0.0.2.sql END  *******************************************************/ 
+
+ALTER TABLE tblCreditPayment MODIFY `Remarks` VARCHAR(8000); -- 09Mar2013 put payments log in remarks

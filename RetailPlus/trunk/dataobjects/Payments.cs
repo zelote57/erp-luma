@@ -164,15 +164,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -239,15 +230,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -258,11 +240,7 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = "CALL procCreditCardPaymentInsert(@TransactionID, @TransactionNo, @Amount, @CardTypeID, @CardTypeCode, @CardTypeName, @CardNo, @CardHolder," +
                                                                 "@ValidityDates, @Remarks);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -282,15 +260,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -298,34 +267,11 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try  
 			{
-                //string SQL = "CALL procCreditPaymentInsert(@TransactionID, @TransactionNo, @Amount, @ContactID, @Remarks);";
-
-                //
-	 			
-                //MySqlCommand cmd = new MySqlCommand();
-                //
-                //
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = SQL;
-
-                //cmd.Parameters.AddWithValue("@TransactionID", Details.TransactionID);
-                //cmd.Parameters.AddWithValue("@TransactionNo", Details.TransactionNo);
-                //cmd.Parameters.AddWithValue("@Amount", Details.Amount);
-                //cmd.Parameters.AddWithValue("@ContactID", Details.CustomerDetails.ContactID);
-                //cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
-
-                //base.ExecuteNonQuery(cmd);
-
-
                 // [04/03/2012] Added creditcard information as requested by HP
                 string SQL = "CALL procCreditPaymentInsert(@TransactionID, @pvtCustomerID, @pvtGuarantorID, @pvtCreditType, @pvtCreditExpiryDate, @pvtCurrentCredit, @pvtAmount, @pvtTerminalNo, @pvtTransactionDate, @pvtTransactionNo, @pvtCashierName, @pvtRemarks);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -352,15 +298,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -370,11 +307,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procDebitPaymentInsert(@TransactionID, @TransactionNo, @Amount, @ContactID, @Remarks);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -393,15 +326,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw ex;
             }
         }
@@ -412,11 +336,7 @@ namespace AceSoft.RetailPlus.Data
 			{
                 string SQL = "CALL procCreditPaymentUpdateCredit(@TransactionID, @TransactionNo, @Amount, @Remarks);";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -433,15 +353,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -451,11 +362,7 @@ namespace AceSoft.RetailPlus.Data
 			{
                 string SQL = "CALL procDebitPaymentUpdateDebit(@TransactionID, @TransactionNo, @Amount, @Remarks);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -471,15 +378,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -493,12 +391,8 @@ namespace AceSoft.RetailPlus.Data
 			try 
 			{
 				string SQL=	"DELETE FROM tblPayment WHERE PaymentID IN (" + IDs + ");";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -509,15 +403,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -543,15 +428,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -566,11 +442,7 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblCashPayment " +
 							"WHERE TransactionID = @TransactionID;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -608,15 +480,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -632,12 +495,8 @@ namespace AceSoft.RetailPlus.Data
 								"Remarks " +
 							"FROM tblChequePayment " +
 							"WHERE TransactionID = @TransactionID;";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -677,15 +536,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -706,11 +556,7 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblCreditCardPayment " +
 							"WHERE TransactionID = @TransactionID;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -755,15 +601,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -779,11 +616,7 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblCreditPayment " +
 							"WHERE TransactionID = @TransactionID;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -823,15 +656,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}
@@ -849,11 +673,7 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblDebitPayment " +
 							"WHERE TransactionID = @TransactionID;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -924,11 +744,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -942,15 +758,6 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw ex;
 			}	
 		}

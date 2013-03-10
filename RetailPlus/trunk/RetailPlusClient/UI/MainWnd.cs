@@ -1414,7 +1414,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Closing Main window. TRACE: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Closing Main window. TRACE: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 		}
 		private void MainWnd_KeyDown(object sender, KeyEventArgs e)
@@ -1756,7 +1757,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Closing Main window. TRACE: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Closing Main window. TRACE: " + ex.Message, true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 		}
 		public void MyKeyDown(object sender, KeyEventArgs e)
@@ -2551,10 +2553,10 @@ namespace AceSoft.RetailPlus.Client.UI
 						ComputeSubTotal();
 
 						clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks);
+                        clsSalesTransactions.CommitAndDispose();
 
                         InsertAuditLog(AccessTypes.RefundTransaction, "Return Item " + details.ProductCode + "." + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 						
-						clsSalesTransactions.CommitAndDispose();
 						try
 						{
 							DisplayItemToTurretDelegate DisplayItemToTurretDel = new DisplayItemToTurretDelegate(DisplayItemToTurret);
@@ -2687,10 +2689,9 @@ namespace AceSoft.RetailPlus.Client.UI
 								dr["PurchaseAmount"] = clsItemDetails.PurchaseAmount;
 
 								clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, clsItemDetails);
+                                clsSalesTransactions.CommitAndDispose();
 
                                 InsertAuditLog(AccessTypes.Discounts, "Apply item discount for " + clsItemDetails.ProductCode + ". discount=" + clsItemDetails.Discount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-								clsSalesTransactions.CommitAndDispose();
 
 								clsEvent.AddEventLn("Done applying item discount...", true);
 
@@ -2823,10 +2824,9 @@ namespace AceSoft.RetailPlus.Client.UI
 									dr["PurchaseAmount"] = clsItemDetails.PurchaseAmount;
 
 									clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, clsItemDetails);
+                                    clsSalesTransactions.CommitAndDispose();
 
 									InsertAuditLog(AccessTypes.Discounts, "Apply item discount for " + clsItemDetails.ProductCode + ". discount=" + clsItemDetails.Discount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-									clsSalesTransactions.CommitAndDispose();
 
 									clsEvent.AddEventLn("Done applying item discount...", true);
 
@@ -3494,10 +3494,9 @@ namespace AceSoft.RetailPlus.Client.UI
                         mConnection = clsWithHold.Connection; mTransaction = clsWithHold.Transaction;
 
 						clsWithHold.Insert(clsWithHoldDetails);
+                        clsWithHold.CommitAndDispose();
 
                         InsertAuditLog(AccessTypes.Withhold, "WithHold payment: type='" + clsWithHoldDetails.PaymentType.ToString("G") + "' amount='" + clsWithHoldDetails.Amount.ToString(",##0.#0") + "'" + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-						clsWithHold.CommitAndDispose();
 
 						//PrintWithHoldDelegate printwithholDel = new PrintWithHoldDelegate(PrintWithHold);
 						//printwithholDel.BeginInvoke(clsWithHoldDetails, null, null);
@@ -3564,10 +3563,9 @@ namespace AceSoft.RetailPlus.Client.UI
 						Data.Disburse clsDisburse = new Data.Disburse(mConnection, mTransaction);
                         mConnection = clsDisburse.Connection; mTransaction = clsDisburse.Transaction;
 						clsDisburse.Insert(clsDisburseDetails);
+                        clsDisburse.CommitAndDispose();
 
                         InsertAuditLog(AccessTypes.Disburse, "Disburse: type='" + clsDisburseDetails.PaymentType.ToString("G") + "' amount='" + clsDisburseDetails.Amount.ToString(",##0.#0") + "'" + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-						clsDisburse.CommitAndDispose();
 
 						//PrintDisbursementDelegate printdisburseDel = new PrintDisbursementDelegate(PrintDisbursement);
 						//printdisburseDel.BeginInvoke(clsDisburseDetails, null, null);
@@ -3634,10 +3632,9 @@ namespace AceSoft.RetailPlus.Client.UI
 						Data.PaidOut clsPaidOut = new Data.PaidOut(mConnection, mTransaction);
                         mConnection = clsPaidOut.Connection; mTransaction = clsPaidOut.Transaction;
 						clsPaidOut.Insert(clsPaidOutDetails);
+                        clsPaidOut.CommitAndDispose();
 
                         InsertAuditLog(AccessTypes.PaidOut, "Paid-out: type='" + clsPaidOutDetails.PaymentType.ToString("G") + "' amount='" + clsPaidOutDetails.Amount.ToString(",##0.#0") + "'" + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-						clsPaidOut.CommitAndDispose();
 
 						//PrintPaidOutDelegate paidoutDel = new PrintPaidOutDelegate(PrintPaidOut);
 						//paidoutDel.BeginInvoke(clsPaidOutDetails, null, null);
@@ -3707,10 +3704,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
 						clsContact.AddDebit(clsDepositDetails.ContactID, clsDepositDetails.Amount);
+                        clsDeposit.CommitAndDispose();
 
                         InsertAuditLog(AccessTypes.Deposit, "Deposit: type='" + clsDepositDetails.PaymentType.ToString("G") + "' amount='" + clsDepositDetails.Amount.ToString(",##0.#0") + "'" + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-						clsDeposit.CommitAndDispose();
 
                         PrintDeposit(clsDepositDetails);
 						//PrintDepositDelegate printdepositDel = new PrintDepositDelegate(PrintDeposit);
@@ -3966,10 +3962,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 							// Added May 7, 2011 to Cater Reserved and Commit functionality    
 							ReservedAndCommitItem(Details, _previousTransactionItemStatus);
+                            clsSalesTransactions.CommitAndDispose();
 
                             InsertAuditLog(AccessTypes.VoidItem, "Voiding item #: " + Details.ItemNo + " :" + Details.Description + "." + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-							clsSalesTransactions.CommitAndDispose();
 
 							dgItems[iRow, 8] = "VOID";
 							dgItems[iRow, 9] = "0.00";
@@ -5445,10 +5440,11 @@ namespace AceSoft.RetailPlus.Client.UI
 							}
 						}
 
-                        InsertAuditLog(AccessTypes.CloseTransaction, "Close transaction #: " + lblTransNo.Text + "... Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + CashPayment.ToString("#,###.#0") + " ChequePayment: " + ChequePayment.ToString("#,###.#0") + " CreditCardPayment: " + CreditCardPayment + " CreditPayment: " + CreditPayment.ToString("#,###.#0") + " DebitPayment: " + DebitPayment.ToString("#,###.#0") + " ChangeAmount: " + ChangeAmount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-						// commit the transactions
+                        // commit the transactions
                         clsSalesTransactions.CommitAndDispose();
+
+                        InsertAuditLog(AccessTypes.CloseTransaction, "Close transaction #: " + lblTransNo.Text + "... Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + CashPayment.ToString("#,###.#0") + " ChequePayment: " + ChequePayment.ToString("#,###.#0") + " CreditCardPayment: " + CreditCardPayment + " CreditPayment: " + CreditPayment.ToString("#,###.#0") + " DebitPayment: " + DebitPayment.ToString("#,###.#0") + " ChangeAmount: " + ChangeAmount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+						
                         clsEvent.AddEventLn("Done! Transaction no. " + lblTransNo.Text + " has been closed. Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + CashPayment.ToString("#,###.#0") + " ChequePayment: " + ChequePayment.ToString("#,###.#0") + " CreditCardPayment: " + CreditCardPayment + " CreditPayment: " + CreditPayment.ToString("#,###.#0") + " DebitPayment: " + DebitPayment.ToString("#,###.#0") + " ChangeAmount: " + ChangeAmount.ToString("#,###.#0"), true);
 
                         this.LoadOptions();
@@ -5503,11 +5499,10 @@ namespace AceSoft.RetailPlus.Client.UI
                     mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
 					clsSalesTransactions.CloseAsOrderSlip(mclsSalesTransactionDetails.TransactionID);
+                    clsSalesTransactions.CommitAndDispose();
 
 					InsertAuditLog(AccessTypes.CloseTransaction, "Close transaction #: " + lblTransNo.Text + "... Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + 0.ToString("#,###.#0") + " ChequePayment: " + 0.ToString("#,###.#0") + " CreditCardPayment: " + 0 + " CreditPayment: " + 0.ToString("#,###.#0") + " DebitPayment: " + 0.ToString("#,###.#0") + " ChangeAmount: " + 0.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-					// commit the transactions
-                    clsSalesTransactions.CommitAndDispose();
+					
                     clsEvent.AddEventLn("Done! Transaction no. " + lblTransNo.Text + " has been closed as order slip. Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + 0.ToString("#,###.#0") + " ChequePayment: " + 0.ToString("#,###.#0") + " CreditCardPayment: " + 0 + " CreditPayment: " + 0.ToString("#,###.#0") + " DebitPayment: " + 0.ToString("#,###.#0") + " ChangeAmount: " + 0.ToString("#,###.#0"), true);
                     this.LoadOptions();
 
@@ -5797,10 +5792,9 @@ namespace AceSoft.RetailPlus.Client.UI
                             mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
 							clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks);
+                            clsSalesTransactions.CommitAndDispose();
 
                             InsertAuditLog(AccessTypes.Discounts, "Apply transaction discount for " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + ". Tran. #:" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-							clsSalesTransactions.CommitAndDispose();
 						}
 						else
 						{
@@ -5897,10 +5891,9 @@ namespace AceSoft.RetailPlus.Client.UI
                             mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
 							clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks);
+                            clsSalesTransactions.CommitAndDispose();
 
                             InsertAuditLog(AccessTypes.ChargeType, "Apply transaction Charge for " + mclsSalesTransactionDetails.Charge.ToString("#,###.#0") + ". Tran. #:" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-							clsSalesTransactions.CommitAndDispose();
 						}
 						else
 						{
@@ -6147,10 +6140,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 							//UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
 							UpdateCashierReport(TransactionStatus.CreditPayment, AmountPaid, 0, 0, 0, 0, 0, 0, 0, CashPayment, ChequePayment, CreditCardPayment, 0, DebitPayment, 0, 0, PaymentType);
+                            clsSalesTransactions.CommitAndDispose();
 
                             InsertAuditLog(AccessTypes.CreditPayment, "Pay credit for " + details.ContactName + "." + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-							clsSalesTransactions.CommitAndDispose();
 
 							if (mclsTerminalDetails.AutoPrint == PrintingPreference.AskFirst)
 								if (MessageBox.Show("Would you like to print this transaction?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
@@ -6186,7 +6178,8 @@ namespace AceSoft.RetailPlus.Client.UI
 						catch (Exception ex)
 						{
 							Event clsEvent = new Event();
-							clsEvent.AddEventLn("ERROR!!! Credit payment procedure. Err Description: " + ex.Message);
+							clsEvent.AddEventLn("ERROR!!! Credit payment procedure. Err Description: " + ex.Message, true);
+                            clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 						}
 						Cursor.Current = Cursors.Default;
 					}
@@ -7243,10 +7236,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					this.UnLock(UserID);
 					this.InitializeTransaction(UserID);
+                    clsCashierLogs.CommitAndDispose();
 
                     InsertAuditLog(AccessTypes.LoginFE, "System login at terminal no. " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-					clsCashierLogs.CommitAndDispose();
 
 					clsEvent.AddEventLn("System is now ready for transaction. Current user: " + lblCashier.Text, true);
 					Cursor.Current = Cursors.Default;
@@ -9692,11 +9684,10 @@ namespace AceSoft.RetailPlus.Client.UI
 				lblTransNo.Tag = mclsSalesTransactionDetails.TransactionID.ToString();
 
 				mboIsInTransaction = true;
+                clsTerminalReport.CommitAndDispose();
 
 				InsertAuditLog(AccessTypes.CreateTransaction, "Create transaction #:" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 				clsEvent.AddEventLn("Done! Trans #: " + lblTransNo.Text + " has been created.", true);
-
-                clsTerminalReport.CommitAndDispose();
 			}
 			catch (Exception ex)
 			{ clsEvent.AddErrorEventLn(ex); boRetValue = false; }
@@ -10271,10 +10262,9 @@ namespace AceSoft.RetailPlus.Client.UI
                     Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
 					clsContact.AddDebit(clsDepositDetails.ContactID, clsDepositDetails.Amount);
 				}
+                clsDeposit.CommitAndDispose();
 
                 InsertAuditLog(AccessTypes.Deposit, "Deposit: type='" + clsDepositDetails.PaymentType.ToString("G") + "' amount='" + clsDepositDetails.Amount.ToString(",##0.#0") + "'" + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-                clsDeposit.CommitAndDispose();
 
 				// Remove Debit Payments so that it wont be saved in the debit payment table
 				DebitPaymentDetails = new Data.DebitPaymentDetails[0];
@@ -11163,7 +11153,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing Charge Slip: " + clsChargeSlipType .ToString("G") + ". Err Description: " + ex.Message);
+				clsEvent.AddEventLn(" Printing Charge Slip: " + clsChargeSlipType .ToString("G") + ". Err Description: " + ex.Message, true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -11213,7 +11204,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing Rewards Redeemption Slip. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing Rewards Redeemption Slip. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -11583,7 +11575,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing ZRead report. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing ZRead report. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -11736,7 +11729,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing ZRead report. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing ZRead report. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -11992,7 +11986,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing XREAD report. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing XREAD report. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12080,7 +12075,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing hourly report. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing hourly report. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12195,6 +12191,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			{
 				Event clsEvent = new Event();
 				clsEvent.AddEventLn("ERROR!!! Printing group report. Err Description: " + ex.Message, true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12325,7 +12322,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing PLU report. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing PLU report. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12585,7 +12583,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing Electronic Journal report. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing Electronic Journal report. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12740,7 +12739,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing PLU report. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing PLU report. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12932,7 +12932,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing terminal report. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing terminal report. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13076,7 +13077,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing terminal report. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing terminal report. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13276,7 +13278,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing cashier report data. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing cashier report data. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13325,7 +13328,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing cash count data. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing cash count data. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13369,7 +13373,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing wihhold data. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing wihhold data. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13413,7 +13418,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing disbursement data. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing disbursement data. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 				Cursor.Current = Cursors.Default;
 				throw ex;
 			}
@@ -13458,7 +13464,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing paid-out data. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing paid-out data. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 				Cursor.Current = Cursors.Default;
 				throw ex;
 			}
@@ -13508,7 +13515,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing deposit data. Err Description: " + ex.Message);
+				clsEvent.AddEventLn("ERROR!!! Printing deposit data. Err Description: " + ex.Message,true);
+                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
 				Cursor.Current = Cursors.Default;
 				throw ex;
 			}

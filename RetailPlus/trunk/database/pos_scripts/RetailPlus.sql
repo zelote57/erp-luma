@@ -4823,7 +4823,7 @@ CREATE TABLE tblProductMovement (
 	`ProductCode` VARCHAR(30) NOT NULL,
 	`ProductDescription` VARCHAR(50) NOT NULL,
 	`MatrixID` BIGINT NOT NULL DEFAULT 0,
-	`MatrixDescription` VARCHAR(100) NOT NULL,
+	`MatrixDescription` VARCHAR(100),
 	`QuantityFrom` DECIMAL(18,2) NOT NULL DEFAULT 0,
 	`Quantity` DECIMAL(18,2) NOT NULL DEFAULT 0,
 	`QuantityTo` DECIMAL(18,2) NOT NULL DEFAULT 0,
@@ -6220,3 +6220,4 @@ ALTER TABLE tblTransactions ADD PARTITION (
 /*********************************  v_4.0.0.2.sql END  *******************************************************/ 
 
 ALTER TABLE tblCreditPayment MODIFY `Remarks` VARCHAR(8000); -- 09Mar2013 put payments log in remarks
+ALTER TABLE tblProductMovement ADD `MatrixDescription` VARCHAR(100) DEFAULT '';

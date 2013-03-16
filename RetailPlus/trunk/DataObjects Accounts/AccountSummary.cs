@@ -31,66 +31,20 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class AccountSummary
+	public class AccountSummary : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
 		#region Constructors and Destructors
 
 		public AccountSummary()
-		{
-			
-		}
+            : base(null, null)
+        {
+        }
 
-		public AccountSummary(MySqlConnection Connection, MySqlTransaction Transaction)
+        public AccountSummary(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
 
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
 		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-			}
-			
-			IsInTransaction = true;
-			return mConnection;
-		} 
-		
 
 		#endregion
 
@@ -103,11 +57,7 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = "INSERT INTO tblAccountSummary (AccountSummaryCode, AccountSummaryName, AccountClassificationID) " +
                                                     "VALUES (@AccountSummaryCode, @AccountSummaryName, @AccountClassificationID);";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -123,39 +73,29 @@ namespace AceSoft.RetailPlus.Data
                 prmAccountClassificationID.Value = Details.AccountClassificationID;
                 cmd.Parameters.Add(prmAccountClassificationID);
      
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				SQL = "SELECT LAST_INSERT_ID();";
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 				
 				Int32 iID = 0;
 
-				while (myReader.Read()) 
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{
-					iID = myReader.GetInt32(0);
+					iID = Int32.Parse(dr[0].ToString());
 				}
-
-				myReader.Close();
 
 				return iID;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -168,12 +108,8 @@ namespace AceSoft.RetailPlus.Data
 								"AccountSummaryName		= @AccountSummaryName, " +
                                 "AccountClassificationID= @AccountClassificationID " +
 							"WHERE AccountSummaryID = @AccountSummaryID;";
-				  
-				MySqlConnection cn = GetConnection();
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -193,21 +129,12 @@ namespace AceSoft.RetailPlus.Data
 				prmAccountSummaryID.Value = Details.AccountSummaryID;
 				cmd.Parameters.Add(prmAccountSummaryID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -222,31 +149,18 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	"DELETE FROM tblAccountSummary WHERE AccountSummaryID IN (" + IDs + ");";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -276,11 +190,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL =	SQLSelect() + "WHERE AccountSummaryID = @AccountSummaryID;";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -288,38 +198,28 @@ namespace AceSoft.RetailPlus.Data
 				prmAccountSummaryID.Value = AccountSummaryID;
 				cmd.Parameters.Add(prmAccountSummaryID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				AccountSummaryDetails Details = new AccountSummaryDetails();
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.AccountSummaryID = AccountSummaryID;
-					Details.AccountSummaryCode = "" + myReader["AccountSummaryCode"].ToString();
-					Details.AccountSummaryName = "" + myReader["AccountSummaryName"].ToString();
-                    Details.AccountClassificationID = myReader.GetInt16("AccountClassificationID");
-                    Details.AccountClassificationCode = "" + myReader["AccountClassificationCode"].ToString();
-                    Details.AccountClassificationName = "" + myReader["AccountClassificationName"].ToString();
-                    Details.AccountClassificationType = (AccountClassificationType) Enum.Parse(typeof(AccountClassificationType), myReader.GetString("AccountClassificationType"));
-				}
+                AccountSummaryDetails Details = new AccountSummaryDetails();
 
-				myReader.Close();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.AccountSummaryID = AccountSummaryID;
+                    Details.AccountSummaryCode = "" + dr["AccountSummaryCode"].ToString();
+                    Details.AccountSummaryName = "" + dr["AccountSummaryName"].ToString();
+                    Details.AccountClassificationID = Int16.Parse(dr["AccountClassificationID"].ToString());
+                    Details.AccountClassificationCode = "" + dr["AccountClassificationCode"].ToString();
+                    Details.AccountClassificationName = "" + dr["AccountClassificationName"].ToString();
+                    Details.AccountClassificationType = (AccountClassificationType)Enum.Parse(typeof(AccountClassificationType), dr["AccountClassificationType"].ToString());
+                }
 
 				return Details;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -339,30 +239,17 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		
@@ -381,11 +268,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -393,22 +276,13 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey +"%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 

@@ -29,66 +29,20 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class Bank
+	public class Bank : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
+		#region Bank and Destructors
 
-		public MySqlConnection Connection
+        public Bank()
+            : base(null, null)
+        {
+        }
+
+        public Bank(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			get { return mConnection;	}
+
 		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
-		#region Constructors and Destructors
-
-		public Bank()
-		{
-			
-		}
-
-		public Bank(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open(); 
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-			}
-			
-			IsInTransaction = true;
-			return mConnection;
-		} 
-		
 
 		#endregion
 
@@ -101,11 +55,11 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = "INSERT INTO tblBank (BankCode, BankName, ChequeCode, ChequeCounter) " +
                                                     "VALUES (@BankCode, @BankName, @ChequeCode, @ChequeCounter);";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -125,39 +79,29 @@ namespace AceSoft.RetailPlus.Data
                 prmChequeCounter.Value = Details.ChequeCounter;
                 cmd.Parameters.Add(prmChequeCounter);
      
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				SQL = "SELECT LAST_INSERT_ID();";
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 				
 				Int32 iID = 0;
 
-				while (myReader.Read()) 
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{
-					iID = myReader.GetInt32(0);
+					iID = Int32.Parse(dr[0].ToString());
 				}
-
-				myReader.Close();
 
 				return iID;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void Update(BankDetails Details)
@@ -171,11 +115,11 @@ namespace AceSoft.RetailPlus.Data
                                 "ChequeCounter  = @ChequeCounter " +
 							"WHERE BankID = @BankID;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -199,21 +143,21 @@ namespace AceSoft.RetailPlus.Data
 				prmBankID.Value = Details.BankID;
 				cmd.Parameters.Add(prmBankID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					 
+					
+					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public void UpdateChequeCounter(int BankID, string ChequeCounter)
@@ -224,11 +168,11 @@ namespace AceSoft.RetailPlus.Data
                                 "ChequeCounter  = @ChequeCounter " +
                             "WHERE BankID = @BankID;";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -240,21 +184,21 @@ namespace AceSoft.RetailPlus.Data
                 prmBankID.Value = BankID;
                 cmd.Parameters.Add(prmBankID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateChequeCounter(string BankCode, string ChequeCounter)
@@ -265,11 +209,11 @@ namespace AceSoft.RetailPlus.Data
                                 "ChequeCounter  = @ChequeCounter " +
                             "WHERE BankCode	    = @BankCode ";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -281,21 +225,21 @@ namespace AceSoft.RetailPlus.Data
                 prmChequeCounter.Value = ChequeCounter;
                 cmd.Parameters.Add(prmChequeCounter);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -309,31 +253,31 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	"DELETE FROM tblBank WHERE BankID IN (" + IDs + ");";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					 
+					
+					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -360,11 +304,11 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL =	SQLSelect() + "WHERE BankID = @BankID;";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -372,7 +316,7 @@ namespace AceSoft.RetailPlus.Data
 				prmBankID.Value = BankID;
 				cmd.Parameters.Add(prmBankID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				BankDetails Details = new BankDetails();
 
@@ -392,16 +336,16 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					 
+					
+					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -421,30 +365,30 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					 
+					
+					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
@@ -459,11 +403,11 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -475,16 +419,16 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -503,11 +447,11 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
+				
 
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -515,22 +459,22 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey +"%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					 
+					
+					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public System.Data.DataTable SearchDataTable(string SearchKey, string SortField, SortOption SortOrder)
@@ -548,11 +492,11 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC ";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -566,16 +510,16 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -592,11 +536,11 @@ namespace AceSoft.RetailPlus.Data
                                     "ChequeCounter " +
                                 "FROM tblBank WHERE BankID = 1";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -616,16 +560,16 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public string getChequeNo(int BankID)
@@ -636,11 +580,11 @@ namespace AceSoft.RetailPlus.Data
                                     "ChequeCounter " +
                                 "FROM tblBank WHERE BankID = @BankID ";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -664,16 +608,16 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public string getChequeNo(string BankCode)
@@ -684,11 +628,11 @@ namespace AceSoft.RetailPlus.Data
                                     "ChequeCounter " +
                                 "FROM tblBank WHERE BankID = @BankCode ";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -712,16 +656,16 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public string getChequeNo(out string ChequeCode)
@@ -732,11 +676,11 @@ namespace AceSoft.RetailPlus.Data
                                     "ChequeCounter " +
                                 "FROM tblBank WHERE BankID = 1";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -758,16 +702,16 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public string getChequeNo(int BankID, out string ChequeCode)
@@ -779,11 +723,11 @@ namespace AceSoft.RetailPlus.Data
                                     "ChequeCounter " +
                                 "FROM tblBank WHERE BankID = @BankID ";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -809,16 +753,16 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public string getChequeNo(string BankCode, out string ChequeCode)
@@ -830,11 +774,11 @@ namespace AceSoft.RetailPlus.Data
                                     "ChequeCounter " +
                                 "FROM tblBank WHERE BankID = @BankCode ";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -860,16 +804,16 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 

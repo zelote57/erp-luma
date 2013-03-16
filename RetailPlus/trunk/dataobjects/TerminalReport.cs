@@ -302,7 +302,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -343,7 +343,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -381,7 +381,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 		public DateTime MAXDateLastInitialized(string TerminalNo, DateTime ProcessingDate)
@@ -423,7 +423,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		#endregion
@@ -464,7 +464,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -489,7 +489,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -514,7 +514,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -537,7 +537,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -789,7 +789,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1011,7 +1011,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }
         //}
 
@@ -1085,7 +1085,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1159,7 +1159,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1233,7 +1233,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		
@@ -1318,7 +1318,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1359,7 +1359,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1389,7 +1389,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1431,7 +1431,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public void InitializeZRead(int BranchID, string pvtTerminalNo, DateTime pvtDateLastInitialized, string pvtInitializedBy)
@@ -1467,7 +1467,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1504,7 +1504,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 
 		}
@@ -1542,7 +1542,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1667,7 +1667,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         private MySqlCommand GroupReportPrivate(string TerminalNo, int BranchID)
@@ -1737,7 +1737,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1903,7 +1903,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 

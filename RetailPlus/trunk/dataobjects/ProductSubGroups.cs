@@ -221,7 +221,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -308,7 +308,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -354,7 +354,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
         //// Dec 10, 2011 : Obsolete, change to ChangeTax
@@ -400,7 +400,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
         //// Dec 10, 2011 : Obsolete, change to ChangeTax
@@ -445,7 +445,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
 
@@ -513,7 +513,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -574,7 +574,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -640,7 +640,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -702,7 +702,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 		
@@ -773,7 +773,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -908,7 +908,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -973,7 +973,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1062,7 +1062,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public System.Data.DataTable ListAsDataTable(ProductSubGroupColumns clsProductSubGroupColumns, ProductSubGroupColumns SearchColumns, string SearchKey, long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, int Limit, string SortField, System.Data.SqlClient.SortOrder SortOrder)
@@ -1121,7 +1121,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         //public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
@@ -1161,7 +1161,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
         //public System.Data.DataTable ListAsDataTable(long ProductGroupID, string SortField, SortOption SortOrder)
@@ -1203,7 +1203,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }
         //}
         //public System.Data.DataTable ListByNameAsDataTable(string SortField, SortOption SortOrder)
@@ -1245,7 +1245,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }
         //}
         //public System.Data.DataTable ListByNameAsDataTable(string GroupName, string SortField, SortOption SortOrder)
@@ -1289,7 +1289,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }
         //}
         //public System.Data.DataTable SearchDataTable(long ProductGroupID, string SearchKey, string SortField, SortOption SortOrder)
@@ -1335,7 +1335,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }
         //}
 
@@ -1390,7 +1390,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }
         //}
         //public MySqlDataReader List(Int64 GroupID, string SortField, SortOption SortOrder)
@@ -1443,7 +1443,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //            
         //        }
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }
         //}
         //public MySqlDataReader ListByName(string SortField, SortOption SortOrder)
@@ -1483,7 +1483,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
         //public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
@@ -1543,7 +1543,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}				
 
@@ -1589,7 +1589,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void InheritGroupVariationsMatrix(Int64 ProductGroupID, Int64 ProductSubGroupID)
@@ -1655,7 +1655,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void InheritGroupUnitMatrix(Int64 ProductGroupID, Int64 ProductSubGroupID)
@@ -1695,7 +1695,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 

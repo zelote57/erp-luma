@@ -100,7 +100,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -146,7 +146,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -184,7 +184,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -240,7 +240,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public CardTypeDetails Details(string CardTypeName)
@@ -290,7 +290,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -336,7 +336,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -409,7 +409,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		

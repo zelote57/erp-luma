@@ -147,7 +147,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -183,7 +183,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -221,7 +221,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -297,7 +297,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -337,7 +337,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -353,7 +353,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public MySqlDataReader List(CashCountDetails clsSearchKey, string SortField, SortOption SortOrder)
@@ -415,7 +415,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -484,7 +484,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
 		}
 

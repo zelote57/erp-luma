@@ -113,7 +113,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -155,7 +155,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -215,7 +215,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -274,7 +274,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -314,7 +314,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -398,7 +398,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public void Update(MatrixPackageDetails Details, long pvtUID, DateTime pvtChangeDate, string pvtHistoryRemarks)
@@ -461,7 +461,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public void UpdateByMatrixIDUnitIDAndQuantity(MatrixPackageDetails Details, long pvtUID, DateTime pvtChangeDate, string pvtHistoryRemarks)
@@ -505,7 +505,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public void UpdatePurchasing(long MatrixID, int UnitID, decimal Quantity, decimal PurchasePrice)
@@ -540,7 +540,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -576,7 +576,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateSellingWSPrice(long MatrixID, int UnitID, decimal Quantity, decimal WholesalePrice)
@@ -611,7 +611,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateSellingWithSameQuantityAndUnit(long ProductID, int UnitID, decimal Quantity, decimal Price)
@@ -646,7 +646,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -682,7 +682,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -720,7 +720,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -771,7 +771,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public MatrixPackageDetails Details(Int64 MatrixPackageID)
@@ -828,7 +828,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public MatrixPackageDetails DetailsByMatrixID(Int64 MatrixID)
@@ -885,7 +885,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -924,7 +924,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -972,7 +972,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
         //// Dec 10, 2011 : Obsolete, change to ChangeTax
@@ -1014,7 +1014,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
         //// Dec 10, 2011 : Obsolete, change to ChangeTax
@@ -1056,7 +1056,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
 
@@ -1127,7 +1127,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 

@@ -479,7 +479,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -624,7 +624,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void UpdateBarcode(long ProductID, string Barcode)
@@ -652,7 +652,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void UpdateVariationCount(long ProductID)
@@ -673,7 +673,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -709,7 +709,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -738,7 +738,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -771,7 +771,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void UpdatePurchasingIncludingAllMatrix(long ProductID, long SupplierID, int BaseUnitID, decimal UnitCost)
@@ -804,7 +804,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -844,7 +844,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		private void UpdateSellingPrivateWSPrice(long ProductID, long SupplierID, int BaseUnitID, decimal WholesalePrice)
@@ -883,7 +883,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -908,7 +908,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void UpdateSellingWSPrice(long ProductID, long SupplierID, int BaseUnitID, decimal WholesalePrice)
@@ -932,7 +932,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -959,7 +959,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void UpdateSellingIncludingAllMatrixWithSameQuantityAndUnit(long ProductID, long SupplierID, int BaseUnitID, decimal SellingPrice)
@@ -978,7 +978,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1005,7 +1005,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void UpdateSellingIncludingAllMatrixWithSameQuantityAndUnitWSPrice(long ProductID, long SupplierID, int BaseUnitID, decimal WholesalePrice)
@@ -1023,7 +1023,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1060,7 +1060,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1121,7 +1121,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1187,7 +1187,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1253,7 +1253,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1319,7 +1319,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1342,7 +1342,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void TagInactive(long ProductID)
@@ -1364,7 +1364,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		private void TagActiveInActive(long ProductID, bool bolActive)
@@ -1400,7 +1400,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1443,7 +1443,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 			return boRetValue;
@@ -1483,7 +1483,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 			return boRetValue;
@@ -1528,7 +1528,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 			return boRetValue;
@@ -1600,7 +1600,7 @@ namespace AceSoft.RetailPlus.Data
 		//            
 		//        }
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }	
 		//}
 
@@ -1639,7 +1639,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 			return boRetValue;
@@ -1708,7 +1708,7 @@ namespace AceSoft.RetailPlus.Data
 		//            
 		//        }
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }	
 		//}
 
@@ -1763,7 +1763,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 			return boRetValue;
@@ -1806,7 +1806,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1841,7 +1841,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1876,7 +1876,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 		}
@@ -1913,7 +1913,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 		}
@@ -1950,7 +1950,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 		}
@@ -1987,7 +1987,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 			
 		}
@@ -2025,7 +2025,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 		}
@@ -2063,7 +2063,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 		}
@@ -2101,7 +2101,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 		}
@@ -2178,7 +2178,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 		}
@@ -2264,7 +2264,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -2695,7 +2695,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 		public bool WillPrintProductComposition(long ProductID)
@@ -2738,7 +2738,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 
 			return bolRetValue;
@@ -2785,7 +2785,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public ProductDetails Details(long ProductID)
@@ -2826,7 +2826,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public ProductDetails Details(string BarCode)
@@ -2867,7 +2867,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public ProductDetails DetailsByCode(string ProductCode)
@@ -2906,7 +2906,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2948,7 +2948,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public ProductDetails Details(int BranchID, string BarCode)
@@ -2989,7 +2989,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public ProductDetails DetailsByCode(int BranchID, string ProductCode)
@@ -3028,7 +3028,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -3114,7 +3114,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
         private ProductDetails SetDetails(System.Data.DataTable dt)
@@ -3198,7 +3198,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -3237,7 +3237,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
@@ -3281,7 +3281,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		
@@ -3319,7 +3319,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -3371,7 +3371,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public System.Data.DataTable ListAsDataTableActiveInactive(ProductListFilterType clsProductListFilterType, string SortField, SortOption SortOrder, int Limit, bool isQuantityGreaterThanZERO)
@@ -3425,7 +3425,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -3461,7 +3461,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -3489,7 +3489,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		
@@ -3523,7 +3523,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		
@@ -3580,7 +3580,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 
@@ -3637,7 +3637,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 
@@ -3716,7 +3716,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		
@@ -3731,7 +3731,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public System.Data.DataTable SearchDataTableActiveInactive(ProductListFilterType clsProductListFilterType, string SearchKey, string SortField, SortOption SortOrder, Int32 Limit, bool isQuantityGreaterThanZERO)
@@ -3744,7 +3744,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public System.Data.DataTable SearchSaleableDataTable(string SearchKey, string SortField, SortOption SortOrder, Int32 Limit, bool isQuantityGreaterThanZERO)
@@ -3757,7 +3757,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public System.Data.DataTable SearchSaleableDataTableByGroup(string ProductGroupCode, string SearchKey, string SortField, SortOption SortOrder, Int32 Limit, bool isQuantityGreaterThanZERO)
@@ -3829,7 +3829,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public System.Data.DataTable SearchDataTable(ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 Limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
@@ -3911,7 +3911,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public System.Data.DataTable SearchDataTableSimple(ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 Limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
@@ -3991,7 +3991,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public System.Data.DataTable SearchDataTableSimple(int BranchID, ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 Limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
@@ -4057,7 +4057,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public System.Data.DataTable ProductIDandCodeDataTable(ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive, string SearchKey="", long SupplierID = 0, long ProductGroupID = 0, string ProductGroupName = "", long ProductSubGroupID=0, string ProductSubGroupName="", Int32 Limit=100, bool isQuantityGreaterThanZERO=false, bool CheckIItemisSold=true, string SortField="ProductCode", SortOption SortOrder=SortOption.Ascending)
@@ -4155,7 +4155,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}		
 		public System.Data.DataTable InventoryReport(string ProductGroupName, string ProductSubGroupName, string ProductCode)
@@ -4225,7 +4225,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		
@@ -4239,7 +4239,7 @@ namespace AceSoft.RetailPlus.Data
 		//    }
 		//    catch (Exception ex)
 		//    {
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }	
 		//}		
 
@@ -4286,7 +4286,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}		
 
@@ -4349,7 +4349,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -4549,7 +4549,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -4665,7 +4665,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -4781,7 +4781,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -4827,7 +4827,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void InheritSubGroupVariationsMatrix(Int64 ProductSubGroupID, Int64 ProductID, ProductDetails prodDetails)
@@ -4898,7 +4898,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void InheritSubGroupUnitMatrix(Int64 ProductSubGroupID, Int64 ProductID)
@@ -4938,7 +4938,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -4995,7 +4995,7 @@ namespace AceSoft.RetailPlus.Data
 		//            
 		//        }
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }	
 		//}
 
@@ -5047,7 +5047,7 @@ namespace AceSoft.RetailPlus.Data
 		//            
 		//        }
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }	
 		//}
 
@@ -5098,7 +5098,7 @@ namespace AceSoft.RetailPlus.Data
 		//            
 		//        }
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }	
 		//}
 
@@ -5182,7 +5182,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -5220,7 +5220,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 

@@ -128,7 +128,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 	
@@ -185,7 +185,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -250,7 +250,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -311,7 +311,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -350,7 +350,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -401,7 +401,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public MySqlDataReader List(Int64 ProductID, string SortField, SortOption SortOrder)
@@ -444,7 +444,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -493,7 +493,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -538,7 +538,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		public ProductUnitsMatrixDetails LastDetails(Int64 ProductID)
@@ -598,7 +598,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 

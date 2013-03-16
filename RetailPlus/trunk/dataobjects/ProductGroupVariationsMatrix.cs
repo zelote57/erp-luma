@@ -162,7 +162,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -208,7 +208,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -291,7 +291,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -339,7 +339,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -385,7 +385,7 @@ namespace AceSoft.RetailPlus.Data
 					
 					
 				}
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -430,7 +430,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
         //// Dec 10, 2011 : Obsolete, change to ChangeTax
@@ -472,7 +472,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
         //// Dec 10, 2011 : Obsolete, change to ChangeTax
@@ -514,7 +514,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
 
@@ -562,7 +562,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void ChangeTax(long ProductGroupID, decimal NewVAT, decimal NewEVAT, decimal NewLocalTax)
@@ -617,7 +617,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -661,7 +661,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -720,7 +720,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -795,7 +795,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -839,7 +839,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -894,7 +894,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -955,7 +955,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1014,7 +1014,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 

@@ -221,7 +221,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void Update(ContactDetails Details)
@@ -273,7 +273,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void Update(string ContactCode, string TransactionNo, long ContactID)
@@ -309,7 +309,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -334,7 +334,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -469,7 +469,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public ContactDetails Details(string ContactCode)
@@ -493,7 +493,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -518,7 +518,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -543,7 +543,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -589,7 +589,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.CreditDetails.CreditLimit = Details.CreditLimit;
                 Details.CreditDetails.CreditActive = Convert.ToBoolean(Details.IsCreditAllowed);
             }
-            catch (Exception ex) { throw ex; }
+            catch (Exception ex) { throw base.ThrowException(ex); }
             return Details;
         }
 		#endregion
@@ -615,7 +615,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
@@ -644,7 +644,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		public MySqlDataReader Customers(string SearchKey, Int32 Limit, string SortField, SortOption SortOrder)
@@ -686,7 +686,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		public MySqlDataReader Customers(string SearchKey, Int32 Limit, bool HasCreditOnly, string SortField, SortOption SortOrder)
@@ -732,7 +732,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		public MySqlDataReader Suppliers(string SearchKey, Int32 Limit, string SortField, SortOption SortOrder)
@@ -774,7 +774,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		public MySqlDataReader Search(string SearchKey, Int16 ContactGroupID, Int32 Limit, string SortField, SortOption SortOrder)
@@ -813,7 +813,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		public MySqlDataReader Search(string SearchKey, Int16 ContactGroupID, Int32 Limit, bool HasCreditOnly, string SortField, SortOption SortOrder)
@@ -852,7 +852,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		public MySqlDataReader AdvanceSearch(string ContactCode, string ContactName, Int16 Deleted, Int32 ContactGroupID, bool HasCreditOnly, string SortField, SortOption SortOrder)
@@ -905,7 +905,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public System.Data.DataTable AdvanceSearchDataTable(ContactGroupCategory ContactGroupCategory, string ContactCode, string ContactName, Int16 Deleted, Int32 ContactGroupID, bool HasCreditOnly, string SortField, SortOption SortOrder)
@@ -973,7 +973,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }		
 		
@@ -1039,7 +1039,7 @@ namespace AceSoft.RetailPlus.Data
         //    }
         //    catch (Exception ex)
         //    {
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }
         //}		
         //public MySqlDataReader CustomerAdvanceSearch(string ContactCode, string ContactName, string ContactGroupCode, bool HasCreditOnly, string SortField, SortOption SortOrder)
@@ -1104,7 +1104,7 @@ namespace AceSoft.RetailPlus.Data
         //    }
         //    catch (Exception ex)
         //    {
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
 
@@ -1173,7 +1173,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1253,7 +1253,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public DataTable Suppliers(ContactColumns clsContactColumns, long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, ContactColumns SearchColumns, string SearchKey, Int32 Limit, bool HasCreditOnly, string SortField, System.Data.SqlClient.SortOrder SortOrder)
@@ -1318,7 +1318,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }		
 		public DataTable CustomersDataTable(string SearchKey, Int32 Limit, bool HasCreditOnly, string SortField, SortOption SortOrder)
@@ -1361,7 +1361,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public DataTable CustomersDataTable(string SearchKey, Int32 Limit = Constants.C_DEFAULT_LIMIT_OF_RECORD_TO_SHOW, string SortField = "ContactName", SortOption SortOrder=SortOption.Ascending)
@@ -1406,7 +1406,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public DataTable ListAsDataTable(string SortField, SortOption SortOrder)
@@ -1601,7 +1601,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1672,7 +1672,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1698,7 +1698,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void AddDebit(long ContactID, decimal Amount)
@@ -1719,7 +1719,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void SubtractCredit(long ContactID, decimal Amount)
@@ -1740,7 +1740,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public void SubtractDebit(long ContactID, decimal Amount)
@@ -1761,7 +1761,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 

@@ -567,7 +567,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -614,7 +614,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -723,7 +723,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void UpdateContact(Int64 TransactionID, DateTime TransactionDate, ContactDetails details)
@@ -744,7 +744,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void UpdateWaiter(Int64 TransactionID, DateTime TransactionDate, long WaiterID, string WaiterName)
@@ -765,7 +765,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void UpdateOrderType(Int64 TransactionID, DateTime TransactionDate, OrderTypes pvtOrderType)
@@ -785,7 +785,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void UpdateAgent(Int64 TransactionID, DateTime TransactionDate, ContactDetails details)
@@ -808,7 +808,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -927,7 +927,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -990,7 +990,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1061,7 +1061,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1128,7 +1128,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1185,7 +1185,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1246,7 +1246,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -1280,7 +1280,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void UpdateSubTotal(Int64 TransactionID, decimal SubTotal, decimal ItemsDiscount, decimal Discount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VatableAmount, decimal EVAT, decimal EVatableAmount, decimal LocalTax, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks)
@@ -1418,7 +1418,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void Suspend(Int64 TransactionID, Decimal SubTotal, ContactDetails details)
@@ -1461,7 +1461,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void Resume(Int64 TransactionID)
@@ -1490,7 +1490,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void Close(Int64 TransactionID, decimal SubTotal, decimal ItemsDiscount, decimal Discount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VatableAmount, decimal EVAT, decimal EVatableAmount, decimal LocalTax, decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, decimal BalanceAmount, decimal ChangeAmount, PaymentTypes PaymentType, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, Int64 CashierID, string CashierName)
@@ -1670,7 +1670,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void CloseAsOrderSlip(Int64 TransactionID)
@@ -1701,7 +1701,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void Void(Int64 TransactionID, decimal SubTotal, decimal ItemsDiscount, decimal Discount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VatableAmount, decimal EVAT, decimal EVatableAmount, decimal LocalTax, decimal Charge, Int64 CashierID, string CashierName)
@@ -1787,7 +1787,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void Refund(Int64 TransactionID, decimal SubTotal, decimal ItemsDiscount, decimal Discount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VatableAmount, decimal EVAT, decimal EVatableAmount, decimal LocalTax, decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, decimal BalanceAmount, decimal ChangeAmount, PaymentTypes PaymentType, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, Int64 CashierID, string CashierName)
@@ -1968,7 +1968,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void Pack(Int64 TransactionID)
@@ -1992,7 +1992,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void UnPack(Int64 TransactionID)
@@ -2016,7 +2016,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void Release(Int64 TransactionID, long ReleaserID, string ReleaserName)
@@ -2054,7 +2054,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2081,7 +2081,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void UpdatePaxNo(Int64 TransactionID, int PaxNo)
@@ -2109,7 +2109,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2125,7 +2125,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2143,7 +2143,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2175,7 +2175,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2234,7 +2234,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2282,7 +2282,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2430,7 +2430,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2545,7 +2545,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2612,7 +2612,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2627,7 +2627,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 

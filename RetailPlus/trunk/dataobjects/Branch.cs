@@ -120,7 +120,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -187,7 +187,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -226,7 +226,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -307,7 +307,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public BranchDetails Details(string BranchCode)
@@ -366,7 +366,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -441,7 +441,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
 		
@@ -492,7 +492,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
 

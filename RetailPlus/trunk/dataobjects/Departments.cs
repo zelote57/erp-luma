@@ -102,7 +102,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -137,7 +137,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -185,7 +185,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -236,7 +236,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public DepartmentDetails Details(string DepartmentName)
@@ -281,7 +281,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -327,7 +327,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder, Int32 Limit)
@@ -371,7 +371,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder, Int32 Limit)
@@ -417,7 +417,7 @@ namespace AceSoft.RetailPlus.Data
 				
 				
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public System.Data.DataTable SearchDataTable(string SearchKey, string SortField, SortOption SortOrder, Int32 Limit)
@@ -464,7 +464,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 		

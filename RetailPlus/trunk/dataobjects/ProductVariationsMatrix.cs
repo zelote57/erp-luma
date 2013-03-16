@@ -203,7 +203,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public void InsertBaseVariationEasy(long pvtProductID, string pvtDescription)
@@ -226,7 +226,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -261,7 +261,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -324,7 +324,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public void UpdatePurchasing(long MatrixID, long SupplierID, int UnitID, decimal PurchasePrice)
@@ -367,7 +367,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateSelling(long MatrixID, long SupplierID, int UnitID, decimal Price)
@@ -407,7 +407,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateSellingWSPrice(long MatrixID, long SupplierID, int UnitID, decimal WholesalePrice)
@@ -447,7 +447,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateSellingWithSameQuantityAndUnit(long ProductID, long SupplierID, int UnitID, decimal Price)
@@ -489,7 +489,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateSellingWithSameQuantityAndUnitWSPrice(long ProductID, long SupplierID, int UnitID, decimal WholePrice)
@@ -517,7 +517,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateInvDetails(int BranchID, long ProductID, long MatrixID, decimal QuantityNow, decimal MinThresholdNow, decimal MaxThresholdNow, string Remarks, DateTime TransactionDate, string TransactionNo, string AdjustedBy)
@@ -546,7 +546,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -607,7 +607,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -642,7 +642,7 @@ namespace AceSoft.RetailPlus.Data
 										
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -663,7 +663,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -693,7 +693,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
 
             return boRetValue;
@@ -731,7 +731,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public ProductBaseMatrixDetails BaseDetails(long ProductID)
@@ -762,7 +762,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public ProductBaseMatrixDetails BaseDetails(string Description, long ProductID)
@@ -797,7 +797,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public ProductBaseMatrixDetails BaseDetailsByMatrixID(long MatrixID)
@@ -828,7 +828,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         //private ProductBaseMatrixDetails getBaseDetails(MySqlDataReader myReader)
@@ -1016,7 +1016,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1054,7 +1054,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1097,7 +1097,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1143,7 +1143,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1186,7 +1186,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1219,7 +1219,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1259,7 +1259,7 @@ namespace AceSoft.RetailPlus.Data
         //    }
         //    catch (Exception ex)
         //    {
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }
         //}
 
@@ -1295,7 +1295,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1329,7 +1329,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1364,7 +1364,7 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1419,7 +1419,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         
@@ -1476,7 +1476,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public System.Data.DataTable InventoryReport(DateTime ExpiryDate, string SortField, SortOption SortOrder)
@@ -1516,7 +1516,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public System.Data.DataTable InventoryReport(string ProductGroupName, string ProductSubGroupName, string ProductCode)
@@ -1563,7 +1563,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1601,7 +1601,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public System.Data.DataTable ForReorder(long ProductID, long SupplierID)
@@ -1631,7 +1631,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public System.Data.DataTable OverStock(string SortField, SortOption SortOrder)
@@ -1663,7 +1663,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1715,7 +1715,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1761,7 +1761,7 @@ namespace AceSoft.RetailPlus.Data
 					
 					
 				}
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1820,7 +1820,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1876,7 +1876,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public System.Data.DataTable ProductVariationsMatrixListAsDataTable(long MatriXID, string SortField, System.Data.SqlClient.SortOrder SortOrder)
@@ -1927,7 +1927,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1981,7 +1981,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -2030,7 +2030,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
         //// Dec 10, 2011 : Obsolete, change to ChangeTax
@@ -2072,7 +2072,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
         //// Dec 10, 2011 : Obsolete, change to ChangeTax
@@ -2114,7 +2114,7 @@ namespace AceSoft.RetailPlus.Data
         //            
         //        }
 
-        //        throw ex;
+        //        throw base.ThrowException(ex);
         //    }	
         //}
 
@@ -2178,7 +2178,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -2230,7 +2230,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -2278,7 +2278,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -2319,7 +2319,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -2355,7 +2355,7 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -2399,7 +2399,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -2457,7 +2457,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 

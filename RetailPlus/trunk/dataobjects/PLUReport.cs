@@ -140,7 +140,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -178,7 +178,7 @@ namespace AceSoft.RetailPlus.Data
 					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -262,7 +262,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -325,7 +325,7 @@ namespace AceSoft.RetailPlus.Data
 //					
 //				}
 //
-//				throw ex;
+//				throw base.ThrowException(ex);
 //			}	
 //		}
 //		

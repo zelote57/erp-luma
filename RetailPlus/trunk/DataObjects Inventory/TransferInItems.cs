@@ -70,68 +70,22 @@ namespace AceSoft.RetailPlus.Data
          "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
          "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
          "FF52834EAFB5A7A1FDFD5851A3")]
-    public class TransferInItem
+    public class TransferInItem : POSConnection
     {
-        MySqlConnection mConnection;
-        MySqlTransaction mTransaction;
-        bool IsInTransaction = false;
-        bool TransactionFailed = false;
-
-        public MySqlConnection Connection
-        {
-            get { return mConnection; }
-        }
-
-        public MySqlTransaction Transaction
-        {
-            get { return mTransaction; }
-        }
-
-
         #region Constructors and Destructors
 
-        public TransferInItem()
+		public TransferInItem()
+            : base(null, null)
         {
-
         }
 
-        public TransferInItem(MySqlConnection Connection, MySqlTransaction Transaction)
-        {
-            mConnection = Connection;
-            mTransaction = Transaction;
+        public TransferInItem(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
+		{
 
-        }
+		}
 
-        public void CommitAndDispose()
-        {
-            if (!TransactionFailed)
-            {
-                if (IsInTransaction)
-                {
-                    mTransaction.Commit();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-            }
-        }
-
-        public MySqlConnection GetConnection()
-        {
-            if (mConnection == null)
-            {
-                mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());
-                mConnection.Open();
-
-                mTransaction = (MySqlTransaction)mConnection.BeginTransaction();
-            }
-
-            IsInTransaction = true;
-            return mConnection;
-        }
-
-
-        #endregion
+		#endregion
 
         #region Insert and Update
 
@@ -213,11 +167,7 @@ namespace AceSoft.RetailPlus.Data
                                 "@OldSellingPrice" +
                             ");";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -331,16 +281,15 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@SellingLocalTax", Details.SellingLocalTax);
                 cmd.Parameters.AddWithValue("@OldSellingPrice", Details.OldSellingPrice);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 SQL = "SELECT LAST_INSERT_ID();";
 
                 cmd.Parameters.Clear();
                 cmd.CommandText = SQL;
 
-                System.Data.DataTable dt = new System.Data.DataTable("TransferInItem");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 Int64 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)
@@ -348,7 +297,7 @@ namespace AceSoft.RetailPlus.Data
                     iID = Int64.Parse(dr[0].ToString());
                 }
 
-                TransferIn clsTransferIn = new TransferIn(Connection, Transaction);
+                TransferIn clsTransferIn = new TransferIn(base.Connection, base.Transaction);
                 clsTransferIn.SynchronizeAmount(Details.TransferInID);
 
                 return iID;
@@ -356,16 +305,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -411,11 +351,7 @@ namespace AceSoft.RetailPlus.Data
                                 "OldSellingPrice		=	@OldSellingPrice " +
                             "WHERE TransferInItemID = @TransferInItemID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -518,24 +454,15 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@OldSellingPrice", Details.OldSellingPrice);
                 cmd.Parameters.AddWithValue("@TransferInItemID", Details.TransferInItemID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
-                TransferIn clsTransferIn = new TransferIn(Connection, Transaction);
+                TransferIn clsTransferIn = new TransferIn(base.Connection, base.Transaction);
                 clsTransferIn.SynchronizeAmount(Details.TransferInID);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -549,11 +476,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Quantity                       =   @ReceivedQuantity " +
                             "WHERE TransferInItemID = @TransferInItemID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -569,21 +492,12 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInItemID.Value = TransferInItemID;
                 cmd.Parameters.Add(prmTransferInItemID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -596,11 +510,7 @@ namespace AceSoft.RetailPlus.Data
                                 "TransferInItemReceivedStatus   =   @TransferInItemReceivedStatus " +
                             "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -616,21 +526,12 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -643,11 +544,7 @@ namespace AceSoft.RetailPlus.Data
                                 "TransferInItemReceivedStatus   =   @TransferInItemReceivedStatus " +
                             "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -663,21 +560,12 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -692,31 +580,18 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "DELETE FROM tblTransferInItems WHERE TransferInItemID IN (" + IDs + ");";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 return true;
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -775,11 +650,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = SQLSelect() + "WHERE TransferInItemID = @TransferInItemID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -787,7 +658,7 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInItemID.Value = TransferInItemID;
                 cmd.Parameters.Add(prmTransferInItemID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 
                 TransferInItemDetails Details = new TransferInItemDetails();
 
@@ -839,16 +710,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -876,16 +738,11 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
-
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
-            System.Data.DataTable dt = new System.Data.DataTable("TransferInItems");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
 
@@ -913,29 +770,16 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public MySqlDataReader List(TransferInItemStatus TransferInItemstatus, string SortField, SortOption SortOrder)
@@ -952,11 +796,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -964,22 +804,13 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInItemStatus.Value = TransferInItemstatus.ToString("d");
                 cmd.Parameters.Add(prmTransferInItemStatus);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
@@ -998,11 +829,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1010,22 +837,13 @@ namespace AceSoft.RetailPlus.Data
                 prmSearchKey.Value = "%" + SearchKey + "%";
                 cmd.Parameters.Add(prmSearchKey);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public MySqlDataReader Search(TransferInItemStatus TransferInItemstatus, string SearchKey, string SortField, SortOption SortOrder)
@@ -1044,11 +862,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1060,22 +874,13 @@ namespace AceSoft.RetailPlus.Data
                 prmSearchKey.Value = "%" + SearchKey + "%";
                 cmd.Parameters.Add(prmSearchKey);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 

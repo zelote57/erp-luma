@@ -80,66 +80,20 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class POReturns
+	public class POReturns : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
 		#region Constructors and Destructors
 
 		public POReturns()
+            : base(null, null)
+        {
+        }
+
+        public POReturns(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
-
-		public POReturns(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open();
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-			}
-			
-			IsInTransaction = true;
-			return mConnection;
-		} 
-
 
 		#endregion
 
@@ -149,7 +103,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ERPConfig clsERPConfig = new ERPConfig(mConnection, mTransaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
 				string SQL = "INSERT INTO tblPODebitMemo (" +
@@ -200,11 +154,7 @@ namespace AceSoft.RetailPlus.Data
                                 "@ChartOfAccountIDAPLatePayment" +
 							");";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -296,18 +246,18 @@ namespace AceSoft.RetailPlus.Data
                 prmChartOfAccountIDAPLatePayment.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPLatePayment;
                 cmd.Parameters.Add(prmChartOfAccountIDAPLatePayment);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
+                SQL = "SELECT LAST_INSERT_ID();";
 
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                cmd.Parameters.Clear();
+                cmd.CommandText = SQL;
+
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 Int64 iID = 0;
+
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
                     iID = Int64.Parse(dr[0].ToString());
@@ -318,16 +268,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -335,7 +276,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ERPConfig clsERPConfig = new ERPConfig(mConnection, mTransaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
 				string SQL=	"UPDATE tblPODebitMemo SET " + 
@@ -361,11 +302,7 @@ namespace AceSoft.RetailPlus.Data
                                 "ChartOfAccountIDAPLatePayment  = @ChartOfAccountIDAPLatePayment " +
 							"WHERE DebitMemoID = @DebitMemoID;";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -453,21 +390,12 @@ namespace AceSoft.RetailPlus.Data
 				prmDebitMemoID.Value = Details.DebitMemoID;
 				cmd.Parameters.Add(prmDebitMemoID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public void UpdateIsVatInclusive(long DebitMemoID, bool IsVatInclusive)
@@ -478,11 +406,11 @@ namespace AceSoft.RetailPlus.Data
                                 "IsVatInclusive          =   @IsVatInclusive " +
                             "WHERE DebitMemoID = @DebitMemoID;";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -494,23 +422,14 @@ namespace AceSoft.RetailPlus.Data
                 prmDebitMemoID.Value = DebitMemoID;
                 cmd.Parameters.Add(prmDebitMemoID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 SynchronizeAmount(DebitMemoID);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateDiscount(long DebitMemoID, decimal DiscountApplied, DiscountTypes DiscountType, decimal Discount2Applied, DiscountTypes Discount2Type, decimal Discount3Applied, DiscountTypes Discount3Type)
@@ -526,11 +445,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Discount3Type          =   @Discount3Type " +
                             "WHERE DebitMemoID = @DebitMemoID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -562,21 +477,12 @@ namespace AceSoft.RetailPlus.Data
                 prmDebitMemoID.Value = DebitMemoID;
                 cmd.Parameters.Add(prmDebitMemoID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateDiscountFreightDeposit(long DebitMemoID, decimal DiscountApplied, DiscountTypes DiscountType)
@@ -588,11 +494,7 @@ namespace AceSoft.RetailPlus.Data
                                 "DiscountType           =   @DiscountType " +
                             "WHERE DebitMemoID = @DebitMemoID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -608,21 +510,12 @@ namespace AceSoft.RetailPlus.Data
                 prmDebitMemoID.Value = DebitMemoID;
                 cmd.Parameters.Add(prmDebitMemoID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateFreight(long DebitMemoID, decimal Freight)
@@ -633,11 +526,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Freight           =   @Freight " +
                             "WHERE DebitMemoID = @DebitMemoID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -649,21 +538,12 @@ namespace AceSoft.RetailPlus.Data
                 prmDebitMemoID.Value = DebitMemoID;
                 cmd.Parameters.Add(prmDebitMemoID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateDeposit(long DebitMemoID, decimal Deposit)
@@ -674,11 +554,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Deposit           =   @Deposit " +
                             "WHERE DebitMemoID = @DebitMemoID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -690,21 +566,12 @@ namespace AceSoft.RetailPlus.Data
                 prmDebitMemoID.Value = DebitMemoID;
                 cmd.Parameters.Add(prmDebitMemoID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -719,11 +586,7 @@ namespace AceSoft.RetailPlus.Data
 								"DebitMemoStatus	=	@DebitMemoStatus " +
 							"WHERE DebitMemoID = @DebitMemoID;";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -747,12 +610,12 @@ namespace AceSoft.RetailPlus.Data
 				prmDebitMemoID.Value = DebitMemoID;
 				cmd.Parameters.Add(prmDebitMemoID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				/*******************************************
 				 * Update the status of items
 				 * ****************************************/
-				POReturnItems clsPOReturnItems = new POReturnItems(mConnection, mTransaction);
+				POReturnItems clsPOReturnItems = new POReturnItems(base.Connection, base.Transaction);
 				clsPOReturnItems.Post(DebitMemoID);
 
 				/*******************************************
@@ -763,16 +626,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -781,7 +635,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 POReturnDetails clsPOReturnDetails = Details(DebitMemoID);
-                ChartOfAccount clsChartOfAccount = new ChartOfAccount(mConnection, mTransaction);
+                ChartOfAccount clsChartOfAccount = new ChartOfAccount(base.Connection, base.Transaction);
 
                 // update ChartOfAccountIDAPTracking as credit
                 clsChartOfAccount.UpdateCredit(clsPOReturnDetails.ChartOfAccountIDAPTracking, clsPOReturnDetails.SubTotal);
@@ -797,7 +651,7 @@ namespace AceSoft.RetailPlus.Data
                 clsChartOfAccount.UpdateDebit(clsPOReturnDetails.ChartOfAccountIDAPTracking, clsPOReturnDetails.Deposit);
                 clsChartOfAccount.UpdateCredit(clsPOReturnDetails.ChartOfAccountIDAPVDeposit, clsPOReturnDetails.Deposit);
 
-                POReturnItems clsPOReturnItems = new POReturnItems(mConnection, mTransaction);
+                POReturnItems clsPOReturnItems = new POReturnItems(base.Connection, base.Transaction);
                 System.Data.DataTable dt = clsPOReturnItems.ListAsDataTable(DebitMemoID);
 
                 foreach (System.Data.DataRow dr in dt.Rows)
@@ -819,16 +673,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -836,15 +681,15 @@ namespace AceSoft.RetailPlus.Data
 		{
 
 			POReturnDetails clsPOReturnDetails = Details(DebitMemoID);
-			ERPConfig clsERPConfig = new ERPConfig(Connection, Transaction);
+			ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 			ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
-			POReturnItems clsPOReturnItems = new POReturnItems(Connection, Transaction);
-			ProductUnit clsProductUnit = new ProductUnit(Connection, Transaction);
-			Products clsProduct = new Products(Connection, Transaction);
-			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(Connection, Transaction);
+			POReturnItems clsPOReturnItems = new POReturnItems(base.Connection, base.Transaction);
+			ProductUnit clsProductUnit = new ProductUnit(base.Connection, base.Transaction);
+			Products clsProduct = new Products(base.Connection, base.Transaction);
+			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
 
-			Inventory clsInventory = new Inventory(Connection, Transaction);
+			Inventory clsInventory = new Inventory(base.Connection, base.Transaction);
 
 			//MySqlDataReader myReader = clsPOReturnItems.List(DebitMemoID, "DebitMemoItemID", SortOption.Ascending);
             System.Data.DataTable dt = clsPOReturnItems.ListAsDataTable(DebitMemoID, "DebitMemoItemID", SortOption.Ascending);
@@ -908,11 +753,7 @@ namespace AceSoft.RetailPlus.Data
 								"POReturnStatus			=	@POReturnStatus " +
 							"WHERE DebitMemoID = @DebitMemoID;";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -936,28 +777,19 @@ namespace AceSoft.RetailPlus.Data
 				prmDebitMemoID.Value = DebitMemoID;
 				cmd.Parameters.Add(prmDebitMemoID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				/*******************************************
 				 * Update the status of items
 				 * ****************************************/
-				POReturnItems clsPOReturnItems = new POReturnItems(mConnection, mTransaction);
+				POReturnItems clsPOReturnItems = new POReturnItems(base.Connection, base.Transaction);
 				clsPOReturnItems.Cancel(DebitMemoID);
 
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -971,31 +803,31 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	"DELETE FROM tblPODebitMemo WHERE DebitMemoID IN (" + IDs + ");";
 				  
-				MySqlConnection cn = GetConnection();
+				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+				
+				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
+				
+				
 				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
+					
+					
+					
+					
 				}
 
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1071,11 +903,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	SQLSelect() + "AND DebitMemoID = @DebitMemoID;";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1083,7 +911,7 @@ namespace AceSoft.RetailPlus.Data
 				prmDebitMemoID.Value = DebitMemoID;
 				cmd.Parameters.Add(prmDebitMemoID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				POReturnDetails Details = new POReturnDetails();
 
@@ -1145,16 +973,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1164,58 +983,61 @@ namespace AceSoft.RetailPlus.Data
 
 		public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
 		{
-            if (SortField == string.Empty || SortField == null) SortField = "DebitMemoID";
+            try{
+                if (SortField == string.Empty || SortField == null) SortField = "DebitMemoID";
 
-            string SQL = SQLSelect() + "ORDER BY " + SortField;
+                string SQL = SQLSelect() + "ORDER BY " + SortField;
 
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
+                if (SortOrder == SortOption.Ascending)
+                    SQL += " ASC";
+                else
+                    SQL += " DESC";
 
-			MySqlConnection cn = GetConnection();
+			    MySqlCommand cmd = new MySqlCommand();
+			    cmd.CommandType = System.Data.CommandType.Text;
+			    cmd.CommandText = SQL;
 
-			MySqlCommand cmd = new MySqlCommand();
-			cmd.Connection = cn;
-			cmd.Transaction = mTransaction;
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 				
-			System.Data.DataTable dt = new System.Data.DataTable("PODebitMemo");
-			MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-			adapter.Fill(dt);
-				
-			return dt;
+			    return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
 		}
         public System.Data.DataTable ListAsDataTable(POReturnStatus POReturnStatus, string SortField, SortOption SortOrder)
         {
-            if (SortField == string.Empty || SortField == null) SortField = "DebitMemoID";
+            try
+            {
+                if (SortField == string.Empty || SortField == null) SortField = "DebitMemoID";
 
-            string SQL = SQLSelect() + "AND POReturnStatus = @POReturnStatus " +
-                            "ORDER BY " + SortField;
+                string SQL = SQLSelect() + "AND POReturnStatus = @POReturnStatus " +
+                                "ORDER BY " + SortField;
 
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
+                if (SortOrder == SortOption.Ascending)
+                    SQL += " ASC";
+                else
+                    SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
 
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
+                MySqlParameter prmPOReturnStatus = new MySqlParameter("@POReturnStatus",MySqlDbType.Int16);
+                prmPOReturnStatus.Value = POReturnStatus.ToString("d");
+                cmd.Parameters.Add(prmPOReturnStatus);
 
-            MySqlParameter prmPOReturnStatus = new MySqlParameter("@POReturnStatus",MySqlDbType.Int16);
-            prmPOReturnStatus.Value = POReturnStatus.ToString("d");
-            cmd.Parameters.Add(prmPOReturnStatus);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-            System.Data.DataTable dt = new System.Data.DataTable("PODebitMemo");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
-
-            return dt;
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
         }
 		public MySqlDataReader List(long DebitMemoID, string SortField, SortOption SortOrder)
 		{
@@ -1228,11 +1050,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1240,22 +1058,13 @@ namespace AceSoft.RetailPlus.Data
 				prmDebitMemoID.Value = DebitMemoID;
 				cmd.Parameters.Add(prmDebitMemoID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public MySqlDataReader List(string SortField, SortOption SortOrder)
@@ -1269,30 +1078,17 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public MySqlDataReader List(POReturnStatus POReturnStatus, string SortField, SortOption SortOrder)
@@ -1307,11 +1103,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1319,22 +1111,13 @@ namespace AceSoft.RetailPlus.Data
 				prmPOReturnStatus.Value = POReturnStatus.ToString("d");
 				cmd.Parameters.Add(prmPOReturnStatus);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public MySqlDataReader List(POReturnStatus POReturnStatus, long SupplierID, string SortField, SortOption SortOrder)
@@ -1350,11 +1133,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1366,22 +1145,13 @@ namespace AceSoft.RetailPlus.Data
 				prmSupplierID.Value = SupplierID;
 				cmd.Parameters.Add(prmSupplierID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public MySqlDataReader List(POReturnStatus POReturnStatus, DateTime StartDate, DateTime EndDate)
@@ -1392,11 +1162,7 @@ namespace AceSoft.RetailPlus.Data
                         "AND PostingDate BETWEEN @StartDate AND @EndDate " +
                     "ORDER BY DebitMemoID ASC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1412,22 +1178,13 @@ namespace AceSoft.RetailPlus.Data
                 prmEndDate.Value = EndDate.ToString("yyyy-MM-dd HH:mm:ss");
                 cmd.Parameters.Add(prmEndDate);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public MySqlDataReader List(POReturnStatus POReturnStatus, long SupplierID, DateTime StartDate, DateTime EndDate)
@@ -1439,11 +1196,7 @@ namespace AceSoft.RetailPlus.Data
                         "AND PostingDate BETWEEN @StartDate AND @EndDate " +
                     "ORDER BY DebitMemoID ASC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1452,22 +1205,13 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@StartDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@EndDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1484,11 +1228,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1496,22 +1236,13 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		public MySqlDataReader Search(POReturnStatus Status, string SearchKey, string SortField, SortOption SortOrder)
@@ -1528,11 +1259,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1544,22 +1271,13 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public System.Data.DataTable SearchAsDataTable(POReturnStatus Status, string SearchKey, string SortField, SortOption SortOrder)
@@ -1576,11 +1294,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1592,24 +1306,14 @@ namespace AceSoft.RetailPlus.Data
                 prmSearchKey.Value = "%" + SearchKey + "%";
                 cmd.Parameters.Add(prmSearchKey);
 
-                System.Data.DataTable dt = new System.Data.DataTable("PODebitMemo");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
-
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
                 return dt;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public System.Data.DataTable SearchAsDataTable(POReturnStatus status, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder)
@@ -1634,11 +1338,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1650,24 +1350,14 @@ namespace AceSoft.RetailPlus.Data
                 if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                System.Data.DataTable dt = new System.Data.DataTable("PO");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 return dt;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }	
 
@@ -1681,7 +1371,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string stRetValue = String.Empty;
 				
-				ERPConfig clsERPConfig = new ERPConfig(Connection, Transaction);
+				ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 				stRetValue = clsERPConfig.get_LastPOReturnNo();
 
 				return stRetValue;
@@ -1689,16 +1379,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void SynchronizeAmount(long DebitMemoID)
@@ -1707,11 +1388,7 @@ namespace AceSoft.RetailPlus.Data
 			{
                 string SQL = "CALL procPODebitMemoSynchronizeAmount(@DebitMemoID);";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1719,21 +1396,12 @@ namespace AceSoft.RetailPlus.Data
 				prmDebitMemoID.Value = DebitMemoID;
 				cmd.Parameters.Add(prmDebitMemoID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 

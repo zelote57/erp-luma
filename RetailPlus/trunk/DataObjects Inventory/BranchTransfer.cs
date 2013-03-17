@@ -68,68 +68,22 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class BranchTransfer
+	public class BranchTransfer : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
 		#region Constructors and Destructors
 
 		public BranchTransfer()
+            : base(null, null)
+        {
+        }
+
+        public BranchTransfer(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
 
-		public BranchTransfer(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open();
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-			}
-			
-			IsInTransaction = true;
-			return mConnection;
-		} 
-
-
-		#endregion
+        #endregion
 
 		#region Insert and Update
 
@@ -137,7 +91,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ERPConfig clsERPConfig = new ERPConfig(mConnection, mTransaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
 				string SQL = "INSERT INTO tblBranchTransfer (" +
@@ -164,11 +118,8 @@ namespace AceSoft.RetailPlus.Data
                                             "@Remarks" +
 							            ");";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
+				
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -212,46 +163,36 @@ namespace AceSoft.RetailPlus.Data
 				prmRemarks.Value = Details.Remarks;
                 cmd.Parameters.Add(prmRemarks);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				Int64 iID = 0;
+                SQL = "SELECT LAST_INSERT_ID();";
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
+                cmd.Parameters.Clear();
+                cmd.CommandText = SQL;
 
-				myReader.Close();
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				return iID;
+                Int64 iID = 0;
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int64.Parse(dr[0].ToString());
+                }
+
+                return iID;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public void Update(BranchTransferDetails Details)
 		{
 			try 
 			{
-                ERPConfig clsERPConfig = new ERPConfig(mConnection, mTransaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
                 string SQL=	"UPDATE tblBranchTransfer SET " +
@@ -265,11 +206,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Remarks                    =   @Remarks " +
 							"WHERE BranchTransferID = @BranchTransferID;";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -313,21 +250,12 @@ namespace AceSoft.RetailPlus.Data
 				prmBranchTransferID.Value = Details.BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -340,11 +268,7 @@ namespace AceSoft.RetailPlus.Data
                                 "DiscountType           =   @DiscountType " +
                             "WHERE BranchTransferID = @BranchTransferID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -360,21 +284,12 @@ namespace AceSoft.RetailPlus.Data
                 prmBranchTransferID.Value = BranchTransferID;
                 cmd.Parameters.Add(prmBranchTransferID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateDiscountFreightDeposit(long BranchTransferID, decimal DiscountApplied, DiscountTypes DiscountType)
@@ -386,11 +301,7 @@ namespace AceSoft.RetailPlus.Data
                                 "DiscountType           =   @DiscountType " +
                             "WHERE BranchTransferID = @BranchTransferID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -406,21 +317,12 @@ namespace AceSoft.RetailPlus.Data
                 prmBranchTransferID.Value = BranchTransferID;
                 cmd.Parameters.Add(prmBranchTransferID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateFreight(long BranchTransferID, decimal Freight)
@@ -431,11 +333,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Freight           =   @Freight " +
                             "WHERE BranchTransferID = @BranchTransferID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -447,21 +345,12 @@ namespace AceSoft.RetailPlus.Data
                 prmBranchTransferID.Value = BranchTransferID;
                 cmd.Parameters.Add(prmBranchTransferID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateDeposit(long BranchTransferID, decimal Deposit)
@@ -472,11 +361,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Deposit           =   @Deposit " +
                             "WHERE BranchTransferID = @BranchTransferID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -488,21 +373,12 @@ namespace AceSoft.RetailPlus.Data
                 prmBranchTransferID.Value = BranchTransferID;
                 cmd.Parameters.Add(prmBranchTransferID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -516,11 +392,7 @@ namespace AceSoft.RetailPlus.Data
 								"Status				    =	@Status " +
 							"WHERE BranchTransferID = @BranchTransferID;";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -540,12 +412,12 @@ namespace AceSoft.RetailPlus.Data
 				prmBranchTransferID.Value = BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				/*******************************************
 				 * Update the status of items
 				 * ****************************************/
-				BranchTransferItem clsBranchTransferItem = new BranchTransferItem(mConnection, mTransaction);
+				BranchTransferItem clsBranchTransferItem = new BranchTransferItem(base.Connection, base.Transaction);
 				clsBranchTransferItem.Post(BranchTransferID);
 
 				/*******************************************
@@ -566,16 +438,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -584,7 +447,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 //BranchTransferDetails clsBranchTransferDetails = Details(BranchTransferID);
-                //ChartOfAccount clsChartOfAccount = new ChartOfAccount(mConnection, mTransaction);
+                //ChartOfAccount clsChartOfAccount = new ChartOfAccount(base.Connection, base.Transaction);
 
                 //// update ChartOfAccountIDAPTracking as credit
                 //clsChartOfAccount.UpdateCredit(clsBranchTransferDetails.ChartOfAccountIDAPTracking, clsBranchTransferDetails.SubTotal);
@@ -600,7 +463,7 @@ namespace AceSoft.RetailPlus.Data
                 //clsChartOfAccount.UpdateCredit(clsBranchTransferDetails.ChartOfAccountIDAPTracking, clsBranchTransferDetails.Deposit);
                 //clsChartOfAccount.UpdateDebit(clsBranchTransferDetails.ChartOfAccountIDAPVDeposit, clsBranchTransferDetails.Deposit);
 
-                //BranchTransferItem clsBranchTransferItem = new BranchTransferItem(mConnection, mTransaction);
+                //BranchTransferItem clsBranchTransferItem = new BranchTransferItem(base.Connection, base.Transaction);
                 //MySqlDataReader myReader = clsBranchTransferItem.List(BranchTransferID, "BranchTransferItemID", SortOption.Ascending);
                 //while (myReader.Read())
                 //{ 
@@ -622,16 +485,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }	
         }
 
@@ -641,32 +495,23 @@ namespace AceSoft.RetailPlus.Data
             {
                 //string SQL = "CALL procProductUpdateRIDByBranchTransfer(@lngBranchTransferID)";
 
-                //MySqlConnection cn = GetConnection();
+                //
 
                 //MySqlCommand cmd = new MySqlCommand();
-                //cmd.Connection = cn;
-                //cmd.Transaction = mTransaction;
+                //
+                //
                 //cmd.CommandType = System.Data.CommandType.Text;
                 //cmd.CommandText = SQL;
 
                 //cmd.Parameters.AddWithValue("@lngBranchTransferID", BranchTransferID);
 
-                //cmd.ExecuteNonQuery();
+                //base.ExecuteNonQuery(cmd);
 
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
 
         }
@@ -674,17 +519,17 @@ namespace AceSoft.RetailPlus.Data
 		{
 
 			BranchTransferDetails clsBranchTransferDetails = Details(BranchTransferID);
-            ERPConfig clsERPConfig = new ERPConfig(mConnection, mTransaction);
+            ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 			ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
-			BranchTransferItem clsBranchTransferItem = new BranchTransferItem(mConnection, mTransaction);
-            ProductUnit clsProductUnit = new ProductUnit(mConnection, mTransaction);
-            Products clsProduct = new Products(mConnection, mTransaction);
-            ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(mConnection, mTransaction);
-            ProductPackage clsProductPackage = new ProductPackage(mConnection, mTransaction);
-            MatrixPackage clsMatrixPackage = new MatrixPackage(mConnection, mTransaction);
+			BranchTransferItem clsBranchTransferItem = new BranchTransferItem(base.Connection, base.Transaction);
+            ProductUnit clsProductUnit = new ProductUnit(base.Connection, base.Transaction);
+            Products clsProduct = new Products(base.Connection, base.Transaction);
+            ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
+            ProductPackage clsProductPackage = new ProductPackage(base.Connection, base.Transaction);
+            MatrixPackage clsMatrixPackage = new MatrixPackage(base.Connection, base.Transaction);
 
-			Inventory clsInventory = new Inventory(mConnection, mTransaction);
+			Inventory clsInventory = new Inventory(base.Connection, base.Transaction);
             InventoryDetails clsInventoryDetails;
 
 			System.Data.DataTable dt = clsBranchTransferItem.ListAsDataTable(BranchTransferID, "BranchTransferItemID", SortOption.Ascending);
@@ -752,12 +597,8 @@ namespace AceSoft.RetailPlus.Data
 								"CancelledByID			=	@CancelledByID, " +
 								"Status				    =	@Status " +
 							"WHERE BranchTransferID = @BranchTransferID;";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
+
+                MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -781,28 +622,19 @@ namespace AceSoft.RetailPlus.Data
 				prmBranchTransferID.Value = BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				/*******************************************
 				 * Update the status of items
 				 * ****************************************/
-				BranchTransferItem clsBranchTransferItem = new BranchTransferItem(mConnection, mTransaction);
+				BranchTransferItem clsBranchTransferItem = new BranchTransferItem(base.Connection, base.Transaction);
 				clsBranchTransferItem.Cancel(BranchTransferID);
 
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -817,11 +649,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "UPDATE tblBranchTransfer SET PaymentStatus = @PaymentStatus WHERE BranchTransferID IN (" + IDs + ");";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -829,23 +657,14 @@ namespace AceSoft.RetailPlus.Data
                 prmPaymentStatus.Value = paymentStatus.ToString("d");
                 cmd.Parameters.Add(prmPaymentStatus);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 return true;
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public bool UpdatePayment(long BranchTransferID, decimal PaidAmount, BranchTransferPaymentStatus paymentStatus)
@@ -858,11 +677,7 @@ namespace AceSoft.RetailPlus.Data
                                 "PaymentStatus  = @PaymentStatus " +
                              "WHERE BranchTransferID = @BranchTransferID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -878,23 +693,14 @@ namespace AceSoft.RetailPlus.Data
                 prmBranchTransferID.Value = BranchTransferID;
                 cmd.Parameters.Add(prmBranchTransferID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 return true;
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -907,32 +713,19 @@ namespace AceSoft.RetailPlus.Data
 			try 
 			{
 				string SQL=	"DELETE FROM tblBranchTransfer WHERE BranchTransferID IN (" + IDs + ");";
-				  
-				MySqlConnection cn = GetConnection();
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -991,12 +784,8 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				string SQL=	SQLSelect() + "WHERE BranchTransferID = @BranchTransferID;";
-				  
-				MySqlConnection cn = GetConnection();
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1004,9 +793,8 @@ namespace AceSoft.RetailPlus.Data
 				prmBranchTransferID.Value = BranchTransferID;
 				cmd.Parameters.Add(prmBranchTransferID);
 
-				System.Data.DataTable dt = new System.Data.DataTable("Stock");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 				
 				BranchTransferDetails Details = new BranchTransferDetails();
 
@@ -1053,16 +841,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1083,19 +862,14 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
-
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
             cmd.Parameters.AddWithValue("@Status", branchtransferstatus.ToString("d"));
 
-            System.Data.DataTable dt = new System.Data.DataTable("BranchTransfer");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
         }
@@ -1117,11 +891,7 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
-
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
@@ -1132,9 +902,8 @@ namespace AceSoft.RetailPlus.Data
             if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
             if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-            System.Data.DataTable dt = new System.Data.DataTable("BranchTransfer");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
         }
@@ -1150,17 +919,12 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
-
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
-            System.Data.DataTable dt = new System.Data.DataTable("BranchTransfer");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
 		}
@@ -1178,30 +942,17 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1218,30 +969,17 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1258,11 +996,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1270,22 +1004,13 @@ namespace AceSoft.RetailPlus.Data
 				prmStatus.Value = branchtransferstatus.ToString("d");
 				cmd.Parameters.Add(prmStatus);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -1302,11 +1027,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1318,22 +1039,13 @@ namespace AceSoft.RetailPlus.Data
 				prmSupplierID.Value = SupplierID;
 				cmd.Parameters.Add(prmSupplierID);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public MySqlDataReader ListForPayment(long SupplierID, string SortField, SortOption SortOrder)
@@ -1349,11 +1061,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1369,22 +1077,13 @@ namespace AceSoft.RetailPlus.Data
                 prmSupplierID.Value = SupplierID;
                 cmd.Parameters.Add(prmSupplierID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
@@ -1402,11 +1101,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1414,22 +1109,13 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 		public MySqlDataReader Search(BranchTransferStatus branchtransferstatus, string SearchKey, string SortField, SortOption SortOrder)
@@ -1447,11 +1133,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1463,22 +1145,13 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public System.Data.DataTable SearchAsDataTable(BranchTransferStatus branchtransferstatus, string SearchKey, string SortField, SortOption SortOrder)
@@ -1496,11 +1169,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1512,24 +1181,14 @@ namespace AceSoft.RetailPlus.Data
                 prmSearchKey.Value = "%" + SearchKey + "%";
                 cmd.Parameters.Add(prmSearchKey);
 
-                System.Data.DataTable dt = new System.Data.DataTable("BranchTransfer");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 return dt;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public System.Data.DataTable SearchAsDataTable(BranchTransferStatus branchtransferstatus, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder)
@@ -1556,11 +1215,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1572,24 +1227,14 @@ namespace AceSoft.RetailPlus.Data
                 if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                System.Data.DataTable dt = new System.Data.DataTable("BranchTransfer");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 return dt;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }	
 
@@ -1599,11 +1244,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL = SQLSelect() + "WHERE Status = @Status AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY BranchTransferID ASC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1619,22 +1260,13 @@ namespace AceSoft.RetailPlus.Data
 				prmStatus.Value = branchtransferstatus.ToString("d");
 				cmd.Parameters.Add(prmStatus);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public MySqlDataReader List(BranchTransferStatus branchtransferstatus, long SupplierID, DateTime StartDate, DateTime EndDate)
@@ -1643,11 +1275,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = SQLSelect() + "WHERE Status = @Status AND SupplierID = @SupplierID AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY BranchTransferID ASC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1656,22 +1284,13 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@StartDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@EndDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 		
@@ -1685,7 +1304,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string stRetValue = String.Empty;
 				
-				ERPConfig clsERPConfig = new ERPConfig(Connection, Transaction);
+				ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 				stRetValue = clsERPConfig.get_LastBranchTransferNo();
 
 				return stRetValue;
@@ -1693,16 +1312,7 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public void SynchronizeAmount(long BranchTransferID)
@@ -1711,11 +1321,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procBranchTransferSynchronizeAmount(@BranchTransferID);";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1723,21 +1329,12 @@ namespace AceSoft.RetailPlus.Data
                 prmBranchTransferID.Value = BranchTransferID;
                 cmd.Parameters.Add(prmBranchTransferID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 

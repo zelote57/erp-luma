@@ -13,66 +13,20 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class PurchaseAnalysis
+	public class PurchaseAnalysis : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
 		#region Constructors and Destructors
 
 		public PurchaseAnalysis()
+            : base(null, null)
+        {
+        }
+
+        public PurchaseAnalysis(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
-
-		public PurchaseAnalysis(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open();
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-			}
-
-			IsInTransaction = true;
-			return mConnection;
-		} 
-
 
 		#endregion
 
@@ -101,11 +55,7 @@ namespace AceSoft.RetailPlus.Data
 							"GROUP BY a.ContactCode, ContactName " +
 							"ORDER BY a.ContactCode;";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -118,24 +68,14 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.AddWithValue("@PostingDateFrom", PostingDateFrom.ToString("yyyy-MM-dd HH:mm:ss"));
 				cmd.Parameters.AddWithValue("@PostingDateTo", PostingDateTo.ToString("yyyy-MM-dd HH:mm:ss"));
 
-				System.Data.DataTable dt = new System.Data.DataTable("PurchaseAnalysis");
-				MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-				adapter.Fill(dt);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
 				return dt;	
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		

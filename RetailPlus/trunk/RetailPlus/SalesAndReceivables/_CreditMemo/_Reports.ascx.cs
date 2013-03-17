@@ -68,7 +68,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
             {
                 CRViewer.ReportSource = rpt;
                 Session["ReportDocument"] = rpt;
-                OpenExportedReport(strFileName);
+                CRSHelper.OpenExportedReport(strFileName); // OpenExportedReport(strFileName);
             }
 
         }

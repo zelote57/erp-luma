@@ -78,7 +78,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
             {
                 CRViewer.ReportSource = rpt;
                 Session["ReportDocument"] = rpt;
-                OpenExportedReport(strFileName);
+                CRSHelper.OpenExportedReport(strFileName); // OpenExportedReport(strFileName);
             }
 
         }

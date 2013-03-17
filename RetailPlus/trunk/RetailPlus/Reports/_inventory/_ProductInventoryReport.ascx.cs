@@ -173,7 +173,7 @@ namespace AceSoft.RetailPlus.Reports
             {
                 CRViewer.ReportSource = rpt;
                 Session["ReportDocument"] = rpt;
-                OpenExportedReport(strFileName);
+                CRSHelper.OpenExportedReport(strFileName); // OpenExportedReport(strFileName);
             }
 
         }
@@ -182,11 +182,11 @@ namespace AceSoft.RetailPlus.Reports
         {
             try
             {
-                System.Net.WebClient Client = new System.Net.WebClient();
-                Client.DownloadFile(Server.MapPath(Constants.ROOT_DIRECTORY + "/temp/" + FileName), @"c:\" + FileName);
+                //System.Net.WebClient Client = new System.Net.WebClient();
+                //Client.DownloadFile(Server.MapPath(Constants.ROOT_DIRECTORY + "/temp/" + FileName), FileName);
 
                 System.Diagnostics.Process p = new System.Diagnostics.Process();
-                p.StartInfo.FileName = @"c:\" + FileName; //Server.MapPath(Constants.ROOT_DIRECTORY + "/temp/" + FileName);
+                p.StartInfo.FileName = Server.MapPath(Constants.ROOT_DIRECTORY + "/temp/" + FileName);
                 p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
                 p.Start();
             }

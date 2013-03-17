@@ -318,7 +318,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			SortByReqDeliveryDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RequiredDeliveryDate", Session.SessionID);
 			SortByBranchCode.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("BranchID", Session.SessionID);
 			SortByPOSubTotal.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("SubTotal", Session.SessionID);
-            this.Visible = true;
 		}
 		private void LoadList()
 		{	

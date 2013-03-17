@@ -106,7 +106,7 @@ namespace AceSoft.RetailPlus.Reports
             {
                 CRViewer.ReportSource = rpt;
                 Session["ReportDocument"] = rpt;
-                OpenExportedReport(strFileName);
+                CRSHelper.OpenExportedReport(strFileName); // OpenExportedReport(strFileName);
             }
 
         }

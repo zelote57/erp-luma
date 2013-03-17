@@ -94,7 +94,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             {
                 CRViewer.ReportSource = rpt;
                 Session["ReportDocument"] = rpt;
-                OpenExportedReport(strFileName);
+                CRSHelper.OpenExportedReport(strFileName); // OpenExportedReport(strFileName);
             }
 
         }

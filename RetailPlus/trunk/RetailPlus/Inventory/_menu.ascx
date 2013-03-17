@@ -72,24 +72,8 @@
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
-											<asp:HyperLink id="lnkPostedTransferIn" runat="server" ToolTip="Display List of Posted Transfer In">
-													Posted Transfer In</asp:HyperLink>
-										</td>
-										<td class="Ms-pvnavmidr1"></td>
-									</tr>
-									<tr>
-										<td class="Ms-pvnavmidl1"></td>
-										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkTransferOut" runat="server" ToolTip="Display List of Transfer Out">
 													Transfer Out</asp:HyperLink>
-										</td>
-										<td class="Ms-pvnavmidr1"></td>
-									</tr>
-									<tr>
-										<td class="Ms-pvnavmidl1"></td>
-										<td class="Ms-pvtbbutton">
-											<asp:HyperLink id="lnkPostedTransferOut" runat="server" ToolTip="Display List of Posted Transfer Out">
-													Posted Transfer Out</asp:HyperLink>
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>

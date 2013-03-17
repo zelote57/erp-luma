@@ -96,12 +96,12 @@
 //        {
 //            if (!TransactionFailed)
 //            {
-//                if (IsInTransaction)
+//                
 //                {
 //                    mTransaction.Commit();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
 //                }
 //            }
 //        }
@@ -191,11 +191,11 @@
 //                                "(SELECT ChartOfAccountIDInventory FROM tblProducts WHERE ProductID = @ProductID) " +
 //                            ");";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
@@ -303,14 +303,14 @@
 //                prmRemarks.Value = Details.Remarks;
 //                cmd.Parameters.Add(prmRemarks);
 
-//                cmd.ExecuteNonQuery();
+//                base.ExecuteNonQuery(cmd);
 
 //                SQL = "SELECT LAST_INSERT_ID();";
 
 //                cmd.Parameters.Clear();
 //                cmd.CommandText = SQL;
 
-//                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+//                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 
 //                Int64 iID = 0;
 
@@ -321,7 +321,7 @@
 
 //                myReader.Close();
 
-//                InvAdjustment clsInvAdjustment = new InvAdjustment(Connection, Transaction);
+//                InvAdjustment clsInvAdjustment = new InvAdjustment(base.Connection, base.Transaction);
 //                clsInvAdjustment.SynchronizeAmount(Details.InvAdjustmentID);
 
 //                return iID;
@@ -329,16 +329,16 @@
 
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 
@@ -378,11 +378,11 @@
 //                                "ChartOfAccountIDInventory      = (SELECT ChartOfAccountIDInventory FROM tblProducts WHERE ProductID = @ProductID) " +
 //                            "WHERE InvAdjustmentItemID = @InvAdjustmentItemID;";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
@@ -494,24 +494,24 @@
 //                prmInvAdjustmentItemID.Value = Details.InvAdjustmentItemID;
 //                cmd.Parameters.Add(prmInvAdjustmentItemID);
 
-//                cmd.ExecuteNonQuery();
+//                base.ExecuteNonQuery(cmd);
 
-//                InvAdjustment clsInvAdjustment = new InvAdjustment(Connection, Transaction);
+//                InvAdjustment clsInvAdjustment = new InvAdjustment(base.Connection, base.Transaction);
 //                clsInvAdjustment.SynchronizeAmount(Details.InvAdjustmentID);
 //            }
 
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 
@@ -523,11 +523,11 @@
 //                                "InvAdjustmentItemStatus			=	@InvAdjustmentItemStatus " +
 //                            "WHERE InvAdjustmentID = @InvAdjustmentID;";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
@@ -539,21 +539,21 @@
 //                prmInvAdjustmentID.Value = InvAdjustmentID;
 //                cmd.Parameters.Add(prmInvAdjustmentID);
 
-//                cmd.ExecuteNonQuery();
+//                base.ExecuteNonQuery(cmd);
 //            }
 
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 
@@ -565,11 +565,11 @@
 //                                "InvAdjustmentItemStatus			=	@InvAdjustmentItemStatus " +
 //                            "WHERE InvAdjustmentID = @InvAdjustmentID;";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
@@ -581,21 +581,21 @@
 //                prmInvAdjustmentID.Value = InvAdjustmentID;
 //                cmd.Parameters.Add(prmInvAdjustmentID);
 
-//                cmd.ExecuteNonQuery();
+//                base.ExecuteNonQuery(cmd);
 //            }
 
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 
@@ -610,31 +610,31 @@
 //            {
 //                string SQL = "DELETE FROM tblInvAdjustmentItems WHERE InvAdjustmentItemID IN (" + IDs + ");";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
-//                cmd.ExecuteNonQuery();
+//                base.ExecuteNonQuery(cmd);
 
 //                return true;
 //            }
 
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 
@@ -686,11 +686,11 @@
 //            {
 //                string SQL = SQLSelect() + "WHERE InvAdjustmentItemID = @InvAdjustmentItemID;";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
@@ -698,7 +698,7 @@
 //                prmInvAdjustmentItemID.Value = InvAdjustmentItemID;
 //                cmd.Parameters.Add(prmInvAdjustmentItemID);
 
-//                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+//                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 
 //                InvAdjustmentItemDetails Details = new InvAdjustmentItemDetails();
 
@@ -741,16 +741,16 @@
 
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 
@@ -769,7 +769,7 @@
 //            else
 //                SQL += " DESC";
 
-//            MySqlConnection cn = GetConnection();
+//            
 //            System.Data.DataTable dt = new System.Data.DataTable("InvAdjustmentItems");
 //            MySqlDataAdapter adapter = new MySqlDataAdapter(SQL, cn);
 //            adapter.Fill(dt);
@@ -790,30 +790,30 @@
 //                else
 //                    SQL += " DESC";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
-//                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+//                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
 //                return myReader;
 //            }
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 //        public MySqlDataReader List(long InvAdjustmentID, string SortField, SortOption SortOrder)
@@ -829,11 +829,11 @@
 //                else
 //                    SQL += " DESC";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
@@ -841,22 +841,22 @@
 //                prmInvAdjustmentID.Value = InvAdjustmentID;
 //                cmd.Parameters.Add(prmInvAdjustmentID);
 
-//                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+//                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
 //                return myReader;
 //            }
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 //        public MySqlDataReader List(InvAdjustmentItemStatus InvAdjustmentItemstatus, string SortField, SortOption SortOrder)
@@ -873,11 +873,11 @@
 //                else
 //                    SQL += " DESC";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
@@ -885,22 +885,22 @@
 //                prmInvAdjustmentItemStatus.Value = InvAdjustmentItemstatus.ToString("d");
 //                cmd.Parameters.Add(prmInvAdjustmentItemStatus);
 
-//                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+//                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
 //                return myReader;
 //            }
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 //        public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
@@ -919,11 +919,11 @@
 //                else
 //                    SQL += " DESC";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
@@ -931,22 +931,22 @@
 //                prmSearchKey.Value = "%" + SearchKey + "%";
 //                cmd.Parameters.Add(prmSearchKey);
 
-//                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+//                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
 //                return myReader;
 //            }
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 //        public MySqlDataReader Search(InvAdjustmentItemStatus InvAdjustmentItemstatus, string SearchKey, string SortField, SortOption SortOrder)
@@ -965,11 +965,11 @@
 //                else
 //                    SQL += " DESC";
 
-//                MySqlConnection cn = GetConnection();
+//                
 
 //                MySqlCommand cmd = new MySqlCommand();
-//                cmd.Connection = cn;
-//                cmd.Transaction = mTransaction;
+//                
+//                
 //                cmd.CommandType = System.Data.CommandType.Text;
 //                cmd.CommandText = SQL;
 
@@ -981,22 +981,22 @@
 //                prmSearchKey.Value = "%" + SearchKey + "%";
 //                cmd.Parameters.Add(prmSearchKey);
 
-//                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+//                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
 //                return myReader;
 //            }
 //            catch (Exception ex)
 //            {
-//                TransactionFailed = true;
-//                if (IsInTransaction)
+//                
+//                
 //                {
-//                    mTransaction.Rollback();
-//                    mTransaction.Dispose();
-//                    mConnection.Close();
-//                    mConnection.Dispose();
+//                    
+//                    
+//                    
+//                    
 //                }
 
-//                throw ex;
+//                throw base.ThrowException(ex);
 //            }
 //        }
 

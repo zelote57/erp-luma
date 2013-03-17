@@ -25,6 +25,14 @@ namespace AceSoft.RetailPlus.Data
 
 	#endregion
 
+    [StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
+         PublicKey = "002400000480000094000000060200000024000" +
+         "052534131000400000100010053D785642F9F960B43157E0380" +
+         "F393BEE53E8DFAFBF441366C1B6F8B48D9DDF0D527B1F3B21EA" +
+         "E85D2FDB664CE81EB8A87DBE4C589D6F4202FE2B7D4B978BB69" +
+         "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
+         "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
+         "FF52834EAFB5A7A1FDFD5851A3")]
     #region APLinkConfigDetails
 
     public struct APLinkConfigDetails
@@ -37,6 +45,14 @@ namespace AceSoft.RetailPlus.Data
         public int ChartOfAccountIDAPLatePayment;
     }
 
+    [StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
+         PublicKey = "002400000480000094000000060200000024000" +
+         "052534131000400000100010053D785642F9F960B43157E0380" +
+         "F393BEE53E8DFAFBF441366C1B6F8B48D9DDF0D527B1F3B21EA" +
+         "E85D2FDB664CE81EB8A87DBE4C589D6F4202FE2B7D4B978BB69" +
+         "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
+         "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
+         "FF52834EAFB5A7A1FDFD5851A3")]
     public struct ARLinkConfigDetails
     {
         public int ChartOfAccountIDARTracking;
@@ -57,66 +73,20 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class ERPConfig
+	public class ERPConfig : POSConnection
 	{
-		MySqlConnection mConnection;
-		MySqlTransaction mTransaction;
-		bool IsInTransaction = false;
-		bool TransactionFailed = false;
-
-		public MySqlConnection Connection
-		{
-			get { return mConnection;	}
-		}
-
-		public MySqlTransaction Transaction
-		{
-			get { return mTransaction;	}
-		}
-
-
 		#region Constructors and Destructors
 
 		public ERPConfig()
+            : base(null, null)
+        {
+        }
+
+        public ERPConfig(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
 		{
-			
+
 		}
-
-		public ERPConfig(MySqlConnection Connection, MySqlTransaction Transaction)
-		{
-			mConnection = Connection;
-			mTransaction = Transaction;
-			
-		}
-
-		public void CommitAndDispose() 
-		{
-			if (!TransactionFailed)
-			{
-				if (IsInTransaction)
-				{
-					mTransaction.Commit();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-			}
-		}
-
-		public MySqlConnection GetConnection()
-		{
-			if (mConnection==null)
-			{
-				mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());	
-				mConnection.Open();
-				
-				mTransaction = (MySqlTransaction) mConnection.BeginTransaction();
-			}
-			
-			IsInTransaction = true;
-			return mConnection;
-		} 
-
 
 		#endregion
 
@@ -130,11 +100,7 @@ namespace AceSoft.RetailPlus.Data
 								"PostingDateFrom		=	@PostingDateFrom, " +
 								"PostingDateTo			=	@PostingDateTo;";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -146,21 +112,12 @@ namespace AceSoft.RetailPlus.Data
 				prmPostingDateTo.Value = PostingDateTo.ToString("yyyy-MM-dd HH:mm:ss");
 				cmd.Parameters.Add(prmPostingDateTo);
 
-				cmd.ExecuteNonQuery();
+				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -176,11 +133,11 @@ namespace AceSoft.RetailPlus.Data
                                 "ChartOfAccountIDAPContra       = @ChartOfAccountIDAPContra, " +
                                 "ChartOfAccountIDAPLatePayment  = @ChartOfAccountIDAPLatePayment;";
 
-                MySqlConnection cn = GetConnection();
+                
 
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
+                
+                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -208,21 +165,21 @@ namespace AceSoft.RetailPlus.Data
                 prmChartOfAccountIDAPLatePayment.Value = Details.ChartOfAccountIDAPLatePayment;
                 cmd.Parameters.Add(prmChartOfAccountIDAPLatePayment);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
+                
+                
                 {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
+                    
+                    
+                    
+                    
                 }
 
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -240,42 +197,28 @@ namespace AceSoft.RetailPlus.Data
 								"PostingDateTo " +
 							"FROM tblERPConfig;";
 				  
-				MySqlConnection cn = GetConnection();
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 				
 				ERPConfigDetails Details = new ERPConfigDetails();
 
-				while (myReader.Read()) 
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{
-					Details.LastPONo = "" + myReader["LastPONo"].ToString();
-					Details.PostingDateFrom = myReader.GetDateTime("PostingDateFrom");
-					Details.PostingDateTo = myReader.GetDateTime("PostingDateTo");
+					Details.LastPONo = "" + dr["LastPONo"].ToString();
+					Details.PostingDateFrom = DateTime.Parse(dr["PostingDateFrom"].ToString());
+					Details.PostingDateTo = DateTime.Parse(dr["PostingDateTo"].ToString());
 				}
-
-				myReader.Close();
 
 				return Details;
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
         public APLinkConfigDetails APLinkDetails()
@@ -291,45 +234,31 @@ namespace AceSoft.RetailPlus.Data
                                 "ChartOfAccountIDAPLatePayment " +
                             "FROM tblERPConfig;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+				
                 APLinkConfigDetails Details = new APLinkConfigDetails();
 
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    Details.ChartOfAccountIDAPTracking = myReader.GetInt32("ChartOfAccountIDAPTracking");
-                    Details.ChartOfAccountIDAPBills = myReader.GetInt32("ChartOfAccountIDAPBills");
-                    Details.ChartOfAccountIDAPFreight = myReader.GetInt32("ChartOfAccountIDAPFreight");
-                    Details.ChartOfAccountIDAPVDeposit = myReader.GetInt32("ChartOfAccountIDAPVDeposit");
-                    Details.ChartOfAccountIDAPContra = myReader.GetInt32("ChartOfAccountIDAPContra");
-                    Details.ChartOfAccountIDAPLatePayment = myReader.GetInt32("ChartOfAccountIDAPLatePayment");
+                    Details.ChartOfAccountIDAPTracking = Int32.Parse(dr["ChartOfAccountIDAPTracking"].ToString());
+                    Details.ChartOfAccountIDAPBills = Int32.Parse(dr["ChartOfAccountIDAPBills"].ToString());
+                    Details.ChartOfAccountIDAPFreight = Int32.Parse(dr["ChartOfAccountIDAPFreight"].ToString());
+                    Details.ChartOfAccountIDAPVDeposit = Int32.Parse(dr["ChartOfAccountIDAPVDeposit"].ToString());
+                    Details.ChartOfAccountIDAPContra = Int32.Parse(dr["ChartOfAccountIDAPContra"].ToString());
+                    Details.ChartOfAccountIDAPLatePayment = Int32.Parse(dr["ChartOfAccountIDAPLatePayment"].ToString());
                 }
-
-                myReader.Close();
 
                 return Details;
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public ARLinkConfigDetails ARLinkDetails()
@@ -345,45 +274,32 @@ namespace AceSoft.RetailPlus.Data
                                 "ChartOfAccountIDARLatePayment " +
                             "FROM tblERPConfig;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 ARLinkConfigDetails Details = new ARLinkConfigDetails();
 
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    Details.ChartOfAccountIDARTracking = myReader.GetInt32("ChartOfAccountIDARTracking");
-                    Details.ChartOfAccountIDARBills = myReader.GetInt32("ChartOfAccountIDARBills");
-                    Details.ChartOfAccountIDARFreight = myReader.GetInt32("ChartOfAccountIDARFreight");
-                    Details.ChartOfAccountIDARVDeposit = myReader.GetInt32("ChartOfAccountIDARVDeposit");
-                    Details.ChartOfAccountIDARContra = myReader.GetInt32("ChartOfAccountIDARContra");
-                    Details.ChartOfAccountIDARLatePayment = myReader.GetInt32("ChartOfAccountIDARLatePayment");
+                    Details.ChartOfAccountIDARTracking = Int32.Parse(dr["ChartOfAccountIDARTracking"].ToString());
+                    Details.ChartOfAccountIDARBills = Int32.Parse(dr["ChartOfAccountIDARBills"].ToString());
+                    Details.ChartOfAccountIDARFreight = Int32.Parse(dr["ChartOfAccountIDARFreight"].ToString());
+                    Details.ChartOfAccountIDARVDeposit = Int32.Parse(dr["ChartOfAccountIDARVDeposit"].ToString());
+                    Details.ChartOfAccountIDARContra = Int32.Parse(dr["ChartOfAccountIDARContra"].ToString());
+                    Details.ChartOfAccountIDARLatePayment = Int32.Parse(dr["ChartOfAccountIDARLatePayment"].ToString());
                 }
 
-                myReader.Close();
 
                 return Details;
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -393,26 +309,24 @@ namespace AceSoft.RetailPlus.Data
 
 		public System.Data.DataTable DataList(string SortField, SortOption SortOrder)
 		{
-			MySqlDataReader myReader = List(SortField,SortOption.Ascending);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblPO");
+            string SQL = "SELECT " +
+                                "LastPONo, " +
+                                "PostingDateFrom, " +
+                                "PostingDateTo " +
+                            "FROM tblERPConfig " +
+                            "ORDER BY " + SortField;
 
-			dt.Columns.Add("LastPONo");
-			dt.Columns.Add("PostingDateFrom");
-			dt.Columns.Add("PostingDateTo");
-			
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
+            if (SortOrder == SortOption.Ascending)
+                SQL += " ASC";
+            else
+                SQL += " DESC";
 
-				dr["LastPONo"] = "" + myReader["LastPONo"].ToString();
-				dr["PostingDateFrom"] = myReader.GetDateTime("PostingDateFrom");
-				dr["PostingDateTo"] = myReader.GetDateTime("PostingDateTo");
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
 			return dt;
 		}
@@ -433,30 +347,17 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
-				return myReader;			
+				return myReader;
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		
@@ -477,11 +378,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				MySqlConnection cn = GetConnection();
-
 				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -489,22 +386,13 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader();
+				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
 			}
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}		
 
@@ -517,66 +405,12 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"LastPONo " +
-							"FROM tblERPConfig";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				string stRetValue = String.Empty;
-				int iLen = 10;
-
-				while (myReader.Read()) 
-				{
-					if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-					{
-						stRetValue = "" + myReader["LastPONo"].ToString();
-						iLen = stRetValue.Length;
-						stRetValue = stRetValue.PadLeft(iLen, '0');
-					}
-				}
-
-				myReader.Close();
-
-				if (stRetValue == String.Empty)
-					throw new NullReferenceException();
-
-				string LastPONo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-				LastPONo = LastPONo.PadLeft(iLen, '0');
-
-				SQL = "UPDATE tblERPConfig SET LastPONo = @LastPONo;";
-
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmLastPONo = new MySqlParameter("@LastPONo",MySqlDbType.String);
-				prmLastPONo.Value = LastPONo;
-				cmd.Parameters.Add(prmLastPONo);
-
-				cmd.ExecuteNonQuery();
-
-				return stRetValue;
+                return getNewTransactionNo(LastPONo);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -584,66 +418,12 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"LastPOReturnNo " +
-							"FROM tblERPConfig";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				string stRetValue = String.Empty;
-				int iLen = 10;
-
-				while (myReader.Read()) 
-				{
-					if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-					{
-						stRetValue = "" + myReader["LastPOReturnNo"].ToString();
-						iLen = stRetValue.Length;
-						stRetValue = stRetValue.PadLeft(iLen, '0');
-					}
-				}
-
-				myReader.Close();
-
-				if (stRetValue == String.Empty)
-					throw new NullReferenceException();
-
-				string LastPOReturnNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-				LastPOReturnNo = LastPOReturnNo.PadLeft(iLen, '0');
-
-				SQL = "UPDATE tblERPConfig SET LastPOReturnNo = @LastPOReturnNo;";
-
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmLastPOReturnNo = new MySqlParameter("@LastPOReturnNo",MySqlDbType.String);
-				prmLastPOReturnNo.Value = LastPOReturnNo;
-				cmd.Parameters.Add(prmLastPOReturnNo);
-
-				cmd.ExecuteNonQuery();
-
-				return stRetValue;
+                return getNewTransactionNo(LastPOReturnNo);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -651,478 +431,97 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"LastDebitMemoNo " +
-							"FROM tblERPConfig";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				string stRetValue = String.Empty;
-				int iLen = 10;
-
-				while (myReader.Read()) 
-				{
-					if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-					{
-						stRetValue = "" + myReader["LastDebitMemoNo"].ToString();
-						iLen = stRetValue.Length;
-						stRetValue = stRetValue.PadLeft(iLen, '0');
-					}
-				}
-
-				myReader.Close();
-
-				if (stRetValue == String.Empty)
-					throw new NullReferenceException();
-
-				string LastDebitMemoNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-				LastDebitMemoNo = LastDebitMemoNo.PadLeft(iLen, '0');
-
-				SQL = "UPDATE tblERPConfig SET LastDebitMemoNo = @LastDebitMemoNo;";
-
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmLastDebitMemoNo = new MySqlParameter("@LastDebitMemoNo",MySqlDbType.String);
-				prmLastDebitMemoNo.Value = LastDebitMemoNo;
-				cmd.Parameters.Add(prmLastDebitMemoNo);
-
-				cmd.ExecuteNonQuery();
-
-				return stRetValue;
+                return getNewTransactionNo(LastDebitMemoNo);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
         public string get_LastBranchTransferNo()
         {
             try
-            {
-                string SQL = "SELECT " +
-                                "LastBranchTransferNo " +
-                            "FROM tblERPConfig";
+			{
+                return getNewTransactionNo(LastBranchTransferNo);
+			}
 
-                MySqlConnection cn = GetConnection();
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-
-                string stRetValue = String.Empty;
-                int iLen = 10;
-
-                while (myReader.Read())
-                {
-                    if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-                    {
-                        stRetValue = "" + myReader["LastBranchTransferNo"].ToString();
-                        iLen = stRetValue.Length;
-                        stRetValue = stRetValue.PadLeft(iLen, '0');
-                    }
-                }
-
-                myReader.Close();
-
-                if (stRetValue == String.Empty)
-                    throw new NullReferenceException();
-
-                string LastBranchTransferNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-                LastBranchTransferNo = LastBranchTransferNo.PadLeft(iLen, '0');
-
-                SQL = "UPDATE tblERPConfig SET LastBranchTransferNo = @LastBranchTransferNo;";
-
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmLastBranchTransferNo = new MySqlParameter("@LastBranchTransferNo",MySqlDbType.String);
-                prmLastBranchTransferNo.Value = LastBranchTransferNo;
-                cmd.Parameters.Add(prmLastBranchTransferNo);
-
-                cmd.ExecuteNonQuery();
-
-                return stRetValue;
-            }
-
-            catch (Exception ex)
-            {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
-            }
+			catch (Exception ex)
+			{
+				throw base.ThrowException(ex);
+			}	
         }
 
 		#endregion
 
 		#region get_LastSONo, get_LastSOReturnNo, get_LastCreditMemoNo
 
-		public string get_LastSONo()
+        public string get_LastSONo()
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"LastSONo " +
-							"FROM tblERPConfig";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				string stRetValue = String.Empty;
-				int iLen = 10;
-
-				while (myReader.Read()) 
-				{
-					if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-					{
-						stRetValue = "" + myReader["LastSONo"].ToString();
-						iLen = stRetValue.Length;
-						stRetValue = stRetValue.PadLeft(iLen, '0');
-					}
-				}
-
-				myReader.Close();
-
-				if (stRetValue == String.Empty)
-					throw new NullReferenceException();
-
-				string LastSONo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-				LastSONo = LastSONo.PadLeft(iLen, '0');
-
-				SQL = "UPDATE tblERPConfig SET LastSONo = @LastSONo;";
-
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmLastSONo = new MySqlParameter("@LastSONo",MySqlDbType.String);
-				prmLastSONo.Value = LastSONo;
-				cmd.Parameters.Add(prmLastSONo);
-
-				cmd.ExecuteNonQuery();
-
-				return stRetValue;
+                return getNewTransactionNo(LastSONo);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
-
 		public string get_LastSOReturnNo()
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"LastSOReturnNo " +
-							"FROM tblERPConfig";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				string stRetValue = String.Empty;
-				int iLen = 10;
-
-				while (myReader.Read()) 
-				{
-					if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-					{
-						stRetValue = "" + myReader["LastSOReturnNo"].ToString();
-						iLen = stRetValue.Length;
-						stRetValue = stRetValue.PadLeft(iLen, '0');
-					}
-				}
-
-				myReader.Close();
-
-				if (stRetValue == String.Empty)
-					throw new NullReferenceException();
-
-				string LastSOReturnNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-				LastSOReturnNo = LastSOReturnNo.PadLeft(iLen, '0');
-
-				SQL = "UPDATE tblERPConfig SET LastSOReturnNo = @LastSOReturnNo;";
-
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmLastSOReturnNo = new MySqlParameter("@LastSOReturnNo",MySqlDbType.String);
-				prmLastSOReturnNo.Value = LastSOReturnNo;
-				cmd.Parameters.Add(prmLastSOReturnNo);
-
-				cmd.ExecuteNonQuery();
-
-				return stRetValue;
+                return getNewTransactionNo(LastSOReturnNo);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
-
 		public string get_LastCreditMemoNo()
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"LastCreditMemoNo " +
-							"FROM tblERPConfig";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				string stRetValue = String.Empty;
-				int iLen = 10;
-
-				while (myReader.Read()) 
-				{
-					if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-					{
-						stRetValue = "" + myReader["LastCreditMemoNo"].ToString();
-						iLen = stRetValue.Length;
-						stRetValue = stRetValue.PadLeft(iLen, '0');
-					}
-				}
-
-				myReader.Close();
-
-				if (stRetValue == String.Empty)
-					throw new NullReferenceException();
-
-				string LastCreditMemoNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-				LastCreditMemoNo = LastCreditMemoNo.PadLeft(iLen, '0');
-
-				SQL = "UPDATE tblERPConfig SET LastCreditMemoNo = @LastCreditMemoNo;";
-
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmLastCreditMemoNo = new MySqlParameter("@LastCreditMemoNo",MySqlDbType.String);
-				prmLastCreditMemoNo.Value = LastCreditMemoNo;
-				cmd.Parameters.Add(prmLastCreditMemoNo);
-
-				cmd.ExecuteNonQuery();
-
-				return stRetValue;
+                return getNewTransactionNo(LastCreditMemoNo);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
-			}	
+				throw base.ThrowException(ex);
+			}
 		}
-
 
 		#endregion
 
 		#region get_LastTransferInNo, get_LastTransferOutNo
-			
+        
 		public string get_LastTransferInNo()
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"LastTransferInNo " +
-							"FROM tblERPConfig";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				string stRetValue = String.Empty;
-				int iLen = 10;
-
-				while (myReader.Read()) 
-				{
-					if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-					{
-						stRetValue = "" + myReader["LastTransferInNo"].ToString();
-						iLen = stRetValue.Length;
-						stRetValue = stRetValue.PadLeft(iLen, '0');
-					}
-				}
-
-				myReader.Close();
-
-				if (stRetValue == String.Empty)
-					throw new NullReferenceException();
-
-				string LastTransferInNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-				LastTransferInNo = LastTransferInNo.PadLeft(iLen, '0');
-
-				SQL = "UPDATE tblERPConfig SET LastTransferInNo = @LastTransferInNo;";
-
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmLastTransferInNo = new MySqlParameter("@LastTransferInNo",MySqlDbType.String);
-				prmLastTransferInNo.Value = LastTransferInNo;
-				cmd.Parameters.Add(prmLastTransferInNo);
-
-				cmd.ExecuteNonQuery();
-
-				return stRetValue;
+                return getNewTransactionNo(LastTransferInNo);
 			}
 
 			catch (Exception ex)
 			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
-			}	
+				throw base.ThrowException(ex);
+			}
 		}
 
 		public string get_LastTransferOutNo()
 		{
-			try
-			{
-				string SQL=	"SELECT " +
-								"LastTransferOutNo " +
-							"FROM tblERPConfig";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+            try
+            {
+                return getNewTransactionNo(LastTransferOutNo);
+            }
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				string stRetValue = String.Empty;
-				int iLen = 10;
-
-				while (myReader.Read()) 
-				{
-					if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-					{
-						stRetValue = "" + myReader["LastTransferOutNo"].ToString();
-						iLen = stRetValue.Length;
-						stRetValue = stRetValue.PadLeft(iLen, '0');
-					}
-				}
-
-				myReader.Close();
-
-				if (stRetValue == String.Empty)
-					throw new NullReferenceException();
-
-				string LastTransferOutNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-				LastTransferOutNo = LastTransferOutNo.PadLeft(iLen, '0');
-
-				SQL = "UPDATE tblERPConfig SET LastTransferOutNo = @LastTransferOutNo;";
-
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmLastTransferOutNo = new MySqlParameter("@LastTransferOutNo",MySqlDbType.String);
-				prmLastTransferOutNo.Value = LastTransferOutNo;
-				cmd.Parameters.Add(prmLastTransferOutNo);
-
-				cmd.ExecuteNonQuery();
-
-				return stRetValue;
-			}
-
-			catch (Exception ex)
-			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
-			}	
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
 		}
 
 
@@ -1132,135 +531,27 @@ namespace AceSoft.RetailPlus.Data
 
 		public string get_LastInvAdjustmentNo()
 		{
-			try
-			{
-				string SQL=	"SELECT " +
-								"LastInvAdjustmentNo " +
-							"FROM tblERPConfig";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+            try
+            {
+                return getNewTransactionNo(LastInvAdjustmentNo);
+            }
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				string stRetValue = String.Empty;
-				int iLen = 10;
-
-				while (myReader.Read()) 
-				{
-					if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-					{
-						stRetValue = "" + myReader["LastInvAdjustmentNo"].ToString();
-						iLen = stRetValue.Length;
-						stRetValue = stRetValue.PadLeft(iLen, '0');
-					}
-				}
-
-				myReader.Close();
-
-				if (stRetValue == String.Empty)
-					throw new NullReferenceException();
-
-				string LastInvAdjustmentNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-				LastInvAdjustmentNo = LastInvAdjustmentNo.PadLeft(iLen, '0');
-
-				SQL = "UPDATE tblERPConfig SET LastInvAdjustmentNo = @LastInvAdjustmentNo;";
-
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmLastInvAdjustmentNo = new MySqlParameter("@LastInvAdjustmentNo",MySqlDbType.String);
-				prmLastInvAdjustmentNo.Value = LastInvAdjustmentNo;
-				cmd.Parameters.Add(prmLastInvAdjustmentNo);
-
-				cmd.ExecuteNonQuery();
-
-				return stRetValue;
-			}
-
-			catch (Exception ex)
-			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
-			}	
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
 		}
 		public string get_LastClosingNo()
 		{
-			try
-			{
-				string SQL=	"SELECT " +
-								"LastClosingNo " +
-							"FROM tblERPConfig";
-				  
-				MySqlConnection cn = GetConnection();
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.Connection = cn;
-				cmd.Transaction = mTransaction;
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+            try
+            {
+                return getNewTransactionNo(LastClosingNo);
+            }
 
-				MySqlDataReader myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-				
-				string stRetValue = String.Empty;
-				int iLen = 10;
-
-				while (myReader.Read()) 
-				{
-					if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-					{
-						stRetValue = "" + myReader["LastClosingNo"].ToString();
-						iLen = stRetValue.Length;
-						stRetValue = stRetValue.PadLeft(iLen, '0');
-					}
-				}
-
-				myReader.Close();
-
-				if (stRetValue == String.Empty)
-					throw new NullReferenceException();
-
-				string LastClosingNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-				LastClosingNo = LastClosingNo.PadLeft(iLen, '0');
-
-				SQL = "UPDATE tblERPConfig SET LastClosingNo = @LastClosingNo;";
-
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmLastClosingNo = new MySqlParameter("@LastClosingNo",MySqlDbType.String);
-				prmLastClosingNo.Value = LastClosingNo;
-				cmd.Parameters.Add(prmLastClosingNo);
-
-				cmd.ExecuteNonQuery();
-
-				return stRetValue;
-			}
-
-			catch (Exception ex)
-			{
-				TransactionFailed = true;
-				if (IsInTransaction)
-				{
-					mTransaction.Rollback();
-					mTransaction.Dispose(); 
-					mConnection.Close();
-					mConnection.Dispose();
-				}
-
-				throw ex;
-			}	
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
 		}
 
 		#endregion
@@ -1271,140 +562,94 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "SELECT " +
-                                "LastCreditCardNo " +
-                            "FROM tblERPConfig";
-
-                MySqlConnection cn = GetConnection();
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-
-                string stRetValue = String.Empty;
-                int iLen = 10;
-
-                while (myReader.Read())
-                {
-                    if (myReader.GetString(0) != null && myReader.GetString(0) != "")
-                    {
-                        stRetValue = "" + myReader["LastCreditCardNo"].ToString();
-                        iLen = stRetValue.Length;
-                        stRetValue = stRetValue.PadLeft(iLen, '0');
-                    }
-                }
-
-                myReader.Close();
-
-                if (stRetValue == String.Empty)
-                    throw new NullReferenceException();
-
-                string strLastCreditCardNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-                strLastCreditCardNo = strLastCreditCardNo.PadLeft(iLen, '0');
-
-                SQL = "UPDATE tblERPConfig SET LastCreditCardNo = @LastCreditCardNo;";
-
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmLastCreditCardNo = new MySqlParameter("@LastCreditCardNo",MySqlDbType.String);
-                prmLastCreditCardNo.Value = strLastCreditCardNo;
-                cmd.Parameters.Add(prmLastCreditCardNo);
-
-                cmd.ExecuteNonQuery();
-
-                stRetValue = DateTime.Now.ToString("yyyy") + stRetValue;
-
-                return stRetValue;
+                return DateTime.Now.ToString("yyyy") + getNewTransactionNo(LastCreditCardNo);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public string get_LastRewardCardNo()
         {
             try
             {
-                string SQL = "SELECT " +
-                                "LastRewardCardNo " +
+                return DateTime.Now.ToString("yyyy") + getNewTransactionNo(LastRewardCardNo);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        #endregion
+
+        private static string LastPONo = "LastPONo";
+        private static string LastPOReturnNo = "LastPOReturnNo";
+        private static string LastDebitMemoNo = "LastDebitMemoNo";
+        private static string LastBranchTransferNo = "LastBranchTransferNo";
+        private static string LastSONo = "LastSONo";
+        private static string LastSOReturnNo = "LastSOReturnNo";
+        private static string LastCreditMemoNo = "LastCreditMemoNo";
+        private static string LastTransferInNo = "LastTransferInNo";
+        private static string LastTransferOutNo = "LastTransferOutNo";
+        private static string LastInvAdjustmentNo = "LastInvAdjustmentNo";
+        private static string LastClosingNo = "LastClosingNo";
+        private static string LastCreditCardNo = "LastCreditCardNo";
+        private static string LastRewardCardNo = "LastRewardCardNo";
+
+        private string getNewTransactionNo(string ColumnName)
+        {
+            try
+            {
+                string SQL = "SELECT " + ColumnName + " " +
                             "FROM tblERPConfig";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 string stRetValue = String.Empty;
                 int iLen = 10;
 
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    if (myReader.GetString(0) != null && myReader.GetString(0) != "")
+                    if (dr[ColumnName].ToString() != null && dr[ColumnName].ToString() != "")
                     {
-                        stRetValue = "" + myReader["LastRewardCardNo"].ToString();
+                        stRetValue = "" + dr[ColumnName].ToString();
                         iLen = stRetValue.Length;
                         stRetValue = stRetValue.PadLeft(iLen, '0');
                     }
                 }
 
-                myReader.Close();
-
                 if (stRetValue == String.Empty)
                     throw new NullReferenceException();
 
-                string strLastRewardCardNo = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
-                strLastRewardCardNo = strLastRewardCardNo.PadLeft(iLen, '0');
+                string ColumnValue = Convert.ToString(Convert.ToInt64(stRetValue) + 1);
+                ColumnValue = ColumnValue.PadLeft(iLen, '0');
 
-                SQL = "UPDATE tblERPConfig SET LastRewardCardNo = @LastRewardCardNo;";
+                SQL = "UPDATE tblERPConfig SET " + ColumnName + " = @" + ColumnName + ";";
 
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmLastRewardCardNo = new MySqlParameter("@LastRewardCardNo",MySqlDbType.String);
-                prmLastRewardCardNo.Value = strLastRewardCardNo;
-                cmd.Parameters.Add(prmLastRewardCardNo);
+                MySqlParameter prmLastSONo = new MySqlParameter("@" + ColumnName, MySqlDbType.String);
+                prmLastSONo.Value = ColumnValue;
+                cmd.Parameters.Add(prmLastSONo);
 
-                cmd.ExecuteNonQuery();
-
-                stRetValue = DateTime.Now.ToString("yyyy") + stRetValue;
+                base.ExecuteNonQuery(cmd);
 
                 return stRetValue;
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
-
-        #endregion
 	}
 }
 

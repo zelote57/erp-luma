@@ -80,66 +80,20 @@ namespace AceSoft.RetailPlus.Data
          "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
          "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
          "FF52834EAFB5A7A1FDFD5851A3")]
-    public class TransferIn
+    public class TransferIn : POSConnection
     {
-        MySqlConnection mConnection;
-        MySqlTransaction mTransaction;
-        bool IsInTransaction = false;
-        bool TransactionFailed = false;
-
-        public MySqlConnection Connection
-        {
-            get { return mConnection; }
-        }
-
-        public MySqlTransaction Transaction
-        {
-            get { return mTransaction; }
-        }
-
-
         #region Constructors and Destructors
 
-        public TransferIn()
+		public TransferIn()
+            : base(null, null)
         {
-
         }
 
-        public TransferIn(MySqlConnection Connection, MySqlTransaction Transaction)
-        {
-            mConnection = Connection;
-            mTransaction = Transaction;
+        public TransferIn(MySqlConnection Connection, MySqlTransaction Transaction) 
+            : base(Connection, Transaction)
+		{
 
-        }
-
-        public void CommitAndDispose()
-        {
-            if (!TransactionFailed)
-            {
-                if (IsInTransaction)
-                {
-                    mTransaction.Commit();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-            }
-        }
-
-        public MySqlConnection GetConnection()
-        {
-            if (mConnection == null)
-            {
-                mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString());
-                mConnection.Open();
-
-                mTransaction = (MySqlTransaction)mConnection.BeginTransaction();
-            }
-
-            IsInTransaction = true;
-            return mConnection;
-        }
-
+		}
 
         #endregion
 
@@ -149,7 +103,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                ERPConfig clsERPConfig = new ERPConfig(mConnection, mTransaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
                 string SQL = "INSERT INTO tblTransferIn (" +
@@ -198,11 +152,7 @@ namespace AceSoft.RetailPlus.Data
                                 "@ChartOfAccountIDAPLatePayment" +
                             ");";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -290,18 +240,18 @@ namespace AceSoft.RetailPlus.Data
                 prmChartOfAccountIDAPLatePayment.Value = clsAPLinkConfigDetails.ChartOfAccountIDAPLatePayment;
                 cmd.Parameters.Add(prmChartOfAccountIDAPLatePayment);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 SQL = "SELECT LAST_INSERT_ID();";
 
                 cmd.Parameters.Clear();
                 cmd.CommandText = SQL;
 
-                System.Data.DataTable dt = new System.Data.DataTable("TransferIn");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 Int64 iID = 0;
+
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
                     iID = Int64.Parse(dr[0].ToString());
@@ -312,23 +262,14 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void Update(TransferInDetails Details)
         {
             try
             {
-                ERPConfig clsERPConfig = new ERPConfig(mConnection, mTransaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
                 string SQL = "UPDATE tblTransferIn SET " +
@@ -354,11 +295,7 @@ namespace AceSoft.RetailPlus.Data
                                 "ChartOfAccountIDAPLatePayment  = @ChartOfAccountIDAPLatePayment " +
                             "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -446,21 +383,12 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = Details.TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -472,11 +400,7 @@ namespace AceSoft.RetailPlus.Data
                                 "IsVatInclusive          =   @IsVatInclusive " +
                             "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -488,23 +412,14 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 SynchronizeAmount(TransferInID);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -521,11 +436,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Discount3Type          =   @Discount3Type " +
                             "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -557,21 +468,12 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateDiscountFreightDeposit(long TransferInID, decimal DiscountApplied, DiscountTypes DiscountType)
@@ -583,11 +485,7 @@ namespace AceSoft.RetailPlus.Data
                                 "DiscountType           =   @DiscountType " +
                             "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -603,21 +501,12 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateFreight(long TransferInID, decimal Freight)
@@ -628,11 +517,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Freight           =   @Freight " +
                             "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -644,21 +529,12 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void UpdateDeposit(long TransferInID, decimal Deposit)
@@ -669,11 +545,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Deposit           =   @Deposit " +
                             "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -685,21 +557,12 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -713,11 +576,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Status				    =	@Status " +
                             "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -737,12 +596,12 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 /*******************************************
                  * Update the status of items
                  * ****************************************/
-                TransferInItem clsTransferInItem = new TransferInItem(mConnection, mTransaction);
+                TransferInItem clsTransferInItem = new TransferInItem(base.Connection, base.Transaction);
                 clsTransferInItem.Post(TransferInID);
 
                 /*******************************************
@@ -758,16 +617,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -776,7 +626,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 TransferInDetails clsTransferInDetails = Details(TransferInID);
-                ChartOfAccount clsChartOfAccount = new ChartOfAccount(mConnection, mTransaction);
+                ChartOfAccount clsChartOfAccount = new ChartOfAccount(base.Connection, base.Transaction);
 
                 // update ChartOfAccountIDAPTracking as credit
                 clsChartOfAccount.UpdateCredit(clsTransferInDetails.ChartOfAccountIDAPTracking, clsTransferInDetails.SubTotal);
@@ -809,161 +659,155 @@ namespace AceSoft.RetailPlus.Data
                     clsChartOfAccount.UpdateDebit(iChartOfAccountIDTaxTransferIn, decVAT);
 
                 }
-                
-
             }
-
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
         private void AddItemToInventory(long TransferInID)
         {
-
-            TransferInDetails clsTransferInDetails = Details(TransferInID);
-            ERPConfig clsERPConfig = new ERPConfig(mConnection, mTransaction);
-            ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
-
-            TransferInItem clsTransferInItem = new TransferInItem(Connection, Transaction);
-            ProductUnit clsProductUnit = new ProductUnit(Connection, Transaction);
-            Products clsProduct = new Products(mConnection, mTransaction);
-            ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(mConnection, mTransaction);
-            ProductPackage clsProductPackage = new ProductPackage(mConnection, mTransaction);
-            MatrixPackage clsMatrixPackage = new MatrixPackage(mConnection, mTransaction);
-
-            Inventory clsInventory = new Inventory(Connection, Transaction);
-            InventoryDetails clsInventoryDetails;
-
-            MatrixPackagePriceHistoryDetails clsMatrixPackagePriceHistoryDetails;
-            ProductPackagePriceHistoryDetails clsProductPackagePriceHistoryDetails;
-
-            System.Data.DataTable dt = clsTransferInItem.ListAsDataTable(TransferInID, "TransferInItemID", SortOption.Ascending);
-            
-            foreach(System.Data.DataRow dr in dt.Rows)
+            try
             {
-                long lngProductID = long.Parse(dr["ProductID"].ToString());
-                int intProductUnitID = int.Parse(dr["ProductUnitID"].ToString());
+                TransferInDetails clsTransferInDetails = Details(TransferInID);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
-                decimal decItemQuantity = decimal.Parse(dr["Quantity"].ToString());
-                decimal decQuantity = new ProductUnit().GetBaseUnitValue(lngProductID, intProductUnitID, decItemQuantity);
+                TransferInItem clsTransferInItem = new TransferInItem(base.Connection, base.Transaction);
+                ProductUnit clsProductUnit = new ProductUnit(base.Connection, base.Transaction);
+                Products clsProduct = new Products(base.Connection, base.Transaction);
+                ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
+                ProductPackage clsProductPackage = new ProductPackage(base.Connection, base.Transaction);
+                MatrixPackage clsMatrixPackage = new MatrixPackage(base.Connection, base.Transaction);
 
-                long lngVariationMatrixID = long.Parse(dr["VariationMatrixID"].ToString()); 
-                string strMatrixDescription = "" + dr["MatrixDescription"].ToString();
-                string strProductCode = "" + dr["ProductCode"].ToString();
-                decimal decUnitCost = decimal.Parse(dr["UnitCost"].ToString());
-                decimal decItemCost = decimal.Parse(dr["Amount"].ToString());
-                decimal decVAT = decimal.Parse(dr["VAT"].ToString());
+                Inventory clsInventory = new Inventory(base.Connection, base.Transaction);
+                InventoryDetails clsInventoryDetails;
 
-                /*******************************************
-				 * Add in the Purchase Price History
-				 * ****************************************/
-                if (lngVariationMatrixID != 0)
+                MatrixPackagePriceHistoryDetails clsMatrixPackagePriceHistoryDetails;
+                ProductPackagePriceHistoryDetails clsProductPackagePriceHistoryDetails;
+
+                System.Data.DataTable dt = clsTransferInItem.ListAsDataTable(TransferInID, "TransferInItemID", SortOption.Ascending);
+            
+                foreach(System.Data.DataRow dr in dt.Rows)
                 {
-                    // Update MatrixPackagePriceHistory first to get the history
-                    clsMatrixPackagePriceHistoryDetails = new MatrixPackagePriceHistoryDetails();
-                    clsMatrixPackagePriceHistoryDetails.UID = clsTransferInDetails.TransferrerID;
-                    clsMatrixPackagePriceHistoryDetails.PackageID = new MatrixPackage().GetPackageID(lngVariationMatrixID, intProductUnitID);
-                    clsMatrixPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
-                    clsMatrixPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
-                    clsMatrixPackagePriceHistoryDetails.Price = -1;
-                    clsMatrixPackagePriceHistoryDetails.VAT = -1;
-                    clsMatrixPackagePriceHistoryDetails.EVAT = -1;
-                    clsMatrixPackagePriceHistoryDetails.LocalTax = -1;
-                    clsMatrixPackagePriceHistoryDetails.Remarks = "Based on TransferIn #: " + clsTransferInDetails.TransferInNo;
-                    MatrixPackagePriceHistory clsMatrixPackagePriceHistory = new MatrixPackagePriceHistory(mConnection, mTransaction);
-                    clsMatrixPackagePriceHistory.Insert(clsMatrixPackagePriceHistoryDetails);
+                    long lngProductID = long.Parse(dr["ProductID"].ToString());
+                    int intProductUnitID = int.Parse(dr["ProductUnitID"].ToString());
+
+                    decimal decItemQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    decimal decQuantity = new ProductUnit().GetBaseUnitValue(lngProductID, intProductUnitID, decItemQuantity);
+
+                    long lngVariationMatrixID = long.Parse(dr["VariationMatrixID"].ToString()); 
+                    string strMatrixDescription = "" + dr["MatrixDescription"].ToString();
+                    string strProductCode = "" + dr["ProductCode"].ToString();
+                    decimal decUnitCost = decimal.Parse(dr["UnitCost"].ToString());
+                    decimal decItemCost = decimal.Parse(dr["Amount"].ToString());
+                    decimal decVAT = decimal.Parse(dr["VAT"].ToString());
+
+                    /*******************************************
+				     * Add in the Purchase Price History
+				     * ****************************************/
+                    if (lngVariationMatrixID != 0)
+                    {
+                        // Update MatrixPackagePriceHistory first to get the history
+                        clsMatrixPackagePriceHistoryDetails = new MatrixPackagePriceHistoryDetails();
+                        clsMatrixPackagePriceHistoryDetails.UID = clsTransferInDetails.TransferrerID;
+                        clsMatrixPackagePriceHistoryDetails.PackageID = new MatrixPackage().GetPackageID(lngVariationMatrixID, intProductUnitID);
+                        clsMatrixPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
+                        clsMatrixPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
+                        clsMatrixPackagePriceHistoryDetails.Price = -1;
+                        clsMatrixPackagePriceHistoryDetails.VAT = -1;
+                        clsMatrixPackagePriceHistoryDetails.EVAT = -1;
+                        clsMatrixPackagePriceHistoryDetails.LocalTax = -1;
+                        clsMatrixPackagePriceHistoryDetails.Remarks = "Based on TransferIn #: " + clsTransferInDetails.TransferInNo;
+                        MatrixPackagePriceHistory clsMatrixPackagePriceHistory = new MatrixPackagePriceHistory(base.Connection, base.Transaction);
+                        clsMatrixPackagePriceHistory.Insert(clsMatrixPackagePriceHistoryDetails);
+                    }
+                    else
+                    {
+                        // Update ProductPackagePriceHistory first to get the history
+                        clsProductPackagePriceHistoryDetails = new ProductPackagePriceHistoryDetails();
+                        clsProductPackagePriceHistoryDetails.UID = clsTransferInDetails.TransferrerID;
+                        clsProductPackagePriceHistoryDetails.PackageID = new ProductPackage().GetPackageID(lngProductID, intProductUnitID);
+                        clsProductPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
+                        clsProductPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
+                        clsProductPackagePriceHistoryDetails.Price = -1;
+                        clsProductPackagePriceHistoryDetails.VAT = -1;
+                        clsProductPackagePriceHistoryDetails.EVAT = -1;
+                        clsProductPackagePriceHistoryDetails.LocalTax = -1;
+                        clsProductPackagePriceHistoryDetails.Remarks = "Based on TransferIn #: " + clsTransferInDetails.TransferInNo;
+                        ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
+                        clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
+                    }
+
+                    /*******************************************
+                     * Add to Inventory
+                     * ****************************************/
+                    //clsProduct.AddQuantity(lngProductID, decQuantity);
+                    //if (lngVariationMatrixID != 0)
+                    //{
+                    //    clsProductVariationsMatrix.AddQuantity(lngVariationMatrixID, decQuantity);
+                    //}
+                    // July 26, 2011: change the above codes to the following
+                    clsProduct.AddQuantity(clsTransferInDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_TRANSFER_IN), DateTime.Now, clsTransferInDetails.TransferInNo, clsTransferInDetails.TransferrerName);
+
+                    /*******************************************
+                     * Update Purchasing Information
+                     * ****************************************/
+                    clsProduct.UpdatePurchasing(lngProductID, clsTransferInDetails.SupplierID, intProductUnitID, (decItemQuantity * decUnitCost) / decQuantity);
+                    if (lngVariationMatrixID != 0)
+                    {
+                        clsProductVariationsMatrix.UpdatePurchasing(lngVariationMatrixID, clsTransferInDetails.SupplierID, intProductUnitID, (decItemQuantity * decUnitCost) / decQuantity);
+                    }
+
+                    /*******************************************
+                     * Add to Inventory Analysis
+                     * ****************************************/
+                    clsInventoryDetails = new InventoryDetails();
+                    clsInventoryDetails.PostingDateFrom = clsERPConfigDetails.PostingDateFrom;
+                    clsInventoryDetails.PostingDateTo = clsERPConfigDetails.PostingDateTo;
+                    clsInventoryDetails.PostingDate = clsTransferInDetails.DeliveryDate;
+                    clsInventoryDetails.ReferenceNo = clsTransferInDetails.TransferInNo;
+                    clsInventoryDetails.ContactID = clsTransferInDetails.SupplierID;
+                    clsInventoryDetails.ContactCode = clsTransferInDetails.SupplierCode;
+                    clsInventoryDetails.ProductID = lngProductID;
+                    clsInventoryDetails.ProductCode = strProductCode;
+                    clsInventoryDetails.VariationMatrixID = lngVariationMatrixID;
+                    clsInventoryDetails.MatrixDescription = strMatrixDescription;
+                    clsInventoryDetails.TransferInQuantity = decQuantity;
+                    clsInventoryDetails.TransferInCost = decItemCost - decVAT;
+                    clsInventoryDetails.TransferInVAT = decItemCost;	// TransferIn Cost with VAT
+
+                    clsInventory.Insert(clsInventoryDetails);
+
+                    /*******************************************
+				     * Added April 28, 2010 4:20PM
+                     * Update Selling Information when TransferIn is posted
+				     * ****************************************/
+                    clsProduct.UpdateSellingIncludingAllMatrixWithSameQuantityAndUnit(lngProductID, clsTransferInDetails.SupplierID, intProductUnitID, decimal.Parse(dr["SellingPrice"].ToString()));
+                    //if (lngVariationMatrixID != 0)
+                    //{
+                    //    clsProductVariationsMatrix.UpdateSellingWithSameQuantityAndUnit(lngVariationMatrixID, clsPODetails.SupplierID, intProductUnitID, decimal.Parse(myReader["SellingPrice");
+                    //}
+
+                    /*******************************************
+				     * Added April 28, 2010 4:20PM
+                     * Update the purchase price history to check who has the lowest price.
+				     * ****************************************/
+                    ProductPurchasePriceHistoryDetails clsProductPurchasePriceHistoryDetails = new ProductPurchasePriceHistoryDetails();
+                    clsProductPurchasePriceHistoryDetails.ProductID = lngProductID;
+                    clsProductPurchasePriceHistoryDetails.MatrixID = lngVariationMatrixID;
+                    clsProductPurchasePriceHistoryDetails.SupplierID = clsTransferInDetails.SupplierID;
+                    clsProductPurchasePriceHistoryDetails.PurchasePrice = decUnitCost;
+                    clsProductPurchasePriceHistoryDetails.PurchaseDate = clsTransferInDetails.TransferInDate;
+                    clsProductPurchasePriceHistoryDetails.Remarks = clsTransferInDetails.TransferInNo;
+                    ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(base.Connection, base.Transaction);
+                    clsProductPurchasePriceHistory.AddToList(clsProductPurchasePriceHistoryDetails);
                 }
-                else
-                {
-                    // Update ProductPackagePriceHistory first to get the history
-                    clsProductPackagePriceHistoryDetails = new ProductPackagePriceHistoryDetails();
-                    clsProductPackagePriceHistoryDetails.UID = clsTransferInDetails.TransferrerID;
-                    clsProductPackagePriceHistoryDetails.PackageID = new ProductPackage().GetPackageID(lngProductID, intProductUnitID);
-                    clsProductPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
-                    clsProductPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
-                    clsProductPackagePriceHistoryDetails.Price = -1;
-                    clsProductPackagePriceHistoryDetails.VAT = -1;
-                    clsProductPackagePriceHistoryDetails.EVAT = -1;
-                    clsProductPackagePriceHistoryDetails.LocalTax = -1;
-                    clsProductPackagePriceHistoryDetails.Remarks = "Based on TransferIn #: " + clsTransferInDetails.TransferInNo;
-                    ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(mConnection, mTransaction);
-                    clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
-                }
-
-                /*******************************************
-                 * Add to Inventory
-                 * ****************************************/
-                //clsProduct.AddQuantity(lngProductID, decQuantity);
-                //if (lngVariationMatrixID != 0)
-                //{
-                //    clsProductVariationsMatrix.AddQuantity(lngVariationMatrixID, decQuantity);
-                //}
-                // July 26, 2011: change the above codes to the following
-                clsProduct.AddQuantity(clsTransferInDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_TRANSFER_IN), DateTime.Now, clsTransferInDetails.TransferInNo, clsTransferInDetails.TransferrerName);
-
-                /*******************************************
-                 * Update Purchasing Information
-                 * ****************************************/
-                clsProduct.UpdatePurchasing(lngProductID, clsTransferInDetails.SupplierID, intProductUnitID, (decItemQuantity * decUnitCost) / decQuantity);
-                if (lngVariationMatrixID != 0)
-                {
-                    clsProductVariationsMatrix.UpdatePurchasing(lngVariationMatrixID, clsTransferInDetails.SupplierID, intProductUnitID, (decItemQuantity * decUnitCost) / decQuantity);
-                }
-
-                /*******************************************
-                 * Add to Inventory Analysis
-                 * ****************************************/
-                clsInventoryDetails = new InventoryDetails();
-                clsInventoryDetails.PostingDateFrom = clsERPConfigDetails.PostingDateFrom;
-                clsInventoryDetails.PostingDateTo = clsERPConfigDetails.PostingDateTo;
-                clsInventoryDetails.PostingDate = clsTransferInDetails.DeliveryDate;
-                clsInventoryDetails.ReferenceNo = clsTransferInDetails.TransferInNo;
-                clsInventoryDetails.ContactID = clsTransferInDetails.SupplierID;
-                clsInventoryDetails.ContactCode = clsTransferInDetails.SupplierCode;
-                clsInventoryDetails.ProductID = lngProductID;
-                clsInventoryDetails.ProductCode = strProductCode;
-                clsInventoryDetails.VariationMatrixID = lngVariationMatrixID;
-                clsInventoryDetails.MatrixDescription = strMatrixDescription;
-                clsInventoryDetails.TransferInQuantity = decQuantity;
-                clsInventoryDetails.TransferInCost = decItemCost - decVAT;
-                clsInventoryDetails.TransferInVAT = decItemCost;	// TransferIn Cost with VAT
-
-                clsInventory.Insert(clsInventoryDetails);
-
-                /*******************************************
-				 * Added April 28, 2010 4:20PM
-                 * Update Selling Information when TransferIn is posted
-				 * ****************************************/
-                clsProduct.UpdateSellingIncludingAllMatrixWithSameQuantityAndUnit(lngProductID, clsTransferInDetails.SupplierID, intProductUnitID, decimal.Parse(dr["SellingPrice"].ToString()));
-                //if (lngVariationMatrixID != 0)
-                //{
-                //    clsProductVariationsMatrix.UpdateSellingWithSameQuantityAndUnit(lngVariationMatrixID, clsPODetails.SupplierID, intProductUnitID, decimal.Parse(myReader["SellingPrice");
-                //}
-
-                /*******************************************
-				 * Added April 28, 2010 4:20PM
-                 * Update the purchase price history to check who has the lowest price.
-				 * ****************************************/
-                ProductPurchasePriceHistoryDetails clsProductPurchasePriceHistoryDetails = new ProductPurchasePriceHistoryDetails();
-                clsProductPurchasePriceHistoryDetails.ProductID = lngProductID;
-                clsProductPurchasePriceHistoryDetails.MatrixID = lngVariationMatrixID;
-                clsProductPurchasePriceHistoryDetails.SupplierID = clsTransferInDetails.SupplierID;
-                clsProductPurchasePriceHistoryDetails.PurchasePrice = decUnitCost;
-                clsProductPurchasePriceHistoryDetails.PurchaseDate = clsTransferInDetails.TransferInDate;
-                clsProductPurchasePriceHistoryDetails.Remarks = clsTransferInDetails.TransferInNo;
-                ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(mConnection, mTransaction);
-                clsProductPurchasePriceHistory.AddToList(clsProductPurchasePriceHistoryDetails);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
             }
 
         }
@@ -978,11 +822,7 @@ namespace AceSoft.RetailPlus.Data
                                 "Status				    =	@Status " +
                             "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1006,46 +846,37 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 /*******************************************
                  * Update the status of items
                  * ****************************************/
-                TransferInItem clsTransferInItem = new TransferInItem(mConnection, mTransaction);
+                TransferInItem clsTransferInItem = new TransferInItem(base.Connection, base.Transaction);
                 clsTransferInItem.Cancel(TransferInID);
 
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void GenerateItemsForReorder(long TransferInID)
         {
             try
             {
-                GetConnection();
+                base.GetConnection();
 
-                Terminal clsTerminal = new Terminal(Connection, Transaction);
+                Terminal clsTerminal = new Terminal(base.Connection, base.Transaction);
                 TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
 
                 TransferInDetails clsTransferInDetails = Details(TransferInID);
 
-                Products clsProduct = new Products(Connection, Transaction);
+                Products clsProduct = new Products(base.Connection, base.Transaction);
                 System.Data.DataTable dt = clsProduct.ForReorder(clsTransferInDetails.SupplierID);
 
-                TransferInItem clsTransferInItem = new TransferInItem(Connection, Transaction);
-                ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(Connection, Transaction);
+                TransferInItem clsTransferInItem = new TransferInItem(base.Connection, base.Transaction);
+                ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
@@ -1140,16 +971,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1164,11 +986,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "UPDATE tblTransferIn SET PaymentStatus = @PaymentStatus WHERE TransferInID IN (" + IDs + ");";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1176,23 +994,14 @@ namespace AceSoft.RetailPlus.Data
                 prmPaymentStatus.Value = paymentStatus.ToString("d");
                 cmd.Parameters.Add(prmPaymentStatus);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 return true;
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public bool UpdatePayment(long TransferInID, decimal PaidAmount, TransferInPaymentStatus paymentStatus)
@@ -1205,11 +1014,7 @@ namespace AceSoft.RetailPlus.Data
                                 "PaymentStatus  = @PaymentStatus " +
                              "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1225,23 +1030,14 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 return true;
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1255,31 +1051,18 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "DELETE FROM tblTransferIn WHERE TransferInID IN (" + IDs + ");";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
 
                 return true;
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1351,11 +1134,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = SQLSelect() + "WHERE TransferInID = @TransferInID;";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1363,7 +1142,7 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 
                 TransferInDetails Details = new TransferInDetails();
 
@@ -1425,16 +1204,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1453,11 +1223,7 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
-
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
@@ -1465,9 +1231,8 @@ namespace AceSoft.RetailPlus.Data
             prmStatus.Value = transferinstatus.ToString("d");
             cmd.Parameters.Add(prmStatus);
 
-            System.Data.DataTable dt = new System.Data.DataTable("TransferIn");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
         }
@@ -1489,11 +1254,7 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
-
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
@@ -1504,9 +1265,8 @@ namespace AceSoft.RetailPlus.Data
             if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
             if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-            System.Data.DataTable dt = new System.Data.DataTable("TransferIn");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
         }
@@ -1522,17 +1282,12 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlConnection cn = GetConnection();
-
             MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = cn;
-            cmd.Transaction = mTransaction;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
-            System.Data.DataTable dt = new System.Data.DataTable("TransferIn");
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;
         }
@@ -1550,30 +1305,17 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1590,30 +1332,17 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1630,11 +1359,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1642,22 +1367,13 @@ namespace AceSoft.RetailPlus.Data
                 prmStatus.Value = transferinstatus.ToString("d");
                 cmd.Parameters.Add(prmStatus);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1674,11 +1390,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1690,22 +1402,13 @@ namespace AceSoft.RetailPlus.Data
                 prmSupplierID.Value = SupplierID;
                 cmd.Parameters.Add(prmSupplierID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public MySqlDataReader ListForPayment(long SupplierID, string SortField, SortOption SortOrder)
@@ -1721,11 +1424,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1741,22 +1440,13 @@ namespace AceSoft.RetailPlus.Data
                 prmSupplierID.Value = SupplierID;
                 cmd.Parameters.Add(prmSupplierID);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
@@ -1774,11 +1464,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1786,22 +1472,13 @@ namespace AceSoft.RetailPlus.Data
                 prmSearchKey.Value = "%" + SearchKey + "%";
                 cmd.Parameters.Add(prmSearchKey);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public MySqlDataReader Search(TransferInStatus transferinstatus, string SearchKey, string SortField, SortOption SortOrder)
@@ -1819,11 +1496,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1835,22 +1508,13 @@ namespace AceSoft.RetailPlus.Data
                 prmSearchKey.Value = "%" + SearchKey + "%";
                 cmd.Parameters.Add(prmSearchKey);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public System.Data.DataTable SearchAsDataTable(TransferInStatus transferinstatus, string SearchKey, string SortField, SortOption SortOrder)
@@ -1868,11 +1532,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1884,24 +1544,14 @@ namespace AceSoft.RetailPlus.Data
                 prmSearchKey.Value = "%" + SearchKey + "%";
                 cmd.Parameters.Add(prmSearchKey);
 
-                System.Data.DataTable dt = new System.Data.DataTable("TransferIn");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 return dt;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public System.Data.DataTable SearchAsDataTable(TransferInStatus transferinstatus, DateTime OrderStartDate, DateTime OrderEndDate, DateTime PostingStartDate, DateTime PostingEndDate, string SearchKey, string SortField, SortOption SortOrder)
@@ -1925,11 +1575,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1941,24 +1587,14 @@ namespace AceSoft.RetailPlus.Data
                 if (PostingStartDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingStartDate", PostingStartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 if (PostingEndDate != DateTime.MinValue) cmd.Parameters.AddWithValue("@PostingEndDate", PostingEndDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                System.Data.DataTable dt = new System.Data.DataTable("TransferIn");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 return dt;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -1968,11 +1604,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = SQLSelect() + "WHERE Status = @Status AND DeliveryDate BETWEEN @StartDate AND @EndDate ORDER BY TransferInID ASC";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1988,22 +1620,13 @@ namespace AceSoft.RetailPlus.Data
                 prmStatus.Value = transferinstatus.ToString("d");
                 cmd.Parameters.Add(prmStatus);
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader();
+                MySqlDataReader myReader = base.ExecuteReader(cmd);
 
                 return myReader;
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 
@@ -2017,7 +1640,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string stRetValue = String.Empty;
 
-                ERPConfig clsERPConfig = new ERPConfig(Connection, Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 stRetValue = clsERPConfig.get_LastTransferInNo();
 
                 return stRetValue;
@@ -2025,16 +1648,7 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
         public void SynchronizeAmount(long TransferInID)
@@ -2043,11 +1657,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procTransferInSynchronizeAmount(@TransferInID);";
 
-                MySqlConnection cn = GetConnection();
-
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = cn;
-                cmd.Transaction = mTransaction;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -2055,21 +1665,12 @@ namespace AceSoft.RetailPlus.Data
                 prmTransferInID.Value = TransferInID;
                 cmd.Parameters.Add(prmTransferInID);
 
-                cmd.ExecuteNonQuery();
+                base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-
-                throw ex;
+                throw base.ThrowException(ex);
             }
         }
 

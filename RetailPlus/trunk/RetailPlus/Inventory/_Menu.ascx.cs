@@ -27,9 +27,7 @@ namespace AceSoft.RetailPlus.Inventory
 				lnkStock.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_Stock/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
 
 				lnkTransferIn.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_TransferIn/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
-                lnkPostedTransferIn.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_TransferIn/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID) + "&status=" + Common.Encrypt(POStatus.Posted.ToString("d"), Session.SessionID);
 				lnkTransferOut.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_TransferOut/Default.aspx?task=" + Common.Encrypt("list",Session.SessionID);
-                lnkPostedTransferOut.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_TransferOut/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID) + "&status=" + Common.Encrypt(POStatus.Posted.ToString("d"), Session.SessionID);
 
                 lnkInvAdjustment.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("invadjustment", Session.SessionID);
 
@@ -73,12 +71,10 @@ namespace AceSoft.RetailPlus.Inventory
 			lnkUpload.Visible = clsDetails.Read; 
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.TransferIn);
-            lnkPostedTransferIn.Visible = clsDetails.Read; 
 			lnkTransferIn.Visible = clsDetails.Read;
             lnkBranchTransfer.Visible = clsDetails.Read;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.TransferOut);
-            lnkPostedTransferOut.Visible = clsDetails.Read; 
 			lnkTransferOut.Visible = clsDetails.Read; 
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InvAdjustment); 

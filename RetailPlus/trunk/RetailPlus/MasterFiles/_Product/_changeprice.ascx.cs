@@ -87,6 +87,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 }
                 catch { }
 
+                txtProductCode.ToolTip = intProductBaseUnitID.ToString();
+                lblProductID.ToolTip = decCommision.ToString(); 
+
                 ProductPackage clsProductPackage = new ProductPackage(clsProduct.Connection, clsProduct.Transaction);
                 lstProductPackages.DataSource = clsProductPackage.ListAsDataTable(Convert.ToInt64(cboProductCode.SelectedValue), "PackageID", SortOption.Ascending).DefaultView;
                 lstProductPackages.DataBind();
@@ -137,10 +140,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 imgInventoryAdjustment.Visible = false;
                 imgEditNow.Visible = false;
                 lblPurchasePriceHistory.Visible = false;
+                txtProductCode.ToolTip = intProductBaseUnitID.ToString();
+                lblProductID.ToolTip = decCommision.ToString(); 
             }
-            txtProductCode.ToolTip = intProductBaseUnitID.ToString();
-            lblProductID.ToolTip = decCommision.ToString(); 
-            
+           
         }
         protected void cmdProductCode_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
@@ -436,6 +439,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 		private void LoadOptions()
 		{
+            lblProductID.ToolTip = "0"; //default zero for Commision
+
             string strproductcode = string.Empty;
             try { strproductcode = Common.Decrypt(Request.QueryString["productcode"].ToString(), Session.SessionID); }
             catch { }
@@ -449,8 +454,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 txtProductCode.Text = strproductcode;
                 cmdProductCode_Click(null, null);
             }
-
-            lblProductID.ToolTip = "0"; //default zero for Commision
 		}
         private void SaveRecordProductPackage()
         {

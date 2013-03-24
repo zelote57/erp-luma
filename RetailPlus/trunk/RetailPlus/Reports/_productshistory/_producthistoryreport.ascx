@@ -3,8 +3,6 @@
     Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
 <link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css"
     rel="stylesheet" type="text/css" />
-<link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css"
-    rel="stylesheet" type="text/css" />
 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
 <ContentTemplate>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">

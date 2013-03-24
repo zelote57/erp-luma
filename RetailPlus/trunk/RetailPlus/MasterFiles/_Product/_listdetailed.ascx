@@ -4,6 +4,9 @@
 <script language="JavaScript" src="../../_Scripts/SelectAll.js"></script>
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
 <script language="JavaScript" src="../../_Scripts/DocumentScripts.js"></script>
+<script type="text/javascript" language="javascript">
+    var ModalProgress = '<%= "Supress" %>';         
+</script> 
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
 		<td colSpan="3"><IMG height="10" src="../../_layouts/images/blank.gif" width="1"></td>
@@ -172,13 +175,13 @@
 							        <TD class="ms-vb-user">
 								        <INPUT id="chkList" type="checkbox" name="chkList" runat="server"></TD>
 							        <TD class="ms-vb2">
-							            <asp:ImageButton id="imgVariations" runat="server" ImageUrl="../../_layouts/images/variations.gif" ToolTip="Show Variation Types" CommandName="imgVariationsClick" CausesValidation=false></asp:ImageButton></TD>
+							            <asp:ImageButton id="imgVariations" runat="server" ImageUrl="../../_layouts/images/variations.gif" ToolTip="Show Variation Types" CommandName="imgVariationsClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
-							            <asp:ImageButton id="imgVariationsMatrix" runat="server" ImageUrl="../../_layouts/images/varmatrix.gif" ToolTip="Show Variations Matrix" CommandName="imgVariationsMatrixClick" CausesValidation=false></asp:ImageButton></TD>
+							            <asp:ImageButton id="imgVariationsMatrix" runat="server" ImageUrl="../../_layouts/images/varmatrix.gif" ToolTip="Show Variations Matrix" CommandName="imgVariationsMatrixClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
-							            <asp:ImageButton id="imgUnitsMatrix" runat="server" ImageUrl="../../_layouts/images/unitmatrix.gif" ToolTip="Show Units Matrix" CommandName="imgUnitsMatrixClick" CausesValidation=false></asp:ImageButton></TD>
+							            <asp:ImageButton id="imgUnitsMatrix" runat="server" ImageUrl="../../_layouts/images/unitmatrix.gif" ToolTip="Show Units Matrix" CommandName="imgUnitsMatrixClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
-							            <asp:HyperLink ID="lnkPackage" runat="server" ToolTip="Setup Product Packages" Font-Underline="true">&nbsp;p&nbsp;</asp:HyperLink></TD>
+							            <asp:HyperLink ID="lnkPackage" runat="server" ToolTip="Setup Product Packages" Font-Underline="true" Target="_blank">&nbsp;p&nbsp;</asp:HyperLink></TD>
 							        <TD class="ms-vb-user">&nbsp;
 								        <asp:HyperLink id="lnkProductCode" Runat="server"></asp:HyperLink>
 							        <TD class="ms-vb-user">
@@ -195,18 +198,18 @@
 						        </TR>
 						        <TR>
 							        <TD class="ms-vh2" height="1">
-							            <asp:ImageButton id="imgProductTag" runat="server" ImageUrl="../../_layouts/images/prodtagact.gif" ToolTip="Tag as inactive" CommandName="imgProductTag" CausesValidation=false></asp:ImageButton>
+							            <asp:ImageButton id="imgProductTag" runat="server" ImageUrl="../../_layouts/images/prodtagact.gif" ToolTip="Tag as inactive" CommandName="imgProductTag" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton>
 							        </TD>
 							        <TD class="ms-vb2">
-							            <A class="DropDown" id="imgVariationsAdd" href="" runat="server">
+							            <A class="DropDown" id="imgVariationsAdd" href="" runat="server" target="_blank">
 							                <asp:Label runat=server ToolTip="Add new Product Variation Type" Text="+"></asp:Label></A>
 							        </TD>
 							        <TD class="ms-vb2">
-								        <asp:ImageButton id="imgVariationsMatrixAdd" runat="server" ImageUrl="../../_layouts/images/newuser.gif" ToolTip="Add new Product Variations Matrix" CommandName="imgVariationsMatrixAddClick" CausesValidation=false></asp:ImageButton></TD>
+								        <asp:ImageButton id="imgVariationsMatrixAdd" runat="server" ImageUrl="../../_layouts/images/newuser.gif" ToolTip="Add new Product Variations Matrix" CommandName="imgVariationsMatrixAddClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
-								        <asp:ImageButton id="imgUnitsMatrixAdd" runat="server" ImageUrl="../../_layouts/images/newuser.gif" ToolTip="Add new Product Units Matrix" CommandName="imgUnitsMatrixAddClick" CausesValidation=false></asp:ImageButton></TD>
+								        <asp:ImageButton id="imgUnitsMatrixAdd" runat="server" ImageUrl="../../_layouts/images/newuser.gif" ToolTip="Add new Product Units Matrix" CommandName="imgUnitsMatrixAddClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
-								        <asp:ImageButton id="imgPackageAdd" runat="server" ImageUrl="../../_layouts/images/newuser.gif" ToolTip="Add new Product Package Matrix" CommandName="imgPackageMatrixAddClick" CausesValidation=false></asp:ImageButton></TD>
+								        <asp:ImageButton id="imgPackageAdd" runat="server" ImageUrl="../../_layouts/images/newuser.gif" ToolTip="Add new Product Package Matrix" CommandName="imgPackageMatrixAddClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
 								        <asp:Label id="Label6" runat="server" text="Buying"></asp:Label>
 								        <asp:Label id="Label8" runat="server" text="<b>:</b>"></asp:Label>
@@ -237,15 +240,15 @@
 						        </TR>
 						        <TR>
 							        <TD class="ms-vb2">
-							            <asp:ImageButton id="imgProductHistory" runat="server" ImageUrl="../../_layouts/images/prodhist.gif" ToolTip="Show product inventory history report" CommandName="imgProductHistoryClick" CausesValidation=false></asp:ImageButton></TD>
+							            <asp:ImageButton id="imgProductHistory" runat="server" ImageUrl="../../_layouts/images/prodhist.gif" ToolTip="Show product inventory history report" CommandName="imgProductHistoryClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
-								        <asp:ImageButton id="imgProductPriceHistory" runat="server" ImageUrl="../../_layouts/images/pricehist.gif" ToolTip="Show product price history report" CommandName="imgProductPriceHistoryClick" CausesValidation=false></asp:ImageButton></TD>
+								        <asp:ImageButton id="imgProductPriceHistory" runat="server" ImageUrl="../../_layouts/images/pricehist.gif" ToolTip="Show product price history report" CommandName="imgProductPriceHistoryClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
-								        <asp:ImageButton id="imgInventoryAdjustment" runat="server" ImageUrl="../../_layouts/images/invadj.gif" ToolTip="Adjust inventory count" CommandName="imgInventoryAdjustmentClick" CausesValidation=false></asp:ImageButton></TD>
+								        <asp:ImageButton id="imgInventoryAdjustment" runat="server" ImageUrl="../../_layouts/images/invadj.gif" ToolTip="Adjust inventory count" CommandName="imgInventoryAdjustmentClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
-								        <asp:ImageButton id="imgChangePrice" runat="server" ImageUrl="../../_layouts/images/chprice.gif" ToolTip="Change price" CommandName="imgChangePriceClick" CausesValidation=false></asp:ImageButton></TD>
+								        <asp:ImageButton id="imgChangePrice" runat="server" ImageUrl="../../_layouts/images/chprice.gif" ToolTip="Change price" CommandName="imgChangePriceClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
-								        <asp:ImageButton id="imgEditNow" runat="server" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Edit this product" CommandName="imgEditNowClick" CausesValidation=false></asp:ImageButton></TD>
+								        <asp:ImageButton id="imgEditNow" runat="server" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Edit this product" CommandName="imgEditNowClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
 								        <asp:Label id="Label61" runat="server" text="Supplier"></asp:Label>
 								        <asp:Label id="Label81" runat="server" text="<b>:</b>"></asp:Label>

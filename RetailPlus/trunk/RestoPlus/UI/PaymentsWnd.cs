@@ -73,7 +73,13 @@ namespace AceSoft.RetailPlus.Client.UI
         private GroupBox grpRewardCard;
         private Label lblRewardPointsAmount;
         private Button cmdF6;
+        private bool mboCreditCardSwiped = false;
 
+        public bool CreditCardSwiped
+        {
+            get { return mboCreditCardSwiped; }
+            set { mboCreditCardSwiped = value; }
+        }
         public Data.SalesTransactionDetails SalesTransactionDetails
         {
             get { return mclsSalesTransactionDetails; }
@@ -819,12 +825,12 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void PaymentsWnd_Load(object sender, System.EventArgs e)
 		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Payments.jpg");	}
-			catch{}
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Payments.jpg"); }
+            catch { }
             try
             { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
             catch { }
@@ -838,7 +844,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.cmdF3.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
                 this.cmdF4.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
                 this.cmdF5.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
-                this.cmdF6.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg"); 
+                this.cmdF6.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
             }
             catch { }
 
@@ -849,7 +855,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mdecAllowedDebit = mclsCustomerDetails.Debit;
                 if (mboIsRefund) mboIsDebitAllowed = mboIsCreditAllowed;
                 else { if (mdecAllowedDebit > 0) mboIsDebitAllowed = true; else { mboIsDebitAllowed = false; } }
-                
+
                 grpDebit.Visible = mboIsDebitAllowed;
 
                 if (mclsTerminalDetails.RewardPointsDetails.EnableRewardPointsAsPayment == true)
@@ -863,43 +869,46 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
             }
 
-			if (mboIsRefund)
-			{
-				lblHeader.Text = "Enter payment types to refund.";
-				lblSubTotalName.Text = "REFUND";
-				lblAmountPaidName.Text = "REFUNDED AMT";
-				lblChangeName.Text = "OVER";
-				cmdF4.Visible = false;
-				lblCredit.Visible = false;
-			}
-			else
-			{
-				if (mdecAllowedCredit <= 0 && mboIsCreditAllowed)
-				{
-					cmdF4.Enabled = false;
-					lblCredit.Enabled = false;
-					mboIsCreditAllowed = false;
-					grpDebit.Visible = mboIsDebitAllowed;
-				}
-				else
-				{
-					cmdF4.Visible = mboIsCreditAllowed;
-					lblCredit.Visible = mboIsCreditAllowed;
-					grpDebit.Visible = mboIsDebitAllowed;
-				}
-			}
-			lblCash.Tag = "0.00";
-			lblCheque.Tag = "0.00";
-			lblCreditCard.Tag = "0.00";
-			lblCredit.Tag = "0.00";
-			lblDebit.Tag = "0.00";
+            if (mboIsRefund)
+            {
+                lblHeader.Text = "Enter payment types to refund.";
+                lblSubTotalName.Text = "REFUND";
+                lblAmountPaidName.Text = "REFUNDED AMT";
+                lblChangeName.Text = "OVER";
+                cmdF4.Visible = false;
+                lblCredit.Visible = false;
+            }
+            else
+            {
+                if (mclsTerminalDetails.ShowCustomerSelection) mboCreditCardSwiped = true;
+                if (mboCreditCardSwiped == false) mboIsCreditAllowed = false;
+
+                if (mdecAllowedCredit <= 0 && mboIsCreditAllowed)
+                {
+                    cmdF4.Enabled = false;
+                    lblCredit.Enabled = false;
+                    mboIsCreditAllowed = false;
+                    grpDebit.Visible = mboIsDebitAllowed;
+                }
+                else
+                {
+                    cmdF4.Visible = mboIsCreditAllowed;
+                    lblCredit.Visible = mboIsCreditAllowed;
+                    grpDebit.Visible = mboIsDebitAllowed;
+                }
+            }
+            lblCash.Tag = "0.00";
+            lblCheque.Tag = "0.00";
+            lblCreditCard.Tag = "0.00";
+            lblCredit.Tag = "0.00";
+            lblDebit.Tag = "0.00";
             lblRewardPointsAmount.Tag = "0.00";
             lblRewardPointsPayment.Text = "0.00";
 
-			lblDiscount.Text = mdecDiscount.ToString("#,##0.#0");
-			lblCharge.Text = mdecCharge.ToString("#,##0.#0");
-			lblSubTotal.Text = mdecSubTotal.ToString("#,##0.#0");
-			ComputePayments();
+            lblDiscount.Text = mclsSalesTransactionDetails.Discount.ToString("#,##0.#0");
+            lblCharge.Text = mclsSalesTransactionDetails.Charge.ToString("#,##0.#0");
+            lblSubTotal.Text = mclsSalesTransactionDetails.SubTotal.ToString("#,##0.#0");
+            ComputePayments();
 		}
 
 		private void PaymentsWnd_KeyDown(object sender, KeyEventArgs e)

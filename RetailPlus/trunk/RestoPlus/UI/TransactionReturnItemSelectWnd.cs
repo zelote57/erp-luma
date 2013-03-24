@@ -684,7 +684,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				mDetails.PackageQuantity = Convert.ToDecimal(dgItems[iRow, 25]);
 				mDetails.PromoQuantity = Convert.ToDecimal(dgItems[iRow, 26]);
 				mDetails.PromoValue = Convert.ToDecimal(dgItems[iRow, 27]);
-				mDetails.PromoInPercent = Convert.ToInt16(dgItems[iRow, 28]);
+				mDetails.PromoInPercent = Convert.ToBoolean(dgItems[iRow, 28]);
 				mDetails.PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), dgItems[iRow, 29].ToString());
 				mDetails.PromoApplied = Convert.ToDecimal(dgItems[iRow, 30]);
 				mDetails.PurchasePrice = Convert.ToDecimal(dgItems[iRow, 31]);

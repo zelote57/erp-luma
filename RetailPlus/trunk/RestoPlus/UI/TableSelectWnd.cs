@@ -290,7 +290,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				int iRow = 0;
 				int iCol = 0;
 				int iCtr = 1;
-				Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
+                Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(clsContact.Connection, clsContact.Transaction);
 				Data.SalesTransactionDetails clsSalesTransactionDetails = new Data.SalesTransactionDetails();
 
 				if (dtContact.Rows.Count == 0)
@@ -298,8 +298,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					cmdTableLeft.Tag = "0".ToString(); // reset the sequenceno to 0 if no record
 					cmdTableRight.Tag = "0".ToString(); // reset the sequenceno to 0 if no record
 				}
-				else
-				{ clsSalesTransactions = new Data.SalesTransactions(clsContact.Connection, clsContact.Transaction); }
+
 				foreach (System.Data.DataRow dr in dtContact.Rows)
 				{
 					if (iCol == 5) { iCol = 0; iRow++; }
@@ -385,6 +384,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					iCol++; iCtr++;
 				}
+                clsSalesTransactions.CommitAndDispose();
 				clsContact.CommitAndDispose();
 			}
 			catch (IndexOutOfRangeException){}

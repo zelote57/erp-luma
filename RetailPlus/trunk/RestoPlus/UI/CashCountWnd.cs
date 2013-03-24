@@ -6,53 +6,53 @@ using AceSoft.RetailPlus.Data;
 
 namespace AceSoft.RetailPlus.Client.UI
 {
-	public class CashCountWnd : System.Windows.Forms.Form
-	{
+    public class CashCountWnd : System.Windows.Forms.Form
+    {
         private System.Windows.Forms.DataGrid dgCashCount;
-		private System.Windows.Forms.DataGridTableStyle dgStyle;
-		private System.Windows.Forms.DataGridTextBoxColumn DenominationID;
-		private System.Windows.Forms.DataGridTextBoxColumn ImagePath;
+        private System.Windows.Forms.DataGridTableStyle dgStyle;
+        private System.Windows.Forms.DataGridTextBoxColumn DenominationID;
+        private System.Windows.Forms.DataGridTextBoxColumn ImagePath;
         private System.Windows.Forms.DataGridTextBoxColumn DenominationValue;
         private System.Windows.Forms.DataGridTextBoxColumn DenominationCount;
         private System.Windows.Forms.DataGridTextBoxColumn DenominationAmount;
         private System.Windows.Forms.DataGridTextBoxColumn DenominationCode;
-		
-		private System.Windows.Forms.PictureBox imgIcon;
-		private System.Windows.Forms.Label lblHeader;
-		private System.Windows.Forms.PictureBox imgImagePath;
-		private System.Windows.Forms.TextBox txtDenominationCount;
+
+        private System.Windows.Forms.PictureBox imgIcon;
+        private System.Windows.Forms.Label lblHeader;
+        private System.Windows.Forms.PictureBox imgImagePath;
+        private System.Windows.Forms.TextBox txtDenominationCount;
 
         private DialogResult dialog;
-		private System.ComponentModel.Container components = null;
+        private System.ComponentModel.Container components = null;
 
-		private CashCountDetails[] marrCashCountDetails;
-		private Int64 mCashierID;
-		private System.Windows.Forms.Label label13;
-		private System.Windows.Forms.Label lblCashCount;
-		private string mCashierName;
-		private System.Windows.Forms.Label lblDescription;
+        private CashCountDetails[] marrCashCountDetails;
+        private Int64 mCashierID;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label lblCashCount;
+        private string mCashierName;
+        private System.Windows.Forms.Label lblDescription;
         private Button cmdCancel;
         private Button cmdEnter;
         private AceSoft.KeyBoardHook.KeyboardNoControl keyboardNoControl1;
-		private decimal mdecAmount;
+        private decimal mdecAmount;
         private bool mboIsTouchScreen;
-		public CashCountDetails[] Details
-		{
-			get {	return marrCashCountDetails;	}
-		}
-		public Int64 CashierID 
-		{
-			set {	mCashierID = value;	}
-		}
+        public CashCountDetails[] Details
+        {
+            get { return marrCashCountDetails; }
+        }
+        public Int64 CashierID
+        {
+            set { mCashierID = value; }
+        }
 
-		public string CashierName
-		{
-			set {	mCashierName = value;	}
-		}
+        public string CashierName
+        {
+            set { mCashierName = value; }
+        }
 
-		public decimal Amount
-		{
-			get	{	return mdecAmount;	}
+        public decimal Amount
+        {
+            get { return mdecAmount; }
         }
 
         public DialogResult Result
@@ -74,31 +74,31 @@ namespace AceSoft.RetailPlus.Client.UI
         #region Constructors and Destructors
 
         public CashCountWnd()
-		{
-			InitializeComponent();
-		}
+        {
+            InitializeComponent();
+        }
 
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
         }
 
         #endregion
 
         #region Windows Form Designer generated code
         /// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.dgCashCount = new System.Windows.Forms.DataGrid();
             this.dgStyle = new System.Windows.Forms.DataGridTableStyle();
@@ -179,7 +179,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgStyle.HeaderBackColor = System.Drawing.Color.DarkOrange;
             this.dgStyle.HeaderFont = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dgStyle.HeaderForeColor = System.Drawing.Color.White;
-            this.dgStyle.MappingName = "tblDenomination";
+            this.dgStyle.MappingName = "tblDenominationsasasasas";
             this.dgStyle.PreferredColumnWidth = 180;
             this.dgStyle.PreferredRowHeight = 30;
             this.dgStyle.RowHeadersVisible = false;
@@ -394,32 +394,32 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
+        }
+        #endregion
 
         #region Windows Form Methods
 
         private void CashCount_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			System.Data.DataTable dt;
-			int index;
+        {
+            System.Data.DataTable dt;
+            int index;
 
-			switch (e.KeyData)
-			{
-				case Keys.Escape:
-					dialog = DialogResult.Cancel;
-					this.Hide(); 
-					break;
+            switch (e.KeyData)
+            {
+                case Keys.Escape:
+                    dialog = DialogResult.Cancel;
+                    this.Hide();
+                    break;
 
-				case Keys.Enter:
-					if (isValuesAssigned())
-					{
-						dialog = DialogResult.OK;
-						this.Hide();
-					}
-					break;
-				
-				case Keys.Up:
+                case Keys.Enter:
+                    if (isValuesAssigned())
+                    {
+                        dialog = DialogResult.OK;
+                        this.Hide();
+                    }
+                    break;
+
+                case Keys.Up:
                     dgCashCount.Focus();
                     dt = (System.Data.DataTable)dgCashCount.DataSource;
                     if (dgCashCount.CurrentRowIndex > 0)
@@ -439,9 +439,9 @@ namespace AceSoft.RetailPlus.Client.UI
                         txtDenominationCount.Text = dgCashCount[dgCashCount.CurrentRowIndex, 3].ToString().Replace(",", "");
                         txtDenominationCount.SelectAll();
                     }
-					break;
+                    break;
 
-				case Keys.Down:
+                case Keys.Down:
                     dgCashCount.Focus();
                     dt = (System.Data.DataTable)dgCashCount.DataSource;
                     if (dgCashCount.CurrentRowIndex < dt.Rows.Count - 1)
@@ -451,7 +451,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         catch { }
                         dgCashCount[dgCashCount.CurrentRowIndex, 3] = iDenominationCount.ToString("#,##0");
                         dgCashCount[dgCashCount.CurrentRowIndex, 4] = Convert.ToDecimal(Convert.ToDecimal(dgCashCount[dgCashCount.CurrentRowIndex, 2]) * iDenominationCount).ToString("#,##0.#0");
-                        
+
                         SetCashCount();
                         index = dgCashCount.CurrentRowIndex;
 
@@ -462,7 +462,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         txtDenominationCount.SelectAll();
                     }
                     //SendKeys.SendWait("{DOWN}");
-					break;
+                    break;
                 //case Keys.D0:
                 //    if (txtDenominationCount.Visible == false)
                 //    {
@@ -623,17 +623,17 @@ namespace AceSoft.RetailPlus.Client.UI
                 //        SendKeys.Send("9");
                 //    }
                 //    break;
-			}
-		}
+            }
+        }
 
-		private void CashCount_Load(object sender, System.EventArgs e)
-		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/CashCount.jpg");	}
-			catch{}
+        private void CashCount_Load(object sender, System.EventArgs e)
+        {
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/CashCount.jpg"); }
+            catch { }
             try
             { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
             catch { }
@@ -641,20 +641,20 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-			LoadOptions();
-			LoadDenominationData();
-		}
+            LoadOptions();
+            LoadDenominationData();
+        }
 
-		private void CashCount_Resize(object sender, System.EventArgs e)
-		{
-			SetGridItemsWidth();
-		}
+        private void CashCount_Resize(object sender, System.EventArgs e)
+        {
+            SetGridItemsWidth();
+        }
 
-		private void txtDenominationCount_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
-		{
-			Methods clsMethods = new Methods();
-			e.Handled = clsMethods.AllNum(Convert.ToInt32(e.KeyChar));
-		}
+        private void txtDenominationCount_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            Methods clsMethods = new Methods();
+            e.Handled = clsMethods.AllNum(Convert.ToInt32(e.KeyChar));
+        }
 
         private void keyboardNoControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
         {
@@ -667,22 +667,21 @@ namespace AceSoft.RetailPlus.Client.UI
                 dt = (System.Data.DataTable)dgCashCount.DataSource;
                 if (dgCashCount.CurrentRowIndex > 0)
                 {
-                    if (txtDenominationCount.Visible == true)
-                    {
-                        Int32 iDenominationCount = 0;
-                        try { iDenominationCount = Convert.ToInt32(txtDenominationCount.Text); }
-                        catch { }
-                        dgCashCount[dgCashCount.CurrentRowIndex, 3] = iDenominationCount.ToString("#,##0");
-                        dgCashCount[dgCashCount.CurrentRowIndex, 4] = Convert.ToDecimal(Convert.ToDecimal(dgCashCount[dgCashCount.CurrentRowIndex, 2]) * iDenominationCount).ToString("#,##0.#0");
-                        txtDenominationCount.Text = "";
-                        //txtDenominationCount.Visible = false;
-                        SetCashCount();
-                    }
+                    Int32 iDenominationCount = 0;
+                    try { iDenominationCount = Convert.ToInt32(txtDenominationCount.Text); }
+                    catch { }
+                    dgCashCount[dgCashCount.CurrentRowIndex, 3] = iDenominationCount.ToString("#,##0");
+                    dgCashCount[dgCashCount.CurrentRowIndex, 4] = Convert.ToDecimal(Convert.ToDecimal(dgCashCount[dgCashCount.CurrentRowIndex, 2]) * iDenominationCount).ToString("#,##0.#0");
+                    txtDenominationCount.Text = "";
+                    SetCashCount();
                     index = dgCashCount.CurrentRowIndex;
 
                     dgCashCount.CurrentRowIndex -= 1;
                     dgCashCount.Select(dgCashCount.CurrentRowIndex);
                     dgCashCount.UnSelect(index);
+                    txtDenominationCount.Text = dgCashCount[dgCashCount.CurrentRowIndex, 3].ToString().Replace(",", "");
+                    txtDenominationCount.Focus();
+                    txtDenominationCount.SelectAll();
                 }
             }
             if (e.KeyboardKeyPressed.ToString() == "{DOWN}")
@@ -691,22 +690,21 @@ namespace AceSoft.RetailPlus.Client.UI
                 dt = (System.Data.DataTable)dgCashCount.DataSource;
                 if (dgCashCount.CurrentRowIndex < dt.Rows.Count - 1)
                 {
-                    if (txtDenominationCount.Visible == true)
-                    {
-                        Int32 iDenominationCount = 0;
-                        try { iDenominationCount = Convert.ToInt32(txtDenominationCount.Text); }
-                        catch { }
-                        dgCashCount[dgCashCount.CurrentRowIndex, 3] = iDenominationCount.ToString("#,##0");
-                        dgCashCount[dgCashCount.CurrentRowIndex, 4] = Convert.ToDecimal(Convert.ToDecimal(dgCashCount[dgCashCount.CurrentRowIndex, 2]) * iDenominationCount).ToString("#,##0.#0");
-                        txtDenominationCount.Text = "";
-                        //txtDenominationCount.Visible = false;
-                        SetCashCount();
-                    }
+                    Int32 iDenominationCount = 0;
+                    try { iDenominationCount = Convert.ToInt32(txtDenominationCount.Text); }
+                    catch { }
+                    dgCashCount[dgCashCount.CurrentRowIndex, 3] = iDenominationCount.ToString("#,##0");
+                    dgCashCount[dgCashCount.CurrentRowIndex, 4] = Convert.ToDecimal(Convert.ToDecimal(dgCashCount[dgCashCount.CurrentRowIndex, 2]) * iDenominationCount).ToString("#,##0.#0");
+
+                    SetCashCount();
                     index = dgCashCount.CurrentRowIndex;
 
                     dgCashCount.CurrentRowIndex += 1;
                     dgCashCount.Select(dgCashCount.CurrentRowIndex);
                     dgCashCount.UnSelect(index);
+                    txtDenominationCount.Text = dgCashCount[dgCashCount.CurrentRowIndex, 3].ToString().Replace(",", "");
+                    txtDenominationCount.Focus();
+                    txtDenominationCount.SelectAll();
                 }
             }
             else { txtDenominationCount.Focus(); }
@@ -727,12 +725,12 @@ namespace AceSoft.RetailPlus.Client.UI
                 dialog = DialogResult.OK;
                 this.Hide();
             }
-        }     
-        
+        }
+
         private void imgIcon_Click(object sender, EventArgs e)
         {
             dialog = DialogResult.Cancel;
-            this.Hide(); 
+            this.Hide();
         }
 
         #endregion
@@ -744,47 +742,47 @@ namespace AceSoft.RetailPlus.Client.UI
         #region Private Methods
 
         private bool SaveRecord()
-		{
-			System.Data.DataTable dt = (System.Data.DataTable) dgCashCount.DataSource;
+        {
+            System.Data.DataTable dt = (System.Data.DataTable)dgCashCount.DataSource;
 
-			ArrayList arrCashCountDetails = new ArrayList();				
-			CashCountDetails clsDetails;
-			CashCounts clsCashCount = new CashCounts();
-			
-			foreach(System.Data.DataRow dr in dt.Rows)
-			{
-				clsDetails = new CashCountDetails();
-				clsDetails.CashierID = mCashierID;
-				clsDetails.CashierName = mCashierName;
-				clsDetails.TerminalNo = CompanyDetails.TerminalNo;
-				clsDetails.DateCreated = DateTime.Now;
+            ArrayList arrCashCountDetails = new ArrayList();
+            CashCountDetails clsDetails;
+            CashCounts clsCashCount = new CashCounts();
+
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                clsDetails = new CashCountDetails();
+                clsDetails.CashierID = mCashierID;
+                clsDetails.CashierName = mCashierName;
+                clsDetails.TerminalNo = CompanyDetails.TerminalNo;
+                clsDetails.BranchID = Constants.TerminalBranchID;
+                clsDetails.DateCreated = DateTime.Now;
                 clsDetails.DenominationID = Convert.ToInt32(dr["DenominationID"].ToString().Replace(",", ""));
                 clsDetails.DenominationCount = Convert.ToInt32(dr["DenominationCount"].ToString().Replace(",", ""));
                 clsDetails.DenominationValue = Convert.ToDecimal(dr["DenominationValue"].ToString().Replace(",", ""));
                 clsDetails.DenominationAmount = Convert.ToDecimal(dr["DenominationAmount"].ToString().Replace(",", ""));
-				arrCashCountDetails.Add(clsDetails);
-			}
-			if (arrCashCountDetails != null)
-			{
-				CashCountDetails[] arrDetails = new CashCountDetails[arrCashCountDetails.Count];
-				arrCashCountDetails.CopyTo(arrDetails);
+                arrCashCountDetails.Add(clsDetails);
+            }
+            if (arrCashCountDetails != null)
+            {
+                CashCountDetails[] arrDetails = new CashCountDetails[arrCashCountDetails.Count];
+                arrCashCountDetails.CopyTo(arrDetails);
 
-                clsCashCount.GetConnection();
                 Terminal clsTerminal = new Terminal(clsCashCount.Connection, clsCashCount.Transaction);
                 clsTerminal.UpdateIsCashCountInitialized(Constants.TerminalBranchID, CompanyDetails.TerminalNo, mCashierID, true);
 
-				clsCashCount.Insert(arrDetails);
-				clsCashCount.CommitAndDispose();
+                clsCashCount.Insert(arrDetails);
+                clsCashCount.CommitAndDispose();
 
-				marrCashCountDetails = arrDetails;
-			}
-			MessageBox.Show("Cash Count has been initialized...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			return true;
+                marrCashCountDetails = arrDetails;
+            }
+            MessageBox.Show("Cash Count has been initialized...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return true;
 
-		}
-		
-		private void LoadOptions()
-		{
+        }
+
+        private void LoadOptions()
+        {
             txtDenominationCount.Visible = true;
             txtDenominationCount.Focus();
 
@@ -799,59 +797,61 @@ namespace AceSoft.RetailPlus.Client.UI
                 dgCashCount.Height = 450;
             }
 
-		}
+        }
 
-		private void LoadDenominationData()
-		{	
-			try
-			{
-				Data.Denominations clsDenomination = new Data.Denominations();
+        private void LoadDenominationData()
+        {
+            try
+            {
+                Data.Denominations clsDenomination = new Data.Denominations();
 
-				System.Data.DataTable dt = clsDenomination.ListForCashCount("DenominationID", SortOption.Ascending);
+                System.Data.DataTable dt = clsDenomination.ListForCashCount("DenominationID", SortOption.Ascending);
 
-				clsDenomination.CommitAndDispose();
-				dgCashCount.DataSource = dt;
-				dgCashCount.Select(0);
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message,"RetailPlus",MessageBoxButtons.OK,MessageBoxIcon.Error); 
-			}
-		}
+                clsDenomination.CommitAndDispose();
+
+                this.dgStyle.MappingName = dt.TableName;
+                dgCashCount.DataSource = dt;
+                dgCashCount.Select(0);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void SetGridItemsWidth()
-		{
-			dgStyle.GridColumnStyles["DenominationID"].Width = 0;
-			
-			dgStyle.GridColumnStyles["ImagePath"].Width = 50;
-			dgStyle.GridColumnStyles["DenominationValue"].Width = 80;
-			dgStyle.GridColumnStyles["DenominationCount"].Width = 130;
-			dgStyle.GridColumnStyles["DenominationAmount"].Width = 120;
-			dgStyle.GridColumnStyles["DenominationCode"].Width = dgCashCount.Width - 380;
-		}
+        {
+            dgStyle.GridColumnStyles["DenominationID"].Width = 0;
+
+            dgStyle.GridColumnStyles["ImagePath"].Width = 50;
+            dgStyle.GridColumnStyles["DenominationValue"].Width = 80;
+            dgStyle.GridColumnStyles["DenominationCount"].Width = 130;
+            dgStyle.GridColumnStyles["DenominationAmount"].Width = 120;
+            dgStyle.GridColumnStyles["DenominationCode"].Width = dgCashCount.Width - 380;
+        }
 
         private void SetCashCount()
-		{
-			System.Data.DataTable dt = (System.Data.DataTable) dgCashCount.DataSource;
+        {
+            System.Data.DataTable dt = (System.Data.DataTable)dgCashCount.DataSource;
 
-			decimal Amount = 0;
-			foreach(System.Data.DataRow dr in dt.Rows)
-			{
-				try 
-				{
-					Amount += Convert.ToDecimal(dr["DenominationAmount"]);				
-				}
-				catch {}
-			}
-			lblCashCount.Text = Amount.ToString("#,##0.#0");
-			mdecAmount = Amount;
+            decimal Amount = 0;
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                try
+                {
+                    Amount += Convert.ToDecimal(dr["DenominationAmount"]);
+                }
+                catch { }
+            }
+            lblCashCount.Text = Amount.ToString("#,##0.#0");
+            mdecAmount = Amount;
 
-		}
+        }
 
-		private bool isValuesAssigned()
-		{
-			try 
-			{
+        private bool isValuesAssigned()
+        {
+            try
+            {
                 if (txtDenominationCount.Text.Trim() != string.Empty)
                 {
                     Int32 iDenominationCount = 0;
@@ -863,18 +863,18 @@ namespace AceSoft.RetailPlus.Client.UI
                     SetCashCount();
                 }
                 if (MessageBox.Show("Warning!!! Cash Count will be intialized...Press OK to continue.", "RetailPlus", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.OK)
-                {  
+                {
                     return SaveRecord();
                 }
                 return false;
-			}
-			catch
-			{
-				MessageBox.Show("Sorry you have entered an invalid amount." +
-					"Please type a valid amount.","RetailPlus",MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				return false;
-			}
-		}
+            }
+            catch
+            {
+                MessageBox.Show("Sorry you have entered an invalid amount." +
+                    "Please type a valid amount.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+        }
 
         #endregion
 
@@ -883,5 +883,5 @@ namespace AceSoft.RetailPlus.Client.UI
 
         }
 
-	}
+    }
 }

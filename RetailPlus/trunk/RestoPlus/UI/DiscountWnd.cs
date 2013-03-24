@@ -34,6 +34,15 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label lblDescription;
         private AceSoft.KeyBoardHook.KeyboardNoControl keyboardNoControl1;
         private bool mbolIsDiscountEditable;
+        private string mstHeader;
+
+        public string Header
+        {
+            set
+            {
+                mstHeader = value;
+            }
+        }
 
         public bool IsDiscountEditable
         {
@@ -484,19 +493,18 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void LoadOptions() 
 		{
-			if (mDiscountType == DiscountTypes.Percentage)
-			{
-				lblHeader.Text = "Apply Percentage Discount";
-				lblDiscountType.Visible = true;
-			}
-			else if (mDiscountType == DiscountTypes.FixedValue)
-			{
-                lblHeader.Text = "Apply Amount Discount";
-				lblDiscountType.Visible = false;
-			}
+            lblHeader.Text = mstHeader;
+
+            if (mDiscountType == DiscountTypes.Percentage)
+            {
+                lblDiscountType.Visible = true;
+            }
+            else if (mDiscountType == DiscountTypes.FixedValue)
+            {
+                lblDiscountType.Visible = false;
+            }
             else if (mDiscountType == DiscountTypes.NotApplicable)
             {
-                lblHeader.Text = "Apply Discount";
                 lblDiscountType.Visible = false;
             }
 
@@ -528,13 +536,13 @@ namespace AceSoft.RetailPlus.Client.UI
 			LoadChangeDiscount();
 		}
 
-		private void LoadChangeDiscount()
-		{
-			if (cboDiscountType.Text != null & cboDiscountType.Text != "")
-			{
-				Data.Discount clsDiscount = new Data.Discount();
+        private void LoadChangeDiscount()
+        {
+            if (cboDiscountType.Text != null & cboDiscountType.Text != "")
+            {
+                Data.Discount clsDiscount = new Data.Discount();
                 Data.DiscountDetails clsDiscountDetails = clsDiscount.Details(cboDiscountType.Text);
-				clsDiscount.CommitAndDispose();
+                clsDiscount.CommitAndDispose();
 
                 //if (clsDiscountDetails.DiscountPrice == 0)
                 //{
@@ -543,22 +551,21 @@ namespace AceSoft.RetailPlus.Client.UI
                 //    lblDiscountType.Visible = false;
                 //}
                 //else 
+                lblHeader.Text = mstHeader;
                 if (clsDiscountDetails.InPercent == 1)
                 {
                     mDiscountType = DiscountTypes.Percentage;
-                    lblHeader.Text = "Apply Percentage Discount";
                     lblDiscountType.Visible = true;
                 }
                 else
                 {
                     mDiscountType = DiscountTypes.FixedValue;
-                    lblHeader.Text = "Apply Amount Discount";
                     lblDiscountType.Visible = false;
                 }
 
                 txtAmount.Text = clsDiscountDetails.DiscountPrice.ToString("#,##0.#0");
-			}
-		}
+            }
+        }
 
         private void keyboardSearchControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
         {

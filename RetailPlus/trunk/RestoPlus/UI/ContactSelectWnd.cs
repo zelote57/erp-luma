@@ -6,43 +6,43 @@ using AceSoft.RetailPlus.Data;
 
 namespace AceSoft.RetailPlus.Client.UI
 {
-	public class ContactSelectWnd : System.Windows.Forms.Form
-	{
-		private Label label1;
+    public class ContactSelectWnd : System.Windows.Forms.Form
+    {
+        private Label label1;
         private TextBox txtSearch;
-		private DataGridTableStyle dgStyle;
-		private DataGrid dgContacts;
-		private DataGridTextBoxColumn ContactID;
-		private DataGridTextBoxColumn ContactCode;
-		private DataGridTextBoxColumn ContactName;
-		private DataGridTextBoxColumn Debit;
-		private DataGridTextBoxColumn Credit;
-		private DataGridTextBoxColumn CreditLimit;
-		private DataGridTextBoxColumn IsCreditAllowed;
+        private DataGridTableStyle dgStyle;
+        private DataGrid dgContacts;
+        private DataGridTextBoxColumn ContactID;
+        private DataGridTextBoxColumn ContactCode;
+        private DataGridTextBoxColumn ContactName;
+        private DataGridTextBoxColumn Debit;
+        private DataGridTextBoxColumn Credit;
+        private DataGridTextBoxColumn CreditLimit;
+        private DataGridTextBoxColumn IsCreditAllowed;
         private DataGridTextBoxColumn PositionName;
         private DataGridTextBoxColumn DepartmentName;
-		private PictureBox imgIcon;
+        private PictureBox imgIcon;
         private Label lblAddNewCustomer;
-		private System.ComponentModel.Container components = null;
-        private AceSoft.KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
+        private System.ComponentModel.Container components = null;
 
-		private DialogResult dialog;
-		private Data.ContactDetails mDetails;
-		private bool mboHasCreditOnly;
+        private DialogResult dialog;
+        private Data.ContactDetails mDetails;
+        private bool mboHasCreditOnly;
+        private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
         private ContactGroupCategory mContactGroupCategory;
 
         public bool HasCreditOnly
-		{
-			set {	mboHasCreditOnly = value;	}
-		}
-		public DialogResult Result
-		{
-			get {	return dialog;	}
-		}
-		public ContactDetails Details
-		{
-			get {	return mDetails;	}
-		}
+        {
+            set { mboHasCreditOnly = value; }
+        }
+        public DialogResult Result
+        {
+            get { return dialog; }
+        }
+        public ContactDetails Details
+        {
+            get { return mDetails; }
+        }
         public ContactGroupCategory ContactGroupCategory
         {
             set { mContactGroupCategory = value; }
@@ -51,31 +51,31 @@ namespace AceSoft.RetailPlus.Client.UI
         #region Constructors and Destructors
 
         public ContactSelectWnd()
-		{
-			InitializeComponent();
-		}
+        {
+            InitializeComponent();
+        }
 
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
         }
 
         #endregion
 
         #region Windows Form Designer generated code
         /// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dgContacts = new System.Windows.Forms.DataGrid();
@@ -135,15 +135,15 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgContacts.HeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
             this.dgContacts.HeaderFont = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dgContacts.HeaderForeColor = System.Drawing.Color.White;
-            this.dgContacts.Location = new System.Drawing.Point(0, 198);
+            this.dgContacts.Location = new System.Drawing.Point(0, 196);
             this.dgContacts.Name = "dgContacts";
             this.dgContacts.PreferredRowHeight = 50;
             this.dgContacts.ReadOnly = true;
             this.dgContacts.RowHeadersVisible = false;
             this.dgContacts.RowHeaderWidth = 5;
             this.dgContacts.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            this.dgContacts.SelectionForeColor = System.Drawing.Color.White;
-            this.dgContacts.Size = new System.Drawing.Size(802, 422);
+            this.dgContacts.SelectionForeColor = System.Drawing.Color.WhiteSmoke;
+            this.dgContacts.Size = new System.Drawing.Size(1022, 570);
             this.dgContacts.TabIndex = 5;
             this.dgContacts.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
             this.dgStyle});
@@ -272,7 +272,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblAddNewCustomer.AutoSize = true;
             this.lblAddNewCustomer.BackColor = System.Drawing.Color.Transparent;
             this.lblAddNewCustomer.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.lblAddNewCustomer.Location = new System.Drawing.Point(586, 33);
+            this.lblAddNewCustomer.Location = new System.Drawing.Point(772, 31);
             this.lblAddNewCustomer.Name = "lblAddNewCustomer";
             this.lblAddNewCustomer.Size = new System.Drawing.Size(206, 13);
             this.lblAddNewCustomer.TabIndex = 89;
@@ -294,19 +294,19 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.keyboardSearchControl1.BackColor = System.Drawing.Color.White;
             this.keyboardSearchControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.keyboardSearchControl1.Location = new System.Drawing.Point(0, 64);
+            this.keyboardSearchControl1.Location = new System.Drawing.Point(0, 62);
             this.keyboardSearchControl1.Name = "keyboardSearchControl1";
-            this.keyboardSearchControl1.Size = new System.Drawing.Size(802, 134);
-            this.keyboardSearchControl1.TabIndex = 1;
+            this.keyboardSearchControl1.Size = new System.Drawing.Size(1022, 134);
+            this.keyboardSearchControl1.TabIndex = 97;
             this.keyboardSearchControl1.TabStop = false;
             this.keyboardSearchControl1.Tag = "";
-            this.keyboardSearchControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardSearchControl1_UserKeyPressed);
+            this.keyboardSearchControl1.Load += new System.EventHandler(this.keyboardSearchControl1_Load);
             // 
             // ContactSelectWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(802, 620);
+            this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
             this.Controls.Add(this.keyboardSearchControl1);
             this.Controls.Add(this.lblAddNewCustomer);
@@ -322,98 +322,98 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.ContactSelectWnd_Load);
-            this.Resize += new System.EventHandler(this.ContactSelectWnd_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ContactSelectWnd_KeyDown);
+            this.Resize += new System.EventHandler(this.ContactSelectWnd_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dgContacts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
+        }
+        #endregion
 
-		#region Windows Form Methods
+        #region Windows Form Methods
 
-		private void ContactSelectWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			System.Data.DataTable dt;
-			int index;
+        private void ContactSelectWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            System.Data.DataTable dt;
+            int index;
 
-			switch (e.KeyData)
-			{
-				case Keys.Escape:
-					dialog = DialogResult.Cancel;
-					this.Hide(); 
-					break;
+            switch (e.KeyData)
+            {
+                case Keys.Escape:
+                    dialog = DialogResult.Cancel;
+                    this.Hide();
+                    break;
 
-				case Keys.Enter:
-					if (dgContacts.CurrentRowIndex < 0)
-					{
-						dialog = DialogResult.Cancel;
-					} 
-					else 
-					{
-						CreateDetails(dgContacts.CurrentRowIndex);
-						dialog = DialogResult.OK;
-					}
-					this.Hide(); 
-					break;
-				
-				case Keys.Up:
-					dt = (System.Data.DataTable) dgContacts.DataSource;
-					if (dgContacts.CurrentRowIndex > 0) 
-					{
-						index = dgContacts.CurrentRowIndex;				
-						dgContacts.CurrentRowIndex -= 1;
-						dgContacts.Select(dgContacts.CurrentRowIndex);
-						dgContacts.UnSelect(index);
-					}
-					break;
+                case Keys.Enter:
+                    if (dgContacts.CurrentRowIndex < 0)
+                    {
+                        dialog = DialogResult.Cancel;
+                    }
+                    else
+                    {
+                        CreateDetails(dgContacts.CurrentRowIndex);
+                        dialog = DialogResult.OK;
+                    }
+                    this.Hide();
+                    break;
 
-				case Keys.Down:
-					dt = (System.Data.DataTable) dgContacts.DataSource;
-					if (dgContacts.CurrentRowIndex < dt.Rows.Count-1) 
-					{
-						index = dgContacts.CurrentRowIndex;				
+                case Keys.Up:
+                    dt = (System.Data.DataTable)dgContacts.DataSource;
+                    if (dgContacts.CurrentRowIndex > 0)
+                    {
+                        index = dgContacts.CurrentRowIndex;
+                        dgContacts.CurrentRowIndex -= 1;
+                        dgContacts.Select(dgContacts.CurrentRowIndex);
+                        dgContacts.UnSelect(index);
+                    }
+                    break;
 
-						dgContacts.CurrentRowIndex += 1;
-						dgContacts.Select(dgContacts.CurrentRowIndex);
-						dgContacts.UnSelect(index);
-					}
-					break;
+                case Keys.Down:
+                    dt = (System.Data.DataTable)dgContacts.DataSource;
+                    if (dgContacts.CurrentRowIndex < dt.Rows.Count - 1)
+                    {
+                        index = dgContacts.CurrentRowIndex;
+
+                        dgContacts.CurrentRowIndex += 1;
+                        dgContacts.Select(dgContacts.CurrentRowIndex);
+                        dgContacts.UnSelect(index);
+                    }
+                    break;
                 case Keys.F2:
                     ContactAdd();
                     break;
-			}
-		}
+            }
+        }
 
-		private void ContactSelectWnd_Load(object sender, System.EventArgs e)
-		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ContactSelect.jpg");	}
-			catch{}
+        private void ContactSelectWnd_Load(object sender, System.EventArgs e)
+        {
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ContactSelect.jpg"); }
+            catch { }
 
-			LoadOptions();
-			LoadContactData();
-		}
+            LoadOptions();
+            LoadContactData();
+        }
 
-		private void ContactSelectWnd_Resize(object sender, System.EventArgs e)
-		{
+        private void ContactSelectWnd_Resize(object sender, System.EventArgs e)
+        {
             dgStyle.GridColumnStyles["ContactCode"].Width = 200;
             dgStyle.GridColumnStyles["ContactName"].Width = this.Width - 225;
-		}
-		
-		#endregion
+        }
+
+        #endregion
 
         #region Windows Control Methods
 
-		private void txtSearch_TextChanged(object sender, System.EventArgs e)
-		{
-			LoadContactData();
-		}
+        private void txtSearch_TextChanged(object sender, System.EventArgs e)
+        {
+            LoadContactData();
+        }
 
         private void dgContacts_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
@@ -442,60 +442,64 @@ namespace AceSoft.RetailPlus.Client.UI
             txtSearch.Focus();
             SendKeys.Send(e.KeyboardKeyPressed);
         }
-		
+
         #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         private void CreateDetails(int iRow)
-		{
-			mDetails = new ContactDetails();
-			
-			//int iRow = dgContacts.CurrentRowIndex;
+        {
+            mDetails = new ContactDetails();
+            Customer clsCustomer = new Customer();
+            mDetails = clsCustomer.Details(Convert.ToInt64(dgContacts[iRow, 0].ToString()));
+            clsCustomer.CommitAndDispose();
 
-			mDetails.ContactID = Convert.ToInt64(dgContacts[iRow, 0].ToString());
-			mDetails.ContactCode = dgContacts[iRow, 1].ToString();
-			mDetails.ContactName = dgContacts[iRow, 2].ToString();
-			mDetails.Debit = Convert.ToDecimal(dgContacts[iRow, 3].ToString());
-			mDetails.Credit = Convert.ToDecimal(dgContacts[iRow, 4].ToString());
-			mDetails.CreditLimit = Convert.ToDecimal(dgContacts[iRow, 5].ToString());
-			mDetails.IsCreditAllowed = Convert.ToInt16(dgContacts[iRow, 6].ToString());
-            mDetails.PositionName = dgContacts[iRow, 7].ToString();
-            mDetails.DepartmentName = dgContacts[iRow, 8].ToString();
-		}
-		private void LoadOptions()
-		{
+            ////int iRow = dgContacts.CurrentRowIndex;
+
+            //mDetails.ContactID = Convert.ToInt64(dgContacts[iRow, 0].ToString());
+            //mDetails.ContactCode = dgContacts[iRow, 1].ToString();
+            //mDetails.ContactName = dgContacts[iRow, 2].ToString();
+            //mDetails.Debit = Convert.ToDecimal(dgContacts[iRow, 3].ToString());
+            //mDetails.Credit = Convert.ToDecimal(dgContacts[iRow, 4].ToString());
+            //mDetails.CreditLimit = Convert.ToDecimal(dgContacts[iRow, 5].ToString());
+            //mDetails.IsCreditAllowed = Convert.ToInt16(dgContacts[iRow, 6].ToString());
+            //mDetails.PositionName = dgContacts[iRow, 7].ToString();
+            //mDetails.DepartmentName = dgContacts[iRow, 8].ToString();
+        }
+        private void LoadOptions()
+        {
             if (mContactGroupCategory == ContactGroupCategory.AGENT)
                 lblAddNewCustomer.Visible = false;
 
-		}
-		private void LoadContactData()
-		{	
-			Contacts clsContact = new Contacts();
+        }
+        private void LoadContactData()
+        {
+            Contacts clsContact = new Contacts();
 
-			try
-			{
-				string searchkey = "" + txtSearch.Text;
+            try
+            {
+                string searchkey = "" + txtSearch.Text;
 
                 System.Data.DataTable dt;
                 if (mContactGroupCategory == ContactGroupCategory.AGENT)
-                    dt = clsContact.AgentsAsDataTable(searchkey, 100, "ContactName", SortOption.Ascending); 
-				else
+                    dt = clsContact.AgentsAsDataTable(searchkey, 100, "ContactName", SortOption.Ascending);
+                else
                     dt = clsContact.CustomersDataTable(searchkey, 100, mboHasCreditOnly, "ContactName", SortOption.Ascending);
 
-				clsContact.CommitAndDispose();
-				
-				dgContacts.DataSource = dt;
-				dgContacts.Select(0);
-				dgContacts.CurrentRowIndex=0;
-			}
-			catch (IndexOutOfRangeException){}
-			catch (Exception ex)
-			{
-				clsContact.CommitAndDispose();
-				MessageBox.Show(ex.Message,"RetailPlus",MessageBoxButtons.OK,MessageBoxIcon.Error); 
-			}
-		}
+                clsContact.CommitAndDispose();
+
+                this.dgStyle.MappingName = dt.TableName;
+                dgContacts.DataSource = dt;
+                dgContacts.Select(0);
+                dgContacts.CurrentRowIndex = 0;
+            }
+            catch (IndexOutOfRangeException) { }
+            catch (Exception ex)
+            {
+                clsContact.CommitAndDispose();
+                MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private void ContactAdd()
         {
             ContactAddWnd addwnd = new ContactAddWnd();
@@ -514,12 +518,17 @@ namespace AceSoft.RetailPlus.Client.UI
 
         }
 
-		#endregion
+        #endregion
 
         private void lblAddNewCustomer_Click(object sender, EventArgs e)
         {
             ContactAdd();
         }
 
-	}
+        private void keyboardSearchControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+    }
 }

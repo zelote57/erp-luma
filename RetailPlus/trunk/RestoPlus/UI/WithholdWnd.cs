@@ -44,7 +44,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 		}
 
-        public Data.WithHoldDetails WithholdDetails
+        public Data.WithHoldDetails WithHoldDetails
 		{
 			get
 			{

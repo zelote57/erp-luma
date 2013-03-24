@@ -311,6 +311,7 @@
     <Compile Include="Credits\_Menu.ascx.designer.cs">
       <DependentUpon>_menu.ascx</DependentUpon>
     </Compile>
+    <Compile Include="App_Code\CRSHelper.cs" />
     <Compile Include="Datasets\ReportDataset.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

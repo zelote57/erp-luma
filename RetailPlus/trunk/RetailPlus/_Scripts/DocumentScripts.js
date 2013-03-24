@@ -43,7 +43,15 @@ Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(beginReq);
 Sys.WebForms.PageRequestManager.getInstance().add_endRequest(endReq);    
 var timeOut
 function beginReq(sender, args) {
-   openModal();
+    var elem = args.get_postBackElement();
+    // alert(elem.value);
+//    if (elem.value == "Go") {
+//        var ModalProgress = '<%="" %>';
+//    } 
+//    else {
+//        openModal();
+//    }
+    openModal();
    // timeOut =  setTimeout('openModal()', 750);
 }
 

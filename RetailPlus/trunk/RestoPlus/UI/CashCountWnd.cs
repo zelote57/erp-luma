@@ -435,7 +435,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         //dgCashCount.CurrentRowIndex -= 1;
                         dgCashCount.Select(dgCashCount.CurrentRowIndex);
-                        dgCashCount.UnSelect(index);
+                        //dgCashCount.UnSelect(index);
                         txtDenominationCount.Text = dgCashCount[dgCashCount.CurrentRowIndex, 3].ToString().Replace(",", "");
                         txtDenominationCount.SelectAll();
                     }
@@ -457,7 +457,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         //dgCashCount.CurrentRowIndex += 1;
                         dgCashCount.Select(dgCashCount.CurrentRowIndex);
-                        dgCashCount.UnSelect(index);
+                        //dgCashCount.UnSelect(index);
                         txtDenominationCount.Text = dgCashCount[dgCashCount.CurrentRowIndex, 3].ToString().Replace(",", "");
                         txtDenominationCount.SelectAll();
                     }

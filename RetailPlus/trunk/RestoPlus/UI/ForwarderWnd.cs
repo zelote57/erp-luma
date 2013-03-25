@@ -6,29 +6,28 @@ using System.Windows.Forms;
 
 namespace AceSoft.RetailPlus.Client.UI
 {
-	/// <summary>
-	/// Summary description for ForwarderWnd.
-	/// </summary>
-	public class ForwarderWnd : System.Windows.Forms.Form
+    /// <summary>
+    /// Summary description for ForwarderWnd.
+    /// </summary>
+    public class ForwarderWnd : System.Windows.Forms.Form
     {
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Label lblCash;
-		private System.Windows.Forms.TextBox txtDateFrom;
-		private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblCash;
+        private System.Windows.Forms.TextBox txtDateFrom;
+        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cboDate;
-        private IContainer components;
+        private System.ComponentModel.Container components = null;
 
-		private DialogResult dialog;
-		private string mstTerminalNo;
-		private System.Windows.Forms.PictureBox imgIcon;
+        private DialogResult dialog;
+        private string mstTerminalNo;
+        private System.Windows.Forms.PictureBox imgIcon;
         private Label label3;
         private TextBox txtDateTo;
         private Button cmdGO;
         private TextBox txtSelectedTexBox;
-        private AceSoft.KeyBoardHook.KeyboardNoControl keyboardNoControl1;
         private Button cmdCancel;
         private Button cmdEnter;
         private GroupBox grpRLC;
@@ -36,74 +35,74 @@ namespace AceSoft.RetailPlus.Client.UI
         private ColumnHeader Filename;
         private ColumnHeader FileSize;
         private ColumnHeader DateModified;
-		private DateTime mdtDateLastInitialized;
+        private KeyBoardHook.KeyboardNoControl keyboardNoControl1;
+        private DateTime mdtDateLastInitialized;
 
-		public DialogResult Result
-		{
-			get 
-			{
-				return dialog;
-			}
-		}
-		public string TerminalNo
-		{
-			set
-			{
-				mstTerminalNo = value;
-			}
-		}
+        public DialogResult Result
+        {
+            get
+            {
+                return dialog;
+            }
+        }
+        public string TerminalNo
+        {
+            set
+            {
+                mstTerminalNo = value;
+            }
+        }
         public DateTime DateLastInitialized
-		{
-			get
-			{
-				return mdtDateLastInitialized;
-			}
+        {
+            get
+            {
+                return mdtDateLastInitialized;
+            }
         }
 
         #region Constructors and Destructors
 
         public ForwarderWnd()
-		{
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
+        {
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
 
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
-		}
+            //
+            // TODO: Add any constructor code after InitializeComponent call
+            //
+        }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
         }
 
         #endregion
 
         #region Windows Form Designer generated code
         /// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
             this.cmdGO = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.txtDateTo = new System.Windows.Forms.TextBox();
@@ -115,9 +114,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter = new System.Windows.Forms.Button();
             this.grpRLC = new System.Windows.Forms.GroupBox();
             this.lstItems = new System.Windows.Forms.ListView();
-            this.Filename = new System.Windows.Forms.ColumnHeader();
-            this.FileSize = new System.Windows.Forms.ColumnHeader();
-            this.DateModified = new System.Windows.Forms.ColumnHeader();
+            this.Filename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.FileSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.DateModified = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.grpRLC.SuspendLayout();
@@ -161,8 +161,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label15.AutoSize = true;
             this.label15.BackColor = System.Drawing.Color.Transparent;
             this.label15.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.ForeColor = System.Drawing.Color.MistyRose;
-            this.label15.Location = new System.Drawing.Point(552, 41);
+            this.label15.ForeColor = System.Drawing.Color.Red;
+            this.label15.Location = new System.Drawing.Point(35, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(31, 13);
             this.label15.TabIndex = 78;
@@ -177,27 +177,17 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.Controls.Add(this.txtDateTo);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.cboDate);
+            this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.lblCash);
             this.groupBox1.Controls.Add(this.txtDateFrom);
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Blue;
             this.groupBox1.Location = new System.Drawing.Point(9, 67);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(780, 230);
+            this.groupBox1.Size = new System.Drawing.Size(1007, 230);
             this.groupBox1.TabIndex = 80;
             this.groupBox1.TabStop = false;
-            // 
-            // keyboardNoControl1
-            // 
-            this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
-            this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Default;
-            this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Default;
-            this.keyboardNoControl1.Location = new System.Drawing.Point(545, 20);
-            this.keyboardNoControl1.Name = "keyboardNoControl1";
-            this.keyboardNoControl1.Size = new System.Drawing.Size(202, 201);
-            this.keyboardNoControl1.TabIndex = 6;
-            this.keyboardNoControl1.TabStop = false;
-            this.keyboardNoControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardNoControl1_UserKeyPressed);
+            this.groupBox1.Text = "Press Send button to resume Transaction";
             // 
             // cmdGO
             // 
@@ -206,7 +196,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdGO.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmdGO.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdGO.ForeColor = System.Drawing.Color.White;
-            this.cmdGO.Location = new System.Drawing.Point(413, 35);
+            this.cmdGO.Location = new System.Drawing.Point(499, 51);
             this.cmdGO.Name = "cmdGO";
             this.cmdGO.Size = new System.Drawing.Size(78, 62);
             this.cmdGO.TabIndex = 2;
@@ -219,7 +209,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label3.Location = new System.Drawing.Point(250, 61);
+            this.label3.Location = new System.Drawing.Point(336, 77);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(17, 13);
             this.label3.TabIndex = 21;
@@ -229,7 +219,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtDateTo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtDateTo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDateTo.Location = new System.Drawing.Point(277, 51);
+            this.txtDateTo.Location = new System.Drawing.Point(363, 67);
             this.txtDateTo.MaxLength = 10;
             this.txtDateTo.Name = "txtDateTo";
             this.txtDateTo.Size = new System.Drawing.Size(134, 30);
@@ -243,7 +233,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label2.Location = new System.Drawing.Point(181, 113);
+            this.label2.Location = new System.Drawing.Point(267, 129);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(189, 13);
             this.label2.TabIndex = 19;
@@ -254,7 +244,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cboDate.CausesValidation = false;
             this.cboDate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboDate.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cboDate.Location = new System.Drawing.Point(76, 133);
+            this.cboDate.Location = new System.Drawing.Point(162, 149);
             this.cboDate.Name = "cboDate";
             this.cboDate.Size = new System.Drawing.Size(415, 31);
             this.cboDate.TabIndex = 3;
@@ -264,7 +254,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCash.AutoSize = true;
             this.lblCash.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCash.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblCash.Location = new System.Drawing.Point(70, 30);
+            this.lblCash.Location = new System.Drawing.Point(156, 46);
             this.lblCash.Name = "lblCash";
             this.lblCash.Size = new System.Drawing.Size(337, 13);
             this.lblCash.TabIndex = 15;
@@ -274,7 +264,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtDateFrom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtDateFrom.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDateFrom.Location = new System.Drawing.Point(106, 51);
+            this.txtDateFrom.Location = new System.Drawing.Point(192, 67);
             this.txtDateFrom.MaxLength = 10;
             this.txtDateFrom.Name = "txtDateFrom";
             this.txtDateFrom.Size = new System.Drawing.Size(134, 30);
@@ -290,7 +280,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmdCancel.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdCancel.ForeColor = System.Drawing.Color.White;
-            this.cmdCancel.Location = new System.Drawing.Point(533, 310);
+            this.cmdCancel.Location = new System.Drawing.Point(772, 306);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(106, 83);
             this.cmdCancel.TabIndex = 5;
@@ -305,7 +295,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmdEnter.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdEnter.ForeColor = System.Drawing.Color.White;
-            this.cmdEnter.Location = new System.Drawing.Point(639, 310);
+            this.cmdEnter.Location = new System.Drawing.Point(878, 306);
             this.cmdEnter.Name = "cmdEnter";
             this.cmdEnter.Size = new System.Drawing.Size(106, 83);
             this.cmdEnter.TabIndex = 4;
@@ -321,7 +311,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpRLC.ForeColor = System.Drawing.Color.Blue;
             this.grpRLC.Location = new System.Drawing.Point(9, 395);
             this.grpRLC.Name = "grpRLC";
-            this.grpRLC.Size = new System.Drawing.Size(780, 221);
+            this.grpRLC.Size = new System.Drawing.Size(1007, 221);
             this.grpRLC.TabIndex = 83;
             this.grpRLC.TabStop = false;
             this.grpRLC.Text = "RLC File Server Management: [DOUBLE CLICK TO RELOAD] :";
@@ -338,7 +328,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lstItems.Location = new System.Drawing.Point(6, 20);
             this.lstItems.MultiSelect = false;
             this.lstItems.Name = "lstItems";
-            this.lstItems.Size = new System.Drawing.Size(768, 195);
+            this.lstItems.Size = new System.Drawing.Size(995, 195);
             this.lstItems.TabIndex = 95;
             this.lstItems.UseCompatibleStateImageBehavior = false;
             this.lstItems.View = System.Windows.Forms.View.Details;
@@ -359,25 +349,34 @@ namespace AceSoft.RetailPlus.Client.UI
             this.DateModified.Text = "Date Modified";
             this.DateModified.Width = 117;
             // 
+            // keyboardNoControl1
+            // 
+            this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
+            this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Up;
+            this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
+            this.keyboardNoControl1.Location = new System.Drawing.Point(648, 20);
+            this.keyboardNoControl1.Name = "keyboardNoControl1";
+            this.keyboardNoControl1.Size = new System.Drawing.Size(202, 176);
+            this.keyboardNoControl1.TabIndex = 79;
+            this.keyboardNoControl1.TabStop = false;
+            // 
             // ForwarderWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(802, 620);
+            this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
             this.Controls.Add(this.grpRLC);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.label15);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.imgIcon);
             this.Font = new System.Drawing.Font("Tahoma", 8F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Name = "ForwarderWnd";
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.ForwarderWnd_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ForwarderWnd_KeyDown);
@@ -388,19 +387,19 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
+        }
+        #endregion
 
         #region Windows Form Methods
 
         private void ForwarderWnd_Load(object sender, System.EventArgs e)
-		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/WithHold.jpg");	}
-			catch{}
+        {
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Withhold.jpg"); }
+            catch { }
             try
             { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
             catch { }
@@ -414,46 +413,46 @@ namespace AceSoft.RetailPlus.Client.UI
             txtDateFrom.Text = DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd");
             txtDateTo.Text = DateTime.Now.ToString("yyyy-MM-dd");
             LoadOptions();
-			
-		}
-        
-		private void ForwarderWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			switch (e.KeyData)
-			{
-				case Keys.PageUp:
-					SendKeys.Send("+{TAB}");
-					break;
 
-				case Keys.PageDown:
-					SendKeys.Send("{TAB}");
-					break;
+        }
 
-				case Keys.Escape:
-					dialog = DialogResult.Cancel;
-					this.Hide(); 
-					break;
+        private void ForwarderWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            switch (e.KeyData)
+            {
+                case Keys.PageUp:
+                    SendKeys.Send("+{TAB}");
+                    break;
 
-				case Keys.Enter:
-                    if (cboDate.SelectedText == "No valid date") 
+                case Keys.PageDown:
+                    SendKeys.Send("{TAB}");
+                    break;
+
+                case Keys.Escape:
+                    dialog = DialogResult.Cancel;
+                    this.Hide();
+                    break;
+
+                case Keys.Enter:
+                    if (cboDate.SelectedText == "No valid date")
                     {
                         MessageBox.Show("Sorry, no record is found on your searched date.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
-					try
-					{
+                    try
+                    {
                         mdtDateLastInitialized = Convert.ToDateTime(cboDate.SelectedValue.ToString());
-					}
-					catch
-					{
-						MessageBox.Show("Sorry, the date you selected is not a valid date." +
-							"Please check the date you select.","RetailPlus",MessageBoxButtons.OK, MessageBoxIcon.Warning);
-						return;
-					}
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Sorry, the date you selected is not a valid date." +
+                            "Please check the date you select.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
                     dialog = DialogResult.OK;
                     this.Hide();
                     break;
-			}
+            }
         }
 
         private void grpRLC_DoubleClick(object sender, EventArgs e)
@@ -484,12 +483,12 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTexBox = (TextBox)sender;
         }
-        
+
         private void txtDateTo_GotFocus(object sender, EventArgs e)
         {
             txtSelectedTexBox = (TextBox)sender;
         }
-        
+
         private void cmdGO_Click(object sender, EventArgs e)
         {
             try
@@ -514,7 +513,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             LoadOptions();
         }
-        
+
         private void keyboardNoControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
         {
             if (txtSelectedTexBox == null)
@@ -526,13 +525,13 @@ namespace AceSoft.RetailPlus.Client.UI
 
             SendKeys.Send(e.KeyboardKeyPressed);
         }
-        
+
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             dialog = DialogResult.Cancel;
             this.Hide();
         }
-        
+
         private void cmdEnter_Click(object sender, EventArgs e)
         {
             if (cboDate.SelectedText == "No valid date")
@@ -617,14 +616,15 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 MessageBox.Show("Error encountered while loading file list. " + Environment.NewLine + "Err #: " + ex.Message, "RetailPlus", MessageBoxButtons.OK);
             }
 
             clsFTP.Disconnect();
             clsFTP = null;
         }
-        
+
         #endregion
 
     }

@@ -6,42 +6,42 @@ using System.Windows.Forms;
 
 namespace AceSoft.RetailPlus.Client.UI
 {
-	public class ResumeTransactionWnd : System.Windows.Forms.Form
-	{
+    public class ResumeTransactionWnd : System.Windows.Forms.Form
+    {
         private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.DataGrid dgItems;
-		private System.Windows.Forms.DataGridTableStyle dgStyle;
-		private System.Windows.Forms.DataGridTextBoxColumn TransactionID;
-		private System.Windows.Forms.DataGridTextBoxColumn TransactionNo;
-		private System.Windows.Forms.DataGridTextBoxColumn CustomerID;
-		private System.Windows.Forms.DataGridTextBoxColumn CustomerName;
-		private System.Windows.Forms.DataGridTextBoxColumn TransactionDate;
-		private System.Windows.Forms.DataGridTextBoxColumn DateSuspended;
-		private System.Windows.Forms.DataGridTextBoxColumn TransactionStatus;
-		private System.Windows.Forms.DataGridTextBoxColumn TransDiscount;
-		private System.Windows.Forms.DataGridTextBoxColumn TransDiscountType;
-		private System.Windows.Forms.DataGridTextBoxColumn WaiterID;
-		private System.Windows.Forms.DataGridTextBoxColumn WaiterName;
-		private System.Windows.Forms.DataGridTextBoxColumn ChargeAmount;
-		private System.Windows.Forms.DataGridTextBoxColumn ChargeCode;
-		private DialogResult dialog;
-		private Data.SalesTransactionDetails mDetails = new Data.SalesTransactionDetails();
-		private System.ComponentModel.Container components = null;
-		private Int64 mCashierID;
-		private System.Windows.Forms.PictureBox imgIcon;
-		
+        private System.Windows.Forms.DataGrid dgItems;
+        private System.Windows.Forms.DataGridTableStyle dgStyle;
+        private System.Windows.Forms.DataGridTextBoxColumn TransactionID;
+        private System.Windows.Forms.DataGridTextBoxColumn TransactionNo;
+        private System.Windows.Forms.DataGridTextBoxColumn CustomerID;
+        private System.Windows.Forms.DataGridTextBoxColumn CustomerName;
+        private System.Windows.Forms.DataGridTextBoxColumn TransactionDate;
+        private System.Windows.Forms.DataGridTextBoxColumn DateSuspended;
+        private System.Windows.Forms.DataGridTextBoxColumn TransactionStatus;
+        private System.Windows.Forms.DataGridTextBoxColumn TransDiscount;
+        private System.Windows.Forms.DataGridTextBoxColumn TransDiscountType;
+        private System.Windows.Forms.DataGridTextBoxColumn WaiterID;
+        private System.Windows.Forms.DataGridTextBoxColumn WaiterName;
+        private System.Windows.Forms.DataGridTextBoxColumn ChargeAmount;
+        private System.Windows.Forms.DataGridTextBoxColumn ChargeCode;
+        private DialogResult dialog;
+        private Data.SalesTransactionDetails mDetails = new Data.SalesTransactionDetails();
+        private System.ComponentModel.Container components = null;
+        private Int64 mCashierID;
+        private System.Windows.Forms.PictureBox imgIcon;
+
         private bool mShowOnlyPackedTransactions;
-        private AceSoft.KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
         private TextBox txtSearch;
         private bool mShowOneTerminalSuspendedTransactions;
+        private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
 
-		public Int64 CashierID
-		{
-			set 
-			{
-				mCashierID = value;
-			}
-		}
+        public Int64 CashierID
+        {
+            set
+            {
+                mCashierID = value;
+            }
+        }
 
         public bool ShowOnlyPackedTransactions
         {
@@ -57,22 +57,22 @@ namespace AceSoft.RetailPlus.Client.UI
                 mShowOneTerminalSuspendedTransactions = value;
             }
         }
-        
-		public DialogResult Result
-		{
-			get 
-			{
-				return dialog;
-			}
-		}
 
-		public Data.SalesTransactionDetails Details
-		{
-			get 
-			{
-				return mDetails;
-			}
-		}
+        public DialogResult Result
+        {
+            get
+            {
+                return dialog;
+            }
+        }
+
+        public Data.SalesTransactionDetails Details
+        {
+            get
+            {
+                return mDetails;
+            }
+        }
 
         private string mstTerminalNo;
         public string TerminalNo
@@ -80,30 +80,30 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mstTerminalNo = value; }
         }
 
-		public ResumeTransactionWnd()
-		{
-			InitializeComponent();
-		}
+        public ResumeTransactionWnd()
+        {
+            InitializeComponent();
+        }
 
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        #region Windows Form Designer generated code
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.label1 = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.dgItems = new System.Windows.Forms.DataGrid();
@@ -121,8 +121,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.WaiterName = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ChargeAmount = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ChargeCode = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
             this.txtSearch = new System.Windows.Forms.TextBox();
+            this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).BeginInit();
             this.SuspendLayout();
@@ -327,18 +327,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ChargeCode.ReadOnly = true;
             this.ChargeCode.Width = 0;
             // 
-            // keyboardSearchControl1
-            // 
-            this.keyboardSearchControl1.BackColor = System.Drawing.Color.White;
-            this.keyboardSearchControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.keyboardSearchControl1.Location = new System.Drawing.Point(0, 62);
-            this.keyboardSearchControl1.Name = "keyboardSearchControl1";
-            this.keyboardSearchControl1.Size = new System.Drawing.Size(1022, 134);
-            this.keyboardSearchControl1.TabIndex = 96;
-            this.keyboardSearchControl1.TabStop = false;
-            this.keyboardSearchControl1.Tag = "";
-            this.keyboardSearchControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardSearchControl1_UserKeyPressed);
-            // 
             // txtSearch
             // 
             this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -349,14 +337,25 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtSearch.TabIndex = 0;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
+            // keyboardSearchControl1
+            // 
+            this.keyboardSearchControl1.BackColor = System.Drawing.Color.White;
+            this.keyboardSearchControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.keyboardSearchControl1.Location = new System.Drawing.Point(0, 62);
+            this.keyboardSearchControl1.Name = "keyboardSearchControl1";
+            this.keyboardSearchControl1.Size = new System.Drawing.Size(1022, 134);
+            this.keyboardSearchControl1.TabIndex = 99;
+            this.keyboardSearchControl1.TabStop = false;
+            this.keyboardSearchControl1.Tag = "";
+            // 
             // ResumeTransactionWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
-            this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.keyboardSearchControl1);
+            this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.dgItems);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.imgIcon);
@@ -368,162 +367,174 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.ResumeTransactionWnd_Load);
-            this.Resize += new System.EventHandler(this.ResumeTransactionWnd_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ResumeTransactionWnd_KeyDown);
+            this.Resize += new System.EventHandler(this.ResumeTransactionWnd_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
+        }
+        #endregion
 
-		private void ResumeTransactionWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			System.Data.DataTable dt;
-			int index;
+        private void ResumeTransactionWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            System.Data.DataTable dt;
+            int index;
 
-			switch (e.KeyData)
-			{
-				case Keys.Escape:
-					dialog = DialogResult.Cancel;
-					this.Hide(); 
-					break;
+            switch (e.KeyData)
+            {
+                case Keys.Escape:
+                    dialog = DialogResult.Cancel;
+                    this.Hide();
+                    break;
 
-				case Keys.Enter:
+                case Keys.Enter:
                     if (dgItems.CurrentRowIndex < 0)
                     {
                         dialog = DialogResult.Cancel;
+                        this.Hide();
                     }
                     else
                     {
                         dialog = DialogResult.OK;
-                        CreateDetails(dgItems.CurrentRowIndex);
+                        if (CreateDetails(dgItems.CurrentRowIndex))
+                        { this.Hide(); }
                     }
-					this.Hide();
-					break;
-				
-				case Keys.Up:
-					dt = (System.Data.DataTable) dgItems.DataSource;
-					if (dgItems.CurrentRowIndex > 0) 
-					{
-						index = dgItems.CurrentRowIndex;				
-						dgItems.CurrentRowIndex -= 1;
-						dgItems.Select(dgItems.CurrentRowIndex);
-						dgItems.UnSelect(index);
-					}
-					break;
 
-				case Keys.Down:
-					dt = (System.Data.DataTable) dgItems.DataSource;
-					if (dgItems.CurrentRowIndex < dt.Rows.Count-1) 
-					{
-						index = dgItems.CurrentRowIndex;				
+                    break;
 
-						dgItems.CurrentRowIndex += 1;
-						dgItems.Select(dgItems.CurrentRowIndex);
-						dgItems.UnSelect(index);
-					}
-					break;
-			}
-		}
+                case Keys.Up:
+                    dt = (System.Data.DataTable)dgItems.DataSource;
+                    if (dgItems.CurrentRowIndex > 0)
+                    {
+                        index = dgItems.CurrentRowIndex;
+                        dgItems.CurrentRowIndex -= 1;
+                        dgItems.Select(dgItems.CurrentRowIndex);
+                        dgItems.UnSelect(index);
+                    }
+                    break;
 
-		private void ResumeTransactionWnd_Resize(object sender, System.EventArgs e)
-		{
-			dgStyle.GridColumnStyles["TransactionNo"].Width = 180;
-			dgStyle.GridColumnStyles["CustomerName"].Width = 180;
-			dgStyle.GridColumnStyles["DateSuspended"].Width = this.Width - 370;
-		}
+                case Keys.Down:
+                    dt = (System.Data.DataTable)dgItems.DataSource;
+                    if (dgItems.CurrentRowIndex < dt.Rows.Count - 1)
+                    {
+                        index = dgItems.CurrentRowIndex;
 
-		private void ResumeTransactionWnd_Load(object sender, System.EventArgs e)
-		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ResumeTransaction.jpg");	}
-			catch{}
-			LoadOptions();
-			LoadData();
+                        dgItems.CurrentRowIndex += 1;
+                        dgItems.Select(dgItems.CurrentRowIndex);
+                        dgItems.UnSelect(index);
+                    }
+                    break;
+            }
+        }
+
+        private void ResumeTransactionWnd_Resize(object sender, System.EventArgs e)
+        {
+            dgStyle.GridColumnStyles["TransactionNo"].Width = 180;
+            dgStyle.GridColumnStyles["CustomerName"].Width = 180;
+            dgStyle.GridColumnStyles["DateSuspended"].Width = this.Width - 370;
+        }
+
+        private void ResumeTransactionWnd_Load(object sender, System.EventArgs e)
+        {
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ResumeTransaction.jpg"); }
+            catch { }
+            LoadOptions();
+            LoadData();
             txtSearch.Focus();
-		}
+        }
 
-		private void LoadOptions()
-		{
-			dgStyle.GridColumnStyles["TransactionNo"].Width = 200;
+        private void LoadOptions()
+        {
+            dgStyle.GridColumnStyles["TransactionNo"].Width = 200;
             dgStyle.GridColumnStyles["CustomerName"].Width = this.Width - 510;
-			dgStyle.GridColumnStyles["DateSuspended"].Width = 300;
-		}
+            dgStyle.GridColumnStyles["DateSuspended"].Width = 300;
+        }
 
-		private void LoadData()
-		{	
-			try
-			{
-				Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
+        private void LoadData()
+        {
+            try
+            {
+                Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
 
                 System.Data.DataTable dt;
-                if (mShowOneTerminalSuspendedTransactions == false) {
-                    dt = clsTransactions.ListSuspendedDataTable(Constants.TerminalBranchID, mstTerminalNo, 0, string.Empty, SortOption.Ascending, mShowOnlyPackedTransactions); 
+                if (mShowOneTerminalSuspendedTransactions == false)
+                {
+                    dt = clsTransactions.ListSuspendedDataTable(Constants.TerminalBranchID, mstTerminalNo, 0, string.Empty, SortOption.Ascending, mShowOnlyPackedTransactions);
                 }
-                else {
-                    dt = clsTransactions.ListSuspendedDataTable(Constants.TerminalBranchID, mstTerminalNo, mCashierID, string.Empty, SortOption.Ascending, mShowOnlyPackedTransactions); 
+                else
+                {
+                    dt = clsTransactions.ListSuspendedDataTable(Constants.TerminalBranchID, mstTerminalNo, mCashierID, string.Empty, SortOption.Ascending, mShowOnlyPackedTransactions);
                 }
-				clsTransactions.CommitAndDispose();
+                clsTransactions.CommitAndDispose();
 
-				dgItems.DataSource = dt;
-				dgItems.Select(0);
-				dgItems.CurrentRowIndex=0;
-			}
-			catch (IndexOutOfRangeException){}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message,"RetailPlus",MessageBoxButtons.OK,MessageBoxIcon.Error); 
-			}
-		}
+                this.dgStyle.MappingName = dt.TableName;
+                dgItems.DataSource = dt;
+                dgItems.Select(0);
+                dgItems.CurrentRowIndex = 0;
+            }
+            catch (IndexOutOfRangeException) { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-		private void CreateDetails(int iRow)
-		{
-			try
-			{
-				mDetails = new Data.SalesTransactionDetails();
-			
-				mDetails.TransactionID = Convert.ToInt64(dgItems[iRow, 0]);
-				mDetails.TransactionNo = dgItems[iRow, 1].ToString();
-				
-				Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
+        private bool CreateDetails(int iRow)
+        {
+            try
+            {
+                bool boRetValue = false;
+
+                mDetails = new Data.SalesTransactionDetails();
+
+                mDetails.TransactionID = Convert.ToInt64(dgItems[iRow, 0]);
+                mDetails.TransactionNo = dgItems[iRow, 1].ToString();
+
+                Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
                 mDetails = clsTransactions.Details(mDetails.TransactionNo, mstTerminalNo, Constants.TerminalBranchID);
-				clsTransactions.Resume(mDetails.TransactionID);
-				
+                clsTransactions.Resume(mDetails.TransactionID);
+
                 Data.SalesTransactionItems clsItems = new Data.SalesTransactionItems(clsTransactions.Connection, clsTransactions.Transaction);
                 mDetails.TransactionItems = clsItems.Details(mDetails.TransactionID, mDetails.TransactionDate);
 
                 clsTransactions.CommitAndDispose();
-			}
-			catch(Exception ex)
-			{
-				MessageBox.Show(this, ex.Message);
-			}
-		}
 
-		private void txtSearch_TextChanged(object sender, System.EventArgs e)
-		{
-			System.Data.DataTable dt = (System.Data.DataTable) dgItems.DataSource;
+                boRetValue = true;
 
-			for(int iRow = 0;iRow < dt.Rows.Count ;iRow++) 
-			{
-				try
-				{
-					if (dgItems[iRow, 3].ToString().Substring(0, txtSearch.Text.Length).ToLower() == txtSearch.Text.ToLower())
-					{
-						dgItems.UnSelect(dgItems.CurrentRowIndex); 
-						dgItems.Select(iRow);
-						dgItems.CurrentRowIndex=iRow;
-						return;
-					}
-				}
-				catch {}
-			}
-		}
+                return boRetValue;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, System.EventArgs e)
+        {
+            System.Data.DataTable dt = (System.Data.DataTable)dgItems.DataSource;
+
+            for (int iRow = 0; iRow < dt.Rows.Count; iRow++)
+            {
+                try
+                {
+                    if (dgItems[iRow, 3].ToString().Substring(0, txtSearch.Text.Length).ToLower() == txtSearch.Text.ToLower())
+                    {
+                        dgItems.UnSelect(dgItems.CurrentRowIndex);
+                        dgItems.Select(iRow);
+                        dgItems.CurrentRowIndex = iRow;
+                        return;
+                    }
+                }
+                catch { }
+            }
+        }
 
         private void dgItems_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
@@ -533,19 +544,23 @@ namespace AceSoft.RetailPlus.Client.UI
             switch (hti.Type)
             {
                 case System.Windows.Forms.DataGrid.HitTestType.Cell:
-                    dgItems.Select(hti.Row);
-                    CreateDetails(hti.Row);
-                    dialog = DialogResult.OK;
-                    this.Hide();
-                    break;
+                    {
+                        dgItems.Select(hti.Row);
+                        if (CreateDetails(hti.Row))
+                        {
+                            dialog = DialogResult.OK;
+                            this.Hide();
+                        }
+                        break;
+                    }
             }
         }
 
-		private void txtSearch_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
-		{
-			Methods clsMethods = new Methods();
-			e.Handled = clsMethods.AllNum(Convert.ToInt32(e.KeyChar));
-		}
+        private void txtSearch_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            Methods clsMethods = new Methods();
+            e.Handled = clsMethods.AllNum(Convert.ToInt32(e.KeyChar));
+        }
 
         private void imgIcon_Click(object sender, EventArgs e)
         {
@@ -559,5 +574,5 @@ namespace AceSoft.RetailPlus.Client.UI
             SendKeys.Send(e.KeyboardKeyPressed);
         }
 
-	}
+    }
 }

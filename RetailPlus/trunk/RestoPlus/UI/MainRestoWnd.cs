@@ -4371,7 +4371,58 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 		private void ShowOtherCommands()
 		{
- 
+            if (mboIsInTransaction)
+            {
+                if (MessageBox.Show("Active Transaction Found! Suspend current transaction first?", "RetailPlus", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.OK)
+                { if (!SuspendTransaction(true)) return; }
+                else
+                    return;
+            }
+
+            OtherCommandsWnd othCmd = new OtherCommandsWnd();
+            othCmd.CashierID = mclsSalesTransactionDetails.CashierID;
+            othCmd.ShowDialog(this);
+            DialogResult reportsresult = othCmd.Result;
+            Keys KeyData = othCmd.KeyData;
+            othCmd.Close();
+            othCmd.Dispose();
+
+            switch (KeyData)
+            {
+                case Keys.F1:
+                    InitializeZRead();
+                    break;
+
+                case Keys.F2:
+                    if (mclsTerminalDetails.CashCountBeforeReport)
+					{ if (!mboIsCashCountInitialized) CashCount(); }
+					else { CashCount(); }
+					break;
+
+                case Keys.F3:
+                    PaidOut();
+                    break;
+
+                case Keys.F4:
+                    Disburse();
+                    break;
+
+                case Keys.F5:
+                    WithHold();
+                    break;
+
+                case Keys.F6:
+                    RefundTransaction();
+                    break;
+
+                case Keys.F7:
+                    ReturnItem();
+                    break;
+
+                case Keys.F8:
+                    OpenDrawer();
+                    break;
+            }
 		}
 		private void ShowPrintWindow()
 		{

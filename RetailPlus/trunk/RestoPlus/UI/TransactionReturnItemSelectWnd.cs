@@ -7,79 +7,79 @@ using MySql.Data.MySqlClient;
 
 namespace AceSoft.RetailPlus.Client.UI
 {
-	public class TransactionReturnItemSelectWnd : System.Windows.Forms.Form
-	{
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.DataGrid dgItems;
-		private System.Windows.Forms.DataGridTextBoxColumn TransactionItemsID;
-		private System.Windows.Forms.DataGridTextBoxColumn ProductID;
-		private System.Windows.Forms.DataGridTextBoxColumn ProductCode;
-		private System.Windows.Forms.DataGridTextBoxColumn BarCode;
-		private System.Windows.Forms.DataGridTextBoxColumn ProductDesc;
-		private System.Windows.Forms.DataGridTextBoxColumn ProductUnitID;
-		private System.Windows.Forms.DataGridTextBoxColumn ProductUnitCode;
-		private System.Windows.Forms.DataGridTextBoxColumn Quantity;
-		private System.Windows.Forms.DataGridTextBoxColumn Price;
-		private System.Windows.Forms.DataGridTextBoxColumn Discount;
-		private System.Windows.Forms.DataGridTextBoxColumn ItemDiscount;
-		private System.Windows.Forms.DataGridTextBoxColumn ItemDiscountType;
-		private System.Windows.Forms.DataGridTextBoxColumn Amount;
-		private System.Windows.Forms.DataGridTextBoxColumn VAT;
-		private System.Windows.Forms.DataGridTextBoxColumn EVAT;
-		private System.Windows.Forms.DataGridTextBoxColumn LocalTax;
-		private System.Windows.Forms.DataGridTextBoxColumn VariationsMatrixID;
-		private System.Windows.Forms.DataGridTextBoxColumn MatrixDescription;
-		private System.Windows.Forms.DataGridTextBoxColumn ProductGroup;
-		private System.Windows.Forms.DataGridTextBoxColumn ProductSubGroup;
-		private System.Windows.Forms.DataGridTextBoxColumn TransactionItemStatus;
-		private System.Windows.Forms.DataGridTextBoxColumn DiscountCode;
-		private System.Windows.Forms.DataGridTextBoxColumn DiscountRemarks;
-		private System.Windows.Forms.DataGridTextBoxColumn ProductPackageID;
-		private System.Windows.Forms.DataGridTextBoxColumn MatrixPackageID;
-		private System.Windows.Forms.DataGridTextBoxColumn PackageQuantity;
-		private System.Windows.Forms.DataGridTextBoxColumn PromoQuantity;
-		private System.Windows.Forms.DataGridTextBoxColumn PromoValue;
-		private System.Windows.Forms.DataGridTextBoxColumn PromoInPercent;
-		private System.Windows.Forms.DataGridTextBoxColumn PromoType;
-		private System.Windows.Forms.DataGridTextBoxColumn PromoApplied;
-		private System.Windows.Forms.DataGridTextBoxColumn PurchasePrice;
-		private System.Windows.Forms.DataGridTextBoxColumn PurchaseAmount;
+    public class TransactionReturnItemSelectWnd : System.Windows.Forms.Form
+    {
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGrid dgItems;
+        private System.Windows.Forms.DataGridTextBoxColumn TransactionItemsID;
+        private System.Windows.Forms.DataGridTextBoxColumn ProductID;
+        private System.Windows.Forms.DataGridTextBoxColumn ProductCode;
+        private System.Windows.Forms.DataGridTextBoxColumn BarCode;
+        private System.Windows.Forms.DataGridTextBoxColumn ProductDesc;
+        private System.Windows.Forms.DataGridTextBoxColumn ProductUnitID;
+        private System.Windows.Forms.DataGridTextBoxColumn ProductUnitCode;
+        private System.Windows.Forms.DataGridTextBoxColumn Quantity;
+        private System.Windows.Forms.DataGridTextBoxColumn Price;
+        private System.Windows.Forms.DataGridTextBoxColumn Discount;
+        private System.Windows.Forms.DataGridTextBoxColumn ItemDiscount;
+        private System.Windows.Forms.DataGridTextBoxColumn ItemDiscountType;
+        private System.Windows.Forms.DataGridTextBoxColumn Amount;
+        private System.Windows.Forms.DataGridTextBoxColumn VAT;
+        private System.Windows.Forms.DataGridTextBoxColumn EVAT;
+        private System.Windows.Forms.DataGridTextBoxColumn LocalTax;
+        private System.Windows.Forms.DataGridTextBoxColumn VariationsMatrixID;
+        private System.Windows.Forms.DataGridTextBoxColumn MatrixDescription;
+        private System.Windows.Forms.DataGridTextBoxColumn ProductGroup;
+        private System.Windows.Forms.DataGridTextBoxColumn ProductSubGroup;
+        private System.Windows.Forms.DataGridTextBoxColumn TransactionItemStatus;
+        private System.Windows.Forms.DataGridTextBoxColumn DiscountCode;
+        private System.Windows.Forms.DataGridTextBoxColumn DiscountRemarks;
+        private System.Windows.Forms.DataGridTextBoxColumn ProductPackageID;
+        private System.Windows.Forms.DataGridTextBoxColumn MatrixPackageID;
+        private System.Windows.Forms.DataGridTextBoxColumn PackageQuantity;
+        private System.Windows.Forms.DataGridTextBoxColumn PromoQuantity;
+        private System.Windows.Forms.DataGridTextBoxColumn PromoValue;
+        private System.Windows.Forms.DataGridTextBoxColumn PromoInPercent;
+        private System.Windows.Forms.DataGridTextBoxColumn PromoType;
+        private System.Windows.Forms.DataGridTextBoxColumn PromoApplied;
+        private System.Windows.Forms.DataGridTextBoxColumn PurchasePrice;
+        private System.Windows.Forms.DataGridTextBoxColumn PurchaseAmount;
 
-		private System.Windows.Forms.DataGridTableStyle dgStyle;
-		private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.DataGridTableStyle dgStyle;
+        private System.Windows.Forms.TextBox txtSearch;
 
-		private DialogResult dialog;
-		private SalesTransactionItemDetails mDetails;
-		private string mstTransactionNo;
-		private System.Windows.Forms.PictureBox imgIcon;
-        private AceSoft.KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
+        private DialogResult dialog;
+        private SalesTransactionItemDetails mDetails;
+        private string mstTransactionNo;
+        private System.Windows.Forms.PictureBox imgIcon;
+        private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
 
-		private System.ComponentModel.Container components = null;
+        private System.ComponentModel.Container components = null;
 
-		public TransactionReturnItemSelectWnd()
-		{
-			InitializeComponent();
-		}
+        public TransactionReturnItemSelectWnd()
+        {
+            InitializeComponent();
+        }
 
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        #region Windows Form Designer generated code
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dgItems = new System.Windows.Forms.DataGrid();
@@ -161,7 +161,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgItems.HeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
             this.dgItems.HeaderFont = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dgItems.HeaderForeColor = System.Drawing.Color.White;
-            this.dgItems.Location = new System.Drawing.Point(0, 198);
+            this.dgItems.Location = new System.Drawing.Point(0, 196);
             this.dgItems.Name = "dgItems";
             this.dgItems.PreferredRowHeight = 50;
             this.dgItems.ReadOnly = true;
@@ -169,7 +169,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgItems.RowHeaderWidth = 7;
             this.dgItems.SelectionBackColor = System.Drawing.Color.RoyalBlue;
             this.dgItems.SelectionForeColor = System.Drawing.Color.White;
-            this.dgItems.Size = new System.Drawing.Size(802, 422);
+            this.dgItems.Size = new System.Drawing.Size(1022, 570);
             this.dgItems.TabIndex = 5;
             this.dgItems.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
             this.dgStyle});
@@ -540,19 +540,18 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.keyboardSearchControl1.BackColor = System.Drawing.Color.White;
             this.keyboardSearchControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.keyboardSearchControl1.Location = new System.Drawing.Point(0, 64);
+            this.keyboardSearchControl1.Location = new System.Drawing.Point(0, 62);
             this.keyboardSearchControl1.Name = "keyboardSearchControl1";
-            this.keyboardSearchControl1.Size = new System.Drawing.Size(802, 134);
-            this.keyboardSearchControl1.TabIndex = 1;
+            this.keyboardSearchControl1.Size = new System.Drawing.Size(1022, 134);
+            this.keyboardSearchControl1.TabIndex = 51;
             this.keyboardSearchControl1.TabStop = false;
             this.keyboardSearchControl1.Tag = "";
-            this.keyboardSearchControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardSearchControl1_UserKeyPressed);
             // 
             // TransactionReturnItemSelectWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(802, 620);
+            this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
             this.Controls.Add(this.keyboardSearchControl1);
             this.Controls.Add(this.dgItems);
@@ -567,39 +566,39 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.TransactionReturnItemSelectWnd_Load);
-            this.Resize += new System.EventHandler(this.TransactionReturnItemSelectWnd_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TransactionReturnItemSelectWnd_KeyDown);
+            this.Resize += new System.EventHandler(this.TransactionReturnItemSelectWnd_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
+        }
+        #endregion
 
-		public DialogResult Result
-		{
-			get 
-			{
-				return dialog;
-			}
-		}
+        public DialogResult Result
+        {
+            get
+            {
+                return dialog;
+            }
+        }
 
-		public SalesTransactionItemDetails Details
-		{
-			get 
-			{
-				return mDetails;
-			}
-		}
+        public SalesTransactionItemDetails Details
+        {
+            get
+            {
+                return mDetails;
+            }
+        }
 
-		public string TransactionNo
-		{
-			set 
-			{
-				mstTransactionNo = value;
-			}
-		}
+        public string TransactionNo
+        {
+            set
+            {
+                mstTransactionNo = value;
+            }
+        }
 
         private string mstTerminalNo;
         public string TerminalNo
@@ -607,250 +606,251 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mstTerminalNo = value; }
         }
 
-		private void TransactionReturnItemSelectWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			System.Data.DataTable dt;
-			int index;
+        private void TransactionReturnItemSelectWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            System.Data.DataTable dt;
+            int index;
 
-			switch (e.KeyData)
-			{
-				case Keys.Escape:
-					dialog = DialogResult.Cancel;
-					this.Hide(); 
-					break;
+            switch (e.KeyData)
+            {
+                case Keys.Escape:
+                    dialog = DialogResult.Cancel;
+                    this.Hide();
+                    break;
 
-				case Keys.Enter:
+                case Keys.Enter:
                     CreateDetails(dgItems.CurrentRowIndex);
-					dialog = DialogResult.OK;
-					this.Hide();
-					break;
-				
-				case Keys.Up:
-					dt = (System.Data.DataTable) dgItems.DataSource;
-					if (dgItems.CurrentRowIndex > 0) 
-					{
-						index = dgItems.CurrentRowIndex;				
-						dgItems.CurrentRowIndex -= 1;
-						dgItems.Select(dgItems.CurrentRowIndex);
-						dgItems.UnSelect(index);
-					}
-					break;
+                    dialog = DialogResult.OK;
+                    this.Hide();
+                    break;
 
-				case Keys.Down:
-					dt = (System.Data.DataTable) dgItems.DataSource;
-					if (dgItems.CurrentRowIndex < dt.Rows.Count-1) 
-					{
-						index = dgItems.CurrentRowIndex;				
+                case Keys.Up:
+                    dt = (System.Data.DataTable)dgItems.DataSource;
+                    if (dgItems.CurrentRowIndex > 0)
+                    {
+                        index = dgItems.CurrentRowIndex;
+                        dgItems.CurrentRowIndex -= 1;
+                        dgItems.Select(dgItems.CurrentRowIndex);
+                        dgItems.UnSelect(index);
+                    }
+                    break;
 
-						dgItems.CurrentRowIndex += 1;
-						dgItems.Select(dgItems.CurrentRowIndex);
-						dgItems.UnSelect(index);
-					}
-					break;
-			}
-		}
+                case Keys.Down:
+                    dt = (System.Data.DataTable)dgItems.DataSource;
+                    if (dgItems.CurrentRowIndex < dt.Rows.Count - 1)
+                    {
+                        index = dgItems.CurrentRowIndex;
+
+                        dgItems.CurrentRowIndex += 1;
+                        dgItems.Select(dgItems.CurrentRowIndex);
+                        dgItems.UnSelect(index);
+                    }
+                    break;
+            }
+        }
 
         private void CreateDetails(int iRow)
-		{
-			try
-			{
-				mDetails = new Data.SalesTransactionItemDetails();
+        {
+            try
+            {
+                mDetails = new Data.SalesTransactionItemDetails();
 
-				mDetails.TransactionItemsID = Convert.ToInt64(dgItems[iRow, 0]);
-				mDetails.ProductID = Convert.ToInt64(dgItems[iRow, 1]);
-				mDetails.ProductCode = dgItems[iRow, 2].ToString();
-				mDetails.BarCode = dgItems[iRow, 3].ToString();
-				mDetails.Description = dgItems[iRow, 4].ToString();
-				mDetails.ProductUnitID = Convert.ToInt32(dgItems[iRow, 5].ToString());
-				mDetails.ProductUnitCode = dgItems[iRow, 6].ToString();
-				mDetails.Quantity = Convert.ToDecimal(dgItems[iRow, 7].ToString());
-				mDetails.Price = Convert.ToDecimal(dgItems[iRow, 8].ToString());
-				mDetails.Discount = Convert.ToDecimal(dgItems[iRow, 9].ToString());
-				mDetails.ItemDiscount = Convert.ToDecimal(dgItems[iRow, 10].ToString());
-				mDetails.ItemDiscountType = (DiscountTypes) Enum.Parse(typeof(DiscountTypes), dgItems[iRow, 11].ToString());
-				mDetails.Amount = Convert.ToDecimal(dgItems[iRow, 12].ToString());
-				mDetails.VAT = Convert.ToDecimal(dgItems[iRow, 13].ToString());
-				mDetails.EVAT = Convert.ToDecimal(dgItems[iRow, 14].ToString());
-				mDetails.LocalTax = Convert.ToDecimal(dgItems[iRow, 15].ToString());
-				mDetails.VariationsMatrixID = Convert.ToInt64(dgItems[iRow, 16]);
-				mDetails.MatrixDescription = dgItems[iRow, 17].ToString();
-				mDetails.ProductGroup = dgItems[iRow, 18].ToString();
-				mDetails.ProductSubGroup = dgItems[iRow, 19].ToString();
-				mDetails.TransactionItemStatus = (TransactionItemStatus) Enum.Parse(typeof (TransactionItemStatus), dgItems[iRow, 20].ToString());
-				mDetails.DiscountCode = dgItems[iRow, 21].ToString();
-				mDetails.DiscountRemarks = dgItems[iRow, 22].ToString();
-				mDetails.ProductPackageID = Convert.ToInt64(dgItems[iRow, 23]);
-				mDetails.MatrixPackageID = Convert.ToInt64(dgItems[iRow, 24]);
-				mDetails.PackageQuantity = Convert.ToDecimal(dgItems[iRow, 25]);
-				mDetails.PromoQuantity = Convert.ToDecimal(dgItems[iRow, 26]);
-				mDetails.PromoValue = Convert.ToDecimal(dgItems[iRow, 27]);
-				mDetails.PromoInPercent = Convert.ToBoolean(dgItems[iRow, 28]);
-				mDetails.PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), dgItems[iRow, 29].ToString());
-				mDetails.PromoApplied = Convert.ToDecimal(dgItems[iRow, 30]);
-				mDetails.PurchasePrice = Convert.ToDecimal(dgItems[iRow, 31]);
-				mDetails.PurchaseAmount = Convert.ToDecimal(dgItems[iRow, 32]);
-			}
-			catch (Exception ex) {
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("Application error. TRACE: " + ex.Message);
-				clsEvent.AddEventLn("SOURCE: " + ex.Source, false);
-				clsEvent.AddEventLn("STACK TRACE: " + ex.StackTrace, false);
-				throw ex;
-			}
-		}
+                mDetails.TransactionItemsID = Convert.ToInt64(dgItems[iRow, 0]);
+                mDetails.ProductID = Convert.ToInt64(dgItems[iRow, 1]);
+                mDetails.ProductCode = dgItems[iRow, 2].ToString();
+                mDetails.BarCode = dgItems[iRow, 3].ToString();
+                mDetails.Description = dgItems[iRow, 4].ToString();
+                mDetails.ProductUnitID = Convert.ToInt32(dgItems[iRow, 5].ToString());
+                mDetails.ProductUnitCode = dgItems[iRow, 6].ToString();
+                mDetails.Quantity = Convert.ToDecimal(dgItems[iRow, 7].ToString());
+                mDetails.Price = Convert.ToDecimal(dgItems[iRow, 8].ToString());
+                mDetails.Discount = Convert.ToDecimal(dgItems[iRow, 9].ToString());
+                mDetails.ItemDiscount = Convert.ToDecimal(dgItems[iRow, 10].ToString());
+                mDetails.ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dgItems[iRow, 11].ToString());
+                mDetails.Amount = Convert.ToDecimal(dgItems[iRow, 12].ToString());
+                mDetails.VAT = Convert.ToDecimal(dgItems[iRow, 13].ToString());
+                mDetails.EVAT = Convert.ToDecimal(dgItems[iRow, 14].ToString());
+                mDetails.LocalTax = Convert.ToDecimal(dgItems[iRow, 15].ToString());
+                mDetails.VariationsMatrixID = Convert.ToInt64(dgItems[iRow, 16]);
+                mDetails.MatrixDescription = dgItems[iRow, 17].ToString();
+                mDetails.ProductGroup = dgItems[iRow, 18].ToString();
+                mDetails.ProductSubGroup = dgItems[iRow, 19].ToString();
+                mDetails.TransactionItemStatus = (TransactionItemStatus)Enum.Parse(typeof(TransactionItemStatus), dgItems[iRow, 20].ToString());
+                mDetails.DiscountCode = dgItems[iRow, 21].ToString();
+                mDetails.DiscountRemarks = dgItems[iRow, 22].ToString();
+                mDetails.ProductPackageID = Convert.ToInt64(dgItems[iRow, 23]);
+                mDetails.MatrixPackageID = Convert.ToInt64(dgItems[iRow, 24]);
+                mDetails.PackageQuantity = Convert.ToDecimal(dgItems[iRow, 25]);
+                mDetails.PromoQuantity = Convert.ToDecimal(dgItems[iRow, 26]);
+                mDetails.PromoValue = Convert.ToDecimal(dgItems[iRow, 27]);
+                mDetails.PromoInPercent = Convert.ToBoolean(dgItems[iRow, 28].ToString());
+                mDetails.PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dgItems[iRow, 29].ToString());
+                mDetails.PromoApplied = Convert.ToDecimal(dgItems[iRow, 30]);
+                mDetails.PurchasePrice = Convert.ToDecimal(dgItems[iRow, 31]);
+                mDetails.PurchaseAmount = Convert.ToDecimal(dgItems[iRow, 32]);
+            }
+            catch (Exception ex)
+            {
+                Event clsEvent = new Event();
+                clsEvent.AddEventLn("Application error. TRACE: " + ex.Message);
+                clsEvent.AddEventLn("SOURCE: " + ex.Source, false);
+                clsEvent.AddEventLn("STACK TRACE: " + ex.StackTrace, false);
+                throw ex;
+            }
+        }
 
-		private void TransactionReturnItemSelectWnd_Load(object sender, System.EventArgs e)
-		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/TransactionItemSelect.jpg");	}
-			catch{}
+        private void TransactionReturnItemSelectWnd_Load(object sender, System.EventArgs e)
+        {
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/TransactionItemSelect.jpg"); }
+            catch { }
 
-			LoadOptions();
-			LoadItemData();
-		}
+            LoadOptions();
+            LoadItemData();
+        }
 
-		private void LoadOptions()
-		{
-			dgStyle.GridColumnStyles["ProductCode"].Width = 180;
-			dgStyle.GridColumnStyles["BarCode"].Width = 180;
-			dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 370;
-		}
+        private void LoadOptions()
+        {
+            dgStyle.GridColumnStyles["ProductCode"].Width = 180;
+            dgStyle.GridColumnStyles["BarCode"].Width = 180;
+            dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 370;
+        }
 
-		private void LoadItemData()
-		{	
-			try
-			{
-				
-				System.Data.DataTable dt = new System.Data.DataTable("tblproducts");
+        private void LoadItemData()
+        {
+            try
+            {
 
-				dt.Columns.Add("TransactionItemsID");
-				dt.Columns.Add("ProductID");
-				dt.Columns.Add("ProductCode");
-				dt.Columns.Add("BarCode");
-				dt.Columns.Add("ProductDesc");
-				dt.Columns.Add("ProductUnitID");
-				dt.Columns.Add("ProductUnitCode");
-				dt.Columns.Add("Quantity");
-				dt.Columns.Add("Price");
-				dt.Columns.Add("Discount");
-				dt.Columns.Add("ItemDiscount");
-				dt.Columns.Add("ItemDiscountType");
-				dt.Columns.Add("Amount");
-				dt.Columns.Add("VAT");
-				dt.Columns.Add("EVAT");
-				dt.Columns.Add("LocalTax");
-				dt.Columns.Add("VariationsMatrixID");
-				dt.Columns.Add("MatrixDescription");
-				dt.Columns.Add("ProductGroup");
-				dt.Columns.Add("ProductSubGroup");
-				dt.Columns.Add("TransactionItemStatus");
-				dt.Columns.Add("DiscountCode");
-				dt.Columns.Add("DiscountRemarks");
-				dt.Columns.Add("ProductPackageID");
-				dt.Columns.Add("MatrixPackageID");
-				dt.Columns.Add("PackageQuantity");
-				dt.Columns.Add("PromoQuantity");
-				dt.Columns.Add("PromoValue");
-				dt.Columns.Add("PromoInPercent");
-				dt.Columns.Add("PromoType");
-				dt.Columns.Add("PromoApplied");
-				dt.Columns.Add("PurchasePrice");
-				dt.Columns.Add("PurchaseAmount");
-				
-				Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
+                System.Data.DataTable dt = new System.Data.DataTable("tblproducts");
+
+                dt.Columns.Add("TransactionItemsID");
+                dt.Columns.Add("ProductID");
+                dt.Columns.Add("ProductCode");
+                dt.Columns.Add("BarCode");
+                dt.Columns.Add("ProductDesc");
+                dt.Columns.Add("ProductUnitID");
+                dt.Columns.Add("ProductUnitCode");
+                dt.Columns.Add("Quantity");
+                dt.Columns.Add("Price");
+                dt.Columns.Add("Discount");
+                dt.Columns.Add("ItemDiscount");
+                dt.Columns.Add("ItemDiscountType");
+                dt.Columns.Add("Amount");
+                dt.Columns.Add("VAT");
+                dt.Columns.Add("EVAT");
+                dt.Columns.Add("LocalTax");
+                dt.Columns.Add("VariationsMatrixID");
+                dt.Columns.Add("MatrixDescription");
+                dt.Columns.Add("ProductGroup");
+                dt.Columns.Add("ProductSubGroup");
+                dt.Columns.Add("TransactionItemStatus");
+                dt.Columns.Add("DiscountCode");
+                dt.Columns.Add("DiscountRemarks");
+                dt.Columns.Add("ProductPackageID");
+                dt.Columns.Add("MatrixPackageID");
+                dt.Columns.Add("PackageQuantity");
+                dt.Columns.Add("PromoQuantity");
+                dt.Columns.Add("PromoValue");
+                dt.Columns.Add("PromoInPercent");
+                dt.Columns.Add("PromoType");
+                dt.Columns.Add("PromoApplied");
+                dt.Columns.Add("PurchasePrice");
+                dt.Columns.Add("PurchaseAmount");
+
+                Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
                 Data.SalesTransactionDetails det = clsSalesTransactions.Details(mstTransactionNo, mstTerminalNo, Constants.TerminalBranchID);
-				clsSalesTransactions.CommitAndDispose();
+                clsSalesTransactions.CommitAndDispose();
 
-				Data.SalesTransactionItems clsItems = new Data.SalesTransactionItems();
-				Data.SalesTransactionItemDetails[] TransactionItems = clsItems.Details(det.TransactionID, det.TransactionDate);
-				clsItems.CommitAndDispose();
+                Data.SalesTransactionItems clsItems = new Data.SalesTransactionItems();
+                Data.SalesTransactionItemDetails[] TransactionItems = clsItems.Details(det.TransactionID, det.TransactionDate);
+                clsItems.CommitAndDispose();
 
-				foreach (Data.SalesTransactionItemDetails item in TransactionItems)
-				{
-					if (item.TransactionItemStatus == AceSoft.RetailPlus.TransactionItemStatus.Valid)
-					{
-						System.Data.DataRow dr = dt.NewRow();
+                foreach (Data.SalesTransactionItemDetails item in TransactionItems)
+                {
+                    if (item.TransactionItemStatus == AceSoft.RetailPlus.TransactionItemStatus.Valid)
+                    {
+                        System.Data.DataRow dr = dt.NewRow();
 
-						dr["TransactionItemsID"] = item.TransactionItemsID;
-						dr["ProductID"] = item.ProductID;
-						dr["ProductCode"] = item.ProductCode;
-						dr["BarCode"] = item.BarCode;
-						dr["ProductDesc"] = item.Description;
-						dr["ProductUnitID"] = item.ProductUnitID;
-						dr["ProductUnitCode"] = item.ProductUnitCode;
-						dr["Quantity"] = item.Quantity;
-						dr["Price"] = item.Price;
-						dr["Discount"] = item.Discount;
-						dr["ItemDiscount"] = item.ItemDiscount;
-						dr["ItemDiscountType"] = item.ItemDiscountType;
-						dr["Amount"] = item.Amount;
-						dr["VAT"] = item.VAT;
-						dr["EVAT"] = item.EVAT;
-						dr["LocalTax"] = item.LocalTax;
-						dr["VariationsMatrixID"] = item.VariationsMatrixID;
-						dr["MatrixDescription"] = item.MatrixDescription;
-						dr["ProductGroup"] = item.ProductGroup;
-						dr["ProductSubGroup"] = item.ProductSubGroup;
-						dr["TransactionItemStatus"] = item.TransactionItemStatus;
-						dr["DiscountCode"] = item.DiscountCode;
-						dr["DiscountRemarks"] = item.DiscountRemarks;
-						dr["ProductPackageID"] = item.ProductPackageID;
-						dr["MatrixPackageID"] = item.MatrixPackageID;
-						dr["PackageQuantity"] = item.PackageQuantity;
-						dr["PromoQuantity"] = item.PromoQuantity;
-						dr["PromoValue"] = item.PromoValue;
-						dr["PromoInPercent"] = item.PromoInPercent;
-						dr["PromoType"] = item.PromoType;
-						dr["PromoApplied"] = item.PromoApplied;
-						dr["PurchasePrice"] = item.PurchasePrice;
-						dr["PurchaseAmount"] = item.PurchaseAmount;
+                        dr["TransactionItemsID"] = item.TransactionItemsID;
+                        dr["ProductID"] = item.ProductID;
+                        dr["ProductCode"] = item.ProductCode;
+                        dr["BarCode"] = item.BarCode;
+                        dr["ProductDesc"] = item.Description;
+                        dr["ProductUnitID"] = item.ProductUnitID;
+                        dr["ProductUnitCode"] = item.ProductUnitCode;
+                        dr["Quantity"] = item.Quantity;
+                        dr["Price"] = item.Price;
+                        dr["Discount"] = item.Discount;
+                        dr["ItemDiscount"] = item.ItemDiscount;
+                        dr["ItemDiscountType"] = item.ItemDiscountType;
+                        dr["Amount"] = item.Amount;
+                        dr["VAT"] = item.VAT;
+                        dr["EVAT"] = item.EVAT;
+                        dr["LocalTax"] = item.LocalTax;
+                        dr["VariationsMatrixID"] = item.VariationsMatrixID;
+                        dr["MatrixDescription"] = item.MatrixDescription;
+                        dr["ProductGroup"] = item.ProductGroup;
+                        dr["ProductSubGroup"] = item.ProductSubGroup;
+                        dr["TransactionItemStatus"] = item.TransactionItemStatus;
+                        dr["DiscountCode"] = item.DiscountCode;
+                        dr["DiscountRemarks"] = item.DiscountRemarks;
+                        dr["ProductPackageID"] = item.ProductPackageID;
+                        dr["MatrixPackageID"] = item.MatrixPackageID;
+                        dr["PackageQuantity"] = item.PackageQuantity;
+                        dr["PromoQuantity"] = item.PromoQuantity;
+                        dr["PromoValue"] = item.PromoValue;
+                        dr["PromoInPercent"] = item.PromoInPercent;
+                        dr["PromoType"] = item.PromoType;
+                        dr["PromoApplied"] = item.PromoApplied;
+                        dr["PurchasePrice"] = item.PurchasePrice;
+                        dr["PurchaseAmount"] = item.PurchaseAmount;
 
-						dt.Rows.Add(dr);
-					}
+                        dt.Rows.Add(dr);
+                    }
 
-				}
+                }
+                this.dgStyle.MappingName = dt.TableName;
+                dgItems.DataSource = dt;
 
-				dgItems.DataSource = dt;
-				
-				if (dgItems.VisibleRowCount > 0)
-					dgItems.Select(0);
-					dgItems.CurrentRowIndex=0;
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message,"RetailPlus",MessageBoxButtons.OK,MessageBoxIcon.Error); 
-			}
-		}
+                if (dgItems.VisibleRowCount > 0)
+                    dgItems.Select(0);
+                dgItems.CurrentRowIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-		private void TransactionReturnItemSelectWnd_Resize(object sender, System.EventArgs e)
-		{
-			dgStyle.GridColumnStyles["ProductCode"].Width = 180;
-			dgStyle.GridColumnStyles["BarCode"].Width = 180;
-			dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 370;
-		}
+        private void TransactionReturnItemSelectWnd_Resize(object sender, System.EventArgs e)
+        {
+            dgStyle.GridColumnStyles["ProductCode"].Width = 180;
+            dgStyle.GridColumnStyles["BarCode"].Width = 180;
+            dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 370;
+        }
 
-		private void txtSearch_TextChanged(object sender, System.EventArgs e)
-		{
-			System.Data.DataTable dt = (System.Data.DataTable) dgItems.DataSource;
+        private void txtSearch_TextChanged(object sender, System.EventArgs e)
+        {
+            System.Data.DataTable dt = (System.Data.DataTable)dgItems.DataSource;
 
-			for(int iRow = 0;iRow < dt.Rows.Count ;iRow++) 
-			{
-				try
-				{
-					if (dgItems[iRow, 2].ToString().Substring(0, txtSearch.Text.Length).ToLower() == txtSearch.Text.ToLower())
-					{
-						dgItems.UnSelect(dgItems.CurrentRowIndex); 
-						dgItems.Select(iRow);
-						dgItems.CurrentRowIndex=iRow;
-						return;
-					}
-				}
-				catch {}
-			}
-		}
+            for (int iRow = 0; iRow < dt.Rows.Count; iRow++)
+            {
+                try
+                {
+                    if (dgItems[iRow, 2].ToString().Substring(0, txtSearch.Text.Length).ToLower() == txtSearch.Text.ToLower())
+                    {
+                        dgItems.UnSelect(dgItems.CurrentRowIndex);
+                        dgItems.Select(iRow);
+                        dgItems.CurrentRowIndex = iRow;
+                        return;
+                    }
+                }
+                catch { }
+            }
+        }
 
         private void dgItems_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
@@ -879,5 +879,5 @@ namespace AceSoft.RetailPlus.Client.UI
             txtSearch.Focus();
             SendKeys.Send(e.KeyboardKeyPressed);
         }
-	}
+    }
 }

@@ -379,13 +379,15 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (dgItems.CurrentRowIndex < 0)
                     {
                         dialog = DialogResult.Cancel;
+                        this.Hide();
                     }
                     else
                     {
                         dialog = DialogResult.OK;
-                        CreateDetails(dgItems.CurrentRowIndex);
+                        if (CreateDetails(dgItems.CurrentRowIndex))
+                        {   this.Hide();    }
                     }
-                    this.Hide();
+                    
                     break;
 
                 case Keys.Up:
@@ -469,10 +471,12 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        private void CreateDetails(int iRow)
+        private bool CreateDetails(int iRow)
         {
             try
             {
+                bool boRetValue = false;
+
                 mDetails = new Data.SalesTransactionDetails();
 
                 mDetails.TransactionID = Convert.ToInt64(dgItems[iRow, 0]);
@@ -486,10 +490,15 @@ namespace AceSoft.RetailPlus.Client.UI
                 mDetails.TransactionItems = clsItems.Details(mDetails.TransactionID, mDetails.TransactionDate);
 
                 clsTransactions.CommitAndDispose();
+
+                boRetValue = true;
+
+                return boRetValue;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message);
+                MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 
@@ -521,11 +530,15 @@ namespace AceSoft.RetailPlus.Client.UI
             switch (hti.Type)
             {
                 case System.Windows.Forms.DataGrid.HitTestType.Cell:
-                    dgItems.Select(hti.Row);
-                    CreateDetails(hti.Row);
-                    dialog = DialogResult.OK;
-                    this.Hide();
-                    break;
+                    {
+                        dgItems.Select(hti.Row);
+                        if (CreateDetails(hti.Row))
+                        {
+                            dialog = DialogResult.OK;
+                            this.Hide();
+                        }
+                        break;
+                    }
             }
         }
 

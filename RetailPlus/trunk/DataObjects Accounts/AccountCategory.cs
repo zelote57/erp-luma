@@ -97,15 +97,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -120,11 +111,7 @@ namespace AceSoft.RetailPlus.Data
 								"AccountCategoryName		= @AccountCategoryName " +
 							"WHERE AccountCategoryID = @AccountCategoryID;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -150,14 +137,6 @@ namespace AceSoft.RetailPlus.Data
 			catch (Exception ex)
 			{
 				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -230,12 +209,8 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				string SQL =	SQLSelect() + "WHERE AccountCategoryID = @AccountCategoryID;";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -243,40 +218,30 @@ namespace AceSoft.RetailPlus.Data
 				prmAccountCategoryID.Value = AccountCategoryID;
 				cmd.Parameters.Add(prmAccountCategoryID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 				
 				AccountCategoryDetails Details = new AccountCategoryDetails();
 
-				while (myReader.Read()) 
+				foreach(System.Data.DataRow dr in dt.Rows)
 				{
 					Details.AccountCategoryID = AccountCategoryID;
-					Details.AccountCategoryCode = "" + myReader["AccountCategoryCode"].ToString();
-					Details.AccountCategoryName = "" + myReader["AccountCategoryName"].ToString();
-					Details.AccountSummaryID = myReader.GetInt32("AccountSummaryID");
-					Details.AccountSummaryCode = "" + myReader["AccountSummaryCode"].ToString();
-					Details.AccountSummaryName = "" + myReader["AccountSummaryName"].ToString();
-                    Details.AccountClassificationID = myReader.GetInt16("AccountClassificationID");
-                    Details.AccountClassificationCode = "" + myReader["AccountClassificationCode"].ToString();
-                    Details.AccountClassificationName = "" + myReader["AccountClassificationName"].ToString();
-                    Details.AccountClassificationType = (AccountClassificationType)Enum.Parse(typeof(AccountClassificationType), myReader.GetString("AccountClassificationType"));
+					Details.AccountCategoryCode = "" + dr["AccountCategoryCode"].ToString();
+					Details.AccountCategoryName = "" + dr["AccountCategoryName"].ToString();
+					Details.AccountSummaryID = Int32.Parse(dr["AccountSummaryID"].ToString());
+					Details.AccountSummaryCode = "" + dr["AccountSummaryCode"].ToString();
+					Details.AccountSummaryName = "" + dr["AccountSummaryName"].ToString();
+                    Details.AccountClassificationID = Int16.Parse(dr["AccountClassificationID"].ToString());
+                    Details.AccountClassificationCode = "" + dr["AccountClassificationCode"].ToString();
+                    Details.AccountClassificationName = "" + dr["AccountClassificationName"].ToString();
+                    Details.AccountClassificationType = (AccountClassificationType)Enum.Parse(typeof(AccountClassificationType), dr["AccountClassificationType"].ToString());
 				}
-
-				myReader.Close();
 
 				return Details;
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -297,11 +262,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -311,15 +272,6 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -334,11 +286,7 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -352,15 +300,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -382,11 +321,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -400,15 +335,6 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}		

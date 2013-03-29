@@ -87,15 +87,7 @@ namespace AceSoft.RetailPlus
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-                throw ex;
+                throw ThrowException(ex);
             }
         }
 
@@ -113,15 +105,7 @@ namespace AceSoft.RetailPlus
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-                throw ex;
+                throw ThrowException(ex);
             }
         }
         public int ExecuteNonQuery(MySqlCommand cmd)
@@ -136,15 +120,7 @@ namespace AceSoft.RetailPlus
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-                throw ex;
+                throw ThrowException(ex);
             }
         }
 
@@ -159,15 +135,7 @@ namespace AceSoft.RetailPlus
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-                throw ex;
+                throw ThrowException(ex);
             }
         }
 
@@ -180,16 +148,26 @@ namespace AceSoft.RetailPlus
             }
             catch (Exception ex)
             {
-                TransactionFailed = true;
-                if (IsInTransaction)
-                {
-                    mTransaction.Rollback();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
-                throw ex;
+                throw ThrowException(ex);
             }
+        }
+
+        public Exception ThrowException(Exception ex)
+        {
+            TransactionFailed = true;
+            //if (IsInTransaction)
+            //{
+            //    mTransaction.Rollback();
+            //    mTransaction.Dispose();
+            //}
+            if (mConnection.State == System.Data.ConnectionState.Open)
+            {
+                mTransaction.Rollback();
+                mTransaction.Dispose();
+                mConnection.Close();
+                mConnection.Dispose();
+            }
+            throw ex;
         }
     }
 }

@@ -58,11 +58,7 @@ namespace AceSoft.RetailPlus.Data
 				string SQL = "INSERT INTO tblBranch (BranchCode, BranchName, DBIP, DBPort, Address, Remarks) " +
 					"VALUES (@BranchCode, @BranchName, @DBIP, @DBPort, @Address, @Remarks);";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -325,11 +321,7 @@ namespace AceSoft.RetailPlus.Data
                             "FROM tblBranch " +
                             "WHERE BranchCode = @BranchCode;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -357,15 +349,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -373,128 +356,6 @@ namespace AceSoft.RetailPlus.Data
 		#endregion
 
 		#region Streams
-
-        //public System.Data.DataTable DataList(string SortField, SortOption SortOrder)
-        //{
-        //    string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-        //    if (SortOrder == SortOption.Ascending)
-        //        SQL += " ASC";
-        //    else
-        //        SQL += " DESC";
-
-        //    
-
-        //    MySqlCommand cmd = new MySqlCommand();
-        //    
-        //    
-        //    cmd.CommandType = System.Data.CommandType.Text;
-        //    cmd.CommandText = SQL;
-
-        //    System.Data.DataTable dt = new System.Data.DataTable("tblBranch");
-        //    base.MySqlDataAdapterFill(cmd, dt);
-        //    
-
-        //    return dt;
-        //}
-		
-        //public MySqlDataReader List(string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = "SELECT " +
-        //            "BranchID, " +
-        //            "BranchCode, " +
-        //            "BranchName, " + 
-        //            "DBIP, " +
-        //            "DBPort, " +
-        //            "Address, " +
-        //            "Remarks " +
-        //            "FROM tblBranch " +
-        //            "ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        
-				
-        //        return base.ExecuteReader(cmd);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
-		
-        //public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = "SELECT " +
-        //                        "BranchID, " +
-        //                        "BranchCode, " +
-        //                        "BranchName, " + 
-        //                        "DBIP, " +
-        //                        "DBPort, " +
-        //                        "Address, " +
-        //                        "Remarks " +
-        //                    "FROM tblBranch " +
-        //                    "WHERE BranchName LIKE @SearchKey ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-        //        prmSearchKey.Value = "%" + SearchKey + "%";
-        //        cmd.Parameters.Add(prmSearchKey);
-
-        //        
-				
-        //        return base.ExecuteReader(cmd);			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
 
         public System.Data.DataTable ListAsDataTable(string SortField = "BranchCode", SortOption SortOrder=SortOption.Ascending)
         {
@@ -523,11 +384,7 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            
-
             MySqlCommand cmd = new MySqlCommand();
-            
-            
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
@@ -535,7 +392,6 @@ namespace AceSoft.RetailPlus.Data
 
             System.Data.DataTable dt = new System.Data.DataTable("tblBranch");
             base.MySqlDataAdapterFill(cmd, dt);
-            
 
             return dt;
         }

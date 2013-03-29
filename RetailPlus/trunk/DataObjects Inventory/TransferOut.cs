@@ -607,7 +607,7 @@ namespace AceSoft.RetailPlus.Data
                 /*******************************************
                  * Update Vendor Account
                  * ****************************************/
-                SubtractItemFromInvneotry(TransferOutID);
+                SubtractItemFromInventory(TransferOutID);
 
                 /*******************************************
 				 * Update Account Balance
@@ -668,7 +668,7 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        private void SubtractItemFromInvneotry(long TransferOutID)
+        private void SubtractItemFromInventory(long TransferOutID)
         {
 
             TransferOutDetails clsTransferOutDetails = Details(TransferOutID);
@@ -685,8 +685,8 @@ namespace AceSoft.RetailPlus.Data
             Inventory clsInventory = new Inventory(base.Connection, base.Transaction);
             InventoryDetails clsInventoryDetails;
 
-            MatrixPackagePriceHistoryDetails clsMatrixPackagePriceHistoryDetails;
-            ProductPackagePriceHistoryDetails clsProductPackagePriceHistoryDetails;
+            //MatrixPackagePriceHistoryDetails clsMatrixPackagePriceHistoryDetails;
+            //ProductPackagePriceHistoryDetails clsProductPackagePriceHistoryDetails;
 
             System.Data.DataTable dt = clsTransferOutItem.ListAsDataTable(TransferOutID, "TransferOutItemID", SortOption.Ascending);
 
@@ -705,41 +705,41 @@ namespace AceSoft.RetailPlus.Data
                 decimal decItemCost = decimal.Parse(dr["Amount"].ToString());
                 decimal decVAT = decimal.Parse(dr["VAT"].ToString());
 
-                /*******************************************
-				 * Add in the Purchase Price History
-				 * ****************************************/
-                if (lngVariationMatrixID != 0)
-                {
-                    // Update MatrixPackagePriceHistory first to get the history
-                    clsMatrixPackagePriceHistoryDetails = new MatrixPackagePriceHistoryDetails();
-                    clsMatrixPackagePriceHistoryDetails.UID = clsTransferOutDetails.TransferrerID;
-                    clsMatrixPackagePriceHistoryDetails.PackageID = clsMatrixPackage.GetPackageID(lngVariationMatrixID, intProductUnitID);
-                    clsMatrixPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
-                    clsMatrixPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
-                    clsMatrixPackagePriceHistoryDetails.Price = -1;
-                    clsMatrixPackagePriceHistoryDetails.VAT = -1;
-                    clsMatrixPackagePriceHistoryDetails.EVAT = -1;
-                    clsMatrixPackagePriceHistoryDetails.LocalTax = -1;
-                    clsMatrixPackagePriceHistoryDetails.Remarks = "Based on TransferOut #: " + clsTransferOutDetails.TransferOutNo;
-                    MatrixPackagePriceHistory clsMatrixPackagePriceHistory = new MatrixPackagePriceHistory(base.Connection, base.Transaction);
-                    clsMatrixPackagePriceHistory.Insert(clsMatrixPackagePriceHistoryDetails);
-                }
-                else
-                {
-                    // Update ProductPackagePriceHistory first to get the history
-                    clsProductPackagePriceHistoryDetails = new ProductPackagePriceHistoryDetails();
-                    clsProductPackagePriceHistoryDetails.UID = clsTransferOutDetails.TransferrerID;
-                    clsProductPackagePriceHistoryDetails.PackageID = clsProductPackage.GetPackageID(lngProductID, intProductUnitID);
-                    clsProductPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
-                    clsProductPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
-                    clsProductPackagePriceHistoryDetails.Price = -1;
-                    clsProductPackagePriceHistoryDetails.VAT = -1;
-                    clsProductPackagePriceHistoryDetails.EVAT = -1;
-                    clsProductPackagePriceHistoryDetails.LocalTax = -1;
-                    clsProductPackagePriceHistoryDetails.Remarks = "Based on TransferOut #: " + clsTransferOutDetails.TransferOutNo;
-                    ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
-                    clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
-                }
+                ///*******************************************
+                // * Add in the Purchase Price History
+                // * ****************************************/
+                //if (lngVariationMatrixID != 0)
+                //{
+                //    // Update MatrixPackagePriceHistory first to get the history
+                //    clsMatrixPackagePriceHistoryDetails = new MatrixPackagePriceHistoryDetails();
+                //    clsMatrixPackagePriceHistoryDetails.UID = clsTransferOutDetails.TransferrerID;
+                //    clsMatrixPackagePriceHistoryDetails.PackageID = clsMatrixPackage.GetPackageID(lngVariationMatrixID, intProductUnitID);
+                //    clsMatrixPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
+                //    clsMatrixPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
+                //    clsMatrixPackagePriceHistoryDetails.Price = -1;
+                //    clsMatrixPackagePriceHistoryDetails.VAT = -1;
+                //    clsMatrixPackagePriceHistoryDetails.EVAT = -1;
+                //    clsMatrixPackagePriceHistoryDetails.LocalTax = -1;
+                //    clsMatrixPackagePriceHistoryDetails.Remarks = "Based on TransferOut #: " + clsTransferOutDetails.TransferOutNo;
+                //    MatrixPackagePriceHistory clsMatrixPackagePriceHistory = new MatrixPackagePriceHistory(base.Connection, base.Transaction);
+                //    clsMatrixPackagePriceHistory.Insert(clsMatrixPackagePriceHistoryDetails);
+                //}
+                //else
+                //{
+                //    // Update ProductPackagePriceHistory first to get the history
+                //    clsProductPackagePriceHistoryDetails = new ProductPackagePriceHistoryDetails();
+                //    clsProductPackagePriceHistoryDetails.UID = clsTransferOutDetails.TransferrerID;
+                //    clsProductPackagePriceHistoryDetails.PackageID = clsProductPackage.GetPackageID(lngProductID, intProductUnitID);
+                //    clsProductPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
+                //    clsProductPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
+                //    clsProductPackagePriceHistoryDetails.Price = -1;
+                //    clsProductPackagePriceHistoryDetails.VAT = -1;
+                //    clsProductPackagePriceHistoryDetails.EVAT = -1;
+                //    clsProductPackagePriceHistoryDetails.LocalTax = -1;
+                //    clsProductPackagePriceHistoryDetails.Remarks = "Based on TransferOut #: " + clsTransferOutDetails.TransferOutNo;
+                //    ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
+                //    clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
+                //}
 
                 /*******************************************
                  * Add to Inventory

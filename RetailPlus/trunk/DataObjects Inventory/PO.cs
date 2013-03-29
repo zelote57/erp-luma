@@ -737,17 +737,19 @@ namespace AceSoft.RetailPlus.Data
                 decimal decItemQuantity = Convert.ToDecimal(dr["Quantity"]); // myReader.GetDecimal("Quantity");
                 decimal decQuantity = clsProductUnit.GetBaseUnitValue(lngProductID, intProductUnitID, decItemQuantity);
 
-                long lngVariationMatrixID = Convert.ToInt64(dr["ProductID"]); // myReader.GetInt64("VariationMatrixID");
-                string strMatrixDescription = dr["ProductID"].ToString(); //  "" + myReader["MatrixDescription"].ToString();
+                long lngVariationMatrixID = Convert.ToInt64(dr["VariationMatrixID"]); // myReader.GetInt64("VariationMatrixID");
+                string strMatrixDescription = dr["MatrixDescription"].ToString(); //  "" + myReader["MatrixDescription"].ToString();
                 string strProductCode = dr["ProductCode"].ToString(); // "" + myReader["ProductCode"].ToString();
                 string strProductUnitCode = dr["ProductUnitCode"].ToString(); // "" + myReader["ProductUnitCode"].ToString();
                 decimal decUnitCost = Convert.ToDecimal(dr["UnitCost"]); // myReader.GetDecimal("UnitCost");
                 decimal decItemCost = Convert.ToDecimal(dr["Amount"]); // myReader.GetDecimal("Amount");
+                decimal decSellingPrice = Convert.ToDecimal(dr["SellingPrice"]);
                 decimal decVAT = Convert.ToDecimal(dr["VAT"]); // myReader.GetDecimal("VAT");
-
+                decimal decEVAT = Convert.ToDecimal(dr["EVAT"]);
+                decimal decLocalTax = Convert.ToDecimal(dr["LocalTax"]); 
 
                 /*******************************************
-				 * Add in the Purchase Price History
+				 * Add in the Price History
 				 * ****************************************/
                 if (lngVariationMatrixID != 0)
                 {
@@ -757,10 +759,10 @@ namespace AceSoft.RetailPlus.Data
                     clsMatrixPackagePriceHistoryDetails.PackageID = clsMatrixPackage.GetPackageID(lngVariationMatrixID, intProductUnitID);
                     clsMatrixPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
                     clsMatrixPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
-                    clsMatrixPackagePriceHistoryDetails.Price = -1;
-                    clsMatrixPackagePriceHistoryDetails.VAT = -1;
-                    clsMatrixPackagePriceHistoryDetails.EVAT = -1;
-                    clsMatrixPackagePriceHistoryDetails.LocalTax = -1;
+                    clsMatrixPackagePriceHistoryDetails.Price = decSellingPrice;
+                    clsMatrixPackagePriceHistoryDetails.VAT = decVAT;
+                    clsMatrixPackagePriceHistoryDetails.EVAT = decEVAT;
+                    clsMatrixPackagePriceHistoryDetails.LocalTax = decLocalTax;
                     clsMatrixPackagePriceHistoryDetails.Remarks = "Based on PO #: " + clsPODetails.PONo;
                     MatrixPackagePriceHistory clsMatrixPackagePriceHistory = new MatrixPackagePriceHistory(base.Connection, base.Transaction);
                     clsMatrixPackagePriceHistory.Insert(clsMatrixPackagePriceHistoryDetails);
@@ -772,10 +774,10 @@ namespace AceSoft.RetailPlus.Data
                     clsProductPackagePriceHistoryDetails.PackageID = clsProductPackage.GetPackageID(lngProductID, intProductUnitID);
                     clsProductPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
                     clsProductPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
-                    clsProductPackagePriceHistoryDetails.Price = -1;
-                    clsProductPackagePriceHistoryDetails.VAT = -1;
-                    clsProductPackagePriceHistoryDetails.EVAT = -1;
-                    clsProductPackagePriceHistoryDetails.LocalTax = -1;
+                    clsProductPackagePriceHistoryDetails.Price = decSellingPrice;
+                    clsProductPackagePriceHistoryDetails.VAT = decVAT;
+                    clsProductPackagePriceHistoryDetails.EVAT = decEVAT;
+                    clsProductPackagePriceHistoryDetails.LocalTax = decLocalTax;
                     clsProductPackagePriceHistoryDetails.Remarks = "Based on PO #: " + clsPODetails.PONo;
                     ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
                     clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);

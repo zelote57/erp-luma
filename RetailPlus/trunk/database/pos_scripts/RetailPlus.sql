@@ -6220,4 +6220,4 @@ ALTER TABLE tblTransactions ADD PARTITION (
 /*********************************  v_4.0.0.2.sql END  *******************************************************/ 
 
 ALTER TABLE tblCreditPayment MODIFY `Remarks` VARCHAR(8000); -- 09Mar2013 put payments log in remarks
-ALTER TABLE tblProductMovement ADD `MatrixDescription` VARCHAR(100) DEFAULT '';
+ALTER TABLE tblProductMovement MODIFY `MatrixDescription` VARCHAR(100) DEFAULT '';

@@ -702,8 +702,8 @@ namespace AceSoft.RetailPlus.Data
                 decimal decItemQuantity = Convert.ToDecimal(dr["Quantity"]); // myReader.GetDecimal("Quantity");
                 decimal decQuantity = clsProductUnit.GetBaseUnitValue(lngProductID, intProductUnitID, decItemQuantity);
 
-                long lngVariationMatrixID = Convert.ToInt64(dr["ProductID"]); // myReader.GetInt64("VariationMatrixID");
-                string strMatrixDescription = dr["ProductID"].ToString(); //  "" + myReader["MatrixDescription"].ToString();
+                long lngVariationMatrixID = Convert.ToInt64(dr["VariationMatrixID"]); // myReader.GetInt64("VariationMatrixID");
+                string strMatrixDescription = dr["MatrixDescription"].ToString(); //  "" + myReader["MatrixDescription"].ToString();
                 string strProductCode = dr["ProductCode"].ToString(); // "" + myReader["ProductCode"].ToString();
                 string strProductUnitCode = dr["ProductUnitCode"].ToString(); // "" + myReader["ProductUnitCode"].ToString();
                 decimal decUnitCost = Convert.ToDecimal(dr["UnitCost"]); // myReader.GetDecimal("UnitCost");

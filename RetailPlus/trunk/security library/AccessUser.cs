@@ -216,7 +216,7 @@ namespace AceSoft.RetailPlus.Security
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -339,7 +339,7 @@ namespace AceSoft.RetailPlus.Security
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -367,7 +367,7 @@ namespace AceSoft.RetailPlus.Security
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -426,7 +426,7 @@ namespace AceSoft.RetailPlus.Security
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -516,7 +516,7 @@ namespace AceSoft.RetailPlus.Security
 		//        
 		//        
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }	
 		//}
 		public System.Data.DataTable ListAsDataTable(AccessGroupTypes clsAccessGroupTypes = AccessGroupTypes.All, string SearchKey = "", Int32 Limit = 0, Int32 UserGroupID = 0, string SortField = "UID", SortOption SortOrder = SortOption.Ascending)
@@ -576,7 +576,7 @@ namespace AceSoft.RetailPlus.Security
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -590,7 +590,7 @@ namespace AceSoft.RetailPlus.Security
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 
@@ -604,7 +604,7 @@ namespace AceSoft.RetailPlus.Security
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}	
 
@@ -647,7 +647,7 @@ namespace AceSoft.RetailPlus.Security
 		//        
 		//        
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }
 		//}
 		//public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
@@ -693,7 +693,7 @@ namespace AceSoft.RetailPlus.Security
 		//        
 		//        
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }	
 		//}
 		//public System.Data.DataTable SearchAsDataTable(string SearchKey, string SortField, SortOption SortOrder)
@@ -741,7 +741,7 @@ namespace AceSoft.RetailPlus.Security
 		//        
 		//        
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }
 		//}
 		//public MySqlDataReader Waiters(AccessGroupTypes clsAccessGroupTypes, string SearchKey = "", string SortField = "UID", SortOption SortOrder = SortOption.Ascending)
@@ -798,7 +798,7 @@ namespace AceSoft.RetailPlus.Security
 		//        
 		//        
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }
 		//}
 		//public DataTable WaitersDataTable(string SearchKey, Int32 Limit, string SortField, SortOption SortOrder)
@@ -838,7 +838,7 @@ namespace AceSoft.RetailPlus.Security
 		//            
 		//        }
 
-		//        throw ex;
+		//        throw base.ThrowException(ex);
 		//    }
 		//}				
 
@@ -881,7 +881,7 @@ namespace AceSoft.RetailPlus.Security
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		public Int64 Login(string UserName, string Password, AccessTypes accesstype, out string pstrName)
@@ -922,7 +922,7 @@ namespace AceSoft.RetailPlus.Security
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 		
@@ -956,7 +956,7 @@ namespace AceSoft.RetailPlus.Security
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -981,7 +981,7 @@ namespace AceSoft.RetailPlus.Security
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 		public void SynchronizeAccessRightsFromGroup(long UID, int GroupID)
@@ -1002,7 +1002,7 @@ namespace AceSoft.RetailPlus.Security
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}
 		}
 

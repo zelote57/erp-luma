@@ -254,7 +254,7 @@ namespace AceSoft.RetailPlus.Reports
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -318,7 +318,7 @@ namespace AceSoft.RetailPlus.Reports
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 
@@ -358,7 +358,7 @@ namespace AceSoft.RetailPlus.Reports
 
 			catch (Exception ex)
 			{
-				throw ex;
+				throw base.ThrowException(ex);
 			}	
 		}
 

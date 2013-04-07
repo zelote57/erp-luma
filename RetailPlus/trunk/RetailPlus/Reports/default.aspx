@@ -42,7 +42,7 @@
 	<BODY id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
 		<FORM id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">
             <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
-		    <%--<CTRL:ctrlProcessing id="ctrlProcessing" runat="server" ></CTRL:ctrlProcessing>--%>
+		    <CTRL:ctrlProcessing id="ctrlProcessing" runat="server" ></CTRL:ctrlProcessing>
 			<table class="ms-main" height="100%" cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<TR>
 					<TD width="100%" colspan="3">

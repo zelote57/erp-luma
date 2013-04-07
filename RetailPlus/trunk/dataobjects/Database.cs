@@ -124,7 +124,38 @@ namespace AceSoft.RetailPlus.Data
             {
                 throw base.ThrowException(ex);
             }
-        }		
+        }
+
+        public DateTime getDoubleTransaction()
+        {
+            try
+            {
+                string SQL = "SELECT TransactionNo FROM (SELECT Count(TransactionNo) TransCount, TransactionNo FROM tblTransactions GROUP BY TransactionNo) tbl WHERE TransCount >= 2;";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo", MySqlDbType.String);
+                prmTerminalNo.Value = CompanyDetails.TerminalNo;
+                cmd.Parameters.Add(prmTerminalNo);
+
+                System.Data.DataTable dt = new System.Data.DataTable("tblTerminalReport");
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                DateTime dtDateLastInitialized = DateTime.MinValue;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    dtDateLastInitialized = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                }
+
+                return dtDateLastInitialized;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }	
 	}
 }
 

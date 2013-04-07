@@ -128,16 +128,16 @@ namespace AceSoft.RetailPlus.Reports
 
 				ReceiptDetails Details = new ReceiptDetails();
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				while (myReader.Read()) 
-				{
-					Details.Module = "" + myReader["Module"].ToString();
-					Details.Text = "" + myReader["Text"].ToString();
-					Details.Value = "" + myReader["Value"].ToString();
-					Details.Orientation = (ReportFormatOrientation) Enum.Parse(typeof(ReportFormatOrientation), myReader["Orientation"].ToString());
-				}
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				myReader.Close();
+				foreach (System.Data.DataRow dr in dt.Rows)
+				{
+					Details.Module = "" + dr["Module"].ToString();
+					Details.Text = "" + dr["Text"].ToString();
+					Details.Value = "" + dr["Value"].ToString();
+					Details.Orientation = (ReportFormatOrientation) Enum.Parse(typeof(ReportFormatOrientation), dr["Orientation"].ToString());
+				}
 
 				return Details;
 			}

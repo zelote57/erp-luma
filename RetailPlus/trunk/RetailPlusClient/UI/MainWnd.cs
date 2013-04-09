@@ -94,7 +94,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private System.Windows.Forms.Timer tmr;
 		private System.Windows.Forms.Timer tmrRLC;
 
-
+        private DateTime mdteOverRidingPrintDate;
 		private bool mboIsRefund;
 		private bool mboIsItemHeaderPrinted;
 		private bool mboIsInTransaction;
@@ -2003,6 +2003,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				mboIsItemHeaderPrinted = false;
 				mboCreditCardSwiped = false;
 				mboRewardCardSwiped = false;
+                mdteOverRidingPrintDate = DateTime.MinValue;
 
 				//StartMarqueeThread();
 				Cursor.Current = Cursors.Default;
@@ -3241,6 +3242,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						grpItems.Tag = mclsSalesTransactionDetails.WaiterID.ToString();
 
 						lblTransDate.Text = mclsSalesTransactionDetails.TransactionDate.ToString("MMM. dd, yyyy hh:mm:ss tt");
+                        mdteOverRidingPrintDate = mclsSalesTransactionDetails.TransactionDate;
 
 						lblTransDiscount.Tag = mclsSalesTransactionDetails.TransDiscountType.ToString("d");
 						
@@ -9732,6 +9734,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				grpItems.Tag = mclsSalesTransactionDetails.WaiterID;
 
 				lblTransDate.Text = mclsSalesTransactionDetails.TransactionDate.ToString("MMM. dd, yyyy hh:mm:ss tt");
+                mdteOverRidingPrintDate = mclsSalesTransactionDetails.TransactionDate;
 
 				lblTransDiscount.Tag = mclsSalesTransactionDetails.TransDiscountType.ToString("d");
 
@@ -10548,8 +10551,9 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void PrintReportHeadersSection(bool IsReceipt)
 		{
-			PrintReportHeaderSection(IsReceipt, DateTime.MinValue);
+            PrintReportHeaderSection(IsReceipt, mdteOverRidingPrintDate);
 			PrintReportPageHeaderSectionChecked(IsReceipt);
+            mdteOverRidingPrintDate = DateTime.MinValue;
 		}
 		private void PrintReportHeadersSection(bool IsReceipt, DateTime OverRidingPrintDate)
 		{
@@ -11090,7 +11094,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
 
 					PrintReportHeaderSection(false, DateTime.MinValue);
-					if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID)
+                    if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID && mclsContactDetails.CreditDetails.GuarantorID != 0)
 					{ if (GetReceiptFormatParameter(ReceiptFieldFormats.InHouseGroupCreditPermitNo, false, DateTime.MinValue) != string.Empty) mstrToPrint += CenterString("BIR Permit No." + GetReceiptFormatParameter(ReceiptFieldFormats.InHouseGroupCreditPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
 					else
 					{ if (GetReceiptFormatParameter(ReceiptFieldFormats.InHouseIndividualCreditPermitNo, false, DateTime.MinValue) != string.Empty) mstrToPrint += CenterString("BIR Permit No." + GetReceiptFormatParameter(ReceiptFieldFormats.InHouseIndividualCreditPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
@@ -11099,7 +11103,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					mstrToPrint += Environment.NewLine;
 					mstrToPrint += "Transaction Date   :" + mclsSalesTransactionDetails.TransactionDate.ToString("yyyy-MM-dd").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 20) + Environment.NewLine;
 					mstrToPrint += "Transaction #      :" + mclsSalesTransactionDetails.TransactionNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 20) + Environment.NewLine;
-					if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID)
+                    if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID && mclsContactDetails.CreditDetails.GuarantorID != 0)
 					{
 						Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
 						Data.ContactDetails clsGuarantorContactDetails = clsContact.Details(mclsContactDetails.CreditDetails.GuarantorID);
@@ -11109,7 +11113,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						mstrToPrint += CenterString("Guarantor", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 					}
 					mstrToPrint += Environment.NewLine;
-					if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID)
+                    if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID && mclsContactDetails.CreditDetails.GuarantorID != 0)
 					{ mstrToPrint += CenterString("SUPER CREDIT CHARGE SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
 					else
 					{ mstrToPrint += CenterString("HP CREDIT CHARGE SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
@@ -11153,8 +11157,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn(" Printing Charge Slip: " + clsChargeSlipType .ToString("G") + ". Err Description: " + ex.Message, true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				clsEvent.AddErrorEventLn(new Exception(" Printing Charge Slip: " + clsChargeSlipType .ToString("G") + ". Err Description: " + ex.Message, ex.InnerException));
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -11252,11 +11255,13 @@ namespace AceSoft.RetailPlus.Client.UI
 				if (OverRidingPrintDate != DateTime.MinValue)
 					stRetValue = OverRidingPrintDate.ToString("MMM. dd, yyyy hh:mm:ss tt");
 				else
-					stRetValue = DateTime.Now.ToLocalTime().ToString("MMM. dd, yyyy hh:mm:ss tt");
+					stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
+                //stRetValue = DateTime.Now.ToLocalTime().ToString("MMM. dd, yyyy hh:mm:ss tt");
 			}
 			else if (stReceiptFormat == ReceiptFieldFormats.TransactionDate)
 			{
-				stRetValue = mclsSalesTransactionDetails.TransactionDate.ToLocalTime().ToString("MMM. dd, yyyy hh:mm:ss tt");
+				//stRetValue = mclsSalesTransactionDetails.TransactionDate.ToLocalTime().ToString("MMM. dd, yyyy hh:mm:ss tt");
+                stRetValue = mclsSalesTransactionDetails.TransactionDate.ToString("MMM. dd, yyyy hh:mm:ss tt");
 			}
 			else if (stReceiptFormat == ReceiptFieldFormats.Cashier)
 			{
@@ -11424,11 +11429,10 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			if (result == DialogResult.OK)
 			{
-				PrintZReadDelegate printzreadDel = new PrintZReadDelegate(PrintZRead);
-				printzreadDel.BeginInvoke(true, Details, null, null);
+                PrintZRead(true, Details);
 			}
 		}
-		private delegate void PrintZReadDelegate(bool pvtWillOpenDrawer, Data.TerminalReportDetails Details);
+		//private delegate void PrintZReadDelegate(bool pvtWillOpenDrawer, Data.TerminalReportDetails Details);
 		private void PrintZRead(bool pvtWillOpenDrawer, Data.TerminalReportDetails Details)
 		{
 			if (pvtWillOpenDrawer)
@@ -11575,13 +11579,12 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing ZRead report. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				clsEvent.AddErrorEventLn(new Exception("ERROR!!! Printing ZRead report. Err Description: " + ex.Message,ex.InnerException));
 			}
 			Cursor.Current = Cursors.Default;
 		}
 
-		private delegate void RePrintZReadDelegate(Data.TerminalReportDetails Details);
+		//private delegate void RePrintZReadDelegate(Data.TerminalReportDetails Details);
 		private void RePrintZRead(Data.TerminalReportDetails Details)
 		{
 			Cursor.Current = Cursors.WaitCursor;
@@ -11836,8 +11839,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			if (result == DialogResult.OK)
 			{
-				PrintXReadDelegate printxreadDel = new PrintXReadDelegate(PrintXRead);
-				printxreadDel.BeginInvoke(Details, null, null);
+				//PrintXReadDelegate printxreadDel = new PrintXReadDelegate(PrintXRead);
+				PrintXRead(Details);
 			}
 		}
 		private delegate void PrintXReadDelegate(Data.TerminalReportDetails Details);
@@ -12018,8 +12021,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			if (result == DialogResult.OK)
 			{
-				PrintHourlyReportDelegate hourlyreportDel = new PrintHourlyReportDelegate(PrintHourlyReport);
-				hourlyreportDel.BeginInvoke(dtHourlyReport, null, null);
+				//PrintHourlyReportDelegate hourlyreportDel = new PrintHourlyReportDelegate(PrintHourlyReport);
+				PrintHourlyReport(dtHourlyReport);
 			}
 		}
 		private delegate void PrintHourlyReportDelegate(System.Data.DataTable dtHourlyReport);
@@ -12115,8 +12118,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			if (result == DialogResult.OK)
 			{
-				PrintGroupReportDelegate groupreportDel = new PrintGroupReportDelegate(PrintGroupReport);
-				groupreportDel.BeginInvoke(dtGroupReport, clsTerminalReportDetails, null, null);
+				//PrintGroupReportDelegate groupreportDel = new PrintGroupReportDelegate(PrintGroupReport);
+				PrintGroupReport(dtGroupReport, clsTerminalReportDetails);
 			}
 		}
 
@@ -12238,8 +12241,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			if (result == DialogResult.OK)
 			{
-				PrintPLUReportDelegate plureportDel = new PrintPLUReportDelegate(PrintPLUReport);
-				plureportDel.BeginInvoke(dtpluReport, clsCashierReportDetails, clsReceiptFormatDetails, StartDate, EndDate, null, null);
+				//PrintPLUReportDelegate plureportDel = new PrintPLUReportDelegate(PrintPLUReport);
+				PrintPLUReport(dtpluReport, clsCashierReportDetails, clsReceiptFormatDetails, StartDate, EndDate);
 			}
 		}
 
@@ -12360,8 +12363,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			if (result == DialogResult.OK)
 			{
-				PrintEJournalReportDelegate ejournalreportDel = new PrintEJournalReportDelegate(PrintEJournalReport);
-				ejournalreportDel.BeginInvoke(salesDetails, null, null);
+				//PrintEJournalReportDelegate ejournalreportDel = new PrintEJournalReportDelegate(PrintEJournalReport);
+				PrintEJournalReport(salesDetails);
 			}
 		}
 
@@ -12788,8 +12791,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 				if (result == DialogResult.OK)
 				{
-					PrintTerminalReportDelegate terminalreportDel = new PrintTerminalReportDelegate(PrintTerminalReport);
-					terminalreportDel.BeginInvoke(Details, null, null);
+					//PrintTerminalReportDelegate terminalreportDel = new PrintTerminalReportDelegate(PrintTerminalReport);
+					PrintTerminalReport(Details);
 				}
 			}
 		}
@@ -13077,8 +13080,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing terminal report. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				clsEvent.AddErrorEventLn(new Exception("ERROR!!! Printing terminal report. Err Description: " + ex.Message, ex.InnerException));
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13125,8 +13127,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				if (result == DialogResult.OK)
 				{
-					PrintCashiersReportDelegate cashierreportDel = new PrintCashiersReportDelegate(PrintCashiersReport);
-					cashierreportDel.BeginInvoke(Details, null, null);
+					//PrintCashiersReportDelegate cashierreportDel = new PrintCashiersReportDelegate(PrintCashiersReport);
+					PrintCashiersReport(Details);
 				}
 			}
 
@@ -13193,10 +13195,13 @@ namespace AceSoft.RetailPlus.Client.UI
 				mstrToPrint += "Total Discounts     :" + Details.TotalDiscount.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
 
                 Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
+                mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
+
                 Data.TerminalReport clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
 				Data.TerminalReportDetails clsTerminalReportDetails = clsTerminalReport.Details(Details.TerminalNo);
 				System.Data.DataTable dt = clsSalesTransactions.Discounts(Details.TerminalNo, clsTerminalReportDetails.BeginningTransactionNo, clsTerminalReportDetails.EndingTransactionNo, Details.CashierID);
 				clsSalesTransactions.CommitAndDispose();
+
 				if (dt.Rows.Count > 0)
 				{
 					mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
@@ -13278,8 +13283,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (Exception ex)
 			{
 				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing cashier report data. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				clsEvent.AddErrorEventLn(new Exception("ERROR!!! Printing cashier report data. Err Description: " + ex.Message,ex.InnerException));
 			}
 			Cursor.Current = Cursors.Default;
 		}

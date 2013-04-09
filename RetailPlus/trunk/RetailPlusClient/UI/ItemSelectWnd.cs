@@ -605,18 +605,18 @@ namespace AceSoft.RetailPlus.Client.UI
                 //else
                 //{ dt = clsProduct.SearchDataTableSimple(Constants.TerminalBranchID, ProductListFilterType.ShowActiveAndInactive, SearchKey, 0, 0, string.Empty, 0, string.Empty, 16, mboShowItemMoreThanZeroQty, true, "ProductCode", SortOption.Ascending); }
                 if (mboShowInActiveProducts == false)
-                { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
+                { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending); }
                 else
-                { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
+                { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending); }
 
                 if (dt.Rows.Count == 0)
                 {
                     clsSearchKeys = new Data.ProductDetails();
                     clsSearchKeys.ProductCode = strSearchKey;
                     if (mboShowInActiveProducts == false)
-                    { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
+                    { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending); }
                     else
-                    { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
+                    { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending); }
 
                 }
 				clsProduct.CommitAndDispose();

@@ -46,6 +46,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private System.Windows.Forms.Timer tmr;
 		private System.Windows.Forms.Timer tmrRLC;
 
+        private DateTime mdteOverRidingPrintDate;
 		private bool mboIsRefund;
 		private bool mboIsItemHeaderPrinted;
 		private bool mboIsInTransaction;
@@ -2527,6 +2528,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mboIsItemHeaderPrinted = false;
                 mboCreditCardSwiped = false;
                 mboRewardCardSwiped = false;
+                mdteOverRidingPrintDate = DateTime.MinValue;
 
                 //StartMarqueeThread();
                 Cursor.Current = Cursors.Default;
@@ -3887,6 +3889,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         lblServedBy.Tag = mclsSalesTransactionDetails.WaiterID.ToString();
 
                         lblTransDate.Text = mclsSalesTransactionDetails.TransactionDate.ToString("MMM. dd, yyyy hh:mm:ss tt");
+                        mdteOverRidingPrintDate = mclsSalesTransactionDetails.TransactionDate;
 
                         lblTransDiscount.Tag = mclsSalesTransactionDetails.TransDiscountType.ToString("d");
 
@@ -10442,6 +10445,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 lblServedBy.Tag = mclsSalesTransactionDetails.WaiterID;
 
                 lblTransDate.Text = mclsSalesTransactionDetails.TransactionDate.ToString("MMM. dd, yyyy hh:mm:ss tt");
+                mdteOverRidingPrintDate = mclsSalesTransactionDetails.TransactionDate;
 
                 lblTransDiscount.Tag = mclsSalesTransactionDetails.TransDiscountType.ToString("d");
                 cmdPaxAdd.Visible = true; cmdPaxDeduct.Visible = true;
@@ -11248,8 +11252,9 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         private void PrintReportHeadersSection(bool IsReceipt)
         {
-            PrintReportHeaderSection(IsReceipt, DateTime.MinValue);
+            PrintReportHeaderSection(IsReceipt, mdteOverRidingPrintDate);
             PrintReportPageHeaderSectionChecked(IsReceipt);
+            mdteOverRidingPrintDate = DateTime.MinValue;
         }
         private void PrintReportHeadersSection(bool IsReceipt, DateTime OverRidingPrintDate)
         {
@@ -12124,8 +12129,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (result == DialogResult.OK)
             {
-                PrintZReadDelegate printzreadDel = new PrintZReadDelegate(PrintZRead);
-                printzreadDel.BeginInvoke(true, Details, null, null);
+                //PrintZReadDelegate printzreadDel = new PrintZReadDelegate(PrintZRead);
+                //printzreadDel.BeginInvoke(true, Details, null, null);
+                PrintZRead(true, Details);
             }
         }
         private delegate void PrintZReadDelegate(bool pvtWillOpenDrawer, Data.TerminalReportDetails Details);
@@ -12536,8 +12542,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (result == DialogResult.OK)
             {
-                PrintXReadDelegate printxreadDel = new PrintXReadDelegate(PrintXRead);
-                printxreadDel.BeginInvoke(Details, null, null);
+                //PrintXReadDelegate printxreadDel = new PrintXReadDelegate(PrintXRead);
+                //printxreadDel.BeginInvoke(Details, null, null);
+                PrintXRead(Details);
             }
         }
         private delegate void PrintXReadDelegate(Data.TerminalReportDetails Details);
@@ -12718,8 +12725,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (result == DialogResult.OK)
             {
-                PrintHourlyReportDelegate hourlyreportDel = new PrintHourlyReportDelegate(PrintHourlyReport);
-                hourlyreportDel.BeginInvoke(dtHourlyReport, null, null);
+                //PrintHourlyReportDelegate hourlyreportDel = new PrintHourlyReportDelegate(PrintHourlyReport);
+                //hourlyreportDel.BeginInvoke(dtHourlyReport, null, null);
+                PrintHourlyReport(dtHourlyReport);
             }
         }
         private delegate void PrintHourlyReportDelegate(System.Data.DataTable dtHourlyReport);
@@ -12815,8 +12823,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (result == DialogResult.OK)
             {
-                PrintGroupReportDelegate groupreportDel = new PrintGroupReportDelegate(PrintGroupReport);
-                groupreportDel.BeginInvoke(dtGroupReport, clsTerminalReportDetails, null, null);
+                //PrintGroupReportDelegate groupreportDel = new PrintGroupReportDelegate(PrintGroupReport);
+                //groupreportDel.BeginInvoke(dtGroupReport, clsTerminalReportDetails, null, null);
+                PrintGroupReport(dtGroupReport, clsTerminalReportDetails);
             }
         }
 
@@ -12938,8 +12947,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (result == DialogResult.OK)
             {
-                PrintPLUReportDelegate plureportDel = new PrintPLUReportDelegate(PrintPLUReport);
-                plureportDel.BeginInvoke(dtpluReport, clsCashierReportDetails, clsReceiptFormatDetails, StartDate, EndDate, null, null);
+                //PrintPLUReportDelegate plureportDel = new PrintPLUReportDelegate(PrintPLUReport);
+                //plureportDel.BeginInvoke(dtpluReport, clsCashierReportDetails, clsReceiptFormatDetails, StartDate, EndDate, null, null);
+                PrintPLUReport(dtpluReport, clsCashierReportDetails, clsReceiptFormatDetails, StartDate, EndDate);
             }
         }
 
@@ -13060,8 +13070,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (result == DialogResult.OK)
             {
-                PrintEJournalReportDelegate ejournalreportDel = new PrintEJournalReportDelegate(PrintEJournalReport);
-                ejournalreportDel.BeginInvoke(salesDetails, null, null);
+                //PrintEJournalReportDelegate ejournalreportDel = new PrintEJournalReportDelegate(PrintEJournalReport);
+                //ejournalreportDel.BeginInvoke(salesDetails, null, null);
+                PrintEJournalReport(salesDetails);
             }
         }
 
@@ -13488,8 +13499,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 if (result == DialogResult.OK)
                 {
-                    PrintTerminalReportDelegate terminalreportDel = new PrintTerminalReportDelegate(PrintTerminalReport);
-                    terminalreportDel.BeginInvoke(Details, null, null);
+                    //PrintTerminalReportDelegate terminalreportDel = new PrintTerminalReportDelegate(PrintTerminalReport);
+                    //terminalreportDel.BeginInvoke(Details, null, null);
+                    PrintTerminalReport(Details);
                 }
             }
         }
@@ -13825,8 +13837,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 if (result == DialogResult.OK)
                 {
-                    PrintCashiersReportDelegate cashierreportDel = new PrintCashiersReportDelegate(PrintCashiersReport);
-                    cashierreportDel.BeginInvoke(Details, null, null);
+                    //PrintCashiersReportDelegate cashierreportDel = new PrintCashiersReportDelegate(PrintCashiersReport);
+                    //cashierreportDel.BeginInvoke(Details, null, null);
+                    PrintCashiersReport(Details);
                 }
             }
 

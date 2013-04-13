@@ -162,7 +162,9 @@ namespace AceSoft.RetailPlus
             //}
             if (mConnection.State == System.Data.ConnectionState.Open)
             {
-                mTransaction.Rollback();
+                try
+                { mTransaction.Rollback(); }
+                catch { }
                 mTransaction.Dispose();
                 mConnection.Close();
                 mConnection.Dispose();

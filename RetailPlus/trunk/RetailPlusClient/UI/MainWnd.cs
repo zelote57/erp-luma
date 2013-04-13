@@ -1295,18 +1295,22 @@ namespace AceSoft.RetailPlus.Client.UI
 				clsEvent.AddEventLn("Done!");
 			}
 			catch (Exception ex)
-			{ clsEvent.AddErrorEventLn(ex); }
+            { 
+                InsertErrorLogToFile(ex, "ERROR!!! Locking window."); 
+            }
 		}
         public void UnLock(long UserID)
 		{
-            AccessUser clsUser = new AccessUser(mConnection, mTransaction);
-            mConnection = clsUser.Connection; mTransaction = clsUser.Transaction;
-
-			AccessUserDetails details = clsUser.Details(UserID);
             
-			clsEvent.AddEvent("[" + details.Name + "] UnLocking client application.");
             try
             {
+                AccessUser clsUser = new AccessUser(mConnection, mTransaction);
+                mConnection = clsUser.Connection; mTransaction = clsUser.Transaction;
+
+                AccessUserDetails details = clsUser.Details(UserID);
+
+                clsEvent.AddEvent("[" + details.Name + "] UnLocking client application.");
+
                 this.lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
                 this.lblCashier.Tag = details.UID;
                 this.lblCashier.Text = details.Name;
@@ -1321,14 +1325,14 @@ namespace AceSoft.RetailPlus.Client.UI
                 mclsSalesTransactionDetails.CashierName = details.Name;
 
                 InsertAuditLog(AccessTypes.UnlockTerminal, "Unlock terminal #: " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+                
+                clsUser.CommitAndDispose();
+
                 clsEvent.AddEventLn("Done!");
             }
             catch (Exception ex)
             {
-                clsEvent.AddErrorEventLn(ex);
-            }
-            finally {
-                clsUser.CommitAndDispose();
+                InsertErrorLogToFile(ex, "ERROR!!! Unlocking window.");
             }
 		}
 
@@ -1413,9 +1417,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Closing Main window. TRACE: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+                InsertErrorLogToFile(ex, "ERROR!!! Closing Main window. TRACE: ");
 			}
 		}
 		private void MainWnd_KeyDown(object sender, KeyEventArgs e)
@@ -1756,9 +1758,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Closing Main window. TRACE: " + ex.Message, true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+                InsertErrorLogToFile(ex, "ERROR!!! Processing event.");
 			}
 		}
 		public void MyKeyDown(object sender, KeyEventArgs e)
@@ -2005,14 +2005,16 @@ namespace AceSoft.RetailPlus.Client.UI
 				mboRewardCardSwiped = false;
                 mdteOverRidingPrintDate = DateTime.MinValue;
 
-				//StartMarqueeThread();
+				StartMarqueeThread();
 				Cursor.Current = Cursors.Default;
 
 				clsEvent.AddEventLn("Done!");
 
 			}
 			catch (Exception ex)
-			{ clsEvent.AddErrorEventLn(ex); }
+            { 
+                InsertErrorLogToFile(ex, "ERROR!!! Loading options."); 
+            }
 		}
 		private void SetGridItemsWidth()
 		{
@@ -2087,256 +2089,255 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void PriceInquiry()
 		{
-			try
-			{
-				clsEvent.AddEventLn(" Opening Price Inquiry module...", true);
+            clsEvent.AddEventLn(" Opening Price Inquiry module...", true);
 
-				PriceInquiryWnd clsPriceInquiryWnd = new PriceInquiryWnd();
-				clsPriceInquiryWnd.ShowDialog(this);
-				DialogResult result = clsPriceInquiryWnd.Result;
-				clsPriceInquiryWnd.Close();
-				clsPriceInquiryWnd.Dispose();
+            PriceInquiryWnd clsPriceInquiryWnd = new PriceInquiryWnd();
+            clsPriceInquiryWnd.ShowDialog(this);
+            DialogResult result = clsPriceInquiryWnd.Result;
+            clsPriceInquiryWnd.Close();
+            clsPriceInquiryWnd.Dispose();
 
-				clsEvent.AddEventLn(" Price Inquiry module closed...", true);
-			}
-			catch { }
+            clsEvent.AddEventLn(" Price Inquiry module closed...", true);
 		}
 		private void ChangeQuantity()
 		{
-			int iOldRow = dgItems.CurrentRowIndex;
-			int iRow = dgItems.CurrentRowIndex;
+            
+            int iOldRow = dgItems.CurrentRowIndex;
+            int iRow = dgItems.CurrentRowIndex;
 
-			if (iRow >= 0)
-			{
-				if (dgItems[iRow, 8].ToString() != "VOID")
-				{
-					if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
-					{
-						MessageBox.Show("Sorry you cannot change quantity if Auto-print is ON.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-						return;
-					}
+            if (iRow >= 0)
+            {
+                if (dgItems[iRow, 8].ToString() != "VOID")
+                {
+                    if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
+                    {
+                        MessageBox.Show("Sorry you cannot change quantity if Auto-print is ON.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
 
-					DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.ChangeQuantity);
+                    DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.ChangeQuantity);
 
-					if (loginresult == DialogResult.None)
-					{
-						LogInWnd login = new LogInWnd();
+                    if (loginresult == DialogResult.None)
+                    {
+                        LogInWnd login = new LogInWnd();
 
-						login.AccessType = AccessTypes.ChangeQuantity;
-						login.Header = "Change Quantity";
-						login.ShowDialog(this);
-						loginresult = login.Result;
-						login.Close();
-						login.Dispose();
-					}
+                        login.AccessType = AccessTypes.ChangeQuantity;
+                        login.Header = "Change Quantity";
+                        login.ShowDialog(this);
+                        loginresult = login.Result;
+                        login.Close();
+                        login.Dispose();
+                    }
 
-					if (loginresult == DialogResult.OK)
-					{
-						Data.SalesTransactionItemDetails Details = getCurrentRowItemDetails();
+                    if (loginresult == DialogResult.OK)
+                    {
+                        Data.SalesTransactionItemDetails Details = getCurrentRowItemDetails();
 
-						decimal oldQuantity = Details.Quantity;
-						ChangeQuantityWnd QtyWnd = new ChangeQuantityWnd();
-						QtyWnd.Details = Details;
+                        decimal oldQuantity = Details.Quantity;
+                        ChangeQuantityWnd QtyWnd = new ChangeQuantityWnd();
+                        QtyWnd.Details = Details;
 
-						QtyWnd.ShowDialog(this);
-						DialogResult result = QtyWnd.Result;
-						Details = QtyWnd.Details;
+                        QtyWnd.ShowDialog(this);
+                        DialogResult result = QtyWnd.Result;
+                        Details = QtyWnd.Details;
 
-						QtyWnd.Close();
-						QtyWnd.Dispose();
+                        QtyWnd.Close();
+                        QtyWnd.Dispose();
 
-						if (result == DialogResult.OK && oldQuantity != Details.Quantity)
-						{
-							Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
+                        if (result == DialogResult.OK && oldQuantity != Details.Quantity)
+                        {
+                            Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
                             mConnection = clsProduct.Connection; mTransaction = clsProduct.Transaction;
 
-							if (mboIsRefund == false )
-							{
-								if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
-								{
-									if (Details.TransactionItemStatus != TransactionItemStatus.Return)
-									{
-										// Aug 3, 2011 : Lemu
-										// Check the ProductVariationMatrixCurrentQuantity currenct quantity if sufficient for 
-										if (Details.VariationsMatrixID != 0)
-										{
-											Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
-											decimal decProductVariationMatrixCurrentQuantity = clsProductVariationsMatrix.BaseDetailsByMatrixID(Details.VariationsMatrixID).Quantity + oldQuantity;
-											if (decProductVariationMatrixCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
-											{
-												clsProduct.CommitAndDispose();
-												MessageBox.Show("Sorry the quantity you entered is greater than the current stock of Variation: " + Details.MatrixDescription + Environment.NewLine + "Current Stock: " + decProductVariationMatrixCurrentQuantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-												return;
-											}
-										}
-										else
-										{
-											decimal decProductCurrentQuantity = clsProduct.Details(Details.ProductID).Quantity + oldQuantity;
-											if (decProductCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
-											{
-												clsProduct.CommitAndDispose();
-												MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + decProductCurrentQuantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-												return;
-											}
-										}
-									}
-								}
-							}
+                            if (mboIsRefund == false)
+                            {
+                                if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
+                                {
+                                    if (Details.TransactionItemStatus != TransactionItemStatus.Return)
+                                    {
+                                        // Aug 3, 2011 : Lemu
+                                        // Check the ProductVariationMatrixCurrentQuantity currenct quantity if sufficient for 
+                                        if (Details.VariationsMatrixID != 0)
+                                        {
+                                            Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
+                                            decimal decProductVariationMatrixCurrentQuantity = clsProductVariationsMatrix.BaseDetailsByMatrixID(Details.VariationsMatrixID).Quantity + oldQuantity;
+                                            if (decProductVariationMatrixCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
+                                            {
+                                                clsProduct.CommitAndDispose();
+                                                MessageBox.Show("Sorry the quantity you entered is greater than the current stock of Variation: " + Details.MatrixDescription + Environment.NewLine + "Current Stock: " + decProductVariationMatrixCurrentQuantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                                return;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            decimal decProductCurrentQuantity = clsProduct.Details(Details.ProductID).Quantity + oldQuantity;
+                                            if (decProductCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
+                                            {
+                                                clsProduct.CommitAndDispose();
+                                                MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + decProductCurrentQuantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
-							if (mboIsRefund == false && mclsTerminalDetails.ReservedAndCommit == true)
-							{
-								if (Details.TransactionItemStatus == TransactionItemStatus.Return)
-								{
-									Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
-									decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
+                            if (mboIsRefund == false && mclsTerminalDetails.ReservedAndCommit == true)
+                            {
+                                if (Details.TransactionItemStatus == TransactionItemStatus.Return)
+                                {
+                                    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
+                                    decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
 
-									clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_RETURN_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-								}
-								else 
-								{
-									Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
-									decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
+                                    clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_RETURN_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                                }
+                                else
+                                {
+                                    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
+                                    decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
 
-									clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_CHANGE_QTY), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-									// remove the ff codes for a change in Jul 26, 2011
-									// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
-									// if (Details.VariationsMatrixID != 0)
-									// {
-									//     Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
-									//     clsProductVariationsMatrix.AddQuantity(Details.VariationsMatrixID, decNewQuantity);
-									// }
-								}
-							}
+                                    clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_CHANGE_QTY), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                                    // remove the ff codes for a change in Jul 26, 2011
+                                    // clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
+                                    // if (Details.VariationsMatrixID != 0)
+                                    // {
+                                    //     Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
+                                    //     clsProductVariationsMatrix.AddQuantity(Details.VariationsMatrixID, decNewQuantity);
+                                    // }
+                                }
+                            }
 
-							mbodgItemRowClick = true;
+                            mbodgItemRowClick = true;
 
-							if (mboIsRefund)
-								ApplyChangeQuantityPriceAmountDetails(iRow, Details);
-							else
-							{
-								Details = ApplyPromo(Details);
+                            if (mboIsRefund)
+                                ApplyChangeQuantityPriceAmountDetails(iRow, Details);
+                            else
+                            {
+                                Details = ApplyPromo(Details);
 
-								ApplyChangeQuantityPriceAmountDetails(iRow, Details);
+                                ApplyChangeQuantityPriceAmountDetails(iRow, Details);
 
-								System.Data.DataTable dt = (System.Data.DataTable)dgItems.DataSource;
-								for (int x = iRow + 1; x < dt.Rows.Count; x++)
-								{
-									dgItems.CurrentRowIndex = x;
-									Details = getCurrentRowItemDetails();
+                                System.Data.DataTable dt = (System.Data.DataTable)dgItems.DataSource;
+                                for (int x = iRow + 1; x < dt.Rows.Count; x++)
+                                {
+                                    dgItems.CurrentRowIndex = x;
+                                    Details = getCurrentRowItemDetails();
 
-									System.Data.DataRow dr = dt.Rows[x];
-									if (dr["Quantity"].ToString() != "VOID" && dr["Quantity"].ToString().IndexOf("RETURN") == -1 && dr["ProductID"].ToString() == Details.ProductID.ToString())
-									{
-										Details = ApplyPromo(Details);
-										ApplyChangeQuantityPriceAmountDetails(x, Details);
-									}
+                                    System.Data.DataRow dr = dt.Rows[x];
+                                    if (dr["Quantity"].ToString() != "VOID" && dr["Quantity"].ToString().IndexOf("RETURN") == -1 && dr["ProductID"].ToString() == Details.ProductID.ToString())
+                                    {
+                                        Details = ApplyPromo(Details);
+                                        ApplyChangeQuantityPriceAmountDetails(x, Details);
+                                    }
 
-								}
+                                }
 
-								dgItems.CurrentRowIndex = iOldRow;
-								dgItems.Select(iOldRow);
-							}
+                                dgItems.CurrentRowIndex = iOldRow;
+                                dgItems.Select(iOldRow);
+                            }
 
-							// Added May 7, 2011 to Cater Reserved and Commit functionality    
-							// Details.Quantity = -oldQuantity + Details.Quantity;
-							// Jul 26, 2011 Change the AddQuantity and SubtractQuantity
-							ReservedAndCommitItem(Details, Details.TransactionItemStatus);
+                            // Added May 7, 2011 to Cater Reserved and Commit functionality    
+                            // Details.Quantity = -oldQuantity + Details.Quantity;
+                            // Jul 26, 2011 Change the AddQuantity and SubtractQuantity
+                            ReservedAndCommitItem(Details, Details.TransactionItemStatus);
 
-							clsProduct.CommitAndDispose();
-							mbodgItemRowClick = false;
+                            clsProduct.CommitAndDispose();
+                            mbodgItemRowClick = false;
 
-							DisplayItemToTurretDelegate DisplayItemToTurretDel = new DisplayItemToTurretDelegate(DisplayItemToTurret);
-							DisplayItemToTurretDel.BeginInvoke(Details.Description, Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, null, null);
-						}
-					}
-				}
-			}
+                            DisplayItemToTurretDelegate DisplayItemToTurretDel = new DisplayItemToTurretDelegate(DisplayItemToTurret);
+                            DisplayItemToTurretDel.BeginInvoke(Details.Description, Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, null, null);
+                        }
+                    }
+                }
+            }
+            
 		}
 		private void ChangePrice()
 		{
-			int iOldRow = dgItems.CurrentRowIndex;
-			int iRow = dgItems.CurrentRowIndex;
+            
+            int iOldRow = dgItems.CurrentRowIndex;
+            int iRow = dgItems.CurrentRowIndex;
 
-			if (iRow >= 0)
-			{
-				if (dgItems[iRow, 8].ToString() != "VOID" && dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1)
-				{
-					if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
-					{
-						MessageBox.Show("Sorry you cannot change price if Auto-print is ON.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-						return;
-					}
+            if (iRow >= 0)
+            {
+                if (dgItems[iRow, 8].ToString() != "VOID" && dgItems[iRow, 8].ToString().IndexOf("RETURN") == -1)
+                {
+                    if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
+                    {
+                        MessageBox.Show("Sorry you cannot change price if Auto-print is ON.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
 
-					DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.ChangePrice);
+                    DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.ChangePrice);
 
-					if (loginresult == DialogResult.None)
-					{
-						LogInWnd login = new LogInWnd();
+                    if (loginresult == DialogResult.None)
+                    {
+                        LogInWnd login = new LogInWnd();
 
-						login.AccessType = AccessTypes.ChangePrice;
-						login.Header = "Change Price";
-						login.ShowDialog(this);
-						loginresult = login.Result;
-						login.Close();
-						login.Dispose();
-					}
+                        login.AccessType = AccessTypes.ChangePrice;
+                        login.Header = "Change Price";
+                        login.ShowDialog(this);
+                        loginresult = login.Result;
+                        login.Close();
+                        login.Dispose();
+                    }
 
-					if (loginresult == DialogResult.OK)
-					{
-						Data.SalesTransactionItemDetails Details = getCurrentRowItemDetails();
+                    if (loginresult == DialogResult.OK)
+                    {
+                        Data.SalesTransactionItemDetails Details = getCurrentRowItemDetails();
 
-						decimal oldPrice = Details.Price;
-						ChangePriceWnd PriceWnd = new ChangePriceWnd();
-						PriceWnd.Details = Details;
+                        decimal oldPrice = Details.Price;
+                        ChangePriceWnd PriceWnd = new ChangePriceWnd();
+                        PriceWnd.Details = Details;
 
-						PriceWnd.ShowDialog(this);
-						DialogResult result = PriceWnd.Result;
-						Details = PriceWnd.Details;
+                        PriceWnd.ShowDialog(this);
+                        DialogResult result = PriceWnd.Result;
+                        Details = PriceWnd.Details;
 
-						PriceWnd.Close();
-						PriceWnd.Dispose();
+                        PriceWnd.Close();
+                        PriceWnd.Dispose();
 
-						if (result == DialogResult.OK && oldPrice != Details.Price)
-						{
-							Cursor.Current = Cursors.WaitCursor;
+                        if (result == DialogResult.OK && oldPrice != Details.Price)
+                        {
+                            Cursor.Current = Cursors.WaitCursor;
 
-							mbodgItemRowClick = true;
+                            mbodgItemRowClick = true;
 
-							if (mboIsRefund)
-								ApplyChangeQuantityPriceAmountDetails(iRow, Details);
-							else
-							{
-								Details = ApplyPromo(Details);
+                            if (mboIsRefund)
+                                ApplyChangeQuantityPriceAmountDetails(iRow, Details);
+                            else
+                            {
+                                Details = ApplyPromo(Details);
 
-								ApplyChangeQuantityPriceAmountDetails(iRow, Details);
+                                ApplyChangeQuantityPriceAmountDetails(iRow, Details);
 
-								System.Data.DataTable dt = (System.Data.DataTable)dgItems.DataSource;
-								for (int x = iRow + 1; x < dt.Rows.Count; x++)
-								{
-									dgItems.CurrentRowIndex = x;
-									Details = getCurrentRowItemDetails();
+                                System.Data.DataTable dt = (System.Data.DataTable)dgItems.DataSource;
+                                for (int x = iRow + 1; x < dt.Rows.Count; x++)
+                                {
+                                    dgItems.CurrentRowIndex = x;
+                                    Details = getCurrentRowItemDetails();
 
-									System.Data.DataRow dr = dt.Rows[x];
-									if (dr["Quantity"].ToString() != "VOID" && dr["Quantity"].ToString().IndexOf("RETURN") == -1 && dr["ProductID"].ToString() == Details.ProductID.ToString())
-									{
-										Details = ApplyPromo(Details);
-										ApplyChangeQuantityPriceAmountDetails(x, Details);
-									}
+                                    System.Data.DataRow dr = dt.Rows[x];
+                                    if (dr["Quantity"].ToString() != "VOID" && dr["Quantity"].ToString().IndexOf("RETURN") == -1 && dr["ProductID"].ToString() == Details.ProductID.ToString())
+                                    {
+                                        Details = ApplyPromo(Details);
+                                        ApplyChangeQuantityPriceAmountDetails(x, Details);
+                                    }
 
-								}
-								dgItems.CurrentRowIndex = iOldRow;
-								dgItems.Select(iOldRow);
-							}
-							Details = getCurrentRowItemDetails();
-							DisplayItemToTurretDelegate DisplayItemToTurretDel = new DisplayItemToTurretDelegate(DisplayItemToTurret);
-							DisplayItemToTurretDel.BeginInvoke(Details.Description, Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, null, null);
-							InsertAuditLog(AccessTypes.ChangePrice, "Change price for item " + Details.ProductCode + " to " + Details.Price.ToString("#,##0.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-							mbodgItemRowClick = false;
-							Cursor.Current = Cursors.Default;
-						}
-					}
-				}
-			}
+                                }
+                                dgItems.CurrentRowIndex = iOldRow;
+                                dgItems.Select(iOldRow);
+                            }
+                            Details = getCurrentRowItemDetails();
+                            DisplayItemToTurretDelegate DisplayItemToTurretDel = new DisplayItemToTurretDelegate(DisplayItemToTurret);
+                            DisplayItemToTurretDel.BeginInvoke(Details.Description, Details.ProductUnitCode, Details.Quantity, Details.Price, Details.Discount, Details.PromoApplied, Details.Amount, Details.VAT, Details.EVAT, null, null);
+                            InsertAuditLog(AccessTypes.ChangePrice, "Change price for item " + Details.ProductCode + " to " + Details.Price.ToString("#,##0.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+                            mbodgItemRowClick = false;
+                            Cursor.Current = Cursors.Default;
+                        }
+                    }
+                }
+            }
 		}
 		private void ChangeAmount()
 		{
@@ -2448,29 +2449,6 @@ namespace AceSoft.RetailPlus.Client.UI
 			clsSalesTransactions.CommitAndDispose();
 
 		}
-        //private void ApplyChangeQuantityPriceAmountDetails(int iRow, Data.SalesTransactionItemDetails Details)
-        //{
-        //    System.Data.DataRow dr = (System.Data.DataRow)ItemDataTable.Rows[iRow];
-
-        //    dr = setCurrentRowItemDetails(dr, Details);
-
-        //    ComputeSubTotal();
-        //    mclsTransactionStream.AddItem(Details, mclsSalesTransactionDetails.TransactionDate);
-
-        //    Details.TransactionID = Convert.ToInt64(lblTransNo.Tag);
-
-        //    //mclsSalesTransactionDetails.SubTotal = mclsSalesTransactionDetails.SubTotal;
-        //    /*******Added: January 18, 2008***********************
-        //     * update purchase amount everytime there a change in 
-        //     *  Quantity
-        //     *  Price
-        //     *  Amount *********************************/
-        //    Details.PurchaseAmount = Details.Quantity * Details.PurchasePrice;
-
-        //    Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
-        //    clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, Details);
-        //    clsSalesTransactions.CommitAndDispose();
-        //}
 		private void ReturnItem()
 		{
 			if (mboIsRefund)
@@ -2703,7 +2681,9 @@ namespace AceSoft.RetailPlus.Client.UI
 							else { clsEvent.AddEventLn("Cancelled!"); }
 						}
 						catch (Exception ex)
-						{ clsEvent.AddErrorEventLn(ex); }
+						{ 
+                            InsertErrorLogToFile(ex, "ERROR!!! Applying item discount."); 
+                        }
 
 						Cursor.Current = Cursors.Default;
 					}
@@ -2835,7 +2815,9 @@ namespace AceSoft.RetailPlus.Client.UI
 									DisplayItemToTurretDel.BeginInvoke(clsItemDetails.Description, clsItemDetails.ProductUnitCode, clsItemDetails.Quantity, clsItemDetails.Price, clsItemDetails.Discount, clsItemDetails.PromoApplied, clsItemDetails.Amount, clsItemDetails.VAT, clsItemDetails.EVAT, null, null);
 								}
 								catch (Exception ex)
-								{ clsEvent.AddErrorEventLn(ex); }
+								{ 
+                                    InsertErrorLogToFile(ex, "ERROR!!! Applying discount for all item."); 
+                                }
 								Cursor.Current = Cursors.Default;
 							}
 						}
@@ -2909,7 +2891,9 @@ namespace AceSoft.RetailPlus.Client.UI
 				else { clsEvent.AddEventLn("Cancelled!"); }
 			}
 			catch (Exception ex)
-			{ clsEvent.AddErrorEventLn(ex); }
+			{ 
+                InsertErrorLogToFile(ex, "ERROR!!! Selecting contact."); 
+            }
 		}
 		private void LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory enumContactGroupCategory, Data.ContactDetails pContactDetails)
 		{
@@ -3008,7 +2992,9 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 			}
 			catch (Exception ex)
-			{ clsEvent.AddErrorEventLn(ex); }
+			{ 
+                InsertErrorLogToFile(ex, "ERROR!!! Loading contact."); 
+            }
 		}
 		private bool SuspendTransaction()
 		{
@@ -3084,7 +3070,9 @@ namespace AceSoft.RetailPlus.Client.UI
 						else { clsEvent.AddEventLn("Cancelled!"); }
 					}
 					catch (Exception ex)
-					{ clsEvent.AddErrorEventLn(ex); }
+					{ 
+                        InsertErrorLogToFile(ex, "ERROR!!! Suspending transaction."); 
+                    }
 				}
 				else
 				{
@@ -3113,7 +3101,9 @@ namespace AceSoft.RetailPlus.Client.UI
 						boRetValue = true;
 					}
 					catch (Exception ex)
-					{ clsEvent.AddErrorEventLn(ex); }
+					{ 
+                        InsertErrorLogToFile(ex, "ERROR!!! Suspending transaction."); 
+                    }
 				}
 			}
 			return boRetValue;
@@ -3160,7 +3150,9 @@ namespace AceSoft.RetailPlus.Client.UI
 				else { clsEvent.AddEventLn("Cancelled!"); }
 			}
 			catch (Exception ex)
-			{ clsEvent.AddErrorEventLn(ex); }
+			{ 
+                InsertErrorLogToFile(ex, "ERROR!!! Selecting waiter."); 
+            }
 
 			return retValue;
 		}
@@ -3285,7 +3277,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Resuming transaction."); 
+                }
 			}
 		}
 		private void VoidTransaction()
@@ -3449,7 +3443,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					Cursor.Current = Cursors.Default;
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Voiding transaction."); 
+                }
 			}
 		}
 		private void WithHold()
@@ -3519,7 +3515,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Withholding amount."); 
+                }
 			}
 		}
 		private void Disburse()
@@ -3588,7 +3586,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Disbursing amount."); 
+                }
 			}
 		}
 		private void PaidOut()
@@ -3656,7 +3656,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Issuing paid out."); 
+                }
 			}
 		}
 		private void Deposit()
@@ -3722,7 +3724,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Receiving customer deposit."); 
+                }
 			}
 		}
 		private void ShowPrintWindow()
@@ -3840,7 +3844,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Mall Forwarder: Cancelled!", true); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -3910,6 +3916,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
+                InsertErrorLogToFile(ex, "ERROR!!! Mall Forwarder: " + CONFIG.MallCode.ToUpper());
 				MessageBox.Show(ex.Message, "Mall Forwarder", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
@@ -3946,11 +3953,10 @@ namespace AceSoft.RetailPlus.Client.UI
 							}
 						}
 
+                        Details = getCurrentRowItemDetails();
+                        clsEvent.AddEvent("[" + lblCashier.Text + "] Voiding item no. " + Details.ItemNo + " :" + Details.Description + ".");
 						try
 						{
-							Details = getCurrentRowItemDetails();
-							clsEvent.AddEvent("[" + lblCashier.Text + "] Voiding item no. " + Details.ItemNo + " :" + Details.Description + ".");
-
 							// override the transaction item status
 							TransactionItemStatus _previousTransactionItemStatus = Details.TransactionItemStatus;
 
@@ -3995,7 +4001,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						}
 						catch (Exception ex)
-						{ clsEvent.AddErrorEventLn(ex); }
+						{
+                            InsertErrorLogToFile(ex, "ERROR!!! Voiding item." + Details.ItemNo + " :" + Details.Description); 
+                        }
 					}
 				}
 			}
@@ -4071,7 +4079,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!", true); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{
+                    InsertErrorLogToFile(ex, "ERROR!!! Issuing cash count"); 
+                }
 			}
 			return boRetValue;
 		}
@@ -4123,7 +4133,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Entering beginning balance cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Issuing beginning balance."); 
+                }
 			}
 		}
 		private void InitializeZRead()
@@ -4213,7 +4225,9 @@ namespace AceSoft.RetailPlus.Client.UI
 						LoggedOutCashier(false);
 					}
 					catch (Exception ex)
-					{ clsEvent.AddErrorEventLn(ex); }
+					{ 
+                        InsertErrorLogToFile(ex, "ERRROR!!! Initializing ZREAD"); 
+                    }
 
 					Cursor.Current = Cursors.Default;
 				}
@@ -5454,7 +5468,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 				catch (Exception ex)
 				{
-					clsEvent.AddErrorEventLn(ex);
+					InsertErrorLogToFile(ex, "ERROR!!! Closing transaction.");
 				}
 			}
 			Cursor.Current = Cursors.Default;
@@ -5512,7 +5526,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 				catch (Exception ex)
 				{
-					clsEvent.AddErrorEventLn(ex);
+					InsertErrorLogToFile(ex, "ERROR!!! Closing transaction as ORDER SLIP.");
 				}
 			}
 			Cursor.Current = Cursors.Default;
@@ -5598,8 +5612,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 				catch (Exception ex)
 				{
-					clsEvent.AddEvent("[" + lblCashier.Text + "] Error in selecting product...");
-					clsEvent.AddErrorEventLn(ex);
+					InsertErrorLogToFile(ex, "ERROR!!! in selecting product...");
 				}
 			}
 			Cursor.Current = Cursors.Default;
@@ -5641,7 +5654,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					clsEvent.AddEventLn("[" + lblCashier.Text + "] Done... Releasing items...");
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex,"ERRROR!!! Releasing items."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -5701,7 +5716,9 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsCashierLogs.CommitAndDispose();
 					}
 					catch (Exception ex)
-					{ clsEvent.AddErrorEventLn(ex); }
+					{
+                        InsertErrorLogToFile(ex, "ERROR!!! Logging out cashier"); 
+                    }
 					return DialogResult.OK;
 				}
 				Cursor.Current = Cursors.Default;
@@ -5813,7 +5830,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Applying transaction discount."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -5912,7 +5931,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Applying transaction charge."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -5987,7 +6008,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Changing order type."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -6179,9 +6202,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						}
 						catch (Exception ex)
 						{
-							Event clsEvent = new Event();
-							clsEvent.AddEventLn("ERROR!!! Credit payment procedure. Err Description: " + ex.Message, true);
-                            clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+                            InsertErrorLogToFile(ex, "ERROR!!! Credit payment procedure. Err Description: ");
 						}
 						Cursor.Current = Cursors.Default;
 					}
@@ -6233,7 +6254,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					clsEvent.AddEventLn("Done! Tran. #" + lblTransNo.Text);
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+                { 
+                    InsertErrorLogToFile(ex, "ERROR!!! Refunding transaction."); 
+                }
 
 				Cursor.Current = Cursors.Default;
 			}
@@ -6328,7 +6351,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+                { 
+                    InsertErrorLogToFile(ex, "ERROR!!! Issuing reward card."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 			
@@ -6419,7 +6444,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+                { 
+                    InsertErrorLogToFile(ex, "ERROR!!! Renewing reward card."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -6513,7 +6540,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Replacing reward card."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -6594,7 +6623,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Activating reward card."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -6673,7 +6704,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex,"ERRROR!!! Declaring reward card as lost."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -6801,7 +6834,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Issuing internal credit-card."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 
@@ -6894,7 +6929,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Renewing internal credit card."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -6990,7 +7027,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Replacing internal credit card."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -7073,7 +7112,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Reactivating internal credit card."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -7154,7 +7195,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					else { clsEvent.AddEventLn("Cancelled!"); }
 				}
 				catch (Exception ex)
-				{ clsEvent.AddErrorEventLn(ex); }
+				{ 
+                    InsertErrorLogToFile(ex, "ERROR!!! Declaring internal credit card as lost."); 
+                }
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -7183,8 +7226,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR! Initializing transaction using username : " + lblCashier.Text + "TRACE: " + ex.Message);
+                InsertErrorLogToFile(ex, "ERROR!!! Initializing transaction using username : " + lblCashier.Text);
 			}
 		}
 		public void DoLogin()
@@ -7248,8 +7290,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR! System login: TRACE: " + ex.Message);
+                InsertErrorLogToFile(ex, "ERROR!!! System login: TRACE: ");
 				Cursor.Current = Cursors.Default;
 				throw ex;
 			}
@@ -7323,8 +7364,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR! Getting current row item details. TRACE: " + ex.Message);
+                InsertErrorLogToFile(ex, "ERROR!!! Getting current row item details. TRACE: ");
 				throw ex;
 			}
 		}
@@ -7420,8 +7460,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR! Setting current row item details. TRACE: " + ex.Message);
+                InsertErrorLogToFile(ex, "ERROR!!! Setting current row item details. TRACE: ");
 				return dr;
 			}
 		}
@@ -7460,9 +7499,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				return boRetValue;
 			}
 			catch (Exception ex)
-			{
-				clsEvent.AddEventLn("ERROR! Initializing balance.");
-				clsEvent.AddErrorEventLn(ex);
+		    {
+                InsertErrorLogToFile(ex, "ERROR!!! Initializing balance.");
 				throw ex;
 			}
 		}
@@ -7514,63 +7552,10 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				clsEvent.AddEventLn("ERROR! Applying promo. TRACE: ");
-				clsEvent.AddErrorEventLn(ex);
+                InsertErrorLogToFile(ex, "ERROR!!! Applying promo. TRACE: ");
 				throw ex;
 			}
 		}
-        //private Data.SalesTransactionItemDetails ApplyPromo(Data.SalesTransactionItemDetails Details)
-        //{
-        //    try
-        //    {
-        //        Details.Amount = (Details.Price * Details.Quantity);
-
-        //        decimal AppliedQuantity = 0;
-        //        foreach (System.Data.DataRow dr in ItemDataTable.Rows)
-        //        {
-        //            if (dr["TransactionItemsID"].ToString() != Details.TransactionItemsID.ToString())
-        //            {
-        //                if (dr["Quantity"].ToString() != "VOID" && dr["Quantity"].ToString().IndexOf("RETURN") == -1 && dr["ProductID"].ToString() == Details.ProductID.ToString())
-        //                {
-        //                    AppliedQuantity += Convert.ToDecimal(dr["Quantity"]);
-        //                }
-        //            }
-        //            if (Details.ItemNo == dr["ItemNo"].ToString())
-        //            {
-        //                break;
-        //            }
-        //        }
-
-        //        PromoTypes PromoType = PromoTypes.NotApplicable;
-        //        decimal PromoQuantity = 0;
-        //        decimal PromoValue = 0;
-        //        bool PromoInPercent = false;
-
-        //        Data.PromoItems clsPromoItems = new Data.PromoItems(mConnection, mTransaction);
-        //        bool IsPromoApplied = clsPromoItems.ApplyPromoValue(Convert.ToInt64(lblCustomer.Tag), Details.ProductID, Details.VariationsMatrixID, out PromoType, out PromoQuantity, out PromoValue, out PromoInPercent);
-
-        //        Details.PromoValue = PromoValue;
-        //        Details.PromoQuantity = PromoQuantity;
-        //        Details.PromoInPercent = Convert.ToInt16(PromoInPercent);
-        //        Details.PromoType = PromoType;
-        //        Details.PromoApplied = 0;
-
-        //        if (IsPromoApplied && PromoType != PromoTypes.NotApplicable)
-        //        {
-        //            Details.PromoApplied = GetPromoApplied(PromoType, Details.Price, Details.Quantity, PromoQuantity, PromoValue, PromoInPercent, AppliedQuantity);
-        //        }
-        //        Details.Amount = Details.Amount - Details.Discount - Details.PromoApplied;
-        //        Details.Commision = Details.Amount * (Details.PercentageCommision / 100);
-
-        //        return Details;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        clsEvent.AddEventLn("ERROR! Applying promo. TRACE: ");
-        //        clsEvent.AddErrorEventLn(ex);
-        //        throw ex;
-        //    }
-        //}
 		private decimal GetPromoApplied(PromoTypes PromoType, decimal Price, decimal Quantity, decimal PromoQuantity, decimal PromoValue, bool InPercent, decimal AppliedQuantity)
 		{
 			try
@@ -7596,8 +7581,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR! Computing applicable promo. TRACE: " + ex.Message);
+                InsertErrorLogToFile(ex, "ERROR!!! Computing applicable promo. TRACE: ");
 				throw ex;
 			}
 		}
@@ -7657,8 +7641,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR! Adding sales item. TRACE: " + ex.Message, true);
+				InsertErrorLogToFile(ex, "ERROR!!! Adding sales item. TRACE: ");
 				throw ex;
 			}
 		}
@@ -7679,8 +7662,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR! Adding sales item to database. TRACE: " + ex.Message);
+                InsertErrorLogToFile(ex, "ERROR!!! Adding sales item to database. TRACE: ");
 				throw ex;
 			}
 		}
@@ -8008,7 +7990,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				clsEvent.AddEventLn("ERROR! Computing sales subtotal. TRACE: " + ex.Message + " " + ex.ToString());
+                InsertErrorLogToFile(ex, "ERROR!!! Computing sales subtotal. TRACE: ");
 			}
 		}
 		private void PackTransaction()
@@ -8052,8 +8034,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 				catch (Exception ex)
 				{
-					Event clsEvent = new Event();
-					clsEvent.AddEventLn("ERROR! Packing sales transaction to database. TRACE: " + ex.Message);
+					InsertErrorLogToFile(ex, "ERROR!!! Packing sales transaction to database. TRACE: ");
 					throw ex;
 				}
 			}
@@ -8099,8 +8080,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 				catch (Exception ex)
 				{
-					Event clsEvent = new Event();
-					clsEvent.AddEventLn("ERROR! UnPacking sales transaction to database. TRACE: " + ex.Message);
+					InsertErrorLogToFile(ex, "ERROR!!! UnPacking sales transaction to database. TRACE: ");
 					throw ex;
 				}
 			}
@@ -8862,8 +8842,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddErrorEventLn(ex);
+				InsertErrorLogToFile(ex);
 				MessageBox.Show("Sorry an error was encountered during printing, please reprint again." + Environment.NewLine + "Details: " + ex.Message, "RetailPlus");
 			}
 		}
@@ -9039,9 +9018,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 			}
 			catch (Exception ex)
-			{
-				Event clsEvent = new Event();
-				clsEvent.AddErrorEventLn(ex);
+            {
+				InsertErrorLogToFile(ex);
 			}
 		}
 		private object GetField(Object obj, String fieldName)
@@ -9207,8 +9185,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddErrorEventLn(ex);
+				InsertErrorLogToFile(ex);
 			}
 		}
 		private void PrintTerminalZRead()
@@ -9416,7 +9393,6 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private bool IsDateLastInitializationOK()
 		{
-			Event clsEvent = new Event();
 			try
 			{
 				clsEvent.AddEvent("Checking last initialization date");
@@ -9517,7 +9493,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				clsEvent.AddErrorEventLn(ex);
+				InsertErrorLogToFile(ex);
 				return false;
 			}
 		}
@@ -9692,7 +9668,10 @@ namespace AceSoft.RetailPlus.Client.UI
 				clsEvent.AddEventLn("Done! Trans #: " + lblTransNo.Text + " has been created.", true);
 			}
 			catch (Exception ex)
-			{ clsEvent.AddErrorEventLn(ex); boRetValue = false; }
+			{ 
+                InsertErrorLogToFile(ex); 
+                boRetValue = false; 
+            }
 
 			return boRetValue;
 		}
@@ -9763,7 +9742,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				clsEvent.AddEventLn("ERROR! Loading transaction. TRACE: " + ex.Message, true);
+				InsertErrorLogToFile(ex, "ERROR!!! Loading transaction. TRACE: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -9833,8 +9812,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR! Loading transaction items. TRACE: " + ex.Message);
+				InsertErrorLogToFile(ex, "ERROR!!! Loading transaction items. TRACE: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -10401,8 +10379,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-
-				clsEvent.AddErrorEventLn(ex);
+				InsertErrorLogToFile(ex);
 				return false;
 			}
 		}
@@ -10447,7 +10424,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						if (bolCreateAndTransferFile)
 						{ tmrRLC.Enabled = false; lblMallForwarderStatus.Text = "Success in sending file(s) to RLC server. Press [Ctrl+C] to close this notification."; }
 						else
-						{ tmrRLC.Enabled = true; lblMallForwarderStatus.Text = "Error sending file(s) to RLC server. Press [Ctrl+C] to close this notification."; }
+						{ tmrRLC.Enabled = true; lblMallForwarderStatus.Text = "ERROR!!! sending file(s) to RLC server. Press [Ctrl+C] to close this notification."; }
 
 						clsTerminalReportHistory = new Data.TerminalReportHistory();
 						dteDateToProcess = clsTerminalReportHistory.getRLCDateLastInitialized(mclsTerminalDetails.TerminalNo);
@@ -10456,10 +10433,17 @@ namespace AceSoft.RetailPlus.Client.UI
 						if (dteDateToProcess != DateTime.MinValue)
 						{ goto Back; }
 					}
-					catch { tmrRLC.Enabled = true; lblMallForwarderStatus.Text = "Error sending file(s) to RLC server. Press [Ctrl+C] to close this notification."; }
+					catch
+                    { 
+                        tmrRLC.Enabled = true; 
+                        lblMallForwarderStatus.Text = "ERROR!!! sending file(s) to RLC server. Press [Ctrl+C] to close this notification.";
+                    }
 				}
 			}
-			catch { }
+            catch (Exception ex)
+            {
+                InsertErrorLogToFile(ex, lblMallForwarderStatus.Text);
+            }
 		}
 
 		#endregion
@@ -11156,8 +11140,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddErrorEventLn(new Exception(" Printing Charge Slip: " + clsChargeSlipType .ToString("G") + ". Err Description: " + ex.Message, ex.InnerException));
+                InsertErrorLogToFile(ex, "ERROR!!! Printing Charge Slip: " + clsChargeSlipType.ToString("G"));
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -11206,9 +11189,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing Rewards Redeemption Slip. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing Rewards Redeemption Slip. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -11578,8 +11559,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddErrorEventLn(new Exception("ERROR!!! Printing ZRead report. Err Description: " + ex.Message,ex.InnerException));
+                InsertErrorLogToFile(ex, "ERROR!!! Printing ZRead report. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -11731,9 +11711,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing ZRead report. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+                InsertErrorLogToFile(ex, "ERROR!!! Printing ZRead report. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -11988,9 +11966,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing XREAD report. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+                InsertErrorLogToFile(ex, "ERROR!!! Printing XREAD report. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12077,9 +12053,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing hourly report. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing hourly report. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12192,9 +12166,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing group report. Err Description: " + ex.Message, true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing group report. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12324,9 +12296,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing PLU report. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing PLU report. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12585,9 +12555,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing Electronic Journal report. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing Electronic Journal report. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12741,9 +12709,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing PLU report. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing PLU report. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -12934,9 +12900,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing terminal report. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing terminal report. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13079,8 +13043,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddErrorEventLn(new Exception("ERROR!!! Printing terminal report. Err Description: " + ex.Message, ex.InnerException));
+				InsertErrorLogToFile(ex, "ERROR!!! Printing terminal report. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13282,8 +13245,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddErrorEventLn(new Exception("ERROR!!! Printing cashier report data. Err Description: " + ex.Message,ex.InnerException));
+				InsertErrorLogToFile(ex, "ERROR!!! Printing cashier report data. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13331,9 +13293,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing cash count data. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+                InsertErrorLogToFile(ex, "ERROR!!! Printing cash count data. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13376,9 +13336,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing wihhold data. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing wihhold data. Err Description: ");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13421,9 +13379,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing disbursement data. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing disbursement data. Err Description: ");
 				Cursor.Current = Cursors.Default;
 				throw ex;
 			}
@@ -13467,9 +13423,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing paid-out data. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing paid-out data. Err Description: ");
 				Cursor.Current = Cursors.Default;
 				throw ex;
 			}
@@ -13518,9 +13472,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("ERROR!!! Printing deposit data. Err Description: " + ex.Message,true);
-                clsEvent.AddEventLn("StackTrace:" + ex.StackTrace);
+				InsertErrorLogToFile(ex, "ERROR!!! Printing deposit data. Err Description: ");
 				Cursor.Current = Cursors.Default;
 				throw ex;
 			}
@@ -13562,8 +13514,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddEventLn("Error in auto-cutting the paper from printer. Err Description: " + ex.Message);
+				InsertErrorLogToFile(ex, "ERROR!!! in auto-cutting the paper from printer. Err Description: ");
 			}
 		}
 
@@ -13596,10 +13547,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			catch (Exception ex)
 			{
-				clsEvent.AddErrorEventLn(ex);
+				InsertErrorLogToFile(ex);
 			}
-
-
 		}
 
 		#endregion
@@ -13612,7 +13561,6 @@ namespace AceSoft.RetailPlus.Client.UI
 			Cursor.Current = Cursors.WaitCursor;
 			try
 			{
-				Event clsEvent = new Event();
 				clsEvent.AddEventLn("Opening cash drawer...", true);
 
 				//Chr$(&H1B) + Chr$(&H70) + Chr$(&H0) + Chr$(&H2F) + Chr$(&H3F) '//drawer open
@@ -13622,11 +13570,11 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				InsertAuditLog(AccessTypes.OpenDrawer, "Open cash drawer." + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 				clsEvent.AddEventLn("Done opening cash drawer!", true);
+
 			}
 			catch (Exception ex)
 			{
-				Event clsEvent = new Event();
-				clsEvent.AddErrorEventLn(ex);
+				InsertErrorLogToFile(ex, "ERROR!!! Opening drawer.");
 			}
 			Cursor.Current = Cursors.Default;
 		}
@@ -13661,7 +13609,26 @@ namespace AceSoft.RetailPlus.Client.UI
 			clsAuditTrail.Insert(clsAuditDetails);
             clsAuditTrail.CommitAndDispose();
 		}
-		
+        
+        private void InsertErrorLogToFile(Exception ex = null, string remarks=null)
+        {
+            if (remarks != null) clsEvent.AddEventLn(remarks, true);
+            if (ex != null) clsEvent.AddErrorEventLn(ex);
+
+            if (mConnection != null)
+            {
+                if (mConnection.State == System.Data.ConnectionState.Open)
+                {
+                    mTransaction.Rollback();
+                    mTransaction.Dispose();
+                    mConnection.Close();
+                    mConnection.Dispose();
+                    clsEvent.AddEventLn("An open connnection has been found and closed.", true);
+                }
+            }
+            
+        }
+
 		#endregion
 
 		#region Marquee
@@ -13680,7 +13647,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch (ThreadAbortException taex)
 			{
 				StartMarqueeThread();
-				clsEvent.AddEventLn("Marquee Thread has expired. New instance of marquee thread has been started.", true);
+				clsEvent.AddEventLn("ERROR!!! Marquee Thread has expired. New instance of marquee thread has been started.", true);
 				clsEvent.AddEventLn("Error;" + taex.Message, true);
 			}
 			catch { }
@@ -13804,7 +13771,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				if (!mbodgItemRowClick)
 				{
 					int index = dgItems.CurrentRowIndex;
-					//clsEvent.AddEvent("Current index: " + dgItems.CurrentRowIndex.ToString(), true);
+
 					try { dgItems.Select(index); }
 					catch { }
 					SetItemDetails();

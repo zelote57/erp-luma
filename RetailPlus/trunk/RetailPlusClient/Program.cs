@@ -73,7 +73,7 @@ namespace AceSoft.RetailPlus.Client
 				Application.Exit();
 				return;
 			}
-			clsEvent.AddEventLn("This application version is updated.");
+			clsEvent.AddEventLn("This application version is updated.",true);
 
 			appsplash.lblStatus.Text = "Checking connections to database... ";
 			appsplash.prgBar.Value = 30;
@@ -214,7 +214,7 @@ namespace AceSoft.RetailPlus.Client
 
 				clsEvent.AddEvent("Checking connections to database.");
 
-				Data.Database clsDatabase = new Data.Database();
+                Data.Database clsDatabase = new Data.Database();
 				bool boIsDBAlive = clsDatabase.IsAlive();
 				clsEvent.AddEventLn("Done! Connected to " + clsDatabase.Connection.ConnectionString, false);
 

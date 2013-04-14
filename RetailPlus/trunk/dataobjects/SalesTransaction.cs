@@ -973,7 +973,7 @@ namespace AceSoft.RetailPlus.Data
 							"Credit, " +
 							"CreditPaid, " +
 							"Balance " +
-						"FROM (" + SQL + ") AS tblCreditPayment ORDER BY TransactionNo DESC ";
+						"FROM (" + SQL + ") AS tblCreditPayment ORDER BY TransactionNo ASC ";
 
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;

@@ -1321,50 +1321,50 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }		
-		public DataTable CustomersDataTable(string SearchKey, Int32 Limit, bool HasCreditOnly, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //public DataTable CustomersDataTable(string SearchKey, Int32 Limit, bool HasCreditOnly, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
 
-                dt.Columns.Add("ContactID");
-                dt.Columns.Add("ContactCode");
-                dt.Columns.Add("ContactName");
-                dt.Columns.Add("Debit");
-                dt.Columns.Add("Credit");
-                dt.Columns.Add("CreditLimit");
-                dt.Columns.Add("IsCreditAllowed");
-                dt.Columns.Add("PositionName");
-                dt.Columns.Add("DepartmentName");
+        //        dt.Columns.Add("ContactID");
+        //        dt.Columns.Add("ContactCode");
+        //        dt.Columns.Add("ContactName");
+        //        dt.Columns.Add("Debit");
+        //        dt.Columns.Add("Credit");
+        //        dt.Columns.Add("CreditLimit");
+        //        dt.Columns.Add("IsCreditAllowed");
+        //        dt.Columns.Add("PositionName");
+        //        dt.Columns.Add("DepartmentName");
 
-                MySqlDataReader myReader = Customers(SearchKey, Limit, HasCreditOnly, SortField, SortOrder);
+        //        MySqlDataReader myReader = Customers(SearchKey, Limit, HasCreditOnly, SortField, SortOrder);
 
-                while (myReader.Read())
-                {
-                    System.Data.DataRow dr = dt.NewRow();
+        //        while (myReader.Read())
+        //        {
+        //            System.Data.DataRow dr = dt.NewRow();
 
-                    dr["ContactID"] = myReader.GetInt64("ContactID");
-                    dr["ContactCode"] = "" + myReader["ContactCode"].ToString();
-                    dr["ContactName"] = "" + myReader["ContactName"].ToString();
-                    dr["Debit"] = myReader.GetDecimal("Debit");
-                    dr["Credit"] = myReader.GetDecimal("Credit");
-                    dr["CreditLimit"] = myReader.GetDecimal("CreditLimit");
-                    dr["IsCreditAllowed"] = myReader.GetInt16("IsCreditAllowed");
-                    dr["PositionName"] = "" + myReader["PositionName"].ToString();
-                    dr["DepartmentName"] = "" + myReader["DepartmentName"].ToString();
+        //            dr["ContactID"] = myReader.GetInt64("ContactID");
+        //            dr["ContactCode"] = "" + myReader["ContactCode"].ToString();
+        //            dr["ContactName"] = "" + myReader["ContactName"].ToString();
+        //            dr["Debit"] = myReader.GetDecimal("Debit");
+        //            dr["Credit"] = myReader.GetDecimal("Credit");
+        //            dr["CreditLimit"] = myReader.GetDecimal("CreditLimit");
+        //            dr["IsCreditAllowed"] = myReader.GetInt16("IsCreditAllowed");
+        //            dr["PositionName"] = "" + myReader["PositionName"].ToString();
+        //            dr["DepartmentName"] = "" + myReader["DepartmentName"].ToString();
 
-                    dt.Rows.Add(dr);
-                }
-                myReader.Close();
+        //            dt.Rows.Add(dr);
+        //        }
+        //        myReader.Close();
 
-                return dt;
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-        public DataTable CustomersDataTable(string SearchKey, Int32 Limit = Constants.C_DEFAULT_LIMIT_OF_RECORD_TO_SHOW, string SortField = "ContactName", SortOption SortOrder=SortOption.Ascending)
+        //        return dt;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+        public DataTable CustomersDataTable(string SearchKey, Int32 Limit = Constants.C_DEFAULT_LIMIT_OF_RECORD_TO_SHOW, bool HasCreditOnly= false, string SortField = "ContactName", SortOption SortOrder=SortOption.Ascending)
 		{
 			try
 			{
@@ -1373,6 +1373,9 @@ namespace AceSoft.RetailPlus.Data
 							    "OR ContactName LIKE @SearchKey) ";
 
 				SQL += "AND (b.ContactGroupCategory = @CustomerCategory OR b.ContactGroupCategory = @BothCategory) ";
+                if (HasCreditOnly)
+                    SQL += "AND Credit > 0 ";
+
 				SQL += "ORDER BY " + SortField;
 
 				if (SortOrder == SortOption.Ascending)

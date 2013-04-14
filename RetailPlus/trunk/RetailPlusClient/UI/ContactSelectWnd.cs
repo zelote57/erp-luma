@@ -469,7 +469,9 @@ namespace AceSoft.RetailPlus.Client.UI
 				if (mContactGroupCategory == ContactGroupCategory.AGENT)
 					dt = clsContact.AgentsAsDataTable(searchkey, 100, "ContactName", SortOption.Ascending); 
 				else
-					dt = clsContact.CustomersDataTable(searchkey, 100, mboHasCreditOnly, "ContactName", SortOption.Ascending);
+                    dt = clsContact.CustomersDataTable(searchkey, 100, mboHasCreditOnly, "ContactName", SortOption.Ascending);
+
+					//dt = clsContact.CustomersDataTable(searchkey, 100, mboHasCreditOnly, "ContactName", SortOption.Ascending);
 
 				clsContact.CommitAndDispose();
 

@@ -10,8 +10,6 @@ namespace AceSoft.RetailPlus
     {
         MySqlConnection mConnection;
         MySqlTransaction mTransaction;
-        bool IsInTransaction = false;
-        bool TransactionFailed = false;
         bool IsNewInstance = false;
 
         public MySqlConnection Connection
@@ -37,26 +35,14 @@ namespace AceSoft.RetailPlus
             GetConnection();
         }
 
-        //public POSConnection(out MySqlConnection Connection, out MySqlTransaction Transaction)
-        //{
-
-        //    mConnection = Connection;
-        //    mTransaction = Transaction;
-
-        //    GetConnection();
-        //}
-
         public void CommitAndDispose()
         {
-            if (!TransactionFailed)
+            if (mConnection.State == System.Data.ConnectionState.Open && IsNewInstance)
             {
-                if (IsInTransaction && IsNewInstance)
-                {
-                    mTransaction.Commit();
-                    mTransaction.Dispose();
-                    mConnection.Close();
-                    mConnection.Dispose();
-                }
+                mTransaction.Commit();
+                mTransaction.Dispose();
+                mConnection.Close();
+                mConnection.Dispose();
             }
         }
 
@@ -68,7 +54,6 @@ namespace AceSoft.RetailPlus
                 mConnection.Open();
 
                 mTransaction = (MySqlTransaction)mConnection.BeginTransaction();
-                IsInTransaction = true;
                 IsNewInstance = true;
             }
 
@@ -154,18 +139,11 @@ namespace AceSoft.RetailPlus
 
         public Exception ThrowException(Exception ex)
         {
-            TransactionFailed = true;
-            //if (IsInTransaction)
-            //{
-            //    mTransaction.Rollback();
-            //    mTransaction.Dispose();
-            //}
             if (mConnection.State == System.Data.ConnectionState.Open)
             {
-                try
-                { mTransaction.Rollback(); }
-                catch { }
+                mTransaction.Rollback();
                 mTransaction.Dispose();
+
                 mConnection.Close();
                 mConnection.Dispose();
             }

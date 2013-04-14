@@ -1728,7 +1728,13 @@ namespace AceSoft.RetailPlus.Client.UI
 							case Keys.Insert:
 								{
 									if (mclsTerminalDetails.CashCountBeforeReport)
-									{ if (!mboIsCashCountInitialized) CashCount(); }
+									{ 
+                                        if (!mboIsCashCountInitialized) 
+                                            CashCount();
+                                        else
+                                            MessageBox.Show("Sorry, cash count has been already initialized for the day. You can only initialize cash count once a day.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+
+                                    }
 									else { CashCount(); }
 									break;
 								}
@@ -2005,7 +2011,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				mboRewardCardSwiped = false;
                 mdteOverRidingPrintDate = DateTime.MinValue;
 
-				StartMarqueeThread();
+				//StartMarqueeThread();
 				Cursor.Current = Cursors.Default;
 
 				clsEvent.AddEventLn("Done!");
@@ -2448,6 +2454,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, Details);
 			clsSalesTransactions.CommitAndDispose();
 
+            clsEvent.AddEventLn("Updating item #:" + Details.ItemNo + " :" + Details.BarCode + " " + Details.ProductCode + " Price:"  + Details.Price + " Quantity:"  + Details.Quantity + " Amount:"  + Details.Amount + ".", true);
 		}
 		private void ReturnItem()
 		{
@@ -3967,6 +3974,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
 							clsSalesTransactions.VoidItem(Details.TransactionItemsID, mclsSalesTransactionDetails.TransactionDate);
+                            clsEvent.AddEventLn("Voiding item #: " + Details.ItemNo + " :" + Details.Description + ".", true);
 
 							// Added May 7, 2011 to Cater Reserved and Commit functionality    
 							ReservedAndCommitItem(Details, _previousTransactionItemStatus);
@@ -6109,7 +6117,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							lblCustomer.Tag = details.ContactID;
 							lblCustomer.Text = details.ContactName;
 
-							clsEvent.AddEvent("[" + lblCashier.Text + "] Creating " + Data.Products.DEFAULT_CREDIT_PAYMENT_BARCODE + "transaction for customer: ");
+							clsEvent.AddEvent("[" + lblCashier.Text + "] Creating " + Data.Products.DEFAULT_CREDIT_PAYMENT_BARCODE + " transaction for customer: ");
 							LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER, details);
 
 							if (!this.CreateTransaction()) return;
@@ -7625,6 +7633,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
 				clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks);
+                clsSalesTransactions.CommitAndDispose();
 
 				try
 				{
@@ -7658,7 +7667,9 @@ namespace AceSoft.RetailPlus.Client.UI
 				long TransactionItemsID = clsSalesTransactions.AddItem(Details);
                 clsSalesTransactions.CommitAndDispose();
 
-				return TransactionItemsID;
+                clsEvent.AddEventLn("Adding item no: " + Details.ItemNo + " Barcode:" + Details.BarCode + " ProductCode:" + Details.ProductCode + " Price:" + Details.Price, true);
+
+ 				return TransactionItemsID;
 			}
 			catch (Exception ex)
 			{
@@ -9762,6 +9773,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					dr["ItemNo"] = ItemDataTable.Rows.Count + 1;
 
 					ItemDataTable.Rows.Add(dr);
+                    clsEvent.AddEventLn("Loading item no: " + dr["ItemNo"].ToString() + " Barcode:" + dr["BarCode"].ToString() + " " + dr["ProductCode"].ToString() + " Price:" + dr["Price"].ToString(), true);
 
 					mclsTransactionStream.AddItem(item, mclsSalesTransactionDetails.TransactionDate);
 
@@ -9994,7 +10006,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			Data.TerminalReport clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
 			clsTerminalReport.UpdateTransactionSales(clsTerminalReportDetails);
-            clsTerminalReport.CommitAndDispose();
+            //clsTerminalReport.CommitAndDispose(); --Remove this. Should be commited by the calling object
 		}
 
 		#endregion
@@ -10261,7 +10273,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			Data.Payment clsPayment = new Data.Payment(mConnection, mTransaction);
 			clsPayment.Insert(Details);
-            clsPayment.CommitAndDispose();
+            //clsPayment.CommitAndDispose(); -- Remove this coz the connection should be committed by the calling object.
 		}
 		private bool IsStartCutOffTimeOK()
 		{
@@ -13656,7 +13668,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			string marqueemessage = mclsTerminalDetails.MarqueeMessage;
 
-			if (marqueemessage.Length < 97)
+			if (marqueemessage.Length < 140) //97
 				marqueemessage = marqueemessage + " " + marqueemessage;
 
 			// 

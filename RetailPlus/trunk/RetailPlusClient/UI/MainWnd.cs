@@ -5378,6 +5378,9 @@ namespace AceSoft.RetailPlus.Client.UI
 								string strReason = "Purchase " + mclsSalesTransactionDetails.AmountDue.ToString("#,##0.#0") + " using Reward Card #: " + mclsSalesTransactionDetails.RewardCardNo;
 								clsContactReward.AddMovement(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.RewardPreviousPoints, mclsSalesTransactionDetails.RewardEarnedPoints, mclsSalesTransactionDetails.RewardCurrentPoints, mclsSalesTransactionDetails.RewardCardExpiry, strReason, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierName, mclsSalesTransactionDetails.TransactionNo);
 							}
+                            // commit the transactions here.
+                            // in case error s encoutered n printing. transaction is already committed.
+                            clsSalesTransactions.CommitAndDispose();
 
 							/**
 							 * print the transaction
@@ -5463,9 +5466,6 @@ namespace AceSoft.RetailPlus.Client.UI
 								}
 							}
 						}
-
-                        // commit the transactions
-                        clsSalesTransactions.CommitAndDispose();
 
                         InsertAuditLog(AccessTypes.CloseTransaction, "Close transaction #: " + lblTransNo.Text + "... Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + CashPayment.ToString("#,###.#0") + " ChequePayment: " + ChequePayment.ToString("#,###.#0") + " CreditCardPayment: " + CreditCardPayment + " CreditPayment: " + CreditPayment.ToString("#,###.#0") + " DebitPayment: " + DebitPayment.ToString("#,###.#0") + " ChangeAmount: " + ChangeAmount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 						
@@ -11109,22 +11109,33 @@ namespace AceSoft.RetailPlus.Client.UI
 						mstrToPrint += CenterString("Guarantor", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 					}
 					mstrToPrint += Environment.NewLine;
+
+                    Receipt clsReceipt = new Receipt(mConnection, mTransaction);
+                    ReceiptDetails clsReceiptDetails;
                     if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID && mclsContactDetails.CreditDetails.GuarantorID != 0)
-					{ mstrToPrint += CenterString("SUPER CREDIT CHARGE SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
+					{ clsReceiptDetails = clsReceipt.Details(ReportFormatModule.GroupCreditChargeHeader);}
 					else
-					{ mstrToPrint += CenterString("HP CREDIT CHARGE SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
+					{ clsReceiptDetails = clsReceipt.Details(ReportFormatModule.IndividualCreditChargeHeader); }
+                    clsReceipt.CommitAndDispose();
+
+                    if (clsReceiptDetails.Value == null || clsReceiptDetails.Value == string.Empty)
+                    { mstrToPrint += CenterString("CHARGE SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
+                    else { mstrToPrint += CenterString(clsReceiptDetails.Value, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
 
 					//mstrToPrint += CenterString("CHARGE SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 					mstrToPrint += Environment.NewLine;
 					mstrToPrint += "Amount of Purchase :" + mclsSalesTransactionDetails.CreditPayment.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 20) + Environment.NewLine;
 					mstrToPrint += Environment.NewLine;
-					mstrToPrint += "I hereby agree  to pay the total  amount" + Environment.NewLine;
-					mstrToPrint += "stated herein including any charges  due" + Environment.NewLine;
-					mstrToPrint += "thereon  subject   to    the   pertinent" + Environment.NewLine;
-					mstrToPrint += "contract   governing  the use of    this" + Environment.NewLine;
-					mstrToPrint += "Credit Card." + Environment.NewLine;
-					mstrToPrint += Environment.NewLine;
-					mstrToPrint += Environment.NewLine;
+                    if (mclsTerminalDetails.IncludeCreditChargeAgreement)
+                    {
+                        mstrToPrint += "I hereby agree  to pay the total  amount" + Environment.NewLine;
+                        mstrToPrint += "stated herein including any charges  due" + Environment.NewLine;
+                        mstrToPrint += "thereon  subject   to    the   pertinent" + Environment.NewLine;
+                        mstrToPrint += "contract   governing  the use of    this" + Environment.NewLine;
+                        mstrToPrint += "Credit Card." + Environment.NewLine;
+                        mstrToPrint += Environment.NewLine;
+                        mstrToPrint += Environment.NewLine;
+                    }
 					mstrToPrint += "-".PadLeft(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
 					mstrToPrint += CenterString(mclsSalesTransactionDetails.CustomerName, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 					mstrToPrint += Environment.NewLine;

@@ -85,6 +85,9 @@ namespace AceSoft.RetailPlus.Data
 
         // [03/18/2012] Include to know how the search will be done.
         public ProductSearchType ProductSearchType;
+
+        // [04/29/2013] Include to know whether to print agreement or not
+        public bool IncludeCreditChargeAgreement;
 	}
 
     public struct RewardPointsDetails
@@ -533,7 +536,8 @@ namespace AceSoft.RetailPlus.Data
                             "InHouseIndividualCreditPermitNo, " +
                             "InHouseGroupCreditPermitNo, " +
                             "DBVersion, " +
-                            "ProductSearchType " +
+                            "ProductSearchType, " +
+                            "IncludeCreditChargeAgreement " +
 						"FROM tblTerminal ";
 
 			return SQL;
@@ -756,6 +760,9 @@ namespace AceSoft.RetailPlus.Data
 
                 // Added Mar 18, 2012
                 Details.ProductSearchType = (ProductSearchType)Enum.Parse(typeof(ProductSearchType), myReader.GetString("ProductSearchType"));
+                
+                // Added Apr 29, 2013
+                Details.IncludeCreditChargeAgreement = myReader.GetBoolean("IncludeCreditChargeAgreement");
             }
             myReader.Close();
 

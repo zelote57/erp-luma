@@ -70,6 +70,8 @@ namespace AceSoft.RetailPlus
 
 		public static string ReportFooterSpacer	=	"ReportFooterSpacer";
 
+        public static string GroupCreditChargeHeader = "GroupCreditChargeHeader";
+        public static string IndividualCreditChargeHeader = "IndividualCreditChargeHeader";
 	}
 
 	public enum ReportFormatOrientation

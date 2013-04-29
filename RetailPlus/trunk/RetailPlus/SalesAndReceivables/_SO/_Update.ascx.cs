@@ -102,7 +102,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
             Contacts clsContact = new Contacts();
             cboCustomer.DataTextField = "ContactName";
             cboCustomer.DataValueField = "ContactID";
-            cboCustomer.DataSource = clsContact.CustomersDataTable(null, 0, "ContactName", SortOption.Ascending).DefaultView;
+            cboCustomer.DataSource = clsContact.CustomersDataTable(null).DefaultView;
             cboCustomer.DataBind();
             clsContact.CommitAndDispose();
             cboCustomer.SelectedIndex = 0;

@@ -6221,3 +6221,23 @@ ALTER TABLE tblTransactions ADD PARTITION (
 
 ALTER TABLE tblCreditPayment MODIFY `Remarks` VARCHAR(8000); -- 09Mar2013 put payments log in remarks
 ALTER TABLE tblProductMovement MODIFY `MatrixDescription` VARCHAR(100) DEFAULT '';
+
+-- Update the correct transactionid. Found out in BOOZE that incorrect transactionid was saved for old transactions.
+UPDATE tblcreditpayment SET
+	TransactionID = (SELECT transactionid FROM tbltransactions 
+				WHERE tbltransactions.transactionno = tblcreditpayment.transactionno
+					and tbltransactions.customerid = tblcreditpayment.Contactid);
+
+-- Added Apr 29, 2013
+INSERT INTO tblReceipt(Module, Text, Value, Orientation) VALUES ('GroupCreditChargeHeader', '', 'GROUP CREDIT CHARGE SLIP',1);
+INSERT INTO tblReceipt(Module, Text, Value, Orientation) VALUES ('IndividualCreditChargeHeader', '', 'CHARGE SLIP',1);
+-- For HP values should be
+--		GroupCreditChargeHeader:		HP CREDIT CHARGE SLIP
+--		IndividualCreditChargeHeader:	SUPER CREDIT CHARGE SLIP
+
+ALTER TABLE tblTerminal ADD `IncludeCreditChargeAgreement` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+-- If HP the value should be 1 which will include the following
+--		I hereby agree  to pay the total  amount
+--		stated herein including any charges  due
+--		thereon  subject   to    the   pertinent
+--		contract   governing  the use of    this

@@ -205,12 +205,12 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Customer
 
 			if (Request.QueryString["Search"]==null)
 			{
-				PageData.DataSource = clsContact.CustomersDataTable(null,0,SortField, sortoption).DefaultView;
+				PageData.DataSource = clsContact.CustomersDataTable(null,0,false,SortField, sortoption).DefaultView;
 			}
 			else
 			{						
 				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsContact.CustomersDataTable(SearchKey,0,SortField, sortoption).DefaultView;
+                PageData.DataSource = clsContact.CustomersDataTable(SearchKey, 0, false, SortField, sortoption).DefaultView;
 			}
 
 			clsContact.CommitAndDispose();

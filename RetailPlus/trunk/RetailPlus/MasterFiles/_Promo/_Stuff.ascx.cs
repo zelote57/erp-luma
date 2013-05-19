@@ -290,7 +290,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 
 			cboProductVariation.DataTextField = "VariationDesc";
 			cboProductVariation.DataValueField = "MatrixID";
-            cboProductVariation.DataSource = clsProductVariationsMatrix.BaseListAsDataTable(Convert.ToInt64(cboProducts.SelectedItem.Value));
+            cboProductVariation.DataSource = clsProductVariationsMatrix.BaseListAsDataTable(0, Convert.ToInt64(cboProducts.SelectedItem.Value));
 			cboProductVariation.DataBind();
             cboProductVariation.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
 			cboProductVariation.SelectedIndex = 0;

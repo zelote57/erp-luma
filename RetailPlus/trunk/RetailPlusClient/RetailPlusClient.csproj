@@ -245,6 +245,7 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -358,15 +359,6 @@
     <Compile Include="UI\ItemReleaseWnd.Designer.cs">
       <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\ItemVariationsRestoWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ItemMatrixPackageRestoWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ItemPackageRestoWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\ItemSelectRestoWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -415,16 +407,7 @@
     <Compile Include="UI\HourlyReportWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ItemMatrixPackageWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ItemPackageWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\ItemSelectWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ItemVariationsWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\LogInWnd.cs">
@@ -852,18 +835,6 @@
       <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemVariationsRestoWnd.resx">
-      <DependentUpon>ItemVariationsRestoWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemMatrixPackageRestoWnd.resx">
-      <DependentUpon>ItemMatrixPackageRestoWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemPackageRestoWnd.resx">
-      <DependentUpon>ItemPackageRestoWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\ItemSelectRestoWnd.resx">
       <DependentUpon>ItemSelectRestoWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -924,20 +895,8 @@
       <DependentUpon>HourlyReportWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemMatrixPackageWnd.resx">
-      <DependentUpon>ItemMatrixPackageWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemPackageWnd.resx">
-      <DependentUpon>ItemPackageWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\ItemSelectWnd.resx">
       <DependentUpon>ItemSelectWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemVariationsWnd.resx">
-      <DependentUpon>ItemVariationsWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LogInWnd.resx">
@@ -1036,12 +995,12 @@
   <ItemGroup>
     <PublishFile Include="bin\Debug\version.xml">
       <Visible>False</Visible>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
   </ItemGroup>

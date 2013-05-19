@@ -317,9 +317,9 @@ namespace AceSoft.RetailPlus.Inventory
                     // remove this again due to inventory per branch
                     // re-use this again. AddQty does not tally
                     if (decQuantityBefore > decQuantityNow)
-                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
                     else if (decQuantityBefore < decQuantityNow)
-                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
 
                     //if (decQuantityBefore > decQuantityNow)
                     //{ clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
@@ -377,10 +377,11 @@ namespace AceSoft.RetailPlus.Inventory
                         clsInvAdjustment.Insert(clsInvAdjustmentDetails);
 
                         bolContinue = true;
-                        if (decQuantityBeforeMatrix > decQuantityNowMatrix)
-                        { clsProductVariationsMatrix.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, long.Parse(chkMatrixID.Value), decimal.Parse(txtQuantityNowMatrix.Text), decimal.Parse(txtMaxThresholdMatrix.Text), decimal.Parse(txtMaxThresholdMatrix.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
-                        else if (decQuantityBeforeMatrix < decQuantityNowMatrix)
-                        { clsProductVariationsMatrix.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, long.Parse(chkMatrixID.Value), decimal.Parse(txtQuantityNowMatrix.Text), decimal.Parse(txtMaxThresholdMatrix.Text), decimal.Parse(txtMaxThresholdMatrix.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+
+                        if (decQuantityBefore > decQuantityNow)
+                        { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, long.Parse(chkMatrixID.Value), decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                        else if (decQuantityBefore < decQuantityNow)
+                        { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, long.Parse(chkMatrixID.Value), decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
 
                     }
 
@@ -404,9 +405,9 @@ namespace AceSoft.RetailPlus.Inventory
 
                     // re-use this again. AddQty does not tally
                     if (decQuantityBefore > decQuantityNow)
-                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
                     else if (decQuantityBefore < decQuantityNow)
-                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
 
                 }
             }

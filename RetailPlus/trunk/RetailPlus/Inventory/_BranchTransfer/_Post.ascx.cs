@@ -125,7 +125,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			ProductVariationsMatrix clsProductVariationMatrix = new ProductVariationsMatrix();
             cboVariation.DataTextField = "VariationDescOnly";
 			cboVariation.DataValueField = "MatrixID";
-			cboVariation.DataSource = clsProductVariationMatrix.BaseListAsDataTable(ProductID, "VariationDesc",SortOption.Ascending).DefaultView;
+			cboVariation.DataSource = clsProductVariationMatrix.BaseListAsDataTable(0, ProductID, "VariationDesc",SortOption.Ascending).DefaultView;
 			cboVariation.DataBind();
 
 			if (cboVariation.Items.Count == 0)

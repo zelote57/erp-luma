@@ -63,7 +63,7 @@ namespace AceSoft.RetailPlus.Inventory
             clsProductColumns.ProductCode = true;
             clsProductColumns.ProductGroupCode = true;
             clsProductColumns.ProductSubGroupCode = true;
-            clsProductColumns.MainQuantity = true;
+            clsProductColumns.Quantity = true;
             clsProductColumns.MinThreshold = true;
             clsProductColumns.MaxThreshold = true;
             clsProductColumns.BaseUnitCode = true;
@@ -163,7 +163,7 @@ namespace AceSoft.RetailPlus.Inventory
 
                 Label lblQuantity = (Label)e.Item.FindControl("lblQuantity");
                 // lblQuantity.Text = Convert.ToDecimal(dr[ProductColumnNames.MainQuantity].ToString()).ToString("#,##0.#0") + " " + dr[ProductColumnNames.BaseUnitCode];
-                lblQuantity.Text = dr[ProductColumnNames.ConvertedMainQuantity].ToString();
+                lblQuantity.Text = dr[ProductColumnNames.ConvertedQuantity].ToString();
 
 				Label lblMinThreshold = (Label) e.Item.FindControl("lblMinThreshold");
 				lblMinThreshold.Text = Convert.ToDecimal(dr[ProductColumnNames.MinThreshold].ToString()).ToString("#,##0.#0");

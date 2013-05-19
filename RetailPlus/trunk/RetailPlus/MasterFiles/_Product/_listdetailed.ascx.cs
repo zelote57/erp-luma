@@ -167,7 +167,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 lnkSubGroup.Text = dr[ProductColumnNames.ProductSubGroupCode].ToString();
 
                 Label lblQuantity = (Label)e.Item.FindControl("lblQuantity");
-                lblQuantity.Text += dr[ProductColumnNames.ConvertedMainQuantity].ToString();
+                lblQuantity.Text += dr[ProductColumnNames.ConvertedQuantity].ToString();
                 //if (dr[ProductColumnNames.ConvertedMainQuantity].ToString().Split(';').Length > 0)
                 //{ lblQuantity.Text += " (" + dr[ProductColumnNames.ConvertedMainQuantity].ToString() + ") "; }
                 //else
@@ -521,7 +521,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsProductColumns.Price = true;
             clsProductColumns.PurchasePrice = true;
             clsProductColumns.ProductSubGroupCode = true;
-            clsProductColumns.MainQuantity = true;
+            clsProductColumns.Quantity = true;
             clsProductColumns.SupplierName = true;
             clsProductColumns.SupplierID = true;
             clsProductColumns.IncludeInSubtotalDiscount = true;

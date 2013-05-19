@@ -10,8 +10,11 @@ namespace AceSoft.RetailPlus.Client.UI
 	{
 		private System.Windows.Forms.Label lblHeader;
 		private System.Windows.Forms.DataGrid dgItems;
+        private System.Windows.Forms.DataGridTextBoxColumn PackageID;
 		private System.Windows.Forms.DataGridTextBoxColumn ProductID;
+        private System.Windows.Forms.DataGridTextBoxColumn MatrixID;
 		private System.Windows.Forms.DataGridTextBoxColumn ProductCode;
+        private System.Windows.Forms.DataGridTextBoxColumn MatrixDescription;
 		private System.Windows.Forms.DataGridTextBoxColumn BarCode;
 		private System.Windows.Forms.DataGridTextBoxColumn ProductDesc;
 		private System.Windows.Forms.DataGridTextBoxColumn ProductGroup;
@@ -108,9 +111,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblHeader = new System.Windows.Forms.Label();
             this.dgItems = new System.Windows.Forms.DataGrid();
             this.dgStyle = new System.Windows.Forms.DataGridTableStyle();
+            this.PackageID = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.MatrixID = new System.Windows.Forms.DataGridTextBoxColumn();
             this.BarCode = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductCode = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.MatrixDescription = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductDesc = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductGroup = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductSubGroup = new System.Windows.Forms.DataGridTextBoxColumn();
@@ -187,9 +193,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgStyle.BackColor = System.Drawing.Color.White;
             this.dgStyle.DataGrid = this.dgItems;
             this.dgStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+            this.PackageID,
             this.ProductID,
+            this.MatrixID,
             this.BarCode,
             this.ProductCode,
+            this.MatrixDescription,
             this.ProductDesc,
             this.ProductGroup,
             this.ProductSubGroup,
@@ -212,6 +221,16 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgStyle.SelectionBackColor = System.Drawing.Color.Green;
             this.dgStyle.SelectionForeColor = System.Drawing.Color.White;
             // 
+            // PackageID
+            // 
+            this.PackageID.Format = "";
+            this.PackageID.FormatInfo = null;
+            this.PackageID.HeaderText = "PackageID";
+            this.PackageID.MappingName = "PackageID";
+            this.PackageID.NullText = "";
+            this.PackageID.ReadOnly = true;
+            this.PackageID.Width = 0;
+            // 
             // ProductID
             // 
             this.ProductID.Format = "";
@@ -221,6 +240,16 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ProductID.NullText = "";
             this.ProductID.ReadOnly = true;
             this.ProductID.Width = 0;
+            // 
+            // MatrixID
+            // 
+            this.MatrixID.Format = "";
+            this.MatrixID.FormatInfo = null;
+            this.MatrixID.HeaderText = "MatrixID";
+            this.MatrixID.MappingName = "MatrixID";
+            this.MatrixID.NullText = "";
+            this.MatrixID.ReadOnly = true;
+            this.MatrixID.Width = 0;
             // 
             // BarCode
             // 
@@ -241,6 +270,16 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ProductCode.NullText = "";
             this.ProductCode.ReadOnly = true;
             this.ProductCode.Width = 0;
+            // 
+            // MatrixDescription
+            // 
+            this.MatrixDescription.Format = "";
+            this.MatrixDescription.FormatInfo = null;
+            this.MatrixDescription.HeaderText = "";
+            this.MatrixDescription.MappingName = "MatrixDescription";
+            this.MatrixDescription.NullText = "";
+            this.MatrixDescription.ReadOnly = true;
+            this.MatrixDescription.Width = 0;
             // 
             // ProductDesc
             // 
@@ -501,6 +540,13 @@ namespace AceSoft.RetailPlus.Client.UI
 			try 
 			{
 				mstBarCode = dgItems[iRow, 1].ToString();
+
+                ProductModel.Clear();
+                ProductModel.PackageID = Int64.Parse(dgItems[iRow, 0].ToString());
+                ProductModel.ProductID = Int64.Parse(dgItems[iRow, 1].ToString());
+                ProductModel.MatrixID = Int64.Parse(dgItems[iRow, 2].ToString());
+                ProductModel.BarCode = dgItems[iRow, 3].ToString();
+                
 			}
 			catch (Exception ex)
 			{
@@ -518,15 +564,22 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     dgStyle.GridColumnStyles["BarCode"].Width = 150;
                     if (!CONFIG.ShowDescriptionDuringItemSelect)
-                    { dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 390; }
+                    { 
+                        dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 590;
+                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 200;
+                    }
                     else
-                    { dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 390; }
+                    {
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 590;
+                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 200;
+                    }
                 }
                 else
                 {
                     dgStyle.GridColumnStyles["BarCode"].Width = 0;
-                    dgStyle.GridColumnStyles["ProductCode"].Width = 150;
-                    dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 390;
+                    dgStyle.GridColumnStyles["ProductCode"].Width = 200;
+                    dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 590;
+                    dgStyle.GridColumnStyles["MatrixDescription"].Width = 150;
                 }
 				dgStyle.GridColumnStyles["Price"].Width = 100;
 				dgStyle.GridColumnStyles["Quantity"].Width = 120;
@@ -540,15 +593,21 @@ namespace AceSoft.RetailPlus.Client.UI
                 { 
                     dgStyle.GridColumnStyles["BarCode"].Width = 150;
                     if (!CONFIG.ShowDescriptionDuringItemSelect)
-                    { dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 295; }
+                    {
+                        dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 495;
+                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 200; 
+                    }
                     else
-                    { dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 295; }
+                    {
+                        dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 495;
+                        dgStyle.GridColumnStyles["MatrixDescription"].Width = 200; 
+                    }
                 }
                 else
                 {
                     dgStyle.GridColumnStyles["BarCode"].Width = 0;
-                    dgStyle.GridColumnStyles["ProductCode"].Width = 150;
-                    dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 295;
+                    dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 495;
+                    dgStyle.GridColumnStyles["MatrixDescription"].Width = 350;
                 }
                 
                 //dgStyle.GridColumnStyles["ProductDesc"].Width = this.Width - 480;
@@ -563,62 +622,10 @@ namespace AceSoft.RetailPlus.Client.UI
 		{	
 			try
 			{
-                Data.ProductColumns clsProductColumns = new Data.ProductColumns();
-                clsProductColumns.ProductID = true;
-                clsProductColumns.BarCode = true;
-                clsProductColumns.ProductCode = true;
-                clsProductColumns.MainQuantity = true;
-                clsProductColumns.Price = true;
-                clsProductColumns.IncludeAllPackages = true;
-                clsProductColumns.MinThreshold = true;
-
                 string strSearchKey = Constants.MaskProductSearch + txtSearch.Text;
-                Data.ProductDetails clsSearchKeys = new Data.ProductDetails();
-
-                if (mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeOnly ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeProductCode ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeProductCodeProductDesc)
-                {
-                    clsSearchKeys.BarCode = strSearchKey;
-                    clsSearchKeys.BarCode2 = strSearchKey;
-                    clsSearchKeys.BarCode3 = strSearchKey;
-                }
-                if (mclsTerminalDetails.ProductSearchType == ProductSearchType.ProductCode  ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.ProductCodeProductDesc  ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeProductCode ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeProductCodeProductDesc)
-                {
-                    clsSearchKeys.ProductCode  = strSearchKey;
-                }
-                if (mclsTerminalDetails.ProductSearchType == ProductSearchType.ProductDesc ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.ProductCodeProductDesc ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeProductCodeProductDesc)
-                {
-                    clsSearchKeys.ProductDesc = strSearchKey;
-                }
-                
                 Products clsProduct = new Products();
 
-                System.Data.DataTable dt;
-                //if (mboShowInActiveProducts == false)
-                //{ dt = clsProduct.SearchDataTableSimple(Constants.TerminalBranchID, ProductListFilterType.ShowActiveOnly, SearchKey, 0, 0, string.Empty, 0, string.Empty, 16, mboShowItemMoreThanZeroQty, true, "ProductCode", SortOption.Ascending); }
-                //else
-                //{ dt = clsProduct.SearchDataTableSimple(Constants.TerminalBranchID, ProductListFilterType.ShowActiveAndInactive, SearchKey, 0, 0, string.Empty, 0, string.Empty, 16, mboShowItemMoreThanZeroQty, true, "ProductCode", SortOption.Ascending); }
-                if (mboShowInActiveProducts == false)
-                { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending); }
-                else
-                { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending); }
-
-                if (dt.Rows.Count == 0)
-                {
-                    clsSearchKeys = new Data.ProductDetails();
-                    clsSearchKeys.ProductCode = strSearchKey;
-                    if (mboShowInActiveProducts == false)
-                    { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending); }
-                    else
-                    { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending); }
-
-                }
+                System.Data.DataTable dt = clsProduct.ListAsDataTable(mclsTerminalDetails.BranchID, strSearchKey, mboShowInActiveProducts ? ProductListFilterType.ShowActiveAndInactive : ProductListFilterType.ShowActiveOnly, 100, mclsTerminalDetails.ShowItemMoreThanZeroQty); 
 				clsProduct.CommitAndDispose();
 
                 this.dgStyle.MappingName = dt.TableName;

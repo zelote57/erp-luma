@@ -211,13 +211,13 @@ namespace AceSoft.RetailPlus.Reports
             clsProductColumns.ProductGroupName = true;
             clsProductColumns.DateCreated = true;
             clsProductColumns.Price = true;
-            clsProductColumns.MainQuantity = true;
+            clsProductColumns.Quantity = true;
             clsProductColumns.MinThreshold = true;
             clsProductColumns.MaxThreshold = true;
             clsProductColumns.PurchasePrice = true;
             clsProductColumns.SupplierName = true;
-            clsProductColumns.MainQuantityIN = true;
-            clsProductColumns.MainQuantityOUT = true;
+            clsProductColumns.QuantityIN = true;
+            clsProductColumns.QuantityOUT = true;
             clsProductColumns.RIDMinThreshold = true;
             clsProductColumns.RIDMaxThreshold = true;
             clsProductColumns.RID = true;

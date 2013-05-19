@@ -1744,11 +1744,11 @@ namespace AceSoft.RetailPlus.Client.UI
 								break;
 
 							case Keys.PageDown:
-								SelectProduct(false);
+                                SelectProduct(false);
 								break;
 
 							case Keys.Right:
-								SelectProduct(false);
+								SelectProduct(false); // 13May2013 LEAceron: by right, price should be visible.
 								break;
 
 							case Keys.PageUp:
@@ -2161,28 +2161,12 @@ namespace AceSoft.RetailPlus.Client.UI
                                 {
                                     if (Details.TransactionItemStatus != TransactionItemStatus.Return)
                                     {
-                                        // Aug 3, 2011 : Lemu
-                                        // Check the ProductVariationMatrixCurrentQuantity currenct quantity if sufficient for 
-                                        if (Details.VariationsMatrixID != 0)
+                                        decimal decProductCurrentQuantity = clsProduct.Details(Details.ProductID, Details.VariationsMatrixID).Quantity + oldQuantity;
+                                        if (decProductCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
                                         {
-                                            Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
-                                            decimal decProductVariationMatrixCurrentQuantity = clsProductVariationsMatrix.BaseDetailsByMatrixID(Details.VariationsMatrixID).Quantity + oldQuantity;
-                                            if (decProductVariationMatrixCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
-                                            {
-                                                clsProduct.CommitAndDispose();
-                                                MessageBox.Show("Sorry the quantity you entered is greater than the current stock of Variation: " + Details.MatrixDescription + Environment.NewLine + "Current Stock: " + decProductVariationMatrixCurrentQuantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                                return;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            decimal decProductCurrentQuantity = clsProduct.Details(Details.ProductID).Quantity + oldQuantity;
-                                            if (decProductCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
-                                            {
-                                                clsProduct.CommitAndDispose();
-                                                MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + decProductCurrentQuantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                                return;
-                                            }
+                                            clsProduct.CommitAndDispose();
+                                            MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + decProductCurrentQuantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                            return;
                                         }
                                     }
                                 }
@@ -2203,13 +2187,23 @@ namespace AceSoft.RetailPlus.Client.UI
                                     decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
 
                                     clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_CHANGE_QTY), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-                                    // remove the ff codes for a change in Jul 26, 2011
-                                    // clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
-                                    // if (Details.VariationsMatrixID != 0)
-                                    // {
-                                    //     Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
-                                    //     clsProductVariationsMatrix.AddQuantity(Details.VariationsMatrixID, decNewQuantity);
-                                    // }
+                                }
+                            }
+                            else if (mboIsRefund && mclsTerminalDetails.ReservedAndCommit)
+                            {
+                                if (Details.TransactionItemStatus == TransactionItemStatus.Return)
+                                {
+                                    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
+                                    decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
+
+                                    clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_CHANGE_QTY), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                                }
+                                else
+                                {
+                                    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
+                                    decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
+
+                                    clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_RETURN_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
                                 }
                             }
 
@@ -3012,11 +3006,11 @@ namespace AceSoft.RetailPlus.Client.UI
 				MessageBox.Show("Sorry you cannot suspend an empty transaction.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return boRetValue;
 			}
-			if (mboIsRefund)
-			{
-				MessageBox.Show("Sorry you cannot suspend a REFUND transaction.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				return boRetValue;
-			}
+            //if (mboIsRefund)
+            //{
+            //    MessageBox.Show("Sorry you cannot suspend a REFUND transaction.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return boRetValue;
+            //}
 
 			DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.SuspendTransaction);
 
@@ -3222,7 +3216,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						mclsSalesTransactionDetails = details;
 
-						if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Refund)
+						if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Refund || mclsSalesTransactionDetails.TransactionType == TransactionTypes.POSRefund)
 						{
 							mboIsRefund = true;
 							lblSubtotalName.Text = "SUBTOTAL: REFUND";
@@ -3378,8 +3372,12 @@ namespace AceSoft.RetailPlus.Client.UI
 						{
 							dgItems.CurrentRowIndex = x;
 							Data.SalesTransactionItemDetails Details = getCurrentRowItemDetails();
-							Details.TransactionItemStatus = TransactionItemStatus.Void;
-							ReservedAndCommitItem(Details, Details.TransactionItemStatus);
+
+                            if (Details.TransactionItemStatus != TransactionItemStatus.Void)
+                            {
+                                Details.TransactionItemStatus = TransactionItemStatus.Void;
+                                ReservedAndCommitItem(Details, Details.TransactionItemStatus);
+                            }
 						}
 					}
 					#endregion
@@ -3398,6 +3396,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					mclsTransactionStream.WriteLine("The above transaction is void. REASON: transaction has been void.", mclsSalesTransactionDetails.TransactionDate);
 					mclsTransactionStream.CommitAndDispose(mclsSalesTransactionDetails.TransactionDate);
+                    
+                    clsSalesTransactions.CommitAndDispose();
 
 					clsEvent.AddEventLn("Done transaction no. " + lblTransNo.Text + " has been void.", true);
 
@@ -3442,8 +3442,6 @@ namespace AceSoft.RetailPlus.Client.UI
 					//Data.Contact clsContact = new Data.Contact();
 					//clsContact.Update(mclsSalesTransactionDetails.CustomerName, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CustomerID);
 					//clsContact.CommitAndDispose();
-
-                    clsSalesTransactions.CommitAndDispose();
                     this.LoadOptions();
 
 					MessageBox.Show("Transaction has been VOID. Press OK button to continue...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -4280,36 +4278,38 @@ namespace AceSoft.RetailPlus.Client.UI
 							return;
 						}
 					}
-					Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
-                    mConnection = clsProduct.Connection; mTransaction = clsProduct.Transaction;
+                    Data.ProductPackage clsProductPackage = new Data.ProductPackage(mConnection, mTransaction);
+                    mConnection = clsProductPackage.Connection; mTransaction = clsProductPackage.Transaction;
 
-					Data.ProductDetails clsProductDetails = clsProduct.Details(stBarcode);
+                    Data.ProductPackageDetails clsProductPackageDetails;
+                    if (ProductModel.PackageID !=0)
+                        clsProductPackageDetails = clsProductPackage.Details(ProductModel.PackageID);
+                    else
+                        clsProductPackageDetails = clsProductPackage.DetailsByBarCode(stBarcode);
+
+                    Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
+                    Data.ProductDetails clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID, clsProductPackageDetails.MatrixID);
 
 					txtBarCode.Text = "";
-
-					Data.ProductPackage clsProductPackage = new Data.ProductPackage(mConnection, mTransaction);
-					Data.ProductPackageDetails clsProductPackageDetails = clsProductPackage.DetailsByBarCode(stBarcode);
-					if (clsProductPackageDetails.PackageID != 0 && clsProductDetails.ProductID == 0)
-					{ clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID); }
+                    ProductModel.Clear();
 
 					// check if the product is weighted
-					if (clsProductDetails.ProductID == 0)
+                    if (clsProductDetails.ProductID == 0)
 					{
 						if (stBarcode.Length == 12) stBarcode = "0" + stBarcode;
 						if (stBarcode.Length > Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT + 1)
 						{
-							clsProductDetails = clsProduct.Details(stBarcode.Remove(Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT));
-							clsProductPackageDetails = clsProductPackage.DetailsByBarCode(stBarcode.Remove(Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT));
-							if (clsProductPackageDetails.PackageID != 0 && clsProductDetails.ProductID == 0)
-							{ clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID); }
+                            clsProductPackageDetails = clsProductPackage.DetailsByBarCode(stBarcode.Remove(Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT));
 
+                            clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID, clsProductPackageDetails.MatrixID);
+							
 							if (clsProductDetails.ProductID != 0)
 							{
 								decQuantity = (decimal.Parse(stBarcode.Remove(stBarcode.Length - 1).Remove(1, Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT)) / 100) / clsProductDetails.Price;
 							}
 						}
 					}
-					if (clsProductDetails.ProductID != 0)
+                    if (clsProductDetails.ProductID != 0)
 					{
 						
 						if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
@@ -4353,360 +4353,31 @@ namespace AceSoft.RetailPlus.Client.UI
 						clsItemDetails.PercentageCommision = clsProductDetails.PercentageCommision;
 						clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
 
-                        Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
-                        int variationsCtr = clsProductVariationsMatrix.CountVariations(clsItemDetails.ProductID);
+                        clsItemDetails.ProductPackageID = clsProductPackageDetails.PackageID;
+                        clsItemDetails.ProductUnitID = clsProductPackageDetails.UnitID;
+                        clsItemDetails.ProductUnitCode = clsProductPackageDetails.UnitCode;
+                        clsItemDetails.Price = clsProductPackageDetails.Price;
+                        clsItemDetails.PackageQuantity = clsProductPackageDetails.Quantity;
+                        clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
+                        clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
 
-                        if (clsProductPackageDetails.PackageID != 0 && variationsCtr == 0)
-						{
-							if (!mboIsInTransaction)
-							{
-								lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
-								if (!this.CreateTransaction()) { clsProduct.CommitAndDispose(); return; }
-							}
-							clsItemDetails.ProductPackageID = clsProductPackageDetails.PackageID;
-							clsItemDetails.ProductUnitID = clsProductPackageDetails.UnitID;
-							clsItemDetails.ProductUnitCode = clsProductPackageDetails.UnitCode;
-							clsItemDetails.Price = clsProductPackageDetails.Price;
-							clsItemDetails.PackageQuantity = clsProductPackageDetails.Quantity;
-							clsItemDetails.VAT = clsProductPackageDetails.VAT;
-							clsItemDetails.LocalTax = clsProductPackageDetails.LocalTax;
-							clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-							clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
-							clsItemDetails.PurchasePrice = clsProductPackageDetails.PurchasePrice;
-							clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
-						}
-						else
-						{
-							#region variationsCtr = 0
-							if (variationsCtr == 0)
-							{
-								Int32 ItemPackageCount = clsProductPackage.CountPackage(clsItemDetails.ProductID);
+                        clsItemDetails.MatrixPackageID = clsProductPackageDetails.MatrixID;
+                        clsItemDetails.VariationsMatrixID = clsProductDetails.MatrixID;
+                        clsItemDetails.MatrixDescription = clsProductDetails.MatrixDescription; 
 
-								if (ItemPackageCount == 0)
-								{
-									clsProduct.CommitAndDispose();
-									MessageBox.Show("Sorry there is no Product Package for this item. " + Environment.NewLine +
-													"Please advise you Inventory Officer to create at least one package." + Environment.NewLine +
-														"Details are as follows: " + Environment.NewLine +
-														"Product:" + clsItemDetails.Description, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-									return;
-								}
-								else if (ItemPackageCount == 1)
-								{
-									if (!mboIsInTransaction)
-									{
-										lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
-										if (!this.CreateTransaction()) { clsProduct.CommitAndDispose(); return; }
-									}
-
-									clsProductPackageDetails = clsProductPackage.DetailsByProductID(clsItemDetails.ProductID);
-
-									clsItemDetails.ProductPackageID = clsProductPackageDetails.PackageID;
-									clsItemDetails.ProductUnitID = clsProductPackageDetails.UnitID;
-									clsItemDetails.ProductUnitCode = clsProductPackageDetails.UnitCode;
-									clsItemDetails.Price = clsProductPackageDetails.Price;
-									clsItemDetails.PackageQuantity = clsProductPackageDetails.Quantity;
-									clsItemDetails.VAT = clsProductPackageDetails.VAT;
-									clsItemDetails.LocalTax = clsProductPackageDetails.LocalTax;
-									clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-									clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
-									clsItemDetails.PurchasePrice = clsProductPackageDetails.PurchasePrice;
-									clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
-								}
-								else if (ItemPackageCount > 1)
-								{
-									DialogResult ShowPackageSelectionResult = DialogResult.Cancel;
-									Data.SalesTransactionItemDetails clsSalesTransactionItemDetails = clsItemDetails;
-
-									ItemPackageWnd ItemPackgWnd = new ItemPackageWnd();
-									ItemPackgWnd.Details = clsItemDetails;
-									ItemPackgWnd.ShowDialog(this);
-									ShowPackageSelectionResult = ItemPackgWnd.Result;
-									clsSalesTransactionItemDetails = ItemPackgWnd.Details;
-									ItemPackgWnd.Close();
-									ItemPackgWnd.Dispose();
-
-									if (ShowPackageSelectionResult == DialogResult.OK)
-									{
-										clsItemDetails = clsSalesTransactionItemDetails;
-
-										if (!mboIsInTransaction)
-										{
-											lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
-											if (!this.CreateTransaction()) { clsProduct.CommitAndDispose(); return; }
-										}
-									}
-									else
-									{
-										clsProduct.CommitAndDispose();
-										return;
-									}
-								}
-
-
-							}
-							#endregion
-							#region variationsCtr = 1
-							else if (variationsCtr == 1)
-							{
-								Data.ProductVariationsMatrix clsVariation = new Data.ProductVariationsMatrix(mConnection, mTransaction);
-								Data.ProductBaseMatrixDetails clsProductBaseMatrixDetails = clsVariation.BaseDetails(clsItemDetails.ProductID);
-
-								decimal decProductVariationMatrixCurrentQuantity = clsProductBaseMatrixDetails.Quantity;
-								if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
-								{
-									if (decProductVariationMatrixCurrentQuantity < clsItemDetails.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
-									{
-										clsProduct.CommitAndDispose();
-										MessageBox.Show("Sorry the quantity you entered is greater than the current stock of Variation: " + clsItemDetails.MatrixDescription + Environment.NewLine + "Current Stock: " + decProductVariationMatrixCurrentQuantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-										return;
-									}
-								}
-
-								clsItemDetails.VariationsMatrixID = clsProductBaseMatrixDetails.MatrixID;
-								clsItemDetails.MatrixDescription = clsProductBaseMatrixDetails.Description;
-								clsItemDetails.Price = clsProductBaseMatrixDetails.Price;
-								clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-								clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
-								clsItemDetails.VAT = clsProductBaseMatrixDetails.VAT;
-								clsItemDetails.LocalTax = clsProductBaseMatrixDetails.LocalTax;
-								clsItemDetails.PurchasePrice = clsProductBaseMatrixDetails.PurchasePrice;
-								clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
-								clsItemDetails.IncludeInSubtotalDiscount = clsProductBaseMatrixDetails.IncludeInSubtotalDiscount;
-
-								Data.MatrixPackage clsMatrixPackage = new Data.MatrixPackage(mConnection, mTransaction);
-								Int32 MatrixPackageCount = clsMatrixPackage.CountPackage(clsItemDetails.VariationsMatrixID);
-								if (MatrixPackageCount == 0)
-								{
-									clsProduct.CommitAndDispose();
-									MessageBox.Show("Sorry there is no Product Variation Package for this item. " + Environment.NewLine +
-													"Please advise you Inventory Officer to create at least one package." + Environment.NewLine +
-														"Details are as follows: " + Environment.NewLine +
-														"Product:" + clsItemDetails.Description + Environment.NewLine +
-														"Variation: " + clsItemDetails.MatrixDescription, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-									return;
-								}
-								else if (MatrixPackageCount == 1)
-								{
-									if (!mboIsInTransaction)
-									{
-										lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
-										if (!this.CreateTransaction()) { clsProduct.CommitAndDispose(); return; }
-									}
-
-									Data.MatrixPackageDetails clsMatrixPackageDetails = clsMatrixPackage.DetailsByMatrixID(clsItemDetails.VariationsMatrixID);
-
-									clsItemDetails.MatrixPackageID = clsMatrixPackageDetails.PackageID;
-									clsItemDetails.ProductUnitID = clsMatrixPackageDetails.UnitID;
-									clsItemDetails.ProductUnitCode = clsMatrixPackageDetails.UnitCode;
-									clsItemDetails.Price = clsMatrixPackageDetails.Price;
-									clsItemDetails.PackageQuantity = clsMatrixPackageDetails.Quantity;
-									clsItemDetails.VAT = clsMatrixPackageDetails.VAT;
-									clsItemDetails.EVAT = clsMatrixPackageDetails.EVAT;
-									clsItemDetails.LocalTax = clsMatrixPackageDetails.LocalTax;
-									clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-									clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
-									clsItemDetails.PurchasePrice = clsMatrixPackageDetails.PurchasePrice;
-									clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
-								}
-								else if (MatrixPackageCount > 1)
-								{
-									DialogResult result = DialogResult.Cancel;
-									Data.SalesTransactionItemDetails clsSalesTransactionItemDetails = clsItemDetails;
-
-									if (mclsTerminalDetails.IsTouchScreen)
-									{
-										ItemMatrixPackageRestoWnd ItemMatrixPackgWnd = new ItemMatrixPackageRestoWnd();
-										ItemMatrixPackgWnd.IsPriceInq = false;
-										ItemMatrixPackgWnd.Details = clsItemDetails;
-										ItemMatrixPackgWnd.ShowDialog(this);
-										result = ItemMatrixPackgWnd.Result;
-										clsSalesTransactionItemDetails = ItemMatrixPackgWnd.Details;
-										ItemMatrixPackgWnd.Close();
-										ItemMatrixPackgWnd.Dispose();
-									}
-									else
-									{
-										ItemMatrixPackageWnd ItemMatrixPackgWnd = new ItemMatrixPackageWnd();
-										ItemMatrixPackgWnd.Details = clsItemDetails;
-										ItemMatrixPackgWnd.ShowDialog(this);
-										result = ItemMatrixPackgWnd.Result;
-										clsSalesTransactionItemDetails = ItemMatrixPackgWnd.Details;
-										ItemMatrixPackgWnd.Close();
-										ItemMatrixPackgWnd.Dispose();
-									}
-
-									if (result == DialogResult.OK)
-									{
-										clsItemDetails = clsSalesTransactionItemDetails;
-
-										if (!mboIsInTransaction)
-										{
-											lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
-											if (!this.CreateTransaction()) { clsProduct.CommitAndDispose(); return; }
-										}
-									}
-									else
-									{
-										clsProduct.CommitAndDispose();
-										return;
-									}
-								}
-
-							}
-							#endregion
-							#region variationsCtr > 1
-							else if (variationsCtr > 1)
-							{
-							BackToVariation:
-								DialogResult result = DialogResult.Cancel;
-								Data.SalesTransactionItemDetails clsSalesTransactionItemDetails = clsItemDetails;
-
-								if (mclsTerminalDetails.IsTouchScreen)
-								{
-									ItemVariationsRestoWnd ItemVarWnd = new ItemVariationsRestoWnd();
-									ItemVarWnd.IsPriceInq = false;
-									ItemVarWnd.Details = clsItemDetails;
-									if (lblCustomer.Text.Trim().ToUpper() == Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
-										ItemVarWnd.ShowItemMoreThanZeroQty = false;
-									else
-										ItemVarWnd.ShowItemMoreThanZeroQty = mclsTerminalDetails.ShowItemMoreThanZeroQty;
-									ItemVarWnd.ShowDialog(this);
-									result = ItemVarWnd.Result;
-									clsSalesTransactionItemDetails = ItemVarWnd.Details;
-									ItemVarWnd.Close();
-									ItemVarWnd.Dispose();
-								}
-								else
-								{
-									ItemVariationsWnd ItemVarWnd = new ItemVariationsWnd();
-									ItemVarWnd.IsPriceInq = false;
-									ItemVarWnd.Details = clsItemDetails;
-									if (lblCustomer.Text.Trim().ToUpper() == Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
-										ItemVarWnd.ShowItemMoreThanZeroQty = false;
-									else
-										ItemVarWnd.ShowItemMoreThanZeroQty = mclsTerminalDetails.ShowItemMoreThanZeroQty;
-									ItemVarWnd.ShowDialog(this);
-									result = ItemVarWnd.Result;
-									clsSalesTransactionItemDetails = ItemVarWnd.Details;
-									ItemVarWnd.Close();
-									ItemVarWnd.Dispose();
-								}
-
-								if (result == DialogResult.OK)
-								{
-									clsItemDetails = clsSalesTransactionItemDetails;
-
-									decimal decProductVariationMatrixCurrentQuantity = clsProductVariationsMatrix.BaseDetailsByMatrixID(clsItemDetails.VariationsMatrixID).Quantity;
-									if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
-									{
-										if (decProductVariationMatrixCurrentQuantity < clsItemDetails.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
-										{
-											clsProduct.CommitAndDispose();
-											MessageBox.Show("Sorry the quantity you entered is greater than the current stock of Variation: " + clsItemDetails.MatrixDescription + Environment.NewLine + "Current Stock: " + decProductVariationMatrixCurrentQuantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-											return;
-										}
-									}
-
-									Data.MatrixPackage clsMatrixPackage = new Data.MatrixPackage(mConnection, mTransaction);
-									Int32 MatrixPackageCount = clsMatrixPackage.CountPackage(clsItemDetails.VariationsMatrixID);
-									if (MatrixPackageCount == 0)
-									{
-										clsProduct.CommitAndDispose();
-										MessageBox.Show("Sorry there is no Product Variation Package for this item. " + Environment.NewLine +
-														"Please advise you Inventory Officer to create at least one package." + Environment.NewLine +
-															"Details are as follows: " + Environment.NewLine +
-															"Product:" + clsItemDetails.Description + Environment.NewLine +
-															"Variation: " + clsItemDetails.MatrixDescription, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-										return;
-									}
-									else if (MatrixPackageCount == 1)
-									{
-										if (!mboIsInTransaction)
-										{
-											lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
-											if (!this.CreateTransaction()) { clsProduct.CommitAndDispose(); return; }
-										}
-
-										Data.MatrixPackageDetails clsMatrixPackageDetails = clsMatrixPackage.DetailsByMatrixID(clsItemDetails.VariationsMatrixID);
-										clsItemDetails.MatrixPackageID = clsMatrixPackageDetails.PackageID;
-										clsItemDetails.ProductUnitID = clsMatrixPackageDetails.UnitID;
-										clsItemDetails.ProductUnitCode = clsMatrixPackageDetails.UnitCode;
-										clsItemDetails.Price = clsMatrixPackageDetails.Price;
-										clsItemDetails.PackageQuantity = clsMatrixPackageDetails.Quantity;
-										clsItemDetails.VAT = clsMatrixPackageDetails.VAT;
-										clsItemDetails.EVAT = clsMatrixPackageDetails.EVAT;
-										clsItemDetails.LocalTax = clsMatrixPackageDetails.LocalTax;
-										clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-										clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
-										clsItemDetails.PurchasePrice = clsMatrixPackageDetails.PurchasePrice;
-										clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsMatrixPackageDetails.PurchasePrice;
-									}
-									else if (MatrixPackageCount > 1)
-									{
-										if (mclsTerminalDetails.IsTouchScreen)
-										{
-											ItemMatrixPackageRestoWnd ItemMatrixPackgWnd = new ItemMatrixPackageRestoWnd();
-											ItemMatrixPackgWnd.IsPriceInq = false;
-											ItemMatrixPackgWnd.Details = clsItemDetails;
-											ItemMatrixPackgWnd.ShowDialog(this);
-											result = ItemMatrixPackgWnd.Result;
-											clsSalesTransactionItemDetails = ItemMatrixPackgWnd.Details;
-											ItemMatrixPackgWnd.Close();
-											ItemMatrixPackgWnd.Dispose();
-										}
-										else
-										{
-											ItemMatrixPackageWnd ItemMatrixPackgWnd = new ItemMatrixPackageWnd();
-											ItemMatrixPackgWnd.Details = clsItemDetails;
-											ItemMatrixPackgWnd.ShowDialog(this);
-											result = ItemMatrixPackgWnd.Result;
-											clsSalesTransactionItemDetails = ItemMatrixPackgWnd.Details;
-											ItemMatrixPackgWnd.Close();
-											ItemMatrixPackgWnd.Dispose();
-										}
-
-										if (result == DialogResult.OK)
-										{
-											clsItemDetails = clsSalesTransactionItemDetails;
-
-											if (!mboIsInTransaction)
-											{
-												lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
-												if (!this.CreateTransaction()) { clsProduct.CommitAndDispose(); return; }
-											}
-										}
-										else
-										{
-											clsProduct.CommitAndDispose();
-											return;
-										}
-									}
-
-								}
-								else
-								{
-									clsProduct.CommitAndDispose();
-									return;
-								}
-								// Added June 1, 2010
-								// Reload Variation Selection Window if WillContinueSelectionVariation
-								if (mclsTerminalDetails.WillContinueSelectionVariation == true)
-								{
-									AddItem(clsItemDetails);
-									goto BackToVariation;
-								}
-							}
-							#endregion
-						}
-
+                        if (!mboIsInTransaction)
+                        {
+                            lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
+                            if (!this.CreateTransaction()) { clsProduct.CommitAndDispose(); return; }
+                        }
+                        
 						AddItem(clsItemDetails);
 					}
 					else
 					{
 						MessageBox.Show("Sorry the item is not yet entered in the system. Please select the generic code for this item.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					}
-					clsProduct.CommitAndDispose();
+					clsProductPackage.CommitAndDispose();
 				}
 			}
 		}
@@ -4730,280 +4401,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						return;
 					}
 				}
-				Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
-				Data.ProductDetails details = clsProduct.Details(stBarcode);
-				clsProduct.CommitAndDispose();
-				if (details.ProductID != 0)
-				{
-					Data.SalesTransactionItemDetails clsItemDetails = new Data.SalesTransactionItemDetails();
-
-					clsItemDetails.ProductID = details.ProductID;
-					clsItemDetails.ProductCode = details.ProductCode;
-					clsItemDetails.BarCode = details.BarCode;
-					clsItemDetails.Description = details.ProductDesc;
-					clsItemDetails.ProductGroup = details.ProductGroupName;
-					clsItemDetails.ProductSubGroup = details.ProductSubGroupName;
-					clsItemDetails.TransactionItemStatus = TransactionItemStatus.Valid;
-					clsItemDetails.ProductUnitID = details.BaseUnitID;
-					clsItemDetails.ProductUnitCode = details.BaseUnitCode;
-					clsItemDetails.Quantity = decQuantity;
-					clsItemDetails.Price = details.Price;
-					clsItemDetails.Discount = 0;
-					clsItemDetails.ItemDiscount = 0;
-					clsItemDetails.ItemDiscountType = DiscountTypes.NotApplicable;
-					clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-					clsItemDetails.VAT = details.VAT;
-					clsItemDetails.EVAT = details.EVAT;
-					clsItemDetails.LocalTax = details.LocalTax;
-					clsItemDetails.TransactionItemStatus = TransactionItemStatus.Valid;
-					clsItemDetails.PurchasePrice = details.PurchasePrice;
-					clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
-					clsItemDetails.IncludeInSubtotalDiscount = details.IncludeInSubtotalDiscount;
-					clsItemDetails.OrderSlipPrinter = details.OrderSlipPrinter;
-					clsItemDetails.OrderSlipPrinted = false;
-					clsItemDetails.PercentageCommision = details.PercentageCommision;
-					clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
-
-					Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
-					int variationsCtr = clsProductVariationsMatrix.CountVariations(clsItemDetails.ProductID);
-					clsProductVariationsMatrix.CommitAndDispose();
-
-					if (variationsCtr == 0)
-					{
-						Data.ProductPackage clsProductPackage = new Data.ProductPackage(mConnection, mTransaction);
-						Int32 ItemPackageCount = clsProductPackage.CountPackage(clsItemDetails.ProductID);
-
-						if (ItemPackageCount == 1)
-						{
-							Data.ProductPackageDetails PackageDetails = clsProductPackage.DetailsByProductID(clsItemDetails.ProductID);
-							clsProductPackage.CommitAndDispose();
-
-							clsItemDetails.ProductPackageID = PackageDetails.PackageID;
-							clsItemDetails.ProductUnitID = PackageDetails.UnitID;
-							clsItemDetails.ProductUnitCode = PackageDetails.UnitCode;
-							clsItemDetails.Price = PackageDetails.Price;
-							clsItemDetails.PackageQuantity = PackageDetails.Quantity;
-							clsItemDetails.VAT = PackageDetails.VAT;
-							clsItemDetails.LocalTax = PackageDetails.LocalTax;
-							clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-							clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
-							clsItemDetails.PurchasePrice = PackageDetails.PurchasePrice;
-							clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
-						}
-						else if (ItemPackageCount > 1)
-						{
-							clsProductPackage.CommitAndDispose();
-							DialogResult result = DialogResult.Cancel;
-							Data.SalesTransactionItemDetails clsSalesTransactionItemDetails = clsItemDetails;
-
-							if (mclsTerminalDetails.IsTouchScreen)
-							{
-								ItemPackageRestoWnd ItemPackgWnd = new ItemPackageRestoWnd();
-								ItemPackgWnd.IsPriceInq = true;
-								ItemPackgWnd.Details = clsItemDetails;
-								ItemPackgWnd.ShowDialog(this);
-								result = ItemPackgWnd.Result;
-								clsSalesTransactionItemDetails = ItemPackgWnd.Details;
-								ItemPackgWnd.Close();
-								ItemPackgWnd.Dispose();
-							}
-							else
-							{
-								ItemPackageWnd ItemPackgWnd = new ItemPackageWnd();
-								ItemPackgWnd.Details = clsItemDetails;
-								ItemPackgWnd.ShowDialog(this);
-								result = ItemPackgWnd.Result;
-								clsSalesTransactionItemDetails = ItemPackgWnd.Details;
-								ItemPackgWnd.Close();
-								ItemPackgWnd.Dispose();
-							}
-
-							if (result == DialogResult.OK)
-							{
-								clsItemDetails = clsSalesTransactionItemDetails;
-							}
-							else
-							{
-								txtBarCode.Text = "";
-								return;
-							}
-						}
-					}
-					else if (variationsCtr == 1)
-					{
-						Data.ProductVariationsMatrix clsVariation = new Data.ProductVariationsMatrix(mConnection, mTransaction);
-						Data.ProductBaseMatrixDetails clsDetails = clsVariation.BaseDetails(clsItemDetails.ProductID);
-						clsVariation.CommitAndDispose();
-
-						clsItemDetails.VariationsMatrixID = clsDetails.MatrixID;
-						clsItemDetails.MatrixDescription = clsDetails.Description;
-						clsItemDetails.Price = Convert.ToDecimal(clsDetails.Price);
-						clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-						clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
-						clsItemDetails.VAT = details.VAT;
-						clsItemDetails.LocalTax = details.LocalTax;
-						clsItemDetails.PurchasePrice = clsDetails.PurchasePrice;
-						clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
-
-						Data.MatrixPackage clsMatrixPackage = new Data.MatrixPackage(mConnection, mTransaction);
-						Int32 MatrixPackageCount = clsMatrixPackage.CountPackage(clsItemDetails.VariationsMatrixID);
-						if (MatrixPackageCount == 1)
-						{
-							Data.MatrixPackageDetails clsMatrixPackageDetails = clsMatrixPackage.DetailsByMatrixID(clsItemDetails.VariationsMatrixID);
-							clsMatrixPackage.CommitAndDispose();
-
-							clsItemDetails.MatrixPackageID = clsMatrixPackageDetails.PackageID;
-							clsItemDetails.ProductUnitID = clsMatrixPackageDetails.UnitID;
-							clsItemDetails.ProductUnitCode = clsMatrixPackageDetails.UnitCode;
-							clsItemDetails.Price = clsMatrixPackageDetails.Price;
-							clsItemDetails.PackageQuantity = clsMatrixPackageDetails.Quantity;
-							clsItemDetails.VAT = clsMatrixPackageDetails.VAT;
-							clsItemDetails.EVAT = clsMatrixPackageDetails.EVAT;
-							clsItemDetails.LocalTax = clsMatrixPackageDetails.LocalTax;
-							clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-							clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
-							//clsItemDetails.PurchasePrice = clsItemDetails.PurchasePrice;
-							clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
-						}
-						else if (MatrixPackageCount > 1)
-						{
-							clsMatrixPackage.CommitAndDispose();
-							DialogResult result = DialogResult.Cancel;
-							Data.SalesTransactionItemDetails clsSalesTransactionItemDetails = clsItemDetails;
-
-							if (mclsTerminalDetails.IsTouchScreen)
-							{
-								ItemMatrixPackageRestoWnd ItemMatrixPackgWnd = new ItemMatrixPackageRestoWnd();
-								ItemMatrixPackgWnd.IsPriceInq = true;
-								ItemMatrixPackgWnd.Details = clsItemDetails;
-								ItemMatrixPackgWnd.ShowDialog(this);
-								result = ItemMatrixPackgWnd.Result;
-								clsSalesTransactionItemDetails = ItemMatrixPackgWnd.Details;
-								ItemMatrixPackgWnd.Close();
-								ItemMatrixPackgWnd.Dispose();
-							}
-							else
-							{
-								ItemMatrixPackageWnd ItemMatrixPackgWnd = new ItemMatrixPackageWnd();
-								//ItemMatrixPackgWnd.IsPriceInq = true;
-								ItemMatrixPackgWnd.Details = clsItemDetails;
-								ItemMatrixPackgWnd.ShowDialog(this);
-								result = ItemMatrixPackgWnd.Result;
-								clsSalesTransactionItemDetails = ItemMatrixPackgWnd.Details;
-								ItemMatrixPackgWnd.Close();
-								ItemMatrixPackgWnd.Dispose();
-							}
-
-							if (result == DialogResult.OK)
-							{
-								clsItemDetails = clsSalesTransactionItemDetails;
-							}
-							else
-							{
-								txtBarCode.Text = "";
-								return;
-							}
-						}
-
-					}
-					else if (variationsCtr > 1)
-					{
-						DialogResult result = DialogResult.Cancel;
-						Data.SalesTransactionItemDetails clsSalesTransactionItemDetails = clsItemDetails;
-
-						if (mclsTerminalDetails.IsTouchScreen)
-						{
-							ItemVariationsRestoWnd ItemVarWnd = new ItemVariationsRestoWnd();
-							ItemVarWnd.IsPriceInq = true;
-							ItemVarWnd.Details = clsItemDetails;
-							ItemVarWnd.ShowItemMoreThanZeroQty = mclsTerminalDetails.ShowItemMoreThanZeroQty;
-							ItemVarWnd.ShowDialog(this);
-							result = ItemVarWnd.Result;
-							clsSalesTransactionItemDetails = ItemVarWnd.Details;
-							ItemVarWnd.Close();
-							ItemVarWnd.Dispose();
-						}
-						else
-						{
-							ItemVariationsWnd ItemVarWnd = new ItemVariationsWnd();
-							ItemVarWnd.IsPriceInq = false;
-							ItemVarWnd.Details = clsItemDetails;
-							ItemVarWnd.ShowItemMoreThanZeroQty = mclsTerminalDetails.ShowItemMoreThanZeroQty;
-							ItemVarWnd.ShowDialog(this);
-							result = ItemVarWnd.Result;
-							clsSalesTransactionItemDetails = ItemVarWnd.Details;
-							ItemVarWnd.Close();
-							ItemVarWnd.Dispose();
-						}
-
-						if (result == DialogResult.OK)
-						{
-							clsItemDetails = clsSalesTransactionItemDetails;
-
-							Data.MatrixPackage clsMatrixPackage = new Data.MatrixPackage(mConnection, mTransaction);
-							Int32 MatrixPackageCount = clsMatrixPackage.CountPackage(clsItemDetails.VariationsMatrixID);
-							if (MatrixPackageCount == 1)
-							{
-								Data.MatrixPackageDetails clsMatrixPackageDetails = clsMatrixPackage.DetailsByMatrixID(clsItemDetails.VariationsMatrixID);
-								clsItemDetails.MatrixPackageID = clsMatrixPackageDetails.PackageID;
-								clsItemDetails.ProductUnitID = clsMatrixPackageDetails.UnitID;
-								clsItemDetails.ProductUnitCode = clsMatrixPackageDetails.UnitCode;
-								clsItemDetails.Price = clsMatrixPackageDetails.Price;
-								clsItemDetails.PackageQuantity = clsMatrixPackageDetails.Quantity;
-								clsItemDetails.VAT = clsMatrixPackageDetails.VAT;
-								clsItemDetails.EVAT = clsMatrixPackageDetails.EVAT;
-								clsItemDetails.LocalTax = clsMatrixPackageDetails.LocalTax;
-								clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-								clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
-								clsItemDetails.PurchasePrice = clsMatrixPackageDetails.PurchasePrice;
-								clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
-
-								clsMatrixPackage.CommitAndDispose();
-							}
-							else if (MatrixPackageCount > 1)
-							{
-								clsMatrixPackage.CommitAndDispose();
-
-								if (mclsTerminalDetails.IsTouchScreen)
-								{
-									ItemMatrixPackageRestoWnd ItemMatrixPackgWnd = new ItemMatrixPackageRestoWnd();
-									ItemMatrixPackgWnd.IsPriceInq = true;
-									ItemMatrixPackgWnd.Details = clsItemDetails;
-									ItemMatrixPackgWnd.ShowDialog(this);
-									result = ItemMatrixPackgWnd.Result;
-									clsSalesTransactionItemDetails = ItemMatrixPackgWnd.Details;
-									ItemMatrixPackgWnd.Close();
-									ItemMatrixPackgWnd.Dispose();
-								}
-								else
-								{
-									ItemMatrixPackageWnd ItemMatrixPackgWnd = new ItemMatrixPackageWnd();
-									ItemMatrixPackgWnd.Details = clsItemDetails;
-									ItemMatrixPackgWnd.ShowDialog(this);
-									result = ItemMatrixPackgWnd.Result;
-									clsSalesTransactionItemDetails = ItemMatrixPackgWnd.Details;
-									ItemMatrixPackgWnd.Close();
-									ItemMatrixPackgWnd.Dispose();
-								}
-
-								if (result == DialogResult.OK)
-								{
-									clsItemDetails = clsSalesTransactionItemDetails;
-								}
-								else
-								{
-									txtBarCode.Text = "";
-									return;
-								}
-							}
-						}
-						else
-						{
-							txtBarCode.Text = "";
-							return;
-						}
-					}
-				}
+				// do nothing
 				txtBarCode.Text = "";
 			}
 		}
@@ -5160,6 +4558,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						mclsTransactionStream.CommitAndDispose(mclsSalesTransactionDetails.TransactionDate);
 
+                        Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
+
 						if (mboIsRefund)
 						{
 							clsSalesTransactions.UpdateTerminalNo(mclsSalesTransactionDetails.TransactionID, lblTerminalNo.Text);
@@ -5198,45 +4598,36 @@ namespace AceSoft.RetailPlus.Client.UI
 									PrintReportFooterSection(true, TransactionStatus.Refund, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails );
 							}
 
-							Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
-							Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
-							Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
+                            // Sep 24, 2011      Lemuel E. Aceron
+                            // Added order slip wherein all punch items will not change sales and inventory
+                            // a customer named ORDER SLIP should be defined in contacts
+                            // lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER
 
-							foreach (System.Data.DataRow dr in ItemDataTable.Rows)
-							{
-								Int64 lProductID = Convert.ToInt64(dr["ProductID"]);
-								Int64 lVariationsMatrixID = Convert.ToInt64(dr["VariationsMatrixID"]);
-								Int32 iProductUnitID = Convert.ToInt32(dr["ProductUnitID"]);
-								decimal decQuantity = 0;
-								decimal decPackageQuantity = 0;
-								decimal decNewQuantity = 0;
-								
-								if (dr["Quantity"].ToString() != "VOID")
-								{
-									decQuantity = Convert.ToDecimal(dr["Quantity"]);
-									decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
-									decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
+                            // Added May 7, 2011 to Cater Reserved and Commit functionality
+                            // !mclsTerminalDetails.ReservedAndCommit
+                            if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.ReservedAndCommit)
+                            {
+                                Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
 
-									// Sep 24, 2011      Lemuel E. Aceron
-									// Added order slip wherein all punch items will not change sales and inventory
-									// a customer named ORDER SLIP should be defined in contacts
-									if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
-									{
-										// Added May 7, 2011 to Cater Reserved and Commit functionality    
-										if (mclsTerminalDetails.ReservedAndCommit == false)
-										{
-											// Jul 26, 2011
-											clsProduct.AddQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_REFUND_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                                foreach (System.Data.DataRow dr in ItemDataTable.Rows)
+                                {
+                                    Int64 lProductID = Convert.ToInt64(dr["ProductID"]);
+                                    Int64 lVariationsMatrixID = Convert.ToInt64(dr["VariationsMatrixID"]);
+                                    Int32 iProductUnitID = Convert.ToInt32(dr["ProductUnitID"]);
+                                    decimal decQuantity = 0;
+                                    decimal decPackageQuantity = 0;
+                                    decimal decNewQuantity = 0;
 
-											// remove the ff codes for a change in Jul 26, 2011
-											// clsProduct.AddQuantity(lProductID, decNewQuantity);
-											// if (lVariationsMatrixID != 0)
-											//    clsProductVariationsMatrix.AddQuantity(lVariationsMatrixID, decNewQuantity);
-											//
-										}
-									}
-								}
-							}
+                                    if (dr["Quantity"].ToString() != "VOID")
+                                    {
+                                        decQuantity = Convert.ToDecimal(dr["Quantity"]);
+                                        decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
+                                        decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
+
+                                        clsProduct.AddQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_REFUND_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                                    }
+                                }
+                            }
 						}
 						else
 						{
@@ -5249,223 +4640,203 @@ namespace AceSoft.RetailPlus.Client.UI
 							//UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
 							UpdateCashierReport(TransactionStatus.Closed, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
-							Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
-							Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
-							Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
+                            // Sep 24, 2011      Lemuel E. Aceron
+							// Added order slip wherein all punch items will not change sales and inventory
+							// a customer named ORDER SLIP should be defined in contacts
+							//if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
 
-							foreach (System.Data.DataRow dr in ItemDataTable.Rows)
-							{
-								long lProductID = Convert.ToInt64(dr["ProductID"]);
-								long lVariationsMatrixID = Convert.ToInt64(dr["VariationsMatrixID"]);
-								int iProductUnitID = Convert.ToInt32(dr["ProductUnitID"]);
-								decimal decQuantity = 0;
-								decimal decPackageQuantity = 0;
-								decimal decNewQuantity = 0;
-								decimal decPrice = Convert.ToDecimal(dr["Price"]);
-								decimal decPurchasePrice = Convert.ToDecimal(dr["PurchasePrice"]);
+                            // Added May 7, 2011 to Cater Reserved and Commit functionality    
+                            // !mclsTerminalDetails.ReservedAndCommit
+                            if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.ReservedAndCommit)
+                            {
+							    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
+							    Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
 
-								if (dr["Quantity"].ToString().IndexOf("RETURN") != -1)
-								{
-									decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim());
-									decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
-									decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
+							    foreach (System.Data.DataRow dr in ItemDataTable.Rows)
+							    {
+								    long lProductID = Convert.ToInt64(dr["ProductID"]);
+								    long lVariationsMatrixID = Convert.ToInt64(dr["VariationsMatrixID"]);
+								    int iProductUnitID = Convert.ToInt32(dr["ProductUnitID"]);
+								    decimal decQuantity = 0;
+								    decimal decPackageQuantity = 0;
+								    decimal decNewQuantity = 0;
+								    decimal decPrice = Convert.ToDecimal(dr["Price"]);
+								    decimal decPurchasePrice = Convert.ToDecimal(dr["PurchasePrice"]);
 
-									// Sep 24, 2011      Lemuel E. Aceron
-									// Added order slip wherein all punch items will not change sales and inventory
-									// a customer named ORDER SLIP should be defined in contacts
-									if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
-									{
-										// Added May 7, 2011 to Cater Reserved and Commit functionality    
-										if (mclsTerminalDetails.ReservedAndCommit == false)
-										{
-											// Jul 26, 2011
-											clsProduct.AddQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RETURN_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+								    if (dr["Quantity"].ToString().IndexOf("RETURN") != -1)
+								    {
+									    decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim());
+									    decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
+									    decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
 
-											// remove the ff codes for a change in Jul 26, 2011
-											// clsProduct.AddQuantity(lProductID, decNewQuantity);
-											// 
-											// if (lVariationsMatrixID != 0)
-											//     clsProductVariationsMatrix.AddQuantity(lVariationsMatrixID, decNewQuantity);
-										}
-									}
-								}
-								else if (dr["Quantity"].ToString() != "VOID")
-								{
-									decQuantity = Convert.ToDecimal(dr["Quantity"]);
-									decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
-									decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
+                                        clsProduct.AddQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RETURN_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+								    }
+								    else if (dr["Quantity"].ToString() != "VOID")
+								    {
+									    decQuantity = Convert.ToDecimal(dr["Quantity"]);
+									    decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
+									    decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
 
-									// Sep 24, 2011      Lemuel E. Aceron
-									// Added order slip wherein all punch items will not change sales and inventory
-									// a customer named ORDER SLIP should be defined in contacts
-									if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
-									{
-										// Added May 7, 2011 to Cater Reserved and Commit functionality    
-										if (mclsTerminalDetails.ReservedAndCommit == false)
-										{
-											// Jul 26, 2011
-											clsProduct.SubtractQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + decPrice.ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-											// remove the ff codes for a change in Jul 26, 2011
-											// clsProduct.SubtractQuantity(lProductID, decNewQuantity);
-											// 
-											// if (lVariationsMatrixID != 0)
-											//     clsProductVariationsMatrix.SubtractQuantity(lVariationsMatrixID, decNewQuantity);
-										}
-									}
-
-									// Nov 1, 2011 : Lemu - disabled reward points if product is exempted 
-									if (mclsSalesTransactionDetails.RewardCardActive)
-									{
-										if (mclsTerminalDetails.RewardPointsDetails.EnableRewardPoints == true)
-										{
-											if (dr["Barcode"].ToString() == Data.Products.DEFAULT_ADVANTAGE_CARD_MEMBERSHIP_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Products.DEFAULT_ADVANTAGE_CARD_RENEWAL_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Products.DEFAULT_ADVANTAGE_CARD_REPLACEMENT_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Products.DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Products.DEFAULT_CREDIT_CARD_RENEWAL_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Products.DEFAULT_SUPER_CARD_MEMBERSHIP_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Products.DEFAULT_SUPER_CARD_RENEWAL_FEE_BARCODE ||
-												dr["Barcode"].ToString() == Data.Products.DEFAULT_SUPER_CARD_REPLACEMENT_FEE_BARCODE)
-												mclsTerminalDetails.RewardPointsDetails.EnableRewardPoints = false;
-										}
-									}
-								}
+                                        clsProduct.SubtractQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + decPrice.ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+								    }
+                                }
 							}
 
-							// Oct 23, 2011 : Lemu - Added Reward Points
+                            // Nov 1, 2011 : Lemu - disabled reward points if product is exempted 
+                            if (mclsSalesTransactionDetails.RewardCardActive && mclsTerminalDetails.RewardPointsDetails.EnableRewardPoints)
+                            {
+                                foreach (System.Data.DataRow dr in ItemDataTable.Rows)
+                                {
+                                    if (dr["Barcode"].ToString() == Data.Products.DEFAULT_ADVANTAGE_CARD_MEMBERSHIP_FEE_BARCODE ||
+                                        dr["Barcode"].ToString() == Data.Products.DEFAULT_ADVANTAGE_CARD_RENEWAL_FEE_BARCODE ||
+                                        dr["Barcode"].ToString() == Data.Products.DEFAULT_ADVANTAGE_CARD_REPLACEMENT_FEE_BARCODE ||
+                                        dr["Barcode"].ToString() == Data.Products.DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE ||
+                                        dr["Barcode"].ToString() == Data.Products.DEFAULT_CREDIT_CARD_RENEWAL_FEE_BARCODE ||
+                                        dr["Barcode"].ToString() == Data.Products.DEFAULT_SUPER_CARD_MEMBERSHIP_FEE_BARCODE ||
+                                        dr["Barcode"].ToString() == Data.Products.DEFAULT_SUPER_CARD_RENEWAL_FEE_BARCODE ||
+                                        dr["Barcode"].ToString() == Data.Products.DEFAULT_SUPER_CARD_REPLACEMENT_FEE_BARCODE)
+                                    {
+                                        mclsTerminalDetails.RewardPointsDetails.EnableRewardPoints = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
 
-							if (mclsSalesTransactionDetails.RewardPointsPayment != 0)
+						// Oct 23, 2011 : Lemu - Added Reward Points
+
+						if (mclsSalesTransactionDetails.RewardPointsPayment != 0)
+						{
+							// this should comes before earning of points otherwise this will be wrong.
+							Data.ContactReward clsContactReward = new Data.ContactReward(mConnection, mTransaction);
+							clsContactReward.DeductPoints(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.RewardPointsPayment);
+							string strReason = "Redeemed " + mclsSalesTransactionDetails.RewardPointsPayment + " using Reward Card #: " + mclsSalesTransactionDetails.RewardCardNo;
+							clsContactReward.AddMovement(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.RewardCurrentPoints, -mclsSalesTransactionDetails.RewardPointsPayment, mclsSalesTransactionDetails.RewardCurrentPoints - mclsSalesTransactionDetails.RewardPointsPayment, mclsSalesTransactionDetails.RewardCardExpiry, strReason, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierName, mclsSalesTransactionDetails.TransactionNo);
+
+							mclsSalesTransactionDetails.RewardPreviousPoints = mclsSalesTransactionDetails.RewardCurrentPoints;
+							mclsSalesTransactionDetails.RewardCurrentPoints -= mclsSalesTransactionDetails.RewardPointsPayment;
+							mclsSalesTransactionDetails.RewardEarnedPoints = 0;
+
+							PrintRewardsRedemptionSlip();
+						}
+
+						if (mboRewardCardSwiped && mclsTerminalDetails.RewardPointsDetails.EnableRewardPoints && mclsSalesTransactionDetails.RewardCardActive && mclsTerminalDetails.RewardPointsDetails.RewardPointsMinimum <= mclsSalesTransactionDetails.AmountDue)
+						{
+							decimal decRewardPoints = 0;
+							try
 							{
-								// this should comes before earning of points otherwise this will be wrong.
-								Data.ContactReward clsContactReward = new Data.ContactReward(mConnection, mTransaction);
-								clsContactReward.DeductPoints(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.RewardPointsPayment);
-								string strReason = "Redeemed " + mclsSalesTransactionDetails.RewardPointsPayment + " using Reward Card #: " + mclsSalesTransactionDetails.RewardCardNo;
-								clsContactReward.AddMovement(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.RewardCurrentPoints, -mclsSalesTransactionDetails.RewardPointsPayment, mclsSalesTransactionDetails.RewardCurrentPoints - mclsSalesTransactionDetails.RewardPointsPayment, mclsSalesTransactionDetails.RewardCardExpiry, strReason, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierName, mclsSalesTransactionDetails.TransactionNo);
+								decRewardPoints = (mclsSalesTransactionDetails.AmountDue - mclsSalesTransactionDetails.RewardConvertedPayment) / mclsTerminalDetails.RewardPointsDetails.RewardPointsEvery * mclsTerminalDetails.RewardPointsDetails.RewardPoints;
 
-								mclsSalesTransactionDetails.RewardPreviousPoints = mclsSalesTransactionDetails.RewardCurrentPoints;
-								mclsSalesTransactionDetails.RewardCurrentPoints -= mclsSalesTransactionDetails.RewardPointsPayment;
-								mclsSalesTransactionDetails.RewardEarnedPoints = 0;
+								// round down points if RoundDown is enabled
+								if (mclsTerminalDetails.RewardPointsDetails.RoundDownRewardPoints) decRewardPoints = decimal.Floor(decRewardPoints);
 
-								PrintRewardsRedemptionSlip();
-							}
-
-							if (mboRewardCardSwiped && mclsTerminalDetails.RewardPointsDetails.EnableRewardPoints && mclsSalesTransactionDetails.RewardCardActive && mclsTerminalDetails.RewardPointsDetails.RewardPointsMinimum <= mclsSalesTransactionDetails.AmountDue)
-							{
-								decimal decRewardPoints = 0;
-								try
+								//Data.Product clsProduct
+								long lngProductID = 0;
+								foreach (System.Data.DataRow dr in ItemDataTable.Rows)
 								{
-									decRewardPoints = (mclsSalesTransactionDetails.AmountDue - mclsSalesTransactionDetails.RewardConvertedPayment) / mclsTerminalDetails.RewardPointsDetails.RewardPointsEvery * mclsTerminalDetails.RewardPointsDetails.RewardPoints;
-
-									// round down points if RoundDown is enabled
-									if (mclsTerminalDetails.RewardPointsDetails.RoundDownRewardPoints) decRewardPoints = decimal.Floor(decRewardPoints);
-
-									//Data.Product clsProduct
-									long lngProductID = 0;
-									foreach (System.Data.DataRow dr in ItemDataTable.Rows)
-									{
-										lngProductID = long.Parse(dr["ProductID"].ToString());
-										decRewardPoints += clsProduct.Details(lngProductID).RewardPoints;
-									}
+									lngProductID = long.Parse(dr["ProductID"].ToString());
+									decRewardPoints += clsProduct.Details(lngProductID).RewardPoints;
 								}
-								catch { }
-
-								mclsSalesTransactionDetails.RewardEarnedPoints = decRewardPoints;
-								mclsSalesTransactionDetails.RewardCurrentPoints = mclsSalesTransactionDetails.RewardPreviousPoints + mclsSalesTransactionDetails.RewardEarnedPoints;
-
-								Data.ContactReward clsContactReward = new Data.ContactReward(mConnection, mTransaction);    
-								clsContactReward.AddPoints(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.RewardEarnedPoints);
-								clsContactReward.AddPurchase(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.AmountDue);
-								string strReason = "Purchase " + mclsSalesTransactionDetails.AmountDue.ToString("#,##0.#0") + " using Reward Card #: " + mclsSalesTransactionDetails.RewardCardNo;
-								clsContactReward.AddMovement(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.RewardPreviousPoints, mclsSalesTransactionDetails.RewardEarnedPoints, mclsSalesTransactionDetails.RewardCurrentPoints, mclsSalesTransactionDetails.RewardCardExpiry, strReason, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierName, mclsSalesTransactionDetails.TransactionNo);
 							}
-                            // commit the transactions here.
-                            // in case error s encoutered n printing. transaction is already committed.
-                            clsSalesTransactions.CommitAndDispose();
+							catch { }
 
-							/**
-							 * print the transaction
-							 * */
+							mclsSalesTransactionDetails.RewardEarnedPoints = decRewardPoints;
+							mclsSalesTransactionDetails.RewardCurrentPoints = mclsSalesTransactionDetails.RewardPreviousPoints + mclsSalesTransactionDetails.RewardEarnedPoints;
+
+							Data.ContactReward clsContactReward = new Data.ContactReward(mConnection, mTransaction);    
+							clsContactReward.AddPoints(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.RewardEarnedPoints);
+							clsContactReward.AddPurchase(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.AmountDue);
+							string strReason = "Purchase " + mclsSalesTransactionDetails.AmountDue.ToString("#,##0.#0") + " using Reward Card #: " + mclsSalesTransactionDetails.RewardCardNo;
+							clsContactReward.AddMovement(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.RewardPreviousPoints, mclsSalesTransactionDetails.RewardEarnedPoints, mclsSalesTransactionDetails.RewardCurrentPoints, mclsSalesTransactionDetails.RewardCardExpiry, strReason, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierName, mclsSalesTransactionDetails.TransactionNo);
+						}
+                        // commit the transactions here.
+                        // in case error s encoutered n printing. transaction is already committed.
+                        clsSalesTransactions.CommitAndDispose();
+
+						/**
+							* print the transaction
+							* */
 							
-							if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice)
-							{
+						if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice)
+						{
+							PrintSalesInvoice();
+						}
+						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.DeliveryReceipt)
+						{
+							PrintDeliveryReceipt();
+						}
+						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceAndDR)
+						{
+							PrintSalesInvoice();
+							PrintDeliveryReceipt();
+						}
+						//Added February 10, 2010
+						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300Printer)
+						{
+							PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300Printer);
+						}
+						//Added May 11, 2010
+						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceOrDR)
+						{
+							if (mclsSalesTransactionDetails.CashPayment != 0 || mclsSalesTransactionDetails.CreditCardPayment != 0)
 								PrintSalesInvoice();
-							}
-							else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.DeliveryReceipt)
-							{
+							if (mclsSalesTransactionDetails.ChequePayment != 0 || mclsSalesTransactionDetails.CreditPayment != 0)
 								PrintDeliveryReceipt();
-							}
-							else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceAndDR)
+						}
+						//Added January 17, 2011
+						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300PlusPrinter)
+						{
+							PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300PlusPrinter);
+						}
+						//Added February 22, 2011
+						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300PlusAmazon)
+						{
+							PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300PlusAmazon);
+						}
+						else
+						{
+							if (mclsTerminalDetails.AutoPrint == PrintingPreference.Normal)	//print items if not yet printed
 							{
-								PrintSalesInvoice();
-								PrintDeliveryReceipt();
-							}
-							//Added February 10, 2010
-							else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300Printer)
-							{
-								PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300Printer);
-							}
-							//Added May 11, 2010
-							else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceOrDR)
-							{
-								if (mclsSalesTransactionDetails.CashPayment != 0 || mclsSalesTransactionDetails.CreditCardPayment != 0)
-									PrintSalesInvoice();
-								if (mclsSalesTransactionDetails.ChequePayment != 0 || mclsSalesTransactionDetails.CreditPayment != 0)
-									PrintDeliveryReceipt();
-							}
-							//Added January 17, 2011
-							else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300PlusPrinter)
-							{
-								PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300PlusPrinter);
-							}
-							//Added February 22, 2011
-							else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300PlusAmazon)
-							{
-								PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300PlusAmazon);
-							}
-							else
-							{
-								if (mclsTerminalDetails.AutoPrint == PrintingPreference.Normal)	//print items if not yet printed
+								foreach (System.Data.DataRow dr in ItemDataTable.Rows)
 								{
-									foreach (System.Data.DataRow dr in ItemDataTable.Rows)
+									string stItemNo = "" + dr["ItemNo"].ToString();
+									string stProductUnitCode = "" + dr["ProductUnitCode"].ToString();
+									decimal decPrice = Convert.ToDecimal(dr["Price"]);
+									decimal decDiscount = Convert.ToDecimal(dr["Discount"]);
+									decimal decAmount = Convert.ToDecimal(dr["Amount"]);
+									decimal decVAT = Convert.ToDecimal(dr["VAT"]);
+									decimal decEVAT = Convert.ToDecimal(dr["EVAT"]);
+									decimal decPromoApplied = Convert.ToDecimal(dr["PromoApplied"]);
+									string stProductCode = "" + dr["ProductCode"].ToString();
+									if (dr["MatrixDescription"].ToString() != string.Empty && dr["MatrixDescription"].ToString() != null) stProductCode += "-" + dr["MatrixDescription"].ToString();
+									decimal decQuantity = 0;
+
+									if (dr["Quantity"].ToString().IndexOf("RETURN") != -1)
 									{
-										string stItemNo = "" + dr["ItemNo"].ToString();
-										string stProductUnitCode = "" + dr["ProductUnitCode"].ToString();
-										decimal decPrice = Convert.ToDecimal(dr["Price"]);
-										decimal decDiscount = Convert.ToDecimal(dr["Discount"]);
-										decimal decAmount = Convert.ToDecimal(dr["Amount"]);
-										decimal decVAT = Convert.ToDecimal(dr["VAT"]);
-										decimal decEVAT = Convert.ToDecimal(dr["EVAT"]);
-										decimal decPromoApplied = Convert.ToDecimal(dr["PromoApplied"]);
-										string stProductCode = "" + dr["ProductCode"].ToString();
-										if (dr["MatrixDescription"].ToString() != string.Empty && dr["MatrixDescription"].ToString() != null) stProductCode += "-" + dr["MatrixDescription"].ToString();
-										decimal decQuantity = 0;
-
-										if (dr["Quantity"].ToString().IndexOf("RETURN") != -1)
-										{
-											stProductCode = "" + dr["ProductCode"].ToString() + "-RET";
-											decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim());
-											decAmount = -decAmount;
-										}
-										else if (dr["Quantity"].ToString() != "VOID")
-										{
-											decQuantity = Convert.ToDecimal(dr["Quantity"]);
-										}
-
-										if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
-											PrintItem(stItemNo, stProductCode, stProductUnitCode, decQuantity, decPrice, decDiscount, decPromoApplied, decAmount, decVAT, decEVAT);
+										stProductCode = "" + dr["ProductCode"].ToString() + "-RET";
+										decQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace(" - RETURN", "").Trim());
+										decAmount = -decAmount;
 									}
+									else if (dr["Quantity"].ToString() != "VOID")
+									{
+										decQuantity = Convert.ToDecimal(dr["Quantity"]);
+									}
+
 									if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
-									{
-										PrintReportFooterSection(true, TransactionStatus.Closed, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
+										PrintItem(stItemNo, stProductCode, stProductUnitCode, decQuantity, decPrice, decDiscount, decPromoApplied, decAmount, decVAT, decEVAT);
+								}
+								if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
+								{
+									PrintReportFooterSection(true, TransactionStatus.Closed, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
 
-										// Nov 05, 2011 : Print Charge Slip
-										PrintChargeSlip(ChargeSlipType.Guarantor);
-										PrintChargeSlip(ChargeSlipType.Original);
+									// Nov 05, 2011 : Print Charge Slip
+									PrintChargeSlip(ChargeSlipType.Guarantor);
+									PrintChargeSlip(ChargeSlipType.Original);
 										
-									}
 								}
 							}
 						}
+						
 
                         InsertAuditLog(AccessTypes.CloseTransaction, "Close transaction #: " + lblTransNo.Text + "... Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + CashPayment.ToString("#,###.#0") + " ChequePayment: " + ChequePayment.ToString("#,###.#0") + " CreditCardPayment: " + CreditCardPayment + " CreditPayment: " + CreditPayment.ToString("#,###.#0") + " DebitPayment: " + DebitPayment.ToString("#,###.#0") + " ChangeAmount: " + ChangeAmount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 						
@@ -6250,8 +5621,10 @@ namespace AceSoft.RetailPlus.Client.UI
 				{
 					clsEvent.AddEventLn("Issuing REFUND Transaction!");
 					LoadOptions();
-					if (!this.CreateTransaction()) return;
-					mboIsRefund = true;
+
+                    mboIsRefund = true;
+                    if (!this.CreateTransaction()) return;
+					
 					// Aug 6, 2011 : Lemu
 					// Include items with zero quantity for REFUND
 					mclsTerminalDetails.ShowItemMoreThanZeroQty = false;
@@ -9646,6 +9019,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				mclsSalesTransactionDetails.BranchID = Constants.TerminalBranchID;
 				mclsSalesTransactionDetails.BranchCode = mclsTerminalDetails.BranchDetails.BranchCode;
 				mclsSalesTransactionDetails.TransactionStatus = TransactionStatus.Open;
+                mclsSalesTransactionDetails.TransactionType = mboIsRefund ? TransactionTypes.POSRefund : TransactionTypes.POSNormal;
 			   
                 Data.Transaction clsTransaction = new AceSoft.RetailPlus.Data.Transaction(mConnection, mTransaction);
 
@@ -9706,7 +9080,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				//mclsSalesTransactionDetails.RewardCardExpiry = clsContactDetails.RewardDetails.ExpiryDate;
 				//mclsSalesTransactionDetails.RewardPreviousPoints = clsContactDetails.RewardDetails.RewardPoints;
 
-				if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Refund)
+                if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Refund || mclsSalesTransactionDetails.TransactionType == TransactionTypes.POSRefund)
 				{
 					mboIsRefund = true;
 					lblSubtotalName.Text = "SUBTOTAL: REFUND";

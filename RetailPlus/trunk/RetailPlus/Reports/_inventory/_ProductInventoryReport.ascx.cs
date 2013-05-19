@@ -240,18 +240,18 @@ namespace AceSoft.RetailPlus.Reports
             clsProductColumns.ProductGroupName = true;
             clsProductColumns.DateCreated = true;
             clsProductColumns.Price = true;
-            clsProductColumns.MainQuantity = true;
+            clsProductColumns.Quantity = true;
             clsProductColumns.MinThreshold = true;
             clsProductColumns.MaxThreshold = true;
             clsProductColumns.PurchasePrice = true;
             clsProductColumns.SupplierName = true;
-            clsProductColumns.MainQuantityIN = true;
-            clsProductColumns.MainQuantityOUT = true;
+            clsProductColumns.QuantityIN = true;
+            clsProductColumns.QuantityOUT = true;
             clsProductColumns.RIDMinThreshold = true;
             clsProductColumns.RIDMaxThreshold = true;
             clsProductColumns.RID = true;
             if (long.Parse(cboBranch.SelectedItem.Value) != Constants.ZERO)
-                clsProductColumns.BranchQuantity = true;
+                clsProductColumns.Quantity = true;
 
             #endregion
 
@@ -278,17 +278,17 @@ namespace AceSoft.RetailPlus.Reports
                     {
                         if (cboBranch.SelectedItem.Value == Constants.ZERO_STRING)
                         {
-                            if (dc.ColumnName != ProductColumnNames.BranchQuantity &&
-                            dc.ColumnName != ProductColumnNames.ConvertedBranchQuantity)
-                                if (dc.ColumnName == ProductColumnNames.MainQuantity && long.Parse(cboBranch.SelectedItem.Value) != Constants.ZERO)
-                                    drNew[dc] = dr[ProductColumnNames.BranchQuantity];
+                            if (dc.ColumnName != ProductColumnNames.Quantity &&
+                            dc.ColumnName != ProductColumnNames.ConvertedQuantity)
+                                if (dc.ColumnName == ProductColumnNames.Quantity && long.Parse(cboBranch.SelectedItem.Value) != Constants.ZERO)
+                                    drNew[dc] = dr[ProductColumnNames.Quantity];
                                 else
                                     drNew[dc] = dr[dc.ColumnName];
                         }
                         else
                         {
-                            if (dc.ColumnName == ProductColumnNames.MainQuantity && long.Parse(cboBranch.SelectedItem.Value) != Constants.ZERO)
-                                drNew[dc] = dr[ProductColumnNames.BranchQuantity];
+                            if (dc.ColumnName == ProductColumnNames.Quantity && long.Parse(cboBranch.SelectedItem.Value) != Constants.ZERO)
+                                drNew[dc] = dr[ProductColumnNames.Quantity];
                             else
                                 drNew[dc] = dr[dc.ColumnName];
                         }

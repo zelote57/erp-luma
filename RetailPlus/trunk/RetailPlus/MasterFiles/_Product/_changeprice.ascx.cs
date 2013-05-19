@@ -95,7 +95,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 lstProductPackages.DataBind();
 
                 ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
-                lstItemMatrix.DataSource = clsProductVariationsMatrix.BaseListAsDataTable(Convert.ToInt64(cboProductCode.SelectedValue), "MatriXID", SortOption.Ascending).DefaultView;
+                lstItemMatrix.DataSource = clsProductVariationsMatrix.BaseListAsDataTable(0, Convert.ToInt64(cboProductCode.SelectedValue), "MatriXID", SortOption.Ascending).DefaultView;
                 lstItemMatrix.DataBind();
 
                 ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProduct.Connection, clsProduct.Transaction);

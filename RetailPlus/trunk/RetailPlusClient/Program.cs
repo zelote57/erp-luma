@@ -315,15 +315,14 @@ namespace AceSoft.RetailPlus.Client
 						return false;
 					}
 					clsEvent.AddEventLn("Done!");
-
-					
 				}
 
 				return boIsTerminalExist;
 			}
 			catch(Exception ex)
 			{
-				clsEvent.AddEventLn("FATAL ERROR!!! The Terminal No. does not exist in the database. TRACE:" + ex.Message);
+                ErrorMessage = "FATAL ERROR!!! TRACE: " + ex.Message;
+				clsEvent.AddEventLn("FATAL ERROR!!! TRACE:" + ex.Message);
 				return false;
 			}
 		}

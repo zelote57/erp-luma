@@ -139,7 +139,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 			cboProductUnit.DataBind();
 
             Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
-			ProductDetails clsDetails = clsProduct.Details(ProductID);
+            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, ProductID);
             clsProductVariationMatrix.CommitAndDispose();
 
             cboProductUnit.SelectedIndex = cboProductUnit.Items.IndexOf(new ListItem(clsDetails.BaseUnitCode, clsDetails.BaseUnitID.ToString()));
@@ -455,7 +455,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 			DebitMemoItemDetails clsDetails = new DebitMemoItemDetails();
 
 			Products clsProducts = new Products();
-			ProductDetails clsProductDetails = clsProducts.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
+            ProductDetails clsProductDetails = clsProducts.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
 			TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);

@@ -200,7 +200,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     clsBranchProductDetails = clsProductDetails;
                     try
                     {
-                        clsBranchProductDetails.ProductID = clsBranchProduct.Details(clsBranchProductDetails.BarCode).ProductID;
+                        clsBranchProductDetails.ProductID = clsBranchProduct.Details(Constants.BRANCH_ID_MAIN, clsBranchProductDetails.BarCode).ProductID;
                         if (clsBranchProductDetails.ProductID != 0)
                         {
                             lblError.Text += clsBranchProductDetails.BarCode + " already exist.<br><br>";
@@ -209,7 +209,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                         }
                         else
                         {
-                            clsBranchProductDetails.ProductID = clsBranchProduct.DetailsByCode(clsBranchProductDetails.ProductCode).ProductID;
+                            clsBranchProductDetails.ProductID = clsBranchProduct.DetailsByCode(Constants.BRANCH_ID_MAIN, clsBranchProductDetails.ProductCode).ProductID;
                             if (clsBranchProductDetails.ProductID != 0)
                             {
                                 lblError.Text += clsBranchProductDetails.ProductCode + " already exist.<br><br>";
@@ -341,7 +341,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     clsProductDetails = clsBranchProductDetails;
                     try
                     {
-                        clsProductDetails.ProductID = clsProduct.Details(clsProductDetails.BarCode).ProductID;
+                        clsProductDetails.ProductID = clsProduct.Details(Constants.BRANCH_ID_MAIN, clsProductDetails.BarCode).ProductID;
                         if (clsProductDetails.ProductID != 0)
                         {
                             lblError.Text += clsProductDetails.BarCode + " already exist.<br><br>";
@@ -350,7 +350,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                         }
                         else
                         {
-                            clsProductDetails.ProductID = clsProduct.DetailsByCode(clsProductDetails.BarCode).ProductID;
+                            clsProductDetails.ProductID = clsProduct.DetailsByCode(Constants.BRANCH_ID_MAIN, clsProductDetails.BarCode).ProductID;
                             if (clsProductDetails.ProductID != 0)
                             {
                                 lblError.Text += clsProductDetails.ProductCode + " already exist.<br><br>";
@@ -630,7 +630,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 lblError.Text += "Checking <b>" + clsBranchProductDetails.ProductCode + "</b> if exist... ";
 
                                 //check product by barcode
-                                clsBranchProductDetails.ProductID = clsBranchProduct.Details(clsBranchProductDetails.BarCode).ProductID;
+                                clsBranchProductDetails.ProductID = clsBranchProduct.Details(Constants.BRANCH_ID_MAIN, clsBranchProductDetails.BarCode).ProductID;
                                 lngBranchProductID = clsBranchProductDetails.ProductID;
                                 if (clsBranchProductDetails.ProductID != 0)
                                 {
@@ -639,7 +639,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 }
 
                                 //check product by product code
-                                clsBranchProductDetails.ProductID = clsBranchProduct.Details(clsBranchProductDetails.ProductCode).ProductID;
+                                clsBranchProductDetails.ProductID = clsBranchProduct.Details(Constants.BRANCH_ID_MAIN, clsBranchProductDetails.ProductCode).ProductID;
                                 lngBranchProductID = clsBranchProductDetails.ProductID;
                                 if (clsBranchProductDetails.ProductID != 0)
                                 {
@@ -863,7 +863,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             lblError.Text += "Checking <b>" + clsBranchProductDetails.ProductCode + "</b> if exist... ";
 
                             //check product by barcode
-                            clsBranchProductDetails.ProductID = clsBranchProduct.Details(clsBranchProductDetails.BarCode).ProductID;
+                            clsBranchProductDetails.ProductID = clsBranchProduct.Details(Constants.BRANCH_ID_MAIN, clsBranchProductDetails.BarCode).ProductID;
                             lngBranchProductID = clsBranchProductDetails.ProductID;
                             if (clsBranchProductDetails.ProductID != 0)
                             {
@@ -872,7 +872,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             }
 
                             //check product by product code
-                            clsBranchProductDetails.ProductID = clsBranchProduct.Details(clsBranchProductDetails.ProductCode).ProductID;
+                            clsBranchProductDetails.ProductID = clsBranchProduct.Details(Constants.BRANCH_ID_MAIN, clsBranchProductDetails.ProductCode).ProductID;
                             lngBranchProductID = clsBranchProductDetails.ProductID;
                             if (clsBranchProductDetails.ProductID != 0)
                             {

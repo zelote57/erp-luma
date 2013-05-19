@@ -154,7 +154,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 			Products clsProduct = new Products();
 			ProductDetails clsDetails = new ProductDetails();
-			clsDetails = clsProduct.Details(ProductID);
+			clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, ProductID);
 			clsProduct.CommitAndDispose();
 			cboProductUnit.Items.Add( new ListItem(clsDetails.BaseUnitCode, clsDetails.BaseUnitID.ToString()));
 
@@ -288,7 +288,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		{
 			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
 			Products clsProduct = new Products();
-			ProductDetails clsDetails = clsProduct.Details(iID);
+            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, iID);
 
 			Contacts clsContact = new Contacts(clsProduct.Connection, clsProduct.Transaction);
 			ContactDetails clsContactDetails = clsContact.Details(clsDetails.SupplierID);

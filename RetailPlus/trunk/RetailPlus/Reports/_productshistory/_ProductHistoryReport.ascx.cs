@@ -381,7 +381,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.ProductHistoryMovement:
                     #region Product History Movement
                     Products clsProduct = new Products();
-                    ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
+                    ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
                     clsProduct.CommitAndDispose();
 
                     paramField = Report.DataDefinition.ParameterFields["ProductCode"];

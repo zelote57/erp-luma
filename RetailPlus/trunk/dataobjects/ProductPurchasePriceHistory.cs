@@ -371,7 +371,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        private ProductPurchasePriceHistoryDetails SetDetails(MySqlDataReader myReader)
+        private ProductPurchasePriceHistoryDetails SetDetails(MySqlDataReader myReader, int BranchID = 0)
         {
             try
             {
@@ -388,7 +388,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.Remarks = "" + myReader["Remarks"].ToString();
 
                     Products clsProduct = new Products(base.Connection, base.Transaction);
-                    Details.ProductDetails = clsProduct.Details(Details.ProductID);
+                    Details.ProductDetails = clsProduct.Details(BranchID, Details.ProductID);
 
                     Contacts clsContact = new Contacts(base.Connection, base.Transaction);
                     Details.SupplierDetails = clsContact.Details(Details.SupplierID);
@@ -399,15 +399,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }

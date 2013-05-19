@@ -266,7 +266,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             "Please type a valid Transaction No.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    else if (status == TransactionStatus.Closed || status == TransactionStatus.Released)
+                    else if (status == TransactionStatus.Closed || status == TransactionStatus.Released || status == TransactionStatus.Refund)
                     {
                         mstrTransactionNo = txtTransactionNo.Text.PadLeft(miTransactionNoLength - 1, '0');
                         mstrTerminalNo = txtTerminalNo.Text;

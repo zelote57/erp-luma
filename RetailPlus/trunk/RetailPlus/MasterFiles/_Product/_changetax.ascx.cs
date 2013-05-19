@@ -122,7 +122,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 if (cboProductCode.SelectedItem.Value != Constants.ZERO_STRING)
                 {
                     Products clsProduct = new Products();
-                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
+                    ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, long.Parse(cboProductCode.SelectedItem.Value));
                     clsProduct.CommitAndDispose();
                     txtVAT.Text = clsProductDetails.VAT.ToString("#,##0.#0");
                     txtEVAT.Text = clsProductDetails.EVAT.ToString("#,##0.#0");

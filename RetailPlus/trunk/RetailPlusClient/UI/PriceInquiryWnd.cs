@@ -281,7 +281,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         ClearProduct();
                         Data.Products clsProduct = new Data.Products();
-                        Data.ProductDetails clsProductDetails = clsProduct.Details(txtBarCode.Text.Trim());
+                        Data.ProductDetails clsProductDetails = clsProduct.Details(Constants.TerminalBranchID, txtBarCode.Text.Trim());
                         if (clsProductDetails.ProductID == 0)
                         {
                             string strContactCardNo = txtBarCode.Text.Trim();

@@ -111,7 +111,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 			cboUnit.DataBind();
 
             Products clsProduct = new Products(clsUnit.Connection, clsUnit.Transaction);
-			ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
+            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(lblProductID.Text));
             clsUnit.CommitAndDispose();
 
             cboUnit.Items.Insert(0, new ListItem(clsDetails.BaseUnitName, clsDetails.BaseUnitID.ToString()));
@@ -124,7 +124,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 			ProductPackageDetails clsDetails = clsProductPackage.Details(Convert.ToInt64(lblPackageID.Text));
 
             Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
-            ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
+            ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(lblProductID.Text));
             clsProductPackage.CommitAndDispose();
 
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsDetails.UnitID.ToString()));

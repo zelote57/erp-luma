@@ -94,7 +94,6 @@ ALTER TABLE tblProducts DROP ActualQuantity;
 
 
 /******************************** do the package insertion ***********************************/
-ALTER TABLE tblProductPackage DROP PurchasePrice;
 ALTER TABLE tblProductPackage ADD MatrixID bigint NOT NULL DEFAULT 0;
 ALTER TABLE tblProductPackage ADD PRIMARY KEY(PackageID);
 
@@ -117,30 +116,45 @@ INSERT INTO tblProductPackage(ProductID, MatrixID, UnitID, Price, Quantity, VAT,
 SELECT ProductID, mtrxpkg.MatrixID, mtrxpkg.UnitID, mtrxpkg.Price, mtrxpkg.Quantity, mtrxpkg.VAT, mtrxpkg.EVAT, mtrxpkg.LocalTax, mtrxpkg.WSPrice, '', '', '' 
 FROM deleted_tblmatrixpackage mtrxpkg INNER JOIN tblProductBaseVariationsMatrix mtrx ON mtrxpkg.MatrixID = mtrx.MatrixID;
 
+-- update the barcode4 as a unique system barcode
 UPDATE tblProductPackage SET 
 	BarCode4 = REPLACE(CONCAT(IFNULL(BarCode1,''), Quantity, ProductID, MatrixID),'.','')
 WHERE MatrixID = 0;	
 
+-- update the barcode4 as a unique system barcode for each variations
 UPDATE tblProductPackage prd 
 INNER JOIN tblProductPackage mtrx ON
 	prd.ProductID = mtrx.ProductID AND mtrx.MatrixID <> 0
 SET mtrx.BarCode4 = REPLACE(CONCAT(IFNULL(prd.BarCode1,''), mtrx.Quantity, prd.ProductID, mtrx.MatrixID),'.','');
 
+-- update the purchase price
+UPDATE tblProductPackage pkg
+INNER JOIN tblProducts prd ON pkg.ProductID = prd.ProductID AND pkg.MatrixID = 0 AND pkg.Quantity = 1 AND pkg.UnitID = prd.BaseUnitID 
+SET pkg.purchaseprice = prd.PurchasePrice;
+
+UPDATE tblProductPackage pkg
+INNER JOIN tblProductBaseVariationsMatrix mtrx ON pkg.ProductID = mtrx.ProductID AND pkg.MatrixID = mtrx.MatrixID AND pkg.Quantity = 1 AND pkg.UnitID = mtrx.UnitID 
+SET pkg.purchaseprice = mtrx.PurchasePrice;
+
 ALTER TABLE tblProducts DROP Barcode;
 ALTER TABLE tblProducts DROP Barcode2;
 ALTER TABLE tblProducts DROP Barcode3;
+
+ALTER TABLE tblProducts DROP PurchasePrice;
 ALTER TABLE tblProducts DROP Price;
 ALTER TABLE tblProducts DROP WSPrice;
+ALTER TABLE tblProducts DROP VAT;
+ALTER TABLE tblProducts DROP EVAT;
+ALTER TABLE tblProducts DROP LocalTax;
 
+ALTER TABLE tblProductBaseVariationsMatrix DROP PurchasePrice;
 ALTER TABLE tblProductBaseVariationsMatrix DROP Price;
 ALTER TABLE tblProductBaseVariationsMatrix DROP WSPrice;
+ALTER TABLE tblProductBaseVariationsMatrix DROP VAT;
+ALTER TABLE tblProductBaseVariationsMatrix DROP EVAT;
+ALTER TABLE tblProductBaseVariationsMatrix DROP LocalTax;
 
 ALTER TABLE tblTransactions ADD TransactionType INT(1) NOT NULL DEFAULT 0;
-
-
-
-
-
 
 
 

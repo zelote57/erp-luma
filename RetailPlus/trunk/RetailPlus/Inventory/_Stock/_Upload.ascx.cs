@@ -206,7 +206,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 								}
 
 								Products clsProduct = new Products(clsStock.Connection, clsStock.Transaction);
-								ProductID = clsProduct.Details(reader.GetAttribute("BarCode")).ProductID;
+                                ProductID = clsProduct.Details(Constants.BRANCH_ID_MAIN, reader.GetAttribute("BarCode")).ProductID;
 								if (ProductID == 0) 
 								{
 									Label1.Text += "inserting product....";

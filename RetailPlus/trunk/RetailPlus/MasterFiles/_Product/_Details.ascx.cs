@@ -217,7 +217,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			Common Common = new Common();
 			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
 			Products clsProduct = new Products();
-			ProductDetails clsDetails = clsProduct.Details(iID);
+            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, iID);
 			clsProduct.CommitAndDispose();
 
 			lblProductID.Text = clsDetails.ProductID.ToString();

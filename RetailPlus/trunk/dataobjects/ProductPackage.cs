@@ -21,7 +21,8 @@ namespace AceSoft.RetailPlus.Data
 		public Int32 UnitID;
 		public string UnitCode;
 		public string UnitName;
-		public decimal Price;
+        public decimal PurchasePrice;
+        public decimal Price;
         public decimal WSPrice;
 		public decimal Quantity;
 		public decimal VAT;
@@ -31,9 +32,6 @@ namespace AceSoft.RetailPlus.Data
         public string BarCode2;
         public string BarCode3;
         public string ProductDesc;
-
-        //this is just a holder during computation in transaction
-        public decimal PurchasePrice;
 	}
 
     public struct ProductPackageColumns
@@ -63,6 +61,7 @@ namespace AceSoft.RetailPlus.Data
         public const string UnitID = "UnitID";
         public const string UnitCode = "UnitCode";
         public const string UnitName = "UnitName";
+        public const string PurchasePrice = "PurchasePrice";
         public const string Price = "Price";
         public const string WSPrice = "WSPrice";
         public const string Quantity = "Quantity";
@@ -113,7 +112,8 @@ namespace AceSoft.RetailPlus.Data
                                 "BarCode2, " +
                                 "BarCode3, " +
 								"UnitID, " +
-								"Price, " +
+                                "PurchasePrice, " +
+                                "Price, " +
                                 "WSPrice, " +
 								"Quantity, " +
 								"VAT, " +
@@ -125,7 +125,8 @@ namespace AceSoft.RetailPlus.Data
                                 "@BarCode2, " +
                                 "@BarCode3, " +
 								"@UnitID, " +
-								"@Price, " +
+                                "@PurchasePrice, " +
+                                "@Price, " +
                                 "@WSPrice, " +
 								"@Quantity, " +
 								"@VAT, " +
@@ -146,6 +147,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@BarCode2", Details.BarCode2);
                 cmd.Parameters.AddWithValue("@BarCode3", Details.BarCode3);
                 cmd.Parameters.AddWithValue("@UnitID", Details.UnitID);
+                cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
                 cmd.Parameters.AddWithValue("@Price", Details.Price);
                 cmd.Parameters.AddWithValue("@WSPrice", Details.WSPrice);
                 cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
@@ -170,6 +172,7 @@ namespace AceSoft.RetailPlus.Data
                 clsProductPackagePriceHistoryDetails.UID = pvtUID;
                 clsProductPackagePriceHistoryDetails.PackageID = Details.PackageID;
                 clsProductPackagePriceHistoryDetails.ChangeDate = pvtChangeDate;
+                clsProductPackagePriceHistoryDetails.PurchasePrice = Details.PurchasePrice;
                 clsProductPackagePriceHistoryDetails.Price = Details.Price;
                 clsProductPackagePriceHistoryDetails.VAT = Details.VAT;
                 clsProductPackagePriceHistoryDetails.EVAT = Details.EVAT;
@@ -179,17 +182,16 @@ namespace AceSoft.RetailPlus.Data
                 ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
                 clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
 
-                string SQL = "CALL procProductPackageUpdate(@PackageID, @ProductID, @UnitID, @Price, @WSPrice, @@Quantity, @VAT, @EVAT, @LocalTax, @BarCode1, @BarCode2, @BarCode3);";
+                string SQL = "CALL procProductPackageUpdate(@PackageID, @ProductID, @UnitID, @PurchasePrice, @Price, @WSPrice, @Quantity, @VAT, @EVAT, @LocalTax, @BarCode1, @BarCode2, @BarCode3);";
 				  
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@PackageID", Details.PackageID);
                 cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
 				cmd.Parameters.AddWithValue("@UnitID", Details.UnitID);
+                cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
                 cmd.Parameters.AddWithValue("@Price", Details.Price);
                 cmd.Parameters.AddWithValue("@WSPrice", Details.WSPrice);
                 cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
@@ -201,12 +203,6 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@BarCode3", Details.BarCode3);
 
 				base.ExecuteNonQuery(cmd);
-
-				if (Details.Quantity == 1)
-				{
-					Products clsProduct = new Products(base.Connection, base.Transaction);
-                    clsProduct.UpdateByPackage(Details.ProductID, Details.UnitID, Details.Price, Details.WSPrice, Details.VAT, Details.EVAT, Details.LocalTax);
-				}
 
 			}
 
@@ -895,7 +891,7 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-        public ProductPackageDetails DetailsByBarCode(string BarCode)
+        public ProductPackageDetails DetailsByBarCode(string BarCode, bool ShowItemMoreThanZeroQty = false)
         {
             try
             {
@@ -903,8 +899,12 @@ namespace AceSoft.RetailPlus.Data
                 clsProductPackageColumns.ProductDesc = false;
 
                 string SQL = SQLSelect(clsProductPackageColumns) + " ";
-                SQL += "WHERE tblProductPackage.Barcode1 LIKE @BarCode OR tblProductPackage.Barcode2 LIKE @BarCode OR tblProductPackage.Barcode3 LIKE @BarCode ";
-                SQL += "LIMIT 1;";
+                SQL += "WHERE tblProductPackage.Barcode1 LIKE @BarCode OR tblProductPackage.Barcode2 LIKE @BarCode OR tblProductPackage.Barcode3 LIKE @BarCode OR tblProductPackage.Barcode4 LIKE @BarCode ";
+                if (ShowItemMoreThanZeroQty)
+                {
+                    SQL += "AND ProductID = (SELECT ProductID FROM tblProductInventory inv WHERE inv.ProductID = tblProductPackage.ProductID AND inv.MatrixID = tblProductPackage.MatrixID ORDER BY Quantity DESC LIMIT 1)";
+                }
+                SQL += "ORDER BY LIMIT 1;";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -924,15 +924,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }

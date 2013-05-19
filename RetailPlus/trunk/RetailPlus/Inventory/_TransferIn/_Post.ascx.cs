@@ -142,7 +142,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
             cboProductUnit.DataBind();
 
             Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
-            ProductDetails clsDetails = clsProduct.Details(ProductID);
+            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, ProductID);
             ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
             System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(ProductID, "PurchasePrice", SortOption.Ascending);
 
@@ -265,7 +265,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                 if (clsProductPackageDetails.PackageID != 0)
                 {
                     clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
-                    Data.ProductDetails clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID);
+                    Data.ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, clsProductPackageDetails.ProductID);
 
                     cboProductCode.Items.Add(new ListItem(clsProductDetails.ProductCode, clsProductDetails.ProductID.ToString()));
                 }
@@ -591,7 +591,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
             {
                 ProductUnit clsProductUnit = new ProductUnit(clsProductPackage.Connection, clsProductPackage.Transaction);
                 Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
-                ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
+                ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, long.Parse(cboProductCode.SelectedItem.Value));
                 decimal decBaseUnitValue = clsProductUnit.GetBaseUnitValue(long.Parse(cboProductCode.SelectedItem.Value), int.Parse(cboProductUnit.SelectedItem.Value), 1);
 
                 clsDetails.Price = decBaseUnitValue * clsProductDetails.Price;
@@ -749,7 +749,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
 			TransferInItemDetails clsDetails = new TransferInItemDetails();
 
 			Products clsProducts = new Products();
-			ProductDetails clsProductDetails = clsProducts.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
+            ProductDetails clsProductDetails = clsProducts.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
 			TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
@@ -1392,11 +1392,11 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                                 clsTransferInItemDetails.SellingLocalTax = Convert.ToDecimal(xmlReader.GetAttribute("ItemSellingLocalTax"));
                                 clsTransferInItemDetails.OldSellingPrice = Convert.ToDecimal(xmlReader.GetAttribute("ItemOldSellingPrice"));
 
-                                clsTransferInItemDetails.ProductID = clsProduct.Details(clsTransferInItemDetails.BarCode).ProductID;
+                                clsTransferInItemDetails.ProductID = clsProduct.Details(Constants.BRANCH_ID_MAIN, clsTransferInItemDetails.BarCode).ProductID;
                                 lngProductID = clsTransferInItemDetails.ProductID;
                                 if (clsTransferInItemDetails.ProductID == 0)
                                 {
-                                    clsTransferInItemDetails.ProductID = clsProduct.Details(clsTransferInItemDetails.ProductCode).ProductID;
+                                    clsTransferInItemDetails.ProductID = clsProduct.Details(Constants.BRANCH_ID_MAIN, clsTransferInItemDetails.ProductCode).ProductID;
                                     if (clsTransferInItemDetails.ProductID == 0)
                                     {
                                         //insert new product

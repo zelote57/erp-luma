@@ -414,7 +414,7 @@ namespace AceSoft.RetailPlus.Reports
 
                     paramField = Report.DataDefinition.ParameterFields["ConvertedQuantity"];
                     discreteParam = new ParameterDiscreteValue();
-                    discreteParam.Value = clsDetails.ConvertedMainQuantity;
+                    discreteParam.Value = clsDetails.ConvertedQuantity;
                     currentValues = new ParameterValues();
                     currentValues.Add(discreteParam);
                     paramField.ApplyCurrentValues(currentValues);

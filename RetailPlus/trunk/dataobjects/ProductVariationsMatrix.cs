@@ -520,35 +520,35 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-        public void UpdateInvDetails(int BranchID, long ProductID, long MatrixID, decimal QuantityNow, decimal MinThresholdNow, decimal MaxThresholdNow, string Remarks, DateTime TransactionDate, string TransactionNo, string AdjustedBy)
-        {
-            try
-            {
-                string SQL = "CALL procProductBaseVariationUpdateInvDetails(@BranchID, @ProductID, @MatrixID, @QuantityNow, @MinThresholdNow, @MaxThresholdNow, @strRemarks, @dteTransactionDate, @strTransactionNo, @AdjustedBy);";
+        //public void UpdateInvDetails(int BranchID, long ProductID, long MatrixID, decimal QuantityNow, decimal MinThresholdNow, decimal MaxThresholdNow, string Remarks, DateTime TransactionDate, string TransactionNo, string AdjustedBy)
+        //{
+        //    try
+        //    {
+        //        string SQL = "CALL procProductBaseVariationUpdateInvDetails(@BranchID, @ProductID, @MatrixID, @QuantityNow, @MinThresholdNow, @MaxThresholdNow, @strRemarks, @dteTransactionDate, @strTransactionNo, @AdjustedBy);";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@BranchID", BranchID);
-                cmd.Parameters.AddWithValue("@ProductID", ProductID);
-                cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
-                cmd.Parameters.AddWithValue("@QuantityNow", QuantityNow);
-                cmd.Parameters.AddWithValue("@MinThresholdNow", MinThresholdNow);
-                cmd.Parameters.AddWithValue("@MaxThresholdNow", MaxThresholdNow);
-                cmd.Parameters.AddWithValue("@strRemarks", Remarks);
-                cmd.Parameters.AddWithValue("@dteTransactionDate", TransactionDate);
-                cmd.Parameters.AddWithValue("@strTransactionNo", TransactionNo);
-                cmd.Parameters.AddWithValue("@AdjustedBy", AdjustedBy);
+        //        cmd.Parameters.AddWithValue("@BranchID", BranchID);
+        //        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        //        cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
+        //        cmd.Parameters.AddWithValue("@QuantityNow", QuantityNow);
+        //        cmd.Parameters.AddWithValue("@MinThresholdNow", MinThresholdNow);
+        //        cmd.Parameters.AddWithValue("@MaxThresholdNow", MaxThresholdNow);
+        //        cmd.Parameters.AddWithValue("@strRemarks", Remarks);
+        //        cmd.Parameters.AddWithValue("@dteTransactionDate", TransactionDate);
+        //        cmd.Parameters.AddWithValue("@strTransactionNo", TransactionNo);
+        //        cmd.Parameters.AddWithValue("@AdjustedBy", AdjustedBy);
 
-                base.ExecuteNonQuery(cmd);
-            }
+        //        base.ExecuteNonQuery(cmd);
+        //    }
 
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 
         public void UpdateByPackage(Int64 MatrixID, Int32 UnitID, decimal Price, decimal WSPrice, decimal PurchasePrice, decimal VAT, decimal EVAT, decimal LocalTax)
 		{
@@ -961,7 +961,9 @@ namespace AceSoft.RetailPlus.Data
                                     "a.RIDMinThreshold, " +
                                     "a.RIDMaxThreshold, " +
                                     "a.SupplierID, " +
-                                    "f.ContactName AS SupplierName " +
+                                    "f.ContactName AS SupplierName, " +
+                                    "z.BranchID, " +
+                                    "brnch.BranchCode " +
                                 "FROM tblBranchInventoryMatrix z " +
                                     "INNER JOIN tblProductBaseVariationsMatrix a ON a.MatrixID = z.MatrixID " +
                                     "INNER JOIN tblProducts b ON a.ProductID = b.ProductID " +
@@ -970,7 +972,10 @@ namespace AceSoft.RetailPlus.Data
                                     "INNER JOIN tblProductGroup e ON d.ProductGroupID = e.ProductGroupID " +
                                     "INNER JOIN tblContacts f ON a.SupplierID = f.ContactID " +
                                     "LEFT OUTER JOIN tblproductvariationsmatrix g on a.MatrixID = g.MatrixID " +
-                                "WHERE a.Deleted = 0 AND z.BranchID = " + BranchID + " ";
+                                    "LEFT OUTER JOIN tblBranch brnch on brnch.BranchID = z.BranchID " +
+                                "WHERE a.Deleted = 0 ";
+
+            stSQL += BranchID == 0 ? "" : "AND z.BranchID = " + BranchID + " ";
 
             return stSQL;
         }
@@ -984,8 +989,8 @@ namespace AceSoft.RetailPlus.Data
 									"Description, " +
 									"CONCAT(ProductDesc, ':' , Description) AS VariationDesc, " +
 									"ProductDesc " +
-								"FROM tblProductBaseVariationsMatrix a INNER JOIN " +
-								    "tblProducts b ON a.ProductID = b.ProductID " +
+								"FROM tblProductBaseVariationsMatrix a " +
+                                    "INNER JOIN tblProducts b ON a.ProductID = b.ProductID " +
 								"WHERE 1=1 ORDER BY " + SortField;
 
 				if (SortOrder == SortOption.Ascending)
@@ -1007,15 +1012,6 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -1190,12 +1186,13 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public System.Data.DataTable BaseListAsDataTable(long ProductID=0, string SortField="Description", SortOption SortOrder=SortOption.Ascending)
+        public System.Data.DataTable BaseListAsDataTable(int BranchID, long ProductID=0, string SortField="Description", SortOption SortOrder=SortOption.Ascending)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
-                string SQL = SQLSelect();
+                //string SQL = BranchID == 0 ? SQLSelect() : SQLSelect(BranchID);
+                string SQL = SQLSelect(BranchID);
 
                 if (ProductID != 0)
                 {

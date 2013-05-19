@@ -90,8 +90,9 @@ function ComputeQuantityByVariation(obj)
         
         document.getElementById(txtAmountShort).value = "0.00"; 
         decAmountShortOver = decAmountShortOver * -1;
-        document.getElementById(txtAmountOver).value = decAmountShortOver.toFixed(3);     
+        document.getElementById(txtAmountOver).value = decAmountShortOver.toFixed(3);
     }
+    
 //    for (var i=0; i < document.forms[0].elements.length;i++)
 //	{							
 //		var e = document.forms[0].elements[i];						

@@ -19,6 +19,7 @@ namespace AceSoft.RetailPlus.Data
 	public struct SalesTransactionDetails
 	{
 		public Int64 TransactionID;
+        public TransactionTypes TransactionType;
 		public string TransactionNo;
 		public int BranchID;
 		public string BranchCode;
@@ -114,11 +115,13 @@ namespace AceSoft.RetailPlus.Data
 
 		public DateTime TransactionDateFrom;
 		public DateTime TransactionDateTo;
+
 	}
 
 	public struct SalesTransactionsColumns
 	{
 		public bool TransactionID;
+        public bool TransactionType;
 		public bool TransactionNo;
 		public bool BranchID;
 		public bool BranchCode;
@@ -212,12 +215,12 @@ namespace AceSoft.RetailPlus.Data
 		public bool RewardConvertedPayment;
 
 		public bool PaxNo;
-
 	}
 
 	public struct SalesTransactionsColumnNames
 	{
 		public const string TransactionID = "TransactionID";
+        public const string TransactionType = "TransactionType";
 		public const string TransactionNo = "TransactionNo";
 		public const string BranchID = "BranchID";
 		public const string BranchCode = "BranchCode";
@@ -348,6 +351,7 @@ namespace AceSoft.RetailPlus.Data
 
 			string stSQL = "SELECT " +
 								"TransactionID, " +
+                                "TransactionType, " +
 								"TransactionNo, " +
 								"BranchID, " +
 								"BranchCode, " +
@@ -468,7 +472,7 @@ namespace AceSoft.RetailPlus.Data
 			if (clsSalesTransactionsColumns.AgentPositionName) stSQL += "" + SalesTransactionsColumnNames.AgentPositionName + ", ";
 			if (clsSalesTransactionsColumns.AgentDepartmentName) stSQL += "" + SalesTransactionsColumnNames.AgentDepartmentName + ", ";
 
-			stSQL += "TransactionID FROM tblTransactions ";
+            stSQL += "TransactionType, TransactionID FROM tblTransactions ";
 
 			return stSQL;
 		}
@@ -505,6 +509,7 @@ namespace AceSoft.RetailPlus.Data
 				while (myReader.Read())
 				{
 					Details.TransactionID = myReader.GetInt64("TransactionID");
+                    Details.TransactionType = (TransactionTypes)Enum.Parse(typeof(TransactionTypes), myReader.GetString("TransactionType"));
 					Details.TransactionNo = "" + myReader["TransactionNo"].ToString();
 					Details.BranchID = myReader.GetInt32("BranchID");
 					Details.BranchCode = "" + myReader["BranchCode"].ToString();
@@ -628,6 +633,7 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				string SQL = "INSERT INTO tblTransactions (" +
+                                "TransactionType, " +
 								"TransactionNo, " +
 								"BranchID, " +
 								"BranchCode, " + 
@@ -650,6 +656,7 @@ namespace AceSoft.RetailPlus.Data
 								"ChargeCode, ChargeRemarks,OrderType, " +
 								"AgentPositionName, AgentDepartmentName" +
 							")VALUES(" +
+                                "@TransactionType, " +
 								"@TransactionNo, " +
 								"@BranchID, " +
 								"@BranchCode, " +
@@ -677,6 +684,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
+                cmd.Parameters.AddWithValue("@TransactionType", Details.TransactionType.ToString("d"));
 				cmd.Parameters.AddWithValue("@TransactionNo", Details.TransactionNo);
 				cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
 				cmd.Parameters.AddWithValue("@BranchCode", Details.BranchCode);

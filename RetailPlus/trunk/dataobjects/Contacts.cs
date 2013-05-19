@@ -45,6 +45,9 @@ namespace AceSoft.RetailPlus.Data
 
         // Nov 2, 2011 : Lemu for credit details
         public ContactCreditDetails CreditDetails;
+
+        // May 14, 2013
+        public bool isLock;
 	}
 
     public struct ContactColumns
@@ -364,7 +367,8 @@ namespace AceSoft.RetailPlus.Data
                                 "a.DepartmentID, " +
                                 "DepartmentName, " +
                                 "a.PositionID, " +
-                                "PositionName " +
+                                "PositionName, " +
+                                "isLock " +
                             "FROM tblContacts a " +
                             "INNER JOIN tblContactGroup b ON a.ContactGroupID = b.ContactGroupID " +
                             "INNER JOIN tblDepartments c ON a.DepartmentID = c.DepartmentID " +
@@ -576,6 +580,8 @@ namespace AceSoft.RetailPlus.Data
                     Details.DepartmentName = "" + myReader["DepartmentName"].ToString();
                     Details.PositionID = myReader.GetInt16("PositionID");
                     Details.PositionName = "" + myReader["PositionName"].ToString();
+
+                    Details.isLock = Convert.ToBoolean(myReader.GetInt16("isLock"));
                 }
                 myReader.Close();
 

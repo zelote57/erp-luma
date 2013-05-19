@@ -1,118 +1,153 @@
 
-/**************************************************************
-	procGenerateProductHistoryToProductMovement
-	Lemuel E. Aceron
-	CALL procGenerateProductHistoryToProductMovement();
-	
-	Mar 6, 2013 - Save all previous history of products to tblProductMovement
-**************************************************************/
 
-ALTER TABLE tblProductMovement MODIFY MatrixDescription VARCHAR(100);
-ALTER TABLE tblProductMovement MODIFY Remarks VARCHAR(150);
+DROP TABLE IF EXISTS deleted_tblProducts;
+CREATE TABLE deleted_tblProducts(SELECT * FROM tblProducts);
 
-delimiter GO
-DROP PROCEDURE IF EXISTS procGenerateProductHistoryToProductMovement
-GO
+DROP TABLE IF EXISTS deleted_tblProductBaseVariationsMatrix;
+CREATE TABLE deleted_tblProductBaseVariationsMatrix(SELECT * FROM tblProductBaseVariationsMatrix);
 
-create procedure procGenerateProductHistoryToProductMovement()
-BEGIN
-	DECLARE dteStartTransactionDate DateTime;
-	DECLARE dteEndTransactionDate DateTime;
+/*****************************
+**	tblProductInventory
+*****************************/
+DROP TABLE IF EXISTS tblProductInventory;
+CREATE TABLE tblProductInventory (
+	`BranchID` INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ProductID` BIGINT NOT NULL DEFAULT 0,
+	`MatrixID` BIGINT NOT NULL DEFAULT 0,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityIn` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`IsLock` TINYINT(1) NOT NULL DEFAULT 0,
+	INDEX `IX_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`),
+	UNIQUE `PK_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`)
+);
 
-	SET dteStartTransactionDate = '0001-01-01';
-	SET dteEndTransactionDate = IF(NOT ISNULL(dteEndTransactionDate), dteEndTransactionDate, (SELECT DATE_ADD(MIN(transactiondate), INTERVAL -1 MINUTE) FROM tblProductMovement));
-	SET dteEndTransactionDate = IF(NOT ISNULL(dteEndTransactionDate), dteEndTransactionDate, dteStartTransactionDate);
+RENAME TABLE tblBranchInventory TO deleted_tblBranchInventory;
+RENAME TABLE tblBranchInventoryMatrix TO deleted_tblBranchInventoryMatrix;
 
-	SELECT MIN(transactiondate) AS 'tblProductMovement END Date', 
-			dteEndTransactionDate AS EndTransactionDateToProcess 
-	FROM tblProductMovement;
+INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, Quantity, QuantityIn, QuantityOut, ActualQuantity)
+SELECT BranchID, ProductID, 0, Quantity, QuantityIn, QuantityOut, ActualQuantity 
+FROM deleted_tblBranchInventory
+WHERE ProductID NOT IN (SELECT DISTINCT ProductID FROM deleted_tblBranchInventoryMatrix);
 
-	INSERT INTO tblProductMovement (ProductID, ProductCode, ProductDescription, MatrixID, MatrixDescription, QuantityFrom, Quantity, QuantityTo, MatrixQuantity, 
-									UnitCode, Remarks, TransactionDate, TransactionNo, CreatedBy, BranchIDFrom, BranchIDTo, QuantityMovementType)
-	SELECT a.ProductID, b.ProductCode, COALESCE(c.Description,''), a.VariationMatrixID, IFNULL(c.Description, b.ProductCode) 'MatrixDescription', 0, CASE StockDirection
-																																						WHEN 0 THEN a.Quantity
-																																						WHEN 1 THEN -a.Quantity
-																																					END AS Quantity, 0, 0,
-									d.UnitCode, a.Remarks, a.StockDate, TransactionNo, 'SYSTEM AUTO-G', BranchID, BranchID, 1 'QuantityMovementType'
-	FROM (((tblStockItems a
-		INNER JOIN tblStock f ON a.StockID = f.StockID
-		LEFT OUTER JOIN tblProducts b ON a.ProductID = b.ProductID)
-		LEFT OUTER JOIN tblProductBaseVariationsMatrix c ON a.VariationMatrixID = c.MatrixID)
-		LEFT OUTER JOIN tblUnit d ON a.ProductUnitID = d.UnitID)
-		LEFT OUTER JOIN tblStockType e ON a.StockTypeID = e.StockTypeID
-	WHERE DATE_FORMAT(a.StockDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
-		AND DATE_FORMAT(a.StockDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i');
+INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, Quantity, QuantityIn, QuantityOut, ActualQuantity)
+SELECT BranchID, ProductID, MatrixID, Quantity, QuantityIn, QuantityOut, ActualQuantity FROM deleted_tblBranchInventoryMatrix;
 
-	
-	INSERT INTO tblProductMovement (ProductID, ProductCode, ProductDescription, MatrixID, MatrixDescription, QuantityFrom, Quantity, QuantityTo, MatrixQuantity, 
-									UnitCode, Remarks, TransactionDate, TransactionNo, CreatedBy, BranchIDFrom, BranchIDTo, QuantityMovementType)
-	SELECT ProductID, ProductCode, COALESCE(Description,''), VariationsMatrixID, MatrixDescription, 0, CASE TransactionItemStatus
-																											WHEN 0 THEN -Quantity
-																											WHEN 1 THEN 0
-																											WHEN 2 THEN 0
-																											WHEN 3 THEN Quantity
-																											WHEN 4 THEN -Quantity
-																										END AS Quantity, 0 'QuantityTo', 0 'MatrixQuantity',  
-									ProductUnitCode, CASE TransactionItemStatus
-														WHEN 0 THEN CONCAT('Sold @ ',a.Price, '. Price: ',a.PurchasePrice,' /',a.ProductUnitCode, ' to ', CustomerName)
-														WHEN 1 THEN 'Void'
-														WHEN 2 THEN 'Trash'
-														WHEN 3 THEN 'Return'
-														WHEN 4 THEN 'Refund'
-													END AS Remarks, TransactionDate, TransactionNo,
-									CashierName, BranchID, BranchID, 1 'QuantityMovementType'
-	FROM tblTransactionItems a 
-	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
-	WHERE DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
-		AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i');
+-- insert all products that are not in the inventory
+INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, Quantity, QuantityIn, QuantityOut, ActualQuantity)
+SELECT brnch.BranchID, prd.ProductID, 0, prd.Quantity, prd.QuantityIn, prd.QuantityOut, prd.ActualQuantity
+FROM deleted_tblProducts prd
+LEFT OUTER JOIN tblBranch brnch ON 1=1
+LEFT OUTER JOIN tblProductInventory inv ON prd.ProductID = inv.ProductID AND MatrixID = 0 AND brnch.BranchID = inv.BranchID
+WHERE inv.MatrixID IS NULL;
 
-	/***************************************Added July 10, 2009*****************************************************/
-	INSERT INTO tblProductMovement (ProductID, ProductCode, ProductDescription, MatrixID, MatrixDescription, QuantityFrom, Quantity, QuantityTo, MatrixQuantity, 
-									UnitCode, Remarks, TransactionDate, TransactionNo, CreatedBy, BranchIDFrom, BranchIDTo, QuantityMovementType)
-	SELECT a.ProductID, a.ProductCode, COALESCE(a.Description,''), a.VariationMatrixID, a.MatrixDescription, 0, Quantity, 0, 0 'MatrixQuantity',
-									a.ProductUnitCode as UnitCode, CONCAT('Purchase Order from ',SupplierCode) AS Remarks, b.PODate AS TransactionDate, b.PONo AS TransactionNo,
-									PurchaserName, BranchID, BranchID, 1 'QuantityMovementType'
-	FROM tblPOItems a
-	INNER JOIN tblPO b ON a.POID = b.POID
-	WHERE DATE_FORMAT(b.PODate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
-		AND DATE_FORMAT(b.PODate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i')
-		AND b.Status = 1;
+-- insert all variations that are not in the inventory
+INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, Quantity, QuantityIn, QuantityOut, ActualQuantity)
+SELECT brnch.BranchID, prd.ProductID, mtrx.MatrixID, mtrx.Quantity, mtrx.QuantityIn, mtrx.QuantityOut, mtrx.ActualQuantity
+FROM deleted_tblProducts prd
+INNER JOIN deleted_tblProductBaseVariationsMatrix mtrx ON prd.ProductID = mtrx.ProductID
+LEFT OUTER JOIN tblBranch brnch ON 1=1
+LEFT OUTER JOIN tblProductInventory inv ON prd.ProductID = inv.ProductID AND inv.MatrixID = mtrx.MatrixID AND brnch.BranchID = inv.BranchID
+WHERE inv.MatrixID IS NULL;
 
-	/***************************************Added July 13, 2009*****************************************************/
-	INSERT INTO tblProductMovement (ProductID, ProductCode, ProductDescription, MatrixID, MatrixDescription, QuantityFrom, Quantity, QuantityTo, MatrixQuantity, 
-									UnitCode, Remarks, TransactionDate, TransactionNo, CreatedBy, BranchIDFrom, BranchIDTo, QuantityMovementType)
-	SELECT a.ProductID, ProductCode, COALESCE(Description,''), a.VariationMatrixID, MatrixDescription, QuantityBefore, (QuantityNow - QuantityBefore) AS Quantity, QuantityNow, 0 'MatrixQuantity',
-									a.UnitCode, CONCAT('Inventory Adjustment : ' , Remarks, ' from ', QuantityBefore, ' to ', QuantityNow ) Remarks, InvAdjustmentDate AS TransactionDate,
-									CONCAT('InvAdjID:' , a.InvAdjustmentID) AS TransactionNo, b.Name, 1, 1, 1 'QuantityMovementType'
-	FROM tblInvAdjustment a
-	INNER JOIN sysAccessUserDetails b ON a.UID = b.UID
-	WHERE DATE_FORMAT(a.InvAdjustmentDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
-		AND DATE_FORMAT(a.InvAdjustmentDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i');
+-- remove all variations where productid not in tblproducts
+DELETE FROM tblProductBaseVariationsMatrix WHERE ProductID NOT IN (SELECT DISTINCT ProductID FROM tblProducts);
 
-	/***************************************Added July 20, 2009*****************************************************/
-	INSERT INTO tblProductMovement (ProductID, ProductCode, ProductDescription, MatrixID, MatrixDescription, QuantityFrom, Quantity, QuantityTo, MatrixQuantity, 
-									UnitCode, Remarks, TransactionDate, TransactionNo, CreatedBy, BranchIDFrom, BranchIDTo, QuantityMovementType)
-	SELECT a.ProductID, a.ProductCode, COALESCE(a.Description,''), a.VariationMatrixID, a.MatrixDescription, 0, Quantity, 0, 0 'MatrixQuantity',
-									a.ProductUnitCode as UnitCode, CONCAT('Transfer In from ',SupplierCode) AS Remarks, b.TransferInDate AS TransactionDate, b.TransferInNo AS TransactionNo,
-									TransferrerName, BranchID, BranchID, 1 'QuantityMovementType'
-	FROM tblTransferInItems a
-	INNER JOIN tblTransferIn b ON a.TransferInID = b.TransferInID
-	WHERE DATE_FORMAT(b.TransferInDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
-		AND DATE_FORMAT(b.TransferInDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i')
-		AND b.Status = 1;
+-- remove invalid variations from the inventory.
+DELETE FROM tblProductInventory WHERE MatrixID <> 0 AND MatrixID NOT IN (SELECT DISTINCT MatrixID FROM tblProductBaseVariationsMatrix);
 
-	/***************************************Added July 20, 2009*****************************************************/
-	INSERT INTO tblProductMovement (ProductID, ProductCode, ProductDescription, MatrixID, MatrixDescription, QuantityFrom, Quantity, QuantityTo, MatrixQuantity, 
-									UnitCode, Remarks, TransactionDate, TransactionNo, CreatedBy, BranchIDFrom, BranchIDTo, QuantityMovementType)
-	SELECT a.ProductID, a.ProductCode, COALESCE(a.Description,''), a.VariationMatrixID, a.MatrixDescription, 0, Quantity, 0, 0 'MatrixQuantity',
-									a.ProductUnitCode as UnitCode, CONCAT('Transfer out to ',SupplierCode) AS Remarks, b.TransferOutDate AS TransactionDate, b.TransferOutNo AS TransactionNo,
-									TransferrerName, BranchID, BranchID, 1 'QuantityMovementType'
-	FROM tblTransferOutItems a
-	INNER JOIN tblTransferOut b ON a.TransferOutID = b.TransferOutID
-	WHERE DATE_FORMAT(b.TransferOutDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
-		AND DATE_FORMAT(b.TransferOutDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i')
-		AND b.Status = 1;
+-- check if all variations are already in the inventory, should all be zero result
+SELECT * FROM tblProductInventory WHERE MatrixID <> 0 AND MatrixID NOT IN (SELECT DISTINCT MatrixID FROM tblProductBaseVariationsMatrix);
+SELECT * FROM tblProductBaseVariationsMatrix WHERE MatrixID <> 0 AND MatrixID NOT IN (SELECT DISTINCT MatrixID FROM tblProductInventory);
 
-END;
-GO
-delimiter ;
+-- remove invalid products from the inventory. this is cause by the branchinventorymatrix
+DELETE FROM tblProductInventory WHERE ProductID NOT IN (SELECT DISTINCT ProductID FROM tblProducts);
+
+--- check if all products are already in the inventory, should all be zero result
+SELECT * FROM tblProducts WHERE ProductID NOT IN (SELECT DISTINCT ProductID FROM tblProductInventory);
+SELECT * FROM tblProductInventory WHERE ProductID NOT IN (SELECT DISTINCT ProductID FROM tblProducts);
+
+-- update the quantity of constant products
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'CREDIT PAYMENT');
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - MEMBERSHIP FEE');
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - RENEWAL FEE');
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - REPLACEMENT FEE');
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'CREDIT CARD - MEMBERSHIP FEE');
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'CREDIT CARD - RENEWAL FEE');
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'CREDIT CARD - REPLACEMENT FEE');
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'SUPER CARD - MEMBERSHIP FEE');
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'SUPER CARD - RENEWAL FEE');
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'SUPER CARD - REPLACEMENT FEE');
+
+ALTER TABLE tblProductBaseVariationsMatrix DROP Quantity;
+ALTER TABLE tblProductBaseVariationsMatrix DROP QuantityIN;
+ALTER TABLE tblProductBaseVariationsMatrix DROP QuantityOut;
+ALTER TABLE tblProductBaseVariationsMatrix DROP ActualQuantity;
+ALTER TABLE tblProductBaseVariationsMatrix DROP MinThreshold;
+ALTER TABLE tblProductBaseVariationsMatrix DROP MaxThreshold;
+
+ALTER TABLE tblProducts DROP Quantity;
+ALTER TABLE tblProducts DROP QuantityIN;
+ALTER TABLE tblProducts DROP QuantityOut;
+ALTER TABLE tblProducts DROP ActualQuantity;
+
+
+/******************************** do the package insertion ***********************************/
+ALTER TABLE tblProductPackage DROP PurchasePrice;
+ALTER TABLE tblProductPackage ADD MatrixID bigint NOT NULL DEFAULT 0;
+ALTER TABLE tblProductPackage ADD PRIMARY KEY(PackageID);
+
+ALTER TABLE tblProductPackage DROP INDEX `PK_tblProductPackage`;
+ALTER TABLE tblProductPackage ADD UNIQUE INDEX `PK_tblProductPackage`(`ProductID`,`MatrixID`,`UnitID`,`Quantity`);
+ALTER TABLE tblProductPackage DROP INDEX `IX_tblProductPackage`;
+ALTER TABLE tblProductPackage ADD INDEX `IX_tblProductPackage`(`PackageID`,`ProductID`,`MatrixID`);
+
+ALTER TABLE tblProductPackage ADD BarCode4 VARCHAR(60);
+ALTER TABLE tblProductPackage ADD INDEX `IX3_tblProductPackage`(`BarCode1`,`BarCode2`,`BarCode3`,`BarCode4`);
+
+INSERT INTO tblProductPackage(ProductID, MatrixID, UnitID, Price, Quantity, VAT, EVAT, LocalTax, WSPrice, Barcode1, Barcode2, Barcode3)
+SELECT ProductID, 0, BaseUnitID, Price, 1, VAT, EVAT, LocalTax, WSPrice, BarCode, BarCode2, BarCode3
+FROM tblProducts prd WHERE ProductID NOT IN (SELECT DISTINCT PRODUCTID FROM tblProductPackage WHERE MatrixID = 0);
+
+DROP TABLE IF EXISTS deleted_tblmatrixpackage;
+RENAME TABLE tblmatrixpackage TO deleted_tblmatrixpackage;
+
+INSERT INTO tblProductPackage(ProductID, MatrixID, UnitID, Price, Quantity, VAT, EVAT, LocalTax, WSPrice, Barcode1, Barcode2, Barcode3)
+SELECT ProductID, mtrxpkg.MatrixID, mtrxpkg.UnitID, mtrxpkg.Price, mtrxpkg.Quantity, mtrxpkg.VAT, mtrxpkg.EVAT, mtrxpkg.LocalTax, mtrxpkg.WSPrice, '', '', '' 
+FROM deleted_tblmatrixpackage mtrxpkg INNER JOIN tblProductBaseVariationsMatrix mtrx ON mtrxpkg.MatrixID = mtrx.MatrixID;
+
+UPDATE tblProductPackage SET 
+	BarCode4 = REPLACE(CONCAT(IFNULL(BarCode1,''), Quantity, ProductID, MatrixID),'.','')
+WHERE MatrixID = 0;	
+
+UPDATE tblProductPackage prd 
+INNER JOIN tblProductPackage mtrx ON
+	prd.ProductID = mtrx.ProductID AND mtrx.MatrixID <> 0
+SET mtrx.BarCode4 = REPLACE(CONCAT(IFNULL(prd.BarCode1,''), mtrx.Quantity, prd.ProductID, mtrx.MatrixID),'.','');
+
+ALTER TABLE tblProducts DROP Barcode;
+ALTER TABLE tblProducts DROP Barcode2;
+ALTER TABLE tblProducts DROP Barcode3;
+ALTER TABLE tblProducts DROP Price;
+ALTER TABLE tblProducts DROP WSPrice;
+
+ALTER TABLE tblProductBaseVariationsMatrix DROP Price;
+ALTER TABLE tblProductBaseVariationsMatrix DROP WSPrice;
+
+ALTER TABLE tblTransactions ADD TransactionType INT(1) NOT NULL DEFAULT 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

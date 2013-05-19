@@ -29,19 +29,27 @@ namespace AceSoft.RetailPlus.Inventory
                     cboBranch.DataValueField = "BranchID";
                     cboBranch.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
                     cboBranch.DataBind();
-                    clsBranch.CommitAndDispose();
+                    
                     cboBranch.SelectedIndex = cboBranch.Items.IndexOf(cboBranch.Items.FindByValue(Constants.BRANCH_ID_MAIN.ToString()));
 
                     mlngItemNo = 0;
-                    try {
-                        //AccessUserDetails clsAccessUserDetails = (AccessUserDetails) Session["AccessUserDetails"];
-                        txtLimit.Text = Session["PageSize"].ToString(); }
-                    catch { }
+
+                    Contacts clsContact = new Contacts(clsBranch.Connection, clsBranch.Transaction);
+                    cboContact.DataTextField = "ContactName";
+                    cboContact.DataValueField = "ContactID";
+                    cboContact.DataSource = clsContact.SuppliersAsDataTable(txtContactCode.Text, 100).DefaultView;
+                    cboContact.DataBind();
+                    cboContact.SelectedIndex = 0;
+
+                    clsBranch.CommitAndDispose();
+
                     txtClosingDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
 					ManageSecurity();
 					LoadList();
                     cmdZeroOutActualQuantity.Attributes.Add("onClick", "return confirm_zeroout_inventory();");
                     imgZeroOutActualQuantity.Attributes.Add("onClick", "return confirm_zeroout_inventory();");
+                    cmdZeroOutActualQuantity1.Attributes.Add("onClick", "return confirm_zeroout_inventory();");
+                    imgZeroOutActualQuantity1.Attributes.Add("onClick", "return confirm_zeroout_inventory();");
                     cmdCloseInventory.Attributes.Add("onClick", "return confirm_close_inventory();");
                     imgCloseInventory.Attributes.Add("onClick", "return confirm_close_inventory();");
 				}
@@ -70,19 +78,16 @@ namespace AceSoft.RetailPlus.Inventory
 
         #region Web Control Methods
 
-        protected void rdoShowAll_CheckedChanged(object sender, EventArgs e)
+        protected void imgContactCodeSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            LoadList();
-        }
-
-        protected void rdoShowActiveOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            LoadList();
-        }
-        
-        protected void rdoShowInactiveOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            LoadList();
+            Contacts clsContact = new Contacts();
+            cboContact.DataTextField = "ContactName";
+            cboContact.DataValueField = "ContactID";
+            cboContact.DataSource = clsContact.SuppliersAsDataTable(txtContactCode.Text, 100).DefaultView;
+            cboContact.DataBind();
+            cboContact.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            if (cboContact.Items.Count > 1 && txtContactCode.Text.Trim() != string.Empty) cboContact.SelectedIndex = 1; else cboContact.SelectedIndex = 0;
+            clsContact.CommitAndDispose();
         }
 
         protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -208,9 +213,16 @@ namespace AceSoft.RetailPlus.Inventory
                 // Populate Variations
                 DataList lstVariationMatrix = (DataList)e.Item.FindControl("lstVariationMatrix");
                 ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-                lstVariationMatrix.DataSource = clsProductVariationsMatrix.BaseListAsDataTable(Convert.ToInt64(dr["ProductID"].ToString()), "MatriXID", SortOption.Ascending).DefaultView;
+                DataTable dt = clsProductVariationsMatrix.BaseListAsDataTable(0, Convert.ToInt64(dr["ProductID"].ToString()), "MatriXID", SortOption.Ascending);
+                lstVariationMatrix.DataSource = dt.DefaultView;
                 lstVariationMatrix.DataBind();
                 clsProductVariationsMatrix.CommitAndDispose();
+
+                if (dt.Rows.Count > 0)
+                {
+                    txtActualQuantity.Enabled = false;
+                    txtActualQuantity.CssClass = "ms-short-disabled";
+                }
 			}
 		}				
 		protected void lstItem_ItemCommand(object source, System.Web.UI.WebControls.DataListCommandEventArgs e)
@@ -315,6 +327,20 @@ namespace AceSoft.RetailPlus.Inventory
 
                 ImageButton imgMatrixDelete = (ImageButton)e.Item.FindControl("imgMatrixDelete");
                 imgMatrixDelete.Attributes.Add("onClick", "return confirm_item_delete();");
+
+                Label lblBranchID = (Label)e.Item.FindControl("lblBranchID");
+                Label lblBranchCode = (Label)e.Item.FindControl("lblBranchCode");
+
+                lblBranchID.Text = dr["BranchID"].ToString();
+                if (dr["BranchID"].ToString() == cboBranch.SelectedItem.Value)
+                { 
+                    lblBranchCode.Text = "";
+                }
+                else 
+                { 
+                    lblBranchCode.Text = dr["BranchCode"].ToString();
+                    
+                }
             }
         }
         protected void lstVariationMatrix_ItemCommand(object source, System.Web.UI.WebControls.DataListCommandEventArgs e)
@@ -357,7 +383,6 @@ namespace AceSoft.RetailPlus.Inventory
         {
             SaveAllActualQuantity();
         }
-
         protected void cmdSaveActualQuantity_Click(object sender, EventArgs e)
         {
             SaveAllActualQuantity();
@@ -366,6 +391,20 @@ namespace AceSoft.RetailPlus.Inventory
         {
             LoadList();
         }
+
+        protected void cboContact_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            LoadList();
+        }
+        protected void imgLockUnlockProduct_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            LockUnlockForSelling();
+        }
+        protected void cmdLockUnlockProduct_Click(object sender, EventArgs e)
+        {
+            LockUnlockForSelling();
+        }
+        
 
         #endregion
 
@@ -415,178 +454,12 @@ namespace AceSoft.RetailPlus.Inventory
             bool boRetValue = false;
 
             Products clsProduct = new Products();
-            boRetValue = clsProduct.UpdateActualQuantity(int.Parse(cboBranch.SelectedItem.Value), 0, 0);
+            boRetValue = clsProduct.ZeroOutActualQuantityBySupplier(int.Parse(cboBranch.SelectedItem.Value), long.Parse(cboContact.SelectedItem.Value));
             clsProduct.CommitAndDispose();
             boRetValue = true;
 
             return boRetValue;
         }
-
-        //private bool UpdateActualQuantity()
-        //{
-        //    bool boRetValue = false;
-
-        //    if (txtPath.HasFile)
-        //    {
-        //        string fn = System.IO.Path.GetFileName(txtPath.PostedFile.FileName);
-
-        //        if (!fn.Contains(Constants.CLOSE_INVENTORY_FILE_NAME_CODE))
-        //        {
-        //            string stScript = "<Script>";
-        //            stScript += "window.alert('Please select a VALID Inventory file to upload.')";
-        //            stScript += "</Script>";
-        //            Response.Write(stScript);
-        //            return boRetValue;
-        //        }
-                
-        //        string SaveLocation = Constants.ROOT_DIRECTORY + "/temp/uploaded_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + fn;
-
-        //        txtPath.PostedFile.SaveAs(SaveLocation);
-
-        //        Microsoft.Office.Interop.Excel.Application ObjExcel = new Microsoft.Office.Interop.Excel.Application();
-        //        Microsoft.Office.Interop.Excel.Worksheet ObjWorkSheet;
-        //        ObjExcel.DisplayAlerts = false;
-        //        ObjExcel.Visible = false;
-
-        //        Microsoft.Office.Interop.Excel.Workbook ObjWorkBook = ObjExcel.Workbooks.Open(SaveLocation, false, false,
-        //                                          Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-        //                                          Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-        //                                          Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-        //        try
-        //        {
-        //            ObjWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[Constants.CLOSE_INVENTORY_SHEET_NAME];
-        //        }
-        //        catch 
-        //        {
-        //            ObjWorkBook.Close(Microsoft.Office.Interop.Excel.XlSaveAction.xlDoNotSaveChanges, Type.Missing, Type.Missing);
-        //            ObjExcel.Quit();
-        //            ObjExcel = null;
-
-        //            string stScript = "<Script>";
-        //            stScript += "window.alert('The file does not contain a valid inventory sheet. Please double check that the sheet name is named INVENTORY.')";
-        //            stScript += "</Script>";
-        //            Response.Write(stScript);
-        //            return boRetValue;
-        //        }
-
-        //        Microsoft.Office.Interop.Excel.Range rangeQuantityError; int iRowQuantityError = 1;
-        //        Microsoft.Office.Interop.Excel.Worksheet ObjWokSheetQuantityError;
-        //        try 
-        //        { 
-        //            ObjWokSheetQuantityError = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[Constants.CLOSE_INVENTORY_SHEET_NAME_QUANTITY_ERROR]; 
-        //        }
-        //        catch 
-        //        { 
-        //            ObjWokSheetQuantityError = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets.Add(Type.Missing, ObjWorkSheet, Type.Missing, Type.Missing);
-        //            ObjWokSheetQuantityError.Name = Constants.CLOSE_INVENTORY_SHEET_NAME_QUANTITY_ERROR;
-        //        }
-
-        //        Microsoft.Office.Interop.Excel.Range rangeInvalidProduct; int iRowInvalidProduct = 1;
-        //        Microsoft.Office.Interop.Excel.Worksheet ObjWokSheetInvalidProduct;
-        //        try
-        //        { 
-        //            ObjWokSheetInvalidProduct = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[Constants.CLOSE_INVENTORY_SHEET_NAME_INVALID_PRODUCT]; 
-        //        }
-        //        catch
-        //        {
-        //            ObjWokSheetInvalidProduct = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets.Add(Type.Missing, ObjWorkSheet, Type.Missing, Type.Missing);
-        //            ObjWokSheetInvalidProduct.Name = Constants.CLOSE_INVENTORY_SHEET_NAME_INVALID_PRODUCT;
-        //        }
-
-        //        Product clsProduct = new Product();
-        //        for (int iRow = 1; iRow <= 10000; iRow++)
-        //        {
-        //            Microsoft.Office.Interop.Excel.Range rangeProducts = ObjWorkSheet.get_Range("A" + iRow.ToString(), "C" + iRow.ToString());
-        //            System.Array myvalues = (System.Array)rangeProducts.Cells.Value2;
-        //            string[] strArray = ConvertToStringArray(myvalues);
-
-        //            if (strArray[0] == string.Empty)
-        //                break;
-        //            else
-        //            {
-        //                if (strArray[1] == string.Empty) strArray[1] = "1";
-        //                decimal decQuantity = 0;
-        //                try 
-        //                {
-        //                    // update the actual quantity
-        //                    decQuantity = decimal.Parse(strArray[1]);
-        //                    bool boAddQuantity = clsProduct.AddActualQuantity(strArray[0], decQuantity);
-
-        //                    if (!boAddQuantity)
-        //                    {
-        //                        // if invalid product; report as not error
-        //                        rangeProducts.Cells.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
-
-        //                        // if invalid product; include in second sheet
-        //                        rangeInvalidProduct = (Microsoft.Office.Interop.Excel.Range)ObjWokSheetInvalidProduct.Cells[iRowInvalidProduct, "A"];
-        //                        rangeInvalidProduct.Value2 = strArray[0];
-
-        //                        rangeInvalidProduct = (Microsoft.Office.Interop.Excel.Range)ObjWokSheetInvalidProduct.Cells[iRowInvalidProduct, "B"];
-        //                        rangeInvalidProduct.Value2 = strArray[1];
-
-        //                        iRowInvalidProduct += 1;
-        //                    }
-        //                }
-        //                catch 
-        //                {
-        //                    // if error; report as not error
-        //                    rangeProducts.Cells.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
-
-        //                    // if error; include in second sheet
-        //                    rangeQuantityError = (Microsoft.Office.Interop.Excel.Range)ObjWokSheetQuantityError.Cells[iRowQuantityError, "A"];
-        //                    rangeQuantityError.Value2 = strArray[0];
-
-        //                    rangeQuantityError = (Microsoft.Office.Interop.Excel.Range)ObjWokSheetQuantityError.Cells[iRowQuantityError, "B"];
-        //                    rangeQuantityError.Value2 = strArray[1];
-
-        //                    iRowQuantityError += 1;
-        //                }
-        //            }
-        //        }
-        //        clsProduct.CommitAndDispose();
-                
-        //        ObjWorkBook.Save();
-        //        ObjWorkBook.Close(Microsoft.Office.Interop.Excel.XlSaveAction.xlSaveChanges, Type.Missing, Type.Missing);
-        //        ObjExcel.Quit();
-        //        ObjExcel = null;
-
-        //        boRetValue = true;
-
-        //        string stScriptReport = "<Script>";
-        //        stScriptReport += "window.open(" + SaveLocation + ", 'Redirector', 'toolbar=0,location=0,status=0,menubar=0');";
-        //        stScriptReport += "window.opener = self;";
-        //        stScriptReport += "</Script>";
-        //        Response.Write(stScriptReport);
-                
-        //    }
-        //    else
-        //    {
-        //        string stScript = "<Script>";
-        //        stScript += "window.alert('Cannot upload an empty filename. Please select the file to be uploaded.')";
-        //        stScript += "</Script>";
-        //        Response.Write(stScript);
-        //    }
-
-        //    return boRetValue;
-        //}
-        
-        //private string[] ConvertToStringArray(System.Array values)
-        //{
-
-        //    // create a new string array
-        //    string[] theArray = new string[values.Length];
-
-        //    // loop through the 2-D System.Array and populate the 1-D String Array
-        //    for (int iRow = 1; iRow <= values.Length; iRow++)
-        //    {
-        //        if (values.GetValue(1, iRow) == null)
-        //            theArray[iRow-1] = string.Empty;
-        //        else
-        //            theArray[iRow-1] = (string)values.GetValue(1, iRow).ToString();
-        //    }
-
-        //    return theArray;
-        //}
 
         private void ManageSecurity()
         {
@@ -619,25 +492,31 @@ namespace AceSoft.RetailPlus.Inventory
             { sortoption = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
 
             ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive;
-            if (rdoShowActiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowActiveOnly;
-            if (rdoShowInactiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowInactiveOnly;
 
-            int intLimit = 0;
-            try { intLimit = int.Parse(txtLimit.Text); }
-            catch { }
+            Int64 lngSupplierID = Convert.ToInt64(cboContact.SelectedItem.Value);
 
-            string SearchKey = txtSearch.Text;
-            if (Request.QueryString["Search"] != null)
-            { SearchKey = Common.Decrypt((string)Request.QueryString["search"], Session.SessionID); }
+            PageData.DataSource = clsProduct.SearchDataTableSimple(int.Parse(cboBranch.SelectedItem.Value), clsProductListFilterType, string.Empty, lngSupplierID, 0, string.Empty, 0, string.Empty, 0, false, false, SortField, sortoption).DefaultView;
 
-            PageData.DataSource = clsProduct.SearchDataTableSimple(int.Parse(cboBranch.SelectedItem.Value), clsProductListFilterType, SearchKey, 0, 0, string.Empty, 0, string.Empty, intLimit, false, false, SortField, sortoption).DefaultView;
+            Contacts clsContacts = new Contacts(clsProduct.Connection, clsProduct.Transaction);
+            ContactDetails clsContactDetails = clsContacts.Details(lngSupplierID);
 
             clsProduct.CommitAndDispose();
+
+            if (!clsContactDetails.isLock)
+            {
+                cmdLockUnlockProduct.Text = "Lock Supplier [Products under this supplier are allowed for Selling]";
+                cmdLockUnlockProduct1.Text = "Lock Supplier [Products under this supplier are allowed for Selling]";
+            }
+            else
+            {
+                cmdLockUnlockProduct.Text = "UnLock Supplier [Current Products under this supplier are NOT allowed for Selling]";
+                cmdLockUnlockProduct1.Text = "UnLock Supplier [Current Products under this supplier are NOT allowed for Selling]";
+            }
 
             int iPageSize = Convert.ToInt16(Session["PageSize"]);
 
             PageData.AllowPaging = true;
-            PageData.PageSize = iPageSize; // 5000;
+            PageData.PageSize = 5000;
             try
             {
                 PageData.CurrentPageIndex = Convert.ToInt16(cboCurrentPage.SelectedItem.Value) - 1;
@@ -693,6 +572,30 @@ namespace AceSoft.RetailPlus.Inventory
             LoadList();
         }
 
+        private void LockUnlockForSelling()
+        {
+            bool isLock = false;
+
+            if (cmdLockUnlockProduct.Text == "Lock Supplier [Products under this supplier are allowed for Selling]")
+            {
+                isLock = true;
+            }
+
+            Products clsProducts = new Products();
+            clsProducts.LockUnlockForSellingBySupplier(int.Parse(cboBranch.SelectedItem.Value), long.Parse(cboContact.SelectedItem.Value), isLock);
+            clsProducts.CommitAndDispose();
+
+            if (!isLock)
+            {
+                cmdLockUnlockProduct.Text = "Lock Supplier [Products under this supplier are allowed for Selling]";
+                cmdLockUnlockProduct1.Text = "Lock Supplier [Products under this supplier are allowed for Selling]";
+            }
+            else
+            {
+                cmdLockUnlockProduct.Text = "UnLock Supplier [Current Products under this supplier are NOT allowed for Selling]";
+                cmdLockUnlockProduct1.Text = "UnLock Supplier [Current Products under this supplier are NOT allowed for Selling]";
+            }
+        }
         #endregion
         
     }

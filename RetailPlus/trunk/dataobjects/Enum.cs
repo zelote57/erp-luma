@@ -9,6 +9,12 @@ namespace AceSoft.RetailPlus
         Excel   = 2
     }
 
+    public enum TransactionTypes
+    {
+        POSNormal = 0,
+        POSRefund = 1
+    }
+
 	public enum TransactionStatus
 	{
 		Open				=	0,

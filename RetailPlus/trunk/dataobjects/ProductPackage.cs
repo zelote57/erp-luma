@@ -17,12 +17,12 @@ namespace AceSoft.RetailPlus.Data
 	{
 		public Int64 PackageID;
 		public Int64 ProductID;
+        public Int64 MatrixID;
 		public Int32 UnitID;
 		public string UnitCode;
 		public string UnitName;
 		public decimal Price;
         public decimal WSPrice;
-		public decimal PurchasePrice;
 		public decimal Quantity;
 		public decimal VAT;
 		public decimal EVAT;
@@ -31,18 +31,21 @@ namespace AceSoft.RetailPlus.Data
         public string BarCode2;
         public string BarCode3;
         public string ProductDesc;
+
+        //this is just a holder during computation in transaction
+        public decimal PurchasePrice;
 	}
 
     public struct ProductPackageColumns
     {
         public bool PackageID;
         public bool ProductID;
+        public bool MatrixID;
         public bool UnitID;
         public bool UnitCode;
         public bool UnitName;
         public bool Price;
         public bool WSPrice;
-        public bool PurchasePrice;
         public bool Quantity;
         public bool VAT;
         public bool EVAT;
@@ -62,7 +65,6 @@ namespace AceSoft.RetailPlus.Data
         public const string UnitName = "UnitName";
         public const string Price = "Price";
         public const string WSPrice = "WSPrice";
-        public const string PurchasePrice = "PurchasePrice";
         public const string Quantity = "Quantity";
         public const string VAT = "VAT";
         public const string EVAT = "EVAT";
@@ -71,6 +73,7 @@ namespace AceSoft.RetailPlus.Data
         public const string BarCode2 = "BarCode2";
         public const string BarCode3 = "BarCode3";
         public const string ProductDesc = "ProductDesc";
+        public const string MatrixID = "MatrixID";
     }
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -112,7 +115,6 @@ namespace AceSoft.RetailPlus.Data
 								"UnitID, " +
 								"Price, " +
                                 "WSPrice, " +
-								"PurchasePrice, " +
 								"Quantity, " +
 								"VAT, " +
 								"EVAT, " +
@@ -125,7 +127,6 @@ namespace AceSoft.RetailPlus.Data
 								"@UnitID, " +
 								"@Price, " +
                                 "@WSPrice, " +
-								"@PurchasePrice, " +
 								"@Quantity, " +
 								"@VAT, " +
 								"@EVAT, " +
@@ -147,7 +148,6 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@UnitID", Details.UnitID);
                 cmd.Parameters.AddWithValue("@Price", Details.Price);
                 cmd.Parameters.AddWithValue("@WSPrice", Details.WSPrice);
-                cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
                 cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
                 cmd.Parameters.AddWithValue("@VAT", Details.VAT);
                 cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
@@ -158,15 +158,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -174,14 +165,11 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try  
 			{
-                
-
                 // Update ProductPackagePriceHistory first to get the history
                 ProductPackagePriceHistoryDetails clsProductPackagePriceHistoryDetails = new ProductPackagePriceHistoryDetails();
                 clsProductPackagePriceHistoryDetails.UID = pvtUID;
                 clsProductPackagePriceHistoryDetails.PackageID = Details.PackageID;
                 clsProductPackagePriceHistoryDetails.ChangeDate = pvtChangeDate;
-                clsProductPackagePriceHistoryDetails.PurchasePrice = Details.PurchasePrice;
                 clsProductPackagePriceHistoryDetails.Price = Details.Price;
                 clsProductPackagePriceHistoryDetails.VAT = Details.VAT;
                 clsProductPackagePriceHistoryDetails.EVAT = Details.EVAT;
@@ -191,7 +179,7 @@ namespace AceSoft.RetailPlus.Data
                 ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
                 clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
 
-                string SQL = "CALL procProductPackageUpdate(@PackageID, @ProductID, @UnitID, @Price, @WSPrice, @PurchasePrice, @Quantity, @VAT, @EVAT, @LocalTax, @BarCode1, @BarCode2, @BarCode3);";
+                string SQL = "CALL procProductPackageUpdate(@PackageID, @ProductID, @UnitID, @Price, @WSPrice, @@Quantity, @VAT, @EVAT, @LocalTax, @BarCode1, @BarCode2, @BarCode3);";
 				  
 				MySqlCommand cmd = new MySqlCommand();
 				
@@ -204,7 +192,6 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.AddWithValue("@UnitID", Details.UnitID);
                 cmd.Parameters.AddWithValue("@Price", Details.Price);
                 cmd.Parameters.AddWithValue("@WSPrice", Details.WSPrice);
-                cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
                 cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
 				cmd.Parameters.AddWithValue("@VAT", Details.VAT);
                 cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
@@ -218,22 +205,13 @@ namespace AceSoft.RetailPlus.Data
 				if (Details.Quantity == 1)
 				{
 					Products clsProduct = new Products(base.Connection, base.Transaction);
-                    clsProduct.UpdateByPackage(Details.ProductID, Details.UnitID, Details.Price, Details.WSPrice, Details.PurchasePrice, Details.VAT, Details.EVAT, Details.LocalTax);
+                    clsProduct.UpdateByPackage(Details.ProductID, Details.UnitID, Details.Price, Details.WSPrice, Details.VAT, Details.EVAT, Details.LocalTax);
 				}
 
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -244,12 +222,8 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = "SELECT PackageID FROM tblProductPackage WHERE ProductID = @ProductID " +
                                 "AND UnitID		=	@UnitID " +
                                 "AND Quantity	=	@Quantity;";
-
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -269,15 +243,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -287,17 +252,12 @@ namespace AceSoft.RetailPlus.Data
 			try  
 			{
 				string SQL="UPDATE tblProductPackage SET " +
-								"PurchasePrice	=	@PurchasePrice, " +
                                 "WSPrice	    =   @PurchasePrice * (1 + ((SELECT WSPriceMarkUp FROM tblTerminal LIMIT 1) / 100)) " +
 							"WHERE ProductID	=	@ProductID " +
 							    "AND UnitID		=	@UnitID " +
 							    "AND Quantity	=	@Quantity;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -305,21 +265,12 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@UnitID", UnitID);
                 cmd.Parameters.AddWithValue("@PurchasePrice", PurchasePrice);
                 cmd.Parameters.AddWithValue("@Quantity", Quantity);
-				
+
 				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -667,7 +618,6 @@ namespace AceSoft.RetailPlus.Data
                                 "c.UnitName, " +
                                 "a.Price, " +
                                 "a.WSPrice, " +
-                                "a.PurchasePrice, " +
                                 "a.Quantity, " +
                                 "a.VAT, " +
                                 "a.EVAT, " +
@@ -687,12 +637,12 @@ namespace AceSoft.RetailPlus.Data
             string stSQL = "SELECT ";
 
             if (clsProductPackageColumns.ProductID) stSQL += "tblProductPackage.ProductID, ";
+            if (clsProductPackageColumns.MatrixID) stSQL += "tblProductPackage.MatrixID, ";
             if (clsProductPackageColumns.UnitID) stSQL += "tblProductPackage.UnitID, ";
             if (clsProductPackageColumns.UnitCode) stSQL += "tblUnit.UnitCode, ";
             if (clsProductPackageColumns.UnitName) stSQL += "tblUnit.UnitName, ";
             if (clsProductPackageColumns.Price) stSQL += "tblProductPackage.Price, ";
             if (clsProductPackageColumns.WSPrice) stSQL += "tblProductPackage.WSPrice, ";
-            if (clsProductPackageColumns.PurchasePrice) stSQL += "tblProductPackage.PurchasePrice, ";
             if (clsProductPackageColumns.Quantity) stSQL += "tblProductPackage.Quantity, ";
             if (clsProductPackageColumns.VAT) stSQL += "tblProductPackage.VAT, ";
             if (clsProductPackageColumns.EVAT) stSQL += "tblProductPackage.EVAT, ";
@@ -721,11 +671,11 @@ namespace AceSoft.RetailPlus.Data
             ProductPackageColumns clsProductPackageColumns = new ProductPackageColumns();
             clsProductPackageColumns.PackageID = true;
             clsProductPackageColumns.ProductID = true;
+            clsProductPackageColumns.MatrixID = true;
             clsProductPackageColumns.UnitID = true;
             clsProductPackageColumns.UnitCode = true;
             clsProductPackageColumns.UnitName = true;
             clsProductPackageColumns.Price = true;
-            clsProductPackageColumns.PurchasePrice = true;
             clsProductPackageColumns.Quantity = true;
             clsProductPackageColumns.VAT = true;
             clsProductPackageColumns.EVAT = true;
@@ -743,11 +693,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "SELECT PackageID FROM tblProductPackage WHERE ProductID = @ProductID AND UnitID = @UnitID AND Quantity = 1;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -770,15 +716,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -792,11 +729,7 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = SQLSelect(clsProductPackageColumns) + " ";
                 SQL += "WHERE tblProductPackage.PackageID = @PackageID ";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -885,11 +818,7 @@ namespace AceSoft.RetailPlus.Data
                 SQL += "    AND tblProductPackage.UnitID = @UnitID ";
                 SQL += "LIMIT 1;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -963,15 +892,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -986,11 +906,7 @@ namespace AceSoft.RetailPlus.Data
                 SQL += "WHERE tblProductPackage.Barcode1 LIKE @BarCode OR tblProductPackage.Barcode2 LIKE @BarCode OR tblProductPackage.Barcode3 LIKE @BarCode ";
                 SQL += "LIMIT 1;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -1000,7 +916,6 @@ namespace AceSoft.RetailPlus.Data
 
                 System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 ProductPackageDetails clsDetails = setDetails(dt);
 
@@ -1033,7 +948,6 @@ namespace AceSoft.RetailPlus.Data
                 clsDetails.UnitCode = "" + myReader[ProductPackageColumnNames.UnitCode].ToString();
                 clsDetails.UnitName = "" + myReader[ProductPackageColumnNames.UnitName].ToString();
                 clsDetails.Price = Convert.ToDecimal(myReader[ProductPackageColumnNames.Price].ToString());
-                clsDetails.PurchasePrice = Convert.ToDecimal(myReader[ProductPackageColumnNames.PurchasePrice].ToString());
                 clsDetails.Quantity = Convert.ToDecimal(myReader[ProductPackageColumnNames.Quantity].ToString());
                 clsDetails.VAT = Convert.ToDecimal(myReader[ProductPackageColumnNames.VAT].ToString());
                 clsDetails.EVAT = Convert.ToDecimal(myReader[ProductPackageColumnNames.EVAT].ToString());
@@ -1056,11 +970,11 @@ namespace AceSoft.RetailPlus.Data
             {
                 clsDetails.PackageID = Convert.ToInt64(dr[ProductPackageColumnNames.PackageID].ToString());
                 clsDetails.ProductID = Convert.ToInt64(dr[ProductPackageColumnNames.ProductID].ToString());
+                clsDetails.MatrixID = Convert.ToInt64(dr[ProductPackageColumnNames.MatrixID].ToString());
                 clsDetails.UnitID = Convert.ToInt32(dr[ProductPackageColumnNames.UnitID].ToString());
                 clsDetails.UnitCode = "" + dr[ProductPackageColumnNames.UnitCode].ToString();
                 clsDetails.UnitName = "" + dr[ProductPackageColumnNames.UnitName].ToString();
                 clsDetails.Price = Convert.ToDecimal(dr[ProductPackageColumnNames.Price].ToString());
-                clsDetails.PurchasePrice = Convert.ToDecimal(dr[ProductPackageColumnNames.PurchasePrice].ToString());
                 clsDetails.Quantity = Convert.ToDecimal(dr[ProductPackageColumnNames.Quantity].ToString());
                 clsDetails.VAT = Convert.ToDecimal(dr[ProductPackageColumnNames.VAT].ToString());
                 clsDetails.EVAT = Convert.ToDecimal(dr[ProductPackageColumnNames.EVAT].ToString());
@@ -1127,7 +1041,6 @@ namespace AceSoft.RetailPlus.Data
 								"c.UnitCode, " +
 								"c.UnitName, " +
 								"a.Price, " +
-								"a.PurchasePrice, " +
 								"a.Quantity, " +
 								"a.VAT, " +
 								"a.EVAT, " +
@@ -1188,7 +1101,6 @@ namespace AceSoft.RetailPlus.Data
 								"c.UnitCode, " +
 								"c.UnitName, " +
 								"a.Price, " +
-								"a.PurchasePrice, " +
 								"a.Quantity, " +
 								"a.VAT, " +
 								"a.EVAT, " +

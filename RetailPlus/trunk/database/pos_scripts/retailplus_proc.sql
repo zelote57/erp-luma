@@ -1336,7 +1336,6 @@ create procedure procProductPackageUpdate(
 	IN pvtUnitID INT(10),
 	IN pvtSellingPrice DECIMAL(18,3),
 	IN pvtWSPrice DECIMAL(18,3),
-	IN pvtPurchasePrice DECIMAL(18,3), 
 	IN pvtQuantity DECIMAL(18,3), 
 	IN pvtVAT DECIMAL(18,3), 
 	IN pvtEVAT DECIMAL(18,3), 
@@ -1350,7 +1349,6 @@ BEGIN
 		UnitID			=	pvtUnitID,
 		Price			=	pvtSellingPrice,
 		WSPrice			=	pvtWSPrice,
-		PurchasePrice	=	pvtPurchasePrice,
 		Quantity		=	pvtQuantity,
 		VAT				=	pvtVAT,
 		EVAT			=	pvtEVAT,
@@ -3452,68 +3450,38 @@ BEGIN
 	DECLARE decProductQuantity, decMatrixQuantity DECIMAL(18,3) DEFAULT 0;
 	
 	/*********** add to main ***********/	
-	-- Set the value of strMatrixDescription, decMatrixQuantity
-	SELECT Description, Quantity INTO strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND MatrixID = lngMatrixID AND ProductID = lngProductID;
-
 	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-	SELECT ProductCode, ProductDesc, Quantity, UnitCode INTO strProductCode, strProductDesc, decProductQuantity, strUnitCode FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE ProductID = lngProductID;
-	
+	SELECT ProductCode, ProductDesc, UnitCode, Description, Quantity
+		INTO strProductCode, strProductDesc, strUnitCode, strMatrixDescription, decProductQuantity
+	FROM tblProducts a 
+	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
+	INNER JOIN tblProductInventory inv ON a.ProductID = inv.ProductID AND MatrixID = lngMatrixID
+	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = inv.MatrixID
+	WHERE a.Deleted = 0 AND inv.BranchID = intBranchID AND a.ProductID = lngProductID AND IFNULL(inv.MatrixID, 0) = lngMatrixID;
+
 	-- Insert to product movement history
 	CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
 									decProductQuantity, decQuantity, decProductQuantity + decQuantity, decMatrixQuantity, 
 									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, strCreatedBy, intBranchID, intBranchID, 0);
 										
 	-- Add the quantity to Product table
-	UPDATE tblProducts SET 
+	UPDATE tblProductInventory SET 
 		Quantity	= Quantity + decQuantity, QuantityIN	= QuantityIN + decQuantity
-	WHERE ProductID = lngProductID;
-	
-	-- Add the quantity to Matrix table
-	UPDATE tblProductBaseVariationsMatrix SET 
-		Quantity	= Quantity + decQuantity, QuantityIN	= QuantityIN + decQuantity 
 	WHERE MatrixID	= lngMatrixID 
-		AND ProductID = lngProductID;
+		AND ProductID = lngProductID
+		AND BranchID = intBranchID;
+		
 	/*********** end add to main ***********/	
-
-	-- Set the value of strMatrixDescription, decMatrixQuantity
-	SELECT a.Description, b.Quantity INTO strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID AND a.ProductID = b.ProductID WHERE Deleted = 0 AND a.MatrixID = lngMatrixID AND a.ProductID = lngProductID AND BranchID = intBranchID;
-
-	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-	SELECT a.ProductCode, a.ProductDesc, c.Quantity, b.UnitCode INTO strProductCode, strProductDesc, decProductQuantity, strUnitCode FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID INNER JOIN tblBranchInventory c ON a.ProductID = c.ProductID WHERE a.ProductID = lngProductID AND BranchID = intBranchID;
-	
-	-- Insert to product movement history
-	CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
-									decProductQuantity, decQuantity, decProductQuantity + decQuantity, decMatrixQuantity, 
-									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, strCreatedBy, intBranchID, intBranchID, 1);
-									
-	-- Add the quantity to BranchInventory table
-	IF EXISTS(SELECT ProductID FROM tblBranchInventory WHERE ProductID = lngProductID AND BranchID = intBranchID) THEN
-		UPDATE tblBranchInventory SET 
-			Quantity	= Quantity + decQuantity, QuantityIN	= QuantityIN + decQuantity
-		WHERE ProductID = lngProductID 
-			AND BranchID = intBranchID;
-	ELSE
-		INSERT INTO tblBranchInventory (BranchID , ProductID, Quantity, QuantityIN) VALUES (intBranchID, lngProductID, decQuantity, decQuantity);
-	END IF;
-	
-	-- Add the quantity to Matrix table
-	IF EXISTS(SELECT ProductID FROM tblBranchInventoryMatrix WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID ) THEN
-		UPDATE tblBranchInventoryMatrix SET 
-			Quantity	= Quantity + decQuantity, QuantityIN	= QuantityIN + decQuantity 
-		WHERE MatrixID	= lngMatrixID  
-			AND ProductID = lngProductID 
-			AND BranchID = intBranchID;
-	ELSEIF lngMatrixID <> 0 THEN
-		INSERT INTO tblBranchInventoryMatrix (BranchID , ProductID, MatrixID, Quantity, QuantityIN) VALUES (intBranchID, lngProductID, lngMatrixID, decQuantity, decQuantity);
-	END IF;
 	
 	-- Tag product as Active if quantity > 0
-	IF (SELECT Quantity FROM tblProducts WHERE ProductID = lngProductID) > 0 THEN
-		CALL procProductTagActiveInactive(lngProductID, 1);
+	IF (SELECT ShowItemMoreThanZeroQty FROM tblTerminal WHERE TerminalID = 1) = 1 THEN
+		IF (SELECT SUM(Quantity) FROM tblProductInventory WHERE ProductID = lngProductID) > 0 THEN
+			CALL procProductTagActiveInactive(lngProductID, 1);
+		END IF;
 	END IF;
-	
+
 	-- Process sync of product that are sold without matrix but with existing matrix now
-	CALL procSyncProductVariationFromQuantityPerItem(lngProductID, intBranchID);
+	-- CALL procSyncProductVariationFromQuantityPerItem(lngProductID, intBranchID);
 END;
 GO
 delimiter ;
@@ -3553,76 +3521,39 @@ BEGIN
 	DECLARE decProductQuantity, decMatrixQuantity DECIMAL(18,3) DEFAULT 0;
 	
 	/*********** subtract from main ***********/
-	-- Set the value of strMatrixDescription, decMatrixQuantity
-	SELECT Description, Quantity 
-		INTO strMatrixDescription, decMatrixQuantity 
-	FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND MatrixID = lngMatrixID AND ProductID = lngProductID;
 
 	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-	SELECT ProductCode, ProductDesc, Quantity, UnitCode 
-		INTO strProductCode, strProductDesc, decProductQuantity, strUnitCode 
-	FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE ProductID = lngProductID;
+	SELECT ProductCode, ProductDesc, UnitCode, Description, Quantity
+		INTO strProductCode, strProductDesc, strUnitCode, strMatrixDescription, decProductQuantity
+	FROM tblProducts a 
+	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
+	INNER JOIN tblProductInventory inv ON a.ProductID = inv.ProductID AND MatrixID = lngMatrixID
+	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = inv.MatrixID
+	WHERE a.Deleted = 0 AND inv.BranchID = intBranchID AND a.ProductID = lngProductID AND IFNULL(inv.MatrixID, 0) = lngMatrixID;
 	
 	-- Insert to product movement history
 	CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
-									decProductQuantity, -1 * decQuantity, decProductQuantity - decQuantity, decMatrixQuantity, 
+									decProductQuantity, -1 * decQuantity, decProductQuantity - decQuantity, 0, 
 									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, strCreatedBy, intBranchID, intBranchID, 0);
 	
 	-- Subtract the quantity from Product table
-	UPDATE tblProducts SET 
-		Quantity	= Quantity - decQuantity, QuantityOut	= QuantityOut + decQuantity, ActualQuantity = ActualQuantity - decQuantity
-	WHERE ProductID = lngProductID;
-	
-	-- Subtract the quantity from Matrix table
-	UPDATE tblProductBaseVariationsMatrix SET 
-		Quantity	= Quantity - decQuantity, QuantityOut	= QuantityOut + decQuantity, ActualQuantity = ActualQuantity - decQuantity
+	UPDATE tblProductInventory SET 
+		Quantity	= Quantity - decQuantity, QuantityOut	= QuantityOut + decQuantity
 	WHERE MatrixID	= lngMatrixID 
-		AND ProductID = lngProductID;
+		AND ProductID = lngProductID
+		AND BranchID = intBranchID;
 		
 	/*********** end subtract from main ***********/
-
-	-- Set the value of strMatrixDescription, decMatrixQuantity
-	SELECT a.Description, b.Quantity INTO strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID AND a.ProductID = b.ProductID WHERE Deleted = 0 AND a.MatrixID = lngMatrixID AND a.ProductID = lngProductID AND BranchID = intBranchID;
-	
-	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-	SELECT a.ProductCode, a.ProductDesc, c.Quantity, b.UnitCode INTO strProductCode, strProductDesc, decProductQuantity, strUnitCode FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID INNER JOIN tblBranchInventory c ON a.ProductID = c.ProductID WHERE a.ProductID = lngProductID AND BranchID = intBranchID;
-	
-	-- Insert to product movement history
-	CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
-									decProductQuantity, -1 * decQuantity, decProductQuantity - decQuantity, decMatrixQuantity, 
-									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, strCreatedBy, intBranchID, intBranchID, 1);
-
-	-- Subtract the quantity from BranchInventory table
-	IF EXISTS(SELECT ProductID FROM tblBranchInventory WHERE ProductID = lngProductID AND BranchID = intBranchID) THEN
-		UPDATE tblBranchInventory SET 
-			Quantity	= Quantity - decQuantity, QuantityOut	= QuantityOut + decQuantity, ActualQuantity = ActualQuantity - decQuantity
-		WHERE ProductID = lngProductID
-			AND BranchID = intBranchID;
-	ELSE
-		INSERT INTO tblBranchInventory (BranchID , ProductID, Quantity, QuantityIN) VALUES (intBranchID, lngProductID, -decQuantity, -decQuantity);
-	END IF;
-	
-	-- Subtract the quantity from BranchInventoryMatrix table
-	IF EXISTS(SELECT ProductID FROM tblBranchInventoryMatrix WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID ) THEN
-		UPDATE tblBranchInventoryMatrix SET 
-			Quantity	= Quantity - decQuantity, QuantityOut	= QuantityOut + decQuantity, ActualQuantity = ActualQuantity - decQuantity
-		WHERE MatrixID	= lngMatrixID 
-			AND ProductID = lngProductID
-			AND BranchID = intBranchID;
-	ELSEIF lngMatrixID <> 0 THEN
-		INSERT INTO tblBranchInventoryMatrix (BranchID , ProductID, MatrixID, Quantity, QuantityIN) VALUES (intBranchID, lngProductID, lngMatrixID, -decQuantity, -decQuantity);
-	END IF;
-		
 	
 	-- Tag product as InActive if quantity <= 0
 	IF (SELECT ShowItemMoreThanZeroQty FROM tblTerminal WHERE TerminalID = 1) = 1 THEN
-		IF (SELECT Quantity FROM tblProducts WHERE ProductID = lngProductID) = 0 THEN
+		IF (SELECT SUM(Quantity) FROM tblProductInventory WHERE ProductID = lngProductID) = 0 THEN
 			CALL procProductTagActiveInactive(lngProductID, 0);
 		END IF;
 	END IF;
 	
 	-- Process sync of product that are returned without matrix but with existing matrix now
-	CALL procSyncProductVariationFromQuantityPerItem(lngProductID, intBranchID);
+	-- CALL procSyncProductVariationFromQuantityPerItem(lngProductID, intBranchID);
 									
 END;
 GO
@@ -5038,6 +4969,7 @@ CALL procSetupCalendarDate('2013');
 
 
 
+
 /**************************************************************
 	procGenerateProductHistoryToProductMovement
 	Lemuel E. Aceron
@@ -5046,6 +4978,7 @@ CALL procSetupCalendarDate('2013');
 	Mar 6, 2013 - Save all previous history of products to tblProductMovement
 **************************************************************/
 
+ALTER TABLE tblProductMovement MODIFY MatrixDescription VARCHAR(100);
 ALTER TABLE tblProductMovement MODIFY Remarks VARCHAR(150);
 
 delimiter GO
@@ -5154,3 +5087,66 @@ BEGIN
 END;
 GO
 delimiter ;
+
+
+
+/**************************************************************
+
+	procProductZeroOutActualQuantityBySupplier
+	Lemuel E. Aceron
+	May 4, 2013 - Add updating of products by supplier
+
+	CALL procProductZeroOutActualQuantityBySupplier();
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductZeroOutActualQuantityBySupplier
+GO
+
+create procedure procProductZeroOutActualQuantityBySupplier(
+						IN intBranchID INT(4),
+						IN lngSupplierID bigint)
+BEGIN
+	
+	UPDATE tblProductInventory SET 
+		ActualQuantity = 0 
+	WHERE BranchID = intBranchID 
+		AND (ProductID IN (SELECT ProductID FROM tblProducts WHERE SupplierID = lngSupplierID)
+		OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE SupplierID = lngSupplierID));
+END;
+GO
+delimiter ;
+
+/**************************************************************
+
+	procLockUnlockProduct
+	Lemuel E. Aceron
+	March 14, 2009
+
+	CALL LockUnlockProductForSellingBySupplier();
+
+	May 4, 2013 - Add updating of products by supplier
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS LockUnlockProductForSellingBySupplier
+GO
+
+create procedure LockUnlockProductForSellingBySupplier(
+						IN intBranchID INT(4),
+						IN lngSupplierID bigint,
+						IN bolisLock TINYINT(1))
+BEGIN
+
+	UPDATE tblProductInventory SET 
+		isLock = bolisLock
+	WHERE BranchID = intBranchID 
+		AND (ProductID IN (SELECT ProductID FROM tblProducts WHERE SupplierID = lngSupplierID)
+		OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE SupplierID = lngSupplierID));
+	
+	UPDATE tblContacts SET
+		isLock = bolisLock
+	WHERE ContactID = lngSupplierID;
+END;
+GO
+delimiter ;
+

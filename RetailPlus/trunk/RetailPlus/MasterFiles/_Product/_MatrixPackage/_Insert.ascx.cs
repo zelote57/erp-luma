@@ -109,7 +109,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._MatrixPackage
 			clsUnit.CommitAndDispose();	
 
 			Products clsProduct = new Products();
-			ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
+            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(lblProductID.Text));
 			cboUnit.Items.Add(new ListItem(clsDetails.BaseUnitName, clsDetails.BaseUnitID.ToString()));
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsDetails.BaseUnitID.ToString()));
 			txtProductPrice.Text = clsDetails.Price.ToString("#,##0.#0");

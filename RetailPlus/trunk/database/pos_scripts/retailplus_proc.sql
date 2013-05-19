@@ -1325,6 +1325,8 @@ delimiter ;
 	CALL procProductPackageUpdate();
 	
 	June 3, 2009 - create this procedure
+
+	19May2013 : Added updating of BarCode 4
 *********************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procProductPackageUpdate
@@ -1334,6 +1336,7 @@ create procedure procProductPackageUpdate(
 	IN pvtPackageID BIGINT(20),
 	IN pvtProductID BIGINT(20),
 	IN pvtUnitID INT(10),
+	IN pvtPurchasePrice DECIMAL(18,3),
 	IN pvtSellingPrice DECIMAL(18,3),
 	IN pvtWSPrice DECIMAL(18,3),
 	IN pvtQuantity DECIMAL(18,3), 
@@ -1347,6 +1350,7 @@ BEGIN
 	UPDATE tblProductPackage SET
 		ProductID		=	pvtProductID,
 		UnitID			=	pvtUnitID,
+		PurchasePrice	=	pvtPurchasePrice,
 		Price			=	pvtSellingPrice,
 		WSPrice			=	pvtWSPrice,
 		Quantity		=	pvtQuantity,
@@ -1357,8 +1361,12 @@ BEGIN
 		BarCode2		=	pvtBarCode2,
 		BarCode3		=	pvtBarCode3
 	WHERE PackageID		=	pvtPackageID;
-							
+						
 		
+	UPDATE tblProductPackage SET 
+		BarCode4 = REPLACE(CONCAT(IFNULL(BarCode1,''), Quantity, ProductID, MatrixID),'.','')
+	WHERE PackageID		=	pvtPackageID;
+
 END;
 GO
 delimiter ;
@@ -1431,11 +1439,13 @@ BEGIN
 	INSERT INTO tblProductPackagePriceHistory(UID, PackageID, ChangeDate, 
 		PurchasePriceBefore, PurchasePriceNow, SellingPriceBefore, SellingPriceNow, 
 		VATBefore, VATNow, EVATBefore, EVATNow, LocalTaxBefore, LocalTaxNow, Remarks)
-						   SELECT pvtUID, pvtPackageID, pvtChangeDate, 
+	SELECT pvtUID, pvtPackageID, pvtChangeDate, 
 		PurchasePrice, IF(pvtPurchasePriceNow=-1,PurchasePrice,pvtPurchasePriceNow), 
 		Price, IF(pvtSellingPriceNow=-1,Price,pvtSellingPriceNow), 
 		VAT, IF(pvtVATNow=-1,VAT,pvtVATNow), EVAT, IF(pvtEVATNow=-1,EVAT,pvtEVATNow), 
-		LocalTax, IF(pvtLocalTaxNow=-1,LocalTax,pvtLocalTaxNow), pvtRemarks FROM tblProductPackage WHERE PackageID = pvtPackageID;
+		LocalTax, IF(pvtLocalTaxNow=-1,LocalTax,pvtLocalTaxNow), pvtRemarks 
+	FROM tblProductPackage pkg
+	WHERE PackageID = pvtPackageID;
 		
 END;
 GO

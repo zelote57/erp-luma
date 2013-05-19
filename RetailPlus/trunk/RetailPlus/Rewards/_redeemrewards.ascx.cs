@@ -101,7 +101,7 @@ namespace AceSoft.RetailPlus.Rewards
 				if (cboProductCode.SelectedItem.Value != Constants.ZERO_STRING)
 				{
 					Products clsProduct = new Products();
-					ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
+                    ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, long.Parse(cboProductCode.SelectedItem.Value));
 					clsProduct.CommitAndDispose();
 					txtRedeemRewardPoints.Text = clsProductDetails.RewardPoints.ToString("#,##0.#0");
                     txtNewRewardPoints.Text = Convert.ToInt32(Convert.ToDecimal(txtCurrentRewardPoints.Text) - Convert.ToDecimal(txtRedeemRewardPoints.Text)).ToString();

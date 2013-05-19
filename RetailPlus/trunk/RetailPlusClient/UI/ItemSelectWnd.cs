@@ -539,7 +539,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			try 
 			{
-				mstBarCode = dgItems[iRow, 1].ToString();
+				mstBarCode = dgItems[iRow, 3].ToString();
 
                 ProductModel.Clear();
                 ProductModel.PackageID = Int64.Parse(dgItems[iRow, 0].ToString());

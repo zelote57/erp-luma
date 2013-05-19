@@ -210,7 +210,7 @@ namespace AceSoft.RetailPlus.Inventory._VariationsMatrix
                 clsProductVariationsMatrix.GetConnection();
 
                 Products clsProduct = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
-                ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
+                ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(lblProductID.Text));
 
                 string[] strIDs = stIDs.Substring(0, stIDs.Length - 1).Split(',');
                 foreach (string ID in strIDs)

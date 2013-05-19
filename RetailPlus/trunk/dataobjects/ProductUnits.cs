@@ -381,12 +381,12 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Public Modifiers
 
-		public decimal GetBaseUnitValue(Int64 ProductID, Int32 UnitIDToConvert, decimal Quantity)
+		public decimal GetBaseUnitValue(Int64 ProductID, Int32 UnitIDToConvert, decimal Quantity, int BranchID = 0)
 		{
 			try
 			{
 				Products clsProduct = new Products(base.Connection, base.Transaction);
-                Int32 BaseUnitID = clsProduct.Details(ProductID).BaseUnitID;
+                Int32 BaseUnitID = clsProduct.Details(BranchID, ProductID).BaseUnitID;
 				
 				Int32 origUnitIDToConvert = UnitIDToConvert;
 

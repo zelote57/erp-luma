@@ -40,7 +40,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Variations
                 ProductDetails clsDetails = new ProductDetails();
 
                 long id = long.Parse(Common.Decrypt(Request.QueryString["prodid"].ToString(), Session.SessionID));
-                clsDetails = clsProduct.Details(id);
+                clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, id);
 
                 clsProduct.CommitAndDispose();
 

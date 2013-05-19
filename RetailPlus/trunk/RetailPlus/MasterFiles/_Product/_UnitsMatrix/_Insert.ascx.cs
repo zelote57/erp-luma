@@ -109,7 +109,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
 			{
 				Products clsProduct = new Products();
 				ProductDetails clsDetails = new ProductDetails();
-				clsDetails = clsProduct.Details(prodid);
+                clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, prodid);
 				clsProduct.CommitAndDispose();
 
 				txtBaseUnit.Text = clsDetails.BaseUnitName;
@@ -152,7 +152,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
             if (clsProductPackageDetails.PackageID == 0)
             {
                 Products clsProduct = new Products(clsUnitMatrix.Connection, clsUnitMatrix.Transaction);
-                ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
+                ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(lblProductID.Text));
 
                 Terminal clsTerminal = new Terminal(clsUnitMatrix.Connection, clsUnitMatrix.Transaction);
                 TerminalDetails clsTerminalDetails = clsTerminal.Details(Constants.C_DEFAULT_TERMINAL_ID_01);

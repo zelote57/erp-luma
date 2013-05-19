@@ -82,7 +82,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 Products clsProduct = new Products();
                 try
                 {
-                    ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedValue));
+                    ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedValue));
                     intProductBaseUnitID = clsDetails.BaseUnitID; decCommision = clsDetails.PercentageCommision;
                 }
                 catch { }
@@ -477,7 +477,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     clsProduct.UpdateCommision(long.Parse(cboProductCode.SelectedValue), Convert.ToDecimal(txtCommision.Text));
 
-                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
+                    ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, long.Parse(cboProductCode.SelectedItem.Value));
                     clsProductDetails.BarCode = txtBarCode1.Text;
                     clsProductDetails.BarCode2 = txtBarCode2.Text;
                     clsProductDetails.BarCode3 = txtBarCode3.Text;
@@ -538,7 +538,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     clsProduct.UpdateCommision(long.Parse(cboProductCode.SelectedValue), Convert.ToDecimal(txtCommision.Text));
 
-                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
+                    ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, long.Parse(cboProductCode.SelectedItem.Value));
                     clsProductDetails.BarCode = txtBarCode1.Text;
                     clsProductDetails.BarCode2 = txtBarCode2.Text;
                     clsProductDetails.BarCode3 = txtBarCode3.Text;

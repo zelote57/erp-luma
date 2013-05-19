@@ -2161,7 +2161,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 {
                                     if (Details.TransactionItemStatus != TransactionItemStatus.Return)
                                     {
-                                        decimal decProductCurrentQuantity = clsProduct.Details(Details.ProductID, Details.VariationsMatrixID).Quantity + oldQuantity;
+                                        decimal decProductCurrentQuantity = clsProduct.Details(mclsTerminalDetails.BranchID, Details.ProductID, Details.VariationsMatrixID).Quantity + oldQuantity;
                                         if (decProductCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
                                         {
                                             clsProduct.CommitAndDispose();
@@ -4281,47 +4281,54 @@ namespace AceSoft.RetailPlus.Client.UI
                     Data.ProductPackage clsProductPackage = new Data.ProductPackage(mConnection, mTransaction);
                     mConnection = clsProductPackage.Connection; mTransaction = clsProductPackage.Transaction;
 
-                    Data.ProductPackageDetails clsProductPackageDetails;
-                    if (ProductModel.PackageID !=0)
-                        clsProductPackageDetails = clsProductPackage.Details(ProductModel.PackageID);
-                    else
-                        clsProductPackageDetails = clsProductPackage.DetailsByBarCode(stBarcode);
-
                     Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
-                    Data.ProductDetails clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID, clsProductPackageDetails.MatrixID);
+
+                    Data.ProductPackageDetails clsProductPackageDetails = new Data.ProductPackageDetails();
+                    Data.ProductDetails clsProductDetails = new Data.ProductDetails();
+
+                    if (ProductModel.PackageID != 0) //PackageID is not zero if selection is used.
+                    {
+                        clsProductPackageDetails = clsProductPackage.Details(ProductModel.PackageID);
+                        clsProductDetails = clsProduct.Details(mclsTerminalDetails.BranchID, clsProductPackageDetails.ProductID, clsProductPackageDetails.MatrixID);
+                    }
+                    else //PackageID is zero if selection is not used.
+                    {
+                        // check if the product exist and with quantity
+                        clsProductDetails = clsProduct.Details(mclsTerminalDetails.BranchID, stBarcode, mclsTerminalDetails.ShowItemMoreThanZeroQty, decQuantity);
+
+                        // check if the product exist and zero quantity
+                        if (clsProductDetails.ProductID == 0) clsProductDetails = clsProduct.Details(mclsTerminalDetails.BranchID, stBarcode);
+
+                        // check if the product is weighted
+                        if (clsProductDetails.ProductID == 0)
+                        {
+                            if (stBarcode.Length == 12) stBarcode = "0" + stBarcode;
+                            if (stBarcode.Length > Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT + 1)
+                            {
+                                clsProductDetails = clsProduct.Details(mclsTerminalDetails.BranchID, stBarcode.Remove(Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT));
+
+                                if (clsProductDetails.ProductID != 0)
+                                {
+                                    decQuantity = (decimal.Parse(stBarcode.Remove(stBarcode.Length - 1).Remove(1, Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT)) / 100) / clsProductDetails.Price;
+                                }
+                            }
+                        }
+
+                        // get the package details
+                        if (clsProductDetails.ProductID != 0) clsProductPackageDetails = clsProductPackage.Details(clsProductDetails.PackageID);
+                    }
 
 					txtBarCode.Text = "";
                     ProductModel.Clear();
-
-					// check if the product is weighted
-                    if (clsProductDetails.ProductID == 0)
-					{
-						if (stBarcode.Length == 12) stBarcode = "0" + stBarcode;
-						if (stBarcode.Length > Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT + 1)
-						{
-                            clsProductPackageDetails = clsProductPackage.DetailsByBarCode(stBarcode.Remove(Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT));
-
-                            clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID, clsProductPackageDetails.MatrixID);
-							
-							if (clsProductDetails.ProductID != 0)
-							{
-								decQuantity = (decimal.Parse(stBarcode.Remove(stBarcode.Length - 1).Remove(1, Data.Products.DEFAULT_WEIGHTED_BARCODE_CHARACTER_COUNT)) / 100) / clsProductDetails.Price;
-							}
-						}
-					}
+					
                     if (clsProductDetails.ProductID != 0)
 					{
 						
-						if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
+                        if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER &&
+                            !mboIsRefund && clsProductDetails.Quantity < decQuantity && mclsTerminalDetails.ShowItemMoreThanZeroQty)
 						{
-							if (mboIsRefund == false)
-							{
-								if (clsProductDetails.Quantity < decQuantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
-								{
-									MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + clsProductDetails.Quantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-									return;
-								}
-							}
+							MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + clsProductDetails.Quantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+							return;
 						}
 
 						Data.SalesTransactionItemDetails clsItemDetails = new Data.SalesTransactionItemDetails();
@@ -4735,7 +4742,7 @@ namespace AceSoft.RetailPlus.Client.UI
 								foreach (System.Data.DataRow dr in ItemDataTable.Rows)
 								{
 									lngProductID = long.Parse(dr["ProductID"].ToString());
-									decRewardPoints += clsProduct.Details(lngProductID).RewardPoints;
+									decRewardPoints += clsProduct.Details(mclsTerminalDetails.BranchID, lngProductID).RewardPoints;
 								}
 							}
 							catch { }

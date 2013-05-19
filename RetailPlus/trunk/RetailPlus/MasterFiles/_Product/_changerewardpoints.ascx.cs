@@ -81,8 +81,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             Products clsProduct = new Products();
             int intProductBaseUnitID = 0;
             decimal decCommision = 0;
-            try { 
-                ProductDetails clsDetails =clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedValue));
+            try {
+                ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedValue));
                 intProductBaseUnitID = clsDetails.BaseUnitID; decCommision = clsDetails.PercentageCommision;
             }
             catch { }

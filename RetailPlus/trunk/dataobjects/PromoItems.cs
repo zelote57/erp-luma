@@ -568,7 +568,7 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Public Modifiers
 
-		public bool ApplyPromoValue(Int64 ContactID, Int64 ProductID, Int64 VariationMatrixID, out PromoTypes PromoType, out decimal PromoQuantity, out decimal PromoValue, out bool InPercent)
+		public bool ApplyPromoValue(Int64 ContactID, Int64 ProductID, Int64 VariationMatrixID, out PromoTypes PromoType, out decimal PromoQuantity, out decimal PromoValue, out bool InPercent, int BranchID = 0)
 		{
 			PromoType = PromoTypes.NotApplicable;
 			PromoQuantity = 0;
@@ -577,10 +577,8 @@ namespace AceSoft.RetailPlus.Data
 
 			bool boHasPromo = false;
 
-			
-
 			Data.Products clsProduct = new Data.Products(base.Connection, base.Transaction);
-			Data.ProductDetails clsProductDetails = clsProduct.Details(ProductID);
+            Data.ProductDetails clsProductDetails = clsProduct.Details(BranchID, ProductID);
 
 			Int64 ProductSubGroupID = clsProductDetails.ProductSubGroupID;
 			Int64 ProductGroupID = clsProductDetails.ProductGroupID;

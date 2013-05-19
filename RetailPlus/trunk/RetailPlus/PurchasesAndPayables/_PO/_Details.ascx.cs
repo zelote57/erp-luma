@@ -336,7 +336,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             foreach (DataRow row in dtaPOItems.Rows)
             {
                 clsProductDetails = new ProductDetails();
-                clsProductDetails = clsProduct.Details(Convert.ToInt64(row["ProductID"].ToString()));
+                clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(row["ProductID"].ToString()));
 
                 writer.WriteStartElement("POItem");
                 writer.WriteAttributeString("POItemID", row["POItemID"].ToString());

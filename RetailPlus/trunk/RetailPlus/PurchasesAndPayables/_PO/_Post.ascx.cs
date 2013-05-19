@@ -142,7 +142,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             cboProductUnit.DataBind();
 
             Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
-            ProductDetails clsDetails = clsProduct.Details(ProductID);
+            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, ProductID);
             ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
             System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(ProductID, "PurchasePrice", SortOption.Ascending);
 
@@ -274,7 +274,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 if (clsProductPackageDetails.PackageID != 0)
                 {
                     clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
-                    Data.ProductDetails clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID);
+                    Data.ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, clsProductPackageDetails.ProductID);
 
                     cboProductCode.Items.Add(new ListItem(clsProductDetails.ProductCode, clsProductDetails.ProductID.ToString()));
                 }
@@ -636,7 +636,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             {
                 ProductUnit clsProductUnit = new ProductUnit(clsProductPackage.Connection, clsProductPackage.Transaction);
                 Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
-                ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
+                ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, long.Parse(cboProductCode.SelectedItem.Value));
                 decimal decBaseUnitValue = clsProductUnit.GetBaseUnitValue(long.Parse(cboProductCode.SelectedItem.Value), int.Parse(cboProductUnit.SelectedItem.Value), 1);
 
                 clsDetails.Price = decBaseUnitValue * clsProductDetails.Price;
@@ -818,7 +818,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			POItemDetails clsDetails = new POItemDetails();
 
 			Products clsProducts = new Products();
-			ProductDetails clsProductDetails = clsProducts.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
+            ProductDetails clsProductDetails = clsProducts.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
 			TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
@@ -1409,7 +1409,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             foreach (DataRow row in dtaPOItems.Rows)
             {
                 clsProductDetails = new ProductDetails();
-                clsProductDetails = clsProduct.Details(Convert.ToInt64(row["ProductID"].ToString()));
+                clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(row["ProductID"].ToString()));
 
                 writer.WriteStartElement("POItem");
                 writer.WriteAttributeString("POItemID", row["POItemID"].ToString());
@@ -1688,11 +1688,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                                 clsPOItemDetails.SellingLocalTax = Convert.ToDecimal(xmlReader.GetAttribute("ItemSellingLocalTax"));
                                 clsPOItemDetails.OldSellingPrice = Convert.ToDecimal(xmlReader.GetAttribute("ItemOldSellingPrice"));
 
-                                clsPOItemDetails.ProductID = clsProduct.Details(clsPOItemDetails.BarCode).ProductID;
+                                clsPOItemDetails.ProductID = clsProduct.Details(Constants.BRANCH_ID_MAIN, clsPOItemDetails.BarCode).ProductID;
                                 lngProductID = clsPOItemDetails.ProductID;
                                 if (clsPOItemDetails.ProductID == 0)
                                 {
-                                    clsPOItemDetails.ProductID = clsProduct.Details(clsPOItemDetails.ProductCode).ProductID;
+                                    clsPOItemDetails.ProductID = clsProduct.Details(Constants.BRANCH_ID_MAIN, clsPOItemDetails.ProductCode).ProductID;
                                     if (clsPOItemDetails.ProductID == 0)
                                     {
                                         //insert new product

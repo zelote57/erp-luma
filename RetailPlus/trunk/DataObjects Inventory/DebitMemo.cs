@@ -489,7 +489,7 @@ namespace AceSoft.RetailPlus.Data
                 decimal decAmount = myReader.GetDecimal("Amount");
                 decimal decVAT = myReader.GetDecimal("VAT");
 
-                clsProductDetails = clsProduct.Details(lngProductID);
+                clsProductDetails = clsProduct.Details(clsDebitMemoDetails.BranchID, lngProductID);
                 /*******************************************
 				 * Add in the Purchase Price History based on Debit Memo
 				 * ****************************************/

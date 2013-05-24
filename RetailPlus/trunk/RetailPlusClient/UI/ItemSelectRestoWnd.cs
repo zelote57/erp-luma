@@ -368,7 +368,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (mboShowInActiveProducts == false)
                     { dt = clsProduct.SearchSaleableDataTableByGroup(strGroupCode, string.Empty, "ProductCode", SortOption.Ascending, 0, mboShowItemMoreThanZeroQty); }
                     else
-                    { dt = clsProduct.SearchDataTableActiveInactive(ProductListFilterType.ShowActiveAndInactive, strGroupCode, "ProductCode", SortOption.Ascending, 0, mboShowItemMoreThanZeroQty); }
+                    { dt = clsProduct.SearchDataTableActiveInactive(ProductListFilterType.ShowInactiveOnly, strGroupCode, "ProductCode", SortOption.Ascending, 0, mboShowItemMoreThanZeroQty); }
                     clsProduct.CommitAndDispose();
 
                     lstItems.Items.Clear(); int iImgCtr = 0;

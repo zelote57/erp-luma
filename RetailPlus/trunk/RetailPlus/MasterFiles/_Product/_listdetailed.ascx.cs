@@ -490,9 +490,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-            ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive;
-            if (rdoShowActiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowActiveOnly;
+            ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveOnly;
             if (rdoShowInactiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowInactiveOnly;
+            if (rdoShowActiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowActiveOnly;
 
             int intLimit = 0;
             try { intLimit = int.Parse(txtLimit.Text); }
@@ -508,26 +508,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             if (SearchKey == null) { SearchKey = string.Empty; }
             else if (SearchKey != string.Empty) { Session.Add("Search", Common.Encrypt(SearchKey, Session.SessionID)); }
 
-            ProductColumns clsProductColumns = new ProductColumns();
-            clsProductColumns.Active = true;
-
-            clsProductColumns.BarCode = true;
-            clsProductColumns.ProductCode = true;
-            clsProductColumns.ProductDesc = true;
-            clsProductColumns.ProductGroupID = true;
-            clsProductColumns.ProductGroupCode = true;
-            clsProductColumns.BaseUnitID = true;
-            clsProductColumns.BaseUnitCode = true;
-            clsProductColumns.Price = true;
-            clsProductColumns.PurchasePrice = true;
-            clsProductColumns.ProductSubGroupCode = true;
-            clsProductColumns.Quantity = true;
-            clsProductColumns.SupplierName = true;
-            clsProductColumns.SupplierID = true;
-            clsProductColumns.IncludeInSubtotalDiscount = true;
-            clsProductColumns.VAT = true;
-            clsProductColumns.EVAT = true;
-            clsProductColumns.LocalTax = true;
 
             Data.ProductDetails clsSearchKeys = new Data.ProductDetails();
             clsSearchKeys.BarCode = SearchKey;
@@ -535,13 +515,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsSearchKeys.BarCode3 = SearchKey;
             clsSearchKeys.ProductCode = SearchKey;
 
-            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, clsProductListFilterType, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, SortField, SortOption.Ascending);
+            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsSearchKeys, clsProductListFilterType, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, SortField, SortOption.Ascending);
 
             if (dt.Rows.Count == 0)
             {
                 clsSearchKeys = new Data.ProductDetails();
                 clsSearchKeys.ProductCode = SearchKey;
-                dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, clsProductListFilterType, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, SortField, SortOption.Ascending);
+                dt = clsProduct.ListAsDataTable(clsSearchKeys, clsProductListFilterType, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, SortField, SortOption.Ascending);
             }
             PageData.DataSource = dt.DefaultView;
             //PageData.DataSource = clsProduct.ListAsDataTable(clsProductColumns, 0, clsProductListFilterType, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, SortField, SortOption.Ascending).DefaultView;

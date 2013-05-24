@@ -522,9 +522,9 @@ namespace AceSoft.RetailPlus.Inventory
             if (Request.QueryString["sortoption"] != null)
             { sortoption = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
 
-            ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive;
+            ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowInactiveOnly;
             if (rdoShowActiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowActiveOnly;
-            if (rdoShowInactiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowInactiveOnly;
+            if (rdoShowInactiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive;
 
             int intLimit = 0;
             try { intLimit = int.Parse(txtLimit.Text); }

@@ -232,7 +232,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 			writer.WriteAttributeString("StockRemarks",clsStockDetails.Remarks);
 				foreach (DataRow row in dtaStockItemList.Rows) {
 					clsProductDetails = new ProductDetails();
-                    clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(row["ProductID"].ToString()));
+                    clsProductDetails = clsProduct.Details(Convert.ToInt64(row["ProductID"].ToString()));
 
 					writer.WriteStartElement("Item");
 						writer.WriteAttributeString("ItemStockItemID", row["StockItemID"].ToString());

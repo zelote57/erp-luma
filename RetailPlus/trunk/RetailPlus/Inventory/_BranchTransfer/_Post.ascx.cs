@@ -139,7 +139,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			cboProductUnit.DataBind();
 
             Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
-            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, ProductID);
+            ProductDetails clsDetails = clsProduct.Details(ProductID);
             ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
             System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(ProductID, "PurchasePrice", SortOption.Ascending);
             clsProductVariationMatrix.CommitAndDispose();
@@ -219,7 +219,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			cboProductCode.DataValueField = "ProductID";
 
             string stSearchKey = txtProductCode.Text;
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowActiveAndInactive, stSearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, stSearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending);
 			cboProductCode.DataBind();
 			clsProduct.CommitAndDispose();
 
@@ -422,7 +422,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
             {
                 ProductUnit clsProductUnit = new ProductUnit(clsProductPackage.Connection, clsProductPackage.Transaction);
                 Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
-                ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, long.Parse(cboProductCode.SelectedItem.Value));
+                ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
                 decimal decBaseUnitValue = clsProductUnit.GetBaseUnitValue(long.Parse(cboProductCode.SelectedItem.Value), int.Parse(cboProductUnit.SelectedItem.Value), 1);
 
                 clsDetails.Price = decBaseUnitValue * clsProductDetails.Price;

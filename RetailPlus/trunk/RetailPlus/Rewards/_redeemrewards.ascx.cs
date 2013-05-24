@@ -101,7 +101,7 @@ namespace AceSoft.RetailPlus.Rewards
 				if (cboProductCode.SelectedItem.Value != Constants.ZERO_STRING)
 				{
 					Products clsProduct = new Products();
-                    ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, long.Parse(cboProductCode.SelectedItem.Value));
+                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
 					clsProduct.CommitAndDispose();
 					txtRedeemRewardPoints.Text = clsProductDetails.RewardPoints.ToString("#,##0.#0");
                     txtNewRewardPoints.Text = Convert.ToInt32(Convert.ToDecimal(txtCurrentRewardPoints.Text) - Convert.ToDecimal(txtRedeemRewardPoints.Text)).ToString();
@@ -184,10 +184,6 @@ namespace AceSoft.RetailPlus.Rewards
 		}
 		private void LoadProduct()
 		{
-			Data.ProductColumns clsProductColumns = new Data.ProductColumns();
-			clsProductColumns.ProductID = true;
-			clsProductColumns.ProductCode = true;
-
 			string strSearchKey = txtProductCode.Text.Trim();
 			Data.ProductDetails clsSearchKeys = new Data.ProductDetails();
 			clsSearchKeys.BarCode = strSearchKey;
@@ -198,7 +194,7 @@ namespace AceSoft.RetailPlus.Rewards
 			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
-			cboProductCode.DataSource = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending);
+			cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending);
 			cboProductCode.DataBind();
 			clsProduct.CommitAndDispose();
 

@@ -274,7 +274,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 
 			cboProducts.DataTextField = "ProductCode";
 			cboProducts.DataValueField = "ProductID";
-            cboProducts.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowActiveAndInactive, txtProductCode.Text.Trim(), 0, Convert.ToInt64(cboProductGroup.SelectedItem.Value), string.Empty, Convert.ToInt64(cboSubGroup.SelectedItem.Value));
+            cboProducts.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, txtProductCode.Text.Trim(), 0, Convert.ToInt64(cboProductGroup.SelectedItem.Value), string.Empty, Convert.ToInt64(cboSubGroup.SelectedItem.Value));
 			cboProducts.DataBind();
             cboProducts.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             if (cboProducts.Items.Count > 1 && txtProductCode.Text.Trim() != string.Empty) cboProducts.SelectedIndex = 1; else cboProducts.SelectedIndex = 0;

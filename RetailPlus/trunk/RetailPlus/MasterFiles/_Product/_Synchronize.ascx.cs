@@ -341,7 +341,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     clsProductDetails = clsBranchProductDetails;
                     try
                     {
-                        clsProductDetails.ProductID = clsProduct.Details(Constants.BRANCH_ID_MAIN, clsProductDetails.BarCode).ProductID;
+                        clsProductDetails.ProductID = clsProduct.Details(clsProductDetails.BarCode).ProductID;
                         if (clsProductDetails.ProductID != 0)
                         {
                             lblError.Text += clsProductDetails.BarCode + " already exist.<br><br>";

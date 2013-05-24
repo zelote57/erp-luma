@@ -165,10 +165,11 @@ namespace AceSoft.RetailPlus.Data
 		public const string ProductID = "ProductID";
 		public const string ProductCode = "ProductCode";
         public const string PackageID = "PackageID";
-		public const string BarCode = "BarCode4";
+        public const string BarCode = "BarCode";
         public const string BarCode1 = "BarCode1";
 		public const string BarCode2 = "BarCode2";
 		public const string BarCode3 = "BarCode3";
+        public const string BarCode4 = "BarCode4";
 		public const string ProductDesc = "ProductDesc";
 		public const string ProductGroupID = "ProductGroupID";
 		public const string ProductGroupCode = "ProductGroupCode";
@@ -479,7 +480,7 @@ namespace AceSoft.RetailPlus.Data
 			{
                 if (IsExist(Details.ProductID, Details.BarCode, Details.BarCode2, Details.BarCode3))
                 {
-                    throw new EntryPointNotFoundException("This product already exist, please check the barcode.");
+                    throw new Exception("This product already exist, please check the barcode.");
                 }
 
 				string SQL =	"UPDATE tblProducts SET " +
@@ -487,12 +488,8 @@ namespace AceSoft.RetailPlus.Data
 									"ProductDesc		= @ProductDesc, " +  
 									"ProductSubGroupID	= @ProductSubGroupID, " + 
 									"BaseUnitID			= @BaseUnitID, " +
-									"PurchasePrice		= @PurchasePrice, " +
 									"PercentageCommision        =   @PercentageCommision, " +
 									"IncludeInSubtotalDiscount	=	@IncludeInSubtotalDiscount, " +
-									"VAT				= @VAT, " +
-									"EVAT				= @EVAT, " +
-									"LocalTax			= @LocalTax, " +
 									"MinThreshold		= @MinThreshold, " +
 									"MaxThreshold		= @MaxThreshold, " +
 									"SupplierID			= @SupplierID, " +
@@ -520,24 +517,11 @@ namespace AceSoft.RetailPlus.Data
 				prmBaseUnitID.Value = Details.BaseUnitID;
 				cmd.Parameters.Add(prmBaseUnitID);
 
-				cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
 				cmd.Parameters.AddWithValue("@PercentageCommision", Details.PercentageCommision);
 
 				MySqlParameter prmIncludeInSubtotalDiscount = new MySqlParameter("@IncludeInSubtotalDiscount",MySqlDbType.Int16);			
 				prmIncludeInSubtotalDiscount.Value = Details.IncludeInSubtotalDiscount;
 				cmd.Parameters.Add(prmIncludeInSubtotalDiscount);
-
-				MySqlParameter prmVAT = new MySqlParameter("@VAT",MySqlDbType.Decimal);			
-				prmVAT.Value = Details.VAT;
-				cmd.Parameters.Add(prmVAT);
-
-				MySqlParameter prmEVAT = new MySqlParameter("@EVAT",MySqlDbType.Decimal);			
-				prmEVAT.Value = Details.EVAT;
-				cmd.Parameters.Add(prmEVAT);
-
-				MySqlParameter prmLocalTax = new MySqlParameter("@LocalTax",MySqlDbType.Decimal);			
-				prmLocalTax.Value = Details.LocalTax;
-				cmd.Parameters.Add(prmLocalTax);
 
 				MySqlParameter prmMinThreshold = new MySqlParameter("@MinThreshold",MySqlDbType.Decimal);			
 				prmMinThreshold.Value = Details.MinThreshold;
@@ -570,6 +554,7 @@ namespace AceSoft.RetailPlus.Data
 				clsDetails.Quantity = 1;
 				clsDetails.Price = Details.Price;
 				clsDetails.WSPrice = Details.WSPrice;
+                clsDetails.PurchasePrice = Details.PurchasePrice;
 				clsDetails.VAT = Details.VAT;
 				clsDetails.EVAT = Details.EVAT;
 				clsDetails.LocalTax = Details.LocalTax;
@@ -1782,11 +1767,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL = "CALL procProductUpdateRID(@lngProductID, @lngRID)";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1798,15 +1779,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}
 		}
@@ -2314,10 +2286,11 @@ namespace AceSoft.RetailPlus.Data
                                     "a.ProductID, " +
                                     "a.ProductCode, " +
                                     "pkg.PackageID, " +
-                                    "pkg.BarCode1, " +
-                                    "pkg.BarCode2, " +
-                                    "pkg.BarCode3, " +
-                                    "pkg.BarCode4 BarCode, " +
+                                    "IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode, " +
+							        "pkg.BarCode1, " +
+							        "pkg.BarCode2, " +
+							        "pkg.BarCode3, " +
+                                    "pkg.BarCode4, " +
                                     "a.ProductDesc, " +
                                     "a.ProductSubGroupID, " +
                                     "b.ProductSubGroupCode, " +
@@ -2385,48 +2358,32 @@ namespace AceSoft.RetailPlus.Data
 		}
 		private string SQLSelectSimple()
 		{
-			string stSQL = "SELECT " +
-									"a.ProductID, " +
-									"a.ProductCode, " +
-									"a.BarCode, " +
-									"a.BarCode2, " +
-									"a.BarCode3, " +
-									"a.ProductDesc, " +
-									"a.ProductSubGroupID, " +
-									"a.BaseUnitID, " +
-									"a.DateCreated, " +
-									"a.Deleted, " +
-									"a.Active, " +
-									"a.Price, " +
-									"a.WSPrice, " +
-									"a.PurchasePrice, " +
-									"a.PercentageCommision, " +
-									"a.IncludeInSubtotalDiscount, " +
-									"a.VAT, " +
-									"a.EVAT, " +
-									"a.LocalTax, " +
-									"a.Quantity, " +
-									//"a.MinThreshold, " +
-									//"a.MaxThreshold, " +
-									//"a.RID, " +
-									"a.SupplierID, " +
-									//"a.ChartOfAccountIDPurchase, " +
-									//"a.ChartOfAccountIDSold, " +
-									//"a.ChartOfAccountIDInventory, " +
-									//"a.ChartOfAccountIDTaxPurchase, " +
-									//"a.ChartOfAccountIDTaxSold, " +
-									//"a.IsItemSold, " +
-									//"a.WillPrintProductComposition, " +
-									//"a.VariationCount, " +
-									//"a.QuantityIN, " +
-									//"a.QuantityOUT, " +
-									"a.ActualQuantity, " +
-									//"a.MaxThreshold - a.Quantity AS ReorderQty, " +
-									//"a.RIDMinThreshold, " +
-									//"a.RIDMaxThreshold, " +
-									//"a.RIDMaxThreshold - a.Quantity AS RIDReorderQty, " +
-									"a.RewardPoints " +
-								"FROM tblProducts a ";
+            string stSQL = "SELECT " +
+                                    "a.ProductID, " +
+                                    "a.ProductCode, " +
+                                    "a.BarCode1, " +
+                                    "a.BarCode2, " +
+                                    "a.BarCode3, " +
+                                    "a.ProductDesc, " +
+                                    "a.ProductSubGroupID, " +
+                                    "a.BaseUnitID, " +
+                                    "a.DateCreated, " +
+                                    "a.Deleted, " +
+                                    "a.Active, " +
+                                    "a.Price, " +
+                                    "a.WSPrice, " +
+                                    "a.PurchasePrice, " +
+                                    "a.PercentageCommision, " +
+                                    "a.IncludeInSubtotalDiscount, " +
+                                    "a.VAT, " +
+                                    "a.EVAT, " +
+                                    "a.LocalTax, " +
+                                    "a.Quantity, " +
+                                    "a.SupplierID, " +
+                                    "a.ActualQuantity, " +
+                                    "a.RewardPoints " +
+                                "FROM tblProducts a " +
+                                "INNER JOIN tblProductPackage b ON a.ProductID = b.ProductID AND ";
 			return stSQL;
 		}
 		private string SQLSelectSimple(int BranchID)
@@ -2508,7 +2465,7 @@ namespace AceSoft.RetailPlus.Data
 
             if (clsProductColumns.Price) stSQL += "tblProductPackage." + ProductColumnNames.Price + ", ";
             if (clsProductColumns.WSPrice) stSQL += "tblProductPackage." + ProductColumnNames.WSPrice + ", ";
-            if (clsProductColumns.PurchasePrice) stSQL += "tblProducts." + ProductColumnNames.PurchasePrice + ", ";
+            if (clsProductColumns.PurchasePrice) stSQL += "tblProductPackage." + ProductColumnNames.PurchasePrice + ", ";
 
 			if (clsProductColumns.PercentageCommision) stSQL += "tblProducts." + ProductColumnNames.PercentageCommision + ", ";
 			if (clsProductColumns.IncludeInSubtotalDiscount) stSQL += "tblProducts." + ProductColumnNames.IncludeInSubtotalDiscount + ", ";
@@ -2548,9 +2505,9 @@ namespace AceSoft.RetailPlus.Data
             stSQL += "INNER JOIN tblProductSubGroup ON tblProducts.ProductSubGroupID = tblProductSubGroup.ProductSubGroupID ";
             stSQL += "INNER JOIN tblProductGroup ON tblProductSubGroup.ProductGroupID = tblProductGroup.ProductGroupID ";
             stSQL += "INNER JOIN tblUnit ON tblProducts.BaseUnitID = tblUnit.UnitID ";
-            
-            stSQL += "INNER JOIN tblProductInventory ON tblProducts.ProductID = tblProductInventory.ProductID ";
             stSQL += "INNER JOIN tblProductPackage ON tblProducts.ProductID = tblProductPackage.ProductID ";
+            stSQL += "LEFT OUTER JOIN tblProductInventory ON tblProducts.ProductID = tblProductInventory.ProductID ";
+            
             stSQL += "INNER JOIN tblUnit tblUnitPackage ON tblProductPackage.UnitID = tblUnitPackage.UnitID ";
 		    
             stSQL += "INNER JOIN tblContacts ON tblProducts.SupplierID = tblContacts.ContactID ";
@@ -2628,15 +2585,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -2813,6 +2761,43 @@ namespace AceSoft.RetailPlus.Data
         //        throw base.ThrowException(ex);
         //    }
         //}
+
+        public ProductDetails Details(long ProductID)
+        {
+            return getDetails(ProductID, string.Empty);
+        }
+
+        public ProductDetails Details(string BarCode)
+        {
+            return getDetails(0, BarCode);
+        }
+
+        private ProductDetails getDetails(long ProductID, string BarCode)
+        {
+            try
+            {
+                string SQL = "CALL procProductMainDetails(@ProductID, @BarCode)";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@BarCode", BarCode);
+
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                ProductDetails Details = SetDetails(dt);
+
+                return Details;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		public ProductDetails Details(int BranchID, long ProductID)
 		{
@@ -3200,7 +3185,7 @@ namespace AceSoft.RetailPlus.Data
 				string SQL = SQLSelect() + "WHERE a.Deleted = 0 ";
 
 				if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND a.Active = 1 ";
-				else if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) SQL += "AND a.Active = 0 ";
+				else if (clsProductListFilterType == ProductListFilterType.ShowActiveAndInactive) SQL += "AND a.Active = 0 ";
 
 				if (isQuantityGreaterThanZERO == true)
 					SQL += "AND a.Quantity > 0 ";
@@ -3635,7 +3620,7 @@ namespace AceSoft.RetailPlus.Data
 
 				if (CheckIItemisSold) SQL += "AND a.IsItemSold = 1 ";
 				if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND a.Active = 1 ";
-				if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) SQL += "AND a.Active = 0 ";
+				if (clsProductListFilterType == ProductListFilterType.ShowActiveAndInactive) SQL += "AND a.Active = 0 ";
 
 				if (SearchKey != string.Empty)
 				{
@@ -3717,7 +3702,7 @@ namespace AceSoft.RetailPlus.Data
 
 				if (CheckIItemisSold) SQL += "AND a.IsItemSold = 1 ";
 				if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND a.Active = 1 ";
-				if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) SQL += "AND a.Active = 0 ";
+				if (clsProductListFilterType == ProductListFilterType.ShowActiveAndInactive) SQL += "AND a.Active = 0 ";
 
 				if (SearchKey != string.Empty)
 				{
@@ -3797,7 +3782,7 @@ namespace AceSoft.RetailPlus.Data
 
 				if (CheckIItemisSold) SQL += "AND a.IsItemSold = 1 ";
 				if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND a.Active = 1 ";
-				if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) SQL += "AND a.Active = 0 ";
+				if (clsProductListFilterType == ProductListFilterType.ShowActiveAndInactive) SQL += "AND a.Active = 0 ";
 
 				if (!string.IsNullOrEmpty(SearchKey))
 				{ SQL += "AND (Barcode LIKE @SearchKey OR Barcode2 LIKE @SearchKey OR ProductCode LIKE @SearchKey) "; }
@@ -3855,7 +3840,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public System.Data.DataTable ProductIDandCodeDataTable(ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive, string SearchKey="", long SupplierID = 0, long ProductGroupID = 0, string ProductGroupName = "", long ProductSubGroupID=0, string ProductSubGroupName="", Int32 Limit=100, bool isQuantityGreaterThanZERO=false, bool CheckIItemisSold=true, string SortField="ProductCode", SortOption SortOrder=SortOption.Ascending)
+		public System.Data.DataTable ProductIDandCodeDataTable(ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowInactiveOnly, string SearchKey="", long SupplierID = 0, long ProductGroupID = 0, string ProductGroupName = "", long ProductSubGroupID=0, string ProductSubGroupName="", Int32 Limit=100, bool isQuantityGreaterThanZERO=false, bool CheckIItemisSold=true, string SortField="ProductCode", SortOption SortOrder=SortOption.Ascending)
 		{
 			try
 			{
@@ -3869,7 +3854,7 @@ namespace AceSoft.RetailPlus.Data
 
 				if (CheckIItemisSold) SQL += "AND a.IsItemSold = 1 ";
 				if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND a.Active = 1 ";
-				if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) SQL += "AND a.Active = 0 ";
+				if (clsProductListFilterType == ProductListFilterType.ShowActiveAndInactive) SQL += "AND a.Active = 0 ";
 
 				if (SearchKey != string.Empty)
 				{
@@ -4148,199 +4133,46 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public System.Data.DataTable ListAsDataTable(ProductColumns clsProductColumns, ProductDetails clsSearchKeys, ProductListFilterType clsProductListFilterType,
-					long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, Int32 Limit, bool isQuantityGreaterThanZERO, string SortField, SortOption SortOrder)
+        private System.Data.DataTable ListAsDataTable(string BarCode = "", string ProductCode = "", Int64 SupplierID = 0, ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowInactiveOnly,
+                bool isQuantityGreaterThanZERO = false, Int32 Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending)
+        {
+            string SQL = "CALL procProductSelect(@BarCode, @ProductCode, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, @lngLimit, @SortField, @SortOrder)";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            cmd.Parameters.AddWithValue("@BarCode", BarCode);
+            cmd.Parameters.AddWithValue("@ProductCode", ProductCode);
+            cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
+            cmd.Parameters.AddWithValue("@ShowActiveAndInactive", clsProductListFilterType.ToString("d"));
+            cmd.Parameters.AddWithValue("@isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
+            cmd.Parameters.AddWithValue("@lngLimit", Limit);
+            cmd.Parameters.AddWithValue("@SortField", SortField);
+            switch (SortOrder)
+            {
+                case SortOption.Ascending:
+                    cmd.Parameters.AddWithValue("@SortOrder", "ASC");
+                    break;
+                case SortOption.Desscending:
+                    cmd.Parameters.AddWithValue("@SortOrder", "DESC");
+                    break;
+            } 
+
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            return dt;
+        }
+
+		public System.Data.DataTable ListAsDataTable(ProductDetails clsSearchKeys, ProductListFilterType clsProductListFilterType,
+					long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, Int32 Limit, bool isQuantityGreaterThanZERO, string SortField = "ProductCode", SortOption SortOrder = SortOption.Ascending)
 		{
 			try
 			{
-				MySqlCommand cmd = new MySqlCommand();
-
-				clsProductColumns.IncludeAllPackages = true; 
-
-				// include branchid in the selection if branchid is not zero
-				if (clsSearchKeys.BranchID != 0) clsProductColumns.BranchID = true;
-				if (clsSearchKeys.BarCode != string.Empty) clsProductColumns.BarCode1 = true;
-				if (clsSearchKeys.BarCode2 != string.Empty) clsProductColumns.BarCode2 = true;
-				if (clsSearchKeys.BarCode3 != string.Empty) clsProductColumns.BarCode3 = true;
-
-				string SQL = SQLSelect(clsProductColumns) + "WHERE tblProducts.deleted=0 ";
-
-				if (SequenceNoStart != Constants.ZERO)
-				{
-					if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
-						SQL += "AND tblProducts.SequenceNo < " + SequenceNoStart.ToString() + " ";
-					else
-						SQL += "AND tblProducts.SequenceNo > " + SequenceNoStart.ToString() + " ";
-				}
-
-				if (clsSearchKeys.BranchID != Constants.ZERO)
-				{
-					SQL += "AND tblProductInventory.BranchID = @BranchID ";
-					MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-					prmBranchID.Value = clsSearchKeys.BranchID;
-					cmd.Parameters.Add(prmBranchID);
-				}
-				if (clsSearchKeys.IsItemSold)
-				{
-					SQL += "AND tblProducts.IsItemSold = @IsItemSold ";
-					MySqlParameter prmIsItemSold = new MySqlParameter("@IsItemSold",MySqlDbType.Int16);
-					prmIsItemSold.Value = clsSearchKeys.IsItemSold;
-					cmd.Parameters.Add(prmIsItemSold);
-				}
-				if (clsSearchKeys.SupplierID !=0 )
-				{
-					SQL += "AND tblProducts.SupplierID = @SupplierID ";
-					MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);
-					prmSupplierID.Value = clsSearchKeys.SupplierID;
-					cmd.Parameters.Add(prmSupplierID);
-				}
-				if (clsSearchKeys.ProductSubGroupID != 0)
-				{
-					SQL += "AND tblProducts.ProductSubGroupID = @ProductSubGroupID ";
-					MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);
-					prmProductSubGroupID.Value = clsSearchKeys.ProductSubGroupID;
-					cmd.Parameters.Add(prmProductSubGroupID);
-				}
-				if (clsSearchKeys.ProductSubGroupName != string.Empty && clsSearchKeys.ProductSubGroupName != null)
-				{
-					SQL += "AND tblProductSubGroup.ProductSubGroupName LIKE @ProductSubGroupName ";
-					MySqlParameter prmProductSubGroupName = new MySqlParameter("@ProductSubGroupName",MySqlDbType.String);
-					prmProductSubGroupName.Value = clsSearchKeys.ProductSubGroupName + "%";
-					cmd.Parameters.Add(prmProductSubGroupName);
-				}
-				if (clsSearchKeys.ProductGroupID != 0)
-				{
-					SQL += "AND tblProductSubGroup.ProductGroupID = @ProductGroupID ";
-					MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);
-					prmProductGroupID.Value = clsSearchKeys.ProductGroupID;
-					cmd.Parameters.Add(prmProductGroupID);
-				}
-				if (clsSearchKeys.ProductGroupName != string.Empty && clsSearchKeys.ProductGroupName != null)
-				{
-					SQL += "AND tblProductGroup.ProductGroupName LIKE @ProductGroupName ";
-					MySqlParameter prmProductGroupName = new MySqlParameter("@ProductGroupName",MySqlDbType.String);
-					prmProductGroupName.Value = clsSearchKeys.ProductGroupName + "%";
-					cmd.Parameters.Add(prmProductGroupName);
-				}
-				if (clsProductListFilterType != ProductListFilterType.ShowActiveAndInactive)
-				{
-					SQL += "AND tblProducts.Active = @Active ";
-					MySqlParameter prmActive = new MySqlParameter("@Active",MySqlDbType.Int16);
-					if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) prmActive.Value = 1;
-					if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) prmActive.Value = 0;
-					cmd.Parameters.Add(prmActive);
-				}
-				if (isQuantityGreaterThanZERO)
-				{
-					if (clsSearchKeys.BranchID == Constants.ZERO)
-                        SQL += "AND tblProductInventory.Quantity > 0 ";
-					else
-						SQL += "AND tblProductInventory.Quantity > 0 ";
-				}
-
-				string SQLSearch = string.Empty;
-				string SQLPackage = string.Empty;
-				if (clsProductColumns.IncludeAllPackages)
-				{
-					if (clsSearchKeys.BarCode != string.Empty && clsSearchKeys.BarCode != null)
-					{
-						if (SQLSearch != string.Empty) SQLSearch += "OR ";
-						SQLSearch += "tblProducts.BarCode LIKE @BarCode ";
-
-						MySqlParameter prmBarcode = new MySqlParameter("@BarCode",MySqlDbType.String);
-						prmBarcode.Value = clsSearchKeys.BarCode + "%";
-						cmd.Parameters.Add(prmBarcode);
-					}
-					if (clsSearchKeys.BarCode2 != string.Empty && clsSearchKeys.BarCode2 != null)
-					{
-						if (SQLSearch != string.Empty) SQLSearch += "OR ";
-						SQLSearch += "tblProducts.BarCode2 LIKE @BarCode ";
-
-						MySqlParameter prmBarCode2 = new MySqlParameter("@BarCode2",MySqlDbType.String);
-						prmBarCode2.Value = clsSearchKeys.BarCode2 + "%";
-						cmd.Parameters.Add(prmBarCode2);
-					}
-					if (clsSearchKeys.BarCode3 != string.Empty && clsSearchKeys.BarCode3 != null)
-					{
-						if (SQLSearch != string.Empty) SQLSearch += "OR ";
-						SQLSearch += "tblProducts.BarCode3 LIKE @BarCode ";
-
-						MySqlParameter prmBarCode3 = new MySqlParameter("@BarCode3",MySqlDbType.String);
-						prmBarCode3.Value = clsSearchKeys.BarCode3 + "%";
-						cmd.Parameters.Add(prmBarCode3);
-					}
-				}
-				else
-				{
-					if (clsSearchKeys.BarCode != string.Empty && clsSearchKeys.BarCode != null)
-					{
-						if (SQLPackage != string.Empty) SQLPackage += "OR ";
-						SQLPackage += "tblProductPackage.BarCode1 LIKE @BarCode ";
-
-						MySqlParameter prmBarcode = new MySqlParameter("@BarCode",MySqlDbType.String);
-						prmBarcode.Value = clsSearchKeys.BarCode + "%";
-						cmd.Parameters.Add(prmBarcode);
-					}
-					if (clsSearchKeys.BarCode2 != string.Empty && clsSearchKeys.BarCode2 != null)
-					{
-						if (SQLPackage != string.Empty) SQLPackage += "OR ";
-						SQLPackage += "tblProductPackage.BarCode2 LIKE @BarCode ";
-
-						MySqlParameter prmBarCode2 = new MySqlParameter("@BarCode2",MySqlDbType.String);
-						prmBarCode2.Value = clsSearchKeys.BarCode2 + "%";
-						cmd.Parameters.Add(prmBarCode2);
-					}
-					if (clsSearchKeys.BarCode3 != string.Empty && clsSearchKeys.BarCode3 != null)
-					{
-						if (SQLPackage != string.Empty) SQLPackage += "OR ";
-						SQLPackage += "tblProductPackage.BarCode3 LIKE @BarCode ";
-
-						MySqlParameter prmBarCode3 = new MySqlParameter("@BarCode3",MySqlDbType.String);
-						prmBarCode3.Value = clsSearchKeys.BarCode3 + "%";
-						cmd.Parameters.Add(prmBarCode3);
-					}
-					if (SQLPackage != string.Empty)
-						SQLSearch += "AND (SELECT DISTINCT(ProductID) FROM tblProductPackage WHERE " + SQLPackage + ")";
-				}
-				if (clsSearchKeys.ProductCode != string.Empty && clsSearchKeys.ProductCode != null)
-				{
-					if (SQLSearch != string.Empty) SQLSearch += "OR ";
-					SQLSearch += "tblProducts.ProductCode LIKE @ProductCode ";
-
-					MySqlParameter prmProductCode = new MySqlParameter("@ProductCode",MySqlDbType.String);
-					prmProductCode.Value = clsSearchKeys.ProductCode + "%";
-					cmd.Parameters.Add(prmProductCode);
-				}
-				if (clsSearchKeys.ProductDesc != string.Empty && clsSearchKeys.ProductDesc != null)
-				{
-					if (SQLSearch != string.Empty) SQLSearch += "OR ";
-					SQLSearch += "tblProducts.ProductDesc LIKE @ProductDesc ";
-
-					MySqlParameter prmProductDesc = new MySqlParameter("@ProductDesc",MySqlDbType.String);
-					prmProductDesc.Value = clsSearchKeys.ProductDesc + "%";
-					cmd.Parameters.Add(prmProductDesc);
-				}
-				if (SQLSearch != string.Empty) SQL += "AND (" + SQLSearch + ") ";
-
-				if (SortField != string.Empty && SortField != null)
-				{
-					SQL += "ORDER BY " + SortField + " ";
-
-					if (SortOrder == SortOption.Ascending)
-						SQL += "ASC ";
-					else
-						SQL += "DESC ";
-				}
-
-				if (Limit != 0) SQL += "LIMIT " + Limit + " ";
-
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-				base.MySqlDataAdapterFill(cmd, dt);
-
-				return dt;
+				System.Data.DataTable dt = ListAsDataTable(clsSearchKeys.BarCode, clsSearchKeys.ProductCode, clsSearchKeys.SupplierID, clsProductListFilterType, 
+                                                            isQuantityGreaterThanZERO, Limit, SortField, SortOrder);
+                return dt;
 			}
 			catch (Exception ex)
 			{
@@ -4348,118 +4180,109 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-		public System.Data.DataTable ListAsDataTable(ProductColumns clsProductColumns, int BranchID, ProductListFilterType clsProductListFilterType,
-			long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, 
-			ProductColumns SearchColumns, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 Limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				clsProductColumns.IncludeAllPackages = true;
-				
-				// include branchid in the selection if branchid is not zero
-				if (BranchID != 0) clsProductColumns.BranchID = true;
+        public System.Data.DataTable ListAsDataTable(ProductColumns clsProductColumns, int BranchID, ProductListFilterType clsProductListFilterType,
+            long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder,
+            ProductColumns SearchColumns, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 Limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
+        {
+            try
+            {
+                clsProductColumns.IncludeAllPackages = true;
 
-				string SQL = SQLSelect(clsProductColumns) + "WHERE tblProducts.deleted=0 ";
+                // include branchid in the selection if branchid is not zero
+                if (BranchID != 0) clsProductColumns.BranchID = true;
 
-				if (SequenceNoStart != Constants.ZERO)
-				{
-					if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
-						SQL += "AND tblProducts.SequenceNo < " + SequenceNoStart.ToString() + " ";
-					else
-						SQL += "AND tblProducts.SequenceNo > " + SequenceNoStart.ToString() + " ";
-				}
+                string SQL = SQLSelect(clsProductColumns) + "WHERE tblProducts.deleted=0 ";
 
-				if (BranchID != Constants.ZERO) SQL += "AND tblProductInventory.BranchID = " + BranchID.ToString() + " ";
-				if (CheckIItemisSold) SQL += "AND tblProducts.IsItemSold = 1 ";
-				if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND tblProducts.Active = 1 ";
-				if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) SQL += "AND tblProducts.Active = 0 ";
+                if (SequenceNoStart != Constants.ZERO)
+                {
+                    if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
+                        SQL += "AND tblProducts.SequenceNo < " + SequenceNoStart.ToString() + " ";
+                    else
+                        SQL += "AND tblProducts.SequenceNo > " + SequenceNoStart.ToString() + " ";
+                }
 
-				if (SearchKey != string.Empty)
-				{
-					string SQLSearch = string.Empty;
+                if (BranchID != Constants.ZERO) SQL += "AND tblProductInventory.BranchID = " + BranchID.ToString() + " ";
+                if (CheckIItemisSold) SQL += "AND tblProducts.IsItemSold = 1 ";
+                if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND tblProducts.Active = 1 ";
+                if (clsProductListFilterType == ProductListFilterType.ShowActiveAndInactive) SQL += "AND tblProducts.Active = 0 ";
 
-					if (SearchColumns.BarCode)
-					{ if (SQLSearch == string.Empty) SQLSearch += "tblProducts.Barcode LIKE @SearchKey "; else SQLSearch += "OR tblProducts.Barcode LIKE @SearchKey "; }
+                if (SearchKey != string.Empty)
+                {
+                    string SQLSearch = string.Empty;
 
-					if (SearchColumns.BarCode2)
-					{ if (SQLSearch == string.Empty) SQLSearch += "tblProducts.Barcode2 LIKE @SearchKey "; else SQLSearch += "OR tblProducts.Barcode2 LIKE @SearchKey "; }
+                    if (SearchColumns.BarCode)
+                    { if (SQLSearch == string.Empty) SQLSearch += "tblProducts.Barcode LIKE @SearchKey "; else SQLSearch += "OR tblProducts.Barcode LIKE @SearchKey "; }
 
-					if (SearchColumns.BarCode3)
-					{ if (SQLSearch == string.Empty) SQLSearch += "tblProducts.Barcode3 LIKE @SearchKey "; else SQLSearch += "OR tblProducts.Barcode3 LIKE @SearchKey "; }
+                    if (SearchColumns.BarCode2)
+                    { if (SQLSearch == string.Empty) SQLSearch += "tblProducts.Barcode2 LIKE @SearchKey "; else SQLSearch += "OR tblProducts.Barcode2 LIKE @SearchKey "; }
 
-					if (SearchColumns.ProductCode)
-					{ if (SQLSearch == string.Empty) SQLSearch += "tblProducts.ProductCode LIKE @SearchKey "; else SQLSearch += "OR tblProducts.ProductCode LIKE @SearchKey "; }
+                    if (SearchColumns.BarCode3)
+                    { if (SQLSearch == string.Empty) SQLSearch += "tblProducts.Barcode3 LIKE @SearchKey "; else SQLSearch += "OR tblProducts.Barcode3 LIKE @SearchKey "; }
 
-					if (SearchColumns.ProductDesc)
-					{ if (SQLSearch == string.Empty) SQLSearch += "tblProducts.ProductDesc LIKE @SearchKey "; else SQLSearch += "OR tblProducts.ProductDesc LIKE @SearchKey "; }
+                    if (SearchColumns.ProductCode)
+                    { if (SQLSearch == string.Empty) SQLSearch += "tblProducts.ProductCode LIKE @SearchKey "; else SQLSearch += "OR tblProducts.ProductCode LIKE @SearchKey "; }
 
-					if (SQLSearch != string.Empty) SQL += "AND (" + SQLSearch + ") ";
-				}
+                    if (SearchColumns.ProductDesc)
+                    { if (SQLSearch == string.Empty) SQLSearch += "tblProducts.ProductDesc LIKE @SearchKey "; else SQLSearch += "OR tblProducts.ProductDesc LIKE @SearchKey "; }
 
-				if (SupplierID != Constants.ZERO)
-					SQL += "AND (tblProducts.SupplierID = " + SupplierID + " OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE SupplierID = " + SupplierID + ")) ";
+                    if (SQLSearch != string.Empty) SQL += "AND (" + SQLSearch + ") ";
+                }
 
-				if (ProductSubGroupID != Constants.ZERO)
-				{ SQL += "AND tblProducts.ProductSubGroupID = " + ProductSubGroupID + " "; }
+                if (SupplierID != Constants.ZERO)
+                    SQL += "AND (tblProducts.SupplierID = " + SupplierID + " OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE SupplierID = " + SupplierID + ")) ";
 
-				if (ProductSubGroupName != string.Empty && ProductSubGroupName != null)
-				{ SQL += "AND tblProductSubGroup.ProductSubGroupName = '" + ProductSubGroupName + "' "; }
+                if (ProductSubGroupID != Constants.ZERO)
+                { SQL += "AND tblProducts.ProductSubGroupID = " + ProductSubGroupID + " "; }
 
-				if (ProductGroupID != Constants.ZERO)
-				{ SQL += "AND tblProductSubGroup.ProductGroupID = " + ProductGroupID + " "; }
+                if (ProductSubGroupName != string.Empty && ProductSubGroupName != null)
+                { SQL += "AND tblProductSubGroup.ProductSubGroupName = '" + ProductSubGroupName + "' "; }
 
-				if (ProductGroupName != string.Empty && ProductGroupName != null)
-				{ SQL += "AND tblProductGroup.ProductGroupName = '" + ProductGroupName + "' "; }
+                if (ProductGroupID != Constants.ZERO)
+                { SQL += "AND tblProductSubGroup.ProductGroupID = " + ProductGroupID + " "; }
+
+                if (ProductGroupName != string.Empty && ProductGroupName != null)
+                { SQL += "AND tblProductGroup.ProductGroupName = '" + ProductGroupName + "' "; }
 
                 if (isQuantityGreaterThanZERO)
                 { SQL += "AND tblProductInventory.Quantity > 0 "; }
 
-				if (SortField != string.Empty && SortField != null)
-				{
-					SQL += "ORDER BY " + SortField + " ";
+                if (SortField != string.Empty && SortField != null)
+                {
+                    SQL += "ORDER BY " + SortField + " ";
 
-					if (SortOrder == SortOption.Ascending)
-						SQL += "ASC ";
-					else
-						SQL += "DESC ";
-				}
+                    if (SortOrder == SortOption.Ascending)
+                        SQL += "ASC ";
+                    else
+                        SQL += "DESC ";
+                }
 
-				if (Limit != 0)
-					SQL += "LIMIT " + Limit + " ";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                if (Limit != 0)
+                    SQL += "LIMIT " + Limit + " ";
 
 
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
 
-				string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-				base.MySqlDataAdapterFill(cmd, dt);
-				
+                MySqlCommand cmd = new MySqlCommand();
 
-				return dt;
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
 
-				throw base.ThrowException(ex);
-			}
-		}
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+
+                MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey", MySqlDbType.String);
+                prmSearchKey.Value = SearchKey + "%";
+                cmd.Parameters.Add(prmSearchKey);
+
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		public System.Data.DataTable ListAsDataTable(ProductColumns clsProductColumns, int BranchID, ProductListFilterType clsProductListFilterType,
 			long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder,
@@ -4484,7 +4307,7 @@ namespace AceSoft.RetailPlus.Data
 				if (BranchID != Constants.ZERO) SQL += "AND tblProductInventory.BranchID = " + BranchID.ToString() + " ";
 				if (CheckIItemisSold) SQL += "AND tblProducts.IsItemSold = 1 ";
 				if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) SQL += "AND tblProducts.Active = 1 ";
-				if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) SQL += "AND tblProducts.Active = 0 ";
+				if (clsProductListFilterType == ProductListFilterType.ShowActiveAndInactive) SQL += "AND tblProducts.Active = 0 ";
 
 				if (SearchKey != string.Empty)
 				{
@@ -4582,12 +4405,12 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = SQLSelectSimple(BranchID);
                 
-                if (clsProductListFilterType != ProductListFilterType.ShowActiveAndInactive)
+                if (clsProductListFilterType != ProductListFilterType.ShowInactiveOnly)
                 {
                     SQL += "AND prd.Active = @Active ";
                     MySqlParameter prmActive = new MySqlParameter("@Active", MySqlDbType.Int16);
                     if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) prmActive.Value = 1;
-                    if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) prmActive.Value = 0;
+                    if (clsProductListFilterType == ProductListFilterType.ShowActiveAndInactive) prmActive.Value = 0;
                     cmd.Parameters.Add(prmActive);
                 }
                 if (isQuantityGreaterThanZERO)

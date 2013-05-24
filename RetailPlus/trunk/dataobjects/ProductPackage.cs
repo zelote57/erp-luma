@@ -111,6 +111,7 @@ namespace AceSoft.RetailPlus.Data
                                 "BarCode1, " +
                                 "BarCode2, " +
                                 "BarCode3, " +
+                                "BarCode4, " +
 								"UnitID, " +
                                 "PurchasePrice, " +
                                 "Price, " +
@@ -124,6 +125,7 @@ namespace AceSoft.RetailPlus.Data
                                 "@BarCode1, " +
                                 "@BarCode2, " +
                                 "@BarCode3, " +
+                                "REPLACE(CONCAT(IFNULL(BarCode1,''), @Quantity, @ProductID, 0),'.',''), " +
 								"@UnitID, " +
                                 "@PurchasePrice, " +
                                 "@Price, " +
@@ -134,11 +136,7 @@ namespace AceSoft.RetailPlus.Data
 								"@LocalTax" +
 							");";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -203,7 +201,6 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@BarCode3", Details.BarCode3);
 
 				base.ExecuteNonQuery(cmd);
-
 			}
 
 			catch (Exception ex)
@@ -215,7 +212,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try  
 			{
-                string SQL = "SELECT PackageID FROM tblProductPackage WHERE ProductID = @ProductID " +
+                string SQL = "SELECT PackageID FROM tblProductPackage WHERE MatrixID = 0 AND ProductID = @ProductID " +
                                 "AND UnitID		=	@UnitID " +
                                 "AND Quantity	=	@Quantity;";
 	 			
@@ -571,12 +568,8 @@ namespace AceSoft.RetailPlus.Data
 			try 
 			{
 				string SQL=	"DELETE FROM tblProductPackage WHERE PackageID IN (" + IDs + ");";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -587,15 +580,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -622,7 +606,7 @@ namespace AceSoft.RetailPlus.Data
                                 "a.BarCode2, " +
                                 "a.BarCode3 " +
                             "FROM tblProductPackage a " +
-                            "INNER JOIN tblProducts b ON a.ProductID = b.ProductID " +
+                            "INNER JOIN tblProducts b ON a.MatrixID = 0 AND a.ProductID = b.ProductID " +
                             "INNER JOIN tblUnit c ON a.UnitID = c.UnitID ";
 
             return stSQL;
@@ -687,7 +671,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "SELECT PackageID FROM tblProductPackage WHERE ProductID = @ProductID AND UnitID = @UnitID AND Quantity = 1;";
+                string SQL = "SELECT PackageID FROM tblProductPackage WHERE MatrixID = 0 AND ProductID = @ProductID AND UnitID = @UnitID AND Quantity = 1 LIMIT 1;";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -697,14 +681,14 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@UnitID", UnitID);
 
                 System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
+                base.MySqlDataAdapterFill(cmd, dt); 
 
                 long lngRetValue = 0;
 
                 foreach(System.Data.DataRow dr in dt.Rows)
                 {
                     lngRetValue = Int64.Parse(dr["PackageID"].ToString());
+                    break;
                 }
 
                 return lngRetValue;
@@ -1306,12 +1290,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL = "SELECT Count(ProductID) FROM tblProductPackage WHERE ProductID = @ProductID "; 
-				
+                string SQL = "SELECT Count(ProductID) FROM tblProductPackage WHERE MatrixID = 0 AND ProductID = @ProductID "; 
 
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1333,28 +1314,17 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}
 		}
+
         public void CopyToMatrixPackage(long ProductID)
         {
             try
             {
                 string SQL = "CALL procProductPackageCopyToMatrixPackage(@ProductID);";
-                
 
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
@@ -1362,15 +1332,6 @@ namespace AceSoft.RetailPlus.Data
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }

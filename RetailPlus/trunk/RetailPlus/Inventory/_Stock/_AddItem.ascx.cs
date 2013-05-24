@@ -108,7 +108,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
             cboProductUnit.DataBind();
 
             Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
-            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, ProductID);
+            ProductDetails clsDetails = clsProduct.Details(ProductID);
             ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
             System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(ProductID, "PurchasePrice", SortOption.Ascending);
 
@@ -164,7 +164,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
             {
                 ProductUnit clsProductUnit = new ProductUnit(clsProductPackage.Connection, clsProductPackage.Transaction);
                 Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
-                ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, long.Parse(cboProductCode.SelectedItem.Value));
+                ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
                 decimal decBaseUnitValue = clsProductUnit.GetBaseUnitValue(long.Parse(cboProductCode.SelectedItem.Value), int.Parse(cboProductUnit.SelectedItem.Value), 1);
 
                 clsDetails.Price = decBaseUnitValue * clsProductDetails.Price;
@@ -184,7 +184,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 			cboProductCode.DataValueField = "ProductID";
 
             string stSearchKey = txtProductCode.Text;
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowActiveAndInactive, stSearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, stSearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending);
 			cboProductCode.DataBind();
 			clsProduct.CommitAndDispose();
 
@@ -195,7 +195,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
                 if (clsProductPackageDetails.PackageID != 0)
                 {
                     clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
-                    Data.ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, clsProductPackageDetails.ProductID);
+                    Data.ProductDetails clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID);
 
                     cboProductCode.Items.Add(new ListItem(clsProductDetails.ProductCode, clsProductDetails.ProductID.ToString()));
                 }

@@ -73,7 +73,7 @@ namespace AceSoft.RetailPlus.Inventory
             clsSearchColumns.ProductCode = true;
 
 			Products clsProduct = new Products();
-            PageData.DataSource = clsProduct.ListAsDataTable(clsProductColumns, 0, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending).DefaultView;
+            PageData.DataSource = clsProduct.ListAsDataTable(clsProductColumns, 0, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending).DefaultView;
             //PageData.DataSource = clsProduct.SearchDataTable(ProductListFilterType.ShowActiveAndInactive, SearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending).DefaultView;
             clsProduct.CommitAndDispose();
 

@@ -491,7 +491,7 @@ namespace AceSoft.RetailPlus.Inventory
             if (Request.QueryString["sortoption"] != null)
             { sortoption = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
 
-            ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive;
+            ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowInactiveOnly;
 
             Int64 lngSupplierID = Convert.ToInt64(cboContact.SelectedItem.Value);
 

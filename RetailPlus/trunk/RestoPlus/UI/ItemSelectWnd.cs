@@ -607,7 +607,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 if (mboShowInActiveProducts == false)
                 { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
                 else
-                { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
+                { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
 
                 if (dt.Rows.Count == 0)
                 {
@@ -616,7 +616,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (mboShowInActiveProducts == false)
                     { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
                     else
-                    { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
+                    { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
 
                 }
                 clsProduct.CommitAndDispose();

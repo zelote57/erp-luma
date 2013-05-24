@@ -311,7 +311,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             if (SearchKey == null) { SearchKey = string.Empty; }
             else if (SearchKey != string.Empty) { Session.Add("Search", Common.Encrypt(SearchKey, Session.SessionID)); }
 
-            PageData.DataSource = clsProduct.SearchDataTableActiveInactive(ProductListFilterType.ShowActiveAndInactive, SearchKey, SortField, sortoption, 0, false).DefaultView;
+            PageData.DataSource = clsProduct.SearchDataTableActiveInactive(ProductListFilterType.ShowInactiveOnly, SearchKey, SortField, sortoption, 0, false).DefaultView;
 
 			clsProduct.CommitAndDispose();
 

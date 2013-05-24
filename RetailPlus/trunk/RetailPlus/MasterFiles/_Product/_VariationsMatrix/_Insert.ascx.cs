@@ -110,7 +110,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			clsUnit.CommitAndDispose();	
 
 			Products clsProduct = new Products();
-            ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(lblProductID.Text));
+            ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
 			cboUnit.Items.Add(new ListItem(clsProductDetails.BaseUnitName, clsProductDetails.BaseUnitID.ToString()));
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsProductDetails.BaseUnitID.ToString()));
 			txtProductPrice.Text = clsProductDetails.Price.ToString("#,##0.#0");
@@ -191,7 +191,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			clsProductVariationsMatrix.UpdateVariationDesc(clsBaseDetails);
 
             Products clsProduct = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
-            ProductDetails clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, clsBaseDetails.ProductID);
+            ProductDetails clsProductDetails = clsProduct.Details(clsBaseDetails.ProductID);
 
             InvAdjustmentDetails clsInvAdjustmentDetails = new InvAdjustmentDetails();
             clsInvAdjustmentDetails.UID = clsAccessUserDetails.UID;

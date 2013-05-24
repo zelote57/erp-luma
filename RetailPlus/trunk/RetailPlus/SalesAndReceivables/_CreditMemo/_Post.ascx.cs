@@ -135,7 +135,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
             cboProductUnit.DataBind();
 
             Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
-            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, ProductID);
+            ProductDetails clsDetails = clsProduct.Details(ProductID);
             clsProductVariationMatrix.CommitAndDispose();
             cboProductUnit.Items.Insert(0, new ListItem(clsDetails.BaseUnitCode, clsDetails.BaseUnitID.ToString()));
             cboProductUnit.SelectedIndex = cboProductUnit.Items.IndexOf(new ListItem(clsDetails.BaseUnitCode, clsDetails.BaseUnitID.ToString()));
@@ -178,7 +178,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
             cboProductCode.DataValueField = "ProductID";
 
             string stSearchKey = txtProductCode.Text;
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowActiveAndInactive, stSearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, stSearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending);
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
 

@@ -330,7 +330,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
             foreach (DataRow row in dtaTransferOutItems.Rows)
             {
                 clsProductDetails = new ProductDetails();
-                clsProductDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(row["ProductID"].ToString()));
+                clsProductDetails = clsProduct.Details(Convert.ToInt64(row["ProductID"].ToString()));
 
                 writer.WriteStartElement("TransferOutItem");
                 writer.WriteAttributeString("TransferOutItemID", row["TransferOutItemID"].ToString());

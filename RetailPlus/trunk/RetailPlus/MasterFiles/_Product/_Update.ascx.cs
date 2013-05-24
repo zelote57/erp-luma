@@ -194,9 +194,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 		private void LoadRecord()
 		{
-			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
+            Int64 prdID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"], Session.SessionID));
 			Products clsProduct = new Products();
-            ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, iID);
+            ProductDetails clsDetails = clsProduct.Details(prdID);
 			clsProduct.CommitAndDispose();
 
 			lblProductID.Text = clsDetails.ProductID.ToString();
@@ -237,6 +237,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             chkWillPrintProductComposition.Checked = clsDetails.WillPrintProductComposition;
 
             txtRID.Text = clsDetails.RID.ToString("###0");
+
+            cboProductUnit.Enabled = clsDetails.Quantity != 0 ? false : true;
 		}
 
 		private void SaveRecord()

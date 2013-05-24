@@ -625,7 +625,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 string strSearchKey = Constants.MaskProductSearch + txtSearch.Text;
                 Products clsProduct = new Products();
 
-                System.Data.DataTable dt = clsProduct.ListAsDataTable(mclsTerminalDetails.BranchID, strSearchKey, mboShowInActiveProducts ? ProductListFilterType.ShowActiveAndInactive : ProductListFilterType.ShowActiveOnly, 100, mclsTerminalDetails.ShowItemMoreThanZeroQty); 
+                System.Data.DataTable dt = clsProduct.ListAsDataTable(mclsTerminalDetails.BranchID, strSearchKey, mboShowInActiveProducts ? ProductListFilterType.ShowInactiveOnly : ProductListFilterType.ShowActiveOnly, 100, mclsTerminalDetails.ShowItemMoreThanZeroQty); 
 				clsProduct.CommitAndDispose();
 
                 this.dgStyle.MappingName = dt.TableName;

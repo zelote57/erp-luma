@@ -98,7 +98,7 @@ namespace AceSoft.RetailPlus.Reports
 			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowActiveAndInactive, txtProductCode.Text, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, txtProductCode.Text, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending);
             cboProductCode.DataBind();
 			clsProduct.CommitAndDispose();
 			
@@ -381,7 +381,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.ProductHistoryMovement:
                     #region Product History Movement
                     Products clsProduct = new Products();
-                    ProductDetails clsDetails = clsProduct.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
+                    ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
                     clsProduct.CommitAndDispose();
 
                     paramField = Report.DataDefinition.ParameterFields["ProductCode"];
@@ -490,7 +490,7 @@ namespace AceSoft.RetailPlus.Reports
 			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowActiveAndInactive, txtProductCode.Text, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, txtProductCode.Text, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending);
 			cboProductCode.DataBind();
 			clsProduct.CommitAndDispose();
 			

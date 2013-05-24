@@ -380,9 +380,9 @@ namespace AceSoft.RetailPlus
 
     public enum ProductListFilterType
     {
-        ShowActiveAndInactive = 0,
+        ShowInactiveOnly = 0,
         ShowActiveOnly = 1,
-        ShowInactiveOnly = 2
+        ShowActiveAndInactive = 2
     }
 
     public enum TransactionListFilterType

@@ -265,7 +265,7 @@ namespace AceSoft.RetailPlus.Reports
             #endregion
 
 			Products clsProduct = new Products();
-            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKey, ProductListFilterType.ShowActiveAndInactive, 0, System.Data.SqlClient.SortOrder.Ascending, 0, false, ProductColumnNames.ProductCode, SortOption.Ascending);
+            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsSearchKey, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 0, false, ProductColumnNames.ProductCode, SortOption.Ascending);
 			clsProduct.CommitAndDispose();
 
             foreach (DataRow dr in dt.Rows)

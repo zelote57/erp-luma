@@ -116,33 +116,37 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 		}
 		protected void cboProductCode_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			if (cboProductCode.Items.Count ==0)
-				return;
+            if (cboProductCode.Items.Count == 0)
+                return;
 
-			DataClass clsDataClass = new DataClass();
-			long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
+            if (cboProductCode.Items.Count == 1 && cboProductCode.SelectedValue == Constants.ZERO_STRING)
+                return;
 
-			ProductVariationsMatrix clsProductVariationMatrix = new ProductVariationsMatrix();
-            cboVariation.DataTextField = "VariationDescOnly";
-			cboVariation.DataValueField = "MatrixID";
-			cboVariation.DataSource = clsProductVariationMatrix.BaseListAsDataTable(0, ProductID, "VariationDesc",SortOption.Ascending).DefaultView;
-			cboVariation.DataBind();
+            DataClass clsDataClass = new DataClass();
+            long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
-			if (cboVariation.Items.Count == 0)
-			{ cboVariation.Items.Add(new ListItem("No Variation", "0"));}
-			cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
+            ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
+            cboVariation.DataTextField = "MatrixDescription";
+            cboVariation.DataValueField = "MatrixID";
+            cboVariation.DataSource = clsProductVariationsMatrix.BaseListSimpleAsDataTable(ProductID, SortField: "VariationDesc").DefaultView;
+            cboVariation.DataBind();
 
-            ProductUnitsMatrix clsUnitMatrix = new ProductUnitsMatrix(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
-			cboProductUnit.DataTextField = "BottomUnitCode";
-			cboProductUnit.DataValueField = "BottomUnitID";
-			cboProductUnit.DataSource = clsUnitMatrix.ListAsDataTable(ProductID,"a.MatrixID",SortOption.Ascending).DefaultView;
-			cboProductUnit.DataBind();
+            if (cboVariation.Items.Count == 0)
+            { cboVariation.Items.Add(new ListItem("No Variation", "0")); }
+            cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
 
-            Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
+            ProductUnitsMatrix clsUnitMatrix = new ProductUnitsMatrix(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
+
+            cboProductUnit.DataTextField = "BottomUnitCode";
+            cboProductUnit.DataValueField = "BottomUnitID";
+            cboProductUnit.DataSource = clsUnitMatrix.ListAsDataTable(ProductID, "a.MatrixID", SortOption.Ascending).DefaultView;
+            cboProductUnit.DataBind();
+
+            Products clsProduct = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
             ProductDetails clsDetails = clsProduct.Details(ProductID);
-            ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
+            ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
             System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(ProductID, "PurchasePrice", SortOption.Ascending);
-            clsProductVariationMatrix.CommitAndDispose();
+            clsProductVariationsMatrix.CommitAndDispose();
 
             string strPurchasePriceHistory = string.Empty;
             foreach (System.Data.DataRow dr in dtProductPurchasePriceHistory.Rows)
@@ -181,28 +185,28 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 		}
         protected void cboVariation_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			long VariationMatrixID = Convert.ToInt64(cboVariation.SelectedItem.Value);
-			if (VariationMatrixID != 0)
+			long MatrixID = Convert.ToInt64(cboVariation.SelectedItem.Value);
+			if (MatrixID != 0)
 			{
 				long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
-				ProductVariationsMatrix clsProductVariationMatrix = new ProductVariationsMatrix();
-				ProductBaseMatrixDetails clsProductBaseMatrixDetails = clsProductVariationMatrix.BaseDetails(VariationMatrixID, ProductID);
-				clsProductVariationMatrix.CommitAndDispose();
+                Products clsProducts = new Products();
+                ProductDetails clsDetails = clsProducts.Details(ProductID: ProductID, MatrixID: MatrixID);
+                clsProducts.CommitAndDispose();
 
-				txtPrice.Text = clsProductBaseMatrixDetails.PurchasePrice.ToString("####0.#0");
-                txtSellingPrice.Text = clsProductBaseMatrixDetails.Price.ToString("#####0.#0");
-                txtOldSellingPrice.Text = clsProductBaseMatrixDetails.Price.ToString("#####0.#0");
-                decimal decMargin = clsProductBaseMatrixDetails.Price - clsProductBaseMatrixDetails.PurchasePrice;
-                try { decMargin = decMargin / clsProductBaseMatrixDetails.PurchasePrice; }
+				txtPrice.Text = clsDetails.PurchasePrice.ToString("####0.#0");
+                txtSellingPrice.Text = clsDetails.Price.ToString("#####0.#0");
+                txtOldSellingPrice.Text = clsDetails.Price.ToString("#####0.#0");
+                decimal decMargin = clsDetails.Price - clsDetails.PurchasePrice;
+                try { decMargin = decMargin / clsDetails.PurchasePrice; }
                 catch { decMargin = 1; }
                 decMargin = decMargin * 100;
                 txtMargin.Text = decMargin.ToString("#,##0.#0");
-                txtVAT.Text = clsProductBaseMatrixDetails.VAT.ToString("#,##0.#0");
-                txtEVAT.Text = clsProductBaseMatrixDetails.EVAT.ToString("#,##0.#0");
-                txtLocalTax.Text = clsProductBaseMatrixDetails.LocalTax.ToString("#,##0.#0");
+                txtVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
+                txtEVAT.Text = clsDetails.EVAT.ToString("#,##0.#0");
+                txtLocalTax.Text = clsDetails.LocalTax.ToString("#,##0.#0");
 
-				if (clsProductBaseMatrixDetails.VAT > 0)
+				if (clsDetails.VAT > 0)
 					chkIsTaxable.Checked = true;
 				else
 					chkIsTaxable.Checked = false;
@@ -219,7 +223,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			cboProductCode.DataValueField = "ProductID";
 
             string stSearchKey = txtProductCode.Text;
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, stSearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: stSearchKey, Limit: 100);
 			cboProductCode.DataBind();
 			clsProduct.CommitAndDispose();
 
@@ -253,10 +257,10 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			DataClass clsDataClass = new DataClass();
 			long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
-			ProductVariationsMatrix clsProductVariationMatrix = new ProductVariationsMatrix();
+			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
             cboVariation.DataTextField = "Description";
 			cboVariation.DataValueField = "MatrixID";
-			cboVariation.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationMatrix.Search(ProductID, stSearchKey, "VariationDesc",SortOption.Ascending)).DefaultView;
+			cboVariation.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationsMatrix.Search(ProductID, stSearchKey, "VariationDesc",SortOption.Ascending)).DefaultView;
 			cboVariation.DataBind();
 
 			if (cboVariation.Items.Count == 0)
@@ -264,7 +268,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 				cboVariation.Items.Add(new ListItem("No Variation", "0"));
 			}
 			cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
-			clsProductVariationMatrix.CommitAndDispose();
+			clsProductVariationsMatrix.CommitAndDispose();
 		}				
 		protected void lstItem_ItemDataBound(object sender, DataListItemEventArgs e)
 		{
@@ -464,7 +468,11 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			cboVariation.Items.Clear();
 			cboProductUnit.Items.Clear();
 
-			cboProductCode.Items.Add(new ListItem("No Product; Enter product to search.", "0"));
+            cboProductCode.Items.Add(new ListItem("No Product; Enter product to search.", "0"));
+
+            cboProductCode_SelectedIndexChanged(null, null);
+            cboVariation.Items.Add(new ListItem("No Variation", "0"));
+            cboProductUnit.Items.Add(new ListItem("No Unit", "0")); 
 
 			cboProductCode_SelectedIndexChanged(null, null);
 
@@ -518,7 +526,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			BranchTransferItemDetails clsDetails = new BranchTransferItemDetails();
 
 			Products clsProducts = new Products();
-            ProductDetails clsProductDetails = clsProducts.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
+            ProductDetails clsProductDetails = clsProducts.Details1(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
 			TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
@@ -750,7 +758,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			DataClass clsDataClass = new DataClass();
 
 			BranchTransferItem clsBranchTransferItem = new BranchTransferItem();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsBranchTransferItem.List(Convert.ToInt64(lblBranchTransferID.Text), "BranchTransferItemID",SortOption.Desscending)).DefaultView;
+            lstItem.DataSource = clsBranchTransferItem.ListAsDataTable(Convert.ToInt64(lblBranchTransferID.Text)).DefaultView;
 			lstItem.DataBind();
 			clsBranchTransferItem.CommitAndDispose();
 		}

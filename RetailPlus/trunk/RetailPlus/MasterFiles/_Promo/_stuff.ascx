@@ -258,7 +258,7 @@
 								<td class="ms-authoringcontrols" width="100%">
 									<asp:TextBox id="txtQuantity" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="20" onKeyPress="AllNum()"></asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'Quantity' must not be left blank." Display="Dynamic" ControlToValidate="txtQuantity" ForeColor=" "></asp:requiredfieldvalidator>
-									<asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtQuantity" Display="Dynamic" ErrorMessage="'Quantity' must be in number." ForeColor=" " Operator="DataTypeCheck" Type="Double"></asp:CompareValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtQuantity" Display="Dynamic" ErrorMessage="'Quantity' must be in number, max of 3 decimal places." ForeColor=" " Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator>
 								</td>
 							</tr>
 							<tr>
@@ -274,7 +274,7 @@
 								<td class="ms-authoringcontrols" width="100%">
 									<asp:TextBox id="txtPromoValue" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="20" onKeyPress="AllNum()"></asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator8" runat="server" CssClass="ms-error" ErrorMessage="'Promo Value' must not be left blank." Display="Dynamic" ControlToValidate="txtPromoValue" ForeColor=" "></asp:requiredfieldvalidator>
-									<asp:CompareValidator id="CompareValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtPromoValue" Display="Dynamic" ErrorMessage="'Promo Value' must be in number." ForeColor=" " Operator="DataTypeCheck" Type="Double"></asp:CompareValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtPromoValue" Display="Dynamic" ErrorMessage="'Promo Value' must be in number, max of 3 decimal places." ForeColor=" " Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator>
 								</td>
 							</tr>
 							<tr>

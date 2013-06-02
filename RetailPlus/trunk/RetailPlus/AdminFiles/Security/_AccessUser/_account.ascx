@@ -92,7 +92,7 @@
                                     <img src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan=3>
                                     <asp:textbox id="txtConfirm" accessKey="C" runat="server" CssClass="ms-long" MaxLength="15" BorderStyle="Groove"></asp:textbox>
-									<asp:CompareValidator id="CompareValidator1" runat="server" CssClass="ms-error" ControlToValidate="txtConfirm" Display="Dynamic" ErrorMessage="'Password' must be equal to the &quot;Confirmed assword&quot;." ControlToCompare="txtPassword"></asp:CompareValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator1" runat="server" CssClass="ms-error" ControlToValidate="txtConfirm" Display="Dynamic" ErrorMessage="'Password' must be equal to the &quot;Confirmed assword&quot;." ControlToCompare="txtPassword"></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>
@@ -261,7 +261,7 @@
                                 <td class="ms-authoringcontrols" colspan=3>
                                     <asp:textbox id="txtPageSize" accessKey="E" runat="server" CssClass="ms-short" MaxLength="5" BorderStyle="Groove"></asp:textbox>
 									<asp:RequiredFieldValidator id="Requiredfieldvalidator6" CssClass="ms-error" runat="server" ControlToValidate="txtPageSize" Display="Dynamic" ErrorMessage="'Page Size' must not be left blank."></asp:RequiredFieldValidator>
-									<asp:CompareValidator id="CompareValidator6" CssClass="ms-error" runat="server" ControlToValidate="txtPageSize" Display="Dynamic" ErrorMessage="'Page Size' must be in number." Operator="DataTypeCheck" Type="Currency"></asp:CompareValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator6" CssClass="ms-error" runat="server" ControlToValidate="txtPageSize" Display="Dynamic" ErrorMessage="'Page Size' must be in number, max of 3 decimal places." ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
 									
                                 </td>
                                 <td class="ms-formspacer">

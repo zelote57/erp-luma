@@ -35,8 +35,8 @@
 					            <td class="ms-toolbar">
 						            <table cellSpacing="0" cellPadding="1" border="0">
 							            <tr>
-								            <td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Cancel Applying Local Tax" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/impitem.gif" alt="Cancel Applying Local Tax" border="0" width="16" height="16" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
-								            <td noWrap><asp:linkbutton id="cmdCancel" title="Cancel Applying Local Tax" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
+								            <td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Cancel Inventory Adjustment" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/impitem.gif" alt="Cancel Inventory Adjustment" border="0" width="16" height="16" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
+								            <td noWrap><asp:linkbutton id="cmdCancel" title="Cancel Inventory Adjustment" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
 							            </tr>
 						            </table>
 					            </td>
@@ -96,10 +96,10 @@
                                                 <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 		                                            <colgroup>
 			                                            <col width="4%">
-			                                            <col width="21%" align="left">
+			                                            <col width="43%" align="left">
                                                         <col width="10%" align="left">
-                                                        <col width="12%" align="left">
-                                                        <col width="12%" align="left">
+                                                        <col width="10%" align="left">
+                                                        <col width="10%" align="left">
                                                         <col width="10%" align="left">
                                                         <col width="10%" align="left">
 			                                            <col width="1%">
@@ -131,20 +131,22 @@
 				                                            <input type="checkbox" id="NA" runat="server" NAME="NA" visible=false>
 			                                            </TD>
 			                                            <TD class="ms-vb-user" nowrap>
-				                                            <asp:Label ID="lblUnitName" Runat="server" Visible="False"></asp:Label>
+				                                            <asp:Label ID="lblProductDesc" Runat="server"></asp:Label>
+                                                            <asp:Label ID="Label2" Runat="server"> (Total) - </asp:Label>
+                                                            <asp:Label ID="lblUnitName" Runat="server"></asp:Label>
 			                                            </TD>
 			                                            <TD class="ms-vb-user">
-				                                            <asp:TextBox accessKey="C" id="txtQuantityBefore" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" Enabled=false Width=100% Visible="False"></asp:TextBox>
+				                                            <asp:TextBox accessKey="C" id="txtQuantityBefore" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" Enabled=false Width="100%"></asp:TextBox>
 			                                            </TD>
 			                                            <TD class="ms-vb-user">
-			                                                <asp:TextBox accessKey="C" id="txtDifference" runat="server" onkeypress="AllNum()" onKeyUp="InvAdjustmentComputeByDiff(this)" CssClass="ms-short" BorderStyle="Groove" BackColor="YellowGreen" Visible="False">0</asp:TextBox>
+			                                                <asp:TextBox accessKey="C" id="txtDifference" runat="server" onkeypress="AllNum()" onKeyUp="InvAdjustmentComputeByDiff(this)" CssClass="ms-short" BorderStyle="Groove" BackColor="YellowGreen">0</asp:TextBox>
 			                                            <TD class="ms-vb-user">
-			                                                <asp:TextBox accessKey="C" id="txtQuantityNow" runat="server" onkeypress="AllNum()" onKeyUp="InvAdjustmentComputeByQty(this)" CssClass="ms-short" BorderStyle="Groove" Visible="False">0</asp:TextBox>
+			                                                <asp:TextBox accessKey="C" id="txtQuantityNow" runat="server" onkeypress="AllNum()" onKeyUp="InvAdjustmentComputeByQty(this)" CssClass="ms-short" BorderStyle="Groove">0</asp:TextBox>
 			                                            </TD>
 			                                            <TD class="ms-vb-user">
-				                                            <asp:TextBox accessKey="C" id="txtMinThreshold" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" MaxLength="6" Width=70% Visible="False"></asp:TextBox></TD>
+				                                            <asp:TextBox accessKey="C" id="txtMinThreshold" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" MaxLength="6" Width="80%"></asp:TextBox></TD>
 			                                            <TD class="ms-vb-user">
-				                                            <asp:TextBox accessKey="C" id="txtMaxThreshold" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" MaxLength="6" Width=70% Visible="False"></asp:TextBox></TD>
+				                                            <asp:TextBox accessKey="C" id="txtMaxThreshold" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" MaxLength="6" Width="80%"></asp:TextBox></TD>
 			                                            <TD class="ms-vb2"><A class="DropDown" id="anchorDown" href="" runat="server">
 					                                            </A>
 			                                            </TD>
@@ -190,13 +192,13 @@
 			                            <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 				                            <colgroup>
 					                            <col width="4%">
-					                            <col width="21%" align="left">
-                                                <col width="10%" align="left">
-                                                <col width="12%" align="left">
-                                                <col width="12%" align="left">
+			                                    <col width="43%" align="left">
                                                 <col width="10%" align="left">
                                                 <col width="10%" align="left">
-					                            <col width="1%">
+                                                <col width="10%" align="left">
+                                                <col width="10%" align="left">
+                                                <col width="10%" align="left">
+			                                    <col width="1%">
 				                            </colgroup>
 				                            <TR>
 					                            <TH class="ms-vh2" style="padding-bottom: 4px">
@@ -222,13 +224,13 @@
 			                            <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 				                            <colgroup>
 					                            <col width="4%">
-					                            <col width="21%" align="left">
-                                                <col width="10%" align="left">
-                                                <col width="12%" align="left">
-                                                <col width="12%" align="left">
+			                                    <col width="43%" align="left">
                                                 <col width="10%" align="left">
                                                 <col width="10%" align="left">
-					                            <col width="1%">
+                                                <col width="10%" align="left">
+                                                <col width="10%" align="left">
+                                                <col width="10%" align="left">
+			                                    <col width="1%">
 				                            </colgroup>
 				                            <TR>
 					                            <TD class="ms-vb-user" align=right>
@@ -237,7 +239,7 @@
 					                            <TD class="ms-vb-user" nowrap>
 					                                <asp:Label ID="lblVariationDesc" Runat="server"></asp:Label>
 					                                <asp:Label ID="Label2" Runat="server"> - </asp:Label>
-						                            <asp:Label ID="lblUnitName" Runat="server"></asp:Label>
+						                            <asp:Label ID="lblUnitCode" Runat="server"></asp:Label>
 					                            </TD>
 					                            <TD class="ms-vb-user">
 						                            <asp:TextBox accessKey="C" id="txtQuantityBefore" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" Enabled=false Width=100%></asp:TextBox>
@@ -293,7 +295,7 @@
 					<td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveTwo" title="Save This Adjustment" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/edit.gif" alt="Cancel this purchase order" border="0" width="16" height="16" OnClick="imgSaveTwo_Click" ></asp:imagebutton></td>
+								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveTwo" title="Save This Adjustment" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/edit.gif" alt="Save this adjustment" border="0" width="16" height="16" OnClick="imgSaveTwo_Click" ></asp:imagebutton></td>
 								<td noWrap><asp:linkbutton id="cmdSaveTwo" title="Save This Adjustment" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" OnClick="cmdSaveTwo_Click" >Save Adjustment</asp:linkbutton></td>
 							</tr>
 						</table>

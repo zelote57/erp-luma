@@ -234,27 +234,19 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 		}
 		private void LoadList()
 		{	
-			ProductPackage clsProductPackage = new ProductPackage();
-			DataClass clsDataClass = new DataClass();
-
 			string SortField = "PackageID";
 			if (Request.QueryString["sortfield"]!=null)
 			{	SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID);	}
-			
-			SortOption sortoption = SortOption.Ascending;
+
+            SortOption SortOrder = SortOption.Ascending;
 			if (Request.QueryString["sortoption"]!=null)
-			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
+            { SortOrder = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
 
-			if (Request.QueryString["Search"]==null)
-			{
-				PageData.DataSource = clsProductPackage.ListAsDataTable(Convert.ToInt64(lblProductID.Text), SortField, sortoption).DefaultView;
-			}
-			else
-			{	
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsProductPackage.List(Convert.ToInt64(lblProductID.Text), SortField, sortoption)).DefaultView;	
-			}
-
+            ProductPackage clsProductPackage = new ProductPackage();
+            System.Data.DataTable dt = clsProductPackage.ListAsDataTable(Convert.ToInt64(lblProductID.Text), SortField: SortField, SortOrder: SortOrder);
 			clsProductPackage.CommitAndDispose();
+
+            PageData.DataSource = dt.DefaultView;
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;
 			
@@ -379,9 +371,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 		}
         private void CopyToMatrixPackage()
         {
-            ProductPackage clsProductPackage = new ProductPackage();
-            clsProductPackage.CopyToMatrixPackage(long.Parse(lblProductID.Text));
-            clsProductPackage.CommitAndDispose();
+            //ProductPackage clsProductPackage = new ProductPackage();
+            //clsProductPackage.CopyToMatrixPackage(long.Parse(lblProductID.Text));
+            //clsProductPackage.CommitAndDispose();
         }
 
 		#endregion

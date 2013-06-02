@@ -95,7 +95,7 @@
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtDBPort" runat="server" accesskey="T" CssClass="ms-short" MaxLength="4" BorderStyle="Groove" onkeypress="AllNum()">3306</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'DB Port.' must not be left blank." Display="Dynamic" ControlToValidate="txtDBPort" ForeColor=" "></asp:requiredfieldvalidator>
-									<asp:CompareValidator id="CompareValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtDBPort" Display="Dynamic" ErrorMessage="'DB Port' must be in number." ForeColor=" " Operator="DataTypeCheck" Type="Double"></asp:CompareValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtDBPort" Display="Dynamic" ErrorMessage="'DB Port' must be in number, max of 3 decimal places." ForeColor=" " Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>

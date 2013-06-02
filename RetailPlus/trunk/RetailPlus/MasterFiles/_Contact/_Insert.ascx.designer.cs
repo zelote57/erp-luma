@@ -212,13 +212,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator16;
         
         /// <summary>
-        /// CompareValidator6 control.
+        /// RegularExpressionValidator6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator6;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator6;
         
         /// <summary>
         /// txtDebit control.
@@ -239,13 +239,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator11;
         
         /// <summary>
-        /// CompareValidator7 control.
+        /// RegularExpressionValidator7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator7;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator7;
         
         /// <summary>
         /// txtCredit control.
@@ -266,13 +266,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator12;
         
         /// <summary>
-        /// CompareValidator8 control.
+        /// RegularExpressionValidator8 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator8;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator8;
         
         /// <summary>
         /// txtBusinessName control.
@@ -320,13 +320,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator13;
         
         /// <summary>
-        /// CompareValidator2 control.
+        /// RegularExpressionValidator2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator2;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator2;
         
         /// <summary>
         /// txtAddress control.

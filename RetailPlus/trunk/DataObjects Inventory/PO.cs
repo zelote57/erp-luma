@@ -717,12 +717,10 @@ namespace AceSoft.RetailPlus.Data
             Products clsProduct = new Products(base.Connection, base.Transaction);
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
             ProductPackage clsProductPackage = new ProductPackage(base.Connection, base.Transaction);
-            MatrixPackage clsMatrixPackage = new MatrixPackage(base.Connection, base.Transaction);
 
 			Inventory clsInventory = new Inventory(base.Connection, base.Transaction);
             InventoryDetails clsInventoryDetails;
 
-            MatrixPackagePriceHistoryDetails clsMatrixPackagePriceHistoryDetails;
             ProductPackagePriceHistoryDetails clsProductPackagePriceHistoryDetails;
 
 			//MySqlDataReader myReader = clsPOItem.List(POID, "POItemID", SortOption.Ascending);
@@ -731,57 +729,40 @@ namespace AceSoft.RetailPlus.Data
 			//while (myReader.Read())
             foreach (System.Data.DataRow dr in dt.Rows)
 			{
-                long lngProductID = Convert.ToInt64(dr["ProductID"]); // myReader.GetInt64("ProductID");
-                int intProductUnitID = Convert.ToInt16(dr["ProductUnitID"]); // myReader.GetInt16("ProductUnitID");
+                long lngProductID = Convert.ToInt64(dr["ProductID"]);
+                int intProductUnitID = Convert.ToInt16(dr["ProductUnitID"]);
 
-                decimal decItemQuantity = Convert.ToDecimal(dr["Quantity"]); // myReader.GetDecimal("Quantity");
+                decimal decItemQuantity = Convert.ToDecimal(dr["Quantity"]);
                 decimal decQuantity = clsProductUnit.GetBaseUnitValue(lngProductID, intProductUnitID, decItemQuantity);
 
-                long lngVariationMatrixID = Convert.ToInt64(dr["VariationMatrixID"]); // myReader.GetInt64("VariationMatrixID");
-                string strMatrixDescription = dr["MatrixDescription"].ToString(); //  "" + myReader["MatrixDescription"].ToString();
-                string strProductCode = dr["ProductCode"].ToString(); // "" + myReader["ProductCode"].ToString();
-                string strProductUnitCode = dr["ProductUnitCode"].ToString(); // "" + myReader["ProductUnitCode"].ToString();
-                decimal decUnitCost = Convert.ToDecimal(dr["UnitCost"]); // myReader.GetDecimal("UnitCost");
-                decimal decItemCost = Convert.ToDecimal(dr["Amount"]); // myReader.GetDecimal("Amount");
+                long lngVariationMatrixID = Convert.ToInt64(dr["VariationMatrixID"]);
+                string strMatrixDescription = dr["MatrixDescription"].ToString();
+                string strProductCode = dr["ProductCode"].ToString();
+                string strProductUnitCode = dr["ProductUnitCode"].ToString();
+                decimal decUnitCost = Convert.ToDecimal(dr["UnitCost"]);
+                decimal decItemCost = Convert.ToDecimal(dr["Amount"]);
                 decimal decSellingPrice = Convert.ToDecimal(dr["SellingPrice"]);
-                decimal decVAT = Convert.ToDecimal(dr["VAT"]); // myReader.GetDecimal("VAT");
+                decimal decVAT = Convert.ToDecimal(dr["VAT"]);
                 decimal decEVAT = Convert.ToDecimal(dr["EVAT"]);
                 decimal decLocalTax = Convert.ToDecimal(dr["LocalTax"]); 
 
                 /*******************************************
 				 * Add in the Price History
 				 * ****************************************/
-                if (lngVariationMatrixID != 0)
-                {
-                    // Update MatrixPackagePriceHistory first to get the history
-                    clsMatrixPackagePriceHistoryDetails = new MatrixPackagePriceHistoryDetails();
-                    clsMatrixPackagePriceHistoryDetails.UID = clsPODetails.PurchaserID;
-                    clsMatrixPackagePriceHistoryDetails.PackageID = clsMatrixPackage.GetPackageID(lngVariationMatrixID, intProductUnitID);
-                    clsMatrixPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
-                    clsMatrixPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
-                    clsMatrixPackagePriceHistoryDetails.Price = decSellingPrice;
-                    clsMatrixPackagePriceHistoryDetails.VAT = decVAT;
-                    clsMatrixPackagePriceHistoryDetails.EVAT = decEVAT;
-                    clsMatrixPackagePriceHistoryDetails.LocalTax = decLocalTax;
-                    clsMatrixPackagePriceHistoryDetails.Remarks = "Based on PO #: " + clsPODetails.PONo;
-                    MatrixPackagePriceHistory clsMatrixPackagePriceHistory = new MatrixPackagePriceHistory(base.Connection, base.Transaction);
-                    clsMatrixPackagePriceHistory.Insert(clsMatrixPackagePriceHistoryDetails);
-                }
-                else {
-                    // Update ProductPackagePriceHistory first to get the history
-                    clsProductPackagePriceHistoryDetails = new ProductPackagePriceHistoryDetails();
-                    clsProductPackagePriceHistoryDetails.UID = clsPODetails.PurchaserID;
-                    clsProductPackagePriceHistoryDetails.PackageID = clsProductPackage.GetPackageID(lngProductID, intProductUnitID);
-                    clsProductPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
-                    clsProductPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
-                    clsProductPackagePriceHistoryDetails.Price = decSellingPrice;
-                    clsProductPackagePriceHistoryDetails.VAT = decVAT;
-                    clsProductPackagePriceHistoryDetails.EVAT = decEVAT;
-                    clsProductPackagePriceHistoryDetails.LocalTax = decLocalTax;
-                    clsProductPackagePriceHistoryDetails.Remarks = "Based on PO #: " + clsPODetails.PONo;
-                    ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
-                    clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
-                }
+                // Update ProductPackagePriceHistory first to get the history
+                clsProductPackagePriceHistoryDetails = new ProductPackagePriceHistoryDetails();
+                clsProductPackagePriceHistoryDetails.UID = clsPODetails.PurchaserID;
+                clsProductPackagePriceHistoryDetails.PackageID = clsProductPackage.GetPackageID(lngProductID, intProductUnitID);
+                clsProductPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
+                clsProductPackagePriceHistoryDetails.PurchasePrice = (decItemQuantity * decUnitCost) / decQuantity;
+                clsProductPackagePriceHistoryDetails.Price = decSellingPrice;
+                clsProductPackagePriceHistoryDetails.VAT = decVAT;
+                clsProductPackagePriceHistoryDetails.EVAT = decEVAT;
+                clsProductPackagePriceHistoryDetails.LocalTax = decLocalTax;
+                clsProductPackagePriceHistoryDetails.Remarks = "Based on PO #: " + clsPODetails.PONo;
+                ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
+                clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
+
 
 				/*******************************************
 				 * Add to Inventory
@@ -793,21 +774,15 @@ namespace AceSoft.RetailPlus.Data
 
                 /*******************************************
 				 * Update Purchasing Information
+                 * 
+                 * 30May2013 Include variation in the package.
 				 * ****************************************/
                 int iBaseUnitID = clsProduct.get_BaseUnitID(lngProductID);
                 if (iBaseUnitID != intProductUnitID)
                 {
-                    clsProduct.UpdatePurchasing(lngProductID, clsPODetails.SupplierID, iBaseUnitID, (decItemQuantity * decUnitCost) / decQuantity);
+                    clsProduct.UpdatePurchasing(lngProductID, lngVariationMatrixID, clsPODetails.SupplierID, iBaseUnitID, (decItemQuantity * decUnitCost) / decQuantity);
                 }
-                clsProduct.UpdatePurchasing(lngProductID, clsPODetails.SupplierID, intProductUnitID, decUnitCost);
-
-                if (lngVariationMatrixID != 0)
-                {
-                    clsProductVariationsMatrix.UpdatePurchasing(lngVariationMatrixID, clsPODetails.SupplierID, intProductUnitID, (decItemQuantity * decUnitCost) / decQuantity);
-                }
-
-                // update base unit purchase price
-                
+                clsProduct.UpdatePurchasing(lngProductID, lngVariationMatrixID, clsPODetails.SupplierID, intProductUnitID, decUnitCost);
 
 				/*******************************************
 				 * Add to Inventory Analysis
@@ -834,11 +809,7 @@ namespace AceSoft.RetailPlus.Data
 				 * Added Jan 1, 2010 4:20PM
                  * Update Selling Information when PO is posted
 				 * ****************************************/
-                clsProduct.UpdateSellingIncludingAllMatrixWithSameQuantityAndUnit(lngProductID, clsPODetails.SupplierID, intProductUnitID, Convert.ToDecimal(dr["SellingPrice"]));
-                //if (lngVariationMatrixID != 0)
-                //{
-                //    clsProductVariationsMatrix.UpdateSellingWithSameQuantityAndUnit(lngVariationMatrixID, clsPODetails.SupplierID, intProductUnitID, decimal.Parse(myReader["SellingPrice");
-                //}
+                clsProduct.UpdateSellingPrice(lngProductID, lngVariationMatrixID, clsPODetails.SupplierID, intProductUnitID, Convert.ToDecimal(dr["SellingPrice"]));
 
                 /*******************************************
 				 * Added Mar 8, 2010 4:20PM

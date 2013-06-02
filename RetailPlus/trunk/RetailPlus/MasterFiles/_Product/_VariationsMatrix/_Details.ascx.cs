@@ -117,20 +117,23 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 
 		private void LoadRecord()
 		{
-			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-			ProductBaseMatrixDetails clsProductBaseMatrixDetails = clsProductVariationsMatrix.BaseDetails(Convert.ToInt32(lblMatrixID.Text), Convert.ToInt32(lblProductID.Text));
-			clsProductVariationsMatrix.CommitAndDispose();
+            long ProductID = Int64.Parse(lblProductID.Text);
+            long MatrixID = Int64.Parse(lblMatrixID.Text);
 
-			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsProductBaseMatrixDetails.UnitID.ToString()));
-			txtProductPrice.Text = clsProductBaseMatrixDetails.Price.ToString("#,##0.#0");
-			txtPurchasePrice.Text = clsProductBaseMatrixDetails.PurchasePrice.ToString("#,##0.#0");
-            chkIncludeInSubtotalDiscount.Checked = clsProductBaseMatrixDetails.IncludeInSubtotalDiscount;
-			txtVAT.Text = clsProductBaseMatrixDetails.VAT.ToString("#,##0.#0");
-			txtEVAT.Text = clsProductBaseMatrixDetails.EVAT.ToString("#,##0.#0");
-			txtLocalTax.Text = clsProductBaseMatrixDetails.LocalTax.ToString("#,##0.#0");
-			txtQuantity.Text = clsProductBaseMatrixDetails.Quantity.ToString("#,##0.#0");
-			txtMinThreshold.Text = clsProductBaseMatrixDetails.MinThreshold.ToString("#,##0.#0");
-			txtMaxThreshold.Text = clsProductBaseMatrixDetails.MaxThreshold.ToString("#,##0.#0");
+            Products clsProducts = new Products();
+            ProductDetails clsDetails = clsProducts.Details(ProductID: ProductID, MatrixID: MatrixID);
+            clsProducts.CommitAndDispose();
+
+			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsDetails.BaseUnitID.ToString()));
+			txtProductPrice.Text = clsDetails.Price.ToString("#,##0.#0");
+			txtPurchasePrice.Text = clsDetails.PurchasePrice.ToString("#,##0.#0");
+            chkIncludeInSubtotalDiscount.Checked = clsDetails.IncludeInSubtotalDiscount;
+			txtVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
+			txtEVAT.Text = clsDetails.EVAT.ToString("#,##0.#0");
+			txtLocalTax.Text = clsDetails.LocalTax.ToString("#,##0.#0");
+			txtQuantity.Text = clsDetails.Quantity.ToString("#,##0.#0");
+			txtMinThreshold.Text = clsDetails.MinThreshold.ToString("#,##0.#0");
+			txtMaxThreshold.Text = clsDetails.MaxThreshold.ToString("#,##0.#0");
 		}
 
 

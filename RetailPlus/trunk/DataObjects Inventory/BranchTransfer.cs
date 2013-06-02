@@ -525,11 +525,8 @@ namespace AceSoft.RetailPlus.Data
 			BranchTransferItem clsBranchTransferItem = new BranchTransferItem(base.Connection, base.Transaction);
             ProductUnit clsProductUnit = new ProductUnit(base.Connection, base.Transaction);
             Products clsProduct = new Products(base.Connection, base.Transaction);
-            ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
-            ProductPackage clsProductPackage = new ProductPackage(base.Connection, base.Transaction);
-            MatrixPackage clsMatrixPackage = new MatrixPackage(base.Connection, base.Transaction);
 
-			Inventory clsInventory = new Inventory(base.Connection, base.Transaction);
+            Inventory clsInventory = new Inventory(base.Connection, base.Transaction);
             InventoryDetails clsInventoryDetails;
 
 			System.Data.DataTable dt = clsBranchTransferItem.ListAsDataTable(BranchTransferID, "BranchTransferItemID", SortOption.Ascending);

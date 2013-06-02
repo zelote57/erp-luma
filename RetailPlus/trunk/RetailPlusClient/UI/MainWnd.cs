@@ -4742,7 +4742,7 @@ namespace AceSoft.RetailPlus.Client.UI
 								foreach (System.Data.DataRow dr in ItemDataTable.Rows)
 								{
 									lngProductID = long.Parse(dr["ProductID"].ToString());
-									decRewardPoints += clsProduct.Details(mclsTerminalDetails.BranchID, lngProductID).RewardPoints;
+									decRewardPoints += clsProduct.Details1(mclsTerminalDetails.BranchID, lngProductID).RewardPoints;
 								}
 							}
 							catch { }

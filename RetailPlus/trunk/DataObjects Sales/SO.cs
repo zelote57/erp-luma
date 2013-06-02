@@ -753,7 +753,7 @@ namespace AceSoft.RetailPlus.Data
 			ProductPackage clsProductPackage = new ProductPackage(mConnection, mTransaction);
 			MatrixPackage clsMatrixPackage = new MatrixPackage(mConnection, mTransaction);
 
-			Inventory clsInventory = new Inventory(mConnection, mTransaction);
+			ProductInventory clsInventory = new ProductInventory(mConnection, mTransaction);
 			InventoryDetails clsInventoryDetails;
 
 			MatrixPackagePriceHistoryDetails clsMatrixPackagePriceHistoryDetails;
@@ -826,7 +826,7 @@ namespace AceSoft.RetailPlus.Data
 				/*******************************************
 				 * Update Selling Information
 				 * ****************************************/
-				clsProduct.UpdateSelling(lngProductID, clsSODetails.CustomerID, intProductUnitID, decSellingPrice); // Price should be the sugegsted selling price
+				clsProduct.UpdateSellingPrice(lngProductID, clsSODetails.CustomerID, intProductUnitID, decSellingPrice); // Price should be the sugegsted selling price
 				clsProduct.UpdateSellingWSPrice(lngProductID, clsSODetails.CustomerID, intProductUnitID, decUnitCost); // WS Price should be the unit cost
 
 

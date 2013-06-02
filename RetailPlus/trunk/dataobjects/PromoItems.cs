@@ -578,7 +578,7 @@ namespace AceSoft.RetailPlus.Data
 			bool boHasPromo = false;
 
 			Data.Products clsProduct = new Data.Products(base.Connection, base.Transaction);
-            Data.ProductDetails clsProductDetails = clsProduct.Details(BranchID, ProductID);
+            Data.ProductDetails clsProductDetails = clsProduct.Details1(BranchID, ProductID);
 
 			Int64 ProductSubGroupID = clsProductDetails.ProductSubGroupID;
 			Int64 ProductGroupID = clsProductDetails.ProductGroupID;

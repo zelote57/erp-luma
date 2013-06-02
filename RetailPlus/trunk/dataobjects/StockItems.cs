@@ -408,24 +408,19 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 		
-        public System.Data.DataTable ListAsDataTable(Int64 StockID, string SortField = "StockItemID", SortOption SortOrder = SortOption.Ascending)
+        public System.Data.DataTable ListAsDataTable(Int64 StockID, string SortField = "StockItemID", SortOption SortOrder = SortOption.Desscending)
 		{
 			try
 			{
 				string SQL = SQLSelect() + "AND StockID = @StockID " +
 								"ORDER BY " + SortField; 
-
 				
 				if (SortOrder == SortOption.Ascending)
 					SQL += " ASC";
 				else
 					SQL += " DESC";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -441,15 +436,6 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

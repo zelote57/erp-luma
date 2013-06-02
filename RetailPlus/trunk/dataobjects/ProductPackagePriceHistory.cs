@@ -93,12 +93,8 @@ namespace AceSoft.RetailPlus.Data
 			try 
 			{
 				string SQL=	"DELETE FROM tblProductPackagePriceHistory WHERE PackageID IN (" + IDs + ");";
-				  
 				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
+                MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -109,173 +105,37 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 		
 		#endregion
 
-        private string SQLSelect()
-        {
-            string stSQL = "SELECT " +
-                                "a.PackageID, " +
-                                "b.ProductID, " +
-                                "ProductCode, " +
-                                "ProductDesc AS Description, " +
-                                "b.UnitID, " +
-                                "d.UnitCode, " +
-                                "d.UnitName, " +
-                                "a.ChangeDate, " +
-                                "b.Quantity, " +
-                                "a.PurchasePriceBefore, " +
-                                "a.PurchasePriceNow, " +
-                                "a.SellingPriceBefore, " +
-                                "a.SellingPriceNow, " +
-                                "a.VATBefore, " +
-                                "a.VATNow, " +
-                                "a.EVATBefore, " +
-                                "a.EVATNow, " +
-                                "a.LocalTaxBefore, " +
-                                "a.LocalTaxNow, " +
-                                "a.Remarks, " +
-                                "e.Name " +
-                            "FROM tblProductPackagePriceHistory a " +
-                            "INNER JOIN tblProductPackage b ON a.PackageID = b.PackageID " +
-                            "INNER JOIN tblProducts c ON b.ProductID = c.ProductID " +
-                            "INNER JOIN tblUnit d ON b.UnitID = d.UnitID " +
-                            "INNER JOIN sysAccessUserDetails e ON a.UID = e.UID ";
-
-            return stSQL;
-        }
-
 		#region Streams
 
-        //public System.Data.DataTable List(DateTime StartChangeDate, DateTime EndChangeDate, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = SQLSelect() + "WHERE a.ChangeDate >= @StartChangeDate " +
-        //                                    "AND a.ChangeDate <= @EndChangeDate " +
-        //                                    "ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        cmd.Parameters.AddWithValue("@StartChangeDate", StartChangeDate.ToString("yyyy-MM-dd HH:mm:ss"));
-        //        cmd.Parameters.AddWithValue("@EndChangeDate", EndChangeDate.ToString("yyyy-MM-dd HH:mm:ss"));
-
-        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-        //        base.MySqlDataAdapterFill(cmd, dt);
-        //        
-
-        //        return dt;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
-        //public System.Data.DataTable List(long ProductID, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = SQLSelect() + "WHERE b.ProductID = @ProductID ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        cmd.Parameters.AddWithValue("@ProductID", ProductID);
-
-        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-        //        base.MySqlDataAdapterFill(cmd, dt);
-        //        
-
-        //        return dt;	
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
         public System.Data.DataTable List(DateTime StartChangeDate, DateTime EndChangeDate, long ProductID = 0, string SortField = "ChangeDate", SortOption SortOrder = SortOption.Ascending)
         {
             try
             {
+                string SQL = "CALL procProductPriceHistorySelect(@StartChangeDate, @EndChangeDate, @ProductID, @SortField, @SortOrder)";
+
                 MySqlCommand cmd = new MySqlCommand();
-
-                string SQL = SQLSelect() + "WHERE 1=1 ";
-
-                if (StartChangeDate == DateTime.MinValue)
-                {
-                    SQL += "AND a.ChangeDate >= @StartChangeDate ";
-                    cmd.Parameters.AddWithValue("@StartChangeDate", StartChangeDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                }
-                if (EndChangeDate == DateTime.MinValue)
-                {
-                    SQL += "AND a.ChangeDate <= @EndChangeDate ";
-                    cmd.Parameters.AddWithValue("@EndChangeDate", EndChangeDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                }
-                if (ProductID != 0) 
-                { 
-                    SQL+= "AND b.ProductID = @ProductID ";
-                    cmd.Parameters.AddWithValue("@ProductID", ProductID); 
-                }
-                
-                SQL += "ORDER BY " + SortField;
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@StartChangeDate", StartChangeDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@EndChangeDate", EndChangeDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@SortField", SortField);
+                switch (SortOrder)
+                {
+                    case SortOption.Ascending:
+                        cmd.Parameters.AddWithValue("@SortOrder", "ASC");
+                        break;
+                    case SortOption.Desscending:
+                        cmd.Parameters.AddWithValue("@SortOrder", "DESC");
+                        break;
+                }
 
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);

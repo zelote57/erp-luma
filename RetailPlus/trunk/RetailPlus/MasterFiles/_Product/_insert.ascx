@@ -192,9 +192,9 @@
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator8" runat="server" ControlToValidate="txtPurchasePrice"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Purchase Price' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="Comparevalidator7" runat="server" ControlToValidate="txtPurchasePrice"
-                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Purchase Price' must be in number."
-                                                Operator="DataTypeCheck" Type="Currency"></asp:CompareValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="txtPurchasePrice"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Purchase Price' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -206,9 +206,9 @@
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator7" runat="server" ControlToValidate="txtProductPrice"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Selling Price' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="txtProductPrice"
-                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Selling Price' must be in number."
-                                                Operator="DataTypeCheck" Type="Double"></asp:CompareValidator> 
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtProductPrice"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Selling Price' must be in number, max of 3 decimal places."
+                                                Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator> 
                                         </td>
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -220,9 +220,9 @@
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator16" runat="server" ControlToValidate="txtWSPrice"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Wholesale Price' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="CompareValidator9" runat="server" ControlToValidate="txtWSPrice"
-                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Wholesale Price' must be in number."
-                                                Operator="DataTypeCheck" Type="Double"></asp:CompareValidator> 
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator9" runat="server" ControlToValidate="txtWSPrice"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Wholesale Price' must be in number, max of 3 decimal places."
+                                                Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator> 
                                         </td>
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -255,9 +255,9 @@
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator12" runat="server" ControlToValidate="txtVAT"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Value Added Tax' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtVAT"
-                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'VAT' must be in number."
-                                                Operator="DataTypeCheck" Type="Currency"></asp:CompareValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtVAT"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'VAT' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -267,9 +267,9 @@
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator14" runat="server" ControlToValidate="txtEVAT"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Expanded Value Added Tax' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="Comparevalidator8" runat="server" ControlToValidate="txtEVAT"
-                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'EVAT' must be in number."
-                                                Operator="DataTypeCheck" Type="Currency"></asp:CompareValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator8" runat="server" ControlToValidate="txtEVAT"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'EVAT' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -279,9 +279,9 @@
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator13" runat="server" ControlToValidate="txtLocalTax"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Local Tax' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="txtLocalTax"
-                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Local Tax' must be in number."
-                                                Operator="DataTypeCheck" Type="Currency"></asp:CompareValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="txtLocalTax"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Local Tax' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -325,9 +325,9 @@
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator11" runat="server" ControlToValidate="txtQuantity"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Initial Quantity' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="CompareValidator4" runat="server" ControlToValidate="txtQuantity"
-                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Current Quantity' must be in number."
-                                                Operator="DataTypeCheck" Type="Currency"></asp:CompareValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="txtQuantity"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Current Quantity' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -337,9 +337,9 @@
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator9" runat="server" ControlToValidate="txtMinThreshold"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Min threshold' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="txtMinThreshold"
-                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Minimum Threshold' must be in number."
-                                                Operator="DataTypeCheck" Type="Currency"></asp:CompareValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator5" runat="server" ControlToValidate="txtMinThreshold"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Minimum Threshold' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -349,9 +349,9 @@
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator10" runat="server" ControlToValidate="txtMaxThreshold"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Max threshold' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="CompareValidator6" runat="server" ControlToValidate="txtMaxThreshold"
-                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Maximum Threshold Quantity' must be in number."
-                                                Operator="DataTypeCheck" Type="Currency"></asp:CompareValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator6" runat="server" ControlToValidate="txtMaxThreshold"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Maximum Threshold Quantity' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                     </tr>
                                     <tr>

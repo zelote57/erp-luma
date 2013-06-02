@@ -244,7 +244,7 @@ namespace AceSoft.RetailPlus.Reports
             {
                 case ReportTypes.ProductList:
                     #region Products List
-                    dt = clsProduct.ListAsDataTable(clsSearchKey, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 0, false, ProductColumnNames.ProductCode, SortOption.Ascending);
+                    dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKey);
 
                     ProductVariationsMatrix clsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
                     System.Data.DataTable dtMatrixInventoryReport = clsMatrix.InventoryReport(ProductGroupName, SubGroupName, txtProductCode.Text);
@@ -273,7 +273,7 @@ namespace AceSoft.RetailPlus.Reports
 
                 case ReportTypes.ProductPriceList:
                     #region Products Price List
-                    dt = clsProduct.ListAsDataTable(clsSearchKey, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 0, false, ProductColumnNames.ProductCode, SortOption.Ascending);
+                    dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKey);
                     clsProduct.CommitAndDispose();
                     foreach (DataRow dr in dt.Rows)
                     {
@@ -291,7 +291,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.WeightedProductsForWeighingScale:
                 case ReportTypes.CountedProductsForWeighingScale:
                     #region Weighted and Counted Products For Weighing Scale
-                    dt = clsProduct.ListAsDataTable(clsSearchKey, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 0, false, ProductColumnNames.ProductCode, SortOption.Ascending);
+                    dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKey);
                     clsProduct.CommitAndDispose();
                     foreach (DataRow dr in dt.Rows)
                     {

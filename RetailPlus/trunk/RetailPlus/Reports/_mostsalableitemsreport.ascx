@@ -62,7 +62,7 @@
 	<TR>
 		<TD></TD>
 		<TD>
-			<asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Start Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtStartTransactionDate"></asp:CompareValidator></TD>
+			<asp:v id="CompareValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Start Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtStartTransactionDate"></asp:CompareValidator></TD>
 	</TR>
 	<TR>
 		<TD></TD>

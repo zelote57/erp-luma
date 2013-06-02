@@ -47,7 +47,7 @@
 	</TR>
 	<TR>
 		<TD></TD>
-		<TD><asp:comparevalidator id="CompareValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtRequiredDeliveryDate" Display="Dynamic" ErrorMessage="'Required Delivery Date' must be a valid date." Type="Date" Operator="DataTypeCheck" ForeColor=" "></asp:comparevalidator></TD>
+		<TD><asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtRequiredDeliveryDate" Display="Dynamic" ErrorMessage="'Required Delivery Date' must be a valid date." Type="Date" Operator="DataTypeCheck" ForeColor=" "></asp:CompareValidator></TD>
 	</TR>
 	<tr>
 		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>

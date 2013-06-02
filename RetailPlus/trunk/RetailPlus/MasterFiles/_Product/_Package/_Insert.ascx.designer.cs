@@ -113,13 +113,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator11;
         
         /// <summary>
-        /// CompareValidator6 control.
+        /// RegularExpressionValidator6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator6;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator6;
         
         /// <summary>
         /// cboUnit control.
@@ -158,13 +158,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator2;
         
         /// <summary>
-        /// Comparevalidator4 control.
+        /// RegularExpressionValidator4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator Comparevalidator4;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator4;
         
         /// <summary>
         /// txtMargin control.
@@ -194,13 +194,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator7;
         
         /// <summary>
-        /// CompareValidator1 control.
+        /// RegularExpressionValidator1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator1;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
         
         /// <summary>
         /// txtVAT control.
@@ -221,13 +221,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator12;
         
         /// <summary>
-        /// CompareValidator3 control.
+        /// RegularExpressionValidator3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator3;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator3;
         
         /// <summary>
         /// txtEVAT control.
@@ -248,13 +248,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator3;
         
         /// <summary>
-        /// Comparevalidator5 control.
+        /// RegularExpressionValidator5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator Comparevalidator5;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator5;
         
         /// <summary>
         /// txtLocalTax control.
@@ -275,13 +275,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator13;
         
         /// <summary>
-        /// CompareValidator2 control.
+        /// RegularExpressionValidator2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator2;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator2;
         
         /// <summary>
         /// txtBarCode1 control.

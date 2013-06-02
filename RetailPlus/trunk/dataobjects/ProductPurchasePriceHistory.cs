@@ -96,15 +96,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -388,7 +379,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.Remarks = "" + myReader["Remarks"].ToString();
 
                     Products clsProduct = new Products(base.Connection, base.Transaction);
-                    Details.ProductDetails = clsProduct.Details(BranchID, Details.ProductID);
+                    Details.ProductDetails = clsProduct.Details1(BranchID, Details.ProductID);
 
                     Contacts clsContact = new Contacts(base.Connection, base.Transaction);
                     Details.SupplierDetails = clsContact.Details(Details.SupplierID);

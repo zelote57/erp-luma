@@ -145,21 +145,21 @@
                                 <td class="ms-authoringcontrols">
                                     <asp:textbox onkeypress="AllNum()" id="txtVAT" accessKey="P" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="6" Width="100px">12</asp:textbox>%
 									<asp:RequiredFieldValidator id="RequiredFieldValidator9" CssClass="ms-error" runat="server" ControlToValidate="txtVAT" Display="Dynamic" ErrorMessage="'VAT' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
-									<asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtVAT" Display="Dynamic" ErrorMessage="'VAT' must be in number." ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:CompareValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtVAT" Display="Dynamic" ErrorMessage="'VAT' must be in number, max of 3 decimal places." ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer">
                                     <img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:textbox onkeypress="AllNum()" id="txtEVAT" accessKey="P" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="6" Width="100px">0</asp:textbox>%
 									<asp:RequiredFieldValidator id="RequiredFieldValidator10" CssClass="ms-error" runat="server" ControlToValidate="txtEVAT" Display="Dynamic" ErrorMessage="'EVAT' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
-									<asp:CompareValidator id="CompareValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtEVAT" Display="Dynamic" ErrorMessage="'EVAT' must be in number." ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:CompareValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtEVAT" Display="Dynamic" ErrorMessage="'EVAT' must be in number, max of 3 decimal places." ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer">
                                     <img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:textbox onkeypress="AllNum()" id="txtLocalTax" accessKey="P" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="6" Width="100px">0</asp:textbox>%
 									<asp:RequiredFieldValidator id="RequiredFieldValidator11" CssClass="ms-error" runat="server" ControlToValidate="txtLocalTax" Display="Dynamic" ErrorMessage="'Local Tax' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
-									<asp:CompareValidator id="CompareValidator3" CssClass="ms-error" runat="server" ControlToValidate="txtLocalTax" Display="Dynamic" ErrorMessage="'Local Tax' must be in number." ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:CompareValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator3" CssClass="ms-error" runat="server" ControlToValidate="txtLocalTax" Display="Dynamic" ErrorMessage="'Local Tax' must be in number, max of 3 decimal places." ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer">
                                     <img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -450,7 +450,7 @@
                                 <td class="ms-authoringcontrols">
                                     <asp:textbox onkeypress="AllNum()" id="txtMaxReceiptWidth" accessKey="P" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="2">40</asp:textbox>
 									<asp:RequiredFieldValidator id="RequiredFieldValidator3" CssClass="ms-error" runat="server" ControlToValidate="txtMaxReceiptWidth" Display="Dynamic" ErrorMessage="'Maximum Receipt Width' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
-									<asp:CompareValidator id="CompareValidator10" CssClass="ms-error" runat="server" ControlToValidate="txtMaxReceiptWidth" Display="Dynamic" ErrorMessage="'Maximum Receipt Width' must be in number." ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:CompareValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator10" CssClass="ms-error" runat="server" ControlToValidate="txtMaxReceiptWidth" Display="Dynamic" ErrorMessage="'Maximum Receipt Width' must be in number, max of 3 decimal places." ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer">
                                     <img src="../../_layouts/images/trans.gif" width="10" /></td>

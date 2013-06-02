@@ -162,6 +162,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ContactCredits.cs" />
+    <Compile Include="ProductInventory.cs" />
     <Compile Include="RemoteBranchInventory.cs" />
     <Compile Include="ContactRewards.cs" />
     <Compile Include="DataClass.cs" />

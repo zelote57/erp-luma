@@ -439,7 +439,7 @@ delimiter ;
 	procProductUpdateInvDetails
 	Lemuel E. Aceron
 	CALL procProductUpdateInvDetails();
-	
+	     
 	July 9, 2009 - create this procedure
 *********************************/
 delimiter GO
@@ -463,34 +463,65 @@ BEGIN
 	DECLARE strProductDesc VARCHAR(50) DEFAULT '';
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
 	DECLARE decProductQuantity, decMatrixQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE decQuantityDiff DECIMAL(18,3) DEFAULT 0;
 
 	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-	SELECT ProductCode, ProductDesc, UnitCode, SUM(Quantity) INTO strProductCode, strProductDesc, strUnitCode, decProductQuantity
+	SELECT ProductCode, ProductDesc, UnitCode, IFNULL(SUM(Quantity),0) INTO strProductCode, strProductDesc, strUnitCode, decProductQuantity
 	FROM tblProducts a 
 		INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
-		INNER JOIN tblProductInventory c ON a.ProductID = c.ProductID
-	WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID
+		LEFT OUTER JOIN tblProductInventory c ON a.ProductID = c.ProductID AND MatrixID = pvtMatrixID AND BranchID = pvtBranchID
+	WHERE a.ProductID = pvtProductID 
 	GROUP BY ProductCode, ProductDesc, UnitCode;
 	
+	SET decQuantityDiff = pvtQuantityNow - decProductQuantity;
+
+	-- get all products from diff inventory
+	SELECT IFNULL(SUM(Quantity),0) INTO decProductQuantity
+	FROM tblProducts a 
+		INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
+		LEFT OUTER JOIN tblProductInventory c ON a.ProductID = c.ProductID -- AND MatrixID = pvtMatrixID AND BranchID = pvtBranchID
+	WHERE a.ProductID = pvtProductID 
+	GROUP BY ProductCode, ProductDesc, UnitCode;
+
 	-- Insert to product movement history
 	CALL procProductMovementInsert(pvtProductID, strProductCode, strProductDesc, 0, '', 
-									decProductQuantity, pvtQuantityNow - decProductQuantity, pvtQuantityNow, 0, 
+									decProductQuantity, decQuantityDiff, decProductQuantity + decQuantityDiff, 0, 
 									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, pvtAdjustedBy, pvtBranchID, pvtBranchID, 0);
-	
-	UPDATE tblProductInventory SET
-		Quantity	= pvtQuantityNow,
-		QuantityIN  = pvtQuantityNow +  QuantityOut
-	WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND BranchID = pvtBranchID;
-			
-	UPDATE tblProducts SET
-		MinThreshold= pvtMinThresholdNow,
-		MaxThreshold= pvtmaxThresholdNow
-	WHERE ProductID = pvtproductID;
 
-	UPDATE tblProducts SET
-		MinThreshold= pvtMinThresholdNow,
-		MaxThreshold= pvtmaxThresholdNow
-	WHERE ProductID = pvtproductID;
+	IF EXISTS(SELECT Quantity FROM tblProductInventory WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND BranchID = pvtBranchID) THEN 
+		IF pvtQuantityNow >= 0 THEN
+			UPDATE tblProductInventory SET
+				Quantity	= pvtQuantityNow,
+				QuantityIN  = pvtQuantityNow + QuantityIN
+			WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND BranchID = pvtBranchID;
+		ELSE
+			UPDATE tblProductInventory SET
+				Quantity	= pvtQuantityNow,
+				QuantityOut = pvtQuantityNow + QuantityOut
+			WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND BranchID = pvtBranchID;
+		END IF;
+	ELSE
+		IF pvtQuantityNow >= 0 THEN
+			INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, Quantity, QuantityIN, QuantityOut)
+			VALUES(pvtBranchID, pvtProductID, pvtMatrixID, pvtQuantityNow, pvtQuantityNow, 0);
+		ELSE
+			INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, Quantity, QuantityIN, QuantityOut)
+			VALUES(pvtBranchID, pvtProductID, pvtMatrixID, pvtQuantityNow, 0, pvtQuantityNow);
+		END IF;
+	END IF;
+	
+			
+	IF pvtMatrixID = 0 THEN
+		UPDATE tblProducts SET
+			MinThreshold= pvtMinThresholdNow,
+			MaxThreshold= pvtmaxThresholdNow
+		WHERE ProductID = pvtproductID;
+	ELSE
+		UPDATE tblProductBaseVariationsMatrix SET
+			MinThreshold= pvtMinThresholdNow,
+			MaxThreshold= pvtmaxThresholdNow
+		WHERE ProductID = pvtproductID AND MatrixID = pvtMatrixID;
+	END IF;
 
 END;
 GO

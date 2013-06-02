@@ -211,9 +211,11 @@ namespace AceSoft.RetailPlus.Inventory
                 }
 
                 // Populate Variations
+                long ProductID = Convert.ToInt64(dr["ProductID"].ToString());
+
                 DataList lstVariationMatrix = (DataList)e.Item.FindControl("lstVariationMatrix");
                 ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-                DataTable dt = clsProductVariationsMatrix.BaseListAsDataTable(0, Convert.ToInt64(dr["ProductID"].ToString()), "MatriXID", SortOption.Ascending);
+                System.Data.DataTable dt = clsProductVariationsMatrix.BaseListSimpleAsDataTable(ProductID, SortField: "VariationDesc");
                 lstVariationMatrix.DataSource = dt.DefaultView;
                 lstVariationMatrix.DataBind();
                 clsProductVariationsMatrix.CommitAndDispose();
@@ -491,7 +493,7 @@ namespace AceSoft.RetailPlus.Inventory
             if (Request.QueryString["sortoption"] != null)
             { sortoption = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
 
-            ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowInactiveOnly;
+            ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveOnly;
 
             Int64 lngSupplierID = Convert.ToInt64(cboContact.SelectedItem.Value);
 

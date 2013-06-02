@@ -117,26 +117,26 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
             DataClass clsDataClass = new DataClass();
             long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
-            ProductVariationsMatrix clsProductVariationMatrix = new ProductVariationsMatrix();
+            ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
             cboVariation.DataTextField = "Description";
             cboVariation.DataValueField = "MatrixID";
-            cboVariation.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationMatrix.BaseList(ProductID, "VariationDesc", SortOption.Ascending)).DefaultView;
+            cboVariation.DataSource = clsProductVariationsMatrix.BaseListSimpleAsDataTable(ProductID, SortField: "VariationDesc").DefaultView;
             cboVariation.DataBind();
 
             if (cboVariation.Items.Count == 0)
             { cboVariation.Items.Add(new ListItem("No Variation", "0"));}
             cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
 
-            ProductUnitsMatrix clsUnitMatrix = new ProductUnitsMatrix(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
+            ProductUnitsMatrix clsUnitMatrix = new ProductUnitsMatrix(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
 
             cboProductUnit.DataTextField = "BottomUnitCode";
             cboProductUnit.DataValueField = "BottomUnitID";
             cboProductUnit.DataSource = clsUnitMatrix.ListAsDataTable(ProductID, "a.MatrixID", SortOption.Ascending).DefaultView;
             cboProductUnit.DataBind();
 
-            Products clsProduct = new Products(clsProductVariationMatrix.Connection, clsProductVariationMatrix.Transaction);
+            Products clsProduct = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
             ProductDetails clsDetails = clsProduct.Details(ProductID);
-            clsProductVariationMatrix.CommitAndDispose();
+            clsProductVariationsMatrix.CommitAndDispose();
             cboProductUnit.Items.Insert(0, new ListItem(clsDetails.BaseUnitCode, clsDetails.BaseUnitID.ToString()));
             cboProductUnit.SelectedIndex = cboProductUnit.Items.IndexOf(new ListItem(clsDetails.BaseUnitCode, clsDetails.BaseUnitID.ToString()));
 
@@ -151,17 +151,17 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
         }
         protected void cboVariation_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            long VariationMatrixID = Convert.ToInt64(cboVariation.SelectedItem.Value);
-            if (VariationMatrixID != 0)
+            long MatrixID = Convert.ToInt64(cboVariation.SelectedItem.Value);
+            if (MatrixID != 0)
             {
                 long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
-                ProductVariationsMatrix clsProductVariationMatrix = new ProductVariationsMatrix();
-                ProductBaseMatrixDetails clsProductBaseMatrixDetails = clsProductVariationMatrix.BaseDetails(VariationMatrixID, ProductID);
-                clsProductVariationMatrix.CommitAndDispose();
+                Products clsProducts = new Products();
+                ProductDetails clsDetails = clsProducts.Details(ProductID: ProductID, MatrixID: MatrixID);
+                clsProducts.CommitAndDispose();
 
-                txtPrice.Text = clsProductBaseMatrixDetails.PurchasePrice.ToString("####0.#0");
-                if (clsProductBaseMatrixDetails.VAT > 0)
+                txtPrice.Text = clsDetails.PurchasePrice.ToString("####0.#0");
+                if (clsDetails.VAT > 0)
                     chkIsTaxable.Checked = true;
                 else
                     chkIsTaxable.Checked = false;
@@ -178,7 +178,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
             cboProductCode.DataValueField = "ProductID";
 
             string stSearchKey = txtProductCode.Text;
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, stSearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: stSearchKey, Limit: 100);
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
 
@@ -221,10 +221,10 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
             DataClass clsDataClass = new DataClass();
             long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
-            ProductVariationsMatrix clsProductVariationMatrix = new ProductVariationsMatrix();
+            ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
             cboVariation.DataTextField = "Description";
             cboVariation.DataValueField = "MatrixID";
-            cboVariation.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationMatrix.Search(ProductID, stSearchKey, "VariationDesc", SortOption.Ascending)).DefaultView;
+            cboVariation.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationsMatrix.Search(ProductID, stSearchKey, "VariationDesc", SortOption.Ascending)).DefaultView;
             cboVariation.DataBind();
 
             if (cboVariation.Items.Count == 0)
@@ -232,7 +232,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
                 cboVariation.Items.Add(new ListItem("No Variation", "0"));
             }
             cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
-            clsProductVariationMatrix.CommitAndDispose();
+            clsProductVariationsMatrix.CommitAndDispose();
         }
         protected void lstItem_ItemDataBound(object sender, DataListItemEventArgs e)
         {
@@ -342,8 +342,9 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
                 long.Parse(cboProductCode.SelectedItem.Value);
                 if (txtVariation.Text != null || txtVariation.Text.Trim() != string.Empty || txtVariation.Text.Trim() != "")
                 {
+                    Security.AccessUserDetails clsAccessUserDetails = (Security.AccessUserDetails)Session["AccessUserDetails"];
                     ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-                    clsProductVariationsMatrix.InsertBaseVariationEasy(long.Parse(cboProductCode.SelectedItem.Value), txtVariation.Text);
+                    clsProductVariationsMatrix.InsertBaseVariationEasy(long.Parse(cboProductCode.SelectedItem.Value), txtVariation.Text, clsAccessUserDetails.Name);
                     clsProductVariationsMatrix.CommitAndDispose();
 
                     cmdVariationSearch_Click(null, null);
@@ -455,7 +456,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
             CreditMemoItemDetails clsDetails = new CreditMemoItemDetails();
 
             Products clsProducts = new Products();
-            ProductDetails clsProductDetails = clsProducts.Details(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
+            ProductDetails clsProductDetails = clsProducts.Details1(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
 
             Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
             TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);

@@ -133,17 +133,17 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			txtEVAT.Text = clsProductDetails.EVAT.ToString("#,##0.#0");
 			clsProduct.CommitAndDispose();
 
-			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-			bool IsFirstBaseVariation = clsProductVariationsMatrix.IsFirstBaseVariation(Convert.ToInt64(lblProductID.Text));
-			if (IsFirstBaseVariation)
-			{
-				txtQuantity.Text = clsProductDetails.Quantity.ToString("##0");
-			}
-			clsProductVariationsMatrix.CommitAndDispose();
-			
 		}
 		private bool SaveRecord()
 		{
+            string stringVariationDesc = null;
+            foreach (DataListItem item in lstItem.Items)
+            {
+                HtmlInputCheckBox chkList = (HtmlInputCheckBox)item.FindControl("chkList");
+                TextBox txtDescription = (TextBox)item.FindControl("txtDescription");
+                stringVariationDesc += txtDescription.Text + "; ";
+            }
+
             Security.AccessUserDetails clsAccessUserDetails = (Security.AccessUserDetails)Session["AccessUserDetails"];
 
 			ProductBaseMatrixDetails clsBaseDetails = new ProductBaseMatrixDetails();
@@ -151,7 +151,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
 			
 			clsBaseDetails.ProductID = Convert.ToInt64(lblProductID.Text);
-			clsBaseDetails.Description = "";
+            clsBaseDetails.BarCode1 = txtBarcode.Text;
+            clsBaseDetails.BarCode2 = txtBarcode2.Text;
+            clsBaseDetails.BarCode3 = txtBarcode3.Text;
+            clsBaseDetails.Description = stringVariationDesc;
 			clsBaseDetails.UnitID = Convert.ToInt32(cboUnit.SelectedItem.Value);
 			clsBaseDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
             clsBaseDetails.WSPrice = Convert.ToDecimal(txtWSPrice.Text); 
@@ -166,8 +169,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
             clsBaseDetails.CreatedBy = clsAccessUserDetails.Name;
 			clsBaseDetails.MatrixID = clsProductVariationsMatrix.InsertBaseVariation(clsBaseDetails);
 
-            string stringVariationDesc = null;
-
 			foreach (DataListItem item in lstItem.Items)
 			{
 				HtmlInputCheckBox chkList = (HtmlInputCheckBox) item.FindControl("chkList");
@@ -180,48 +181,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 				clsDetails.Description = txtDescription.Text;
 				
 				clsProductVariationsMatrix.InsertVariation(clsDetails);
-
-                //Label lblVariationType = (Label) item.FindControl("lblVariationType");
-                //stringVariationDesc += lblVariationType.Text + ":" + txtDescription.Text + "; ";
-                stringVariationDesc += txtDescription.Text + "; ";
 			}
-			
-			//Insert as single description 
-			clsBaseDetails.Description = stringVariationDesc;
-			clsProductVariationsMatrix.UpdateVariationDesc(clsBaseDetails);
-
-            Products clsProduct = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
-            ProductDetails clsProductDetails = clsProduct.Details(clsBaseDetails.ProductID);
-
-            InvAdjustmentDetails clsInvAdjustmentDetails = new InvAdjustmentDetails();
-            clsInvAdjustmentDetails.UID = clsAccessUserDetails.UID;
-            clsInvAdjustmentDetails.InvAdjustmentDate = DateTime.Now;
-            clsInvAdjustmentDetails.ProductID = clsBaseDetails.ProductID;
-            clsInvAdjustmentDetails.ProductCode = clsProductDetails.ProductCode;
-            clsInvAdjustmentDetails.Description = clsProductDetails.ProductDesc;
-            clsInvAdjustmentDetails.VariationMatrixID = clsBaseDetails.MatrixID;
-            clsInvAdjustmentDetails.MatrixDescription = clsBaseDetails.Description;
-            clsInvAdjustmentDetails.UnitID = clsBaseDetails.UnitID;
-            clsInvAdjustmentDetails.UnitCode = cboUnit.SelectedItem.Text;
-            clsInvAdjustmentDetails.QuantityBefore = 0;
-            clsInvAdjustmentDetails.QuantityNow = 0; // Aug 1, 2011 : Lemu Change the clsBaseDetails.Quantity to ZERO and add in the clsProduct.AddQuantity
-            clsInvAdjustmentDetails.MinThresholdBefore = 0;
-            clsInvAdjustmentDetails.MinThresholdNow = clsBaseDetails.MinThreshold;
-            clsInvAdjustmentDetails.MaxThresholdBefore = 0;
-            clsInvAdjustmentDetails.MaxThresholdNow = clsBaseDetails.MaxThreshold;
-            clsInvAdjustmentDetails.Remarks = "newly added. beginning balance.";
-
-            InvAdjustment clsInvAdjustment = new InvAdjustment(clsProduct.Connection, clsProduct.Transaction);
-
-            clsInvAdjustment.DeleteMainProduct(clsProductDetails.ProductID);
-            clsInvAdjustment.Insert(clsInvAdjustmentDetails);
-
-            // Aug 1, 2011 : Lemu
-            // Deleted and replaced by adding the quantity in the product to include in the ProductMovement report
-            // clsProduct.AddQuantity is already included in the clsProductVariationsMatrix.InsertBaseVariation
-            // 
-			// clsProductVariationsMatrix.SynchronizeQuantity(long.Parse(lblProductID.Text));
-
 			clsProductVariationsMatrix.CommitAndDispose();
 
 			return true;

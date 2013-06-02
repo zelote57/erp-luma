@@ -523,12 +523,41 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public MySqlDataReader List(long DebitMemoID, string SortField, SortOption SortOrder)
+        //public MySqlDataReader List(long DebitMemoID, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == string.Empty || SortField == null) SortField = "DebitMemoItemID";
+
+        //        string SQL = SQLSelect() + "WHERE DebitMemoID = @DebitMemoID ORDER BY " + SortField;
+
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
+
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
+
+        //        MySqlParameter prmDebitMemoID = new MySqlParameter("@DebitMemoID",MySqlDbType.Int64);
+        //        prmDebitMemoID.Value = DebitMemoID;
+        //        cmd.Parameters.Add(prmDebitMemoID);
+
+        //        MySqlDataReader myReader = base.ExecuteReader(cmd);
+
+        //        return myReader;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
+
+        public System.Data.DataTable ListAsDataTable(long DebitMemoID, string SortField = "DebitMemoItemID", SortOption SortOrder = SortOption.Desscending)
         {
             try
             {
-                if (SortField == string.Empty || SortField == null) SortField = "DebitMemoItemID";
-
                 string SQL = SQLSelect() + "WHERE DebitMemoID = @DebitMemoID ORDER BY " + SortField;
 
                 if (SortOrder == SortOption.Ascending)
@@ -540,13 +569,15 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDebitMemoID = new MySqlParameter("@DebitMemoID",MySqlDbType.Int64);
-                prmDebitMemoID.Value = DebitMemoID;
-                cmd.Parameters.Add(prmDebitMemoID);
+                cmd.Parameters.AddWithValue("@DebitMemoID", DebitMemoID);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
 
-                return myReader;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
             }
             catch (Exception ex)
             {

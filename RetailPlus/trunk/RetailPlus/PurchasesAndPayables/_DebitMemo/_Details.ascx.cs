@@ -186,7 +186,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 			DataClass clsDataClass = new DataClass();
 
 			DebitMemoItems clsDebitMemoItems = new DebitMemoItems();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsDebitMemoItems.List(Convert.ToInt64(lblDebitMemoID.Text), "DebitMemoItemID",SortOption.Ascending)).DefaultView;
+			lstItem.DataSource = clsDebitMemoItems.ListAsDataTable(Convert.ToInt64(lblDebitMemoID.Text)).DefaultView;
 			lstItem.DataBind();
 			clsDebitMemoItems.CommitAndDispose();
 		}

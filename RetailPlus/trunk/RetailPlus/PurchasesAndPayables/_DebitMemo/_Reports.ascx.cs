@@ -156,18 +156,18 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
             myreader.Close();
 
             DebitMemoItems clsDebitMemoItems = new DebitMemoItems(clsDebitMemos.Connection, clsDebitMemos.Transaction);
-            MySqlDataReader myreaderitems = clsDebitMemoItems.List(iID, "DebitMemoItemID", SortOption.Ascending);
-			while(myreaderitems.Read())
+            System.Data.DataTable dt = clsDebitMemoItems.ListAsDataTable(iID);
+            clsDebitMemos.CommitAndDispose();
+
+			foreach(System.Data.DataRow dr in dt.Rows)
 			{
 				DataRow drNew = rptds.DebitMemoItem.NewRow();
 				
 				foreach (DataColumn dc in rptds.DebitMemoItem.Columns)
-					drNew[dc] = "" + myreaderitems[dc.ColumnName]; 
+					drNew[dc] = "" + dr[dc.ColumnName]; 
 				
 				rptds.DebitMemoItem.Rows.Add(drNew);
 			}
-            myreaderitems.Close();
-            clsDebitMemos.CommitAndDispose();
 
 			Report.SetDataSource(rptds); 
 			SetParameters(Report);

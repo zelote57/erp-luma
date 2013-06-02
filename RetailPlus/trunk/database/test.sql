@@ -1,135 +1,74 @@
+--/**************************************************************
 
-
-
-/**************************************************************
-
-	procProductMainDetails
-	Lemuel E. Aceron
-	March 22, 2013
+--	procProductPriceHistorySelect
+--	Lemuel E. Aceron
+--	March 22, 2013
 	
-	Desc: This will get the main product list
+--	Desc: This will get the main product list
 
-	CALL procProductMainDetails();
+--	CALL procProductPriceHistorySelect(null, null, 3057, null, null);
 	
-**************************************************************/
-delimiter GO
-DROP PROCEDURE IF EXISTS procProductMainDetails
-GO
+--**************************************************************/
+--delimiter GO
+--DROP PROCEDURE IF EXISTS procProductPriceHistorySelect
+--GO
 
-create procedure procProductMainDetails(
-			 IN ProductID bigint,
-			 IN BarCode varchar(60))
-BEGIN
-	SET @SQL = '		SELECT 
-							 prd.ProductID
-							,pkg.PackageID
-							,IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode
-							,pkg.BarCode1
-							,pkg.BarCode2
-							,pkg.BarCode3
-							,pkg.BarCode4
-							,prd.ProductCode
-							,prd.ProductDesc
-							
-							,prdsg.ProductGroupID
-							,prdg.ProductGroupCode
-							,prdg.ProductGroupName
-							,prdg.OrderSlipPrinter
+--create procedure procProductPriceHistorySelect(
+--			 IN StartChangeDate datetime,
+--			 IN EndChangeDate datetime,
+--			 IN ProductID bigint,
+--			 IN SortField varchar(60),
+--			 IN SortOrder varchar(4))
+--BEGIN
+--	SET @SQL = CONCAT('	SELECT 
+--							 hst.PackageID
+--							,pkg.ProductID
+--							,pkg.MatrixID
+--							,prd.ProductCode
+--							,IF(ISNULL(mtrx.Description), prd.ProductDesc, CONCAT(prd.ProductDesc, '':'' , mtrx.Description)) AS Description 
+--							,pkg.UnitID
+--							,unt.UnitCode
+--							,unt.UnitName
+--							,hst.ChangeDate
+--							,pkg.Quantity
+--							,hst.PurchasePriceBefore
+--							,hst.PurchasePriceNow
+--							,hst.SellingPriceBefore
+--							,hst.SellingPriceNow
+--							,hst.VATBefore
+--							,hst.VATNow
+--							,hst.EVATBefore
+--							,hst.EVATNow
+--							,hst.LocalTaxBefore
+--							,hst.LocalTaxNow
+--							,hst.Remarks
+--							,usr.name
+--						FROM tblProductPackagePriceHistory hst
+--						INNER JOIN tblProductPackage pkg ON hst.PackageID = pkg.PackageID
+--						INNER JOIN tblProducts prd ON prd.ProductID = pkg.ProductID
+--						INNER JOIN tblUnit unt ON pkg.UnitID = unt.UnitID
+--						INNER JOIN sysAccessUserDetails usr ON usr.UID = hst.UID
+--						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON pkg.MatrixID = mtrx.MatrixID AND pkg.ProductID = mtrx.ProductID 
+--						WHERE 1=1 ');
 
-							,prd.ProductSubGroupID
-							,prdsg.ProductSubGroupCode
-							,prdsg.ProductSubGroupName
+--	IF IFNULL(StartChangeDate,'') <> '' THEN
+--		SET @SQL = CONCAT(@SQL, 'AND hst.ChangeDate >= ''',StartChangeDate,''' ');
+--	END IF;
 
-							,prd.BaseUnitID
-							,unt.UnitCode BaseUnitCode
-							,unt.UnitName BaseUnitName
-							,prd.BaseUnitID UnitID
-							,unt.UnitCode
-							,unt.UnitName
+--	IF IFNULL(EndChangeDate,'') <> '' THEN
+--		SET @SQL = CONCAT(@SQL, 'AND hst.ChangeDate <= ''',EndChangeDate,''' ');
+--	END IF;
 
-							,prd.DateCreated
-							,prd.Active
-							,prd.Deleted
+--	IF ProductID <> 0 THEN
+--		SET @SQL = CONCAT(@SQL, 'AND prd.ProductID = ',ProductID,' ');
+--	END IF;
 
-							,prd.SupplierID
-							,supp.ContactCode SupplierCode
-							,supp.ContactName SupplierName
+--	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','hst.ChangeDate',SortField),' ',IFNULL(SortOrder,'DESC'),' ');
 
-							,prd.IsItemSold
-							,pkg.Price
-							,pkg.WSPrice
-							,pkg.PurchasePrice
-							,prd.PercentageCommision
-							,prd.IncludeInSubtotalDiscount
-							,pkg.VAT
-							,pkg.EVAT
-							,pkg.LocalTax
-							,prd.RewardPoints
+--	PREPARE cmd FROM @SQL;
+--	EXECUTE cmd;
+--	DEALLOCATE PREPARE cmd;
 
-							,IFNULL(inv.Quantity,0) Quantity
-							,IF(ISNULL(inv.Quantity),0, fnProductQuantityConvert(prd.ProductID, inv.Quantity, prd.BaseUnitID))  ConvertedQuantity
-							,IFNULL(inv.QuantityIN,0) QuantityIN
-							,IFNULL(inv.QuantityOUT,0) QuantityOUT
-							,IFNULL(inv.ActualQuantity,0) ActualQuantity
-
-							,prd.WillPrintProductComposition
-
-							,prd.MinThreshold
-							,prd.MaxThreshold
-							,prd.RID
-
-							,prd.MaxThreshold - IFNULL(inv.Quantity,0) ReorderQty
-							,prd.RIDMinThreshold
-							,prd.RIDMaxThreshold
-							,prd.RIDMaxThreshold -  IFNULL(inv.Quantity,0) AS RIDReorderQty
-
-							,prd.ChartOfAccountIDPurchase
-							,prd.ChartOfAccountIDSold
-							,prd.ChartOfAccountIDInventory
-							,prd.ChartOfAccountIDTaxPurchase
-							,prd.ChartOfAccountIDTaxSold
-
-							,0 MatrixID
-							,NULL MatrixDescription
-						FROM tblProducts prd
-						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
-						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
-						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
-						INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
-														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1 AND pkg.MatrixID = 0
-						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
-						LEFT OUTER JOIN (
-							SELECT ProductID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory GROUP BY ProductID
-						) inv ON inv.ProductID = prd.ProductID 
-						WHERE 1=1 ';
-	IF ProductID <> 0 THEN
-		SET @SQL = CONCAT(@SQL, 'AND prd.ProductID = ',ProductID,' ');
-	ELSEIF IFNULL(BarCode,'') <> '' THEN
-		SET @SQL = CONCAT(@SQL, 'AND (pkg.BarCode1 = ''',BarCode,''' ');
-		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode2 = ''',BarCode,''' ');
-		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode3 = ''',BarCode,''' ');
-		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode4 = ''',BarCode,''') ');
-	END IF;
-	
-	SET @SQL = CONCAT(@SQL, 'LIMIT 1 ');
-
-	PREPARE cmd FROM @SQL;
-	EXECUTE cmd;
-	DEALLOCATE PREPARE cmd;
-
-END;
-GO
-delimiter ;
-
-
-
-
-
-
-
-
-
-
-
-
+--END;
+--GO
+--delimiter ;

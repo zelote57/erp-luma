@@ -479,9 +479,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		}
 		private void LoadList()
 		{	
-			Products clsProduct = new Products();
-			Common Common = new Common();
-
 			string SortField = "ProductDesc";
 			if (Request.QueryString["sortfield"]!=null)
 			{	SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID);	}
@@ -508,25 +505,17 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             if (SearchKey == null) { SearchKey = string.Empty; }
             else if (SearchKey != string.Empty) { Session.Add("Search", Common.Encrypt(SearchKey, Session.SessionID)); }
 
-
             Data.ProductDetails clsSearchKeys = new Data.ProductDetails();
             clsSearchKeys.BarCode = SearchKey;
             clsSearchKeys.BarCode2 = SearchKey;
             clsSearchKeys.BarCode3 = SearchKey;
             clsSearchKeys.ProductCode = SearchKey;
 
-            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsSearchKeys, clsProductListFilterType, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, SortField, SortOption.Ascending);
+            Products clsProduct = new Products();
+            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, clsProductListFilterType: clsProductListFilterType, Limit: 100, SortField: SortField, SortOrder: SortOption.Ascending);
+            clsProduct.CommitAndDispose();
 
-            if (dt.Rows.Count == 0)
-            {
-                clsSearchKeys = new Data.ProductDetails();
-                clsSearchKeys.ProductCode = SearchKey;
-                dt = clsProduct.ListAsDataTable(clsSearchKeys, clsProductListFilterType, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, SortField, SortOption.Ascending);
-            }
             PageData.DataSource = dt.DefaultView;
-            //PageData.DataSource = clsProduct.ListAsDataTable(clsProductColumns, 0, clsProductListFilterType, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, SortField, SortOption.Ascending).DefaultView;
-
-			clsProduct.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;
 			

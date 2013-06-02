@@ -15,9 +15,16 @@
 
 USE mysql;
 
+
 DROP DATABASE IF EXISTS pos;
 
 CREATE DATABASE pos;
+
+GRANT ALL PRIVILEGES ON pos.* TO POSUser IDENTIFIED BY 'pospwd' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+DELETE FROM user WHERE user = '' OR user = null;
+UPDATE user SET password = OLD_PASSWORD('pospwd') WHERE user = 'POSUser';
+FLUSH PRIVILEGES;
 
 USE pos;
 
@@ -2480,14 +2487,6 @@ INDEX `IX3_tblCashierReport`(`TerminalID`)
 INSERT INTO tblCashierReport (`CashierID`, `TerminalID`, `TerminalNo`, `LastLoginDate`)
 		VALUES		(1, 1, '01', "0001-01-01 00:00");
 
-USE mysql;
-GRANT ALL PRIVILEGES ON pos.* TO POSUser IDENTIFIED BY 'pospwd' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-DELETE FROM user WHERE user = '' OR user = null;
-UPDATE user SET password = OLD_PASSWORD('pospwd') WHERE user = 'POSUser';
-FLUSH PRIVILEGES;
-
-USE pos;
 
 INSERT INTO tblDenomination (DenominationCode, `DenominationValue`, ImagePath) VALUES ('One Thousand Pesos', 1000.00, '');
 INSERT INTO tblDenomination (DenominationCode, `DenominationValue`, ImagePath) VALUES ('Five Hundred Pesos', 500.00, '');
@@ -3222,9 +3221,6 @@ ALTER TABLE tblTerminalReport ADD `NoOfDebitPaymentTransactions` INT(10) NOT NUL
 ALTER TABLE tblTerminalReportHistory ADD `NoOfDebitPaymentTransactions` INT(10) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReport ADD `NoOfDebitPaymentTransactions` INT(10) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReportHistory ADD `NoOfDebitPaymentTransactions` INT(10) NOT NULL DEFAULT 0;
-
-
-use pos;
 
 /*****************************
 **	Added on April 25, 2007
@@ -4836,8 +4832,6 @@ INDEX `IX_tblProductMovement`(`ProductID`),
 INDEX `IX_tblProductMovement1`(`MatrixDescription`)
 );
 
-ALTER TABLE tblProductMovement ADD `CreatedBy` VARCHAR(100) NOT NULL DEFAULT '';
-
 DROP TABLE IF EXISTS sysTerminalkey;
 CREATE TABLE sysTerminalkey (
 	`HDSerialNo` VARCHAR(30) NOT NULL,
@@ -4925,21 +4919,14 @@ UNIQUE `PK_tblContactRewards2`(`RewardCardNo`)
 DELETE FROM tblContactRewards WHERE CustomerID = 1;
 INSERT INTO tblContactRewards VALUES(1, '', 1, 0, NOW());
 
-ALTER TABLE tblTerminal DROP ShowCustomerSelection;
 ALTER TABLE tblTerminal ADD ShowCustomerSelection TINYINT (1) NOT NULL DEFAULT 1;
 update tblTerminal set ShowCustomerSelection = 0;
 
-ALTER TABLE tblTerminal DROP EnableRewardPoints;
-ALTER TABLE tblTerminal DROP RewardPointsEvery;
-ALTER TABLE tblTerminal DROP RewardPointsMinimum;
-ALTER TABLE tblTerminal DROP RewardPointsEvery;
-ALTER TABLE tblTerminal DROP RewardPoints;
 ALTER TABLE tblTerminal ADD EnableRewardPoints TINYINT (1) NOT NULL DEFAULT 1;
 ALTER TABLE tblTerminal ADD RewardPointsMinimum DECIMAL(18,3) DEFAULT 0;
 ALTER TABLE tblTerminal ADD RewardPointsEvery DECIMAL(18,3) DEFAULT 0;
 ALTER TABLE tblTerminal ADD RewardPoints DECIMAL(18,3) DEFAULT 0;
 
-ALTER TABLE tblProducts DROP RewardPoints;
 ALTER TABLE tblProducts ADD RewardPoints DECIMAL(18,3) DEFAULT 0;
 
 DROP TABLE IF EXISTS tblContactRewardsMovement;
@@ -5094,7 +5081,7 @@ UNIQUE `PK_tblContactCreditCardInfo2`(`CreditCardNo`)
 );
 
 DROP TABLE IF EXISTS tblContactCreditCardMovement;
---CREATE TABLE tblContactCreditCardMovement (
+-- CREATE TABLE tblContactCreditCardMovement (
 --	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
 --	`GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
 --	`CreditType` TINYINT(1) NOT NULL DEFAULT 0,
@@ -5107,10 +5094,10 @@ DROP TABLE IF EXISTS tblContactCreditCardMovement;
 --	`TerminalNo` VARCHAR(10) NOT NULL,
 --	`CashierName` VARCHAR(150) NOT NULL,
 --	`TransactionNo` VARCHAR(15) NOT NULL,
---INDEX `IX_tblContactCreditCardMovement`(`CustomerID`),
---INDEX `IX_tblContactCreditCardMovement1`(`CreditDate`),
---INDEX `IX_tblContactCreditCardMovement2`(`CustomerID`, `CreditDate`)
---);
+-- INDEX `IX_tblContactCreditCardMovement`(`CustomerID`),
+-- INDEX `IX_tblContactCreditCardMovement1`(`CreditDate`),
+-- INDEX `IX_tblContactCreditCardMovement2`(`CustomerID`, `CreditDate`)
+-- );
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 145; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 145;
 DELETE FROM sysAccessTypes WHERE TypeID = 145;
@@ -5125,11 +5112,6 @@ INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (146, 'Credit Card Replacem
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 146, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 146, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 9, Category = '11: Backend - MasterFiles' WHERE TypeID = 146;
-
-ALTER TABLE tblERPConfig DROP LastCreditCardNo;
-ALTER TABLE tblERPConfig DROP LastRewardCardNo;
-ALTER TABLE tblERPConfig ADD LastCreditCardNo VARCHAR(11) NOT NULL DEFAULT '00000001';
-ALTER TABLE tblERPConfig ADD LastRewardCardNo VARCHAR(11) NOT NULL DEFAULT '00000001';
 
 ALTER TABLE tblTerminal ADD AutoGenerateRewardCardNo TINYINT (1) NOT NULL DEFAULT 1;
 ALTER TABLE tblTerminal ADD EnableRewardPointsAsPayment TINYINT (1) NOT NULL DEFAULT 1;
@@ -5224,9 +5206,6 @@ ALTER TABLE tblTransactionItems12 ADD PaxNo INT(4) NOT NULL DEFAULT 1;
 ALTER TABLE tblProducts ADD `Barcode2` VARCHAR(30);
 ALTER TABLE tblProducts ADD `Barcode3` VARCHAR(30);
 
-DROP INDEX IX_tblProducts_Barcode2 ON tblProducts;
-DROP INDEX IX_tblProducts_Barcode3 ON tblProducts;
-
 CREATE INDEX IX_tblProducts_Barcode2 ON tblProducts (Barcode2);
 CREATE INDEX IX_tblProducts_Barcode3 ON tblProducts (Barcode3);
 
@@ -5314,11 +5293,7 @@ WHERE tblProductPackage.ProductID = tblProducts.ProductID
 	AND tblProductPackage.UnitID = tblProducts.BaseUnitID 
 	AND tblProductPackage.Quantity = 1;
 	
-INSERT INTO tblProductPackage (ProductID, UnitID, Price, WSPrice, PurchasePrice, Quantity, VAT, EVAT, LocalTax,
-								BarCode1, BarCode2, BarCode3) 
-SELECT a.ProductID, b.BottomUnitID, a.Price * b.BaseUnitValue, a.WSPrice * b.BaseUnitValue, a.PurchasePrice * b.BaseUnitValue, 1, a.VAT, a.EVAT, a.LocalTax,
-								'', '', ''
-FROM tblProducts a INNER JOIN tblProductUnitMatrix b ON a.ProductID = b.ProductID;
+INSERT INTO tblProductPackage (ProductID, UnitID, Price, WSPrice, PurchasePrice, Quantity, VAT, EVAT, LocalTax, BarCode1, BarCode2, BarCode3) SELECT a.ProductID, b.BottomUnitID, a.Price * b.BaseUnitValue, a.WSPrice * b.BaseUnitValue, a.PurchasePrice * b.BaseUnitValue, 1, a.VAT, a.EVAT, a.LocalTax, '', '', '' FROM tblProducts a INNER JOIN tblProductUnitMatrix b ON a.ProductID = b.ProductID;
 
 UPDATE tblTerminal SET DBVersion = '3.0.3.74';
 
@@ -5331,7 +5306,7 @@ UPDATE tblTerminal SET DBVersion = '3.0.4.0';
 
 ALTER TABLE tblTerminalReportHistory ADD `InitializedBy` VARCHAR(150);
 
-UPDATE tblTerminalReportHistory SET InitializedBy = (SELECT User FROM sysaudittrail where Activity = 'InitializeZRead' AND tblTerminalReportHistory.DateLastInitialized < sysaudittrail.ActivityDate ORDER BY ActivityDate DESC limit 1);
+UPDATE tblTerminalReportHistory SET InitializedBy = (SELECT User FROM sysAuditTrail where Activity = 'InitializeZRead' AND tblTerminalReportHistory.DateLastInitialized < sysAuditTrail.ActivityDate ORDER BY ActivityDate DESC limit 1);
 
 
 /*********************************  v_3.0.4.0.sql END  *******************************************************/ 
@@ -5384,9 +5359,9 @@ UPDATE tblCashierLogs, tblBranch SET tblCashierLogs.BranchCode = tblBranch.Branc
 ALTER TABLE tblCashCount ADD `BranchID` INT(4) NOT NULL DEFAULT 1;
 ALTER TABLE tblCashCount ADD `BranchCode` VARCHAR(30);
 UPDATE tblCashCount, tblBranch SET tblCashCount.BranchCode = tblBranch.BranchCode WHERE tblCashCount.BranchID = tblBranch.BranchID AND tblCashCount.BranchCode IS NULL;
-ALTER TABLE tblWithhold ADD `BranchID` INT(4) NOT NULL DEFAULT 1;
-ALTER TABLE tblWithhold ADD `BranchCode` VARCHAR(30);
-UPDATE tblWithhold, tblBranch SET tblWithhold.BranchCode = tblBranch.BranchCode WHERE tblWithhold.BranchID = tblBranch.BranchID AND tblWithhold.BranchCode IS NULL;
+ALTER TABLE tblWithHold ADD `BranchID` INT(4) NOT NULL DEFAULT 1;
+ALTER TABLE tblWithHold ADD `BranchCode` VARCHAR(30);
+UPDATE tblWithHold, tblBranch SET tblWithHold.BranchCode = tblBranch.BranchCode WHERE tblWithHold.BranchID = tblBranch.BranchID AND tblWithHold.BranchCode IS NULL;
 ALTER TABLE tblDeposit ADD `BranchID` INT(4) NOT NULL DEFAULT 1;
 ALTER TABLE tblDeposit ADD `BranchCode` VARCHAR(30);
 UPDATE tblDeposit, tblBranch SET tblDeposit.BranchCode = tblBranch.BranchCode WHERE tblDeposit.BranchID = tblBranch.BranchID AND tblDeposit.BranchCode IS NULL;
@@ -6036,8 +6011,6 @@ DROP INDEX PK1_tblProducts ON tblProducts;
 DROP INDEX IX2_tblProducts ON tblProducts;
 DROP INDEX IX3_tblProducts ON tblProducts;
 DROP INDEX IX1_tblProducts ON tblProducts;
-DROP INDEX IX_tblProducts ON tblProducts;
-DROP INDEX IX_tblProducts_Barcode ON tblProducts;
 DROP INDEX IX_tblProducts_Barcode2 ON tblProducts;
 DROP INDEX IX_tblProducts_Barcode3 ON tblProducts;
 DROP INDEX IX4_tblProducts ON tblProducts;
@@ -6045,7 +6018,6 @@ DROP INDEX IX4_tblProducts ON tblProducts;
 ALTER TABLE tblProducts ADD INDEX IX_tblProducts_ProductID (ProductID);
 ALTER TABLE tblProducts ADD INDEX IX_tblProducts_BarCode1 (BarCode);
 ALTER TABLE tblProducts ADD INDEX IX_tblProducts_BarCode2 (BarCode2);
-ALTER TABLE tblProducts ADD INDEX IX_tblProducts_BarCode3 (BarCode3);
 ALTER TABLE tblProducts ADD INDEX IX_tblProducts_BarCode3 (BarCode3);
 ALTER TABLE tblProducts ADD INDEX IX_tblProducts_ProductCode (ProductCode);
 
@@ -6056,9 +6028,6 @@ ALTER TABLE tblProducts PARTITION BY HASH ( ProductID ) PARTITIONS 5 ;
 
 ALTER TABLE tblProductSubGroup MODIFY ProductSubGroupCode VARCHAR(50);
 ALTER TABLE tblTransactionItems MODIFY ProductSubGroup VARCHAR(50);
-
-ALTER TABLE tblSO MODIFY CustomerCode VARCHAR(75);
-
 
 ALTER TABLE tblProductBaseVariationsMatrix MODIFY ActualQuantity DECIMAL(18,3) DEFAULT 0;
 ALTER TABLE tblProducts MODIFY ActualQuantity DECIMAL(18,3) DEFAULT 0;
@@ -6112,9 +6081,9 @@ ALTER TABLE tblCreditPayment ADD `TerminalNo` VARCHAR(10) NOT NULL;
 ALTER TABLE tblCreditPayment ADD `CashierName` VARCHAR(150) NOT NULL;
 ALTER TABLE tblCreditPayment ADD `AmountPaidCuttOffMonth` DECIMAL(18,3) NOT NULL DEFAULT 0;
 
---CREATE INDEX `IX_tblContactCreditCardMovement`(`CustomerID`) ON 
---INDEX `IX_tblContactCreditCardMovement1`(`CreditDate`),
---INDEX `IX_tblContactCreditCardMovement2`(`CustomerID`, `CreditDate`)
+-- CREATE INDEX `IX_tblContactCreditCardMovement`(`CustomerID`) ON 
+-- INDEX `IX_tblContactCreditCardMovement1`(`CreditDate`),
+-- INDEX `IX_tblContactCreditCardMovement2`(`CustomerID`, `CreditDate`)
 
 
 /*****************************
@@ -6136,27 +6105,27 @@ INSERT INTO sysConfig (ConfigName, ConfigValue) VALUES ('Currency',							'PHP')
 INSERT INTO sysConfig (ConfigName, ConfigValue) VALUES ('VersionFTPIPAddress',			    'Localhost');
 
 
-ALTER TABLE tblterminal MODIFY `Status` INT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `AutoPrint` INT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `TerminalReceiptType` INT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `ProductSearchType` INT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `Status` INT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `AutoPrint` INT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `TerminalReceiptType` INT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `ProductSearchType` INT (1) NOT NULL DEFAULT 0;
 
 
-ALTER TABLE tblterminal MODIFY `IsPrinterAutoCutter` TINYINT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `EnableEVAT` TINYINT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `ItemVoidConfirmation` TINYINT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `ShowCustomerSelection` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `IsPrinterAutoCutter` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `EnableEVAT` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `ItemVoidConfirmation` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `ShowCustomerSelection` TINYINT (1) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminal MODIFY `ShowItemMoreThanZeroQty` TINYINT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `RoundDownRewardPoints` TINYINT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `EnableRewardPoints` TINYINT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `IsFineDining` TINYINT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `AutoGenerateRewardCardNo` TINYINT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `EnableRewardPointsAsPayment` TINYINT (1) NOT NULL DEFAULT 0;
-ALTER TABLE tblterminal MODIFY `WillPrintGrandTotal` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `RoundDownRewardPoints` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `EnableRewardPoints` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `IsFineDining` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `AutoGenerateRewardCardNo` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `EnableRewardPointsAsPayment` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `WillPrintGrandTotal` TINYINT (1) NOT NULL DEFAULT 0;
 
-ALTER TABLE tblterminal MODIFY `IsVATInclusive` TINYINT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `IsVATInclusive` TINYINT (1) NOT NULL DEFAULT 0;
 
-ALTER TABLE tblterminal MODIFY `OrderSlipPrinter` INT (1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal MODIFY `OrderSlipPrinter` INT (1) NOT NULL DEFAULT 0;
 ALTER TABLE tblProductGroup MODIFY `OrderSlipPrinter` INT (1) NOT NULL DEFAULT 0;
 
 ALTER TABLE tblTransactionItems MODIFY `OrderSlipPrinter` INT (1) NOT NULL DEFAULT 0;
@@ -6167,15 +6136,6 @@ ALTER TABLE tblTransactionItems MODIFY `PromoType` INT (1) NOT NULL DEFAULT 0;
 ALTER TABLE tblContactRewards MODIFY `RewardCardStatus` INT (1) NOT NULL DEFAULT 0;
 ALTER TABLE tblContactCreditCardInfo MODIFY `CreditType` INT (1) NOT NULL DEFAULT 0;
 ALTER TABLE tblContactCreditCardInfo MODIFY `CreditCardStatus` INT (1) NOT NULL DEFAULT 0;
-
-ALTER TABLE tblBranchInventory ADD `QuantityIN` DECIMAL(18,3) NOT NULL DEFAULT 0; 
-ALTER TABLE tblBranchInventory ADD `QuantityOUT` DECIMAL(18,3) NOT NULL DEFAULT 0; 
-ALTER TABLE tblBranchInventory ADD `ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0; 
-ALTER TABLE tblBranchInventory DROP `ProductCode`; 
-
-ALTER TABLE tblBranchInventoryMatrix ADD `QuantityIN` DECIMAL(18,3) NOT NULL DEFAULT 0; 
-ALTER TABLE tblBranchInventoryMatrix ADD `QuantityOUT` DECIMAL(18,3) NOT NULL DEFAULT 0; 
-ALTER TABLE tblBranchInventoryMatrix ADD `ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0; 
 
 CREATE TABLE tblCalDate(
 	`CalDate` Date,
@@ -6223,10 +6183,10 @@ ALTER TABLE tblCreditPayment MODIFY `Remarks` VARCHAR(8000); -- 09Mar2013 put pa
 ALTER TABLE tblProductMovement MODIFY `MatrixDescription` VARCHAR(100) DEFAULT '';
 
 -- Update the correct transactionid. Found out in BOOZE that incorrect transactionid was saved for old transactions.
-UPDATE tblcreditpayment SET
-	TransactionID = (SELECT transactionid FROM tbltransactions 
-				WHERE tbltransactions.transactionno = tblcreditpayment.transactionno
-					and tbltransactions.customerid = tblcreditpayment.Contactid);
+UPDATE tblCreditPayment SET
+	TransactionID = (SELECT transactionid FROM tblTransactions 
+				WHERE tblTransactions.transactionno = tblCreditPayment.transactionno
+					and tblTransactions.customerid = tblCreditPayment.Contactid);
 
 -- Added Apr 29, 2013
 INSERT INTO tblReceipt(Module, Text, Value, Orientation) VALUES ('GroupCreditChargeHeader', '', 'GROUP CREDIT CHARGE SLIP',1);
@@ -6276,6 +6236,7 @@ CREATE TABLE tblProductInventory (
 	UNIQUE `PK_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`)
 );
 
+
 RENAME TABLE tblBranchInventory TO deleted_tblBranchInventory;
 RENAME TABLE tblBranchInventoryMatrix TO deleted_tblBranchInventoryMatrix;
 
@@ -6317,7 +6278,7 @@ SELECT * FROM tblProductBaseVariationsMatrix WHERE MatrixID <> 0 AND MatrixID NO
 -- remove invalid products from the inventory. this is cause by the branchinventorymatrix
 DELETE FROM tblProductInventory WHERE ProductID NOT IN (SELECT DISTINCT ProductID FROM tblProducts);
 
---- check if all products are already in the inventory, should all be zero result
+-- check if all products are already in the inventory, should all be zero result
 SELECT * FROM tblProducts WHERE ProductID NOT IN (SELECT DISTINCT ProductID FROM tblProductInventory);
 SELECT * FROM tblProductInventory WHERE ProductID NOT IN (SELECT DISTINCT ProductID FROM tblProducts);
 
@@ -6337,8 +6298,6 @@ ALTER TABLE tblProductBaseVariationsMatrix DROP Quantity;
 ALTER TABLE tblProductBaseVariationsMatrix DROP QuantityIN;
 ALTER TABLE tblProductBaseVariationsMatrix DROP QuantityOut;
 ALTER TABLE tblProductBaseVariationsMatrix DROP ActualQuantity;
-ALTER TABLE tblProductBaseVariationsMatrix DROP MinThreshold;
-ALTER TABLE tblProductBaseVariationsMatrix DROP MaxThreshold;
 
 ALTER TABLE tblProducts DROP Quantity;
 ALTER TABLE tblProducts DROP QuantityIN;

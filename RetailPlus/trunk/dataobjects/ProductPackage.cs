@@ -21,9 +21,9 @@ namespace AceSoft.RetailPlus.Data
 		public Int32 UnitID;
 		public string UnitCode;
 		public string UnitName;
-        public decimal PurchasePrice;
         public decimal Price;
         public decimal WSPrice;
+        public decimal PurchasePrice;
 		public decimal Quantity;
 		public decimal VAT;
 		public decimal EVAT;
@@ -44,6 +44,7 @@ namespace AceSoft.RetailPlus.Data
         public bool UnitName;
         public bool Price;
         public bool WSPrice;
+        public bool PurchasePrice;
         public bool Quantity;
         public bool VAT;
         public bool EVAT;
@@ -106,56 +107,8 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try  
 			{
-				string SQL="INSERT INTO tblProductPackage (" +
-								"ProductID, " +
-                                "BarCode1, " +
-                                "BarCode2, " +
-                                "BarCode3, " +
-                                "BarCode4, " +
-								"UnitID, " +
-                                "PurchasePrice, " +
-                                "Price, " +
-                                "WSPrice, " +
-								"Quantity, " +
-								"VAT, " +
-								"EVAT, " +
-								"LocalTax" +
-							") VALUES (" +
-								"@ProductID, " +
-                                "@BarCode1, " +
-                                "@BarCode2, " +
-                                "@BarCode3, " +
-                                "REPLACE(CONCAT(IFNULL(BarCode1,''), @Quantity, @ProductID, 0),'.',''), " +
-								"@UnitID, " +
-                                "@PurchasePrice, " +
-                                "@Price, " +
-                                "@WSPrice, " +
-								"@Quantity, " +
-								"@VAT, " +
-								"@EVAT, " +
-								"@LocalTax" +
-							");";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-                cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
-                cmd.Parameters.AddWithValue("@BarCode1", Details.BarCode1);
-                cmd.Parameters.AddWithValue("@BarCode2", Details.BarCode2);
-                cmd.Parameters.AddWithValue("@BarCode3", Details.BarCode3);
-                cmd.Parameters.AddWithValue("@UnitID", Details.UnitID);
-                cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
-                cmd.Parameters.AddWithValue("@Price", Details.Price);
-                cmd.Parameters.AddWithValue("@WSPrice", Details.WSPrice);
-                cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
-                cmd.Parameters.AddWithValue("@VAT", Details.VAT);
-                cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
-                cmd.Parameters.AddWithValue("@LocalTax", Details.LocalTax);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details, 1, DateTime.Now, "");
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -180,27 +133,7 @@ namespace AceSoft.RetailPlus.Data
                 ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
                 clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
 
-                string SQL = "CALL procProductPackageUpdate(@PackageID, @ProductID, @UnitID, @PurchasePrice, @Price, @WSPrice, @Quantity, @VAT, @EVAT, @LocalTax, @BarCode1, @BarCode2, @BarCode3);";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@PackageID", Details.PackageID);
-                cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
-				cmd.Parameters.AddWithValue("@UnitID", Details.UnitID);
-                cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
-                cmd.Parameters.AddWithValue("@Price", Details.Price);
-                cmd.Parameters.AddWithValue("@WSPrice", Details.WSPrice);
-                cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
-				cmd.Parameters.AddWithValue("@VAT", Details.VAT);
-                cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
-                cmd.Parameters.AddWithValue("@LocalTax", Details.LocalTax);
-                cmd.Parameters.AddWithValue("@BarCode1", Details.BarCode1);
-                cmd.Parameters.AddWithValue("@BarCode2", Details.BarCode2);
-                cmd.Parameters.AddWithValue("@BarCode3", Details.BarCode3);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details, pvtUID, pvtChangeDate, pvtHistoryRemarks);
 			}
 
 			catch (Exception ex)
@@ -208,25 +141,62 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
+
+        private void Save(ProductPackageDetails Details, long pvtUID, DateTime pvtChangeDate, string pvtHistoryRemarks)
+        {
+            try
+            {
+                string SQL = "CALL procProductPackageSave(@PackageID, @ProductID, @MatrixID, @UnitID, @PurchasePrice, @Price, @WSPrice, @Quantity, @VAT, @EVAT, @LocalTax, @BarCode1, @BarCode2, @BarCode3);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@PackageID", Details.PackageID);
+                cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
+                cmd.Parameters.AddWithValue("@MatrixID", Details.MatrixID);
+                cmd.Parameters.AddWithValue("@UnitID", Details.UnitID);
+                cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
+                cmd.Parameters.AddWithValue("@Price", Details.Price);
+                cmd.Parameters.AddWithValue("@WSPrice", Details.WSPrice);
+                cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
+                cmd.Parameters.AddWithValue("@VAT", Details.VAT);
+                cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
+                cmd.Parameters.AddWithValue("@LocalTax", Details.LocalTax);
+                cmd.Parameters.AddWithValue("@BarCode1", Details.BarCode1);
+                cmd.Parameters.AddWithValue("@BarCode2", Details.BarCode2);
+                cmd.Parameters.AddWithValue("@BarCode3", Details.BarCode3);
+
+                base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         public void UpdateByProductIDUnitIDAndQuantity(ProductPackageDetails Details, long pvtUID, DateTime pvtChangeDate, string pvtHistoryRemarks)
 		{
 			try  
 			{
-                string SQL = "SELECT PackageID FROM tblProductPackage WHERE MatrixID = 0 AND ProductID = @ProductID " +
-                                "AND UnitID		=	@UnitID " +
-                                "AND Quantity	=	@Quantity;";
+                string SQL = "SELECT PackageID FROM tblProductPackage " +
+                                "WHERE MatrixID = @MatrixID " +
+                                    "AND ProductID = @ProductID " +
+                                    "AND UnitID		=	@UnitID " +
+                                    "AND Quantity	=	@Quantity;";
 	 			
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
                 cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
+                cmd.Parameters.AddWithValue("@MatrixID", Details.MatrixID);
                 cmd.Parameters.AddWithValue("@UnitID", Details.UnitID);
                 cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
 
                 System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 foreach(System.Data.DataRow dr in dt.Rows)
                 { Details.PackageID = Int64.Parse(dr["PackageID"].ToString()); }
@@ -240,13 +210,22 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public void UpdatePurchasing(long ProductID, int UnitID, decimal Quantity, decimal PurchasePrice)
+        /// <summary>
+        /// Update all product packages with equal productID. variations will be affected.
+        /// </summary>
+        /// <param name="ProductID"></param>
+        /// <param name="UnitID"></param>
+        /// <param name="Quantity"></param>
+        /// <param name="PurchasePrice"></param>
+		public void UpdatePurchasing(long ProductID, long MatrixID, int UnitID, decimal Quantity, decimal PurchasePrice)
 		{
 			try  
 			{
 				string SQL="UPDATE tblProductPackage SET " +
+                                "PurchasePrice	=   @PurchasePrice, " +
                                 "WSPrice	    =   @PurchasePrice * (1 + ((SELECT WSPriceMarkUp FROM tblTerminal LIMIT 1) / 100)) " +
 							"WHERE ProductID	=	@ProductID " +
+                                "AND MatrixID	=	@MatrixID " +
 							    "AND UnitID		=	@UnitID " +
 							    "AND Quantity	=	@Quantity;";
 				  
@@ -255,6 +234,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
                 cmd.Parameters.AddWithValue("@UnitID", UnitID);
                 cmd.Parameters.AddWithValue("@PurchasePrice", PurchasePrice);
                 cmd.Parameters.AddWithValue("@Quantity", Quantity);
@@ -268,54 +248,32 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 		
-		public void UpdateSelling(long ProductID, int UnitID, decimal Quantity, decimal SellingPrice)
+		public void UpdateSelling(long ProductID, long MatrixID, int UnitID, decimal Quantity, decimal SellingPrice)
 		{
 			try  
 			{
 				string SQL="UPDATE tblProductPackage SET " +
 								"Price			=	@Price " +
 							"WHERE ProductID	=	@ProductID " +
-							"AND UnitID		=	@UnitID " +
-							"AND Quantity	=	@Quantity;";
+                                "AND MatrixID	=	@MatrixID " +
+							    "AND UnitID		=	@UnitID " +
+							    "AND Quantity	=	@Quantity;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = ProductID;
-				cmd.Parameters.Add(prmProductID);
 
-				MySqlParameter prmUnitID = new MySqlParameter("@UnitID",MySqlDbType.Int32);			
-				prmUnitID.Value = UnitID;
-				cmd.Parameters.Add(prmUnitID);
-
-				MySqlParameter prmPrice = new MySqlParameter("@Price",MySqlDbType.Decimal);			
-				prmPrice.Value = SellingPrice;
-				cmd.Parameters.Add(prmPrice);
-
-				MySqlParameter prmQuantity = new MySqlParameter("@Quantity",MySqlDbType.Decimal);			
-				prmQuantity.Value = Quantity;
-				cmd.Parameters.Add(prmQuantity);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
+                cmd.Parameters.AddWithValue("@UnitID", UnitID);
+                cmd.Parameters.AddWithValue("@Price", SellingPrice);
+                cmd.Parameters.AddWithValue("@Quantity", Quantity);
 				
 				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -329,11 +287,7 @@ namespace AceSoft.RetailPlus.Data
                             "AND UnitID		=	@UnitID " +
                             "AND Quantity	=	@Quantity;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -347,15 +301,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -598,6 +543,7 @@ namespace AceSoft.RetailPlus.Data
                                 "c.UnitName, " +
                                 "a.Price, " +
                                 "a.WSPrice, " +
+                                "a.PurchasePrice, " +
                                 "a.Quantity, " +
                                 "a.VAT, " +
                                 "a.EVAT, " +
@@ -623,6 +569,7 @@ namespace AceSoft.RetailPlus.Data
             if (clsProductPackageColumns.UnitName) stSQL += "tblUnit.UnitName, ";
             if (clsProductPackageColumns.Price) stSQL += "tblProductPackage.Price, ";
             if (clsProductPackageColumns.WSPrice) stSQL += "tblProductPackage.WSPrice, ";
+            if (clsProductPackageColumns.PurchasePrice) stSQL += "tblProductPackage.Quantity, ";
             if (clsProductPackageColumns.Quantity) stSQL += "tblProductPackage.Quantity, ";
             if (clsProductPackageColumns.VAT) stSQL += "tblProductPackage.VAT, ";
             if (clsProductPackageColumns.EVAT) stSQL += "tblProductPackage.EVAT, ";
@@ -728,19 +675,10 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
-		public ProductPackageDetails DetailsByProductID(Int64 ProductID)
+		public ProductPackageDetails DetailsByProductID(Int64 ProductID, Int64 MatrixID = 0)
 		{
 			try
 			{
@@ -748,24 +686,23 @@ namespace AceSoft.RetailPlus.Data
                 clsProductPackageColumns.ProductDesc = false;
 
                 string SQL = SQLSelect(clsProductPackageColumns) + " ";
-                SQL += "WHERE tblProductPackage.ProductID = @ProductID ";
+                SQL += "WHERE tblProductPackage.ProductID = @ProductID AND MatrixID = @MatrixID ";
                 SQL += "ORDER BY tblProductPackage.PackageID ASC LIMIT 1;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);
+                MySqlParameter prmProductID = new MySqlParameter("@ProductID", MySqlDbType.Int64);
                 prmProductID.Value = ProductID;
                 cmd.Parameters.Add(prmProductID);
 
+                MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID", MySqlDbType.Int64);
+                prmMatrixID.Value = MatrixID;
+                cmd.Parameters.Add(prmMatrixID);
+
                 System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 ProductPackageDetails clsDetails = setDetails(dt);
 
@@ -774,15 +711,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -813,7 +741,6 @@ namespace AceSoft.RetailPlus.Data
                 System.Data.DataTable dt = new System.Data.DataTable("tblProductPackage");
                 base.MySqlDataAdapterFill(cmd, dt);
                 
-
                 ProductPackageDetails clsDetails = setDetails(dt);
 
                 return clsDetails;
@@ -821,15 +748,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -966,44 +884,6 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE 1=1 ORDER BY " + SortField; 
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-
 		public MySqlDataReader List(string SortField, SortOption SortOrder, string ProductIDs)
 		{
 			try
@@ -1064,130 +944,31 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder, string ProductGroupName, string ProductSubGroupName)
-		{
-			try
-			{
-				string SQL = "SELECT " +
-								"a.PackageID, " +
-								"a.ProductID, " +
-								"ProductDesc, " +
-								"a.UnitID, " +
-								"c.UnitCode, " +
-								"c.UnitName, " +
-								"a.Price, " +
-								"a.Quantity, " +
-								"a.VAT, " +
-								"a.EVAT, " +
-								"a.LocalTax " +
-							"FROM tblProductPackage a " +
-							"INNER JOIN tblProducts b ON a.ProductID = b.ProductID " +
-							"INNER JOIN tblUnit c ON a.UnitID = c.UnitID " +
-							"INNER JOIN tblProductSubGroup d ON b.ProductSubGroupID = d.ProductSubGroupID " +
-							"INNER JOIN tblProductGroup e ON d.ProductGroupID = e.ProductGroupID " +	
-							"WHERE 1=1 ";
-
-				if (ProductGroupName != "" && ProductGroupName != null)
-					SQL += "AND ProductGroupName = '" + ProductGroupName + "' ";
-			
-				if (ProductSubGroupName != "" && ProductSubGroupName != null)
-					SQL += "AND ProductSubGroupName = '" + ProductSubGroupName + "' ";
-
-				SQL += "ORDER BY " + SortField; 
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public MySqlDataReader List(Int64 ProductID, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE 1=1 AND a.ProductID = @ProductID ORDER BY " + SortField; 
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = ProductID;
-				cmd.Parameters.Add(prmProductID);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-
-        public System.Data.DataTable ListAsDataTable(Int64 ProductID, string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(Int64 ProductID, string BarCode = "", string ProductGroupName = "", string ProductSubGroupName = "", int Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending)
         {
             try
             {
-                string SQL = SQLSelect() + "WHERE 1=1 AND a.ProductID = @ProductID ORDER BY " + SortField;
+                string SQL = "CALL procProductPackageSelect(@ProductID, @BarCode, @ProductGroupName, @ProductSubGroupName, @lngLimit, @SortField, @SortOrder)";
 
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@BarCode", BarCode);
+                cmd.Parameters.AddWithValue("@ProductGroupName", ProductGroupName);
+                cmd.Parameters.AddWithValue("@ProductSubGroupName", ProductSubGroupName);
+                cmd.Parameters.AddWithValue("@lngLimit", Limit);
+                cmd.Parameters.AddWithValue("@SortField", SortField);
+                switch (SortOrder)
+                {
+                    case SortOption.Ascending:
+                        cmd.Parameters.AddWithValue("@SortOrder", "ASC");
+                        break;
+                    case SortOption.Desscending:
+                        cmd.Parameters.AddWithValue("@SortOrder", "DESC");
+                        break;
+                } 
 
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
@@ -1317,24 +1098,6 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-
-        public void CopyToMatrixPackage(long ProductID)
-        {
-            try
-            {
-                string SQL = "CALL procProductPackageCopyToMatrixPackage(@ProductID);";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-                cmd.Parameters.AddWithValue("@ProductID", ProductID);
-                base.ExecuteNonQuery(cmd);
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
 
 		#endregion
 	}

@@ -246,6 +246,6 @@ UPDATE tblERPConfig SET DBVersionSales = 'v_3.0.0.0';
 ALTER TABLE tblSO ALTER `CustomerDRNo` SET DEFAULT '';
 ALTER TABLE tblSOCreditMemo ALTER `CustomerDocNo` SET DEFAULT '';
 
-
+ALTER TABLE tblSO MODIFY CustomerCode VARCHAR(75);
 
 /*********************************  v_3.0.0.0.sql END  *******************************************************/

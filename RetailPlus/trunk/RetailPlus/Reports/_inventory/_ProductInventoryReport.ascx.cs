@@ -227,46 +227,17 @@ namespace AceSoft.RetailPlus.Reports
 
             ReportDataset rptds = new ReportDataset();
 
-            ProductColumns clsProductColumns = new ProductColumns();
-            #region clsProductColumns
-            clsProductColumns.ProductCode = true;
-            clsProductColumns.BarCode = true;
-            clsProductColumns.BarCode2 = true;
-            clsProductColumns.BarCode3 = true;
-            clsProductColumns.ProductDesc = true;
-            clsProductColumns.ProductSubGroupName = true;
-            clsProductColumns.BaseUnitName = true;
-            clsProductColumns.UnitName = true;
-            clsProductColumns.ProductGroupName = true;
-            clsProductColumns.DateCreated = true;
-            clsProductColumns.Price = true;
-            clsProductColumns.Quantity = true;
-            clsProductColumns.MinThreshold = true;
-            clsProductColumns.MaxThreshold = true;
-            clsProductColumns.PurchasePrice = true;
-            clsProductColumns.SupplierName = true;
-            clsProductColumns.QuantityIN = true;
-            clsProductColumns.QuantityOUT = true;
-            clsProductColumns.RIDMinThreshold = true;
-            clsProductColumns.RIDMaxThreshold = true;
-            clsProductColumns.RID = true;
-            if (long.Parse(cboBranch.SelectedItem.Value) != Constants.ZERO)
-                clsProductColumns.Quantity = true;
-
-            #endregion
-
-            ProductDetails clsSearchKey = new ProductDetails();
             #region Search Key
-            clsSearchKey.BranchID = Convert.ToInt32(cboBranch.SelectedItem.Value);
-            clsSearchKey.SupplierID = Convert.ToInt32(cboContact.SelectedItem.Value);
-            clsSearchKey.ProductGroupID = Convert.ToInt64(cboProductGroup.SelectedItem.Value);
-            clsSearchKey.ProductSubGroupID = Convert.ToInt64(cboSubGroup.SelectedItem.Value);
-            clsSearchKey.ProductCode = txtProductCode.Text;
+            Int32 intBranchID = Convert.ToInt32(cboBranch.SelectedItem.Value);
+            Int64 lngSupplierID = Convert.ToInt32(cboContact.SelectedItem.Value);
+            Int64 lngProductGroupID = Convert.ToInt64(cboProductGroup.SelectedItem.Value);
+            Int64 lngProductSubGroupID = Convert.ToInt64(cboSubGroup.SelectedItem.Value);
+            string stProductCode = txtProductCode.Text;
             #endregion
 
-			Products clsProduct = new Products();
-            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsSearchKey, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 0, false, ProductColumnNames.ProductCode, SortOption.Ascending);
-			clsProduct.CommitAndDispose();
+            ProductInventories clsProduct = new ProductInventories();
+            System.Data.DataTable dt = clsProduct.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID);
+            clsProduct.CommitAndDispose();
 
             foreach (DataRow dr in dt.Rows)
             {

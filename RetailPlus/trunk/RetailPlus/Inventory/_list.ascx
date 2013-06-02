@@ -128,7 +128,7 @@
 							<TD class="ms-vb-user">
 								<INPUT id="chkList" type="checkbox" name="chkList" runat="server"></TD>
 							<TD class="ms-vb2">
-								<asp:ImageButton id="imgVariationsMatrix" runat="server" ImageUrl="../_layouts/images/tabpub.gif" alt="Show Product Variations Matrix" CommandName="imgVariationsMatrixClick"></asp:ImageButton></TD>
+								<asp:ImageButton id="imgVariationsMatrix" runat="server" ImageUrl="../_layouts/images/tabpub.gif" alt="Show Product Variations Matrix" CommandName="imgVariationsMatrixClick" Visible="false"></asp:ImageButton></TD>
 							<TD class="ms-vb-user">
 								&nbsp;&nbsp;
 								<asp:HyperLink id="lnkBarcode" Runat="server"></asp:HyperLink></TD>
@@ -147,7 +147,7 @@
 							<TD class="ms-vb2">
 							</TD>
 						</TR>
-						<tr class="ms-vb2">
+						<%--<tr class="ms-vb2">
 						    <td colspan=2></td>
 						    <td colspan="6">
 						        <asp:datalist id="lstBranchInventory" runat="server" Width="80%" ShowFooter="False" CellPadding="0" CssClass="ms-styleheader" OnItemDataBound="lstBranchInventory_ItemDataBound" Visible=false>
@@ -187,7 +187,7 @@
 				                    </ItemTemplate>
 			                    </asp:datalist>
 						    </td>
-						</tr>
+						</tr>--%>
 					</TABLE>
 				</ItemTemplate>
 			</asp:datalist>

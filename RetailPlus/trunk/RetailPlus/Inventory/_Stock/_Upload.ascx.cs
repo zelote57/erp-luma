@@ -231,26 +231,26 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									ProductID = clsProduct.Insert(clsProductDetails);
 								}
 
-								ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsStock.Connection, clsStock.Transaction);
-								ProductBaseMatrixID = clsProductVariationsMatrix.BaseDetails(reader.GetAttribute("ItemBaseVariationDescription"), ProductID).MatrixID;
-								if (ProductBaseMatrixID == 0)
-								{
-									ProductBaseMatrixDetails clsBaseDetails = new ProductBaseMatrixDetails();
-									clsBaseDetails.ProductID = ProductID;
-									clsBaseDetails.Description = reader.GetAttribute("ItemBaseVariationDescription");
-									clsBaseDetails.UnitID = UnitID;
-									clsBaseDetails.Price = Convert.ToDecimal(reader.GetAttribute("Price"));
-									clsBaseDetails.PurchasePrice = Convert.ToDecimal(reader.GetAttribute("PurchasePrice"));
-									clsBaseDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(reader.GetAttribute("IncludeInSubtotalDiscount"));
-									clsBaseDetails.Quantity = 0;
-									clsBaseDetails.VAT = Convert.ToDecimal(reader.GetAttribute("VAT"));
-									clsBaseDetails.EVAT = Convert.ToDecimal(reader.GetAttribute("EVAT"));
-									clsBaseDetails.LocalTax = Convert.ToDecimal(reader.GetAttribute("LocalTax"));
-									clsBaseDetails.MinThreshold = Convert.ToDecimal(reader.GetAttribute("MinThreshold"));
-									clsBaseDetails.MaxThreshold = Convert.ToDecimal(reader.GetAttribute("MaxThreshold"));
-									ProductBaseMatrixID = clsProductVariationsMatrix.InsertBaseVariation(clsBaseDetails);
-									clsBaseDetails.MatrixID = ProductBaseMatrixID;
-								}
+                                //ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsStock.Connection, clsStock.Transaction);
+                                //ProductBaseMatrixID = clsProductVariationsMatrix.BaseDetails(0, 0, ProductID, reader["ItemBaseVariationDescription"].ToString()).MatrixID;
+                                //if (ProductBaseMatrixID == 0)
+                                //{
+                                //    ProductBaseMatrixDetails clsBaseDetails = new ProductBaseMatrixDetails();
+                                //    clsBaseDetails.ProductID = ProductID;
+                                //    clsBaseDetails.Description = reader.GetAttribute("ItemBaseVariationDescription");
+                                //    clsBaseDetails.UnitID = UnitID;
+                                //    clsBaseDetails.Price = Convert.ToDecimal(reader.GetAttribute("Price"));
+                                //    clsBaseDetails.PurchasePrice = Convert.ToDecimal(reader.GetAttribute("PurchasePrice"));
+                                //    clsBaseDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(reader.GetAttribute("IncludeInSubtotalDiscount"));
+                                //    clsBaseDetails.Quantity = 0;
+                                //    clsBaseDetails.VAT = Convert.ToDecimal(reader.GetAttribute("VAT"));
+                                //    clsBaseDetails.EVAT = Convert.ToDecimal(reader.GetAttribute("EVAT"));
+                                //    clsBaseDetails.LocalTax = Convert.ToDecimal(reader.GetAttribute("LocalTax"));
+                                //    clsBaseDetails.MinThreshold = Convert.ToDecimal(reader.GetAttribute("MinThreshold"));
+                                //    clsBaseDetails.MaxThreshold = Convert.ToDecimal(reader.GetAttribute("MaxThreshold"));
+                                //    ProductBaseMatrixID = clsProductVariationsMatrix.InsertBaseVariation(clsBaseDetails);
+                                //    clsBaseDetails.MatrixID = ProductBaseMatrixID;
+                                //}
 
 								clsStockItemDetails = new StockItemDetails();
 								clsStockItemDetails.StockID = StockID;

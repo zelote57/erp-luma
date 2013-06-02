@@ -47,35 +47,30 @@ namespace AceSoft.RetailPlus.Inventory
 
 		private void LoadList()
 		{
-            string SearchKey = string.Empty;
+            string SortField = "ProductDesc";
+            if (Request.QueryString["sortfield"] != null)
+            { SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID); }
+
+            SortOption sortoption = SortOption.Ascending;
+            if (Request.QueryString["sortoption"] != null)
+            { sortoption = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
+
+            string stSearchKey = string.Empty;
             if (Request.QueryString["Search"] != null)
-            { SearchKey = Common.Decrypt((string)Request.QueryString["search"], Session.SessionID); }
+            { stSearchKey = Server.UrlDecode(Common.Decrypt((string)Request.QueryString["search"], Session.SessionID)); }
             else if (Session["Search"] != null)
-            { SearchKey = Common.Decrypt(Session["Search"].ToString(), Session.SessionID); }
+            { stSearchKey = Server.UrlDecode(Common.Decrypt(Session["Search"].ToString(), Session.SessionID)); }
 
             try { Session.Remove("Search"); }
             catch { }
-            if (SearchKey == null) { SearchKey = string.Empty; }
-            else if (SearchKey != string.Empty) { Session.Add("Search", Common.Encrypt(SearchKey, Session.SessionID)); }
+            if (stSearchKey == null) { stSearchKey = string.Empty; }
+            else if (stSearchKey != string.Empty) { Session.Add("Search", Common.Encrypt(stSearchKey, Session.SessionID)); }
 
-            ProductColumns clsProductColumns = new ProductColumns();
-            clsProductColumns.BarCode = true;
-            clsProductColumns.ProductCode = true;
-            clsProductColumns.ProductGroupCode = true;
-            clsProductColumns.ProductSubGroupCode = true;
-            clsProductColumns.Quantity = true;
-            clsProductColumns.MinThreshold = true;
-            clsProductColumns.MaxThreshold = true;
-            clsProductColumns.BaseUnitCode = true;
-
-            ProductColumns clsSearchColumns = new ProductColumns();
-            clsSearchColumns.BarCode = true;
-            clsSearchColumns.ProductCode = true;
-
-			Products clsProduct = new Products();
-            PageData.DataSource = clsProduct.ListAsDataTable(clsProductColumns, 0, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending).DefaultView;
-            //PageData.DataSource = clsProduct.SearchDataTable(ProductListFilterType.ShowActiveAndInactive, SearchKey, 0, 0, string.Empty, 0, string.Empty, 100, false, false, "ProductCode", SortOption.Ascending).DefaultView;
+            ProductInventories clsProduct = new ProductInventories();
+            System.Data.DataTable dt = clsProduct.ListAsDataTable(BarCode: stSearchKey, ProductCode: stSearchKey, Limit: 100, SortField: SortField, SortOrder: SortOption.Ascending);
             clsProduct.CommitAndDispose();
+
+            PageData.DataSource = dt.DefaultView;
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;
 			
@@ -175,17 +170,17 @@ namespace AceSoft.RetailPlus.Inventory
                 clsBranchInventoryColumns.BranchCode = true;
                 clsBranchInventoryColumns.Quantity = true;
 
-                Data.BranchInventoryColumns clsSearchColumns = new Data.BranchInventoryColumns();
+                //Data.BranchInventoryColumns clsSearchColumns = new Data.BranchInventoryColumns();
 
-                Data.BranchInventory clsBranchInventory = new Data.BranchInventory();
-                DataTable dt = clsBranchInventory.ListAsDataTable(clsBranchInventoryColumns, clsSearchColumns, 0, long.Parse(dr[ProductColumnNames.ProductID].ToString()), string.Empty, System.Data.SqlClient.SortOrder.Ascending);
-                clsBranchInventory.CommitAndDispose();
+                //Data.BranchInventory clsBranchInventory = new Data.BranchInventory();
+                //DataTable dt = clsBranchInventory.ListAsDataTable(clsBranchInventoryColumns, clsSearchColumns, 0, long.Parse(dr[ProductColumnNames.ProductID].ToString()), string.Empty, System.Data.SqlClient.SortOrder.Ascending);
+                //clsBranchInventory.CommitAndDispose();
 
-                if (dt.Rows.Count > 0)
-                {
-                    DataList lstBranchInventory = (DataList)e.Item.FindControl("lstBranchInventory");
-                    lstBranchInventory.DataSource = dt; lstBranchInventory.DataBind(); lstBranchInventory.Visible = true;
-                }
+                //if (dt.Rows.Count > 0)
+                //{
+                //    DataList lstBranchInventory = (DataList)e.Item.FindControl("lstBranchInventory");
+                //    lstBranchInventory.DataSource = dt; lstBranchInventory.DataBind(); lstBranchInventory.Visible = true;
+                //}
 			}
 		}				
 

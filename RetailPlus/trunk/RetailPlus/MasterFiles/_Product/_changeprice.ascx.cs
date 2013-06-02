@@ -88,15 +88,12 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 catch { }
 
                 txtProductCode.ToolTip = intProductBaseUnitID.ToString();
-                lblProductID.ToolTip = decCommision.ToString(); 
+                lblProductID.ToolTip = decCommision.ToString();
+                long ProductID = Convert.ToInt64(cboProductCode.SelectedValue);
 
                 ProductPackage clsProductPackage = new ProductPackage(clsProduct.Connection, clsProduct.Transaction);
-                lstProductPackages.DataSource = clsProductPackage.ListAsDataTable(Convert.ToInt64(cboProductCode.SelectedValue), "PackageID", SortOption.Ascending).DefaultView;
+                lstProductPackages.DataSource = clsProductPackage.ListAsDataTable(Convert.ToInt64(cboProductCode.SelectedValue)).DefaultView;
                 lstProductPackages.DataBind();
-
-                ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
-                lstItemMatrix.DataSource = clsProductVariationsMatrix.BaseListAsDataTable(0, Convert.ToInt64(cboProductCode.SelectedValue), "MatriXID", SortOption.Ascending).DefaultView;
-                lstItemMatrix.DataBind();
 
                 ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProduct.Connection, clsProduct.Transaction);
                 System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(Convert.ToInt64(cboProductCode.SelectedValue), "PurchasePrice", SortOption.Ascending);
@@ -117,9 +114,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 lblProductPackage.Visible = true;
                 lnkProductPackageAdd.Visible = true;
                 lstProductPackages.Visible = true;
-                if (lstItemMatrix.Items.Count == 0)
-                    lstItemMatrix.Visible = false;
-                else lstItemMatrix.Visible = true;
                 imgProductHistory.Visible = true;
                 imgProductPriceHistory.Visible = true;
                 imgInventoryAdjustment.Visible = true;
@@ -134,7 +128,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 lblProductPackage.Visible = false;
                 lnkProductPackageAdd.Visible = false;
                 lstProductPackages.Visible = false;
-                lstItemMatrix.Visible = false;
                 imgProductHistory.Visible = false;
                 imgProductPriceHistory.Visible = false;
                 imgInventoryAdjustment.Visible = false;
@@ -163,7 +156,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 100, false, "ProductCode", SortOption.Ascending);
+            cboProductCode.DataSource = cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100).DefaultView;
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
 
@@ -182,6 +175,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
                 HtmlInputCheckBox chkProductPackageID = (HtmlInputCheckBox)e.Item.FindControl("chkProductPackageID");
                 chkProductPackageID.Value = dr["PackageID"].ToString();
+
+                Label lblProductDesc = (Label)e.Item.FindControl("lblProductDesc");
+                lblProductDesc.Text = dr["ProductDesc"].ToString();
 
                 Label lblProductPackageID = (Label)e.Item.FindControl("lblProductPackageID");
                 lblProductPackageID.Text = dr["PackageID"].ToString();
@@ -290,123 +286,14 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     break;
             }
         }
-        protected void lstItemMatrix_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                DataRowView dr = (DataRowView)e.Item.DataItem;
 
-                HtmlInputCheckBox chkMatrixID = (HtmlInputCheckBox)e.Item.FindControl("chkMatrixID");
-                chkMatrixID.Value = dr["MatrixID"].ToString();
-
-                HyperLink lnkVariation = (HyperLink)e.Item.FindControl("lnkVariation");
-                lnkVariation.Text = dr["Description"].ToString();
-                lnkVariation.NavigateUrl = "_VariationsMatrix/Default.aspx?task=" + Common.Encrypt("det", Session.SessionID) + "&prodid=" + Common.Encrypt(dr["ProductID"].ToString(), Session.SessionID) + "&id=" + Common.Encrypt(dr["MatrixID"].ToString(), Session.SessionID);
-
-                HyperLink lnkVariationAdd = (HyperLink)e.Item.FindControl("lnkVariationAdd");
-                lnkVariationAdd.ToolTip = "Add new package for " + lnkVariation.Text;
-                lnkVariationAdd.NavigateUrl = "_MatrixPackage/Default.aspx?task=" + Common.Encrypt("add", Session.SessionID) + "&matrixid=" + Common.Encrypt(dr["MatrixID"].ToString(), Session.SessionID) + "&prodid=" + Common.Encrypt(dr["ProductID"].ToString(), Session.SessionID);
-                
-                MatrixPackage clsMatrixPackage = new MatrixPackage();
-                DataList lstMatrixPackage = (DataList)e.Item.FindControl("lstMatrixPackage");
-                lstMatrixPackage.DataSource = clsMatrixPackage.ListAsDataTable(Convert.ToInt64(chkMatrixID.Value), "PackageID", SortOption.Ascending).DefaultView;
-                lstMatrixPackage.DataBind();
-                clsMatrixPackage.CommitAndDispose();
-            }
-        }
-        protected void lstMatrixPackage_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                DataRowView dr = (DataRowView)e.Item.DataItem;
-
-                HtmlInputCheckBox chkMatrixPackageID = (HtmlInputCheckBox)e.Item.FindControl("chkMatrixPackageID");
-                chkMatrixPackageID.Value = dr["PackageID"].ToString();
-
-                ImageButton cmdDelMatrixPackage = (ImageButton)e.Item.FindControl("cmdDelMatrixPackage");
-                if (Convert.ToDecimal(dr["Quantity"].ToString()) == Convert.ToDecimal(1) && dr["UnitID"].ToString() == txtProductCode.ToolTip)
-                    cmdDelMatrixPackage.Visible = false;
-
-                Label lblMatrixPackageID = (Label)e.Item.FindControl("lblMatrixPackageID");
-                lblMatrixPackageID.Text = dr["PackageID"].ToString();
-
-                Label lblUnitName = (Label)e.Item.FindControl("lblUnitName");
-                lblUnitName.Text = dr["UnitName"].ToString();
-                lblUnitName.ToolTip = dr["UnitID"].ToString();
-
-                TextBox txtQuantity = (TextBox)e.Item.FindControl("txtQuantity");
-                txtQuantity.Text = Convert.ToDecimal(dr["Quantity"].ToString()).ToString("#,##0.#0");
-
-                TextBox txtPurchasePrice = (TextBox)e.Item.FindControl("txtPurchasePrice");
-                txtPurchasePrice.Text = Convert.ToDecimal(dr["PurchasePrice"].ToString()).ToString("#,##0.#0");
-
-                TextBox txtSellingPrice = (TextBox)e.Item.FindControl("txtSellingPrice");
-                txtSellingPrice.Text = Convert.ToDecimal(dr["Price"].ToString()).ToString("#,##0.#0");
-
-                decimal decMargin = Convert.ToDecimal(dr["Price"].ToString()) - Convert.ToDecimal(dr["PurchasePrice"].ToString());
-                try { decMargin = decMargin / Convert.ToDecimal(dr["PurchasePrice"].ToString()); }
-                catch { decMargin = 1; }
-                decMargin = decMargin * 100;
-                TextBox txtMargin = (TextBox)e.Item.FindControl("txtMargin");
-                txtMargin.Text = decMargin.ToString("#,##0.#0");
-
-                // Added July 9, 2010
-                TextBox txtWSPrice = (TextBox)e.Item.FindControl("txtWSPrice");
-                txtWSPrice.Text = Convert.ToDecimal(dr["WSPrice"].ToString()).ToString("#,##0.#0");
-
-                decMargin = Convert.ToDecimal(dr["WSPrice"].ToString()) - Convert.ToDecimal(dr["PurchasePrice"].ToString());
-                try { decMargin = decMargin / Convert.ToDecimal(dr["PurchasePrice"].ToString()); }
-                catch { decMargin = 1; }
-                decMargin = decMargin * 100;
-                TextBox txtWSPriceMarkUp = (TextBox)e.Item.FindControl("txtWSPriceMarkUp");
-                txtWSPriceMarkUp.Text = decMargin.ToString("#,##0.#0");
-
-                TextBox txtCommision = (TextBox)e.Item.FindControl("txtCommision");
-                txtCommision.Text = lblProductID.ToolTip;
-
-                TextBox txtVAT = (TextBox)e.Item.FindControl("txtVAT");
-                txtVAT.Text = Convert.ToDecimal(dr["VAT"].ToString()).ToString("#,##0.#0");
-
-                TextBox txtEVAT = (TextBox)e.Item.FindControl("txtEVAT");
-                txtEVAT.Text = Convert.ToDecimal(dr["EVAT"].ToString()).ToString("#,##0.#0");
-
-                TextBox txtLocalTax = (TextBox)e.Item.FindControl("txtLocalTax");
-                txtLocalTax.Text = Convert.ToDecimal(dr["LocalTax"].ToString()).ToString("#,##0.#0");
-
-            }
-        }
-        protected void lstMatrixPackage_ItemCommand(object source, System.Web.UI.WebControls.DataListCommandEventArgs e)
-        {
-            switch (e.CommandName)
-            {
-                case "cmdDelMatrixPackage":
-                    {
-                        Label lblMatrixPackageID = (Label)e.Item.FindControl("lblMatrixPackageID");
-
-                        MatrixPackage clsMatrixPackage = new MatrixPackage();
-                        clsMatrixPackage.Delete(lblMatrixPackageID.Text);
-                        clsMatrixPackage.CommitAndDispose();
-
-                        cboProductCode_SelectedIndexChanged(null, null);
-                    }
-                    break;
-            }
-        }
-        protected void cmdCopyToAllMatrix_Click(object sender, EventArgs e)
-        {
-            CopyToMatrixPackage();
-        }
-        protected void imgCopyToAllMatrix_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            CopyToMatrixPackage();
-        }
         protected void imgSaveCopyToAllMatrix_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            SaveRecordProductPackage(); CopyToMatrixPackage();
+            SaveRecord();
         }
         protected void cmdSaveCopyToAllMatrix_Click(object sender, EventArgs e)
         {
-            SaveRecordProductPackage(); CopyToMatrixPackage();
+            SaveRecord();
         }
         protected void imgProductHistory_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
@@ -455,67 +342,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 cmdProductCode_Click(null, null);
             }
 		}
-        private void SaveRecordProductPackage()
-        {
-            long lngUID = long.Parse(Session["UID"].ToString());
-            DateTime dteChangeDate = DateTime.Now;
-
-            ProductPackage clsProductPackage = new ProductPackage();
-            clsProductPackage.GetConnection();
-
-            bool boIsFirstRecord = true;
-            ProductPackageDetails clsProductPackageDetails;
-            foreach (DataListItem e in lstProductPackages.Items)
-            {
-                TextBox txtBarCode1 = (TextBox)e.FindControl("txtBarCode1");
-                TextBox txtBarCode2 = (TextBox)e.FindControl("txtBarCode2");
-                TextBox txtBarCode3 = (TextBox)e.FindControl("txtBarCode3");
-
-                if (boIsFirstRecord == true)
-                {
-                    TextBox txtCommision = (TextBox)e.FindControl("txtCommision");
-                    Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
-                    clsProduct.UpdateCommision(long.Parse(cboProductCode.SelectedValue), Convert.ToDecimal(txtCommision.Text));
-
-                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
-                    clsProductDetails.BarCode = txtBarCode1.Text;
-                    clsProductDetails.BarCode2 = txtBarCode2.Text;
-                    clsProductDetails.BarCode3 = txtBarCode3.Text;
-                    clsProduct.Update(clsProductDetails);
-
-                    boIsFirstRecord = false;
-                }
-
-                HtmlInputCheckBox chkProductPackageID = (HtmlInputCheckBox)e.FindControl("chkProductPackageID");
-                Label lblUnitName = (Label)e.FindControl("lblUnitName");
-                TextBox txtQuantity = (TextBox)e.FindControl("txtQuantity");
-                TextBox txtPurchasePrice = (TextBox)e.FindControl("txtPurchasePrice");
-                TextBox txtSellingPrice = (TextBox)e.FindControl("txtSellingPrice");
-                TextBox txtWSPrice = (TextBox)e.FindControl("txtWSPrice");
-                Label lblVAT = (Label)e.FindControl("lblVAT");
-                Label lblEVAT = (Label)e.FindControl("lblEVAT");
-                Label lblLocalTax = (Label)e.FindControl("lblLocalTax");
-
-                clsProductPackageDetails = new ProductPackageDetails();
-                clsProductPackageDetails.PackageID = Convert.ToInt64(chkProductPackageID.Value);
-                clsProductPackageDetails.ProductID = Convert.ToInt64(cboProductCode.SelectedValue);
-                clsProductPackageDetails.UnitID = Convert.ToInt32(lblUnitName.ToolTip);
-                clsProductPackageDetails.Price = Convert.ToDecimal(txtSellingPrice.Text);
-                clsProductPackageDetails.WSPrice = Convert.ToDecimal(txtWSPrice.Text);
-                clsProductPackageDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
-                clsProductPackageDetails.Quantity = Convert.ToDecimal(txtQuantity.Text);
-                clsProductPackageDetails.VAT = Convert.ToDecimal(lblVAT.Text);
-                clsProductPackageDetails.EVAT = Convert.ToDecimal(lblEVAT.Text);
-                clsProductPackageDetails.LocalTax = Convert.ToDecimal(lblLocalTax.Text);
-                clsProductPackageDetails.BarCode1 = txtBarCode1.Text;
-                clsProductPackageDetails.BarCode2 = txtBarCode2.Text;
-                clsProductPackageDetails.BarCode3 = txtBarCode3.Text;
-
-                clsProductPackage.Update(clsProductPackageDetails, lngUID, dteChangeDate, "Change price adjustment.");
-            }
-
-            clsProductPackage.CommitAndDispose();
-        }
 		private void SaveRecord()
 		{
             long lngUID = long.Parse(Session["UID"].ToString());
@@ -528,26 +354,19 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             ProductPackageDetails clsProductPackageDetails;
             foreach (DataListItem e in lstProductPackages.Items)
             {
-                TextBox txtBarCode1 = (TextBox)e.FindControl("txtBarCode1");
-                TextBox txtBarCode2 = (TextBox)e.FindControl("txtBarCode2");
-                TextBox txtBarCode3 = (TextBox)e.FindControl("txtBarCode3");
-
                 if (boIsFirstRecord == true)
                 {
                     TextBox txtCommision = (TextBox)e.FindControl("txtCommision");
                     Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
                     clsProduct.UpdateCommision(long.Parse(cboProductCode.SelectedValue), Convert.ToDecimal(txtCommision.Text));
 
-                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
-                    clsProductDetails.BarCode = txtBarCode1.Text;
-                    clsProductDetails.BarCode2 = txtBarCode2.Text;
-                    clsProductDetails.BarCode3 = txtBarCode3.Text;
-                    clsProduct.Update(clsProductDetails);
-
                     boIsFirstRecord = false;
                 }
 
                 HtmlInputCheckBox chkProductPackageID = (HtmlInputCheckBox)e.FindControl("chkProductPackageID");
+                TextBox txtBarCode1 = (TextBox)e.FindControl("txtBarCode1");
+                TextBox txtBarCode2 = (TextBox)e.FindControl("txtBarCode2");
+                TextBox txtBarCode3 = (TextBox)e.FindControl("txtBarCode3");
                 Label lblUnitName = (Label)e.FindControl("lblUnitName");
                 TextBox txtQuantity = (TextBox)e.FindControl("txtQuantity");
                 TextBox txtPurchasePrice = (TextBox)e.FindControl("txtPurchasePrice");
@@ -576,63 +395,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
             }
 
-            MatrixPackage clsMatrixPackage = new MatrixPackage(clsProductPackage.Connection, clsProductPackage.Transaction);
-            MatrixPackageDetails clsMatrixPackageDetails;
-            foreach (DataListItem dlItemMatrix in lstItemMatrix.Items)
-            {
-                HtmlInputCheckBox chkMatrixID = (HtmlInputCheckBox)dlItemMatrix.FindControl("chkMatrixID");
-
-                DataList lstMatrixPackage = (DataList)dlItemMatrix.FindControl("lstMatrixPackage");
-                foreach (DataListItem e in lstMatrixPackage.Items)
-                {
-                    HtmlInputCheckBox chkMatrixPackageID = (HtmlInputCheckBox)e.FindControl("chkMatrixPackageID");
-                    Label lblUnitName = (Label)e.FindControl("lblUnitName");
-                    TextBox txtQuantity = (TextBox)e.FindControl("txtQuantity");
-                    TextBox txtPurchasePrice = (TextBox)e.FindControl("txtPurchasePrice");
-                    TextBox txtSellingPrice = (TextBox)e.FindControl("txtSellingPrice");
-                    TextBox txtWSPrice = (TextBox)e.FindControl("txtWSPrice");
-                    TextBox txtVAT = (TextBox)e.FindControl("txtVAT");
-                    TextBox txtEVAT = (TextBox)e.FindControl("txtEVAT");
-                    TextBox txtLocalTax = (TextBox)e.FindControl("txtLocalTax");
-
-                    clsMatrixPackageDetails = new MatrixPackageDetails();
-                    clsMatrixPackageDetails.PackageID = Convert.ToInt64(chkMatrixPackageID.Value);
-                    clsMatrixPackageDetails.MatrixID = Convert.ToInt64(chkMatrixID.Value);
-                    clsMatrixPackageDetails.UnitID = Convert.ToInt32(lblUnitName.ToolTip);
-                    clsMatrixPackageDetails.Price = Convert.ToDecimal(txtSellingPrice.Text);
-                    clsMatrixPackageDetails.WSPrice = Convert.ToDecimal(txtWSPrice.Text);
-                    clsMatrixPackageDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
-                    clsMatrixPackageDetails.Quantity = Convert.ToDecimal(txtQuantity.Text);
-                    clsMatrixPackageDetails.VAT = Convert.ToDecimal(txtVAT.Text);
-                    clsMatrixPackageDetails.EVAT = Convert.ToDecimal(txtEVAT.Text);
-                    clsMatrixPackageDetails.LocalTax = Convert.ToDecimal(txtLocalTax.Text);
-
-                    clsMatrixPackage.Update(clsMatrixPackageDetails, lngUID, dteChangeDate, "Change Price adjustment.");
-                }
-            }
-
             clsProductPackage.CommitAndDispose();
 		}
-        private void CopyToMatrixPackage()
-        {
-            if (cboProductCode.SelectedItem.Value != "0")
-            {
-                ProductPackage clsProductPackage = new ProductPackage();
-                clsProductPackage.CopyToMatrixPackage(long.Parse(cboProductCode.SelectedItem.Value));
-
-                foreach (DataListItem e in lstProductPackages.Items)
-                {
-                    TextBox txtCommision = (TextBox)e.FindControl("txtCommision");
-                    Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
-                    clsProduct.UpdateCommision(long.Parse(cboProductCode.SelectedValue), Convert.ToDecimal(txtCommision.Text));
-                    break;
-                }
-
-                clsProductPackage.CommitAndDispose();
-
-                cboProductCode_SelectedIndexChanged(null, null);
-            }
-        }
         
 		#endregion
 

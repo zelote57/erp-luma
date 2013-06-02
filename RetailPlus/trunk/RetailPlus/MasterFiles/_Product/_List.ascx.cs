@@ -287,33 +287,37 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		}
 
 		private void LoadList()
-		{	
-			Products clsProduct = new Products();
-			DataClass clsDataClass = new DataClass();
-			Common Common = new Common();
+		{
+            string SortField = "ProductDesc";
+            if (Request.QueryString["sortfield"] != null)
+            { SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID); }
 
-			string SortField = "ProductDesc";
-			if (Request.QueryString["sortfield"]!=null)
-			{	SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID);	}
-			
-			SortOption sortoption = SortOption.Ascending;
-			if (Request.QueryString["sortoption"]!=null)
-			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
+            SortOption sortoption = SortOption.Ascending;
+            if (Request.QueryString["sortoption"] != null)
+            { sortoption = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
 
             string SearchKey = string.Empty;
             if (Request.QueryString["Search"] != null)
-            { SearchKey = Common.Decrypt((string)Request.QueryString["search"], Session.SessionID); }
+            { SearchKey = Server.UrlDecode(Common.Decrypt((string)Request.QueryString["search"], Session.SessionID)); }
             else if (Session["Search"] != null)
-            { SearchKey = Common.Decrypt(Session["Search"].ToString(), Session.SessionID); }
+            { SearchKey = Server.UrlDecode(Common.Decrypt(Session["Search"].ToString(), Session.SessionID)); }
 
             try { Session.Remove("Search"); }
             catch { }
             if (SearchKey == null) { SearchKey = string.Empty; }
             else if (SearchKey != string.Empty) { Session.Add("Search", Common.Encrypt(SearchKey, Session.SessionID)); }
 
-            PageData.DataSource = clsProduct.SearchDataTableActiveInactive(ProductListFilterType.ShowInactiveOnly, SearchKey, SortField, sortoption, 0, false).DefaultView;
+            Data.ProductDetails clsSearchKeys = new Data.ProductDetails();
+            clsSearchKeys.BarCode = SearchKey;
+            clsSearchKeys.BarCode2 = SearchKey;
+            clsSearchKeys.BarCode3 = SearchKey;
+            clsSearchKeys.ProductCode = SearchKey;
 
-			clsProduct.CommitAndDispose();
+            Products clsProduct = new Products();
+            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100, SortField: SortField, SortOrder: SortOption.Ascending);
+            clsProduct.CommitAndDispose();
+
+            PageData.DataSource = dt.DefaultView;
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;
 			

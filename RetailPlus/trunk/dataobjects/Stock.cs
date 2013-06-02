@@ -705,8 +705,6 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try  
 			{
-				
-	 			
 				StockItem clsStockItem = new StockItem(base.Connection, base.Transaction);
 				Int64 StockItemID = clsStockItem.Insert(Details);
 
@@ -743,15 +741,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

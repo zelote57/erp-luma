@@ -98,7 +98,7 @@ namespace AceSoft.RetailPlus.Reports
 			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, txtProductCode.Text, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: txtProductCode.Text, Limit: 100);
             cboProductCode.DataBind();
 			clsProduct.CommitAndDispose();
 			
@@ -271,21 +271,10 @@ namespace AceSoft.RetailPlus.Reports
                     #region Product price history
                     ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory();
                     clsProductPackagePriceHistory.GetConnection();
-                    MatrixPackagePriceHistory clsMatrixPackagePriceHistory = new MatrixPackagePriceHistory(clsProductPackagePriceHistory.Connection, clsProductPackagePriceHistory.Transaction);
                     System.Data.DataTable dtProductList = clsProductPackagePriceHistory.List(DateFrom, DateTo, lngProductID);
-                    System.Data.DataTable dtMatrixList = clsMatrixPackagePriceHistory.List(DateFrom, DateTo, lngProductID);
                     clsProductPackagePriceHistory.CommitAndDispose();
 
                     foreach (DataRow dr in dtProductList.Rows)
-                    {
-                        DataRow drNew = rptds.ProductPriceHistory.NewRow();
-
-                        foreach (DataColumn dc in rptds.ProductPriceHistory.Columns)
-                            drNew[dc] = dr[dc.ColumnName];
-
-                        rptds.ProductPriceHistory.Rows.Add(drNew);
-                    }
-                    foreach (DataRow dr in dtMatrixList.Rows)
                     {
                         DataRow drNew = rptds.ProductPriceHistory.NewRow();
 
@@ -490,9 +479,10 @@ namespace AceSoft.RetailPlus.Reports
 			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, txtProductCode.Text, 0, 0, string.Empty, 0, string.Empty, 100, false, false, ProductColumnNames.ProductCode, SortOption.Ascending);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: txtProductCode.Text, Limit: 100);
 			cboProductCode.DataBind();
-			clsProduct.CommitAndDispose();
+			
+            clsProduct.CommitAndDispose();
 			
 			if (cboProductCode.Items.Count == 0) cboProductCode.Items.Add(new ListItem("No product", "0"));
 			cboProductCode.SelectedIndex = 0;

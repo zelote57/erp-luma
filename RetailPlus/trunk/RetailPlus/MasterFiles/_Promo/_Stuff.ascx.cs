@@ -274,7 +274,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 
 			cboProducts.DataTextField = "ProductCode";
 			cboProducts.DataValueField = "ProductID";
-            cboProducts.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowInactiveOnly, txtProductCode.Text.Trim(), 0, Convert.ToInt64(cboProductGroup.SelectedItem.Value), string.Empty, Convert.ToInt64(cboSubGroup.SelectedItem.Value));
+            cboProducts.DataSource = clsProduct.ProductIDandCodeDataTable(ProductListFilterType.ShowActiveAndInactive, txtProductCode.Text.Trim(), 0, Convert.ToInt64(cboProductGroup.SelectedItem.Value), string.Empty, Convert.ToInt64(cboSubGroup.SelectedItem.Value));
 			cboProducts.DataBind();
             cboProducts.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             if (cboProducts.Items.Count > 1 && txtProductCode.Text.Trim() != string.Empty) cboProducts.SelectedIndex = 1; else cboProducts.SelectedIndex = 0;
@@ -285,12 +285,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 
 		protected void cboProducts_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			DataClass clsDataClass = new DataClass();
+
+            long ProductID = Convert.ToInt64(cboProducts.SelectedItem.Value);
 			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
 
 			cboProductVariation.DataTextField = "VariationDesc";
 			cboProductVariation.DataValueField = "MatrixID";
-            cboProductVariation.DataSource = clsProductVariationsMatrix.BaseListAsDataTable(0, Convert.ToInt64(cboProducts.SelectedItem.Value));
+            cboProductVariation.DataSource = clsProductVariationsMatrix.BaseListSimpleAsDataTable(ProductID, SortField: "VariationDesc").DefaultView; 
 			cboProductVariation.DataBind();
             cboProductVariation.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
 			cboProductVariation.SelectedIndex = 0;

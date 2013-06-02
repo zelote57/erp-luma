@@ -637,7 +637,7 @@ namespace AceSoft.RetailPlus.Data
 			Products clsProduct = new Products(Connection, Transaction);
 			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(Connection, Transaction);
 
-			Inventory clsInventory = new Inventory(Connection, Transaction);
+			ProductInventory clsInventory = new ProductInventory(Connection, Transaction);
 
 			MySqlDataReader myReader = clsSOReturnItems.List(CreditMemoID, "CreditMemoItemID", SortOption.Ascending);
 

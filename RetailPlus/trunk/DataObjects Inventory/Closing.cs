@@ -395,7 +395,7 @@ namespace AceSoft.RetailPlus.Data
 			Products clsProduct = new Products(base.Connection, base.Transaction);
 			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
 
-			Inventory clsInventory = new Inventory(base.Connection, base.Transaction);
+            Inventory clsInventory = new Inventory(base.Connection, base.Transaction);
 
 			MySqlDataReader myReader = clsClosingItem.List(ClosingID, "ClosingItemID", SortOption.Ascending);
 
@@ -407,7 +407,7 @@ namespace AceSoft.RetailPlus.Data
 				decimal decItemQuantity = myReader.GetDecimal("Quantity");
                 decimal decQuantity = clsProductUnit.GetBaseUnitValue(lngProductID, intProductUnitID, decItemQuantity);
 
-                long lngVariationMatrixID = myReader.GetInt64("VariationMatrixID");
+                long lngMatrixID = myReader.GetInt64("VariationMatrixID");
 				string strMatrixDescription = "" + myReader["MatrixDescription"].ToString();
 				string strProductCode = "" + myReader["ProductCode"].ToString();
 				decimal decUnitCost = myReader.GetDecimal("UnitCost");
@@ -417,7 +417,7 @@ namespace AceSoft.RetailPlus.Data
 				/*******************************************
 				 * Update Purchasing Information
 				 * ****************************************/
-                clsProduct.UpdatePurchasing(lngProductID, clsClosingDetails.SupplierID, intProductUnitID, (decItemQuantity * decUnitCost) / decQuantity);
+                clsProduct.UpdatePurchasing(lngProductID, lngMatrixID, clsClosingDetails.SupplierID, intProductUnitID, (decItemQuantity * decUnitCost) / decQuantity);
 
                 ///*******************************************
                 // * Add to Inventory
@@ -426,7 +426,7 @@ namespace AceSoft.RetailPlus.Data
                 //if (VariationMatrixID != 0)
                 //{ clsProductVariationsMatrix.AddQuantity(VariationMatrixID, Quantity);}
                 // July 26, 2011: change the above codes to the following
-                clsProduct.AddQuantity(clsClosingDetails.BranchID, lngProductID, lngVariationMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_PURCHASE) + " @ " + decUnitCost.ToString("#,##0.#0"), DateTime.Now, clsClosingDetails.ClosingNo, clsClosingDetails.TransferredByID.ToString());
+                clsProduct.AddQuantity(clsClosingDetails.BranchID, lngProductID, lngMatrixID, decQuantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_PURCHASE) + " @ " + decUnitCost.ToString("#,##0.#0"), DateTime.Now, clsClosingDetails.ClosingNo, clsClosingDetails.TransferredByID.ToString());
 
 				/*******************************************
 				 * Add to Inventory Analysis
@@ -440,7 +440,7 @@ namespace AceSoft.RetailPlus.Data
 				clsInventoryDetails.ContactCode = clsClosingDetails.SupplierCode;
                 clsInventoryDetails.ProductID = lngProductID;
 				clsInventoryDetails.ProductCode = strProductCode;
-				clsInventoryDetails.VariationMatrixID = lngVariationMatrixID;
+				clsInventoryDetails.VariationMatrixID = lngMatrixID;
 				clsInventoryDetails.MatrixDescription = strMatrixDescription;
 				clsInventoryDetails.ClosingQuantity = decQuantity;
 				clsInventoryDetails.ClosingCost = decItemCost - decVAT;

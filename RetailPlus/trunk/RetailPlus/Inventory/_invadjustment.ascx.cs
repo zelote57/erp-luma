@@ -116,9 +116,10 @@ namespace AceSoft.RetailPlus.Inventory
                 imgEditNow.Visible = true;
 
                 Products clsProduct = new Products();
-                ProductDetails clsProductDetails = clsProduct.Details(int.Parse(cboBranch.SelectedItem.Value), Convert.ToInt64(cboProductCode.SelectedValue));
+                ProductDetails clsProductDetails = clsProduct.Details1(int.Parse(cboBranch.SelectedItem.Value), Convert.ToInt64(cboProductCode.SelectedValue));
 
                 txtProductCode.Text = cboProductCode.SelectedItem.Text;
+                lblProductDesc.Text = clsProductDetails.ProductDesc;
                 lblUnitName.ToolTip = clsProductDetails.BaseUnitID.ToString();
                 lblUnitName.Text = clsProductDetails.BaseUnitCode;
                 txtQuantityBefore.Text = clsProductDetails.Quantity.ToString("#,##0.#0");
@@ -129,29 +130,17 @@ namespace AceSoft.RetailPlus.Inventory
                 txtMaxThreshold.ToolTip = clsProductDetails.MaxThreshold.ToString("#,##0.#0");
                 txtMaxThreshold.Text = clsProductDetails.MaxThreshold.ToString("#,##0.#0");
 
-                ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
-                lstVariationMatrix.DataSource = clsProductVariationsMatrix.BaseListAsDataPerBranch(int.Parse(cboBranch.SelectedItem.Value), Convert.ToInt64(cboProductCode.SelectedValue), "MatriXID", SortOption.Ascending).DefaultView;
+                ProductInventories clsProductInventory = new ProductInventories(clsProduct.Connection, clsProduct.Transaction);
+                lstVariationMatrix.DataSource = clsProductInventory.ListAsDataTable(int.Parse(cboBranch.SelectedItem.Value), Convert.ToInt64(cboProductCode.SelectedValue)).DefaultView;
                 lstVariationMatrix.DataBind();
 
                 clsProduct.CommitAndDispose();
 
-                if (lstVariationMatrix.Items.Count == 0)
-                {
-                    lstVariationMatrix.Visible = false;
-
-                    txtDifference.Enabled = true;
-                    txtQuantityNow.Enabled = true;
-                    txtMinThreshold.Enabled = true;
-                    txtMaxThreshold.Enabled = true;
-                }
-                else
-                {
-                    lstVariationMatrix.Visible = true;
-                    txtDifference.Enabled = false;
-                    txtQuantityNow.Enabled = false;
-                    txtMinThreshold.Enabled = false;
-                    txtMaxThreshold.Enabled = false;
-                }
+                lstVariationMatrix.Visible = true;
+                txtDifference.Enabled = false;
+                txtQuantityNow.Enabled = false;
+                txtMinThreshold.Enabled = false;
+                txtMaxThreshold.Enabled = false;
             }
         }
         protected void cmdProductCode_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -162,8 +151,10 @@ namespace AceSoft.RetailPlus.Inventory
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
 
-            string stSearchKey = "%" + txtProductCode.Text;
-            cboProductCode.DataSource = clsProduct.SearchDataTable(stSearchKey, "ProductCode", SortOption.Ascending, 100, false);
+            ProductDetails clsSearchKeys = new ProductDetails();
+            clsSearchKeys.ProductCode = txtProductCode.Text;
+
+            cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100).DefaultView;
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
 
@@ -183,12 +174,13 @@ namespace AceSoft.RetailPlus.Inventory
                 HtmlInputCheckBox chkMatrixID = (HtmlInputCheckBox)e.Item.FindControl("chkMatrixID");
                 chkMatrixID.Value = dr["MatrixID"].ToString();
 
-                Label lblUnitName = (Label)e.Item.FindControl("lblUnitName");
-                lblUnitName.Text = dr["UnitName"].ToString();
-                lblUnitName.ToolTip = dr["UnitID"].ToString();
+                Label lblUnitCode = (Label)e.Item.FindControl("lblUnitCode");
+                lblUnitCode.Text = dr["UnitCode"].ToString();
+                lblUnitCode.ToolTip = dr["UnitID"].ToString();
 
                 Label lblVariationDesc = (Label)e.Item.FindControl("lblVariationDesc");
-                lblVariationDesc.Text = dr["Description"].ToString();
+                lblVariationDesc.Text = chkMatrixID.Value == Constants.ZERO_STRING ? "MAIN product " : dr["MatrixDescription"].ToString();
+                //lblVariationDesc.Text = lblVariationDesc.Text.Length > 40 ? lblVariationDesc.Text.Substring(0, 40) : lblVariationDesc.Text;
 
                 TextBox txtQuantityBefore = (TextBox)e.Item.FindControl("txtQuantityBefore");
                 txtQuantityBefore.Text = Convert.ToDecimal(dr["Quantity"].ToString()).ToString("#,##0.#0");
@@ -286,61 +278,15 @@ namespace AceSoft.RetailPlus.Inventory
             InvAdjustmentDetails clsInvAdjustmentDetails;
 
             long lngProductID = long.Parse(cboProductCode.SelectedValue);
-            decimal decQuantityBefore = decimal.Parse(txtQuantityBefore.Text);
-            decimal decQuantityNow =  0;
 
-            if (lstVariationMatrix.Items.Count == 0)
+            if (lstVariationMatrix.Items.Count > 0)
             {
-                decQuantityNow = decimal.Parse(txtQuantityNow.Text);
-                if (decQuantityBefore != decQuantityNow|| decimal.Parse(txtMinThreshold.ToolTip) != decimal.Parse(txtMinThreshold.Text) || decimal.Parse(txtMaxThreshold.ToolTip) != decimal.Parse(txtMaxThreshold.Text))
-                {
-                    clsInvAdjustmentDetails = new InvAdjustmentDetails();
-                    clsInvAdjustmentDetails.UID = clsDetails.UID;
-                    clsInvAdjustmentDetails.InvAdjustmentDate = dteChangeDate;
-                    clsInvAdjustmentDetails.ProductID = lngProductID;
-                    clsInvAdjustmentDetails.ProductCode = cboProductCode.SelectedItem.Text;
-                    clsInvAdjustmentDetails.Description = cboProductCode.SelectedItem.Text;
-                    clsInvAdjustmentDetails.UnitID = int.Parse(lblUnitName.ToolTip);
-                    clsInvAdjustmentDetails.UnitCode = lblUnitName.Text;
-                    clsInvAdjustmentDetails.QuantityBefore = decimal.Parse(txtQuantityBefore.Text);
-                    clsInvAdjustmentDetails.QuantityNow = decimal.Parse(txtQuantityNow.Text);
-                    clsInvAdjustmentDetails.MinThresholdBefore = decimal.Parse(txtMinThreshold.ToolTip);
-                    clsInvAdjustmentDetails.MinThresholdNow = decimal.Parse(txtMinThreshold.Text);
-                    clsInvAdjustmentDetails.MaxThresholdBefore = decimal.Parse(txtMaxThreshold.ToolTip);
-                    clsInvAdjustmentDetails.MaxThresholdNow = decimal.Parse(txtMaxThreshold.Text);
-                    clsInvAdjustmentDetails.Remarks = txtRemarks.Text;
-                    clsInvAdjustment.Insert(clsInvAdjustmentDetails);
-
-                    // Jul 28, 2011 : Lemu
-                    // - Do not update the quantity of product. Update the MinThreshold & MaxThreshold only.
-                    //   Use AddQuantity or SubtractQuantity to include in ProductMovement Report
-                    // remove this again due to inventory per branch
-                    // re-use this again. AddQty does not tally
-                    if (decQuantityBefore > decQuantityNow)
-                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
-                    else if (decQuantityBefore < decQuantityNow)
-                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
-
-                    //if (decQuantityBefore > decQuantityNow)
-                    //{ clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
-                    //else if (decQuantityBefore < decQuantityNow)
-                    //{ clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
-            
-                }
-            }
-            else
-            {
-                decQuantityNow = 0;
-                decimal decMinThresholdNow = 0;
-                decimal decMaxThresholdNow = 0;
-                bool bolContinue = false;
-
                 ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
                 foreach (DataListItem e in lstVariationMatrix.Items)
                 {
                     HtmlInputCheckBox chkMatrixID = (HtmlInputCheckBox)e.FindControl("chkMatrixID");
                     Label lblVariationDesc = (Label)e.FindControl("lblVariationDesc");
-                    Label lblUnitNameMatrix = (Label)e.FindControl("lblUnitName");
+                    Label lblUnitNameMatrix = (Label)e.FindControl("lblUnitCode");
                     TextBox txtQuantityBeforeMatrix = (TextBox)e.FindControl("txtQuantityBefore");
                     //TextBox txtDifferenceMatrix = (TextBox)e.FindControl("txtDifference");
                     TextBox txtQuantityNowMatrix = (TextBox)e.FindControl("txtQuantityNow");
@@ -376,39 +322,12 @@ namespace AceSoft.RetailPlus.Inventory
                         clsInvAdjustmentDetails.Remarks = txtRemarks.Text;
                         clsInvAdjustment.Insert(clsInvAdjustmentDetails);
 
-                        bolContinue = true;
-
-                        if (decQuantityBefore > decQuantityNow)
-                        { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, long.Parse(chkMatrixID.Value), decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
-                        else if (decQuantityBefore < decQuantityNow)
-                        { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, long.Parse(chkMatrixID.Value), decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                        if (decQuantityBeforeMatrix > decQuantityNowMatrix)
+                        { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, long.Parse(chkMatrixID.Value), decQuantityNowMatrix, decMinThresholdMatrixNow, decMaxThresholdMatrixNow, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
+                        else if (decQuantityBeforeMatrix < decQuantityNowMatrix)
+                        { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, long.Parse(chkMatrixID.Value), decQuantityNowMatrix, decMinThresholdMatrixNow, decMaxThresholdMatrixNow, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
 
                     }
-
-                    decQuantityNow += decimal.Parse(txtQuantityNowMatrix.Text);
-                    decMinThresholdNow = decimal.Parse(txtMaxThresholdMatrix.Text);
-                    decMaxThresholdNow = decimal.Parse(txtMaxThresholdMatrix.Text);
-                }
-
-                if (bolContinue == true)
-                {
-                    // Jul 28, 2011 : Lemu
-                    // - Do not update the quantity of product. Update the MinThreshold & MaxThreshold only.
-                    //   Use AddQuantity or SubtractQuantity to include in ProductMovement Report
-                    // remove this again due to inventory per branch
-                    // clsProduct.UpdateInvDetails(lngProductID, decQuantityBefore, decMinThresholdNow, decMaxThresholdNow);
-
-                    //if (decQuantityBefore > decQuantityNow)
-                    //{ clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
-                    //else if (decQuantityBefore < decQuantityNow)
-                    //{ clsProduct.AddQuantity(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow - decQuantityBefore, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
-
-                    // re-use this again. AddQty does not tally
-                    if (decQuantityBefore > decQuantityNow)
-                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
-                    else if (decQuantityBefore < decQuantityNow)
-                    { clsProduct.UpdateInvDetails(int.Parse(cboBranch.SelectedItem.Value), lngProductID, 0, decQuantityNow, decimal.Parse(txtMinThreshold.Text), decimal.Parse(txtMaxThreshold.Text), Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.ADD_INVENTORY_ADJUSTMENT), dteChangeDate, "SYS-ADJ" + dteChangeDate.ToString("yyyyMMddHHmmss"), clsDetails.Name); }
-
                 }
             }
             clsProduct.CommitAndDispose();

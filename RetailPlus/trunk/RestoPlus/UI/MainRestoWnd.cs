@@ -2692,7 +2692,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                         if (Details.VariationsMatrixID != 0)
                                         {
                                             Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
-                                            decimal decProductVariationMatrixCurrentQuantity = clsProductVariationsMatrix.BaseDetailsByMatrixID(Details.VariationsMatrixID).Quantity + oldQuantity;
+                                            decimal decProductVariationMatrixCurrentQuantity = clsProductVariationsMatrix.BaseDetails(Details.VariationsMatrixID).Quantity + oldQuantity;
                                             if (decProductVariationMatrixCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
                                             {
                                                 clsProduct.CommitAndDispose();
@@ -5276,7 +5276,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 {
                                     clsItemDetails = clsSalesTransactionItemDetails;
 
-                                    decimal decProductVariationMatrixCurrentQuantity = clsProductVariationsMatrix.BaseDetailsByMatrixID(clsItemDetails.VariationsMatrixID).Quantity;
+                                    decimal decProductVariationMatrixCurrentQuantity = clsProductVariationsMatrix.BaseDetails(clsItemDetails.VariationsMatrixID).Quantity;
                                     if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
                                     {
                                         if (decProductVariationMatrixCurrentQuantity < clsItemDetails.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)

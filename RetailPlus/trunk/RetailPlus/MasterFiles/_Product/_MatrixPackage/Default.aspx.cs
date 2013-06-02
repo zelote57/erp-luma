@@ -36,16 +36,14 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._MatrixPackage
 			
 			if (Request.QueryString["task"]!=null)
 			{
-                ProductVariationsMatrix clsMatrix = new ProductVariationsMatrix();
-                ProductBaseMatrixDetails clsDetails = new ProductBaseMatrixDetails();
+                Int64 MatrixID = Convert.ToInt64(Common.Decrypt(Request.QueryString["matrixid"].ToString(), Session.SessionID));
+                Int64 ProductID = Convert.ToInt64(Common.Decrypt(Request.QueryString["prodid"].ToString(), Session.SessionID));
 
-                Int64 matrixid = Convert.ToInt64(Common.Decrypt(Request.QueryString["matrixid"].ToString(), Session.SessionID));
-                Int64 prodid = Convert.ToInt64(Common.Decrypt(Request.QueryString["prodid"].ToString(), Session.SessionID));
-                clsDetails = clsMatrix.BaseDetails(matrixid, prodid);
+                Products clsProducts = new Products();
+                ProductDetails clsDetails = clsProducts.Details(ProductID: ProductID, MatrixID: MatrixID);
+                clsProducts.CommitAndDispose();
 
-                clsMatrix.CommitAndDispose();
-
-                string productCode = " for Matrix : " + clsDetails.Description;
+                string productCode = " for Matrix : " + clsDetails.MatrixDescription;
 
 				string task = Common.Decrypt(Request.QueryString["task"].ToString(),Session.SessionID);
 				switch(task)

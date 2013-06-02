@@ -386,7 +386,7 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				Products clsProduct = new Products(base.Connection, base.Transaction);
-                Int32 BaseUnitID = clsProduct.Details(BranchID, ProductID).BaseUnitID;
+                Int32 BaseUnitID = clsProduct.Details1(BranchID, ProductID).BaseUnitID;
 				
 				Int32 origUnitIDToConvert = UnitIDToConvert;
 

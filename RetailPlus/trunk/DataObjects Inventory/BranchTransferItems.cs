@@ -655,7 +655,7 @@ namespace AceSoft.RetailPlus.Data
             return dt;
 
 		}
-        public System.Data.DataTable ListAsDataTable(long BranchTransferID, string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(long BranchTransferID, string SortField = "BranchTransferItemID", SortOption SortOrder = SortOption.Desscending)
         {
             if (SortField == string.Empty || SortField == null) SortField = "BranchTransferItemID";
 

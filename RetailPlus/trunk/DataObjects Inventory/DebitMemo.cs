@@ -425,14 +425,14 @@ namespace AceSoft.RetailPlus.Data
                 clsChartOfAccount.UpdateCredit(clsDebitMemoDetails.ChartOfAccountIDAPVDeposit, clsDebitMemoDetails.Deposit);
 
                 DebitMemoItems clsDebitMemoItems = new DebitMemoItems(base.Connection, base.Transaction);
-                MySqlDataReader myReader = clsDebitMemoItems.List(DebitMemoID, string.Empty, SortOption.Ascending);
-                while (myReader.Read())
+                System.Data.DataTable dt = clsDebitMemoItems.ListAsDataTable(DebitMemoID);
+                foreach(System.Data.DataRow dr in dt.Rows)
                 {
-                    int iChartOfAccountIDPurchase = myReader.GetInt16("ChartOfAccountIDPurchase");
-                    int iChartOfAccountIDTaxPurchase = myReader.GetInt16("ChartOfAccountIDTaxPurchase");
+                    int iChartOfAccountIDPurchase = Int16.Parse(dr["ChartOfAccountIDPurchase"].ToString());
+                    int iChartOfAccountIDTaxPurchase = Int16.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
 
-                    decimal decVAT = myReader.GetDecimal("VAT");
-                    decimal decVATABLEAmount = myReader.GetDecimal("Amount") - decVAT;
+                    decimal decVAT = decimal.Parse(dr["VAT"].ToString());
+                    decimal decVATABLEAmount = decimal.Parse(dr["Amount"].ToString())-decVAT;
 
                     // update purchase as debit
                     clsChartOfAccount.UpdateCredit(iChartOfAccountIDPurchase, decVATABLEAmount);
@@ -440,7 +440,6 @@ namespace AceSoft.RetailPlus.Data
                     clsChartOfAccount.UpdateCredit(iChartOfAccountIDTaxPurchase, decVAT);
 
                 }
-                myReader.Close();
 
             }
 
@@ -467,62 +466,46 @@ namespace AceSoft.RetailPlus.Data
 
             Inventory clsInventory = new Inventory(base.Connection, base.Transaction);
 
-            MatrixPackagePriceHistoryDetails clsMatrixPackagePriceHistoryDetails;
             ProductPackagePriceHistoryDetails clsProductPackagePriceHistoryDetails;
-            MatrixPackagePriceHistory clsMatrixPackagePriceHistory = new MatrixPackagePriceHistory(base.Connection, base.Transaction);
             ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory(base.Connection, base.Transaction);
 
-            MySqlDataReader myReader = clsDebitMemoItems.List(pvtDebitMemoID, "DebitMemoItemID", SortOption.Ascending);
+            System.Data.DataTable dt = clsDebitMemoItems.ListAsDataTable(pvtDebitMemoID, "DebitMemoItemID", SortOption.Ascending);
 
-            while (myReader.Read())
+            foreach (System.Data.DataRow dr in dt.Rows)
             {
-                long lngProductID = myReader.GetInt64("ProductID");
-                int intProductUnitID = myReader.GetInt32("ProductUnitID");
+                long lngProductID = Convert.ToInt64(dr["ProductID"]);
+                int intProductUnitID = Convert.ToInt16(dr["ProductUnitID"]);
 
-                decimal decItemQuantity = myReader.GetDecimal("Quantity");
+                decimal decItemQuantity = Convert.ToDecimal(dr["Quantity"]);
                 decimal decQuantity = clsProductUnit.GetBaseUnitValue(lngProductID, intProductUnitID, decItemQuantity);
 
-                long lngVariationMatrixID = myReader.GetInt64("VariationMatrixID");
-                string strMatrixDescription = "" + myReader["MatrixDescription"].ToString();
-                string strProductCode = "" + myReader["ProductCode"].ToString();
-                decimal decNewUnitCost = myReader.GetDecimal("UnitCost");
-                decimal decAmount = myReader.GetDecimal("Amount");
-                decimal decVAT = myReader.GetDecimal("VAT");
+                long lngVariationMatrixID = Convert.ToInt64(dr["VariationMatrixID"]);
+                string strMatrixDescription = dr["MatrixDescription"].ToString();
+                string strProductCode = dr["ProductCode"].ToString();
+                string strProductUnitCode = dr["ProductUnitCode"].ToString();
+                decimal decNewUnitCost = Convert.ToDecimal(dr["UnitCost"]);
+                decimal decAmount = Convert.ToDecimal(dr["Amount"]);
+                //decimal decSellingPrice = Convert.ToDecimal(dr["SellingPrice"]);
+                decimal decVAT = Convert.ToDecimal(dr["VAT"]);
+                //decimal decEVAT = Convert.ToDecimal(dr["EVAT"]);
+                //decimal decLocalTax = Convert.ToDecimal(dr["LocalTax"]); 
 
-                clsProductDetails = clsProduct.Details(clsDebitMemoDetails.BranchID, lngProductID);
+                clsProductDetails = clsProduct.Details1(clsDebitMemoDetails.BranchID, lngProductID);
                 /*******************************************
 				 * Add in the Purchase Price History based on Debit Memo
 				 * ****************************************/
-                if (lngVariationMatrixID != 0)
-                {
-                    // Update MatrixPackagePriceHistory first to get the history
-                    clsMatrixPackagePriceHistoryDetails = new MatrixPackagePriceHistoryDetails();
-                    clsMatrixPackagePriceHistoryDetails.UID = clsDebitMemoDetails.PurchaserID;
-                    clsMatrixPackagePriceHistoryDetails.PackageID = clsMatrixPackage.GetPackageID(lngVariationMatrixID, intProductUnitID);
-                    clsMatrixPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
-                    clsMatrixPackagePriceHistoryDetails.PurchasePrice = decNewUnitCost * (decItemQuantity / decQuantity);
-                    clsMatrixPackagePriceHistoryDetails.Price = -1;
-                    clsMatrixPackagePriceHistoryDetails.VAT = -1;
-                    clsMatrixPackagePriceHistoryDetails.EVAT = -1;
-                    clsMatrixPackagePriceHistoryDetails.LocalTax = -1;
-                    clsMatrixPackagePriceHistoryDetails.Remarks = "Based on DebitMemo #: " + clsDebitMemoDetails.MemoNo;
-                    clsMatrixPackagePriceHistory.Insert(clsMatrixPackagePriceHistoryDetails);
-                }
-                else
-                {
-                    // Update ProductPackagePriceHistory first to get the history
-                    clsProductPackagePriceHistoryDetails = new ProductPackagePriceHistoryDetails();
-                    clsProductPackagePriceHistoryDetails.UID = clsDebitMemoDetails.PurchaserID;
-                    clsProductPackagePriceHistoryDetails.PackageID = clsProductPackage.GetPackageID(lngProductID, intProductUnitID);
-                    clsProductPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
-                    clsProductPackagePriceHistoryDetails.PurchasePrice = decNewUnitCost * (decItemQuantity / decQuantity);
-                    clsProductPackagePriceHistoryDetails.Price = -1;
-                    clsProductPackagePriceHistoryDetails.VAT = -1;
-                    clsProductPackagePriceHistoryDetails.EVAT = -1;
-                    clsProductPackagePriceHistoryDetails.LocalTax = -1;
-                    clsProductPackagePriceHistoryDetails.Remarks = "Based on DebitMemo #: " + clsDebitMemoDetails.MemoNo;
-                    clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
-                }
+                // Update ProductPackagePriceHistory first to get the history
+                clsProductPackagePriceHistoryDetails = new ProductPackagePriceHistoryDetails();
+                clsProductPackagePriceHistoryDetails.UID = clsDebitMemoDetails.PurchaserID;
+                clsProductPackagePriceHistoryDetails.PackageID = clsProductPackage.GetPackageID(lngProductID, intProductUnitID);
+                clsProductPackagePriceHistoryDetails.ChangeDate = DateTime.Now;
+                clsProductPackagePriceHistoryDetails.PurchasePrice = decNewUnitCost * (decItemQuantity / decQuantity);
+                clsProductPackagePriceHistoryDetails.Price = -1;
+                clsProductPackagePriceHistoryDetails.VAT = -1;
+                clsProductPackagePriceHistoryDetails.EVAT = -1;
+                clsProductPackagePriceHistoryDetails.LocalTax = -1;
+                clsProductPackagePriceHistoryDetails.Remarks = "Based on DebitMemo #: " + clsDebitMemoDetails.MemoNo;
+                clsProductPackagePriceHistory.Insert(clsProductPackagePriceHistoryDetails);
 
                 /*******************************************
                  * Subtract from Inventory : Remove this since this is a Debit Memo
@@ -536,11 +519,12 @@ namespace AceSoft.RetailPlus.Data
                 /*******************************************
 				 * Update Purchasing Information
 				 * ****************************************/
-                if (intProductUnitID != clsProductDetails.BaseUnitID)
+                int iBaseUnitID = clsProduct.get_BaseUnitID(lngProductID);
+                if (iBaseUnitID != intProductUnitID)
                 {
-                    clsProduct.UpdatePurchasing(lngProductID, clsDebitMemoDetails.SupplierID, clsProductDetails.BaseUnitID, decNewUnitCost * (decItemQuantity / decQuantity));
+                    clsProduct.UpdatePurchasing(lngProductID, lngVariationMatrixID, clsDebitMemoDetails.SupplierID, iBaseUnitID, (decItemQuantity * decNewUnitCost) / decQuantity);
                 }
-                clsProduct.UpdatePurchasing(lngProductID, clsDebitMemoDetails.SupplierID, intProductUnitID, decNewUnitCost);
+                clsProduct.UpdatePurchasing(lngProductID, lngVariationMatrixID, clsDebitMemoDetails.SupplierID, intProductUnitID, decNewUnitCost);
 
                 /*******************************************
                  * Add to Inventory Analysis
@@ -563,8 +547,6 @@ namespace AceSoft.RetailPlus.Data
                 clsInventory.Insert(clsInventoryDetails);
 
             }
-            myReader.Close();
-
         }
 
         public void Cancel(long DebitMemoID, DateTime CancelledDate, string Remarks, long CancelledByID)

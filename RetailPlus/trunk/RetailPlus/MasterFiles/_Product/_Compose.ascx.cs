@@ -131,10 +131,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			DataClass clsDataClass = new DataClass();
 			long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
-			ProductVariationsMatrix clsProductVariationMatrix = new ProductVariationsMatrix();
+			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
 			cboVariation.DataTextField = "VariationDesc";
 			cboVariation.DataValueField = "MatrixID";
-			cboVariation.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationMatrix.BaseList(ProductID, "VariationDesc",SortOption.Ascending)).DefaultView;
+			cboVariation.DataSource = clsProductVariationsMatrix.BaseListSimpleAsDataTable(ProductID, SortField: "VariationDesc").DefaultView;
 			cboVariation.DataBind();
 
 			if (cboVariation.Items.Count == 0)
@@ -142,7 +142,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 				cboVariation.Items.Add(new ListItem("No Variation", "0"));
 			}
 			cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
-			clsProductVariationMatrix.CommitAndDispose();
+			clsProductVariationsMatrix.CommitAndDispose();
 
 			ProductUnitsMatrix clsUnitMatrix = new ProductUnitsMatrix();
 
@@ -164,14 +164,14 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		}
 		protected void cboVariation_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			long VariationMatrixID = Convert.ToInt64(cboVariation.SelectedItem.Value);
-			if (VariationMatrixID != 0)
+			long MatrixID = Convert.ToInt64(cboVariation.SelectedItem.Value);
+			if (MatrixID != 0)
 			{
 				long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
-				ProductVariationsMatrix clsProductVariationMatrix = new ProductVariationsMatrix();
-				ProductBaseMatrixDetails clsProductBaseMatrixDetails = clsProductVariationMatrix.BaseDetails(VariationMatrixID, ProductID);
-				clsProductVariationMatrix.CommitAndDispose();
+                Products clsProducts = new Products();
+                ProductDetails clsDetails = clsProducts.Details(ProductID: ProductID, MatrixID: MatrixID);
+                clsProducts.CommitAndDispose();
 				
 			}
 		}
@@ -212,10 +212,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			DataClass clsDataClass = new DataClass();
 			long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
-			ProductVariationsMatrix clsProductVariationMatrix = new ProductVariationsMatrix();
+			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
 			cboVariation.DataTextField = "VariationDesc";
 			cboVariation.DataValueField = "MatrixID";
-			cboVariation.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationMatrix.Search(ProductID, stSearchKey, "VariationDesc",SortOption.Ascending)).DefaultView;
+			cboVariation.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationsMatrix.Search(ProductID, stSearchKey, "VariationDesc",SortOption.Ascending)).DefaultView;
 			cboVariation.DataBind();
 
 			if (cboVariation.Items.Count == 0)
@@ -223,7 +223,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 				cboVariation.Items.Add(new ListItem("No Variation", "0"));
 			}
 			cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
-			clsProductVariationMatrix.CommitAndDispose();
+			clsProductVariationsMatrix.CommitAndDispose();
 		}				
 
 		private void lstItem_ItemDataBound(object sender, DataListItemEventArgs e)

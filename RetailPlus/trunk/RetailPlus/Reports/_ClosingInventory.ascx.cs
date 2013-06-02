@@ -167,7 +167,7 @@ namespace AceSoft.RetailPlus.Reports
             string SubGroupName = string.Empty;
             if (cboSubGroup.SelectedItem.Value != Constants.ZERO_STRING) SubGroupName = cboSubGroup.SelectedItem.Text;
 
-			Data.Inventory clsInventory = new Data.Inventory();
+            Data.Inventory clsInventory = new Data.Inventory();
             System.Data.DataTable dt = clsInventory.DataList(cboInventoryNo.SelectedItem.Text, chkIncludeShortOverProducts.Checked, long.Parse(cboGroup.SelectedItem.Value), long.Parse(cboSubGroup.SelectedItem.Value), string.Empty, SortOption.Ascending);
             clsInventory.CommitAndDispose();
 

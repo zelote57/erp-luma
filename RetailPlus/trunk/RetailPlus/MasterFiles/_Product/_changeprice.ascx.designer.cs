@@ -220,24 +220,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         protected global::System.Web.UI.WebControls.Label lblPurchasePriceHistory;
         
         /// <summary>
-        /// UpdatePanel2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
-        
-        /// <summary>
-        /// lstItemMatrix control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DataList lstItemMatrix;
-        
-        /// <summary>
         /// imgSaveCopyToAllMatrix control.
         /// </summary>
         /// <remarks>
@@ -254,23 +236,5 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdSaveCopyToAllMatrix;
-        
-        /// <summary>
-        /// imgCopyToAllMatrix control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgCopyToAllMatrix;
-        
-        /// <summary>
-        /// cmdCopyToAllMatrix control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdCopyToAllMatrix;
     }
 }

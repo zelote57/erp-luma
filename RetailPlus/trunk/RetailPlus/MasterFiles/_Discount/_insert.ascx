@@ -114,7 +114,7 @@
 								<td class="ms-authoringcontrols" width="100%">
 									<asp:TextBox id="txtDiscountPrice" runat="server" accesskey="P" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onkeypress="AllNum()">0</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'Discount price.' must not be left blank." Display="Dynamic" ControlToValidate="txtDiscountPrice" ForeColor=" "></asp:requiredfieldvalidator>
-									<asp:CompareValidator id="CompareValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtDiscountPrice" Display="Dynamic" ErrorMessage="'Discount Price' must be in number." ForeColor=" " Operator="DataTypeCheck" Type="Double"></asp:CompareValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtDiscountPrice" Display="Dynamic" ErrorMessage="'Discount Price' must be in number, max of 3 decimal places." ForeColor=" " Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator>
 								</td>
 							</tr>
 							<tr>

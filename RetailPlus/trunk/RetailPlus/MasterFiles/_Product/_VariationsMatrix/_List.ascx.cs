@@ -126,7 +126,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 				chkList.Value = dr["MatrixID"].ToString();
 
 				HyperLink lnkVariation = (HyperLink) e.Item.FindControl("lnkVariation");
-				lnkVariation.Text = dr["Description"].ToString();
+                lnkVariation.Text = dr["MatrixDescription"].ToString();
 				lnkVariation.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("det", Session.SessionID) + "&prodid=" + Common.Encrypt(dr["ProductID"].ToString(), Session.SessionID) + "&id=" + Common.Encrypt(dr["MatrixID"].ToString(), Session.SessionID);
 
 				Label lblUnitName = (Label) e.Item.FindControl("lblUnitName");
@@ -222,7 +222,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			HyperLink SortByPurchasePrice = (HyperLink) e.Item.FindControl("SortByPurchasePrice");
 			HyperLink SortByPrice = (HyperLink) e.Item.FindControl("SortByPrice");
 
-			SortByVariation.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("Description", Session.SessionID);
+            SortByVariation.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("MatrixDescription", Session.SessionID);
 			SortByUnit.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("UnitName", Session.SessionID);
 			SortByPurchasePrice.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("PurchasePrice", Session.SessionID);
 			SortByPrice.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("Price", Session.SessionID);
@@ -230,10 +230,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 
 		private void LoadList()
 		{	
-			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-			DataClass clsDataClass = new DataClass();
-
-			string SortField = "MatriXID";
+			string SortField = "mtrx.Description";
 			if (Request.QueryString["sortfield"]!=null)
 			{	SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID);	}
 			
@@ -241,17 +238,25 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
-			{
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationsMatrix.BaseList(Convert.ToInt64(lblProductID.Text), SortField, sortoption)).DefaultView;
-			}
-			else
-			{	
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationsMatrix.Search(Convert.ToInt64(lblProductID.Text), SearchKey, SortField, sortoption)).DefaultView;
-			}
+            string stSearchKey = string.Empty;
+            if (Request.QueryString["Search"] != null)
+            { stSearchKey = Server.UrlDecode(Common.Decrypt((string)Request.QueryString["search"], Session.SessionID)); }
+            else if (Session["Search"] != null)
+            { stSearchKey = Server.UrlDecode(Common.Decrypt(Session["Search"].ToString(), Session.SessionID)); }
 
+            try { Session.Remove("Search"); }
+            catch { }
+            if (stSearchKey == null) { stSearchKey = string.Empty; }
+            else if (stSearchKey != string.Empty) { Session.Add("Search", Common.Encrypt(stSearchKey, Session.SessionID)); }
+
+            ProductBaseMatrixDetails clsSearchKeys = new ProductBaseMatrixDetails();
+            clsSearchKeys.Description = stSearchKey;
+
+            ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
+            System.Data.DataTable dt = clsProductVariationsMatrix.BaseListAsDataTable(Int64.Parse(lblProductID.Text), MatrixDescription: stSearchKey, SortField: SortField, SortOrder: sortoption);
 			clsProductVariationsMatrix.CommitAndDispose();
+
+            PageData.DataSource = dt.DefaultView;
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;
 			
@@ -306,39 +311,39 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 				ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
                 clsProductVariationsMatrix.GetConnection();
 
-                Products clsProduct = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
-                ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
+                Products clsProducts = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
 
-                string[] strIDs = stIDs.Substring(0,stIDs.Length-1).Split(',');
+                long ProductID = Int64.Parse(lblProductID.Text);
+
+                string[] strIDs = stIDs.Substring(0, stIDs.Length - 1).Split(',');
                 foreach (string ID in strIDs)
                 {
-                    ProductBaseMatrixDetails clsBaseDetails = clsProductVariationsMatrix.BaseDetailsByMatrixID(long.Parse(ID));
+                    long MatrixID = long.Parse(ID);
+                    ProductDetails clsDetails = clsProducts.Details(ProductID: ProductID, MatrixID: MatrixID);
                     
                     InvAdjustmentDetails clsInvAdjustmentDetails = new InvAdjustmentDetails();
                     clsInvAdjustmentDetails.UID = clsAccessUserDetails.UID;
                     clsInvAdjustmentDetails.InvAdjustmentDate = DateTime.Now;
-                    clsInvAdjustmentDetails.ProductID = clsProductDetails.ProductID;
-                    clsInvAdjustmentDetails.ProductCode = clsProductDetails.ProductCode;
-                    clsInvAdjustmentDetails.Description = clsProductDetails.ProductDesc;
-                    clsInvAdjustmentDetails.VariationMatrixID = clsBaseDetails.MatrixID;
-                    clsInvAdjustmentDetails.MatrixDescription = clsBaseDetails.Description;
-                    clsInvAdjustmentDetails.UnitID = clsBaseDetails.UnitID;
-                    clsInvAdjustmentDetails.UnitCode = clsProductDetails.BaseUnitCode;
-                    clsInvAdjustmentDetails.QuantityBefore = clsBaseDetails.Quantity;
+                    clsInvAdjustmentDetails.ProductID = clsDetails.ProductID;
+                    clsInvAdjustmentDetails.ProductCode = clsDetails.ProductCode;
+                    clsInvAdjustmentDetails.Description = clsDetails.ProductDesc;
+                    clsInvAdjustmentDetails.VariationMatrixID = clsDetails.MatrixID;
+                    clsInvAdjustmentDetails.MatrixDescription = clsDetails.MatrixDescription;
+                    clsInvAdjustmentDetails.UnitID = clsDetails.BaseUnitID;
+                    clsInvAdjustmentDetails.UnitCode = clsDetails.BaseUnitCode;
+                    clsInvAdjustmentDetails.QuantityBefore = clsDetails.Quantity;
                     clsInvAdjustmentDetails.QuantityNow = 0;
-                    clsInvAdjustmentDetails.MinThresholdBefore = clsBaseDetails.MinThreshold;
+                    clsInvAdjustmentDetails.MinThresholdBefore = clsDetails.MinThreshold;
                     clsInvAdjustmentDetails.MinThresholdNow = 0;
-                    clsInvAdjustmentDetails.MaxThresholdBefore = clsBaseDetails.MaxThreshold;
+                    clsInvAdjustmentDetails.MaxThresholdBefore = clsDetails.MaxThreshold;
                     clsInvAdjustmentDetails.MaxThresholdNow = 0;
                     clsInvAdjustmentDetails.Remarks = "deleted item.";
 
-                    InvAdjustment clsInvAdjustment = new InvAdjustment(clsProduct.Connection, clsProduct.Transaction);
+                    InvAdjustment clsInvAdjustment = new InvAdjustment(clsProducts.Connection, clsProducts.Transaction);
                     clsInvAdjustment.Insert(clsInvAdjustmentDetails);
 
                     // Aug 1, 2011 : Lemu
                     // Replaced clsProductVariationsMatrix.SynchronizeQuantity(Convert.ToInt64(lblProductID.Text));
-                    clsProduct.SubtractQuantity(Constants.BRANCH_ID_MAIN, clsProductDetails.ProductID, clsBaseDetails.MatrixID, clsBaseDetails.Quantity, Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(PRODUCT_INVENTORY_MOVEMENT.DEDUCT_PRODUCT_VARIATION_DELETE) + " : " + clsBaseDetails.Description, clsInvAdjustmentDetails.InvAdjustmentDate, "SYS-VARDEL" + clsInvAdjustmentDetails.InvAdjustmentDate.ToString("yyyyMMddHHmmss"), clsAccessUserDetails.Name);
-
                     clsProductVariationsMatrix.Delete(long.Parse(ID));
                 }
 

@@ -714,7 +714,12 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
 
                     //Added Jul 1, 2010 4:20PM : For selling information
                     txtSellingQuantity.Text = "1";
-                    txtMargin.Text = decimal.Parse(Convert.ToString(((clsSOItemDetails.SellingPrice - clsSOItemDetails.UnitCost) / clsSOItemDetails.UnitCost) * 100)).ToString("###0.#0");
+                    decimal decMargin = clsSOItemDetails.SellingPrice - clsSOItemDetails.UnitCost;
+                    try { decMargin = decMargin / clsSOItemDetails.UnitCost; }
+                    catch { decMargin = 1; }
+                    decMargin = decMargin * 100;
+                    txtMargin.Text = decMargin.ToString("#,##0.##0");
+                    //txtMargin.Text = decimal.Parse(Convert.ToString(((clsSOItemDetails.SellingPrice - clsSOItemDetails.UnitCost) / clsSOItemDetails.UnitCost) * 100)).ToString("###0.#0");
                     txtSellingPrice.Text = clsSOItemDetails.SellingPrice.ToString("###0.#0");
                     txtVAT.Text = clsSOItemDetails.SellingVAT.ToString("###0.#0");
                     txtEVAT.Text = clsSOItemDetails.SellingEVAT.ToString("###0.#0");
@@ -731,10 +736,8 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
         }
         private void LoadItems()
         {
-            DataClass clsDataClass = new DataClass();
-
             SOItem clsSOItem = new SOItem();
-            lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsSOItem.List(Convert.ToInt64(lblSOID.Text), "SOItemID", SortOption.Desscending)).DefaultView;
+            lstItem.DataSource = clsSOItem.ListAsDataTable(Convert.ToInt64(lblSOID.Text)).DefaultView;
             lstItem.DataBind();
             clsSOItem.CommitAndDispose();
         }

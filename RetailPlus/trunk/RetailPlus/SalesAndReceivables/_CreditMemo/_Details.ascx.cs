@@ -182,10 +182,8 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
         }
         private void LoadItems()
         {
-            DataClass clsDataClass = new DataClass();
-
             CreditMemoItems clsCreditMemoItems = new CreditMemoItems();
-            lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsCreditMemoItems.List(Convert.ToInt64(lblCreditMemoID.Text), "CreditMemoItemID", SortOption.Ascending)).DefaultView;
+            lstItem.DataSource = clsCreditMemoItems.ListAsDataTable(Convert.ToInt64(lblCreditMemoID.Text)).DefaultView;
             lstItem.DataBind();
             clsCreditMemoItems.CommitAndDispose();
         }

@@ -118,13 +118,13 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
             long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-            cboVariation.DataTextField = "Description";
+            cboVariation.DataTextField = "MatrixDescription";
             cboVariation.DataValueField = "MatrixID";
             cboVariation.DataSource = clsProductVariationsMatrix.BaseListSimpleAsDataTable(ProductID, SortField: "VariationDesc").DefaultView;
             cboVariation.DataBind();
 
             if (cboVariation.Items.Count == 0)
-            { cboVariation.Items.Add(new ListItem("No Variation", "0"));}
+            { cboVariation.Items.Add(new ListItem("No Variation", "0")); }
             cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
 
             ProductUnitsMatrix clsUnitMatrix = new ProductUnitsMatrix(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction);
@@ -140,7 +140,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
             cboProductUnit.Items.Insert(0, new ListItem(clsDetails.BaseUnitCode, clsDetails.BaseUnitID.ToString()));
             cboProductUnit.SelectedIndex = cboProductUnit.Items.IndexOf(new ListItem(clsDetails.BaseUnitCode, clsDetails.BaseUnitID.ToString()));
 
-            txtPrice.Text = clsDetails.PurchasePrice.ToString("#####0.#0");
+            txtPrice.Text = clsDetails.WSPrice.ToString("#####0.#0");
             if (clsDetails.VAT > 0)
                 chkIsTaxable.Checked = true;
             else
@@ -632,10 +632,8 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
         }
         private void LoadItems()
         {
-            DataClass clsDataClass = new DataClass();
-
             SOReturnItems clsSOReturnItems = new SOReturnItems();
-            lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsSOReturnItems.List(Convert.ToInt64(lblCreditMemoID.Text), "CreditMemoItemID", SortOption.Ascending)).DefaultView;
+            lstItem.DataSource = clsSOReturnItems.ListAsDataTable(Convert.ToInt64(lblCreditMemoID.Text)).DefaultView;
             lstItem.DataBind();
             clsSOReturnItems.CommitAndDispose();
         }

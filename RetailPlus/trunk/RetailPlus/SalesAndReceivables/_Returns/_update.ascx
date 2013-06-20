@@ -48,8 +48,7 @@
 	</TR>
 	<TR>
 		<TD></TD>
-		<TD>
-			<asp:CompareValidator id="CompareValidator2" CssClass="ms-error" runat="server" ForeColor=" " Operator="DataTypeCheck" Type="Date" ErrorMessage="l" Display="Dynamic" ControlToValidate="txtRequiredReturnDate" Font-Names="Wingdings"></asp:CompareValidator><asp:RegularExpressionValidator id="CompareValidator" CssClass="ms-error" runat="server" ControlToValidate="txtRequiredReturnDate" Display="Dynamic" ErrorMessage="'Required Return Date' must be a valid date." Type="Date" Operator="DataTypeCheck" ForeColor=" "></asp:CompareValidator></TD>
+		<TD><asp:CompareValidator id="CompareValidator3" CssClass="ms-error" runat="server" ControlToValidate="txtRequiredReturnDate" Display="Dynamic" ErrorMessage="'Required Return Date' must be a valid date." Type="Date" Operator="DataTypeCheck" ForeColor=" "></asp:CompareValidator></TD>
 	</TR>
 	<tr>
 		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>

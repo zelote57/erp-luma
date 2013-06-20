@@ -50,7 +50,7 @@ namespace AceSoft.RetailPlus.Reports
             Customer clsCustomer = new Customer();
 			cboContactName.DataTextField = "ContactName";
             cboContactName.DataValueField = "ContactID";
-            cboContactName.DataSource = clsCustomer.CustomersDataTable(txtContactName.Text, 0, false, "ContactName", SortOption.Ascending);
+            cboContactName.DataSource = clsCustomer.CustomersDataTable(txtContactName.Text, 0, true, "ContactName", SortOption.Ascending);
             cboContactName.DataBind();
             cboContactName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             if (cboContactName.Items.Count > 1 && txtContactName.Text.Trim() != string.Empty) cboContactName.SelectedIndex = 1; else cboContactName.SelectedIndex = 0;

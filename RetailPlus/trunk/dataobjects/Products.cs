@@ -652,12 +652,12 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-		public void UpdateSellingWSPrice(long ProductID, long SupplierID, int BaseUnitID, decimal WholesalePrice)
+        public void UpdateSellingWSPrice(long ProductID, long MatrixID, long SupplierID, int BaseUnitID, decimal WholesalePrice)
 		{
 			try
 			{
 				ProductPackage clsProductPackage = new ProductPackage(base.Connection, base.Transaction);
-				clsProductPackage.UpdateSellingWSPrice(ProductID, BaseUnitID, 1, WholesalePrice);
+                clsProductPackage.UpdateSellingWSPrice(ProductID, MatrixID, BaseUnitID, 1, WholesalePrice);
 			}
 
 			catch (Exception ex)

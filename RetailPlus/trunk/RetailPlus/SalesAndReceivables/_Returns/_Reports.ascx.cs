@@ -147,17 +147,16 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
 
 
             SOReturnItems clsSOReturnItems = new SOReturnItems(clsSOReturns.Connection, clsSOReturns.Transaction);
-            MySqlDataReader myreaderitems = clsSOReturnItems.List(iID, "CreditMemoItemID", SortOption.Ascending);
-            while (myreaderitems.Read())
+            System.Data.DataTable dt = clsSOReturnItems.ListAsDataTable(iID);
+            foreach(System.Data.DataRow dr in dt.Rows)
             {
                 DataRow drNew = rptds.SOReturnItems.NewRow();
 
                 foreach (DataColumn dc in rptds.SOReturnItems.Columns)
-                    drNew[dc] = "" + myreaderitems[dc.ColumnName];
+                    drNew[dc] = "" + dr[dc.ColumnName];
 
                 rptds.SOReturnItems.Rows.Add(drNew);
             }
-            myreaderitems.Close();
             clsSOReturns.CommitAndDispose();
 
             Report.SetDataSource(rptds);

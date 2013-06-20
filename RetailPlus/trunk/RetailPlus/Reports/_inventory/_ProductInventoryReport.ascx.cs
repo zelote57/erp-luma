@@ -235,10 +235,10 @@ namespace AceSoft.RetailPlus.Reports
             string stProductCode = txtProductCode.Text;
             #endregion
 
-            ProductInventories clsProduct = new ProductInventories();
-            System.Data.DataTable dt = clsProduct.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID);
-            clsProduct.CommitAndDispose();
-
+            ProductInventories clsProductInventories = new ProductInventories();
+            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID);
+            clsProductInventories.CommitAndDispose();
+            
             foreach (DataRow dr in dt.Rows)
             {
                 if (dr[ProductColumnNames.BarCode].ToString() != null && dr[ProductColumnNames.BarCode].ToString() != string.Empty)
@@ -247,47 +247,11 @@ namespace AceSoft.RetailPlus.Reports
 
                     foreach (DataColumn dc in rptds.Products.Columns)
                     {
-                        if (cboBranch.SelectedItem.Value == Constants.ZERO_STRING)
-                        {
-                            if (dc.ColumnName != ProductColumnNames.Quantity &&
-                            dc.ColumnName != ProductColumnNames.ConvertedQuantity)
-                                if (dc.ColumnName == ProductColumnNames.Quantity && long.Parse(cboBranch.SelectedItem.Value) != Constants.ZERO)
-                                    drNew[dc] = dr[ProductColumnNames.Quantity];
-                                else
-                                    drNew[dc] = dr[dc.ColumnName];
-                        }
-                        else
-                        {
-                            if (dc.ColumnName == ProductColumnNames.Quantity && long.Parse(cboBranch.SelectedItem.Value) != Constants.ZERO)
-                                drNew[dc] = dr[ProductColumnNames.Quantity];
-                            else
-                                drNew[dc] = dr[dc.ColumnName];
-                        }
+                        drNew[dc] = dr[dc.ColumnName];
                     }
                     rptds.Products.Rows.Add(drNew);
                 }
             }
-            if (strReportType == ReportTypes.DetailedInventory 
-                || strReportType == ReportTypes.DetailedInventoryWQtyInOut
-                || strReportType == ReportTypes.ExpiredInventory)
-			{
-				ProductVariationsMatrix clsMatrix = new ProductVariationsMatrix();
-                if (strReportType == ReportTypes.DetailedInventory || strReportType == ReportTypes.DetailedInventoryWQtyInOut)
-				    dt = clsMatrix.InventoryReport("ProductID", SortOption.Ascending);
-                else
-                    dt = clsMatrix.InventoryReport("ProductID", SortOption.Ascending);
-                
-				clsMatrix.CommitAndDispose();
-                foreach (DataRow dr in dt.Rows)
-                {
-                    DataRow drNew = rptds.ProductVariations.NewRow();
-
-                    foreach (DataColumn dc in rptds.ProductVariations.Columns)
-                        drNew[dc] = dr[dc.ColumnName];
-
-                    rptds.ProductVariations.Rows.Add(drNew);
-                }
-			}
 
             Report.SetDataSource(rptds); 
 

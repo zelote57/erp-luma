@@ -160,17 +160,16 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
             myreader.Close();
 
             SOItem clsSOItem = new SOItem(clsSO.Connection, clsSO.Transaction);
-            MySqlDataReader myreaderitems = clsSOItem.List(iID, "SOItemID", SortOption.Ascending);
-            while (myreaderitems.Read())
+            System.Data.DataTable dt = clsSOItem.ListAsDataTable(iID);
+            foreach(System.Data.DataRow dr in dt.Rows)
             {
                 DataRow drNew = rptds.SOItems.NewRow();
 
                 foreach (DataColumn dc in rptds.SOItems.Columns)
-                    drNew[dc] = "" + myreaderitems[dc.ColumnName];
+                    drNew[dc] = "" + dr[dc.ColumnName];
 
                 rptds.SOItems.Rows.Add(drNew);
             }
-            myreaderitems.Close();
             clsSO.CommitAndDispose();
 
             Report.SetDataSource(rptds);

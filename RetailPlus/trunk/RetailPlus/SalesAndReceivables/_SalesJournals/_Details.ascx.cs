@@ -178,10 +178,8 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SalesJournals
 
 		private void LoadItems()
 		{
-			DataClass clsDataClass = new DataClass();
-
 			SOItem clsSOItem = new SOItem();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsSOItem.List(Convert.ToInt64(lblSOID.Text), "SOItemID",SortOption.Ascending)).DefaultView;
+			lstItem.DataSource = clsSOItem.ListAsDataTable(Convert.ToInt64(lblSOID.Text)).DefaultView;
 			lstItem.DataBind();
 			clsSOItem.CommitAndDispose();
 		}

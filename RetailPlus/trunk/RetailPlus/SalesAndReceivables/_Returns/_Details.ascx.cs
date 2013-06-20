@@ -182,10 +182,8 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
         }
         private void LoadItems()
         {
-            DataClass clsDataClass = new DataClass();
-
             SOReturnItems clsSOReturnItems = new SOReturnItems();
-            lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsSOReturnItems.List(Convert.ToInt64(lblCreditMemoID.Text), "CreditMemoItemID", SortOption.Ascending)).DefaultView;
+            lstItem.DataSource = clsSOReturnItems.ListAsDataTable(Convert.ToInt64(lblCreditMemoID.Text)).DefaultView;
             lstItem.DataBind();
             clsSOReturnItems.CommitAndDispose();
         }

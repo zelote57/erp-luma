@@ -146,17 +146,16 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
             myreader.Close();
 
             CreditMemoItems clsCreditMemoItems = new CreditMemoItems(clsCreditMemos.Connection, clsCreditMemos.Transaction);
-            MySqlDataReader myreaderitems = clsCreditMemoItems.List(iID, "CreditMemoItemID", SortOption.Ascending);
-            while (myreaderitems.Read())
+            System.Data.DataTable dt = clsCreditMemoItems.ListAsDataTable(iID);
+            foreach(System.Data.DataRow dr in dt.Rows)
             {
                 DataRow drNew = rptds.CreditMemoItem.NewRow();
 
                 foreach (DataColumn dc in rptds.CreditMemoItem.Columns)
-                    drNew[dc] = "" + myreaderitems[dc.ColumnName];
+                    drNew[dc] = "" + dr[dc.ColumnName];
 
                 rptds.CreditMemoItem.Rows.Add(drNew);
             }
-            myreaderitems.Close();
             clsCreditMemos.CommitAndDispose();
 
             Report.SetDataSource(rptds);

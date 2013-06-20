@@ -277,21 +277,23 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-        public void UpdateSellingWSPrice(long ProductID, int UnitID, decimal Quantity, decimal WholeSalePrice)
+        public void UpdateSellingWSPrice(long ProductID, long MatrixID, int UnitID, decimal Quantity, decimal WholeSalePrice)
         {
             try
             {
                 string SQL = "UPDATE tblProductPackage SET " +
                                 "WSPrice			=	@WSPrice " +
                             "WHERE ProductID	=	@ProductID " +
-                            "AND UnitID		=	@UnitID " +
-                            "AND Quantity	=	@Quantity;";
+                                "AND MatrixID	=	@MatrixID " +
+                                "AND UnitID		=	@UnitID " +
+                                "AND Quantity	=	@Quantity;";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
                 cmd.Parameters.AddWithValue("@UnitID", UnitID);
                 cmd.Parameters.AddWithValue("@WSPrice", WholeSalePrice);
                 cmd.Parameters.AddWithValue("@Quantity", Quantity);

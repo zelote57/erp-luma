@@ -5211,8 +5211,10 @@ BEGIN
 							
 							,prd.ProductSubGroupID
 							,prdsg.ProductSubGroupCode
+							,prdsg.ProductSubGroupName
 							,prdsg.ProductGroupID
 							,prdg.ProductGroupCode
+							,prdg.ProductGroupName
 							,prd.BaseUnitID
 							,unt.UnitCode BaseUnitCode
 							,unt.UnitName BaseUnitName

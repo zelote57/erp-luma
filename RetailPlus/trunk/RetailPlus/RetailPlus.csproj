@@ -59,12 +59,6 @@
     <Reference Include="CrystalDecisions.Web">
       <HintPath>..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.Web.dll</HintPath>
     </Reference>
-    <Reference Include="FluentNHibernate">
-      <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\AjaxControlToolkit.7.0123\lib\40\SanitizerProviders\HtmlAgilityPack.dll</HintPath>
-    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -76,12 +70,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.3.3.3.4000\lib\Net35\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="SanitizerProviders">
-      <HintPath>..\packages\AjaxControlToolkit.7.0123\lib\40\SanitizerProviders\SanitizerProviders.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

@@ -102,7 +102,7 @@
                                     <img src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan=3>
                                     <asp:textbox id="txtConfirm" accessKey="C" runat="server" CssClass="ms-long" MaxLength="15" BorderStyle="Groove" TextMode="Password"></asp:textbox>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator1" runat="server" CssClass="ms-error" ControlToValidate="txtConfirm" Display="Dynamic" ErrorMessage="'Password' must be equal to the &quot;Confirmed assword&quot;." ControlToCompare="txtPassword"></asp:RegularExpressionValidator>
+									<asp:CompareValidator id="CompareValidator1" runat="server" CssClass="ms-error" ControlToValidate="txtConfirm" Display="Dynamic" ErrorMessage="'Password' must be equal to the &quot;Confirmed assword&quot;." ControlToCompare="txtPassword"></asp:CompareValidator>
                                 </td>
                             </tr>
                             <tr>

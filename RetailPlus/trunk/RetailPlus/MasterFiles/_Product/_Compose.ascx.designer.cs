@@ -193,6 +193,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator4;
         
         /// <summary>
+        /// RegularExpressionValidator10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator10;
+        
+        /// <summary>
         /// cboProductUnit control.
         /// </summary>
         /// <remarks>

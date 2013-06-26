@@ -211,13 +211,13 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Customer {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator16;
         
         /// <summary>
-        /// RegularExpressionValidator6 control.
+        /// RegularExpressionValidator10 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator6;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator10;
         
         /// <summary>
         /// txtDebit control.
@@ -238,13 +238,13 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Customer {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator11;
         
         /// <summary>
-        /// RegularExpressionValidator7 control.
+        /// RegularExpressionValidator1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator7;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
         
         /// <summary>
         /// txtCredit control.
@@ -265,13 +265,13 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Customer {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator12;
         
         /// <summary>
-        /// RegularExpressionValidator8 control.
+        /// RegularExpressionValidator3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator8;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator3;
         
         /// <summary>
         /// txtBusinessName control.

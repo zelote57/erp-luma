@@ -82,8 +82,8 @@
 					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						<colgroup>
 							<col width="2%">
-							<col width="15%">
-							<col width="19%">
+							<col width="10%">
+							<col width="24%">
 							<col width="17%">
 							<col width="14%">
 							<col width="14%">
@@ -116,8 +116,8 @@
 						<COLGROUP>
 							<col width="2%">
 							<col width="2%">
-							<col width="15%">
-							<col width="19%">
+							<col width="10%">
+							<col width="24%">
 							<col width="18%">
 							<col width="15%">
 							<col width="14%">

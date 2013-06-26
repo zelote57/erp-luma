@@ -150,19 +150,25 @@
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtTerms" runat="server" accesskey="G" CssClass="ms-short" MaxLength="11" BorderStyle="Groove" onkeypress="AllNum()">0</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator16" runat="server" CssClass="ms-error" ErrorMessage="'Terms.' must not be left blank." Display="Dynamic" ControlToValidate="txtTerms" ForeColor=" "></asp:requiredfieldvalidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator6" runat="server" CssClass="ms-error" ErrorMessage="'Terms' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtTerms" ForeColor=" " Type="Double" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server" ControlToValidate="txtTerms"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Terms' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtDebit" runat="server" accesskey="G" CssClass="ms-short" MaxLength="11" BorderStyle="Groove" onkeypress="AllNum()">0</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator11" runat="server" CssClass="ms-error" ForeColor=" " ControlToValidate="txtDebit" Display="Dynamic" ErrorMessage="'Debit.' must not be left blank." DESIGNTIMEDRAGDROP="77"></asp:requiredfieldvalidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator7" runat="server" CssClass="ms-error" ErrorMessage="'Debit' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtDebit" ForeColor=" " Type="Double" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtDebit"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Debit' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtCredit" runat="server" accesskey="G" CssClass="ms-short" MaxLength="11" BorderStyle="Groove" onkeypress="AllNum()">0</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator12" runat="server" CssClass="ms-error" ErrorMessage="'Credit.' must not be left blank." Display="Dynamic" ControlToValidate="txtCredit" ForeColor=" "></asp:requiredfieldvalidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator8" runat="server" CssClass="ms-error" ForeColor=" " ControlToValidate="txtCredit" Display="Dynamic" ErrorMessage="'Credit' must be in number, max of 3 decimal places." Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="txtCredit"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Credit' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>
@@ -196,7 +202,9 @@
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtCreditLimit" runat="server" accesskey="G" CssClass="ms-short" MaxLength="11" BorderStyle="Groove" onkeypress="AllNum()">0</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator13" runat="server" CssClass="ms-error" ErrorMessage="'Credit Limit' must not be left blank." Display="Dynamic" ControlToValidate="txtCreditLimit" ForeColor=" "></asp:requiredfieldvalidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator2" runat="server" CssClass="ms-error" ForeColor=" " ControlToValidate="txtCreditLimit" Display="Dynamic" ErrorMessage="'Credit Limit' must be in number, max of 3 decimal places." Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtCreditLimit"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Credit Limit' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>

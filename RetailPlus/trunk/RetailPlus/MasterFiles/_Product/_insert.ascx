@@ -208,7 +208,7 @@
                                                 ForeColor=" "></asp:RequiredFieldValidator>
                                             <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtProductPrice"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Selling Price' must be in number, max of 3 decimal places."
-                                                Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator> 
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -220,9 +220,9 @@
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator16" runat="server" ControlToValidate="txtWSPrice"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Wholesale Price' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>
-                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator9" runat="server" ControlToValidate="txtWSPrice"
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server" ControlToValidate="txtWSPrice"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Wholesale Price' must be in number, max of 3 decimal places."
-                                                Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator> 
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>

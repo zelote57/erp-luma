@@ -114,7 +114,12 @@
 								<td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols"><asp:dropdownlist id="cboVariation" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboVariation_SelectedIndexChanged"></asp:dropdownlist><asp:requiredfieldvalidator id="RequiredFieldValidator5" runat="server" CssClass="ms-error" ErrorMessage="'Variation' must not be left blank." Display="Dynamic" ControlToValidate="cboVariation"></asp:requiredfieldvalidator></td>
 								<td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" width="80"><asp:textbox onkeypress="AllNum()" id="txtQuantity" onkeyup="ComputeAmountAddItem()" accessKey="Q" runat="server" CssClass="ms-short" BorderStyle="Groove">1</asp:textbox><asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'Quantity' must not be left blank." Display="Dynamic" ControlToValidate="txtQuantity"></asp:requiredfieldvalidator></td>
+								<td class="ms-authoringcontrols" width="80"><asp:textbox onkeypress="AllNum()" id="txtQuantity" onkeyup="ComputeAmountAddItem()" accessKey="Q" runat="server" CssClass="ms-short" BorderStyle="Groove">1</asp:textbox>
+                                        <asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'Quantity' must not be left blank." Display="Dynamic" ControlToValidate="txtQuantity"></asp:requiredfieldvalidator>
+                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server" ControlToValidate="txtQuantity"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Quantity' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                </td>
 								<td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols"><asp:dropdownlist id="cboProductUnit" runat="server" CssClass="ms-short"></asp:dropdownlist><asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Unit' must not be left blank." Display="Dynamic" ControlToValidate="cboProductUnit"></asp:requiredfieldvalidator></td>
 							</tr>

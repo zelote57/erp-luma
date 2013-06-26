@@ -128,23 +128,32 @@
                                     <tr>
                                         <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
-                                            <asp:textbox id="txtPurchasePrice" accessKey="P" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()"></asp:textbox>
+                                            <asp:textbox id="txtPurchasePrice" accessKey="P" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>
 									        <asp:RequiredFieldValidator id="Requiredfieldvalidator3" CssClass="ms-error" runat="server" ControlToValidate="txtPurchasePrice" Display="Dynamic" ErrorMessage="'Product Purchase Price' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
-									        <asp:RegularExpressionValidator id="RegularExpressionValidator4" CssClass="ms-error" runat="server" ErrorMessage="'Product Purchase Price' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtPurchasePrice" ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
+									        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtPurchasePrice"
+                                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Purchase Price' must be in number, max of 3 decimal places."
+                                                        ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
-                                            <asp:textbox id="txtProductPrice" accessKey="P" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()"></asp:textbox>
+                                            <asp:textbox id="txtProductPrice" accessKey="P" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>
 									        <asp:RequiredFieldValidator id="Requiredfieldvalidator7" CssClass="ms-error" runat="server" ControlToValidate="txtProductPrice" Display="Dynamic" ErrorMessage="'Product Selling Price' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
-									        <asp:RegularExpressionValidator id="RegularExpressionValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Product Selling Price' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtProductPrice" ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
+									        <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="txtProductPrice"
+                                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Selling Price' must be in number, max of 3 decimal places."
+                                                        ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
-                                        <td class="ms-authoringcontrols" colspan=3>
+                                        <td class="ms-authoringcontrols">
                                             <asp:CheckBox id="chkIncludeInSubtotalDiscount" runat="server" Text=" Check if included in subtotal discount." Checked="True"></asp:CheckBox>
+                                        </td>
+                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-authoringcontrols">
+                                    
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="ms-formspacer" height="20"></td>
+                                        <td class="ms-formspacer" height="20">
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
@@ -154,29 +163,37 @@
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                             <label>Local Tax<font color="red">*</font></label></td>
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                            </td>
+                                            <label>Printer for printing orders of this group<font color="red">*</font></label></td>
                                     </tr>
                                     <tr>
                                         <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
-                                            <asp:textbox id="txtVAT" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0</asp:textbox>&nbsp;%
+                                            <asp:textbox id="txtVAT" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>&nbsp;%
 									        <asp:RequiredFieldValidator id="Requiredfieldvalidator12" runat="server" CssClass="ms-error" ErrorMessage="'Value Added Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtVAT" ForeColor=" "></asp:RequiredFieldValidator>
-									        <asp:RegularExpressionValidator id="RegularExpressionValidator3" CssClass="ms-error" runat="server" ErrorMessage="'VAT' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtVAT" ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
+									        <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="txtVAT"
+                                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'VAT' must be in number, max of 3 decimal places."
+                                                        ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
-                                            <asp:textbox id="txtEVAT" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0</asp:textbox>&nbsp;%
+                                            <asp:textbox id="txtEVAT" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>&nbsp;%
 									        <asp:RequiredFieldValidator id="Requiredfieldvalidator6" runat="server" CssClass="ms-error" ErrorMessage="'Expanded Value Added Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtEVAT" ForeColor=" "></asp:RequiredFieldValidator>
-									        <asp:RegularExpressionValidator id="RegularExpressionValidator5" CssClass="ms-error" runat="server" ErrorMessage="'eVAT' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtEVAT" ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
+									        <asp:RegularExpressionValidator ID="RegularExpressionValidator8" runat="server" ControlToValidate="txtEVAT"
+                                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'EVAT' must be in number, max of 3 decimal places."
+                                                        ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
-                                            <asp:textbox id="txtLocalTax" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0</asp:textbox>&nbsp;%
+                                            <asp:textbox id="txtLocalTax" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>&nbsp;%
 									        <asp:RequiredFieldValidator id="Requiredfieldvalidator13" runat="server" CssClass="ms-error" ErrorMessage="'Local Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtLocalTax" ForeColor=" "></asp:RequiredFieldValidator>
-									        <asp:RegularExpressionValidator id="RegularExpressionValidator2" CssClass="ms-error" runat="server" ErrorMessage="'Local Tax' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtLocalTax" ForeColor=" " Type="Currency" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
+									        <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtLocalTax"
+                                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'Local Tax' must be in number, max of 3 decimal places."
+                                                        ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
+                                            <asp:dropdownlist id="cboOrderSlipPrinter" runat="server" CssClass="ms-long" Width="157px"></asp:dropdownlist>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="ms-formspacer" height="20"></td>

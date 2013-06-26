@@ -125,11 +125,17 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 		protected void cboProductCode_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			if (cboProductCode.Items.Count ==0)
+			if (cboProductCode.Items.Count == 0)
 				return;
 
 			DataClass clsDataClass = new DataClass();
 			long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
+
+            if (ProductID == 0) {
+                cboVariation.Items.Clear();
+                cboVariation.Items.Add(new ListItem("No Variation", "0"));
+                return; 
+            }
 
 			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
 			cboVariation.DataTextField = "VariationDesc";
@@ -179,21 +185,14 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		{
 			DataClass clsDataClass = new DataClass();
 
-			Data.Products clsProduct = new Data.Products();
-			cboProductCode.DataTextField = "ProductCode";
-			cboProductCode.DataValueField = "ProductID";
+            Data.Products clsProduct = new Data.Products();
+            cboProductCode.DataTextField = "ProductCode";
+            cboProductCode.DataValueField = "ProductID";
 
-			if (txtProductCode.Text != null)
-			{
-				string stSearchKey = txtProductCode.Text;
-				cboProductCode.DataSource = clsDataClass.DataReaderToDataTable(clsProduct.Search(stSearchKey, "ProductCode", SortOption.Ascending));
-			}
-			else
-			{
-				cboProductCode.DataSource = clsDataClass.DataReaderToDataTable(clsProduct.List("ProductCode", SortOption.Ascending)).DefaultView;
-			}
-			cboProductCode.DataBind();
-			clsProduct.CommitAndDispose();
+            string stSearchKey = txtProductCode.Text;
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: stSearchKey, Limit: 100);
+            cboProductCode.DataBind();
+            clsProduct.CommitAndDispose();
 			
 			if (cboProductCode.Items.Count == 0)
 				cboProductCode.Items.Add(new ListItem("No product", "0"));
@@ -209,21 +208,21 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 			if (txtVariation.Text == null) stSearchKey = "";
 
-			DataClass clsDataClass = new DataClass();
-			long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
+            DataClass clsDataClass = new DataClass();
+            long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
 
-			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-			cboVariation.DataTextField = "VariationDesc";
-			cboVariation.DataValueField = "MatrixID";
-			cboVariation.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariationsMatrix.Search(ProductID, stSearchKey, "VariationDesc",SortOption.Ascending)).DefaultView;
-			cboVariation.DataBind();
+            ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
+            cboVariation.DataTextField = "MatrixDescription";
+            cboVariation.DataValueField = "MatrixID";
+            cboVariation.DataSource = clsProductVariationsMatrix.BaseListAsDataTable(ProductID, MatrixDescription: stSearchKey, SortField: "VariationDesc").DefaultView;
+            cboVariation.DataBind();
 
-			if (cboVariation.Items.Count == 0)
-			{
-				cboVariation.Items.Add(new ListItem("No Variation", "0"));
-			}
-			cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
-			clsProductVariationsMatrix.CommitAndDispose();
+            if (cboVariation.Items.Count == 0)
+            {
+                cboVariation.Items.Add(new ListItem("No Variation", "0"));
+            }
+            cboVariation.SelectedIndex = 0;
+            clsProductVariationsMatrix.CommitAndDispose();
 		}				
 
 		private void lstItem_ItemDataBound(object sender, DataListItemEventArgs e)

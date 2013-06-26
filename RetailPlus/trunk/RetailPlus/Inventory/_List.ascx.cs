@@ -151,6 +151,9 @@ namespace AceSoft.RetailPlus.Inventory
 
                 HyperLink lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
 				lnkProductCode.Text = dr[ProductColumnNames.ProductCode].ToString();
+                if (!string.IsNullOrEmpty(dr["MatrixDescription"].ToString())) {
+                    lnkProductCode.Text += " - " + dr["MatrixDescription"].ToString();
+                }
                 lnkProductCode.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("det", Session.SessionID) + "&id=" + Common.Encrypt(dr[ProductColumnNames.ProductID].ToString(), Session.SessionID);
 
                 Label lblGroup = (Label)e.Item.FindControl("lblGroup");

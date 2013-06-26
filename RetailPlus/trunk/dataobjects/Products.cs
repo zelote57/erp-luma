@@ -230,6 +230,7 @@ namespace AceSoft.RetailPlus.Data
 	{
 		ADD_PURCHASE,
 		ADD_TRANSFER_IN,
+        ADD_BRANCH_TRANSFER_TO,
 		ADD_STOCK_INVENTORY,
 		ADD_INVENTORY_ADJUSTMENT,
 		ADD_RETURN_ITEM,
@@ -242,6 +243,7 @@ namespace AceSoft.RetailPlus.Data
 		DEDUCT_SOLD_RETAIL,
 		DEDUCT_SOLD_WHOLESALE,
 		DEDUCT_TRANSFER_OUT,
+        DEDUCT_BRANCH_TRANSFER_FROM,
 		DEDUCT_STOCK_INVENTORY,
 		DEDUCT_INVENTORY_ADJUSTMENT,
 		DEDUCT_QTY_RESERVE_AND_COMMIT_VOID_ITEM,
@@ -4059,7 +4061,7 @@ namespace AceSoft.RetailPlus.Data
 
                 if (!string.IsNullOrEmpty(BarCode))
                 {
-                    SQL += "AND (Barcode1 LIKE @BarCode OR Barcode2 LIKE @BarCode OR BarCode3 LIKE @BarCode OR BarCode4 LIKE @BarCode) ";
+                    SQL += "AND (Barcode1 LIKE @BarCode OR Barcode2 LIKE @BarCode OR BarCode3 LIKE @BarCode OR BarCode4 LIKE @BarCode OR prd.ProductCode LIKE @BarCode OR prd.ProductDesc LIKE @BarCode) ";
 
                     MySqlParameter prmBarcode = new MySqlParameter("@BarCode", MySqlDbType.String);
                     prmBarcode.Value = BarCode + "%";

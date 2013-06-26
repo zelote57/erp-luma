@@ -1326,6 +1326,7 @@ delimiter ;
 	
 
 	30May2013 Combine procProductPackageInsert and procProductPackageUpdate
+	CALL procProductPackageSave(0, 4355, 26719, 5, 69, 66.3, 65, 1, 12, 0, 0, 'test7', NULL, NULL);
 *********************************/
 
 delimiter GO
@@ -1357,9 +1358,9 @@ create procedure procProductPackageSave(
 	IN pvtBarCode3 VARCHAR(30))
 BEGIN
 	IF pvtPackageID = 0 THEN
-		SET pvtPackageID = (SELECT PackageID FROM tblProductPackage WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND Quantity = 1);
+		SET pvtPackageID = IFNULL((SELECT PackageID FROM tblProductPackage WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND Quantity = 1),0);
 	END IF;
-	
+
 	IF pvtPackageID = 0 THEN
 		INSERT INTO tblProductPackage(
 			ProductID, MatrixID, UnitID, PurchasePrice, Price, WSPrice, Quantity,
@@ -3280,31 +3281,27 @@ BEGIN
 	DECLARE strProductDesc VARCHAR(50) DEFAULT '';
 	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
-	DECLARE decProductQuantity, decMatrixQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE decProductQuantity DECIMAL(18,3) DEFAULT 0;
 	DECLARE decQuantityDiff DECIMAL(18,3) DEFAULT 0;
 
 	/*********** add to main ***********/	
 	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-	SELECT ProductCode, ProductDesc, UnitCode, IFNULL(SUM(Quantity),0) INTO strProductCode, strProductDesc, strUnitCode, decProductQuantity
+	SELECT ProductCode, ProductDesc, UnitCode, IFNULL(Description,'')
+		INTO strProductCode, strProductDesc, strUnitCode, strMatrixDescription
 	FROM tblProducts a 
-		INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
-		LEFT OUTER JOIN tblProductInventory c ON a.ProductID = c.ProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID
-	WHERE a.ProductID = lngProductID 
-	GROUP BY ProductCode, ProductDesc, UnitCode;
-
+	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
+	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = lngMatrixID
+	WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
+	
+	SELECT IFNULL(SUM(Quantity),0) INTO decProductQuantity
+	FROM tblProductInventory inv
+	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
+	
 	SET decQuantityDiff = decQuantity - decProductQuantity;
 
-	-- get all products from diff inventory
-	SELECT IFNULL(SUM(Quantity),0) INTO decProductQuantity
-	FROM tblProducts a 
-		INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
-		LEFT OUTER JOIN tblProductInventory c ON a.ProductID = c.ProductID -- AND MatrixID = lngMatrixID AND BranchID = intBranchID
-	WHERE a.ProductID = lngProductID 
-	GROUP BY ProductCode, ProductDesc, UnitCode;
-
 	-- Insert to product movement history
-	CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, 0, '', 
-									decProductQuantity, decQuantityDiff, decProductQuantity + decQuantityDiff, 0, 
+	CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
+									decProductQuantity, decQuantity, decProductQuantity + decQuantity, 0, 
 									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, strCreatedBy, intBranchID, intBranchID, 0);
 	
 	IF EXISTS(SELECT Quantity FROM tblProductInventory WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN 
@@ -3374,18 +3371,22 @@ BEGIN
 	DECLARE strProductDesc VARCHAR(50) DEFAULT '';
 	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
-	DECLARE decProductQuantity, decMatrixQuantity DECIMAL(18,3) DEFAULT 0;
-	
+	DECLARE decProductQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE decQuantityDiff DECIMAL(18,3) DEFAULT 0;
+
 	/*********** subtract from main ***********/
 
 	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-	SELECT ProductCode, ProductDesc, UnitCode, Description, Quantity
-		INTO strProductCode, strProductDesc, strUnitCode, strMatrixDescription, decProductQuantity
+	SELECT ProductCode, ProductDesc, UnitCode, IFNULL(Description,'')
+		INTO strProductCode, strProductDesc, strUnitCode, strMatrixDescription
 	FROM tblProducts a 
 	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
-	INNER JOIN tblProductInventory inv ON a.ProductID = inv.ProductID AND MatrixID = lngMatrixID
-	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = inv.MatrixID
-	WHERE a.Deleted = 0 AND inv.BranchID = intBranchID AND a.ProductID = lngProductID AND IFNULL(inv.MatrixID, 0) = lngMatrixID;
+	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = lngMatrixID
+	WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
+	
+	SELECT IFNULL(SUM(Quantity),0) INTO decProductQuantity
+	FROM tblProductInventory inv
+	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
 	
 	-- Insert to product movement history
 	CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
@@ -5257,7 +5258,8 @@ BEGIN
 		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
 		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
 		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'' ');
-		SET @SQL = CONCAT(@SQL, '  OR prd.ProductCode LIKE ''%',BarCode,'%'') ');
+		SET @SQL = CONCAT(@SQL, '  OR prd.ProductDesc LIKE ''%',ProductCode,'%'' ');
+		SET @SQL = CONCAT(@SQL, '  OR prd.ProductCode LIKE ''%',ProductCode,'%'') ');
 	ELSEIF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') <> '' THEN
 		SET @SQL = CONCAT(@SQL, 'AND (pkg.BarCode1 LIKE ''%',BarCode,'%'' ');
 		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
@@ -5509,10 +5511,157 @@ delimiter ;
 	
 	Desc: This will get the main product list
 
-	CALL procProductVaritionMatrixSelect('', '', 0, 2, 0, 10, null, null);
+	CALL procProductVaritionMatrixSelect(0, 4355, '', '', '', 0, 2, 0, 10, null, null);
 	
 **************************************************************/
 
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductVaritionMatrixSelect
+GO
+
+create procedure procProductVaritionMatrixSelect(
+			 IN BranchID bigint,
+			 IN ProductID bigint,
+			 IN BarCode varchar(30),
+			 IN ProductCode varchar(30),
+			 IN MatrixDescription varchar(60),
+			 IN SupplierID bigint,
+			 IN ShowActiveAndInactive INT(1),
+			 IN isQuantityGreaterThanZERO TINYINT(1),
+			 IN lngLimit int,
+			 IN SortField varchar(60),
+			 IN SortOrder varchar(4))
+BEGIN
+	SET @SQL = CONCAT('	SELECT 
+							 prd.ProductID
+							,pkg.PackageID
+							,IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode
+							,pkg.BarCode1
+							,pkg.BarCode2
+							,pkg.BarCode3
+							,pkg.BarCode4
+							,prd.ProductCode
+							,prd.ProductDesc
+							
+							,prdsg.ProductGroupID
+							,prdg.ProductGroupCode
+							,prdg.ProductGroupName
+							,prdg.OrderSlipPrinter
+
+							,prd.ProductSubGroupID
+							,prdsg.ProductSubGroupCode
+							,prdsg.ProductSubGroupName
+
+							,prd.BaseUnitID
+							,unt.UnitCode BaseUnitCode
+							,unt.UnitName BaseUnitName
+							,prd.BaseUnitID UnitID
+							,unt.UnitCode
+							,unt.UnitName
+
+							,prd.DateCreated
+							,prd.Active
+							,prd.Deleted
+
+							,prd.SupplierID
+							,supp.ContactCode SupplierCode
+							,supp.ContactName SupplierName
+
+							,prd.IsItemSold
+							,pkg.Price
+							,pkg.WSPrice
+							,pkg.PurchasePrice
+							,prd.PercentageCommision
+							,prd.IncludeInSubtotalDiscount
+							,pkg.VAT
+							,pkg.EVAT
+							,pkg.LocalTax
+							,prd.RewardPoints
+
+							,IFNULL(inv.Quantity,0) Quantity
+							,IF(ISNULL(inv.Quantity),0, fnProductQuantityConvert(prd.ProductID, inv.Quantity, prd.BaseUnitID))  ConvertedQuantity
+							,IFNULL(inv.QuantityIN,0) QuantityIN
+							,IFNULL(inv.QuantityOUT,0) QuantityOUT
+							,IFNULL(inv.ActualQuantity,0) ActualQuantity
+
+							,prd.WillPrintProductComposition
+
+							,prd.MinThreshold
+							,prd.MaxThreshold
+							,prd.RID
+
+							,prd.MaxThreshold - IFNULL(inv.Quantity,0) ReorderQty
+							,prd.RIDMinThreshold
+							,prd.RIDMaxThreshold
+							,prd.RIDMaxThreshold -  IFNULL(inv.Quantity,0) AS RIDReorderQty
+
+							,prd.ChartOfAccountIDPurchase
+							,prd.ChartOfAccountIDSold
+							,prd.ChartOfAccountIDInventory
+							,prd.ChartOfAccountIDTaxPurchase
+							,prd.ChartOfAccountIDTaxSold
+
+							,mtrx.MatrixID
+							,CONCAT(prd.ProductDesc, '':'' , mtrx.Description) AS VariationDesc
+							,mtrx.Description AS MatrixDescription
+						FROM tblProductBaseVariationsMatrix mtrx 
+						INNER JOIN tblProducts prd ON mtrx.ProductID = prd.ProductID
+						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
+						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
+						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+						INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND prd.BaseUnitID = pkg.UnitID
+														AND pkg.Quantity = 1 AND pkg.MatrixID = mtrx.MatrixID
+						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
+						LEFT OUTER JOIN (
+							SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, MatrixID
+						) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = mtrx.MatrixID
+						WHERE mtrx.deleted = 0 ');
+	
+	IF ProductID <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND prd.ProductID = ',ProductID,' ');
+	END IF;
+
+	IF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND (pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
+		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
+		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'' ');
+		SET @SQL = CONCAT(@SQL, '  OR prd.ProductCode LIKE ''%',BarCode,'%'') ');
+	ELSEIF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND (pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
+		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
+		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'') ');
+	ELSEIF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') = '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND prd.ProductCode LIKE ''%',ProductCode,'%'' ');
+	END IF;
+
+	IF IFNULL(MatrixDescription,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND IFNULL(mtrx.Description,'''') LIKE ''%',MatrixDescription,'%'' ');
+	END IF;
+
+	IF SupplierID <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND prd.SupplierID = ',SupplierID,' ');
+	END IF;
+
+	IF ShowActiveAndInactive = 0 OR ShowActiveAndInactive = 1  THEN
+		SET @SQL = CONCAT(@SQL, 'AND prd.Active = ',ShowActiveAndInactive,' ');
+	END IF;
+
+	IF isQuantityGreaterThanZERO <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND IFNULL(inv.Quantity,0) > 0 ');
+	END IF;
+
+	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','MatrixDescription',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
+
+	SET @SQL = CONCAT(@SQL, IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')));
+
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;
 
 
 /**************************************************************

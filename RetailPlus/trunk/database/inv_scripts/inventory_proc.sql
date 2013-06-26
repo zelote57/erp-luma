@@ -461,31 +461,30 @@ BEGIN
 	
 	DECLARE strProductCode VARCHAR(30) DEFAULT '';
 	DECLARE strProductDesc VARCHAR(50) DEFAULT '';
+	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
 	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
-	DECLARE decProductQuantity, decMatrixQuantity DECIMAL(18,3) DEFAULT 0;
-	DECLARE decQuantityDiff DECIMAL(18,3) DEFAULT 0;
+	DECLARE decProductQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE decQuantityBefore DECIMAL(18,3) DEFAULT 0;
 
 	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-	SELECT ProductCode, ProductDesc, UnitCode, IFNULL(SUM(Quantity),0) INTO strProductCode, strProductDesc, strUnitCode, decProductQuantity
+	SELECT ProductCode, ProductDesc, UnitCode, IFNULL(Description,'')
+		INTO strProductCode, strProductDesc, strUnitCode, strMatrixDescription
 	FROM tblProducts a 
-		INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
-		LEFT OUTER JOIN tblProductInventory c ON a.ProductID = c.ProductID AND MatrixID = pvtMatrixID AND BranchID = pvtBranchID
-	WHERE a.ProductID = pvtProductID 
-	GROUP BY ProductCode, ProductDesc, UnitCode;
+	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
+	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = pvtMatrixID
+	WHERE a.Deleted = 0 AND a.ProductID = pvtProductID AND IFNULL(mtrx.MatrixID,0) = pvtMatrixID;
 	
-	SET decQuantityDiff = pvtQuantityNow - decProductQuantity;
-
-	-- get all products from diff inventory
 	SELECT IFNULL(SUM(Quantity),0) INTO decProductQuantity
-	FROM tblProducts a 
-		INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
-		LEFT OUTER JOIN tblProductInventory c ON a.ProductID = c.ProductID -- AND MatrixID = pvtMatrixID AND BranchID = pvtBranchID
-	WHERE a.ProductID = pvtProductID 
-	GROUP BY ProductCode, ProductDesc, UnitCode;
+	FROM tblProductInventory inv
+	WHERE inv.BranchID = pvtBranchID AND inv.ProductID = pvtProductID;
+	
+	SELECT IFNULL(SUM(Quantity),0) INTO decQuantityBefore
+	FROM tblProductInventory inv
+	WHERE inv.BranchID = pvtBranchID AND inv.ProductID = pvtProductID AND inv.MatrixID = pvtMatrixID;
 
 	-- Insert to product movement history
-	CALL procProductMovementInsert(pvtProductID, strProductCode, strProductDesc, 0, '', 
-									decProductQuantity, decQuantityDiff, decProductQuantity + decQuantityDiff, 0, 
+	CALL procProductMovementInsert(pvtProductID, strProductCode, strProductDesc, pvtMatrixID, strMatrixDescription, 
+									decProductQuantity, -(decQuantityBefore - pvtQuantityNow), decProductQuantity - decQuantityBefore + pvtQuantityNow, 0, 
 									strUnitCode, strRemarks, dteTransactionDate, strTransactionNo, pvtAdjustedBy, pvtBranchID, pvtBranchID, 0);
 
 	IF EXISTS(SELECT Quantity FROM tblProductInventory WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND BranchID = pvtBranchID) THEN 

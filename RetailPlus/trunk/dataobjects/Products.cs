@@ -1939,7 +1939,7 @@ namespace AceSoft.RetailPlus.Data
 									"pkg.BarCode1, " +
                                     "pkg.BarCode2, " +
                                     "pkg.BarCode3, " +
-                                    "pkg.BarCode4 BarCode, " +
+                                    "IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode, " +
 									"a.ProductDesc, " +
 									"a.ProductSubGroupID, " +
 									"b.ProductSubGroupCode, " +
@@ -2011,7 +2011,6 @@ namespace AceSoft.RetailPlus.Data
 							        "pkg.BarCode1, " +
 							        "pkg.BarCode2, " +
 							        "pkg.BarCode3, " +
-                                    "pkg.BarCode4, " +
                                     "a.ProductDesc, " +
                                     "a.ProductSubGroupID, " +
                                     "b.ProductSubGroupCode, " +
@@ -2127,7 +2126,7 @@ namespace AceSoft.RetailPlus.Data
                                     "pkg.BarCode1, " +
                                     "pkg.BarCode2, " +
                                     "pkg.BarCode3, " +
-                                    "pkg.BarCode4 BarCode, " +
+                                    "IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode, " +
 
                                     "pkg.Price, " +
                                     "pkg.WSPrice, " +

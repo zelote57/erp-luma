@@ -558,7 +558,20 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void LoadOptions()
 		{
-			if (mboIsPriceInq)
+            if (mclsTerminalDetails.IsParkingTerminal)
+            {
+                dgStyle.GridColumnStyles["BarCode"].Width = 0;
+                dgStyle.GridColumnStyles["ProductCode"].HeaderText = "Parking Type";
+                dgStyle.GridColumnStyles["ProductCode"].Width = this.Width - 495 + 150;
+                dgStyle.GridColumnStyles["MatrixDescription"].Width = 0;
+
+                this.Quantity.Format = "#,##0";
+                dgStyle.GridColumnStyles["Quantity"].Width = 320;
+                dgStyle.GridColumnStyles["Quantity"].HeaderText = "Available Slots";
+                this.lblHeader.Text = "Select Parking rate or enter 'Rate Code' to search:";
+                this.txtSearch.Text = mstSearchCode;
+            }
+			else if (mboIsPriceInq)
 			{
                 if (CONFIG.ShowBarcodeNotProductCodeItemSelect == true)
                 {

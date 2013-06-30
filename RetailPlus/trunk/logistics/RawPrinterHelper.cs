@@ -19,24 +19,31 @@ namespace AceSoft
 	/// </summary>
 	public class RawPrinterHelper
 	{
+        public static string escESC = Convert.ToChar(27).ToString();  // ESC char
         public static string escNewLine  = Convert.ToChar(10).ToString();  // New line (LF line feed)
-        public static string escUnerlineOn = Convert.ToChar(27).ToString() + Convert.ToChar(45).ToString() + Convert.ToChar(1).ToString();  // Unerline On
-        public static string escUnerlineOnx2 = Convert.ToChar(27).ToString() + Convert.ToChar(45).ToString() + Convert.ToChar(2).ToString();  // Unerline On x 2
-        public static string escUnerlineOff = Convert.ToChar(27).ToString() + Convert.ToChar(45).ToString() + Convert.ToChar(0).ToString();  // Unerline Off
-        public static string escBoldOn = Convert.ToChar(27).ToString() + Convert.ToChar(69).ToString() + Convert.ToChar(1).ToString();  // Bold On
-        public static string escBoldOff = Convert.ToChar(27).ToString() + Convert.ToChar(69).ToString() + Convert.ToChar(0).ToString();  // Bold Off
+        public static string escUnerlineOn = escESC + Convert.ToChar(45).ToString() + Convert.ToChar(1).ToString();  // Unerline On
+        public static string escUnerlineOnx2 = escESC + Convert.ToChar(45).ToString() + Convert.ToChar(2).ToString();  // Unerline On x 2
+        public static string escUnerlineOff = escESC + Convert.ToChar(45).ToString() + Convert.ToChar(0).ToString();  // Unerline Off
+
+        public static string escEPSONBoldOn = escESC + Convert.ToChar(16).ToString() + escESC + Convert.ToChar(32).ToString();  // Bold On
+        public static string escEPSONBoldOff = escESC + Convert.ToChar(16).ToString() + escESC + Convert.ToChar(0).ToString();  // Bold Off
+        public static string escSTARBoldOn = escESC + Convert.ToChar(14).ToString() + escESC + Convert.ToChar(15).ToString();  // Bold On
+        public static string escSTARBoldOff = escESC + Convert.ToChar(14).ToString() + escESC + Convert.ToChar(0).ToString();  // Bold Off
+        public static string escBoldOn = escESC + Convert.ToChar(17).ToString();  // Bold On
+        public static string escBoldOff = escESC + Convert.ToChar(0).ToString();  // Bold Off
+
         public static string escNegativeOn = Convert.ToChar(29).ToString() + Convert.ToChar(66).ToString() + Convert.ToChar(1).ToString();  // White On Black On'
         public static string escNegativeOff = Convert.ToChar(29).ToString() + Convert.ToChar(66).ToString() + Convert.ToChar(0).ToString();  // White On Black Off
         public static string esc8CpiOn = Convert.ToChar(29).ToString() + Convert.ToChar(33).ToString() + Convert.ToChar(16).ToString(); // Font Size x2 On
         public static string esc8CpiOff = Convert.ToChar(29).ToString() + Convert.ToChar(33).ToString() + Convert.ToChar(0).ToString();  // Font Size x2 Off
-        public static string esc16Cpi = Convert.ToChar(27).ToString() + Convert.ToChar(77).ToString() + Convert.ToChar(48).ToString(); // Font A  -  Normal Font
-        public static string esc20Cpi = Convert.ToChar(27).ToString() + Convert.ToChar(77).ToString() + Convert.ToChar(49).ToString(); // Font B - Small Font
-        public static string escReset = Convert.ToChar(27).ToString() + Convert.ToChar(64).ToString(); //Convert.ToChar(27) + Convert.ToChar(77) + Convert.ToChar(48); // Reset Printer
+        public static string esc16Cpi = escESC + Convert.ToChar(77).ToString() + Convert.ToChar(48).ToString(); // Font A  -  Normal Font
+        public static string esc20Cpi = escESC + Convert.ToChar(77).ToString() + Convert.ToChar(49).ToString(); // Font B - Small Font
+        public static string escReset = escESC + Convert.ToChar(64).ToString(); //Convert.ToChar(27) + Convert.ToChar(77) + Convert.ToChar(48); // Reset Printer
         public static string escFeedAndCut = Convert.ToChar(29).ToString() + Convert.ToChar(86).ToString() + Convert.ToChar(65).ToString(); // Partial Cut and feed
         public static string escCut = Convert.ToChar(29).ToString() + Convert.ToChar(86).ToString() + Convert.ToChar(49).ToString();
-        public static string escAlignLeft = Convert.ToChar(27).ToString() + Convert.ToChar(97).ToString() + Convert.ToChar(48).ToString(); // Align Text to the Left
-        public static string escAlignCenter = Convert.ToChar(27).ToString() + Convert.ToChar(97).ToString() + Convert.ToChar(49).ToString(); // Align Text to the Center
-        public static string escAlignRight = Convert.ToChar(27).ToString() + Convert.ToChar(97).ToString() + Convert.ToChar(50).ToString(); // Align Text to the Right
+        public static string escAlignLeft = escESC + Convert.ToChar(97).ToString() + Convert.ToChar(48).ToString(); // Align Text to the Left
+        public static string escAlignCenter = escESC + Convert.ToChar(97).ToString() + Convert.ToChar(49).ToString(); // Align Text to the Center
+        public static string escAlignRight = escESC + Convert.ToChar(97).ToString() + Convert.ToChar(50).ToString(); // Align Text to the Right
 
 		public RawPrinterHelper()
 		{
@@ -165,5 +172,7 @@ namespace AceSoft
 			Marshal.FreeCoTaskMem(pBytes);
 			return true;
 		}
+
+
 	}
 }

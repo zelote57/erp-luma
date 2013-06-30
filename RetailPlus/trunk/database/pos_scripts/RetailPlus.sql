@@ -6179,6 +6179,9 @@ ALTER TABLE tblTransactions ADD PARTITION (
 
 /*********************************  v_4.0.0.2.sql END  *******************************************************/ 
 
+/*********************************  v_4.0.0.3.sql START
+	Change the inventory to look into tblProductInventory
+ *******************************************************/ 
 ALTER TABLE tblCreditPayment MODIFY `Remarks` VARCHAR(8000); -- 09Mar2013 put payments log in remarks
 ALTER TABLE tblProductMovement MODIFY `MatrixDescription` VARCHAR(100) DEFAULT '';
 
@@ -6367,6 +6370,17 @@ ALTER TABLE tblProductBaseVariationsMatrix DROP EVAT;
 ALTER TABLE tblProductBaseVariationsMatrix DROP LocalTax;
 
 ALTER TABLE tblTransactions ADD TransactionType INT(1) NOT NULL DEFAULT 0;
+
+
+/*********************************  v_4.0.0.3.sql END  *******************************************************/ 
+
+/*********************************  v_4.0.0.4.sql START  
+	Include terminal as parking and parking rates
+*******************************************************/ 
+
+ALTER TABLE tblTerminal add `IsParkingTerminal` TINYINT (1) NOT NULL DEFAULT 0;
+
+/*********************************  v_4.0.0.4.sql END  *******************************************************/ 
 
 
 

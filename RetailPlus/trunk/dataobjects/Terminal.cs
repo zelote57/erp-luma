@@ -88,6 +88,9 @@ namespace AceSoft.RetailPlus.Data
 
         // [04/29/2013] Include to know whether to print agreement or not
         public bool IncludeCreditChargeAgreement;
+
+        // [06/30/2013] Include to know whether the terminal is parking or not
+        public bool IsParkingTerminal;
 	}
 
     public struct RewardPointsDetails
@@ -537,7 +540,8 @@ namespace AceSoft.RetailPlus.Data
                             "InHouseGroupCreditPermitNo, " +
                             "DBVersion, " +
                             "ProductSearchType, " +
-                            "IncludeCreditChargeAgreement " +
+                            "IncludeCreditChargeAgreement, " +
+                            "IsParkingTerminal " +
 						"FROM tblTerminal ";
 
 			return SQL;
@@ -763,6 +767,9 @@ namespace AceSoft.RetailPlus.Data
                 
                 // Added Apr 29, 2013
                 Details.IncludeCreditChargeAgreement = myReader.GetBoolean("IncludeCreditChargeAgreement");
+
+                // Added Jun 30, 2013
+                Details.IsParkingTerminal = myReader.GetBoolean("IsParkingTerminal");
             }
             myReader.Close();
 

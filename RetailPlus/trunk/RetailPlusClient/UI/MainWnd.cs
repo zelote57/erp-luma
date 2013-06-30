@@ -1363,6 +1363,9 @@ namespace AceSoft.RetailPlus.Client.UI
 			lblTerminalNo.Text = mclsTerminalDetails.TerminalNo;
 			lblCompanyName.Text = CompanyDetails.CompanyName;
 
+            // Added June 30, 2013 handle if RetailPlus or Parking System
+            this.Text = mclsTerminalDetails.IsParkingTerminal ? "RetailPlus™ Parking Terminal" : "RetailPlus™ POS Terminal"; 
+
 			if (mclsTerminalDetails.FORM_Behavior == FORM_Behavior.MODAL)
 			{
 				TaskBarWnd taskbar = new TaskBarWnd();
@@ -3062,10 +3065,17 @@ namespace AceSoft.RetailPlus.Client.UI
 
                             clsSalesTransactions.CommitAndDispose();
 							clsEvent.AddEventLn("Done!");
+
+                            // Added Jun 30, 2013
+                            if (mclsTerminalDetails.IsParkingTerminal)
+                            {
+                                PrintParkingTicket();
+                            }
+
                             this.LoadOptions();
 
 							MessageBox.Show("Transaction has been SUSPENDED. Press OK button to continue...", "RetailPlus", MessageBoxButtons.OK);
-							
+
 							boRetValue = true;
 						}
 						else { clsEvent.AddEventLn("Cancelled!"); }
@@ -4837,7 +4847,10 @@ namespace AceSoft.RetailPlus.Client.UI
 									PrintReportFooterSection(true, TransactionStatus.Closed, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
 
 									// Nov 05, 2011 : Print Charge Slip
-									PrintChargeSlip(ChargeSlipType.Guarantor);
+                                    if (!mclsTerminalDetails.IncludeCreditChargeAgreement) //do not print the guarantor if there is not agreement printed
+                                    {
+                                        PrintChargeSlip(ChargeSlipType.Guarantor);
+                                    }
 									PrintChargeSlip(ChargeSlipType.Original);
 										
 								}
@@ -7790,8 +7803,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				mstrToPrint += CenterString("-/- CHECK-OUT BILL -/-", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 				mstrToPrint += CenterString("NOT VALID AS RECEIPT", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 			}else{
-				mstrToPrint += RawPrinterHelper.escBoldOn + CenterString("-/- CHECK-OUT BILL -/-", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escBoldOff + Environment.NewLine;
-				mstrToPrint += RawPrinterHelper.escBoldOn + CenterString("NOT VALID AS RECEIPT", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escBoldOff + Environment.NewLine;
+				mstrToPrint += RawPrinterHelper.escEPSONBoldOn + CenterString("-/- CHECK-OUT BILL -/-", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
+				mstrToPrint += RawPrinterHelper.escEPSONBoldOn + CenterString("NOT VALID AS RECEIPT", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
 			}
 			PrintReportPageHeaderSection(true);
 		}
@@ -9884,9 +9897,9 @@ namespace AceSoft.RetailPlus.Client.UI
 						else
 						{
 							if (clsReceiptDetails.Value == ReceiptFieldFormats.AmountDue && !mclsTerminalDetails.IsPrinterDotMatrix)
-								mstrToPrint += RawPrinterHelper.esc8CpiOn + RawPrinterHelper.escBoldOn + clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + RawPrinterHelper.esc8CpiOff + RawPrinterHelper.escBoldOff + Environment.NewLine; 
+								mstrToPrint += RawPrinterHelper.esc8CpiOn + RawPrinterHelper.escEPSONBoldOn + clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + RawPrinterHelper.esc8CpiOff + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine; 
 							else if (clsReceiptDetails.Value == ReceiptFieldFormats.Change && !mclsTerminalDetails.IsPrinterDotMatrix)
-								mstrToPrint +=RawPrinterHelper.escBoldOn + clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + RawPrinterHelper.escBoldOff + Environment.NewLine; 
+								mstrToPrint +=RawPrinterHelper.escEPSONBoldOn + clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine; 
 							else
 								mstrToPrint +=clsReceiptDetails.Text.PadRight(13) + ":" + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 14) + Environment.NewLine; 
 						}
@@ -9896,9 +9909,9 @@ namespace AceSoft.RetailPlus.Client.UI
 							mstrToPrint +=CenterString(GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 						else
 							if (clsReceiptDetails.Value == ReceiptFieldFormats.AmountDue && !mclsTerminalDetails.IsPrinterDotMatrix)
-								mstrToPrint +=RawPrinterHelper.esc8CpiOn + RawPrinterHelper.escBoldOn + RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + RawPrinterHelper.esc8CpiOff + RawPrinterHelper.escBoldOff + Environment.NewLine;
+								mstrToPrint +=RawPrinterHelper.esc8CpiOn + RawPrinterHelper.escEPSONBoldOn + RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + RawPrinterHelper.esc8CpiOff + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
 							else if (clsReceiptDetails.Value == ReceiptFieldFormats.Change && !mclsTerminalDetails.IsPrinterDotMatrix)
-								mstrToPrint +=RawPrinterHelper.escBoldOn + RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + RawPrinterHelper.escBoldOff + Environment.NewLine;
+								mstrToPrint +=RawPrinterHelper.escEPSONBoldOn + RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
 							else
 								mstrToPrint +=CenterString(clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 						
@@ -9979,7 +9992,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				mclsFilePrinter.FileName = lblTransNo.Text;
 
 			if (mclsTerminalDetails.IsPrinterDotMatrix) mstrToPrint += CenterString(CompanyDetails.CompanyCode, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
-			else mstrToPrint += RawPrinterHelper.esc8CpiOn + RawPrinterHelper.escBoldOn + RawPrinterHelper.escAlignCenter + CompanyDetails.CompanyCode + RawPrinterHelper.esc8CpiOff + RawPrinterHelper.escBoldOff + RawPrinterHelper.escAlignRight + Environment.NewLine;
+			else mstrToPrint += RawPrinterHelper.esc8CpiOn + RawPrinterHelper.escEPSONBoldOn + RawPrinterHelper.escAlignCenter + CompanyDetails.CompanyCode + RawPrinterHelper.esc8CpiOff + RawPrinterHelper.escEPSONBoldOff + RawPrinterHelper.escAlignRight + Environment.NewLine;
 
 			// print Report Header
 			for (iCtr = 1; iCtr <= 10; iCtr++)
@@ -10447,6 +10460,10 @@ namespace AceSoft.RetailPlus.Client.UI
 				{
 					mstrToPrint += CenterString("------CREDIT PAYMENT--------", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 				}
+                else if (status == TransactionStatus.ParkingTicket)
+                {
+                    mstrToPrint += CenterString("------PARKING TICKET--------", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
+                }
 
 				PrintPageFooterBSection();
 				PrintReportFooter(IsReceipt);
@@ -10461,6 +10478,70 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		}
 
+        private void PrintParkingTicket()
+        {
+            try
+            {
+                if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
+                {
+                    MessageBox.Show("Sorry this option is not applicable for Auto-Print receipt.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                    return;
+                }
+                if (!mboIsInTransaction)
+                {
+                    MessageBox.Show("No active transaction is found! Please transact first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                    return;
+                }
+                DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.CloseTransaction);
+
+                if (loginresult == DialogResult.None)
+                {
+                    LogInWnd login = new LogInWnd();
+
+                    login.AccessType = AccessTypes.CloseTransaction;
+                    login.Header = "Print Parking Ticket Access Validation";
+                    login.ShowDialog(this);
+                    loginresult = login.Result;
+                    login.Close();
+                    login.Dispose();
+                }
+                if (loginresult == DialogResult.OK)
+                {
+                    PrintingPreference oldCONFIG_AutoPrint = mclsTerminalDetails.AutoPrint;
+                    mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
+
+                    PrintReportHeaderSection(true, DateTime.MinValue);
+                    mboIsItemHeaderPrinted = true;
+
+                    AceSoft.BarcodePrinter clsBarcodePrinter = new BarcodePrinter();
+                    if (mclsTerminalDetails.IsPrinterDotMatrix)
+                    {
+                        mstrToPrint += clsBarcodePrinter.GenerateBarCode(mclsSalesTransactionDetails.TerminalNo, AceSoft.printerModel.Tally, barcodeType.EAN13) + Environment.NewLine;
+                        mstrToPrint += RawPrinterHelper.escBoldOn + CenterString("-/- PARKING TICKET -/-", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escBoldOff + Environment.NewLine;
+                        mstrToPrint += RawPrinterHelper.escBoldOn + CenterString("NOT VALID AS RECEIPT", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escBoldOff + Environment.NewLine;
+                    }
+                    else
+                    {
+                        mstrToPrint += clsBarcodePrinter.GenerateBarCode(mclsSalesTransactionDetails.TerminalNo, AceSoft.printerModel.Epson, barcodeType.EAN13) + Environment.NewLine;
+                        mstrToPrint += RawPrinterHelper.escEPSONBoldOn + CenterString("-/- PARKING TICKET -/-", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
+                        mstrToPrint += RawPrinterHelper.escEPSONBoldOn + CenterString("NOT VALID AS RECEIPT", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
+                    }
+                    PrintReportPageHeaderSection(true);
+
+                    mstrToPrint += Environment.NewLine + RawPrinterHelper.escEPSONBoldOn + CenterString("TIME IN: " + mclsSalesTransactionDetails.TransactionDate.ToString("MM/dd/yyyy hh:mm tt"), mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine + Environment.NewLine;
+
+                    PrintReportFooterSection(true, TransactionStatus.ParkingTicket, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
+
+                    mboIsItemHeaderPrinted = false;
+                    mclsTerminalDetails.AutoPrint = oldCONFIG_AutoPrint;
+                }
+            }
+            catch (Exception ex)
+            {
+                InsertErrorLogToFile(ex, "ERROR!!! Printing Parking Slip: ");
+            }
+            Cursor.Current = Cursors.Default;
+        }
 		private void PrintChargeSlip(ChargeSlipType clsChargeSlipType)
 		{
 			try 

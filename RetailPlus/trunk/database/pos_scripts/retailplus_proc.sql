@@ -1515,12 +1515,13 @@ GO
 create procedure procZeroOutProductQuantityAndDropVariations()
 BEGIN
 
-	UPDATE tblProducts SET Quantity = 0;
+	TRUNCATE TABLE tblProductInventory;
 
 	TRUNCATE TABLE tblBranchInventoryMatrix;
 	TRUNCATE TABLE tblProductVariationsMatrix;
+	
 	TRUNCATE TABLE tblProductBaseVariationsMatrix;
-	TRUNCATE TABLE tblMatrixPackage;
+	
 	
 END;
 GO

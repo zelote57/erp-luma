@@ -3069,7 +3069,8 @@ namespace AceSoft.RetailPlus.Client.UI
                             // Added Jun 30, 2013
                             if (mclsTerminalDetails.IsParkingTerminal)
                             {
-                                PrintParkingTicket();
+                                if (MessageBox.Show("Would you like to print the Parking Ticket?", "Print Parking Ticket", MessageBoxButtons.YesNo,  MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+                                    PrintParkingTicket();
                             }
 
                             this.LoadOptions();
@@ -3106,6 +3107,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         clsSalesTransactions.CommitAndDispose();
 						clsEvent.AddEventLn("Done!");
+
+                        // Added Jun 30, 2013
+                        if (mclsTerminalDetails.IsParkingTerminal)
+                        {
+                            if (MessageBox.Show("Would you like to print the Parking Ticket?", "Print Parking Ticket", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+                                PrintParkingTicket();
+                        }
+
                         this.LoadOptions();
 
 						MessageBox.Show("Transaction has been SUSPENDED. Press OK button to continue...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -10321,7 +10330,8 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mclsTerminalDetails.AutoPrint != PrintingPreference.AskFirst)
 			{
-				PrintPageFooterASection();
+                if ((status == TransactionStatus.ParkingTicket && IsReceipt) || status != TransactionStatus.ParkingTicket)
+				    PrintPageFooterASection();
 
 				if (status == TransactionStatus.Refund)
 				{
@@ -10516,13 +10526,13 @@ namespace AceSoft.RetailPlus.Client.UI
                     AceSoft.BarcodePrinter clsBarcodePrinter = new BarcodePrinter();
                     if (mclsTerminalDetails.IsPrinterDotMatrix)
                     {
-                        mstrToPrint += clsBarcodePrinter.GenerateBarCode(mclsSalesTransactionDetails.TerminalNo, AceSoft.printerModel.Tally, barcodeType.EAN13) + Environment.NewLine;
+                        mstrToPrint += clsBarcodePrinter.GenerateBarCode(mclsSalesTransactionDetails.TransactionNo, AceSoft.printerModel.Tally, barcodeType.EAN13) + Environment.NewLine;
                         mstrToPrint += RawPrinterHelper.escBoldOn + CenterString("-/- PARKING TICKET -/-", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escBoldOff + Environment.NewLine;
                         mstrToPrint += RawPrinterHelper.escBoldOn + CenterString("NOT VALID AS RECEIPT", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escBoldOff + Environment.NewLine;
                     }
                     else
                     {
-                        mstrToPrint += clsBarcodePrinter.GenerateBarCode(mclsSalesTransactionDetails.TerminalNo, AceSoft.printerModel.Epson, barcodeType.EAN13) + Environment.NewLine;
+                        mstrToPrint += clsBarcodePrinter.GenerateBarCode(mclsSalesTransactionDetails.TransactionNo, AceSoft.printerModel.Epson, barcodeType.EAN13) + Environment.NewLine;
                         mstrToPrint += RawPrinterHelper.escEPSONBoldOn + CenterString("-/- PARKING TICKET -/-", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
                         mstrToPrint += RawPrinterHelper.escEPSONBoldOn + CenterString("NOT VALID AS RECEIPT", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
                     }
@@ -10530,7 +10540,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     mstrToPrint += Environment.NewLine + RawPrinterHelper.escEPSONBoldOn + CenterString("TIME IN: " + mclsSalesTransactionDetails.TransactionDate.ToString("MM/dd/yyyy hh:mm tt"), mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine + Environment.NewLine;
 
-                    PrintReportFooterSection(true, TransactionStatus.ParkingTicket, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
+                    PrintReportFooterSection(false, TransactionStatus.ParkingTicket, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
 
                     mboIsItemHeaderPrinted = false;
                     mclsTerminalDetails.AutoPrint = oldCONFIG_AutoPrint;

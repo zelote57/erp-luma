@@ -4274,7 +4274,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			if (loginresult == DialogResult.OK)
 			{
-				if (txtBarCode.Text.Trim() != "" && txtBarCode.Text.Trim() != null)
+				if (!string.IsNullOrEmpty(txtBarCode.Text.Trim()))
 				{
 					string stBarcode = txtBarCode.Text.Trim();
 					decimal decQuantity = 1;
@@ -4409,7 +4409,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void ShowProductPrice()
 		{
-			if (txtBarCode.Text.Trim() != "" && txtBarCode.Text.Trim() != null)
+			if (!string.IsNullOrEmpty(txtBarCode.Text.Trim()))
 			{
 				string stBarcode = txtBarCode.Text.Trim();
 				decimal decQuantity = 1;

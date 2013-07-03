@@ -2828,14 +2828,14 @@ create procedure procTransactionRelease(IN lngTransactionID BIGINT(20),
 										IN lngReleasedByID BIGINT(20),
 										IN strReleasedByName VARCHAR(100))
 BEGIN
-	SET @strSQL = CONCAT('UPDATE tblTransactions', intMonth,' SET ');
-	SET @strSQL = CONCAT(@strSQL,'	TransactionStatus=', intTransactionStatus,', ');
-	SET @strSQL = CONCAT(@strSQL,'	ReleaserID=', lngReleasedByID,', ');
-	SET @strSQL = CONCAT(@strSQL,'	ReleaserName=''', strReleasedByName,''', ');
-	SET @strSQL = CONCAT(@strSQL,'	ReleasedDate=NOW() ');
-	SET @strSQL = CONCAT(@strSQL,'WHERE TransactionID=',lngTransactionID,'; ');
+	SET @SQL = CONCAT('UPDATE tblTransactions', intMonth,' SET ');
+	SET @SQL = CONCAT(@SQL,'	TransactionStatus=', intTransactionStatus,', ');
+	SET @SQL = CONCAT(@SQL,'	ReleaserID=', lngReleasedByID,', ');
+	SET @SQL = CONCAT(@SQL,'	ReleaserName=''', strReleasedByName,''', ');
+	SET @SQL = CONCAT(@SQL,'	ReleasedDate=NOW() ');
+	SET @SQL = CONCAT(@SQL,'WHERE TransactionID=',lngTransactionID,'; ');
 		
-	PREPARE strCmd FROM @strSQL;
+	PREPARE strCmd FROM @SQL;
 	EXECUTE strCmd;
 	DEALLOCATE PREPARE strCmd;
 	
@@ -3437,9 +3437,9 @@ create procedure procProductMovementSelect(
 									IN dteStartTransactionDate DATETIME,
 									in dteEndTransactionDate DATETIME)
 BEGIN
-	SET @strSQL := '';
+	SET @SQL := '';
 	
-	SET @strSQL := 'SELECT
+	SET @SQL := 'SELECT
 						ProductID,
 						ProductCode, 
 						ProductDescription,
@@ -3458,21 +3458,21 @@ BEGIN
 					WHERE QuantityMovementType = 0 ';
 	
 	IF (lngProductID <> 0) THEN
-		SET @strSQL = CONCAT(@strSQL,'AND ProductID = ', lngProductID,' ');
+		SET @SQL = CONCAT(@SQL,'AND ProductID = ', lngProductID,' ');
 	END IF;
 	
 	
 	IF (DATE_FORMAT(dteStartTransactionDate, '%Y%m%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
-		SET @strSQL = CONCAT(@strSQL,'AND TransactionDate >= ''', dteStartTransactionDate,''' ');
+		SET @SQL = CONCAT(@SQL,'AND TransactionDate >= ''', dteStartTransactionDate,''' ');
 	END IF;
 	
 	IF (DATE_FORMAT(dteEndTransactionDate, '%Y%m%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
-		SET @strSQL = CONCAT(@strSQL,'AND TransactionDate <= ''', dteEndTransactionDate,''' ');
+		SET @SQL = CONCAT(@SQL,'AND TransactionDate <= ''', dteEndTransactionDate,''' ');
 	END IF;
 	
-	SET @strSQL = CONCAT(@strSQL,'ORDER BY TransactionDate DESC, QuantityTo ASC ');
+	SET @SQL = CONCAT(@SQL,'ORDER BY TransactionDate DESC, QuantityTo ASC ');
 
-	PREPARE stmt FROM @strSQL;
+	PREPARE stmt FROM @SQL;
 	EXECUTE stmt;
 	DEALLOCATE PREPARE stmt;
 	
@@ -4719,7 +4719,7 @@ create procedure procGetRewardPointsReport(
 	) 
 BEGIN
 	
-	SET @strSQL = CONCAT('SELECT BranchID 
+	SET @SQL = CONCAT('SELECT BranchID 
 								,TerminalNo 
 								,CashierName
 								,CustomerID
@@ -4732,18 +4732,18 @@ BEGIN
 							WHERE CustomerID <> 1 AND TransactionStatus = 1 ');
 
 	IF (lngCustomerID <> 0) THEN
-		SET @strSQL = CONCAT(@strSQL, 'AND CustomerID = ',lngCustomerID,' ');
+		SET @SQL = CONCAT(@SQL, 'AND CustomerID = ',lngCustomerID,' ');
 	END IF;
 
 	IF (NOT ISNULL(dteTransactionDateFrom) AND DATE_FORMAT(dteTransactionDateFrom, '%Y-%m-%d') <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
-		SET @strSQL = CONCAT(@strSQL, 'AND DATE_FORMAT(TransactionDate, ''%Y-%m-%d'') >= DATE_FORMAT(''',dteTransactionDateFrom,''', ''%Y-%m-%d'') ');
+		SET @SQL = CONCAT(@SQL, 'AND DATE_FORMAT(TransactionDate, ''%Y-%m-%d'') >= DATE_FORMAT(''',dteTransactionDateFrom,''', ''%Y-%m-%d'') ');
 	END IF;
 	
 	IF (NOT ISNULL(dteTransactionDateTo) AND DATE_FORMAT(dteTransactionDateTo, '%Y-%m-%d') <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
-		SET @strSQL = CONCAT(@strSQL, 'AND DATE_FORMAT(TransactionDate, ''%Y-%m-%d'') <= DATE_FORMAT(''',dteTransactionDateTo,''', ''%Y-%m-%d'') ');
+		SET @SQL = CONCAT(@SQL, 'AND DATE_FORMAT(TransactionDate, ''%Y-%m-%d'') <= DATE_FORMAT(''',dteTransactionDateTo,''', ''%Y-%m-%d'') ');
 	END IF;
 
-	SET @strSQL = CONCAT(@strSQL, '
+	SET @SQL = CONCAT(@SQL, '
 							GROUP BY BranchID
 								,TerminalNo
 								,CashierName
@@ -4756,7 +4756,7 @@ BEGIN
 								,CustomerName
 								,DATE_FORMAT(TransactionDate, ''%Y-%m-%d'')  ');
 
-	PREPARE strCmd FROM @strSQL;
+	PREPARE strCmd FROM @SQL;
 	EXECUTE strCmd;
 	DEALLOCATE PREPARE strCmd;
 	/*******************************
@@ -4784,19 +4784,21 @@ create procedure procProductIsExist(
 									IN lngProductID BIGINT, 
 									IN strBarCode VARCHAR(30))
 BEGIN
-	SET @strSQL := '';
+	SET @SQL := '';
 	
-	SET @strSQL := 'SELECT
+	SET strBarCode = REPLACE(strBarCode, '''', '''''');
+
+	SET @SQL := 'SELECT
 						Count(1) ProductCount
 					FROM tblProductPackage ';
 	
 	IF (lngProductID <> 0) THEN
-		SET @strSQL = CONCAT(@strSQL,' WHERE ProductID <> ', lngProductID,' AND ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
+		SET @SQL = CONCAT(@SQL,' WHERE ProductID <> ', lngProductID,' AND ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
 	ELSEIF (lngProductID = 0) THEN
-		SET @strSQL = CONCAT(@strSQL,' WHERE ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
+		SET @SQL = CONCAT(@SQL,' WHERE ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
 	END IF;
 	
-	PREPARE stmt FROM @strSQL;
+	PREPARE stmt FROM @SQL;
 	EXECUTE stmt;
 	DEALLOCATE PREPARE stmt;
 	
@@ -5038,6 +5040,9 @@ create procedure procProductInventorySelect(
 			 IN SortField varchar(60),
 			 IN SortOrder varchar(4))
 BEGIN
+	SET BarCode = REPLACE(BarCode, '''', '''''');
+	SET ProductCode = REPLACE(ProductCode, '''', '''''');
+
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
 							,pkg.PackageID
@@ -5201,6 +5206,9 @@ create procedure procProductSelect(
 			 IN SortField varchar(60),
 			 IN SortOrder varchar(4))
 BEGIN
+	SET BarCode = REPLACE(BarCode, '''', '''''');
+	SET ProductCode = REPLACE(ProductCode, '''', '''''');
+
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
 							,IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode
@@ -5320,6 +5328,9 @@ create procedure procProductCodeSelect(
 			 IN SortField varchar(60),
 			 IN SortOrder varchar(4))
 BEGIN
+	SET BarCode = REPLACE(BarCode, '''', '''''');
+	SET ProductCode = REPLACE(ProductCode, '''', '''''');
+
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
 							,prd.ProductCode
@@ -5397,6 +5408,8 @@ create procedure procProductMainDetails(
 			 IN MatrixID bigint,
 			 IN BarCode varchar(60))
 BEGIN
+	SET BarCode = REPLACE(BarCode, '''', '''''');
+	
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
 							,pkg.PackageID
@@ -5533,6 +5546,10 @@ create procedure procProductVaritionMatrixSelect(
 			 IN SortField varchar(60),
 			 IN SortOrder varchar(4))
 BEGIN
+	SET BarCode = REPLACE(BarCode, '''', '''''');
+	SET ProductCode = REPLACE(ProductCode, '''', '''''');
+	SET MatrixDescription = REPLACE(MatrixDescription, '''', '''''');
+
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
 							,pkg.PackageID
@@ -5689,6 +5706,10 @@ create procedure procProductPackageSelect(
 			 IN SortField varchar(60),
 			 IN SortOrder varchar(4))
 BEGIN
+	SET BarCode = REPLACE(BarCode, '''', '''''');
+	SET ProductGroupName = REPLACE(ProductGroupName, '''', '''''');
+	SET ProductSubGroupName = REPLACE(ProductSubGroupName, '''', '''''');
+
 	SET @SQL = '		SELECT 
 							 prd.ProductID
 							,pkg.PackageID

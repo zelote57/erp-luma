@@ -1964,8 +1964,8 @@ namespace AceSoft.RetailPlus.Data
 									"pkg.VAT, " +
                                     "pkg.EVAT, " +
                                     "pkg.LocalTax, " +
-									"inv.Quantity, " +
-                                    "fnProductQuantityConvert(a.ProductID, inv.Quantity, a.BaseUnitID) AS ConvertedQuantity, " +
+                                    "IFNULL(inv.Quantity,0) Quantity, " +
+                                    "fnProductQuantityConvert(a.ProductID, IFNULL(inv.Quantity,0), a.BaseUnitID) AS ConvertedQuantity, " +
 									"a.MinThreshold, " +
 									"a.MaxThreshold, " +
 									"a.RID, " +
@@ -1981,13 +1981,13 @@ namespace AceSoft.RetailPlus.Data
 									"a.IsItemSold, " +
 									"a.WillPrintProductComposition, " +
 									"a.VariationCount, " +
-                                    "inv.QuantityIN, " +
-                                    "inv.QuantityOUT, " +
-                                    "inv.ActualQuantity, " +
-                                    "a.MaxThreshold - inv.Quantity AS ReorderQty, " +
+                                    "IFNULL(inv.QuantityIN,0) QuantityIN, " +
+                                    "IFNULL(inv.QuantityOUT,0) QuantityOUT, " +
+                                    "IFNULL(inv.ActualQuantity,0) ActualQuantity, " +
+                                    "a.MaxThreshold - IFNULL(inv.Quantity,0) AS ReorderQty, " +
 									"a.RIDMinThreshold, " +
 									"a.RIDMaxThreshold, " +
-                                    "a.RIDMaxThreshold - inv.Quantity AS RIDReorderQty, " +
+                                    "a.RIDMaxThreshold - IFNULL(inv.Quantity,0) AS RIDReorderQty, " +
 									"a.RewardPoints, " +
                                     "IFNULL(inv.MatrixID,0) MatrixID, " +
                                     "IFNULL(mtrx.Description,'') MatrixDescription " +
@@ -1997,7 +1997,7 @@ namespace AceSoft.RetailPlus.Data
 								"   INNER JOIN tblUnit d ON a.BaseUnitID = d.UnitID " +
 								"   INNER JOIN tblContacts e ON a.SupplierID = e.ContactID " +
                                 "   INNER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID " +
-                                "   INNER JOIN tblProductInventory inv ON a.ProductID =  inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
+                                "   LEFT OUTER JOIN tblProductInventory inv ON a.ProductID =  inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
                                 "   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON a.ProductID = mtrx.ProductID AND mtrx.MatrixID = inv.MatrixID " ;
 			return stSQL;
 		}
@@ -2035,8 +2035,8 @@ namespace AceSoft.RetailPlus.Data
                                     "pkg.VAT, " +
                                     "pkg.EVAT, " +
                                     "pkg.LocalTax, " +
-                                    "inv.Quantity, " +
-                                    "fnProductQuantityConvert(a.ProductID, inv.Quantity, a.BaseUnitID) AS ConvertedQuantity, " +
+                                    "IFNULL(inv.Quantity,0) Quantity, " +
+                                    "fnProductQuantityConvert(a.ProductID, IFNULL(inv.Quantity,0), a.BaseUnitID) AS ConvertedQuantity, " +
                                     "a.MinThreshold, " +
                                     "a.MaxThreshold, " +
                                     "a.RID, " +
@@ -2052,13 +2052,13 @@ namespace AceSoft.RetailPlus.Data
                                     "a.IsItemSold, " +
                                     "a.WillPrintProductComposition, " +
                                     "a.VariationCount, " +
-                                    "inv.QuantityIN, " +
-                                    "inv.QuantityOUT, " +
-                                    "inv.ActualQuantity, " +
-                                    "a.MaxThreshold - inv.Quantity AS ReorderQty, " +
+                                    "IFNULL(inv.QuantityIN,0) QuantityIN, " +
+                                    "IFNULL(inv.QuantityOUT,0) QuantityOUT, " +
+                                    "IFNULL(inv.ActualQuantity,0) ActualQuantity, " +
+                                    "a.MaxThreshold - IFNULL(inv.Quantity,0) AS ReorderQty, " +
                                     "a.RIDMinThreshold, " +
                                     "a.RIDMaxThreshold, " +
-                                    "a.RIDMaxThreshold - inv.Quantity AS RIDReorderQty, " +
+                                    "a.RIDMaxThreshold - IFNULL(inv.Quantity,0) AS RIDReorderQty, " +
                                     "a.RewardPoints, " +
                                     "IFNULL(inv.MatrixID,0) MatrixID, " +
                                     "IFNULL(mtrx.Description,'') MatrixDescription " +
@@ -2068,11 +2068,11 @@ namespace AceSoft.RetailPlus.Data
                                 "   INNER JOIN tblUnit d ON a.BaseUnitID = d.UnitID " +
                                 "   INNER JOIN tblContacts e ON a.SupplierID = e.ContactID " +
                                 "   INNER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID " +
-                                "   INNER JOIN tblProductInventory inv ON a.ProductID =  inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
+                                "   LEFT OUTER JOIN tblProductInventory inv ON a.ProductID =  inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
                                 "   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON a.ProductID = mtrx.ProductID AND mtrx.MatrixID = inv.MatrixID " +
                                 "WHERE 1=1 ";
 
-            stSQL += BranchID == 0 ? "" : "AND inv.BranchID = " + BranchID + " ";
+            stSQL += BranchID == 0 ? "" : "AND IFNULL(inv.BranchID,1) = " + BranchID + " ";
 
 			return stSQL;
 		}
@@ -2134,19 +2134,19 @@ namespace AceSoft.RetailPlus.Data
                                     "pkg.VAT, " +
                                     "pkg.EVAT, " +
                                     "pkg.LocalTax, " +
-									
-                                    "inv.Quantity, " +
+
+                                    "IFNULL(inv.Quantity,0) Quantity, " +
                                     //"fnProductQuantityConvert(inv.ProductID, inv.Quantity, prd.BaseUnitID) AS ConvertedQuantity, " +
-									
-                                    "inv.ActualQuantity, " +
-                                    "mtrx.Description MatrixDescription " +
+
+                                    "IFNULL(inv.ActualQuantity,0) ActualQuantity, " +
+                                    "IFNULL(mtrx.Description,'') MatrixDescription " +
 
 								"FROM tblProducts prd " +
                                 "   INNER JOIN tblProductPackage pkg ON prd.ProductID = pkg.ProductID " +
-                                "   INNER JOIN tblProductInventory inv ON prd.ProductID = inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
+                                "   LEFT OUTER JOIN tblProductInventory inv ON prd.ProductID = inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
                                 "   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON prd.ProductID = mtrx.ProductID AND mtrx.MatrixID = inv.MatrixID " +
 								"WHERE prd.Deleted = 0 ";
-            stSQL += BranchID == 0 ? "" : "AND inv.BranchID = " + BranchID.ToString() + " ";
+            stSQL += BranchID == 0 ? "" : "AND IFNULL(inv.BranchID,1) = " + BranchID.ToString() + " ";
 
 			return stSQL;
 		}
@@ -2249,7 +2249,7 @@ namespace AceSoft.RetailPlus.Data
 
                 bool boRetValue = false;
 
-                if (BarCode1 != string.Empty && BarCode1 != null)
+                if (!string.IsNullOrEmpty(BarCode1))
                 {
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@ProductID", ProductID);
@@ -2266,7 +2266,7 @@ namespace AceSoft.RetailPlus.Data
                     }
                 }
 
-                if (BarCode2 != string.Empty && BarCode2 != null)
+                if (!string.IsNullOrEmpty(BarCode2))
                 {
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@ProductID", ProductID);
@@ -2283,7 +2283,7 @@ namespace AceSoft.RetailPlus.Data
                     }
                 }
 
-                if (BarCode3 != string.Empty && BarCode3 != null)
+                if (!string.IsNullOrEmpty(BarCode3))
                 {
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@ProductID", ProductID);
@@ -2402,7 +2402,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                string SQL = SQLSelect(BranchID) + "AND inv.ProductId = @ProductID AND inv.MatrixID = @MatrixID ";
+                string SQL = SQLSelect(BranchID) + "AND a.ProductId = @ProductID AND IFNULL(inv.MatrixID,0) = @MatrixID ";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -2530,11 +2530,11 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
                 MySqlCommand cmd = new MySqlCommand();
-				string SQL = SQLSelect(BranchID) + "AND BarCode1 = @BarCode OR BarCode2 = @BarCode OR BarCode3 = @BarCode OR BarCode4 = @Barcode ";
+				string SQL = SQLSelect(BranchID) + "AND (BarCode1 = @BarCode OR BarCode2 = @BarCode OR BarCode3 = @BarCode OR BarCode4 = @Barcode) ";
 
                 if (ShowItemMoreThanZeroQty)
                 {
-                    SQL += "AND inv.Quantity >= @Quantity ";
+                    SQL += "AND IFNULL(inv.Quantity,0) >= @Quantity ";
 
                     MySqlParameter prmQuantity = new MySqlParameter("@Quantity", MySqlDbType.Decimal);
                     prmQuantity.Value = Quantity;

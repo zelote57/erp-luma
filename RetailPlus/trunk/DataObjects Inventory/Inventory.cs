@@ -627,7 +627,7 @@ namespace AceSoft.RetailPlus.Data
 
         public System.Data.DataTable ClosingInventoryReferenceNos(DateTime PostingDateFrom, DateTime PostingDateTo)
         {
-            string SQL = "SELECT ReferenceNo, PostingDate FROM tblInventory WHERE ReferenceNo LIKE @CLOSE_INVENTORY_CODE ";
+            string SQL = "SELECT ReferenceNo, PostingDate, CONCAT(ReferenceNo,PostingDate) PostingReference FROM tblInventory WHERE ReferenceNo LIKE @CLOSE_INVENTORY_CODE ";
 
             if (PostingDateFrom != DateTime.MinValue)
                 SQL += "AND PostingDate >= '" + PostingDateFrom.ToString("yyyy-MM-dd") + "' ";
@@ -669,35 +669,41 @@ namespace AceSoft.RetailPlus.Data
 
             return dt;
 		}
-        public System.Data.DataTable DataList(string ReferenceNo, bool IncludeShortOverProducts, long ProductGroupID, long ProductSubGroupID, string SortField, SortOption SortOrder)
+        public System.Data.DataTable DataList(string ReferenceNo, bool IncludeShortOverProducts, long SupplierID, long ProductGroupID, string SortField = "InventoryID", SortOption SortOrder = SortOption.Ascending)
         {
-            string SQL = SQLSelect() + "AND ReferenceNo = @ReferenceNo ";
+            try
+            {
+                string SQL = SQLSelect() + "AND ReferenceNo = @ReferenceNo ";
 
-            if (IncludeShortOverProducts) SQL += "AND ClosingQuantity <> ClosingActualQuantity ";
+                if (!IncludeShortOverProducts) SQL += "AND ClosingQuantity <> ClosingActualQuantity ";
 
-            if (ProductSubGroupID != 0)
-                SQL += "AND ProductSubGroupID = " + ProductSubGroupID + " ";
-            else if (ProductGroupID != 0)
-                SQL += "AND ProductSubGroupID IN (SELECT DISTINCT(ProductSubGroupID) FROM tblProductSubGroup WHERE ProductGroupID = " + ProductGroupID + ") ";
+                if (SupplierID != 0)
+                    SQL += "AND a.ContactID = " + SupplierID + " ";
 
-            if (SortField == string.Empty) SortField = "InventoryID";
-            SQL += "ORDER BY " + SortField;
+                if (ProductGroupID != 0)
+                    SQL += "AND ProductSubGroupID IN (SELECT DISTINCT(ProductSubGroupID) FROM tblProductSubGroup WHERE ProductGroupID = " + ProductGroupID + ") ";
 
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
+                SQL += "ORDER BY " + SortField;
+                if (SortOrder == SortOption.Ascending)
+                    SQL += " ASC";
+                else
+                    SQL += " DESC";
 
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
 
-            cmd.Parameters.AddWithValue("@ReferenceNo", ReferenceNo);
+                cmd.Parameters.AddWithValue("@ReferenceNo", ReferenceNo);
 
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-            return dt;
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }	
         }
 		public MySqlDataReader List(string SortField, SortOption SortOrder)
 		{

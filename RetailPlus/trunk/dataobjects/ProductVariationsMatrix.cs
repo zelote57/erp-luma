@@ -398,38 +398,6 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        /// <summary>
-        /// Lemu - 06-20-2011
-        /// </summary>
-        /// <param name="ProductID">Put zero(0) if you want to update all products</param>
-        /// <param name="Quantity"></param>
-        /// <returns></returns>
-        public bool UpdateActualQuantity(long lngProductID, long lngMatrixID, decimal decQuantity)
-        {
-            bool boRetValue = false;
-            try
-            {
-                string SQL = "CALL procProductBaseVariationUpdateActualQuantity(@lngProductID, @lngMatrixID, @decQuantity);";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@lngProductID", lngProductID);
-                cmd.Parameters.AddWithValue("@lngMatrixID", lngMatrixID);
-                cmd.Parameters.AddWithValue("@decQuantity", decQuantity);
-
-                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
-            }
-
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-
-            return boRetValue;
-        }
-
 		#endregion
 
 		#region tblProductBaseVariationsMatrix Details

@@ -91,6 +91,8 @@ namespace AceSoft.RetailPlus.Data
         public string MatrixDescription;
 
         public long PackageID;
+
+        public bool IsLock;
 	}
 
 	/// <summary>
@@ -144,6 +146,7 @@ namespace AceSoft.RetailPlus.Data
 		public bool UpdatedBy;
 		public bool UpdatedOn;
 		public bool Active;
+        public bool IsLock;
 		public bool PercentageCommision;
 		public bool WSPrice;
 		public bool VariationCount;
@@ -208,6 +211,7 @@ namespace AceSoft.RetailPlus.Data
 		public const string UpdatedBy = "UpdatedBy";
 		public const string UpdatedOn = "UpdatedOn";
 		public const string Active = "Active";
+        public const string IsLock = "IsLock";
 		public const string PercentageCommision = "PercentageCommision";
 		public const string WSPrice = "WSPrice";
 		public const string VariationCount = "VariationCount";
@@ -250,7 +254,9 @@ namespace AceSoft.RetailPlus.Data
 		DEDUCT_QTY_RESERVE_AND_COMMIT_RETURN_ITEM,
 		DEDUCT_PRODUCT_VARIATION_DELETE,
 		SYS_AUTO_ADJ_OF_MATRIX_QTY_FROM_PRODUCT_QTY_AS_BASIS,
-		SYS_AUTO_ADJ_OF_PRODUCT_QTY_FROM_SUM_OF_MATRIX_QTY_AS_BASIS
+		SYS_AUTO_ADJ_OF_PRODUCT_QTY_FROM_SUM_OF_MATRIX_QTY_AS_BASIS,
+        PARKING_IN,
+        PARKING_OUT
 	}
 
 	#endregion
@@ -974,15 +980,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}
 		}
@@ -1005,11 +1002,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL = "CALL procProductTagActiveInactive(@ProductID, @ProductListFilterType);";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -1022,15 +1015,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}
 		}
@@ -1439,47 +1423,6 @@ namespace AceSoft.RetailPlus.Data
 			}
 
 			return boRetValue;
-		}
-
-		public void CloseInventory(int intBranchID, long lngCloseByUserID, DateTime dteClosingDate, string strReferenceNo, bool bolUseVariationAsReference)
-		{
-			try
-			{
-				string SQL = "CALL procCloseInventory(@intBranchID, @lngUID, @dteClosingDate, @strReferenceNo, @lngContactID, @strContactCode, @bolUseVariationAsReference);";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				cmd.Parameters.AddWithValue("@intBranchID", intBranchID);
-				cmd.Parameters.AddWithValue("@lngUID", lngCloseByUserID);
-				cmd.Parameters.AddWithValue("@dteClosingDate", dteClosingDate);
-				cmd.Parameters.AddWithValue("@strReferenceNo", strReferenceNo);
-				cmd.Parameters.AddWithValue("@lngContactID", Contacts.DEFAULT_SUPPLIER_ID);
-				cmd.Parameters.AddWithValue("@strContactCode", Contacts.DEFAULT_SUPPLIER_NAME);
-				cmd.Parameters.AddWithValue("@bolUseVariationAsReference", Convert.ToInt16(bolUseVariationAsReference));
-
-				base.ExecuteNonQuery(cmd);
-
-			}
-
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}
 		}
 
 		public void UpdateRID(long ProductID, long RID)
@@ -1932,85 +1875,14 @@ namespace AceSoft.RetailPlus.Data
 
 		private string SQLSelect()
 		{
-			string stSQL = "SELECT " +
-									"a.ProductID, " +
-									"a.ProductCode, " +
-                                    "pkg.PackageID, " +
-									"pkg.BarCode1, " +
-                                    "pkg.BarCode2, " +
-                                    "pkg.BarCode3, " +
-                                    "IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode, " +
-									"a.ProductDesc, " +
-									"a.ProductSubGroupID, " +
-									"b.ProductSubGroupCode, " +
-									"b.ProductSubGroupName, " +
-									"b.ProductGroupID, " +
-									"c.ProductGroupCode, " +
-									"c.ProductGroupName, " +
-									"a.BaseUnitID, " +
-									"d.UnitID, " +
-									"d.UnitCode 'BaseUnitCode', " +
-									"d.UnitName 'BaseUnitName', " +
-									"d.UnitCode, " +
-									"d.UnitName, " +
-									"a.DateCreated, " +
-									"a.Deleted, " +
-									"a.Active, " +
-									"pkg.Price, " +
-                                    "pkg.WSPrice, " +
-                                    "pkg.PurchasePrice, " +
-									"a.PercentageCommision, " +
-									"a.IncludeInSubtotalDiscount, " +
-									"pkg.VAT, " +
-                                    "pkg.EVAT, " +
-                                    "pkg.LocalTax, " +
-                                    "IFNULL(inv.Quantity,0) Quantity, " +
-                                    "fnProductQuantityConvert(a.ProductID, IFNULL(inv.Quantity,0), a.BaseUnitID) AS ConvertedQuantity, " +
-									"a.MinThreshold, " +
-									"a.MaxThreshold, " +
-									"a.RID, " +
-									"a.SupplierID, " +
-									"e.ContactCode AS SupplierCode, " +
-									"e.ContactName AS SupplierName, " +
-									"c.OrderSlipPrinter, " +
-									"a.ChartOfAccountIDPurchase, " +
-									"a.ChartOfAccountIDSold, " +
-									"a.ChartOfAccountIDInventory, " +
-									"a.ChartOfAccountIDTaxPurchase, " +
-									"a.ChartOfAccountIDTaxSold, " +
-									"a.IsItemSold, " +
-									"a.WillPrintProductComposition, " +
-									"a.VariationCount, " +
-                                    "IFNULL(inv.QuantityIN,0) QuantityIN, " +
-                                    "IFNULL(inv.QuantityOUT,0) QuantityOUT, " +
-                                    "IFNULL(inv.ActualQuantity,0) ActualQuantity, " +
-                                    "a.MaxThreshold - IFNULL(inv.Quantity,0) AS ReorderQty, " +
-									"a.RIDMinThreshold, " +
-									"a.RIDMaxThreshold, " +
-                                    "a.RIDMaxThreshold - IFNULL(inv.Quantity,0) AS RIDReorderQty, " +
-									"a.RewardPoints, " +
-                                    "IFNULL(inv.MatrixID,0) MatrixID, " +
-                                    "IFNULL(mtrx.Description,'') MatrixDescription " +
-								"FROM tblProducts a " +
-                                "   INNER JOIN tblProductSubGroup b ON a.ProductSubGroupID = b.ProductSubGroupID " +
-								"   INNER JOIN tblProductGroup c ON b.ProductGroupID = c.ProductGroupID " +
-								"   INNER JOIN tblUnit d ON a.BaseUnitID = d.UnitID " +
-								"   INNER JOIN tblContacts e ON a.SupplierID = e.ContactID " +
-                                "   INNER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID " +
-                                "   LEFT OUTER JOIN tblProductInventory inv ON a.ProductID =  inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
-                                "   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON a.ProductID = mtrx.ProductID AND mtrx.MatrixID = inv.MatrixID " ;
-			return stSQL;
-		}
-		private string SQLSelect(int BranchID)
-		{
             string stSQL = "SELECT " +
                                     "a.ProductID, " +
                                     "a.ProductCode, " +
                                     "pkg.PackageID, " +
+                                    "pkg.BarCode1, " +
+                                    "pkg.BarCode2, " +
+                                    "pkg.BarCode3, " +
                                     "IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode, " +
-							        "pkg.BarCode1, " +
-							        "pkg.BarCode2, " +
-							        "pkg.BarCode3, " +
                                     "a.ProductDesc, " +
                                     "a.ProductSubGroupID, " +
                                     "b.ProductSubGroupCode, " +
@@ -2055,6 +1927,7 @@ namespace AceSoft.RetailPlus.Data
                                     "IFNULL(inv.QuantityIN,0) QuantityIN, " +
                                     "IFNULL(inv.QuantityOUT,0) QuantityOUT, " +
                                     "IFNULL(inv.ActualQuantity,0) ActualQuantity, " +
+                                    "IFNULL(inv.IsLock,0) IsLock, " +
                                     "a.MaxThreshold - IFNULL(inv.Quantity,0) AS ReorderQty, " +
                                     "a.RIDMinThreshold, " +
                                     "a.RIDMaxThreshold, " +
@@ -2068,8 +1941,87 @@ namespace AceSoft.RetailPlus.Data
                                 "   INNER JOIN tblUnit d ON a.BaseUnitID = d.UnitID " +
                                 "   INNER JOIN tblContacts e ON a.SupplierID = e.ContactID " +
                                 "   INNER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID " +
-                                "   LEFT OUTER JOIN tblProductInventory inv ON a.ProductID =  inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
-                                "   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON a.ProductID = mtrx.ProductID AND mtrx.MatrixID = inv.MatrixID " +
+                                "   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND pkg.MatrixID = mtrx.MatrixID " +
+                                "   LEFT OUTER JOIN (" +
+                                "        SELECT BranchID, ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE BranchID=1 GROUP BY BranchID, ProductID, MatrixID, IsLock " +
+						        "    ) inv ON inv.ProductID = a.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) ";
+            //ON a.ProductID =  inv.ProductID AND pkg.MatrixID = inv.MatrixID 
+			return stSQL;
+		}
+		private string SQLSelect(int BranchID)
+		{
+            string stSQL = "SELECT " +
+                                    "a.ProductID, " +
+                                    "a.ProductCode, " +
+                                    "pkg.PackageID, " +
+                                    "IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode, " +
+							        "pkg.BarCode1, " +
+							        "pkg.BarCode2, " +
+							        "pkg.BarCode3, " +
+                                    "a.ProductDesc, " +
+                                    "a.ProductSubGroupID, " +
+                                    "b.ProductSubGroupCode, " +
+                                    "b.ProductSubGroupName, " +
+                                    "b.ProductGroupID, " +
+                                    "c.ProductGroupCode, " +
+                                    "c.ProductGroupName, " +
+                                    "a.BaseUnitID, " +
+                                    "d.UnitID, " +
+                                    "d.UnitCode 'BaseUnitCode', " +
+                                    "d.UnitName 'BaseUnitName', " +
+                                    "d.UnitCode, " +
+                                    "d.UnitName, " +
+                                    "a.DateCreated, " +
+                                    "a.Deleted, " +
+                                    "a.Active, " +
+                                    "pkg.Price, " +
+                                    "pkg.WSPrice, " +
+                                    "pkg.PurchasePrice, " +
+                                    "a.PercentageCommision, " +
+                                    "a.IncludeInSubtotalDiscount, " +
+                                    "pkg.VAT, " +
+                                    "pkg.EVAT, " +
+                                    "pkg.LocalTax, " +
+                                    "IFNULL(inv.Quantity,0) Quantity, " +
+                                    "IFNULL(inv.IsLock,0) IsLock, " +
+                                    "fnProductQuantityConvert(a.ProductID, IFNULL(inv.Quantity,0), a.BaseUnitID) AS ConvertedQuantity, " +
+                                    "a.MinThreshold, " +
+                                    "a.MaxThreshold, " +
+                                    "a.RID, " +
+                                    "a.SupplierID, " +
+                                    "e.ContactCode AS SupplierCode, " +
+                                    "e.ContactName AS SupplierName, " +
+                                    "c.OrderSlipPrinter, " +
+                                    "a.ChartOfAccountIDPurchase, " +
+                                    "a.ChartOfAccountIDSold, " +
+                                    "a.ChartOfAccountIDInventory, " +
+                                    "a.ChartOfAccountIDTaxPurchase, " +
+                                    "a.ChartOfAccountIDTaxSold, " +
+                                    "a.IsItemSold, " +
+                                    "a.WillPrintProductComposition, " +
+                                    "a.VariationCount, " +
+                                    "IFNULL(inv.QuantityIN,0) QuantityIN, " +
+                                    "IFNULL(inv.QuantityOUT,0) QuantityOUT, " +
+                                    "IFNULL(inv.ActualQuantity,0) ActualQuantity, " +
+                                    "a.MaxThreshold - IFNULL(inv.Quantity,0) AS ReorderQty, " +
+                                    "a.RIDMinThreshold, " +
+                                    "a.RIDMaxThreshold, " +
+                                    "a.RIDMaxThreshold - IFNULL(inv.Quantity,0) AS RIDReorderQty, " +
+                                    "a.RewardPoints, " +
+                                    "IFNULL(inv.MatrixID,0) MatrixID, " +
+                                    "IFNULL(mtrx.Description,'') MatrixDescription " +
+                                "FROM tblProducts a " +
+                                "   INNER JOIN tblProductSubGroup b ON a.ProductSubGroupID = b.ProductSubGroupID " +
+                                "   INNER JOIN tblProductGroup c ON b.ProductGroupID = c.ProductGroupID " +
+                                "   INNER JOIN tblUnit d ON a.BaseUnitID = d.UnitID " +
+                                "   INNER JOIN tblContacts e ON a.SupplierID = e.ContactID " +
+                                "   INNER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID " +
+                                //"   LEFT OUTER JOIN tblProductInventory inv ON a.ProductID =  inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
+                                //"   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON a.ProductID = mtrx.ProductID AND mtrx.MatrixID = inv.MatrixID " +
+                                "   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND pkg.MatrixID = mtrx.MatrixID " +
+                                "   LEFT OUTER JOIN (" +
+                                "        SELECT BranchID, ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE BranchID=" + BranchID + " GROUP BY BranchID, ProductID, MatrixID, IsLock " +
+                                "    ) inv ON inv.ProductID = a.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) " +
                                 "WHERE 1=1 ";
 
             stSQL += BranchID == 0 ? "" : "AND IFNULL(inv.BranchID,1) = " + BranchID + " ";
@@ -2136,6 +2088,7 @@ namespace AceSoft.RetailPlus.Data
                                     "pkg.LocalTax, " +
 
                                     "IFNULL(inv.Quantity,0) Quantity, " +
+                                    "IFNULL(inv.IsLock,0) IsLock, " +
                                     //"fnProductQuantityConvert(inv.ProductID, inv.Quantity, prd.BaseUnitID) AS ConvertedQuantity, " +
 
                                     "IFNULL(inv.ActualQuantity,0) ActualQuantity, " +
@@ -2143,9 +2096,14 @@ namespace AceSoft.RetailPlus.Data
 
 								"FROM tblProducts prd " +
                                 "   INNER JOIN tblProductPackage pkg ON prd.ProductID = pkg.ProductID " +
-                                "   LEFT OUTER JOIN tblProductInventory inv ON prd.ProductID = inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
-                                "   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON prd.ProductID = mtrx.ProductID AND mtrx.MatrixID = inv.MatrixID " +
+                                //"   LEFT OUTER JOIN tblProductInventory inv ON prd.ProductID = inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
+                                //"   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON prd.ProductID = mtrx.ProductID AND mtrx.MatrixID = inv.MatrixID " +
+                                "     LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID " +
+                                "     LEFT OUTER JOIN (" +
+                                "          SELECT BranchID, ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE BranchID=" + BranchID + " GROUP BY BranchID, ProductID, MatrixID, IsLock " +
+                                "      ) inv ON inv.ProductID = a.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) " +
 								"WHERE prd.Deleted = 0 ";
+            
             stSQL += BranchID == 0 ? "" : "AND IFNULL(inv.BranchID,1) = " + BranchID.ToString() + " ";
 
 			return stSQL;
@@ -2626,6 +2584,7 @@ namespace AceSoft.RetailPlus.Data
 					Details.LocalTax = myReader.GetDecimal("LocalTax");
 					Details.Quantity = myReader.GetDecimal("Quantity");
 					Details.ConvertedQuantity = "" + myReader["ConvertedQuantity"].ToString();
+                    Details.IsLock = myReader.GetBoolean("IsLock");
 					Details.MinThreshold = myReader.GetDecimal("MinThreshold");
 					Details.MaxThreshold = myReader.GetDecimal("MaxThreshold");
 					Details.RID = myReader.GetInt64("RID");
@@ -2704,6 +2663,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.LocalTax = Decimal.Parse(dr["LocalTax"].ToString());
                     Details.Quantity = Decimal.Parse(dr["Quantity"].ToString());
                     Details.ConvertedQuantity = dr["ConvertedQuantity"].ToString();
+                    Details.IsLock = Convert.ToBoolean(int.Parse(dr["IsLock"].ToString()));
                     Details.MinThreshold = Decimal.Parse(dr["MinThreshold"].ToString());
                     Details.MaxThreshold = Decimal.Parse(dr["MaxThreshold"].ToString());
                     Details.RID = Int64.Parse(dr["RID"].ToString());

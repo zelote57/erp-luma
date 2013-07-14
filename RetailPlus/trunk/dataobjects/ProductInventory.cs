@@ -67,5 +67,64 @@ namespace AceSoft.RetailPlus.Data
         }
 
 
+        /// <summary>
+        /// Lemu - 06-20-2011
+        /// </summary>
+        /// <param name="ProductID">Put zero(0) if you want to update all products</param>
+        /// <param name="Quantity"></param>
+        /// <returns></returns>
+        public bool UpdateActualQuantity(int BranchID, long lngProductID, long lngMatrixID, decimal decQuantity)
+        {
+            bool boRetValue = false;
+            try
+            {
+                string SQL = "CALL procProductUpdateActualQuantity(@BranchID, @lngProductID, @lngMatrixID, @decQuantity);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@lngProductID", lngProductID);
+                cmd.Parameters.AddWithValue("@lngMatrixID", lngMatrixID);
+                cmd.Parameters.AddWithValue("@decQuantity", decQuantity);
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+
+            return boRetValue;
+        }
+
+        public void CloseInventory(int intBranchID, long lngCloseByUserID, DateTime dteClosingDate, string strReferenceNo, long lngSupplierID, string strContactCode)
+        {
+            try
+            {
+                string SQL = "CALL procCloseInventory(@intBranchID, @lngUID, @dteClosingDate, @strReferenceNo, @lngContactID, @strContactCode);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@intBranchID", intBranchID);
+                cmd.Parameters.AddWithValue("@lngUID", lngCloseByUserID);
+                cmd.Parameters.AddWithValue("@dteClosingDate", dteClosingDate);
+                cmd.Parameters.AddWithValue("@strReferenceNo", strReferenceNo);
+                cmd.Parameters.AddWithValue("@lngContactID", lngSupplierID);
+                cmd.Parameters.AddWithValue("@strContactCode", strContactCode);
+
+                base.ExecuteNonQuery(cmd);
+
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
     }
 }

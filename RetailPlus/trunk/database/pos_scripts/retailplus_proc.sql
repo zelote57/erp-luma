@@ -2839,7 +2839,6 @@ BEGIN
 	EXECUTE strCmd;
 	DEALLOCATE PREPARE strCmd;
 	
-	
 END;
 GO
 delimiter ;
@@ -2847,181 +2846,6 @@ delimiter ;
 /*********************************
 call procTransactionRelease(1,1,9,1,'Administrator');
 *********************************/
-
-/**************************************************************
-
-	procProductUpdateActualQuantity
-	Lemuel E. Aceron
-	March 14, 2009
-
-	CALL procProductUpdateActualQuantity();
-
-**************************************************************/
-delimiter GO
-DROP PROCEDURE IF EXISTS procProductUpdateActualQuantity
-GO
-
-create procedure procProductUpdateActualQuantity(
-						IN intBranchID INT(4),
-						IN lngProductID bigint,
-						IN decQuantity numeric)
-BEGIN
-	IF (lngProductID = 0) THEN
-		UPDATE tblBranchInventory SET ActualQuantity = decQuantity AND BranchID = intBranchID;
-	ELSE
-		UPDATE tblBranchInventory SET ActualQuantity = decQuantity WHERE ProductID = lngProductID AND BranchID = intBranchID;
-	END IF;
-	
-	IF (lngProductID = 0) THEN
-		UPDATE tblProducts SET ActualQuantity = (SELECT SUM(ActualQuantity) FROM tblBranchInventory z WHERE tblProducts.ProductID = z.ProductID);
-	ELSE
-		UPDATE tblProducts SET ActualQuantity = (SELECT SUM(ActualQuantity) FROM tblBranchInventory z WHERE tblProducts.ProductID = z.ProductID) WHERE ProductID = lngProductID;
-	END IF;
-END;
-GO
-delimiter ;
-
-/**************************************************************
-
-	procCloseInventory
-	Lemuel E. Aceron
-	March 14, 2009
-
-	CALL procCloseInventory(1, '2011-07-26', '00001', 1, 'RetailPlus', true);
-
-**************************************************************/
-delimiter GO
-DROP PROCEDURE IF EXISTS procCloseInventory
-GO
-
-create procedure procCloseInventory(IN intBranchID INT(4),
-									IN lngUID bigint, 
-									IN dteClosingDate datetime,
-									IN strReferenceNo varchar(30),
-									IN lngContactID bigint,
-									IN strContactCode varchar(150),
-									IN bolUseVariationAsReference TINYINT(1))
-BEGIN
-	
-	DECLARE lngProductID, lngMatrixID BIGINT DEFAULT 0;
-	DECLARE decProductQuantity, decProductActualQuantity, decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
-	DECLARE decMinThreshold, decMaxThreshold, decPurchasePrice DECIMAL(18,3) DEFAULT 0;
-	DECLARE strProductCode VARCHAR(30) DEFAULT '';
-	DECLARE strDescription VARCHAR(50) DEFAULT '';
-	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
-	DECLARE dtePostingDateFrom, dtePostingDateTo DATETIME;
-	DECLARE strRemarks VARCHAR(100) DEFAULT '';
-	DECLARE intUnitID INT DEFAULT 0;
-	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
-	DECLARE done INT DEFAULT 0;
-	DECLARE lngCtr, lngCount bigint DEFAULT 0;
-	DECLARE curItems CURSOR FOR SELECT ProductID, Quantity, ActualQuantity, ProductCode, ProductDesc, a.BaseUnitID, UnitCode, a.MinThreshold, a.MaxThreshold, PurchasePrice 
-								FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID
-								WHERE Quantity <> ActualQuantity ; 
-	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-	
-	SELECT COUNT(*) INTO lngCount FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE Quantity <> ActualQuantity;
-	
-	--	get the posting dates
-	SELECT PostingDateFrom, PostingDateTo INTO dtePostingDateFrom, dtePostingDateTo FROM tblERPConfig;
-	
-	INSERT INTO tblInventory (BranchID, PostingDateFrom, PostingDateTo, PostingDate, 
-									ReferenceNo, ContactID, ContactCode, 
-									ProductID, ProductCode, VariationMatrixID, MatrixDescription, 
-									ClosingQuantity, ClosingActualQuantity, ClosingVAT, ClosingCost, PurchasePrice)  
-									SELECT intBranchID, dtePostingDateFrom, dtePostingDateTo, dteClosingDate,
-										strReferenceNo, lngContactID, strContactCode, 
-										ProductID, ProductCode, 0, '',
-										Quantity, ActualQuantity, 
-										PurchasePrice * ActualQuantity * 0.12, 
-										PurchasePrice * ActualQuantity, PurchasePrice
-									FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
-										WHERE a.Deleted = 0 AND Active = 1 AND Quantity = ActualQuantity;
-									
-	OPEN curItems;
-	curItems: LOOP
-		SET lngCtr = lngCtr + 1; 
-		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
-		
-		FETCH curItems INTO lngProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
-		-- For testing: SELECT lngProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
-		
-		-- STEP 1: get the last Matrix to be udpated
-		SET lngMatrixID = 0; SET strMatrixDescription = '';
-		
-		SELECT MatrixID, Description INTO lngMatrixID, strMatrixDescription FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID ORDER BY MatrixID DESC LIMIT 1;
-		
-		IF (ISNULL(lngMatrixID)) THEN SET lngMatrixID = 0; END IF; 
-		IF (ISNULL(strMatrixDescription)) THEN SET strMatrixDescription = ''; END IF;
-		
-		-- STEP 2: get the total Quantity of all Matrix
-		SET decMatrixTotalQuantity = 0;
-		IF (lngMatrixID <> 0) THEN SELECT SUM(Quantity) INTO decMatrixTotalQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID; END IF;
-		
-		-- STEP 3: Overwrite the PurchasePrice from tblProductBaseVariationsMatrix if with Matrix
-		IF (lngMatrixID <> 0) THEN SELECT AVG(PurchasePrice) INTO decPurchasePrice FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID; END IF;
-		
-		-- For testing: SELECT lngProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
-		
-		-- STEP 4: Insert to tblInventory
-		INSERT INTO tblInventory (intBranchID, PostingDateFrom, PostingDateTo, PostingDate, 
-									ReferenceNo, ContactID, ContactCode, 
-									ProductID, ProductCode, VariationMatrixID, MatrixDescription, 
-									ClosingQuantity, ClosingActualQuantity, ClosingVAT, ClosingCost, PurchasePrice) VALUES (
-									dtePostingDateFrom, dtePostingDateTo, dteClosingDate,
-									strReferenceNo, lngContactID, strContactCode, 
-									lngProductID, strProductCode, 0, '',
-									decProductQuantity, decProductActualQuantity, 
-									decPurchasePrice * decProductActualQuantity * 0.12, 
-									decPurchasePrice * decProductActualQuantity, decPurchasePrice);
-		
-		-- STEP 6: IF Matrix Total Quantity is not equal to Product Quantity
-		--		   auto adjust the last Matrix (using matrixid) quantity of the correct quantity
-		IF (bolUseVariationAsReference = 0) THEN
-			IF (decMatrixTotalQuantity <> decProductActualQuantity) THEN
-				UPDATE tblProductBaseVariationsMatrix SET Quantity = decProductActualQuantity - decMatrixTotalQuantity + Quantity WHERE MatrixID = lngMatrixID ;
-			END IF;
-		ELSE
-			UPDATE tblProductBaseVariationsMatrix SET Quantity = ActualQuantity WHERE ProductID = lngProductID;
-		END IF;
-		
-		-- STEP 7: set the value of stRemarks, see the administrator for the list of constant remarks
-		SET strRemarks = 'SYSTEM AUTO ADJUSTMENT OF PRODUCT QTY FROM INVENTORY CLOSING-ACTUAL PRODUCT QTY AS BASIS';
-			
-		-- STEP 8: Insert to product movement history
-		CALL procProductMovementInsert(lngProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
-										decProductQuantity, decProductActualQuantity -decProductQuantity, decProductActualQuantity, decProductActualQuantity, 
-										strUnitCode, strRemarks, now(), strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0);
-		
-		-- STEP 9: Insert to inventory adjustment
-		CALL procInvAdjustmentInsert(lngUID, dteClosingDate, lngProductID, strProductCode, strDescription, lngMatrixID,
-												strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductActualQuantity, 
-												decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strReferenceNo));
-		
-		-- STEP 10: auto adjust the quantity based on actual quantity
-		UPDATE tblProducts SET Quantity = decProductActualQuantity WHERE ProductID = lngProductID;
-		
-		SET lngProductID = 0; SET strProductCode = ''; 
-		SET lngMatrixID = 0; SET strMatrixDescription = '';
-		SET decPurchasePrice = 0; SET decProductQuantity = 0; SET decProductActualQuantity = 0;
-			
-	END LOOP curItems;
-	CLOSE curItems;
-	
-	UPDATE tblProducts SET QuantityIN = 0;
-	UPDATE tblProducts SET QuantityOUT = 0;
-	
-	UPDATE tblProductBaseVariationsMatrix SET QuantityIN = 0;
-	UPDATE tblProductBaseVariationsMatrix SET QuantityOUT = 0;
-	
-	
-	IF (bolUseVariationAsReference = 0) THEN
-		CALL procSyncProductVariationFromQuantityAllItem();
-	END IF;
-END;
-GO
-delimiter ;
-
 
 /**************************************************************
 
@@ -3035,96 +2859,14 @@ delimiter ;
 	- Added Insert to product movement history
 	- Added Insert to inventory adjustment
 	
+	Jul 14, 2013 : Lemu
+	- Remove this as replacement for the tblProductInventory. No need to synchronize vairation vs. product quantity
 **************************************************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procSyncProductVariationFromQuantityPerItem
 GO
-
-create procedure procSyncProductVariationFromQuantityPerItem(IN lngProductID BIGINT, IN intBranchID INT)
-BEGIN
-	DECLARE strTransactionNo VARCHAR(30) DEFAULT '';
-	DECLARE lngMatrixID BIGINT DEFAULT 0;
-	DECLARE strProductCode VARCHAR(30) DEFAULT '';
-	DECLARE strProductDesc VARCHAR(50) DEFAULT '';
-	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
-	DECLARE intUnitID INT DEFAULT 0;
-	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
-	DECLARE decProductQuantity, decProductActualQuantity, decMinThreshold, decMaxThreshold DECIMAL(18,3) DEFAULT 0;
-	DECLARE decMatrixQuantity, decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
-	DECLARE strRemarks VARCHAR(100) DEFAULT '';
-	
-	-- STEP 1: get the last Matrix to be udpated
-	SET lngMatrixID = 0; SET strMatrixDescription = '';
-	
-	-- Set the value of strMatrixDescription, decMatrixQuantity
-	/********** update main product **********/
-	SELECT MatrixID, Description, Quantity INTO lngMatrixID, strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID ORDER BY MatrixID DESC LIMIT 1;
-	/********** end update main product **********/
-	
-	SELECT a.MatrixID, Description, b.Quantity INTO lngMatrixID, strMatrixDescription, decMatrixQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID AND a.ProductID = b.ProductID WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND BranchID = intBranchID ORDER BY MatrixID DESC LIMIT 1;
-	
-	IF (ISNULL(lngMatrixID)) THEN SET lngMatrixID = 0; END IF; 
-	IF (ISNULL(strMatrixDescription)) THEN SET strMatrixDescription = ''; END IF;
-	
-	SET decMatrixTotalQuantity = 0;
-	IF (lngMatrixID <> 0) THEN
-			
-		/********** update main product **********/
-		-- STEP 2.a: get the total Quantity of all Matrix
-		SELECT SUM(Quantity) INTO decMatrixTotalQuantity FROM tblProductBaseVariationsMatrix WHERE Deleted = 0 AND ProductID = lngProductID; 
-		
-		-- STEP 2.b: get the Quantity of product
-		--			 Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-		SELECT ProductCode, ProductDesc, Quantity, ActualQuantity, BaseUnitID, UnitCode, MinThreshold, MaxThreshold INTO 
-				strProductCode, strProductDesc, decProductQuantity, decProductActualQuantity, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold
-		FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE ProductID = lngProductID;
-		
-		/********** end update main product **********/
-		
-		-- STEP 2.a: get the total Quantity of all Matrix
-		SELECT SUM(b.Quantity) INTO decMatrixTotalQuantity FROM tblProductBaseVariationsMatrix a INNER JOIN tblBranchInventoryMatrix b ON a.MatrixID = b.MatrixID AND a.ProductID = b.ProductID AND a.ProductID = lngProductID AND BranchID = intBranchID; 
-		
-		-- STEP 2.b: get the Quantity of product
-		--			 Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
-		SELECT ProductCode, ProductDesc, c.Quantity, c.ActualQuantity, BaseUnitID, UnitCode, MinThreshold, MaxThreshold INTO 
-				strProductCode, strProductDesc, decProductQuantity, decProductActualQuantity, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold
-		FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
-		INNER JOIN tblBranchInventory c ON a.ProductID = c.ProductID WHERE a.ProductID = lngProductID AND BranchID = intBranchID;
-		
-		
-		-- STEP 3: IF Matrix Total Quantity is not equal to Product Quantity
-		--		   auto adjust the last Matrix (using matrixid) quantity of the correct quantity
-		IF (decMatrixTotalQuantity <> decProductQuantity) THEN
-			
-			-- STEP 3.a: set values for tblProductMovement history
-			-- Set the value of strTransactionNo
-			SET strTransactionNo = (SELECT CONCAT('SAADJ-', EndingTransactionNo) AS strTransactionNo FROM tblTerminalReport LIMIT 1);
-			
-			-- set the value of stRemarks, see the administrator for the list of constant remarks
-			SET strRemarks = 'SYSTEM AUTO ADJUSTMENT OF MATRIX QTY FROM PRODUCT QTY AS BASIS';
-				
-			-- STEP 3.b: Insert to product movement history
-			CALL procProductMovementInsert(lngProductID, strProductCode, strProductDesc, lngMatrixID, strMatrixDescription, 
-											decProductQuantity, 0, decProductQuantity, decProductQuantity - decMatrixTotalQuantity + decMatrixQuantity, 
-											strUnitCode, strRemarks, now(), strTransactionNo, 'SYSTEM', intBranchID, intBranchID, 0);
-			
-			-- STEP 3.c: Insert to inventory adjustment
-			CALL procInvAdjustmentInsert(1, now(), lngProductID, strProductCode, strProductDesc, lngMatrixID,
-														strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductQuantity, 
-														decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strTransactionNo));
-														
-			-- STEP 3.c: Do the actual adjustment
-			/********** update main product **********/
-			UPDATE tblProductBaseVariationsMatrix SET Quantity = decProductQuantity - decMatrixTotalQuantity + Quantity WHERE MatrixID = lngMatrixID ;
-			/********** end update main product **********/
-			
-			UPDATE tblBranchInventoryMatrix SET Quantity = decProductQuantity - decMatrixTotalQuantity + Quantity WHERE MatrixID = lngMatrixID AND BranchID = intBranchID;
-
-		END IF;
-	END IF;
-END;
-GO
 delimiter ; 
+
 
 /**************************************************************
 
@@ -3137,43 +2879,14 @@ delimiter ;
 	Mar 14, 2011 : Lemu
 	- create this procedure
 	
+	July 14, 2013 : Lemu
+	- remove this as replaced by tblProductInventory. No need to synchronize product quantity
+
 **************************************************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procSyncProductVariationFromQuantityAllItem
 GO
-
-create procedure procSyncProductVariationFromQuantityAllItem(IN intBranchID INT(4))
-BEGIN
-	DECLARE lngProductID BIGINT DEFAULT 0;
-	DECLARE done INT DEFAULT 0;
-	DECLARE lngCtr, lngCount BIGINT DEFAULT 0;
-	DECLARE curItems CURSOR FOR SELECT ProductID FROM tblProducts a
-									WHERE Quantity <> (SELECT SUM(Quantity) FROM tblProductBaseVariationsMatrix b WHERE b.Deleted = 0 AND a.ProductID = b.ProductID) ; 
-	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-	
-	SELECT COUNT(*) INTO lngCount FROM tblProducts a INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID WHERE Quantity <> (SELECT SUM(Quantity) FROM tblProductBaseVariationsMatrix b WHERE b.Deleted = 0 AND a.ProductID = b.ProductID) ; 
-	
-	OPEN curItems;
-	curItems: LOOP
-		SET lngCtr = lngCtr + 1; 
-		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
-		
-		-- Fetch the ProductID to be processed 
-		FETCH curItems INTO lngProductID;
-		
-		-- Process the actual sync of product
-		CALL procSyncProductVariationFromQuantityPerItem(lngProductID, intBranchID);
-		
-		-- reset the ProductID to be processed
-		SET lngProductID = 0;
-			
-	END LOOP curItems;
-	CLOSE curItems;
-	
-END;
-GO
 delimiter ;
-
 
 /********************************************
 	procProductMovementInsert
@@ -3417,6 +3130,40 @@ END;
 GO
 delimiter ;
 
+/**************************************************************
+
+	procProductUpdateActualQuantity
+	Lemuel E. Aceron
+	Oct 24, 2011
+
+	CALL procProductUpdateActualQuantity();
+	
+	Jul 14, 2013: replace procProductBaseVariationUpdateActualQuantity
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductUpdateActualQuantity
+GO
+
+create procedure procProductUpdateActualQuantity(
+						IN intBranchID INT(4),
+						IN lngProductID bigint,
+						IN lngMatrixID bigint,
+						IN decQuantity numeric)
+BEGIN
+	
+	IF EXISTS(SELECT ActualQuantity FROM tblProductInventory WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN 
+		UPDATE tblProductInventory SET
+			ActualQuantity	= decQuantity
+		WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID;
+	ELSE
+		INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, ActualQuantity)
+			VALUES(intBranchID, lngProductID, lngMatrixID, decQuantity);
+	END IF;
+	
+END;
+GO
+delimiter ;
 
 /**************************************************************
 
@@ -4285,35 +4032,6 @@ END;
 GO
 delimiter ;
 
-/**************************************************************
-
-	procProductBaseVariationUpdateActualQuantity
-	Lemuel E. Aceron
-	Oct 24, 2011
-
-	CALL procProductBaseVariationUpdateActualQuantity();
-
-**************************************************************/
-delimiter GO
-DROP PROCEDURE IF EXISTS procProductBaseVariationUpdateActualQuantity
-GO
-
-create procedure procProductBaseVariationUpdateActualQuantity(
-						IN lngProductID bigint,
-						IN lngMatrixID bigint,
-						IN decQuantity numeric)
-BEGIN
-	IF (lngMatrixID != 0) THEN
-		UPDATE tblProductBaseVariationsMatrix SET ActualQuantity = decQuantity WHERE MatrixID = lngMatrixID;
-	END IF;
-	
-	UPDATE tblProducts SET 
-		ActualQuantity = (SELECT IFNULL(SUM(ActualQuantity),0) FROM tblProductBaseVariationsMatrix a WHERE a.Deleted = 0 AND a.ProductID = tblProducts.ProductID) 
-	WHERE ProductID = lngProductID;
-	
-END;
-GO
-delimiter ;
 
 /**************************************************************
 	procProductBranchInventoryInsert
@@ -5094,6 +4812,7 @@ BEGIN
 							,IFNULL(inv.QuantityIN,0) QuantityIN
 							,IFNULL(inv.QuantityOUT,0) QuantityOUT
 							,IFNULL(inv.ActualQuantity,0) ActualQuantity
+							,IFNULL(inv.IsLock,0) IsLock
 
 							,prd.WillPrintProductComposition
 
@@ -5113,8 +4832,8 @@ BEGIN
 							,prd.ChartOfAccountIDTaxSold
 
 							,IFNULL(mtrx.MatrixID,0) MatrixID
-							,CONCAT(prd.ProductDesc, '':'' , mtrx.Description) AS VariationDesc
-							,mtrx.Description AS MatrixDescription
+							,CONCAT(prd.ProductDesc, '':'' , IFNULL(mtrx.Description,'''')) AS VariationDesc
+							,IFNULL(mtrx.Description,'''') AS MatrixDescription
 						FROM tblProducts prd 
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
@@ -5125,7 +4844,7 @@ BEGIN
 														AND pkg.Quantity = 1 
 						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
 						LEFT OUTER JOIN (
-							SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, MatrixID
+							SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, MatrixID, IsLock
 						) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
 						WHERE prd.deleted = 0 AND IFNULL(mtrx.deleted, 0) = 0 ');
 	
@@ -5248,6 +4967,7 @@ BEGIN
 							,IFNULL(inv.Quantity,0) Quantity
 							,IFNULL(inv.ActualQuantity,0) ActualQuantity
 							,IF(ISNULL(inv.Quantity),0, fnProductQuantityConvert(prd.ProductID, inv.Quantity, prd.BaseUnitID))  ConvertedQuantity
+							,IFNULL(inv.IsLock,0) IsLock
 
 						FROM tblProducts prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
@@ -5258,7 +4978,7 @@ BEGIN
 														AND pkg.Quantity = 1
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
 						LEFT OUTER JOIN (
-							SELECT ProductID, SUM(Quantity) Quantity, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID
+							SELECT ProductID, SUM(Quantity) Quantity, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, IsLock
 						) inv ON inv.ProductID = prd.ProductID 
 						WHERE prd.deleted = 0 ');
 
@@ -5461,6 +5181,7 @@ BEGIN
 							,IFNULL(inv.QuantityIN,0) QuantityIN
 							,IFNULL(inv.QuantityOUT,0) QuantityOUT
 							,IFNULL(inv.ActualQuantity,0) ActualQuantity
+							,IFNULL(inv.IsLock,0) IsLock
 
 							,prd.WillPrintProductComposition
 
@@ -5492,7 +5213,7 @@ BEGIN
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
 						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON prd.productID = mtrx.ProductID AND pkg.MatrixID =  mtrx.MatrixID
 						LEFT OUTER JOIN (
-							SELECT ProductID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID
+							SELECT ProductID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, IsLock
 						) inv ON inv.ProductID = prd.ProductID 
 						WHERE prd.deleted = 0 ');
 
@@ -5601,6 +5322,7 @@ BEGIN
 							,IFNULL(inv.QuantityIN,0) QuantityIN
 							,IFNULL(inv.QuantityOUT,0) QuantityOUT
 							,IFNULL(inv.ActualQuantity,0) ActualQuantity
+							,IFNULL(inv.IsLock,0) IsLock
 
 							,prd.WillPrintProductComposition
 
@@ -5632,7 +5354,7 @@ BEGIN
 														AND pkg.Quantity = 1 AND pkg.MatrixID = mtrx.MatrixID
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
 						LEFT OUTER JOIN (
-							SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, MatrixID
+							SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, MatrixID, IsLock
 						) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = mtrx.MatrixID
 						WHERE mtrx.deleted = 0 ');
 	
@@ -5842,6 +5564,148 @@ BEGIN
 	PREPARE cmd FROM @SQL;
 	EXECUTE cmd;
 	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;
+
+
+
+/**************************************************************
+
+	procCloseInventory
+	Lemuel E. Aceron
+	March 14, 2009
+
+	CALL procCloseInventory(1, 1, '2013-07-26', '00001', 2565, 'RetailPlus');
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procCloseInventory
+GO
+
+create procedure procCloseInventory(IN intBranchID INT(4),
+									IN lngUID bigint, 
+									IN dteClosingDate datetime,
+									IN strReferenceNo varchar(30),
+									IN lngContactID bigint,
+									IN strContactCode varchar(150))
+BEGIN
+	
+	DECLARE lngProductID, lngMatrixID BIGINT DEFAULT 0;
+	DECLARE decProductQuantity, decProductActualQuantity, decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE decMinThreshold, decMaxThreshold, decPurchasePrice DECIMAL(18,3) DEFAULT 0;
+	DECLARE strProductCode VARCHAR(30) DEFAULT '';
+	DECLARE strDescription VARCHAR(50) DEFAULT '';
+	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
+	DECLARE dtePostingDateFrom, dtePostingDateTo DATETIME;
+	DECLARE strRemarks VARCHAR(100) DEFAULT '';
+	DECLARE intUnitID INT DEFAULT 0;
+	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
+	DECLARE done INT DEFAULT 0;
+	DECLARE lngCtr, lngCount bigint DEFAULT 0;
+	DECLARE curItems CURSOR FOR SELECT prd.ProductID, IFNULL(inv.Quantity,0) Quantity, IFNULL(inv.ActualQuantity,0) ActualQuantity, prd.ProductCode, prd.ProductDesc, IFNULL(mtrx.MatrixID,0) MatrixID, IFNULL(mtrx.Description,'') AS MatrixDescription, prd.BaseUnitID, unt.UnitCode, prd.MinThreshold, prd.MaxThreshold, pkg.PurchasePrice 
+								FROM tblProducts prd
+								INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+								INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+																AND prd.BaseUnitID = pkg.UnitID
+																AND pkg.Quantity = 1 
+								LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
+								LEFT OUTER JOIN (
+									SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE BranchID=intBranchID GROUP BY ProductID, MatrixID
+								) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
+								WHERE prd.SupplierID = lngContactID AND prd.Deleted = 0;
+								
+								-- AND IFNULL(inv.Quantity,0) <> IFNULL(inv.ActualQuantity,0)
+									
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+	
+	SELECT COUNT(*) INTO lngCount FROM tblProducts prd
+								INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+								INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+																AND prd.BaseUnitID = pkg.UnitID
+																AND pkg.Quantity = 1 
+								LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
+								LEFT OUTER JOIN (
+									SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE BranchID=intBranchID GROUP BY ProductID, MatrixID
+								) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
+								WHERE prd.SupplierID = lngContactID AND prd.Deleted = 0;
+
+								-- AND IFNULL(inv.Quantity,0) <> IFNULL(inv.ActualQuantity,0)
+	
+	--	get the posting dates
+	SELECT PostingDateFrom, PostingDateTo INTO dtePostingDateFrom, dtePostingDateTo FROM tblERPConfig;
+	
+	/*
+	INSERT INTO tblInventory (BranchID, PostingDateFrom, PostingDateTo, PostingDate, 
+									ReferenceNo, ContactID, ContactCode, 
+									ProductID, ProductCode, VariationMatrixID, MatrixDescription, 
+									ClosingQuantity, ClosingActualQuantity, ClosingVAT, ClosingCost, PurchasePrice)  
+									SELECT intBranchID, dtePostingDateFrom, dtePostingDateTo, dteClosingDate,
+										strReferenceNo, lngContactID, strContactCode, 
+										prd.ProductID, prd.ProductCode, IFNULL(mtrx.MatrixID,0) MatrixID, IFNULL(mtrx.Description,'') AS MatrixDescription,
+										IFNULL(inv.Quantity,0) Quantity, IFNULL(inv.ActualQuantity,0) ActualQuantity, 
+										pkg.PurchasePrice * IFNULL(inv.ActualQuantity,0) * 0.12, 
+										pkg.PurchasePrice * IFNULL(inv.ActualQuantity,0), PurchasePrice
+									FROM tblProducts prd
+									INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+									INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+																	AND prd.BaseUnitID = pkg.UnitID
+																	AND pkg.Quantity = 1 
+									LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
+									LEFT OUTER JOIN (
+										SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE BranchID=intBranchID GROUP BY ProductID, MatrixID
+									) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
+									WHERE IFNULL(inv.Quantity,0) <> IFNULL(inv.ActualQuantity,0)
+										AND prd.SupplierID = lngContactID AND prd.Deleted = 0;
+	*/						
+	-- STEP 7: set the value of stRemarks, see the administrator for the list of constant remarks
+	SET strRemarks = 'SYSTEM AUTO ADJUSTMENT OF PRODUCT QTY FROM INVENTORY CLOSING-ACTUAL';
+
+	OPEN curItems;
+	curItems: LOOP
+		SET lngCtr = lngCtr + 1; 
+		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
+		
+		FETCH curItems INTO lngProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
+		-- For testing: SELECT lngProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
+		
+		-- STEP 1: Insert to tblInventory
+		INSERT INTO tblInventory (BranchID, PostingDateFrom, PostingDateTo, PostingDate, 
+									ReferenceNo, ContactID, ContactCode, 
+									ProductID, ProductCode, VariationMatrixID, MatrixDescription, 
+									ClosingQuantity, ClosingActualQuantity, ClosingVAT, ClosingCost, PurchasePrice) VALUES (
+									intBranchID, dtePostingDateFrom, dtePostingDateTo, dteClosingDate,
+									strReferenceNo, lngContactID, strContactCode, 
+									lngProductID, strProductCode, lngMatrixID, strMatrixDescription,
+									decProductQuantity, decProductActualQuantity, 
+									decPurchasePrice * decProductActualQuantity * 0.12, 
+									decPurchasePrice * decProductActualQuantity, decPurchasePrice);
+					
+		-- STEP 2: Insert to product movement history
+		CALL procProductMovementInsert(lngProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
+										decProductQuantity, decProductActualQuantity -decProductQuantity, decProductActualQuantity, decProductActualQuantity, 
+										strUnitCode, strRemarks, now(), strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0);
+		
+		-- STEP 3: Insert to inventory adjustment
+		CALL procInvAdjustmentInsert(lngUID, dteClosingDate, lngProductID, strProductCode, strDescription, lngMatrixID,
+												strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductActualQuantity, 
+												decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strReferenceNo));
+		
+		-- STEP 4: auto adjust the quantity based on actual quantity
+		UPDATE tblProductInventory SET Quantity = decProductActualQuantity WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+		
+		
+		UPDATE tblProductInventory SET QuantityIN = 0 WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET QuantityOUT = 0 WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+
+		SET lngProductID = 0; SET strProductCode = ''; 
+		SET lngMatrixID = 0; SET strMatrixDescription = '';
+		SET decPurchasePrice = 0; SET decProductQuantity = 0; SET decProductActualQuantity = 0;
+			
+	END LOOP curItems;
+	CLOSE curItems;
+	
 
 END;
 GO

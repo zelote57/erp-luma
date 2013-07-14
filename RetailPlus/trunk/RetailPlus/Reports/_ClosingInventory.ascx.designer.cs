@@ -148,6 +148,15 @@ namespace AceSoft.RetailPlus.Reports {
         protected global::System.Web.UI.WebControls.ImageButton cmdSearch;
         
         /// <summary>
+        /// cboContact control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboContact;
+        
+        /// <summary>
         /// cboGroup control.
         /// </summary>
         /// <remarks>
@@ -155,15 +164,6 @@ namespace AceSoft.RetailPlus.Reports {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList cboGroup;
-        
-        /// <summary>
-        /// cboSubGroup control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboSubGroup;
         
         /// <summary>
         /// chkIncludeShortOverProducts control.

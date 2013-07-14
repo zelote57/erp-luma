@@ -13,60 +13,6 @@ namespace AceSoft.RetailPlus.Inventory {
     public partial class @__CloseInventoryDetailed {
         
         /// <summary>
-        /// imgSaveActualQuantity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgSaveActualQuantity;
-        
-        /// <summary>
-        /// cmdSaveActualQuantity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSaveActualQuantity;
-        
-        /// <summary>
-        /// imgLockUnlockProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgLockUnlockProduct;
-        
-        /// <summary>
-        /// cmdLockUnlockProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdLockUnlockProduct;
-        
-        /// <summary>
-        /// imgZeroOutActualQuantity1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgZeroOutActualQuantity1;
-        
-        /// <summary>
-        /// cmdZeroOutActualQuantity1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdZeroOutActualQuantity1;
-        
-        /// <summary>
         /// lblDataCount1 control.
         /// </summary>
         /// <remarks>
@@ -130,6 +76,24 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.ImageButton imgContactCodeSearch;
         
         /// <summary>
+        /// imgLockUnlockProduct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgLockUnlockProduct;
+        
+        /// <summary>
+        /// cmdLockUnlockProduct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdLockUnlockProduct;
+        
+        /// <summary>
         /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>
@@ -148,40 +112,22 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.DataList lstItem;
         
         /// <summary>
-        /// imgSaveActualQuantity1 control.
+        /// imgSaveActualQuantity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgSaveActualQuantity1;
+        protected global::System.Web.UI.WebControls.ImageButton imgSaveActualQuantity;
         
         /// <summary>
-        /// cmdSaveActualQuantity1 control.
+        /// cmdSaveActualQuantity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSaveActualQuantity1;
-        
-        /// <summary>
-        /// imgLockUnlockProduct1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgLockUnlockProduct1;
-        
-        /// <summary>
-        /// cmdLockUnlockProduct1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdLockUnlockProduct1;
+        protected global::System.Web.UI.WebControls.LinkButton cmdSaveActualQuantity;
         
         /// <summary>
         /// imgZeroOutActualQuantity control.

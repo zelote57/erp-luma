@@ -24,6 +24,9 @@ namespace AceSoft.RetailPlus.Reports
 				lblReferrer.Text = Request.UrlReferrer.ToString();
 				LoadOptions();
                 Session["ReportDocument"] = null;
+
+                if (Request.QueryString["refno"] != null)
+                    GenerateHTML();
             }
         }
 
@@ -40,36 +43,52 @@ namespace AceSoft.RetailPlus.Reports
             txtStartTransactionDate.Text = DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd");
             txtEndTransactionDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
 
-            ProductGroup clsProductGroup = new ProductGroup();
+            Contacts clsContact = new Contacts();
+            cboContact.DataTextField = "ContactName";
+            cboContact.DataValueField = "ContactID";
+            cboContact.DataSource = clsContact.SuppliersAsDataTable(Limit: 100).DefaultView;
+            cboContact.DataBind();
+            cboContact.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT, Constants.ZERO_STRING));
+            cboGroup.SelectedIndex = 0;
+
+            ProductGroup clsProductGroup = new ProductGroup(clsContact.Connection, clsContact.Transaction);
             cboGroup.DataTextField = "ProductGroupName";
             cboGroup.DataValueField = "ProductGroupID";
             cboGroup.DataSource = clsProductGroup.ListAsDataTable("ProductGroupName", SortOption.Ascending);
             cboGroup.DataBind();
-            cboGroup.Items.Insert(0, new ListItem(Constants.ALL,Constants.ZERO_STRING));
+            cboGroup.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT,Constants.ZERO_STRING));
             cboGroup.SelectedIndex = 0;
 
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductSubGroupName = true;
-
-            ProductSubGroupDetails clsSearchKey = new ProductSubGroupDetails();
-
-            ProductSubGroup clsSubGroup = new ProductSubGroup(clsProductGroup.Connection, clsProductGroup.Transaction);
-            cboSubGroup.DataTextField = "ProductSubGroupName";
-            cboSubGroup.DataValueField = "ProductSubGroupID";
-            cboSubGroup.DataSource = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKey, 0, System.Data.SqlClient.SortOrder.Ascending, 0, ProductSubGroupColumnNames.ProductSubGroupName, System.Data.SqlClient.SortOrder.Ascending);
-            cboSubGroup.DataBind();
-            cboSubGroup.Items.Insert(0, new ListItem(Constants.ALL,Constants.ZERO_STRING));
-            cboSubGroup.SelectedIndex = 0;
-
-            Data.Inventory clsInventory = new Data.Inventory(clsProductGroup.Connection, clsProductGroup.Transaction);
+            Data.Inventory clsInventory = new Data.Inventory(clsContact.Connection, clsContact.Transaction);
             cboInventoryNo.DataTextField = "ReferenceNo";
-            cboInventoryNo.DataValueField = "PostingDate";
+            cboInventoryNo.DataValueField = "PostingReference";
             cboInventoryNo.DataSource = clsInventory.ClosingInventoryReferenceNos(Convert.ToDateTime(txtStartTransactionDate.Text), Convert.ToDateTime(txtEndTransactionDate.Text));
             cboInventoryNo.DataBind();
-            if (cboInventoryNo.Items.Count == 0) cboInventoryNo.Items.Add(new ListItem(string.Empty, DateTime.MinValue.ToString("yyyy-MM-dd")));
+            cboInventoryNo.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT, Constants.PLEASE_SELECT + DateTime.MinValue.ToString("yyyy-MM-dd")));
             cboInventoryNo.SelectedIndex = cboInventoryNo.Items.Count - 1;
 
-            clsProductGroup.CommitAndDispose();
+            clsContact.CommitAndDispose();
+
+            if (Request.QueryString["refno"] != null)
+            {
+                string strRefNo = "refno";
+                strRefNo = Common.Decrypt(Request.QueryString["refno"].ToString(), Session.SessionID);
+                cboInventoryNo.SelectedIndex = cboInventoryNo.Items.IndexOf(cboInventoryNo.Items.FindByText(strRefNo));
+            }
+
+            if (Request.QueryString["prdgrpid"] != null)
+            {
+                string strPrdGrpID = "prdgrpid";
+                strPrdGrpID = Common.Decrypt(Request.QueryString["prdgrp"].ToString(), Session.SessionID);
+                cboGroup.SelectedIndex = cboGroup.Items.IndexOf(cboGroup.Items.FindByValue(strPrdGrpID));
+            }
+
+            if (Request.QueryString["contactid"] != null)
+            {
+                string strContactID = "contactid";
+                strContactID = Common.Decrypt(Request.QueryString["contactid"].ToString(), Session.SessionID);
+                cboContact.SelectedIndex = cboContact.Items.IndexOf(cboContact.Items.FindByValue(strContactID));
+            }
 		}
 
         #region Export
@@ -162,13 +181,14 @@ namespace AceSoft.RetailPlus.Reports
 		{
             ReportDataset rptds = new ReportDataset();
 
+            string ContactCode = string.Empty;
+            if (cboContact.SelectedItem.Value != Constants.ZERO_STRING) ContactCode = cboContact.SelectedItem.Text;
+
             string ProductGroupName = string.Empty;
             if (cboGroup.SelectedItem.Value != Constants.ZERO_STRING) ProductGroupName = cboGroup.SelectedItem.Text;
-            string SubGroupName = string.Empty;
-            if (cboSubGroup.SelectedItem.Value != Constants.ZERO_STRING) SubGroupName = cboSubGroup.SelectedItem.Text;
 
             Data.Inventory clsInventory = new Data.Inventory();
-            System.Data.DataTable dt = clsInventory.DataList(cboInventoryNo.SelectedItem.Text, chkIncludeShortOverProducts.Checked, long.Parse(cboGroup.SelectedItem.Value), long.Parse(cboSubGroup.SelectedItem.Value), string.Empty, SortOption.Ascending);
+            System.Data.DataTable dt = clsInventory.DataList(cboInventoryNo.SelectedItem.Text, chkIncludeShortOverProducts.Checked, long.Parse(cboContact.SelectedItem.Value), long.Parse(cboGroup.SelectedItem.Value));
             clsInventory.CommitAndDispose();
 
             foreach (System.Data.DataRow dr in dt.Rows)
@@ -218,7 +238,7 @@ namespace AceSoft.RetailPlus.Reports
 
             paramField = Report.DataDefinition.ParameterFields["PostingDate"];
             discreteParam = new ParameterDiscreteValue();
-            discreteParam.Value = Convert.ToDateTime(cboInventoryNo.SelectedItem.Value).ToString("yyyy-MM-dd");
+            discreteParam.Value = Convert.ToDateTime(cboInventoryNo.SelectedItem.Value.Replace(cboInventoryNo.SelectedItem.Text, "")).ToString("yyyy-MM-dd");
             currentValues = new ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
@@ -230,9 +250,9 @@ namespace AceSoft.RetailPlus.Reports
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
 
-            paramField = Report.DataDefinition.ParameterFields["ProductSubGroupName"];
+            paramField = Report.DataDefinition.ParameterFields["ContactCode"];
             discreteParam = new ParameterDiscreteValue();
-            discreteParam.Value = cboSubGroup.SelectedItem.Text;
+            discreteParam.Value = cboContact.SelectedItem.Text;
             currentValues = new ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
@@ -281,24 +301,6 @@ namespace AceSoft.RetailPlus.Reports
 					break;
 			}
 		}
-        protected void cboGroup_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
-            clsProductSubGroupColumns.ProductSubGroupCode = true;
-            clsProductSubGroupColumns.ProductSubGroupName = true;
-
-            ProductSubGroupDetails clsSearchKeys = new ProductSubGroupDetails();
-            clsSearchKeys.ProductGroupID = long.Parse(cboGroup.SelectedItem.Value);
-
-            ProductSubGroup clsSubGroup = new ProductSubGroup();
-            cboSubGroup.DataTextField = "ProductSubGroupName";
-            cboSubGroup.DataValueField = "ProductSubGroupID";
-            cboSubGroup.DataSource = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, 0, System.Data.SqlClient.SortOrder.Ascending, 0, ProductSubGroupColumnNames.ProductSubGroupName, System.Data.SqlClient.SortOrder.Ascending);
-            cboSubGroup.DataBind();
-            cboSubGroup.Items.Insert(0, new ListItem(Constants.ALL,Constants.ZERO_STRING));
-            cboSubGroup.SelectedIndex = 0;
-            clsSubGroup.CommitAndDispose();
-        }
         protected void imgBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             Response.Redirect(lblReferrer.Text);

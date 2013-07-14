@@ -100,19 +100,19 @@
 							</tr>
 							<tr>
 								<td style="PADDING-BOTTOM:2px;" nowrap>
+									<label>Filter by Contact</label>
+								</td>
+								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+								<td>
+									<asp:dropdownlist id="cboContact" CssClass="ms-long" runat="server"></asp:dropdownlist>
+								</td>
+								<TD class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</TD>
+                                <td style="PADDING-BOTTOM:2px;" nowrap>
 									<label>Filter by Group</label>
 								</td>
 								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
 								<td>
-									<asp:DropDownList id="cboGroup" runat="server" CssClass="ms-short" OnSelectedIndexChanged="cboGroup_SelectedIndexChanged" AutoPostBack=true></asp:DropDownList>
-								</td>
-								<TD class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</TD>
-								<td style="PADDING-BOTTOM:2px;" nowrap>
-									<label>Filter by Sub Group</label>
-								</td>
-								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
-								<td>
-									<asp:DropDownList id="cboSubGroup" runat="server" CssClass="ms-short"></asp:DropDownList>
+									<asp:DropDownList id="cboGroup" runat="server" CssClass="ms-long"></asp:DropDownList>
 								</td>
 								<td width="99%" id="align02" noWrap align="right"><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 								</td>

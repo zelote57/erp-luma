@@ -4346,9 +4346,17 @@ namespace AceSoft.RetailPlus.Client.UI
                         if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER &&
                             !mboIsRefund && clsProductDetails.Quantity < decQuantity && mclsTerminalDetails.ShowItemMoreThanZeroQty)
 						{
+                            clsProductPackage.CommitAndDispose(); 
 							MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + clsProductDetails.Quantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 							return;
 						}
+
+                        if (clsProductDetails.IsLock)
+                        {
+                            clsProductPackage.CommitAndDispose(); 
+                            MessageBox.Show("Sorry this product is currently LOCKED for inventory. Please advise the inventory officer if you really want to sell this product.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
 
 						Data.SalesTransactionItemDetails clsItemDetails = new Data.SalesTransactionItemDetails();
 
@@ -4394,7 +4402,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         if (!mboIsInTransaction)
                         {
                             lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
-                            if (!this.CreateTransaction()) { clsProduct.CommitAndDispose(); return; }
+                            if (!this.CreateTransaction()) { clsProductPackage.CommitAndDispose(); return; }
                         }
                         
 						AddItem(clsItemDetails);
@@ -4586,7 +4594,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
 
-						if (mboIsRefund)
+                        if (mboIsRefund && !mclsTerminalDetails.IsParkingTerminal)
 						{
 							clsSalesTransactions.UpdateTerminalNo(mclsSalesTransactionDetails.TransactionID, lblTerminalNo.Text);
 							clsSalesTransactions.Refund(mclsSalesTransactionDetails.TransactionID, -mclsSalesTransactionDetails.SubTotal, -mclsSalesTransactionDetails.ItemsDiscount, -mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, -mclsSalesTransactionDetails.VAT, -mclsSalesTransactionDetails.VatableAmount, -mclsSalesTransactionDetails.EVAT, -mclsSalesTransactionDetails.EVatableAmount, -mclsSalesTransactionDetails.LocalTax, -mclsSalesTransactionDetails.AmountPaid, -CashPayment, -ChequePayment, -CreditCardPayment, -CreditPayment, -DebitPayment, -RewardPointsPayment, -RewardConvertedPayment, -BalanceAmount, -ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, -mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, lblCashier.Text);
@@ -4631,7 +4639,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                             // Added May 7, 2011 to Cater Reserved and Commit functionality
                             // !mclsTerminalDetails.ReservedAndCommit
-                            if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.ReservedAndCommit)
+                            if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.ReservedAndCommit && !mclsTerminalDetails.IsParkingTerminal)
                             {
                                 Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
 
@@ -4655,7 +4663,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 }
                             }
 						}
-						else
+                        else if (!mboIsRefund)
 						{
 							clsSalesTransactions.UpdateTerminalNo(mclsSalesTransactionDetails.TransactionID, lblTerminalNo.Text);
 							clsSalesTransactions.Close(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, BalanceAmount, ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, mclsSalesTransactionDetails.CashierName);
@@ -4673,7 +4681,33 @@ namespace AceSoft.RetailPlus.Client.UI
 
                             // Added May 7, 2011 to Cater Reserved and Commit functionality    
                             // !mclsTerminalDetails.ReservedAndCommit
-                            if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.ReservedAndCommit)
+                            if (mclsTerminalDetails.IsParkingTerminal)
+                            {
+                                Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
+                                Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
+
+                                foreach (System.Data.DataRow dr in ItemDataTable.Rows)
+                                {
+                                    long lProductID = Convert.ToInt64(dr["ProductID"]);
+                                    long lVariationsMatrixID = Convert.ToInt64(dr["VariationsMatrixID"]);
+                                    int iProductUnitID = Convert.ToInt32(dr["ProductUnitID"]);
+                                    decimal decQuantity = 0;
+                                    decimal decPackageQuantity = 0;
+                                    decimal decNewQuantity = 0;
+                                    decimal decPrice = Convert.ToDecimal(dr["Price"]);
+                                    decimal decPurchasePrice = Convert.ToDecimal(dr["PurchasePrice"]);
+
+                                    if ((dr["Quantity"].ToString().IndexOf("RETURN") == -1) && (dr["Quantity"].ToString() != "VOID"))
+                                    {
+                                        decQuantity = Convert.ToDecimal(dr["Quantity"]);
+                                        decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
+                                        decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
+
+                                        clsProduct.AddQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.PARKING_OUT), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                                    }
+                                }
+                            }
+                            else if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.ReservedAndCommit)
                             {
 							    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
 							    Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
@@ -7088,7 +7122,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
 			{
 				// Added May 7, 2011 to Cater Reserved and Commit functionality
-				if (mclsTerminalDetails.ReservedAndCommit == true)
+				if (mclsTerminalDetails.ReservedAndCommit)
 				{
 					Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
                     mConnection = clsProduct.Connection; mTransaction = clsProduct.Transaction;
@@ -7098,7 +7132,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					decimal decNewQuantity = 0;
 
 					// both refund and normal transaction
-					if (mboIsRefund)
+					if (mboIsRefund && !mclsTerminalDetails.IsParkingTerminal)
 					{
 						if (Details.TransactionItemStatus == TransactionItemStatus.Void)
 						{
@@ -7123,10 +7157,10 @@ namespace AceSoft.RetailPlus.Client.UI
 							//     clsProductVariationsMatrix.AddQuantity(Details.VariationsMatrixID, decNewQuantity);
 						}
 					}
-					else
+					else if (!mboIsRefund)
 					{
 						// RETURN items
-						if (Details.TransactionItemStatus == TransactionItemStatus.Return)
+                        if (Details.TransactionItemStatus == TransactionItemStatus.Return && !mclsTerminalDetails.IsParkingTerminal)
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
 
@@ -7138,7 +7172,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							//     clsProductVariationsMatrix.AddQuantity(Details.VariationsMatrixID, decNewQuantity);
 						}
 						// RETURN items that are VOID
-						else if (Details.TransactionItemStatus == TransactionItemStatus.Void && _previousTransactionItemStatus == TransactionItemStatus.Return)
+                        else if (Details.TransactionItemStatus == TransactionItemStatus.Void && _previousTransactionItemStatus == TransactionItemStatus.Return && !mclsTerminalDetails.IsParkingTerminal)
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
 
@@ -7154,7 +7188,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
 
-							clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_VOID_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                            clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_VOID_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 							// remove the ff codes for a change in Jul 26, 2011
 							// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
 							// 
@@ -7165,8 +7199,10 @@ namespace AceSoft.RetailPlus.Client.UI
 						else if (Details.TransactionItemStatus != TransactionItemStatus.Void)
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
-
-							clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                            if (mclsTerminalDetails.IsParkingTerminal)
+							    clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.PARKING_IN) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                            else
+                                clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 							// remove the ff codes for a change in Jul 26, 2011
 							// clsProduct.SubtractQuantity(Details.ProductID, decNewQuantity);
 							// 

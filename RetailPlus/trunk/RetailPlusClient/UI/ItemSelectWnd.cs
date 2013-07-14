@@ -539,13 +539,13 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			try 
 			{
-				mstBarCode = dgItems[iRow, 3].ToString();
+                mstBarCode = string.IsNullOrEmpty(dgItems[iRow, 3].ToString()) ? dgItems[iRow, 4].ToString() : dgItems[iRow, 3].ToString();
 
                 ProductModel.Clear();
                 ProductModel.PackageID = Int64.Parse(dgItems[iRow, 0].ToString());
                 ProductModel.ProductID = Int64.Parse(dgItems[iRow, 1].ToString());
                 ProductModel.MatrixID = Int64.Parse(dgItems[iRow, 2].ToString());
-                ProductModel.BarCode = dgItems[iRow, 3].ToString();
+                ProductModel.BarCode = mstBarCode;
                 
 			}
 			catch (Exception ex)

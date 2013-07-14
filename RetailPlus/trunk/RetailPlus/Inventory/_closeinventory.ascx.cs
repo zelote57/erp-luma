@@ -290,7 +290,7 @@ namespace AceSoft.RetailPlus.Inventory
                     AccessUserDetails clsAccessUserDetails = (AccessUserDetails)Session["AccessUserDetails"];
 
                     Products clsProduct = new Products(clsERPConfig.Connection, clsERPConfig.Transaction);
-                    clsProduct.CloseInventory(int.Parse(cboBranch.SelectedItem.Value), clsAccessUserDetails.UID, DateTime.Parse(txtClosingDate.Text), Constants.CLOSE_INVENTORY_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsERPConfig.get_LastClosingNo(), false);
+                    //clsProduct.CloseInventory(int.Parse(cboBranch.SelectedItem.Value), clsAccessUserDetails.UID, DateTime.Parse(txtClosingDate.Text), Constants.CLOSE_INVENTORY_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsERPConfig.get_LastClosingNo(), false);
                     clsERPConfig.CommitAndDispose();
                     boRetValue = true;
 

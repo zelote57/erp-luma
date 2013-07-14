@@ -15,30 +15,9 @@
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<TR>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveActualQuantity" ToolTip="Save All Actual Quantity" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgSaveActualQuantity_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Save All Actual Quantity" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
-								</td>
-								<td noWrap><asp:linkbutton id="cmdSaveActualQuantity" ToolTip="Save All Actual Quantity" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveActualQuantity_Click">Save All Actual Quantity</asp:linkbutton></td>
-							</tr>
-						</table>
+						
 					</td>
                     <td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgLockUnlockProduct" ToolTip="Lock / Unlock products for selling" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgLockUnlockProduct_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Lock products for Selling" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
-								</td>
-								<td noWrap><asp:linkbutton id="cmdLockUnlockProduct" ToolTip="Lock / Unlock products for selling" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdLockUnlockProduct_Click">Lock products for Selling</asp:linkbutton></td>
-							</tr>
-						</table>
-					</td>
-                    <td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgZeroOutActualQuantity1" ToolTip="Zero Out Actual Quantity" accessKey="Z" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/newuser.gif" alt="Zero Out Actual Quantity" border="0" width="16" height="16" onclick="imgZeroOutActualQuantity_Click"></asp:imagebutton>&nbsp;</td>
-								<td noWrap><asp:linkbutton id="cmdZeroOutActualQuantity1" ToolTip="Zero Out Actual Quantity" accessKey="Z" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdZeroOutActualQuantity_Click">Zero Out Actual Quantity</asp:linkbutton></td>
-							</tr>
-						</table>
 					</td>
 					<TD class="ms-toolbar" id="align01" noWrap align="right" width="99%">
 						<TABLE cellSpacing="0" cellPadding="0" width="100%" border="0">
@@ -95,6 +74,22 @@
 					            <td width="99%" id="Td5" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					            </td>
 				            </tr>
+                            <tr>
+					            <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+					            </td>
+					            <TD class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</TD>
+					            <td style="PADDING-TOP:8px; HEIGHT: 15px" colspan="4">
+                                    <table cellSpacing="0" cellPadding="1" border="0">
+							            <tr>
+								            <td class="ms-toolbar" noWrap><asp:imagebutton id="imgLockUnlockProduct" ToolTip="Lock / Unlock products for selling" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgLockUnlockProduct_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Lock products for Selling" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
+								            </td>
+								            <td noWrap><asp:linkbutton id="cmdLockUnlockProduct" ToolTip="Lock / Unlock products for selling" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdLockUnlockProduct_Click">Lock products for Selling</asp:linkbutton></td>
+							            </tr>
+						            </table>
+                                </td>
+					            <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
+					            </td>
+				            </tr>
                         </table>
                     </td>
 				</tr>
@@ -111,9 +106,10 @@
 					                    <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						                    <colgroup>
 							                    <col width="2%">
-							                    <col width="18%">
-							                    <col width="28%">
-							                    <col width="10%" align="center">
+							                    <col width="15%">
+							                    <col width="23%">
+                                                <col width="12%">
+							                    <col width="8%" align="center">
                                                 <col width="7%" align="center">
 							                    <col width="7%" align="center">
 							                    <col width="7%" align="center">
@@ -129,6 +125,8 @@
 								                    <asp:hyperlink id="SortByDescription" runat="server">Barcode</asp:hyperlink></TH>
 							                    <TH class="ms-vh2" style="padding-bottom: 4px">
 								                    <asp:hyperlink id="SortByProductCode" runat="server">Product Code</asp:hyperlink></TH>
+                                                <TH class="ms-vh2" style="padding-bottom: 4px">
+								                    <asp:hyperlink id="SortByVariationDesc" runat="server"></asp:hyperlink></TH>
                                                 <TH class="ms-vh2" style="padding-bottom: 4px">
 								                    <asp:hyperlink id="SortByUnit" runat="server">Actual Quantity</asp:hyperlink></TH>
 							                    <TH class="ms-vh2" style="padding-bottom: 4px">
@@ -151,9 +149,10 @@
 					                    <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 						                    <colgroup>
 							                    <col width="2%">
-							                    <col width="18%">
-							                    <col width="28%">
-                                                <col width="10%" align="center">
+							                    <col width="15%">
+							                    <col width="23%">
+                                                <col width="12%">
+                                                <col width="8%" align="center">
 							                    <col width="7%" align="center">
 							                    <col width="7%" align="center">
 							                    <col width="7%" align="center">
@@ -163,14 +162,19 @@
 							                    <col width="15">
 						                    </colgroup>
 						                    <TR>
-							                    <TD class="ms-vb-user" align=right>
-								                    <INPUT id="chkList" type="checkbox" name="chkList" runat="server" visible="false">
+							                    <TD class="ms-vb-user" align="right">
+								                    <input id="chkList" type="checkbox" name="chkList" runat="server" visible="false" />
+                                                    <input id="chkMatrixID" type="checkbox" runat="server" name="chkMatrixID" visible="false" />
 								                    <asp:Label id="lblItemNo" Runat="server"></asp:Label>&nbsp;</TD>
 							                    <TD class="ms-vb-user">
 							                        <asp:HyperLink id="lnkBarcode" Runat="server"></asp:HyperLink></TD>
 							                    <TD class="ms-vb-user">
 								                    &nbsp;&nbsp;								
 								                    <asp:Label id="lnkProductCode" Runat="server"></asp:Label>
+							                    </TD>
+                                                <TD class="ms-vb-user">
+								                    &nbsp;&nbsp;								
+								                    <asp:Label id="lnkVariationDesc" Runat="server"></asp:Label>
 							                    </TD>
                                                 <TD class="ms-vb2">
 							                        <asp:TextBox ID="txtActualQuantity" runat="server" AccessKey="C" onkeyup="ComputeQuantityByVariation(this)" BorderStyle="Groove" CssClass="ms-short" Width="70%">0</asp:TextBox>
@@ -189,61 +193,6 @@
 								                    <asp:TextBox ID="txtAmountOver" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled" Width="98%"></asp:TextBox></TD>
 							                    <TD class="ms-vb-user">
 								                    <asp:ImageButton id="imgProductTag" runat="server" ImageUrl="../_layouts/images/prodtagact.gif" ToolTip="Tag as inactive" CommandName="imgProductTag" CausesValidation=false height="15px"></asp:ImageButton></TD>
-						                    </TR>
-						                    <TR>
-						                        <TD class="ms-alternating" colspan="11">
-						                            <asp:datalist id="lstVariationMatrix" runat="server" Width="100%" ShowFooter="False" CellPadding="0" OnItemDataBound="lstVariationMatrix_ItemDataBound" OnItemCommand="lstVariationMatrix_ItemCommand">
-		                                                <ItemTemplate>
-			                                                <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
-				                                                <colgroup>
-					                                                <col width="2%">
-							                                        <col width="28%">
-							                                        <col width="18%">
-                                                                    <col width="10%" align="center">
-							                                        <col width="7%" align="center">
-							                                        <col width="7%" align="center">
-							                                        <col width="7%" align="center">
-							                                        <col width="7%" align="center">
-							                                        <col width="7%" align="center">
-							                                        <col width="7%" align="center">
-							                                        <col width="15">
-				                                                </colgroup>
-				                                                <TR>
-				                                                    <TD class="ms-vb-user" align=right>
-								                                        <input type="checkbox" id="chkMatrixID" runat="server" NAME="chkMatrixID" visible="false">
-								                                        <asp:Label ID="lblProductID" Runat="server" Visible="false"></asp:Label>
-								                                     </TD>
-							                                        <TD class="ms-vb-user" colspan=2>
-								                                        &nbsp;&nbsp;								
-								                                        <asp:Label ID="lblVariationDesc" Runat="server"></asp:Label>
-                                                                        <asp:Label ID="lblBranchID" Runat="server" Visible="false"></asp:Label>
-                                                                        <asp:Label ID="lblBranchCode" Runat="server"></asp:Label>
-							                                        </TD>
-							                                        <%--<TD class="ms-vb-user">
-							                                            </TD>--%>
-                                                                    <TD class="ms-vb2">
-							                                            &nbsp;<asp:TextBox ID="txtActualQuantity" runat="server" AccessKey="C" onkeyup="ComputeQuantityByVariation(this)" BorderStyle="Groove" CssClass="ms-short" Width="70%">0</asp:TextBox>
-								                                        <asp:ImageButton id="imgSaveActualQuantity" runat="server" ImageUrl="../_layouts/images/saveitem.gif" ToolTip="Save Actual Quantity" CommandName="imgSaveActualQuantity" CausesValidation="false" height="15px" Visible="false"></asp:ImageButton></TD>
-							                                        
-							                                        <TD class="ms-vb2">
-								                                        <asp:TextBox ID="txtPOSQuantity" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled" Width="98%"></asp:TextBox></TD>
-							                                        <TD class="ms-vb-user">
-							                                            <asp:TextBox ID="txtShort" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled" Width="98%"></asp:TextBox></TD>
-							                                        <TD class="ms-vb-user">
-							                                            <asp:TextBox ID="txtOver" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled" Width="98%"></asp:TextBox></TD>
-							                                        <TD class="ms-vb-user">
-								                                        <asp:TextBox ID="txtPurchasePrice" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled" Width="98%"></asp:TextBox></TD>
-							                                        <TD class="ms-vb-user">
-								                                        <asp:TextBox ID="txtAmountShort" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled" Width="98%"></asp:TextBox></TD>
-						                                            <TD class="ms-vb-user">
-								                                        <asp:TextBox ID="txtAmountOver" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled" Width="98%"></asp:TextBox></TD>
-								                                    <TD class="ms-vb-user" style="top: 30%;">
-								                                        <asp:ImageButton id="imgMatrixDelete" runat="server" ImageUrl="../_layouts/images/delitem.gif" ToolTip="Delete this product variation" CommandName="imgMatrixDelete" CausesValidation=false height="12px" ></asp:ImageButton></TD>
-				                                                </TR>
-			                                                </table>
-		                                                </ItemTemplate>
-	                                                </asp:datalist>
-						                        </TD>
 						                    </TR>
 					                    </TABLE>
 				                    </ItemTemplate>
@@ -281,18 +230,9 @@
                     <td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveActualQuantity1" ToolTip="Save All Actual Quantity" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgSaveActualQuantity_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Save All Actual Quantity" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveActualQuantity" ToolTip="Save All Actual Quantity" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgSaveActualQuantity_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Save All Actual Quantity" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
 								</td>
-								<td noWrap><asp:linkbutton id="cmdSaveActualQuantity1" ToolTip="Save All Actual Quantity" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveActualQuantity_Click">Save All Actual Quantity</asp:linkbutton></td>
-							</tr>
-						</table>
-					</td>
-                    <td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgLockUnlockProduct1" ToolTip="Lock / Unlock products for selling" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgLockUnlockProduct_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Lock products for Selling" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
-								</td>
-								<td noWrap><asp:linkbutton id="cmdLockUnlockProduct1" ToolTip="Lock / Unlock products for selling" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdLockUnlockProduct_Click">Lock products for Selling</asp:linkbutton></td>
+								<td noWrap><asp:linkbutton id="cmdSaveActualQuantity" ToolTip="Save All Actual Quantity" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveActualQuantity_Click">Save All Actual Quantity</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>

@@ -83,8 +83,8 @@ namespace AceSoft.RetailPlus.Inventory
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InventoryAnalyst);
             lnkInventoryAnalyst.Visible = clsDetails.Read;
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.CloseInventory); 
-			lnkCloseInventory.Visible = clsDetails.Read;
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.CloseInventory);
+            lnkCloseInventory.Visible = false;
             lnkCloseInventoryDetailed.Visible = clsDetails.Read;
             lnkCLosingInventoryReport.Visible = clsDetails.Read;
 

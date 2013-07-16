@@ -110,7 +110,7 @@ namespace AceSoft.RetailPlus.Inventory
             string strRefrenceNo = CloseInventory();
 
             if (!string.IsNullOrEmpty(strRefrenceNo)) {
-                string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID));
+                string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID);
                 Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
             }
         }
@@ -120,7 +120,7 @@ namespace AceSoft.RetailPlus.Inventory
             string strRefrenceNo = CloseInventory();
 
             if (!string.IsNullOrEmpty(strRefrenceNo)) {
-                string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID));
+                string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID);
                 Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
             }
         }

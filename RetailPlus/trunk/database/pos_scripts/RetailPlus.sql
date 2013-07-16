@@ -6380,6 +6380,8 @@ ALTER TABLE tblTransactions ADD TransactionType INT(1) NOT NULL DEFAULT 0;
 
 ALTER TABLE tblTerminal add `IsParkingTerminal` TINYINT (1) NOT NULL DEFAULT 0;
 
+ALTER TABLE tblTerminal add `WillPrintChargeSlip` TINYINT (1) NOT NULL DEFAULT 1;
+
 /*********************************  v_4.0.0.4.sql END  *******************************************************/ 
 
 

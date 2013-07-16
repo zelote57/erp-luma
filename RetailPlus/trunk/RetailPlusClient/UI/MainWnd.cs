@@ -4889,13 +4889,15 @@ namespace AceSoft.RetailPlus.Client.UI
 								{
 									PrintReportFooterSection(true, TransactionStatus.Closed, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
 
-									// Nov 05, 2011 : Print Charge Slip
-                                    if (!mclsTerminalDetails.IncludeCreditChargeAgreement) //do not print the guarantor if there is not agreement printed
+                                    if (mclsTerminalDetails.WillPrintChargeSlip)
                                     {
-                                        PrintChargeSlip(ChargeSlipType.Guarantor);
+                                        // Nov 05, 2011 : Print Charge Slip
+                                        if (!mclsTerminalDetails.IncludeCreditChargeAgreement) //do not print the guarantor if there is not agreement printed
+                                        {
+                                            PrintChargeSlip(ChargeSlipType.Guarantor);
+                                        }
+                                        PrintChargeSlip(ChargeSlipType.Original);
                                     }
-									PrintChargeSlip(ChargeSlipType.Original);
-										
 								}
 							}
 						}

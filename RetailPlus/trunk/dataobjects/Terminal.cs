@@ -91,6 +91,8 @@ namespace AceSoft.RetailPlus.Data
 
         // [06/30/2013] Include to know whether the terminal is parking or not
         public bool IsParkingTerminal;
+
+        public bool WillPrintChargeSlip;
 	}
 
     public struct RewardPointsDetails
@@ -541,7 +543,8 @@ namespace AceSoft.RetailPlus.Data
                             "DBVersion, " +
                             "ProductSearchType, " +
                             "IncludeCreditChargeAgreement, " +
-                            "IsParkingTerminal " +
+                            "IsParkingTerminal, " +
+                            "WillPrintChargeSlip " +
 						"FROM tblTerminal ";
 
 			return SQL;
@@ -770,6 +773,8 @@ namespace AceSoft.RetailPlus.Data
 
                 // Added Jun 30, 2013
                 Details.IsParkingTerminal = myReader.GetBoolean("IsParkingTerminal");
+
+                Details.WillPrintChargeSlip = myReader.GetBoolean("WillPrintChargeSlip");
             }
             myReader.Close();
 

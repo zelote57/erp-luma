@@ -4887,7 +4887,7 @@ BEGIN
 		SET @SQL = CONCAT(@SQL, 'AND IFNULL(inv.Quantity,0) > 0 ');
 	END IF;
 
-	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','MatrixDescription',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
+	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','prd.ProductCode, MatrixDescription',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
 
 	SET @SQL = CONCAT(@SQL, IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')));
 

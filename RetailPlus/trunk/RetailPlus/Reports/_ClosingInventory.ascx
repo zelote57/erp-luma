@@ -72,7 +72,6 @@
 				                <td style="PADDING-BOTTOM:2px" nowrap>
 					                <label>Posting Date From</label>&nbsp;
 				                &nbsp;&nbsp;&nbsp;</td>
-				                <td class="ms-separator">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;</td>
 				                <td>
 					                <asp:TextBox id="txtStartTransactionDate" ondblclick="ontime(this)" accessKey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" ></asp:TextBox>
 				                </td>
@@ -81,6 +80,7 @@
 					                <label>Posting Date To</label>
 				                    <asp:TextBox id="txtEndTransactionDate" ondblclick="ontime(this)" accessKey="E" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" ></asp:TextBox>
 				                </td>
+                                <td colspan="2"></td>
 				                <td width="99%" id="align05" noWrap align="left">&nbsp;
 					                <asp:Label id="Label3" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
 					                <asp:Label id="Label4" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>
@@ -89,7 +89,6 @@
 			                <tr>
 								<td style="PADDING-BOTTOM:2px;" nowrap>
 									<label>Filter by Inventory No.</label>&nbsp;&nbsp;&nbsp;</td>
-								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;<label>Filter by Inventory No.</label></TD>
 								<td colspan=5>
 									<asp:DropDownList id="cboInventoryNo" runat="server" CssClass="ms-long"></asp:DropDownList>
 									<asp:ImageButton id="cmdSearch" title="Search Reference Numbers in specific posting dates" style="CURSOR: hand" accessKey="s" BorderStyle="Groove" runat="server" ImageUrl="../_layouts/images/icongo01.gif" border="0" alt="Execute search" causesvalidation=false Height="14px" OnClick="cmdSearch_Click"></asp:ImageButton>
@@ -101,7 +100,6 @@
 								<td style="PADDING-BOTTOM:2px;" nowrap>
 									<label>Filter by Contact</label>
 								&nbsp;&nbsp;&nbsp;</td>
-								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;</TD>
 								<td>
 									<asp:dropdownlist id="cboContact" CssClass="ms-long" runat="server"></asp:dropdownlist>
 								</td>
@@ -110,6 +108,7 @@
 									<label>Filter by Group</label>
 									<asp:DropDownList id="cboGroup" runat="server" CssClass="ms-long"></asp:DropDownList>
 								</td>
+                                <td colspan="2"></td>
 								<td width="99%" id="align02" noWrap align="right"><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 								</td>
 							</tr>

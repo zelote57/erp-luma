@@ -109,18 +109,20 @@ namespace AceSoft.RetailPlus.Inventory
         {
             string strRefrenceNo = CloseInventory();
 
-            if (!string.IsNullOrEmpty(strRefrenceNo))
-                Response.Redirect(Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID));
-                //LoadList();
+            if (!string.IsNullOrEmpty(strRefrenceNo)) {
+                string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID));
+                Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+            }
         }
 
         protected void cmdCloseInventory_Click(object sender, EventArgs e)
         {
             string strRefrenceNo = CloseInventory();
 
-            if (!string.IsNullOrEmpty(strRefrenceNo))
-                Response.Redirect(Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID));
-                //LoadList();
+            if (!string.IsNullOrEmpty(strRefrenceNo)) {
+                string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID));
+                Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+            }
         }
 
         protected void cboCurrentPage_SelectedIndexChanged(object sender, System.EventArgs e)

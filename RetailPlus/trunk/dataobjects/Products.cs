@@ -2101,7 +2101,7 @@ namespace AceSoft.RetailPlus.Data
                                 "     LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID " +
                                 "     LEFT OUTER JOIN (" +
                                 "          SELECT BranchID, ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE BranchID=" + BranchID + " GROUP BY BranchID, ProductID, MatrixID, IsLock " +
-                                "      ) inv ON inv.ProductID = a.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) " +
+                                "      ) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) " +
 								"WHERE prd.Deleted = 0 ";
             
             stSQL += BranchID == 0 ? "" : "AND IFNULL(inv.BranchID,1) = " + BranchID.ToString() + " ";

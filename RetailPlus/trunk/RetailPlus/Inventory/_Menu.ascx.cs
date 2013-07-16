@@ -81,7 +81,7 @@ namespace AceSoft.RetailPlus.Inventory
 			lnkInvAdjustment.Visible = clsDetails.Read;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InventoryAnalyst);
-            lnkInventoryAnalyst.Visible = clsDetails.Read;
+            lnkInventoryAnalyst.Visible = false;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.CloseInventory);
             lnkCloseInventory.Visible = false;

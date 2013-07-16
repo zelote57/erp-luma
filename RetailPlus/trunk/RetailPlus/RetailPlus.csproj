@@ -385,6 +385,12 @@
     <Compile Include="Inventory\_BranchTransfer\_Update.ascx.designer.cs">
       <DependentUpon>_update.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Reports\_ClosingInventoryCount.cs">
+      <DependentUpon>_ClosingInventoryCount.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reports\_rewards\_rewardssummary.cs">
       <DependentUpon>_rewardssummary.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -3759,6 +3765,10 @@
     <EmbeddedResource Include="Reports\ChartOfAccountsSummary.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ChartOfAccountsSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_ClosingInventoryCount.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ClosingInventoryCount.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_customercredit\_CustomerCreditBill.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

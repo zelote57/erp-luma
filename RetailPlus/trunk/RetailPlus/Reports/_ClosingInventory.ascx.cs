@@ -26,7 +26,10 @@ namespace AceSoft.RetailPlus.Reports
                 Session["ReportDocument"] = null;
 
                 if (Request.QueryString["refno"] != null)
-                    GenerateHTML();
+                    GeneratePDF();
+
+                if (Request.QueryString["type"] != null)
+                    GeneratePDF();
             }
         }
 
@@ -69,6 +72,17 @@ namespace AceSoft.RetailPlus.Reports
 
             clsContact.CommitAndDispose();
 
+            lblType.Text = "";
+            if (Request.QueryString["type"] != null)
+            {
+                lblType.Text = Common.Decrypt(Request.QueryString["type"].ToString(), Session.SessionID);
+            }
+            lblBranchID.Text = "0";
+            if (Request.QueryString["branchid"] != null)
+            {
+                lblBranchID.Text = Common.Decrypt(Request.QueryString["branchid"].ToString(), Session.SessionID);
+            }
+
             if (Request.QueryString["refno"] != null)
             {
                 string strRefNo = "refno";
@@ -96,7 +110,14 @@ namespace AceSoft.RetailPlus.Reports
         private void Export(ExportFormatType pvtExportFormatType)
         {
             ReportDocument rpt = new ReportDocument();
-            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_ClosingInventory.rpt"));
+            if (lblType.Text == "invcount")
+            {
+                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_ClosingInventoryCount.rpt"));
+            }
+            else
+            {
+                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_ClosingInventory.rpt"));
+            }
 
             SetDataSource(rpt);
 
@@ -167,7 +188,14 @@ namespace AceSoft.RetailPlus.Reports
         private void GenerateHTML()
         {
             ReportDocument rpt = new ReportDocument();
-            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_ClosingInventory.rpt"));
+            if (lblType.Text == "invcount")
+            {
+                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_ClosingInventoryCount.rpt"));
+            }
+            else
+            {
+                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_ClosingInventory.rpt"));
+            }
             SetDataSource(rpt);
             CRViewer.ReportSource = rpt;
             Session["ReportDocument"] = rpt;
@@ -187,19 +215,46 @@ namespace AceSoft.RetailPlus.Reports
             string ProductGroupName = string.Empty;
             if (cboGroup.SelectedItem.Value != Constants.ZERO_STRING) ProductGroupName = cboGroup.SelectedItem.Text;
 
-            Data.Inventory clsInventory = new Data.Inventory();
-            System.Data.DataTable dt = clsInventory.DataList(cboInventoryNo.SelectedItem.Text, chkIncludeShortOverProducts.Checked, long.Parse(cboContact.SelectedItem.Value), long.Parse(cboGroup.SelectedItem.Value));
-            clsInventory.CommitAndDispose();
-
-            foreach (System.Data.DataRow dr in dt.Rows)
+            System.Data.DataTable dt = null;
+            if (lblType.Text == "invcount")
             {
-                DataRow drInventory = rptds.Inventory.NewRow();
+                Int64 lngSupplierID = Convert.ToInt64(cboContact.SelectedItem.Value);
 
-                foreach (DataColumn dc in rptds.Inventory.Columns)
-                    drInventory[dc] = dr[dc.ColumnName];
+                ProductInventories clsProductInventories = new ProductInventories();
+                dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(lblBranchID.Text), SupplierID: lngSupplierID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly);
 
-                rptds.Inventory.Rows.Add(drInventory);
+                //Contacts clsContacts = new Contacts(clsProductInventories.Connection, clsProductInventories.Transaction);
+                //ContactDetails clsContactDetails = clsContacts.Details(lngSupplierID);
+
+                clsProductInventories.CommitAndDispose();
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    DataRow drInventory = rptds.ProductInventory.NewRow();
+
+                    foreach (DataColumn dc in rptds.ProductInventory.Columns)
+                        drInventory[dc] = dr[dc.ColumnName];
+
+                    rptds.ProductInventory.Rows.Add(drInventory);
+                }
             }
+            else
+            {
+                Data.Inventory clsInventory = new Data.Inventory();
+                dt = clsInventory.DataList(cboInventoryNo.SelectedItem.Text, chkIncludeShortOverProducts.Checked, long.Parse(cboContact.SelectedItem.Value), long.Parse(cboGroup.SelectedItem.Value));
+                clsInventory.CommitAndDispose();
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    DataRow drInventory = rptds.Inventory.NewRow();
+
+                    foreach (DataColumn dc in rptds.Inventory.Columns)
+                        drInventory[dc] = dr[dc.ColumnName];
+
+                    rptds.Inventory.Rows.Add(drInventory);
+                }
+            }
+            
 
             Report.SetDataSource(rptds);
 
@@ -245,14 +300,14 @@ namespace AceSoft.RetailPlus.Reports
 
             paramField = Report.DataDefinition.ParameterFields["ProductGroupName"];
             discreteParam = new ParameterDiscreteValue();
-            discreteParam.Value = cboGroup.SelectedItem.Text;
+            discreteParam.Value = cboGroup.SelectedItem.Value == Constants.ZERO_STRING ? "ALL" : cboGroup.SelectedItem.Text;
             currentValues = new ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
 
             paramField = Report.DataDefinition.ParameterFields["ContactCode"];
             discreteParam = new ParameterDiscreteValue();
-            discreteParam.Value = cboContact.SelectedItem.Text;
+            discreteParam.Value = cboContact.SelectedItem.Value == Constants.ZERO_STRING ? "ALL" : cboContact.SelectedItem.Text;
             currentValues = new ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);

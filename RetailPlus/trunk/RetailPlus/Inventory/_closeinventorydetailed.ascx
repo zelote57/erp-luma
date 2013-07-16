@@ -22,6 +22,14 @@
 					<TD class="ms-toolbar" id="align01" noWrap align="right" width="99%">
 						<TABLE cellSpacing="0" cellPadding="0" width="100%" border="0">
 							<TR>
+                                <td class="ms-toolbar">
+									<table cellSpacing="0" cellPadding="1" border="0">
+										<tr>
+											<td class="ms-toolbar" noWrap><asp:imagebutton id="imgPrint" title="Print this Inventory for Counting" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../_layouts/images/print.gif" alt="Print this Inventory for Counting" border="0" width="16" height="16" OnClick="imgPrint_Click"></asp:imagebutton></td>
+											<td noWrap><asp:linkbutton id="cmdPrint" title="Print this Inventory for Counting" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrint_Click">Print Inventory Sheet</asp:linkbutton></td>
+										</tr>
+									</table>
+								</td>
 								<td class="ms-toolbar" noWrap align="right"><asp:label id="lblDataCount1" CssClass="Normal" runat="server"> Go to page </asp:label><asp:dropdownlist id="cboCurrentPage" runat="server" AutoPostBack="True" onselectedindexchanged="cboCurrentPage_SelectedIndexChanged">
 										<asp:ListItem Value="1" Selected="True">1</asp:ListItem>
 									</asp:dropdownlist><asp:label id="lblDataCount" CssClass="class=ms-vb-user" runat="server"> of 0</asp:label></td>

@@ -254,6 +254,14 @@ namespace AceSoft.RetailPlus.Inventory
 
 			}
         }
+        protected void imgPrint_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            PrintClosingInventory();
+        }
+        protected void cmdPrint_Click(object sender, System.EventArgs e)
+        {
+            PrintClosingInventory();
+        }
         protected void imgSaveActualQuantity_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             SaveAllActualQuantity();
@@ -284,6 +292,12 @@ namespace AceSoft.RetailPlus.Inventory
         #endregion
 
         #region Private methods
+
+        private void PrintClosingInventory()
+        {
+            string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&type=" + Common.Encrypt("invcount", Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID) + "&branchid=" + Common.Encrypt(cboBranch.SelectedItem.Value, Session.SessionID);
+            Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+        }
 
         private string CloseInventory()
         {

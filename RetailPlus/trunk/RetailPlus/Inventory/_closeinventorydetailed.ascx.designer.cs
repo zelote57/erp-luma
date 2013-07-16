@@ -13,6 +13,24 @@ namespace AceSoft.RetailPlus.Inventory {
     public partial class @__CloseInventoryDetailed {
         
         /// <summary>
+        /// imgPrint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgPrint;
+        
+        /// <summary>
+        /// cmdPrint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdPrint;
+        
+        /// <summary>
         /// lblDataCount1 control.
         /// </summary>
         /// <remarks>

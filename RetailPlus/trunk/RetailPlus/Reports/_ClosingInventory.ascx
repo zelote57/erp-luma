@@ -57,6 +57,8 @@
 				</TR>
 			</TABLE>
 			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label>
+		    <asp:Label ID="lblBranchID" runat="server" Visible="False"></asp:Label>
+            <asp:Label ID="lblType" runat="server" Visible="False"></asp:Label>
 		</TD>
 	</TR>
 	<tr>
@@ -69,18 +71,15 @@
 							<tr>
 				                <td style="PADDING-BOTTOM:2px" nowrap>
 					                <label>Posting Date From</label>&nbsp;
-				                </td>
-				                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+				                &nbsp;&nbsp;&nbsp;</td>
+				                <td class="ms-separator">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;</td>
 				                <td>
 					                <asp:TextBox id="txtStartTransactionDate" ondblclick="ontime(this)" accessKey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" ></asp:TextBox>
 				                </td>
-				                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+				                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 				                <td style="PADDING-BOTTOM:2px" nowrap>
 					                <label>Posting Date To</label>
-				                </td>
-				                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
-				                <td>
-					                <asp:TextBox id="txtEndTransactionDate" ondblclick="ontime(this)" accessKey="E" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" ></asp:TextBox>
+				                    <asp:TextBox id="txtEndTransactionDate" ondblclick="ontime(this)" accessKey="E" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" ></asp:TextBox>
 				                </td>
 				                <td width="99%" id="align05" noWrap align="left">&nbsp;
 					                <asp:Label id="Label3" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
@@ -89,8 +88,8 @@
 			                </tr>
 			                <tr>
 								<td style="PADDING-BOTTOM:2px;" nowrap>
-									<label>Filter by Inventory No.</label></td>
-								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+									<label>Filter by Inventory No.</label>&nbsp;&nbsp;&nbsp;</td>
+								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;<label>Filter by Inventory No.</label></TD>
 								<td colspan=5>
 									<asp:DropDownList id="cboInventoryNo" runat="server" CssClass="ms-long"></asp:DropDownList>
 									<asp:ImageButton id="cmdSearch" title="Search Reference Numbers in specific posting dates" style="CURSOR: hand" accessKey="s" BorderStyle="Groove" runat="server" ImageUrl="../_layouts/images/icongo01.gif" border="0" alt="Execute search" causesvalidation=false Height="14px" OnClick="cmdSearch_Click"></asp:ImageButton>
@@ -101,17 +100,14 @@
 							<tr>
 								<td style="PADDING-BOTTOM:2px;" nowrap>
 									<label>Filter by Contact</label>
-								</td>
-								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+								&nbsp;&nbsp;&nbsp;</td>
+								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;</TD>
 								<td>
 									<asp:dropdownlist id="cboContact" CssClass="ms-long" runat="server"></asp:dropdownlist>
 								</td>
-								<TD class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</TD>
+								<TD class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
                                 <td style="PADDING-BOTTOM:2px;" nowrap>
 									<label>Filter by Group</label>
-								</td>
-								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
-								<td>
 									<asp:DropDownList id="cboGroup" runat="server" CssClass="ms-long"></asp:DropDownList>
 								</td>
 								<td width="99%" id="align02" noWrap align="right"><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="1">
@@ -119,8 +115,7 @@
 							</tr>
 							<tr>
 								<td style="PADDING-BOTTOM:2px;" nowrap>
-									<label>Exclude products without short/over </label></td>
-								<TD class="ms-separator">&nbsp;&nbsp;&nbsp;</TD>
+									<label>Exclude products without short/over </label>&nbsp;&nbsp;&nbsp;</td>
 								<td colspan=5>
 									<asp:CheckBox id="chkIncludeShortOverProducts" runat="server" CssClass="ms-short" Checked=true></asp:CheckBox>
 								</td>

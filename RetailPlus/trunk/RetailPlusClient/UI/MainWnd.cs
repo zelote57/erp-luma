@@ -2014,7 +2014,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				mboRewardCardSwiped = false;
                 mdteOverRidingPrintDate = DateTime.MinValue;
 
-				//StartMarqueeThread();
+				StartMarqueeThread();
 				Cursor.Current = Cursors.Default;
 
 				clsEvent.AddEventLn("Done!");
@@ -2455,7 +2455,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void ReturnItem()
 		{
-			if (mboIsRefund)
+            if (mboIsRefund || mclsTerminalDetails.IsParkingTerminal)
 				return;
 
 			DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.ReturnItem);
@@ -4278,7 +4278,15 @@ namespace AceSoft.RetailPlus.Client.UI
 				{
 					string stBarcode = txtBarCode.Text.Trim();
 					decimal decQuantity = 1;
-					
+
+                    // 21Jul2013 Check if parking ticket and has already an item.
+                    if (mclsTerminalDetails.IsParkingTerminal && ItemDataTable.Rows.Count >= 1)
+                    {
+                        txtBarCode.Text = "";
+                        MessageBox.Show("Sorry you can only park 1 vehicle per transaction. ", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
 					if (stBarcode.EndsWith("*"))
 					{
 						MessageBox.Show("Sorry please scan the item after the quantity before you press the enter key.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -4341,51 +4349,61 @@ namespace AceSoft.RetailPlus.Client.UI
                     ProductModel.Clear();
 					
                     if (clsProductDetails.ProductID != 0)
-					{
-						
+                    {
+                        // 21Jul2013 Include getting of rates for parking
+                        if (mclsTerminalDetails.IsParkingTerminal)
+                        {
+                            Data.ParkingRate clsParkingRate = new Data.ParkingRate(mConnection, mTransaction);
+                            Data.ParkingRateDetails clsParkingRateDetails = clsParkingRate.Details(clsProductDetails.ProductID, DateTime.Now.ToString("dddd"));
+                            if (clsParkingRateDetails.ParkingRateID != 0)
+                            {
+                                clsProductDetails.Price = clsParkingRateDetails.MinimumStayPrice;
+                            }
+                        }
+
                         if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER &&
                             !mboIsRefund && clsProductDetails.Quantity < decQuantity && mclsTerminalDetails.ShowItemMoreThanZeroQty)
-						{
-                            clsProductPackage.CommitAndDispose(); 
-							MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + clsProductDetails.Quantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-							return;
-						}
+                        {
+                            clsProductPackage.CommitAndDispose();
+                            MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + clsProductDetails.Quantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
 
                         if (clsProductDetails.IsLock)
                         {
-                            clsProductPackage.CommitAndDispose(); 
+                            clsProductPackage.CommitAndDispose();
                             MessageBox.Show("Sorry this product is currently LOCKED for inventory. Please advise the inventory officer if you really want to sell this product.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
 
-						Data.SalesTransactionItemDetails clsItemDetails = new Data.SalesTransactionItemDetails();
+                        Data.SalesTransactionItemDetails clsItemDetails = new Data.SalesTransactionItemDetails();
 
-						clsItemDetails.ProductID = clsProductDetails.ProductID;
-						clsItemDetails.ProductCode = clsProductDetails.ProductCode;
-						clsItemDetails.BarCode = clsProductDetails.BarCode;
-						clsItemDetails.Description = clsProductDetails.ProductDesc;
-						clsItemDetails.ProductGroup = clsProductDetails.ProductGroupName;
-						clsItemDetails.ProductSubGroup = clsProductDetails.ProductSubGroupName;
-						clsItemDetails.TransactionItemStatus = TransactionItemStatus.Valid;
-						clsItemDetails.ProductUnitID = clsProductDetails.BaseUnitID;
-						clsItemDetails.ProductUnitCode = clsProductDetails.BaseUnitCode;
-						clsItemDetails.Quantity = decQuantity;
-						clsItemDetails.Price = clsProductDetails.Price;
-						clsItemDetails.Discount = 0;
-						clsItemDetails.ItemDiscount = 0;
-						clsItemDetails.ItemDiscountType = DiscountTypes.NotApplicable;
-						clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-						clsItemDetails.VAT = clsProductDetails.VAT;
-						clsItemDetails.EVAT = clsProductDetails.EVAT;
-						clsItemDetails.LocalTax = clsProductDetails.LocalTax;
-						clsItemDetails.TransactionItemStatus = TransactionItemStatus.Valid;
-						clsItemDetails.PurchasePrice = clsProductDetails.PurchasePrice;
-						clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
-						clsItemDetails.IncludeInSubtotalDiscount = clsProductDetails.IncludeInSubtotalDiscount;
-						clsItemDetails.OrderSlipPrinter = clsProductDetails.OrderSlipPrinter;
-						clsItemDetails.OrderSlipPrinted = false;
-						clsItemDetails.PercentageCommision = clsProductDetails.PercentageCommision;
-						clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
+                        clsItemDetails.ProductID = clsProductDetails.ProductID;
+                        clsItemDetails.ProductCode = clsProductDetails.ProductCode;
+                        clsItemDetails.BarCode = clsProductDetails.BarCode;
+                        clsItemDetails.Description = clsProductDetails.ProductDesc;
+                        clsItemDetails.ProductGroup = clsProductDetails.ProductGroupName;
+                        clsItemDetails.ProductSubGroup = clsProductDetails.ProductSubGroupName;
+                        clsItemDetails.TransactionItemStatus = TransactionItemStatus.Valid;
+                        clsItemDetails.ProductUnitID = clsProductDetails.BaseUnitID;
+                        clsItemDetails.ProductUnitCode = clsProductDetails.BaseUnitCode;
+                        clsItemDetails.Quantity = decQuantity;
+                        clsItemDetails.Price = clsProductDetails.Price;
+                        clsItemDetails.Discount = 0;
+                        clsItemDetails.ItemDiscount = 0;
+                        clsItemDetails.ItemDiscountType = DiscountTypes.NotApplicable;
+                        clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
+                        clsItemDetails.VAT = clsProductDetails.VAT;
+                        clsItemDetails.EVAT = clsProductDetails.EVAT;
+                        clsItemDetails.LocalTax = clsProductDetails.LocalTax;
+                        clsItemDetails.TransactionItemStatus = TransactionItemStatus.Valid;
+                        clsItemDetails.PurchasePrice = clsProductDetails.PurchasePrice;
+                        clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
+                        clsItemDetails.IncludeInSubtotalDiscount = clsProductDetails.IncludeInSubtotalDiscount;
+                        clsItemDetails.OrderSlipPrinter = clsProductDetails.OrderSlipPrinter;
+                        clsItemDetails.OrderSlipPrinted = false;
+                        clsItemDetails.PercentageCommision = clsProductDetails.PercentageCommision;
+                        clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
 
                         clsItemDetails.ProductPackageID = clsProductPackageDetails.PackageID;
                         clsItemDetails.ProductUnitID = clsProductPackageDetails.UnitID;
@@ -4397,16 +4415,16 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         clsItemDetails.MatrixPackageID = clsProductPackageDetails.MatrixID;
                         clsItemDetails.VariationsMatrixID = clsProductDetails.MatrixID;
-                        clsItemDetails.MatrixDescription = clsProductDetails.MatrixDescription; 
+                        clsItemDetails.MatrixDescription = clsProductDetails.MatrixDescription;
 
                         if (!mboIsInTransaction)
                         {
                             lblTransDate.Text = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
                             if (!this.CreateTransaction()) { clsProductPackage.CommitAndDispose(); return; }
                         }
-                        
-						AddItem(clsItemDetails);
-					}
+
+                        AddItem(clsItemDetails);
+                    }
 					else
 					{
 						MessageBox.Show("Sorry the item is not yet entered in the system. Please select the generic code for this item.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -6818,6 +6836,31 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			try
 			{
+                //21Jul2013 Add Parking rate if parking
+                if (mclsTerminalDetails.IsParkingTerminal)
+                {
+                    Data.ParkingRate clsParkingRate = new Data.ParkingRate(mConnection, mTransaction);
+                    Data.ParkingRateDetails clsParkingRateDetails = clsParkingRate.Details(Details.ProductID, mclsSalesTransactionDetails.TransactionDate.ToString("dddd"));
+                    if (clsParkingRateDetails.ParkingRateID != 0)
+                    {
+                        //compute the parking rate
+                        Int32 intTotalNoOfMinutes =  (Int32) (mclsSalesTransactionDetails.DateResumed - mclsSalesTransactionDetails.TransactionDate).TotalMinutes;
+                        decimal decParkingPrice = Details.Price;
+
+                        if (intTotalNoOfMinutes <= clsParkingRateDetails.MinimumStayInMin)
+                        {
+                            Details.Price = clsParkingRateDetails.MinimumStayPrice;
+                            Details.Description += Environment.NewLine + "TotalNoOfMinutes:" + intTotalNoOfMinutes.ToString("#,##0") + " @ " + clsParkingRateDetails.MinimumStayPrice.ToString("#,##0.#0") + " / " + clsParkingRateDetails.MinimumStayInMin.ToString("#,##0"); 
+                        }
+                        else
+                        {
+                            decParkingPrice = clsParkingRateDetails.MinimumStayPrice + (intTotalNoOfMinutes - clsParkingRateDetails.MinimumStayInMin) / clsParkingRateDetails.NoOfUnitperMin * clsParkingRateDetails.PerUnitPrice;
+                            Details.Description += Environment.NewLine + "TotalNoOfMinutes:" + intTotalNoOfMinutes.ToString("#,##0") + " First " + clsParkingRateDetails.MinimumStayInMin.ToString("#,##0") + " @ " + clsParkingRateDetails.MinimumStayPrice.ToString("#,##0.#0") + " SuccNoOfUnit: " + (intTotalNoOfMinutes - clsParkingRateDetails.MinimumStayInMin).ToString("#,##0") + "/" + clsParkingRateDetails.NoOfUnitperMin.ToString("#,##0") + " * " + clsParkingRateDetails.PerUnitPrice.ToString("#,##0.#0");
+                        }
+                        Details.Price = decParkingPrice;
+                    }
+                }
+
 				//if (Details.ItemDiscountType == DiscountTypes.NotApplicable)
 				//{	Details.Description		= Details.Description;	}
 				if (Details.ItemDiscountType == DiscountTypes.FixedValue)
@@ -9210,7 +9253,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				{
 					System.Data.DataRow dr = ItemDataTable.NewRow();
 
-					dr = setCurrentRowItemDetails(dr, item);
+                    dr = setCurrentRowItemDetails(dr, item);
 					dr["ItemNo"] = ItemDataTable.Rows.Count + 1;
 
 					ItemDataTable.Rows.Add(dr);

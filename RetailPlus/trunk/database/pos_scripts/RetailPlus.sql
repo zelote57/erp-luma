@@ -3,7 +3,7 @@
 **		Name: RetailPlus
 **		Desc: RetailPlus
 **
-**		Auth: Lemuel E. Aceron
+**		Auth: Lem E. Aceron
 **		Date: 
 *******************************************************************************
 **		Change History
@@ -2513,7 +2513,7 @@ INSERT INTO sysAccessGroups (GroupName, Remarks) VALUES ('Cashiers', 'Default gr
 
 INSERT INTO sysAccessUsers (Username, Password, DateCreated ) VALUES ('admin', 'admin', '2004-10-17 13:37:45.293');
 
-INSERT INTO sysAccessUserDetails (UID ,Name, CountryID, GroupID) VALUES (1, 'Lemuel E. Aceron', 1, 1);
+INSERT INTO sysAccessUserDetails (UID ,Name, CountryID, GroupID) VALUES (1, 'Lem E. Aceron', 1, 1);
 
 
 INSERT INTO sysAccessTypes (TypeName) VALUES ('LoginBE');
@@ -3086,7 +3086,7 @@ INSERT INTO tblUnit (UnitCode, UnitName) VALUES ('MTR', 'METER');
 
 /*****************************
 **	Added on March 8, 2007
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 *****************************/
 
 INSERT INTO sysAccessTypes (TypeName) VALUES ('Branch');
@@ -3224,7 +3224,7 @@ ALTER TABLE tblCashierReportHistory ADD `NoOfDebitPaymentTransactions` INT(10) N
 
 /*****************************
 **	Added on April 25, 2007
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 *****************************/ 
 
 ALTER TABLE tblTransactions01 ADD `ItemsDiscount` DECIMAL(18,2) NOT NULL DEFAULT 0;
@@ -3243,7 +3243,7 @@ ALTER TABLE tblTransactions12 ADD `ItemsDiscount` DECIMAL(18,2) NOT NULL DEFAULT
 
 /*****************************
 **	Added on April 30, 2007
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 *****************************/ 
 
 ALTER TABLE tblTransactions01 ADD `Charge` DECIMAL(18,2) NOT NULL DEFAULT 0, ADD `ChargeAmount` DECIMAL(18,2) NOT NULL DEFAULT 0, ADD `ChargeCode` VARCHAR(30), ADD `ChargeRemarks` VARCHAR(255);
@@ -3271,7 +3271,7 @@ alter table tblTerminal add `LocalTax` INT (2) NOT NULL DEFAULT 0;
 
 /*****************************
 **	Added on November 22, 2007
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 **	
 **	UPDATES:
 **	1. Add product composition to enable inventory of RAW PRODUCTS.
@@ -3317,7 +3317,7 @@ ALTER TABLE tblTerminalReportHistory ADD `TrustFund` DECIMAL(5,2) NOT NULL DEFAU
 
 /*****************************
 **	Added on December 10, 2007
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 **	Parameterized the display of items in Front-End if items with Quantity 
 **	to display only Items with more than zero quantity
 **		0 - means false [display all items]
@@ -3329,7 +3329,7 @@ ALTER TABLE sysAccessUserDetails ADD PageSize INT(5) NOT NULL DEFAULT 10;
 
 /*****************************
 **	Added on Feb 07, 2008
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 **	Include Waiter in all installations
 *****************************/
 INSERT INTO sysAccessGroups (GroupName, Remarks) VALUES ('Waiters', 'Default group for waiters.');
@@ -3658,7 +3658,7 @@ INDEX `IX1_tblRemoteBranchInventory`(`BranchID`)
 
 /*****************************
 **	Added on November 28, 2008 for packing terminal
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 *****************************/
 
 ALTER TABLE tblTransactions01 ADD `Packed` TINYINT(1) NOT NULL DEFAULT 0;
@@ -3699,7 +3699,7 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (2, 
 
 /*****************************
 **	Added on Dec 01, 2008 for cas count
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 *****************************/
 
 ALTER TABLE tblCashierReport ADD `IsCashCountInitialized` TINYINT(1) NOT NULL DEFAULT 0; 
@@ -3707,7 +3707,7 @@ ALTER TABLE tblCashierReport ADD `IsCashCountInitialized` TINYINT(1) NOT NULL DE
 
 /******************************************************************
 **	Added on Dec 09, 2008 for OrderSlipPrinter
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 **
 ** OrderSlipPrinter Types
 ** 0 = Print to 1st printer PrinterName=RetailPlusOSPrinter1
@@ -3737,7 +3737,7 @@ ALTER TABLE tblTransactionItems12 ADD `OrderSlipPrinter` TINYINT(1) NOT NULL DEF
 
 /******************************************************************
 **	Added on Dec 18, 2008 for OrderSlipPrinted
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 **
 ** OrderSlipPrinted Types
 ** 0 = not yet printed
@@ -3759,7 +3759,7 @@ ALTER TABLE tblTransactionItems12 ADD `OrderSlipPrinted` TINYINT(1) NOT NULL DEF
 
 /*****************************
 **	Added on December 26, 2008 Total Stock Report
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 *****************************/ 
 
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (121, 'TotalStockReport');
@@ -3802,7 +3802,7 @@ ALTER TABLE tblProductSubGroup ADD ChartOfAccountIDInventory INT(4) UNSIGNED NOT
 
 /**************************************************************
 ** February 7. 2009
-** Lemuel E. Aceron
+** Lem E. Aceron
 **
 ** 1.Add OrderSlipPrinter for printing PLU Report group by
 **   OrderSlipPrinter
@@ -3820,7 +3820,7 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 
 
 /**************************************************************
 ** March 14, 2009
-** Lemuel E. Aceron
+** Lem E. Aceron
 **
 ** 1. Add table to hold temporary records for sales per item
 ** 2. Add stored procedure to insert the records
@@ -3841,7 +3841,7 @@ INDEX `IX_tblSalesPerItem1`(`ProductCode`)
 
 
 /********************************************
-Lemuel E. Aceron
+Lem E. Aceron
 
 Cater the requirement of RLC
 
@@ -3876,7 +3876,7 @@ ALTER TABLE tblCashierReportHistory ADD `CreditSalesTax` DECIMAL(18,2) NOT NULL 
 
 /**************************************************************
 ** March 14, 2009
-** Lemuel E. Aceron
+** Lem E. Aceron
 **
 ** 1. Add table to hold temporary records for sales per item
 ** 2. Add stored procedure to insert the records
@@ -3915,7 +3915,7 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 
 /*********************************  v_2.0.0.1.sql START  *******************************************************/
 	
 /*********************************
-Lemuel E. Aceron
+Lem E. Aceron
 April 22, 2009
 *********************************/
 ALTER TABLE tblTerminal ADD DBVersion varchar(15) NOT NULL DEFAULT 'v_2.0.0.1'; 
@@ -3931,7 +3931,7 @@ UPDATE tblTerminal SET DBVersion = 'v_2.0.0.2';
 ALTER TABLE tblReceipt MODIFY `TEXT` varchar(20);
 	
 /*********************************
-Lemuel E. Aceron
+Lem E. Aceron
 May 1, 2009
 
 OrderType values:
@@ -4146,7 +4146,7 @@ UPDATE tblTerminal SET DBVersion = 'v_2.0.0.6';
 /*********************************
 **
 ** May 29, 2011
-** Lemuel E. Aceron
+** Lem E. Aceron
 ** Remove the 2 codes below to support the mysql version 5 and above
 ** No warning should be displayed from fresh install
 
@@ -4320,7 +4320,7 @@ ALTER TABLE tblDebitPayment MODIFY Remarks VARCHAR(255);
 /*********************************
 **
 ** May 29, 2011
-** Lemuel E. Aceron
+** Lem E. Aceron
 ** Remove the codes below to support the mysql version 5 and above
 ** No warning should be displayed from fresh install
 ** Below code should be run if upgraded from lower version.
@@ -4427,7 +4427,7 @@ INDEX `IX_tblAgentsCommision1`(`Description`)
 /*********************************
 **
 ** May 29, 2011 
-** Lemuel E. Aceron
+** Lem E. Aceron
 ** Remove the drop command since this is a new update version to mysql 5
 ** 
 
@@ -4570,7 +4570,7 @@ ALTER TABLE tblAgentsCommision ADD `AgentName` VARCHAR(100);
 
 /*****************************
 **	Added on September 21, 2010 for Agent Commision Access
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 *****************************/
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (134, 'Agents Commision Report');
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 134, 1, 1);
@@ -4695,7 +4695,7 @@ UPDATE tblTransactions12 SET AgentPositionName = 'System Default Position';
 /*****************************
 **	  
 **	Added: May 29, 2011 
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 **
 **  Start supporting the new MySQL 5.5 and higher version
 **  Remove the unsupported 'TYPE=INNODB COMMENT = '
@@ -4705,7 +4705,7 @@ UPDATE tblTransactions12 SET AgentPositionName = 'System Default Position';
 /*****************************
 **	For Releasing of Items
 **	Added: April 7, 2011 
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 *****************************/
 
 UPDATE tblTerminal SET DBVersion = 'v_3.0.0.0';
@@ -4722,7 +4722,7 @@ UPDATE sysAccessTypes SET SequenceNo = 24, Category = '14: Frontend - Cashiering
 
 /*****************************
 **	Added on May 3, 2011 for releasing
-**	Lemuel E. Aceron
+**	Lem E. Aceron
 *****************************/
 
 ALTER TABLE tblTransactions01 ADD `ReleaserID` BIGINT(20) NOT NULL DEFAULT 0;
@@ -4809,7 +4809,7 @@ UPDATE tblTerminal SET DBVersion = 'v_3.0.0.1';
 
 /**************************************************************
 ** July 26, 2011
-** Lemuel E. Aceron
+** Lem E. Aceron
 **
 **************************************************************/
 
@@ -6369,6 +6369,9 @@ ALTER TABLE tblProductBaseVariationsMatrix DROP VAT;
 ALTER TABLE tblProductBaseVariationsMatrix DROP EVAT;
 ALTER TABLE tblProductBaseVariationsMatrix DROP LocalTax;
 
+-- This will be use to determine if Transaction is Refund
+--		0 POSNormal
+--		1 POSRefund
 ALTER TABLE tblTransactions ADD TransactionType INT(1) NOT NULL DEFAULT 0;
 
 
@@ -6382,14 +6385,174 @@ ALTER TABLE tblTerminal add `IsParkingTerminal` TINYINT (1) NOT NULL DEFAULT 0;
 
 ALTER TABLE tblTerminal add `WillPrintChargeSlip` TINYINT (1) NOT NULL DEFAULT 1;
 
+/*****************************
+**	tblParkingRates
+		Overrides the base parking rate if the rate is not flat rate. Flat rate is the Price in tblProductPackage. 
+		No need to create parking rate if rate is just flat rate but not daily. If daily flat rate then have to create this.
+	
+		MinimumStayInMin is the no of minutes on the first bucket 
+			example: 24HRS everyday rate is 200 pesos value should be 1440 and MinimumStayPrice should be 200 (pesos)
+			example: if first 2 hours is 100 pesos value should be 120 and MinimumStayPrice should be 100 (pesos)
+			example: if first 1 hour is 50 pesos value should be 60 and MinimumStayPrice should be 50 (pesos)
+			example: if first 15 mins is free value should be 15 and MinimumStayPrice should be 0 (pesos)
+		NoOfUnitPerMin is the no of units per succeeding after the first charge of MinimumStayInMin
+			example: if succeeding hourly rate is 10 pesos value should be 60 and PerUnitPrice should be 10 (pesos)
+			example: if succeeding rate is 10 pesos every 30 min value should be 30 and PerUnitPrice should be 10 (pesos)
+			example: if succeeding rate is 1 peso per min value should be 1 and PerUnitPrice should be 10 (peso)
+
+*****************************/
+DROP TABLE IF EXISTS tblParkingRates;
+CREATE TABLE tblParkingRates (
+	`ParkingRateID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ProductID` BIGINT NOT NULL DEFAULT 0,
+	`DayOfWeek` VARCHAR(9) NOT NULL,
+	`StartTime` VARCHAR(5) NOT NULL,
+	`Endtime` VARCHAR(5) NOT NULL,
+	`NoOfUnitPerMin` INT NOT NULL DEFAULT 1,
+	`PerUnitPrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`MinimumStayInMin` INT NOT NULL DEFAULT 60,
+	`MinimumStayPrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreatedByName` VARCHAR(100),
+	`CreatedOn` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`LastUpdatedByName` VARCHAR(100),
+	`LastUpdatedOn` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	INDEX `IX_tblParkingRates`(`ProductID`, `DayOfWeek`, `StartTime`),
+	PRIMARY KEY (ParkingRateID),
+	UNIQUE `PK_tblParkingRates`(`ProductID`, `DayOfWeek`, `StartTime`, `Endtime`)
+);
+
+
 /*********************************  v_4.0.0.4.sql END  *******************************************************/ 
 
 
+/*****************************
+**	tblTransactionsBackup
+		This table will hold the backup records of tblTransactions.
+	
+		Purpose of this is to make the reporting of sales items faster specially in groceries.
 
+*****************************/
 
+DROP TABLE IF EXISTS tblTransactionsBackup;
+CREATE TABLE `tblTransactionsBackup` (
+  `TransactionID` bigint(20) unsigned NOT NULL DEFAULT 0,
+  `TransactionNo` varchar(30) NOT NULL,
+  `CustomerID` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `CustomerName` varchar(100) NOT NULL,
+  `CashierID` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `CashierName` varchar(100) NOT NULL,
+  `TerminalNo` varchar(30) NOT NULL,
+  `TransactionDate` datetime NOT NULL,
+  `DateSuspended` datetime NOT NULL DEFAULT '0001-01-01 12:00:00',
+  `DateResumed` datetime NOT NULL DEFAULT '0001-01-01 12:00:00',
+  `TransactionStatus` smallint(1) unsigned NOT NULL DEFAULT '0',
+  `SubTotal` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `Discount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `TransDiscount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `TransDiscountType` int(10) NOT NULL DEFAULT '0',
+  `VAT` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `VatableAmount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `EVAT` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `EVatableAmount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `LocalTax` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `AmountPaid` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CashPayment` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ChequePayment` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditCardPayment` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditPayment` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `BalanceAmount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ChangeAmount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `DateClosed` datetime NOT NULL DEFAULT '0001-01-01 12:00:00',
+  `PaymentType` int(10) unsigned NOT NULL DEFAULT '4',
+  `DiscountCode` varchar(5) DEFAULT NULL,
+  `DiscountRemarks` varchar(255) DEFAULT NULL,
+  `DebitPayment` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ItemsDiscount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `Charge` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ChargeAmount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ChargeCode` varchar(30) DEFAULT NULL,
+  `ChargeRemarks` varchar(255) DEFAULT NULL,
+  `WaiterID` bigint(20) unsigned NOT NULL DEFAULT '2',
+  `WaiterName` varchar(100) NOT NULL,
+  `Packed` tinyint(1) NOT NULL DEFAULT '0',
+  `OrderType` smallint(6) NOT NULL DEFAULT '0',
+  `AgentID` bigint(20) NOT NULL DEFAULT '1',
+  `AgentName` varchar(100) DEFAULT 'RetailPlus Customer T',
+  `CreatedByID` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `CreatedByName` varchar(100) DEFAULT NULL,
+  `AgentDepartmentName` varchar(30) NOT NULL DEFAULT 'System Default Department',
+  `AgentPositionName` varchar(30) NOT NULL DEFAULT 'System Default Position',
+  `ReleaserID` bigint(20) NOT NULL DEFAULT '0',
+  `ReleaserName` varchar(100) DEFAULT NULL,
+  `ReleasedDate` datetime NOT NULL DEFAULT '0001-01-01 12:00:00',
+  `RewardPointsPayment` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `RewardConvertedPayment` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `PaxNo` int(4) NOT NULL DEFAULT '1',
+  `CreditChargeAmount` decimal(18,3) NOT NULL DEFAULT '0.000',
+  `BranchID` int(4) NOT NULL DEFAULT '1',
+  `BranchCode` varchar(30) DEFAULT NULL,
+  `TransactionType` int(1) NOT NULL DEFAULT '0',
+  `BackupDate` datetime,
+  KEY `IXU_tblTransactionsBackup` (`TransactionDate`),
+  KEY `IX0_tblTransactionsBackup` (`TransactionID`),
+  KEY `IX1_tblTransactionsBackup` (`TransactionNo`),
+  KEY `IX2_tblTransactionsBackup` (`CustomerID`),
+  KEY `IX3_tblTransactionsBackup` (`CashierID`)
+);
 
-
-
-
+DROP TABLE IF EXISTS tblTransactionItemsBackup;
+CREATE TABLE `tblTransactionItemsBackup` (
+  `TransactionItemsID` bigint(20) unsigned NOT NULL DEFAULT 0,
+  `TransactionID` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `ProductID` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `ProductCode` varchar(30) NOT NULL,
+  `BarCode` varchar(30) NOT NULL,
+  `Description` varchar(100) NOT NULL,
+  `ProductUnitID` int(3) unsigned NOT NULL DEFAULT '0',
+  `ProductUnitCode` varchar(5) DEFAULT NULL,
+  `Quantity` decimal(12,3) NOT NULL DEFAULT '0.000',
+  `Price` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `SellingPrice` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `Discount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ItemDiscount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `ItemDiscountType` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `Amount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `VAT` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `VatableAmount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `EVAT` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `EVatableAmount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `LocalTax` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `VariationsMatrixID` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `MatrixDescription` varchar(150) DEFAULT NULL,
+  `ProductGroup` varchar(20) DEFAULT NULL,
+  `ProductSubGroup` varchar(50) DEFAULT NULL,
+  `TransactionItemStatus` int(1) NOT NULL DEFAULT '0',
+  `DiscountCode` varchar(5) DEFAULT NULL,
+  `DiscountRemarks` varchar(255) DEFAULT NULL,
+  `ProductPackageID` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `MatrixPackageID` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `PackageQuantity` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `PromoQuantity` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `PromoValue` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `PromoInPercent` tinyint(1) NOT NULL DEFAULT '0',
+  `PromoType` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `PromoApplied` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `PurchasePrice` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `PurchaseAmount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `IncludeInSubtotalDiscount` tinyint(1) NOT NULL DEFAULT '1',
+  `OrderSlipPrinter` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `orderslipprinted` tinyint(1) NOT NULL DEFAULT '0',
+  `PercentageCommision` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `Commision` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `PaxNo` int(4) NOT NULL DEFAULT '1',
+  `BackupDate` datetime,
+  PRIMARY KEY (`TransactionItemsID`),
+  KEY `IX_tblTransactionItemsBackup` (`TransactionItemsID`),
+  KEY `IX0_tblTransactionItemsBackup` (`TransactionID`,`ProductID`),
+  KEY `IX1_tblTransactionItemsBackup` (`TransactionID`,`ProductID`,`VariationsMatrixID`),
+  KEY `IX2_tblTransactionItemsBackup` (`ProductCode`),
+  KEY `IX3_tblTransactionItemsBackup` (`TransactionID`),
+  KEY `IX4_tblTransactionItemsBackup` (`ProductUnitID`)
+);
 
 

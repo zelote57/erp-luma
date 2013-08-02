@@ -5710,3 +5710,163 @@ BEGIN
 END;
 GO
 delimiter ;
+
+
+
+
+/********************************************
+	procSaveParkingRate
+	
+	CALL procSaveParkingRate(0, 5448, 'Monday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
+	CALL procSaveParkingRate(0, 5448, 'Tuesday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
+	CALL procSaveParkingRate(0, 5448, 'Wednesday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
+	CALL procSaveParkingRate(0, 5448, 'Thursday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
+	CALL procSaveParkingRate(0, 5448, 'Friday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
+	CALL procSaveParkingRate(0, 5448, 'Saturday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
+	CALL procSaveParkingRate(0, 5448, 'Sunday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
+
+	Jul 21, 2013 : Lem
+	- create this procedure
+	
+	
+********************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveParkingRate
+GO
+
+create procedure procSaveParkingRate(
+	IN lngParkingRateID BIGINT,
+	IN lngProductID BIGINT,
+	IN strDayOfWeek VARCHAR(9),
+	IN strStartTime VARCHAR(5),
+	IN strEndtime VARCHAR(5),
+	IN intNoOfUnitPerMin INT,
+	IN decPerUnitPrice DECIMAL(18,3),
+	IN intMinimumStayInMin INT,
+	IN decMinimumStayPrice DECIMAL(18,3),
+	IN strCreatedByName VARCHAR(100)
+	)
+BEGIN
+	
+	IF EXISTS(SELECT ProductID FROM tblParkingRates WHERE ParkingRateID = lngParkingRateID) THEN 
+		UPDATE tblParkingRates SET
+			DayOfWeek			= strDayOfWeek,
+			StartTime			= strStartTime,
+			EndTime				= strEndTime,
+			NoofUnitPerMin		= intNoOfUnitPerMin,
+			PerUnitPrice		= decPerUnitPrice,
+			MinimumStayInMin	= intMinimumStayInMin,
+			MinimumStayPrice	= decMinimumStayPrice,
+			LastUpdatedByName	= strCreatedByName,
+			LastUpdatedOn		= NOW()
+		WHERE ParkingRateID		= lngParkingRateID;
+	ELSE
+		INSERT INTO tblParkingRates(ProductID, DayOfWeek, StartTime, EndTime, NoOfUnitperMin, PerUnitPrice, MinimumStayInMin, MinimumStayPrice, CreatedByName, CreatedOn)
+			VALUES(lngProductID, strDayOfWeek, strStartTime, strEndTime, intNoOfUnitperMin, decPerUnitPrice, intMinimumStayInMin, decMinimumStayPrice, strCreatedByName, NOW());
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/**************************************************************
+
+	procParkingRateSelect
+	Lemuel E. Aceron
+	March 22, 2013
+	
+	Desc: This will get the main product list
+
+	CALL procParkingRateSelect(0, 5448, NULL, NULL, NULL, NULL, NULL);
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procParkingRateSelect
+GO
+
+create procedure procParkingRateSelect(
+			 	IN lngParkingRateID BIGINT,
+				IN lngProductID BIGINT,
+				IN strDayOfWeek VARCHAR(9),
+				IN strStartTime VARCHAR(5),
+				IN strEndtime VARCHAR(5),
+				IN SortField varchar(60),
+				IN SortOrder varchar(4))
+BEGIN
+	SET @SQL = CONCAT('	SELECT 
+							 rte.ParkingRateID
+							,rte.ProductID
+							,rte.DayOfWeek
+							,rte.StartTime
+							,rte.EndTime
+							,rte.NoOfUnitperMin
+							,rte.PerUnitPrice
+							,rte.MinimumStayInMin
+							,rte.MinimumStayPrice
+							,rte.CreatedByName
+							,rte.CreatedOn
+							,rte.LastUpdatedByName
+							,rte.LastUpdatedOn
+						FROM tblParkingRates rte
+						WHERE 1=1 ');
+
+	IF lngParkingRateID <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND rte.ParkingRateID >= ',lngParkingRateID,' ');
+	END IF;
+
+	IF lngProductID <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND rte.ProductID = ',lngProductID,' ');
+	END IF;
+
+	IF IFNULL(strDayOfWeek,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND rte.DayOfWeek = ''',strDayOfWeek,''' ');
+	END IF;
+
+	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','rte.ParkingRateID',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
+
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;
+
+
+
+/**************************************************************
+
+	sysPurgeTransactions
+	Lemuel E. Aceron
+	March 22, 2013
+	
+	Desc:	This will backup all sales details and transactions from transaction tables to make it faster. 
+			After the backup, it will remove the records from tables.
+
+			tblTransactionItemsBackup and tblTransactionsBackup must be created before this.
+
+	CALL sysPurgeTransactions();
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS sysPurgeTransactions
+GO
+
+create procedure sysPurgeTransactions()
+BEGIN
+	
+	INSERT INTO tblTransactionItemsBackup (TransactionItemsID, 	TransactionID, 	ProductID, 	ProductCode, 	BarCode, 	Description, 	ProductUnitID, 	ProductUnitCode, 	Quantity, 	Price, 	SellingPrice, 	Discount, 	ItemDiscount, 	ItemDiscountType, 	Amount, 	VAT, 	VatableAmount, 	EVAT, 	EVatableAmount, 	LocalTax, 	VariationsMatrixID, 	MatrixDescription, 	ProductGroup, 	ProductSubGroup, 	TransactionItemStatus, 	DiscountCode, 	DiscountRemarks, 	ProductPackageID, 	MatrixPackageID, 	PackageQuantity, 	PromoQuantity, 	PromoValue, 	PromoInPercent, 	PromoType, 	PromoApplied, 	PurchasePrice, 	PurchaseAmount, 	IncludeInSubtotalDiscount, 	OrderSlipPrinter, 	orderslipprinted, 	PercentageCommision, 	Commision, 	PaxNo, BackupDate)
+	SELECT TransactionItemsID, 	TransactionID, 	ProductID, 	ProductCode, 	BarCode, 	Description, 	ProductUnitID, 	ProductUnitCode, 	Quantity, 	Price, 	SellingPrice, 	Discount, 	ItemDiscount, 	ItemDiscountType, 	Amount, 	VAT, 	VatableAmount, 	EVAT, 	EVatableAmount, 	LocalTax, 	VariationsMatrixID, 	MatrixDescription, 	ProductGroup, 	ProductSubGroup, 	TransactionItemStatus, 	DiscountCode, 	DiscountRemarks, 	ProductPackageID, 	MatrixPackageID, 	PackageQuantity, 	PromoQuantity, 	PromoValue, 	PromoInPercent, 	PromoType, 	PromoApplied, 	PurchasePrice, 	PurchaseAmount, 	IncludeInSubtotalDiscount, 	OrderSlipPrinter, 	orderslipprinted, 	PercentageCommision, 	Commision, 	PaxNo, NOW()
+	FROM tblTransactionItems WHERE TransactionID IN (SELECT DISTINCT TransactionID FROM tblTransactions WHERE DATE_FORMAT(TransactionDate, '%Y-%m-%d') <= '2012-05-31');
+
+	INSERT INTO tblTransactionsBackup(TransactionID, 	TransactionNo, 	CustomerID, 	CustomerName, 	CashierID, 	CashierName, 	TerminalNo, 	TransactionDate, 	DateSuspended, 	DateResumed, 	TransactionStatus, 	SubTotal, 	Discount, 	TransDiscount, 	TransDiscountType, 	VAT, 	VatableAmount, 	EVAT, 	EVatableAmount, 	LocalTax, 	AmountPaid, 	CashPayment, 	ChequePayment, 	CreditCardPayment, 	CreditPayment, 	BalanceAmount, 	ChangeAmount, 	DateClosed, 	PaymentType, 	DiscountCode, 	DiscountRemarks, 	DebitPayment, 	ItemsDiscount, 	Charge, 	ChargeAmount, 	ChargeCode, 	ChargeRemarks, 	WaiterID, 	WaiterName, 	Packed, 	OrderType, 	AgentID, 	AgentName, 	CreatedByID, 	CreatedByName, 	AgentDepartmentName, 	AgentPositionName, 	ReleaserID, 	ReleaserName, 	ReleasedDate, 	RewardPointsPayment, 	RewardConvertedPayment, 	PaxNo, 	CreditChargeAmount, 	BranchID, 	BranchCode, TransactionType, BackupDate)
+	SELECT TransactionID, 	TransactionNo, 	CustomerID, 	CustomerName, 	CashierID, 	CashierName, 	TerminalNo, 	TransactionDate, 	DateSuspended, 	DateResumed, 	TransactionStatus, 	SubTotal, 	Discount, 	TransDiscount, 	TransDiscountType, 	VAT, 	VatableAmount, 	EVAT, 	EVatableAmount, 	LocalTax, 	AmountPaid, 	CashPayment, 	ChequePayment, 	CreditCardPayment, 	CreditPayment, 	BalanceAmount, 	ChangeAmount, 	DateClosed, 	PaymentType, 	DiscountCode, 	DiscountRemarks, 	DebitPayment, 	ItemsDiscount, 	Charge, 	ChargeAmount, 	ChargeCode, 	ChargeRemarks, 	WaiterID, 	WaiterName, 	Packed, 	OrderType, 	AgentID, 	AgentName, 	CreatedByID, 	CreatedByName, 	AgentDepartmentName, 	AgentPositionName, 	ReleaserID, 	ReleaserName, 	ReleasedDate, 	RewardPointsPayment, 	RewardConvertedPayment, 	PaxNo, 	CreditChargeAmount, 	BranchID, 	BranchCode, TransactionType, NOW()
+	FROM tblTransactions WHERE DATE_FORMAT(TransactionDate, '%Y-%m-%d') <= '2012-05-31';
+
+	DELETE FROM tblTransactionItems WHERE TransactionID IN (SELECT DISTINCT TransactionID FROM tblTransactions WHERE DATE_FORMAT(TransactionDate, '%Y-%m-%d') <= '2012-05-31');
+	DELETE FROM tblTransactions WHERE DATE_FORMAT(TransactionDate, '%Y-%m-%d') <= '2012-05-31';
+
+END;
+GO
+delimiter ;

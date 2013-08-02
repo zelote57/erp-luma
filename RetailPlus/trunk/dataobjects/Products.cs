@@ -2102,7 +2102,7 @@ namespace AceSoft.RetailPlus.Data
                                 "     LEFT OUTER JOIN (" +
                                 "          SELECT BranchID, ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE BranchID=" + BranchID + " GROUP BY BranchID, ProductID, MatrixID, IsLock " +
                                 "      ) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) " +
-								"WHERE prd.Deleted = 0 ";
+                                "WHERE prd.deleted = 0 AND IFNULL(mtrx.deleted, 0) = 0 ";
             
             stSQL += BranchID == 0 ? "" : "AND IFNULL(inv.BranchID,1) = " + BranchID.ToString() + " ";
 

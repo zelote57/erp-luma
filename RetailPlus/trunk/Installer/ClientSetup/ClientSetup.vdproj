@@ -1793,7 +1793,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:2.0.50727   "
+                "FrameworkVersion" = "8:2.0.50727    "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=9832"
                 }
@@ -2085,7 +2085,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Data, Version=2.0.0.2, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Data, Version=2.0.0.2, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_1D6AC48FAC2DE0877F1D77E0BBC67694"
@@ -2176,7 +2176,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.WebLibrary, Version=2.0.0.2, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.WebLibrary, Version=2.0.0.2, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_242FFE800FE8B702F7AA3BAE381D47DC"
@@ -2598,7 +2598,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Data.Accounts, Version=2.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Data.Accounts, Version=2.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_480B9D1C3A859FD11F615463A78A9447"
@@ -2849,7 +2849,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Client.Library, Version=1.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Client.Library, Version=1.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_640052AE47F0E3EA4422A4CAA82B9E5A"
@@ -2920,7 +2920,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Data.Inventory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Data.Inventory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_69A0CCEC0ED640A4E73DB0D251FC70D8"
@@ -3562,7 +3562,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Reports, Version=1.0.0.3, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Reports, Version=1.0.0.3, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_94C06B538FD6F36773D6288D9BCD9708"
@@ -3775,7 +3775,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Key, Version=1.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Key, Version=1.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_A19EEBF38FEA707CFD07D9623B437FE8"
@@ -3826,7 +3826,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.DBConnection, Version=2.0.0.2, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.DBConnection, Version=2.0.0.2, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_A6409A54AECC19183AE2D8E7AF1718A2"
@@ -4608,7 +4608,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Security, Version=1.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Security, Version=1.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_DD486D0499D77317A217F1C4894E67B1"
@@ -4750,7 +4750,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.KeyBoardHook, Version=1.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.KeyBoardHook, Version=1.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_E53A5EAE566947B732A71EA5991D154E"
@@ -4821,7 +4821,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Company, Version=1.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Company, Version=1.0.0.1, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_EDB36A8FE87A9A07F4AC58796789E126"
@@ -4852,7 +4852,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Forwarder, Version=2.0.0.3, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:AceSoft.RetailPlus.Forwarder, Version=2.0.0.3, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_EEFFA330AD14EEF137095380B674F750"
@@ -5209,7 +5209,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:RetailPlus POS System - FrontEnd"
         "ProductCode" = "8:{68AB85A0-F2FC-46BF-AA82-052FC67EB5E3}"
-        "PackageCode" = "8:{69E4E605-49D6-4770-9AFC-78EC580178C1}"
+        "PackageCode" = "8:{658AD132-4A4C-4882-A17C-A126B04A052E}"
         "UpgradeCode" = "8:{2D5043F7-CD82-415A-AE8D-997E692D5A03}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

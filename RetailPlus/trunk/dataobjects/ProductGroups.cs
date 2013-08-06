@@ -32,6 +32,8 @@ namespace AceSoft.RetailPlus.Data
         public int ChartOfAccountIDInventory;
         public int ChartOfAccountIDTaxPurchase;
         public int ChartOfAccountIDTaxSold;
+
+        public bool isLock;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -505,15 +507,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -671,7 +664,8 @@ namespace AceSoft.RetailPlus.Data
                                 "a.ChartOfAccountIDSold, " +
                                 "a.ChartOfAccountIDInventory, " +
                                 "a.ChartOfAccountIDTaxPurchase, " +
-                                "a.ChartOfAccountIDTaxSold " +
+                                "a.ChartOfAccountIDTaxSold, " +
+                                "a.isLock " +
                             "FROM tblProductGroup a " +
                             "INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID ";
             return stSQL;
@@ -696,11 +690,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	SQLSelect() + "WHERE ProductGroupID = @ProductGroupID;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -735,6 +725,8 @@ namespace AceSoft.RetailPlus.Data
                     Details.ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString());
                     Details.ChartOfAccountIDTaxPurchase = Int32.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
                     Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
+
+                    Details.isLock = Convert.ToBoolean (Int16.Parse(dr["isLock"].ToString()));
                 }
 
 				return Details;
@@ -743,14 +735,6 @@ namespace AceSoft.RetailPlus.Data
 			catch (Exception ex)
 			{
 				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -1048,42 +1032,36 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-        public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(string Searchkey = "", string SortField = "ProductGroupCode", SortOption SortOrder = SortOption.Ascending)
         {
             try
             {
-                string SQL = SQLSelect() + "ORDER BY " + SortField;
+                MySqlCommand cmd = new MySqlCommand();
+
+                string SQL = SQLSelect();
+                if (!string.IsNullOrEmpty(Searchkey)) {
+                    SQL+= "WHERE ProductGroupCode LIKE @SearchKey ";
+
+                    cmd.Parameters.AddWithValue("@Searchkey", Searchkey);
+                }
+                
+                SQL+= "ORDER BY " + SortField;
 
                 if (SortOrder == SortOption.Ascending)
                     SQL += " ASC";
                 else
                     SQL += " DESC";
 
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("tblProductGroup");
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }

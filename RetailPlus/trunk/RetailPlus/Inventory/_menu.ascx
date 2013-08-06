@@ -110,7 +110,7 @@
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkCloseInventory" runat="server" ToolTip="Close Inventory">
 								<li>
-									Close Inventory</li></asp:HyperLink>
+									Close Inventory By Group</li></asp:HyperLink>
 						</td>
 					</tr>
 					<tr>
@@ -118,7 +118,7 @@
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word" nowrap>
 							<asp:HyperLink id="lnkCloseInventoryDetailed" runat="server" ToolTip="Close Inventory using detailed variation">
 								<li>
-									Close Inventory - Detailed</li></asp:HyperLink>
+									Close Inventory By Supplier</li></asp:HyperLink>
 						</td>
 					</tr>
 					<tr>

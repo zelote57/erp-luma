@@ -322,6 +322,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportDataset.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Inventory\_closeinventory.ascx.cs">
+      <DependentUpon>_closeinventory.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_closeinventory.ascx.designer.cs">
+      <DependentUpon>_closeinventory.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Inventory\_BranchTransfer\_Reports.ascx.cs">
       <DependentUpon>_reports.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -846,13 +853,6 @@
     </Compile>
     <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Inventory\_closeinventory.ascx.cs">
-      <DependentUpon>_closeinventory.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Inventory\_closeinventory.ascx.designer.cs">
-      <DependentUpon>_closeinventory.ascx</DependentUpon>
     </Compile>
     <Compile Include="Inventory\Default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
@@ -3278,6 +3278,7 @@
     <Content Include="Credits\_Customers\_update.ascx" />
     <Content Include="Credits\_default.ascx" />
     <Content Include="Credits\_menu.ascx" />
+    <Content Include="Inventory\_closeinventory.ascx" />
     <Content Include="packages.config" />
     <None Include="Scripts\jquery-2.0.0.min.map" />
     <None Include="User Guide - Backend.pdf" />
@@ -3385,7 +3386,6 @@
     <Content Include="GenericError.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Home.aspx" />
-    <Content Include="Inventory\_closeinventory.ascx" />
     <Content Include="Inventory\default.aspx" />
     <Content Include="Inventory\_Branch\default.aspx" />
     <Content Include="Inventory\_Branch\_details.ascx" />

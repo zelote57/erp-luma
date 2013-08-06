@@ -112,6 +112,7 @@ namespace AceSoft.RetailPlus.Inventory
             if (!string.IsNullOrEmpty(strRefrenceNo)) {
                 string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID);
                 Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+                LoadList();
             }
         }
 
@@ -122,6 +123,7 @@ namespace AceSoft.RetailPlus.Inventory
             if (!string.IsNullOrEmpty(strRefrenceNo)) {
                 string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboContact.SelectedItem.Value, Session.SessionID);
                 Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+                LoadList();
             }
         }
 
@@ -319,7 +321,7 @@ namespace AceSoft.RetailPlus.Inventory
                     AccessUserDetails clsAccessUserDetails = (AccessUserDetails)Session["AccessUserDetails"];
 
                     ProductInventories clsProductInventories = new ProductInventories(clsERPConfig.Connection, clsERPConfig.Transaction);
-                    clsProductInventories.CloseInventory(int.Parse(cboBranch.SelectedItem.Value), clsAccessUserDetails.UID, DateTime.Parse(txtClosingDate.Text), strReferenceNo, long.Parse(cboContact.SelectedItem.Value), cboContact.SelectedItem.Text);
+                    clsProductInventories.CloseInventoryBySupplier(int.Parse(cboBranch.SelectedItem.Value), clsAccessUserDetails.UID, DateTime.Parse(txtClosingDate.Text), strReferenceNo, long.Parse(cboContact.SelectedItem.Value), cboContact.SelectedItem.Text);
 
                     Products clsProducts = new Products(clsERPConfig.Connection, clsERPConfig.Transaction);
                     clsProducts.LockUnlockForSellingBySupplier(int.Parse(cboBranch.SelectedItem.Value), long.Parse(cboContact.SelectedItem.Value), false);
@@ -388,7 +390,7 @@ namespace AceSoft.RetailPlus.Inventory
             Int64 lngSupplierID = Convert.ToInt64(cboContact.SelectedItem.Value);
 
             ProductInventories clsProductInventories = new ProductInventories();
-            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(cboBranch.SelectedItem.Value), SupplierID: lngSupplierID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly);
+            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(cboBranch.SelectedItem.Value), SupplierID: lngSupplierID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode, MatrixDescription");
 
             Contacts clsContacts = new Contacts(clsProductInventories.Connection, clsProductInventories.Transaction);
             ContactDetails clsContactDetails = clsContacts.Details(lngSupplierID);

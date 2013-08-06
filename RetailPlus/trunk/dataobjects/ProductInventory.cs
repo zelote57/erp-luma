@@ -100,7 +100,34 @@ namespace AceSoft.RetailPlus.Data
             return boRetValue;
         }
 
-        public void CloseInventory(int intBranchID, long lngCloseByUserID, DateTime dteClosingDate, string strReferenceNo, long lngSupplierID, string strContactCode)
+        public void CloseInventoryByProductGroup(int intBranchID, long lngCloseByUserID, DateTime dteClosingDate, string strReferenceNo, long lngProductGroupID, string strProductGroupName)
+        {
+            try
+            {
+                string SQL = "CALL procCloseInventoryByProductGroup(@intBranchID, @lngUID, @dteClosingDate, @strReferenceNo, @lngProductGroupID, @strProductGroupName);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@intBranchID", intBranchID);
+                cmd.Parameters.AddWithValue("@lngUID", lngCloseByUserID);
+                cmd.Parameters.AddWithValue("@dteClosingDate", dteClosingDate);
+                cmd.Parameters.AddWithValue("@strReferenceNo", strReferenceNo);
+                cmd.Parameters.AddWithValue("@lngProductGroupID", lngProductGroupID);
+                cmd.Parameters.AddWithValue("@strProductGroupName", strProductGroupName);
+
+                base.ExecuteNonQuery(cmd);
+
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public void CloseInventoryBySupplier(int intBranchID, long lngCloseByUserID, DateTime dteClosingDate, string strReferenceNo, long lngSupplierID, string strContactCode)
         {
             try
             {

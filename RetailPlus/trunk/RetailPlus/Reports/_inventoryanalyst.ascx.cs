@@ -40,7 +40,7 @@ namespace AceSoft.RetailPlus.Reports
             ProductGroup clsProductGroup = new ProductGroup();
             cboGroup.DataTextField = "ProductGroupName";
             cboGroup.DataValueField = "ProductGroupID";
-            cboGroup.DataSource = clsProductGroup.ListAsDataTable("ProductGroupName", SortOption.Ascending);
+            cboGroup.DataSource = clsProductGroup.ListAsDataTable();
             cboGroup.DataBind();
             cboGroup.Items.Insert(0, new ListItem(Constants.ALL,Constants.ZERO_STRING));
             cboGroup.SelectedIndex = 0;

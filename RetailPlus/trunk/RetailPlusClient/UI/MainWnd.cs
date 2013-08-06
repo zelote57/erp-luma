@@ -4408,11 +4408,14 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsItemDetails.ProductPackageID = clsProductPackageDetails.PackageID;
                         clsItemDetails.ProductUnitID = clsProductPackageDetails.UnitID;
                         clsItemDetails.ProductUnitCode = clsProductPackageDetails.UnitCode;
-                        clsItemDetails.Price = clsProductPackageDetails.Price;
-                        clsItemDetails.PackageQuantity = clsProductPackageDetails.Quantity;
-                        clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
-                        clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
 
+                        if (!mclsTerminalDetails.IsParkingTerminal)
+                        {
+                            clsItemDetails.Price = clsProductPackageDetails.Price;
+                            clsItemDetails.PackageQuantity = clsProductPackageDetails.Quantity;
+                            clsItemDetails.Amount = (clsItemDetails.Quantity * clsItemDetails.Price) - (clsItemDetails.Quantity * clsItemDetails.Discount);
+                            clsItemDetails.Commision = clsItemDetails.Amount * (clsItemDetails.PercentageCommision / 100);
+                        }
                         clsItemDetails.MatrixPackageID = clsProductPackageDetails.MatrixID;
                         clsItemDetails.VariationsMatrixID = clsProductDetails.MatrixID;
                         clsItemDetails.MatrixDescription = clsProductDetails.MatrixDescription;
@@ -6858,6 +6861,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             Details.Description += Environment.NewLine + "TotalNoOfMinutes:" + intTotalNoOfMinutes.ToString("#,##0") + " First " + clsParkingRateDetails.MinimumStayInMin.ToString("#,##0") + " @ " + clsParkingRateDetails.MinimumStayPrice.ToString("#,##0.#0") + " SuccNoOfUnit: " + (intTotalNoOfMinutes - clsParkingRateDetails.MinimumStayInMin).ToString("#,##0") + "/" + clsParkingRateDetails.NoOfUnitperMin.ToString("#,##0") + " * " + clsParkingRateDetails.PerUnitPrice.ToString("#,##0.#0");
                         }
                         Details.Price = decParkingPrice;
+                        Details.Amount = decParkingPrice;
                     }
                 }
 

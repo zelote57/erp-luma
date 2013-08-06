@@ -1078,6 +1078,32 @@ namespace AceSoft.RetailPlus.Data
             return boRetValue;
         }
 
+        public bool ZeroOutActualQuantityByProductGroup(int BranchID, long lngProductGroupID)
+        {
+            bool boRetValue = false;
+            try
+            {
+                string SQL = "CALL procProductZeroOutActualQuantityByProductGroup(@BranchID, @lngProductGroupID);";
+
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@lngProductGroupID", lngProductGroupID);
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+
+            return boRetValue;
+        }
+
         public bool LockUnlockForSellingBySupplier(int BranchID, long lngSupplierID, bool isLock)
         {
             bool boRetValue = false;
@@ -1092,6 +1118,33 @@ namespace AceSoft.RetailPlus.Data
 
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 cmd.Parameters.AddWithValue("@lngSupplierID", lngSupplierID);
+                cmd.Parameters.AddWithValue("@bolisLock", isLock);
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+
+            return boRetValue;
+        }
+
+        public bool LockUnlockForSellingByProductGroup(int BranchID, long lngProductGroupID, bool isLock)
+        {
+            bool boRetValue = false;
+            try
+            {
+                string SQL = "CALL LockUnlockProductForSellingByProductGroup(@BranchID, @lngProductGroupID, @bolisLock);";
+
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@lngProductGroupID", lngProductGroupID);
                 cmd.Parameters.AddWithValue("@bolisLock", isLock);
 
                 if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;

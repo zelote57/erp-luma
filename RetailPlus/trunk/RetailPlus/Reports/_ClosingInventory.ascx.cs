@@ -57,7 +57,7 @@ namespace AceSoft.RetailPlus.Reports
             ProductGroup clsProductGroup = new ProductGroup(clsContact.Connection, clsContact.Transaction);
             cboGroup.DataTextField = "ProductGroupName";
             cboGroup.DataValueField = "ProductGroupID";
-            cboGroup.DataSource = clsProductGroup.ListAsDataTable("ProductGroupName", SortOption.Ascending);
+            cboGroup.DataSource = clsProductGroup.ListAsDataTable();
             cboGroup.DataBind();
             cboGroup.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT,Constants.ZERO_STRING));
             cboGroup.SelectedIndex = 0;
@@ -93,7 +93,7 @@ namespace AceSoft.RetailPlus.Reports
             if (Request.QueryString["prdgrpid"] != null)
             {
                 string strPrdGrpID = "prdgrpid";
-                strPrdGrpID = Common.Decrypt(Request.QueryString["prdgrp"].ToString(), Session.SessionID);
+                strPrdGrpID = Common.Decrypt(Request.QueryString["prdgrpid"].ToString(), Session.SessionID);
                 cboGroup.SelectedIndex = cboGroup.Items.IndexOf(cboGroup.Items.FindByValue(strPrdGrpID));
             }
 
@@ -220,8 +220,10 @@ namespace AceSoft.RetailPlus.Reports
             {
                 Int64 lngSupplierID = Convert.ToInt64(cboContact.SelectedItem.Value);
 
+                Int64 lngProductgroupID = Convert.ToInt64(cboGroup.SelectedItem.Value);
+
                 ProductInventories clsProductInventories = new ProductInventories();
-                dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(lblBranchID.Text), SupplierID: lngSupplierID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly);
+                dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(lblBranchID.Text), SupplierID: lngSupplierID, ProductGroupID: lngProductgroupID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode, MatrixDescription");
 
                 //Contacts clsContacts = new Contacts(clsProductInventories.Connection, clsProductInventories.Transaction);
                 //ContactDetails clsContactDetails = clsContacts.Details(lngSupplierID);

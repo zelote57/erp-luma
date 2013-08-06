@@ -6554,5 +6554,3 @@ CREATE TABLE `tblTransactionItemsBackup` (
   KEY `IX3_tblTransactionItemsBackup` (`TransactionID`),
   KEY `IX4_tblTransactionItemsBackup` (`ProductUnitID`)
 );
-
-

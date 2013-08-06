@@ -29,15 +29,20 @@ namespace AceSoft.RetailPlus.Inventory
                     cboBranch.DataValueField = "BranchID";
                     cboBranch.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
                     cboBranch.DataBind();
-                    clsBranch.CommitAndDispose();
+                    
                     cboBranch.SelectedIndex = cboBranch.Items.IndexOf(cboBranch.Items.FindByValue(Constants.BRANCH_ID_MAIN.ToString()));
 
-                    try
-                    {
-                        //AccessUserDetails clsAccessUserDetails = (AccessUserDetails) Session["AccessUserDetails"];
-                        txtLimit.Text = Session["PageSize"].ToString();
-                    }
-                    catch { }
+                    mlngItemNo = 0;
+
+                    ProductGroup clsProductGroup = new ProductGroup(clsBranch.Connection, clsBranch.Transaction);
+                    cboProductGroup.DataTextField = "ProductGroupName";
+                    cboProductGroup.DataValueField = "ProductGroupID";
+                    cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroup.Text).DefaultView;
+                    cboProductGroup.DataBind();
+                    cboProductGroup.SelectedIndex = 0;
+
+                    clsBranch.CommitAndDispose();
+
                     txtClosingDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
 					ManageSecurity();
 					LoadList();
@@ -71,19 +76,16 @@ namespace AceSoft.RetailPlus.Inventory
 
         #region Web Control Methods
 
-        protected void rdoShowAll_CheckedChanged(object sender, EventArgs e)
+        protected void imgProductGroupSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            LoadList();
-        }
-
-        protected void rdoShowActiveOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            LoadList();
-        }
-        
-        protected void rdoShowInactiveOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            LoadList();
+            ProductGroup clsProductGroup = new ProductGroup();
+            cboProductGroup.DataTextField = "ContactName";
+            cboProductGroup.DataValueField = "ContactID";
+            cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroup.Text).DefaultView;
+            cboProductGroup.DataBind();
+            cboProductGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            if (cboProductGroup.Items.Count > 1 && txtProductGroup.Text.Trim() != string.Empty) cboProductGroup.SelectedIndex = 1; else cboProductGroup.SelectedIndex = 0;
+            clsProductGroup.CommitAndDispose();
         }
 
         protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -105,16 +107,24 @@ namespace AceSoft.RetailPlus.Inventory
 
         protected void imgCloseInventory_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            if (CloseInventory())
-                Response.Redirect(Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID));
-                // LoadList();
+            string strRefrenceNo = CloseInventory();
+
+            if (!string.IsNullOrEmpty(strRefrenceNo)) {
+                string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboProductGroup.SelectedItem.Value, Session.SessionID);
+                Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+                LoadList();
+            }
         }
 
         protected void cmdCloseInventory_Click(object sender, EventArgs e)
         {
-            if (CloseInventory())
-                Response.Redirect(Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID));
-                // LoadList();
+            string strRefrenceNo = CloseInventory();
+
+            if (!string.IsNullOrEmpty(strRefrenceNo)) {
+                string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboProductGroup.SelectedItem.Value, Session.SessionID);
+                Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+                LoadList();
+            }
         }
 
         protected void cboCurrentPage_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -122,17 +132,6 @@ namespace AceSoft.RetailPlus.Inventory
             LoadList();
         }
 
-        protected void imgUpload_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            if (UpdateActualQuantity())
-                LoadList();
-        }
-
-        protected void cmdUpload_Click(object sender, EventArgs e)
-        {
-            if (UpdateActualQuantity())
-                LoadList();
-        }
 
         protected void lstItem_ItemDataBound(object sender, DataListItemEventArgs e)
 		{
@@ -145,6 +144,9 @@ namespace AceSoft.RetailPlus.Inventory
 				HtmlInputCheckBox chkList = (HtmlInputCheckBox) e.Item.FindControl("chkList");
 				chkList.Value = dr["ProductID"].ToString();
 
+                HtmlInputCheckBox chkMatrixID = (HtmlInputCheckBox)e.Item.FindControl("chkMatrixID");
+                chkMatrixID.Value = dr["MatrixID"].ToString();
+
                 Label lblItemNo = (Label)e.Item.FindControl("lblItemNo");
                 lblItemNo.Text = mlngItemNo.ToString();
 
@@ -154,6 +156,9 @@ namespace AceSoft.RetailPlus.Inventory
 
 				Label lnkProductCode = (Label) e.Item.FindControl("lnkProductCode");
 				lnkProductCode.Text = dr["ProductCode"].ToString();
+
+                Label lnkVariationDesc = (Label)e.Item.FindControl("lnkVariationDesc");
+                lnkVariationDesc.Text = dr["MatrixDescription"].ToString();
 
                 decimal decPOSQuantity = Convert.ToDecimal(dr["Quantity"].ToString());
                 decimal decActualQuantity = Convert.ToDecimal(dr["ActualQuantity"].ToString());
@@ -207,7 +212,6 @@ namespace AceSoft.RetailPlus.Inventory
                 }
 			}
 		}				
-
 		protected void lstItem_ItemCommand(object source, System.Web.UI.WebControls.DataListCommandEventArgs e)
 		{
 			HtmlInputCheckBox chkList = null;
@@ -254,29 +258,54 @@ namespace AceSoft.RetailPlus.Inventory
 
 			}
         }
-
+        protected void imgPrint_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            PrintClosingInventory();
+        }
+        protected void cmdPrint_Click(object sender, System.EventArgs e)
+        {
+            PrintClosingInventory();
+        }
         protected void imgSaveActualQuantity_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             SaveAllActualQuantity();
         }
-
         protected void cmdSaveActualQuantity_Click(object sender, EventArgs e)
         {
             SaveAllActualQuantity();
         }
-
         protected void cboBranch_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             LoadList();
         }
 
+        protected void cboProductGroup_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            LoadList();
+        }
+        protected void imgLockUnlockProduct_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            LockUnlockForSelling();
+        }
+        protected void cmdLockUnlockProduct_Click(object sender, EventArgs e)
+        {
+            LockUnlockForSelling();
+        }
+        
+
         #endregion
 
         #region Private methods
 
-        private bool CloseInventory()
+        private void PrintClosingInventory()
         {
-            bool boRetValue = false;
+            string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&type=" + Common.Encrypt("invcount", Session.SessionID) + "&prdgrpid=" + Common.Encrypt(cboProductGroup.SelectedItem.Value, Session.SessionID) + "&branchid=" + Common.Encrypt(cboBranch.SelectedItem.Value, Session.SessionID);
+            Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+        }
+
+        private string CloseInventory()
+        {
+            string strRetValue = "";
 
             try
             {
@@ -287,13 +316,18 @@ namespace AceSoft.RetailPlus.Inventory
 
                 if (clsERPConfigDetails.PostingDateFrom <= DeliveryDate && clsERPConfigDetails.PostingDateTo >= DeliveryDate)
                 {
+                    string strReferenceNo = Constants.CLOSE_INVENTORY_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsERPConfig.get_LastClosingNo();
+
                     AccessUserDetails clsAccessUserDetails = (AccessUserDetails)Session["AccessUserDetails"];
 
-                    Products clsProduct = new Products(clsERPConfig.Connection, clsERPConfig.Transaction);
-                    //clsProduct.CloseInventory(int.Parse(cboBranch.SelectedItem.Value), clsAccessUserDetails.UID, DateTime.Parse(txtClosingDate.Text), Constants.CLOSE_INVENTORY_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsERPConfig.get_LastClosingNo(), false);
-                    clsERPConfig.CommitAndDispose();
-                    boRetValue = true;
+                    ProductInventories clsProductInventories = new ProductInventories(clsERPConfig.Connection, clsERPConfig.Transaction);
+                    clsProductInventories.CloseInventoryByProductGroup(int.Parse(cboBranch.SelectedItem.Value), clsAccessUserDetails.UID, DateTime.Parse(txtClosingDate.Text), strReferenceNo, long.Parse(cboProductGroup.SelectedItem.Value), cboProductGroup.SelectedItem.Text);
 
+                    Products clsProducts = new Products(clsERPConfig.Connection, clsERPConfig.Transaction);
+                    clsProducts.LockUnlockForSellingByProductGroup(int.Parse(cboBranch.SelectedItem.Value), long.Parse(cboProductGroup.SelectedItem.Value), false);
+
+                    clsERPConfig.CommitAndDispose();
+                    strRetValue = strReferenceNo;
                 }
                 else
                 {
@@ -311,7 +345,7 @@ namespace AceSoft.RetailPlus.Inventory
                 stScript += "</Script>";
                 Response.Write(stScript);
             }
-            return boRetValue;
+            return strRetValue;
         }
 
         private bool ZeroOutActualQuantity()
@@ -319,177 +353,11 @@ namespace AceSoft.RetailPlus.Inventory
             bool boRetValue = false;
 
             Products clsProduct = new Products();
-            boRetValue = clsProduct.UpdateActualQuantity(int.Parse(cboBranch.SelectedItem.Value), 0, 0);
+            boRetValue = clsProduct.ZeroOutActualQuantityByProductGroup(int.Parse(cboBranch.SelectedItem.Value), long.Parse(cboProductGroup.SelectedItem.Value));
             clsProduct.CommitAndDispose();
             boRetValue = true;
 
             return boRetValue;
-        }
-
-        private bool UpdateActualQuantity()
-        {
-            bool boRetValue = false;
-
-            if (txtPath.HasFile)
-            {
-                string fn = System.IO.Path.GetFileName(txtPath.PostedFile.FileName);
-
-                if (!fn.Contains(Constants.CLOSE_INVENTORY_FILE_NAME_CODE))
-                {
-                    string stScript = "<Script>";
-                    stScript += "window.alert('Please select a VALID Inventory file to upload.')";
-                    stScript += "</Script>";
-                    Response.Write(stScript);
-                    return boRetValue;
-                }
-                
-                string SaveLocation = Constants.ROOT_DIRECTORY + "/temp/uploaded_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + fn;
-
-                txtPath.PostedFile.SaveAs(SaveLocation);
-
-                Microsoft.Office.Interop.Excel.Application ObjExcel = new Microsoft.Office.Interop.Excel.Application();
-                Microsoft.Office.Interop.Excel.Worksheet ObjWorkSheet;
-                ObjExcel.DisplayAlerts = false;
-                ObjExcel.Visible = false;
-
-                Microsoft.Office.Interop.Excel.Workbook ObjWorkBook = ObjExcel.Workbooks.Open(SaveLocation, false, false,
-                                                  Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                                                  Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                                                  Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                try
-                {
-                    ObjWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[Constants.CLOSE_INVENTORY_SHEET_NAME];
-                }
-                catch 
-                {
-                    ObjWorkBook.Close(Microsoft.Office.Interop.Excel.XlSaveAction.xlDoNotSaveChanges, Type.Missing, Type.Missing);
-                    ObjExcel.Quit();
-                    ObjExcel = null;
-
-                    string stScript = "<Script>";
-                    stScript += "window.alert('The file does not contain a valid inventory sheet. Please double check that the sheet name is named INVENTORY.')";
-                    stScript += "</Script>";
-                    Response.Write(stScript);
-                    return boRetValue;
-                }
-
-                Microsoft.Office.Interop.Excel.Range rangeQuantityError; int iRowQuantityError = 1;
-                Microsoft.Office.Interop.Excel.Worksheet ObjWokSheetQuantityError;
-                try 
-                { 
-                    ObjWokSheetQuantityError = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[Constants.CLOSE_INVENTORY_SHEET_NAME_QUANTITY_ERROR]; 
-                }
-                catch 
-                { 
-                    ObjWokSheetQuantityError = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets.Add(Type.Missing, ObjWorkSheet, Type.Missing, Type.Missing);
-                    ObjWokSheetQuantityError.Name = Constants.CLOSE_INVENTORY_SHEET_NAME_QUANTITY_ERROR;
-                }
-
-                Microsoft.Office.Interop.Excel.Range rangeInvalidProduct; int iRowInvalidProduct = 1;
-                Microsoft.Office.Interop.Excel.Worksheet ObjWokSheetInvalidProduct;
-                try
-                { 
-                    ObjWokSheetInvalidProduct = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[Constants.CLOSE_INVENTORY_SHEET_NAME_INVALID_PRODUCT]; 
-                }
-                catch
-                {
-                    ObjWokSheetInvalidProduct = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets.Add(Type.Missing, ObjWorkSheet, Type.Missing, Type.Missing);
-                    ObjWokSheetInvalidProduct.Name = Constants.CLOSE_INVENTORY_SHEET_NAME_INVALID_PRODUCT;
-                }
-
-                Products clsProduct = new Products();
-                for (int iRow = 1; iRow <= 10000; iRow++)
-                {
-                    Microsoft.Office.Interop.Excel.Range rangeProducts = ObjWorkSheet.get_Range("A" + iRow.ToString(), "C" + iRow.ToString());
-                    System.Array myvalues = (System.Array)rangeProducts.Cells.Value2;
-                    string[] strArray = ConvertToStringArray(myvalues);
-
-                    if (strArray[0] == string.Empty)
-                        break;
-                    else
-                    {
-                        if (strArray[1] == string.Empty) strArray[1] = "1";
-                        decimal decQuantity = 0;
-                        try 
-                        {
-                            // update the actual quantity
-                            decQuantity = decimal.Parse(strArray[1]);
-                            bool boAddQuantity = clsProduct.AddActualQuantity(int.Parse(cboBranch.SelectedItem.Value), strArray[0], decQuantity);
-
-                            if (!boAddQuantity)
-                            {
-                                // if invalid product; report as not error
-                                rangeProducts.Cells.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
-
-                                // if invalid product; include in second sheet
-                                rangeInvalidProduct = (Microsoft.Office.Interop.Excel.Range)ObjWokSheetInvalidProduct.Cells[iRowInvalidProduct, "A"];
-                                rangeInvalidProduct.Value2 = strArray[0];
-
-                                rangeInvalidProduct = (Microsoft.Office.Interop.Excel.Range)ObjWokSheetInvalidProduct.Cells[iRowInvalidProduct, "B"];
-                                rangeInvalidProduct.Value2 = strArray[1];
-
-                                iRowInvalidProduct += 1;
-                            }
-                        }
-                        catch 
-                        {
-                            // if error; report as not error
-                            rangeProducts.Cells.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
-
-                            // if error; include in second sheet
-                            rangeQuantityError = (Microsoft.Office.Interop.Excel.Range)ObjWokSheetQuantityError.Cells[iRowQuantityError, "A"];
-                            rangeQuantityError.Value2 = strArray[0];
-
-                            rangeQuantityError = (Microsoft.Office.Interop.Excel.Range)ObjWokSheetQuantityError.Cells[iRowQuantityError, "B"];
-                            rangeQuantityError.Value2 = strArray[1];
-
-                            iRowQuantityError += 1;
-                        }
-                    }
-                }
-                clsProduct.CommitAndDispose();
-                
-                ObjWorkBook.Save();
-                ObjWorkBook.Close(Microsoft.Office.Interop.Excel.XlSaveAction.xlSaveChanges, Type.Missing, Type.Missing);
-                ObjExcel.Quit();
-                ObjExcel = null;
-
-                boRetValue = true;
-
-                string stScriptReport = "<Script>";
-                stScriptReport += "window.open(" + SaveLocation + ", 'Redirector', 'toolbar=0,location=0,status=0,menubar=0');";
-                stScriptReport += "window.opener = self;";
-                stScriptReport += "</Script>";
-                Response.Write(stScriptReport);
-                
-            }
-            else
-            {
-                string stScript = "<Script>";
-                stScript += "window.alert('Cannot upload an empty filename. Please select the file to be uploaded.')";
-                stScript += "</Script>";
-                Response.Write(stScript);
-            }
-
-            return boRetValue;
-        }
-        
-        private string[] ConvertToStringArray(System.Array values)
-        {
-
-            // create a new string array
-            string[] theArray = new string[values.Length];
-
-            // loop through the 2-D System.Array and populate the 1-D String Array
-            for (int iRow = 1; iRow <= values.Length; iRow++)
-            {
-                if (values.GetValue(1, iRow) == null)
-                    theArray[iRow-1] = string.Empty;
-                else
-                    theArray[iRow-1] = (string)values.GetValue(1, iRow).ToString();
-            }
-
-            return theArray;
         }
 
         private void ManageSecurity()
@@ -504,17 +372,14 @@ namespace AceSoft.RetailPlus.Inventory
             imgCloseInventory.Visible = clsDetails.Write;
             cmdCloseInventory.Visible = clsDetails.Write;
             lblSeparator1.Visible = clsDetails.Write;
-            lblSeparator2.Visible = clsDetails.Write;
+            //lblSeparator2.Visible = clsDetails.Write;
 
             clsAccessRights.CommitAndDispose();
         }
 
         private void LoadList()
         {
-            Products clsProduct = new Products();
-            Common Common = new Common();
-
-            string SortField = "ProductDesc";
+            string SortField = "ProductCode";
             if (Request.QueryString["sortfield"] != null)
             { SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID); }
 
@@ -522,27 +387,33 @@ namespace AceSoft.RetailPlus.Inventory
             if (Request.QueryString["sortoption"] != null)
             { sortoption = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
 
-            ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowInactiveOnly;
-            if (rdoShowActiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowActiveOnly;
-            if (rdoShowInactiveOnly.Checked == true) clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive;
+            Int64 lngProductGroupID = Convert.ToInt64(cboProductGroup.SelectedItem.Value);
 
-            int intLimit = 0;
-            try { intLimit = int.Parse(txtLimit.Text); }
-            catch { }
+            ProductInventories clsProductInventories = new ProductInventories();
+            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(cboBranch.SelectedItem.Value), ProductGroupID: lngProductGroupID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode, MatrixDescription");
 
-            string SearchKey = txtSearch.Text;
-            if (Request.QueryString["Search"] != null)
-            { SearchKey = Common.Decrypt((string)Request.QueryString["search"], Session.SessionID); }
+            ProductGroup clsProductGroup = new ProductGroup(clsProductInventories.Connection, clsProductInventories.Transaction);
+            ProductGroupDetails clsProductGroupDetails = clsProductGroup.Details(lngProductGroupID);
 
-            //PageData.DataSource = clsProduct.SearchDataTableActiveInactive(clsProductListFilterType, SearchKey, SortField, sortoption, intLimit, false).DefaultView;
-            PageData.DataSource = clsProduct.SearchDataTableSimple(int.Parse(cboBranch.SelectedItem.Value), clsProductListFilterType, SearchKey, 0, 0, string.Empty, 0, string.Empty, intLimit, false, false, SortField, sortoption).DefaultView;
+            clsProductInventories.CommitAndDispose();
 
-            clsProduct.CommitAndDispose();
+            PageData.DataSource = dt.DefaultView;
+
+            if (!clsProductGroupDetails.isLock)
+            {
+                cmdLockUnlockProduct.Text = "Lock Product Group [<label class='ms-error'>Note:</label>Products under this group are <u>CURRENTLY ALLOWED</u> for Selling]";
+                cmdLockUnlockProduct.ToolTip = "unlock";
+            }
+            else
+            {
+                cmdLockUnlockProduct.Text = "UnLock Product Group [<label class='ms-error'>Note:</label>Products under this group are <u>CURRENTLY NOT ALLOWED</u> for Selling]";
+                cmdLockUnlockProduct.ToolTip = "lock";
+            }
 
             int iPageSize = Convert.ToInt16(Session["PageSize"]);
 
             PageData.AllowPaging = true;
-            PageData.PageSize = iPageSize; // 5000;
+            PageData.PageSize = 5000;
             try
             {
                 PageData.CurrentPageIndex = Convert.ToInt16(cboCurrentPage.SelectedItem.Value) - 1;
@@ -571,26 +442,53 @@ namespace AceSoft.RetailPlus.Inventory
 
         private void SaveAllActualQuantity()
         {
+            HtmlInputCheckBox chkMatrixID = null;
             HtmlInputCheckBox chkList = null;
             TextBox txtActualQuantity = null;
-            Products clsProduct = new Products();
+            int intBranchID = int.Parse(cboBranch.SelectedItem.Value);
+            ProductInventories clsProductInventories = new ProductInventories();
             foreach (DataListItem item in lstItem.Items)
             {
                 txtActualQuantity = (TextBox)item.FindControl("txtActualQuantity");
                 chkList = (HtmlInputCheckBox)item.FindControl("chkList");
+                chkMatrixID = (HtmlInputCheckBox)item.FindControl("chkMatrixID");
                 try
                 {
                     decimal decActualQuantity = decimal.Parse(txtActualQuantity.Text);
-                    clsProduct.UpdateActualQuantity(int.Parse(cboBranch.SelectedItem.Value), long.Parse(chkList.Value), decActualQuantity);
+                    clsProductInventories.UpdateActualQuantity(intBranchID, long.Parse(chkList.Value), long.Parse(chkMatrixID.Value), decActualQuantity);
                     txtActualQuantity.Text = Server.HtmlEncode(decActualQuantity.ToString("#,##0.#0"));
                 }
                 catch { }
             }
-            clsProduct.CommitAndDispose();
+            clsProductInventories.CommitAndDispose();
+            LoadList();
         }
 
-        #endregion
+        private void LockUnlockForSelling()
+        {
+            bool isLock = false;
 
+            if (cmdLockUnlockProduct.ToolTip == "unlock")
+            {
+                isLock = true;
+            }
+
+            Products clsProducts = new Products();
+            clsProducts.LockUnlockForSellingByProductGroup(int.Parse(cboBranch.SelectedItem.Value), long.Parse(cboProductGroup.SelectedItem.Value), isLock);
+            clsProducts.CommitAndDispose();
+
+            if (!isLock)
+            {
+                cmdLockUnlockProduct.Text = "Lock Product Group [<label class='ms-error'>Note:</label>Products under this group are <u>CURRENTLY ALLOWED</u> for Selling]";
+                cmdLockUnlockProduct.ToolTip = "unlock";
+            }
+            else
+            {
+                cmdLockUnlockProduct.Text = "UnLock Product Group [<label class='ms-error'>Note:</label>Products under this group are <u>CURRENTLY NOT ALLOWED</u> for Selling]";
+                cmdLockUnlockProduct.ToolTip = "lock";
+            }
+        }
+        #endregion
         
     }
 }

@@ -13,76 +13,22 @@ namespace AceSoft.RetailPlus.Inventory {
     public partial class @__CloseInventory {
         
         /// <summary>
-        /// cboBranch control.
+        /// imgPrint control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboBranch;
+        protected global::System.Web.UI.WebControls.ImageButton imgPrint;
         
         /// <summary>
-        /// Label1 control.
+        /// cmdPrint control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
-        
-        /// <summary>
-        /// txtPath control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload txtPath;
-        
-        /// <summary>
-        /// imgUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgUpload;
-        
-        /// <summary>
-        /// cmdUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdUpload;
-        
-        /// <summary>
-        /// lblSeparator2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSeparator2;
-        
-        /// <summary>
-        /// imgSaveActualQuantity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgSaveActualQuantity;
-        
-        /// <summary>
-        /// cmdSaveActualQuantity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSaveActualQuantity;
+        protected global::System.Web.UI.WebControls.LinkButton cmdPrint;
         
         /// <summary>
         /// lblDataCount1 control.
@@ -112,58 +58,58 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.Label lblDataCount;
         
         /// <summary>
-        /// rdoShowAll control.
+        /// cboBranch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rdoShowAll;
+        protected global::System.Web.UI.WebControls.DropDownList cboBranch;
         
         /// <summary>
-        /// rdoShowActiveOnly control.
+        /// cboProductGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rdoShowActiveOnly;
+        protected global::System.Web.UI.WebControls.DropDownList cboProductGroup;
         
         /// <summary>
-        /// rdoShowInactiveOnly control.
+        /// txtProductGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rdoShowInactiveOnly;
+        protected global::System.Web.UI.WebControls.TextBox txtProductGroup;
         
         /// <summary>
-        /// txtLimit control.
+        /// imgProductGroupSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLimit;
+        protected global::System.Web.UI.WebControls.ImageButton imgProductGroupSearch;
         
         /// <summary>
-        /// txtSearch control.
+        /// imgLockUnlockProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearch;
+        protected global::System.Web.UI.WebControls.ImageButton imgLockUnlockProduct;
         
         /// <summary>
-        /// cmdSearch control.
+        /// cmdLockUnlockProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton cmdSearch;
+        protected global::System.Web.UI.WebControls.LinkButton cmdLockUnlockProduct;
         
         /// <summary>
         /// UpdatePanel1 control.
@@ -182,6 +128,24 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DataList lstItem;
+        
+        /// <summary>
+        /// imgSaveActualQuantity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgSaveActualQuantity;
+        
+        /// <summary>
+        /// cmdSaveActualQuantity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdSaveActualQuantity;
         
         /// <summary>
         /// imgZeroOutActualQuantity control.

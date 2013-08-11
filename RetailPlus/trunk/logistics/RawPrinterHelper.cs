@@ -19,31 +19,76 @@ namespace AceSoft
 	/// </summary>
 	public class RawPrinterHelper
 	{
-        public static string escESC = Convert.ToChar(27).ToString();  // ESC char
-        public static string escNewLine  = Convert.ToChar(10).ToString();  // New line (LF line feed)
-        public static string escUnerlineOn = escESC + Convert.ToChar(45).ToString() + Convert.ToChar(1).ToString();  // Unerline On
-        public static string escUnerlineOnx2 = escESC + Convert.ToChar(45).ToString() + Convert.ToChar(2).ToString();  // Unerline On x 2
-        public static string escUnerlineOff = escESC + Convert.ToChar(45).ToString() + Convert.ToChar(0).ToString();  // Unerline Off
+        //http://content.epson.de/fileadmin/content/files/RSD/downloads/escpos.pdf
 
-        public static string escEPSONBoldOn = escESC + Convert.ToChar(16).ToString() + escESC + Convert.ToChar(32).ToString();  // Bold On
-        public static string escEPSONBoldOff = escESC + Convert.ToChar(16).ToString() + escESC + Convert.ToChar(0).ToString();  // Bold Off
-        public static string escSTARBoldOn = escESC + Convert.ToChar(14).ToString() + escESC + Convert.ToChar(15).ToString();  // Bold On
-        public static string escSTARBoldOff = escESC + Convert.ToChar(14).ToString() + escESC + Convert.ToChar(0).ToString();  // Bold Off
-        public static string escBoldOn = escESC + Convert.ToChar(17).ToString();  // Bold On
-        public static string escBoldOff = escESC + Convert.ToChar(0).ToString();  // Bold Off
+        public static string escESC = Convert.ToChar(27).ToString();  // ESC char
+        public static string escNewLine = Convert.ToChar(10).ToString();  // New line (LF line feed)
+
+        public static string escFontSmall = escESC + Convert.ToChar(33).ToString() + Convert.ToChar(1).ToString(); // Font B - Small Font
+        public static string escFontNormal = escESC + Convert.ToChar(33).ToString() + Convert.ToChar(0).ToString(); // Font A  -  Normal Font
+        public static string escFontEmpOn = escESC + Convert.ToChar(33).ToString() + Convert.ToChar(8).ToString(); // Font Emphasized On
+        public static string escFontEmpOff = escESC + Convert.ToChar(33).ToString() + Convert.ToChar(0).ToString(); // Font Emphasized Off
+        public static string escFontHeightX2On = escESC + Convert.ToChar(33).ToString() + Convert.ToChar(16).ToString(); // Font Size Height x2 On
+        public static string escFontHeightX2Off = escESC + Convert.ToChar(33).ToString() + Convert.ToChar(0).ToString();  // Font Size Height x2 Off
+        public static string escFontWidthX2On = escESC + Convert.ToChar(33).ToString() + Convert.ToChar(32).ToString(); // Font Size Width x2 On
+        public static string escFontWidthX2Off = escESC + Convert.ToChar(33).ToString() + Convert.ToChar(0).ToString();  // Font Size Width x2 Off
+        public static string escFontUnderlineOn = escESC + Convert.ToChar(33).ToString() + Convert.ToChar(128).ToString(); // Font Underline x2 On
+        public static string escFontUnderlineOff = escESC + Convert.ToChar(33).ToString() + Convert.ToChar(0).ToString();  // Font Underline x2 Off
+
+        public static string escUnderlineOn = escESC + Convert.ToChar(45).ToString() + Convert.ToChar(1).ToString();  // Unerline On
+        public static string escUnderlineOnx2 = escESC + Convert.ToChar(45).ToString() + Convert.ToChar(2).ToString();  // Unerline On 2-dots
+        public static string escUnderlineOff = escESC + Convert.ToChar(45).ToString() + Convert.ToChar(0).ToString();  // Unerline Off
+
+        public static string escReset = escESC + Convert.ToChar(64).ToString(); // Reset Printer or Initialize printer
+        public static string escEmphasizedOn = escESC + Convert.ToChar(69).ToString() + Convert.ToChar(1).ToString(); // 1, emphasized mode is turned on
+        public static string escEmphasizedOff = escESC + Convert.ToChar(69).ToString() + Convert.ToChar(0).ToString(); // 0, emphasized mode is turned off
+
+        public static string escDoubleStrikeOn = escESC + Convert.ToChar(71).ToString() + Convert.ToChar(1).ToString(); // 1, double-strike is turned on
+        public static string escDoubleStrikeOff = escESC + Convert.ToChar(71).ToString() + Convert.ToChar(0).ToString(); // 0, double-strike is turned off
+
+        public static string escFontA = escESC + Convert.ToChar(77).ToString() + Convert.ToChar(0).ToString(); // Font A
+        public static string escFontB = escESC + Convert.ToChar(77).ToString() + Convert.ToChar(1).ToString(); // Font B
+        public static string escFontC = escESC + Convert.ToChar(77).ToString() + Convert.ToChar(2).ToString(); // Font C
+
+        public static string escAlignDef = escESC + Convert.ToChar(97).ToString() + Convert.ToChar(0).ToString(); // Align Text to the Left
+        public static string escAlignLeft = escESC + Convert.ToChar(97).ToString() + Convert.ToChar(0).ToString(); // Align Text to the Left
+        public static string escAlignCenter = escESC + Convert.ToChar(97).ToString() + Convert.ToChar(1).ToString(); // Align Text to the Center
+        public static string escAlignRight = escESC + Convert.ToChar(97).ToString() + Convert.ToChar(2).ToString(); // Align Text to the Right
+
+        public static string escPrintAndFeedLines(int nlines) 
+        {
+            return escESC + Convert.ToChar(100).ToString() + Convert.ToChar(100).ToString() + Convert.ToChar(nlines).ToString();  // Print and feedlines
+        }
+
+        public static string escPrintAndFeedLinesReverse(int nlines)
+        {
+            return escESC + Convert.ToChar(100).ToString() + Convert.ToChar(101).ToString() + Convert.ToChar(nlines).ToString();  // Print and feedlines in reverse
+        }
+
+        public static string escColor1 = escESC + Convert.ToChar(114).ToString() + Convert.ToChar(1).ToString(); // color 1 is selected 
+        public static string escColorDef = escESC + Convert.ToChar(114).ToString() + Convert.ToChar(0).ToString(); // color 0 is selected -default
 
         public static string escNegativeOn = Convert.ToChar(29).ToString() + Convert.ToChar(66).ToString() + Convert.ToChar(1).ToString();  // White On Black On'
         public static string escNegativeOff = Convert.ToChar(29).ToString() + Convert.ToChar(66).ToString() + Convert.ToChar(0).ToString();  // White On Black Off
-        public static string esc8CpiOn = Convert.ToChar(29).ToString() + Convert.ToChar(33).ToString() + Convert.ToChar(16).ToString(); // Font Size x2 On
-        public static string esc8CpiOff = Convert.ToChar(29).ToString() + Convert.ToChar(33).ToString() + Convert.ToChar(0).ToString();  // Font Size x2 Off
-        public static string esc16Cpi = escESC + Convert.ToChar(77).ToString() + Convert.ToChar(48).ToString(); // Font A  -  Normal Font
-        public static string esc20Cpi = escESC + Convert.ToChar(77).ToString() + Convert.ToChar(49).ToString(); // Font B - Small Font
-        public static string escReset = escESC + Convert.ToChar(64).ToString(); //Convert.ToChar(27) + Convert.ToChar(77) + Convert.ToChar(48); // Reset Printer
-        public static string escFeedAndCut = Convert.ToChar(29).ToString() + Convert.ToChar(86).ToString() + Convert.ToChar(65).ToString(); // Partial Cut and feed
-        public static string escCut = Convert.ToChar(29).ToString() + Convert.ToChar(86).ToString() + Convert.ToChar(49).ToString();
-        public static string escAlignLeft = escESC + Convert.ToChar(97).ToString() + Convert.ToChar(48).ToString(); // Align Text to the Left
-        public static string escAlignCenter = escESC + Convert.ToChar(97).ToString() + Convert.ToChar(49).ToString(); // Align Text to the Center
-        public static string escAlignRight = escESC + Convert.ToChar(97).ToString() + Convert.ToChar(50).ToString(); // Align Text to the Right
+
+        public static string escCutFull = Convert.ToChar(29).ToString() + Convert.ToChar(86).ToString() + Convert.ToChar(48).ToString(); // Full cut
+        public static string escCutPartial = Convert.ToChar(29).ToString() + Convert.ToChar(86).ToString() + Convert.ToChar(49).ToString(); // Partial cut
+        public static string escCutAndFeed = Convert.ToChar(29).ToString() + Convert.ToChar(86).ToString() + Convert.ToChar(65).ToString(); // Full Cut and feed
+        public static string escCutPartialAndFeed = Convert.ToChar(29).ToString() + Convert.ToChar(86).ToString() + Convert.ToChar(66).ToString(); // Partial Cut and feed
+
+        public static string escBarcodeHeight(int ndots = 162)
+        {
+            return Convert.ToChar(29).ToString() + Convert.ToChar(104).ToString() + Convert.ToChar(ndots).ToString(); // set the height of barcode; 162 default per documentation; max=255
+        }
+
+        public static string escBarcodeEan13 = Convert.ToChar(29).ToString() + Convert.ToChar(107).ToString() + Convert.ToChar(2).ToString(); // For EAN13
+        public static string escBarcodeCODE39 = Convert.ToChar(29).ToString() + Convert.ToChar(107).ToString() + Convert.ToChar(4).ToString(); // For CODE39
+
+        public static string escBoldHOn = escFontHeightX2On + escFontEmpOn;
+        public static string escBoldHOff = escFontHeightX2Off + escFontEmpOff;
+        public static string escBoldHWOn = escFontWidthX2On + escFontHeightX2On + escFontEmpOn;
+        public static string escBoldHWOff = escFontWidthX2Off + escFontHeightX2Off + escFontEmpOff;
+        
 
 		public RawPrinterHelper()
 		{

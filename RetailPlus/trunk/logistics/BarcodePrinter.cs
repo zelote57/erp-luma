@@ -8,7 +8,8 @@ namespace AceSoft
     public enum printerModel
     {
         Epson,
-        Tally
+        Tally,
+        EpsonTest
     }
 
     public enum barcodeType
@@ -35,58 +36,65 @@ namespace AceSoft
 
             switch (model)
             {
+                case printerModel.EpsonTest:
+
+                    barcodeString = RawPrinterHelper.escReset + RawPrinterHelper.escEmphasizedOn + RawPrinterHelper.escBarcodeEan13 + barcode + RawPrinterHelper.escEmphasizedOff + RawPrinterHelper.escReset;
+
+                    break;
                 case printerModel.Epson:
 
-                    barcodeString = "\x1B@\x0a" +                                       //Initialize printer
-                                    "\x1B\x28\x42" +                                    //Start barcode header
-                                    Convert.ToChar(6 + barcode.Length).ToString() +     //Barcode length
-                                    "\x00" +
-                                    "{barCodeType}" +                                   //Barcode type
-                                    "\x02" +                                            //Module width
-                                    "\x00" +                                            //Space adjustment
-                                    "\x24" +                                            //Bar lenght(Height)
-                                    "\x00" +                                            //Add check digit 1=ON 0=Off
-                                    "\x03" +                                            //Human readable charachters 3=ON 2=OFF
-                                    "{barCodeData}\x0a" +                               //Data
-                                    "\x1B@\x0a";                                        //Reset Printer
+                    barcodeString = RawPrinterHelper.escReset + RawPrinterHelper.escBarcodeEan13 + barcode + RawPrinterHelper.escReset;
 
-                    switch (codeType)
-                    {
-                        case barcodeType.EAN13:
-                            barcodeString = barcodeString.Replace("{barCodeType}", "\x00");
-                            break;
+                    //barcodeString = "\x1B@\x0a" +                                       //Initialize printer
+                    //                "\x1B\x28\x42" +                                    //Start barcode header
+                    //                Convert.ToChar(6 + barcode.Length).ToString() +     //Barcode length
+                    //                "\x00" +
+                    //                "{barCodeType}" +                                   //Barcode type
+                    //                "\x02" +                                            //Module width
+                    //                "\x00" +                                            //Space adjustment
+                    //                "\x24" +                                            //Bar lenght(Height)
+                    //                "\x00" +                                            //Add check digit 1=ON 0=Off
+                    //                "\x03" +                                            //Human readable charachters 3=ON 2=OFF
+                    //                "{barCodeData}\x0a" +                               //Data
+                    //                "\x1B@\x0a";                                        //Reset Printer
 
-                        case barcodeType.EAN8:
-                            barcodeString = barcodeString.Replace("{barCodeType}", "\x01");
-                            break;
+                    //switch (codeType)
+                    //{
+                    //    case barcodeType.EAN13:
+                    //        barcodeString = barcodeString.Replace("{barCodeType}", "\x00");
+                    //        break;
 
-                        case barcodeType.Code2of5:
-                            barcodeString = barcodeString.Replace("{barCodeType}", "\x02");
-                            break;
+                    //    case barcodeType.EAN8:
+                    //        barcodeString = barcodeString.Replace("{barCodeType}", "\x01");
+                    //        break;
 
-                        case barcodeType.UPCA:
-                            barcodeString = barcodeString.Replace("{barCodeType}", "\x03");
-                            break;
+                    //    case barcodeType.Code2of5:
+                    //        barcodeString = barcodeString.Replace("{barCodeType}", "\x02");
+                    //        break;
 
-                        case barcodeType.UPCE:
-                            barcodeString = barcodeString.Replace("{barCodeType}", "\x04");
-                            break;
+                    //    case barcodeType.UPCA:
+                    //        barcodeString = barcodeString.Replace("{barCodeType}", "\x03");
+                    //        break;
 
-                        case barcodeType.Code39:
-                            barcodeString = barcodeString.Replace("{barCodeType}", "\x05");
-                            break;
+                    //    case barcodeType.UPCE:
+                    //        barcodeString = barcodeString.Replace("{barCodeType}", "\x04");
+                    //        break;
 
-                        case barcodeType.Code128:
-                            barcode = "A" + barcode;
-                            barcodeString = barcodeString.Replace("{barCodeType}", "\x06");
-                            break;
+                    //    case barcodeType.Code39:
+                    //        barcodeString = barcodeString.Replace("{barCodeType}", "\x05");
+                    //        break;
 
-                        case barcodeType.POSTNET:
-                            barcodeString = barcodeString.Replace("{barCodeType}", "\x07");
-                            break;
-                    }
+                    //    case barcodeType.Code128:
+                    //        barcode = "A" + barcode;
+                    //        barcodeString = barcodeString.Replace("{barCodeType}", "\x06");
+                    //        break;
 
-                    barcodeString = barcodeString.Replace("{barCodeData}", barcode);
+                    //    case barcodeType.POSTNET:
+                    //        barcodeString = barcodeString.Replace("{barCodeType}", "\x07");
+                    //        break;
+                    //}
+
+                    //barcodeString = barcodeString.Replace("{barCodeData}", barcode);
 
                     break;
 

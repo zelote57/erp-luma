@@ -202,22 +202,22 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         protected global::System.Web.UI.WebControls.TextBox txtTerms;
         
         /// <summary>
-        /// Requiredfieldvalidator16 control.
+        /// Requiredfieldvalidator6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator16;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator6;
         
         /// <summary>
-        /// RegularExpressionValidator6 control.
+        /// RegularExpressionValidator4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator6;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator4;
         
         /// <summary>
         /// txtDebit control.
@@ -229,22 +229,22 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         protected global::System.Web.UI.WebControls.TextBox txtDebit;
         
         /// <summary>
-        /// Requiredfieldvalidator11 control.
+        /// Requiredfieldvalidator5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator11;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator5;
         
         /// <summary>
-        /// RegularExpressionValidator7 control.
+        /// RegularExpressionValidator3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator7;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator3;
         
         /// <summary>
         /// txtCredit control.
@@ -256,22 +256,22 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         protected global::System.Web.UI.WebControls.TextBox txtCredit;
         
         /// <summary>
-        /// Requiredfieldvalidator12 control.
+        /// Requiredfieldvalidator8 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator12;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator8;
         
         /// <summary>
-        /// RegularExpressionValidator8 control.
+        /// RegularExpressionValidator1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator8;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
         
         /// <summary>
         /// txtBusinessName control.
@@ -310,13 +310,13 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         protected global::System.Web.UI.WebControls.TextBox txtCreditLimit;
         
         /// <summary>
-        /// Requiredfieldvalidator13 control.
+        /// Requiredfieldvalidator7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator13;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator7;
         
         /// <summary>
         /// RegularExpressionValidator2 control.

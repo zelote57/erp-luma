@@ -71,19 +71,20 @@ namespace AceSoft.RetailPlus
 					cboSearchID.Items.Add(new ListItem("Payments","PaymentJournals"));
 					cboSearchID.Items.Add(new ListItem("Returns","PurchaseReturns"));
 					cboSearchID.Items.Add(new ListItem("Debit Memo","PurchaseDebitMemo"));
-					cboSearchID.Items.Add(new ListItem("Customers","Customers"));
-					cboSearchID.Items.Add(new ListItem("Sales Orders","SalesOrders"));
-					cboSearchID.Items.Add(new ListItem("Sales Journals","SalesJournals"));
-					cboSearchID.Items.Add(new ListItem("Sales Returns","SalesReturns"));
-					cboSearchID.Items.Add(new ListItem("Sales Debit Memo","SalesDebitMemo"));
-					cboSearchID.Items.Add(new ListItem("Transfer In","TransferIn"));
-					cboSearchID.Items.Add(new ListItem("Transfer Out","TransferOut"));
-					cboSearchID.Items.Add(new ListItem("Inv Adjustment","InvAdjustment"));
-					cboSearchID.Items.Add(new ListItem("Close Inventory","CloseInventory"));
-                    cboSearchID.Items.Add(new ListItem("General Journals", "GeneralJournals"));
-                    cboSearchID.Items.Add(new ListItem("Positions", "Positions"));
-                    cboSearchID.Items.Add(new ListItem("Departments", "Departments"));
-                    cboSearchID.Items.Add(new ListItem("Reward Members", "RewardMembers"));
+                    cboSearchID.Items.Add(new ListItem("Customers", SearchCategoryID.Customers.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Sales Orders", SearchCategoryID.SalesOrders.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Sales Journals", SearchCategoryID.SalesJournals.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Sales Returns", SearchCategoryID.SalesReturns.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Sales Credit Memo", SearchCategoryID.SalesCreditMemo.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Transfer In", SearchCategoryID.TransferIn.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Transfer Out", SearchCategoryID.TransferOut.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Inv Adjustment", SearchCategoryID.InvAdjustment.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Close Inventory", SearchCategoryID.CloseInventory.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("General Journals", SearchCategoryID.GeneralJournals.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Positions", SearchCategoryID.Positions.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Departments", SearchCategoryID.Departments.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Reward Members", SearchCategoryID.RewardMembers.ToString("G")));
+                    cboSearchID.Items.Add(new ListItem("Customer Management", SearchCategoryID.CustomerDetailed.ToString("G")));
 			
 					cboSearchID.SelectedIndex  = Convert.ToInt16(mSearchIDSelectedItem);
 				}

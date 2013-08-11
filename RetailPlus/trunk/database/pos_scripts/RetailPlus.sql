@@ -6026,6 +6026,9 @@ ALTER TABLE tblProducts PARTITION BY HASH ( ProductID ) PARTITIONS 5 ;
 
 /*********************************  v_4.0.0.0.sql END  *******************************************************/ 
 
+/*********************************  v_4.0.0.1.sql START  *******************************************************/ 
+
+
 ALTER TABLE tblProductSubGroup MODIFY ProductSubGroupCode VARCHAR(50);
 ALTER TABLE tblTransactionItems MODIFY ProductSubGroup VARCHAR(50);
 
@@ -6039,8 +6042,6 @@ ALTER TABLE tblProductPurchasePriceHistory ADD `PurchaserName` VARCHAR(100);
 ALTER TABLE tblProductPurchasePriceHistory ADD `DateCreated` DATETIME NOT NULL;
 UPDATE tblProductPurchasePriceHistory SET 
 	PurchaserName = (SELECT PurchaserName FROM tblPO WHERE tblPO.PurchaserName = tblProductPurchasePriceHistory.PurchaserName);
-
-/*********************************  v_4.0.0.1.sql START  *******************************************************/ 
 
 -- [03/02/2012] HP request to include the purchase price in Stocks to know how much is the cost of bad order.
 ALTER TABLE tblStockItems ADD `PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0;
@@ -6421,10 +6422,6 @@ CREATE TABLE tblParkingRates (
 	UNIQUE `PK_tblParkingRates`(`ProductID`, `DayOfWeek`, `StartTime`, `Endtime`)
 );
 
-
-/*********************************  v_4.0.0.4.sql END  *******************************************************/ 
-
-
 /*****************************
 **	tblTransactionsBackup
 		This table will hold the backup records of tblTransactions.
@@ -6554,3 +6551,61 @@ CREATE TABLE `tblTransactionItemsBackup` (
   KEY `IX3_tblTransactionItemsBackup` (`TransactionID`),
   KEY `IX4_tblTransactionItemsBackup` (`ProductUnitID`)
 );
+
+/*********************************  v_4.0.0.5.sql END  *******************************************************/ 
+
+/*********************************  v_4.0.1.0.sql START  
+	09-Aug-2013 LEAceron
+	Purpose: To serve the Customer Management System required by GLA Mandarin
+
+	Requirements:
+		Roster Information of members w/ complete information.
+*******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.0';
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 147; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 147;
+DELETE FROM sysAccessTypes WHERE TypeID = 147;
+INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (147, 'Customer Management Feature');
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 147, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 147, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '11: Backend - MasterFiles' WHERE TypeID = 147;
+
+
+/*****************************
+**	tblContactDetails
+*****************************/
+DROP TABLE IF EXISTS tblContactDetails;
+CREATE TABLE tblContactDetails (
+	`ContactID` BIGINT(20) NOT NULL DEFAULT 0,
+	`Salutation` VARCHAR(25) NOT NULL,
+	`FirstName` VARCHAR(85) NOT NULL,
+	`MiddleName` VARCHAR(85) NOT NULL,
+	`LastName` VARCHAR(85) NOT NULL,	
+	`SpouseName` VARCHAR(85) NOT NULL,
+	
+	`BirthDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`SpouseBirthDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`AnniversaryDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
+	
+	`Address1` VARCHAR (150) NULL ,
+	`Address2` VARCHAR (150) NULL ,
+	`City` VARCHAR (30) NULL ,
+	`State` VARCHAR (30) NULL ,
+	`Zip` VARCHAR (15) NULL ,
+	`CountryID` TINYINT NOT NULL DEFAULT 0,
+
+	`BussinessphoneNo` VARCHAR(75) NOT NULL DEFAULT '',
+	`HomephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
+	`MobileNo` VARCHAR(75) NOT NULL DEFAULT '',
+	`FaxNo` VARCHAR(75) NOT NULL DEFAULT '',
+
+	`EmailAddress` VARCHAR(85) NOT NULL,
+INDEX `IX_tblContactDetails`(`ContactID`)
+);
+
+ALTER TABLE sysConfig ADD Category VARCHAR(100);
+
+ALTER TABLE tblContactGroup MODIFY ContactGroupCode VARCHAR(10);
+
+/*********************************  v_4.0.1.0.sql END  *******************************************************/ 

@@ -83,7 +83,8 @@
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:TextBox id="txtContactGroupCode" runat="server" accesskey="C" CssClass="ms-short" MaxLength="3" BorderStyle="Groove"></asp:TextBox>
+                                    <asp:TextBox id="txtContactGroupCode" runat="server" accesskey="C" 
+                                        CssClass="ms-short" MaxLength="10" BorderStyle="Groove"></asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Contact Group Code' must not be left blank." Display="Dynamic" ControlToValidate="txtContactGroupCode"></asp:requiredfieldvalidator>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>

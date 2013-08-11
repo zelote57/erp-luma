@@ -9127,8 +9127,8 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             else
             {
-                mstrToPrint += RawPrinterHelper.escEPSONBoldOn + CenterString("-/- CHECK-OUT BILL -/-", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
-                mstrToPrint += RawPrinterHelper.escEPSONBoldOn + CenterString("NOT VALID AS RECEIPT", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
+                mstrToPrint += RawPrinterHelper.escBoldHOn + CenterString("-/- CHECK-OUT BILL -/-", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escBoldHOff + Environment.NewLine;
+                mstrToPrint += RawPrinterHelper.escBoldHOn + CenterString("NOT VALID AS RECEIPT", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escBoldHOff + Environment.NewLine;
             }
             PrintReportPageHeaderSection(true);
         }
@@ -9360,7 +9360,7 @@ namespace AceSoft.RetailPlus.Client.UI
             SendOrderSlipToPrinter(CenterString("Trx #: " + mclsSalesTransactionDetails.TransactionNo, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine, PrinterName);
             if (mclsTerminalDetails.IsPrinterDotMatrix)
             { SendOrderSlipToPrinter(CenterString("ORDER SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine, PrinterName); }
-            else { SendOrderSlipToPrinter(RawPrinterHelper.esc8CpiOn + CenterString("ORDER SLIP", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.esc8CpiOff + Environment.NewLine, PrinterName); }
+            else { SendOrderSlipToPrinter(RawPrinterHelper.escFontHeightX2On + CenterString("ORDER SLIP", mclsTerminalDetails.MaxReceiptWidth) + RawPrinterHelper.escFontHeightX2Off + Environment.NewLine, PrinterName); }
             SendOrderSlipToPrinter(Environment.NewLine, PrinterName);
             SendOrderSlipToPrinter("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine, PrinterName);
             SendOrderSlipToPrinter("Customer : " + mclsSalesTransactionDetails.CustomerName + Environment.NewLine, PrinterName);
@@ -11208,9 +11208,9 @@ namespace AceSoft.RetailPlus.Client.UI
                         else
                         {
                             if (clsReceiptDetails.Value == ReceiptFieldFormats.AmountDue && !mclsTerminalDetails.IsPrinterDotMatrix)
-                                mstrToPrint += RawPrinterHelper.esc8CpiOn + RawPrinterHelper.escEPSONBoldOn + clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + RawPrinterHelper.esc8CpiOff + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
+                                mstrToPrint += RawPrinterHelper.escFontHeightX2On + RawPrinterHelper.escBoldHOn + clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + RawPrinterHelper.escFontHeightX2Off + RawPrinterHelper.escBoldHOff + Environment.NewLine;
                             else if (clsReceiptDetails.Value == ReceiptFieldFormats.Change && !mclsTerminalDetails.IsPrinterDotMatrix)
-                                mstrToPrint += RawPrinterHelper.escEPSONBoldOn + clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
+                                mstrToPrint += RawPrinterHelper.escBoldHOn + clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + RawPrinterHelper.escBoldHOff + Environment.NewLine;
                             else
                                 mstrToPrint += clsReceiptDetails.Text.PadRight(13) + ":" + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 14) + Environment.NewLine;
                         }
@@ -11220,9 +11220,9 @@ namespace AceSoft.RetailPlus.Client.UI
                             mstrToPrint += CenterString(GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
                         else
                             if (clsReceiptDetails.Value == ReceiptFieldFormats.AmountDue && !mclsTerminalDetails.IsPrinterDotMatrix)
-                                mstrToPrint += RawPrinterHelper.esc8CpiOn + RawPrinterHelper.escEPSONBoldOn + RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + RawPrinterHelper.esc8CpiOff + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
+                                mstrToPrint += RawPrinterHelper.escFontHeightX2On + RawPrinterHelper.escBoldHOn + RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + RawPrinterHelper.escFontHeightX2Off + RawPrinterHelper.escBoldHOff + Environment.NewLine;
                             else if (clsReceiptDetails.Value == ReceiptFieldFormats.Change && !mclsTerminalDetails.IsPrinterDotMatrix)
-                                mstrToPrint += RawPrinterHelper.escEPSONBoldOn + RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + RawPrinterHelper.escEPSONBoldOff + Environment.NewLine;
+                                mstrToPrint += RawPrinterHelper.escBoldHOn + RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + RawPrinterHelper.escBoldHOff + Environment.NewLine;
                             else
                                 mstrToPrint += CenterString(clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 
@@ -11303,7 +11303,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mclsFilePrinter.FileName = lblTransNo.Text;
 
             if (mclsTerminalDetails.IsPrinterDotMatrix) mstrToPrint += CenterString(CompanyDetails.CompanyCode, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
-            else mstrToPrint += RawPrinterHelper.esc8CpiOn + RawPrinterHelper.escEPSONBoldOn + RawPrinterHelper.escAlignCenter + CompanyDetails.CompanyCode + RawPrinterHelper.esc8CpiOff + RawPrinterHelper.escEPSONBoldOff + RawPrinterHelper.escAlignRight + Environment.NewLine;
+            else mstrToPrint += RawPrinterHelper.escFontHeightX2On + RawPrinterHelper.escBoldHOn + RawPrinterHelper.escAlignCenter + CompanyDetails.CompanyCode + RawPrinterHelper.escFontHeightX2Off + RawPrinterHelper.escBoldHOff + RawPrinterHelper.escAlignRight + Environment.NewLine;
 
             // print Report Header
             for (iCtr = 1; iCtr <= 10; iCtr++)
@@ -11398,7 +11398,7 @@ namespace AceSoft.RetailPlus.Client.UI
             if (bolBIG)
             {
                 if (mclsTerminalDetails.IsPrinterDotMatrix) SendOrderSlipToPrinter(stQuantity + "x" + stProductUnitCode + " " + stDescription.PadRight(mclsTerminalDetails.MaxReceiptWidth - 12), PrinterName);
-                else SendOrderSlipToPrinter(RawPrinterHelper.esc8CpiOn + stQuantity + "x" + stProductUnitCode + " " + stDescription.PadRight(mclsTerminalDetails.MaxReceiptWidth - 12) + RawPrinterHelper.esc8CpiOff, PrinterName);
+                else SendOrderSlipToPrinter(RawPrinterHelper.escFontHeightX2On + stQuantity + "x" + stProductUnitCode + " " + stDescription.PadRight(mclsTerminalDetails.MaxReceiptWidth - 12) + RawPrinterHelper.escFontHeightX2Off, PrinterName);
             }
             else
             {
@@ -14267,7 +14267,7 @@ namespace AceSoft.RetailPlus.Client.UI
             try
             {
                 //string command = Convert.ToChar(29).ToString() + Convert.ToChar(86).ToString() + Convert.ToChar(49).ToString();   // cut the paper  Chr$(86)
-                RawPrinterHelper.SendStringToPrinter(mclsTerminalDetails.PrinterName, RawPrinterHelper.escCut, "RetailPlus Paper Cutter.");
+                RawPrinterHelper.SendStringToPrinter(mclsTerminalDetails.PrinterName, RawPrinterHelper.escCutFull, "RetailPlus Paper Cutter.");
             }
             catch (Exception ex)
             {

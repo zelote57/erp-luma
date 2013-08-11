@@ -7,189 +7,144 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus.Inventory._Branch {
+namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed {
     
     
-    public partial class @__Update {
+    public partial class _Default {
         
         /// <summary>
-        /// imgSave control.
+        /// frmDefaultID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgSave;
+        protected global::System.Web.UI.HtmlControls.HtmlForm frmDefaultID;
         
         /// <summary>
-        /// cmdSave control.
+        /// ToolkitScriptManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSave;
+        protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
         
         /// <summary>
-        /// imgSaveBack control.
+        /// ctrlProcessing control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgSaveBack;
+        protected global::AceSoft.RetailPlus.@__Processing ctrlProcessing;
         
         /// <summary>
-        /// cmdSaveBack control.
+        /// PageHeader control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSaveBack;
+        protected global::AceSoft.RetailPlus.@__PageHeader PageHeader;
         
         /// <summary>
-        /// imgCancel control.
+        /// HorizontalNavBar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgCancel;
+        protected global::AceSoft.RetailPlus.@__HorizontalNavBar HorizontalNavBar;
         
         /// <summary>
-        /// cmdCancel control.
+        /// ctrlExpiry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdCancel;
+        protected global::AceSoft.RetailPlus.@__Expiry ctrlExpiry;
         
         /// <summary>
-        /// lblReferrer control.
+        /// SiteTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblReferrer;
+        protected global::AceSoft.RetailPlus.@__SiteTitle SiteTitle;
         
         /// <summary>
-        /// lblBranchID control.
+        /// LargeHeading control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBranchID;
+        protected global::AceSoft.RetailPlus.@__LargeHeading LargeHeading;
         
         /// <summary>
-        /// ValidationSummary1 control.
+        /// RightBodySectionSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
+        protected global::AceSoft.RetailPlus.@__RightBodySectionSearch RightBodySectionSearch;
         
         /// <summary>
-        /// txtBranchCode control.
+        /// ctrlMenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBranchCode;
+        protected global::AceSoft.RetailPlus.MasterFiles.@__Menu ctrlMenu;
         
         /// <summary>
-        /// Requiredfieldvalidator1 control.
+        /// PageLevelError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator1;
+        protected global::AceSoft.RetailPlus.@__PageLevelError PageLevelError;
         
         /// <summary>
-        /// txtBranchName control.
+        /// ctrlList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBranchName;
+        protected global::AceSoft.RetailPlus.MasterFiles._ContactDetailed.@__List ctrlList;
         
         /// <summary>
-        /// Requiredfieldvalidator2 control.
+        /// ctrlInsert control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator2;
+        protected global::AceSoft.RetailPlus.MasterFiles._ContactDetailed.@__Insert ctrlInsert;
         
         /// <summary>
-        /// txtDBIP control.
+        /// ctrlUpdate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDBIP;
+        protected global::AceSoft.RetailPlus.MasterFiles._ContactDetailed.@__Update ctrlUpdate;
         
         /// <summary>
-        /// Requiredfieldvalidator3 control.
+        /// ctrlDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator3;
-        
-        /// <summary>
-        /// txtDBPort control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDBPort;
-        
-        /// <summary>
-        /// Requiredfieldvalidator8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator8;
-        
-        /// <summary>
-        /// RegularExpressionValidator7 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator7;
-        
-        /// <summary>
-        /// txtAddress control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAddress;
-        
-        /// <summary>
-        /// txtRemarks control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRemarks;
+        protected global::AceSoft.RetailPlus.MasterFiles._ContactDetailed.@__Details ctrlDetails;
     }
 }

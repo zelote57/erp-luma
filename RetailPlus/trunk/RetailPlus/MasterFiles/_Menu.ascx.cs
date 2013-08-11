@@ -44,6 +44,9 @@ namespace AceSoft.RetailPlus.MasterFiles
 
                 lnkPositions.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Position/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
                 lnkDepartments.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Department/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
+
+                lnkContactDetailed.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_ContactDetailed/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
+                
 			}
 		}
 
@@ -53,15 +56,25 @@ namespace AceSoft.RetailPlus.MasterFiles
 			AccessRights clsAccessRights = new AccessRights(); 
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.CardType); 
-			lnkChargeType.Visible = clsDetails.Read; 
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.Products);
+            Menu_Product.Visible = clsDetails.Read;
+            lnkProducts.Visible = clsDetails.Read;
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.ChargeType); 
-			lnkChargeType.Visible = clsDetails.Read; 
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ProductGroups);
+            lnkProductGroup.Visible = Menu_Product.Visible && clsDetails.Read;
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Products); 
-			lnkProducts.Visible = clsDetails.Read;
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ProductSubGroups);
+            lnkProductSubGroup.Visible = clsDetails.Read;
 
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.Promos);
+            lnkPromo.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.Variations);
+            lnkVariation.Visible = clsDetails.Read; 
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.UnitMeasurement);
+            lnkUnit.Visible = clsDetails.Read; 
+			
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.SynchronizeBranchProducts);
             lnkSynchronize.Visible = clsDetails.Read;
 
@@ -72,36 +85,34 @@ namespace AceSoft.RetailPlus.MasterFiles
             lnkChangeProductPrice.Visible = clsDetails.Write;
             lnkChangeTax.Visible = clsDetails.Write;
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Variations); 
-			lnkVariation.Visible = clsDetails.Read; 
+			
+            // Contacts
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ContactGroups);
+            lnkContactGroup.Visible = clsDetails.Read;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Contacts); 
-			lnkContact.Visible = clsDetails.Read; 
+			lnkContact.Visible = clsDetails.Read;
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.ContactGroups); 
-			lnkContactGroup.Visible = clsDetails.Read; 
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CustomerManagement);
+            lnkContactDetailed.Visible = clsDetails.Read;
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.UnitMeasurement); 
-			lnkUnit.Visible = clsDetails.Read; 
-
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Discounts); 
-			lnkDiscount.Visible = clsDetails.Read; 
-
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.ProductGroups); 
-			lnkProductGroup.Visible = clsDetails.Read; 
-
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.ProductSubGroups); 
-			lnkProductSubGroup.Visible = clsDetails.Read; 
-
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Promos); 
-			lnkPromo.Visible = clsDetails.Read;
-
-            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.Position);
+			clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.Position);
             lnkPositions.Visible = clsDetails.Read;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.Department);
-            lnkDepartments.Visible = clsDetails.Read; 
+            lnkDepartments.Visible = clsDetails.Read;
 
+            // Miscellaneous
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Discounts); 
+			lnkDiscount.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CardType);
+            lnkChargeType.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ChargeType);
+            lnkChargeType.Visible = clsDetails.Read; 
+
+			
 			clsAccessRights.CommitAndDispose();
 		}
 

@@ -251,7 +251,12 @@ namespace AceSoft.RetailPlus
         * Added: Nov 2, 2011 Lemuel E. Aceron
         *******************************/
         CreditCardIssuance = 145,
-        CreditCardChange = 146
+        CreditCardChange = 146,
+        /******************************
+       * For Reward Membership information
+       * Added: Aug 8, 2013 Lemuel E. Aceron
+       *******************************/
+        CustomerManagement = 147
     }
 
     /// <summary>

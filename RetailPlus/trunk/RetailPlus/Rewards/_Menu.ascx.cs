@@ -38,9 +38,9 @@ namespace AceSoft.RetailPlus.Rewards
             lnkRewardsMovement.Visible = clsDetails.Read;
             lnkCheckRewardPoints.Visible = clsDetails.Read; 
             lnkRewardsReddem.Visible = clsDetails.Read;
-            lnkRewardsSummary.Visible = clsDetails.Read; 
+            lnkRewardsSummary.Visible = clsDetails.Read;
 
-			clsAccessRights.CommitAndDispose();
+            clsAccessRights.CommitAndDispose();
 		}
 
 		#region Web Form Designer generated code

@@ -1491,7 +1491,7 @@ namespace AceSoft.RetailPlus.Data
 
             return dt;
         }
-        public DataTable AgentsAsDataTable(string SearchKey, Int32 Limit, string SortField, SortOption SortOrder)
+        public DataTable AgentsAsDataTable(string SearchKey = "", Int32 Limit = 0, string SortField = "ContactCode", SortOption SortOrder = SortOption.Ascending)
         {
             if (SearchKey == null) SearchKey = string.Empty;
 

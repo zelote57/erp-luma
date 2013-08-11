@@ -58,7 +58,9 @@
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:TextBox id="txtContactGroupCode" runat="server" accesskey="C" CssClass="ms-short-disabled" MaxLength="3" BorderStyle="Groove" ReadOnly="True"></asp:TextBox>&nbsp;
+                                    <asp:TextBox id="txtContactGroupCode" runat="server" accesskey="C" 
+                                        CssClass="ms-short-disabled" MaxLength="10" BorderStyle="Groove" 
+                                        ReadOnly="True"></asp:TextBox>&nbsp;
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan=3>

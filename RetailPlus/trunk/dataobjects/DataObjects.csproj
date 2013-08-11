@@ -153,6 +153,7 @@
     <Compile Include="ChargeTypes.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Salutation.cs" />
     <Compile Include="ParkingRates.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="Constants.cs" />

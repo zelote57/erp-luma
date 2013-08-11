@@ -1,14 +1,56 @@
-﻿ SELECT prd.ProductID, prd.SupplierID, cntct.ContactCode, IFNULL(inv.Quantity,0) Quantity, IFNULL(inv.ActualQuantity,0) ActualQuantity, prd.ProductCode, prd.ProductDesc, IFNULL(mtrx.MatrixID,0) MatrixID, IFNULL(mtrx.Description,'') AS MatrixDescription, prd.BaseUnitID, unt.UnitCode, prd.MinThreshold, prd.MaxThreshold, pkg.PurchasePrice 
-								FROM tblProducts prd
-								INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
-								INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubgroupID = prd.ProductSubgroupID
-								INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID
-								INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
-																AND prd.BaseUnitID = pkg.UnitID
-																AND pkg.Quantity = 1 
-								LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
-								LEFT OUTER JOIN (
-									SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE BranchID=1 GROUP BY ProductID, MatrixID
-								) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
-								WHERE prdsg.ProductGroupID = 7 AND prd.Deleted = 0 AND prd.Active = 1
-								ORDER BY prd.ProductCode, MatrixDescription;
+﻿SET FOREIGN_KEY_CHECKS = 0;
+
+
+TRUNCATE TABLE tblproducthistory;
+TRUNCATE TABLE tblproductmovement;
+TRUNCATE TABLE tblproductpackagepricehistory;
+TRUNCATE TABLE tblproductpurchasepricehistory;
+
+
+TRUNCATE TABLE tblProductInventory;
+TRUNCATE TABLE tblProductBasevariationsMatrix;
+TRUNCATE TABLE tblProductVariationsMatrix;
+
+TRUNCATE TABLE tblproductvariations;
+
+TRUNCATE TABLE tblproductcomposition;
+TRUNCATE TABLE tblproductunitmatrix;
+TRUNCATE TABLE tblproductpackage;
+TRUNCATE TABLE tblproductprices;
+TRUNCATE TABLE tblproducts;
+
+TRUNCATE TABLE tblproductsubgroupbasevariationsmatrix;
+TRUNCATE TABLE tblproductsubgroupcharges;
+TRUNCATE TABLE tblproductsubgroupunitmatrix;
+TRUNCATE TABLE tblproductsubgroupvariations;
+TRUNCATE TABLE tblproductsubgroupvariationsmatrix;
+TRUNCATE TABLE tblproductsubgroup;
+
+TRUNCATE TABLE tblproductgroupbasevariationsmatrix;
+TRUNCATE TABLE tblproductgroupcharges;
+TRUNCATE TABLE tblproductgroupunitmatrix;
+TRUNCATE TABLE tblproductgroupvariations;
+TRUNCATE TABLE tblproductgroupvariationsmatrix;
+TRUNCATE TABLE tblproductgroup;
+
+
+TRUNCATE TABLE tblcontactcreditcardinfo;
+TRUNCATE TABLE tblcontactgroup;
+TRUNCATE TABLE tblcontactrewards;
+TRUNCATE TABLE tblcontactrewardsmovement;
+TRUNCATE TABLE tblContacts;
+
+
+
+
+
+TRUNCATE TABLE tblso;
+TRUNCATE TABLE tblsocreditmemo;
+TRUNCATE TABLE tblsocreditmemoitems;
+TRUNCATE TABLE tblsoitems;
+TRUNCATE TABLE tblstock;
+TRUNCATE TABLE tblstockitems;
+TRUNCATE TABLE tblstocktype;
+
+
+SET FOREIGN_KEY_CHECKS = 1;

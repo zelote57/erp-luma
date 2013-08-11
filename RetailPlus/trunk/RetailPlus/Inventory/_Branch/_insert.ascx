@@ -93,8 +93,12 @@
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtDBPort" runat="server" accesskey="T" CssClass="ms-short" MaxLength="4" BorderStyle="Groove" onkeypress="AllNum()">3306</asp:TextBox>
-									<asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'DB Port.' must not be left blank." Display="Dynamic" ControlToValidate="txtDBPort" ForeColor=" "></asp:requiredfieldvalidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtDBPort" Display="Dynamic" ErrorMessage="'DB Port' must be in number, max of 3 decimal places." ForeColor=" " Operator="DataTypeCheck" Type="Double"></asp:RegularExpressionValidator>
+									<asp:RequiredFieldValidator ID="Requiredfieldvalidator8" runat="server" ControlToValidate="txtDBPort"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Port Number' must not be left blank."
+                                                ForeColor=" "></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="txtDBPort"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Port Number' must be in number which is usually 3306."
+                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>

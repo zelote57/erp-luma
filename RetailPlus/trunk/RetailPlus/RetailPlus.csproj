@@ -410,6 +410,41 @@
       <DependentUpon>_rewardsmovement.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MasterFiles\_ContactDetailed\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactDetailed\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactDetailed\_Details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactDetailed\_Details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactDetailed\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactDetailed\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactDetailed\_List.ascx.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactDetailed\_List.ascx.designer.cs">
+      <DependentUpon>_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactDetailed\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_ContactDetailed\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Rewards\_reports.ascx.cs">
       <DependentUpon>_reports.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3284,6 +3319,11 @@
     <None Include="User Guide - Backend.pdf" />
     <None Include="vwd.webinfo" />
     <None Include="_layouts\images\Thumbs.db" />
+    <Content Include="MasterFiles\_ContactDetailed\default.aspx" />
+    <Content Include="MasterFiles\_ContactDetailed\_details.ascx" />
+    <Content Include="MasterFiles\_ContactDetailed\_insert.ascx" />
+    <Content Include="MasterFiles\_ContactDetailed\_list.ascx" />
+    <Content Include="MasterFiles\_ContactDetailed\_update.ascx" />
     <Content Include="Rewards\_reports.ascx" />
     <Content Include="Rewards\_default.ascx" />
     <Content Include="Rewards\default.aspx" />

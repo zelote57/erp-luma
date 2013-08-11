@@ -62,7 +62,8 @@ namespace AceSoft.RetailPlus
 		GeneralJournals                 = 43,
 		Positions                       = 44,
 		Departments                     = 45,
-        RewardMembers                   = 46
+        RewardMembers                   = 46,
+        CustomerDetailed                = 47
 	}
 
 	public enum HorizontalNavID

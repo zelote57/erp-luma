@@ -9,7 +9,7 @@ function confirm_zeroout_inventory()
 
 function confirm_close_inventory()
 {
-	if (confirm("Are you sure you want to Close the inventory?")==true)
+	if (confirm("Please make sure that you save the actual quantity first. \n     Are you sure you want to Close the inventory?")==true)
 	{	return true;    }
 	else
 	{	return false;    }

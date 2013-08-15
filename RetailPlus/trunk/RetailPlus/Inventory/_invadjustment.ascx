@@ -265,6 +265,8 @@
 	                        </ContentTemplate>
                             <Triggers> 
                                 <asp:AsyncPostBackTrigger ControlID="cboProductCode" EventName="SelectedIndexChanged" />
+                                <asp:AsyncPostBackTrigger ControlID="imgSaveTwo" EventName="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="cmdSaveTwo" EventName="Click" />
                             </Triggers> 
                         </asp:UpdatePanel>
 	                </td>

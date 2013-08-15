@@ -888,3 +888,14 @@ ALTER TABLE tblPODebitMemoItems MODIFY `EVatableAmount` DECIMAL(18,3) NOT NULL D
 ALTER TABLE tblPODebitMemoItems ADD `OriginalQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblPODebitMemoItems ADD `DebitMemoItemReceivedStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0;
 
+
+/*********************************  v_4.0.1.0.sql START  *******************************************************/ 
+-- 08Aug2013 Added for closing inventory by group
+
+ALTER TABLE tblInventory ADD `ProductGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE tblInventory ADD `ProductGroupCode` VARCHAR(20);
+ALTER TABLE tblInventory ADD `ProductGroupName` VARCHAR(50);
+
+/*********************************  v_4.0.1.0.sql END  *******************************************************/ 
+
+

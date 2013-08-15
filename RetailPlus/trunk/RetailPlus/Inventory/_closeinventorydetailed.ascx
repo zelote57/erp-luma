@@ -69,8 +69,14 @@
 					            </td>
 					            <TD class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</TD>
 					            <td style="HEIGHT: 15px" colspan="3">
-						            <asp:dropdownlist id="cboContact" CssClass="ms-long" runat="server" OnSelectedIndexChanged="cboContact_SelectedIndexChanged" AutoPostBack="true" CausesValidation="false"></asp:dropdownlist>
-                                    
+                                    <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                                        <ContentTemplate>
+						                    <asp:dropdownlist id="cboContact" CssClass="ms-long" runat="server" OnSelectedIndexChanged="cboContact_SelectedIndexChanged" AutoPostBack="true" CausesValidation="false"></asp:dropdownlist>
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="imgContactCodeSearch" EventName="Click" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
 					            </td>
                                 <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
                                     <asp:textbox id="txtContactCode" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
@@ -87,13 +93,25 @@
 					            </td>
 					            <TD class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</TD>
 					            <td style="PADDING-TOP:8px; HEIGHT: 15px" colspan="4">
-                                    <table cellSpacing="0" cellPadding="1" border="0">
-							            <tr>
-								            <td class="ms-toolbar" noWrap><asp:imagebutton id="imgLockUnlockProduct" ToolTip="Lock / Unlock products for selling" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgLockUnlockProduct_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Lock products for Selling" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
-								            </td>
-								            <td noWrap><asp:linkbutton id="cmdLockUnlockProduct" ToolTip="Lock / Unlock products for selling" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdLockUnlockProduct_Click">Lock products for Selling</asp:linkbutton></td>
-							            </tr>
-						            </table>
+                                    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                        <ContentTemplate>
+                                            <table cellSpacing="0" cellPadding="1" border="0">
+							                    <tr>
+								                    <td class="ms-toolbar" noWrap><asp:imagebutton id="imgLockUnlockProduct" ToolTip="Lock / Unlock products for selling" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" onclick="imgLockUnlockProduct_Click" ImageUrl="../_layouts/images/saveitem.gif" alt="Lock products for Selling" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
+								                    </td>
+								                    <td noWrap>
+                                                        <asp:linkbutton id="cmdLockUnlockProduct" ToolTip="Lock / Unlock products for selling" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdLockUnlockProduct_Click">Lock products for Selling</asp:linkbutton>  
+                                                    </td>
+							                    </tr>
+						                    </table>
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="imgLockUnlockProduct" EventName="Click" />
+                                            <asp:AsyncPostBackTrigger ControlID="cmdLockUnlockProduct" EventName="Click" />
+                                            <asp:AsyncPostBackTrigger ControlID="imgCloseInventory" EventName="Click" />
+                                            <asp:AsyncPostBackTrigger ControlID="cmdCloseInventory" EventName="Click" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
                                 </td>
 					            <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					            </td>
@@ -207,6 +225,10 @@
 			                    </asp:datalist>
 			                </ContentTemplate>
                         <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="imgLockUnlockProduct" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="cmdLockUnlockProduct" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="imgSaveActualQuantity" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="cmdSaveActualQuantity" EventName="Click" />
                             <asp:AsyncPostBackTrigger ControlID="imgZeroOutActualQuantity" EventName="Click" />
                             <asp:AsyncPostBackTrigger ControlID="cmdZeroOutActualQuantity" EventName="Click" />
                             <asp:AsyncPostBackTrigger ControlID="imgCloseInventory" EventName="Click" />
@@ -254,15 +276,19 @@
 					</td>
 					<TD class="ms-separator"><asp:label id="lblSeparator1" runat="server">|</asp:label></TD>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" noWrap>
-								    <asp:textbox id="txtClosingDate" accessKey="Q" ToolTip="Double Click to Select Date From Calendar" ondblclick="ontime(this)" runat="server" CssClass="ms-short" BorderStyle="Groove" Width="80"></asp:textbox>
-							        <asp:label id="Label17" runat="server" CssClass="ms-error"> 'yyyy-mm-dd' format</asp:label>
-								    <asp:imagebutton id="imgCloseInventory" ToolTip="Close Inventory" accessKey="X" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/delitem.gif" alt="Remove Selected Product" border="0" width="16" height="16" onclick="imgCloseInventory_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdCloseInventory" ToolTip="Close Inventory" accessKey="X" tabIndex="4" CssClass="ms-toolbar" runat="server" onclick="cmdCloseInventory_Click">Close Inventory</asp:linkbutton></td>
-							</tr>
-						</table>
+						<asp:UpdatePanel ID="updCloseInventory" runat="server">
+                            <ContentTemplate>
+						        <table cellSpacing="0" cellPadding="1" border="0">
+							        <tr>
+								        <td class="ms-toolbar" noWrap>
+								            <asp:textbox id="txtClosingDate" accessKey="Q" ToolTip="Double Click to Select Date From Calendar" ondblclick="ontime(this)" runat="server" CssClass="ms-short" BorderStyle="Groove" Width="80"></asp:textbox>
+							                <asp:label id="Label17" runat="server" CssClass="ms-error"> 'yyyy-mm-dd' format</asp:label>
+								            <asp:imagebutton id="imgCloseInventory" ToolTip="Close Inventory" accessKey="X" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/delitem.gif" alt="Remove Selected Product" border="0" width="16" height="16" onclick="imgCloseInventory_Click"></asp:imagebutton></td>
+								        <td noWrap><asp:linkbutton id="cmdCloseInventory" ToolTip="Close Inventory" accessKey="X" tabIndex="4" CssClass="ms-toolbar" runat="server" onclick="cmdCloseInventory_Click">Close Inventory</asp:linkbutton></td>
+							        </tr>
+						        </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
 					</td>					
 					<td class="ms-toolbar" id="Td2" noWrap align="right"><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					</td>

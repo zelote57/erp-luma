@@ -79,8 +79,8 @@ namespace AceSoft.RetailPlus.Inventory
         protected void imgProductGroupSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             ProductGroup clsProductGroup = new ProductGroup();
-            cboProductGroup.DataTextField = "ContactName";
-            cboProductGroup.DataValueField = "ContactID";
+            cboProductGroup.DataTextField = "ProductGroupName";
+            cboProductGroup.DataValueField = "ProductGroupID";
             cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroup.Text).DefaultView;
             cboProductGroup.DataBind();
             cboProductGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
@@ -109,10 +109,11 @@ namespace AceSoft.RetailPlus.Inventory
         {
             string strRefrenceNo = CloseInventory();
 
-            if (!string.IsNullOrEmpty(strRefrenceNo)) {
-                string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboProductGroup.SelectedItem.Value, Session.SessionID);
-                Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+            if (!string.IsNullOrEmpty(strRefrenceNo))
+            {
+                PrintClosingInventory(strRefrenceNo);
                 LoadList();
+                LockUnlockForSelling("Unlock");
             }
         }
 
@@ -121,9 +122,9 @@ namespace AceSoft.RetailPlus.Inventory
             string strRefrenceNo = CloseInventory();
 
             if (!string.IsNullOrEmpty(strRefrenceNo)) {
-                string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefrenceNo, Session.SessionID) + "&contactid=" + Common.Encrypt(cboProductGroup.SelectedItem.Value, Session.SessionID);
-                Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+                PrintClosingInventory(strRefrenceNo);
                 LoadList();
+                LockUnlockForSelling("Unlock");
             }
         }
 
@@ -260,11 +261,11 @@ namespace AceSoft.RetailPlus.Inventory
         }
         protected void imgPrint_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            PrintClosingInventory();
+            PrintClosingInventorySheet();
         }
         protected void cmdPrint_Click(object sender, System.EventArgs e)
         {
-            PrintClosingInventory();
+            PrintClosingInventorySheet();
         }
         protected void imgSaveActualQuantity_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
@@ -297,10 +298,22 @@ namespace AceSoft.RetailPlus.Inventory
 
         #region Private methods
 
-        private void PrintClosingInventory()
+        private void PrintClosingInventorySheet()
         {
             string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&type=" + Common.Encrypt("invcount", Session.SessionID) + "&prdgrpid=" + Common.Encrypt(cboProductGroup.SelectedItem.Value, Session.SessionID) + "&branchid=" + Common.Encrypt(cboBranch.SelectedItem.Value, Session.SessionID);
-            Response.Write("<script>window.open('" + Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam + "');</script>");
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "openwindow", javaScript, true);
+        }
+
+        private void PrintClosingInventory(string strRefNo = "")
+        {
+            string stParam = "?task=" + Common.Encrypt("closinginventoryrep", Session.SessionID) + "&refno=" + Common.Encrypt(strRefNo, Session.SessionID) + "&prdgrpid=" + Common.Encrypt(cboProductGroup.SelectedItem.Value, Session.SessionID) + "&branchid=" + Common.Encrypt(cboBranch.SelectedItem.Value, Session.SessionID); ;
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updCloseInventory, this.updCloseInventory.GetType(), "openwindow", javaScript, true);
         }
 
         private string CloseInventory()
@@ -464,11 +477,15 @@ namespace AceSoft.RetailPlus.Inventory
             LoadList();
         }
 
-        private void LockUnlockForSelling()
+        private void LockUnlockForSelling(string UnLock = "")
         {
             bool isLock = false;
 
-            if (cmdLockUnlockProduct.ToolTip == "unlock")
+            if (UnLock == "Unlock")
+            {
+                isLock = false;
+            }
+            else if (cmdLockUnlockProduct.ToolTip == "unlock")
             {
                 isLock = true;
             }

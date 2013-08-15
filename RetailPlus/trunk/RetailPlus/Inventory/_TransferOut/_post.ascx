@@ -83,8 +83,8 @@
 						        <td class="ms-formspacer" colSpan="6"></td>
 					        </tr>
 					        <tr style="PADDING-BOTTOM: 5px">
-						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="2"><label>Deliver 
-								        to branch: (Specify complete address)</label></td>
+						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="2">
+                                    <label>Transfer OUT from branch: (Specify complete address)</label></td>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colSpan="4"><label>Branch 
 								        Address:</label></td>
 					        </tr>
@@ -642,6 +642,8 @@
                     <asp:AsyncPostBackTrigger ControlID="imgSave" EventName="Click" />
                     <asp:AsyncPostBackTrigger ControlID="cmdDelete" EventName="Click" />
                     <asp:AsyncPostBackTrigger ControlID="imgDelete" EventName="Click" />
+                    <asp:AsyncPostBackTrigger ControlID="cmdGRN" EventName="Click" />
+                    <asp:AsyncPostBackTrigger ControlID="imgGRN" EventName="Click" />
                 </Triggers> 
             </asp:UpdatePanel>
 	    </TD>
@@ -797,6 +799,8 @@
                                 <asp:AsyncPostBackTrigger ControlID="imgSave" EventName="Click" />
                                 <asp:AsyncPostBackTrigger ControlID="cmdDelete" EventName="Click" />
                                 <asp:AsyncPostBackTrigger ControlID="imgDelete" EventName="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="cmdGRN" EventName="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="imgGRN" EventName="Click" />
                             </Triggers>
                         </asp:UpdatePanel>
 	                </td>

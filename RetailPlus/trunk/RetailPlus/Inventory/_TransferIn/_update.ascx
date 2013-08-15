@@ -47,7 +47,7 @@
 	</TR>
 	<TR>
 		<TD></TD>
-		<TD><asp:RegularExpressionValidator id="RegularExpressionValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtRequiredDeliveryDate" Display="Dynamic" ErrorMessage="'Required Delivery Date' must be a valid date." Type="Date" Operator="DataTypeCheck" ForeColor=" "></asp:RegularExpressionValidator></TD>
+		<TD><asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtRequiredDeliveryDate" Display="Dynamic" ErrorMessage="'Required Delivery Date' must be a valid date." Type="Date" Operator="DataTypeCheck" ForeColor=" "></asp:CompareValidator></TD>
 	</TR>
 	<tr>
 		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
@@ -158,7 +158,7 @@
                                     </tr>
                                     <tr>
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                            <label>Select Branch<font color="red">*</font></label></td>
+                                            <label>Transfer IN to Branch<font color="red">*</font></label></td>
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                             <label>Branch Address<font color="red">*</font></label></td>
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">

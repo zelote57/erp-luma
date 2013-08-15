@@ -68,7 +68,7 @@ namespace AceSoft.RetailPlus.Reports
             cboInventoryNo.DataSource = clsInventory.ClosingInventoryReferenceNos(Convert.ToDateTime(txtStartTransactionDate.Text), Convert.ToDateTime(txtEndTransactionDate.Text));
             cboInventoryNo.DataBind();
             cboInventoryNo.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT, Constants.PLEASE_SELECT + DateTime.MinValue.ToString("yyyy-MM-dd")));
-            cboInventoryNo.SelectedIndex = cboInventoryNo.Items.Count - 1;
+            cboInventoryNo.SelectedIndex = 0;
 
             clsContact.CommitAndDispose();
 
@@ -243,7 +243,7 @@ namespace AceSoft.RetailPlus.Reports
             else
             {
                 Data.Inventory clsInventory = new Data.Inventory();
-                dt = clsInventory.DataList(cboInventoryNo.SelectedItem.Text, chkIncludeShortOverProducts.Checked, long.Parse(cboContact.SelectedItem.Value), long.Parse(cboGroup.SelectedItem.Value));
+                dt = clsInventory.DataList(cboInventoryNo.SelectedItem.Text, chkIncludeShortOverProducts.Checked, long.Parse(cboContact.SelectedItem.Value), long.Parse(cboGroup.SelectedItem.Value), SortField: "ProductCode, MatrixDescription");
                 clsInventory.CommitAndDispose();
 
                 foreach (System.Data.DataRow dr in dt.Rows)
@@ -369,7 +369,37 @@ namespace AceSoft.RetailPlus.Reports
 
         protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            
+            Data.Inventory clsInventory = new Data.Inventory();
+            cboInventoryNo.DataTextField = "ReferenceNo";
+            cboInventoryNo.DataValueField = "PostingReference";
+            cboInventoryNo.DataSource = clsInventory.ClosingInventoryReferenceNos(Convert.ToDateTime(txtStartTransactionDate.Text), Convert.ToDateTime(txtEndTransactionDate.Text));
+            cboInventoryNo.DataBind();
+            cboInventoryNo.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT, Constants.PLEASE_SELECT + DateTime.MinValue.ToString("yyyy-MM-dd")));
+            cboInventoryNo.SelectedIndex = 0;
+
+            clsInventory.CommitAndDispose();
+        }
+
+        protected void cboInventoryNo_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            cboContact.SelectedIndex = 0;
+            cboGroup.SelectedIndex = 0;
+
+            Data.Inventory clsInventory = new Data.Inventory();
+
+            System.Data.DataTable dt = clsInventory.ClosingInventoryContactCodes(cboInventoryNo.SelectedItem.Text);
+            if (dt.Rows.Count == 1)
+            {
+                cboContact.SelectedIndex = cboContact.Items.IndexOf(cboContact.Items.FindByValue(dt.Rows[0]["ContactID"].ToString()));
+            }
+
+            dt = clsInventory.ClosingInventoryGroupCodes(cboInventoryNo.SelectedItem.Text);
+            if (dt.Rows.Count == 1)
+            {
+                cboGroup.SelectedIndex = cboGroup.Items.IndexOf(cboGroup.Items.FindByValue(dt.Rows[0]["ProductGroupID"].ToString()));
+            }
+
+            clsInventory.CommitAndDispose();
         }
 
         #endregion

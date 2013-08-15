@@ -166,7 +166,7 @@
                                     </tr>
                                     <tr>
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                            <label>Select Branch<font color="red">*</font></label></td>
+                                            <label>Transfer OUT from Branch<font color="red">*</font></label></td>
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                             <label>Branch Address<font color="red">*</font></label></td>
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">

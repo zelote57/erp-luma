@@ -602,3 +602,101 @@ END;
 GO
 delimiter ;
 
+
+
+
+
+/**************************************************************
+
+	procInventoryContactCode
+	Lemuel E. Aceron
+	Aug 9, 2013
+	
+	Desc: This will get the all Contact ID's from Inventory
+
+	CALL procInventoryContactCode(null, null,null);
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procInventoryContactCode
+GO
+
+create procedure procInventoryContactCode(
+			IN ReferenceNo varchar(30),
+			IN SortField varchar(60),
+			IN SortOrder varchar(4))
+BEGIN
+	SET @SQL = CONCAT('	SELECT 
+							 ContactID
+							,ContactCode
+							,ReferenceNo
+						FROM tblInventory inv
+						WHERE 1 = 1 ');
+	
+	IF IFNULL(ReferenceNo,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND ReferenceNo = ''',ReferenceNo,''' ');
+	END IF;
+
+	SET @SQL = CONCAT(@SQL, 'GROUP BY ContactID
+								     ,ContactCode
+									 ,ReferenceNo ');
+
+	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','inv.ContactCode',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
+
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;
+
+
+
+
+/**************************************************************
+
+	procInventoryProductGroupCode
+	Lemuel E. Aceron
+	Aug 9, 2013
+	
+	Desc: This will get the all Contact ID's from Inventory
+
+	CALL procInventoryProductGroupCode(null, null,null);
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procInventoryProductGroupCode
+GO
+
+create procedure procInventoryProductGroupCode(
+			IN ReferenceNo varchar(30),
+			IN SortField varchar(60),
+			IN SortOrder varchar(4))
+BEGIN
+	SET @SQL = CONCAT('	SELECT 
+							 ProductGroupID
+							,ProductGroupCode
+							,ProductGroupName
+							,ReferenceNo
+						FROM tblInventory inv
+						WHERE 1 = 1 ');
+	
+	IF IFNULL(ReferenceNo,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND ReferenceNo = ''',ReferenceNo,''' ');
+	END IF;
+
+	SET @SQL = CONCAT(@SQL, 'GROUP BY ProductGroupID
+								     ,ProductGroupCode
+									 ,ProductGroupName
+									 ,ReferenceNo ');
+
+	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','inv.ProductGroupCode',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
+
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;

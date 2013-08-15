@@ -67,6 +67,15 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.DropDownList cboBranch;
         
         /// <summary>
+        /// UpdatePanel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel3;
+        
+        /// <summary>
         /// cboProductGroup control.
         /// </summary>
         /// <remarks>
@@ -92,6 +101,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton imgProductGroupSearch;
+        
+        /// <summary>
+        /// UpdatePanel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
         /// imgLockUnlockProduct control.
@@ -173,6 +191,15 @@ namespace AceSoft.RetailPlus.Inventory {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSeparator1;
+        
+        /// <summary>
+        /// updCloseInventory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updCloseInventory;
         
         /// <summary>
         /// txtClosingDate control.

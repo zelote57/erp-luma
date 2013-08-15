@@ -70,28 +70,38 @@
 						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellSpacing="0" cellPadding="0" border="0" width="100%">
 							<tr>
 				                <td style="PADDING-BOTTOM:2px" nowrap>
-					                <label>Posting Date From</label>&nbsp;
+					                <label>Posting Date From & To</label>&nbsp;
 				                &nbsp;&nbsp;&nbsp;</td>
-				                <td>
+				                <td colspan="35">
 					                <asp:TextBox id="txtStartTransactionDate" ondblclick="ontime(this)" accessKey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" ></asp:TextBox>
-				                </td>
-				                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				                <td style="PADDING-BOTTOM:2px" nowrap>
-					                <label>Posting Date To</label>
-				                    <asp:TextBox id="txtEndTransactionDate" ondblclick="ontime(this)" accessKey="E" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" ></asp:TextBox>
-				                </td>
-                                <td colspan="2"></td>
-				                <td width="99%" id="align05" noWrap align="left">&nbsp;
-					                <asp:Label id="Label3" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
+                                    &nbsp;-&nbsp;
+                                    <asp:TextBox id="txtEndTransactionDate" ondblclick="ontime(this)" accessKey="E" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" ></asp:TextBox>
+                                    <asp:ImageButton id="cmdSearch" title="Search Reference Numbers in specific posting dates" style="CURSOR: hand" accessKey="s" BorderStyle="Groove" runat="server" ImageUrl="../_layouts/images/icongo01.gif" border="0" alt="Execute search" causesvalidation=false Height="14px" OnClick="cmdSearch_Click"></asp:ImageButton>
+                                    &nbsp;&nbsp;
+                                    <asp:Label id="Label3" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
 					                <asp:Label id="Label4" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>
+                                </td>
+				                <%--<%--<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				                <td style="PADDING-BOTTOM:2px" nowrap>
+					                <%--<label>Posting Date To</label>
+				                    
 				                </td>
+                                <td></td>--%>
+				                <td width="99%" id="Td3" noWrap align="right"><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="1">
+								</td>
 			                </tr>
 			                <tr>
 								<td style="PADDING-BOTTOM:2px;" nowrap>
 									<label>Filter by Inventory No.</label>&nbsp;&nbsp;&nbsp;</td>
 								<td colspan=5>
-									<asp:DropDownList id="cboInventoryNo" runat="server" CssClass="ms-long"></asp:DropDownList>
-									<asp:ImageButton id="cmdSearch" title="Search Reference Numbers in specific posting dates" style="CURSOR: hand" accessKey="s" BorderStyle="Groove" runat="server" ImageUrl="../_layouts/images/icongo01.gif" border="0" alt="Execute search" causesvalidation=false Height="14px" OnClick="cmdSearch_Click"></asp:ImageButton>
+                                    <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                                        <ContentTemplate>
+									        <asp:DropDownList id="cboInventoryNo" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboInventoryNo_SelectedIndexChanged"></asp:DropDownList>
+									    </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="cmdSearch" EventName="Click" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
 								</td>
 								<td width="99%" id="Td1" noWrap align="right"><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 								</td>
@@ -101,21 +111,37 @@
 									<label>Filter by Contact</label>
 								&nbsp;&nbsp;&nbsp;</td>
 								<td>
-									<asp:dropdownlist id="cboContact" CssClass="ms-long" runat="server"></asp:dropdownlist>
+                                    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                        <ContentTemplate>
+									        <asp:dropdownlist id="cboContact" CssClass="ms-long" runat="server"></asp:dropdownlist>
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="cboInventoryNo" EventName="SelectedIndexChanged" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
 								</td>
 								<TD class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
                                 <td style="PADDING-BOTTOM:2px;" nowrap>
 									<label>Filter by Group</label>
-									<asp:DropDownList id="cboGroup" runat="server" CssClass="ms-long"></asp:DropDownList>
 								</td>
-                                <td colspan="2"></td>
+                                <td>
+									<asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                                        <ContentTemplate>
+									        <asp:DropDownList id="cboGroup" runat="server" CssClass="ms-short"></asp:DropDownList>
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="cboInventoryNo" EventName="SelectedIndexChanged" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+								</td>
+                                <td></td>
 								<td width="99%" id="align02" noWrap align="right"><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 								</td>
 							</tr>
 							<tr>
 								<td style="PADDING-BOTTOM:2px;" nowrap>
-									<label>Exclude products without short/over </label>&nbsp;&nbsp;&nbsp;</td>
-								<td colspan=5>
+									<label>Include products without short/over </label>&nbsp;&nbsp;&nbsp;</td>
+								<td colspan="5">
 									<asp:CheckBox id="chkIncludeShortOverProducts" runat="server" CssClass="ms-short" Checked=true></asp:CheckBox>
 								</td>
 								<td width="99%" id="Td2" noWrap align="right"><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="1">

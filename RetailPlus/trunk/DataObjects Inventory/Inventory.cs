@@ -625,6 +625,59 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
+        public System.Data.DataTable ClosingInventoryContactCodes(string ReferenceNo = "", string SortField = "ContactCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        {
+            string SQL = "CALL procInventoryContactCode(@ReferenceNo, @SortField, @SortOrder)";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            cmd.Parameters.AddWithValue("@ReferenceNo", ReferenceNo);
+            cmd.Parameters.AddWithValue("@SortField", SortField);
+            switch (SortOrder)
+            {
+                case System.Data.SqlClient.SortOrder.Ascending:
+                    cmd.Parameters.AddWithValue("@SortOrder", "ASC");
+                    break;
+                case System.Data.SqlClient.SortOrder.Descending:
+                    cmd.Parameters.AddWithValue("@SortOrder", "DESC");
+                    break;
+            }
+
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            return dt;
+        }
+
+        public System.Data.DataTable ClosingInventoryGroupCodes(string ReferenceNo = "", string SortField = "ProductGroupCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        {
+            string SQL = "CALL procInventoryProductGroupCode(@ReferenceNo, @SortField, @SortOrder)";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            cmd.Parameters.AddWithValue("@ReferenceNo", ReferenceNo);
+            cmd.Parameters.AddWithValue("@SortField", SortField);
+            switch (SortOrder)
+            {
+                case System.Data.SqlClient.SortOrder.Ascending:
+                    cmd.Parameters.AddWithValue("@SortOrder", "ASC");
+                    break;
+                case System.Data.SqlClient.SortOrder.Descending:
+                    cmd.Parameters.AddWithValue("@SortOrder", "DESC");
+                    break;
+            }
+
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            return dt;
+        }
+
+
         public System.Data.DataTable ClosingInventoryReferenceNos(DateTime PostingDateFrom, DateTime PostingDateTo)
         {
             string SQL = "SELECT ReferenceNo, PostingDate, CONCAT(ReferenceNo,PostingDate) PostingReference FROM tblInventory WHERE ReferenceNo LIKE @CLOSE_INVENTORY_CODE ";

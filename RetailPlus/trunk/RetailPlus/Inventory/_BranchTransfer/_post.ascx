@@ -572,6 +572,8 @@
                     <asp:AsyncPostBackTrigger ControlID="imgSave" EventName="Click" />
                     <asp:AsyncPostBackTrigger ControlID="cmdDelete" EventName="Click" />
                     <asp:AsyncPostBackTrigger ControlID="imgDelete" EventName="Click" />
+                    <asp:AsyncPostBackTrigger ControlID="cmdGRN" EventName="Click" />
+                    <asp:AsyncPostBackTrigger ControlID="imgGRN" EventName="Click" />
                 </Triggers> 
             </asp:UpdatePanel>
 	    </TD>
@@ -660,6 +662,8 @@
                                 <asp:AsyncPostBackTrigger ControlID="imgSave" EventName="Click" />
                                 <asp:AsyncPostBackTrigger ControlID="cmdDelete" EventName="Click" />
                                 <asp:AsyncPostBackTrigger ControlID="imgDelete" EventName="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="cmdGRN" EventName="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="imgGRN" EventName="Click" />
                             </Triggers>
                         </asp:UpdatePanel>
 	                </td>

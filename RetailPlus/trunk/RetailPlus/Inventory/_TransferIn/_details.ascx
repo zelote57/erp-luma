@@ -117,7 +117,8 @@
 								<td class="ms-formspacer" colSpan="6"></td>
 							</tr>
 							<tr style="PADDING-BOTTOM: 5px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="2"><label>Deliver 
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="2">
+                                    <label>Transfer IN 
 										to branch: (Specify complete address)</label></td>
 								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colSpan="4"><label>Branch 
 										Address:</label></td>

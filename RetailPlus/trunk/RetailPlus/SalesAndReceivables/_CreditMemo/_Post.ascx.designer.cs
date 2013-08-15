@@ -805,13 +805,13 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator10;
         
         /// <summary>
-        /// RegularExpressionValidator1 control.
+        /// CompareValidator1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
+        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator1;
         
         /// <summary>
         /// Label12 control.

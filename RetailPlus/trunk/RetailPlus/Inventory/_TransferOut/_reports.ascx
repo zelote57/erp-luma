@@ -3,15 +3,15 @@
     Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
 <ContentTemplate>
-<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
-	<TR>
-		<td><IMG src="../../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
-		<TD>
+	<tr>
+		<td><img src="../../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
+		<td>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
-				<TR>
+				<tr>
 					<td class="ms-toolbar" style="WIDTH: 234px">
 						<table cellpadding="1" cellspacing="0" border="0">
 							<tr>
@@ -33,18 +33,18 @@
 							</tr>
 						</table>
 					</td>
-					<TD class="ms-toolbar" align="right" nowrap id="align01">
-						<table cellSpacing="0" cellPadding="0" width="100%" border="0">
-							<TR>
+					<td class="ms-toolbar" align="right" nowrap id="align01">
+						<table cellspacing="0" cellpadding="0" width="100%" border="0">
+							<tr>
 								<td class="ms-toolbar" nowrap align="left">
 									<asp:Button id="cmdView" runat="server" Text="Go" onclick="cmdView_Click" OnClientClick="NewWindow();"></asp:Button>
 								</td>
-							</TR>
-						</TABLE>
-					</TD>
-					<TD class="ms-separator"><asp:label id="lblSeparator4" runat="server">|</asp:label></TD>
+							</tr>
+						</table>
+					</td>
+					<td class="ms-separator"><asp:label id="lblSeparator4" runat="server">|</asp:label></td>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
+						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
 								<td class="ms-toolbar" noWrap style="width: 19px"><asp:imagebutton id="imgBack" accessKey="B" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
 								<td noWrap><asp:linkbutton id="cmdBack" accessKey="B" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" OnClick="cmdBack_Click">Back to previous window</asp:linkbutton></td>
@@ -52,18 +52,18 @@
 						</table>
 					</td>
 					<td class="ms-toolbar" align="right" nowrap id="align032" width="99%" >
-						<IMG src="../../_layouts/images/blank.gif" width="1" height="1" alt="">
+						<img src="../../_layouts/images/blank.gif" width="1" height="1" alt="">
 					</td>
-				</TR>
-			</TABLE>
+				</tr>
+			</table>
 			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label> 
 			<asp:label id="lblTransferOutID" runat="server" Visible="False"></asp:label> 
 		    <asp:label id="lblReportType" runat="server" Visible="False"></asp:label>
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
-		<TD>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
+		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif"></td>
@@ -74,11 +74,11 @@
 				    </td>
 				</tr>
 			</table>
-		</TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		</td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>
 </ContentTemplate>

@@ -196,30 +196,39 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
             txtTransferOutDiscountApplied.Text = clsDetails.DiscountApplied.ToString("###0.#0");
             cboTransferOutDiscountType.SelectedIndex = cboTransferOutDiscountType.Items.IndexOf(cboTransferOutDiscountType.Items.FindByValue(clsDetails.DiscountType.ToString("d")));
             lblTransferOutDiscount.Text = clsDetails.Discount.ToString("#,##0.#0");
+            lblTotalDiscount1.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount + clsDetails.Discount2 + clsDetails.Discount3).ToString("#,##0.#0");
+
+            txtTransferOutDiscount2Applied.Text = clsDetails.Discount2Applied.ToString("###0.#0");
+            cboTransferOutDiscount2Type.SelectedIndex = cboTransferOutDiscount2Type.Items.IndexOf(cboTransferOutDiscount2Type.Items.FindByValue(clsDetails.Discount2Type.ToString("d")));
+            lblTransferOutDiscount2.Text = clsDetails.Discount2.ToString("#,##0.#0");
+            lblTotalDiscount2.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount2 + clsDetails.Discount3).ToString("#,##0.#0");
+
+            txtTransferOutDiscount3Applied.Text = clsDetails.Discount3Applied.ToString("###0.#0");
+            cboTransferOutDiscount3Type.SelectedIndex = cboTransferOutDiscount3Type.Items.IndexOf(cboTransferOutDiscountType.Items.FindByValue(clsDetails.Discount3Type.ToString("d")));
+            lblTransferOutDiscount3.Text = clsDetails.Discount3.ToString("#,##0.#0");
+            lblTotalDiscount3.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount3).ToString("#,##0.#0");
+
             lblTransferOutVatableAmount.Text = clsDetails.VatableAmount.ToString("#,##0.#0");
             txtTransferOutFreight.Text = clsDetails.Freight.ToString("#,##0.#0");
             txtTransferOutDeposit.Text = clsDetails.Deposit.ToString("#,##0.#0");
-            lblTransferOutSubTotal.Text = Convert.ToDecimal(clsDetails.SubTotal - clsDetails.VAT + clsDetails.Freight - clsDetails.Deposit).ToString("#,##0.#0");
+            lblTransferOutSubTotal.Text = Convert.ToDecimal(clsDetails.SubTotal - clsDetails.VAT).ToString("#,##0.#0");
             lblTransferOutVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
             lblTransferOutTotal.Text = clsDetails.SubTotal.ToString("#,##0.#0");
         }
+        private void LoadItems()
+        {
+            DataClass clsDataClass = new DataClass();
 
-		private void LoadItems()
-		{
-			DataClass clsDataClass = new DataClass();
-
-			TransferOutItem clsTransferOutItem = new TransferOutItem();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsTransferOutItem.List(Convert.ToInt64(lblTransferOutID.Text), "TransferOutItemID",SortOption.Ascending)).DefaultView;
-			lstItem.DataBind();
-			clsTransferOutItem.CommitAndDispose();
-		}
-
+            TransferOutItem clsTransferOutItem = new TransferOutItem();
+            lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsTransferOutItem.List(Convert.ToInt64(lblTransferOutID.Text), "TransferOutItemID", SortOption.Ascending)).DefaultView;
+            lstItem.DataBind();
+            clsTransferOutItem.CommitAndDispose();
+        }
         private void PrintTransferOut()
         {
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("transferout", Session.SessionID) + "&transferoutid=" + Common.Encrypt(lblTransferOutID.Text, Session.SessionID);
             Response.Redirect("Default.aspx" + stParam);
         }
-
         private void CancelTransferOut()
         {
             long TransferOutID = Convert.ToInt64(lblTransferOutID.Text);

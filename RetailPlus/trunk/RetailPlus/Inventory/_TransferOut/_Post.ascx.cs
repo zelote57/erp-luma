@@ -388,21 +388,6 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
                     break;
             }
         }
-        private void lstItemFixCssClass()
-        {
-            foreach (DataListItem item in lstItem.Items)
-            {
-                Label lblitemTransferOutItemReceivedStatus = (Label)item.FindControl("lblTransferOutItemReceivedStatus");
-                TransferOutItemReceivedStatus itemTransferOutItemReceivedStatus = (TransferOutItemReceivedStatus)Enum.Parse(typeof(TransferOutItemReceivedStatus), lblitemTransferOutItemReceivedStatus.Text);
-                if (itemTransferOutItemReceivedStatus == TransferOutItemReceivedStatus.Received)
-                    item.CssClass = "ms-item-received";
-                else if (item.ItemType == ListItemType.Item)
-                    item.CssClass = "";
-                else if (item.ItemType == ListItemType.AlternatingItem)
-                    item.CssClass = "ms-alternating";
-
-            }
-        }
         protected void imgPrint_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             PrintTransferOut();
@@ -617,7 +602,14 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
             cboProductUnit.Items.Add(new ListItem("No Unit", "0"));
 
             txtQuantity.Text = "1";
+            txtPrice.Text = "0.00";
             txtDiscount.Text = "0";
+            txtSellingQuantity.Text = "0";
+            txtMargin.Text = "10";
+            txtSellingPrice.Text = "0";
+            txtOldSellingPrice.Text = "0";
+            txtOldSellingPrice.Text = "0";
+
             txtRemarks.Text = "";
             ComputeItemAmount();
             lblTransferOutItemID.Text = "0";
@@ -1091,12 +1083,18 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
         private void PrintTransferOut()
         {
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("TransferOutreport", Session.SessionID) + "&TransferOutid=" + Common.Encrypt(lblTransferOutID.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/_TransferOut/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
         private void PrintTransferOutSelling()
         {
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("TransferOutreport", Session.SessionID) + "&TransferOutid=" + Common.Encrypt(lblTransferOutID.Text, Session.SessionID) + "&reporttype=" + Common.Encrypt("TransferOutReportSellingPrice", Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/_TransferOut/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrintSellingPrice, this.updPrintSellingPrice.GetType(), "openwindow", javaScript, true);
         }
         private void UpdateHeader()
         {
@@ -1540,6 +1538,21 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
                 stScript += "window.alert('Please select Transfer In file to upload.')";
                 stScript += "</Script>";
                 Response.Write(stScript);
+            }
+        }
+        private void lstItemFixCssClass()
+        {
+            foreach (DataListItem item in lstItem.Items)
+            {
+                Label lblitemTransferOutItemReceivedStatus = (Label)item.FindControl("lblTransferOutItemReceivedStatus");
+                TransferOutItemReceivedStatus itemTransferOutItemReceivedStatus = (TransferOutItemReceivedStatus)Enum.Parse(typeof(TransferOutItemReceivedStatus), lblitemTransferOutItemReceivedStatus.Text);
+                if (itemTransferOutItemReceivedStatus == TransferOutItemReceivedStatus.Received)
+                    item.CssClass = "ms-item-received";
+                else if (item.ItemType == ListItemType.Item)
+                    item.CssClass = "";
+                else if (item.ItemType == ListItemType.AlternatingItem)
+                    item.CssClass = "ms-alternating";
+
             }
         }
 

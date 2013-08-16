@@ -231,13 +231,19 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 		}
         private void PrintTransferOut()
         {
-            string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("transferout", Session.SessionID) + "&transferoutid=" + Common.Encrypt(lblTransferOutID.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("TransferOutreport", Session.SessionID) + "&TransferOutid=" + Common.Encrypt(lblTransferOutID.Text, Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/_TransferOut/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
         private void PrintTransferOutSelling()
         {
-            string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("transferinreport", Session.SessionID) + "&transferoutid=" + Common.Encrypt(lblTransferOutID.Text, Session.SessionID) + "&reporttype=" + Common.Encrypt("TransferOutReportSellingPrice", Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("TransferOutreport", Session.SessionID) + "&TransferOutid=" + Common.Encrypt(lblTransferOutID.Text, Session.SessionID) + "&reporttype=" + Common.Encrypt("TransferOutReportSellingPrice", Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/_TransferOut/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrintSellingPrice, this.updPrintSellingPrice.GetType(), "openwindow", javaScript, true);
         }
         private void ExportToFile()
         {

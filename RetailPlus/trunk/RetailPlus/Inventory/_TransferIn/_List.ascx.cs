@@ -150,7 +150,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                 HyperLink lblSupplierCode = (HyperLink)e.Item.FindControl("lblSupplierCode");
                 lblSupplierCode.Text = dr["SupplierCode"].ToString();
                 stParam = "?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(lblSupplierID.Text, Session.SessionID);
-                lblSupplierCode.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_Vendor/Default.aspx" + stParam;
+                lblSupplierCode.NavigateUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_Vendor/Default.aspx" + stParam;
 
                 Label lblReqDeliveryDate = (Label)e.Item.FindControl("lblReqDeliveryDate");
                 lblReqDeliveryDate.Text = Convert.ToDateTime(dr["RequiredDeliveryDate"].ToString()).ToString("yyyy-MM-dd");

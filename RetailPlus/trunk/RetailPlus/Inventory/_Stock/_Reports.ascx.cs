@@ -22,8 +22,12 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 			if (!IsPostBack && Visible)
 			{
 				lblReferrer.Text = Request.UrlReferrer.ToString();
-				LoadOptions();	
-				GenerateHTML();
+				LoadOptions();
+
+                if (!string.IsNullOrEmpty(Request.QueryString["target"]))
+                    GeneratePDF();
+                else
+				    GenerateHTML();
                 Session["ReportDocument"] = null;
             }
         }

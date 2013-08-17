@@ -110,7 +110,12 @@ namespace AceSoft.RetailPlus.Reports
             try
             {
                 if (strProductCode != string.Empty && cboProductCode.SelectedItem.Value != "0")
-                    GenerateHTML();
+                {
+                    if (!string.IsNullOrEmpty(Request.QueryString["reptype"]))
+                        GeneratePDF();
+                    else 
+                        GenerateHTML();
+                }
             }
             catch { }
 		}

@@ -5,10 +5,10 @@
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<TR>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<TR>
@@ -62,10 +62,10 @@
 				</TR>
 			</TABLE>
 		</TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</TR>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<colgroup>
@@ -85,17 +85,17 @@
 						<IMG height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></th></tr>
 				<tr>
 					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px" colSpan="4">
-					    <INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall"><label for="idSelectAll"><B>Select All</B></label>
+					    <input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /><label for="idSelectAll"><B>Select All</B></label>
 					    <asp:RadioButton ID="rdoShowAll" GroupName="FilterTransactionList" runat="server" Text="Show both open and close transactions " OnCheckedChanged="rdoShowAll_CheckedChanged" AutoPostBack="True" />
                         <asp:RadioButton ID="rdoShowActiveOnly" GroupName="FilterTransactionList" runat="server" Text="Show open transactions only " AutoPostBack="True" OnCheckedChanged="rdoShowActiveOnly_CheckedChanged" Checked="True" />
                         <asp:RadioButton ID="rdoShowInactiveOnly" GroupName="FilterTransactionList" runat="server" Text="Show close transactions only " AutoPostBack="True" OnCheckedChanged="rdoShowInactiveOnly_CheckedChanged"/>
 					</td>
 				</tr>
 				<tr>
-					<td colSpan="4" height="5"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+					<td colSpan="4" height="5"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 				</tr>
 			</table>
-			<asp:datalist id="lstItem" runat="server" Width="100%" ShowFooter="False" CellPadding="0" OnItemDataBound="lstItem_ItemDataBound" OnItemCommand="lstItem_ItemCommand">
+			<asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0" OnItemDataBound="lstItem_ItemDataBound" OnItemCommand="lstItem_ItemCommand">
 				<HeaderTemplate>
 					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						<colgroup>
@@ -112,44 +112,24 @@
 							<col width="1">
 						</colgroup>
 						<TR>
-							<TH class="ms-vh2" style="padding-bottom: 4px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px" align="center"></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px"></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByTransactionNo" runat="server">&nbsp;&nbsp;Transaction No.</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByStockType" runat="server">Stock Type</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByStockDirection" runat="server">Stock Direction</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByStockDate" runat="server">Stock Date</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByRemarks" runat="server">Remarks</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByTransactionNo" runat="server">Transaction No.</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByStockType" runat="server">Stock Type</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByStockDirection" runat="server">Stock Direction</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByStockDate" runat="server">Stock Date</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByRemarks" runat="server">Remarks</asp:hyperlink></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 							</TH>
 						</TR>
-					</table>
 				</HeaderTemplate>
 				<ItemTemplate>
-					<TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
-						<colgroup>
-							<col width="10">
-							<col width="10">
-							<col width="10">
-							<col width="10">
-							<col width="10">
-							<col width="16%">
-							<col width="16%">
-							<col width="20%">
-							<col width="18%">
-							<col width="30%">
-							<col width="1">
-						</colgroup>
-						<TR>
+						<tr onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 							<TD class="ms-vb-user">
-								<input type="checkbox" id="chkList" runat="server" NAME="chkList">
+								<input type="checkbox" id="chkList" runat="server" name="chkList" />
 							</TD>
 							<TD class="ms-vb2">
 							    <asp:imagebutton id="imgItemDelete" CommandName="imgItemDelete" accessKey="D" tabIndex="1" height="16" width="16" border="0" tooltip="Delete this transaction" ImageUrl="../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
@@ -184,12 +164,14 @@
 									<asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show" Visible="false"></asp:Image></A>
 							</TD>
 						</TR>
-					</table>
 				</ItemTemplate>
+                <FooterTemplate>
+                    </table>
+                </FooterTemplate>
 			</asp:datalist></TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>

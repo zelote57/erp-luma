@@ -84,7 +84,7 @@
 					<th class="ms-vh2">
 						<IMG height="5" alt="" src="../../../_layouts/images/blank.gif" width="1"></th></tr>
 				<tr>
-					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall">
+					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" />
 					</td>
 					<td class="ms-vb2" style="BORDER-TOP: 0px"><label for="idSelectAll"><B>Select All</B></label></td>
 					<td class="ms-vb2" style="BORDER-TOP: 0px" colSpan="2"><IMG height="1" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
@@ -133,7 +133,7 @@
 						</COLGROUP>
 						<TR>
 							<TD class="ms-vb-user">
-								<INPUT id="chkList" type="checkbox" name="chkList" runat="server">
+								<input id="chkList" type="checkbox" name="chkList" runat="server" />
 							</TD>
 							<TD class="ms-vb2">
 								<asp:ImageButton id="imgEditNow" runat="server" ImageUrl="../../../_layouts/images/edit.gif" ToolTip="Edit this product package" CommandName="imgEditNowClick" CausesValidation=false></asp:ImageButton></TD>

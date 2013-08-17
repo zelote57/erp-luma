@@ -4,28 +4,13 @@
 <script language="JavaScript" src="../../_Scripts/ComputeMargin.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/blank.gif"></td>
+		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/blank.gif" /></td>
 	</tr>
 	<tr>
         <td class="ms-sectionline" colSpan="3" height="1">
-	        <%--<table class="ms-toolbar" id="threetidGrpsTBC" cellSpacing="0" cellPadding="2" border="0" width="100%">
-		        <TR>
-			        <td class="ms-toolbar">
-				        <table cellSpacing="0" cellPadding="1" border="0">
-					        <tr>
-					            
-					            <td class="ms-toolbar" id="align02" noWrap align="right" width="99%"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
-					            </td>
-					        </tr>
-				        </table>
-			        </td>
-			        <td class="ms-toolbar" id="Td1" noWrap align="right" width="99%"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
-					</td>
-		        </TR>
-	        </TABLE>--%>
             <asp:Label ID="lblReferrer" runat="server" Visible="False"></asp:Label></td>
     </tr>
     <TR>
@@ -180,10 +165,10 @@
         </td>
     </TR>
 	<tr>
-		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/blank.gif"></td>
+		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/blank.gif" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<TR>
 		<td class="ms-sectionline" colSpan="3" height="1">

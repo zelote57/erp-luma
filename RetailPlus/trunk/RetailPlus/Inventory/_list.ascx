@@ -57,95 +57,40 @@
 	<tr>
 		<td><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
 		<TD>
-			<%--<table cellSpacing="0" cellPadding="0" width="100%" border="0">
-				<colgroup>
-					<col width="1">
-					<col width="25%">
-					<col width="25%">
-					<col width="50%">
-				</colgroup>
-				<tr>
-					<th class="ms-vh2">
-						<IMG height="10" alt="" src="../_layouts/images/blank.gif" width="1"></th>
-					<th class="ms-vh2">
-						<IMG height="5" alt="" src="../_layouts/images/blank.gif" width="1"></th>
-					<th class="ms-vh2">
-						<IMG height="5" alt="" src="../_layouts/images/blank.gif" width="1"></th>
-					<th class="ms-vh2">
-						<IMG height="5" alt="" src="../_layouts/images/blank.gif" width="1"></th></tr>
-				<tr>
-					<td colSpan="4" height="5"><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
-				</tr>
-			</table>--%>
-			<asp:datalist id="lstItem" runat="server" Width="100%" ShowFooter="False" CellPadding="0" AlternatingItemStyle-CssClass="ms-alternating" OnItemDataBound="lstItem_ItemDataBound" OnItemCommand="lstItem_ItemCommand">
+			<asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0" AlternatingItemStyle-CssClass="ms-alternating" OnItemDataBound="lstItem_ItemDataBound" OnItemCommand="lstItem_ItemCommand">
 				<HeaderTemplate>
 					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						<colgroup>
-							<col width="2%">
-							<col width="10%">
-							<col width="24%">
-							<col width="17%">
-							<col width="14%">
+							<col width="10">
+							<col width="12%">
+							<col width="26%">
+							<col width="15%">
+							<col width="15%">
 							<col width="14%">
 							<col width="15%">
 							<col width="1%">
 						</colgroup>
 						<TR>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall">&nbsp;&nbsp;</TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByBarcode" runat="server">Barcode</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByProductCode" runat="server">Product Code</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								&nbsp;&nbsp;
-								<asp:hyperlink id="SortByGroupName" runat="server">Group / Sub-group</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByUnit" runat="server">Total Quantity</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="Hyperlink1" runat="server">Min. Threshold</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="Hyperlink2" runat="server">Max. Threshold</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-							</TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByBarcode" runat="server">Barcode</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByProductCode" runat="server">Product Code</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByGroupName" runat="server">Group / Sub-group</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; text-align:right"><asp:hyperlink id="SortByUnit" runat="server">Total Quantity</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; text-align:right"><asp:hyperlink id="SortByMinThreshold" runat="server">Min. Threshold</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; text-align:right"><asp:hyperlink id="SortByMaxThreshold" runat="server">Max. Threshold</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 						</TR>
-					</table>
 				</HeaderTemplate>
 				<ItemTemplate>
-					<TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
-						<COLGROUP>
-							<col width="2%">
-							<col width="2%">
-							<col width="10%">
-							<col width="24%">
-							<col width="18%">
-							<col width="15%">
-							<col width="14%">
-							<col width="15%">
-							<col width="1%">
-						</COLGROUP>
-						<TR>
-							<TD class="ms-vb-user">
-								<INPUT id="chkList" type="checkbox" name="chkList" runat="server"></TD>
-							<TD class="ms-vb2">
-								<asp:ImageButton id="imgVariationsMatrix" runat="server" ImageUrl="../_layouts/images/tabpub.gif" alt="Show Product Variations Matrix" CommandName="imgVariationsMatrixClick" Visible="false"></asp:ImageButton></TD>
-							<TD class="ms-vb-user">
-								&nbsp;&nbsp;
-								<asp:HyperLink id="lnkBarcode" Runat="server"></asp:HyperLink></TD>
-							<TD class="ms-vb-user">
-								<asp:HyperLink id="lnkProductCode" Runat="server"></asp:HyperLink>
-							<TD class="ms-vb2">
-								<asp:Label id="lblGroup" Runat="server"></asp:Label></TD>
-							<TD class="ms-vb2">
-								<asp:Label id="lblQuantity" Runat="server"></asp:Label></TD>
-							<TD class="ms-vb-user">
-								<asp:Label ID="lblMinThreshold" Runat="server"></asp:Label>
-							</TD>
-							<TD class="ms-vb-user">
-								<asp:Label ID="lblMaxThreshold" Runat="server"></asp:Label>
-							</TD>
-							<TD class="ms-vb2">
-							</TD>
+						<tr onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
+							<TD class="ms-vb-user"><input id="chkList" type="checkbox" name="chkList" runat="server" /></TD>
+							<TD class="ms-vb-user"><asp:HyperLink id="lnkBarcode" Runat="server" Target="_blank"></asp:HyperLink></TD>
+							<TD class="ms-vb-user"><asp:HyperLink id="lnkProductCode" Runat="server" Target="_blank"></asp:HyperLink>
+							<TD class="ms-vb2"><asp:Label id="lblGroup" Runat="server"></asp:Label></TD>
+							<TD class="ms-vb2" style="text-align:right"><asp:Label id="lblQuantity" Runat="server"></asp:Label></TD>
+							<TD class="ms-vb-user" style="text-align:right"><asp:Label ID="lblMinThreshold" Runat="server"></asp:Label></TD>
+							<TD class="ms-vb-user" style="text-align:right"><asp:Label ID="lblMaxThreshold" Runat="server"></asp:Label></TD>
+							<TD class="ms-vb2"></TD>
 						</TR>
 						<%--<tr class="ms-vb2">
 						    <td colspan=2></td>
@@ -188,8 +133,10 @@
 			                    </asp:datalist>
 						    </td>
 						</tr>--%>
-					</TABLE>
 				</ItemTemplate>
+                <FooterTemplate>
+                    </table>
+                </FooterTemplate>
 			</asp:datalist>
 		</TD>
 		<td><IMG height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>

@@ -201,7 +201,7 @@
 				        <ItemTemplate>
 						        <tr onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 							        <td class="ms-vb-user">
-								        <input type="checkbox" id="chkList" runat="server" NAME="chkList">
+								        <input type="checkbox" id="chkList" runat="server" name="chkList" />
 							        </td>
 							        <td class="ms-vb2">
 							            <asp:imagebutton id="imgItemDelete" CommandName="imgItemDelete" accessKey="D" tabIndex="1" height="16" width="16" border="0" tooltip="Cancel this transfer order" ImageUrl="../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>

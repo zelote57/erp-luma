@@ -89,7 +89,7 @@
 						<IMG height="5" alt="" src="../../../_layouts/images/blank.gif" width="1"></th>
 				</tr>
 				<tr>
-					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall">
+					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" />
 					</td>
 					<td class="ms-vb2" style="BORDER-TOP: 0px"><label for="idSelectAll"><B>Select All</B></label></td>
 					<td class="ms-vb2" style="BORDER-TOP: 0px" colSpan="2"><IMG height="1" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
@@ -125,7 +125,7 @@
 						</colgroup>
 						<TR>
 							<TD class="ms-vb-user">
-								<input type="checkbox" id="chkList" runat="server" NAME="chkList">
+								<input type="checkbox" id="chkList" runat="server" name="chkList" />
 							</TD>
 							<TD class="ms-vb-user">
 								<asp:Label ID="lblVariationType" Runat="server"></asp:Label>

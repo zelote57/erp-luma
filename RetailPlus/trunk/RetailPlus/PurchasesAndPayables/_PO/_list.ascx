@@ -4,10 +4,10 @@
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<TR>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<TABLE class="ms-toolbar" style="MARGIN-LEFT: 0px" cellSpacing="0" cellPadding="2" border="0" width="100%">
 				<TR>
@@ -71,7 +71,7 @@
 				</TR>
 			</TABLE>
 		</TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</TR>
 	<TR>
 		<TD></TD>
@@ -91,7 +91,7 @@
 		<TD><asp:CompareValidator id="CompareValidator4" CssClass="ms-error" runat="server" ErrorMessage="'Posting End Date' must be a valid date." ForeColor=" " Operator="DataTypeCheck" Type="Date" Display="Dynamic" ControlToValidate="txtPostingEndDate"></asp:CompareValidator></TD>
 	</TR>
 	<TR>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td class="ms-authoringcontrols">
 		    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellSpacing="0" cellPadding="0" border="0" width="100%">
 				<tr>
@@ -163,12 +163,12 @@
 		</TD>
 	</TR>
 	<tr>
-	    <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+	    <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td class="ms-sectionline" height="2" style="MARGIN-BOTTOM: 5px"><img alt="" src="../../_layouts/images/empty.gif"></td>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD style="PADDING-TOP:	10px">
             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                 <ContentTemplate>
@@ -190,7 +190,7 @@
 						        </colgroup>
 						        <TR>
 							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall"></TH>
+								        <input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></TH>
 								    <TH class="ms-vh2" style="padding-bottom: 4px">
 								        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TH>
 								    <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
@@ -229,7 +229,7 @@
 						        </colgroup>
 						        <TR>
 							        <TD class="ms-vb-user">
-								        <input type="checkbox" id="chkList" runat="server" NAME="chkList">
+								        <input type="checkbox" id="chkList" runat="server" name="chkList" />
 							        </TD>
 							        <TD class="ms-vb2">
 							            <asp:imagebutton id="imgItemDelete" CommandName="imgItemDelete" accessKey="D" tabIndex="1" height="16" width="16" border="0" tooltip="Cancel this Purchase Order" ImageUrl="../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
@@ -301,9 +301,9 @@
                 </Triggers>
             </asp:UpdatePanel>
 			</TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3" style="PADDING-BOTTOM: 10px"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3" style="PADDING-BOTTOM: 10px"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>

@@ -213,27 +213,36 @@ namespace AceSoft.RetailPlus.Inventory
         }
         protected void imgProductHistory_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            string stParam = "?task=" + Common.Encrypt("producthistory", Session.SessionID) +
-                        "&productcode=" + Common.Encrypt(cboProductCode.SelectedItem.Text, Session.SessionID);
-            Response.Redirect(Constants.ROOT_DIRECTORY + "/Reports/Default.aspx" + stParam);
+            string stParam = "?task=" + Common.Encrypt("producthistory", Session.SessionID) + "&reptype=" + Common.Encrypt("pdf", Session.SessionID) + "&productcode=" + Common.Encrypt(cboProductCode.SelectedItem.Text, Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Reports/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPanelSearchProduct, this.updPanelSearchProduct.GetType(), "openwindow", javaScript, true);
+
         }
         protected void imgProductPriceHistory_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            string stParam = "?task=" + Common.Encrypt("pricehistory", Session.SessionID) +
-                                "&productcode=" + Common.Encrypt(cboProductCode.SelectedItem.Text, Session.SessionID);
-            Response.Redirect(Constants.ROOT_DIRECTORY + "/Reports/Default.aspx" + stParam);
+            string stParam = "?task=" + Common.Encrypt("pricehistory", Session.SessionID) + "&reptype=" + Common.Encrypt("pdf", Session.SessionID) +"&productcode=" + Common.Encrypt(cboProductCode.SelectedItem.Text, Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Reports/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPanelSearchProduct, this.updPanelSearchProduct.GetType(), "openwindow", javaScript, true);
         }
         protected void imgChangePrice_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            string stParam = "?task=" + Common.Encrypt("changeprice", Session.SessionID) +
-                                "&productcode=" + Common.Encrypt(cboProductCode.SelectedItem.Text, Session.SessionID);
-            Response.Redirect(Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam);
+            string stParam = "?task=" + Common.Encrypt("changeprice", Session.SessionID) + "&productcode=" + Common.Encrypt(cboProductCode.SelectedItem.Text, Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPanelSearchProduct, this.updPanelSearchProduct.GetType(), "openwindow", javaScript, true);
         }
         protected void imgEditNow_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            string stParam = "?task=" + Common.Encrypt("edit", Session.SessionID) +
-                                "&id=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
-            Response.Redirect(Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam);
+            string stParam = "?task=" + Common.Encrypt("edit", Session.SessionID) + "&id=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPanelSearchProduct, this.updPanelSearchProduct.GetType(), "openwindow", javaScript, true);
         }
 
 		#endregion

@@ -27,8 +27,12 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                 else
                     lblReportType.Text = "TransferInReport";
 
-				LoadOptions();		
-				GenerateHTML();
+				LoadOptions();
+                if (Request.QueryString["target"] != null)
+                    GeneratePDF();
+                else
+                    GenerateHTML();
+				
                 Session["ReportDocument"] = null;
             }
         }

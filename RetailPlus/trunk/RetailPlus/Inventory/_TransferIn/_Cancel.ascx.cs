@@ -170,7 +170,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
 
             lblSupplierCode.Text = clsDetails.SupplierCode.ToString();
             string stParam = "?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(clsDetails.SupplierID.ToString(), Session.SessionID);
-            lblSupplierCode.NavigateUrl = "../_Vendor/Default.aspx" + stParam;
+            lblSupplierCode.NavigateUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_Vendor/Default.aspx" + stParam;
 
             lblSupplierContact.Text = clsDetails.SupplierContact;
             lblSupplierTelephoneNo.Text = clsDetails.SupplierTelephoneNo;
@@ -216,8 +216,11 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
 
         private void PrintTransferIn()
         {
-            string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("transferin", Session.SessionID) + "&transferinid=" + Common.Encrypt(lblTransferInID.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("transferinreport", Session.SessionID) + "&transferinid=" + Common.Encrypt(lblTransferInID.Text, Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/_TransferIn/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
 
         private void CancelTransferIn()

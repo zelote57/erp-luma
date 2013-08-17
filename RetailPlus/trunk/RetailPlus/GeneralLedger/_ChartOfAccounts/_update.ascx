@@ -58,7 +58,7 @@
 				</tr>
 				<tr>
 					<td colspan="3" class="ms-sectionline" height="1">
-						<A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif"></td>
+						<A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<TR>
 					<td style="PADDING-BOTTOM: 20px" vAlign="top">
@@ -88,7 +88,7 @@
 				</TR>
 				<tr>
 					<td colspan="3" class="ms-sectionline" height="1">
-						<A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif"></td>
+						<A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td valign="top" style="PADDING-BOTTOM: 20px">
@@ -137,7 +137,7 @@
 				</tr>
 				<tr>
 					<td colspan="3" class="ms-sectionline" height="1">
-						<A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif"></td>
+						<A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td valign="top" style="PADDING-BOTTOM: 20px">
@@ -190,7 +190,7 @@
 		</TD>
 	</tr>
 	<tr>
-		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif"></td>
+		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 	</tr>
 	<tr>
 		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>

@@ -47,7 +47,7 @@
 						<asp:ValidationSummary id="ValidationSummary1" runat="server" CssClass="ms-error" ForeColor=" "></asp:ValidationSummary></TD>
 				</TR>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td style="PADDING-BOTTOM: 5px;" vAlign="top" colspan=3>
@@ -189,7 +189,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="2"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colSpan="3" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 			</table>
 		</TD>

@@ -76,7 +76,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><A name="InputFormSection1"></A><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colSpan="3" height="1"><A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td style="PADDING-BOTTOM: 20px" vAlign="top">
@@ -123,7 +123,7 @@
 		</TD>
 	</tr>
 	<tr>
-		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif"></td>
+		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 	</tr>
 	<tr>
 		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>

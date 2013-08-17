@@ -4800,7 +4800,7 @@ delimiter ;
 	
 	Desc: This will get the all product package list
 
-	CALL procProductInventorySelect(0, 0,'D10 W 500ML/EM','D10 W 500ML/EM',0,2,0,0,null,null);
+	CALL procProductInventorySelect(0, 0,0,'PYTOGEN 10MG/ML AMP','PYTOGEN 10MG/ML AMP',0,0,0,2,0,1,0,null,null);
 	
 **************************************************************/
 delimiter GO
@@ -4810,6 +4810,7 @@ GO
 create procedure procProductInventorySelect(
 			 IN BranchID bigint,
 			 IN ProductID bigint,
+			 IN MatrixID bigint,
 			 IN BarCode varchar(30),
 			 IN ProductCode varchar(30),
 			 IN ProductGroupID bigint,
@@ -4818,6 +4819,7 @@ create procedure procProductInventorySelect(
 			 IN ShowActiveAndInactive INT(1),
 			 IN isQuantityGreaterThanZERO TINYINT(1),
 			 IN lngLimit int,
+			 IN isSummary int,
 			 IN SortField varchar(60),
 			 IN SortOrder varchar(4))
 BEGIN
@@ -4897,6 +4899,8 @@ BEGIN
 							,IFNULL(mtrx.MatrixID,0) MatrixID
 							,CONCAT(prd.ProductDesc, '':'' , IFNULL(mtrx.Description,'''')) AS VariationDesc
 							,IFNULL(mtrx.Description,'''') AS MatrixDescription
+							,IFNULL(brnch.BranchID,0) AS BranchID
+							,IFNULL(brnch.BranchCode,''All'') AS BranchCode
 						FROM tblProducts prd 
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
@@ -4907,8 +4911,9 @@ BEGIN
 														AND pkg.Quantity = 1 
 						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
 						LEFT OUTER JOIN (
-							SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, MatrixID, IsLock
+							SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock, ',IF(isSummary=1,'0','BranchID'),' AS BranchID FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, MatrixID, IsLock ',IF(isSummary=1,'',',BranchID'),'
 						) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
+						LEFT OUTER JOIN tblBranch brnch ON brnch.BranchID = INV.BranchID 
 						WHERE prd.deleted = 0 AND IFNULL(mtrx.deleted, 0) = 0 ');
 	
 	IF ProductID <> 0 THEN
@@ -4928,6 +4933,10 @@ BEGIN
 		SET @SQL = CONCAT(@SQL, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'') ');
 	ELSEIF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') = '' THEN
 		SET @SQL = CONCAT(@SQL, 'AND prd.ProductCode LIKE ''%',ProductCode,'%'' ');
+	END IF;
+
+	IF isSummary = 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND IFNULL(mtrx.MatrixID,0) = ',MatrixID,' ');
 	END IF;
 
 	IF ProductGroupID <> 0 THEN
@@ -5031,7 +5040,6 @@ BEGIN
 							,IFNULL(inv.ActualQuantity,0) ActualQuantity
 							,IF(ISNULL(inv.Quantity),0, fnProductQuantityConvert(prd.ProductID, inv.Quantity, prd.BaseUnitID))  ConvertedQuantity
 							,IFNULL(inv.IsLock,0) IsLock
-
 						FROM tblProducts prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
@@ -5041,7 +5049,7 @@ BEGIN
 														AND pkg.Quantity = 1
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
 						LEFT OUTER JOIN (
-							SELECT ProductID, SUM(Quantity) Quantity, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, IsLock
+							SELECT ProductID, SUM(Quantity) Quantity, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, IsLock 
 						) inv ON inv.ProductID = prd.ProductID 
 						WHERE prd.deleted = 0 ');
 
@@ -5126,7 +5134,7 @@ BEGIN
 														AND pkg.Quantity = 1
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
 						LEFT OUTER JOIN (
-							SELECT ProductID, SUM(Quantity) Quantity, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID
+							SELECT ProductID, SUM(Quantity) Quantity, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID  
 						) inv ON inv.ProductID = prd.ProductID 
 						WHERE prd.deleted = 0 ');
 
@@ -5276,7 +5284,7 @@ BEGIN
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
 						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON prd.productID = mtrx.ProductID AND pkg.MatrixID =  mtrx.MatrixID
 						LEFT OUTER JOIN (
-							SELECT ProductID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, IsLock
+							SELECT ProductID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE ',IF(BranchID=0,'1=1',Concat('BranchID=',BranchID)),' GROUP BY ProductID, IsLock 
 						) inv ON inv.ProductID = prd.ProductID 
 						WHERE prd.deleted = 0 ');
 

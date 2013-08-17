@@ -1,7 +1,7 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.MasterFiles._Product.__EasyInsertVariation" Codebehind="_easyinsertvariation.ascx.cs" %>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif"></td>
+		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 	</tr>
 	<tr>
 		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
@@ -59,7 +59,7 @@
 				</tr>
 				<tr>
 					<td colspan="3" class="ms-sectionline" height="1">
-						<A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif"></td>
+						<A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td valign="top" style="PADDING-BOTTOM: 20px">
@@ -96,6 +96,6 @@
 		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif"></td>
+		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 	</tr>
 </table>

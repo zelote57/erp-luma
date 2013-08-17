@@ -646,15 +646,14 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 
             lblTransferOutID.Text = clsDetails.TransferOutID.ToString();
             lnkTransferOutNo.Text = clsDetails.TransferOutNo;
-            lnkTransferOutNo.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&poid=" + Common.Encrypt(clsDetails.TransferOutID.ToString(), Session.SessionID);
-
+            
             lblTransferOutDate.Text = clsDetails.TransferOutDate.ToString("yyyy-MM-dd HH:mm:ss");
             lblRequiredDeliveryDate.Text = clsDetails.RequiredDeliveryDate.ToString("yyyy-MM-dd");
             //lblRID.Text = clsDetails.RID.ToString();
             lblSupplierID.Text = clsDetails.SupplierID.ToString();
 
             lblSupplierCode.Text = clsDetails.SupplierCode.ToString();
-            lblSupplierCode.NavigateUrl = "../_Vendor/Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(clsDetails.SupplierID.ToString(), Session.SessionID);
+            lblSupplierCode.NavigateUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_Vendor/Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(clsDetails.SupplierID.ToString(), Session.SessionID);
 
             lblSupplierContact.Text = clsDetails.SupplierContact;
             lblSupplierTelephoneNo.Text = clsDetails.SupplierTelephoneNo;

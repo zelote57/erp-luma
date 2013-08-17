@@ -11,12 +11,16 @@
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
-						<table cellspacing="0" cellpadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" nowrap><asp:imagebutton id="imgPrint" title="Print this TransferOut Order" accessKey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this TransferOut Order" ImageUrl="../../_layouts/images/edit.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgPrint_Click"></asp:imagebutton></td>
-								<td nowrap><asp:linkbutton id="cmdPrint" title="Print this TransferOut Order" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrint_Click">Print</asp:linkbutton></td>
-							</tr>
-						</table>
+						<asp:UpdatePanel ID="updPrint" runat="server">
+                            <ContentTemplate>
+						        <table cellspacing="0" cellpadding="1" border="0">
+							        <tr>
+								        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgPrint" title="Print this TransferOut Order" accessKey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this TransferOut Order" ImageUrl="../../_layouts/images/edit.gif" runat="server" CssClass="ms-toolbar" OnClick="imgPrint_Click"></asp:imagebutton></td>
+								        <td nowrap><asp:linkbutton id="cmdPrint" title="Print this TransferOut Order" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" onclick="cmdPrint_Click">Print</asp:linkbutton></td>
+							        </tr>
+						        </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
 					</td>
 					<td class="ms-separator"><asp:label id="Label12" runat="server">|</asp:label></td>
 					<td class="ms-toolbar">
@@ -79,7 +83,7 @@
 							<tr style="PADDING-BOTTOM: 5px">
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblSupplierID" runat="server" CssClass="ms-error" Visible="False"></asp:label>
-									<asp:HyperLink id="lblSupplierCode" runat="server">lblSupplierCode</asp:HyperLink></td>
+									<asp:HyperLink id="lblSupplierCode" runat="server" Target="_blank">lblSupplierCode</asp:HyperLink></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblSupplierContact" runat="server" CssClass="ms-error"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>

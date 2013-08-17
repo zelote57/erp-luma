@@ -174,8 +174,8 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 			lblSupplierID.Text = clsDetails.SupplierID.ToString();
 
 			lblSupplierCode.Text = clsDetails.SupplierCode.ToString();
-			string stParam = "?task=" + Common.Encrypt("details",Session.SessionID) + "&id=" + Common.Encrypt(clsDetails.SupplierID.ToString(),Session.SessionID);	
-			lblSupplierCode.NavigateUrl = "../_Vendor/Default.aspx" + stParam;
+			string stParam = "?task=" + Common.Encrypt("details",Session.SessionID) + "&id=" + Common.Encrypt(clsDetails.SupplierID.ToString(),Session.SessionID);
+            lblSupplierCode.NavigateUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_Vendor/Default.aspx" + stParam;
 
 			lblSupplierContact.Text = clsDetails.SupplierContact;
 			lblSupplierTelephoneNo.Text = clsDetails.SupplierTelephoneNo;

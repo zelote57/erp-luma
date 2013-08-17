@@ -203,10 +203,10 @@
 		                            <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                                         <ContentTemplate>
 						                    <asp:dropdownlist id="cboProductCode" runat="server" CssClass="ms-long" width="70%" AutoPostBack="True" onselectedindexchanged="cboProductCode_SelectedIndexChanged"></asp:dropdownlist><asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Product code' must not be left blank." Display="Dynamic" ControlToValidate="cboProductCode"></asp:requiredfieldvalidator>
-						                    <asp:ImageButton id="imgProductHistory" runat="server" Visible=false ImageUrl="../../_layouts/images/prodhist.gif" ToolTip="Show product inventory history report" CausesValidation=false Style="cursor: hand" OnClick="imgProductHistory_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgProductPriceHistory" runat="server" Visible=false ImageUrl="../../_layouts/images/pricehist.gif" ToolTip="Show product price history report" CausesValidation=false Style="cursor: hand" OnClick="imgProductPriceHistory_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgChangePrice" runat="server" Visible=false ImageUrl="../../_layouts/images/chprice.gif" ToolTip="Change price" CausesValidation=false Style="cursor: hand" OnClick="imgChangePrice_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgEditNow" runat="server" Visible=false ImageUrl="../../_layouts/images/edit.gif" ToolTip="Edit this product" CausesValidation=false Style="cursor: hand" OnClick="imgEditNow_Click" ></asp:ImageButton>
+						                    <asp:ImageButton id="imgProductHistory" runat="server" visible="false" ImageUrl="../../_layouts/images/prodhist.gif" ToolTip="Show product inventory history report" CausesValidation=false Style="cursor: hand" OnClick="imgProductHistory_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgProductPriceHistory" runat="server" visible="false" ImageUrl="../../_layouts/images/pricehist.gif" ToolTip="Show product price history report" CausesValidation=false Style="cursor: hand" OnClick="imgProductPriceHistory_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgChangePrice" runat="server" visible="false" ImageUrl="../../_layouts/images/chprice.gif" ToolTip="Change price" CausesValidation=false Style="cursor: hand" OnClick="imgChangePrice_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgEditNow" runat="server" visible="false" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Edit this product" CausesValidation=false Style="cursor: hand" OnClick="imgEditNow_Click" ></asp:ImageButton>
 						                </ContentTemplate>
 				                        <Triggers> 
 				                            <asp:AsyncPostBackTrigger ControlID="cboProductCode" EventName="SelectedIndexChanged" />
@@ -264,13 +264,13 @@
                                         <ContentTemplate>
 	                                        <asp:textbox id="txtProductCode" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
 						                    <asp:imagebutton id="cmdProductCode" ToolTip="Execute search" style="CURSOR: hand" accessKey="P" ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" CausesValidation="False" OnClick="cmdProductCode_Click"></asp:imagebutton>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <asp:ImageButton ID="imgProductQuickAdd" runat="server" BorderStyle="Groove" CausesValidation="false"
                                                 CssClass="ms-toolbar" ImageUrl="../../_layouts/images/quickadd.gif" OnClick="imgProductQuickAdd_Click"
                                                 Style="cursor: hand" ToolTip="Quickly add a new Product"/>
-                                            <asp:HyperLink id="lnkProductDetails" runat="server" Visible=false ToolTip="View product details" Target="_blank">[view details]</asp:HyperLink>
+                                            <asp:HyperLink id="lnkProductDetails" runat="server" visible="false" ToolTip="View product details" Target="_blank">[view details]</asp:HyperLink>
                                             <asp:HyperLink id="lnkAddProduct" runat="server" ToolTip="Add new product" Target="_blank">[add new]</asp:HyperLink>
-                                            <asp:Label id="lblPurchasePriceHistory" runat="server" Visible=false CssClass="ms-error"></asp:Label>
+                                            <asp:Label id="lblPurchasePriceHistory" runat="server" visible="false" CssClass="ms-error"></asp:Label>
                                         </ContentTemplate>
                                         <Triggers> 
                                             <asp:AsyncPostBackTrigger ControlID="cmdProductCode" EventName="Click" />
@@ -284,7 +284,7 @@
                                             <asp:textbox id="txtVariation" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" ondblclick="ontime(this)" ToolTip="Double Click to Select Date From Calendar"></asp:textbox>
 						                    <asp:imagebutton id="cmdVariationSearch" runat="server" ImageUrl="../../_layouts/images/SPSSearch2.gif" ToolTip="Execute search" style="CURSOR: hand" CssClass="ms-toolbar" BorderStyle="Groove" CausesValidation="False" OnClick="cmdVariationSearch_Click" Visible="false"></asp:imagebutton>
 						                    <asp:imagebutton id="imgVariationQuickAdd" runat="server" ImageUrl="../../_layouts/images/quickadd.gif" ToolTip="Quickly add the new Product Variation (Make sure you selected a product to add this.)" style="CURSOR: hand" CssClass="ms-toolbar" BorderStyle="Groove" CausesValidation=false OnClick="imgVariationQuickAdd_Click" Visible="false"></asp:imagebutton>
-						                    <asp:HyperLink id="lnkVariationAdd" runat="server" Visible=false ToolTip="Add new variation">[add new]</asp:HyperLink>
+						                    <asp:HyperLink id="lnkVariationAdd" runat="server" visible="false" ToolTip="Add new variation">[add new]</asp:HyperLink>
 		                                </ContentTemplate>
                                         <Triggers> 
                                             <asp:AsyncPostBackTrigger ControlID="cmdProductCode" EventName="Click" />
@@ -295,7 +295,7 @@
                                 <td class="ms-authoringcontrols" valign="top">
 						        <asp:UpdatePanel ID="UpdatePanel10" runat="server">
                                     <ContentTemplate>
-						                <asp:HyperLink id="lnkProductUnitMatrix" runat="server" Visible=false ToolTip="View Product Unit Matrix">[View Unit Matrix]</asp:HyperLink>
+						                <asp:HyperLink id="lnkProductUnitMatrix" runat="server" visible="false" ToolTip="View Product Unit Matrix">[View Unit Matrix]</asp:HyperLink>
 						            </ContentTemplate>
 				                    <Triggers> 
                                         <asp:AsyncPostBackTrigger ControlID="cmdProductCode" EventName="Click" />
@@ -343,7 +343,7 @@
 		                                            <td colspan=10 style="PADDING-BOTTOM: 5px; PADDING-TOP: 20px" ><label class="ms-error">Change the figures below to update the selling information.</label></td>
 		                                        </tr>
 		                                        <tr>
-                                                    <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2">Margin in Percent (%) <font color="red">*</font></td>
+                                                    <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2">Markup in Percent (%) <font color="red">*</font></td>
 				                                    <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2">Selling Price / Prev. Selling Price<font color="red">*</font></td>
 				                                    <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2">VAT<font color="red">*</font></td>
 				                                    <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2">EVAT<font color="red">*</font></td>
@@ -352,7 +352,7 @@
                                                 <tr>
                                                     <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                                     <td class="ms-authoringcontrols">
-                                                        <asp:textbox onkeypress="AllNum()" id="txtSellingQuantity" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Enabled=false Visible=false>1</asp:textbox>
+                                                        <asp:textbox onkeypress="AllNum()" id="txtSellingQuantity" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Enabled=false visible="false">1</asp:textbox>
 				                                        <asp:textbox onkeypress="AllNum()" id="txtMargin" onkeyup="ChangePriceComputeMarginPPPO(this)" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" BackColor="YellowGreen" Width="80%">0</asp:textbox>
 				                                        <asp:requiredfieldvalidator id="Requiredfieldvalidator14" runat="server" CssClass="ms-error" ErrorMessage="'Price' must not be left blank." Display="Dynamic" ControlToValidate="txtMargin"></asp:requiredfieldvalidator>
                                                     </td>
@@ -514,7 +514,7 @@
 						                <asp:ImageButton id="imgItemUpdate" runat="server" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Update Item" CommandName="imgItemUpdateClick" CausesValidation=false></asp:ImageButton>						                
 					                </td>
 					                <td class="ms-vb-user">
-					                    <asp:Label id="lblTransferOutItemReceivedStatus" CssClass="ms-vh2" runat="server" text="0" Visible=false></asp:Label>
+					                    <asp:Label id="lblTransferOutItemReceivedStatus" CssClass="ms-vh2" runat="server" text="0" visible="false"></asp:Label>
 						                <asp:ImageButton id="imgItemReceive" runat="server" ImageUrl="../../_layouts/images/post.gif" ToolTip="Update Item" CommandName="imgItemReceive" CausesValidation=false></asp:ImageButton>
 					                </td>
 					                <td class="ms-vb-user">

@@ -179,7 +179,7 @@
 						                            </colgroup>
 						                            <TR>
 							                            <TD class="ms-vb-user">
-								                            <input type="checkbox" id="chkList" runat="server" NAME="chkList" visible="false">
+								                            <input type="checkbox" id="chkList" runat="server" name="chkList" visible="false" />
 							                            </TD>
 							                            <TD class="ms-vb-user">
 								                            <asp:Label ID="lblTypeName" Runat="server"></asp:Label>

@@ -206,7 +206,7 @@
 						</colgroup>
 						<tr>
 							<td class="ms-vb-user">
-								<input type="checkbox" id="chkList" runat="server" NAME="chkList" visible="false">
+								<input type="checkbox" id="chkList" runat="server" name="chkList" visible="false" />
 							</td>
 							<td class="ms-vb-user">
 								<asp:HyperLink ID="lnkDescription" Runat="server"></asp:HyperLink>

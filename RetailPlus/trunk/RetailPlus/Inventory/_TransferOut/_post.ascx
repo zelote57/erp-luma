@@ -493,7 +493,7 @@
 					                <col width="10">
 				                </colgroup>
 				                <tr>
-					                <th class="ms-vh2" style="padding-bottom:4px; padding-top:4px;"><INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall"></th>
+					                <th class="ms-vh2" style="padding-bottom:4px; padding-top:4px;"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></th>
 					                <th class="ms-vh2" style="padding-bottom:4px; padding-top:4px;">&nbsp;&nbsp;&nbsp;&nbsp;</th>
 					                <th class="ms-vh2" style="padding-bottom:4px; padding-top:4px;">&nbsp;&nbsp;&nbsp;&nbsp;</th>
 					                <th class="ms-vh2" style="padding-bottom:4px; padding-top:4px;"><asp:hyperlink id="SortByDescription" runat="server">Description</asp:hyperlink></th>
@@ -508,7 +508,7 @@
 		                <ItemTemplate>
 				                <tr onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 					                <td class="ms-vb-user">
-						                <input type="checkbox" id="chkList" runat="server" NAME="chkList">
+						                <input type="checkbox" id="chkList" runat="server" name="chkList" />
 					                </td>
 					                <td class="ms-vb-user">
 						                <asp:ImageButton id="imgItemUpdate" runat="server" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Update Item" CommandName="imgItemUpdateClick" CausesValidation=false></asp:ImageButton>						                

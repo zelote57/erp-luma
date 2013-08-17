@@ -142,7 +142,7 @@
 						</COLGROUP>
 						<TR>
 							<TD class="ms-vb-user">
-								<INPUT id="chkList" type="checkbox" name="chkList" runat="server">
+								<input id="chkList" type="checkbox" name="chkList" runat="server" />
 							</TD>
 							<TD class="ms-vb2">
 							    <asp:imagebutton id="imgItemDelete" CommandName="imgItemDelete" accessKey="D" tabIndex="1" height="16" width="16" border="0" tooltip="Delete this user" ImageUrl="../../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>

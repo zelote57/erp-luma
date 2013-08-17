@@ -3,10 +3,10 @@
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<TR>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<TR>
@@ -32,10 +32,10 @@
 				</TR>
 			</TABLE>
 		</TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</TR>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<tr>
@@ -101,7 +101,7 @@
 		</TD>
 	</tr>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
             <asp:DataList ID="lstItem" runat="server" CellPadding="0" ShowFooter="False" Width="100%" OnItemDataBound="lstItem_ItemDataBound">
                 <HeaderTemplate>
@@ -258,13 +258,13 @@
                     </table>
                 </ItemTemplate>
             </asp:DataList></TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<tr>
@@ -340,7 +340,7 @@
 		</TD>
 	</tr>
 	<TR>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD id="AddUserTextTDID2">
 			<table class="ms-toolbar" id="onetidGrpsTC" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 			<table class="ms-toolbar" id="onetidGrpsTC" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
@@ -370,6 +370,6 @@
 				</TR>
 			</TABLE>
 		</TD>
-		<td><a name="cancelsection"></a><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><a name="cancelsection"></a><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</TR>
 </table>

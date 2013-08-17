@@ -4,10 +4,10 @@
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<TR>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<TR>
@@ -54,10 +54,10 @@
 				</TR>
 			</TABLE>
 		</TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</TR>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<colgroup>
@@ -77,13 +77,13 @@
 						<IMG height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></th>
 				</tr>
 				<tr>
-					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall">
+					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" />
 					</td>
 					<td class="ms-vb2" style="BORDER-TOP: 0px"><label for="idSelectAll"><B>Select All</B></label></td>
 					<td class="ms-vb2" style="BORDER-TOP: 0px" colSpan="2"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 				</tr>
 				<tr>
-					<td colSpan="4" height="5"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+					<td colSpan="4" height="5"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 				</tr>
 			</table>
 			<asp:datalist id="lstAccountSummary" runat="server" CellPadding="0" ShowHeader="false" ShowFooter="False" Width="100%">
@@ -210,7 +210,7 @@
 							                                        <TD class="ms-vb-user">
 							                                        </TD>
 							                                        <TD class="ms-vb-user">
-							                                            <input type="checkbox" id="chkList" runat="server" NAME="chkList">
+							                                            <input type="checkbox" id="chkList" runat="server" name="chkList" />
 								                                        <asp:Label ID="lblAccountCode" Runat="server"></asp:Label>&nbsp;
 								                                        <asp:Label ID="lblAccountName" Runat="server"></asp:Label>
 							                                        </TD>
@@ -241,9 +241,9 @@
 					</table>
 				</ItemTemplate>
 			</asp:datalist></TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>

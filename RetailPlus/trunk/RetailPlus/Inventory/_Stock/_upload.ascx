@@ -1,10 +1,10 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Inventory._Stock.__Upload" Codebehind="_Upload.ascx.cs" %>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<TR>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<TR>
@@ -21,10 +21,10 @@
 				</TR>
 			</TABLE>
 			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label></TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</TR>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<tr>
@@ -57,10 +57,10 @@
 		</TD>
 	</tr>
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<TR>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD id="AddUserTextTDID2">
 			<TABLE class="ms-toolbar" id="onetidGrpsTB1" style="MARGIN-LEFT: 3px" cellSpacing="0" cellPadding="2" border="0">
 				<TR>
@@ -77,9 +77,9 @@
 					</td>
 				</TR>
 			</TABLE>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</TR>
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>

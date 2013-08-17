@@ -4,10 +4,10 @@
 <script language="JavaScript" src="../../_Scripts/calendar.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<tr>
@@ -157,7 +157,7 @@
 		</TD>
 	</tr>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 		    <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                 <ContentTemplate>
@@ -228,10 +228,10 @@
                 </Triggers>
             </asp:UpdatePanel>
 		</TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 		    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
                 <ContentTemplate>
@@ -302,13 +302,13 @@
                 </Triggers>
             </asp:UpdatePanel>
 		</TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<tr>

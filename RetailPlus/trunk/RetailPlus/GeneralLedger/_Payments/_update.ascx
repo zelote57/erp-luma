@@ -5,10 +5,10 @@
 <script language="JavaScript" src="../../_Scripts/calendar.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<tr>
@@ -142,7 +142,7 @@
 												        </colgroup>
 												        <TR>
 													        <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
-														        <INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall">
+														        <input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" />
 													        </TH>
 													        <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
 														        <asp:hyperlink id="SortByPONo" runat="server">PO No</asp:hyperlink></TH>
@@ -178,7 +178,7 @@
 												        </colgroup>
 												        <TR>
 													        <TD class="ms-vb-user">
-														        <input type="checkbox" id="chkList" runat="server" NAME="chkList">
+														        <input type="checkbox" id="chkList" runat="server" name="chkList" />
 													        </TD>
 													        <TD class="ms-vb-user">
 														        <asp:HyperLink ID="lnkPONo" Runat="server"></asp:HyperLink>&nbsp;
@@ -399,7 +399,7 @@
 		</TD>
 	</tr>
     <tr>
-        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
         <TD>
             <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                 <ContentTemplate>
@@ -470,10 +470,10 @@
                 </Triggers>
             </asp:UpdatePanel>
         </TD>
-        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
     </tr>
     <tr>
-        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
         <TD>
             <asp:UpdatePanel ID="UpdatePanel5" runat="server">
                 <ContentTemplate>
@@ -544,13 +544,13 @@
                 </Triggers>
             </asp:UpdatePanel>
 	    </TD>
-        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
     </tr>
     <tr>
-        <td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+        <td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
     </tr>
     <tr>
-        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
         <TD>
 	        <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 		        <tr>
@@ -601,7 +601,7 @@
         </TD>
     </tr>
 	<tr>
-	    <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+	    <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td class="ms-sectionline" height="1">
 			<TABLE class="ms-toolbar" id="threetidGrpsTB" style="MARGIN-LEFT: 3px" cellSpacing="0" cellPadding="2" border="0">
 				<TR>

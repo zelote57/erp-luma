@@ -98,7 +98,7 @@
 						<IMG height="5" src="../../_layouts/images/blank.gif" width="1"></th></tr>
 				<tr>
 					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px" colSpan="4">
-					    <INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall"><label for="idSelectAll"><B>Select All</B></label>
+					    <input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /><label for="idSelectAll"><B>Select All</B></label>
 					    <asp:RadioButton ID="rdoShowAll" GroupName="FilterProductList" runat="server" Text="Show both active and inactive products " OnCheckedChanged="rdoShowAll_CheckedChanged" AutoPostBack="True" />
                         <asp:RadioButton ID="rdoShowActiveOnly" GroupName="FilterProductList" runat="server" Text="Show active products only " AutoPostBack="True" OnCheckedChanged="rdoShowActiveOnly_CheckedChanged" Checked="True" />
                         <asp:RadioButton ID="rdoShowInactiveOnly" GroupName="FilterProductList" runat="server" Text="Show inactive products only " AutoPostBack="True" OnCheckedChanged="rdoShowInactiveOnly_CheckedChanged"/>
@@ -173,7 +173,7 @@
 						        </COLGROUP>
 						        <TR>
 							        <TD class="ms-vb-user">
-								        <INPUT id="chkList" type="checkbox" name="chkList" runat="server"></TD>
+								        <input id="chkList" type="checkbox" name="chkList" runat="server" /></TD>
 							        <TD class="ms-vb2">
 							            <asp:ImageButton id="imgVariations" runat="server" ImageUrl="../../_layouts/images/variations.gif" ToolTip="Show Variation Types" CommandName="imgVariationsClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></TD>
 							        <TD class="ms-vb2">
@@ -285,10 +285,10 @@
                                                         <td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+                                                        <td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
                                                     </tr>
                                                     <TR>
-                                                        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+                                                        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
                                                         <TD>
                                                             <table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 	                                                            <TR>
@@ -315,10 +315,10 @@
 	                                                            </TR>
                                                             </TABLE>
                                                         </TD>
-                                                        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+                                                        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
                                                     </TR>
                                                     <tr>
-                                                        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+                                                        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
                                                         <TD>
                                                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
 	                                                            <tr>
@@ -361,7 +361,7 @@
                                                         </TD>
                                                     </tr>
                                                     <tr>
-                                                        <td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+                                                        <td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif"></td>

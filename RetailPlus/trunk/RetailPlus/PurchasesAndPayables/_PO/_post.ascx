@@ -8,10 +8,10 @@
 <script language="JavaScript" src="../../_Scripts/dd_tooltip.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
     <tr>
-        <td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+        <td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
     </tr>
     <tr>
-        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
         <TD>
 	        <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 		        <tr>
@@ -522,7 +522,7 @@
         </TD>
     </tr>
     <tr>
-        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
         <TD>
             <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                 <ContentTemplate>
@@ -543,7 +543,7 @@
 				                </colgroup>
 				                <TR>
 					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
-						                <INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall">
+						                <input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" />
 					                </TH>
 					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
 						                &nbsp;&nbsp;&nbsp;&nbsp;
@@ -584,7 +584,7 @@
 				                </colgroup>
 				                <TR>
 					                <TD class="ms-vb-user">
-						                <input type="checkbox" id="chkList" runat="server" NAME="chkList">
+						                <input type="checkbox" id="chkList" runat="server" name="chkList" />
 					                </TD>
 					                <TD class="ms-vb-user">
 						                <asp:ImageButton id="imgItemUpdate" runat="server" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Update Item" CommandName="imgItemUpdateClick" CausesValidation=false></asp:ImageButton>						                
@@ -701,14 +701,14 @@
                 </Triggers> 
             </asp:UpdatePanel>
 	    </TD>
-        <td><a name="itemsection"></a><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><a name="itemsection"></a><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
     </tr>
     
     <tr>
-        <td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+        <td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
     </tr>
     <tr>
-        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
         <TD>
             <table cellSpacing="0" cellPadding="0" width="100%" border="0">
                 <tr>
@@ -865,7 +865,7 @@
         </TD>
     </tr>
     <TR>
-        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
         <TD>
 	        <table class="ms-toolbar" id="onetidGrpsTC" cellSpacing="0" cellPadding="2" border="0" width="100%">
 		        <TR>
@@ -906,7 +906,7 @@
 		        </TR>
 	        </TABLE>
         </TD>
-        <td><a name="postsection"></a><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><a name="postsection"></a><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
     </TR>
 </table>
    

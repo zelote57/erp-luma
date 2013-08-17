@@ -151,9 +151,11 @@ namespace AceSoft.RetailPlus.Inventory._Stock
             Session.Remove("tranno");
             Session.Add("tranno", lblTransactionNo.Text);
 
-            Common Common = new Common();
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("stocktransaction", Session.SessionID) + "&tranno=" + Common.Encrypt(lblTransactionNo.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/_Stock/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
 
 		#endregion

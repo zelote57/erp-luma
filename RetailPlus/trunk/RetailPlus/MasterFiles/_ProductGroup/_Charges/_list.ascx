@@ -104,7 +104,7 @@
 						</colgroup>
 						<TR>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall">&nbsp;&nbsp;&nbsp;&nbsp;</TH>
+								<input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" />&nbsp;&nbsp;&nbsp;&nbsp;</TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByChargeType" runat="server">Group Charge Type</asp:hyperlink></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
@@ -127,7 +127,7 @@
 						</colgroup>
 						<TR>
 							<TD class="ms-vb-user">
-								<input type="checkbox" id="chkList" runat="server" NAME="chkList">
+								<input type="checkbox" id="chkList" runat="server" name="chkList" />
 							</TD>
 							<TD class="ms-vb-user">
 								<asp:Label ID="lblChargeType" Runat="server"></asp:Label>

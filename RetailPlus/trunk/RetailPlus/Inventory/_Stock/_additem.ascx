@@ -4,10 +4,10 @@
     <ContentTemplate>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<TR>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<TR>
@@ -33,10 +33,10 @@
 				</TR>
 			</TABLE>
 			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label><asp:label id="lblStockID" runat="server" Visible="False"></asp:label></TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</TR>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<tr>
@@ -273,7 +273,7 @@
 		</TD>
 	</tr>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<colgroup>
@@ -300,12 +300,12 @@
 					<td class="ms-vb2" style="BORDER-TOP: 0px" colSpan="2"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 				</tr>
 				<tr>
-					<td colSpan="4" height="5"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+					<td colSpan="4" height="5"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 				</tr>
 			</table>
             <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                 <ContentTemplate>
-			        <asp:datalist id="lstItem" runat="server" CellPadding="0" ShowFooter="False" Width="100%" OnItemDataBound="lstItem_ItemDataBound">
+			        <asp:datalist id="lstItem" runat="server" CellPadding="0" Width="100%" OnItemDataBound="lstItem_ItemDataBound">
 				        <HeaderTemplate>
 					        <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						        <colgroup>
@@ -319,56 +319,36 @@
 							        <col width="1%">
 						        </colgroup>
 						        <TR>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        &nbsp;</TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <asp:hyperlink id="SortByProduct" runat="server">Product</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <asp:hyperlink id="SortByUnit" runat="server">Unit</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px" align="right">
-								        <asp:hyperlink id="SortByQty" runat="server">Quantity</asp:hyperlink></TH>
-                                    <TH class="ms-vh2" style="padding-bottom: 4px" align="right">
-								        <asp:hyperlink id="SortByPurchasePrice" runat="server">Purchase Price</asp:hyperlink></TH>
-                                    <TH class="ms-vh2" style="padding-bottom: 4px" align="right">
-								        <asp:hyperlink id="SortByAmount" runat="server">Amount</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <asp:hyperlink id="SortByRemarks" runat="server">Remarks</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-							        </TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByProduct" runat="server">Product</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByUnit" runat="server">Unit</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px; text-align:right" ><asp:hyperlink id="SortByQty" runat="server">Quantity</asp:hyperlink></TH>
+                                    <TH class="ms-vh2" style="padding-bottom: 4px; text-align:right"><asp:hyperlink id="SortByPurchasePrice" runat="server">Purchase Price</asp:hyperlink></TH>
+                                    <TH class="ms-vh2" style="padding-bottom: 4px; text-align:right"><asp:hyperlink id="SortByAmount" runat="server">Amount</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByRemarks" runat="server">Remarks</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 						        </TR>
-					        </table>
 				        </HeaderTemplate>
 				        <ItemTemplate>
-					        <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
-						        <colgroup>
-							        <col width="10">
-							        <col width="30%">
-							        <col width="15%">
-							        <col width="10%">
-                                    <col width="10%">
-                                    <col width="10%">
-							        <col width="24%">
-							        <col width="1%">
-						        </colgroup>
-						        <TR>
+						        <tr onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 							        <TD class="ms-vb-user">
-								        <input type="checkbox" id="chkList" runat="server" NAME="chkList" visible="false">
+								        <input type="checkbox" id="chkList" runat="server" name="chkList" visible="false" />
 							        </TD>
 							        <TD class="ms-vb-user">
-								        <asp:HyperLink ID="lnkProduct" Runat="server"></asp:HyperLink>
-                                        <asp:HyperLink ID="lnkVariation" Runat="server"></asp:HyperLink>
+								        <asp:HyperLink ID="lnkProduct" Runat="server" Target="_blank"></asp:HyperLink>
+                                        <asp:HyperLink ID="lnkVariation" Runat="server" Target="_blank"></asp:HyperLink>
 							        </TD>
 							        <TD class="ms-vb-user">
 								        <asp:Label ID="lblProductUnit" Runat="server"></asp:Label>
 								        <asp:Label ID="lblStockType" Runat="server" Visible="False"></asp:Label>
 							        </TD>
-							        <TD class="ms-vb-user">
+							        <TD class="ms-vb-user" style="text-align:right;">
 								        <asp:Label ID="lblQuantity" Runat="server"></asp:Label>
 							        </TD>
-                                    <TD class="ms-vb-user" align="right">
+                                    <TD class="ms-vb-user" style="text-align:right;">
 								        <asp:Label ID="lblPurchasePrice" Runat="server"></asp:Label>
 							        </TD>
-                                    <TD class="ms-vb-user" align="right">
+                                    <TD class="ms-vb-user" style="text-align:right;">
 								        <asp:Label ID="lblAmount" Runat="server"></asp:Label>
 							        </TD>
 							        <TD class="ms-vb-user">
@@ -379,8 +359,10 @@
 									        <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show" Visible="false"></asp:Image></A>
 							        </TD>
 						        </TR>
-					        </table>
 				        </ItemTemplate>
+                        <FooterTemplate>
+                            </table>
+                        </FooterTemplate>
 			        </asp:datalist>
                 </ContentTemplate>
                 <Triggers>
@@ -389,13 +371,13 @@
                 </Triggers>
             </asp:UpdatePanel>
         </TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-        <td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+        <td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
     </tr>
     <tr>
-        <td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+        <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
         <TD>
             <table cellSpacing="0" cellPadding="0" width="100%" border="0">
                 <tr>
@@ -422,7 +404,7 @@
         </TD>
     </tr>
     <tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>
     </ContentTemplate>

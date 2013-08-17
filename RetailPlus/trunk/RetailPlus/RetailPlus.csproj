@@ -3378,7 +3378,10 @@
     <Content Include="MasterFiles\_Product\_changetax.ascx" />
     <Content Include="Test.aspx" />
     <Content Include="_Home.ascx" />
+    <Content Include="_layouts\images\headcornerp.gif" />
     <Content Include="_layouts\images\loading.gif" />
+    <Content Include="_layouts\images\rtbullet.gif" />
+    <Content Include="_layouts\images\vnavicon.gif" />
     <Content Include="_Processing.ascx" />
     <Content Include="Default.aspx" />
     <Content Include="GeneralLedger\default.aspx" />
@@ -3776,6 +3779,7 @@
     <Content Include="_Scripts\ComputeMarginPO.js" />
     <Content Include="_Scripts\ComputeMarginTransferIn.js" />
     <Content Include="_Scripts\ConfirmDelete.js" />
+    <Content Include="_Scripts\ComputeMarginTransferOut.js" />
     <Content Include="_Scripts\Rewards.js" />
     <Content Include="_Scripts\dd_tooltip.js" />
     <Content Include="_Scripts\disablerightclick.js" />

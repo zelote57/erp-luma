@@ -4,10 +4,10 @@
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
 <table cellSpacing="0" cellPadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<TR>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<TR>
@@ -52,10 +52,10 @@
 				</TR>
 			</TABLE>
 		</TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</TR>
 	<tr>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<colgroup>
@@ -80,7 +80,7 @@
 					<td class="ms-vb2" style="BORDER-TOP: 0px" colSpan="2"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 				</tr>
 				<tr>
-					<td colSpan="4" height="5"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+					<td colSpan="4" height="5"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 				</tr>
 			</table>
 			<asp:datalist id="lstItem" runat="server" Width="100%" ShowFooter="False" CellPadding="0">
@@ -96,7 +96,7 @@
 						</colgroup>
 						<TR>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
-								<INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall"></TH>
+								<input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByParticulars" runat="server">Particulars</asp:hyperlink></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
@@ -122,7 +122,7 @@
 						</colgroup>
 						<TR>
 							<TD class="ms-vb-user">
-								<input type="checkbox" id="chkList" runat="server" NAME="chkList">
+								<input type="checkbox" id="chkList" runat="server" name="chkList" />
 							</TD>
 							<TD class="ms-vb-user">
 								<asp:HyperLink ID="lnkParticulars" Runat="server"></asp:HyperLink>
@@ -144,9 +144,9 @@
 					</table>
 				</ItemTemplate>
 			</asp:datalist></TD>
-		<td><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>

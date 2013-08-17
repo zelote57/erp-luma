@@ -142,7 +142,7 @@
 	</TR>
 	<tr>
 	    <td></td>
-		<td class="ms-sectionline" height="2" ><img alt="" src="../../_layouts/images/empty.gif"></td>
+		<td class="ms-sectionline" height="2" ><img alt="" src="../../_layouts/images/empty.gif" /></td>
 		<td></td>
 	</tr>
 	<tr>

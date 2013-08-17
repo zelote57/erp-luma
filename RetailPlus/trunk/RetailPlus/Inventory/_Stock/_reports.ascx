@@ -67,7 +67,7 @@
 		<TD>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif"></td>
+					<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td colspan="3" height="2" align=center>

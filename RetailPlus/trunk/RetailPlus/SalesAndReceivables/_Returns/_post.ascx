@@ -16,7 +16,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colspan="3" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<TR>
 					<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 5px" vAlign="top" colspan="3">
@@ -540,7 +540,7 @@
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<tr>
-					<td class="ms-sectionline" colspan="3" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<TR>
 					<td vAlign="top" colspan="3">
@@ -599,7 +599,7 @@
 			                        <tr>
 				                        <TD class="ms-formspacer"></TD>
 				                        <TD></TD>
-				                        <td class="ms-sectionline" colspan="2" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+				                        <td class="ms-sectionline" colspan="2" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 			                        </tr>
 			                        <tr style="PADDING-BOTTOM: 5px">
 				                        <TD class="ms-formspacer"></TD>

@@ -30,10 +30,10 @@ namespace AceSoft.RetailPlus.Data
 		#endregion
 
 
-        public System.Data.DataTable ListAsDataTable(int BranchID = 0, long ProductID = 0, string BarCode = "", string ProductCode = "", Int64 ProductGroupID = 0, Int64 ProductSubGroupID = 0, Int64 SupplierID = 0, ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive,
-                bool isQuantityGreaterThanZERO = false, Int32 Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending)
+        public System.Data.DataTable ListAsDataTable(int BranchID = 0, long ProductID = 0, long MatrixID =0, string BarCode = "", string ProductCode = "", Int64 ProductGroupID = 0, Int64 ProductSubGroupID = 0, Int64 SupplierID = 0, ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive,
+                bool isQuantityGreaterThanZERO = false, Int32 Limit = 0, Int32 isSummary = 1, string SortField = "", SortOption SortOrder = SortOption.Ascending)
         {
-            string SQL = "CALL procProductInventorySelect(@BranchID, @ProductID, @BarCode, @ProductCode, @ProductGroupID, @ProductSubGroupID, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, @lngLimit, @SortField, @SortOrder)";
+            string SQL = "CALL procProductInventorySelect(@BranchID, @ProductID, @MatrixID, @BarCode, @ProductCode, @ProductGroupID, @ProductSubGroupID, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, @lngLimit, @isSummary, @SortField, @SortOrder)";
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
@@ -41,6 +41,7 @@ namespace AceSoft.RetailPlus.Data
 
             cmd.Parameters.AddWithValue("@BranchID", BranchID);
             cmd.Parameters.AddWithValue("@ProductID", ProductID);
+            cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
             cmd.Parameters.AddWithValue("@BarCode", BarCode);
             cmd.Parameters.AddWithValue("@ProductCode", ProductCode);
             cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
@@ -49,6 +50,7 @@ namespace AceSoft.RetailPlus.Data
             cmd.Parameters.AddWithValue("@ShowActiveAndInactive", clsProductListFilterType.ToString("d"));
             cmd.Parameters.AddWithValue("@isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
             cmd.Parameters.AddWithValue("@lngLimit", Limit);
+            cmd.Parameters.AddWithValue("@isSummary", isSummary);
             cmd.Parameters.AddWithValue("@SortField", SortField);
             switch (SortOrder)
             {

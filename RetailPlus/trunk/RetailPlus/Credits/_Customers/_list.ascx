@@ -117,7 +117,7 @@
 	</TR>
 	<tr>
 	    <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<td class="ms-sectionline" height="2" style="MARGIN-BOTTOM: 5px"><img alt="" src="../../_layouts/images/empty.gif"></td>
+		<td class="ms-sectionline" height="2" style="MARGIN-BOTTOM: 5px"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>

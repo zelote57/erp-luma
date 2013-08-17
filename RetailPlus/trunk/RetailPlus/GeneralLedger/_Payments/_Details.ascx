@@ -46,7 +46,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<TR>
 					<td style="PADDING-BOTTOM: 10px" vAlign="top" colSpan="3">
@@ -222,7 +222,7 @@
 										</colgroup>
 										<tr>
 										    <td colspan=5></td>
-										    <td class="ms-sectionline" colSpan="3" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+										    <td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 										</tr>
 										<TR>
 											<TD class="ms-vb-user">
@@ -245,7 +245,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="ms-sectionline" colSpan="6" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+								<td class="ms-sectionline" colSpan="6" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 							</tr>
 						</table>
 					</td>
@@ -377,7 +377,7 @@
 		<TD>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<TR>
 					<td vAlign="top" colSpan="3">
@@ -397,7 +397,7 @@
 							<tr>
 								<TD class="ms-formspacer"></TD>
 								<TD width="70%"></TD>
-								<td class="ms-sectionline" colspan="2" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+								<td class="ms-sectionline" colspan="2" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 							</tr>
 							<tr style="PADDING-BOTTOM: 10px">
 								<TD class="ms-formspacer"></TD>

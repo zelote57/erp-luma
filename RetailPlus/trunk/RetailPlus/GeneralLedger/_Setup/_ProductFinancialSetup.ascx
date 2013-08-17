@@ -15,7 +15,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<TR>
 					<td style="PADDING-BOTTOM: 10px" vAlign="top" colSpan="3">
@@ -29,7 +29,7 @@
 					</td>
 				</TR>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td style="PADDING-BOTTOM: 20px; HEIGHT: 67px" vAlign="top">
@@ -96,7 +96,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td style="PADDING-BOTTOM: 20px; HEIGHT: 67px" vAlign="top">
@@ -172,7 +172,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td style="PADDING-BOTTOM: 20px; HEIGHT: 67px" vAlign="top">
@@ -229,7 +229,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><A name="InputFormSection1"></A><IMG alt="" src="../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colSpan="3" height="1"><A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td class="ms-sectionline" colSpan="3" height="1">

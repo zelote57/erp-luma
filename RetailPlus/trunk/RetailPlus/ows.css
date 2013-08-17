@@ -221,6 +221,12 @@ table.ms-form td {
 	text-align: right;
 	
 }
+.ms-medium
+{
+	font-size: 8pt;
+	font-family: Verdana, sans-serif;
+	width: 250px;
+}
 .ms-long {
     font-size: 8pt; 
     font-family: Verdana, sans-serif; 

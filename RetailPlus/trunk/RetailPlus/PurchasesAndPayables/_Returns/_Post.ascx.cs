@@ -573,10 +573,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 
 			cboProductCode_SelectedIndexChanged(null, null);
 
-			txtQuantity.Text = "1";
-			txtDiscount.Text = "0";
-			txtRemarks.Text = "";
-			ComputeItemAmount();
+            txtQuantity.Text = "1";
+            txtPrice.Text = "0.00";
+            txtDiscount.Text = "0";
+            txtSellingQuantity.Text = "0";
+            txtMargin.Text = "10";
+            txtSellingPrice.Text = "0";
+            txtOldSellingPrice.Text = "0";
+
+            txtRemarks.Text = "";
+            ComputeItemAmount();
             lblPODebitMemoItemID.Text = "0";
 
 			txtPostDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
@@ -1041,7 +1047,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
         {
             Common Common = new Common();
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("poretun", Session.SessionID) + "&retid=" + Common.Encrypt(lblDebitMemoID.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_Returns/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true); ;
         }
         private void UpdateHeader()
         {

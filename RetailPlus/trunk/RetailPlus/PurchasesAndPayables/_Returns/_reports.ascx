@@ -57,6 +57,7 @@
 			</TABLE>
 			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label>
 			<asp:label id="lblReturnID" runat="server" Visible="False"></asp:label>
+		    <asp:Label ID="lblReportType" runat="server" Visible="False"></asp:Label>
 		</TD>
 	</TR>
 	<tr>

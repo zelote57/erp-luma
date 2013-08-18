@@ -22,8 +22,17 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
             if (!IsPostBack && Visible)
 			{
                 lblReferrer.Text = Request.UrlReferrer.ToString();
-				LoadOptions();		
-				GenerateHTML();
+                if (!string.IsNullOrEmpty(Request.QueryString["reporttype"]))
+                    lblReportType.Text = Common.Decrypt(Request.QueryString["reporttype"].ToString(), Session.SessionID);
+                else
+                    lblReportType.Text = "PurchaseReturn";
+
+                LoadOptions();
+                if (!string.IsNullOrEmpty(Request.QueryString["target"]))
+                    GeneratePDF();
+                else
+                    GenerateHTML();
+
                 Session["ReportDocument"] = null;
             }
         }
@@ -45,8 +54,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 
         private void Export(ExportFormatType pvtExportFormatType)
         {
+            string strReportType = lblReportType.Text;
+
             ReportDocument rpt = new ReportDocument();
-            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/PurchaseReturn.rpt"));
+            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/" + strReportType + ".rpt"));
 
             SetDataSource(rpt);
 

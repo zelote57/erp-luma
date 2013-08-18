@@ -206,9 +206,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 
 		private void PrintPOReturn()
 		{
-			Common Common = new Common();
-			string stParam = "?task=" + Common.Encrypt("reports",Session.SessionID) + "&target=" + Common.Encrypt("poretun",Session.SessionID) + "&retid=" + Common.Encrypt(lblDebitMemoID.Text,Session.SessionID);	
-			Response.Redirect("Default.aspx" + stParam);
+			string stParam = "?task=" + Common.Encrypt("reports",Session.SessionID) + "&target=" + Common.Encrypt("poretun",Session.SessionID) + "&retid=" + Common.Encrypt(lblDebitMemoID.Text,Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_Returns/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
 		}
 
 		#endregion

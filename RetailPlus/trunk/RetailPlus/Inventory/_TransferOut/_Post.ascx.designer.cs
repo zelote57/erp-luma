@@ -1156,6 +1156,15 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut {
         protected global::System.Web.UI.WebControls.Label Label16;
         
         /// <summary>
+        /// updIssueGRN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updIssueGRN;
+        
+        /// <summary>
         /// imgGRN control.
         /// </summary>
         /// <remarks>

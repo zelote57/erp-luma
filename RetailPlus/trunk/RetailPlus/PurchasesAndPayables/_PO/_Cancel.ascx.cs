@@ -164,6 +164,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
             lblPOID.Text = clsDetails.POID.ToString();
             lblPONo.Text = clsDetails.PONo;
+            ///lblPONo.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&poid=" + Common.Encrypt(clsDetails.POID.ToString(), Session.SessionID);
+
             lblPODate.Text = clsDetails.PODate.ToString("yyyy-MM-dd HH:mm:ss");
             lblRequiredDeliveryDate.Text = clsDetails.RequiredDeliveryDate.ToString("yyyy-MM-dd");
             lblSupplierID.Text = clsDetails.SupplierID.ToString();
@@ -196,12 +198,33 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             txtPODiscountApplied.Text = clsDetails.DiscountApplied.ToString("###0.#0");
             cboPODiscountType.SelectedIndex = cboPODiscountType.Items.IndexOf(cboPODiscountType.Items.FindByValue(clsDetails.DiscountType.ToString("d")));
             lblPODiscount.Text = clsDetails.Discount.ToString("#,##0.#0");
+            lblTotalDiscount1.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount + clsDetails.Discount2 + clsDetails.Discount3).ToString("#,##0.#0");
+
+            txtPODiscount2Applied.Text = clsDetails.Discount2Applied.ToString("###0.#0");
+            cboPODiscount2Type.SelectedIndex = cboPODiscount2Type.Items.IndexOf(cboPODiscount2Type.Items.FindByValue(clsDetails.Discount2Type.ToString("d")));
+            lblPODiscount2.Text = clsDetails.Discount2.ToString("#,##0.#0");
+            lblTotalDiscount2.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount2 + clsDetails.Discount3).ToString("#,##0.#0");
+
+            txtPODiscount3Applied.Text = clsDetails.Discount3Applied.ToString("###0.#0");
+            cboPODiscount3Type.SelectedIndex = cboPODiscount3Type.Items.IndexOf(cboPODiscountType.Items.FindByValue(clsDetails.Discount3Type.ToString("d")));
+            lblPODiscount3.Text = clsDetails.Discount3.ToString("#,##0.#0");
+            lblTotalDiscount3.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount3).ToString("#,##0.#0");
+
             lblPOVatableAmount.Text = clsDetails.VatableAmount.ToString("#,##0.#0");
             txtPOFreight.Text = clsDetails.Freight.ToString("#,##0.#0");
             txtPODeposit.Text = clsDetails.Deposit.ToString("#,##0.#0");
-            lblPOSubTotal.Text = Convert.ToDecimal(clsDetails.SubTotal - clsDetails.VAT + clsDetails.Freight - clsDetails.Deposit).ToString("#,##0.#0");
             lblPOVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
-            lblPOTotal.Text = clsDetails.SubTotal.ToString("#,##0.#0");
+            chkIsVatInclusive.Checked = clsDetails.IsVatInclusive;
+            if (clsDetails.IsVatInclusive)
+            {
+                lblPOSubTotal.Text = Convert.ToDecimal(clsDetails.SubTotal - clsDetails.VAT).ToString("#,##0.#0");
+                lblPOTotal.Text = clsDetails.SubTotal.ToString("#,##0.#0");
+            }
+            else
+            {
+                lblPOSubTotal.Text = clsDetails.SubTotal.ToString("#,##0.#0");
+                lblPOTotal.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.VAT).ToString("#,##0.#0");
+            }
         }
 
 		private void LoadItems()
@@ -217,7 +240,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
         private void PrintPO()
         {
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("po", Session.SessionID) + "&poid=" + Common.Encrypt(lblPOID.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_PO/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
 
         private void CancelPO()

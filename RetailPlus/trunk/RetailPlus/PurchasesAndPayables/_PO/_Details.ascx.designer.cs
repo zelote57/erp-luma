@@ -13,6 +13,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO {
     public partial class @__Details {
         
         /// <summary>
+        /// updPrint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updPrint;
+        
+        /// <summary>
         /// imgPrint control.
         /// </summary>
         /// <remarks>
@@ -38,6 +47,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label15;
+        
+        /// <summary>
+        /// updPrintSellingPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updPrintSellingPrice;
         
         /// <summary>
         /// imgPrintSelling control.

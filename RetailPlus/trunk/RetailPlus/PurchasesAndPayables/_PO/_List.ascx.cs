@@ -42,7 +42,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 					cmdGRN.Attributes.Add("onClick", "return confirm_select();");
 					imgGRN.Attributes.Add("onClick", "return confirm_select();");
 
-                    
 				}
 		}
 

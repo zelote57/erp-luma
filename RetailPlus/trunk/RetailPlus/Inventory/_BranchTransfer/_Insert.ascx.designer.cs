@@ -202,6 +202,15 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer {
         protected global::System.Web.UI.WebControls.TextBox txtRequestedBy;
         
         /// <summary>
+        /// Requiredfieldvalidator3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator3;
+        
+        /// <summary>
         /// txtRemarks control.
         /// </summary>
         /// <remarks>
@@ -209,5 +218,14 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRemarks;
+        
+        /// <summary>
+        /// Requiredfieldvalidator5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator5;
     }
 }

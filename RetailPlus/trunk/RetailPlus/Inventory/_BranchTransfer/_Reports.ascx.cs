@@ -22,13 +22,17 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 			if (!IsPostBack && Visible)
 			{
 				lblReferrer.Text = Request.UrlReferrer.ToString();
-                if (Request.QueryString["reporttype"] != null)
+                if (!string.IsNullOrEmpty(Request.QueryString["reporttype"]))
                     lblReportType.Text = Common.Decrypt(Request.QueryString["reporttype"].ToString(), Session.SessionID);
                 else
                     lblReportType.Text = "BranchTransfer";
 
-				LoadOptions();		
-				GenerateHTML();
+				LoadOptions();
+                if (!string.IsNullOrEmpty(Request.QueryString["target"]))
+                    GeneratePDF();
+                else
+                    GenerateHTML();
+
                 Session["ReportDocument"] = null;
             }
         }

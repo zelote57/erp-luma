@@ -69,26 +69,6 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 		{
 			Response.Redirect(lblReferrer.Text);
 		}
-		protected void cboSupplier_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			Data.Contacts clsContact = new Data.Contacts();
-			Data.ContactDetails clsDetails = clsContact.Details(Convert.ToInt64(cboSupplier.SelectedItem.Value));
-			clsContact.CommitAndDispose();
-			
-			txtSupplierContact.Text = clsDetails.ContactName;
-			txtSupplierTelephoneNo.Text = clsDetails.TelephoneNo;
-			lblTerms.Text = clsDetails.Terms.ToString("##0");
-            lblModeOfterms.Text = clsDetails.ModeOfTerms.ToString("G");
-			txtSupplierAddress.Text = clsDetails.Address;
-		}
-		protected void cboBranch_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			Data.Branch clsBranch = new Data.Branch();
-			Data.BranchDetails clsDetails = clsBranch.Details(Convert.ToInt16(cboBranch.SelectedItem.Value));
-			clsBranch.CommitAndDispose();
-			
-			txtBranchAddress.Text = clsDetails.Address;
-		}
 
 		#endregion
 
@@ -96,94 +76,59 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 
 		private void LoadOptions()
 		{
-			DataClass clsDataClass = new DataClass();
+            Branch clsBranch = new Branch();
+            cboBranchFrom.DataTextField = "BranchCode";
+            cboBranchFrom.DataValueField = "BranchID";
+            cboBranchFrom.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
+            cboBranchFrom.DataBind();
 
-			Contacts clsContact = new Contacts();
-			cboSupplier.DataTextField = "ContactName";
-			cboSupplier.DataValueField = "ContactID";
-			cboSupplier.DataSource = clsDataClass.DataReaderToDataTable(clsContact.Suppliers(null, 0, "ContactName", SortOption.Ascending)).DefaultView;
-			cboSupplier.DataBind();
-			clsContact.CommitAndDispose();
-			cboSupplier.SelectedIndex = 0;
-			cboSupplier_SelectedIndexChanged(null, null);
+            cboBranchTo.DataTextField = "BranchCode";
+            cboBranchTo.DataValueField = "BranchID";
+            cboBranchTo.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
+            cboBranchTo.DataBind();
 
-			Branch clsBranch = new Branch();
-			cboBranch.DataTextField = "BranchCode";
-			cboBranch.DataValueField = "BranchID";
-			cboBranch.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
-			cboBranch.DataBind();
-			clsBranch.CommitAndDispose();
-            cboBranch.SelectedIndex = cboBranch.Items.IndexOf(cboBranch.Items.FindByValue(Constants.BRANCH_ID_MAIN.ToString()));
-			cboBranch_SelectedIndexChanged(null, null);
+            clsBranch.CommitAndDispose();
+
+            try { cboBranchFrom.SelectedIndex = 0; }
+            catch { }
+            try { cboBranchTo.SelectedIndex = cboBranchTo.Items.Count - 1; }
+            catch { }
 		}
 		private void LoadRecord()
 		{
-			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["poid"],Session.SessionID));
-			PO clsPO = new PO();
-			PODetails clsDetails = clsPO.Details(iID);
-			clsPO.CommitAndDispose();
+            Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["BranchTransferID"], Session.SessionID));
+            BranchTransfer clsBranchTransfer = new BranchTransfer();
+            BranchTransferDetails clsDetails = clsBranchTransfer.Details(iID);
+            clsBranchTransfer.CommitAndDispose();
 
-			lblPOID.Text = clsDetails.POID.ToString();
-			lblPONo.Text = clsDetails.PONo;
-			lblPODate.Text = clsDetails.PODate.ToString("yyyy-MM-dd HH:mm:ss");
+			lblBranchTransferID.Text = clsDetails.BranchTransferID.ToString();
+			lblBranchTransferNo.Text = clsDetails.BranchTransferNo;
+            lblBranchTransferDate.Text = clsDetails.BranchTransferDate.ToString("yyyy-MM-dd HH:mm:ss");
 			txtRequiredDeliveryDate.Text = clsDetails.RequiredDeliveryDate.ToString("yyyy-MM-dd");
-            txtRID.Text = clsDetails.RID.ToString();
-			cboSupplier.SelectedIndex = cboSupplier.Items.IndexOf(cboSupplier.Items.FindByValue(clsDetails.SupplierID.ToString()));
-			txtSupplierContact.Text = clsDetails.SupplierContact;
-			txtSupplierTelephoneNo.Text = clsDetails.SupplierTelephoneNo;
-			lblTerms.Text = clsDetails.SupplierTerms.ToString("##0");
-			switch (clsDetails.SupplierModeOfTerms)
-			{
-				case 0: 
-					lblModeOfterms.Text = "Days"; 
-					break;
-				case 1:
-					lblModeOfterms.Text = "Months"; 
-					break;
-				case 2:
-					lblModeOfterms.Text = "Years"; 
-					break;
-			}
-			txtSupplierAddress.Text = clsDetails.SupplierAddress;
-			cboBranch.SelectedIndex = cboBranch.Items.IndexOf(cboBranch.Items.FindByValue(clsDetails.BranchID.ToString()));
-			txtBranchAddress.Text = clsDetails.BranchAddress;
+            cboBranchFrom.SelectedIndex = cboBranchFrom.Items.IndexOf(cboBranchFrom.Items.FindByValue(clsDetails.BranchIDFrom.ToString()));
+            cboBranchTo.SelectedIndex = cboBranchTo.Items.IndexOf(cboBranchTo.Items.FindByValue(clsDetails.BranchIDTo.ToString()));
+            txtRequestedBy.Text = clsDetails.RequestedBy;
 			txtRemarks.Text = clsDetails.Remarks;
 		}
 		private void SaveRecord()
 		{
-			PODetails clsDetails = new PODetails();
+            BranchTransferDetails clsDetails = new BranchTransferDetails();
 
-			clsDetails.POID = Convert.ToInt64(lblPOID.Text);
-			clsDetails.PONo = lblPONo.Text;
-			clsDetails.PODate = Convert.ToDateTime(lblPODate.Text);
-			clsDetails.SupplierID = Convert.ToInt64(cboSupplier.SelectedItem.Value);
-			clsDetails.SupplierCode = cboSupplier.SelectedItem.Text;
-			clsDetails.SupplierContact = txtSupplierContact.Text;
-			clsDetails.SupplierAddress = txtSupplierAddress.Text;
-			clsDetails.SupplierTelephoneNo = txtSupplierTelephoneNo.Text;
-			switch (lblModeOfterms.Text)
-			{
-				case "Days":
-					clsDetails.SupplierModeOfTerms = 0;
-					break;
-				case "Months":
-					clsDetails.SupplierModeOfTerms = 1;
-					break;
-				case "Years":
-					clsDetails.SupplierModeOfTerms = 2;
-					break;
-			}
-			clsDetails.RequiredDeliveryDate = Convert.ToDateTime(txtRequiredDeliveryDate.Text);
-            clsDetails.RID = Convert.ToInt64(txtRID.Text);
-			clsDetails.BranchID = Convert.ToInt16(cboBranch.SelectedItem.Value);
-			clsDetails.PurchaserID = Convert.ToInt64(Session["UID"].ToString());
-            clsDetails.PurchaserName = Session["Name"].ToString();
-			clsDetails.Status = POStatus.Open;
-			clsDetails.Remarks = txtRemarks.Text;
+            clsDetails.BranchTransferID = long.Parse(lblBranchTransferID.Text);
+            clsDetails.BranchTransferNo = lblBranchTransferNo.Text;
+            clsDetails.BranchTransferDate = Convert.ToDateTime(lblBranchTransferDate.Text);
+            clsDetails.BranchIDFrom = Convert.ToInt16(cboBranchFrom.SelectedItem.Value);
+            clsDetails.BranchIDTo = Convert.ToInt16(cboBranchTo.SelectedItem.Value);
+            clsDetails.RequiredDeliveryDate = Convert.ToDateTime(txtRequiredDeliveryDate.Text);
+            clsDetails.TransferrerID = Convert.ToInt64(Session["UID"].ToString());
+            clsDetails.TransferrerName = Session["Name"].ToString();
+            clsDetails.RequestedBy = txtRequestedBy.Text;
+            clsDetails.Status = BranchTransferStatus.Open;
+            clsDetails.Remarks = txtRemarks.Text;
 
-			PO clsPO = new PO();
-			clsPO.Update(clsDetails);
-			clsPO.CommitAndDispose();
+            BranchTransfer clsBranchTransfer = new BranchTransfer();
+            clsBranchTransfer.Update(clsDetails);
+            clsBranchTransfer.CommitAndDispose();
 		}
 
 		#endregion

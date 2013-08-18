@@ -168,12 +168,12 @@
 											        </tr>
 										        </table>
 									        </td>
-									        <td class="ms-toolbar" id="align02" nowrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+									        <td class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 									        </td>
 								        </tr>
 							        </table>
 						        </td>
-						        <td class="ms-toolbar" nowrap align="right" width="1%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+						        <td class="ms-toolbar" nowrap="nowrap" align="right" width="1%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 						        </td>
 					        </tr>
 				        </table>
@@ -427,7 +427,7 @@
 			        <td class="ms-sectionline" colspan="3" height="1">
 				        <table class="ms-toolbar" id="twotidGrpsTB" cellspacing="0" cellpadding="2" border="0" width="100%">
 					        <tr>
-						        <td class="ms-toolbar" nowrap align="right" width="99%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+						        <td class="ms-toolbar" nowrap="nowrap" align="right" width="99%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 						        </td>
 						        <td class="ms-toolbar">
 							        <table cellspacing="0" cellpadding="1" border="0">
@@ -459,7 +459,7 @@
 											        </tr>
 										        </table>
 									        </td>
-									        <td class="ms-toolbar" id="align03" nowrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+									        <td class="ms-toolbar" id="align03" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 									        </td>
 								        </tr>
 							        </table>
@@ -477,7 +477,7 @@
         <td>
             <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                 <ContentTemplate>
-                    <asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0" OnItemCommand="lstItem_ItemCommand" OnItemDataBound="lstItem_ItemDataBound" AlternatingItemStyle-CssClass="ms-alternating" >
+                    <asp:datalist id="lstItem" runat="server" Width="100%" cellpadding="0" OnItemCommand="lstItem_ItemCommand" OnItemDataBound="lstItem_ItemDataBound" AlternatingItemStyle-CssClass="ms-alternating" >
                         <HeaderTemplate>
 			                <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 				                <colgroup>
@@ -540,12 +540,12 @@
 						                <asp:Label ID="lblAmount" Runat="server"></asp:Label>
 					                </td>
 					                <td class="ms-vb2">
-						                <A class="DropDown" id="anchorDown" href="" runat="server">
-							                <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show"></asp:Image></A>
+						                <a class="DropDown" id="anchorDown" href="" runat="server">
+							                <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show"></asp:Image></a>
 					                </td>
 				                </tr>
 				                <tr onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
-					                <td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+					                <td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 					                <td colspan="8" height="1">
 						                <div class="ACECollapsed" id="divExpCollAsst" runat="server" border="0">
 							                <asp:panel id="panItem" runat="server" Width="100%" Height="100%" CssClass="ms-authoringcontrols">
@@ -607,7 +607,7 @@
 								                </table>
 							                </asp:panel></div>
 					                </td>
-					                <td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+					                <td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 				                </tr>
 		                </ItemTemplate>
                         <FooterTemplate>
@@ -793,7 +793,7 @@
         <td id="AddUserTexttdID2">
 	        <table class="ms-toolbar" id="onetidGrpsTC" cellspacing="0" cellpadding="2" border="0" width="100%">
 		        <tr>
-			        <td class="ms-toolbar" id="align01" nowrap align="right" width="99%">
+			        <td class="ms-toolbar" id="align01" nowrap="nowrap" align="right" width="99%">
 			        </td>
 			        <td class="ms-toolbar" align="center">
 				        <table cellspacing="0" cellpadding="1" border="0">
@@ -825,7 +825,7 @@
 					        </tr>
 				        </table>
 			        </td>
-			        <td class="ms-toolbar" id="align052" nowrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+			        <td class="ms-toolbar" id="align052" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 			        </td>
 		        </tr>
 	        </table>

@@ -3780,6 +3780,7 @@
     <Content Include="_Scripts\ComputeMarginTransferIn.js" />
     <Content Include="_Scripts\ConfirmDelete.js" />
     <Content Include="_Scripts\ComputeMarginTransferOut.js" />
+    <Content Include="_Scripts\ComputeMarginBranchTransfer.js" />
     <Content Include="_Scripts\Rewards.js" />
     <Content Include="_Scripts\dd_tooltip.js" />
     <Content Include="_Scripts\disablerightclick.js" />

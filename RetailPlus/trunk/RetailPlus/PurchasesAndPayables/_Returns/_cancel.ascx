@@ -12,12 +12,16 @@
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<TR>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgPrint" title="Print this Purchase Return" accessKey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this Purchase Return" ImageUrl="../../_layouts/images/print.gif" runat="server" CssClass="ms-toolbar" OnClick="imgPrint_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdPrint" title="Print this Purchase Return" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" onclick="cmdPrint_Click">Print</asp:linkbutton></td>
-							</tr>
-						</table>
+                        <asp:UpdatePanel ID="updPrint" runat="server">
+                            <ContentTemplate>
+						        <table cellSpacing="0" cellPadding="1" border="0">
+							        <tr>
+								        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgPrint" title="Print this Purchase Return" accessKey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this Purchase Return" ImageUrl="../../_layouts/images/print.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgPrint_Click"></asp:imagebutton></td>
+								        <td noWrap><asp:linkbutton id="cmdPrint" title="Print this Purchase Return" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrint_Click">Print</asp:linkbutton></td>
+							        </tr>
+						        </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
 					</td>
 					<TD class="ms-separator"><asp:label id="Label12" runat="server">|</asp:label></TD>
 					<td class="ms-toolbar">
@@ -142,7 +146,7 @@
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<TD><asp:datalist id="lstItem" runat="server" Width="100%" ShowFooter="False" CellPadding="0">
+		<TD><asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0">
 				<HeaderTemplate>
 					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						<colgroup>
@@ -157,65 +161,43 @@
 							<col width="10">
 						</colgroup>
 						<TR>
-							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
-							</TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
-								<asp:hyperlink id="SortByDescription" runat="server">Description</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
-								<asp:hyperlink id="SortByMatrixDescription" runat="server">Matrix Desc.</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px" align="right">
-								<asp:hyperlink id="SortByQuantity" runat="server">Quantity</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
-								<asp:hyperlink id="SortByProductUnitCode" runat="server">Unit of Measure</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px" align="right">
-								<asp:hyperlink id="SortByUntCost" runat="server">Unit Cost</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px" align="right">
-								<asp:hyperlink id="SortByDiscount" runat="server">Discount</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px" align="right">
-								<asp:hyperlink id="SortByAmount" runat="server">Total Cost</asp:hyperlink></TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
-							</TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"><asp:hyperlink id="SortByDescription" runat="server">Description</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"><asp:hyperlink id="SortByMatrixDescription" runat="server">Matrix Desc.</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByQuantity" runat="server">Quantity</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"><asp:hyperlink id="SortByProductUnitCode" runat="server">Unit of Measure</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByUntCost" runat="server">Unit Cost</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByDiscount" runat="server">Discount</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByAmount" runat="server">Total Cost</asp:hyperlink></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"></TH>
 						</TR>
-					</table>
 				</HeaderTemplate>
 				<ItemTemplate>
-					<TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
-						<colgroup>
-							<col width="10">
-							<col width="20%">
-							<col width="20%">
-							<col width="12%">
-							<col width="12%">
-							<col width="12%">
-							<col width="12%">
-							<col width="12%">
-							<col width="10">
-						</colgroup>
-						<TR>
+						<TR onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 							<TD class="ms-vb-user">
 								<input type="checkbox" id="chkList" runat="server" name="chkList" visible="false" />
 							</TD>
 							<TD class="ms-vb-user">
-								<asp:HyperLink ID="lnkDescription" Runat="server"></asp:HyperLink>
+								<asp:HyperLink ID="lnkDescription" Runat="server" Target="_blank"></asp:HyperLink>
 							</TD>
 							<TD class="ms-vb-user">
-								<asp:HyperLink ID="lnkMatrixDescription" Runat="server"></asp:HyperLink>
+								<asp:HyperLink ID="lnkMatrixDescription" Runat="server" Target="_blank"></asp:HyperLink>
 							</TD>
-							<TD class="ms-vb-user" align="right">
+							<TD class="ms-vb-user" style="text-align: right">
 								<asp:Label ID="lblQuantity" Runat="server"></asp:Label>&nbsp;&nbsp;
 							</TD>
 							<TD class="ms-vb-user">
 								<asp:Label ID="lblProductUnitID" Runat="server" Visible="False"></asp:Label>
 								<asp:Label ID="lblProductUnitCode" Runat="server"></asp:Label>
 							</TD>
-							<TD class="ms-vb-user" align="right">
+							<TD class="ms-vb-user" style="text-align: right">
 								<asp:Label ID="lblUnitCost" Runat="server"></asp:Label>
 							</TD>
-							<TD class="ms-vb-user" align="right">
+							<TD class="ms-vb-user" style="text-align: right">
 								<asp:Label ID="lblDiscountApplied" Runat="server"></asp:Label>
 								<asp:Label ID="lblPercent" Runat="server" Visible="False">%</asp:Label>
 							</TD>
-							<TD class="ms-vb-user" align="right">
+							<TD class="ms-vb-user" style="text-align: right">
 								<asp:Label ID="lblAmount" Runat="server"></asp:Label>
 							</TD>
 							<TD class="ms-vb2">
@@ -288,8 +270,10 @@
 							</TD>
 							<TD class="ms-vh2" height="1"><IMG height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></TD>
 						</TR>
-					</table>
 				</ItemTemplate>
+                <FooterTemplate>
+                    </table>
+                </FooterTemplate>
 			</asp:datalist></TD>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
@@ -390,12 +374,16 @@
 					</td>
 					<TD class="ms-separator"><asp:label id="Label16" runat="server">|</asp:label></TD>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" noWrap style="width: 19px"><asp:imagebutton id="imgCancelPOReturn" title="Cancel This Purchase Order Return" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/cancel.gif" alt="Cancel this purchase order return" border="0" width="16" height="16" OnClick="imgCancelPOReturn_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdCancelPOReturn" title="Cancel this purchase order return" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdCancelPO_Click">Cancel PO Return</asp:linkbutton></td>
-							</tr>
-						</table>
+                        <asp:UpdatePanel ID="updCancel" runat="server">
+                            <ContentTemplate>
+						        <table cellSpacing="0" cellPadding="1" border="0">
+							        <tr>
+								        <td class="ms-toolbar" noWrap style="width: 19px"><asp:imagebutton id="imgCancelPOReturn" title="Cancel This Purchase Order Return" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/cancel.gif" alt="Cancel this purchase order return" border="0" width="16" height="16" OnClick="imgCancelPOReturn_Click"></asp:imagebutton></td>
+								        <td noWrap><asp:linkbutton id="cmdCancelPOReturn" title="Cancel this purchase order return" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdCancelPO_Click">Cancel PO Return</asp:linkbutton></td>
+							        </tr>
+						        </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
 					</td>
 					<td class="ms-toolbar" id="align052" noWrap align="right"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>

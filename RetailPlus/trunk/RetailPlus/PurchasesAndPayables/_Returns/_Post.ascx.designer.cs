@@ -184,6 +184,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns {
         protected global::System.Web.UI.WebControls.Label Label3;
         
         /// <summary>
+        /// updPrint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updPrint;
+        
+        /// <summary>
         /// imgPrint control.
         /// </summary>
         /// <remarks>
@@ -209,6 +218,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label18;
+        
+        /// <summary>
+        /// updPrintSellingPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updPrintSellingPrice;
         
         /// <summary>
         /// imgCancel control.
@@ -1100,6 +1118,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label16;
+        
+        /// <summary>
+        /// updIssueGRN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updIssueGRN;
         
         /// <summary>
         /// imgPost control.

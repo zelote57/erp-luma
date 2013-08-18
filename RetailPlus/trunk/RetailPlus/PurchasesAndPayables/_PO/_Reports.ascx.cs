@@ -47,17 +47,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
 		private void LoadOptions()
 		{
-            //Int64 iID = 0;
-            //try
-            //{
-            //    if (Request.QueryString["task"].ToString().ToLower() == "reports" && Request.QueryString["poid"].ToString() != null)
-            //    {
-            //        txtTransactionNo.Text = Request.QueryString["tranno"].ToString();
-            //        GenerateHTML();
-            //    }
-            //}
-            //catch { iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["poid"], Session.SessionID)); }
-		}
+
+        }
 
         #region Export
 

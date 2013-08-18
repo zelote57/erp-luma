@@ -341,12 +341,16 @@
 					</td>
 					<td class="ms-separator"><asp:label id="Label16" runat="server">|</asp:label></td>
 					<td class="ms-toolbar">
-						<table cellspacing="0" cellpadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancelBranchTransfer" title="Cancel This Branch Transfer" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/cancel.gif" alt="Cancel this branch transfer" border="0" width="16" height="16" OnClick="imgCancelBranchTransfer_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdCancelBranchTransfer" title="Cancel this branch transfer" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdCancelBranchTransfer_Click">Cancel BranchTransfer</asp:linkbutton></td>
-							</tr>
-						</table>
+                        <asp:UpdatePanel ID="updCancel" runat="server">
+                            <ContentTemplate>
+						        <table cellspacing="0" cellpadding="1" border="0">
+							        <tr>
+								        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancelBranchTransfer" title="Cancel This Branch Transfer" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/cancel.gif" alt="Cancel this branch transfer" border="0" width="16" height="16" OnClick="imgCancelBranchTransfer_Click"></asp:imagebutton></td>
+								        <td noWrap><asp:linkbutton id="cmdCancelBranchTransfer" title="Cancel this branch transfer" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdCancelBranchTransfer_Click">Cancel BranchTransfer</asp:linkbutton></td>
+							        </tr>
+						        </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
 					</td>
 					<td class="ms-toolbar" id="align052" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>

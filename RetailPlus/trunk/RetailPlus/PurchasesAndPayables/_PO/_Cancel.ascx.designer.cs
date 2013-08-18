@@ -13,6 +13,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO {
     public partial class @__Cancel {
         
         /// <summary>
+        /// updPrint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updPrint;
+        
+        /// <summary>
         /// imgPrint control.
         /// </summary>
         /// <remarks>
@@ -211,6 +220,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO {
         protected global::System.Web.UI.WebControls.DataList lstItem;
         
         /// <summary>
+        /// lblTotalDiscount1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalDiscount1;
+        
+        /// <summary>
         /// txtPODiscountApplied control.
         /// </summary>
         /// <remarks>
@@ -229,6 +247,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO {
         protected global::System.Web.UI.WebControls.DropDownList cboPODiscountType;
         
         /// <summary>
+        /// Requiredfieldvalidator6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator6;
+        
+        /// <summary>
         /// lblPODiscount control.
         /// </summary>
         /// <remarks>
@@ -236,6 +263,105 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPODiscount;
+        
+        /// <summary>
+        /// lblTotalDiscount2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalDiscount2;
+        
+        /// <summary>
+        /// txtPODiscount2Applied control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPODiscount2Applied;
+        
+        /// <summary>
+        /// cboPODiscount2Type control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboPODiscount2Type;
+        
+        /// <summary>
+        /// Requiredfieldvalidator16 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator16;
+        
+        /// <summary>
+        /// lblPODiscount2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPODiscount2;
+        
+        /// <summary>
+        /// lblTotalDiscount3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalDiscount3;
+        
+        /// <summary>
+        /// txtPODiscount3Applied control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPODiscount3Applied;
+        
+        /// <summary>
+        /// cboPODiscount3Type control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboPODiscount3Type;
+        
+        /// <summary>
+        /// Requiredfieldvalidator17 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator17;
+        
+        /// <summary>
+        /// lblPODiscount3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPODiscount3;
+        
+        /// <summary>
+        /// chkIsVatInclusive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkIsVatInclusive;
         
         /// <summary>
         /// lblPOVatableAmount control.
@@ -326,6 +452,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label16;
+        
+        /// <summary>
+        /// updCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updCancel;
         
         /// <summary>
         /// imgCancelPO control.

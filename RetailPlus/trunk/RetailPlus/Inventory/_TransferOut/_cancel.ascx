@@ -439,12 +439,16 @@
 					</td>
 					<td class="ms-separator"><asp:label id="Label16" runat="server">|</asp:label></td>
 					<td class="ms-toolbar">
-						<table cellspacing="0" cellpadding="1" border="0">
-							<tr>
-								<td class="ms-toolbar" nowrap><asp:imagebutton id="imgCancelTransferOut" title="Cancel This TransferOut Order" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/edit.gif" alt="Cancel this purchase order" border="0" width="16" height="16" OnClick="imgCancelTransferOut_Click"></asp:imagebutton></td>
-								<td nowrap><asp:linkbutton id="cmdCancelTransferOut" title="Cancel this purchase order" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdCancelTransferOut_Click">Cancel TransferOut</asp:linkbutton></td>
-							</tr>
-						</table>
+                        <asp:UpdatePanel ID="updCancel" runat="server">
+                            <ContentTemplate>
+						        <table cellspacing="0" cellpadding="1" border="0">
+							        <tr>
+								        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgCancelTransferOut" title="Cancel This TransferOut Order" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/edit.gif" alt="Cancel this purchase order" border="0" width="16" height="16" OnClick="imgCancelTransferOut_Click"></asp:imagebutton></td>
+								        <td nowrap><asp:linkbutton id="cmdCancelTransferOut" title="Cancel this purchase order" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdCancelTransferOut_Click">Cancel TransferOut</asp:linkbutton></td>
+							        </tr>
+						        </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
 					</td>
 					<td class="ms-toolbar" id="align052" nowrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>

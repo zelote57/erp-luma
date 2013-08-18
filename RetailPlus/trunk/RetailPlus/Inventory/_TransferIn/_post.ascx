@@ -823,12 +823,16 @@
 			        </td>
 			        <td class="ms-separator"><asp:label id="Label16" runat="server">|</asp:label></td>
 			        <td class="ms-toolbar">
-				        <table cellspacing="0" cellpadding="1" border="0">
-					        <tr>
-						        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgGRN" title="Post &amp; Issue GRN" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/edit.gif" alt="Issue Goods Receive Note" border="0" width="16" height="16" OnClick="imgGRN_Click"></asp:imagebutton></td>
-						        <td nowrap><asp:linkbutton id="cmdGRN" title="Issue GRN" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdGRN_Click">Issue GRN</asp:linkbutton></td>
-					        </tr>
-				        </table>
+                        <asp:UpdatePanel ID="updIssueGRN" runat="server">
+                            <ContentTemplate>
+				                <table cellspacing="0" cellpadding="1" border="0">
+					                <tr>
+						                <td class="ms-toolbar" nowrap><asp:imagebutton id="imgGRN" title="Post &amp; Issue GRN" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/edit.gif" alt="Issue Goods Receive Note" border="0" width="16" height="16" OnClick="imgGRN_Click"></asp:imagebutton></td>
+						                <td nowrap><asp:linkbutton id="cmdGRN" title="Issue GRN" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdGRN_Click">Issue GRN</asp:linkbutton></td>
+					                </tr>
+				                </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
 			        </td>
 			        <td class="ms-toolbar" id="align052" nowrap align="right"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 			        </td>

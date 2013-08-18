@@ -686,7 +686,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             txtMargin.Text = "10";
             txtSellingPrice.Text = "0";
             txtOldSellingPrice.Text = "0";
-            txtOldSellingPrice.Text = "0";
 
 			txtRemarks.Text = "";
 			ComputeItemAmount();
@@ -1164,12 +1163,18 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
         private void PrintPO()
         {
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("po", Session.SessionID) + "&poid=" + Common.Encrypt(lblPOID.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_PO/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
         private void PrintPOSelling()
         {
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("po", Session.SessionID) + "&poid=" + Common.Encrypt(lblPOID.Text, Session.SessionID) + "&reporttype=" + Common.Encrypt("POReportSellingPrice", Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_PO/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrintSellingPrice, this.updPrintSellingPrice.GetType(), "openwindow", javaScript, true);
         }
         private void UpdateHeader()
         {

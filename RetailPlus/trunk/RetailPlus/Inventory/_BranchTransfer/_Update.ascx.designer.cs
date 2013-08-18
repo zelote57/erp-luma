@@ -76,13 +76,13 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer {
         protected global::System.Web.UI.WebControls.Label lblReferrer;
         
         /// <summary>
-        /// lblPOID control.
+        /// lblBranchTransferID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPOID;
+        protected global::System.Web.UI.WebControls.Label lblBranchTransferID;
         
         /// <summary>
         /// CompareValidator1 control.
@@ -112,22 +112,22 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer {
         protected global::System.Web.UI.UpdatePanel UpdatePanel3;
         
         /// <summary>
-        /// lblPONo control.
+        /// lblBranchTransferNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPONo;
+        protected global::System.Web.UI.WebControls.Label lblBranchTransferNo;
         
         /// <summary>
-        /// lblPODate control.
+        /// lblBranchTransferDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPODate;
+        protected global::System.Web.UI.WebControls.Label lblBranchTransferDate;
         
         /// <summary>
         /// txtRequiredDeliveryDate control.
@@ -148,85 +148,13 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer {
         protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
-        /// txtRID control.
+        /// cboBranchFrom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRID;
-        
-        /// <summary>
-        /// cboSupplier control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboSupplier;
-        
-        /// <summary>
-        /// Requiredfieldvalidator1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator1;
-        
-        /// <summary>
-        /// txtSupplierContact control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSupplierContact;
-        
-        /// <summary>
-        /// txtSupplierTelephoneNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSupplierTelephoneNo;
-        
-        /// <summary>
-        /// lblTerms control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTerms;
-        
-        /// <summary>
-        /// lblModeOfterms control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblModeOfterms;
-        
-        /// <summary>
-        /// txtSupplierAddress control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSupplierAddress;
-        
-        /// <summary>
-        /// cboBranch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboBranch;
+        protected global::System.Web.UI.WebControls.DropDownList cboBranchFrom;
         
         /// <summary>
         /// Requiredfieldvalidator2 control.
@@ -238,13 +166,40 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator2;
         
         /// <summary>
-        /// txtBranchAddress control.
+        /// cboBranchTo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBranchAddress;
+        protected global::System.Web.UI.WebControls.DropDownList cboBranchTo;
+        
+        /// <summary>
+        /// Requiredfieldvalidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator1;
+        
+        /// <summary>
+        /// txtRequestedBy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtRequestedBy;
+        
+        /// <summary>
+        /// Requiredfieldvalidator3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator3;
         
         /// <summary>
         /// txtRemarks control.
@@ -254,5 +209,14 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRemarks;
+        
+        /// <summary>
+        /// Requiredfieldvalidator5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator5;
     }
 }

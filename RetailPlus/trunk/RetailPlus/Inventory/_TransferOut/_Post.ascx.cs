@@ -608,7 +608,6 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
             txtMargin.Text = "10";
             txtSellingPrice.Text = "0";
             txtOldSellingPrice.Text = "0";
-            txtOldSellingPrice.Text = "0";
 
             txtRemarks.Text = "";
             ComputeItemAmount();

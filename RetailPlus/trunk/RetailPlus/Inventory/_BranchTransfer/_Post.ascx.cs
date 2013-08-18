@@ -476,10 +476,16 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 
 			cboProductCode_SelectedIndexChanged(null, null);
 
-			txtQuantity.Text = "1";
-			txtDiscount.Text = "0";
-			txtRemarks.Text = "";
-			ComputeItemAmount();
+            txtQuantity.Text = "1";
+            txtPrice.Text = "0.00";
+            txtDiscount.Text = "0";
+            txtSellingQuantity.Text = "0";
+            txtMargin.Text = "10";
+            txtSellingPrice.Text = "0";
+            txtOldSellingPrice.Text = "0";
+
+            txtRemarks.Text = "";
+            ComputeItemAmount();
 			lblBranchTransferItemID.Text = "0";
 
 			txtDeliveryDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
@@ -860,13 +866,19 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 		}
         private void PrintBranchTransfer()
         {
-            string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("po", Session.SessionID) + "&BranchTransferID=" + Common.Encrypt(lblBranchTransferID.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("branchtransfer", Session.SessionID) + "&BranchTransferID=" + Common.Encrypt(lblBranchTransferID.Text, Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/_BranchTransfer/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
         private void PrintBranchTransferSelling()
         {
-            string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("po", Session.SessionID) + "&BranchTransferID=" + Common.Encrypt(lblBranchTransferID.Text, Session.SessionID) + "&reporttype=" + Common.Encrypt("BranchTransferReportSellingPrice", Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("branchtransfer", Session.SessionID) + "&BranchTransferID=" + Common.Encrypt(lblBranchTransferID.Text, Session.SessionID) + "&reporttype=" + Common.Encrypt("BranchTransferReportSellingPrice", Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/_BranchTransfer/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrintSellingPrice, this.updPrintSellingPrice.GetType(), "openwindow", javaScript, true);
         }
         private void UpdateHeader()
         {

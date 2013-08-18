@@ -192,7 +192,10 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
         private void PrintBranchTransfer()
         {
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("po", Session.SessionID) + "&BranchTransferID=" + Common.Encrypt(lblBranchTransferID.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/Inventory/_BranchTransfer/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
 
         private void CancelBranchTransfer()

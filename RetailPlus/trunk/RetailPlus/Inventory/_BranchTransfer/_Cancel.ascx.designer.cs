@@ -13,6 +13,15 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer {
     public partial class @__Cancel {
         
         /// <summary>
+        /// updPrint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updPrint;
+        
+        /// <summary>
         /// imgPrint control.
         /// </summary>
         /// <remarks>

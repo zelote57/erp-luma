@@ -68,17 +68,17 @@ BEGIN
 	SET decTotalLocalTax = (SELECT decTotalVATableAmount * (SELECT LocalTax/100 FROM tblTerminal WHERE TerminalID = 1));
 	
 	UPDATE tblPO SET
-		SubTotal = decTotalItemAmount - decPODiscount - decPODiscount2 - decPODiscount3 + Freight - Deposit,
-		Discount = decPODiscount,
-		Discount2 = decPODiscount2,
-		Discount3 = decPODiscount3,
-		TotalItemDiscount = decTotalItemDiscount,
-		VAT = decTotalVAT,
-		VATAbleAmount = decTotalVATableAmount,
-		EVAT = decTotalEVAT,
-		EVATAbleAmount = decTotalEVATableAmount,
-		LocalTax = decTotalLocalTax,
-		UnpaidAmount = decTotalItemAmount - decPODiscount - decPODiscount2 - decPODiscount3 + Freight - Deposit
+		SubTotal = IFNULL(decTotalItemAmount,0) - IFNULL(decPODiscount,0) - IFNULL(decPODiscount2,0) - IFNULL(decPODiscount3,0) + IFNULL(Freight,0) - IFNULL(Deposit,0),
+		Discount = IFNULL(decPODiscount,0),
+		Discount2 = IFNULL(decPODiscount2,0),
+		Discount3 = IFNULL(decPODiscount3,0),
+		TotalItemDiscount = IFNULL(decTotalItemDiscount,0),
+		VAT = IFNULL(decTotalVAT,0),
+		VATAbleAmount = IFNULL(decTotalVATableAmount,0),
+		EVAT = IFNULL(decTotalEVAT,0),
+		EVATAbleAmount = IFNULL(decTotalEVATableAmount,0),
+		LocalTax = IFNULL(decTotalLocalTax,0),
+		UnpaidAmount = IFNULL(decTotalItemAmount,0) - IFNULL(decPODiscount,0) - IFNULL(decPODiscount2,0) - IFNULL(decPODiscount3,0) + IFNULL(Freight,0) - IFNULL(Deposit,0)
 	WHERE POID = lngPOID;
 	
 END;
@@ -146,17 +146,17 @@ BEGIN
 	SET decTotalLocalTax = (SELECT decTotalVATableAmount * (SELECT LocalTax/100 FROM tblTerminal WHERE TerminalID = 1));
 	
 	UPDATE tblPODebitMemo SET
-		SubTotal = decTotalItemAmount - decPODebitMemoDiscount - decPODebitMemoDiscount2 - decPODebitMemoDiscount3 + Freight - Deposit,
-		Discount = decPODebitMemoDiscount,
-		Discount2 = decPODebitMemoDiscount2,
-		Discount3 = decPODebitMemoDiscount3,
-		TotalItemDiscount = decTotalItemDiscount,
-		VAT = decTotalVAT,
-		VATAbleAmount = decTotalVATableAmount,
-		EVAT = decTotalEVAT,
-		EVATAbleAmount = decTotalEVATableAmount,
-		LocalTax = decTotalLocalTax,
-		UnpaidAmount = decTotalItemAmount - decPODebitMemoDiscount - decPODebitMemoDiscount2 - decPODebitMemoDiscount3 + Freight - Deposit
+		SubTotal = IFNULL(decTotalItemAmount,0) - IFNULL(decPODebitMemoDiscount,0) - IFNULL(decPODebitMemoDiscount2,0) - IFNULL(decPODebitMemoDiscount3,0) + IFNULL(Freight,0) - IFNULL(Deposit,0),
+		Discount = IFNULL(decPODebitMemoDiscount,0),
+		Discount2 = IFNULL(decPODebitMemoDiscount2,0),
+		Discount3 = IFNULL(decPODebitMemoDiscount3,0),
+		TotalItemDiscount = IFNULL(decTotalItemDiscount,0),
+		VAT = IFNULL(decTotalVAT,0),
+		VATAbleAmount = IFNULL(decTotalVATableAmount,0),
+		EVAT = IFNULL(decTotalEVAT,0),
+		EVATAbleAmount = IFNULL(decTotalEVATableAmount,0),
+		LocalTax = IFNULL(decTotalLocalTax,0),
+		UnpaidAmount = IFNULL(decTotalItemAmount,0) - IFNULL(decPODebitMemoDiscount,0) - IFNULL(decPODebitMemoDiscount2,0) - IFNULL(decPODebitMemoDiscount3,0) + IFNULL(Freight,0) - IFNULL(Deposit,0)
 	WHERE DebitMemoID = lngDebitMemoID;
 	
 END;
@@ -230,17 +230,17 @@ BEGIN
 	SET decTotalLocalTax = (SELECT decTotalVATableAmount * (SELECT LocalTax/100 FROM tblTerminal WHERE TerminalID = 1));
 	
 	UPDATE tblTransferIn SET
-		SubTotal = decTotalItemAmount - decTransferInDiscount - decTransferInDiscount2 - decTransferInDiscount3 + Freight - Deposit,
-		Discount = decTransferInDiscount,
-		Discount2 = decTransferInDiscount2,
-		Discount3 = decTransferInDiscount3,
-		TotalItemDiscount = decTotalItemDiscount,
-		VAT = decTotalVAT,
-		VATAbleAmount = decTotalVATableAmount,
-		EVAT = decTotalEVAT,
-		EVATAbleAmount = decTotalEVATableAmount,
-		LocalTax = decTotalLocalTax,
-		UnpaidAmount = decTotalItemAmount - decTransferInDiscount - decTransferInDiscount2 - decTransferInDiscount3 + Freight - Deposit
+		SubTotal = IFNULL(decTotalItemAmount,0) - IFNULL(decTransferInDiscount,0) - IFNULL(decTransferInDiscount2,0) - IFNULL(decTransferInDiscount3,0) + IFNULL(Freight,0) - IFNULL(Deposit,0),
+		Discount = IFNULL(decTransferInDiscount,0),
+		Discount2 = IFNULL(decTransferInDiscount2,0),
+		Discount3 = IFNULL(decTransferInDiscount3,0),
+		TotalItemDiscount = IFNULL(decTotalItemDiscount,0),
+		VAT = IFNULL(decTotalVAT,0),
+		VATAbleAmount = IFNULL(decTotalVATableAmount,0),
+		EVAT = IFNULL(decTotalEVAT,0),
+		EVATAbleAmount = IFNULL(decTotalEVATableAmount,0),
+		LocalTax = IFNULL(decTotalLocalTax,0),
+		UnpaidAmount = IFNULL(decTotalItemAmount,0) - IFNULL(decTransferInDiscount,0) - IFNULL(decTransferInDiscount2,0) - IFNULL(decTransferInDiscount3,0) + IFNULL(Freight,0) - IFNULL(Deposit,0)
 	WHERE TransferInID = lngTransferInID;
 	
 END;
@@ -305,17 +305,17 @@ BEGIN
 	SET decTotalLocalTax = (SELECT decTotalVATableAmount * (SELECT LocalTax/100 FROM tblTerminal WHERE TerminalID = 1));
 	
 	UPDATE tblTransferOut SET
-		SubTotal = decTotalItemAmount - decTransferOutDiscount - decTransferOutDiscount2 - decTransferOutDiscount3 + Freight - Deposit,
-		Discount = decTransferOutDiscount,
-		Discount2 = decTransferOutDiscount2,
-		Discount3 = decTransferOutDiscount3,
-		TotalItemDiscount = decTotalItemDiscount,
-		VAT = decTotalVAT,
-		VATAbleAmount = decTotalVATableAmount,
-		EVAT = decTotalEVAT,
-		EVATAbleAmount = decTotalEVATableAmount,
-		LocalTax = decTotalLocalTax,
-		UnpaidAmount = decTotalItemAmount - decTransferOutDiscount - decTransferOutDiscount2 - decTransferOutDiscount3 + Freight - Deposit
+		SubTotal = IFNULL(decTotalItemAmount,0) - IFNULL(decTransferOutDiscount,0) - IFNULL(decTransferOutDiscount2,0) - IFNULL(decTransferOutDiscount3,0) + IFNULL(Freight,0) - IFNULL(Deposit,0),
+		Discount = IFNULL(decTransferOutDiscount,0),
+		Discount2 = IFNULL(decTransferOutDiscount2,0),
+		Discount3 = IFNULL(decTransferOutDiscount3,0),
+		TotalItemDiscount = IFNULL(decTotalItemDiscount,0),
+		VAT = IFNULL(decTotalVAT,0),
+		VATAbleAmount = IFNULL(decTotalVATableAmount,0),
+		EVAT = IFNULL(decTotalEVAT,0),
+		EVATAbleAmount = IFNULL(decTotalEVATableAmount,0),
+		LocalTax = IFNULL(decTotalLocalTax,0),
+		UnpaidAmount = IFNULL(decTotalItemAmount,0) - IFNULL(decTransferOutDiscount,0) - IFNULL(decTransferOutDiscount2,0) - IFNULL(decTransferOutDiscount3,0) + IFNULL(Freight,0) - IFNULL(Deposit,0)
 	WHERE TransferOutID = lngTransferOutID;
 	
 END;
@@ -379,15 +379,15 @@ BEGIN
 	SET decTotalLocalTax = (SELECT decTotalVATableAmount * (SELECT LocalTax/100 FROM tblTerminal WHERE TerminalID = 1));
 	
 	UPDATE tblInvAdjustment SET
-		SubTotal = decTotalItemAmount - decInvAdjustmentDiscount + Freight - Deposit,
-		Discount = decInvAdjustmentDiscount,
-		TotalItemDiscount = decTotalItemDiscount,
-		VAT = decTotalVAT,
-		VATAbleAmount = decTotalVATableAmount,
-		EVAT = decTotalEVAT,
-		EVATAbleAmount = decTotalEVATableAmount,
-		LocalTax = decTotalLocalTax,
-		UnpaidAmount = decTotalItemAmount - decInvAdjustmentDiscount + Freight - Deposit
+		SubTotal = IFNULL(decTotalItemAmount,0) - IFNULL(decInvAdjustmentDiscount,0) + IFNULL(Freight,0) - IFNULL(Deposit,0),
+		Discount = IFNULL(decInvAdjustmentDiscount,0),
+		TotalItemDiscount = IFNULL(decTotalItemDiscount,0),
+		VAT = IFNULL(decTotalVAT,0),
+		VATAbleAmount = IFNULL(decTotalVATableAmount,0),
+		EVAT = IFNULL(decTotalEVAT,0),
+		EVATAbleAmount = IFNULL(decTotalEVATableAmount,0),
+		LocalTax = IFNULL(decTotalLocalTax,0),
+		UnpaidAmount = IFNULL(decTotalItemAmount,0) - IFNULL(decInvAdjustmentDiscount,0) + IFNULL(Freight,0) - IFNULL(Deposit,0)
 	WHERE InvAdjustmentID = lngInvAdjustmentID;
 	
 END;

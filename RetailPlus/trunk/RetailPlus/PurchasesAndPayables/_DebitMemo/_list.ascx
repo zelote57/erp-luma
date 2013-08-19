@@ -188,7 +188,7 @@
 			</table>
             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                 <ContentTemplate>
-                    <asp:datalist id="lstItem" runat="server" Width="100%" ShowFooter="False" CellPadding="0" OnItemDataBound="lstItem_ItemDataBound" OnItemCommand="lstItem_ItemCommand" AlternatingItemStyle-CssClass="ms-alternating">
+                    <asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0" OnItemDataBound="lstItem_ItemDataBound" OnItemCommand="lstItem_ItemCommand" AlternatingItemStyle-CssClass="ms-alternating">
 				        <HeaderTemplate>
 					        <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						        <colgroup>
@@ -206,48 +206,22 @@
 							        <col width="1">
 						        </colgroup>
 						        <TR>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 								    <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 								    <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
-								    <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <asp:hyperlink id="SortByMemoNo" runat="server">Memo No.</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <asp:hyperlink id="SortByMemoDate" runat="server">Memo Date</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <asp:hyperlink id="SortBySupplierCode" runat="server">Vendor/Supplier</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <asp:hyperlink id="SortByPostingDate" runat="server">Posting Date</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <asp:hyperlink id="SortByBranchCode" runat="server">Affected Branch</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px" align="right">
-								        <asp:hyperlink id="SortBySubTotal" runat="server">Amount</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-								        <asp:hyperlink id="SortByRemarks" runat="server">Remarks</asp:hyperlink></TH>
-							        <TH class="ms-vh2" style="padding-bottom: 4px">
-							        </TH>
+								    <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByMemoNo" runat="server">Memo No.</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByMemoDate" runat="server">Memo Date</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortBySupplierCode" runat="server">Vendor/Supplier</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByPostingDate" runat="server">Posting Date</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByBranchCode" runat="server">Affected Branch</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px; text-align:right"><asp:hyperlink id="SortBySubTotal" runat="server">Amount</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"><asp:hyperlink id="SortByRemarks" runat="server">Remarks</asp:hyperlink></TH>
+							        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 						        </TR>
-					        </table>
 				        </HeaderTemplate>
-				        <ItemTemplate>
-					        <TABLE id="tblItemTemplate" cellSpacing="0" cellPadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
-						        <colgroup>
-							        <col width="10">
-							        <col width="10">
-							        <col width="10">
-							        <col width="10">
-							        <col width="20%">
-							        <col width="14%">
-							        <col width="16%">
-							        <col width="14%">
-							        <col width="16%">
-							        <col width="5%" align="right">
-							        <col width="15%">
-							        <col width="1">
-						        </colgroup>
-						        <TR>
+				        <ItemTemplate> 
+						        <TR onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 							        <TD class="ms-vb-user">
 								        <input type="checkbox" id="chkList" runat="server" name="chkList" />
 							        </TD>
@@ -277,7 +251,7 @@
 								        <asp:Label ID="lblBranchCode" Runat="server"></asp:Label>
 								        <asp:Label ID="lblBranchID" Runat="server" Visible="False"></asp:Label>
 							        </TD>
-							        <TD class="ms-vb-user">
+							        <TD class="ms-vb-user" style="text-align: right">
 								        <asp:Label ID="lblSubTotal" Runat="server"></asp:Label>
 							        </TD>
 							        <TD class="ms-vb-user">
@@ -288,8 +262,10 @@
 									        <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show" Visible="false"></asp:Image></A>
 							        </TD>
 						        </TR>
-					        </table>
 				        </ItemTemplate>
+                        <FooterTemplate>
+                            </table>
+                        </FooterTemplate>
 			        </asp:datalist>
                 </ContentTemplate>
                 <Triggers>

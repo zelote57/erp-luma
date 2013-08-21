@@ -13,6 +13,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo {
     public partial class @__Details {
         
         /// <summary>
+        /// updPrint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updPrint;
+        
+        /// <summary>
         /// imgPrint control.
         /// </summary>
         /// <remarks>
@@ -238,22 +247,31 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo {
         protected global::System.Web.UI.WebControls.DataList lstItem;
         
         /// <summary>
-        /// txtPODiscountApplied control.
+        /// lblTotalDiscount1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPODiscountApplied;
+        protected global::System.Web.UI.WebControls.Label lblTotalDiscount1;
         
         /// <summary>
-        /// cboPODiscountType control.
+        /// txtPODebitMemoDiscountApplied control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboPODiscountType;
+        protected global::System.Web.UI.WebControls.TextBox txtPODebitMemoDiscountApplied;
+        
+        /// <summary>
+        /// cboPODebitMemoDiscountType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboPODebitMemoDiscountType;
         
         /// <summary>
         /// Requiredfieldvalidator6 control.
@@ -265,49 +283,148 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator6;
         
         /// <summary>
-        /// lblPODiscount control.
+        /// lblPODebitMemoDiscount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPODiscount;
+        protected global::System.Web.UI.WebControls.Label lblPODebitMemoDiscount;
         
         /// <summary>
-        /// lblPOVatableAmount control.
+        /// lblTotalDiscount2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPOVatableAmount;
+        protected global::System.Web.UI.WebControls.Label lblTotalDiscount2;
         
         /// <summary>
-        /// lblPOSubTotal control.
+        /// txtPODebitMemoDiscount2Applied control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPOSubTotal;
+        protected global::System.Web.UI.WebControls.TextBox txtPODebitMemoDiscount2Applied;
         
         /// <summary>
-        /// lblPOVAT control.
+        /// cboPODebitMemoDiscount2Type control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPOVAT;
+        protected global::System.Web.UI.WebControls.DropDownList cboPODebitMemoDiscount2Type;
         
         /// <summary>
-        /// txtPOFreight control.
+        /// Requiredfieldvalidator16 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPOFreight;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator16;
+        
+        /// <summary>
+        /// lblPODebitMemoDiscount2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPODebitMemoDiscount2;
+        
+        /// <summary>
+        /// lblTotalDiscount3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalDiscount3;
+        
+        /// <summary>
+        /// txtPODebitMemoDiscount3Applied control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPODebitMemoDiscount3Applied;
+        
+        /// <summary>
+        /// cboPODebitMemoDiscount3Type control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboPODebitMemoDiscount3Type;
+        
+        /// <summary>
+        /// Requiredfieldvalidator17 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator17;
+        
+        /// <summary>
+        /// lblPODebitMemoDiscount3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPODebitMemoDiscount3;
+        
+        /// <summary>
+        /// chkIsVatInclusive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkIsVatInclusive;
+        
+        /// <summary>
+        /// lblPODebitMemoVatableAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPODebitMemoVatableAmount;
+        
+        /// <summary>
+        /// lblPODebitMemoSubTotal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPODebitMemoSubTotal;
+        
+        /// <summary>
+        /// lblPODebitMemoVAT control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPODebitMemoVAT;
+        
+        /// <summary>
+        /// txtPODebitMemoFreight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPODebitMemoFreight;
         
         /// <summary>
         /// Requiredfieldvalidator11 control.
@@ -319,13 +436,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator11;
         
         /// <summary>
-        /// txtPODeposit control.
+        /// txtPODebitMemoDeposit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPODeposit;
+        protected global::System.Web.UI.WebControls.TextBox txtPODebitMemoDeposit;
         
         /// <summary>
         /// Requiredfieldvalidator12 control.
@@ -337,12 +454,12 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator12;
         
         /// <summary>
-        /// lblPOTotal control.
+        /// lblPODebitMemoTotal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPOTotal;
+        protected global::System.Web.UI.WebControls.Label lblPODebitMemoTotal;
     }
 }

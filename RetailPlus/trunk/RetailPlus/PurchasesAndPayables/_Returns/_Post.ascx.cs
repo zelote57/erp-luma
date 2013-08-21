@@ -52,8 +52,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
             if (cboProductCode.SelectedItem.Value.ToString() != "0") //|| cboProductCode.SelectedItem.Value.ToString() != null)
             {
 				SaveRecord();
-                //LoadOptions();
 				LoadItems();
+                LoadOptions();
 			}
 		}
 		protected void cmdSave_Click(object sender, System.EventArgs e)
@@ -61,8 +61,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
             if (cboProductCode.SelectedItem.Value.ToString() != "0") //|| cboProductCode.SelectedItem.Value.ToString() != null)
             {
 				SaveRecord();
-                //LoadOptions();
 				LoadItems();
+                LoadOptions();
 			}
 		}
 		protected void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -403,7 +403,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
         {
             try
             {
-                if (txtProductCode.Text != null || txtProductCode.Text.Trim() != string.Empty || txtProductCode.Text.Trim() != "")
+                if (!string.IsNullOrEmpty(txtProductCode.Text))
                 {
                     ProductDetails clsDetails = new ProductDetails();
 
@@ -569,7 +569,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 			cboVariation.Items.Clear();
 			cboProductUnit.Items.Clear();
 
-			cboProductCode.Items.Add(new ListItem("No Product", "0"));
+            cboProductCode.Items.Add(new ListItem("No Product; Enter product to search.", "0"));
+
+            cboProductCode_SelectedIndexChanged(null, null);
+            cboVariation.Items.Add(new ListItem("No Variation", "0"));
+            cboProductUnit.Items.Add(new ListItem("No Unit", "0")); 
 
 			cboProductCode_SelectedIndexChanged(null, null);
 
@@ -586,6 +590,22 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
             lblPODebitMemoItemID.Text = "0";
 
 			txtPostDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+
+            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam;
+            lnkAddProduct.NavigateUrl = newWindowUrl;
+
+            //imgProductHistory.Visible = false;
+            //imgProductPriceHistory.Visible = false;
+            //imgChangePrice.Visible = false;
+            //imgEditNow.Visible = false;
+            //lnkProductDetails.Visible = false;
+            //cmdVariationSearch.Visible = false;
+            //imgVariationQuickAdd.Visible = false;
+            //lnkVariationAdd.Visible = false;
+            //lnkProductUnitMatrix.Visible = false;
+            //lblPurchasePriceHistory.Visible = false;
+            ShowCommandButtons(false);
 		}
 		private void LoadRecord()
 		{
@@ -1045,18 +1065,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 		}
         private void PrintPOReturn()
         {
-            Common Common = new Common();
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("poretun", Session.SessionID) + "&retid=" + Common.Encrypt(lblDebitMemoID.Text, Session.SessionID);
             string newWindowUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_Returns/Default.aspx" + stParam;
             string javaScript = "window.open('" + newWindowUrl + "');";
 
-            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true); ;
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
         private void UpdateHeader()
         {
             string stID = lblDebitMemoID.Text;
 
-            Common Common = new Common();
             string stParam = "?task=" + Common.Encrypt("edit", Session.SessionID) + "&retid=" + Common.Encrypt(stID, Session.SessionID);
             Response.Redirect("Default.aspx" + stParam);
         }

@@ -16,7 +16,7 @@
 	        <table cellspacing="0" cellpadding="0" width="100%" border="0">
 		        <tr>
 			        <td class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px" colSpan="3"><font color="red">*</font>
-				        Indicates a required field<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label><asp:label id="lblPOID" runat="server" Visible="False"></asp:label>
+				        Indicates a required field<asp:label id="lblReferrer" runat="server" Visible="false" ></asp:label><asp:label id="lblPOID" runat="server" Visible="false" ></asp:label>
 			        </td>
 		        </tr>
 		        <tr>
@@ -27,16 +27,16 @@
 				        <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
 					        <tr style="PADDING-BOTTOM: 10px">
 						        <td class="ms-formspacer"></td>
-						        <td width="30%" rowSpan="4"><IMG alt="" src="../../_layouts/images/company_logo.gif"></td>
+						        <td width="30%" rowspan="4"><img alt="" src="../../_layouts/images/company_logo.gif"></td>
 						        <td class="ms-formspacer"></td>
-						        <td style="HEIGHT: 70px" borderColor="white" align="center" width="40%" rowSpan="3"><label class="ms-sectionheader" style="FONT-WEIGHT: bold; FONT-SIZE: 40px">Purchase 
+						        <td style="HEIGHT: 70px" bordercolor="white" align="center" width="40%" rowspan="3"><label class="ms-sectionheader" style="FONT-WEIGHT: bold; FONT-SIZE: 40px">Purchase 
 								        Order</label></td>
 						        <td style="PADDING-BOTTOM: 2px" width="30%" colSpan="2"><label>Purchase Order no:</label></td>
 					        </tr>
 					        <tr style="PADDING-BOTTOM: 5px">
 						        <td class="ms-formspacer"></td>
 						        <td class="ms-formspacer"></td>
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td style="PADDING-BOTTOM: 2px" width="30%"><asp:HyperLink id="lnkPONo" runat="server" CssClass="ms-error"></asp:HyperLink></td>
 					        </tr>
 					        <tr style="PADDING-BOTTOM: 5px">
@@ -53,12 +53,12 @@
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="2"><label>Terms:</label></td>
 					        </tr>
 					        <tr style="PADDING-BOTTOM: 5px">
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblSupplierID" runat="server" CssClass="ms-error" Visible="False"></asp:label>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblSupplierID" runat="server" CssClass="ms-error" Visible="false" ></asp:label>
 							        <asp:HyperLink id="lblSupplierCode" runat="server" Target="_blank">lblSupplierCode</asp:HyperLink></td>
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblSupplierContact" runat="server" CssClass="ms-error"></asp:label></td>
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblTerms" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblModeOfterms" runat="server" CssClass="ms-error"></asp:label></td>
 					        </tr>
 					        <tr>
@@ -73,11 +73,11 @@
 								        Delivery Date:</label></td>
 					        </tr>
 					        <tr style="PADDING-BOTTOM: 5px">
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblSupplierAddress" runat="server" CssClass="ms-error"></asp:label></td>
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblSupplierTelephoneNo" runat="server" CssClass="ms-error"></asp:label></td>
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblRequiredDeliveryDate" runat="server" CssClass="ms-error"></asp:label></td>
 					        </tr>
 					        <tr>
@@ -91,11 +91,11 @@
 								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colSpan="2"><label>Required Inventory Days:</label></td>
 					        </tr>
 					        <tr style="PADDING-BOTTOM: 5px">
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblBranchCode" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblBranchID" runat="server" CssClass="ms-error" Visible="False"></asp:label></td>
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblBranchCode" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblBranchID" runat="server" CssClass="ms-error" Visible="false" ></asp:label></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblBranchAddress" runat="server" CssClass="ms-error"></asp:label></td>
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblRID" runat="server" CssClass="ms-error"></asp:label></td>
 					        </tr>
 					        <tr>
@@ -119,8 +119,8 @@
 									        <td class="ms-toolbar">
 										        <table cellspacing="0" cellpadding="1" border="0">
 											        <tr>
-												        <td class="ms-toolbar" noWrap><asp:imagebutton id="cmdUpdateHeader" title="Update Purchase Order Header" accessKey="E" tabIndex="5" runat="server" CssClass="ms-toolbar" ImageUrl="../../_layouts/images/edit.gif" alt="Update Purchase Order Header" border="0" width="16" height="16" OnClick="cmdUpdateHeader_Click"></asp:imagebutton></td>
-												        <td noWrap><asp:linkbutton id="imgUpdateHeader" title="Update Purchase Order Header" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" onclick="imgUpdateHeader_Click">Update Purchase Order Header</asp:linkbutton></td>
+												        <td class="ms-toolbar" nowrap><asp:imagebutton id="cmdUpdateHeader" title="Update Purchase Order Header" accessKey="E" tabIndex="5" runat="server" CssClass="ms-toolbar" ImageUrl="../../_layouts/images/edit.gif" alt="Update Purchase Order Header" border="0" width="16" height="16" OnClick="cmdUpdateHeader_Click"></asp:imagebutton></td>
+												        <td nowrap><asp:linkbutton id="imgUpdateHeader" title="Update Purchase Order Header" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" onclick="imgUpdateHeader_Click">Update Purchase Order Header</asp:linkbutton></td>
 											        </tr>
 										        </table>
 									        </td>
@@ -130,8 +130,8 @@
                                                     <ContentTemplate>
 										                <table cellspacing="0" cellpadding="1" border="0">
 											                <tr>
-												                <td class="ms-toolbar" noWrap><asp:imagebutton id="imgPrint" title="Print this Purchase Order" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/print.gif" alt="Print this Purchase Order" border="0" width="16" height="16" OnClick="imgPrint_Click"></asp:imagebutton></td>
-												                <td noWrap><asp:linkbutton id="cmdPrint" title="Print this Purchase Order" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrint_Click" OnClientClick="NewWindow();">Print</asp:linkbutton></td>
+												                <td class="ms-toolbar" nowrap><asp:imagebutton id="imgPrint" title="Print this Purchase Order" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/print.gif" alt="Print this Purchase Order" border="0" width="16" height="16" OnClick="imgPrint_Click"></asp:imagebutton></td>
+												                <td nowrap><asp:linkbutton id="cmdPrint" title="Print this Purchase Order" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrint_Click" OnClientClick="NewWindow();">Print</asp:linkbutton></td>
 											                </tr>
 										                </table>
                                                     </ContentTemplate>
@@ -143,8 +143,8 @@
                                                     <ContentTemplate>
 										                <table cellspacing="0" cellpadding="1" border="0">
 											                <tr>
-												                <td class="ms-toolbar" noWrap><asp:imagebutton id="imgPrintSelling" ToolTip="Print this Purchase Order Selling Price" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/print.gif" border="0" width="16" height="16" onclick="imgPrintSelling_Click" ></asp:imagebutton></td>
-												                <td noWrap><asp:linkbutton id="cmdPrintSelling" ToolTip="Print this Purchase Order Selling Price" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrintSelling_Click" OnClientClick="NewWindow();">Print Selling Price</asp:linkbutton></td>
+												                <td class="ms-toolbar" nowrap><asp:imagebutton id="imgPrintSelling" ToolTip="Print this Purchase Order Selling Price" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/print.gif" border="0" width="16" height="16" onclick="imgPrintSelling_Click" ></asp:imagebutton></td>
+												                <td nowrap><asp:linkbutton id="cmdPrintSelling" ToolTip="Print this Purchase Order Selling Price" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrintSelling_Click" OnClientClick="NewWindow();">Print Selling Price</asp:linkbutton></td>
 											                </tr>
 										                </table>
                                                     </ContentTemplate>
@@ -154,10 +154,10 @@
 									        <td class="ms-toolbar">
 										        <table cellspacing="0" cellpadding="1" border="0">
 											        <tr>
-												        <td class="ms-toolbar" noWrap>
+												        <td class="ms-toolbar" nowrap>
 												        <asp:FileUpload ID="txtPath" runat="server" cssclass="ms-short" tabindex="7"></asp:FileUpload>
 												        <asp:imagebutton id="imgImport" title="Import PO items" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/genorder.gif" ToolTip="Import PO items" border="0" width="16" height="16" OnClick="imgImport_Click"></asp:imagebutton></td>
-												        <td noWrap><asp:linkbutton id="cmdImport" title="Import PO items" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdImport_Click">Import from XML File</asp:linkbutton></td>
+												        <td nowrap><asp:linkbutton id="cmdImport" title="Import PO items" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdImport_Click">Import from XML File</asp:linkbutton></td>
 											        </tr>
 										        </table>
 									        </td>
@@ -165,8 +165,8 @@
 					                        <td class="ms-toolbar">
 						                        <table cellspacing="0" cellpadding="1" border="0">
 							                        <tr>
-								                        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgExport" ToolTip="Export to XML File" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Back To PO List" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="imgExport_Click"></asp:imagebutton></td>
-								                        <td noWrap><asp:linkbutton id="cmdExport" ToolTip="Export to XML File" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdExport_Click">Export to XML File</asp:linkbutton></td>
+								                        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgExport" ToolTip="Export to XML File" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Back To PO List" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="imgExport_Click"></asp:imagebutton></td>
+								                        <td nowrap><asp:linkbutton id="cmdExport" ToolTip="Export to XML File" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdExport_Click">Export to XML File</asp:linkbutton></td>
 							                        </tr>
 						                        </table>
 					                        </td>
@@ -174,17 +174,17 @@
 									        <td class="ms-toolbar">
 										        <table cellspacing="0" cellpadding="1" border="0">
 											        <tr>
-												        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Cancel Adding New Item And Back To PO List" accessKey="C" tabIndex="3" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/impitem.gif" alt="Cancel Adding New Item And Back To PO List" border="0" width="16" height="16" OnClick="imgCancel_Click"></asp:imagebutton></td>
-												        <td noWrap><asp:linkbutton id="cmdCancel" title="Cancel Adding New Item And Back To PO List" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Back To PO List</asp:linkbutton></td>
+												        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgCancel" title="Cancel Adding New Item And Back To PO List" accessKey="C" tabIndex="3" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/impitem.gif" alt="Cancel Adding New Item And Back To PO List" border="0" width="16" height="16" OnClick="imgCancel_Click"></asp:imagebutton></td>
+												        <td nowrap><asp:linkbutton id="cmdCancel" title="Cancel Adding New Item And Back To PO List" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Back To PO List</asp:linkbutton></td>
 											        </tr>
 										        </table>
 									        </td>
-									        <td class="ms-toolbar" id="align02" noWrap align="right"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+									        <td class="ms-toolbar" id="align02" nowrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 									        </td>
 								        </tr>
 							        </table>
 						        </td>
-						        <td class="ms-toolbar" noWrap align="right" width="1%"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+						        <td class="ms-toolbar" nowrap align="right" width="1%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 						        </td>
 					        </tr>
 				        </table>
@@ -202,22 +202,22 @@
 					        <tr>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2"><label>Select 
 								        Product Code<font color="red">*
-									        <asp:label id="lblPOItemID" runat="server" CssClass="ms-error" Visible="False">0</asp:label></font></label></td>
+									        <asp:label id="lblPOItemID" runat="server" CssClass="ms-error" Visible="false" >0</asp:label></font></label></td>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2"><label>Select 
 								        Variation<font color="red">*</font></label></td>
 						        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2"><label>Select 
 								        unit<font color="red">*</font></label></td>
 					        </tr>
 					        <tr>
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td class="ms-authoringcontrols">
 						            <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                                         <ContentTemplate>
 						                    <asp:dropdownlist id="cboProductCode" runat="server" CssClass="ms-long" width="70%" AutoPostBack="True" onselectedindexchanged="cboProductCode_SelectedIndexChanged"></asp:dropdownlist><asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Product code' must not be left blank." Display="Dynamic" ControlToValidate="cboProductCode"></asp:requiredfieldvalidator>
-						                    <asp:ImageButton id="imgProductHistory" runat="server" Visible=false ImageUrl="../../_layouts/images/prodhist.gif" ToolTip="Show product inventory history report" CausesValidation=false Style="cursor: hand" OnClick="imgProductHistory_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgProductPriceHistory" runat="server" Visible=false ImageUrl="../../_layouts/images/pricehist.gif" ToolTip="Show product price history report" CausesValidation=false Style="cursor: hand" OnClick="imgProductPriceHistory_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgChangePrice" runat="server" Visible=false ImageUrl="../../_layouts/images/chprice.gif" ToolTip="Change price" CausesValidation=false Style="cursor: hand" OnClick="imgChangePrice_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgEditNow" runat="server" Visible=false ImageUrl="../../_layouts/images/edit.gif" ToolTip="Edit this product" CausesValidation=false Style="cursor: hand" OnClick="imgEditNow_Click" ></asp:ImageButton>
+						                    <asp:ImageButton id="imgProductHistory" runat="server" Visible="false"  ImageUrl="../../_layouts/images/prodhist.gif" ToolTip="Show product inventory history report" CausesValidation="false" Style="cursor: hand" OnClick="imgProductHistory_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgProductPriceHistory" runat="server" Visible="false"  ImageUrl="../../_layouts/images/pricehist.gif" ToolTip="Show product price history report" CausesValidation="false" Style="cursor: hand" OnClick="imgProductPriceHistory_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgChangePrice" runat="server" Visible="false"  ImageUrl="../../_layouts/images/chprice.gif" ToolTip="Change price" CausesValidation="false" Style="cursor: hand" OnClick="imgChangePrice_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgEditNow" runat="server" Visible="false"  ImageUrl="../../_layouts/images/edit.gif" ToolTip="Edit this product" CausesValidation="false" Style="cursor: hand" OnClick="imgEditNow_Click" ></asp:ImageButton>
 						                </ContentTemplate>
 				                        <Triggers> 
 				                            <asp:AsyncPostBackTrigger ControlID="cboProductCode" EventName="SelectedIndexChanged" />
@@ -230,7 +230,7 @@
                                         </Triggers> 
                                     </asp:UpdatePanel>
 						        </td>
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td class="ms-authoringcontrols">
 						            <asp:UpdatePanel ID="UpdatePanel5" runat="server">
                                         <ContentTemplate>
@@ -248,10 +248,10 @@
                                         </Triggers> 
                                     </asp:UpdatePanel>
 						        </td>
-						        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+						        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 						        <td class="ms-authoringcontrols">
 						            <asp:UpdatePanel ID="UpdatePanel6" runat="server"><ContentTemplate>
-                                        <asp:dropdownlist id="cboProductUnit" runat="server" CssClass="ms-short" AutoPostBack="True" CausesValidation=false OnSelectedIndexChanged="cboProductUnit_SelectedIndexChanged">
+                                        <asp:dropdownlist id="cboProductUnit" runat="server" CssClass="ms-short" AutoPostBack="True" CausesValidation="false" OnSelectedIndexChanged="cboProductUnit_SelectedIndexChanged">
                                         </asp:dropdownlist><asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ControlToValidate="cboProductUnit" Display="Dynamic" ErrorMessage="'Unit' must not be left blank."></asp:requiredfieldvalidator> 
                                     </ContentTemplate>
                                     <Triggers>
@@ -279,9 +279,9 @@
                                             <asp:ImageButton ID="imgProductQuickAdd" runat="server" BorderStyle="Groove" CausesValidation="false"
                                                 CssClass="ms-toolbar" ImageUrl="../../_layouts/images/quickadd.gif" OnClick="imgProductQuickAdd_Click"
                                                 Style="cursor: hand" ToolTip="Quickly add a new Product"/>
-                                            <asp:HyperLink id="lnkProductDetails" runat="server" Visible=false ToolTip="View product details">[view details]</asp:HyperLink>
-                                            <asp:HyperLink id="lnkAddProduct" runat="server" ToolTip="Add new product">[add new]</asp:HyperLink>
-                                            <asp:Label id="lblPurchasePriceHistory" runat="server" Visible=false CssClass="ms-error"></asp:Label>
+                                            <asp:HyperLink id="lnkProductDetails" runat="server" Visible="false"  ToolTip="View product details" Target="_blank">[view details]</asp:HyperLink>
+                                            <asp:HyperLink id="lnkAddProduct" runat="server" ToolTip="Add new product" Target="_blank">[add new]</asp:HyperLink>
+                                            <asp:Label id="lblPurchasePriceHistory" runat="server" Visible="false"  CssClass="ms-error"></asp:Label>
                                         </ContentTemplate>
 				                        <Triggers> 
                                             <asp:AsyncPostBackTrigger ControlID="cmdProductCode" EventName="Click" />
@@ -293,9 +293,9 @@
 						            <asp:UpdatePanel ID="UpdatePanel8" runat="server">
                                         <ContentTemplate>
                                             <asp:textbox id="txtVariation" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" ondblclick="ontime(this)" ToolTip="Double Click to Select Date From Calendar"></asp:textbox>
-						                    <asp:imagebutton id="cmdVariationSearch" runat="server" ImageUrl="../../_layouts/images/SPSSearch2.gif" ToolTip="Execute search" style="CURSOR: hand" CssClass="ms-toolbar" BorderStyle="Groove" CausesValidation="False" OnClick="cmdVariationSearch_Click" Visible="false"></asp:imagebutton>
-						                    <asp:imagebutton id="imgVariationQuickAdd" runat="server" ImageUrl="../../_layouts/images/quickadd.gif" ToolTip="Quickly add the new Product Variation (Make sure you selected a product to add this.)" style="CURSOR: hand" CssClass="ms-toolbar" BorderStyle="Groove" CausesValidation=false OnClick="imgVariationQuickAdd_Click" Visible="false"></asp:imagebutton>
-						                    <asp:HyperLink id="lnkVariationAdd" runat="server" Visible=false ToolTip="Add new variation">[add new]</asp:HyperLink>
+						                    <asp:imagebutton id="cmdVariationSearch" runat="server" ImageUrl="../../_layouts/images/SPSSearch2.gif" ToolTip="Execute search" style="CURSOR: hand" CssClass="ms-toolbar" BorderStyle="Groove" CausesValidation="False" OnClick="cmdVariationSearch_Click" Visible="false" ></asp:imagebutton>
+						                    <asp:imagebutton id="imgVariationQuickAdd" runat="server" ImageUrl="../../_layouts/images/quickadd.gif" ToolTip="Quickly add the new Product Variation (Make sure you selected a product to add this.)" style="CURSOR: hand" CssClass="ms-toolbar" BorderStyle="Groove" CausesValidation="false" OnClick="imgVariationQuickAdd_Click" Visible="false" ></asp:imagebutton>
+						                    <asp:HyperLink id="lnkVariationAdd" runat="server" Visible="false"  ToolTip="Add new variation" Target="_blank">[add new]</asp:HyperLink>
 						                </ContentTemplate>
 				                        <Triggers> 
                                             <asp:AsyncPostBackTrigger ControlID="cmdProductCode" EventName="Click" />
@@ -306,7 +306,7 @@
 						        <td class="ms-authoringcontrols" valign="top">
 						            <asp:UpdatePanel ID="UpdatePanel10" runat="server">
                                         <ContentTemplate>
-						                    <asp:HyperLink id="lnkProductUnitMatrix" runat="server" Visible=false ToolTip="View Product Unit Matrix">[View Unit Matrix]</asp:HyperLink>
+						                    <asp:HyperLink id="lnkProductUnitMatrix" runat="server" Visible="false"  ToolTip="View Product Unit Matrix" Target="_blank">[View Unit Matrix]</asp:HyperLink>
 						                </ContentTemplate>
 				                        <Triggers> 
                                             <asp:AsyncPostBackTrigger ControlID="cmdProductCode" EventName="Click" />
@@ -330,23 +330,23 @@
 							                        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2"></td>
 						                        </tr>
 						                        <tr valign="top">
-							                        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+							                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 							                        <td class="ms-authoringcontrols">
 							                            <asp:textbox onkeypress="AllNum()" id="txtQuantity" onkeyup="ComputeAmountPost()" accessKey="Q" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Width="45%">1</asp:textbox><asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'Quantity' must not be left blank." Display="Dynamic" ControlToValidate="txtQuantity"></asp:requiredfieldvalidator>
 							                            <asp:textbox onkeypress="AllNum()" id="txtRID" onkeyup="ComputeAmountPost()" accessKey="R" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Width="35%" AutoPostBack="True" OnTextChanged="txtRID_TextChanged">1</asp:textbox><asp:requiredfieldvalidator id="Requiredfieldvalidator13" runat="server" CssClass="ms-error" ErrorMessage="'RID' must not be left blank." Display="Dynamic" ControlToValidate="txtRID"></asp:requiredfieldvalidator>
 							                        </td>
-							                        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+							                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 							                        <td class="ms-authoringcontrols"><asp:textbox onkeypress="AllNum()" id="txtPrice" onkeyup="ChangePriceComputeMarginMPPO(this)" accessKey="P" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Width="80%">0</asp:textbox><asp:requiredfieldvalidator id="Requiredfieldvalidator8" runat="server" CssClass="ms-error" ErrorMessage="'Price' must not be left blank." Display="Dynamic" ControlToValidate="txtPrice"></asp:requiredfieldvalidator></td>
-							                        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+							                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 							                        <td class="ms-authoringcontrols">
 							                            <asp:textbox onkeypress="AllNum()" id="txtDiscount" onkeyup="ComputeAmountPost()" accessKey="D" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Width="50%">0</asp:textbox>
-							                            <INPUT id="chkInPercent" type="checkbox" onchange="ComputeAmountPost()" CHECKED name="chkInPercent" runat="server" /><label style="FONT-SIZE: 10px">(in percent)</label>
+							                            <input id="chkInPercent" type="checkbox" onchange="ComputeAmountPost()" CHECKED name="chkInPercent" runat="server" /><label style="FONT-SIZE: 10px">(in percent)</label>
 							                            <asp:requiredfieldvalidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'Discount' must not be left blank." Display="Dynamic" ControlToValidate="txtDiscount"></asp:requiredfieldvalidator>
 							                        </td>
-							                        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+							                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 							                        <td class="ms-authoringcontrols"><asp:textbox onkeypress="AllNum()" id="txtAmount" accessKey="A" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" ReadOnly="True" Width="80%">0</asp:textbox><asp:requiredfieldvalidator id="Requiredfieldvalidator9" runat="server" CssClass="ms-error" ErrorMessage="'Amount' must not be left blank." Display="Dynamic" ControlToValidate="txtAmount"></asp:requiredfieldvalidator></td>
 							                        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" align="center" colspan=2>
-							                            <INPUT id="chkIsTaxable" type="checkbox" CHECKED name="chkIsTaxable" runat="server" onchange="ComputeAmountPost()" />
+							                            <input id="chkIsTaxable" type="checkbox" CHECKED name="chkIsTaxable" runat="server" onchange="ComputeAmountPost()" />
 							                            <label>Check if taxable</label>
 							                        </td>
 						                        </tr>
@@ -361,29 +361,29 @@
 				                                    <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2">Local Tax<font color="red">*</font></td>
 			                                    </tr>
 			                                    <tr valign="top">
-				                                    <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+				                                    <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 				                                    <td class="ms-authoringcontrols">
-				                                        <asp:textbox onkeypress="AllNum()" id="txtSellingQuantity" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Enabled=false Visible=false>1</asp:textbox>
+				                                        <asp:textbox onkeypress="AllNum()" id="txtSellingQuantity" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Enabled=false Visible="false" >1</asp:textbox>
 				                                        <asp:textbox onkeypress="AllNum()" id="txtMargin" onkeyup="ChangePriceComputeMarginPPPO(this)" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" BackColor="YellowGreen" Width="80%">0</asp:textbox>
 				                                        <asp:requiredfieldvalidator id="Requiredfieldvalidator14" runat="server" CssClass="ms-error" ErrorMessage="'Price' must not be left blank." Display="Dynamic" ControlToValidate="txtMargin"></asp:requiredfieldvalidator>
 				                                    </td>
-				                                    <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+				                                    <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 				                                    <td class="ms-authoringcontrols">
 				                                        <asp:textbox onkeypress="AllNum()" id="txtSellingPrice" onkeyup="ChangePriceComputeMarginByPriceMPPO(this)" runat="server" width="31%" CssClass="ms-short-numeric" BorderStyle="Groove" BackColor="YellowGreen">0</asp:textbox>
 				                                        <button name="cmdRevertSellingPrice" id="cmdRevertSellingPrice" causesvalidation="false" runat="server" onclick="RevertSellingPrice()"> <- </button>
 				                                        <asp:textbox onkeypress="AllNum()" id="txtOldSellingPrice" runat="server" width="31%" CssClass="ms-short-numeric" BorderStyle="Groove" BackColor="YellowGreen" ReadOnly="true" Text="0.00"></asp:textbox>
 				                                        <asp:requiredfieldvalidator id="Requiredfieldvalidator15" runat="server" CssClass="ms-error" ErrorMessage="'Discount' must not be left blank." Display="Dynamic" ControlToValidate="txtDiscount"></asp:requiredfieldvalidator>
 				                                    </td>
-				                                    <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+				                                    <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 				                                    <td class="ms-authoringcontrols">
 				                                        <asp:TextBox accessKey="C" id="txtVAT" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" MaxLength="6" Width="80%" BackColor="YellowGreen"></asp:TextBox>%&nbsp;&nbsp;&nbsp;
 				                                                        
 				                                    </td>
-				                                    <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+				                                    <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 				                                    <td class="ms-authoringcontrols">
 				                                        <asp:TextBox accessKey="C" id="txtEVAT" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" MaxLength="6" Width="80%" BackColor="YellowGreen"></asp:TextBox>%
 				                                    </td>
-				                                    <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+				                                    <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 				                                    <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px">
 				                                        <asp:TextBox accessKey="C" id="txtLocalTax" runat="server" onkeypress="AllNum()" CssClass="ms-short-numeric" BorderStyle="Groove" MaxLength="6" Width="80%" BackColor="YellowGreen"></asp:TextBox>%
 				                                    </td>
@@ -417,7 +417,7 @@
 				                        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="6"><label>Remarks</label></td>
 			                        </tr>
 			                        <tr>
-				                        <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+				                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 				                        <td class="ms-authoringcontrols" colSpan="5">
 				                            <asp:UpdatePanel ID="UpdatePanel7" runat="server">
                                             <ContentTemplate>
@@ -447,7 +447,7 @@
 			        <td class="ms-sectionline" colSpan="3" height="1">
 				        <table class="ms-toolbar" id="twotidGrpsTB" cellspacing="0" cellpadding="2" border="0" width="100%">
 					        <tr>
-						        <td class="ms-toolbar" noWrap align="right" width="99%"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+						        <td class="ms-toolbar" nowrap align="right" width="99%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 						        </td>
 						        <td class="ms-toolbar">
 							        <table cellspacing="0" cellpadding="1" border="0">
@@ -455,8 +455,8 @@
 								            <td class="ms-toolbar">
 										        <table cellspacing="0" cellpadding="1" border="0">
 											        <tr>
-												        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgGenerateByThreshold" title="Generate items for re-order using Threshold" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/genorder.gif" alt="Generate items for re-order using Threshold" border="0" width="16" height="16" OnClick="imgGenerateByThreshold_Click"></asp:imagebutton></td>
-												        <td noWrap><asp:linkbutton id="cmdGenerateByThreshold" title="Generate items for re-order using Threshold" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdGenerateByThreshold_Click">Reorder using Threshold</asp:linkbutton></td>
+												        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgGenerateByThreshold" title="Generate items for re-order using Threshold" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/genorder.gif" alt="Generate items for re-order using Threshold" border="0" width="16" height="16" OnClick="imgGenerateByThreshold_Click"></asp:imagebutton></td>
+												        <td nowrap><asp:linkbutton id="cmdGenerateByThreshold" title="Generate items for re-order using Threshold" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdGenerateByThreshold_Click">Reorder using Threshold</asp:linkbutton></td>
 											        </tr>
 										        </table>
 									        </td>
@@ -464,15 +464,15 @@
 									        <td class="ms-toolbar">
 										        <table cellspacing="0" cellpadding="1" border="0">
 											        <tr>
-												        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgGenerate" title="Generate items for re-order using RID" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/genorder.gif" alt="Generate items for re-order using RID" border="0" width="16" height="16" OnClick="imgGenerate_Click"></asp:imagebutton></td>
-												        <td noWrap><asp:linkbutton id="cmdGenerate" title="Generate items for re-order using RID" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdGenerate_Click">Reorder using RID</asp:linkbutton></td>
+												        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgGenerate" title="Generate items for re-order using RID" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/genorder.gif" alt="Generate items for re-order using RID" border="0" width="16" height="16" OnClick="imgGenerate_Click"></asp:imagebutton></td>
+												        <td nowrap><asp:linkbutton id="cmdGenerate" title="Generate items for re-order using RID" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdGenerate_Click">Reorder using RID</asp:linkbutton></td>
 											        </tr>
 										        </table>
 									        </td>
 									        <td class="ms-toolbar">
 										        <table cellspacing="0" cellpadding="1" border="0">
 											        <tr>
-												        <td noWrap>
+												        <td nowrap>
 												            <label style="FONT-SIZE: 10px">Trx Sales Date</label>
 												            <asp:textbox id="txtIDCStartDate" accessKey="C" runat="server" CssClass="ms-short" Width="75" BorderStyle="Groove" ondblclick="ontime(this)" ToolTip="Double Click to Select Date From Calendar"></asp:textbox>
 												            <label style="FONT-SIZE: 10px">-</label>
@@ -485,8 +485,8 @@
 									        <td class="ms-toolbar">
 										        <table cellspacing="0" cellpadding="1" border="0">
 											        <tr>
-												        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgClear" title="Clear and Load Defaults" accessKey="C" tabIndex="3" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/delitem.gif" alt="Clear and Load Defaults" border="0" width="16" height="16" OnClick="imgClear_Click"></asp:imagebutton></td>
-												        <td noWrap><asp:linkbutton id="cmdClear" title="Clear and Load Defaults" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdClear_Click">Clear & Load Defaults</asp:linkbutton></td>
+												        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgClear" title="Clear and Load Defaults" accessKey="C" tabIndex="3" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/delitem.gif" alt="Clear and Load Defaults" border="0" width="16" height="16" OnClick="imgClear_Click"></asp:imagebutton></td>
+												        <td nowrap><asp:linkbutton id="cmdClear" title="Clear and Load Defaults" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdClear_Click">Clear & Load Defaults</asp:linkbutton></td>
 											        </tr>
 										        </table>
 									        </td>
@@ -494,9 +494,9 @@
 									        <td class="ms-toolbar">
 										        <table cellspacing="0" cellpadding="1" border="0">
 											        <tr>
-												        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgSave" title="Save Item" accessKey="A" tabIndex="1" runat="server" CssClass="ms-toolbar" ImageUrl="../../_layouts/images/newuser.gif" alt="Save Item" border="0" width="16" height="16" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
+												        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgSave" title="Save Item" accessKey="A" tabIndex="1" runat="server" CssClass="ms-toolbar" ImageUrl="../../_layouts/images/newuser.gif" alt="Save Item" border="0" width="16" height="16" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
 												        </td>
-												        <td noWrap><asp:linkbutton id="cmdSave" title="Save Item" accessKey="A" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSave_Click">Save Item</asp:linkbutton></td>
+												        <td nowrap><asp:linkbutton id="cmdSave" title="Save Item" accessKey="A" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSave_Click">Save Item</asp:linkbutton></td>
 											        </tr>
 										        </table>
 									        </td>
@@ -504,8 +504,8 @@
 									        <td class="ms-toolbar">
 										        <table cellspacing="0" cellpadding="1" border="0">
 											        <tr>
-												        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgDelete" ToolTip="Remove Selected Item" accessKey="X" tabIndex="3" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/delitem.gif" alt="Remove Selected Item" border="0" width="16" height="16" OnClick="imgDelete_Click"></asp:imagebutton></td>
-												        <td noWrap><asp:linkbutton id="cmdDelete" ToolTip="Remove Selected Item" accessKey="X" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdDelete_Click">Remove Selected Item</asp:linkbutton></td>
+												        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgDelete" ToolTip="Remove Selected Item" accessKey="X" tabIndex="3" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/delitem.gif" alt="Remove Selected Item" border="0" width="16" height="16" OnClick="imgDelete_Click"></asp:imagebutton></td>
+												        <td nowrap><asp:linkbutton id="cmdDelete" ToolTip="Remove Selected Item" accessKey="X" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdDelete_Click">Remove Selected Item</asp:linkbutton></td>
 											        </tr>
 										        </table>
 									        </td>
@@ -513,12 +513,12 @@
 									        <td class="ms-toolbar">
 										        <table cellspacing="0" cellpadding="1" border="0">
 											        <tr>
-												        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgEdit" title="Update Item" accessKey="E" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/edit.gif" alt="Update Item" border="0" width="16" height="16" OnClick="imgEdit_Click"></asp:imagebutton></td>
-												        <td noWrap><asp:linkbutton id="cmdEdit" title="Update Item" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdEdit_Click">Update Item</asp:linkbutton></td>
+												        <td class="ms-toolbar" nowrap><asp:imagebutton id="imgEdit" title="Update Item" accessKey="E" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/edit.gif" alt="Update Item" border="0" width="16" height="16" OnClick="imgEdit_Click"></asp:imagebutton></td>
+												        <td nowrap><asp:linkbutton id="cmdEdit" title="Update Item" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdEdit_Click">Update Item</asp:linkbutton></td>
 											        </tr>
 										        </table>
 									        </td>--%>
-									        <td class="ms-toolbar" id="align03" noWrap align="right"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+									        <td class="ms-toolbar" id="align03" nowrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 									        </td>
 								        </tr>
 							        </table>
@@ -535,7 +535,7 @@
         <td>
             <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                 <ContentTemplate>
-                    <asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0" OnItemCommand="lstItem_ItemCommand" OnItemDataBound="lstItem_ItemDataBound" AlternatingItemStyle-CssClass="ms-alternating">
+                    <asp:datalist id="lstItem" runat="server" Width="100%" cellpadding="0" OnItemCommand="lstItem_ItemCommand" OnItemDataBound="lstItem_ItemDataBound" AlternatingItemStyle-CssClass="ms-alternating">
 		                <HeaderTemplate>
 			                <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 				                <colgroup>
@@ -572,7 +572,7 @@
 						                <asp:ImageButton id="imgItemUpdate" runat="server" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Update Item" CommandName="imgItemUpdateClick" CausesValidation=false></asp:ImageButton>						                
 					                </td>
 					                <td class="ms-vb-user">
-					                    <asp:Label id="lblPOItemReceivedStatus" CssClass="ms-vh2" runat="server" text="0" Visible=false></asp:Label>
+					                    <asp:Label id="lblPOItemReceivedStatus" CssClass="ms-vh2" runat="server" text="0" Visible="false" ></asp:Label>
 						                <asp:ImageButton id="imgItemReceive" runat="server" ImageUrl="../../_layouts/images/post.gif" ToolTip="Update Item" CommandName="imgItemReceive" CausesValidation=false></asp:ImageButton>
 					                </td>
 					                <td class="ms-vb-user">
@@ -584,7 +584,7 @@
 						                <asp:Label ID="lblQuantity" Runat="server"></asp:Label>&nbsp;&nbsp;
 					                </td>
 					                <td class="ms-vb-user">
-						                <asp:Label ID="lblProductUnitID" Runat="server" Visible="False"></asp:Label>
+						                <asp:Label ID="lblProductUnitID" Runat="server" Visible="false" ></asp:Label>
 						                <asp:Label ID="lblProductUnitCode" Runat="server"></asp:Label>
 					                </td>
 					                <td class="ms-vb-user" align="right">
@@ -592,7 +592,7 @@
 					                </td>
 					                <td class="ms-vb-user" align="right">
 						                <asp:Label ID="lblDiscountApplied" Runat="server"></asp:Label>
-						                <asp:Label ID="lblPercent" Runat="server" Visible="False">%</asp:Label>
+						                <asp:Label ID="lblPercent" Runat="server" Visible="false" >%</asp:Label>
 					                </td>
 					                <td class="ms-vb-user" align="right">
 						                <asp:Label ID="lblAmount" Runat="server"></asp:Label>
@@ -603,13 +603,13 @@
 					                </td>
 				                </tr>
 				                <tr>
-					                <td class="ms-vh2" height="1"><IMG height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+					                <td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 					                <td colSpan="8" height="1">
 						                <DIV class="ACECollapsed" id="divExpCollAsst" runat="server" border="0">
 							                <asp:panel id="panItem" runat="server" Width="100%" Height="100%" CssClass="ms-authoringcontrols">
 								                <table id="tblpanItem" cellspacing="0" cellpadding="0" width="100%" border="0">
 									                <tr>
-										                <td class="ms-formspacer" colSpan="1"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+										                <td class="ms-formspacer" colSpan="1"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 									                </tr>
 									                <tr>
 										                <td width="19%">
@@ -665,7 +665,7 @@
 								                </table>
 							                </asp:panel></DIV>
 					                </td>
-					                <td class="ms-vh2" height="1"><IMG height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
+					                <td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 				                </tr>
 		                </ItemTemplate>
                         <FooterTemplate>
@@ -853,13 +853,13 @@
         <td>
 	        <table class="ms-toolbar" id="onetidGrpsTC" cellspacing="0" cellpadding="2" border="0" width="100%">
 		        <tr>
-			        <td class="ms-toolbar" id="align01" noWrap align="right" width="99%">
+			        <td class="ms-toolbar" id="align01" nowrap align="right" width="99%">
 			        </td>
 			        <td class="ms-toolbar" align="center">
 				        <table cellspacing="0" cellpadding="1" border="0">
 					        <tr>
-						        <td class="ms-toolbar" noWrap>Delivery Date :</td>
-						        <td noWrap><asp:textbox id="txtDeliveryDate" accessKey="Q" ToolTip="Double Click to Select Date From Calendar" ondblclick="ontime(this)" runat="server" CssClass="ms-short" BorderStyle="Groove"></asp:textbox>
+						        <td class="ms-toolbar" nowrap>Delivery Date :</td>
+						        <td nowrap><asp:textbox id="txtDeliveryDate" accessKey="Q" ToolTip="Double Click to Select Date From Calendar" ondblclick="ontime(this)" runat="server" CssClass="ms-short" BorderStyle="Groove"></asp:textbox>
 							        <asp:label id="Label17" runat="server" CssClass="ms-error"> 'yyyy-mm-dd' format</asp:label></td>
 					        </tr>
 				        </table>
@@ -870,8 +870,8 @@
 			        <td class="ms-toolbar" align="center">
 				        <table cellspacing="0" cellpadding="1" border="0">
 					        <tr>
-						        <td class="ms-toolbar" noWrap>Supplier Delivery No:</td>
-						        <td noWrap><asp:textbox id="txtSupplierDRNo" accessKey="Q" runat="server" CssClass="ms-short" BorderStyle="Groove">NA</asp:textbox></td>
+						        <td class="ms-toolbar" nowrap>Supplier Delivery No:</td>
+						        <td nowrap><asp:textbox id="txtSupplierDRNo" accessKey="Q" runat="server" CssClass="ms-short" BorderStyle="Groove">NA</asp:textbox></td>
 					        </tr>
 				        </table>
 				        <asp:requiredfieldvalidator id="Requiredfieldvalidator7" runat="server" CssClass="ms-error" ControlToValidate="txtSupplierDRNo" Display="Dynamic" ErrorMessage="'Delivery No' must not be left blank."></asp:requiredfieldvalidator>
@@ -882,14 +882,14 @@
                             <ContentTemplate>
 				                <table cellspacing="0" cellpadding="1" border="0">
 					                <tr>
-						                <td class="ms-toolbar" noWrap><asp:imagebutton id="imgGRN" title="Post &amp; Issue GRN" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/issuegrn.gif" alt="Issue Goods Receive Note" border="0" width="16" height="16" OnClick="imgGRN_Click"></asp:imagebutton></td>
-						                <td noWrap><asp:linkbutton id="cmdGRN" title="Issue GRN" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdGRN_Click">Issue GRN</asp:linkbutton></td>
+						                <td class="ms-toolbar" nowrap><asp:imagebutton id="imgGRN" title="Post &amp; Issue GRN" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/issuegrn.gif" alt="Issue Goods Receive Note" border="0" width="16" height="16" OnClick="imgGRN_Click"></asp:imagebutton></td>
+						                <td nowrap><asp:linkbutton id="cmdGRN" title="Issue GRN" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdGRN_Click">Issue GRN</asp:linkbutton></td>
 					                </tr>
 				                </table>
                             </ContentTemplate>
                         </asp:UpdatePanel>
 			        </td>
-			        <td class="ms-toolbar" id="align052" noWrap align="right"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+			        <td class="ms-toolbar" id="align052" nowrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 			        </td>
 		        </tr>
 	        </table>

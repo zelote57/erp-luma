@@ -17,10 +17,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 
 		protected void Page_Load(object sender, System.EventArgs e)
 		{
-			const string defaultHeading = "Purchase Returns";
+			const string defaultHeading = "Purchase Debit Memo";
 			string stHeading = defaultHeading;			
 
-			const string defaultTitle = "Issue Purchase Returns to suppliers";
+			const string defaultTitle = "Issue Purchase Debit Memo to suppliers";
 			SiteTitle.Title = defaultTitle;
 
 			const SearchCategoryID defaultSearchIndex = SearchCategoryID.PurchaseReturns;

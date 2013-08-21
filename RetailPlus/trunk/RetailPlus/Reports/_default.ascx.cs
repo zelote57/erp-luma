@@ -103,7 +103,7 @@ namespace AceSoft.RetailPlus.Reports
                     txtProductCode.Text = Common.Decrypt(Request.QueryString["productcode"].ToString(), Session.SessionID);
             }
             catch { }
-            if (txtProductCode.Text != null)
+            if (!string.IsNullOrEmpty(txtProductCode.Text))
             {
                 string stSearchKey = txtProductCode.Text;
                 cboProductCode.DataSource = clsDataClass.DataReaderToDataTable(clsProduct.Search(stSearchKey, "ProductCode", SortOption.Ascending));
@@ -404,7 +404,7 @@ namespace AceSoft.RetailPlus.Reports
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
 
-            if (txtProductCode.Text != null)
+            if (!string.IsNullOrEmpty(txtProductCode.Text))
             {
                 string stSearchKey = txtProductCode.Text;
                 cboProductCode.DataSource = clsDataClass.DataReaderToDataTable(clsProduct.Search(stSearchKey, "ProductCode", SortOption.Ascending));

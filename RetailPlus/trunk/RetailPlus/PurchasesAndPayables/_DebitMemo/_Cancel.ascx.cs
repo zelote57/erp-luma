@@ -179,7 +179,27 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
             lblBranchAddress.Text = clsDetails.BranchAddress;
             lblRemarks.Text = clsDetails.Remarks;
 
-            UpdateFooter(clsDetails);
+            txtPODebitMemoDiscountApplied.Text = clsDetails.DiscountApplied.ToString("###0.#0");
+            cboPODebitMemoDiscountType.SelectedIndex = cboPODebitMemoDiscountType.Items.IndexOf(cboPODebitMemoDiscountType.Items.FindByValue(clsDetails.DiscountType.ToString("d")));
+            lblPODebitMemoDiscount.Text = clsDetails.Discount.ToString("#,##0.#0");
+            lblTotalDiscount1.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount + clsDetails.Discount2 + clsDetails.Discount3).ToString("#,##0.#0");
+
+            txtPODebitMemoDiscount2Applied.Text = clsDetails.Discount2Applied.ToString("###0.#0");
+            cboPODebitMemoDiscount2Type.SelectedIndex = cboPODebitMemoDiscount2Type.Items.IndexOf(cboPODebitMemoDiscount2Type.Items.FindByValue(clsDetails.Discount2Type.ToString("d")));
+            lblPODebitMemoDiscount2.Text = clsDetails.Discount2.ToString("#,##0.#0");
+            lblTotalDiscount2.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount2 + clsDetails.Discount3).ToString("#,##0.#0");
+
+            txtPODebitMemoDiscount3Applied.Text = clsDetails.Discount3Applied.ToString("###0.#0");
+            cboPODebitMemoDiscount3Type.SelectedIndex = cboPODebitMemoDiscount3Type.Items.IndexOf(cboPODebitMemoDiscountType.Items.FindByValue(clsDetails.Discount3Type.ToString("d")));
+            lblPODebitMemoDiscount3.Text = clsDetails.Discount3.ToString("#,##0.#0");
+            lblTotalDiscount3.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount3).ToString("#,##0.#0");
+
+            lblPODebitMemoVatableAmount.Text = clsDetails.VatableAmount.ToString("#,##0.#0");
+            txtPODebitMemoFreight.Text = clsDetails.Freight.ToString("#,##0.#0");
+            txtPODebitMemoDeposit.Text = clsDetails.Deposit.ToString("#,##0.#0");
+            lblPODebitMemoSubTotal.Text = Convert.ToDecimal(clsDetails.SubTotal - clsDetails.VAT).ToString("#,##0.#0");
+            lblPODebitMemoVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
+            lblPODebitMemoTotal.Text = clsDetails.SubTotal.ToString("#,##0.#0");
 		}
 		private void LoadItems()
 		{
@@ -192,9 +212,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 		}
         private void Print()
         {
-            Common Common = new Common();
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("debitmemo", Session.SessionID) + "&memoid=" + Common.Encrypt(lblDebitMemoID.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_DebitMemo/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
         private void CancelDebitMemo()
         {
@@ -210,13 +232,28 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
         }
         private void UpdateFooter(DebitMemoDetails clsDebitMemoDetails)
         {
-            lblPODiscount.Text = clsDebitMemoDetails.Discount.ToString("#,##0.#0");
-            lblPOVatableAmount.Text = clsDebitMemoDetails.VatableAmount.ToString("#,##0.#0");
-            txtPOFreight.Text = clsDebitMemoDetails.Freight.ToString("#,##0.#0");
-            txtPODeposit.Text = clsDebitMemoDetails.Deposit.ToString("#,##0.#0");
-            lblPOSubTotal.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal - clsDebitMemoDetails.VAT).ToString("#,##0.#0");
-            lblPOVAT.Text = clsDebitMemoDetails.VAT.ToString("#,##0.#0");
-            lblPOTotal.Text = clsDebitMemoDetails.SubTotal.ToString("#,##0.#0");
+            lblPODebitMemoDiscount.Text = clsDebitMemoDetails.Discount.ToString("#,##0.#0");
+            lblPODebitMemoDiscount2.Text = clsDebitMemoDetails.Discount2.ToString("#,##0.#0");
+            lblPODebitMemoDiscount3.Text = clsDebitMemoDetails.Discount3.ToString("#,##0.#0");
+
+            lblTotalDiscount1.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal + clsDebitMemoDetails.Discount + clsDebitMemoDetails.Discount2 + clsDebitMemoDetails.Discount3).ToString("#,##0.#0");
+            lblTotalDiscount2.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal + clsDebitMemoDetails.Discount2 + clsDebitMemoDetails.Discount3).ToString("#,##0.#0");
+            lblTotalDiscount3.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal + clsDebitMemoDetails.Discount3).ToString("#,##0.#0");
+
+            lblPODebitMemoVatableAmount.Text = clsDebitMemoDetails.VatableAmount.ToString("#,##0.#0");
+            txtPODebitMemoFreight.Text = clsDebitMemoDetails.Freight.ToString("#,##0.#0");
+            txtPODebitMemoDeposit.Text = clsDebitMemoDetails.Deposit.ToString("#,##0.#0");
+            lblPODebitMemoVAT.Text = clsDebitMemoDetails.VAT.ToString("#,##0.#0");
+            if (chkIsVatInclusive.Checked)
+            {
+                lblPODebitMemoSubTotal.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal - clsDebitMemoDetails.VAT).ToString("#,##0.#0");
+                lblPODebitMemoTotal.Text = clsDebitMemoDetails.SubTotal.ToString("#,##0.#0");
+            }
+            else
+            {
+                lblPODebitMemoSubTotal.Text = clsDebitMemoDetails.SubTotal.ToString("#,##0.#0");
+                lblPODebitMemoTotal.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal + clsDebitMemoDetails.VAT).ToString("#,##0.#0");
+            }
         }
 
 		#endregion

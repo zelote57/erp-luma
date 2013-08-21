@@ -103,6 +103,15 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo {
         protected global::System.Web.UI.WebControls.Label lblDebitMemoID;
         
         /// <summary>
+        /// lblReportType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblReportType;
+        
+        /// <summary>
         /// CRViewer control.
         /// </summary>
         /// <remarks>

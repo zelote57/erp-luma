@@ -20,10 +20,18 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 		protected void Page_Load(object sender, System.EventArgs e)
 		{
             if (!IsPostBack && Visible)
-			{
-				lblReferrer.Text = Request.UrlReferrer.ToString();
-			    LoadOptions();		
-				GenerateHTML();
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["reporttype"]))
+                    lblReportType.Text = Common.Decrypt(Request.QueryString["reporttype"].ToString(), Session.SessionID);
+                else
+                    lblReportType.Text = "DebitMemoReport";
+
+                LoadOptions();
+                if (!string.IsNullOrEmpty(Request.QueryString["target"]))
+                    GeneratePDF();
+                else
+                    GenerateHTML();
+
                 Session["ReportDocument"] = null;
             }
         }

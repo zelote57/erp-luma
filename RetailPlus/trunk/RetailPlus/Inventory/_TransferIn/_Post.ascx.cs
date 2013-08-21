@@ -450,7 +450,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
         {
             try
             {
-                if (txtProductCode.Text != null || txtProductCode.Text.Trim() != string.Empty || txtProductCode.Text.Trim() != "")
+                if (!string.IsNullOrEmpty(txtProductCode.Text))
                 {
                     ProductDetails clsDetails = new ProductDetails();
 

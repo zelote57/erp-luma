@@ -496,7 +496,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
         {
             try
             {
-                if (txtProductCode.Text != null || txtProductCode.Text.Trim() != string.Empty || txtProductCode.Text.Trim() != "")
+                if (!string.IsNullOrEmpty(txtProductCode.Text))
                 {
                     ProductDetails clsDetails = new ProductDetails();
 
@@ -699,16 +699,18 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             string newWindowUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam;
             lnkAddProduct.NavigateUrl = newWindowUrl;
 
-            imgProductHistory.Visible = false;
-            imgProductPriceHistory.Visible = false;
-            imgChangePrice.Visible = false;
-            imgEditNow.Visible = false;
-            lnkProductDetails.Visible = false;
-            cmdVariationSearch.Visible = false;
-            imgVariationQuickAdd.Visible = false;
-            lnkVariationAdd.Visible = false;
-            lnkProductUnitMatrix.Visible = false;
-            lblPurchasePriceHistory.Visible = false;
+            //imgProductHistory.Visible = false;
+            //imgProductPriceHistory.Visible = false;
+            //imgChangePrice.Visible = false;
+            //imgEditNow.Visible = false;
+            //lnkProductDetails.Visible = false;
+            //cmdVariationSearch.Visible = false;
+            //imgVariationQuickAdd.Visible = false;
+            //lnkVariationAdd.Visible = false;
+            //lnkProductUnitMatrix.Visible = false;
+            //lblPurchasePriceHistory.Visible = false;
+
+            ShowCommandButtons(false);
 		}
 		private void LoadRecord()
 		{

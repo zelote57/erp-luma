@@ -432,7 +432,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
         {
             try
             {
-                if (txtProductCode.Text != null || txtProductCode.Text.Trim() != string.Empty || txtProductCode.Text.Trim() != "")
+                if (!string.IsNullOrEmpty(txtProductCode.Text))
                 {
                     ProductDetails clsDetails = new ProductDetails();
 

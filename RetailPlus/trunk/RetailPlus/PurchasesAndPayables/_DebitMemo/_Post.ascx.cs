@@ -55,8 +55,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
             if (cboProductCode.SelectedItem.Value.ToString() != "0") //|| cboProductCode.SelectedItem.Value.ToString() != null)
             {
                 SaveRecord();
-                //LoadOptions();
                 LoadItems();
+                LoadOptions();
             }
 		}
 		protected void cmdSave_Click(object sender, System.EventArgs e)
@@ -64,8 +64,8 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
             if (cboProductCode.SelectedItem.Value.ToString() != "0") //|| cboProductCode.SelectedItem.Value.ToString() != null)
             {
 				SaveRecord();
-                //LoadOptions();
 				LoadItems();
+                LoadOptions();
 			}
 		}
 		protected void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -181,16 +181,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 		}
         protected void cmdProductCode_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
-			DataClass clsDataClass = new DataClass();
+            DataClass clsDataClass = new DataClass();
 
-			Data.Products clsProduct = new Data.Products();
-			cboProductCode.DataTextField = "ProductCode";
-			cboProductCode.DataValueField = "ProductID";
+            Data.Products clsProduct = new Data.Products();
+            cboProductCode.DataTextField = "ProductCode";
+            cboProductCode.DataValueField = "ProductID";
 
             string stSearchKey = txtProductCode.Text;
             cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: stSearchKey, Limit: 100);
-			cboProductCode.DataBind();
-			clsProduct.CommitAndDispose();
+            cboProductCode.DataBind();
+            clsProduct.CommitAndDispose();
 
             bool bolShowCommandButtons = false;
             if (cboProductCode.Items.Count == 0)
@@ -201,26 +201,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
             else
             {
                 bolShowCommandButtons = true;
-                string stParam = "?task=" + Common.Encrypt("add", Session.SessionID);
-                string newWindowUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam;
-                lnkAddProduct.NavigateUrl = newWindowUrl;
 
-                stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&prodid=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
-                newWindowUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/_VariationsMatrix/Default.aspx" + stParam;
-                lnkVariationAdd.NavigateUrl = newWindowUrl;
             }
-            imgProductHistory.Visible = bolShowCommandButtons;
-            imgProductPriceHistory.Visible = bolShowCommandButtons;
-            imgChangePrice.Visible = bolShowCommandButtons;
-            imgEditNow.Visible = bolShowCommandButtons;
-            lnkAddProduct.Visible = bolShowCommandButtons;
-            cmdVariationSearch.Visible = bolShowCommandButtons;
-            imgVariationQuickAdd.Visible = bolShowCommandButtons;
-            lnkVariationAdd.Visible = bolShowCommandButtons;
+            ShowCommandButtons(bolShowCommandButtons);
 
-			cboProductCode.SelectedIndex = 0;
+            cboProductCode.SelectedIndex = 0;
 
-			cboProductCode_SelectedIndexChanged(null, null);
+            cboProductCode_SelectedIndexChanged(null, null);
 		}
         protected void cmdVariationSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
@@ -316,6 +303,17 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
                 anchorDown.HRef = "javascript:ToggleDiv('" + divExpCollAsst.ClientID + "')";
 			}
 		}
+        protected void lstItem_ItemCommand(object source, System.Web.UI.WebControls.DataListCommandEventArgs e)
+        {
+            HtmlInputCheckBox chkList = (HtmlInputCheckBox)e.Item.FindControl("chkList");
+
+            switch (e.CommandName)
+            {
+                case "imgItemUpdateClick":
+                    LoadItem(chkList.Value);
+                    break;
+            }
+        }
         protected void cmdUpdateHeader_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             UpdateHeader();
@@ -332,19 +330,19 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
         {
             PrintDebitMemo();
         }
-        protected void txtPODiscountApplied_TextChanged(object sender, EventArgs e)
+        protected void txtPODebitMemoDiscountApplied_TextChanged(object sender, EventArgs e)
         {
             UpdatePODiscount();
         }
-        protected void cboPODiscountType_SelectedIndexChanged(object sender, EventArgs e)
+        protected void cboPODebitMemoDiscountType_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdatePODiscount();
         }
-        protected void txtPOFreight_TextChanged(object sender, EventArgs e)
+        protected void txtPODebitMemoFreight_TextChanged(object sender, EventArgs e)
         {
             UpdateFreight();
         }
-        protected void txtPODeposit_TextChanged(object sender, EventArgs e)
+        protected void txtPODebitMemoDeposit_TextChanged(object sender, EventArgs e)
         {
             UpdateDeposit();
         }
@@ -389,7 +387,41 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
                                 "&id=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
             Response.Redirect(Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam);
         }
+        protected void cboProductUnit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ProductPackage clsProductPackage = new ProductPackage();
+            ProductPackageDetails clsDetails = clsProductPackage.DetailsByProductIDAndUnitID(long.Parse(cboProductCode.SelectedValue), long.Parse(cboProductUnit.SelectedValue));
+            if (clsDetails.PackageID == 0)
+            {
+                ProductUnit clsProductUnit = new ProductUnit(clsProductPackage.Connection, clsProductPackage.Transaction);
+                Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
+                ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
+                decimal decBaseUnitValue = clsProductUnit.GetBaseUnitValue(long.Parse(cboProductCode.SelectedItem.Value), int.Parse(cboProductUnit.SelectedItem.Value), 1);
 
+                clsDetails.Price = decBaseUnitValue * clsProductDetails.Price;
+                clsDetails.PurchasePrice = decBaseUnitValue * clsProductDetails.PurchasePrice;
+            }
+            clsProductPackage.CommitAndDispose();
+
+
+            txtPrice.Text = clsDetails.PurchasePrice.ToString("#####0.##0");
+        }
+        protected void chkIsVatInclusive_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                long DebitMemosID = long.Parse(lblDebitMemoID.Text);
+
+                DebitMemos clsDebitMemos = new DebitMemos();
+                clsDebitMemos.UpdateIsVatInclusive(DebitMemosID, chkIsVatInclusive.Checked);
+
+                DebitMemoDetails clsDebitMemoDetails = clsDebitMemos.Details(DebitMemosID);
+                clsDebitMemos.CommitAndDispose();
+
+                UpdateFooter(clsDebitMemoDetails);
+            }
+            catch (Exception ex) { throw ex; }
+        }
 		#endregion
 
 		#region Private Methods
@@ -409,14 +441,22 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 			cboProductCode_SelectedIndexChanged(null, null);
 
             txtQuantity.Text = "1";
-            txtPrice.Text = "0.00";
+            txtPrevPrice.Text = "0.000";
+            txtPrice.Text = "0.000";
             txtDiscount.Text = "0";
+            txtAmount.Text = "0.000";
 
 			txtRemarks.Text = "";
 			ComputeItemAmount();
 			lblDebitMemoItemID.Text = "0";
 
 			txtPostDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+
+            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam;
+            lnkAddProduct.NavigateUrl = newWindowUrl;
+
+            ShowCommandButtons(false);
 		}
 		private void LoadRecord()
 		{
@@ -457,7 +497,27 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 			lblBranchAddress.Text = clsDetails.BranchAddress;
 			lblRemarks.Text = clsDetails.Remarks;
 
-            UpdateFooter(clsDetails);
+            txtPODebitMemoDiscountApplied.Text = clsDetails.DiscountApplied.ToString("###0.#0");
+            cboPODebitMemoDiscountType.SelectedIndex = cboPODebitMemoDiscountType.Items.IndexOf(cboPODebitMemoDiscountType.Items.FindByValue(clsDetails.DiscountType.ToString("d")));
+            lblPODebitMemoDiscount.Text = clsDetails.Discount.ToString("#,##0.#0");
+            lblTotalDiscount1.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount + clsDetails.Discount2 + clsDetails.Discount3).ToString("#,##0.#0");
+
+            txtPODebitMemoDiscount2Applied.Text = clsDetails.Discount2Applied.ToString("###0.#0");
+            cboPODebitMemoDiscount2Type.SelectedIndex = cboPODebitMemoDiscount2Type.Items.IndexOf(cboPODebitMemoDiscount2Type.Items.FindByValue(clsDetails.Discount2Type.ToString("d")));
+            lblPODebitMemoDiscount2.Text = clsDetails.Discount2.ToString("#,##0.#0");
+            lblTotalDiscount2.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount2 + clsDetails.Discount3).ToString("#,##0.#0");
+
+            txtPODebitMemoDiscount3Applied.Text = clsDetails.Discount3Applied.ToString("###0.#0");
+            cboPODebitMemoDiscount3Type.SelectedIndex = cboPODebitMemoDiscount3Type.Items.IndexOf(cboPODebitMemoDiscountType.Items.FindByValue(clsDetails.Discount3Type.ToString("d")));
+            lblPODebitMemoDiscount3.Text = clsDetails.Discount3.ToString("#,##0.#0");
+            lblTotalDiscount3.Text = Convert.ToDecimal(clsDetails.SubTotal + clsDetails.Discount3).ToString("#,##0.#0");
+
+            lblPODebitMemoVatableAmount.Text = clsDetails.VatableAmount.ToString("#,##0.#0");
+            txtPODebitMemoFreight.Text = clsDetails.Freight.ToString("#,##0.#0");
+            txtPODebitMemoDeposit.Text = clsDetails.Deposit.ToString("#,##0.#0");
+            lblPODebitMemoSubTotal.Text = Convert.ToDecimal(clsDetails.SubTotal - clsDetails.VAT).ToString("#,##0.#0");
+            lblPODebitMemoVAT.Text = clsDetails.VAT.ToString("#,##0.#0");
+            lblPODebitMemoTotal.Text = clsDetails.SubTotal.ToString("#,##0.#0");
 		}
 		private void SaveRecord()
 		{
@@ -545,11 +605,23 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 			}
 			else
 				clsDebitMemoItems.Insert(clsDetails);
-			
-			DebitMemos clsDebitMemos = new DebitMemos(clsDebitMemoItems.Connection, clsDebitMemoItems.Transaction);
-			DebitMemoDetails clsDebitMemoDetails = clsDebitMemos.Details(clsDetails.DebitMemoID);
 
-			clsDebitMemoItems.CommitAndDispose();
+            DebitMemoDetails clsDebitMemoDetails = new DebitMemoDetails();
+            clsDebitMemoDetails.DebitMemoID = clsDetails.DebitMemoID;
+            clsDebitMemoDetails.DiscountApplied = Convert.ToDecimal(txtPODebitMemoDiscountApplied.Text);
+            clsDebitMemoDetails.DiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), cboPODebitMemoDiscountType.SelectedItem.Value);
+
+            clsDebitMemoDetails.Discount2Applied = Convert.ToDecimal(txtPODebitMemoDiscount2Applied.Text);
+            clsDebitMemoDetails.Discount2Type = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), cboPODebitMemoDiscount2Type.SelectedItem.Value);
+
+            clsDebitMemoDetails.Discount3Applied = Convert.ToDecimal(txtPODebitMemoDiscount3Applied.Text);
+            clsDebitMemoDetails.Discount3Type = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), cboPODebitMemoDiscount3Type.SelectedItem.Value);
+
+            DebitMemos clsDebitMemos = new DebitMemos(clsDebitMemoItems.Connection, clsDebitMemoItems.Transaction);
+            clsDebitMemos.UpdateDiscount(clsDetails.DebitMemoID, clsDebitMemoDetails.DiscountApplied, clsDebitMemoDetails.DiscountType, clsDebitMemoDetails.Discount2Applied, clsDebitMemoDetails.Discount2Type, clsDebitMemoDetails.Discount3Applied, clsDebitMemoDetails.Discount3Type);
+
+            clsDebitMemoDetails = clsDebitMemos.Details(clsDetails.DebitMemoID);
+            clsDebitMemoItems.CommitAndDispose();
 
             UpdateFooter(clsDebitMemoDetails);
 		}
@@ -642,6 +714,96 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 				Response.Write(stScript);	
 			}
 		}
+        private void LoadItem(string stID)
+        {
+            DebitMemoItems clsDebitMemoItems = new DebitMemoItems();
+            DebitMemoItemDetails clsDebitMemoItemDetails = clsDebitMemoItems.Details(Convert.ToInt64(stID));
+            clsDebitMemoItems.CommitAndDispose();
+
+            cboProductCode.Items.Clear();
+            cboVariation.Items.Clear();
+            cboProductUnit.Items.Clear();
+
+            txtProductCode.Text = clsDebitMemoItemDetails.BarCode;
+            cmdProductCode_Click(null, null);
+
+            cboProductCode.SelectedIndex = cboProductCode.Items.IndexOf(new ListItem(clsDebitMemoItemDetails.ProductCode, clsDebitMemoItemDetails.ProductID.ToString()));
+
+            if (clsDebitMemoItemDetails.VariationMatrixID == 0)
+            { cboVariation.Items.Add(new ListItem("No Variation", "0")); cboVariation.SelectedIndex = 0; }
+            else
+            { cboVariation.SelectedIndex = cboVariation.Items.IndexOf(new ListItem(clsDebitMemoItemDetails.MatrixDescription, clsDebitMemoItemDetails.VariationMatrixID.ToString())); }
+
+            if (clsDebitMemoItemDetails.ProductUnitID == 0)
+            { cboProductUnit.Items.Add(new ListItem("No Unit", "0")); cboProductUnit.SelectedIndex = 0; }
+            else
+            {
+                cboProductUnit.SelectedIndex = cboProductUnit.Items.IndexOf(new ListItem(clsDebitMemoItemDetails.ProductUnitCode, clsDebitMemoItemDetails.ProductUnitID.ToString()));
+            }
+
+            txtQuantity.Text = clsDebitMemoItemDetails.Quantity.ToString("###0.##0");
+            txtPrice.Text = clsDebitMemoItemDetails.UnitCost.ToString("###0.##0");
+            txtDiscount.Text = clsDebitMemoItemDetails.DiscountApplied.ToString("###0.##0");
+
+            if (clsDebitMemoItemDetails.DiscountType == DiscountTypes.Percentage)
+                chkInPercent.Checked = true;
+            else
+            {
+                chkInPercent.Checked = false;
+            }
+            txtAmount.Text = clsDebitMemoItemDetails.Amount.ToString("###0.##0");
+            txtRemarks.Text = clsDebitMemoItemDetails.Remarks;
+            lblDebitMemoItemID.Text = stID;
+            chkIsTaxable.Checked = clsDebitMemoItemDetails.IsVatable;
+
+            ////Added Jan 1, 2010 4:20PM : For selling information
+            //txtSellingQuantity.Text = "1";
+            //try
+            //{ txtMargin.Text = decimal.Parse(Convert.ToString(((clsDebitMemoItemDetails.SellingPrice - clsDebitMemoItemDetails.UnitCost) / clsDebitMemoItemDetails.UnitCost) * 100)).ToString("###0.##0"); }
+            //catch { txtMargin.Text = "0.00"; }
+            //txtSellingPrice.Text = clsDebitMemoItemDetails.SellingPrice.ToString("###0.##0");
+            //txtVAT.Text = clsDebitMemoItemDetails.SellingVAT.ToString("###0.##0");
+            //txtEVAT.Text = clsDebitMemoItemDetails.SellingEVAT.ToString("###0.##0");
+            //txtLocalTax.Text = clsDebitMemoItemDetails.SellingLocalTax.ToString("###0.##0");
+
+            ////Added April 28, 2010 4:20PM : For selling information
+            //txtOldSellingPrice.Text = clsDebitMemoItemDetails.OldSellingPrice.ToString("###0.##0");
+
+            //// Aug 9, 2011 : Lemu
+            //// For Required Inventory Days
+            //txtRID.Text = clsDebitMemoItemDetails.RID.ToString();
+
+            txtProductCode.Focus();
+            ShowCommandButtons(true);
+        }
+        private void ShowCommandButtons(bool bolShowCommandButtons)
+        {
+            imgProductHistory.Visible = bolShowCommandButtons;
+            imgProductPriceHistory.Visible = bolShowCommandButtons;
+            imgChangePrice.Visible = bolShowCommandButtons;
+            imgEditNow.Visible = bolShowCommandButtons;
+            lnkProductDetails.Visible = bolShowCommandButtons;
+            cmdVariationSearch.Visible = bolShowCommandButtons;
+            imgVariationQuickAdd.Visible = bolShowCommandButtons;
+            lnkVariationAdd.Visible = bolShowCommandButtons;
+            lnkProductUnitMatrix.Visible = bolShowCommandButtons;
+            lblPurchasePriceHistory.Visible = bolShowCommandButtons;
+
+            if (bolShowCommandButtons)
+            {
+                string stParam = "?task=" + Common.Encrypt("det", Session.SessionID) + "&id=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
+                string newWindowUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx" + stParam;
+                lnkProductDetails.NavigateUrl = newWindowUrl;
+
+                stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&prodid=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
+                newWindowUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/_VariationsMatrix/Default.aspx" + stParam;
+                lnkVariationAdd.NavigateUrl = newWindowUrl;
+
+                stParam = "?task=" + Common.Encrypt("list", Session.SessionID) + "&prodid=" + Common.Encrypt(cboProductCode.SelectedItem.Value, Session.SessionID);
+                newWindowUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/_UnitsMatrix/Default.aspx" + stParam;
+                lnkProductUnitMatrix.NavigateUrl = newWindowUrl;
+            }
+        }
 		private void LoadItems()
 		{
 			DataClass clsDataClass = new DataClass();
@@ -692,7 +854,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
             }
             else
             { amount = (quantity * (price - discount)); }
-            txtAmount.Text = amount.ToString("####0.#0");
+            txtAmount.Text = amount.ToString("####0.##0");
             return amount;
 		}
 		private decimal getItemTotalDiscount()
@@ -750,9 +912,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 		}
         private void PrintDebitMemo()
         {
-            Common Common = new Common();
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("debitmemo", Session.SessionID) + "&memoid=" + Common.Encrypt(lblDebitMemoID.Text, Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
+            string newWindowUrl = Constants.ROOT_DIRECTORY + "/PurchasesAndPayables/_DebitMemo/Default.aspx" + stParam;
+            string javaScript = "window.open('" + newWindowUrl + "');";
+
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
         }
         private void UpdateHeader()
         {
@@ -766,11 +930,18 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
         {
             DebitMemoDetails clsDebitMemoDetails = new DebitMemoDetails();
             clsDebitMemoDetails.DebitMemoID = Convert.ToInt64(lblDebitMemoID.Text);
-            clsDebitMemoDetails.DiscountApplied = Convert.ToDecimal(txtPODiscountApplied.Text);
-            clsDebitMemoDetails.DiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), cboPODiscountType.SelectedItem.Value);
+            clsDebitMemoDetails.DiscountApplied = Convert.ToDecimal(txtPODebitMemoDiscountApplied.Text);
+            clsDebitMemoDetails.DiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), cboPODebitMemoDiscountType.SelectedItem.Value);
+
+            clsDebitMemoDetails.Discount2Applied = Convert.ToDecimal(txtPODebitMemoDiscount2Applied.Text);
+            clsDebitMemoDetails.Discount2Type = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), cboPODebitMemoDiscount2Type.SelectedItem.Value);
+
+            clsDebitMemoDetails.Discount3Applied = Convert.ToDecimal(txtPODebitMemoDiscount3Applied.Text);
+            clsDebitMemoDetails.Discount3Type = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), cboPODebitMemoDiscount3Type.SelectedItem.Value);
+
 
             DebitMemos clsDebitMemos = new DebitMemos();
-            clsDebitMemos.UpdateDiscount(clsDebitMemoDetails.DebitMemoID, clsDebitMemoDetails.DiscountApplied, clsDebitMemoDetails.DiscountType);
+            clsDebitMemos.UpdateDiscount(clsDebitMemoDetails.DebitMemoID, clsDebitMemoDetails.DiscountApplied, clsDebitMemoDetails.DiscountType, clsDebitMemoDetails.Discount2Applied, clsDebitMemoDetails.Discount2Type, clsDebitMemoDetails.Discount3Applied, clsDebitMemoDetails.Discount3Type);
             clsDebitMemos.SynchronizeAmount(Convert.ToInt64(lblDebitMemoID.Text));
             clsDebitMemoDetails = clsDebitMemos.Details(Convert.ToInt64(lblDebitMemoID.Text));
             clsDebitMemos.CommitAndDispose();
@@ -781,7 +952,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
         {
             DebitMemoDetails clsDebitMemoDetails = new DebitMemoDetails();
             clsDebitMemoDetails.DebitMemoID = Convert.ToInt64(lblDebitMemoID.Text);
-            clsDebitMemoDetails.Freight = Convert.ToDecimal(txtPOFreight.Text);
+            clsDebitMemoDetails.Freight = Convert.ToDecimal(txtPODebitMemoFreight.Text);
 
             DebitMemos clsDebitMemos = new DebitMemos();
             clsDebitMemos.UpdateFreight(clsDebitMemoDetails.DebitMemoID, clsDebitMemoDetails.Freight);
@@ -795,7 +966,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
         {
             DebitMemoDetails clsDebitMemoDetails = new DebitMemoDetails();
             clsDebitMemoDetails.DebitMemoID = Convert.ToInt64(lblDebitMemoID.Text);
-            clsDebitMemoDetails.Deposit = Convert.ToDecimal(txtPODeposit.Text);
+            clsDebitMemoDetails.Deposit = Convert.ToDecimal(txtPODebitMemoDeposit.Text);
 
             DebitMemos clsDebitMemos = new DebitMemos();
             clsDebitMemos.UpdateDeposit(clsDebitMemoDetails.DebitMemoID, clsDebitMemoDetails.Deposit);
@@ -807,13 +978,28 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
         }
         private void UpdateFooter(DebitMemoDetails clsDebitMemoDetails)
         {
-            lblPODiscount.Text = clsDebitMemoDetails.Discount.ToString("#,##0.#0");
-            lblPOVatableAmount.Text = clsDebitMemoDetails.VatableAmount.ToString("#,##0.#0");
-            txtPOFreight.Text = clsDebitMemoDetails.Freight.ToString("#,##0.#0");
-            txtPODeposit.Text = clsDebitMemoDetails.Deposit.ToString("#,##0.#0");
-            lblPOSubTotal.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal - clsDebitMemoDetails.VAT).ToString("#,##0.#0");
-            lblPOVAT.Text = clsDebitMemoDetails.VAT.ToString("#,##0.#0");
-            lblPOTotal.Text = clsDebitMemoDetails.SubTotal.ToString("#,##0.#0");
+            lblPODebitMemoDiscount.Text = clsDebitMemoDetails.Discount.ToString("#,##0.#0");
+            lblPODebitMemoDiscount2.Text = clsDebitMemoDetails.Discount2.ToString("#,##0.#0");
+            lblPODebitMemoDiscount3.Text = clsDebitMemoDetails.Discount3.ToString("#,##0.#0");
+
+            lblTotalDiscount1.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal + clsDebitMemoDetails.Discount + clsDebitMemoDetails.Discount2 + clsDebitMemoDetails.Discount3).ToString("#,##0.#0");
+            lblTotalDiscount2.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal + clsDebitMemoDetails.Discount2 + clsDebitMemoDetails.Discount3).ToString("#,##0.#0");
+            lblTotalDiscount3.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal + clsDebitMemoDetails.Discount3).ToString("#,##0.#0");
+
+            lblPODebitMemoVatableAmount.Text = clsDebitMemoDetails.VatableAmount.ToString("#,##0.#0");
+            txtPODebitMemoFreight.Text = clsDebitMemoDetails.Freight.ToString("#,##0.#0");
+            txtPODebitMemoDeposit.Text = clsDebitMemoDetails.Deposit.ToString("#,##0.#0");
+            lblPODebitMemoVAT.Text = clsDebitMemoDetails.VAT.ToString("#,##0.#0");
+            if (chkIsVatInclusive.Checked)
+            {
+                lblPODebitMemoSubTotal.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal - clsDebitMemoDetails.VAT).ToString("#,##0.#0");
+                lblPODebitMemoTotal.Text = clsDebitMemoDetails.SubTotal.ToString("#,##0.#0");
+            }
+            else
+            {
+                lblPODebitMemoSubTotal.Text = clsDebitMemoDetails.SubTotal.ToString("#,##0.#0");
+                lblPODebitMemoTotal.Text = Convert.ToDecimal(clsDebitMemoDetails.SubTotal + clsDebitMemoDetails.VAT).ToString("#,##0.#0");
+            }
         }
 
 		#endregion

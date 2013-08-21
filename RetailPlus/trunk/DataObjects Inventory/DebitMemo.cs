@@ -39,6 +39,12 @@ namespace AceSoft.RetailPlus.Data
         public decimal Discount;
         public decimal DiscountApplied;
         public DiscountTypes DiscountType;
+        public decimal Discount2;
+        public decimal Discount2Applied;
+        public DiscountTypes Discount2Type;
+        public decimal Discount3;
+        public decimal Discount3Applied;
+        public DiscountTypes Discount3Type;
         public decimal VAT;
         public decimal VatableAmount;
         public decimal EVAT;
@@ -266,23 +272,80 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-
-        public void UpdateDiscount(long DebitMemoID, decimal DiscountApplied, DiscountTypes DiscountType)
+        public void UpdateIsVatInclusive(long DebitMemoID, bool IsVatInclusive)
         {
             try
             {
                 string SQL = "UPDATE tblPODebitMemo SET " +
-                                "DiscountApplied        =   @DiscountApplied, " +
-                                "DiscountType           =   @DiscountType " +
+                                "IsVatInclusive          =   @IsVatInclusive " +
                             "WHERE DebitMemoID = @DebitMemoID;";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@DiscountApplied", DiscountApplied);
-                cmd.Parameters.AddWithValue("@DiscountType", Convert.ToInt16(DiscountType.ToString("d")));
-                cmd.Parameters.AddWithValue("@DebitMemoID", DebitMemoID);
+                MySqlParameter prmIsVatInclusive = new MySqlParameter("@IsVatInclusive", MySqlDbType.Int16);
+                prmIsVatInclusive.Value = Convert.ToInt16(IsVatInclusive); ;
+                cmd.Parameters.Add(prmIsVatInclusive);
+
+                MySqlParameter prmDebitMemoID = new MySqlParameter("@DebitMemoID", MySqlDbType.Int64);
+                prmDebitMemoID.Value = DebitMemoID;
+                cmd.Parameters.Add(prmDebitMemoID);
+
+                base.ExecuteNonQuery(cmd);
+
+                SynchronizeAmount(DebitMemoID);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+        public void UpdateDiscount(long DebitMemoID, decimal DiscountApplied, DiscountTypes DiscountType, decimal Discount2Applied, DiscountTypes Discount2Type, decimal Discount3Applied, DiscountTypes Discount3Type)
+        {
+            try
+            {
+                string SQL = "UPDATE tblPODebitMemo SET " +
+                                "DiscountApplied        =   @DiscountApplied, " +
+                                "DiscountType           =   @DiscountType, " +
+                                "Discount2Applied       =   @Discount2Applied, " +
+                                "Discount2Type          =   @Discount2Type, " +
+                                "Discount3Applied       =   @Discount3Applied, " +
+                                "Discount3Type          =   @Discount3Type " +
+                            "WHERE DebitMemoID = @DebitMemoID;";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied", MySqlDbType.Decimal);
+                prmDiscountApplied.Value = DiscountApplied;
+                cmd.Parameters.Add(prmDiscountApplied);
+
+                MySqlParameter prmDiscountType = new MySqlParameter("@DiscountType", MySqlDbType.Int16);
+                prmDiscountType.Value = Convert.ToInt16(DiscountType.ToString("d"));
+                cmd.Parameters.Add(prmDiscountType);
+
+                MySqlParameter prmDiscount2Applied = new MySqlParameter("@Discount2Applied", MySqlDbType.Decimal);
+                prmDiscount2Applied.Value = Discount2Applied;
+                cmd.Parameters.Add(prmDiscount2Applied);
+
+                MySqlParameter prmDiscount2Type = new MySqlParameter("@Discount2Type", MySqlDbType.Int16);
+                prmDiscount2Type.Value = Convert.ToInt16(Discount2Type.ToString("d"));
+                cmd.Parameters.Add(prmDiscount2Type);
+
+                MySqlParameter prmDiscount3Applied = new MySqlParameter("@Discount3Applied", MySqlDbType.Decimal);
+                prmDiscount3Applied.Value = Discount3Applied;
+                cmd.Parameters.Add(prmDiscount3Applied);
+
+                MySqlParameter prmDiscount3Type = new MySqlParameter("@Discount3Type", MySqlDbType.Int16);
+                prmDiscount3Type.Value = Convert.ToInt16(Discount3Type.ToString("d"));
+                cmd.Parameters.Add(prmDiscount3Type);
+
+                MySqlParameter prmDebitMemoID = new MySqlParameter("@DebitMemoID", MySqlDbType.Int64);
+                prmDebitMemoID.Value = DebitMemoID;
+                cmd.Parameters.Add(prmDebitMemoID);
 
                 base.ExecuteNonQuery(cmd);
             }
@@ -638,6 +701,12 @@ namespace AceSoft.RetailPlus.Data
                             "Discount, " +
                             "DiscountApplied, " +
                             "DiscountType, " +
+                            "Discount2, " +
+                            "Discount2Applied, " +
+                            "Discount2Type, " +
+                            "Discount3, " +
+                            "Discount3Applied, " +
+                            "Discount3Type, " +
                             "VAT, " +
                             "VatableAmount, " +
                             "EVAT, " +
@@ -649,6 +718,7 @@ namespace AceSoft.RetailPlus.Data
                             "UnpaidAmount, " +
                             "TotalItemDiscount, " +
                             "DebitMemoStatus, " +
+                            "IsVatInclusive, " +
                             "a.Remarks, " +
                             "SupplierDocNo, " +
                             "PostingDate, " +
@@ -680,7 +750,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmDebitMemoID = new MySqlParameter("@DebitMemoID",MySqlDbType.Int16);
+                MySqlParameter prmDebitMemoID = new MySqlParameter("@DebitMemoID", MySqlDbType.Int64);
                 prmDebitMemoID.Value = DebitMemoID;
                 cmd.Parameters.Add(prmDebitMemoID);
 
@@ -711,6 +781,12 @@ namespace AceSoft.RetailPlus.Data
                     Details.Discount = myReader.GetDecimal("Discount");
                     Details.DiscountApplied = myReader.GetDecimal("DiscountApplied");
                     Details.DiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), myReader.GetString("DiscountType"));
+                    Details.Discount2 = myReader.GetDecimal("Discount2");
+                    Details.Discount2Applied = myReader.GetDecimal("Discount2Applied");
+                    Details.Discount2Type = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), myReader.GetString("Discount2Type"));
+                    Details.Discount3 = myReader.GetDecimal("Discount3");
+                    Details.Discount3Applied = myReader.GetDecimal("Discount3Applied");
+                    Details.Discount3Type = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), myReader.GetString("Discount3Type"));
                     Details.VAT = myReader.GetDecimal("VAT");
                     Details.VatableAmount = myReader.GetDecimal("VatableAmount");
                     Details.EVAT = myReader.GetDecimal("EVAT");

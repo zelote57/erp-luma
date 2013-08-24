@@ -6608,4 +6608,67 @@ ALTER TABLE sysConfig ADD Category VARCHAR(100);
 
 ALTER TABLE tblContactGroup MODIFY ContactGroupCode VARCHAR(10);
 
+
+
+
+
+/*****************************
+**	tblProductInventoryAudit
+**	This will contain all changes in the tblProductInventory
+*****************************/
+DROP TABLE IF EXISTS tblProductInventoryAudit;
+CREATE TABLE tblProductInventoryAudit (
+	`BranchID` INT(4) UNSIGNED NOT NULL,
+	`ProductID` BIGINT NOT NULL DEFAULT 0,
+	`MatrixID` BIGINT NOT NULL DEFAULT 0,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityIn` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`IsLock` TINYINT(1) NOT NULL DEFAULT 0,
+	`DateCreated` DATETIME NOT NULL DEFAULT NOW(),
+	INDEX `IX_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`)
+);
+
+/*****************************
+**	tblProductInventoryDaily
+**	This will contain all the end-of-day quantity in tblProductInventory
+*****************************/
+DROP TABLE IF EXISTS tblProductInventoryDaily;
+CREATE TABLE tblProductInventoryDaily (
+	`BranchID` INT(4) UNSIGNED NOT NULL,
+	`ProductID` BIGINT NOT NULL DEFAULT 0,
+	`MatrixID` BIGINT NOT NULL DEFAULT 0,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityIn` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`IsLock` TINYINT(1) NOT NULL DEFAULT 0,
+	`DateCreated` DATETIME NOT NULL DEFAULT NOW(),
+	INDEX `IX_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`)
+);
+
+
+/*****************************
+**	tblProductInventoryMonthly
+**	This will contain all the end-of-month quantity in tblProductInventory
+*****************************/
+DROP TABLE IF EXISTS tblProductInventoryMonthly;
+CREATE TABLE tblProductInventoryMonthly (
+	`BranchID` INT(4) UNSIGNED NOT NULL,
+	`ProductID` BIGINT NOT NULL DEFAULT 0,
+	`MatrixID` BIGINT NOT NULL DEFAULT 0,
+	`Quantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityIn` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`IsLock` TINYINT(1) NOT NULL DEFAULT 0,
+	`DateMonth` VARCHAR(7),
+	`DateCreated` DATETIME NOT NULL DEFAULT NOW(),
+	INDEX `IX_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`)
+);
+
+CREATE INDEX IX_tblProductInventory_PID ON tblProductInventory (ProductID);
+CREATE INDEX IX_tblProductInventory_PBID ON tblProductInventory (ProductID, BranchID);
+
 /*********************************  v_4.0.1.0.sql END  *******************************************************/ 

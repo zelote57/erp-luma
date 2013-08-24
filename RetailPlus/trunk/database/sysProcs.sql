@@ -60,3 +60,44 @@ GO
 delimiter ;
 
 
+
+/**************************************************************
+	22Aug2013: LEAceron		sysProductInventorySnapshot
+	Desc: Auto save the daily inventory and monthly
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS sysProductInventorySnapshot
+GO
+
+create procedure sysProductInventorySnapshot()
+BEGIN
+	DECLARE dteProcessDate DATETIME;
+	
+	SET dteProcessDate = NOW();
+
+	CALL procsysAuditInsert(dteProcessDate, 'SYSTEM', 'sysProductInventorySnapshot: DAILY INV START', 'localhost', 'Start processing daily inventory');
+
+	INSERT INTO tblProductInventoryDaily (
+					 BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,IsLock ,DateCreated)
+			SELECT   BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,IsLock , dteProcessDate FROM tblProductInventory;
+
+	CALL procsysAuditInsert(NOW(), 'SYSTEM', 'sysProductInventorySnapshot: DAILY INV FINISH', 'localhost', 'Finish processing daily inventory');
+
+	SET dteProcessDate = NOW();
+	CALL procsysAuditInsert(dteProcessDate, 'SYSTEM', 'sysProductInventorySnapshot: MONTHLY INV START', 'localhost', 'Start processing monthly inventory');
+
+	DELETE FROM tblProductInventoryMonthly WHERE DateMonth = DATE_FORMAT(dteProcessDate, '%Y-%m');
+
+	INSERT INTO tblProductInventoryMonthly (
+				BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,IsLock ,DateMonth ,DateCreated)
+	SELECT   BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,IsLock ,DATE_FORMAT(dteProcessDate, '%Y-%m') ,dteProcessDate FROM tblProductInventory;
+	
+	CALL procsysAuditInsert(NOW(), 'SYSTEM', 'sysProductInventorySnapshot: MONTHLY INV FINISH', 'localhost', 'Start processing monthly inventory');	
+END;
+GO
+delimiter ;
+
+
+
+

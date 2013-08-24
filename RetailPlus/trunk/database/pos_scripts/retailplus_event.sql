@@ -1,5 +1,4 @@
-﻿USE POS
-
+﻿
 /********************************************
 	eventExpireContactRewardCard
 	-- Expires all advantage card(s) that is less than the current date.
@@ -11,9 +10,10 @@ GO
 CREATE EVENT eventExpireContactRewardCard
     ON SCHEDULE
 		EVERY 1 DAY
+		STARTS '2012-08-24 23:50:00'
     DO 
 	BEGIN
-		CALL pos.procContactRewardExpire();
+		CALL procContactRewardExpire();
 	END;
 GO
 delimiter ;
@@ -30,9 +30,30 @@ GO
 CREATE EVENT eventExpireCustomerCreditCard
     ON SCHEDULE
 		EVERY 1 DAY
+		STARTS '2012-08-24 23:50:00'
     DO 
 	BEGIN
-		CALL pos.procContactCreditCardExpire();
+		CALL procContactCreditCardExpire();
+	END;
+GO
+delimiter ;
+
+
+/********************************************
+	eventProductInventorySnapshot
+	-- Take a daily and monthly snaphot of the inventory
+********************************************/
+delimiter GO
+DROP EVENT IF EXISTS eventProductInventorySnapshot
+GO
+
+CREATE EVENT eventProductInventorySnapshot
+    ON SCHEDULE
+		EVERY 1 DAY
+		STARTS '2013-08-24 23:50:00'
+    DO 
+	BEGIN
+		CALL sysProductInventorySnapshot();
 	END;
 GO
 delimiter ;

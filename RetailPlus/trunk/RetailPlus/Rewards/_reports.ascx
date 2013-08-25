@@ -1,7 +1,7 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Rewards.__Reports" Codebehind="_reports.ascx.cs" %>
 <%@ Register Assembly="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304"
     Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
-<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+<asp:UpdatePanel id="UpdatePanel1" runat="server">
 <ContentTemplate>
     <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	    <tr>
@@ -16,10 +16,10 @@
 						    <table cellpadding="1" cellspacing="0" border="0">
 							    <tr>
 								    <td class="ms-toolbar" nowrap="nowrap">
-									    <asp:imagebutton id="imgView" accessKey="V" tabIndex="1" height="16" width="16" border="0" ToolTip="View Report" ImageUrl="~/_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
+									    <asp:imagebutton id="imgView" accesskey="V" tabIndex="1" height="16" width="16" border="0" ToolTip="View Report" ImageUrl="~/_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
 								    </td>
 								    <td class="ms-toolbar" nowrap="nowrap" width="100">
-									    <asp:Label ID="Label2" Runat="server">Report Options</asp:Label>
+									    <asp:Label id="Label2" Runat="server">Report Options</asp:Label>
 								    </td>
 								    <td class="ms-toolbar" nowrap="nowrap">
 									    <asp:DropDownList id="cboReportOptions" runat="server" Width="150">
@@ -44,20 +44,24 @@
 						    </table>
 					    </td>
 					    <td class="ms-toolbar" align="right" nowrap="nowrap" id="align01">
-						    <table cellspacing="0" cellpadding="0" width="100%" border="0">
-							    <tr>
-								    <td class="ms-toolbar" nowrap="nowrap" align="left">
-									    <asp:Button id="cmdView" runat="server" Text="Go" onclick="cmdView_Click" OnClientClick="NewWindow();"></asp:Button>
-								    </td>
-							    </tr>
-						    </table>
+						    <asp:UpdatePanel id="updPrint" runat="server">
+                                <ContentTemplate>
+						            <table cellspacing="0" cellpadding="0" width="100%" border="0">
+							            <tr>
+								            <td class="ms-toolbar" nowrap="nowrap" align="left">
+									            <asp:Button id="cmdView" runat="server" Text="Go" onclick="cmdView_Click" OnClientClick="NewWindow();"></asp:Button>
+								            </td>
+							            </tr>
+						            </table>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
 					    </td>
 					    <td class="ms-separator"><asp:label id="lblSeparator4" runat="server">|</asp:label></td>
 					    <td class="ms-toolbar">
 						    <table cellspacing="0" cellpadding="1" border="0">
 							    <tr>
-								    <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgBack" accessKey="B" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="~/_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
-								    <td nowrap="nowrap"><asp:linkbutton id="cmdBack" accessKey="B" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" OnClick="cmdBack_Click">Back to previous window</asp:linkbutton></td>
+								    <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgBack" accesskey="B" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="~/_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
+								    <td nowrap="nowrap"><asp:linkbutton id="cmdBack" accesskey="B" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" OnClick="cmdBack_Click">Back to previous window</asp:linkbutton></td>
 							    </tr>
 						    </table>
 					    </td>
@@ -66,7 +70,7 @@
 					    </td>
 				    </tr>
 			    </table>
-			    <asp:label id="lblReferrer" runat="server" Visible="False"></asp:label>
+			    <asp:label id="lblReferrer" runat="server" visible="False"></asp:label>
 		    </td>
 	    </tr>
 	    <tr>
@@ -76,7 +80,7 @@
 				    <tr>
 					    <td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	10px" colspan="3">
 						    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                <asp:PlaceHolder ID="holderSelectCustomer" runat="server" Visible="true">
+                                <asp:PlaceHolder id="holderSelectCustomer" runat="server" Visible="true">
 							        <tr>
 								        <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
 									        <label>Filter by Customer</label>
@@ -86,9 +90,9 @@
 									        <asp:dropdownlist id="cboContactName" CssClass="ms-long" runat="server"></asp:dropdownlist>
 								        </td>
                                         <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
-                                            <asp:textbox id="txtContactName" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
+                                            <asp:textbox id="txtContactName" accesskey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                             <asp:imagebutton id="imgContactNameSearch" ToolTip="Execute search" 
-                                                style="CURSOR: hand; width: 16px;" accessKey="P" 
+                                                style="CURSOR: hand; width: 16px;" accesskey="P" 
                                                 ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
                                                 CausesValidation="False" onclick="imgContactNameSearch_Click"></asp:imagebutton>
 								        </td>
@@ -96,14 +100,14 @@
 								        </td>
 							        </tr>
                                 </asp:PlaceHolder>
-                                <asp:PlaceHolder ID="holderTranDate" runat="server" Visible="true">
+                                <asp:PlaceHolder id="holderTranDate" runat="server" Visible="true">
 				                    <tr>
 					                    <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
 						                    <label>Transaction Start &nbsp;Date</label>&nbsp;
 					                    </td>
 					                    <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 					                    <td nowrap="nowrap">
-						                    <asp:TextBox id="txtStartTransactionDate" ondblclick="ontime(this)" accessKey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" Width="100px"></asp:TextBox>
+						                    <asp:TextBox id="txtStartTransactionDate" ondblclick="ontime(this)" accesskey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" Width="100px"></asp:TextBox>
 					                    </td>
 					                    <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
 					                    <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
@@ -111,7 +115,7 @@
 					                    </td>
 					                    <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 					                    <td nowrap="nowrap">
-						                    <asp:TextBox id="txtEndTransactionDate" ondblclick="ontime(this)" accessKey="E" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" Width="100px"></asp:TextBox>
+						                    <asp:TextBox id="txtEndTransactionDate" ondblclick="ontime(this)" accesskey="E" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" Width="100px"></asp:TextBox>
                                             &nbsp;&nbsp;
                                             <asp:Label id="Label3" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
 						                    <asp:Label id="Label4" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>

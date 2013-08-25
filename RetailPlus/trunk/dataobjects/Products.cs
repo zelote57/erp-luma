@@ -4522,7 +4522,7 @@ namespace AceSoft.RetailPlus.Data
         //        MySqlCommand cmd = new MySqlCommand();
         //        string SQL;
 
-        //        SQL = "ALTER TABLE tblProducts ADD Quantity" + ID.ToString() + " decimal(18,2) NOT NULL DEFAULT 0;";
+        //        SQL = "ALTER table tblProducts ADD Quantity" + ID.ToString() + " decimal(18,2) NOT NULL DEFAULT 0;";
         //        cmd = new MySqlCommand();
 				
 				

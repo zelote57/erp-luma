@@ -12,12 +12,12 @@
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
-                        <asp:UpdatePanel ID="updPrint" runat="server">
+                        <asp:UpdatePanel id="updPrint" runat="server">
                             <ContentTemplate>
 						        <table cellspacing="0" cellpadding="1" border="0">
 							        <tr>
-								        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgPrint" title="Print this Purchase Debit Memo" accessKey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this Purchase Debit Memo" ImageUrl="../../_layouts/images/print.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgPrint_Click"></asp:imagebutton></td>
-								        <td noWrap><asp:linkbutton id="cmdPrint" title="Print this Purchase Debit Memo" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrint_Click">Print</asp:linkbutton></td>
+								        <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgPrint" title="Print this Purchase Debit Memo" accesskey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this Purchase Debit Memo" ImageUrl="../../_layouts/images/print.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgPrint_Click"></asp:imagebutton></td>
+								        <td nowrap="nowrap"><asp:linkbutton id="cmdPrint" title="Print this Purchase Debit Memo" accesskey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrint_Click">Print</asp:linkbutton></td>
 							        </tr>
 						        </table>
                             </ContentTemplate>
@@ -27,12 +27,12 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Back To Debit Memo List" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Back To Debit Memo List" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdCancel" title="Back To Debit Memo List" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Back To Debit Memo List</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Back To Debit Memo List" accesskey="C" tabIndex="3" height="16" width="16" border="0" alt="Back To Debit Memo List" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdCancel" title="Back To Debit Memo List" accesskey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Back To Debit Memo List</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<td class="ms-toolbar" id="align02" noWrap align="right" width="99%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="align02" nowrap="nowrap" align="right" width="99%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>
 				</tr>
 			</table>
@@ -45,8 +45,8 @@
 			<table cellspacing="0" cellpadding="0" width="100%" border="0">
 				<tr>
 					<td class="ms-descriptiontext" colSpan="3">
-						<asp:label id="lblDebitMemoID" runat="server" Visible="False"></asp:label>
-						<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label>
+						<asp:label id="lblDebitMemoID" runat="server" visible="False"></asp:label>
+						<asp:label id="lblReferrer" runat="server" visible="False"></asp:label>
 					</td>
 				</tr>
 				<tr>
@@ -85,7 +85,7 @@
 							</tr>
 							<tr style="PADDING-BOTTOM: 5px">
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblSupplierID" runat="server" CssClass="ms-error" Visible="False"></asp:label>
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblSupplierID" runat="server" CssClass="ms-error" visible="False"></asp:label>
 									<asp:HyperLink id="lblSupplierCode" runat="server" Target="_blank">lblSupplierCode</asp:HyperLink></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblSupplierContact" runat="server" CssClass="ms-error"></asp:label></td>
@@ -123,7 +123,7 @@
 							</tr>
 							<tr style="PADDING-BOTTOM: 5px">
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblBranchCode" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblBranchID" runat="server" CssClass="ms-error" Visible="False"></asp:label></td>
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblBranchCode" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblBranchID" runat="server" CssClass="ms-error" visible="False"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colSpan="3"><asp:label id="lblBranchAddress" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
@@ -179,27 +179,27 @@
 				                <input type="checkbox" id="chkList" runat="server" name="chkList" visible="false" />
 			                </td>
 			                <td class="ms-vb-user">
-				                <asp:HyperLink ID="lnkDescription" Runat="server" Target="_blank"></asp:HyperLink>
+				                <asp:HyperLink id="lnkDescription" Runat="server" Target="_blank"></asp:HyperLink>
 			                </td>
 			                <td class="ms-vb-user">
-				                <asp:HyperLink ID="lnkMatrixDescription" Runat="server" Target="_blank"></asp:HyperLink>
+				                <asp:HyperLink id="lnkMatrixDescription" Runat="server" Target="_blank"></asp:HyperLink>
 			                </td>
 			                <td class="ms-vb-user" style="text-align: right">
-				                <asp:Label ID="lblQuantity" Runat="server"></asp:Label>&nbsp;&nbsp;
+				                <asp:Label id="lblQuantity" Runat="server"></asp:Label>&nbsp;&nbsp;
 			                </td>
 			                <td class="ms-vb-user">
-				                <asp:Label ID="lblProductUnitID" Runat="server" Visible="False"></asp:Label>
-				                <asp:Label ID="lblProductUnitCode" Runat="server"></asp:Label>
+				                <asp:Label id="lblProductUnitID" Runat="server" visible="False"></asp:Label>
+				                <asp:Label id="lblProductUnitCode" Runat="server"></asp:Label>
 			                </td>
 			                <td class="ms-vb-user" style="text-align: right">
-				                <asp:Label ID="lblUnitCost" Runat="server"></asp:Label>
+				                <asp:Label id="lblUnitCost" Runat="server"></asp:Label>
 			                </td>
 			                <td class="ms-vb-user" style="text-align: right">
-				                <asp:Label ID="lblDiscountApplied" Runat="server"></asp:Label>
-				                <asp:Label ID="lblPercent" Runat="server" Visible="False">%</asp:Label>
+				                <asp:Label id="lblDiscountApplied" Runat="server"></asp:Label>
+				                <asp:Label id="lblPercent" Runat="server" visible="False">%</asp:Label>
 			                </td>
 			                <td class="ms-vb-user" style="text-align: right">
-				                <asp:Label ID="lblAmount" Runat="server"></asp:Label>
+				                <asp:Label id="lblAmount" Runat="server"></asp:Label>
 			                </td>
 			                <td class="ms-vb2">
 				                <A class="DropDown" id="anchorDown" href="" runat="server">
@@ -263,7 +263,7 @@
 									                <asp:Label id="Label10" CssClass="ms-vh2" runat="server" text="<b>:</b>"></asp:Label>
 								                </td>
 								                <td colspan="4">
-									                <asp:Label ID="lblRemarks" CssClass="ms-vb2" Runat="server"></asp:Label>
+									                <asp:Label id="lblRemarks" CssClass="ms-vb2" Runat="server"></asp:Label>
 								                </td>
 							                </tr>
 						                </table>
@@ -302,7 +302,7 @@
 				                <td class="ms-formspacer"></td>
 				                <td></td>
 				                <td align="left"><label>   &nbsp; &nbsp; Applicable Discount (1):</label></td>
-				                <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoDiscountApplied" accessKey="" runat="server" CssClass="ms-short-numeric-disabled" BorderStyle="Groove" Text=0 Width="82px" AutoPostBack="True" ReadOnly="True"></asp:textbox><asp:dropdownlist id="cboPODebitMemoDiscountType" runat="server" CssClass="ms-short-disabled" AutoPostBack="True" Enabled="False">
+				                <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoDiscountApplied" accesskey="" runat="server" CssClass="ms-short-numeric-disabled" BorderStyle="Groove" Text=0 Width="82px" AutoPostBack="True" ReadOnly="True"></asp:textbox><asp:dropdownlist id="cboPODebitMemoDiscountType" runat="server" CssClass="ms-short-disabled" AutoPostBack="True" Enabled="False">
                                     <asp:ListItem Value="0">NA</asp:ListItem>
                                     <asp:ListItem Value="1">amt</asp:ListItem>
                                     <asp:ListItem Selected="True" Value="2">%</asp:ListItem>
@@ -330,7 +330,7 @@
 				                <td class="ms-formspacer"></td>
 				                <td></td>
 				                <td align="left"><label>   &nbsp; &nbsp; Applicable Discount (2):</label></td>
-				                <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoDiscount2Applied" accessKey="" runat="server" CssClass="ms-short-numeric-disabled" BorderStyle="Groove" Text=0 Width="82px" AutoPostBack="True" ReadOnly="True"></asp:textbox><asp:dropdownlist id="cboPODebitMemoDiscount2Type" runat="server" CssClass="ms-short-disabled" AutoPostBack="True" Enabled="False">
+				                <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoDiscount2Applied" accesskey="" runat="server" CssClass="ms-short-numeric-disabled" BorderStyle="Groove" Text=0 Width="82px" AutoPostBack="True" ReadOnly="True"></asp:textbox><asp:dropdownlist id="cboPODebitMemoDiscount2Type" runat="server" CssClass="ms-short-disabled" AutoPostBack="True" Enabled="False">
                                     <asp:ListItem Value="0">NA</asp:ListItem>
                                     <asp:ListItem Value="1">amt</asp:ListItem>
                                     <asp:ListItem Selected="True" Value="2">%</asp:ListItem>
@@ -358,7 +358,7 @@
 				                <td class="ms-formspacer"></td>
 				                <td></td>
 				                <td align="left"><label>   &nbsp; &nbsp; Applicable Discount (3):</label></td>
-				                <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoDiscount3Applied" accessKey="" runat="server" CssClass="ms-short-numeric-disabled" BorderStyle="Groove" Text=0 Width="82px" AutoPostBack="True" ReadOnly="True"></asp:textbox><asp:dropdownlist id="cboPODebitMemoDiscount3Type" runat="server" CssClass="ms-short-disabled" AutoPostBack="True" Enabled="False">
+				                <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoDiscount3Applied" accesskey="" runat="server" CssClass="ms-short-numeric-disabled" BorderStyle="Groove" Text=0 Width="82px" AutoPostBack="True" ReadOnly="True"></asp:textbox><asp:dropdownlist id="cboPODebitMemoDiscount3Type" runat="server" CssClass="ms-short-disabled" AutoPostBack="True" Enabled="False">
                                     <asp:ListItem Value="0">NA</asp:ListItem>
                                     <asp:ListItem Value="1">amt</asp:ListItem>
                                     <asp:ListItem Selected="True" Value="2">%</asp:ListItem>
@@ -379,7 +379,7 @@
 			                <tr style="PADDING-TOP: 5px;PADDING-BOTTOM: 5px">
 				                <td class="ms-formspacer"></td>
 				                <td></td>
-				                <td align="left"><label><b>VATable Amount:</b></label><asp:CheckBox ID="chkIsVatInclusive" runat="server" Checked="true" Text="(Is-Vat-Inclusive)" Enabled="false" AutoPostBack="true"/></td>
+				                <td align="left"><label><b>VATable Amount:</b></label><asp:CheckBox id="chkIsVatInclusive" runat="server" Checked="true" Text="(Is-Vat-Inclusive)" Enabled="false" AutoPostBack="true"/></td>
 				                <td align="right"><asp:label id="lblPODebitMemoVatableAmount" runat="server" CssClass="ms-error">0.00</asp:label></td>
 			                </tr>
 			                <tr style="PADDING-BOTTOM: 5px">
@@ -398,14 +398,14 @@
 				                <td class="ms-formspacer"></td>
 				                <td width="50%"></td>
 				                <td align="left"><label><b>Freight:</b></label></td>
-				                <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoFreight" accessKey="" runat="server" CssClass="ms-short-numeric-disabled" BorderStyle="Groove" Text="0.00" AutoPostBack="True" ReadOnly="true"></asp:textbox>
+				                <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoFreight" accesskey="" runat="server" CssClass="ms-short-numeric-disabled" BorderStyle="Groove" Text="0.00" AutoPostBack="True" ReadOnly="true"></asp:textbox>
 				                                                            <asp:requiredfieldvalidator id="Requiredfieldvalidator11" runat="server" CssClass="ms-error" ControlToValidate="txtPODebitMemoFreight" Display="Dynamic" ErrorMessage="'Freight' must not be left blank."></asp:requiredfieldvalidator></td>
 			                </tr>
 			                <tr style="PADDING-BOTTOM: 5px">
 				                <td class="ms-formspacer"></td>
 				                <td></td>
 				                <td align="left"><label><b>PODebitMemo Deposit:</b></label></td>
-				                <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoDeposit" accessKey="" runat="server" CssClass="ms-short-numeric-disabled" BorderStyle="Groove" Text="0.00" AutoPostBack="True" ReadOnly="true"></asp:textbox>
+				                <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoDeposit" accesskey="" runat="server" CssClass="ms-short-numeric-disabled" BorderStyle="Groove" Text="0.00" AutoPostBack="True" ReadOnly="true"></asp:textbox>
 				                                                                <asp:requiredfieldvalidator id="Requiredfieldvalidator12" runat="server" CssClass="ms-error" ControlToValidate="txtPODebitMemoDeposit" Display="Dynamic" ErrorMessage="'PODebitMemo Deposit' must not be left blank."></asp:requiredfieldvalidator></td>
 			                </tr>
 			                <tr>
@@ -430,31 +430,31 @@
 		<td id="AddUserTextTDID2">
 			<table class="ms-toolbar" id="onetidGrpsTC" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td class="ms-toolbar" align="left" noWrap width="99%">
+					<td class="ms-toolbar" align="left" nowrap="nowrap" width="99%">
 						<table cellspacing="0" cellpadding="1" border="0" width="99%">
 							<tr>
-								<td class="ms-toolbar" noWrap>Remarks :</td>
-								<td noWrap width="99%">
-								<asp:Label ID="Label1" runat="server" CssClass="ms-error">Enter remarks to of cancellation. Remarks should not be blank.</asp:Label><br />
-								<asp:textbox id="txtRemarks" accessKey="Q" runat="server" CssClass="ms-long" BorderStyle="Groove" Width="100%" TextMode="MultiLine" Rows="5" BorderColor="Red"></asp:textbox></td>
+								<td class="ms-toolbar" nowrap="nowrap">Remarks :</td>
+								<td nowrap="nowrap" width="99%">
+								<asp:Label id="Label1" runat="server" CssClass="ms-error">Enter remarks to of cancellation. Remarks should not be blank.</asp:Label><br />
+								<asp:textbox id="txtRemarks" accesskey="Q" runat="server" CssClass="ms-long" BorderStyle="Groove" Width="100%" TextMode="MultiLine" Rows="5" BorderColor="Red"></asp:textbox></td>
 							</tr>
 						</table>
 						<asp:requiredfieldvalidator id="Requiredfieldvalidator10" runat="server" CssClass="ms-error" ControlToValidate="txtRemarks" Display="Dynamic" ErrorMessage="'Remarks' must not be left blank."></asp:requiredfieldvalidator>
 					</td>
 					<td class="ms-separator"><asp:label id="Label16" runat="server">|</asp:label></td>
 					<td class="ms-toolbar">
-                        <asp:UpdatePanel ID="updCancel" runat="server">
+                        <asp:UpdatePanel id="updCancel" runat="server">
                             <ContentTemplate>
 						        <table cellspacing="0" cellpadding="1" border="0">
 							        <tr>
-								        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancelDebitMemo" title="Cancel This Debit Memo" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/cancel.gif" alt="Cancel this Debit Memo" border="0" width="16" height="16" OnClick="imgCancelDebitMemo_Click"></asp:imagebutton></td>
-								        <td noWrap><asp:linkbutton id="cmdCancelDebitMemo" title="Cancel this Debit Memo" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdCancelDebitMemo_Click">Cancel Debit Memo</asp:linkbutton></td>
+								        <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancelDebitMemo" title="Cancel This Debit Memo" accesskey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/cancel.gif" alt="Cancel this Debit Memo" border="0" width="16" height="16" OnClick="imgCancelDebitMemo_Click"></asp:imagebutton></td>
+								        <td nowrap="nowrap"><asp:linkbutton id="cmdCancelDebitMemo" title="Cancel this Debit Memo" accesskey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdCancelDebitMemo_Click">Cancel Debit Memo</asp:linkbutton></td>
 							        </tr>
 						        </table>
                             </ContentTemplate>
                         </asp:UpdatePanel>
 					</td>
-					<td class="ms-toolbar" id="align052" noWrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="align052" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>
 				</tr>
 			</table>

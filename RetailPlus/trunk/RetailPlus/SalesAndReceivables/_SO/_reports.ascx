@@ -3,13 +3,91 @@
     Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
 <link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css"
     rel="stylesheet" type="text/css" />
-<asp:UpdatePanel ID="UpdatePanel1" runat="server"><ContentTemplate>
-<table cellSpacing=0 cellPadding=0 width="100%" border=0><TBODY><TR><TD colspan=3><IMG height=10 alt="" src="../../_layouts/images/blank.gif" width=1 /></TD></TR><TR><TD><IMG height=1 alt="" src="../../_layouts/images/blank.gif" width=10 /></TD><TD><table style="MARGIN-LEFT: 3px" class="ms-toolbar" cellSpacing=0 cellPadding=2 border=0><TBODY><TR><TD style="WIDTH: 234px" class="ms-toolbar"><table cellSpacing=0 cellPadding=1 border=0><TBODY><TR><TD class="ms-toolbar" noWrap><asp:imagebutton accessKey="V" id="imgView" tabIndex=1 runat="server" CssClass="ms-toolbar" ImageUrl="../../_layouts/images/tabpub.gif" ToolTip="View Report" border="0" width="16" height="16"></asp:imagebutton> </TD><TD class="ms-toolbar" noWrap width=100><asp:Label id="Label2" Runat="server">Report Options</asp:Label> </TD><TD class="ms-toolbar" noWrap><asp:DropDownList id="cboReportOptions" runat="server" Width="150">
-										<asp:ListItem Value="0" Selected="True">Web Format</asp:ListItem>
-										<asp:ListItem Value="1">Acrobat PDF</asp:ListItem>
-										<asp:ListItem Value="2">Microsoft Word</asp:ListItem>
-										<asp:ListItem Value="3">Microsoft Excel</asp:ListItem>
-									</asp:DropDownList> </TD></TR></TBODY></TABLE></TD><TD id="align01" class="ms-toolbar" noWrap align=right><table cellSpacing=0 cellPadding=0 width="100%" border=0><TBODY><TR><TD class="ms-toolbar" noWrap align=left><asp:Button id="cmdView" onclick="cmdView_Click" runat="server" Text="Go"></asp:Button> </TD></TR></TBODY></TABLE></TD><TD class="ms-separator"><asp:label id="lblSeparator4" runat="server">|</asp:label></TD><TD class="ms-toolbar"><table cellSpacing=0 cellPadding=1 border=0><TBODY><TR><TD style="WIDTH: 19px" class="ms-toolbar" noWrap><asp:imagebutton accessKey="B" id="imgBack" tabIndex=3 onclick="imgBack_Click" runat="server" CssClass="ms-toolbar" ImageUrl="../../_layouts/images/impitem.gif" border="0" width="16" height="16" CausesValidation="False" alt="Back to previous window"></asp:imagebutton></TD><TD noWrap><asp:linkbutton accessKey="B" id="cmdBack" tabIndex=4 onclick="cmdBack_Click" runat="server" CssClass="ms-toolbar" CausesValidation="False">Back to previous window</asp:linkbutton></TD></TR></TBODY></TABLE></TD><TD id="align032" class="ms-toolbar" noWrap align=right width="99%"><IMG height=1 alt="" src="../../_layouts/images/blank.gif" width=1 /> </TD></TR></TBODY></TABLE><asp:label id="lblReferrer" runat="server" Visible="False"></asp:label> <asp:label id="lblSOID" runat="server" Visible="False"></asp:label> <asp:label id="lblReportType" runat="server" Visible="False" __designer:wfdid="w1"></asp:label></TD></TR><TR><TD><IMG height=1 alt="" src="../../_layouts/images/blank.gif" width=10 /></TD><TD><table cellSpacing=0 cellPadding=0 width="100%" border=0><TBODY><TR><TD class="ms-sectionline" colspan=3 height=2><IMG alt="" src="../../_layouts/images/empty.gif" /></TD></TR><TR><TD align=center colspan=3 height=2>
-									<cr:crystalreportviewer id="CRViewer" runat="server" Width="350px" ToolPanelView="None" HasToggleGroupTreeButton="false" HasToggleParameterPanelButton="false"  Height="50px" HasCrystalLogo="False"></cr:crystalreportviewer> </TD></TR></TBODY></TABLE></TD><TD><IMG height=1 alt="" src="../../_layouts/images/blank.gif" width=10 /></TD></TR><TR><TD colspan=3><IMG height=10 alt="" src="../../_layouts/images/blank.gif" width=1 /></TD></TR></TBODY></TABLE>
+<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+<ContentTemplate>
+    <table cellspacing=0 cellPadding=0 width="100%" border=0>
+        <tbody>
+            <tr>
+                <td colspan=3><IMG height=10 alt="" src="../../_layouts/images/blank.gif" width=1 /></td>
+            </tr>
+            <tr>
+                <td><IMG height=1 alt="" src="../../_layouts/images/blank.gif" width=10 /></td>
+                <td>
+                    <table style="MARGIN-LEFT: 3px" class="ms-toolbar" cellspacing=0 cellPadding=2 border=0>
+                        <tbody>
+                            <tr>
+                                <td style="WIDTH: 234px" class="ms-toolbar">
+                                    <table cellspacing=0 cellPadding=1 border=0>
+                                        <tbody>
+                                            <tr>
+                                                <td class="ms-toolbar" noWrap>
+                                                    <asp:imagebutton accessKey="V" id="imgView" tabIndex=1 runat="server" CssClass="ms-toolbar" ImageUrl="../../_layouts/images/tabpub.gif" ToolTip="View Report" border="0" width="16" height="16"></asp:imagebutton> 
+                                                </td>
+                                                <td class="ms-toolbar" noWrap width=100><asp:Label id="Label2" Runat="server">Report Options</asp:Label> </td>
+                                                <td class="ms-toolbar" noWrap>
+                                                    <asp:DropDownList id="cboReportOptions" runat="server" Width="150">
+										                <asp:ListItem Value="0" Selected="True">Web Format</asp:ListItem>
+										                <asp:ListItem Value="1">Acrobat PDF</asp:ListItem>
+										                <asp:ListItem Value="2">Microsoft Word</asp:ListItem>
+										                <asp:ListItem Value="3">Microsoft Excel</asp:ListItem>
+									                </asp:DropDownList> 
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td id="align01" class="ms-toolbar" noWrap align=right>
+                                    <asp:UpdatePanel id="updPrint" runat="server">
+                                        <ContentTemplate>
+						                    <table cellspacing="0" cellpadding="0" width="100%" border="0">
+							                    <tr>
+								                    <td class="ms-toolbar" nowrap="nowrap" align="left">
+									                    <asp:Button id="cmdView" runat="server" Text="Go" onclick="cmdView_Click" OnClientClick="NewWindow();"></asp:Button>
+								                    </td>
+							                    </tr>
+						                    </table>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                </td>
+                                <td class="ms-separator"><asp:label id="lblSeparator4" runat="server">|</asp:label></td>
+                                <td class="ms-toolbar">
+                                    <table cellspacing=0 cellPadding=1 border=0>
+                                        <tbody>
+                                            <tr>
+                                                <td style="WIDTH: 19px" class="ms-toolbar" noWrap><asp:imagebutton accessKey="B" id="imgBack" tabIndex=3 onclick="imgBack_Click" runat="server" CssClass="ms-toolbar" ImageUrl="../../_layouts/images/impitem.gif" border="0" width="16" height="16" CausesValidation="False" alt="Back to previous window"></asp:imagebutton></td>
+                                                <td noWrap><asp:linkbutton accessKey="B" id="cmdBack" tabIndex=4 onclick="cmdBack_Click" runat="server" CssClass="ms-toolbar" CausesValidation="False">Back to previous window</asp:linkbutton></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td id="align032" class="ms-toolbar" noWrap align=right width="99%"><IMG height=1 alt="" src="../../_layouts/images/blank.gif" width=1 /> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <asp:label id="lblReferrer" runat="server" Visible="False"></asp:label> <asp:label id="lblSOID" runat="server" Visible="False"></asp:label> <asp:label id="lblReportType" runat="server" Visible="False" __designer:wfdid="w1"></asp:label>
+                </td>
+            </tr>
+            <tr>
+                <td><IMG height=1 alt="" src="../../_layouts/images/blank.gif" width=10 /></td>
+                <td>
+                    <table cellspacing=0 cellPadding=0 width="100%" border=0>
+                        <tbody>
+                            <tr>
+                                <td class="ms-sectionline" colspan=3 height=2><IMG alt="" src="../../_layouts/images/empty.gif" /></td>
+                            </tr>
+                            <tr><td align=center colspan=3 height=2>
+								    <cr:crystalreportviewer id="CRViewer" runat="server" Width="350px" ToolPanelView="None" HasToggleGroupTreeButton="false" HasToggleParameterPanelButton="false"  Height="50px" HasCrystalLogo="False"></cr:crystalreportviewer> 
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td><IMG height=1 alt="" src="../../_layouts/images/blank.gif" width=10 /></td>
+            </tr>
+            <tr>
+                <td colspan=3><IMG height=10 alt="" src="../../_layouts/images/blank.gif" width=1 /></td>
+            </tr>
+        </tbody>
+    </table>
 </ContentTemplate>
 </asp:UpdatePanel>

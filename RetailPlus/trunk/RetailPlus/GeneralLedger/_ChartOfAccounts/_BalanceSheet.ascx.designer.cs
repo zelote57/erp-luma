@@ -40,6 +40,15 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts {
         protected global::System.Web.UI.WebControls.DropDownList cboReportOptions;
         
         /// <summary>
+        /// updPrint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updPrint;
+        
+        /// <summary>
         /// cmdView control.
         /// </summary>
         /// <remarks>
@@ -85,21 +94,12 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts {
         protected global::System.Web.UI.WebControls.CheckBox cnkInActive;
         
         /// <summary>
-        /// UpdatePanel1 control.
+        /// CRViewer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
-        
-        /// <summary>
-        /// fraViewer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl fraViewer;
+        protected global::CrystalDecisions.Web.CrystalReportViewer CRViewer;
     }
 }

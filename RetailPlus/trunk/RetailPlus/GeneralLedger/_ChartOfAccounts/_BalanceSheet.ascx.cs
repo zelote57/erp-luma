@@ -34,182 +34,50 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 		{
 			
 		}
- 
-		#region GeneratePDF
 
-		private void GeneratePDF()
-		{
+        private ReportDocument getReportDocument()
+        {
             ReportDocument rpt = new ReportDocument();
+
             rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/BalanceSheet.rpt"));
 
-			ExportOptions exportop = new ExportOptions();
-			DiskFileDestinationOptions dest = new DiskFileDestinationOptions();
-			
-			string strPath = Server.MapPath(@"\RetailPlus\temp\");
+            return rpt;
+        }
 
-			string strFileName = "balancesheet_" + Session["UserName"].ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + ".pdf";
-			if (System.IO.File.Exists(strPath + strFileName))
-				System.IO.File.Delete(strPath + strFileName);
+        #region Export
 
-			dest.DiskFileName = strPath + strFileName;
+        private void Export(ExportFormatType pvtExportFormatType)
+        {
+            ReportDocument rpt = getReportDocument();
 
-			exportop = rpt.ExportOptions;
-	
-			SetDataSource(rpt);
+            SetDataSource(rpt);
+            CRViewer.ReportSource = rpt;
+            Session["ReportDocument"] = rpt;
 
-			exportop.DestinationOptions = dest;
-			exportop.ExportDestinationType = ExportDestinationType.DiskFile;
-			exportop.ExportFormatType = ExportFormatType.PortableDocFormat;
-			rpt.Export();   rpt.Close();    rpt.Dispose();   rpt.Close();    rpt.Dispose();
-			
-			fraViewer.Attributes.Add("src","/RetailPlus/temp/" + strFileName);
-		}
+            if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
+            {
+                string strFileName = Session["UserName"].ToString() + "_balancesheet";
+                CRSHelper.GenerateReport(strFileName, rpt, this.updPrint, pvtExportFormatType);
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region GenerateWord
+        #region GeneratePDF
+        private void GeneratePDF() { Export(ExportFormatType.PortableDocFormat); }
+        #endregion
 
-		private void GenerateWord()
-		{
-            ReportDocument rpt = new ReportDocument();
-            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/BalanceSheet.rpt"));
+        #region GenerateWord
+        private void GenerateWord() { Export(ExportFormatType.WordForWindows); }
+        #endregion
 
-			ExportOptions exportop = new ExportOptions();
-			DiskFileDestinationOptions dest = new DiskFileDestinationOptions();
-			
-			string strPath = Server.MapPath(@"\retailplus\temp\");
+        #region GenerateExcel
+        private void GenerateExcel() { Export(ExportFormatType.Excel); }
+        #endregion
 
-			string strFileName = "balancesheet_" + Session["UserName"].ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + ".doc";
-			if (System.IO.File.Exists(strPath + strFileName))
-				System.IO.File.Delete(strPath + strFileName);
-
-			dest.DiskFileName = strPath + strFileName;
-
-			exportop = rpt.ExportOptions;
-	
-			SetDataSource(rpt);
-
-			exportop.DestinationOptions = dest;
-			exportop.ExportDestinationType = ExportDestinationType.DiskFile;
-			exportop.ExportFormatType = ExportFormatType.WordForWindows;
-			rpt.Export();   rpt.Close();    rpt.Dispose();   rpt.Close();    rpt.Dispose();
-			
-			fraViewer.Attributes.Add("src","/retailplus/temp/" + strFileName);
-		}
-
-		#endregion
-
-		#region GenerateExcel
-
-		private void GenerateExcel()
-		{
-            ReportDocument rpt = new ReportDocument();
-            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/BalanceSheet.rpt"));
-
-			ExportOptions exportop = new ExportOptions();
-			DiskFileDestinationOptions dest = new DiskFileDestinationOptions();
-			
-			string strPath = Server.MapPath(@"\RetailPlus\temp\");
-
-			string strFileName = "balancesheet_" + Session["UserName"].ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + ".xls";
-			if (System.IO.File.Exists(strPath + strFileName))
-				System.IO.File.Delete(strPath + strFileName);
-
-			dest.DiskFileName = strPath + strFileName;
-
-			exportop = rpt.ExportOptions;
-	
-			SetDataSource(rpt);
-
-			exportop.DestinationOptions = dest;
-			exportop.ExportDestinationType = ExportDestinationType.DiskFile;
-			exportop.ExportFormatType = ExportFormatType.Excel;
-			rpt.Export();   rpt.Close();    rpt.Dispose();   rpt.Close();    rpt.Dispose();
-			
-			fraViewer.Attributes.Add("src","/RetailPlus/temp/" + strFileName);
-		}
-
-		#endregion
-
-		#region GenerateHTML
-
-		private void GenerateHTML()
-		{
-            ReportDocument rpt = new ReportDocument();
-            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/BalanceSheet.rpt"));
-
-			HTMLFormatOptions htmlOpts = new HTMLFormatOptions();
- 
-			ExportOptions exportop = new ExportOptions();
-			DiskFileDestinationOptions dest = new DiskFileDestinationOptions();
-			
-			string strPath = Server.MapPath(@"\RetailPlus\temp\html\");
-//			DeleteTempDirectory(strPath);
-
-			string strFileName = "balancesheet_" + Session["UserName"].ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + ".htm";
-			if (System.IO.File.Exists(strPath + strFileName))
-				System.IO.File.Delete(strPath + strFileName);
-
-			htmlOpts.HTMLFileName = strFileName;
-			htmlOpts.HTMLEnableSeparatedPages = true;;
-			htmlOpts.HTMLHasPageNavigator = true;
-			htmlOpts.HTMLBaseFolderName = strPath;
-			rpt.ExportOptions.FormatOptions = htmlOpts;
-
-			exportop = rpt.ExportOptions;
-
-			exportop.ExportDestinationType = ExportDestinationType.DiskFile;
-			exportop.ExportFormatType = ExportFormatType.HTML40;
-			
-			dest.DiskFileName = strFileName.ToString();
-			exportop.DestinationOptions = dest;
-
-			SetDataSource(rpt);
-
-			rpt.Export();   rpt.Close();    rpt.Dispose();
-
-			strFileName = "//" + Request.ServerVariables["SERVER_NAME"].ToString() + FindHTMLFile(strPath,strFileName);	
-			
-			fraViewer.Attributes.Add("src",strFileName);
-		}
-
-		private string FindHTMLFile(string Root,string HTMLFile)
-		{
-			string strFile = string.Empty;
-
-			string[] dirs = Directory.GetDirectories(Root);
-			foreach (string dir in dirs)
-			{									
-				string[] strFiles = Directory.GetFiles(dir);
-
-				foreach( string file in strFiles)
-				{
-					if (file.ToLower()==dir.ToLower() + "\\" + HTMLFile.ToLower())
-					{
-						int lngIndex = file.ToLower().IndexOf(@"\retailplus\temp\html\");
-						string filepath = file.Substring(lngIndex); 
-						filepath = filepath.Replace("\\","/");
-						return filepath;
-					}
-				}
-			}
-
-			return strFile;
-		}
-
-//		private void DeleteTempDirectory(string Path)
-//		{
-//			if (Directory.Exists(Path)) 
-//			{
-//				DirectoryInfo dir = new DirectoryInfo(Path);
-//				dir.Delete(true);
-//			}
-//			
-//			Directory.CreateDirectory(Path); 
-//
-//		}
-
-		#endregion
+        #region GenerateHTML
+        private void GenerateHTML() { Export(ExportFormatType.HTML40); }
+        #endregion
 
 		#region SetDataSource
 
@@ -303,29 +171,25 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 
 		protected void cmdView_Click(object sender, System.EventArgs e)
 		{
-			fraViewer.Visible = true;
-
 			switch (Convert.ToInt16(cboReportOptions.SelectedItem.Value))
 			{
-				case 0:
-					GenerateHTML();
-					break;
-				case 1:
-					GeneratePDF();
-					break;
-				case 2:
-					GenerateWord();
-					break;
-				case 3:
-					GenerateExcel();
-					break;
+                case 0:
+                    GenerateHTML();
+                    break;
+                case 1:
+                    GeneratePDF();
+                    break;
+                case 2:
+                    GenerateWord();
+                    break;
+                case 3:
+                    GenerateExcel();
+                    break;
 			}
 		}
 
         protected void imgView_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            fraViewer.Visible = true;
-
             switch (Convert.ToInt16(cboReportOptions.SelectedItem.Value))
             {
                 case 0:

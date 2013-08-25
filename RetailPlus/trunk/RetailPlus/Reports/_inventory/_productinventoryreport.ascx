@@ -8,15 +8,15 @@
 	</tr>
 	<tr>
 		<td><img src="../../_layouts/images/blank.gif" width="10" height="1" alt="" /></td>
-		<TD>
+		<td>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
 						<table cellpadding="1" cellspacing="0" border="0">
 							<tr>
 								<td class="ms-toolbar" nowrap="nowrap">
-									<a tabindex="2" id="idGroup" class="ms-toolbar" ACCESSKEY="N" title="Select Group"></a>
-									&nbsp;<asp:imagebutton id="imgView" ToolTip="Show Report" accessKey="V" tabIndex="1" height="16" width="16" border="0" ImageUrl="../../_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
+									<a tabindex="2" id="idGroup" class="ms-toolbar" accesskey="N" title="Select Group"></a>
+									&nbsp;<asp:imagebutton id="imgView" ToolTip="Show Report" accesskey="V" tabIndex="1" height="16" width="16" border="0" ImageUrl="../../_layouts/images/tabpub.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
 								</td>
 								<td class="ms-toolbar" nowrap="nowrap" width="100">
 									<asp:Label id="Label2" Runat="server" text="Select Group :">Report Options</asp:Label>
@@ -43,21 +43,25 @@
 							</tr>
 						</table>
 					</td>
-					<TD class="ms-toolbar" nowrap="nowrap" id="align01">
-						<table cellspacing="0" cellpadding="0" width="100%" border="0">
-							<tr>
-								<td class="ms-toolbar" nowrap="nowrap" align="left">
-									<asp:Button id="cmdView" runat="server" Text="Go" onclick="cmdView_Click" OnClientClick="NewWindow();"></asp:Button>
-								</td>
-							</tr>
-						</TABLE>
-					</TD>
-					<TD class="ms-separator"><asp:label id="lblSeparator4" runat="server">|</asp:label></TD>
+					<td class="ms-toolbar" nowrap="nowrap" id="align01">
+						<asp:UpdatePanel id="updPrint" runat="server">
+                            <ContentTemplate>
+						        <table cellspacing="0" cellpadding="0" width="100%" border="0">
+							        <tr>
+								        <td class="ms-toolbar" nowrap="nowrap" align="left">
+									        <asp:Button id="cmdView" runat="server" Text="Go" onclick="cmdView_Click" OnClientClick="NewWindow();"></asp:Button>
+								        </td>
+							        </tr>
+						        </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+					</td>
+					<td class="ms-separator"><asp:label id="lblSeparator4" runat="server">|</asp:label></td>
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgBack" title="Back to previous window" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdBack" title="Back to previous window" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Back to previous window</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgBack" title="Back to previous window" accesskey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdBack" title="Back to previous window" accesskey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Back to previous window</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -65,13 +69,13 @@
 						<img src="../../_layouts/images/blank.gif" width="1" height="1" alt="" />
 					</td>
 				</tr>
-			</TABLE>
-			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label>
-		</TD>
+			</table>
+			<asp:label id="lblReferrer" runat="server" visible="False"></asp:label>
+		</td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<TD>
+		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	10px" colspan="3">
@@ -83,7 +87,7 @@
 					            </td>
 					            <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
 					            <td style="HEIGHT: 15px" colspan="7">
-						            <asp:TextBox id="txtExpiryDate" ondblclick="ontime(this)" accessKey="E" CssClass="ms-short" runat="server" ToolTip="Double click to select date from Calendar" MaxLength="10" BorderStyle="Groove"></asp:TextBox>
+						            <asp:TextBox id="txtExpiryDate" ondblclick="ontime(this)" accesskey="E" CssClass="ms-short" runat="server" ToolTip="Double click to select date from Calendar" MaxLength="10" BorderStyle="Groove"></asp:TextBox>
                                     <asp:Label id="Label1" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>
 					            </td>
 					            <td width="99%" id="Td1" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
@@ -116,9 +120,9 @@
 						            <asp:dropdownlist id="cboContact" CssClass="ms-medium" runat="server"></asp:dropdownlist>
 					            </td>
                                 <td style="HEIGHT:15px" nowrap="nowrap">
-                                    <asp:textbox id="txtContactCode" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
+                                    <asp:textbox id="txtContactCode" accesskey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                     <asp:imagebutton id="imgContactCodeSearch" ToolTip="Execute search" 
-                                        style="CURSOR: hand; width: 16px;" accessKey="P" 
+                                        style="CURSOR: hand; width: 16px;" accesskey="P" 
                                         ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" 
                                         CausesValidation="False" onclick="imgContactCodeSearch_Click"></asp:imagebutton>
 					            </td>
@@ -134,9 +138,9 @@
                                     <asp:dropdownlist id="cboProductGroup" CssClass="ms-medium" runat="server" AutoPostBack="True" onselectedindexchanged="cboProductGroup_SelectedIndexChanged"></asp:dropdownlist>
 					            </td>
                                 <td style="HEIGHT:15px" nowrap="nowrap">
-                                    <asp:textbox id="txtProductGroupCode" accessKey="G" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
+                                    <asp:textbox id="txtProductGroupCode" accesskey="G" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                     <asp:imagebutton id="imgProductGroupCodeSearch" ToolTip="Execute search" 
-                                        style="CURSOR: hand" accessKey="P" 
+                                        style="CURSOR: hand" accesskey="P" 
                                         ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" 
                                         CausesValidation="False" onclick="imgProductGroupCodeSearch_Click"></asp:imagebutton>
                                 </td>
@@ -150,9 +154,9 @@
 						            <asp:DropDownList id="cboSubGroup" runat="server" CssClass="ms-medium"></asp:DropDownList>
 					            </td>
                                 <td style="HEIGHT:15px" nowrap="nowrap">
-                                    <asp:textbox id="txtSubGroupCode" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
+                                    <asp:textbox id="txtSubGroupCode" accesskey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                     <asp:imagebutton id="imgSubGroupCodeSearch" ToolTip="Execute search" 
-                                        style="CURSOR: hand" accessKey="P" 
+                                        style="CURSOR: hand" accesskey="P" 
                                         ImageUrl="../../_layouts/images/SPSSearch2.gif" runat="server" 
                                         CausesValidation="False" onclick="imgSubGroupCodeSearch_Click"></asp:imagebutton>
                                 </td>
@@ -183,7 +187,7 @@
 					</td>
 				</tr>
 			</table>
-		</TD>
+		</td>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>

@@ -96,11 +96,10 @@ namespace AceSoft.RetailPlus.Reports
             }
         }
 
-        #region Export
-
-        private void Export(ExportFormatType pvtExportFormatType)
+        private ReportDocument getReportDocument()
         {
             ReportDocument rpt = new ReportDocument();
+
             switch (cboReportType.SelectedItem.Text)
             {
                 case "Posted PO":
@@ -115,59 +114,26 @@ namespace AceSoft.RetailPlus.Reports
                 case "By Vendor":
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_PurchasesAndPayablesPurchaseAnalysis.rpt"));
                     break;
-                default:
-                    return;
-
             }
 
-            SetDataSource(rpt);
-
-            ExportOptions exportop = new ExportOptions();
-            DiskFileDestinationOptions dest = new DiskFileDestinationOptions();
-            string strPath = Server.MapPath(@"\retailplus\temp\");
-            string strFileExtensionName = ".pdf";
-            switch (pvtExportFormatType)
-            {
-                case ExportFormatType.PortableDocFormat: strFileExtensionName = ".pdf"; exportop.ExportFormatType = ExportFormatType.PortableDocFormat; break;
-                case ExportFormatType.WordForWindows: strFileExtensionName = ".doc"; exportop.ExportFormatType = ExportFormatType.WordForWindows; break;
-                case ExportFormatType.Excel: strFileExtensionName = ".xls"; exportop.ExportFormatType = ExportFormatType.Excel; break;
-            }
-            string strFileName = "purchases_" + Session["UserName"].ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + strFileExtensionName;
-            if (System.IO.File.Exists(strPath + strFileName))
-                System.IO.File.Delete(strPath + strFileName);
-
-            dest.DiskFileName = strPath + strFileName;
-            exportop.DestinationOptions = dest;
-            exportop.ExportDestinationType = ExportDestinationType.DiskFile;
-            rpt.Export(exportop); //rpt.Close(); rpt.Dispose();
-
-            if (pvtExportFormatType == ExportFormatType.PortableDocFormat)
-            {
-                rpt.Close(); rpt.Dispose();
-                Response.Redirect(Constants.ROOT_DIRECTORY + "/temp/" + strFileName, false);
-            }
-            else
-            {
-                CRViewer.ReportSource = rpt;
-                Session["ReportDocument"] = rpt;
-                CRSHelper.OpenExportedReport(strFileName); // OpenExportedReport(strFileName);
-            }
-
+            return rpt;
         }
 
-        private void OpenExportedReport(string FileName)
-        {
-            try
-            {
-                System.Net.WebClient Client = new System.Net.WebClient();
-                Client.DownloadFile(Server.MapPath(Constants.ROOT_DIRECTORY + "/temp/" + FileName), @"c:\" + FileName);
+        #region Export
 
-                System.Diagnostics.Process p = new System.Diagnostics.Process();
-                p.StartInfo.FileName = @"c:\" + FileName; //Server.MapPath(Constants.ROOT_DIRECTORY + "/temp/" + FileName);
-                p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
-                p.Start();
+        private void Export(ExportFormatType pvtExportFormatType)
+        {
+            ReportDocument rpt = getReportDocument();
+
+            SetDataSource(rpt);
+            CRViewer.ReportSource = rpt;
+            Session["ReportDocument"] = rpt;
+
+            if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
+            {
+                string strFileName = Session["UserName"].ToString() + "_purchase";
+                CRSHelper.GenerateReport(strFileName, rpt, this.updPrint, pvtExportFormatType);
             }
-            catch (Exception ex) { throw ex; }
         }
 
         #endregion
@@ -185,33 +151,7 @@ namespace AceSoft.RetailPlus.Reports
         #endregion
 
         #region GenerateHTML
-
-        private void GenerateHTML()
-        {
-            ReportDocument rpt = new ReportDocument();
-            switch (cboReportType.SelectedItem.Text)
-            {
-                case "Posted PO":
-                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_PurchasesAndPayablesPostedPO.rpt"));
-                    break;
-                case "Posted PO Returns":
-                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_PurchasesAndPayablesPostedPOReturns.rpt"));
-                    break;
-                case "Posted Debit Memo":
-                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_PurchasesAndPayablesPostedDebitMemo.rpt"));
-                    break;
-                case "By Vendor":
-                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_PurchasesAndPayablesPurchaseAnalysis.rpt"));
-                    break;
-                default:
-                    return;
-
-            }
-            SetDataSource(rpt);
-            CRViewer.ReportSource = rpt;
-            Session["ReportDocument"] = rpt;
-        }
-
+        private void GenerateHTML() { Export(ExportFormatType.HTML40); }
         #endregion
 
 		#region SetDataSource

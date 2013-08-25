@@ -128,68 +128,75 @@ namespace AceSoft.RetailPlus.Reports
             catch { }
         }
 
-        #region Export
+        private ReportDocument getReportDocument()
+        {
+            ReportDocument rpt = new ReportDocument();
 
-        private void Export(ExportFormatType pvtExportFormatType)
-		{
-            if (lblReferrer.ToolTip != null || lblReferrer.ToolTip != string.Empty)
+            if (!string.IsNullOrEmpty(lblReferrer.ToolTip))
             {
                 string strUnparsedTask = lblReferrer.ToolTip;
                 string task = strUnparsedTask;
 
-                ReportDocument rpt = new ReportDocument();
-
-                string strPath = Server.MapPath(@"\retailplus\temp\");
-                string strFileName = string.Empty;
-                
-                string strFileExtensionName = ".pdf";
-                switch (pvtExportFormatType)
-                {
-                    case ExportFormatType.PortableDocFormat: strFileExtensionName = ".pdf"; break;
-                    case ExportFormatType.WordForWindows: strFileExtensionName = ".doc"; break;
-                    case ExportFormatType.Excel : strFileExtensionName = ".xls"; break;
-                }
-
-                if (strUnparsedTask.ToLower() == "transaction")
-                {
-                    
-                }
-                else
+                if (strUnparsedTask.ToLower() != "transaction")
                 {
                     task = Common.Decrypt(strUnparsedTask, Session.SessionID);
                     switch (task)
                     {
                         case "products":
                             rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/ProductsReport.rpt"));
-                            strFileName = "products_" + Session["UserName"].ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + strFileExtensionName;
                             break;
                         case "producthistory":
                             rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/ProductHistoryReport.rpt"));
-                            strFileName = "producthistory_" + Session["UserName"].ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmssff") + strFileExtensionName;
                             break;
                     }
                 }
-
-                if (System.IO.File.Exists(strPath + strFileName))
-                    System.IO.File.Delete(strPath + strFileName);
-
-                DiskFileDestinationOptions dest = new DiskFileDestinationOptions();
-                dest.DiskFileName = strPath + strFileName;
-
-                ExportOptions exportop = rpt.ExportOptions;
-                exportop.DestinationOptions = dest;
-                exportop.ExportDestinationType = ExportDestinationType.DiskFile;
-                exportop.ExportFormatType = pvtExportFormatType;
-
-                SetDataSource(rpt, task);
                 
-                rpt.Export(); rpt.Close(); rpt.Dispose();
-                Response.Redirect(Constants.ROOT_DIRECTORY + "/temp/" + strFileName);
             }
 
-		}
+            return rpt;
+        }
 
-		#endregion
+        #region Export
+
+        private void Export(ExportFormatType pvtExportFormatType)
+        {
+            if (string.IsNullOrEmpty(lblReferrer.ToolTip)) return;
+
+            ReportDocument rpt = getReportDocument();
+
+            string strUnparsedTask = lblReferrer.ToolTip;
+            string task = strUnparsedTask;
+            if (strUnparsedTask.ToLower() != "transaction")
+                task = Common.Decrypt(strUnparsedTask, Session.SessionID);
+
+            SetDataSource(rpt, task);
+            CRViewer.ReportSource = rpt;
+            Session["ReportDocument"] = rpt;
+
+            if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
+            {
+                string strFileName = Session["UserName"].ToString() + "_products";
+                CRSHelper.GenerateReport(strFileName, rpt, this.updPrint, pvtExportFormatType);
+            }
+        }
+
+        #endregion
+
+        #region GeneratePDF
+        private void GeneratePDF() { Export(ExportFormatType.PortableDocFormat); }
+        #endregion
+
+        #region GenerateWord
+        private void GenerateWord() { Export(ExportFormatType.WordForWindows); }
+        #endregion
+
+        #region GenerateExcel
+        private void GenerateExcel() { Export(ExportFormatType.Excel); }
+        #endregion
+
+        #region GenerateHTML
+        private void GenerateHTML() { Export(ExportFormatType.HTML40); }
+        #endregion
 
 		#region SetDataSource
 
@@ -301,50 +308,6 @@ namespace AceSoft.RetailPlus.Reports
 		}
 
 		#endregion
-
-        #region GeneratePDF
-        private void GeneratePDF() { Export(ExportFormatType.PortableDocFormat); }
-        #endregion
-
-        #region GenerateWord
-        private void GenerateWord() { Export(ExportFormatType.WordForWindows); }
-        #endregion
-
-        #region GenerateExcel
-        private void GenerateExcel() { Export(ExportFormatType.Excel); }
-        #endregion
-
-        #region GenerateHTML
-        private void GenerateHTML()
-        {
-            if (lblReferrer.ToolTip != null || lblReferrer.ToolTip != string.Empty)
-            {
-                string strUnparsedTask = lblReferrer.ToolTip;
-                ReportDocument rpt = new ReportDocument();
-                if (strUnparsedTask.ToLower() == "transaction")
-                {
-                    //stHeading = "View Transaction Report";
-                }
-                else
-                {
-                    string task = Common.Decrypt(strUnparsedTask, Session.SessionID);
-                    switch (task)
-                    {
-                        case "products":
-                            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/ProductsReport.rpt"));
-                            SetDataSource(rpt, task);
-                            break;
-                        case "producthistory":
-                            rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/ProductHistoryReport.rpt"));
-                            SetDataSource(rpt, task);
-                            break;
-                    }
-                }
-                CRViewer.ReportSource = rpt;
-                Session["ReportDocument"] = rpt;
-            }
-        }
-        #endregion
 
 		#region Web Form Designer generated code
 		override protected void OnInit(EventArgs e)

@@ -190,6 +190,9 @@ namespace AceSoft.RetailPlus.Reports
             #endregion
 
             Products clsProduct = new Products();
+            clsProduct.GetConnection();
+            ProductInventories clsProductInventories = new ProductInventories(clsProduct.Connection, clsProduct.Transaction);
+
             DataTable dt;
             string ProductIDs = null;
 
@@ -244,7 +247,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.WeightedProductsForWeighingScale:
                 case ReportTypes.CountedProductsForWeighingScale:
                     #region Weighted and Counted Products For Weighing Scale
-                    dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKey);
+                    dt = clsProductInventories.ListAsDataTable(int.Parse(cboBranch.SelectedItem.Value), SupplierID: long.Parse(cboContact.SelectedItem.Value), ProductGroupID: long.Parse(cboProductGroup.SelectedItem.Value), ProductSubGroupID: long.Parse(cboSubGroup.SelectedItem.Value), ProductCode: txtProductCode.Text);
                     clsProduct.CommitAndDispose();
                     foreach (DataRow dr in dt.Rows)
                     {

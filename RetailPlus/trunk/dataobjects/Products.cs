@@ -957,15 +957,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}
 		}
@@ -1019,38 +1010,90 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-		/// <summary>
-		/// Lemu - 06-20-2011
-		/// </summary>
-		/// <param name="ProductID">Put zero(0) if you want to update all products</param>
-		/// <param name="Quantity"></param>
-		/// <returns></returns>
-		public bool UpdateActualQuantity(int BranchID, long lngProductID, decimal decQuantity)
-		{
-			bool boRetValue = false;
-			try
-			{
-				string SQL = "CALL procProductUpdateActualQuantity(@BranchID, @lngProductID, @decQuantity);";
+        ///// <summary>
+        ///// Lemu - 06-20-2011
+        ///// </summary>
+        ///// <param name="ProductID">Put zero(0) if you want to update all products</param>
+        ///// <param name="Quantity"></param>
+        ///// <returns></returns>
+        //public bool UpdateActualQuantity(int BranchID, long lngProductID, decimal decQuantity)
+        //{
+        //    bool boRetValue = false;
+        //    try
+        //    {
+        //        string SQL = "CALL procProductUpdateActualQuantity(@BranchID, @lngProductID, @decQuantity);";
 
-				MySqlCommand cmd = new MySqlCommand();
+        //        MySqlCommand cmd = new MySqlCommand();
 				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-				cmd.Parameters.AddWithValue("@BranchID", BranchID);
-				cmd.Parameters.AddWithValue("@lngProductID", lngProductID);
-				cmd.Parameters.AddWithValue("@decQuantity", decQuantity);
+        //        cmd.Parameters.AddWithValue("@BranchID", BranchID);
+        //        cmd.Parameters.AddWithValue("@lngProductID", lngProductID);
+        //        cmd.Parameters.AddWithValue("@decQuantity", decQuantity);
 
-				if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
-			}
+        //        if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+        //    }
 
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
 
-			return boRetValue;
-		}
+        //    return boRetValue;
+        //}
+
+        public bool CopyPOSToActualBySupplier(int BranchID, long lngSupplierID)
+        {
+            bool boRetValue = false;
+            try
+            {
+                string SQL = "CALL procProductCopyPOSToActualBySupplier(@BranchID, @lngSupplierID);";
+
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@lngSupplierID", lngSupplierID);
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+
+            return boRetValue;
+        }
+
+        public bool CopyPOSToActualByProductGroup(int BranchID, long lngProductGroupID)
+        {
+            bool boRetValue = false;
+            try
+            {
+                string SQL = "CALL procProductCopyPOSToActualByProductGroup(@BranchID, @lngProductGroupID);";
+
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@lngProductGroupID", lngProductGroupID);
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+
+            return boRetValue;
+        }
 
         public bool ZeroOutActualQuantityBySupplier(int BranchID, long lngSupplierID)
         {
@@ -1850,55 +1893,55 @@ namespace AceSoft.RetailPlus.Data
 				MySqlCommand cmd = new MySqlCommand();
 				string SQL;
 
-				SQL=	"DELETE FROM tblProductPackage WHERE ProductID IN (" + IDs + ");";
-				cmd = new MySqlCommand(); 
+                //SQL=	"DELETE FROM tblProductPackage WHERE ProductID IN (" + IDs + ");";
+                //cmd = new MySqlCommand(); 
 				
 				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				base.ExecuteNonQuery(cmd);
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = SQL;
+                //base.ExecuteNonQuery(cmd);
 
-				SQL=	"DELETE FROM tblProductUnitMatrix WHERE ProductID IN (" + IDs + ");";
-				cmd = new MySqlCommand(); 
+                //SQL=	"DELETE FROM tblProductUnitMatrix WHERE ProductID IN (" + IDs + ");";
+                //cmd = new MySqlCommand(); 
 				
 				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				base.ExecuteNonQuery(cmd);
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = SQL;
+                //base.ExecuteNonQuery(cmd);
 
-				SQL=	"DELETE FROM tblMatrixPackage WHERE MatrixID IN (SELECT MatrixID FROM tblProductBaseVariationsMatrix WHERE ProductID IN (" + IDs + "));";
-				cmd = new MySqlCommand(); 
+                //SQL=	"DELETE FROM tblMatrixPackage WHERE MatrixID IN (SELECT MatrixID FROM tblProductBaseVariationsMatrix WHERE ProductID IN (" + IDs + "));";
+                //cmd = new MySqlCommand(); 
 				
 				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				base.ExecuteNonQuery(cmd);
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = SQL;
+                //base.ExecuteNonQuery(cmd);
 
-				SQL=	"DELETE FROM tblProductVariationsMatrix WHERE MatrixID IN (SELECT MatrixID FROM tblProductBaseVariationsMatrix WHERE ProductID IN (" + IDs + "));";
-				cmd = new MySqlCommand(); 
+                //SQL=	"DELETE FROM tblProductVariationsMatrix WHERE MatrixID IN (SELECT MatrixID FROM tblProductBaseVariationsMatrix WHERE ProductID IN (" + IDs + "));";
+                //cmd = new MySqlCommand(); 
 				
 				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				base.ExecuteNonQuery(cmd);
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = SQL;
+                //base.ExecuteNonQuery(cmd);
 
-				SQL=	"DELETE FROM tblProductBaseVariationsMatrix WHERE ProductID IN (" + IDs + ");";
-				cmd = new MySqlCommand(); 
+                //SQL=	"DELETE FROM tblProductBaseVariationsMatrix WHERE ProductID IN (" + IDs + ");";
+                //cmd = new MySqlCommand(); 
 				
 				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				base.ExecuteNonQuery(cmd);
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = SQL;
+                //base.ExecuteNonQuery(cmd);
 
-				SQL=	"DELETE FROM tblProductVariations WHERE ProductID IN (" + IDs + ");";
-				cmd = new MySqlCommand(); 
+                //SQL=	"DELETE FROM tblProductVariations WHERE ProductID IN (" + IDs + ");";
+                //cmd = new MySqlCommand(); 
 				
 				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				base.ExecuteNonQuery(cmd);
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = SQL;
+                //base.ExecuteNonQuery(cmd);
 
-				SQL=	"DELETE FROM tblProducts WHERE ProductID IN (" + IDs + ");";
+				SQL=	"UPDATE tblProducts SET deleted = 1 WHERE ProductID IN (" + IDs + ");";
 				cmd = new MySqlCommand();
 				
 				
@@ -1910,15 +1953,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

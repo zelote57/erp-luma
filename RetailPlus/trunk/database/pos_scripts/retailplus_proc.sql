@@ -1,5 +1,85 @@
 
 /********************************************
+	trgr_tblContacts_Insert
+********************************************/
+delimiter GO
+DROP TRIGGER IF EXISTS trgr_tblContacts_Insert
+GO
+
+CREATE TRIGGER trgr_tblContacts_Insert AFTER INSERT ON tblContacts
+FOR EACH ROW 
+BEGIN
+	CALL procContactAuditInsert(NEW.ContactID ,NEW.ContactCode ,NEW.ContactName ,NEW.ContactGroupID ,NEW.ModeOfTerms ,NEW.Terms 
+								,NEW.Address ,NEW.BusinessName ,NEW.TelephoneNo ,NEW.Remarks ,NEW.Debit ,NEW.Credit 
+								,NEW.CreditLimit ,NEW.IsCreditAllowed ,NEW.DateCreated ,NEW.Deleted ,NEW.DepartmentID ,NEW.PositionID , NEW.isLock);
+END;
+GO
+
+delimiter ;
+
+
+/********************************************
+	trgr_tblContacts_Update
+********************************************/
+delimiter GO
+DROP TRIGGER IF EXISTS trgr_tblContacts_Update
+GO
+
+CREATE TRIGGER trgr_tblContacts_Update AFTER UPDATE ON tblContacts
+FOR EACH ROW 
+BEGIN
+	CALL procContactAuditInsert(NEW.ContactID ,NEW.ContactCode ,NEW.ContactName ,NEW.ContactGroupID ,NEW.ModeOfTerms ,NEW.Terms 
+								,NEW.Address ,NEW.BusinessName ,NEW.TelephoneNo ,NEW.Remarks ,NEW.Debit ,NEW.Credit 
+								,NEW.CreditLimit ,NEW.IsCreditAllowed ,NEW.DateCreated ,NEW.Deleted ,NEW.DepartmentID ,NEW.PositionID , NEW.isLock);
+
+END;
+GO
+
+delimiter ;
+
+
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procContactAuditInsert
+GO
+
+create procedure procContactAuditInsert(
+	IN lngContactID BIGINT(20),
+	IN strContactCode VARCHAR(25),
+	IN strContactName VARCHAR(75),
+	IN intContactGroupID INT(10),
+	IN intModeOfTerms INT(10),
+	IN intTerms INT(10),
+	IN strAddress VARCHAR(150),
+	IN strBusinessName varchar(75),
+	IN strTelephoneNo varchar(75),
+	IN strRemarks varchar(150),
+	IN decDebit decimal(18,2),
+	IN decCredit decimal(18,2),
+	IN decCreditLimit decimal(18,2),
+	IN decIsCreditAllowed tinyint(1),
+	IN dteDateCreated datetime,
+	IN intDeleted tinyint(1),
+	IN intDepartmentID int(10),
+	IN intPositionID int(10),
+	IN intisLock tinyint(1)
+)
+BEGIN
+	INSERT INTO tblContactsAudit (ContactID ,ContactCode ,ContactName ,ContactGroupID ,ModeOfTerms ,Terms 
+			,Address ,BusinessName ,TelephoneNo ,Remarks ,Debit ,Credit 
+			,CreditLimit ,IsCreditAllowed ,DateCreated ,Deleted ,DepartmentID ,PositionID , isLock
+			,AuditDateCreated)
+	VALUES (lngContactID ,strContactCode ,strContactName ,intContactGroupID ,intModeOfTerms ,intTerms 
+			,strAddress ,strBusinessName ,strTelephoneNo ,strRemarks ,decDebit ,decCredit 
+			,decCreditLimit ,decIsCreditAllowed ,dteDateCreated ,intDeleted ,intDepartmentID ,intPositionID , intisLock
+			 ,NOW());
+
+END;
+GO
+delimiter ;
+
+
+/********************************************
 	trgr_tblProductInventory_Insert
 ********************************************/
 delimiter GO
@@ -2465,7 +2545,9 @@ BEGIN
 						) tblCreditPayment
 	SET 
 		tblContacts.Credit = tblCreditPayment.Credit
-	WHERE tblContacts.ContactID = tblCreditPayment.ContactID;
+	WHERE tblContacts.ContactID = tblCreditPayment.ContactID
+		AND tblContacts.Credit <> tblCreditPayment.Credit;
+
 
 END;
 GO
@@ -4596,12 +4678,13 @@ BEGIN
 
 	SET @SQL := 'SELECT
 						Count(1) ProductCount
-					FROM tblProductPackage ';
+					FROM tblProductPackage pkg INNER JOIN tblProducts prd ON pkg.ProductID = prd.ProductID
+					WHERE prd.deleted = 0 ';
 	
 	IF (lngProductID <> 0) THEN
-		SET @SQL = CONCAT(@SQL,' WHERE ProductID <> ', lngProductID,' AND ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
+		SET @SQL = CONCAT(@SQL,' AND pkg.ProductID <> ', lngProductID,' AND ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
 	ELSEIF (lngProductID = 0) THEN
-		SET @SQL = CONCAT(@SQL,' WHERE ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
+		SET @SQL = CONCAT(@SQL,' AND ''',strBarCode,''' IN  (BarCode1, BarCode2, BarCode3) ');
 	END IF;
 	
 	PREPARE stmt FROM @SQL;
@@ -4754,6 +4837,60 @@ END;
 GO
 delimiter ;
 
+
+/**************************************************************
+
+	procProductCopyPOSToActualByProductGroup
+	Lemuel E. Aceron
+	Sep 1, 2013 - Update Actual Quantity by POS Quantity by Group
+
+	CALL procProductCopyPOSToActualByProductGroup();
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductCopyPOSToActualByProductGroup
+GO
+
+create procedure procProductCopyPOSToActualByProductGroup(
+						IN intBranchID INT(4),
+						IN lngProductGroupID bigint)
+BEGIN
+	
+	UPDATE tblProductInventory SET 
+		ActualQuantity = Quantity 
+	WHERE BranchID = intBranchID 
+		AND (ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts INNER JOIN tblProductSubGroup ON tblProducts.ProductSubGroupID = tblProductSubGroup.ProductSubGroupID WHERE ProductGroupID = lngProductGroupID));
+	
+END;
+GO
+delimiter ;
+
+/**************************************************************
+
+	procProductCopyPOSToActualBySupplier
+	Lemuel E. Aceron
+	Sep 1, 2013 - Update Actual Quantity by POS Quantity by Supplier
+
+	CALL procProductCopyPOSToActualBySupplier();
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductCopyPOSToActualBySupplier
+GO
+
+create procedure procProductCopyPOSToActualBySupplier(
+						IN intBranchID INT(4),
+						IN lngSupplierID bigint)
+BEGIN
+	
+	UPDATE tblProductInventory SET 
+		ActualQuantity = Quantity 
+	WHERE BranchID = intBranchID 
+		AND (ProductID IN (SELECT ProductID FROM tblProducts WHERE SupplierID = lngSupplierID)
+		OR ProductID IN (SELECT DISTINCT(ProductID) FROM tblProductBaseVariationsMatrix WHERE SupplierID = lngSupplierID));
+END;
+GO
+delimiter ;
 
 /**************************************************************
 
@@ -5134,6 +5271,7 @@ delimiter ;
 	Desc: This will get the main product list
 
 	CALL procProductSelect(0, 'TEST','',0,2,0,100,null,null);
+
 	
 **************************************************************/
 delimiter GO
@@ -5974,6 +6112,35 @@ delimiter ;
 
 
 /**************************************************************
+	10Aug2013: LEAceron		procUpdatetblInventorySG
+	Desc: Update the pproductsubgroupids in tblInventory
+
+	This is triggered when Closing Inventory By Group
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procUpdatetblInventorySG
+GO
+
+create procedure procUpdatetblInventorySG()
+BEGIN
+
+	UPDATE tblInventory
+    INNER JOIN tblProducts ON tblProducts.ProductID = tblInventory.ProductID
+    INNER JOIN tblProductSubGroup ON tblProducts.ProductSubGroupID = tblProductSubGroup.ProductSubGroupID
+	INNER JOIN tblProductGroup ON tblProductSubGroup.ProductGroupID = tblProductGroup.ProductGroupID
+    SET  tblInventory.ProductGroupID = tblProductGroup.ProductGroupID
+		,tblInventory.ProductGroupCode = tblProductGroup.ProductGroupCode
+		,tblInventory.ProductGroupName = tblProductGroup.ProductGroupName
+	WHERE tblInventory.ProductGroupID = 0;
+
+END;
+GO
+delimiter ;
+
+CALL procUpdatetblInventorySG();
+
+/**************************************************************
 
 	procCloseInventory
 	Lemuel E. Aceron
@@ -6109,10 +6276,12 @@ BEGIN
 	END LOOP curItems;
 	CLOSE curItems;
 	
+	CALL procUpdatetblInventorySG();
 
 END;
 GO
 delimiter ;
+
 
 
 
@@ -6404,6 +6573,38 @@ delimiter ;
 
 
 
+
+/*********************************
+	procCheckDuplicateBarcode
+	Lemuel E. Aceron
+	CALL procCheckDuplicateBarcode();
+	
+	[08/31/2013] - create this procedure
+
+*********************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procCheckDuplicateBarcode
+GO
+
+create procedure procCheckDuplicateBarcode()
+BEGIN
+	
+	SELECT main.BarCode1, prd.ProductID, pkg.UnitID, prd.baseUnitID, ProductCode, Barcode1Count
+	FROM ( 
+		SELECT Barcode1, COUNT(Barcode1) Barcode1Count, pkg.UnitID
+		FROM tblProducts prd 
+		INNER JOIN tblProductPackage pkg ON prd.ProductID = pkg.ProductID
+		WHERE IFNULL(BarCode1,'') <> ''
+		GROUP BY BarCode1, pkg.UnitID
+	) MAIN 
+	INNER JOIN tblProductPackage pkg ON MAIN.BarCode1 = pkg.BarCode1
+	INNER JOIN tblProducts prd ON pkg.ProductID = prd.ProductID
+	WHERE Barcode1Count >= 2;
+
+
+END;
+GO
+delimiter ;
 
 
 

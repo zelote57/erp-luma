@@ -6671,4 +6671,30 @@ CREATE TABLE tblProductInventoryMonthly (
 CREATE INDEX IX_tblProductInventory_PID ON tblProductInventory (ProductID);
 CREATE INDEX IX_tblProductInventory_PBID ON tblProductInventory (ProductID, BranchID);
 
+DROP TABLE IF EXISTS tblContactsAudit;
+CREATE TABLE `tblContactsAudit` (
+  `ContactID` bigint(20) NOT NULL,
+  `ContactCode` varchar(25) NOT NULL,
+  `ContactName` varchar(75) NOT NULL,
+  `ContactGroupID` int(10) unsigned DEFAULT '0',
+  `ModeOfTerms` int(10) NOT NULL DEFAULT '0',
+  `Terms` int(10) NOT NULL DEFAULT '0',
+  `Address` varchar(150) NOT NULL DEFAULT '',
+  `BusinessName` varchar(75) NOT NULL DEFAULT '',
+  `TelephoneNo` varchar(75) NOT NULL DEFAULT '',
+  `Remarks` varchar(150) NOT NULL DEFAULT '',
+  `Debit` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `Credit` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `CreditLimit` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `IsCreditAllowed` tinyint(1) NOT NULL DEFAULT '0',
+  `DateCreated` DATETIME NOT NULL,
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `DepartmentID` int(10) unsigned NOT NULL DEFAULT '1',
+  `PositionID` int(10) unsigned NOT NULL DEFAULT '1',
+  `isLock` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `AuditDateCreated` DATETIME NOT NULL DEFAULT NOW(),
+  KEY `IX_tblcontactsAudit` (`ContactID`,`ContactCode`,`ContactName`),
+  KEY `IX1_tblcontactsAudit` (`ContactGroupID`)
+);
+
 /*********************************  v_4.0.1.0.sql END  *******************************************************/ 

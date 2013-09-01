@@ -3,34 +3,15 @@
 --	System automatic procedures.
 -- =============================================
 
-
-
 /**************************************************************
 	10Aug2013: LEAceron		sysUpdatetblInventorySG
 	Desc: Auto update the pproductsubgroupids in tblInventory
+
+	01Sep2013 Deleted and put in the Closing inventory by group
 **************************************************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS sysUpdatetblInventorySG
 GO
-
-create procedure sysUpdatetblInventorySG()
-BEGIN
-
-	UPDATE tblInventory
-    INNER JOIN tblProducts ON tblProducts.ProductID = tblInventory.ProductID
-    INNER JOIN tblProductSubGroup ON tblProducts.ProductSubGroupID = tblProductSubGroup.ProductSubGroupID
-	INNER JOIN tblProductGroup ON tblProductSubGroup.ProductGroupID = tblProductGroup.ProductGroupID
-    SET  tblInventory.ProductGroupID = tblProductGroup.ProductGroupID
-		,tblInventory.ProductGroupCode = tblProductGroup.ProductGroupCode
-		,tblInventory.ProductGroupName = tblProductGroup.ProductGroupName
-	WHERE tblInventory.ProductGroupID = 0;
-
-END;
-GO
-delimiter ;
-
-CALL sysUpdatetblInventorySG();
-
 
 
 /**************************************************************

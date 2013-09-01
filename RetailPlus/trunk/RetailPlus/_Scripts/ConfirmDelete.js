@@ -7,6 +7,13 @@ function confirm_zeroout_inventory()
 	{	return false;    }
 }
 
+function confirm_copypostoactual_inventory() {
+    if (confirm("Are you sure you want to copy the current POS Quantity to Actual Quantity?") == true)
+    { return true; }
+    else
+    { return false; }
+}
+
 function confirm_close_inventory()
 {
 	if (confirm("Please make sure that you save the actual quantity first. \n     Are you sure you want to Close the inventory?")==true)

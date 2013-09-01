@@ -3380,6 +3380,7 @@
     <Content Include="_Home.ascx" />
     <Content Include="_layouts\images\headcornerp.gif" />
     <Content Include="_layouts\images\loading.gif" />
+    <Content Include="_layouts\images\processing_old.gif" />
     <Content Include="_layouts\images\rtbullet.gif" />
     <Content Include="_layouts\images\vnavicon.gif" />
     <Content Include="_Processing.ascx" />

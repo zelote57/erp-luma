@@ -99,6 +99,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsProductSubGroupColumns.ProductSubGroupName = true;
 
             ProductSubGroupColumns clsSearchColumns = new ProductSubGroupColumns();
+            clsSearchColumns.ProductGroupID = true;
 
             ProductSubGroup clsProductSubGroup = new ProductSubGroup();
             cboProductSubGroup.DataTextField = "ProductSubGroupName";
@@ -108,20 +109,21 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             cboProductSubGroup.SelectedIndex = cboProductSubGroup.Items.Count - 1;
             clsProductSubGroup.CommitAndDispose();
 
-			cboProductSubGroup_SelectedIndexChanged(sender, e);
+            // do not load the default to override
+            //cboProductSubGroup_SelectedIndexChanged(sender, e);
 		}
 
-		protected void cboProductSubGroup_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			if (cboProductSubGroup.Items.Count != 0)
-			{
-				ProductSubGroup clsProductSubGroup = new ProductSubGroup();
-				ProductSubGroupDetails clsProductSubGroupDetails = clsProductSubGroup.Details(Convert.ToInt32(cboProductSubGroup.SelectedItem.Value));
-				cboProductUnit.SelectedIndex = cboProductUnit.Items.IndexOf( cboProductUnit.Items.FindByValue(clsProductSubGroupDetails.BaseUnitID.ToString()));
-				txtProductPrice.Text = clsProductSubGroupDetails.Price.ToString("#,##0.#0");
-				clsProductSubGroup.CommitAndDispose();	
-			}
-		}
+        //protected void cboProductSubGroup_SelectedIndexChanged(object sender, System.EventArgs e)
+        //{
+        //    //if (cboProductSubGroup.Items.Count != 0)
+        //    //{
+        //    //    ProductSubGroup clsProductSubGroup = new ProductSubGroup();
+        //    //    ProductSubGroupDetails clsProductSubGroupDetails = clsProductSubGroup.Details(Convert.ToInt32(cboProductSubGroup.SelectedItem.Value));
+        //    //    cboProductUnit.SelectedIndex = cboProductUnit.Items.IndexOf( cboProductUnit.Items.FindByValue(clsProductSubGroupDetails.BaseUnitID.ToString()));
+        //    //    txtProductPrice.Text = clsProductSubGroupDetails.Price.ToString("#,##0.#0");
+        //    //    clsProductSubGroup.CommitAndDispose();	
+        //    //}
+        //}
 
 		
 		#endregion

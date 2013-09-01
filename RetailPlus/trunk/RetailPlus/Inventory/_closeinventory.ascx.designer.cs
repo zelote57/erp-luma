@@ -184,6 +184,24 @@ namespace AceSoft.RetailPlus.Inventory {
         protected global::System.Web.UI.WebControls.LinkButton cmdZeroOutActualQuantity;
         
         /// <summary>
+        /// imgCopyPOSToActual control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgCopyPOSToActual;
+        
+        /// <summary>
+        /// cmdCopyPOSToActual control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdCopyPOSToActual;
+        
+        /// <summary>
         /// lblSeparator1 control.
         /// </summary>
         /// <remarks>

@@ -176,7 +176,8 @@ namespace AceSoft.RetailPlus.Reports
                 Int64 lngProductgroupID = Convert.ToInt64(cboGroup.SelectedItem.Value);
 
                 ProductInventories clsProductInventories = new ProductInventories();
-                dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(lblBranchID.Text), SupplierID: lngSupplierID, ProductGroupID: lngProductgroupID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode, MatrixDescription");
+
+                dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(lblBranchID.Text), SupplierID: lngSupplierID, ProductGroupID: lngProductgroupID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode ASC, MatrixDescription ASC, BarCode1", SortOrder: SortOption.Desscending);
 
                 //Contacts clsContacts = new Contacts(clsProductInventories.Connection, clsProductInventories.Transaction);
                 //ContactDetails clsContactDetails = clsContacts.Details(lngSupplierID);
@@ -196,7 +197,7 @@ namespace AceSoft.RetailPlus.Reports
             else
             {
                 Data.Inventory clsInventory = new Data.Inventory();
-                dt = clsInventory.DataList(cboInventoryNo.SelectedItem.Text, chkIncludeShortOverProducts.Checked, long.Parse(cboContact.SelectedItem.Value), long.Parse(cboGroup.SelectedItem.Value), SortField: "ProductCode, MatrixDescription");
+                dt = clsInventory.DataList(cboInventoryNo.SelectedItem.Text, chkIncludeShortOverProducts.Checked, long.Parse(cboContact.SelectedItem.Value), long.Parse(cboGroup.SelectedItem.Value), SortField: "InventoryID", SortOrder: SortOption.Ascending);
                 clsInventory.CommitAndDispose();
 
                 foreach (System.Data.DataRow dr in dt.Rows)

@@ -10,7 +10,7 @@
 			<ProgressTemplate>
 				 <div style="position: absolute; top: 30%; left:40%; text-align: center;">
 					<img src="/RetailPlus/_layouts/images/processing.gif" style="vertical-align: middle" alt="Processing" />
-					<b>Processing, please wait...</b>
+					<b><font size="small" nowrap="nowrap">Processing, please wait...</font></b>
 				</div>
 			</ProgressTemplate>
 		</asp:UpdateProgress>

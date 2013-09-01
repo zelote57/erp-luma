@@ -154,9 +154,7 @@
                                         <td class="ms-formspacer">
                                             <img src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
-                                            <asp:DropDownList ID="cboProductSubGroup" runat="server" AutoPostBack="True" CssClass="ms-short"
-                                                OnSelectedIndexChanged="cboProductSubGroup_SelectedIndexChanged">
-                                            </asp:DropDownList>
+                                            <asp:DropDownList ID="cboProductSubGroup" runat="server" CssClass="ms-short"></asp:DropDownList>
                                             <asp:RequiredFieldValidator ID="Requiredfieldvalidator6" runat="server" ControlToValidate="cboProductSubGroup"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product sub group' must not be left blank."
                                                 ForeColor=" "></asp:RequiredFieldValidator>

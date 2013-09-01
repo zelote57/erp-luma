@@ -145,7 +145,7 @@
 						                    </colgroup>
 						                    <tr style="padding-bottom: 4px">
 							                    <th class="ms-vh2">
-								                    <INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" visible="false" style="display:none">&nbsp;&nbsp;</th>
+								                    <input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" visible="false" style="display:none" />&nbsp;&nbsp;</th>
 							                    <th class="ms-vh2"><asp:hyperlink id="SortByDescription" runat="server">Barcode</asp:hyperlink></th>
 							                    <th class="ms-vh2"><asp:hyperlink id="SortByProductCode" runat="server">Product Code</asp:hyperlink></th>
                                                 <th class="ms-vh2"><asp:hyperlink id="SortByVariationDesc" runat="server"></asp:hyperlink></th>
@@ -166,7 +166,7 @@
                                                     <input id="chkMatrixID" type="checkbox" runat="server" name="chkMatrixID" visible="false" />
 								                    <asp:Label id="lblItemNo" Runat="server"></asp:Label>&nbsp;</td>
 							                    <td class="ms-vb-user">
-							                        <asp:HyperLink id="lnkBarcode" Runat="server"></asp:HyperLink></td>
+							                        <asp:HyperLink id="lnkBarcode" Runat="server" Target="_blank"></asp:HyperLink></td>
 							                    <td class="ms-vb-user">
 								                    &nbsp;&nbsp;								
 								                    <asp:Label id="lnkProductCode" Runat="server"></asp:Label>
@@ -177,7 +177,7 @@
 							                    </td>
                                                 <td class="ms-vb2">
 							                        <asp:TextBox ID="txtActualQuantity" runat="server" AccessKey="C" onkeyup="ComputeQuantityByVariation(this)" BorderStyle="Groove" CssClass="ms-short" Width="70%">0</asp:TextBox>
-								                    <asp:ImageButton id="imgSaveActualQuantity" runat="server" ImageUrl="../_layouts/images/saveitem.gif" ToolTip="Save Actual Quantity" CommandName="imgSaveActualQuantity" CausesValidation=false height="15px" Visible="false"></asp:ImageButton></td>
+								                    <asp:ImageButton id="imgSaveActualQuantity" runat="server" ImageUrl="../_layouts/images/saveitem.gif" ToolTip="Save Actual Quantity" CommandName="imgSaveActualQuantity" CausesValidation="false" height="15px"></asp:ImageButton></td>
 							                    <td class="ms-vb2">
 								                    <asp:TextBox ID="txtPOSQuantity" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled" Width="98%"></asp:TextBox></td>
 							                    <td class="ms-vb-user">
@@ -191,7 +191,7 @@
 						                        <td class="ms-vb-user">
 								                    <asp:TextBox ID="txtAmountOver" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-disabled" Width="98%"></asp:TextBox></td>
 							                    <td class="ms-vb-user">
-								                    <asp:ImageButton id="imgProductTag" runat="server" ImageUrl="../_layouts/images/prodtagact.gif" ToolTip="Tag as inactive" CommandName="imgProductTag" CausesValidation=false height="15px"></asp:ImageButton></td>
+								                    <asp:ImageButton id="imgProductTag" runat="server" ImageUrl="../_layouts/images/prodtagact.gif" ToolTip="Tag as inactive" CommandName="imgProductTag" CausesValidation="false" height="15px"></asp:ImageButton></td>
 						                    </tr>
 				                    </ItemTemplate>
                                     <FooterTemplate>
@@ -206,6 +206,8 @@
                             <asp:AsyncPostBackTrigger ControlID="cmdSaveActualQuantity" EventName="Click" />
                             <asp:AsyncPostBackTrigger ControlID="imgZeroOutActualQuantity" EventName="Click" />
                             <asp:AsyncPostBackTrigger ControlID="cmdZeroOutActualQuantity" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="imgCopyPOSToActual" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="cmdCopyPOSToActual" EventName="Click" />
                             <asp:AsyncPostBackTrigger ControlID="imgCloseInventory" EventName="Click" />
                             <asp:AsyncPostBackTrigger ControlID="cmdCloseInventory" EventName="Click" />
                         </Triggers>
@@ -246,6 +248,14 @@
 							<tr>
 								<td class="ms-toolbar" nowrap><asp:imagebutton id="imgZeroOutActualQuantity" ToolTip="Zero Out Actual Quantity" accessKey="Z" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/newuser.gif" alt="Zero Out Actual Quantity" border="0" width="16" height="16" onclick="imgZeroOutActualQuantity_Click"></asp:imagebutton>&nbsp;</td>
 								<td nowrap><asp:linkbutton id="cmdZeroOutActualQuantity" ToolTip="Zero Out Actual Quantity" accessKey="Z" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdZeroOutActualQuantity_Click">Zero Out Actual Quantity</asp:linkbutton></td>
+							</tr>
+						</table>
+					</td>
+                    <td class="ms-toolbar">
+						<table cellspacing="0" cellpadding="1" border="0">
+							<tr>
+								<td class="ms-toolbar" nowrap><asp:imagebutton id="imgCopyPOSToActual" ToolTip="Copy current POS Quantity to Actual Quantity" accessKey="Z" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/newuser.gif" alt="Copty POS Quantity to Actual Quantity" border="0" width="16" height="16" onclick="imgCopyPOSToActual_Click"></asp:imagebutton>&nbsp;</td>
+								<td nowrap><asp:linkbutton id="cmdCopyPOSToActual" ToolTip="Copy current POS Quantity to Actual Quantity" accessKey="Z" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdCopyPOSToActual_Click">Copy POS Quantity To Actual</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>

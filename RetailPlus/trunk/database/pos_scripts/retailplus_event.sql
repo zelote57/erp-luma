@@ -60,4 +60,21 @@ delimiter ;
 
 
 
+/********************************************
+	eventUpdatetblInventorySG
+	-- Update the Closing Inventory group details and/or supplier details.
+********************************************/
+delimiter GO
+DROP EVENT IF EXISTS eventUpdatetblInventorySG
+GO
 
+CREATE EVENT eventUpdatetblInventorySG
+    ON SCHEDULE
+		EVERY 1 DAY
+		STARTS '2012-08-24 23:50:00'
+    DO 
+	BEGIN
+		CALL sysUpdatetblInventorySG();
+	END;
+GO
+delimiter ;

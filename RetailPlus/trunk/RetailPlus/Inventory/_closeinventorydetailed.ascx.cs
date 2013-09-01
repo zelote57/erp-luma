@@ -48,6 +48,8 @@ namespace AceSoft.RetailPlus.Inventory
 					LoadList();
                     cmdZeroOutActualQuantity.Attributes.Add("onClick", "return confirm_zeroout_inventory();");
                     imgZeroOutActualQuantity.Attributes.Add("onClick", "return confirm_zeroout_inventory();");
+                    cmdCopyPOSToActual.Attributes.Add("onClick", "return confirm_copypostoactual_inventory();");
+                    imgCopyPOSToActual.Attributes.Add("onClick", "return confirm_copypostoactual_inventory();");
                     cmdCloseInventory.Attributes.Add("onClick", "return confirm_close_inventory();");
                     imgCloseInventory.Attributes.Add("onClick", "return confirm_close_inventory();");
 				}
@@ -104,6 +106,18 @@ namespace AceSoft.RetailPlus.Inventory
             if (ZeroOutActualQuantity())
                 LoadList();
 		}
+
+        protected void imgCopyPOSToActual_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            if (CopyPOSToActual())
+                LoadList();
+        }
+
+        protected void cmdCopyPOSToActual_Click(object sender, System.EventArgs e)
+        {
+            if (CopyPOSToActual())
+                LoadList();
+        }
 
         protected void imgCloseInventory_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
@@ -202,26 +216,31 @@ namespace AceSoft.RetailPlus.Inventory
                 }
 
                 ImageButton imgProductTag = (ImageButton)e.Item.FindControl("imgProductTag");
-                if (Convert.ToBoolean(dr["Active"].ToString()))
+                if (chkMatrixID.Value == "0")
                 {
-                    imgProductTag.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/prodtagact.gif";
-                    imgProductTag.ToolTip = "Tag this product as INACTIVE.";
+                    if (Convert.ToBoolean(dr["Active"].ToString()))
+                    {
+                        imgProductTag.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/prodtagact.gif";
+                        imgProductTag.ToolTip = "Tag this product as INACTIVE.";
+                    }
+                    else //if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly)
+                    {
+                        imgProductTag.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/prodtaginact.gif";
+                        imgProductTag.ToolTip = "Tag this product as ACTIVE.";
+                    }
                 }
-                else //if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly)
+                else
                 {
-                    imgProductTag.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/prodtaginact.gif";
-                    imgProductTag.ToolTip = "Tag this product as ACTIVE.";
+                    imgProductTag.Visible = false;
                 }
 			}
 		}				
 		protected void lstItem_ItemCommand(object source, System.Web.UI.WebControls.DataListCommandEventArgs e)
 		{
-			HtmlInputCheckBox chkList = null;
-			string stParam = null;
-
-			chkList = (HtmlInputCheckBox) e.Item.FindControl("chkList");
-			stParam = "?task=" + Common.Encrypt("list",Session.SessionID) + 
-					"&prodid=" + Common.Encrypt(chkList.Value,Session.SessionID);
+            HtmlInputCheckBox chkList = (HtmlInputCheckBox)e.Item.FindControl("chkList");
+            HtmlInputCheckBox chkMatrixID = (HtmlInputCheckBox)e.Item.FindControl("chkMatrixID");
+			string stParam = "?task=" + Common.Encrypt("list",Session.SessionID) + 
+					            "&prodid=" + Common.Encrypt(chkList.Value,Session.SessionID);
 
             
 			switch(e.CommandName)
@@ -232,12 +251,18 @@ namespace AceSoft.RetailPlus.Inventory
                         Products clsProduct = new Products();
 
                         if (imgProductTag.ToolTip == "Tag this product as INACTIVE.")
+                        {
                             clsProduct.TagInactive(long.Parse(chkList.Value));
+                            imgProductTag.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/prodtaginact.gif";
+                            imgProductTag.ToolTip = "Tag this product as ACTIVE.";
+                        }
                         else
+                        {
                             clsProduct.TagActive(long.Parse(chkList.Value));
-
+                            imgProductTag.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/prodtagact.gif";
+                            imgProductTag.ToolTip = "Tag this product as INACTIVE.";
+                        }
                         clsProduct.CommitAndDispose();
-                        LoadList();
                     }
                     break;
                 case "imgSaveActualQuantity":
@@ -252,9 +277,9 @@ namespace AceSoft.RetailPlus.Inventory
                             Response.Write(stScript);
                             break;
                         }
-                        Products clsProduct = new Products();
-                        clsProduct.UpdateActualQuantity(int.Parse(cboBranch.SelectedItem.Value), long.Parse(chkList.Value), decimal.Parse(txtActualQuantity.Text));
-                        clsProduct.CommitAndDispose();
+                        ProductInventories clsProductInventories = new ProductInventories();
+                        clsProductInventories.UpdateActualQuantity(int.Parse(cboBranch.SelectedItem.Value), long.Parse(chkList.Value), long.Parse(chkMatrixID.Value), decimal.Parse(txtActualQuantity.Text));
+                        clsProductInventories.CommitAndDispose();
                     }
                     break;
 
@@ -374,6 +399,18 @@ namespace AceSoft.RetailPlus.Inventory
             return boRetValue;
         }
 
+        private bool CopyPOSToActual()
+        {
+            bool boRetValue = false;
+
+            Products clsProduct = new Products();
+            boRetValue = clsProduct.CopyPOSToActualBySupplier(int.Parse(cboBranch.SelectedItem.Value), long.Parse(cboContact.SelectedItem.Value));
+            clsProduct.CommitAndDispose();
+            boRetValue = true;
+
+            return boRetValue;
+        }
+
         private void ManageSecurity()
         {
             Int64 UID = Convert.ToInt64(Session["UID"]);
@@ -404,7 +441,7 @@ namespace AceSoft.RetailPlus.Inventory
             Int64 lngSupplierID = Convert.ToInt64(cboContact.SelectedItem.Value);
 
             ProductInventories clsProductInventories = new ProductInventories();
-            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(cboBranch.SelectedItem.Value), SupplierID: lngSupplierID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode, MatrixDescription");
+            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(cboBranch.SelectedItem.Value), SupplierID: lngSupplierID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode ASC, MatrixDescription ASC, BarCode1", SortOrder: SortOption.Desscending);
 
             Contacts clsContacts = new Contacts(clsProductInventories.Connection, clsProductInventories.Transaction);
             ContactDetails clsContactDetails = clsContacts.Details(lngSupplierID);

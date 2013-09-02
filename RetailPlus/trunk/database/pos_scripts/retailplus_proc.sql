@@ -5055,9 +5055,7 @@ BEGIN
 
 	IF ProductID <> 0 THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductID = ',ProductID,' ');
-	END IF;
-
-	IF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') <> '' THEN
+	ELSEIF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') <> '' THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 LIKE ''%',BarCode,'%'' ');
 		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
 		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
@@ -5072,18 +5070,6 @@ BEGIN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode LIKE ''%',ProductCode,'%'' ');
 	END IF;
 
-	IF isSummary = 0 THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND IFNULL(mtrx.MatrixID,0) = ',MatrixID,' ');
-	END IF;
-
-	IF ProductGroupID <> 0 THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND prdg.ProductGroupID = ',ProductGroupID,' ');
-	END IF;
-
-	IF ProductSubGroupID <> 0 THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND prdsg.ProductSubGroupID = ',ProductSubGroupID,' ');
-	END IF;
-
 	IF SupplierID <> 0 THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.SupplierID = ',SupplierID,' ');
 	END IF;
@@ -5092,18 +5078,14 @@ BEGIN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.Active = ',ShowActiveAndInactive,' ');
 	END IF;
 
-	IF isQuantityGreaterThanZERO <> 0 THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND IFNULL(inv.Quantity,0) > 0 ');
-	END IF;
-
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
-							,pkg.PackageID
-							,IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode
-							,pkg.BarCode1
-							,pkg.BarCode2
-							,pkg.BarCode3
-							,pkg.BarCode4
+							,prd.PackageID
+							,IFNULL(prd.BarCode1,prd.BarCode4) BarCode
+							,prd.BarCode1
+							,prd.BarCode2
+							,prd.BarCode3
+							,prd.BarCode4
 							,prd.ProductCode
 							,prd.ProductDesc
 							
@@ -5132,14 +5114,14 @@ BEGIN
 							,supp.ContactName SupplierName
 
 							,prd.IsItemSold
-							,pkg.Price
-							,pkg.WSPrice
-							,pkg.PurchasePrice
+							,prd.Price
+							,prd.WSPrice
+							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
-							,pkg.VAT
-							,pkg.EVAT
-							,pkg.LocalTax
+							,prd.VAT
+							,prd.EVAT
+							,prd.LocalTax
 							,prd.RewardPoints
 
 							,SUM(IFNULL(inv.Quantity,0)) Quantity
@@ -5171,28 +5153,37 @@ BEGIN
 							,IFNULL(mtrx.Description,'''') AS MatrixDescription
 							,',IF(isSummary=1,'0','IFNULL(brnch.BranchID,0)'),' AS BranchID
 							,',IF(isSummary=1,'''All''','IFNULL(brnch.BranchCode,''All'')'),' AS BranchCode
-						FROM tblProducts prd 
-						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
-						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
+						FROM (SELECT prd.* ,pkg.PackageID, pkg.MatrixID
+									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
+									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
+							  FROM tblProducts prd 
+							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND prd.BaseUnitID = pkg.UnitID
+														AND pkg.Quantity = 1
+							  WHERE prd.deleted = 0 ',SQLWhere,' ) prd
+						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID ', IF(ProductSubGroupID=0,'',CONCAT('AND prdsg.ProductSubGroupID =',ProductSubGroupID)),'
+						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID ', IF(ProductGroupID=0,'',CONCAT('AND prdg.ProductGroupID =',ProductGroupID)),'
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
-						INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
-														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1 
-						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
+						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND prd.MatrixID = mtrx.MatrixID
 						LEFT OUTER JOIN tblBranch brnch ON ',IF(BranchID=0,'1=1',Concat('brnch.BranchID=',BranchID)),'						
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) ',IF(BranchID=0,'AND brnch.BranchID = INV.BranchID ',Concat('AND INV.BranchID=',BranchID)),'
-						WHERE prd.deleted = 0 AND IFNULL(mtrx.deleted, 0) = 0 ');
+						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) 
+														',IF(BranchID=0,'AND brnch.BranchID = INV.BranchID ',Concat('AND INV.BranchID=',BranchID)),' 
+														', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						WHERE IFNULL(mtrx.deleted, 0) = 0 ');
 	
-	SET @SQL = CONCAT(@SQL, SQLWhere,' ');
+	
+	IF isSummary = 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND IFNULL(mtrx.MatrixID,0) = ',MatrixID,' ');
+	END IF;
 
 	SET @SQL = CONCAT(@SQL, '
 						GROUP BY prd.ProductID
-                            ,pkg.PackageID
-                            ,pkg.BarCode1
-                            ,pkg.BarCode2
-                            ,pkg.BarCode3
-                            ,pkg.BarCode4
+                            ,prd.PackageID
+                            ,prd.BarCode1
+                            ,prd.BarCode2
+                            ,prd.BarCode3
+                            ,prd.BarCode4
                             ,prd.ProductCode
                             ,prd.ProductDesc
 
@@ -5221,14 +5212,14 @@ BEGIN
                             ,supp.ContactName
 
                             ,prd.IsItemSold
-                            ,pkg.Price
-                            ,pkg.WSPrice
-                            ,pkg.PurchasePrice
+                            ,prd.Price
+                            ,prd.WSPrice
+                            ,prd.PurchasePrice
                             ,prd.PercentageCommision
                             ,prd.IncludeInSubtotalDiscount
-                            ,pkg.VAT
-                            ,pkg.EVAT
-                            ,pkg.LocalTax
+                            ,prd.VAT
+                            ,prd.EVAT
+                            ,prd.LocalTax
                             ,prd.RewardPoints
 
                             ,prd.WillPrintProductComposition
@@ -5261,6 +5252,7 @@ BEGIN
 END;
 GO
 delimiter ;
+
 
 /**************************************************************
 
@@ -5318,17 +5310,13 @@ BEGIN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.Active = ',ShowActiveAndInactive,' ');
 	END IF;
 
-	IF isQuantityGreaterThanZERO <> 0 THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND IFNULL(inv.Quantity,0) > 0 ');
-	END IF;
-
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
-							,IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode
-							,pkg.BarCode1
-							,pkg.BarCode2
-							,pkg.BarCode3
-							,pkg.BarCode4
+							,IFNULL(prd.BarCode1,prd.BarCode4) BarCode
+							,prd.BarCode1
+							,prd.BarCode2
+							,prd.BarCode3
+							,prd.BarCode4
 							,prd.ProductCode
 							,prd.ProductDesc
 							
@@ -5348,39 +5336,42 @@ BEGIN
 							,supp.ContactCode SupplierCode
 							,supp.ContactName SupplierName
 
-							,pkg.Price
-							,pkg.WSPrice
-							,pkg.PurchasePrice
+							,prd.Price
+							,prd.WSPrice
+							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
-							,pkg.VAT
-							,pkg.EVAT
-							,pkg.LocalTax
+							,prd.VAT
+							,prd.EVAT
+							,prd.LocalTax
 							,prd.RewardPoints
 
 							,SUM(IFNULL(inv.Quantity,0)) Quantity
                             ,SUM(IFNULL(inv.ActualQuantity,0)) ActualQuantity
                             ,fnProductQuantityConvert(prd.ProductID, SUM(IFNULL(inv.Quantity,0)), prd.BaseUnitID)  ConvertedQuantity
                             ,IFNULL(MAX(inv.IsLock),0) IsLock
-						FROM tblProducts prd
+						FROM (SELECT prd.* ,pkg.PackageID, pkg.MatrixID
+									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
+									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
+							  FROM tblProducts prd 
+							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND prd.BaseUnitID = pkg.UnitID
+														AND pkg.Quantity = 1
+							  WHERE prd.deleted = 0 ',SQLWhere,' ) prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
-						INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
-														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1
+						
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),'
-						WHERE prd.deleted = 0 ');
-
-	SET @SQL = CONCAT(@SQL, SQLWhere,' ');
+						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						');
 
 	SET @SQL = CONCAT(@SQL, ' 
 						GROUP BY prd.ProductID
-							,pkg.BarCode1
-							,pkg.BarCode2
-							,pkg.BarCode3
-							,pkg.BarCode4
+							,prd.BarCode1
+							,prd.BarCode2
+							,prd.BarCode3
+							,prd.BarCode4
 							,prd.ProductCode
 							,prd.ProductDesc
 
@@ -5400,14 +5391,14 @@ BEGIN
 							,supp.ContactCode
 							,supp.ContactName
 
-							,pkg.Price
-							,pkg.WSPrice
-							,pkg.PurchasePrice
+							,prd.Price
+							,prd.WSPrice
+							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
-							,pkg.VAT
-							,pkg.EVAT
-							,pkg.LocalTax
+							,prd.VAT
+							,prd.EVAT
+							,prd.LocalTax
 							,prd.RewardPoints ');
 
 	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','prd.ProductCode',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
@@ -5421,6 +5412,7 @@ BEGIN
 END;
 GO
 delimiter ;
+
 
 /**************************************************************
 
@@ -5476,27 +5468,34 @@ BEGIN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.Active = ',ShowActiveAndInactive,' ');
 	END IF;
 
-	IF isQuantityGreaterThanZERO <> 0 THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND IFNULL(inv.Quantity,0) > 0 ');
-	END IF;
-
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
 							,prd.ProductCode
 							-- ,SUM(inv.Quantity) Quantity
 							-- ,SUM(inv.ActualQuantity) ActualQuantity
-						FROM tblProducts prd
+						FROM (SELECT prd.*
+									,pkg.BarCode1
+									,pkg.BarCode2
+									,pkg.BarCode3
+									,pkg.BarCode4
+									
+									,pkg.Price
+									,pkg.WSPrice
+									,pkg.PurchasePrice
+									,pkg.VAT
+									,pkg.EVAT
+									,pkg.LocalTax
+							  FROM tblProducts prd 
+							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND prd.BaseUnitID = pkg.UnitID
+														AND pkg.Quantity = 1
+							  WHERE prd.deleted = 0 ',SQLWhere,' ) prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
-						INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
-														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),'
-						WHERE prd.deleted = 0 ');
-
-	SET @SQL = CONCAT(@SQL, SQLWhere,' ');
+						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						');
 
 	SET @SQL = CONCAT(@SQL, 'GROUP BY prd.ProductID, prd.ProductCode ');
 
@@ -5511,6 +5510,7 @@ BEGIN
 END;
 GO
 delimiter ;
+
 
 /**************************************************************
 
@@ -5531,7 +5531,8 @@ create procedure procProductMainDetails(
 			 IN BranchID int,
 			 IN ProductID bigint,
 			 IN MatrixID bigint,
-			 IN BarCode varchar(60))
+			 IN BarCode varchar(60),
+			 IN isQuantityGreaterThanZERO TINYINT(1))
 BEGIN
 	DECLARE SQLWhere VARCHAR(8000) DEFAULT '';
 
@@ -5549,12 +5550,12 @@ BEGIN
 
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
-							,pkg.PackageID
-							,IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode
-							,pkg.BarCode1
-							,pkg.BarCode2
-							,pkg.BarCode3
-							,pkg.BarCode4
+							,prd.PackageID
+							,IFNULL(prd.BarCode1,prd.BarCode4) BarCode
+							,prd.BarCode1
+							,prd.BarCode2
+							,prd.BarCode3
+							,prd.BarCode4
 							,prd.ProductCode
 							,prd.ProductDesc
 							
@@ -5583,14 +5584,14 @@ BEGIN
 							,supp.ContactName SupplierName
 
 							,prd.IsItemSold
-							,pkg.Price
-							,pkg.WSPrice
-							,pkg.PurchasePrice
+							,prd.Price
+							,prd.WSPrice
+							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
-							,pkg.VAT
-							,pkg.EVAT
-							,pkg.LocalTax
+							,prd.VAT
+							,prd.EVAT
+							,prd.LocalTax
 							,prd.RewardPoints
 
 							,SUM(IFNULL(inv.Quantity,0)) Quantity
@@ -5620,28 +5621,41 @@ BEGIN
 							,IFNULL(mtrx.MatrixID,0) MatrixID
 							,IFNULL(CONCAT(prd.ProductDesc, '':'' , mtrx.Description),'''') AS VariationDesc
 							,IFNULL(mtrx.Description,'''') MatrixDescription
-						FROM tblProducts prd
+						FROM (SELECT prd.*
+									,pkg.PackageID
+									,pkg.MatrixID
+									,pkg.BarCode1
+									,pkg.BarCode2
+									,pkg.BarCode3
+									,pkg.BarCode4
+									
+									,pkg.Price
+									,pkg.WSPrice
+									,pkg.PurchasePrice
+									,pkg.VAT
+									,pkg.EVAT
+									,pkg.LocalTax
+							  FROM tblProducts prd 
+							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND prd.BaseUnitID = pkg.UnitID
+														AND pkg.Quantity = 1
+							  WHERE prd.deleted = 0 ',SQLWhere,' ) prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
-						INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
-														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
-						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON prd.productID = mtrx.ProductID AND pkg.MatrixID =  mtrx.MatrixID
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),'
-						WHERE prd.deleted = 0 ');
-
-	SET @SQL = CONCAT(@SQL, SQLWhere,' ');
+						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON prd.productID = mtrx.ProductID AND prd.MatrixID =  mtrx.MatrixID
+						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						');
 
 	SET @SQL = CONCAT(@SQL, '
 						GROUP BY 
 							prd.ProductID
-						   ,pkg.PackageID
-						   ,pkg.BarCode1
-						   ,pkg.BarCode2
-						   ,pkg.BarCode3
-						   ,pkg.BarCode4
+						   ,prd.PackageID
+						   ,prd.BarCode1
+						   ,prd.BarCode2
+						   ,prd.BarCode3
+						   ,prd.BarCode4
 						   ,prd.ProductCode
 						   ,prd.ProductDesc
 
@@ -5670,14 +5684,14 @@ BEGIN
 						   ,supp.ContactName
 
 						   ,prd.IsItemSold
-						   ,pkg.Price
-						   ,pkg.WSPrice
-						   ,pkg.PurchasePrice
+						   ,prd.Price
+						   ,prd.WSPrice
+						   ,prd.PurchasePrice
 						   ,prd.PercentageCommision
 						   ,prd.IncludeInSubtotalDiscount
-						   ,pkg.VAT
-						   ,pkg.EVAT
-						   ,pkg.LocalTax
+						   ,prd.VAT
+						   ,prd.EVAT
+						   ,prd.LocalTax
 						   ,prd.RewardPoints
 
 						   ,prd.WillPrintProductComposition
@@ -5763,10 +5777,6 @@ BEGIN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode LIKE ''%',ProductCode,'%'' ');
 	END IF;
 
-	IF IFNULL(MatrixDescription,'') <> '' THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND IFNULL(mtrx.Description,'''') LIKE ''%',MatrixDescription,'%'' ');
-	END IF;
-
 	IF SupplierID <> 0 THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.SupplierID = ',SupplierID,' ');
 	END IF;
@@ -5774,19 +5784,19 @@ BEGIN
 	IF ShowActiveAndInactive = 0 OR ShowActiveAndInactive = 1  THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.Active = ',ShowActiveAndInactive,' ');
 	END IF;
-
-	IF isQuantityGreaterThanZERO <> 0 THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND IFNULL(inv.Quantity,0) > 0 ');
+	
+	IF IFNULL(MatrixDescription,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND IFNULL(mtrx.Description,'''') LIKE ''%',MatrixDescription,'%'' ');
 	END IF;
 
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
-							,pkg.PackageID
-							,IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode
-							,pkg.BarCode1
-							,pkg.BarCode2
-							,pkg.BarCode3
-							,pkg.BarCode4
+							,prd.PackageID
+							,IFNULL(prd.BarCode1,prd.BarCode4) BarCode
+							,prd.BarCode1
+							,prd.BarCode2
+							,prd.BarCode3
+							,prd.BarCode4
 							,prd.ProductCode
 							,prd.ProductDesc
 							
@@ -5815,14 +5825,14 @@ BEGIN
 							,supp.ContactName SupplierName
 
 							,prd.IsItemSold
-							,pkg.Price
-							,pkg.WSPrice
-							,pkg.PurchasePrice
+							,prd.Price
+							,prd.WSPrice
+							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
-							,pkg.VAT
-							,pkg.EVAT
-							,pkg.LocalTax
+							,prd.VAT
+							,prd.EVAT
+							,prd.LocalTax
 							,prd.RewardPoints
 
 							,SUM(IFNULL(inv.Quantity,0)) Quantity
@@ -5838,7 +5848,7 @@ BEGIN
 							,prd.MaxThreshold
 							,prd.RID
 
-							,IFNULL(mtrx.MaxThreshold, prd.MaxThreshold) - SUM(IFNULL(inv.Quantity,0)) ReorderQty
+							,IFNULL(mtrxMaxThreshold, prd.MaxThreshold) - SUM(IFNULL(inv.Quantity,0)) ReorderQty
 							,prd.RIDMinThreshold
 							,prd.RIDMaxThreshold
 							,prd.RIDMaxThreshold -  SUM(IFNULL(inv.Quantity,0)) AS RIDReorderQty
@@ -5849,31 +5859,36 @@ BEGIN
 							,prd.ChartOfAccountIDTaxPurchase
 							,prd.ChartOfAccountIDTaxSold
 
-							,mtrx.MatrixID
-							,CONCAT(prd.ProductDesc, '':'' , mtrx.Description) AS VariationDesc
-							,mtrx.Description AS MatrixDescription
-						FROM tblProductBaseVariationsMatrix mtrx 
-						INNER JOIN tblProducts prd ON mtrx.ProductID = prd.ProductID
+							,prd.MatrixID
+							,CONCAT(prd.ProductDesc, '':'' , prd.Description) AS VariationDesc
+							,prd.Description AS MatrixDescription
+						FROM (SELECT prd.* ,pkg.PackageID ,pkg.MatrixID
+									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
+									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice
+									,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
+									,mtrx.Description ,mtrx.MinThreshold mtrxMinThreshold, mtrx.MaxThreshold mtrxMaxThreshold
+							  FROM tblProducts prd 
+							  INNER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID
+							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND prd.BaseUnitID = pkg.UnitID
+														AND pkg.Quantity = 1
+														AND pkg.MatrixID = mtrx.MatrixID
+							  WHERE prd.deleted = 0 ',SQLWhere,' ) prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
-						INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
-														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1 AND pkg.MatrixID = mtrx.MatrixID
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),'
-						WHERE mtrx.deleted = 0 ');
-	
-	SET @SQL = CONCAT(@SQL, SQLWhere,' ');
+						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						');
 
 	SET @SQL = CONCAT(@SQL, '
 						GROUP BY 
 							 prd.ProductID
-							,pkg.PackageID
-							,pkg.BarCode1
-							,pkg.BarCode2
-							,pkg.BarCode3
-							,pkg.BarCode4
+							,prd.PackageID
+							,prd.BarCode1
+							,prd.BarCode2
+							,prd.BarCode3
+							,prd.BarCode4
 							,prd.ProductCode
 							,prd.ProductDesc
 							
@@ -5902,14 +5917,14 @@ BEGIN
 							,supp.ContactName
 
 							,prd.IsItemSold
-							,pkg.Price
-							,pkg.WSPrice
-							,pkg.PurchasePrice
+							,prd.Price
+							,prd.WSPrice
+							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
-							,pkg.VAT
-							,pkg.EVAT
-							,pkg.LocalTax
+							,prd.VAT
+							,prd.EVAT
+							,prd.LocalTax
 							,prd.RewardPoints
 
 							,prd.WillPrintProductComposition
@@ -5918,7 +5933,7 @@ BEGIN
 							,prd.MaxThreshold
 							,prd.RID
 
-							,mtrx.MaxThreshold
+							,prd.MaxThreshold
 							,prd.RIDMinThreshold
 							,prd.RIDMaxThreshold
 
@@ -5928,8 +5943,8 @@ BEGIN
 							,prd.ChartOfAccountIDTaxPurchase
 							,prd.ChartOfAccountIDTaxSold
 
-							,mtrx.MatrixID
-							,mtrx.Description ');
+							,prd.MatrixID
+							,prd.Description ');
 
 	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','MatrixDescription',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
 

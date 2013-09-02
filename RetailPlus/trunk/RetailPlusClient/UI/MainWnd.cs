@@ -4316,7 +4316,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (ProductModel.PackageID != 0) //PackageID is not zero if selection is used.
                     {
                         clsProductPackageDetails = clsProductPackage.Details(ProductModel.PackageID);
-                        clsProductDetails = clsProduct.Details(mclsTerminalDetails.BranchID, clsProductPackageDetails.ProductID, clsProductPackageDetails.MatrixID);
+                        clsProductDetails = clsProduct.Details(clsProductPackageDetails.ProductID, clsProductPackageDetails.MatrixID, mclsTerminalDetails.BranchID);
                     }
                     else //PackageID is zero if selection is not used.
                     {
@@ -4324,7 +4324,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsProductDetails = clsProduct.Details(mclsTerminalDetails.BranchID, stBarcode, mclsTerminalDetails.ShowItemMoreThanZeroQty, decQuantity);
 
                         // check if the product exist and zero quantity
-                        if (clsProductDetails.ProductID == 0) clsProductDetails = clsProduct.Details(mclsTerminalDetails.BranchID, stBarcode);
+                        if (clsProductDetails.ProductID == 0) clsProductDetails = clsProduct.Details(stBarcode, mclsTerminalDetails.BranchID);
 
                         // check if the product is weighted
                         if (clsProductDetails.ProductID == 0)
@@ -6847,7 +6847,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (clsParkingRateDetails.ParkingRateID != 0)
                     {
                         //compute the parking rate
-                        Int32 intTotalNoOfMinutes =  (Int32) (mclsSalesTransactionDetails.DateResumed - mclsSalesTransactionDetails.TransactionDate).TotalMinutes;
+                        Int32 intTotalNoOfMinutes = mclsSalesTransactionDetails.DateResumed == DateTime.MinValue ? 0 : (Int32)(mclsSalesTransactionDetails.DateResumed - mclsSalesTransactionDetails.TransactionDate).TotalMinutes;
                         decimal decParkingPrice = Details.Price;
 
                         if (intTotalNoOfMinutes <= clsParkingRateDetails.MinimumStayInMin)

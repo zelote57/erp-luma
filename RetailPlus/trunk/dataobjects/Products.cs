@@ -2147,7 +2147,7 @@ namespace AceSoft.RetailPlus.Data
 		}
 		private string SQLSelectSimple(int BranchID)
 		{
-			string stSQL = "SELECT " +
+            string stSQL = "SELECT " +
                                     "pkg.PackageID, " +
                                     "prd.ProductID, " +
                                     "pkg.MatrixID, " +
@@ -2174,24 +2174,29 @@ namespace AceSoft.RetailPlus.Data
                                     "pkg.EVAT, " +
                                     "pkg.LocalTax, " +
 
-                                    "IFNULL(inv.Quantity,0) Quantity, " +
-                                    "IFNULL(inv.IsLock,0) IsLock, " +
-                                    //"fnProductQuantityConvert(inv.ProductID, inv.Quantity, prd.BaseUnitID) AS ConvertedQuantity, " +
+                                    "SUM(IFNULL(inv.Quantity,0)) Quantity, " +
+                                    "MAX(IFNULL(inv.IsLock,0)) IsLock, " +
+                //"fnProductQuantityConvert(inv.ProductID, inv.Quantity, prd.BaseUnitID) AS ConvertedQuantity, " +
 
-                                    "IFNULL(inv.ActualQuantity,0) ActualQuantity, " +
+                                    "SUM(IFNULL(inv.ActualQuantity,0)) ActualQuantity, " +
                                     "IFNULL(mtrx.Description,'') MatrixDescription " +
 
-								"FROM tblProducts prd " +
-                                "   INNER JOIN tblProductPackage pkg ON prd.ProductID = pkg.ProductID " +
-                                //"   LEFT OUTER JOIN tblProductInventory inv ON prd.ProductID = inv.ProductID AND pkg.MatrixID = inv.MatrixID " +
-                                //"   LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON prd.ProductID = mtrx.ProductID AND mtrx.MatrixID = inv.MatrixID " +
-                                "     LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID " +
-                                "     LEFT OUTER JOIN (" +
-                                "          SELECT BranchID, ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity, IsLock FROM tblProductInventory WHERE BranchID=" + BranchID + " GROUP BY BranchID, ProductID, MatrixID, IsLock " +
-                                "      ) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) " +
-                                "WHERE prd.deleted = 0 AND IFNULL(mtrx.deleted, 0) = 0 ";
-            
-            stSQL += BranchID == 0 ? "" : "AND IFNULL(inv.BranchID,1) = " + BranchID.ToString() + " ";
+                                "FROM tblProducts prd " +
+                                "INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID " +
+                                                        "AND prd.BaseUnitID = pkg.UnitID " +
+                                                        "AND pkg.Quantity = 1 " +
+                                 "     LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID ";
+            if (BranchID == 0)
+            {
+                stSQL += "             LEFT OUTER JOIN tblBranch brnch ON 1=1 " +
+                         "             LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) AND brnch.BranchID = INV.BranchID";
+            }
+            else 
+            {
+                stSQL += "             LEFT OUTER JOIN tblBranch brnch ON brnch.BranchID=" + BranchID.ToString() + " " +
+                         "             LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) AND INV.BranchID=" + BranchID.ToString() + " ";
+            }
+            stSQL += "WHERE prd.deleted = 0 AND IFNULL(mtrx.deleted, 0) = 0 ";
 
 			return stSQL;
 		}
@@ -2537,11 +2542,11 @@ namespace AceSoft.RetailPlus.Data
             return getDetails(0, 0, BarCode, BranchID);
         }
 
-        private ProductDetails getDetails(long ProductID, long MatrixID, string BarCode, int BranchID = 0)
+        private ProductDetails getDetails(long ProductID, long MatrixID, string BarCode, int BranchID = 0, bool isQuantityGreaterThanZERO = false)
         {
             try
             {
-                string SQL = "CALL procProductMainDetails(@BranchID, @ProductID, @MatrixID, @BarCode)";
+                string SQL = "CALL procProductMainDetails(@BranchID, @ProductID, @MatrixID, @BarCode, @isQuantityGreaterThanZERO)";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -2551,6 +2556,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
                 cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
                 cmd.Parameters.AddWithValue("@BarCode", BarCode);
+                cmd.Parameters.AddWithValue("@isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
 
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
@@ -2574,32 +2580,34 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                MySqlCommand cmd = new MySqlCommand();
-				string SQL = SQLSelect(BranchID) + "AND (BarCode1 = @BarCode OR BarCode2 = @BarCode OR BarCode3 = @BarCode OR BarCode4 = @Barcode) ";
+                return getDetails(0, 0, BarCode, BranchID, ShowItemMoreThanZeroQty);
 
-                if (ShowItemMoreThanZeroQty)
-                {
-                    SQL += "AND IFNULL(inv.Quantity,0) >= @Quantity ";
+                //MySqlCommand cmd = new MySqlCommand();
+                //string SQL = SQLSelect(BranchID) + "AND (BarCode1 = @BarCode OR BarCode2 = @BarCode OR BarCode3 = @BarCode OR BarCode4 = @Barcode) ";
 
-                    MySqlParameter prmQuantity = new MySqlParameter("@Quantity", MySqlDbType.Decimal);
-                    prmQuantity.Value = Quantity;
-                    cmd.Parameters.Add(prmQuantity);
-                }
-                SQL += "ORDER BY mtrx.Description ASC LIMIT 1";
+                //if (ShowItemMoreThanZeroQty)
+                //{
+                //    SQL += "AND IFNULL(inv.Quantity,0) >= @Quantity ";
 
-                cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                //    MySqlParameter prmQuantity = new MySqlParameter("@Quantity", MySqlDbType.Decimal);
+                //    prmQuantity.Value = Quantity;
+                //    cmd.Parameters.Add(prmQuantity);
+                //}
+                //SQL += "ORDER BY mtrx.Description ASC LIMIT 1";
 
-				MySqlParameter prmBarCode = new MySqlParameter("@BarCode",MySqlDbType.String);
-				prmBarCode.Value = BarCode;
-				cmd.Parameters.Add(prmBarCode);
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = SQL;
 
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
+                //MySqlParameter prmBarCode = new MySqlParameter("@BarCode",MySqlDbType.String);
+                //prmBarCode.Value = BarCode;
+                //cmd.Parameters.Add(prmBarCode);
 
-				ProductDetails Details = SetDetails(dt);
+                //string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                //base.MySqlDataAdapterFill(cmd, dt);
+
+                //ProductDetails Details = SetDetails(dt);
                 
-				return Details;
+                //return Details;
 			}
 
 			catch (Exception ex)
@@ -4084,41 +4092,112 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-        public System.Data.DataTable ListAsDataTable(int BranchID, string BarCode, ProductListFilterType clsProductListFilterType, Int32 Limit, bool isQuantityGreaterThanZERO, string SortField = "ProductCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        public System.Data.DataTable ListAsDataTableFE(int BranchID, string BarCode, ProductListFilterType clsProductListFilterType, Int32 Limit, bool isQuantityGreaterThanZERO, string SortField = "ProductCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
 
                 string SQL = SQLSelectSimple(BranchID);
-                
-                if (clsProductListFilterType != ProductListFilterType.ShowInactiveOnly)
-                {
-                    SQL += "AND prd.Active = @Active ";
-                    MySqlParameter prmActive = new MySqlParameter("@Active", MySqlDbType.Int16);
-                    if (clsProductListFilterType == ProductListFilterType.ShowActiveOnly) prmActive.Value = 1;
-                    if (clsProductListFilterType == ProductListFilterType.ShowInactiveOnly) prmActive.Value = 0;
-                    cmd.Parameters.Add(prmActive);
-                }
-                if (isQuantityGreaterThanZERO)
-                {
-                    SQL += "AND inv.Quantity > 0 ";
-                }
 
+                SQL = "SELECT " +
+                                    "prd.PackageID, " +
+                                    "prd.ProductID, " +
+                                    "prd.MatrixID, " +
+                                    "prd.ProductCode, " +
+                                    "prd.ProductDesc, " +
+                                    "prd.ProductSubGroupID, " +
+                                    "prd.BaseUnitID, " +
+                                    "prd.DateCreated, " +
+                                    "prd.PercentageCommision, " +
+                                    "prd.IncludeInSubtotalDiscount, " +
+                                    "prd.SupplierID, " +
+                                    "prd.RewardPoints, " +
+                                    "prd.MinThreshold, " +
+                                    "prd.MaxThreshold, " +
+                                    "prd.BarCode1, " +
+                                    "prd.BarCode2, " +
+                                    "prd.BarCode3, " +
+                                    "IFNULL(prd.BarCode1,prd.BarCode4) BarCode, " +
+
+                                    "prd.Price, " +
+                                    "prd.WSPrice, " +
+                                    "prd.PurchasePrice, " +
+                                    "prd.VAT, " +
+                                    "prd.EVAT, " +
+                                    "prd.LocalTax, " +
+
+                                    "SUM(IFNULL(inv.Quantity,0)) Quantity, " +
+                                    "MAX(IFNULL(inv.IsLock,0)) IsLock, " +
+                                    //"fnProductQuantityConvert(inv.ProductID, inv.Quantity, prd.BaseUnitID) AS ConvertedQuantity, " +
+                                    "SUM(IFNULL(inv.ActualQuantity,0)) ActualQuantity, " +
+                                    "IFNULL(mtrx.Description,'') MatrixDescription ";
+
+                SQL += "        FROM (SELECT prd.ProductID, prd.ProductCode, prd.ProductDesc, prd.ProductSubGroupID, prd.BaseUnitID, prd.DateCreated, prd.PercentageCommision, prd.IncludeInSubtotalDiscount " +
+                       "                ,prd.SupplierID, prd.RewardPoints, prd.MinThreshold, prd.MaxThreshold " +
+                       "                ,pkg.PackageID, pkg.MatrixID ,pkg.BarCode1, pkg.BarCode2, pkg.BarCode3, pkg.BarCode4, pkg.Price, pkg.WSPrice, pkg.PurchasePrice, pkg.VAT, pkg.EVAT, pkg.LocalTax " +
+                       "              FROM tblProducts prd INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID AND prd.BaseUnitID = pkg.UnitID AND pkg.Quantity = 1 " +
+                       "                    WHERE prd.Active = 1 AND prd.deleted = 0 ";
                 if (!string.IsNullOrEmpty(BarCode))
                 {
-                    SQL += "AND (Barcode1 LIKE @BarCode OR Barcode2 LIKE @BarCode OR BarCode3 LIKE @BarCode OR BarCode4 LIKE @BarCode OR prd.ProductCode LIKE @BarCode OR prd.ProductDesc LIKE @BarCode) ";
+                    SQL += "                      AND (Barcode1 LIKE @BarCode OR Barcode2 LIKE @BarCode OR BarCode3 LIKE @BarCode OR BarCode4 LIKE @BarCode OR prd.ProductCode LIKE @BarCode OR prd.ProductDesc LIKE @BarCode) ";
 
                     MySqlParameter prmBarcode = new MySqlParameter("@BarCode", MySqlDbType.String);
                     prmBarcode.Value = BarCode + "%";
                     cmd.Parameters.Add(prmBarcode);
                 }
+                SQL += "              LIMIT " + Limit + ") prd ";
+                
+                SQL += "     LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND prd.MatrixID = mtrx.MatrixID ";
+                if (BranchID == 0)
+                {
+                    SQL += "           LEFT OUTER JOIN tblBranch brnch ON 1=1 " +
+                             "         LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) AND brnch.BranchID = INV.BranchID";
+                }
+                else
+                {
+                    SQL += "           LEFT OUTER JOIN tblBranch brnch ON brnch.BranchID=" + BranchID.ToString() + " " +
+                             "         LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) AND INV.BranchID=" + BranchID.ToString() + " ";
+                }
+                SQL += "WHERE IFNULL(mtrx.deleted, 0) = 0 ";
 
-                SQL += "ORDER BY inv.Quantity ASC ";
+                
+                if (isQuantityGreaterThanZERO)
+                {
+                    SQL += "AND inv.Quantity > 0 ";
+                }
+
+                SQL += "GROUP BY prd.PackageID, " +
+                                "prd.ProductID, " +
+                                "prd.MatrixID, " +
+                                "prd.ProductCode, " +
+                                "prd.ProductDesc, " +
+                                "prd.ProductSubGroupID, " +
+                                "prd.BaseUnitID, " +
+                                "prd.DateCreated, " +
+                                "prd.PercentageCommision, " +
+                                "prd.IncludeInSubtotalDiscount, " +
+                                "prd.SupplierID, " +
+                                "prd.RewardPoints, " +
+                                "prd.MinThreshold, " +
+                                "prd.MaxThreshold, " +
+                                "prd.BarCode1, " +
+                                "prd.BarCode2, " +
+                                "prd.BarCode3, " +
+                                "IFNULL(prd.BarCode1,prd.BarCode4), " +
+                                "prd.Price, " +
+                                "prd.WSPrice, " +
+                                "prd.PurchasePrice, " +
+                                "prd.VAT, " +
+                                "prd.EVAT, " +
+                                "prd.LocalTax," +
+                                "IFNULL(mtrx.Description,'') ";
+
+                SQL += "ORDER BY ";
 
                 if (!string.IsNullOrEmpty(SortField))
                 {
-                    SQL +="," + SortField + " ";
+                    SQL += SortField + " ";
 
                     if (SortOrder == System.Data.SqlClient.SortOrder.Ascending)
                         SQL += "ASC ";

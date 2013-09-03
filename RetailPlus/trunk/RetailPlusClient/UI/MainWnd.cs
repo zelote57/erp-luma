@@ -2164,7 +2164,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 {
                                     if (Details.TransactionItemStatus != TransactionItemStatus.Return)
                                     {
-                                        decimal decProductCurrentQuantity = clsProduct.Details(mclsTerminalDetails.BranchID, Details.ProductID, Details.VariationsMatrixID).Quantity + oldQuantity;
+                                        decimal decProductCurrentQuantity = clsProduct.Details(Details.ProductID, Details.VariationsMatrixID, mclsTerminalDetails.BranchID).Quantity + oldQuantity;
                                         if (decProductCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
                                         {
                                             clsProduct.CommitAndDispose();

@@ -5160,14 +5160,14 @@ BEGIN
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
 														AND prd.BaseUnitID = pkg.UnitID
 														AND pkg.Quantity = 1
-							  WHERE prd.deleted = 0 ',SQLWhere,' ) prd
+							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID ', IF(ProductSubGroupID=0,'',CONCAT('AND prdsg.ProductSubGroupID =',ProductSubGroupID)),'
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID ', IF(ProductGroupID=0,'',CONCAT('AND prdg.ProductGroupID =',ProductGroupID)),'
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
 						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND prd.MatrixID = mtrx.MatrixID
 						LEFT OUTER JOIN tblBranch brnch ON ',IF(BranchID=0,'1=1',Concat('brnch.BranchID=',BranchID)),'						
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) 
+						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND prd.MatrixID = inv.MatrixID 
 														',IF(BranchID=0,'AND brnch.BranchID = INV.BranchID ',Concat('AND INV.BranchID=',BranchID)),' 
 														', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
 						WHERE IFNULL(mtrx.deleted, 0) = 0 ');
@@ -5357,13 +5357,12 @@ BEGIN
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
 														AND prd.BaseUnitID = pkg.UnitID
 														AND pkg.Quantity = 1
-							  WHERE prd.deleted = 0 ',SQLWhere,' ) prd
+							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
-						
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND prd.MatrixID = inv.MatrixID',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
 						');
 
 	SET @SQL = CONCAT(@SQL, ' 
@@ -5474,27 +5473,17 @@ BEGIN
 							-- ,SUM(inv.Quantity) Quantity
 							-- ,SUM(inv.ActualQuantity) ActualQuantity
 						FROM (SELECT prd.*
-									,pkg.BarCode1
-									,pkg.BarCode2
-									,pkg.BarCode3
-									,pkg.BarCode4
-									
-									,pkg.Price
-									,pkg.WSPrice
-									,pkg.PurchasePrice
-									,pkg.VAT
-									,pkg.EVAT
-									,pkg.LocalTax
+								,pkg.MatrixID
 							  FROM tblProducts prd 
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
 														AND prd.BaseUnitID = pkg.UnitID
 														AND pkg.Quantity = 1
-							  WHERE prd.deleted = 0 ',SQLWhere,' ) prd
+							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = prd.MatrixID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
 						');
 
 	SET @SQL = CONCAT(@SQL, 'GROUP BY prd.ProductID, prd.ProductCode ');
@@ -5532,6 +5521,7 @@ create procedure procProductMainDetails(
 			 IN ProductID bigint,
 			 IN MatrixID bigint,
 			 IN BarCode varchar(60),
+			 IN ProductCode varchar(60),
 			 IN isQuantityGreaterThanZERO TINYINT(1))
 BEGIN
 	DECLARE SQLWhere VARCHAR(8000) DEFAULT '';
@@ -5543,10 +5533,13 @@ BEGIN
 	ELSEIF IFNULL(BarCode,'') <> '' THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 = ''',BarCode,''' ');
 		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 = ''',BarCode,''' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 = ''',BarCode,''' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 = ''',BarCode,''') ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 = ''',BarCode,''') ');
+	ELSEIF IFNULL(ProductCode,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode = ''',ProductCode,''' ');
 	END IF;
-	SET SQLWhere = CONCAT(SQLWhere, 'AND pkg.MatrixID = ',MatrixID,' ');
+	IF MatrixID <> 0 THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND pkg.MatrixID = ',MatrixID,' ');
+	END IF;
 
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
@@ -5639,13 +5632,13 @@ BEGIN
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
 														AND prd.BaseUnitID = pkg.UnitID
 														AND pkg.Quantity = 1
-							  WHERE prd.deleted = 0 ',SQLWhere,' ) prd
+							  WHERE prd.deleted = 0 ',SQLWhere,' LIMIT 1) prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
 						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON prd.productID = mtrx.ProductID AND prd.MatrixID =  mtrx.MatrixID
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND prd.MatrixID =  inv.MatrixID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
 						');
 
 	SET @SQL = CONCAT(@SQL, '
@@ -5713,8 +5706,6 @@ BEGIN
 
 						   ,mtrx.MatrixID
 						   ,mtrx.Description ');
-
-	SET @SQL = CONCAT(@SQL, 'LIMIT 1 ');
 	
 	PREPARE cmd FROM @SQL;
 	EXECUTE cmd;
@@ -5873,12 +5864,12 @@ BEGIN
 														AND prd.BaseUnitID = pkg.UnitID
 														AND pkg.Quantity = 1
 														AND pkg.MatrixID = mtrx.MatrixID
-							  WHERE prd.deleted = 0 ',SQLWhere,' ) prd
+							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
 						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND prd.MatrixID = inv.MatrixID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
 						');
 
 	SET @SQL = CONCAT(@SQL, '

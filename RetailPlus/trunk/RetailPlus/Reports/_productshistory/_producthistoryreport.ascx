@@ -106,6 +106,7 @@
 								</td>
 								<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 								<td nowrap="nowrap"><asp:ImageButton id="cmdProductCode" title="Search by product code" style="CURSOR: hand" accesskey="P" runat="server" ImageUrl="../../_layouts/images/SPSSearch2.gif" alt="Search by product code" border="0" OnClick="cmdProductCode_Click"></asp:ImageButton>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <asp:ImageButton id="imgProductHistory" runat="server" CausesValidation="false" ImageUrl="../../_layouts/images/prodhist.gif"
                                         OnClick="imgProductHistory_Click" Style="cursor: hand" ToolTip="Show product inventory history report"
                                         Visible="false" />

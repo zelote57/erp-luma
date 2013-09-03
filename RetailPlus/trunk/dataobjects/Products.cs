@@ -2409,11 +2409,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL = "Select BaseUnitID FROM tblProducts WHERE ProductID = @ProductID;";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -2436,49 +2432,40 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}
 		}
-		public ProductDetails Details(int BranchID, long ProductID, long MatrixID = 0)
-		{
-			try
-			{
-                string SQL = SQLSelect(BranchID) + "AND a.ProductId = @ProductID AND IFNULL(inv.MatrixID,0) = @MatrixID ";
+        //public ProductDetails Details(int BranchID, long ProductID, long MatrixID = 0)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelect(BranchID) + "AND a.ProductId = @ProductID AND IFNULL(inv.MatrixID,0) = @MatrixID ";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID", MySqlDbType.Int64);
-                prmMatrixID.Value = MatrixID;
-                cmd.Parameters.Add(prmMatrixID);
+        //        MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID", MySqlDbType.Int64);
+        //        prmMatrixID.Value = MatrixID;
+        //        cmd.Parameters.Add(prmMatrixID);
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = ProductID;
-				cmd.Parameters.Add(prmProductID);
+        //        MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
+        //        prmProductID.Value = ProductID;
+        //        cmd.Parameters.Add(prmProductID);
 
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
+        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //        base.MySqlDataAdapterFill(cmd, dt);
                 
-				ProductDetails Details = SetDetails(dt);
+        //        ProductDetails Details = SetDetails(dt);
 
-				return Details;
-			}
+        //        return Details;
+        //    }
 
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
         //public ProductDetails Details(string BarCode)
         //{
         //    try
@@ -2534,19 +2521,19 @@ namespace AceSoft.RetailPlus.Data
 
         public ProductDetails Details(long ProductID, long MatrixID = 0, int BranchID = 0)
         {
-            return getDetails(ProductID, MatrixID, string.Empty, BranchID);
+            return getDetails(ProductID, MatrixID, string.Empty, string.Empty, BranchID, false);
         }
 
         public ProductDetails Details(string BarCode, int BranchID = 0)
         {
-            return getDetails(0, 0, BarCode, BranchID);
+            return getDetails(0, 0, BarCode, string.Empty, BranchID, false);
         }
 
-        private ProductDetails getDetails(long ProductID, long MatrixID, string BarCode, int BranchID = 0, bool isQuantityGreaterThanZERO = false)
+        private ProductDetails getDetails(long ProductID, long MatrixID, string BarCode, string ProductCode = "", int BranchID = 0, bool isQuantityGreaterThanZERO = false)
         {
             try
             {
-                string SQL = "CALL procProductMainDetails(@BranchID, @ProductID, @MatrixID, @BarCode, @isQuantityGreaterThanZERO)";
+                string SQL = "CALL procProductMainDetails(@BranchID, @ProductID, @MatrixID, @BarCode, @ProductCode, @isQuantityGreaterThanZERO)";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -2556,6 +2543,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
                 cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
                 cmd.Parameters.AddWithValue("@BarCode", BarCode);
+                cmd.Parameters.AddWithValue("@ProductCode", ProductCode);
                 cmd.Parameters.AddWithValue("@isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
 
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
@@ -2574,40 +2562,13 @@ namespace AceSoft.RetailPlus.Data
 
 		public ProductDetails Details1(int BranchID, long ProductID)
 		{
-            return getDetails(ProductID, 0, string.Empty, BranchID);
+            return getDetails(ProductID, 0, string.Empty, string.Empty, BranchID);
 		}
         public ProductDetails Details(int BranchID, string BarCode, bool ShowItemMoreThanZeroQty = false, decimal Quantity = 1)
 		{
 			try
 			{
-                return getDetails(0, 0, BarCode, BranchID, ShowItemMoreThanZeroQty);
-
-                //MySqlCommand cmd = new MySqlCommand();
-                //string SQL = SQLSelect(BranchID) + "AND (BarCode1 = @BarCode OR BarCode2 = @BarCode OR BarCode3 = @BarCode OR BarCode4 = @Barcode) ";
-
-                //if (ShowItemMoreThanZeroQty)
-                //{
-                //    SQL += "AND IFNULL(inv.Quantity,0) >= @Quantity ";
-
-                //    MySqlParameter prmQuantity = new MySqlParameter("@Quantity", MySqlDbType.Decimal);
-                //    prmQuantity.Value = Quantity;
-                //    cmd.Parameters.Add(prmQuantity);
-                //}
-                //SQL += "ORDER BY mtrx.Description ASC LIMIT 1";
-
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = SQL;
-
-                //MySqlParameter prmBarCode = new MySqlParameter("@BarCode",MySqlDbType.String);
-                //prmBarCode.Value = BarCode;
-                //cmd.Parameters.Add(prmBarCode);
-
-                //string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                //base.MySqlDataAdapterFill(cmd, dt);
-
-                //ProductDetails Details = SetDetails(dt);
-                
-                //return Details;
+                return getDetails(0, 0, BarCode, string.Empty, BranchID, ShowItemMoreThanZeroQty);
 			}
 
 			catch (Exception ex)
@@ -2619,21 +2580,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL = SQLSelect(BranchID) + "AND ProductCode = @ProductCode;";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				cmd.Parameters.AddWithValue("@ProductCode", ProductCode);
-
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-				ProductDetails Details = SetDetails(dt);
-                
-				return Details;
+                return getDetails(0, 0, string.Empty, ProductCode, BranchID);
 			}
 
 			catch (Exception ex)

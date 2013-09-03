@@ -22,7 +22,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Bank
 			{
 				if (Visible)
 				{
-					lblReferrer.Text = Request.UrlReferrer.ToString();
+					lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 					LoadOptions();			
 				}
 			}

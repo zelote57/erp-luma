@@ -23,7 +23,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Discount
 			{
 				if (Visible)
 				{
-					lblReferrer.Text = Request.UrlReferrer.ToString();
+					lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 					LoadOptions();			
 				}
 			}

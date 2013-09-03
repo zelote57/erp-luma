@@ -21,7 +21,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 		{
             if (!IsPostBack && Visible)
 			{
-                lblReferrer.Text = Request.UrlReferrer.ToString();
+                lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
                 if (!string.IsNullOrEmpty(Request.QueryString["reporttype"]))
                     lblReportType.Text = Common.Decrypt(Request.QueryString["reporttype"].ToString(), Session.SessionID);
                 else

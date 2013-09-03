@@ -18,7 +18,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Charges
 		{
 			if (!IsPostBack)
 			{
-				lblReferrer.Text = Request.UrlReferrer.ToString();
+				lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				if (Visible)
 					LoadOptions();			
 			}

@@ -17,7 +17,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 		{
             if (!IsPostBack )
 			{
-                try { lblReferrer.Text = Request.UrlReferrer.ToString(); }
+                try { lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString(); }
                 catch { }
                 if (Visible)
                 {

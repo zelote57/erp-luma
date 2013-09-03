@@ -22,7 +22,7 @@ namespace AceSoft.RetailPlus.Reports
 		{
             if (!IsPostBack && Visible)
 			{
-				lblReferrer.Text = Request.UrlReferrer.ToString();
+				lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				LoadOptions();
                 Session["ReportDocument"] = null;
             }

@@ -40,7 +40,7 @@ namespace AceSoft.RetailPlus.Security._Terminals
 		{
 			if (!IsPostBack)
 			{
-				lblReferrer.Text = Request.UrlReferrer.ToString();
+				lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				if (Visible)
 				{
 					LoadOptions();

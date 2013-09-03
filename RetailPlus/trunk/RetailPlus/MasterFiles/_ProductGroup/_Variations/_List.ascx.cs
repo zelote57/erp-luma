@@ -19,7 +19,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Group._Variations
 		{
             if (!IsPostBack)
             {
-                lblReferrer.Text = Request.UrlReferrer.ToString();
+                lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
                 if (Visible)
                 {
                     lblGroupID.Text = Common.Decrypt((string)Request.QueryString["groupid"], Session.SessionID);

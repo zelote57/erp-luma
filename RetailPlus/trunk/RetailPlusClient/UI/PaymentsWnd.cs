@@ -846,7 +846,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (!grpDebit.Visible && grpRewardCard.Visible) grpRewardCard.Location = new Point(9, 335);
                 }
             }
-
+            
 			if (mboIsRefund)
 			{
 				lblHeader.Text = "Enter payment types to refund.";
@@ -873,6 +873,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					cmdF4.Visible = mboIsCreditAllowed;
 					lblCredit.Visible = mboIsCreditAllowed;
 					grpDebit.Visible = mboIsDebitAllowed;
+
+                    lblCredit.Text = mclsSalesTransactionDetails.isConsignment ? "CONSIGNMENT" : "IN-HOUSE CREDIT";
 				}
 			}
 			lblCash.Tag = "0.00";

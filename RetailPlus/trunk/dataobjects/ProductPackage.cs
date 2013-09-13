@@ -571,7 +571,7 @@ namespace AceSoft.RetailPlus.Data
             if (clsProductPackageColumns.UnitName) stSQL += "tblUnit.UnitName, ";
             if (clsProductPackageColumns.Price) stSQL += "tblProductPackage.Price, ";
             if (clsProductPackageColumns.WSPrice) stSQL += "tblProductPackage.WSPrice, ";
-            if (clsProductPackageColumns.PurchasePrice) stSQL += "tblProductPackage.Quantity, ";
+            if (clsProductPackageColumns.PurchasePrice) stSQL += "tblProductPackage.PurchasePrice, ";
             if (clsProductPackageColumns.Quantity) stSQL += "tblProductPackage.Quantity, ";
             if (clsProductPackageColumns.VAT) stSQL += "tblProductPackage.VAT, ";
             if (clsProductPackageColumns.EVAT) stSQL += "tblProductPackage.EVAT, ";
@@ -604,6 +604,7 @@ namespace AceSoft.RetailPlus.Data
             clsProductPackageColumns.UnitID = true;
             clsProductPackageColumns.UnitCode = true;
             clsProductPackageColumns.UnitName = true;
+            clsProductPackageColumns.PurchasePrice = true;
             clsProductPackageColumns.Price = true;
             clsProductPackageColumns.Quantity = true;
             clsProductPackageColumns.VAT = true;
@@ -869,6 +870,7 @@ namespace AceSoft.RetailPlus.Data
                 clsDetails.UnitID = Convert.ToInt32(dr[ProductPackageColumnNames.UnitID].ToString());
                 clsDetails.UnitCode = "" + dr[ProductPackageColumnNames.UnitCode].ToString();
                 clsDetails.UnitName = "" + dr[ProductPackageColumnNames.UnitName].ToString();
+                clsDetails.PurchasePrice = Convert.ToDecimal(dr[ProductPackageColumnNames.PurchasePrice].ToString());
                 clsDetails.Price = Convert.ToDecimal(dr[ProductPackageColumnNames.Price].ToString());
                 clsDetails.Quantity = Convert.ToDecimal(dr[ProductPackageColumnNames.Quantity].ToString());
                 clsDetails.VAT = Convert.ToDecimal(dr[ProductPackageColumnNames.VAT].ToString());

@@ -129,6 +129,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private Thread MarqueeThread;
 
         private MySqlConnection mConnection;
+        private Label lblConsignment;
         private MySqlTransaction mTransaction;
 
 		#endregion
@@ -176,1087 +177,1102 @@ namespace AceSoft.RetailPlus.Client.UI
 		#region Windows Form Designer generated code
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWnd));
-			this.dgItems = new System.Windows.Forms.DataGrid();
-			this.dgStyle = new System.Windows.Forms.DataGridTableStyle();
-			this.TransactionItemsID = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.ItemNo = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.ProductID = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.ProductCode = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.BarCode = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.Description = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.ProductUnitID = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.ProductUnitCode = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.Quantity = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.Price = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.Discount = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.ItemDiscount = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.ItemDiscountType = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.Amount = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.VAT = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.EVAT = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.LocalTax = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.VariationsMatrixID = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.MatrixDescription = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.ProductGroup = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.ProductSubGroup = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.TransactionItemStat = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.DiscountCode = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.DiscountRemarks = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.ProductPackageID = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.MatrixPackageID = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.PackageQuantity = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.PromoQuantity = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.PromoValue = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.PromoInPercent = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.PromoType = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.PromoApplied = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.PurchasePrice = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.PurchaseAmount = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.IncludeInSubtotalDiscount = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.OrderSlipPrinter = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.OrderSlipPrinted = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.PercentageCommision = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.Commision = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.grpItems = new System.Windows.Forms.GroupBox();
-			this.lblProperties = new System.Windows.Forms.Label();
-			this.lblCategory = new System.Windows.Forms.Label();
-			this.lblPropertiesName = new System.Windows.Forms.Label();
-			this.lblCategoryName = new System.Windows.Forms.Label();
-			this.lblDescription = new System.Windows.Forms.Label();
-			this.lblDescriptionName = new System.Windows.Forms.Label();
-			this.panLocked = new System.Windows.Forms.Panel();
-			this.lblPress = new System.Windows.Forms.Label();
-			this.lblThisStation = new System.Windows.Forms.Label();
-			this.imgIcon = new System.Windows.Forms.PictureBox();
-			this.grpTop = new System.Windows.Forms.GroupBox();
-			this.lblCustomer = new System.Windows.Forms.Label();
-			this.lblTransNo = new System.Windows.Forms.Label();
-			this.lblTransactionNoName = new System.Windows.Forms.Label();
-			this.grpBottom = new System.Windows.Forms.GroupBox();
-			this.lblAgent = new System.Windows.Forms.Label();
-			this.lblCashier = new System.Windows.Forms.Label();
-			this.lblTerminalNoName = new System.Windows.Forms.Label();
-			this.lblTerminalNo = new System.Windows.Forms.Label();
-			this.lblTransDate = new System.Windows.Forms.Label();
-			this.lblCashierName = new System.Windows.Forms.Label();
-			this.lblCompanyName = new System.Windows.Forms.Label();
-			this.grptxtBarcode = new System.Windows.Forms.GroupBox();
-			this.txtBarCode = new System.Windows.Forms.TextBox();
-			this.grpMarquee = new System.Windows.Forms.GroupBox();
-			this.lblMessage = new System.Windows.Forms.Label();
-			this.lblAgentPositionDepartment = new System.Windows.Forms.Label();
-			this.tmr = new System.Windows.Forms.Timer(this.components);
-			this.tmrRLC = new System.Windows.Forms.Timer(this.components);
-			this.grpRLC = new System.Windows.Forms.GroupBox();
-			this.cmdRLCClose = new System.Windows.Forms.Button();
-			this.lblMallForwarderStatus = new System.Windows.Forms.Label();
-			this.imgCompanyLogo = new System.Windows.Forms.PictureBox();
-			this.panSubTotal = new System.Windows.Forms.GroupBox();
-			this.lblSubtotalName = new System.Windows.Forms.Label();
-			this.lblSubTotal = new System.Windows.Forms.Label();
-			this.lblTransDiscount = new System.Windows.Forms.Label();
-			this.lblTransCharge = new System.Windows.Forms.Label();
-			this.lblCurrency = new System.Windows.Forms.Label();
-			this.lblOrderType = new System.Windows.Forms.Label();
-			this.tmrLogo = new System.Windows.Forms.Timer(this.components);
-			((System.ComponentModel.ISupportInitialize)(this.dgItems)).BeginInit();
-			this.grpItems.SuspendLayout();
-			this.panLocked.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
-			this.grpTop.SuspendLayout();
-			this.grpBottom.SuspendLayout();
-			this.grptxtBarcode.SuspendLayout();
-			this.grpMarquee.SuspendLayout();
-			this.grpRLC.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.imgCompanyLogo)).BeginInit();
-			this.panSubTotal.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// dgItems
-			// 
-			this.dgItems.AlternatingBackColor = System.Drawing.Color.White;
-			this.dgItems.BackColor = System.Drawing.Color.White;
-			this.dgItems.BackgroundColor = System.Drawing.Color.White;
-			this.dgItems.CaptionBackColor = System.Drawing.Color.White;
-			this.dgItems.CaptionForeColor = System.Drawing.Color.Blue;
-			this.dgItems.CaptionVisible = false;
-			this.dgItems.CausesValidation = false;
-			this.dgItems.DataMember = "";
-			this.dgItems.FlatMode = true;
-			this.dgItems.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dgItems.GridLineColor = System.Drawing.Color.Blue;
-			this.dgItems.HeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-			this.dgItems.HeaderFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dgItems.HeaderForeColor = System.Drawing.Color.White;
-			this.dgItems.Location = new System.Drawing.Point(0, 28);
-			this.dgItems.Name = "dgItems";
-			this.dgItems.ParentRowsBackColor = System.Drawing.Color.Blue;
-			this.dgItems.PreferredRowHeight = 100;
-			this.dgItems.ReadOnly = true;
-			this.dgItems.RowHeadersVisible = false;
-			this.dgItems.RowHeaderWidth = 40;
-			this.dgItems.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-			this.dgItems.SelectionForeColor = System.Drawing.Color.White;
-			this.dgItems.Size = new System.Drawing.Size(791, 511);
-			this.dgItems.TabIndex = 49;
-			this.dgItems.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
-			this.dgStyle});
-			this.dgItems.TabStop = false;
-			this.dgItems.CurrentCellChanged += new System.EventHandler(this.dgItems_CurrentCellChanged);
-			this.dgItems.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dgItems_KeyUp);
-			this.dgItems.Click += new System.EventHandler(this.dgItems_Click);
-			// 
-			// dgStyle
-			// 
-			this.dgStyle.AllowSorting = false;
-			this.dgStyle.AlternatingBackColor = System.Drawing.Color.White;
-			this.dgStyle.BackColor = System.Drawing.Color.White;
-			this.dgStyle.DataGrid = this.dgItems;
-			this.dgStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
-			this.TransactionItemsID,
-			this.ItemNo,
-			this.ProductID,
-			this.ProductCode,
-			this.BarCode,
-			this.Description,
-			this.ProductUnitID,
-			this.ProductUnitCode,
-			this.Quantity,
-			this.Price,
-			this.Discount,
-			this.ItemDiscount,
-			this.ItemDiscountType,
-			this.Amount,
-			this.VAT,
-			this.EVAT,
-			this.LocalTax,
-			this.VariationsMatrixID,
-			this.MatrixDescription,
-			this.ProductGroup,
-			this.ProductSubGroup,
-			this.TransactionItemStat,
-			this.DiscountCode,
-			this.DiscountRemarks,
-			this.ProductPackageID,
-			this.MatrixPackageID,
-			this.PackageQuantity,
-			this.PromoQuantity,
-			this.PromoValue,
-			this.PromoInPercent,
-			this.PromoType,
-			this.PromoApplied,
-			this.PurchasePrice,
-			this.PurchaseAmount,
-			this.IncludeInSubtotalDiscount,
-			this.OrderSlipPrinter,
-			this.OrderSlipPrinted,
-			this.PercentageCommision,
-			this.Commision});
-			this.dgStyle.GridLineColor = System.Drawing.Color.Blue;
-			this.dgStyle.GridLineStyle = System.Windows.Forms.DataGridLineStyle.None;
-			this.dgStyle.HeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-			this.dgStyle.HeaderFont = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dgStyle.HeaderForeColor = System.Drawing.Color.White;
-			this.dgStyle.MappingName = "tblProducts";
-			this.dgStyle.PreferredColumnWidth = 0;
-			this.dgStyle.PreferredRowHeight = 50;
-			this.dgStyle.ReadOnly = true;
-			this.dgStyle.RowHeadersVisible = false;
-			this.dgStyle.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-			this.dgStyle.SelectionForeColor = System.Drawing.Color.White;
-			// 
-			// TransactionItemsID
-			// 
-			this.TransactionItemsID.Format = "";
-			this.TransactionItemsID.FormatInfo = null;
-			this.TransactionItemsID.MappingName = "TransactionItemsID";
-			this.TransactionItemsID.NullText = "";
-			this.TransactionItemsID.ReadOnly = true;
-			this.TransactionItemsID.Width = 0;
-			// 
-			// ItemNo
-			// 
-			this.ItemNo.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
-			this.ItemNo.Format = "";
-			this.ItemNo.FormatInfo = null;
-			this.ItemNo.HeaderText = "ItemNo";
-			this.ItemNo.MappingName = "ItemNo";
-			this.ItemNo.NullText = "";
-			this.ItemNo.ReadOnly = true;
-			this.ItemNo.Width = 0;
-			// 
-			// ProductID
-			// 
-			this.ProductID.Format = "";
-			this.ProductID.FormatInfo = null;
-			this.ProductID.MappingName = "ProductID";
-			this.ProductID.NullText = "";
-			this.ProductID.ReadOnly = true;
-			this.ProductID.Width = 0;
-			// 
-			// ProductCode
-			// 
-			this.ProductCode.Format = "";
-			this.ProductCode.FormatInfo = null;
-			this.ProductCode.MappingName = "ProductCode";
-			this.ProductCode.NullText = "";
-			this.ProductCode.ReadOnly = true;
-			this.ProductCode.Width = 0;
-			// 
-			// BarCode
-			// 
-			this.BarCode.Format = "";
-			this.BarCode.FormatInfo = null;
-			this.BarCode.MappingName = "BarCode";
-			this.BarCode.NullText = "";
-			this.BarCode.ReadOnly = true;
-			this.BarCode.Width = 0;
-			// 
-			// Description
-			// 
-			this.Description.Format = "";
-			this.Description.FormatInfo = null;
-			this.Description.HeaderText = "Description";
-			this.Description.MappingName = "Description";
-			this.Description.NullText = "";
-			this.Description.ReadOnly = true;
-			this.Description.Width = 0;
-			// 
-			// ProductUnitID
-			// 
-			this.ProductUnitID.Format = "";
-			this.ProductUnitID.FormatInfo = null;
-			this.ProductUnitID.MappingName = "ProductUnitID";
-			this.ProductUnitID.NullText = "";
-			this.ProductUnitID.ReadOnly = true;
-			this.ProductUnitID.Width = 0;
-			// 
-			// ProductUnitCode
-			// 
-			this.ProductUnitCode.Format = "";
-			this.ProductUnitCode.FormatInfo = null;
-			this.ProductUnitCode.MappingName = "ProductUnitCode";
-			this.ProductUnitCode.NullText = "";
-			this.ProductUnitCode.ReadOnly = true;
-			this.ProductUnitCode.Width = 0;
-			// 
-			// Quantity
-			// 
-			this.Quantity.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
-			this.Quantity.Format = "###,##0.###";
-			this.Quantity.FormatInfo = null;
-			this.Quantity.HeaderText = "Quantity";
-			this.Quantity.MappingName = "Quantity";
-			this.Quantity.NullText = "";
-			this.Quantity.ReadOnly = true;
-			this.Quantity.Width = 0;
-			// 
-			// Price
-			// 
-			this.Price.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-			this.Price.Format = "###,##0.#0";
-			this.Price.FormatInfo = null;
-			this.Price.HeaderText = "Price";
-			this.Price.MappingName = "Price";
-			this.Price.NullText = "";
-			this.Price.ReadOnly = true;
-			this.Price.Width = 0;
-			// 
-			// Discount
-			// 
-			this.Discount.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-			this.Discount.Format = "###,##0";
-			this.Discount.FormatInfo = null;
-			this.Discount.MappingName = "Discount";
-			this.Discount.NullText = "";
-			this.Discount.ReadOnly = true;
-			this.Discount.Width = 0;
-			// 
-			// ItemDiscount
-			// 
-			this.ItemDiscount.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-			this.ItemDiscount.Format = "###,##0";
-			this.ItemDiscount.FormatInfo = null;
-			this.ItemDiscount.MappingName = "ItemDiscount";
-			this.ItemDiscount.NullText = "";
-			this.ItemDiscount.ReadOnly = true;
-			this.ItemDiscount.Width = 0;
-			// 
-			// ItemDiscountType
-			// 
-			this.ItemDiscountType.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-			this.ItemDiscountType.Format = "";
-			this.ItemDiscountType.FormatInfo = null;
-			this.ItemDiscountType.MappingName = "ItemDiscountType";
-			this.ItemDiscountType.NullText = "";
-			this.ItemDiscountType.ReadOnly = true;
-			this.ItemDiscountType.Width = 0;
-			// 
-			// Amount
-			// 
-			this.Amount.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-			this.Amount.Format = "#,##0.#0";
-			this.Amount.FormatInfo = null;
-			this.Amount.HeaderText = "Amount";
-			this.Amount.MappingName = "Amount";
-			this.Amount.NullText = "";
-			this.Amount.ReadOnly = true;
-			this.Amount.Width = 0;
-			// 
-			// VAT
-			// 
-			this.VAT.Format = "";
-			this.VAT.FormatInfo = null;
-			this.VAT.MappingName = "VAT";
-			this.VAT.NullText = "";
-			this.VAT.ReadOnly = true;
-			this.VAT.Width = 0;
-			// 
-			// EVAT
-			// 
-			this.EVAT.Format = "";
-			this.EVAT.FormatInfo = null;
-			this.EVAT.MappingName = "EVAT";
-			this.EVAT.NullText = "";
-			this.EVAT.ReadOnly = true;
-			this.EVAT.Width = 0;
-			// 
-			// LocalTax
-			// 
-			this.LocalTax.Format = "";
-			this.LocalTax.FormatInfo = null;
-			this.LocalTax.MappingName = "LocalTax";
-			this.LocalTax.NullText = "";
-			this.LocalTax.ReadOnly = true;
-			this.LocalTax.Width = 0;
-			// 
-			// VariationsMatrixID
-			// 
-			this.VariationsMatrixID.Format = "";
-			this.VariationsMatrixID.FormatInfo = null;
-			this.VariationsMatrixID.MappingName = "VariationsMatrixID";
-			this.VariationsMatrixID.NullText = "";
-			this.VariationsMatrixID.ReadOnly = true;
-			this.VariationsMatrixID.Width = 0;
-			// 
-			// MatrixDescription
-			// 
-			this.MatrixDescription.Format = "";
-			this.MatrixDescription.FormatInfo = null;
-			this.MatrixDescription.MappingName = "MatrixDescription";
-			this.MatrixDescription.NullText = "";
-			this.MatrixDescription.ReadOnly = true;
-			this.MatrixDescription.Width = 0;
-			// 
-			// ProductGroup
-			// 
-			this.ProductGroup.Format = "";
-			this.ProductGroup.FormatInfo = null;
-			this.ProductGroup.MappingName = "ProductGroup";
-			this.ProductGroup.NullText = "";
-			this.ProductGroup.ReadOnly = true;
-			this.ProductGroup.Width = 0;
-			// 
-			// ProductSubGroup
-			// 
-			this.ProductSubGroup.Format = "";
-			this.ProductSubGroup.FormatInfo = null;
-			this.ProductSubGroup.MappingName = "ProductSubGroup";
-			this.ProductSubGroup.NullText = "";
-			this.ProductSubGroup.ReadOnly = true;
-			this.ProductSubGroup.Width = 0;
-			// 
-			// TransactionItemStat
-			// 
-			this.TransactionItemStat.Format = "";
-			this.TransactionItemStat.FormatInfo = null;
-			this.TransactionItemStat.MappingName = "TransactionItemStat";
-			this.TransactionItemStat.NullText = "";
-			this.TransactionItemStat.ReadOnly = true;
-			this.TransactionItemStat.Width = 0;
-			// 
-			// DiscountCode
-			// 
-			this.DiscountCode.Format = "";
-			this.DiscountCode.FormatInfo = null;
-			this.DiscountCode.MappingName = "DiscountCode";
-			this.DiscountCode.NullText = "";
-			this.DiscountCode.ReadOnly = true;
-			this.DiscountCode.Width = 0;
-			// 
-			// DiscountRemarks
-			// 
-			this.DiscountRemarks.Format = "";
-			this.DiscountRemarks.FormatInfo = null;
-			this.DiscountRemarks.MappingName = "DiscountRemarks";
-			this.DiscountRemarks.NullText = "";
-			this.DiscountRemarks.ReadOnly = true;
-			this.DiscountRemarks.Width = 0;
-			// 
-			// ProductPackageID
-			// 
-			this.ProductPackageID.Format = "";
-			this.ProductPackageID.FormatInfo = null;
-			this.ProductPackageID.MappingName = "ProductPackageID";
-			this.ProductPackageID.NullText = "";
-			this.ProductPackageID.ReadOnly = true;
-			this.ProductPackageID.Width = 0;
-			// 
-			// MatrixPackageID
-			// 
-			this.MatrixPackageID.Format = "";
-			this.MatrixPackageID.FormatInfo = null;
-			this.MatrixPackageID.MappingName = "MatrixPackageID";
-			this.MatrixPackageID.NullText = "";
-			this.MatrixPackageID.ReadOnly = true;
-			this.MatrixPackageID.Width = 0;
-			// 
-			// PackageQuantity
-			// 
-			this.PackageQuantity.Format = "";
-			this.PackageQuantity.FormatInfo = null;
-			this.PackageQuantity.MappingName = "PackageQuantity";
-			this.PackageQuantity.NullText = "";
-			this.PackageQuantity.ReadOnly = true;
-			this.PackageQuantity.Width = 0;
-			// 
-			// PromoQuantity
-			// 
-			this.PromoQuantity.Format = "";
-			this.PromoQuantity.FormatInfo = null;
-			this.PromoQuantity.MappingName = "PromoQuantity";
-			this.PromoQuantity.NullText = "0";
-			this.PromoQuantity.ReadOnly = true;
-			this.PromoQuantity.Width = 0;
-			// 
-			// PromoValue
-			// 
-			this.PromoValue.Format = "";
-			this.PromoValue.FormatInfo = null;
-			this.PromoValue.MappingName = "PromoValue";
-			this.PromoValue.NullText = "0";
-			this.PromoValue.ReadOnly = true;
-			this.PromoValue.Width = 0;
-			// 
-			// PromoInPercent
-			// 
-			this.PromoInPercent.Format = "";
-			this.PromoInPercent.FormatInfo = null;
-			this.PromoInPercent.MappingName = "PromoInPercent";
-			this.PromoInPercent.NullText = "0";
-			this.PromoInPercent.ReadOnly = true;
-			this.PromoInPercent.Width = 0;
-			// 
-			// PromoType
-			// 
-			this.PromoType.Format = "";
-			this.PromoType.FormatInfo = null;
-			this.PromoType.MappingName = "PromoType";
-			this.PromoType.NullText = "";
-			this.PromoType.ReadOnly = true;
-			this.PromoType.Width = 0;
-			// 
-			// PromoApplied
-			// 
-			this.PromoApplied.Format = "";
-			this.PromoApplied.FormatInfo = null;
-			this.PromoApplied.MappingName = "PromoApplied";
-			this.PromoApplied.NullText = "";
-			this.PromoApplied.ReadOnly = true;
-			this.PromoApplied.Width = 0;
-			// 
-			// PurchasePrice
-			// 
-			this.PurchasePrice.Format = "";
-			this.PurchasePrice.FormatInfo = null;
-			this.PurchasePrice.MappingName = "PurchasePrice";
-			this.PurchasePrice.NullText = "";
-			this.PurchasePrice.ReadOnly = true;
-			this.PurchasePrice.Width = 0;
-			// 
-			// PurchaseAmount
-			// 
-			this.PurchaseAmount.Format = "";
-			this.PurchaseAmount.FormatInfo = null;
-			this.PurchaseAmount.MappingName = "PurchaseAmount";
-			this.PurchaseAmount.NullText = "";
-			this.PurchaseAmount.ReadOnly = true;
-			this.PurchaseAmount.Width = 0;
-			// 
-			// IncludeInSubtotalDiscount
-			// 
-			this.IncludeInSubtotalDiscount.Format = "";
-			this.IncludeInSubtotalDiscount.FormatInfo = null;
-			this.IncludeInSubtotalDiscount.MappingName = "IncludeInSubtotalDiscount";
-			this.IncludeInSubtotalDiscount.NullText = "";
-			this.IncludeInSubtotalDiscount.ReadOnly = true;
-			this.IncludeInSubtotalDiscount.Width = 0;
-			// 
-			// OrderSlipPrinter
-			// 
-			this.OrderSlipPrinter.Format = "";
-			this.OrderSlipPrinter.FormatInfo = null;
-			this.OrderSlipPrinter.MappingName = "OrderSlipPrinter";
-			this.OrderSlipPrinter.NullText = "";
-			this.OrderSlipPrinter.ReadOnly = true;
-			this.OrderSlipPrinter.Width = 0;
-			// 
-			// OrderSlipPrinted
-			// 
-			this.OrderSlipPrinted.Format = "";
-			this.OrderSlipPrinted.FormatInfo = null;
-			this.OrderSlipPrinted.MappingName = "OrderSlipPrinted";
-			this.OrderSlipPrinted.NullText = "";
-			this.OrderSlipPrinted.ReadOnly = true;
-			this.OrderSlipPrinted.Width = 0;
-			// 
-			// PercentageCommision
-			// 
-			this.PercentageCommision.Format = "";
-			this.PercentageCommision.FormatInfo = null;
-			this.PercentageCommision.MappingName = "PercentageCommision";
-			this.PercentageCommision.NullText = "";
-			this.PercentageCommision.ReadOnly = true;
-			this.PercentageCommision.Width = 0;
-			// 
-			// Commision
-			// 
-			this.Commision.Format = "";
-			this.Commision.FormatInfo = null;
-			this.Commision.MappingName = "Commision";
-			this.Commision.NullText = "";
-			this.Commision.ReadOnly = true;
-			this.Commision.Width = 0;
-			// 
-			// grpItems
-			// 
-			this.grpItems.BackColor = System.Drawing.Color.White;
-			this.grpItems.Controls.Add(this.lblProperties);
-			this.grpItems.Controls.Add(this.lblCategory);
-			this.grpItems.Controls.Add(this.lblPropertiesName);
-			this.grpItems.Controls.Add(this.lblCategoryName);
-			this.grpItems.Controls.Add(this.lblDescription);
-			this.grpItems.Controls.Add(this.lblDescriptionName);
-			this.grpItems.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.grpItems.ForeColor = System.Drawing.Color.YellowGreen;
-			this.grpItems.Location = new System.Drawing.Point(792, 252);
-			this.grpItems.Name = "grpItems";
-			this.grpItems.Size = new System.Drawing.Size(224, 408);
-			this.grpItems.TabIndex = 52;
-			this.grpItems.TabStop = false;
-			this.grpItems.Text = "Item Details";
-			// 
-			// lblProperties
-			// 
-			this.lblProperties.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblProperties.ForeColor = System.Drawing.Color.Black;
-			this.lblProperties.Location = new System.Drawing.Point(25, 132);
-			this.lblProperties.Name = "lblProperties";
-			this.lblProperties.Size = new System.Drawing.Size(181, 138);
-			this.lblProperties.TabIndex = 5;
-			this.lblProperties.Text = "Properties";
-			// 
-			// lblCategory
-			// 
-			this.lblCategory.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCategory.ForeColor = System.Drawing.Color.Black;
-			this.lblCategory.Location = new System.Drawing.Point(25, 92);
-			this.lblCategory.Name = "lblCategory";
-			this.lblCategory.Size = new System.Drawing.Size(181, 14);
-			this.lblCategory.TabIndex = 4;
-			this.lblCategory.Text = "Category";
-			// 
-			// lblPropertiesName
-			// 
-			this.lblPropertiesName.AutoSize = true;
-			this.lblPropertiesName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblPropertiesName.Location = new System.Drawing.Point(15, 115);
-			this.lblPropertiesName.Name = "lblPropertiesName";
-			this.lblPropertiesName.Size = new System.Drawing.Size(66, 13);
-			this.lblPropertiesName.TabIndex = 3;
-			this.lblPropertiesName.Text = "Properties";
-			// 
-			// lblCategoryName
-			// 
-			this.lblCategoryName.AutoSize = true;
-			this.lblCategoryName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCategoryName.Location = new System.Drawing.Point(15, 72);
-			this.lblCategoryName.Name = "lblCategoryName";
-			this.lblCategoryName.Size = new System.Drawing.Size(59, 13);
-			this.lblCategoryName.TabIndex = 2;
-			this.lblCategoryName.Text = "Category";
-			// 
-			// lblDescription
-			// 
-			this.lblDescription.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblDescription.ForeColor = System.Drawing.Color.Black;
-			this.lblDescription.Location = new System.Drawing.Point(25, 48);
-			this.lblDescription.Name = "lblDescription";
-			this.lblDescription.Size = new System.Drawing.Size(183, 14);
-			this.lblDescription.TabIndex = 1;
-			this.lblDescription.Text = "Description";
-			// 
-			// lblDescriptionName
-			// 
-			this.lblDescriptionName.AutoSize = true;
-			this.lblDescriptionName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblDescriptionName.Location = new System.Drawing.Point(15, 28);
-			this.lblDescriptionName.Name = "lblDescriptionName";
-			this.lblDescriptionName.Size = new System.Drawing.Size(71, 13);
-			this.lblDescriptionName.TabIndex = 0;
-			this.lblDescriptionName.Text = "Description";
-			// 
-			// panLocked
-			// 
-			this.panLocked.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.panLocked.Controls.Add(this.lblPress);
-			this.panLocked.Controls.Add(this.lblThisStation);
-			this.panLocked.Controls.Add(this.imgIcon);
-			this.panLocked.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.panLocked.Location = new System.Drawing.Point(244, 251);
-			this.panLocked.Name = "panLocked";
-			this.panLocked.Size = new System.Drawing.Size(360, 109);
-			this.panLocked.TabIndex = 65;
-			this.panLocked.Click += new System.EventHandler(this.panLocked_Click);
-			// 
-			// lblPress
-			// 
-			this.lblPress.AutoSize = true;
-			this.lblPress.BackColor = System.Drawing.Color.Transparent;
-			this.lblPress.Font = new System.Drawing.Font("Tahoma", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblPress.ForeColor = System.Drawing.Color.White;
-			this.lblPress.Location = new System.Drawing.Point(68, 65);
-			this.lblPress.Name = "lblPress";
-			this.lblPress.Size = new System.Drawing.Size(283, 11);
-			this.lblPress.TabIndex = 16;
-			this.lblPress.Text = "Click here or Press the Enter key to login to the system.";
-			// 
-			// lblThisStation
-			// 
-			this.lblThisStation.AutoSize = true;
-			this.lblThisStation.BackColor = System.Drawing.Color.Transparent;
-			this.lblThisStation.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblThisStation.ForeColor = System.Drawing.Color.White;
-			this.lblThisStation.Location = new System.Drawing.Point(80, 40);
-			this.lblThisStation.Name = "lblThisStation";
-			this.lblThisStation.Size = new System.Drawing.Size(241, 23);
-			this.lblThisStation.TabIndex = 15;
-			this.lblThisStation.Text = "NEXT COUNTER PLEASE";
-			this.lblThisStation.Click += new System.EventHandler(this.lblThisStation_Click);
-			// 
-			// imgIcon
-			// 
-			this.imgIcon.BackColor = System.Drawing.Color.Blue;
-			this.imgIcon.Location = new System.Drawing.Point(13, 30);
-			this.imgIcon.Name = "imgIcon";
-			this.imgIcon.Size = new System.Drawing.Size(49, 49);
-			this.imgIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-			this.imgIcon.TabIndex = 13;
-			this.imgIcon.TabStop = false;
-			this.imgIcon.Click += new System.EventHandler(this.imgIcon_Click);
-			// 
-			// grpTop
-			// 
-			this.grpTop.Controls.Add(this.lblCustomer);
-			this.grpTop.Controls.Add(this.lblTransNo);
-			this.grpTop.Controls.Add(this.lblTransactionNoName);
-			this.grpTop.Location = new System.Drawing.Point(0, -7);
-			this.grpTop.Name = "grpTop";
-			this.grpTop.Size = new System.Drawing.Size(1017, 37);
-			this.grpTop.TabIndex = 75;
-			this.grpTop.TabStop = false;
-			// 
-			// lblCustomer
-			// 
-			this.lblCustomer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblCustomer.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCustomer.Location = new System.Drawing.Point(712, 9);
-			this.lblCustomer.Name = "lblCustomer";
-			this.lblCustomer.Size = new System.Drawing.Size(304, 26);
-			this.lblCustomer.TabIndex = 56;
-			this.lblCustomer.Text = "RetailPlus Customer ™";
-			this.lblCustomer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.lblCustomer.Click += new System.EventHandler(this.lblCustomer_Click);
-			// 
-			// lblTransNo
-			// 
-			this.lblTransNo.BackColor = System.Drawing.SystemColors.Control;
-			this.lblTransNo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblTransNo.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTransNo.Location = new System.Drawing.Point(132, 9);
-			this.lblTransNo.Name = "lblTransNo";
-			this.lblTransNo.Size = new System.Drawing.Size(580, 26);
-			this.lblTransNo.TabIndex = 55;
-			this.lblTransNo.Text = "READY...";
-			this.lblTransNo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// lblTransactionNoName
-			// 
-			this.lblTransactionNoName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblTransactionNoName.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTransactionNoName.Location = new System.Drawing.Point(2, 9);
-			this.lblTransactionNoName.Name = "lblTransactionNoName";
-			this.lblTransactionNoName.Size = new System.Drawing.Size(129, 26);
-			this.lblTransactionNoName.TabIndex = 54;
-			this.lblTransactionNoName.Text = "  Transaction No :";
-			this.lblTransactionNoName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// grpBottom
-			// 
-			this.grpBottom.Controls.Add(this.lblAgent);
-			this.grpBottom.Controls.Add(this.lblCashier);
-			this.grpBottom.Controls.Add(this.lblTerminalNoName);
-			this.grpBottom.Controls.Add(this.lblTerminalNo);
-			this.grpBottom.Controls.Add(this.lblTransDate);
-			this.grpBottom.Controls.Add(this.lblCashierName);
-			this.grpBottom.Controls.Add(this.lblCompanyName);
-			this.grpBottom.Location = new System.Drawing.Point(-1, 681);
-			this.grpBottom.Name = "grpBottom";
-			this.grpBottom.Size = new System.Drawing.Size(1017, 34);
-			this.grpBottom.TabIndex = 76;
-			this.grpBottom.TabStop = false;
-			// 
-			// lblAgent
-			// 
-			this.lblAgent.BackColor = System.Drawing.Color.DimGray;
-			this.lblAgent.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblAgent.Font = new System.Drawing.Font("Tahoma", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblAgent.ForeColor = System.Drawing.Color.White;
-			this.lblAgent.Location = new System.Drawing.Point(530, 9);
-			this.lblAgent.Name = "lblAgent";
-			this.lblAgent.Size = new System.Drawing.Size(166, 22);
-			this.lblAgent.TabIndex = 68;
-			this.lblAgent.Text = "  Agent";
-			this.lblAgent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.lblAgent.Click += new System.EventHandler(this.lblAgent_Click);
-			// 
-			// lblCashier
-			// 
-			this.lblCashier.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblCashier.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCashier.Location = new System.Drawing.Point(320, 9);
-			this.lblCashier.Name = "lblCashier";
-			this.lblCashier.Size = new System.Drawing.Size(210, 22);
-			this.lblCashier.TabIndex = 67;
-			this.lblCashier.Text = "Administrator";
-			this.lblCashier.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.lblCashier.Click += new System.EventHandler(this.lblCashier_Click);
-			// 
-			// lblTerminalNoName
-			// 
-			this.lblTerminalNoName.BackColor = System.Drawing.Color.DimGray;
-			this.lblTerminalNoName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblTerminalNoName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTerminalNoName.ForeColor = System.Drawing.Color.White;
-			this.lblTerminalNoName.Location = new System.Drawing.Point(696, 9);
-			this.lblTerminalNoName.Name = "lblTerminalNoName";
-			this.lblTerminalNoName.Size = new System.Drawing.Size(96, 22);
-			this.lblTerminalNoName.TabIndex = 66;
-			this.lblTerminalNoName.Text = "  Terminal No.:";
-			this.lblTerminalNoName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// lblTerminalNo
-			// 
-			this.lblTerminalNo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblTerminalNo.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTerminalNo.Location = new System.Drawing.Point(792, 9);
-			this.lblTerminalNo.Name = "lblTerminalNo";
-			this.lblTerminalNo.Size = new System.Drawing.Size(67, 22);
-			this.lblTerminalNo.TabIndex = 65;
-			this.lblTerminalNo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.lblTerminalNo.Click += new System.EventHandler(this.lblTerminalNo_Click);
-			// 
-			// lblTransDate
-			// 
-			this.lblTransDate.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblTransDate.Location = new System.Drawing.Point(859, 9);
-			this.lblTransDate.Name = "lblTransDate";
-			this.lblTransDate.Size = new System.Drawing.Size(155, 22);
-			this.lblTransDate.TabIndex = 64;
-			this.lblTransDate.Text = "Jan. 01, 0001 12:00:00 AM";
-			this.lblTransDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// lblCashierName
-			// 
-			this.lblCashierName.BackColor = System.Drawing.Color.DimGray;
-			this.lblCashierName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblCashierName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCashierName.ForeColor = System.Drawing.Color.White;
-			this.lblCashierName.Location = new System.Drawing.Point(237, 9);
-			this.lblCashierName.Name = "lblCashierName";
-			this.lblCashierName.Size = new System.Drawing.Size(82, 22);
-			this.lblCashierName.TabIndex = 63;
-			this.lblCashierName.Text = "  Cashier : ";
-			this.lblCashierName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// lblCompanyName
-			// 
-			this.lblCompanyName.BackColor = System.Drawing.Color.SlateGray;
-			this.lblCompanyName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblCompanyName.Font = new System.Drawing.Font("Tahoma", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCompanyName.ForeColor = System.Drawing.Color.White;
-			this.lblCompanyName.Location = new System.Drawing.Point(2, 9);
-			this.lblCompanyName.Name = "lblCompanyName";
-			this.lblCompanyName.Size = new System.Drawing.Size(234, 22);
-			this.lblCompanyName.TabIndex = 62;
-			this.lblCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.lblCompanyName.Click += new System.EventHandler(this.lblCompanyName_Click);
-			// 
-			// grptxtBarcode
-			// 
-			this.grptxtBarcode.BackColor = System.Drawing.Color.White;
-			this.grptxtBarcode.Controls.Add(this.txtBarCode);
-			this.grptxtBarcode.Location = new System.Drawing.Point(0, 532);
-			this.grptxtBarcode.Name = "grptxtBarcode";
-			this.grptxtBarcode.Size = new System.Drawing.Size(794, 40);
-			this.grptxtBarcode.TabIndex = 77;
-			this.grptxtBarcode.TabStop = false;
-			// 
-			// txtBarCode
-			// 
-			this.txtBarCode.BackColor = System.Drawing.Color.White;
-			this.txtBarCode.Enabled = false;
-			this.txtBarCode.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtBarCode.ForeColor = System.Drawing.Color.Black;
-			this.txtBarCode.Location = new System.Drawing.Point(0, 9);
-			this.txtBarCode.Name = "txtBarCode";
-			this.txtBarCode.Size = new System.Drawing.Size(791, 30);
-			this.txtBarCode.TabIndex = 81;
-			// 
-			// grpMarquee
-			// 
-			this.grpMarquee.Controls.Add(this.lblMessage);
-			this.grpMarquee.Location = new System.Drawing.Point(-1, 653);
-			this.grpMarquee.Name = "grpMarquee";
-			this.grpMarquee.Size = new System.Drawing.Size(1017, 36);
-			this.grpMarquee.TabIndex = 82;
-			this.grpMarquee.TabStop = false;
-			// 
-			// lblMessage
-			// 
-			this.lblMessage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblMessage.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblMessage.ForeColor = System.Drawing.Color.Red;
-			this.lblMessage.Location = new System.Drawing.Point(2, 10);
-			this.lblMessage.Name = "lblMessage";
-			this.lblMessage.Size = new System.Drawing.Size(1012, 24);
-			this.lblMessage.TabIndex = 80;
-			this.lblMessage.Text = " Your suggestive selling message and/or description.  Your suggestive selling mes" +
-				"sage and/or    .dasdasdas";
-			this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// lblAgentPositionDepartment
-			// 
-			this.lblAgentPositionDepartment.AutoSize = true;
-			this.lblAgentPositionDepartment.ForeColor = System.Drawing.Color.CornflowerBlue;
-			this.lblAgentPositionDepartment.Location = new System.Drawing.Point(834, 203);
-			this.lblAgentPositionDepartment.Name = "lblAgentPositionDepartment";
-			this.lblAgentPositionDepartment.Size = new System.Drawing.Size(140, 13);
-			this.lblAgentPositionDepartment.TabIndex = 69;
-			this.lblAgentPositionDepartment.Text = "lblAgentPositionDepartment";
-			this.lblAgentPositionDepartment.Visible = false;
-			// 
-			// tmr
-			// 
-			this.tmr.Interval = 1;
-			this.tmr.Tick += new System.EventHandler(this.tmr_Tick);
-			// 
-			// tmrRLC
-			// 
-			this.tmrRLC.Interval = 1;
-			this.tmrRLC.Tick += new System.EventHandler(this.tmrRLC_Tick);
-			// 
-			// grpRLC
-			// 
-			this.grpRLC.BackColor = System.Drawing.Color.White;
-			this.grpRLC.Controls.Add(this.cmdRLCClose);
-			this.grpRLC.Controls.Add(this.lblMallForwarderStatus);
-			this.grpRLC.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.grpRLC.ForeColor = System.Drawing.Color.Blue;
-			this.grpRLC.Location = new System.Drawing.Point(2, 504);
-			this.grpRLC.Name = "grpRLC";
-			this.grpRLC.Size = new System.Drawing.Size(789, 33);
-			this.grpRLC.TabIndex = 97;
-			this.grpRLC.TabStop = false;
-			// 
-			// cmdRLCClose
-			// 
-			this.cmdRLCClose.AutoSize = true;
-			this.cmdRLCClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-			this.cmdRLCClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.cmdRLCClose.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmdRLCClose.ForeColor = System.Drawing.Color.White;
-			this.cmdRLCClose.Image = global::AceSoft.RetailPlus.Client.Properties.Resources.close;
-			this.cmdRLCClose.Location = new System.Drawing.Point(745, -5);
-			this.cmdRLCClose.Name = "cmdRLCClose";
-			this.cmdRLCClose.Size = new System.Drawing.Size(40, 40);
-			this.cmdRLCClose.TabIndex = 92;
-			this.cmdRLCClose.UseVisualStyleBackColor = true;
-			this.cmdRLCClose.Click += new System.EventHandler(this.cmdRLCClose_Click);
-			// 
-			// lblMallForwarderStatus
-			// 
-			this.lblMallForwarderStatus.AutoSize = true;
-			this.lblMallForwarderStatus.BackColor = System.Drawing.Color.Transparent;
-			this.lblMallForwarderStatus.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblMallForwarderStatus.ForeColor = System.Drawing.Color.Green;
-			this.lblMallForwarderStatus.Location = new System.Drawing.Point(4, 12);
-			this.lblMallForwarderStatus.Name = "lblMallForwarderStatus";
-			this.lblMallForwarderStatus.Size = new System.Drawing.Size(302, 16);
-			this.lblMallForwarderStatus.TabIndex = 91;
-			this.lblMallForwarderStatus.Text = "RLC Notification: Trying to send unsent files...";
-			// 
-			// imgCompanyLogo
-			// 
-			this.imgCompanyLogo.BackColor = System.Drawing.Color.White;
-			this.imgCompanyLogo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.imgCompanyLogo.Location = new System.Drawing.Point(791, 28);
-			this.imgCompanyLogo.Name = "imgCompanyLogo";
-			this.imgCompanyLogo.Size = new System.Drawing.Size(224, 225);
-			this.imgCompanyLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-			this.imgCompanyLogo.TabIndex = 81;
-			this.imgCompanyLogo.TabStop = false;
-			// 
-			// panSubTotal
-			// 
-			this.panSubTotal.BackColor = System.Drawing.Color.Maroon;
-			this.panSubTotal.Controls.Add(this.lblSubtotalName);
-			this.panSubTotal.Controls.Add(this.lblSubTotal);
-			this.panSubTotal.Controls.Add(this.lblTransDiscount);
-			this.panSubTotal.Controls.Add(this.lblTransCharge);
-			this.panSubTotal.Controls.Add(this.lblCurrency);
-			this.panSubTotal.Controls.Add(this.lblOrderType);
-			this.panSubTotal.Location = new System.Drawing.Point(1, 566);
-			this.panSubTotal.Name = "panSubTotal";
-			this.panSubTotal.Size = new System.Drawing.Size(790, 94);
-			this.panSubTotal.TabIndex = 130;
-			this.panSubTotal.TabStop = false;
-			// 
-			// lblSubtotalName
-			// 
-			this.lblSubtotalName.AutoSize = true;
-			this.lblSubtotalName.BackColor = System.Drawing.Color.Transparent;
-			this.lblSubtotalName.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSubtotalName.ForeColor = System.Drawing.Color.White;
-			this.lblSubtotalName.Location = new System.Drawing.Point(106, 10);
-			this.lblSubtotalName.Name = "lblSubtotalName";
-			this.lblSubtotalName.Size = new System.Drawing.Size(218, 23);
-			this.lblSubtotalName.TabIndex = 1;
-			this.lblSubtotalName.Text = "SUBTOTAL: REFUND";
-			// 
-			// lblSubTotal
-			// 
-			this.lblSubTotal.BackColor = System.Drawing.Color.Transparent;
-			this.lblSubTotal.Font = new System.Drawing.Font("Arial", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSubTotal.ForeColor = System.Drawing.Color.White;
-			this.lblSubTotal.Location = new System.Drawing.Point(357, 33);
-			this.lblSubTotal.Name = "lblSubTotal";
-			this.lblSubTotal.Size = new System.Drawing.Size(325, 38);
-			this.lblSubTotal.TabIndex = 63;
-			this.lblSubTotal.Text = "0.0000000000";
-			this.lblSubTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// lblTransDiscount
-			// 
-			this.lblTransDiscount.BackColor = System.Drawing.Color.Transparent;
-			this.lblTransDiscount.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTransDiscount.ForeColor = System.Drawing.Color.RoyalBlue;
-			this.lblTransDiscount.Location = new System.Drawing.Point(347, 71);
-			this.lblTransDiscount.Name = "lblTransDiscount";
-			this.lblTransDiscount.Size = new System.Drawing.Size(325, 15);
-			this.lblTransDiscount.TabIndex = 72;
-			this.lblTransDiscount.Text = "Less 0% / 0.00";
-			this.lblTransDiscount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// lblTransCharge
-			// 
-			this.lblTransCharge.BackColor = System.Drawing.Color.Transparent;
-			this.lblTransCharge.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblTransCharge.ForeColor = System.Drawing.Color.RoyalBlue;
-			this.lblTransCharge.Location = new System.Drawing.Point(111, 71);
-			this.lblTransCharge.Name = "lblTransCharge";
-			this.lblTransCharge.Size = new System.Drawing.Size(229, 15);
-			this.lblTransCharge.TabIndex = 3;
-			this.lblTransCharge.Text = "Plus 0% / 0.00";
-			this.lblTransCharge.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// lblCurrency
-			// 
-			this.lblCurrency.BackColor = System.Drawing.Color.Transparent;
-			this.lblCurrency.Font = new System.Drawing.Font("Arial Narrow", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCurrency.ForeColor = System.Drawing.Color.White;
-			this.lblCurrency.Location = new System.Drawing.Point(104, 33);
-			this.lblCurrency.Name = "lblCurrency";
-			this.lblCurrency.Size = new System.Drawing.Size(117, 38);
-			this.lblCurrency.TabIndex = 64;
-			this.lblCurrency.Text = "PHP";
-			// 
-			// lblOrderType
-			// 
-			this.lblOrderType.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Bold);
-			this.lblOrderType.ForeColor = System.Drawing.Color.RoyalBlue;
-			this.lblOrderType.Location = new System.Drawing.Point(347, 10);
-			this.lblOrderType.Name = "lblOrderType";
-			this.lblOrderType.Size = new System.Drawing.Size(325, 19);
-			this.lblOrderType.TabIndex = 4;
-			this.lblOrderType.Text = "DELIVERY";
-			this.lblOrderType.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// tmrLogo
-			// 
-			this.tmrLogo.Enabled = true;
-			this.tmrLogo.Interval = 90000;
-			this.tmrLogo.Tick += new System.EventHandler(this.tmrLogo_Tick);
-			// 
-			// MainWnd
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
-			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(1017, 714);
-			this.Controls.Add(this.grpItems);
-			this.Controls.Add(this.panLocked);
-			this.Controls.Add(this.lblAgentPositionDepartment);
-			this.Controls.Add(this.dgItems);
-			this.Controls.Add(this.grpRLC);
-			this.Controls.Add(this.grptxtBarcode);
-			this.Controls.Add(this.imgCompanyLogo);
-			this.Controls.Add(this.panSubTotal);
-			this.Controls.Add(this.grpTop);
-			this.Controls.Add(this.grpMarquee);
-			this.Controls.Add(this.grpBottom);
-			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.KeyPreview = true;
-			this.MaximizeBox = false;
-			this.Name = "MainWnd";
-			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = " RetailPlus ™";
-			this.Load += new System.EventHandler(this.MainWnd_Load);
-			this.Activated += new System.EventHandler(this.MainWnd_Activated);
-			this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWnd_Closing);
-			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWnd_KeyDown);
-			((System.ComponentModel.ISupportInitialize)(this.dgItems)).EndInit();
-			this.grpItems.ResumeLayout(false);
-			this.grpItems.PerformLayout();
-			this.panLocked.ResumeLayout(false);
-			this.panLocked.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
-			this.grpTop.ResumeLayout(false);
-			this.grpBottom.ResumeLayout(false);
-			this.grptxtBarcode.ResumeLayout(false);
-			this.grptxtBarcode.PerformLayout();
-			this.grpMarquee.ResumeLayout(false);
-			this.grpRLC.ResumeLayout(false);
-			this.grpRLC.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.imgCompanyLogo)).EndInit();
-			this.panSubTotal.ResumeLayout(false);
-			this.panSubTotal.PerformLayout();
-			this.ResumeLayout(false);
-			this.PerformLayout();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWnd));
+            this.dgItems = new System.Windows.Forms.DataGrid();
+            this.dgStyle = new System.Windows.Forms.DataGridTableStyle();
+            this.TransactionItemsID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ItemNo = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ProductID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ProductCode = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.BarCode = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Description = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ProductUnitID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ProductUnitCode = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Quantity = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Price = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Discount = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ItemDiscount = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ItemDiscountType = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Amount = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.VAT = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.EVAT = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.LocalTax = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.VariationsMatrixID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.MatrixDescription = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ProductGroup = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ProductSubGroup = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.TransactionItemStat = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.DiscountCode = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.DiscountRemarks = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.ProductPackageID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.MatrixPackageID = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.PackageQuantity = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.PromoQuantity = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.PromoValue = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.PromoInPercent = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.PromoType = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.PromoApplied = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.PurchasePrice = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.PurchaseAmount = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.IncludeInSubtotalDiscount = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.OrderSlipPrinter = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.OrderSlipPrinted = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.PercentageCommision = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Commision = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.grpItems = new System.Windows.Forms.GroupBox();
+            this.lblProperties = new System.Windows.Forms.Label();
+            this.lblCategory = new System.Windows.Forms.Label();
+            this.lblPropertiesName = new System.Windows.Forms.Label();
+            this.lblCategoryName = new System.Windows.Forms.Label();
+            this.lblDescription = new System.Windows.Forms.Label();
+            this.lblDescriptionName = new System.Windows.Forms.Label();
+            this.panLocked = new System.Windows.Forms.Panel();
+            this.lblPress = new System.Windows.Forms.Label();
+            this.lblThisStation = new System.Windows.Forms.Label();
+            this.imgIcon = new System.Windows.Forms.PictureBox();
+            this.grpTop = new System.Windows.Forms.GroupBox();
+            this.lblCustomer = new System.Windows.Forms.Label();
+            this.lblTransNo = new System.Windows.Forms.Label();
+            this.lblTransactionNoName = new System.Windows.Forms.Label();
+            this.grpBottom = new System.Windows.Forms.GroupBox();
+            this.lblAgent = new System.Windows.Forms.Label();
+            this.lblCashier = new System.Windows.Forms.Label();
+            this.lblTerminalNoName = new System.Windows.Forms.Label();
+            this.lblTerminalNo = new System.Windows.Forms.Label();
+            this.lblTransDate = new System.Windows.Forms.Label();
+            this.lblCashierName = new System.Windows.Forms.Label();
+            this.lblCompanyName = new System.Windows.Forms.Label();
+            this.grptxtBarcode = new System.Windows.Forms.GroupBox();
+            this.txtBarCode = new System.Windows.Forms.TextBox();
+            this.grpMarquee = new System.Windows.Forms.GroupBox();
+            this.lblMessage = new System.Windows.Forms.Label();
+            this.lblAgentPositionDepartment = new System.Windows.Forms.Label();
+            this.tmr = new System.Windows.Forms.Timer(this.components);
+            this.tmrRLC = new System.Windows.Forms.Timer(this.components);
+            this.grpRLC = new System.Windows.Forms.GroupBox();
+            this.cmdRLCClose = new System.Windows.Forms.Button();
+            this.lblMallForwarderStatus = new System.Windows.Forms.Label();
+            this.imgCompanyLogo = new System.Windows.Forms.PictureBox();
+            this.panSubTotal = new System.Windows.Forms.GroupBox();
+            this.lblSubtotalName = new System.Windows.Forms.Label();
+            this.lblSubTotal = new System.Windows.Forms.Label();
+            this.lblTransDiscount = new System.Windows.Forms.Label();
+            this.lblTransCharge = new System.Windows.Forms.Label();
+            this.lblCurrency = new System.Windows.Forms.Label();
+            this.lblOrderType = new System.Windows.Forms.Label();
+            this.tmrLogo = new System.Windows.Forms.Timer(this.components);
+            this.lblConsignment = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.dgItems)).BeginInit();
+            this.grpItems.SuspendLayout();
+            this.panLocked.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
+            this.grpTop.SuspendLayout();
+            this.grpBottom.SuspendLayout();
+            this.grptxtBarcode.SuspendLayout();
+            this.grpMarquee.SuspendLayout();
+            this.grpRLC.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgCompanyLogo)).BeginInit();
+            this.panSubTotal.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // dgItems
+            // 
+            this.dgItems.AlternatingBackColor = System.Drawing.Color.White;
+            this.dgItems.BackColor = System.Drawing.Color.White;
+            this.dgItems.BackgroundColor = System.Drawing.Color.White;
+            this.dgItems.CaptionBackColor = System.Drawing.Color.White;
+            this.dgItems.CaptionForeColor = System.Drawing.Color.Blue;
+            this.dgItems.CaptionVisible = false;
+            this.dgItems.CausesValidation = false;
+            this.dgItems.DataMember = "";
+            this.dgItems.FlatMode = true;
+            this.dgItems.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgItems.GridLineColor = System.Drawing.Color.Blue;
+            this.dgItems.HeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            this.dgItems.HeaderFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgItems.HeaderForeColor = System.Drawing.Color.White;
+            this.dgItems.Location = new System.Drawing.Point(0, 28);
+            this.dgItems.Name = "dgItems";
+            this.dgItems.ParentRowsBackColor = System.Drawing.Color.Blue;
+            this.dgItems.PreferredRowHeight = 100;
+            this.dgItems.ReadOnly = true;
+            this.dgItems.RowHeadersVisible = false;
+            this.dgItems.RowHeaderWidth = 40;
+            this.dgItems.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dgItems.SelectionForeColor = System.Drawing.Color.White;
+            this.dgItems.Size = new System.Drawing.Size(791, 511);
+            this.dgItems.TabIndex = 49;
+            this.dgItems.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
+            this.dgStyle});
+            this.dgItems.TabStop = false;
+            this.dgItems.CurrentCellChanged += new System.EventHandler(this.dgItems_CurrentCellChanged);
+            this.dgItems.Click += new System.EventHandler(this.dgItems_Click);
+            this.dgItems.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dgItems_KeyUp);
+            // 
+            // dgStyle
+            // 
+            this.dgStyle.AllowSorting = false;
+            this.dgStyle.AlternatingBackColor = System.Drawing.Color.White;
+            this.dgStyle.BackColor = System.Drawing.Color.White;
+            this.dgStyle.DataGrid = this.dgItems;
+            this.dgStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+            this.TransactionItemsID,
+            this.ItemNo,
+            this.ProductID,
+            this.ProductCode,
+            this.BarCode,
+            this.Description,
+            this.ProductUnitID,
+            this.ProductUnitCode,
+            this.Quantity,
+            this.Price,
+            this.Discount,
+            this.ItemDiscount,
+            this.ItemDiscountType,
+            this.Amount,
+            this.VAT,
+            this.EVAT,
+            this.LocalTax,
+            this.VariationsMatrixID,
+            this.MatrixDescription,
+            this.ProductGroup,
+            this.ProductSubGroup,
+            this.TransactionItemStat,
+            this.DiscountCode,
+            this.DiscountRemarks,
+            this.ProductPackageID,
+            this.MatrixPackageID,
+            this.PackageQuantity,
+            this.PromoQuantity,
+            this.PromoValue,
+            this.PromoInPercent,
+            this.PromoType,
+            this.PromoApplied,
+            this.PurchasePrice,
+            this.PurchaseAmount,
+            this.IncludeInSubtotalDiscount,
+            this.OrderSlipPrinter,
+            this.OrderSlipPrinted,
+            this.PercentageCommision,
+            this.Commision});
+            this.dgStyle.GridLineColor = System.Drawing.Color.Blue;
+            this.dgStyle.GridLineStyle = System.Windows.Forms.DataGridLineStyle.None;
+            this.dgStyle.HeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            this.dgStyle.HeaderFont = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgStyle.HeaderForeColor = System.Drawing.Color.White;
+            this.dgStyle.MappingName = "tblProducts";
+            this.dgStyle.PreferredColumnWidth = 0;
+            this.dgStyle.PreferredRowHeight = 50;
+            this.dgStyle.ReadOnly = true;
+            this.dgStyle.RowHeadersVisible = false;
+            this.dgStyle.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dgStyle.SelectionForeColor = System.Drawing.Color.White;
+            // 
+            // TransactionItemsID
+            // 
+            this.TransactionItemsID.Format = "";
+            this.TransactionItemsID.FormatInfo = null;
+            this.TransactionItemsID.MappingName = "TransactionItemsID";
+            this.TransactionItemsID.NullText = "";
+            this.TransactionItemsID.ReadOnly = true;
+            this.TransactionItemsID.Width = 0;
+            // 
+            // ItemNo
+            // 
+            this.ItemNo.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
+            this.ItemNo.Format = "";
+            this.ItemNo.FormatInfo = null;
+            this.ItemNo.HeaderText = "ItemNo";
+            this.ItemNo.MappingName = "ItemNo";
+            this.ItemNo.NullText = "";
+            this.ItemNo.ReadOnly = true;
+            this.ItemNo.Width = 0;
+            // 
+            // ProductID
+            // 
+            this.ProductID.Format = "";
+            this.ProductID.FormatInfo = null;
+            this.ProductID.MappingName = "ProductID";
+            this.ProductID.NullText = "";
+            this.ProductID.ReadOnly = true;
+            this.ProductID.Width = 0;
+            // 
+            // ProductCode
+            // 
+            this.ProductCode.Format = "";
+            this.ProductCode.FormatInfo = null;
+            this.ProductCode.MappingName = "ProductCode";
+            this.ProductCode.NullText = "";
+            this.ProductCode.ReadOnly = true;
+            this.ProductCode.Width = 0;
+            // 
+            // BarCode
+            // 
+            this.BarCode.Format = "";
+            this.BarCode.FormatInfo = null;
+            this.BarCode.MappingName = "BarCode";
+            this.BarCode.NullText = "";
+            this.BarCode.ReadOnly = true;
+            this.BarCode.Width = 0;
+            // 
+            // Description
+            // 
+            this.Description.Format = "";
+            this.Description.FormatInfo = null;
+            this.Description.HeaderText = "Description";
+            this.Description.MappingName = "Description";
+            this.Description.NullText = "";
+            this.Description.ReadOnly = true;
+            this.Description.Width = 0;
+            // 
+            // ProductUnitID
+            // 
+            this.ProductUnitID.Format = "";
+            this.ProductUnitID.FormatInfo = null;
+            this.ProductUnitID.MappingName = "ProductUnitID";
+            this.ProductUnitID.NullText = "";
+            this.ProductUnitID.ReadOnly = true;
+            this.ProductUnitID.Width = 0;
+            // 
+            // ProductUnitCode
+            // 
+            this.ProductUnitCode.Format = "";
+            this.ProductUnitCode.FormatInfo = null;
+            this.ProductUnitCode.MappingName = "ProductUnitCode";
+            this.ProductUnitCode.NullText = "";
+            this.ProductUnitCode.ReadOnly = true;
+            this.ProductUnitCode.Width = 0;
+            // 
+            // Quantity
+            // 
+            this.Quantity.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Quantity.Format = "###,##0.###";
+            this.Quantity.FormatInfo = null;
+            this.Quantity.HeaderText = "Quantity";
+            this.Quantity.MappingName = "Quantity";
+            this.Quantity.NullText = "";
+            this.Quantity.ReadOnly = true;
+            this.Quantity.Width = 0;
+            // 
+            // Price
+            // 
+            this.Price.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Price.Format = "###,##0.#0";
+            this.Price.FormatInfo = null;
+            this.Price.HeaderText = "Price";
+            this.Price.MappingName = "Price";
+            this.Price.NullText = "";
+            this.Price.ReadOnly = true;
+            this.Price.Width = 0;
+            // 
+            // Discount
+            // 
+            this.Discount.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Discount.Format = "###,##0";
+            this.Discount.FormatInfo = null;
+            this.Discount.MappingName = "Discount";
+            this.Discount.NullText = "";
+            this.Discount.ReadOnly = true;
+            this.Discount.Width = 0;
+            // 
+            // ItemDiscount
+            // 
+            this.ItemDiscount.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ItemDiscount.Format = "###,##0";
+            this.ItemDiscount.FormatInfo = null;
+            this.ItemDiscount.MappingName = "ItemDiscount";
+            this.ItemDiscount.NullText = "";
+            this.ItemDiscount.ReadOnly = true;
+            this.ItemDiscount.Width = 0;
+            // 
+            // ItemDiscountType
+            // 
+            this.ItemDiscountType.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ItemDiscountType.Format = "";
+            this.ItemDiscountType.FormatInfo = null;
+            this.ItemDiscountType.MappingName = "ItemDiscountType";
+            this.ItemDiscountType.NullText = "";
+            this.ItemDiscountType.ReadOnly = true;
+            this.ItemDiscountType.Width = 0;
+            // 
+            // Amount
+            // 
+            this.Amount.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Amount.Format = "#,##0.#0";
+            this.Amount.FormatInfo = null;
+            this.Amount.HeaderText = "Amount";
+            this.Amount.MappingName = "Amount";
+            this.Amount.NullText = "";
+            this.Amount.ReadOnly = true;
+            this.Amount.Width = 0;
+            // 
+            // VAT
+            // 
+            this.VAT.Format = "";
+            this.VAT.FormatInfo = null;
+            this.VAT.MappingName = "VAT";
+            this.VAT.NullText = "";
+            this.VAT.ReadOnly = true;
+            this.VAT.Width = 0;
+            // 
+            // EVAT
+            // 
+            this.EVAT.Format = "";
+            this.EVAT.FormatInfo = null;
+            this.EVAT.MappingName = "EVAT";
+            this.EVAT.NullText = "";
+            this.EVAT.ReadOnly = true;
+            this.EVAT.Width = 0;
+            // 
+            // LocalTax
+            // 
+            this.LocalTax.Format = "";
+            this.LocalTax.FormatInfo = null;
+            this.LocalTax.MappingName = "LocalTax";
+            this.LocalTax.NullText = "";
+            this.LocalTax.ReadOnly = true;
+            this.LocalTax.Width = 0;
+            // 
+            // VariationsMatrixID
+            // 
+            this.VariationsMatrixID.Format = "";
+            this.VariationsMatrixID.FormatInfo = null;
+            this.VariationsMatrixID.MappingName = "VariationsMatrixID";
+            this.VariationsMatrixID.NullText = "";
+            this.VariationsMatrixID.ReadOnly = true;
+            this.VariationsMatrixID.Width = 0;
+            // 
+            // MatrixDescription
+            // 
+            this.MatrixDescription.Format = "";
+            this.MatrixDescription.FormatInfo = null;
+            this.MatrixDescription.MappingName = "MatrixDescription";
+            this.MatrixDescription.NullText = "";
+            this.MatrixDescription.ReadOnly = true;
+            this.MatrixDescription.Width = 0;
+            // 
+            // ProductGroup
+            // 
+            this.ProductGroup.Format = "";
+            this.ProductGroup.FormatInfo = null;
+            this.ProductGroup.MappingName = "ProductGroup";
+            this.ProductGroup.NullText = "";
+            this.ProductGroup.ReadOnly = true;
+            this.ProductGroup.Width = 0;
+            // 
+            // ProductSubGroup
+            // 
+            this.ProductSubGroup.Format = "";
+            this.ProductSubGroup.FormatInfo = null;
+            this.ProductSubGroup.MappingName = "ProductSubGroup";
+            this.ProductSubGroup.NullText = "";
+            this.ProductSubGroup.ReadOnly = true;
+            this.ProductSubGroup.Width = 0;
+            // 
+            // TransactionItemStat
+            // 
+            this.TransactionItemStat.Format = "";
+            this.TransactionItemStat.FormatInfo = null;
+            this.TransactionItemStat.MappingName = "TransactionItemStat";
+            this.TransactionItemStat.NullText = "";
+            this.TransactionItemStat.ReadOnly = true;
+            this.TransactionItemStat.Width = 0;
+            // 
+            // DiscountCode
+            // 
+            this.DiscountCode.Format = "";
+            this.DiscountCode.FormatInfo = null;
+            this.DiscountCode.MappingName = "DiscountCode";
+            this.DiscountCode.NullText = "";
+            this.DiscountCode.ReadOnly = true;
+            this.DiscountCode.Width = 0;
+            // 
+            // DiscountRemarks
+            // 
+            this.DiscountRemarks.Format = "";
+            this.DiscountRemarks.FormatInfo = null;
+            this.DiscountRemarks.MappingName = "DiscountRemarks";
+            this.DiscountRemarks.NullText = "";
+            this.DiscountRemarks.ReadOnly = true;
+            this.DiscountRemarks.Width = 0;
+            // 
+            // ProductPackageID
+            // 
+            this.ProductPackageID.Format = "";
+            this.ProductPackageID.FormatInfo = null;
+            this.ProductPackageID.MappingName = "ProductPackageID";
+            this.ProductPackageID.NullText = "";
+            this.ProductPackageID.ReadOnly = true;
+            this.ProductPackageID.Width = 0;
+            // 
+            // MatrixPackageID
+            // 
+            this.MatrixPackageID.Format = "";
+            this.MatrixPackageID.FormatInfo = null;
+            this.MatrixPackageID.MappingName = "MatrixPackageID";
+            this.MatrixPackageID.NullText = "";
+            this.MatrixPackageID.ReadOnly = true;
+            this.MatrixPackageID.Width = 0;
+            // 
+            // PackageQuantity
+            // 
+            this.PackageQuantity.Format = "";
+            this.PackageQuantity.FormatInfo = null;
+            this.PackageQuantity.MappingName = "PackageQuantity";
+            this.PackageQuantity.NullText = "";
+            this.PackageQuantity.ReadOnly = true;
+            this.PackageQuantity.Width = 0;
+            // 
+            // PromoQuantity
+            // 
+            this.PromoQuantity.Format = "";
+            this.PromoQuantity.FormatInfo = null;
+            this.PromoQuantity.MappingName = "PromoQuantity";
+            this.PromoQuantity.NullText = "0";
+            this.PromoQuantity.ReadOnly = true;
+            this.PromoQuantity.Width = 0;
+            // 
+            // PromoValue
+            // 
+            this.PromoValue.Format = "";
+            this.PromoValue.FormatInfo = null;
+            this.PromoValue.MappingName = "PromoValue";
+            this.PromoValue.NullText = "0";
+            this.PromoValue.ReadOnly = true;
+            this.PromoValue.Width = 0;
+            // 
+            // PromoInPercent
+            // 
+            this.PromoInPercent.Format = "";
+            this.PromoInPercent.FormatInfo = null;
+            this.PromoInPercent.MappingName = "PromoInPercent";
+            this.PromoInPercent.NullText = "0";
+            this.PromoInPercent.ReadOnly = true;
+            this.PromoInPercent.Width = 0;
+            // 
+            // PromoType
+            // 
+            this.PromoType.Format = "";
+            this.PromoType.FormatInfo = null;
+            this.PromoType.MappingName = "PromoType";
+            this.PromoType.NullText = "";
+            this.PromoType.ReadOnly = true;
+            this.PromoType.Width = 0;
+            // 
+            // PromoApplied
+            // 
+            this.PromoApplied.Format = "";
+            this.PromoApplied.FormatInfo = null;
+            this.PromoApplied.MappingName = "PromoApplied";
+            this.PromoApplied.NullText = "";
+            this.PromoApplied.ReadOnly = true;
+            this.PromoApplied.Width = 0;
+            // 
+            // PurchasePrice
+            // 
+            this.PurchasePrice.Format = "";
+            this.PurchasePrice.FormatInfo = null;
+            this.PurchasePrice.MappingName = "PurchasePrice";
+            this.PurchasePrice.NullText = "";
+            this.PurchasePrice.ReadOnly = true;
+            this.PurchasePrice.Width = 0;
+            // 
+            // PurchaseAmount
+            // 
+            this.PurchaseAmount.Format = "";
+            this.PurchaseAmount.FormatInfo = null;
+            this.PurchaseAmount.MappingName = "PurchaseAmount";
+            this.PurchaseAmount.NullText = "";
+            this.PurchaseAmount.ReadOnly = true;
+            this.PurchaseAmount.Width = 0;
+            // 
+            // IncludeInSubtotalDiscount
+            // 
+            this.IncludeInSubtotalDiscount.Format = "";
+            this.IncludeInSubtotalDiscount.FormatInfo = null;
+            this.IncludeInSubtotalDiscount.MappingName = "IncludeInSubtotalDiscount";
+            this.IncludeInSubtotalDiscount.NullText = "";
+            this.IncludeInSubtotalDiscount.ReadOnly = true;
+            this.IncludeInSubtotalDiscount.Width = 0;
+            // 
+            // OrderSlipPrinter
+            // 
+            this.OrderSlipPrinter.Format = "";
+            this.OrderSlipPrinter.FormatInfo = null;
+            this.OrderSlipPrinter.MappingName = "OrderSlipPrinter";
+            this.OrderSlipPrinter.NullText = "";
+            this.OrderSlipPrinter.ReadOnly = true;
+            this.OrderSlipPrinter.Width = 0;
+            // 
+            // OrderSlipPrinted
+            // 
+            this.OrderSlipPrinted.Format = "";
+            this.OrderSlipPrinted.FormatInfo = null;
+            this.OrderSlipPrinted.MappingName = "OrderSlipPrinted";
+            this.OrderSlipPrinted.NullText = "";
+            this.OrderSlipPrinted.ReadOnly = true;
+            this.OrderSlipPrinted.Width = 0;
+            // 
+            // PercentageCommision
+            // 
+            this.PercentageCommision.Format = "";
+            this.PercentageCommision.FormatInfo = null;
+            this.PercentageCommision.MappingName = "PercentageCommision";
+            this.PercentageCommision.NullText = "";
+            this.PercentageCommision.ReadOnly = true;
+            this.PercentageCommision.Width = 0;
+            // 
+            // Commision
+            // 
+            this.Commision.Format = "";
+            this.Commision.FormatInfo = null;
+            this.Commision.MappingName = "Commision";
+            this.Commision.NullText = "";
+            this.Commision.ReadOnly = true;
+            this.Commision.Width = 0;
+            // 
+            // grpItems
+            // 
+            this.grpItems.BackColor = System.Drawing.Color.White;
+            this.grpItems.Controls.Add(this.lblConsignment);
+            this.grpItems.Controls.Add(this.lblProperties);
+            this.grpItems.Controls.Add(this.lblCategory);
+            this.grpItems.Controls.Add(this.lblPropertiesName);
+            this.grpItems.Controls.Add(this.lblCategoryName);
+            this.grpItems.Controls.Add(this.lblDescription);
+            this.grpItems.Controls.Add(this.lblDescriptionName);
+            this.grpItems.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grpItems.ForeColor = System.Drawing.Color.YellowGreen;
+            this.grpItems.Location = new System.Drawing.Point(792, 252);
+            this.grpItems.Name = "grpItems";
+            this.grpItems.Size = new System.Drawing.Size(224, 408);
+            this.grpItems.TabIndex = 52;
+            this.grpItems.TabStop = false;
+            this.grpItems.Text = "Item Details";
+            // 
+            // lblProperties
+            // 
+            this.lblProperties.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProperties.ForeColor = System.Drawing.Color.Black;
+            this.lblProperties.Location = new System.Drawing.Point(25, 132);
+            this.lblProperties.Name = "lblProperties";
+            this.lblProperties.Size = new System.Drawing.Size(181, 138);
+            this.lblProperties.TabIndex = 5;
+            this.lblProperties.Text = "Properties";
+            // 
+            // lblCategory
+            // 
+            this.lblCategory.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCategory.ForeColor = System.Drawing.Color.Black;
+            this.lblCategory.Location = new System.Drawing.Point(25, 92);
+            this.lblCategory.Name = "lblCategory";
+            this.lblCategory.Size = new System.Drawing.Size(181, 14);
+            this.lblCategory.TabIndex = 4;
+            this.lblCategory.Text = "Category";
+            // 
+            // lblPropertiesName
+            // 
+            this.lblPropertiesName.AutoSize = true;
+            this.lblPropertiesName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPropertiesName.Location = new System.Drawing.Point(15, 115);
+            this.lblPropertiesName.Name = "lblPropertiesName";
+            this.lblPropertiesName.Size = new System.Drawing.Size(66, 13);
+            this.lblPropertiesName.TabIndex = 3;
+            this.lblPropertiesName.Text = "Properties";
+            // 
+            // lblCategoryName
+            // 
+            this.lblCategoryName.AutoSize = true;
+            this.lblCategoryName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCategoryName.Location = new System.Drawing.Point(15, 72);
+            this.lblCategoryName.Name = "lblCategoryName";
+            this.lblCategoryName.Size = new System.Drawing.Size(59, 13);
+            this.lblCategoryName.TabIndex = 2;
+            this.lblCategoryName.Text = "Category";
+            // 
+            // lblDescription
+            // 
+            this.lblDescription.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDescription.ForeColor = System.Drawing.Color.Black;
+            this.lblDescription.Location = new System.Drawing.Point(25, 48);
+            this.lblDescription.Name = "lblDescription";
+            this.lblDescription.Size = new System.Drawing.Size(183, 14);
+            this.lblDescription.TabIndex = 1;
+            this.lblDescription.Text = "Description";
+            // 
+            // lblDescriptionName
+            // 
+            this.lblDescriptionName.AutoSize = true;
+            this.lblDescriptionName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDescriptionName.Location = new System.Drawing.Point(15, 28);
+            this.lblDescriptionName.Name = "lblDescriptionName";
+            this.lblDescriptionName.Size = new System.Drawing.Size(71, 13);
+            this.lblDescriptionName.TabIndex = 0;
+            this.lblDescriptionName.Text = "Description";
+            // 
+            // panLocked
+            // 
+            this.panLocked.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panLocked.Controls.Add(this.lblPress);
+            this.panLocked.Controls.Add(this.lblThisStation);
+            this.panLocked.Controls.Add(this.imgIcon);
+            this.panLocked.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panLocked.Location = new System.Drawing.Point(244, 251);
+            this.panLocked.Name = "panLocked";
+            this.panLocked.Size = new System.Drawing.Size(360, 109);
+            this.panLocked.TabIndex = 65;
+            this.panLocked.Click += new System.EventHandler(this.panLocked_Click);
+            // 
+            // lblPress
+            // 
+            this.lblPress.AutoSize = true;
+            this.lblPress.BackColor = System.Drawing.Color.Transparent;
+            this.lblPress.Font = new System.Drawing.Font("Tahoma", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPress.ForeColor = System.Drawing.Color.White;
+            this.lblPress.Location = new System.Drawing.Point(68, 65);
+            this.lblPress.Name = "lblPress";
+            this.lblPress.Size = new System.Drawing.Size(283, 11);
+            this.lblPress.TabIndex = 16;
+            this.lblPress.Text = "Click here or Press the Enter key to login to the system.";
+            // 
+            // lblThisStation
+            // 
+            this.lblThisStation.AutoSize = true;
+            this.lblThisStation.BackColor = System.Drawing.Color.Transparent;
+            this.lblThisStation.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblThisStation.ForeColor = System.Drawing.Color.White;
+            this.lblThisStation.Location = new System.Drawing.Point(80, 40);
+            this.lblThisStation.Name = "lblThisStation";
+            this.lblThisStation.Size = new System.Drawing.Size(241, 23);
+            this.lblThisStation.TabIndex = 15;
+            this.lblThisStation.Text = "NEXT COUNTER PLEASE";
+            this.lblThisStation.Click += new System.EventHandler(this.lblThisStation_Click);
+            // 
+            // imgIcon
+            // 
+            this.imgIcon.BackColor = System.Drawing.Color.Blue;
+            this.imgIcon.Location = new System.Drawing.Point(13, 30);
+            this.imgIcon.Name = "imgIcon";
+            this.imgIcon.Size = new System.Drawing.Size(49, 49);
+            this.imgIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.imgIcon.TabIndex = 13;
+            this.imgIcon.TabStop = false;
+            this.imgIcon.Click += new System.EventHandler(this.imgIcon_Click);
+            // 
+            // grpTop
+            // 
+            this.grpTop.Controls.Add(this.lblCustomer);
+            this.grpTop.Controls.Add(this.lblTransNo);
+            this.grpTop.Controls.Add(this.lblTransactionNoName);
+            this.grpTop.Location = new System.Drawing.Point(0, -7);
+            this.grpTop.Name = "grpTop";
+            this.grpTop.Size = new System.Drawing.Size(1017, 37);
+            this.grpTop.TabIndex = 75;
+            this.grpTop.TabStop = false;
+            // 
+            // lblCustomer
+            // 
+            this.lblCustomer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCustomer.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCustomer.Location = new System.Drawing.Point(712, 9);
+            this.lblCustomer.Name = "lblCustomer";
+            this.lblCustomer.Size = new System.Drawing.Size(304, 26);
+            this.lblCustomer.TabIndex = 56;
+            this.lblCustomer.Text = "RetailPlus Customer ™";
+            this.lblCustomer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCustomer.Click += new System.EventHandler(this.lblCustomer_Click);
+            // 
+            // lblTransNo
+            // 
+            this.lblTransNo.BackColor = System.Drawing.SystemColors.Control;
+            this.lblTransNo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTransNo.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTransNo.Location = new System.Drawing.Point(132, 9);
+            this.lblTransNo.Name = "lblTransNo";
+            this.lblTransNo.Size = new System.Drawing.Size(580, 26);
+            this.lblTransNo.TabIndex = 55;
+            this.lblTransNo.Text = "READY...";
+            this.lblTransNo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblTransactionNoName
+            // 
+            this.lblTransactionNoName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTransactionNoName.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTransactionNoName.Location = new System.Drawing.Point(2, 9);
+            this.lblTransactionNoName.Name = "lblTransactionNoName";
+            this.lblTransactionNoName.Size = new System.Drawing.Size(129, 26);
+            this.lblTransactionNoName.TabIndex = 54;
+            this.lblTransactionNoName.Text = "  Transaction No :";
+            this.lblTransactionNoName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // grpBottom
+            // 
+            this.grpBottom.Controls.Add(this.lblAgent);
+            this.grpBottom.Controls.Add(this.lblCashier);
+            this.grpBottom.Controls.Add(this.lblTerminalNoName);
+            this.grpBottom.Controls.Add(this.lblTerminalNo);
+            this.grpBottom.Controls.Add(this.lblTransDate);
+            this.grpBottom.Controls.Add(this.lblCashierName);
+            this.grpBottom.Controls.Add(this.lblCompanyName);
+            this.grpBottom.Location = new System.Drawing.Point(-1, 681);
+            this.grpBottom.Name = "grpBottom";
+            this.grpBottom.Size = new System.Drawing.Size(1017, 34);
+            this.grpBottom.TabIndex = 76;
+            this.grpBottom.TabStop = false;
+            // 
+            // lblAgent
+            // 
+            this.lblAgent.BackColor = System.Drawing.Color.DimGray;
+            this.lblAgent.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblAgent.Font = new System.Drawing.Font("Tahoma", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAgent.ForeColor = System.Drawing.Color.White;
+            this.lblAgent.Location = new System.Drawing.Point(530, 9);
+            this.lblAgent.Name = "lblAgent";
+            this.lblAgent.Size = new System.Drawing.Size(166, 22);
+            this.lblAgent.TabIndex = 68;
+            this.lblAgent.Text = "  Agent";
+            this.lblAgent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAgent.Click += new System.EventHandler(this.lblAgent_Click);
+            // 
+            // lblCashier
+            // 
+            this.lblCashier.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCashier.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCashier.Location = new System.Drawing.Point(320, 9);
+            this.lblCashier.Name = "lblCashier";
+            this.lblCashier.Size = new System.Drawing.Size(210, 22);
+            this.lblCashier.TabIndex = 67;
+            this.lblCashier.Text = "Administrator";
+            this.lblCashier.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCashier.Click += new System.EventHandler(this.lblCashier_Click);
+            // 
+            // lblTerminalNoName
+            // 
+            this.lblTerminalNoName.BackColor = System.Drawing.Color.DimGray;
+            this.lblTerminalNoName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTerminalNoName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTerminalNoName.ForeColor = System.Drawing.Color.White;
+            this.lblTerminalNoName.Location = new System.Drawing.Point(696, 9);
+            this.lblTerminalNoName.Name = "lblTerminalNoName";
+            this.lblTerminalNoName.Size = new System.Drawing.Size(96, 22);
+            this.lblTerminalNoName.TabIndex = 66;
+            this.lblTerminalNoName.Text = "  Terminal No.:";
+            this.lblTerminalNoName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblTerminalNo
+            // 
+            this.lblTerminalNo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTerminalNo.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTerminalNo.Location = new System.Drawing.Point(792, 9);
+            this.lblTerminalNo.Name = "lblTerminalNo";
+            this.lblTerminalNo.Size = new System.Drawing.Size(67, 22);
+            this.lblTerminalNo.TabIndex = 65;
+            this.lblTerminalNo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTerminalNo.Click += new System.EventHandler(this.lblTerminalNo_Click);
+            // 
+            // lblTransDate
+            // 
+            this.lblTransDate.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTransDate.Location = new System.Drawing.Point(859, 9);
+            this.lblTransDate.Name = "lblTransDate";
+            this.lblTransDate.Size = new System.Drawing.Size(155, 22);
+            this.lblTransDate.TabIndex = 64;
+            this.lblTransDate.Text = "Jan. 01, 0001 12:00:00 AM";
+            this.lblTransDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCashierName
+            // 
+            this.lblCashierName.BackColor = System.Drawing.Color.DimGray;
+            this.lblCashierName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCashierName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCashierName.ForeColor = System.Drawing.Color.White;
+            this.lblCashierName.Location = new System.Drawing.Point(237, 9);
+            this.lblCashierName.Name = "lblCashierName";
+            this.lblCashierName.Size = new System.Drawing.Size(82, 22);
+            this.lblCashierName.TabIndex = 63;
+            this.lblCashierName.Text = "  Cashier : ";
+            this.lblCashierName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblCompanyName
+            // 
+            this.lblCompanyName.BackColor = System.Drawing.Color.SlateGray;
+            this.lblCompanyName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCompanyName.Font = new System.Drawing.Font("Tahoma", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCompanyName.ForeColor = System.Drawing.Color.White;
+            this.lblCompanyName.Location = new System.Drawing.Point(2, 9);
+            this.lblCompanyName.Name = "lblCompanyName";
+            this.lblCompanyName.Size = new System.Drawing.Size(234, 22);
+            this.lblCompanyName.TabIndex = 62;
+            this.lblCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCompanyName.Click += new System.EventHandler(this.lblCompanyName_Click);
+            // 
+            // grptxtBarcode
+            // 
+            this.grptxtBarcode.BackColor = System.Drawing.Color.White;
+            this.grptxtBarcode.Controls.Add(this.txtBarCode);
+            this.grptxtBarcode.Location = new System.Drawing.Point(0, 532);
+            this.grptxtBarcode.Name = "grptxtBarcode";
+            this.grptxtBarcode.Size = new System.Drawing.Size(794, 40);
+            this.grptxtBarcode.TabIndex = 77;
+            this.grptxtBarcode.TabStop = false;
+            // 
+            // txtBarCode
+            // 
+            this.txtBarCode.BackColor = System.Drawing.Color.White;
+            this.txtBarCode.Enabled = false;
+            this.txtBarCode.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBarCode.ForeColor = System.Drawing.Color.Black;
+            this.txtBarCode.Location = new System.Drawing.Point(0, 9);
+            this.txtBarCode.Name = "txtBarCode";
+            this.txtBarCode.Size = new System.Drawing.Size(791, 30);
+            this.txtBarCode.TabIndex = 81;
+            // 
+            // grpMarquee
+            // 
+            this.grpMarquee.Controls.Add(this.lblMessage);
+            this.grpMarquee.Location = new System.Drawing.Point(-1, 653);
+            this.grpMarquee.Name = "grpMarquee";
+            this.grpMarquee.Size = new System.Drawing.Size(1017, 36);
+            this.grpMarquee.TabIndex = 82;
+            this.grpMarquee.TabStop = false;
+            // 
+            // lblMessage
+            // 
+            this.lblMessage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblMessage.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMessage.ForeColor = System.Drawing.Color.Red;
+            this.lblMessage.Location = new System.Drawing.Point(2, 10);
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(1012, 24);
+            this.lblMessage.TabIndex = 80;
+            this.lblMessage.Text = " Your suggestive selling message and/or description.  Your suggestive selling mes" +
+    "sage and/or    .dasdasdas";
+            this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblAgentPositionDepartment
+            // 
+            this.lblAgentPositionDepartment.AutoSize = true;
+            this.lblAgentPositionDepartment.ForeColor = System.Drawing.Color.CornflowerBlue;
+            this.lblAgentPositionDepartment.Location = new System.Drawing.Point(834, 203);
+            this.lblAgentPositionDepartment.Name = "lblAgentPositionDepartment";
+            this.lblAgentPositionDepartment.Size = new System.Drawing.Size(140, 13);
+            this.lblAgentPositionDepartment.TabIndex = 69;
+            this.lblAgentPositionDepartment.Text = "lblAgentPositionDepartment";
+            this.lblAgentPositionDepartment.Visible = false;
+            // 
+            // tmr
+            // 
+            this.tmr.Interval = 1;
+            this.tmr.Tick += new System.EventHandler(this.tmr_Tick);
+            // 
+            // tmrRLC
+            // 
+            this.tmrRLC.Interval = 1;
+            this.tmrRLC.Tick += new System.EventHandler(this.tmrRLC_Tick);
+            // 
+            // grpRLC
+            // 
+            this.grpRLC.BackColor = System.Drawing.Color.White;
+            this.grpRLC.Controls.Add(this.cmdRLCClose);
+            this.grpRLC.Controls.Add(this.lblMallForwarderStatus);
+            this.grpRLC.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grpRLC.ForeColor = System.Drawing.Color.Blue;
+            this.grpRLC.Location = new System.Drawing.Point(2, 504);
+            this.grpRLC.Name = "grpRLC";
+            this.grpRLC.Size = new System.Drawing.Size(789, 33);
+            this.grpRLC.TabIndex = 97;
+            this.grpRLC.TabStop = false;
+            // 
+            // cmdRLCClose
+            // 
+            this.cmdRLCClose.AutoSize = true;
+            this.cmdRLCClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmdRLCClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdRLCClose.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdRLCClose.ForeColor = System.Drawing.Color.White;
+            this.cmdRLCClose.Image = global::AceSoft.RetailPlus.Client.Properties.Resources.close;
+            this.cmdRLCClose.Location = new System.Drawing.Point(745, -5);
+            this.cmdRLCClose.Name = "cmdRLCClose";
+            this.cmdRLCClose.Size = new System.Drawing.Size(40, 40);
+            this.cmdRLCClose.TabIndex = 92;
+            this.cmdRLCClose.UseVisualStyleBackColor = true;
+            this.cmdRLCClose.Click += new System.EventHandler(this.cmdRLCClose_Click);
+            // 
+            // lblMallForwarderStatus
+            // 
+            this.lblMallForwarderStatus.AutoSize = true;
+            this.lblMallForwarderStatus.BackColor = System.Drawing.Color.Transparent;
+            this.lblMallForwarderStatus.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMallForwarderStatus.ForeColor = System.Drawing.Color.Green;
+            this.lblMallForwarderStatus.Location = new System.Drawing.Point(4, 12);
+            this.lblMallForwarderStatus.Name = "lblMallForwarderStatus";
+            this.lblMallForwarderStatus.Size = new System.Drawing.Size(302, 16);
+            this.lblMallForwarderStatus.TabIndex = 91;
+            this.lblMallForwarderStatus.Text = "RLC Notification: Trying to send unsent files...";
+            // 
+            // imgCompanyLogo
+            // 
+            this.imgCompanyLogo.BackColor = System.Drawing.Color.White;
+            this.imgCompanyLogo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.imgCompanyLogo.Location = new System.Drawing.Point(791, 28);
+            this.imgCompanyLogo.Name = "imgCompanyLogo";
+            this.imgCompanyLogo.Size = new System.Drawing.Size(224, 225);
+            this.imgCompanyLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.imgCompanyLogo.TabIndex = 81;
+            this.imgCompanyLogo.TabStop = false;
+            // 
+            // panSubTotal
+            // 
+            this.panSubTotal.BackColor = System.Drawing.Color.Maroon;
+            this.panSubTotal.Controls.Add(this.lblSubtotalName);
+            this.panSubTotal.Controls.Add(this.lblSubTotal);
+            this.panSubTotal.Controls.Add(this.lblTransDiscount);
+            this.panSubTotal.Controls.Add(this.lblTransCharge);
+            this.panSubTotal.Controls.Add(this.lblCurrency);
+            this.panSubTotal.Controls.Add(this.lblOrderType);
+            this.panSubTotal.Location = new System.Drawing.Point(1, 566);
+            this.panSubTotal.Name = "panSubTotal";
+            this.panSubTotal.Size = new System.Drawing.Size(790, 94);
+            this.panSubTotal.TabIndex = 130;
+            this.panSubTotal.TabStop = false;
+            // 
+            // lblSubtotalName
+            // 
+            this.lblSubtotalName.AutoSize = true;
+            this.lblSubtotalName.BackColor = System.Drawing.Color.Transparent;
+            this.lblSubtotalName.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSubtotalName.ForeColor = System.Drawing.Color.White;
+            this.lblSubtotalName.Location = new System.Drawing.Point(106, 10);
+            this.lblSubtotalName.Name = "lblSubtotalName";
+            this.lblSubtotalName.Size = new System.Drawing.Size(218, 23);
+            this.lblSubtotalName.TabIndex = 1;
+            this.lblSubtotalName.Text = "SUBTOTAL: REFUND";
+            // 
+            // lblSubTotal
+            // 
+            this.lblSubTotal.BackColor = System.Drawing.Color.Transparent;
+            this.lblSubTotal.Font = new System.Drawing.Font("Arial", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSubTotal.ForeColor = System.Drawing.Color.White;
+            this.lblSubTotal.Location = new System.Drawing.Point(357, 33);
+            this.lblSubTotal.Name = "lblSubTotal";
+            this.lblSubTotal.Size = new System.Drawing.Size(325, 38);
+            this.lblSubTotal.TabIndex = 63;
+            this.lblSubTotal.Text = "0.0000000000";
+            this.lblSubTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblTransDiscount
+            // 
+            this.lblTransDiscount.BackColor = System.Drawing.Color.Transparent;
+            this.lblTransDiscount.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTransDiscount.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lblTransDiscount.Location = new System.Drawing.Point(347, 71);
+            this.lblTransDiscount.Name = "lblTransDiscount";
+            this.lblTransDiscount.Size = new System.Drawing.Size(325, 15);
+            this.lblTransDiscount.TabIndex = 72;
+            this.lblTransDiscount.Text = "Less 0% / 0.00";
+            this.lblTransDiscount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblTransCharge
+            // 
+            this.lblTransCharge.BackColor = System.Drawing.Color.Transparent;
+            this.lblTransCharge.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTransCharge.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lblTransCharge.Location = new System.Drawing.Point(111, 71);
+            this.lblTransCharge.Name = "lblTransCharge";
+            this.lblTransCharge.Size = new System.Drawing.Size(229, 15);
+            this.lblTransCharge.TabIndex = 3;
+            this.lblTransCharge.Text = "Plus 0% / 0.00";
+            this.lblTransCharge.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblCurrency
+            // 
+            this.lblCurrency.BackColor = System.Drawing.Color.Transparent;
+            this.lblCurrency.Font = new System.Drawing.Font("Arial Narrow", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCurrency.ForeColor = System.Drawing.Color.White;
+            this.lblCurrency.Location = new System.Drawing.Point(104, 33);
+            this.lblCurrency.Name = "lblCurrency";
+            this.lblCurrency.Size = new System.Drawing.Size(117, 38);
+            this.lblCurrency.TabIndex = 64;
+            this.lblCurrency.Text = "PHP";
+            // 
+            // lblOrderType
+            // 
+            this.lblOrderType.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Bold);
+            this.lblOrderType.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lblOrderType.Location = new System.Drawing.Point(347, 10);
+            this.lblOrderType.Name = "lblOrderType";
+            this.lblOrderType.Size = new System.Drawing.Size(325, 19);
+            this.lblOrderType.TabIndex = 4;
+            this.lblOrderType.Text = "DELIVERY";
+            this.lblOrderType.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tmrLogo
+            // 
+            this.tmrLogo.Enabled = true;
+            this.tmrLogo.Interval = 90000;
+            this.tmrLogo.Tick += new System.EventHandler(this.tmrLogo_Tick);
+            // 
+            // lblConsignment
+            // 
+            this.lblConsignment.BackColor = System.Drawing.Color.RoyalBlue;
+            this.lblConsignment.Font = new System.Drawing.Font("Tahoma", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.lblConsignment.ForeColor = System.Drawing.Color.Maroon;
+            this.lblConsignment.Location = new System.Drawing.Point(2, 323);
+            this.lblConsignment.Name = "lblConsignment";
+            this.lblConsignment.Size = new System.Drawing.Size(223, 85);
+            this.lblConsignment.TabIndex = 6;
+            this.lblConsignment.Text = "C O N S I G N M E N T";
+            this.lblConsignment.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblConsignment.Visible = false;
+            // 
+            // MainWnd
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(1017, 714);
+            this.Controls.Add(this.grpItems);
+            this.Controls.Add(this.panLocked);
+            this.Controls.Add(this.lblAgentPositionDepartment);
+            this.Controls.Add(this.dgItems);
+            this.Controls.Add(this.grpRLC);
+            this.Controls.Add(this.grptxtBarcode);
+            this.Controls.Add(this.imgCompanyLogo);
+            this.Controls.Add(this.panSubTotal);
+            this.Controls.Add(this.grpTop);
+            this.Controls.Add(this.grpMarquee);
+            this.Controls.Add(this.grpBottom);
+            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
+            this.MaximizeBox = false;
+            this.Name = "MainWnd";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = " RetailPlus ™";
+            this.Activated += new System.EventHandler(this.MainWnd_Activated);
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWnd_Closing);
+            this.Load += new System.EventHandler(this.MainWnd_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWnd_KeyDown);
+            ((System.ComponentModel.ISupportInitialize)(this.dgItems)).EndInit();
+            this.grpItems.ResumeLayout(false);
+            this.grpItems.PerformLayout();
+            this.panLocked.ResumeLayout(false);
+            this.panLocked.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
+            this.grpTop.ResumeLayout(false);
+            this.grpBottom.ResumeLayout(false);
+            this.grptxtBarcode.ResumeLayout(false);
+            this.grptxtBarcode.PerformLayout();
+            this.grpMarquee.ResumeLayout(false);
+            this.grpRLC.ResumeLayout(false);
+            this.grpRLC.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgCompanyLogo)).EndInit();
+            this.panSubTotal.ResumeLayout(false);
+            this.panSubTotal.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
@@ -1500,6 +1516,10 @@ namespace AceSoft.RetailPlus.Client.UI
 							case Keys.S:
 								PrintOrderSlip(false); 
 								break;
+
+                            case Keys.T:
+                                UpdateIsConsignment();
+                                break;
 
 							case Keys.U:
 								PackTransaction();
@@ -1930,6 +1950,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				lblTransCharge.Text = lblTransCharge.Text = "Plus 0% / 0.00";
 				lblTransCharge.Tag = ChargeTypes.NotApplicable.ToString("d");
 				txtBarCode.Text = "";
+                lblConsignment.Visible = false;
 
 				mboIsRefund = false;
 				//mboIsDiscountAuthorized = false;
@@ -2636,11 +2657,16 @@ namespace AceSoft.RetailPlus.Client.UI
 									clsItemDetails.Discount = (clsItemDetails.Amount * (clsItemDetails.ItemDiscount / 100));
 								}
 
-								if (clsItemDetails.Discount >= clsItemDetails.Amount)
+                                if (clsItemDetails.Discount >= clsItemDetails.Amount && clsItemDetails.DiscountCode != Constants.C_DISCOUNT_CODE_FREE)
 								{
-									MessageBox.Show("Sorry the input discount will yield a less than ZERO amount. Please type another discount.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                                    MessageBox.Show("Sorry the discount is more than the transaction amount. Please select another discount.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 									goto Back;
 								}
+                                else if (clsItemDetails.Discount > clsItemDetails.Amount && clsItemDetails.DiscountCode == Constants.C_DISCOUNT_CODE_FREE)
+                                {
+                                    MessageBox.Show("Sorry the FREE discount cannot be more than 100%. Please set the FREE discount to 100% or less.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                                    goto Back;
+                                }
 
 								clsEvent.AddEventLn("discount=" + clsItemDetails.Discount.ToString("#,###.#0"));
 
@@ -2834,15 +2860,17 @@ namespace AceSoft.RetailPlus.Client.UI
 				else { clsEvent.AddEventLn("Cancelled!"); }
 			}
 		}
-		private void SelectContact(AceSoft.RetailPlus.Data.ContactGroupCategory enumContactGroupCategory)
+		private bool SelectContact(AceSoft.RetailPlus.Data.ContactGroupCategory enumContactGroupCategory)
 		{
+            bool boretValue = true;
+
 			// Sep 24, 2011      Lemuel E. Aceron
 			// Added order slip wherein all punch items will not change sales and inventory
 			// a customer named ORDER SLIP should be defined in contacts
 			if (lblCustomer.Text.Trim().ToUpper() == Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && mboIsInTransaction && enumContactGroupCategory == AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER)
 			{
 				MessageBox.Show("Sorry you cannot select ORDER SLIP customer when an item is already purchased.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				return;
+				return false;
 			}
 
 			if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto && mboIsInTransaction)
@@ -2857,7 +2885,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						break;
 				}
 
-				return;
+				return false;
 			}
 
 			try
@@ -2871,7 +2899,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							clsEvent.AddEventLn("Cancelled! ShowCustomerSelection is OFF, reward is ON.");
 							txtBarCode.Text = Constants.SWIPE_REWARD_CARD;
 							txtBarCode.Focus(); txtBarCode.SelectionStart = txtBarCode.Text.Length + 1;
-							return;
+							return false;
 						}
 						break;
 					case AceSoft.RetailPlus.Data.ContactGroupCategory.AGENT:
@@ -2892,18 +2920,21 @@ namespace AceSoft.RetailPlus.Client.UI
 				{
 					LoadContact(enumContactGroupCategory, details);
 				}
-				else { clsEvent.AddEventLn("Cancelled!"); }
+                else { clsEvent.AddEventLn("Cancelled!"); boretValue = false; }
+
 			}
 			catch (Exception ex)
 			{ 
-                InsertErrorLogToFile(ex, "ERROR!!! Selecting contact."); 
+                InsertErrorLogToFile(ex, "ERROR!!! Selecting contact.");
+                boretValue = false;
             }
+            return boretValue;
 		}
 		private void LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory enumContactGroupCategory, Data.ContactDetails pContactDetails)
 		{
 			try
 			{
-				if (mclsTerminalDetails.ShowCustomerSelection || pContactDetails.ContactID != 0)
+                if ((mclsTerminalDetails.ShowCustomerSelection || pContactDetails.ContactID != 0) && enumContactGroupCategory == Data.ContactGroupCategory.CUSTOMER)
 					mclsContactDetails = pContactDetails;
 				else
 				{
@@ -2977,20 +3008,20 @@ namespace AceSoft.RetailPlus.Client.UI
 						}
 						break;
 					case AceSoft.RetailPlus.Data.ContactGroupCategory.AGENT:
-						lblAgent.Tag = mclsContactDetails.ContactID;
-						lblAgent.Text = mclsContactDetails.ContactName;
-						lblAgentPositionDepartment.Text = mclsContactDetails.PositionName;
-						lblAgentPositionDepartment.Tag = mclsContactDetails.DepartmentName;
+                        lblAgent.Tag = pContactDetails.ContactID;
+                        lblAgent.Text = pContactDetails.ContactName;
+                        lblAgentPositionDepartment.Text = pContactDetails.PositionName;
+                        lblAgentPositionDepartment.Tag = pContactDetails.DepartmentName;
 						clsEvent.AddEventLn("Done! Selected agent: " + lblAgent.Text);
 
 						if (mboIsInTransaction)
 						{
                             Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
-							clsSalesTransactions.UpdateAgent(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.TransactionDate, mclsContactDetails);
+                            clsSalesTransactions.UpdateAgent(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.TransactionDate, pContactDetails);
 							clsSalesTransactions.CommitAndDispose();
 
-							mclsSalesTransactionDetails.AgentID = mclsContactDetails.ContactID;
-							mclsSalesTransactionDetails.AgentName = mclsContactDetails.ContactName;
+                            mclsSalesTransactionDetails.AgentID = pContactDetails.ContactID;
+                            mclsSalesTransactionDetails.AgentName = pContactDetails.ContactName;
 						}
 						break;
 				}
@@ -3257,7 +3288,8 @@ namespace AceSoft.RetailPlus.Client.UI
                         mdteOverRidingPrintDate = mclsSalesTransactionDetails.TransactionDate;
 
 						lblTransDiscount.Tag = mclsSalesTransactionDetails.TransDiscountType.ToString("d");
-						
+                        lblConsignment.Visible = mclsSalesTransactionDetails.isConsignment;
+
 						if (mclsSalesTransactionDetails.ChargeAmount == 0)
 							lblTransCharge.Tag = ChargeTypes.NotApplicable.ToString("d");
 						else
@@ -6867,7 +6899,11 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				//if (Details.ItemDiscountType == DiscountTypes.NotApplicable)
 				//{	Details.Description		= Details.Description;	}
-				if (Details.ItemDiscountType == DiscountTypes.FixedValue)
+                if (Details.DiscountCode == Constants.C_DISCOUNT_CODE_FREE && Details.ItemDiscountType == DiscountTypes.FixedValue)
+                { Details.Description = Details.Description + Environment.NewLine + "@ " + Details.ItemDiscount.ToString("###,##0.#0") + " FREE"; }
+                else if (Details.DiscountCode == Constants.C_DISCOUNT_CODE_FREE && Details.ItemDiscountType == DiscountTypes.Percentage)
+                { Details.Description = Details.Description + Environment.NewLine + "@ " + Details.ItemDiscount.ToString("###,##0.#0") + "% FREE"; }
+				else if (Details.ItemDiscountType == DiscountTypes.FixedValue)
 				{ Details.Description = Details.Description + Environment.NewLine + "@ " + Details.ItemDiscount.ToString("###,##0.#0") + " disc"; }
 				else if (Details.ItemDiscountType == DiscountTypes.Percentage)
 				{ Details.Description = Details.Description + Environment.NewLine + "@ " + Details.ItemDiscount.ToString("###,##0.#0") + " % disc"; }
@@ -7327,9 +7363,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					if (Convert.ToDecimal(dr["VAT"]) != 0)
 					{
 						// Sep 2, 2010 added to include Senior Citizen Discount as nonvatable
-						if (mclsSalesTransactionDetails.DiscountCode == Constants.SeniorCitizenDiscountCode || dr["DiscountCode"].ToString() == Constants.SeniorCitizenDiscountCode)
+						if (mclsSalesTransactionDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN || dr["DiscountCode"].ToString() == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
 						{
-							if (ItemDiscountType != DiscountTypes.NotApplicable && dr["DiscountCode"].ToString() != Constants.SeniorCitizenDiscountCode)
+							if (ItemDiscountType != DiscountTypes.NotApplicable && dr["DiscountCode"].ToString() != Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
 								decVATableAmount += decItemAmount;    
 							else
 								decNONVATableAmount += decItemAmount;                
@@ -7345,9 +7381,9 @@ namespace AceSoft.RetailPlus.Client.UI
 					if (Convert.ToDecimal(dr["EVAT"]) != 0 && mclsTerminalDetails.EnableEVAT)
 					{
 						// Sep 2, 2010 added to include Senior Citizen Discount as nonvatable
-						if (mclsSalesTransactionDetails.DiscountCode == Constants.SeniorCitizenDiscountCode || dr["DiscountCode"].ToString() == Constants.SeniorCitizenDiscountCode)
+						if (mclsSalesTransactionDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN || dr["DiscountCode"].ToString() == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
 						{
-							if (ItemDiscountType != DiscountTypes.NotApplicable && dr["DiscountCode"].ToString() != Constants.SeniorCitizenDiscountCode)
+							if (ItemDiscountType != DiscountTypes.NotApplicable && dr["DiscountCode"].ToString() != Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
 								decEVATableAmount += decItemAmount;
 							else
 								decNONEVATableAmount += decItemAmount;
@@ -7491,6 +7527,65 @@ namespace AceSoft.RetailPlus.Client.UI
                 InsertErrorLogToFile(ex, "ERROR!!! Computing sales subtotal. TRACE: ");
 			}
 		}
+        private void UpdateIsConsignment()
+        {
+            if (!mboIsInTransaction)
+            {
+                MessageBox.Show("Sorry you cannot consign an empty transaction.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (mclsSalesTransactionDetails.AgentID == Constants.C_RETAILPLUS_AGENTID)
+            {
+                if (MessageBox.Show("Sorry you need to select an agent before you can consign this transaction! Select now?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                { if (!SelectContact(Data.ContactGroupCategory.AGENT)) return; }
+                else
+                    return;
+            }
+
+            if (mclsSalesTransactionDetails.CustomerID == Constants.C_RETAILPLUS_CUSTOMERID)
+            {
+                if (MessageBox.Show("Sorry you need to select a customer before you can consign this transaction! Select now?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                { if (!SelectContact(Data.ContactGroupCategory.CUSTOMER)) return; }
+                else
+                    return;
+            }
+
+            DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.CloseTransaction);
+
+            if (loginresult == DialogResult.None)
+            {
+                LogInWnd login = new LogInWnd();
+
+                login.AccessType = AccessTypes.CloseTransaction;
+                login.Header = "Consign Transaction Access Validation";
+                login.ShowDialog(this);
+                loginresult = login.Result;
+                login.Close();
+                login.Dispose();
+            }
+            if (loginresult == DialogResult.OK)
+            {
+                try
+                {
+                    Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
+                    clsSalesTransactions.UpdateisConsignment(mclsSalesTransactionDetails.TransactionID, !mclsSalesTransactionDetails.isConsignment);
+                    clsSalesTransactions.CommitAndDispose();
+
+                    mclsSalesTransactionDetails.isConsignment = !mclsSalesTransactionDetails.isConsignment;
+
+                    lblConsignment.Visible = mclsSalesTransactionDetails.isConsignment;
+
+                    InsertAuditLog(AccessTypes.CloseTransaction, "Updating isConsignment: " + mclsSalesTransactionDetails.isConsignment.ToString() + " in the database for transactionno: " + mclsSalesTransactionDetails.TransactionNo + " done.");
+                    MessageBox.Show(mclsSalesTransactionDetails.isConsignment ? "This transaction has been saved as consignment." : "This transaction has been saved as NOT consignment", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    InsertErrorLogToFile(ex, "ERROR!!! Updating isConsignment: " + mclsSalesTransactionDetails.isConsignment.ToString() + " in the database for transactionno: " + mclsSalesTransactionDetails.TransactionNo + ". TRACE: ");
+                    throw ex;
+                }
+            }
+        }
 		private void PackTransaction()
 		{
 			if (!mboIsInTransaction)
@@ -8224,6 +8319,8 @@ namespace AceSoft.RetailPlus.Client.UI
 						drNew["CustomerBusinessName"] = clsContactDetails.BusinessName;
 						drNew["CustomerTelNo"] = clsContactDetails.TelephoneNo;
 						drNew["CashierName"] = clsSalesTransactionDetails.CashierName;
+                        drNew["CreatedByName"] = clsSalesTransactionDetails.CreatedByName;
+                        drNew["AgentName"] = clsSalesTransactionDetails.AgentName;
 						drNew["TerminalNo"] = clsSalesTransactionDetails.TerminalNo;
 						drNew["TransactionDate"] = clsSalesTransactionDetails.TransactionDate;
 						drNew["DateSuspended"] = clsSalesTransactionDetails.DateSuspended.ToString();
@@ -8239,12 +8336,14 @@ namespace AceSoft.RetailPlus.Client.UI
 						drNew["CashPayment"] = clsSalesTransactionDetails.CashPayment;
 						drNew["ChequePayment"] = clsSalesTransactionDetails.ChequePayment;
 						drNew["CreditCardPayment"] = clsSalesTransactionDetails.CreditCardPayment;
+                        drNew["CreditPayment"] = clsSalesTransactionDetails.CreditPayment;
 						drNew["BalanceAmount"] = clsSalesTransactionDetails.BalanceAmount;
 						drNew["ChangeAmount"] = clsSalesTransactionDetails.ChangeAmount;
 						drNew["DateClosed"] = clsSalesTransactionDetails.DateClosed;
 						drNew["PaymentType"] = clsSalesTransactionDetails.PaymentType.ToString("d");
 						drNew["ItemsDiscount"] = clsSalesTransactionDetails.ItemsDiscount;
 						drNew["Charge"] = clsSalesTransactionDetails.Charge;
+                        drNew["isConsignment"] = clsSalesTransactionDetails.isConsignment;
 
 						rptds.Transactions.Rows.Add(drNew);
 
@@ -9215,6 +9314,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mdteOverRidingPrintDate = mclsSalesTransactionDetails.TransactionDate;
 
 				lblTransDiscount.Tag = mclsSalesTransactionDetails.TransDiscountType.ToString("d");
+                lblConsignment.Visible = mclsSalesTransactionDetails.isConsignment;
 
 				//mclsSalesTransactionDetails.ChargeAmount = mclsSalesTransactionDetails.ChargeAmount;
 				if (mclsSalesTransactionDetails.ChargeAmount == 0)
@@ -9365,7 +9465,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				if (ItemDiscountType != DiscountTypes.NotApplicable)
 				{ ItemsDiscount += Convert.ToDecimal(dr["Discount"]); }
 
-				if (dr["DiscountCode"].ToString() == Constants.SeniorCitizenDiscountCode)
+				if (dr["DiscountCode"].ToString() == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
 					decSeniorCitizenDiscount += ItemsDiscount;
 				
 				TotalNoOfItems += ItemQuantity;
@@ -9384,7 +9484,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			if (Discount != 0)
 			{   
 				intNoOfDiscountedTransactions = 1;
-				if (mclsSalesTransactionDetails.DiscountCode == Constants.SeniorCitizenDiscountCode)
+				if (mclsSalesTransactionDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
 					decSeniorCitizenDiscount += Discount;
 			}
 			
@@ -9543,7 +9643,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					ItemsDiscount += Convert.ToDecimal(dr["Discount"]);
 				}
 
-				if (dr["DiscountCode"].ToString() == Constants.SeniorCitizenDiscountCode)
+				if (dr["DiscountCode"].ToString() == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
 					decSeniorCitizenDiscount += ItemsDiscount;
 
 				TotalNoOfItems += ItemQuantity;
@@ -9561,7 +9661,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			if (Discount != 0)
 			{
 				intNoOfDiscountedTransactions = 1;
-				if (mclsSalesTransactionDetails.DiscountCode == Constants.SeniorCitizenDiscountCode)
+				if (mclsSalesTransactionDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
 					decSeniorCitizenDiscount += Discount;
 			}
 
@@ -10242,7 +10342,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			//			if (Decimal.Compare(Amount, Decimal.Floor(Amount)) == 0)
 			//			{	stAmount = Amount.ToString("#,##0");	}
 
-			if (mclsSalesTransactionDetails.DiscountCode != Constants.SeniorCitizenDiscountCode)
+			if (mclsSalesTransactionDetails.DiscountCode != Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
 			{
 				if (isVATable)
 				{ stAmount += "V "; }

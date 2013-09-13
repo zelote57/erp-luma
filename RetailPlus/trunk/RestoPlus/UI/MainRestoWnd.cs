@@ -8553,9 +8553,9 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (Convert.ToDecimal(dr["VAT"]) != 0)
                     {
                         // Sep 2, 2010 added to include Senior Citizen Discount as nonvatable
-                        if (mclsSalesTransactionDetails.DiscountCode == Constants.SeniorCitizenDiscountCode || dr["DiscountCode"].ToString() == Constants.SeniorCitizenDiscountCode)
+                        if (mclsSalesTransactionDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN || dr["DiscountCode"].ToString() == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
                         {
-                            if (ItemDiscountType != DiscountTypes.NotApplicable && dr["DiscountCode"].ToString() != Constants.SeniorCitizenDiscountCode)
+                            if (ItemDiscountType != DiscountTypes.NotApplicable && dr["DiscountCode"].ToString() != Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
                                 decVATableAmount += decItemAmount;
                             else
                                 decNONVATableAmount += decItemAmount;
@@ -8571,9 +8571,9 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (Convert.ToDecimal(dr["EVAT"]) != 0 && mclsTerminalDetails.EnableEVAT)
                     {
                         // Sep 2, 2010 added to include Senior Citizen Discount as nonvatable
-                        if (mclsSalesTransactionDetails.DiscountCode == Constants.SeniorCitizenDiscountCode || dr["DiscountCode"].ToString() == Constants.SeniorCitizenDiscountCode)
+                        if (mclsSalesTransactionDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN || dr["DiscountCode"].ToString() == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
                         {
-                            if (ItemDiscountType != DiscountTypes.NotApplicable && dr["DiscountCode"].ToString() != Constants.SeniorCitizenDiscountCode)
+                            if (ItemDiscountType != DiscountTypes.NotApplicable && dr["DiscountCode"].ToString() != Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
                                 decEVATableAmount += decItemAmount;
                             else
                                 decNONEVATableAmount += decItemAmount;
@@ -10588,7 +10588,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 if (ItemDiscountType != DiscountTypes.NotApplicable)
                 { ItemsDiscount += Convert.ToDecimal(dr["Discount"]); }
 
-                if (dr["DiscountCode"].ToString() == Constants.SeniorCitizenDiscountCode)
+                if (dr["DiscountCode"].ToString() == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
                     decSeniorCitizenDiscount += ItemsDiscount;
 
                 TotalNoOfItems += ItemQuantity;
@@ -10607,7 +10607,7 @@ namespace AceSoft.RetailPlus.Client.UI
             if (Discount != 0)
             {
                 intNoOfDiscountedTransactions = 1;
-                if (mclsSalesTransactionDetails.DiscountCode == Constants.SeniorCitizenDiscountCode)
+                if (mclsSalesTransactionDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
                     decSeniorCitizenDiscount += Discount;
             }
 
@@ -10766,7 +10766,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     ItemsDiscount += Convert.ToDecimal(dr["Discount"]);
                 }
 
-                if (dr["DiscountCode"].ToString() == Constants.SeniorCitizenDiscountCode)
+                if (dr["DiscountCode"].ToString() == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
                     decSeniorCitizenDiscount += ItemsDiscount;
 
                 TotalNoOfItems += ItemQuantity;
@@ -10784,7 +10784,7 @@ namespace AceSoft.RetailPlus.Client.UI
             if (Discount != 0)
             {
                 intNoOfDiscountedTransactions = 1;
-                if (mclsSalesTransactionDetails.DiscountCode == Constants.SeniorCitizenDiscountCode)
+                if (mclsSalesTransactionDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
                     decSeniorCitizenDiscount += Discount;
             }
 
@@ -11459,7 +11459,7 @@ namespace AceSoft.RetailPlus.Client.UI
             //			if (Decimal.Compare(Amount, Decimal.Floor(Amount)) == 0)
             //			{	stAmount = Amount.ToString("#,##0");	}
 
-            if (mclsSalesTransactionDetails.DiscountCode != Constants.SeniorCitizenDiscountCode)
+            if (mclsSalesTransactionDetails.DiscountCode != Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
             {
                 if (isVATable)
                 { stAmount += "V "; }

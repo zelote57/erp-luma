@@ -43,6 +43,7 @@ namespace AceSoft.RetailPlus
 
         public const string SalesTransactions = "Sales Transactions";
         public const string SalesTransactionPerCustomer = "Sales Transaction Per Customer";
+        public const string SalesTransactionPerCustomerWithCheque = "Sales Transaction Per Customer With Cheque Details";
         public const string SalesTransactionPerCashier= "Sales Transaction Per Cashier";
         public const string SalesTransactionPerCashierPerCustomer = "Sales Transaction Per Cashier PerCustomer";
         public const string SalesTransactionPerTerminal = "Sales Transaction Per Terminal";

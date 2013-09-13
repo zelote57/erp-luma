@@ -561,7 +561,7 @@ namespace AceSoft.RetailPlus.Data
                     itemDetails.PurchaseAmount = decimal.Parse(dr["PurchaseAmount"].ToString());
                     itemDetails.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
                     itemDetails.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
-                    itemDetails.OrderSlipPrinted = bool.Parse(dr["OrderSlipPrinted"].ToString());
+                    itemDetails.OrderSlipPrinted = Convert.ToBoolean(dr["OrderSlipPrinted"]);
                     itemDetails.PercentageCommision = decimal.Parse(dr["PercentageCommision"].ToString());
                     itemDetails.Commision = decimal.Parse(dr["Commision"].ToString());
                     itemDetails.PaxNo = Int32.Parse(dr["PaxNo"].ToString());

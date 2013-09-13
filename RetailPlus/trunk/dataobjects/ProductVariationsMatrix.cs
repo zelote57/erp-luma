@@ -652,7 +652,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public System.Data.DataTable BaseListAsDataTable(Int64 ProductID, int BranchID = 0, string BarCode = "", string MatrixDescription = "", string SortField = "mtrx.Description", SortOption SortOrder = SortOption.Ascending)
+        public System.Data.DataTable BaseListAsDataTable(Int64 ProductID, int BranchID = 0, string BarCode = "", string MatrixDescription = "", string SortField = "prd.Description", SortOption SortOrder = SortOption.Ascending)
         {
             try
             {
@@ -665,7 +665,7 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public System.Data.DataTable BaseListSimpleAsDataTable(Int64 ProductID, int BranchID = 0, string SortField = "mtrx.Description", SortOption SortOrder = SortOption.Ascending)
+        public System.Data.DataTable BaseListSimpleAsDataTable(Int64 ProductID, int BranchID = 0, string SortField = "prd.Description", SortOption SortOrder = SortOption.Ascending)
         {
             try
             {

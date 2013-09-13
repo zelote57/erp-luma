@@ -591,6 +591,7 @@ namespace AceSoft.RetailPlus.Data
                                 "ProductGroup, " +
                                 "ProductSubGroup, " +
                                 "ItemStatus, " +
+                                "DebitMemoItemReceivedStatus, " +
                                 "IsVatable, " +
                                 "Remarks, " +
                                 "ChartOfAccountIDPurchase, " +

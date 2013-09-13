@@ -70,7 +70,7 @@ namespace AceSoft.RetailPlus
         public const long ZERO = 0;
         public const string ZERO_STRING = "0";
 
-        public static string SeniorCitizenDiscountCode
+        public static string C_DISCOUNT_CODE_SENIORCITIZEN
         {
             get
             {
@@ -80,6 +80,7 @@ namespace AceSoft.RetailPlus
                 return strRetValue;
             }
         }
+        public const string C_DISCOUNT_CODE_FREE = "FREE";
 
         public const string RETAILPLUS_BUSINESS_SOLUTIONS = "RetailPlus™ Business Solutions";
         public const string DEMO_EXPIRED_HEADER = "RetailPlus™ Demo Version";

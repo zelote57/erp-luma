@@ -14,12 +14,12 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label lblRemarks;
         private TextBox txtRemarks;
         private TextBox txtAmount;
-        private Label label8;
+        private Label lblBalance;
         private PictureBox imgIcon;
         private Label lblCredit;
         private System.ComponentModel.Container components = null;
         private Label lblAllowedCredit;
-        private Label label2;
+        private Label lblAllowedCreditLabel;
         private Button cmdCancel;
         private Button cmdEnter;
 
@@ -97,12 +97,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblRemarks = new System.Windows.Forms.Label();
             this.txtRemarks = new System.Windows.Forms.TextBox();
-            this.lblCredit = new System.Windows.Forms.Label();
-            this.txtAmount = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.imgIcon = new System.Windows.Forms.PictureBox();
             this.lblAllowedCredit = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblCredit = new System.Windows.Forms.Label();
+            this.lblAllowedCreditLabel = new System.Windows.Forms.Label();
+            this.txtAmount = new System.Windows.Forms.TextBox();
+            this.lblBalance = new System.Windows.Forms.Label();
+            this.imgIcon = new System.Windows.Forms.PictureBox();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
@@ -114,9 +114,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBalanceAmount.BackColor = System.Drawing.Color.Transparent;
             this.lblBalanceAmount.Font = new System.Drawing.Font("Tahoma", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBalanceAmount.ForeColor = System.Drawing.Color.Red;
-            this.lblBalanceAmount.Location = new System.Drawing.Point(611, 31);
+            this.lblBalanceAmount.Location = new System.Drawing.Point(118, 31);
             this.lblBalanceAmount.Name = "lblBalanceAmount";
-            this.lblBalanceAmount.Size = new System.Drawing.Size(184, 32);
+            this.lblBalanceAmount.Size = new System.Drawing.Size(649, 32);
             this.lblBalanceAmount.TabIndex = 5;
             this.lblBalanceAmount.Text = "0.00";
             this.lblBalanceAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -140,9 +140,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.Controls.Add(this.txtRemarks);
             this.groupBox1.Controls.Add(this.lblAllowedCredit);
             this.groupBox1.Controls.Add(this.lblCredit);
-            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.lblAllowedCreditLabel);
             this.groupBox1.Controls.Add(this.txtAmount);
-            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.lblBalance);
             this.groupBox1.Controls.Add(this.lblBalanceAmount);
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Blue;
@@ -174,6 +174,18 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtRemarks.Size = new System.Drawing.Size(723, 56);
             this.txtRemarks.TabIndex = 1;
             // 
+            // lblAllowedCredit
+            // 
+            this.lblAllowedCredit.BackColor = System.Drawing.Color.Transparent;
+            this.lblAllowedCredit.Font = new System.Drawing.Font("Tahoma", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAllowedCredit.ForeColor = System.Drawing.Color.DarkSalmon;
+            this.lblAllowedCredit.Location = new System.Drawing.Point(118, 7);
+            this.lblAllowedCredit.Name = "lblAllowedCredit";
+            this.lblAllowedCredit.Size = new System.Drawing.Size(649, 32);
+            this.lblAllowedCredit.TabIndex = 6;
+            this.lblAllowedCredit.Text = "0.00";
+            this.lblAllowedCredit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // lblCredit
             // 
             this.lblCredit.AutoSize = true;
@@ -184,6 +196,18 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCredit.Size = new System.Drawing.Size(124, 13);
             this.lblCredit.TabIndex = 2;
             this.lblCredit.Text = "Credit Amount (PHP)";
+            // 
+            // lblAllowedCreditLabel
+            // 
+            this.lblAllowedCreditLabel.AutoSize = true;
+            this.lblAllowedCreditLabel.BackColor = System.Drawing.Color.Transparent;
+            this.lblAllowedCreditLabel.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAllowedCreditLabel.ForeColor = System.Drawing.Color.LightSlateGray;
+            this.lblAllowedCreditLabel.Location = new System.Drawing.Point(775, 14);
+            this.lblAllowedCreditLabel.Name = "lblAllowedCreditLabel";
+            this.lblAllowedCreditLabel.Size = new System.Drawing.Size(225, 19);
+            this.lblAllowedCreditLabel.TabIndex = 8;
+            this.lblAllowedCreditLabel.Text = "Allowed consignment amount.";
             // 
             // txtAmount
             // 
@@ -198,17 +222,17 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
-            // label8
+            // lblBalance
             // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.Transparent;
-            this.label8.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label8.Location = new System.Drawing.Point(801, 38);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(201, 19);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Current Balance to be paid.";
+            this.lblBalance.AutoSize = true;
+            this.lblBalance.BackColor = System.Drawing.Color.Transparent;
+            this.lblBalance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBalance.ForeColor = System.Drawing.Color.LightSlateGray;
+            this.lblBalance.Location = new System.Drawing.Point(776, 38);
+            this.lblBalance.Name = "lblBalance";
+            this.lblBalance.Size = new System.Drawing.Size(201, 19);
+            this.lblBalance.TabIndex = 7;
+            this.lblBalance.Text = "Current Balance to be paid.";
             // 
             // imgIcon
             // 
@@ -220,30 +244,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.imgIcon.TabIndex = 82;
             this.imgIcon.TabStop = false;
             this.imgIcon.Click += new System.EventHandler(this.imgIcon_Click);
-            // 
-            // lblAllowedCredit
-            // 
-            this.lblAllowedCredit.BackColor = System.Drawing.Color.Transparent;
-            this.lblAllowedCredit.Font = new System.Drawing.Font("Tahoma", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAllowedCredit.ForeColor = System.Drawing.Color.DarkSalmon;
-            this.lblAllowedCredit.Location = new System.Drawing.Point(611, 7);
-            this.lblAllowedCredit.Name = "lblAllowedCredit";
-            this.lblAllowedCredit.Size = new System.Drawing.Size(184, 32);
-            this.lblAllowedCredit.TabIndex = 6;
-            this.lblAllowedCredit.Text = "0.00";
-            this.lblAllowedCredit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label2.Location = new System.Drawing.Point(800, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(174, 19);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Allowed credit amount.";
             // 
             // cmdCancel
             // 
@@ -353,6 +353,15 @@ namespace AceSoft.RetailPlus.Client.UI
             lblBalanceAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
             txtAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
             lblCredit.Text = "Credit Amount (" + CompanyDetails.Currency + ")";
+
+            if (mclsSalesTransactionDetails.isConsignment) {
+                lblHeader.Text = "Tender Consignment Amount";
+                lblAllowedCreditLabel.Text = "Allowed consignment amount.";
+            }
+            else {
+                lblHeader.Text = "Tender Credit Amount";
+                lblAllowedCreditLabel.Text = "Allowed credit amount.";
+            }
         }
 
         #endregion

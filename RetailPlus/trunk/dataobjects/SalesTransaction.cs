@@ -116,6 +116,9 @@ namespace AceSoft.RetailPlus.Data
 		public DateTime TransactionDateFrom;
 		public DateTime TransactionDateTo;
 
+        public bool isConsignment;
+        public string isConsignmentSearch;
+
 	}
 
 	public struct SalesTransactionsColumns
@@ -215,6 +218,8 @@ namespace AceSoft.RetailPlus.Data
 		public bool RewardConvertedPayment;
 
 		public bool PaxNo;
+
+        public bool isConsignment;
 	}
 
 	public struct SalesTransactionsColumnNames
@@ -314,6 +319,7 @@ namespace AceSoft.RetailPlus.Data
 		public const string RewardConvertedPayment = "RewardConvertedPayment";
 
 		public const string PaxNo = "PaxNo";
+        public const string isConsignment = "isConsignment";
 
 	}
 
@@ -350,9 +356,9 @@ namespace AceSoft.RetailPlus.Data
 			//	Feb 07, 2008 : Added "WaiterID, WaiterName "
 
 			string stSQL = "SELECT " +
-								"TransactionID, " +
+                                "tblTransactions.TransactionID, " +
                                 "TransactionType, " +
-								"TransactionNo, " +
+                                "tblTransactions.TransactionNo, " +
 								"BranchID, " +
 								"BranchCode, " +
 								"PaxNo, " +
@@ -369,6 +375,19 @@ namespace AceSoft.RetailPlus.Data
 								"DateSuspended, " +
 								"DateResumed, " +
 								"TransactionStatus, " +
+                                "CASE TransactionStatus " +
+									"WHEN 0 THEN 'Open' " +
+									"WHEN 1 THEN 'Closed' " +
+									"WHEN 2 THEN 'Suspended' " +
+									"WHEN 3 THEN 'Void' " +
+									"WHEN 4 THEN 'Reprinted' " +
+									"WHEN 5 THEN 'Refund' " +
+									"WHEN 6 THEN 'NotYetApplied' " +
+									"WHEN 7 THEN 'NotYetApplied' " +
+									"WHEN 8 THEN 'DebitPayment' " +
+									"WHEN 9 THEN 'Released' " +
+									"WHEN 10 THEN 'OrderSlip' " +
+								"END 'TransactionStatusName', " +
 								"SubTotal, " +
 								"ItemsDiscount, " +
 								"Discount, " +
@@ -385,7 +404,8 @@ namespace AceSoft.RetailPlus.Data
 								"CashPayment, " +
 								"ChequePayment, " +
 								"CreditCardPayment, " +
-								"CreditPayment, " +
+                                "IF(isConsignment=0,CreditPayment,0) 'CreditPayment', " +
+                                "IF(isConsignment<>0,CreditPayment,0) 'ConsignmentPayment', " +
 								"DebitPayment, " +
 								"RewardPointsPayment, " +
 								"RewardConvertedPayment, " +
@@ -398,7 +418,10 @@ namespace AceSoft.RetailPlus.Data
 								"Charge, ChargeAmount, ChargeCode, ChargeRemarks, " +
 								"CreditChargeAmount, " +
 								"OrderType, " +
-								"AgentPositionName, AgentDepartmentName FROM tblTransactions ";
+								"AgentPositionName, AgentDepartmentName, isConsignment, " +
+                                "IFNULL(ChequeNo,'') AS ChequeNo, IFNULL(ValidityDate,'" + DateTime.MinValue.ToString("yyyy-MM-dd") + "') AS ValidityDate " +
+                            "FROM tblTransactions " +
+                            "LEFT OUTER JOIN tblChequePayment chque ON tblTransactions.TransactionID = chque.TransactionID ";
 
 			return stSQL;
 		}
@@ -407,7 +430,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			string stSQL = "SELECT ";
 
-			if (clsSalesTransactionsColumns.TransactionNo) stSQL += "" + SalesTransactionsColumnNames.TransactionNo + ", ";
+            if (clsSalesTransactionsColumns.TransactionNo) stSQL += "tblTransactions." + SalesTransactionsColumnNames.TransactionNo + ", ";
 			if (clsSalesTransactionsColumns.BranchID) stSQL += "" + SalesTransactionsColumnNames.BranchID + ", ";
 			if (clsSalesTransactionsColumns.BranchCode) stSQL += "" + SalesTransactionsColumnNames.BranchCode + ", ";
 			if (clsSalesTransactionsColumns.PaxNo) stSQL += "" + SalesTransactionsColumnNames.PaxNo + ", ";
@@ -453,7 +476,8 @@ namespace AceSoft.RetailPlus.Data
 			if (clsSalesTransactionsColumns.CashPayment) stSQL += "" + SalesTransactionsColumnNames.CashPayment + ", ";
 			if (clsSalesTransactionsColumns.ChequePayment) stSQL += "" + SalesTransactionsColumnNames.ChequePayment + ", ";
 			if (clsSalesTransactionsColumns.CreditCardPayment) stSQL += "" + SalesTransactionsColumnNames.CreditCardPayment + ", ";
-			if (clsSalesTransactionsColumns.CreditPayment) stSQL += "" + SalesTransactionsColumnNames.CreditPayment + ", ";
+            stSQL += "IF(isConsignment=0,CreditPayment,0) 'CreditPayment', ";
+            stSQL += "IF(isConsignment<>0,CreditPayment,0) 'ConsignmentPayment', ";
 			if (clsSalesTransactionsColumns.DebitPayment) stSQL += "" + SalesTransactionsColumnNames.DebitPayment + ", ";
 			if (clsSalesTransactionsColumns.RewardPointsPayment) stSQL += "" + SalesTransactionsColumnNames.RewardPointsPayment + ", ";
 			if (clsSalesTransactionsColumns.RewardConvertedPayment) stSQL += "" + SalesTransactionsColumnNames.RewardConvertedPayment + ", ";
@@ -472,7 +496,10 @@ namespace AceSoft.RetailPlus.Data
 			if (clsSalesTransactionsColumns.AgentPositionName) stSQL += "" + SalesTransactionsColumnNames.AgentPositionName + ", ";
 			if (clsSalesTransactionsColumns.AgentDepartmentName) stSQL += "" + SalesTransactionsColumnNames.AgentDepartmentName + ", ";
 
-            stSQL += "TransactionType, TransactionID FROM tblTransactions ";
+            stSQL += "TransactionType, tblTransactions.TransactionID, isConsignment, " +
+                     "IFNULL(ChequeNo,'') AS ChequeNo, IFNULL(ValidityDate,'" + DateTime.MinValue.ToString("yyyy-MM-dd") + "') AS ValidityDate " +
+                     "FROM tblTransactions " +
+                     "LEFT OUTER JOIN tblChequePayment chque ON tblTransactions.TransactionID = chque.TransactionID ";
 
 			return stSQL;
 		}
@@ -486,7 +513,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				SalesTransactionDetails Details = new SalesTransactionDetails();
 
-				string SQL = SQLSelect() + "WHERE TransactionNo = @TransactionNo AND TerminalNo = @TerminalNo AND BranchID = @BranchID;";
+                string SQL = SQLSelect() + "WHERE tblTransactions.TransactionNo = @TransactionNo AND TerminalNo = @TerminalNo AND BranchID = @BranchID;";
 
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
@@ -504,68 +531,71 @@ namespace AceSoft.RetailPlus.Data
 				prmBranchID.Value = BranchID;
 				cmd.Parameters.Add(prmBranchID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                System.Data.DataTable dt = new System.Data.DataTable("tblSalesTransaction");
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read())
+				//MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
-					Details.TransactionID = myReader.GetInt64("TransactionID");
-                    Details.TransactionType = (TransactionTypes)Enum.Parse(typeof(TransactionTypes), myReader.GetString("TransactionType"));
-					Details.TransactionNo = "" + myReader["TransactionNo"].ToString();
-					Details.BranchID = myReader.GetInt32("BranchID");
-					Details.BranchCode = "" + myReader["BranchCode"].ToString();
-					Details.PaxNo = myReader.GetInt32("PaxNo");
-					Details.CustomerID = myReader.GetInt32("CustomerID");
-					Details.CustomerName = "" + myReader["CustomerName"].ToString();
-					Details.AgentID = myReader.GetInt32("AgentID");
-					Details.AgentName = "" + myReader["AgentName"].ToString();
-					Details.CreatedByID = myReader.GetInt64("CreatedByID");
-					Details.CreatedByName = "" + myReader["CreatedByName"].ToString();
-					Details.CashierID = myReader.GetInt64("CashierID");
-					Details.CashierName = "" + myReader["CashierName"].ToString();
-					Details.TerminalNo = "" + myReader["TerminalNo"].ToString();
-					Details.TransactionDate = myReader.GetDateTime("TransactionDate");
-					Details.DateSuspended = myReader.GetDateTime("DateSuspended");
-					Details.DateResumed = myReader.GetDateTime("DateResumed");
-					Details.TransactionStatus = (TransactionStatus)Enum.Parse(typeof(TransactionStatus), myReader.GetString("TransactionStatus"));
-					Details.SubTotal = myReader.GetDecimal("SubTotal");
-					Details.ItemsDiscount = myReader.GetDecimal("ItemsDiscount");
-					Details.Discount = myReader.GetDecimal("Discount");
+                    Details.TransactionID = Int64.Parse(dr["TransactionID"].ToString());
+                    Details.TransactionType = (TransactionTypes)Enum.Parse(typeof(TransactionTypes), dr["TransactionType"].ToString());
+					Details.TransactionNo = "" + dr["TransactionNo"].ToString();
+					Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
+					Details.BranchCode = "" + dr["BranchCode"].ToString();
+					Details.PaxNo = Int32.Parse(dr["PaxNo"].ToString());
+					Details.CustomerID = Int32.Parse(dr["CustomerID"].ToString());
+                    Details.CustomerName = "" + dr["CustomerName"].ToString();
+					Details.AgentID = Int32.Parse(dr["AgentID"].ToString());
+                    Details.AgentName = "" + dr["AgentName"].ToString();
+					Details.CreatedByID = Int64.Parse(dr["CreatedByID"].ToString());
+                    Details.CreatedByName = "" + dr["CreatedByName"].ToString();
+					Details.CashierID = Int64.Parse(dr["CashierID"].ToString());
+                    Details.CashierName = "" + dr["CashierName"].ToString();
+                    Details.TerminalNo = "" + dr["TerminalNo"].ToString();
+					Details.TransactionDate = DateTime.Parse(dr["TransactionDate"].ToString());
+					Details.DateSuspended = DateTime.Parse(dr["DateSuspended"].ToString());
+					Details.DateResumed = DateTime.Parse(dr["DateResumed"].ToString());
+					Details.TransactionStatus = (TransactionStatus)Enum.Parse(typeof(TransactionStatus), dr["TransactionStatus"].ToString());
+                    Details.SubTotal = decimal.Parse(dr["SubTotal"].ToString());
+					Details.ItemsDiscount = decimal.Parse(dr["ItemsDiscount"].ToString());
+					Details.Discount = decimal.Parse(dr["Discount"].ToString());
 					// Aug 6, 2011 : Include in loading DiscountCode
-					Details.DiscountCode = "" + myReader["DiscountCode"].ToString();
+                    Details.DiscountCode = "" + dr["DiscountCode"].ToString();
 					// Aug 6, 2011 : Include in loading DiscountRemarks
-					Details.DiscountRemarks = "" + myReader["DiscountRemarks"].ToString();
-					Details.TransDiscount = myReader.GetDecimal("TransDiscount");
-					Details.TransDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), myReader.GetString("TransDiscountType"));
-					Details.VAT = myReader.GetDecimal("VAT");
-					Details.VatableAmount = myReader.GetDecimal("VatableAmount");
-					Details.EVAT = myReader.GetDecimal("EVAT");
-					Details.EVatableAmount = myReader.GetDecimal("EVatableAmount");
-					Details.LocalTax = myReader.GetDecimal("LocalTax");
-					Details.AmountPaid = myReader.GetDecimal("AmountPaid");
-					Details.CashPayment = myReader.GetDecimal("CashPayment");
-					Details.ChequePayment = myReader.GetDecimal("ChequePayment");
-					Details.CreditCardPayment = myReader.GetDecimal("CreditCardPayment");
-					Details.CreditPayment = myReader.GetDecimal("CreditPayment");
-					Details.DebitPayment = myReader.GetDecimal("DebitPayment");
-					Details.RewardPointsPayment = myReader.GetDecimal("RewardPointsPayment");
-					Details.RewardConvertedPayment = myReader.GetDecimal("RewardConvertedPayment");
-					Details.BalanceAmount = myReader.GetDecimal("BalanceAmount");
-					Details.ChangeAmount = myReader.GetDecimal("ChangeAmount");
-					Details.DateClosed = myReader.GetDateTime("DateClosed");
-					Details.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), myReader.GetString("PaymentType"));
-					Details.WaiterID = myReader.GetInt64("WaiterID");
-					Details.WaiterName = "" + myReader["WaiterName"].ToString();
-					Details.Charge = myReader.GetDecimal("Charge");
-					Details.ChargeAmount = myReader.GetDecimal("ChargeAmount");
-					Details.ChargeCode = "" + myReader["ChargeCode"].ToString();
-					Details.ChargeRemarks = "" + myReader["ChargeRemarks"].ToString();
-					Details.CreditChargeAmount = myReader.GetDecimal("CreditChargeAmount");
-                    Details.OrderType = (OrderTypes)Enum.Parse(typeof(OrderTypes), myReader.GetString("OrderType"));
-					Details.AgentPositionName = "" + myReader["AgentPositionName"].ToString();
-					Details.AgentDepartmentName = "" + myReader["AgentDepartmentName"].ToString();
+                    Details.DiscountRemarks = "" + dr["DiscountRemarks"].ToString();
+					Details.TransDiscount = decimal.Parse(dr["TransDiscount"].ToString());
+					Details.TransDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["TransDiscountType"].ToString());
+					Details.VAT = decimal.Parse(dr["VAT"].ToString());
+					Details.VatableAmount = decimal.Parse(dr["VatableAmount"].ToString());
+					Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
+					Details.EVatableAmount = decimal.Parse(dr["EVatableAmount"].ToString());
+					Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
+					Details.AmountPaid = decimal.Parse(dr["AmountPaid"].ToString());
+					Details.CashPayment = decimal.Parse(dr["CashPayment"].ToString());
+					Details.ChequePayment = decimal.Parse(dr["ChequePayment"].ToString());
+					Details.CreditCardPayment = decimal.Parse(dr["CreditCardPayment"].ToString());
+					Details.CreditPayment = decimal.Parse(dr["CreditPayment"].ToString());
+					Details.DebitPayment = decimal.Parse(dr["DebitPayment"].ToString());
+					Details.RewardPointsPayment = decimal.Parse(dr["RewardPointsPayment"].ToString());
+					Details.RewardConvertedPayment = decimal.Parse(dr["RewardConvertedPayment"].ToString());
+					Details.BalanceAmount = decimal.Parse(dr["BalanceAmount"].ToString());
+					Details.ChangeAmount = decimal.Parse(dr["ChangeAmount"].ToString());
+					Details.DateClosed = DateTime.Parse(dr["DateClosed"].ToString());
+                    Details.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), dr["PaymentType"].ToString());
+					Details.WaiterID = Int64.Parse(dr["WaiterID"].ToString());
+                    Details.WaiterName = "" + dr["WaiterName"].ToString();
+					Details.Charge = decimal.Parse(dr["Charge"].ToString());
+					Details.ChargeAmount = decimal.Parse(dr["ChargeAmount"].ToString());
+                    Details.ChargeCode = "" + dr["ChargeCode"].ToString();
+                    Details.ChargeRemarks = "" + dr["ChargeRemarks"].ToString();
+					Details.CreditChargeAmount = decimal.Parse(dr["CreditChargeAmount"].ToString());
+                    Details.OrderType = (OrderTypes)Enum.Parse(typeof(OrderTypes), dr["OrderType"].ToString());
+                    Details.AgentPositionName = "" + dr["AgentPositionName"].ToString();
+                    Details.AgentDepartmentName = "" + dr["AgentDepartmentName"].ToString();
 					Details.isExist = true;
+                    Details.isConsignment = Convert.ToBoolean(dr["isConsignment"]);
 				}
-				myReader.Close();
 
 				return Details;
 			}
@@ -820,6 +850,27 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
+        public void UpdateisConsignment(Int64 TransactionID, bool isConsignment)
+        {
+            try
+            {
+                string SQL = "CALL procTransactionIsConsignmentUpdate(@TransactionID, @intIsConsignment);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
+                cmd.Parameters.AddWithValue("@intIsConsignment", isConsignment);
+
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 
 		#region Streams
@@ -911,6 +962,11 @@ namespace AceSoft.RetailPlus.Data
 					prmPaymentType.Value = clsSearchKeys.PaymentType.ToString("d");
 					cmd.Parameters.Add(prmPaymentType);
 				}
+                if (clsSearchKeys.isConsignmentSearch != "-1")
+                {
+                    SQL += "AND isConsignment = @isConsignment ";
+                    cmd.Parameters.AddWithValue("@isConsignment", clsSearchKeys.isConsignment ? 1 : 0);
+                }
 
 				if (SortField != string.Empty && SortField != null)
 				{

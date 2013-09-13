@@ -3352,6 +3352,7 @@ GO
 
 create procedure procProductMovementSelect(
 									IN lngProductID BIGINT, 
+									IN lngMatrixID BIGINT, 
 									IN dteStartTransactionDate DATETIME,
 									in dteEndTransactionDate DATETIME)
 BEGIN
@@ -3379,7 +3380,9 @@ BEGIN
 		SET @SQL = CONCAT(@SQL,'AND ProductID = ', lngProductID,' ');
 	END IF;
 	
+	SET @SQL = CONCAT(@SQL,'AND MatrixID = ', lngMatrixID,' ');
 	
+
 	IF (DATE_FORMAT(dteStartTransactionDate, '%Y%m%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
 		SET @SQL = CONCAT(@SQL,'AND TransactionDate >= ''', dteStartTransactionDate,''' ');
 	END IF;
@@ -5590,7 +5593,8 @@ BEGIN
 
 							,SUM(IFNULL(inv.Quantity,0)) Quantity
                             ,fnProductQuantityConvert(prd.ProductID, SUM(IFNULL(inv.Quantity,0)), prd.BaseUnitID)  ConvertedQuantity
-                            ,SUM(IFNULL(inv.QuantityIN,0)) QuantityIN
+                            ,SUM(IFNULL(inv.ReservedQuantity,0)) ReservedQuantity
+							,SUM(IFNULL(inv.QuantityIN,0)) QuantityIN
                             ,SUM(IFNULL(inv.QuantityOUT,0)) QuantityOUT
                             ,SUM(IFNULL(inv.ActualQuantity,0)) ActualQuantity
 							,IFNULL(MAX(inv.IsLock),0) IsLock

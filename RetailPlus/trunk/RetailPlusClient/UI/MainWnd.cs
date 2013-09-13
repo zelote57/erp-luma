@@ -1973,8 +1973,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				// Added order slip wherein all punch items will not change sales and inventory
 				// Override the reserved and commit if order slip
 				// a customer named ORDER SLIP should be defined in contacts
-				if (lblCustomer.Text.Trim().ToUpper() == Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
-				{ mclsTerminalDetails.ReservedAndCommit = false; }
+                //if (lblCustomer.Text.Trim().ToUpper() == Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
+                //{ mclsTerminalDetails.ReservedAndCommit = false; }
 
 				// Dec 01, 2008      Lemuel E. Aceron
 				// added the IsCashCountInitialized for 1 time 
@@ -2185,7 +2185,9 @@ namespace AceSoft.RetailPlus.Client.UI
                                 {
                                     if (Details.TransactionItemStatus != TransactionItemStatus.Return)
                                     {
-                                        decimal decProductCurrentQuantity = clsProduct.Details(Details.ProductID, Details.VariationsMatrixID, mclsTerminalDetails.BranchID).Quantity + oldQuantity;
+                                        Data.ProductDetails det = clsProduct.Details(Details.ProductID, Details.VariationsMatrixID, mclsTerminalDetails.BranchID);
+
+                                        decimal decProductCurrentQuantity = det.Quantity - det.ReservedQuantity + oldQuantity;
                                         if (decProductCurrentQuantity < Details.Quantity && mclsTerminalDetails.ShowItemMoreThanZeroQty == true)
                                         {
                                             clsProduct.CommitAndDispose();
@@ -2196,38 +2198,14 @@ namespace AceSoft.RetailPlus.Client.UI
                                 }
                             }
 
-                            if (mboIsRefund == false && mclsTerminalDetails.ReservedAndCommit == true)
+                            if (!mboIsRefund)
                             {
-                                if (Details.TransactionItemStatus == TransactionItemStatus.Return)
+                                if (Details.TransactionItemStatus != TransactionItemStatus.Return)
                                 {
                                     Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
                                     decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
 
-                                    clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_RETURN_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-                                }
-                                else
-                                {
-                                    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
-                                    decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
-
-                                    clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_CHANGE_QTY), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-                                }
-                            }
-                            else if (mboIsRefund && mclsTerminalDetails.ReservedAndCommit)
-                            {
-                                if (Details.TransactionItemStatus == TransactionItemStatus.Return)
-                                {
-                                    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
-                                    decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
-
-                                    clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_CHANGE_QTY), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-                                }
-                                else
-                                {
-                                    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
-                                    decimal decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, oldQuantity);
-
-                                    clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_RETURN_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                                    clsProduct.SubtractReservedQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_CHANGE_QTY), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
                                 }
                             }
 
@@ -2546,8 +2524,10 @@ namespace AceSoft.RetailPlus.Client.UI
 						details.TransactionItemsID = AddItemToDB(details);
 						dr["TransactionItemsID"] = details.TransactionItemsID.ToString();
 						
+                        
+                        // Sep 14, 2013: Removed if return. Return should have no effect in Reserved and Commit
 						// Added May 7, 2011 to Cater Reserved and Commit functionality    
-						ReservedAndCommitItem(details, details.TransactionItemStatus);
+						// ReservedAndCommitItem(details, details.TransactionItemStatus);
 
 						ItemDataTable.Rows.Add(dr);
 
@@ -3416,8 +3396,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					// Added May 7, 2011 to Cater Reserved and Commit functionality    
 					#region Reserved And Commit
-					if (mclsTerminalDetails.ReservedAndCommit == true)
-					{
+                    //if (mclsTerminalDetails.ReservedAndCommit == true)
+                    //{
 						System.Data.DataTable dt = (System.Data.DataTable)dgItems.DataSource;
 						for (int x = 0; x < dt.Rows.Count; x++)
 						{
@@ -3430,7 +3410,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 ReservedAndCommitItem(Details, Details.TransactionItemStatus);
                             }
 						}
-					}
+                    //}
 					#endregion
 
 					//UpdateTerminalReportDelegate updateterminalDel = new UpdateTerminalReportDelegate(UpdateTerminalReport);
@@ -4394,7 +4374,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         }
 
                         if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER &&
-                            !mboIsRefund && clsProductDetails.Quantity < decQuantity && mclsTerminalDetails.ShowItemMoreThanZeroQty)
+                            !mboIsRefund && clsProductDetails.Quantity - clsProductDetails.ReservedQuantity < decQuantity && mclsTerminalDetails.ShowItemMoreThanZeroQty)
                         {
                             clsProductPackage.CommitAndDispose();
                             MessageBox.Show("Sorry the quantity you entered is greater than the current stock. " + Environment.NewLine + "Current Stock: " + clsProductDetails.Quantity.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -4692,7 +4672,10 @@ namespace AceSoft.RetailPlus.Client.UI
 
                             // Added May 7, 2011 to Cater Reserved and Commit functionality
                             // !mclsTerminalDetails.ReservedAndCommit
-                            if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.ReservedAndCommit && !mclsTerminalDetails.IsParkingTerminal)
+                            
+                            // Sep 14, 2013: Remove the reserved and commit.
+                            //if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.ReservedAndCommit && !mclsTerminalDetails.IsParkingTerminal)
+                            if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.IsParkingTerminal)
                             {
                                 Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
 
@@ -4760,7 +4743,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                     }
                                 }
                             }
-                            else if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.ReservedAndCommit)
+                            else if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
                             {
 							    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
 							    Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
@@ -4791,6 +4774,7 @@ namespace AceSoft.RetailPlus.Client.UI
 									    decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
 
                                         clsProduct.SubtractQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + decPrice.ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                                        clsProduct.SubtractReservedQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + decPrice.ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 								    }
                                 }
 							}
@@ -7204,11 +7188,11 @@ namespace AceSoft.RetailPlus.Client.UI
 			// Sep 24, 2011      Lemuel E. Aceron
 			// Added order slip wherein all punch items will not change sales and inventory
 			// a customer named ORDER SLIP should be defined in contacts
-			if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
+            if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && Details.TransactionItemStatus !=TransactionItemStatus.Return )
 			{
 				// Added May 7, 2011 to Cater Reserved and Commit functionality
-				if (mclsTerminalDetails.ReservedAndCommit)
-				{
+                //if (mclsTerminalDetails.ReservedAndCommit)
+                //{
 					Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
                     mConnection = clsProduct.Connection; mTransaction = clsProduct.Transaction;
 
@@ -7217,63 +7201,24 @@ namespace AceSoft.RetailPlus.Client.UI
 					decimal decNewQuantity = 0;
 
 					// both refund and normal transaction
-					if (mboIsRefund && !mclsTerminalDetails.IsParkingTerminal)
+					
+                    // Sep 14, 2013: remove the reserved and commit for refund. 
+                    // refund quantity should only reflect for refund after closing of transaction.
+                    // 
+                    // return is also not applicable for reserved an commit.
+                    // return quantity should only reflect for refund after closing of transaction.
+                    if (!mboIsRefund)
 					{
-						if (Details.TransactionItemStatus == TransactionItemStatus.Void)
-						{
-							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
-
-							clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_VOID_ITEM) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-							// remove the ff codes for a change in Jul 26, 2011
-							// clsProduct.SubtractQuantity(Details.ProductID, decNewQuantity);
-							// 
-							// if (Details.VariationsMatrixID != 0)
-							//     clsProductVariationsMatrix.SubtractQuantity(Details.VariationsMatrixID, decNewQuantity);
-						}
-						else if (Details.TransactionItemStatus != TransactionItemStatus.Void)
-						{
-							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
-
-							clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_REFUND_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-							// remove the ff codes for a change in Jul 26, 2011
-							// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
-							// 
-							// if (Details.VariationsMatrixID != 0)
-							//     clsProductVariationsMatrix.AddQuantity(Details.VariationsMatrixID, decNewQuantity);
-						}
-					}
-					else if (!mboIsRefund)
-					{
-						// RETURN items
-                        if (Details.TransactionItemStatus == TransactionItemStatus.Return && !mclsTerminalDetails.IsParkingTerminal)
-						{
-							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
-
-							clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RETURN_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-							// remove the ff codes for a change in Jul 26, 2011
-							// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
-							// 
-							// if (Details.VariationsMatrixID != 0)
-							//     clsProductVariationsMatrix.AddQuantity(Details.VariationsMatrixID, decNewQuantity);
-						}
-						// RETURN items that are VOID
-                        else if (Details.TransactionItemStatus == TransactionItemStatus.Void && _previousTransactionItemStatus == TransactionItemStatus.Return && !mclsTerminalDetails.IsParkingTerminal)
-						{
-							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
-
-							clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_VOID_ITEM) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
-							// remove the ff codes for a change in Jul 26, 2011
-							// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
-							// 
-							// if (Details.VariationsMatrixID != 0)
-							//     clsProductVariationsMatrix.AddQuantity(Details.VariationsMatrixID, decNewQuantity);
-						}
+						
 						// SOLD items that are VOID
-						else if (Details.TransactionItemStatus == TransactionItemStatus.Void && _previousTransactionItemStatus != TransactionItemStatus.Return)
+						if (Details.TransactionItemStatus == TransactionItemStatus.Void && _previousTransactionItemStatus != TransactionItemStatus.Return)
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
 
-                            clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_VOID_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                            clsProduct.SubtractReservedQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_VOID_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+
+                            // Sep 14, 2013: remove
+                            // clsProduct.AddQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_VOID_ITEM), DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 							// remove the ff codes for a change in Jul 26, 2011
 							// clsProduct.AddQuantity(Details.ProductID, decNewQuantity);
 							// 
@@ -7285,9 +7230,9 @@ namespace AceSoft.RetailPlus.Client.UI
 						{
 							decNewQuantity = clsProductUnit.GetBaseUnitValue(Details.ProductID, Details.ProductUnitID, Details.Quantity * Details.PackageQuantity);
                             if (mclsTerminalDetails.IsParkingTerminal)
-							    clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.PARKING_IN) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+							    clsProduct.AddReservedQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.PARKING_IN) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
                             else
-                                clsProduct.SubtractQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
+                                clsProduct.AddReservedQuantity(Constants.TerminalBranchID, Details.ProductID, Details.VariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + Details.Price.ToString("#,##0.#0") + " Buying:" + Details.PurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 							// remove the ff codes for a change in Jul 26, 2011
 							// clsProduct.SubtractQuantity(Details.ProductID, decNewQuantity);
 							// 
@@ -7295,7 +7240,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							//     clsProductVariationsMatrix.SubtractQuantity(Details.VariationsMatrixID, decNewQuantity);
 						}
 					}
-				}
+                //}
 			}
 		}
 

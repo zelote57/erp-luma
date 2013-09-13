@@ -148,6 +148,15 @@ namespace AceSoft.RetailPlus.Reports {
         protected global::System.Web.UI.WebControls.DropDownList cboProductCode;
         
         /// <summary>
+        /// cboVariation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboVariation;
+        
+        /// <summary>
         /// txtProductCode control.
         /// </summary>
         /// <remarks>

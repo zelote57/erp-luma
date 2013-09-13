@@ -96,16 +96,20 @@
 							<asp:PlaceHolder id="holderProductCode" runat="server" Visible="false">
                             <tr>
 								<td style="PADDING-BOTTOM:2px" nowrap="nowrap">
-									<label>Product Code =</label>&nbsp;
+									<label>Product Code<label>&nbsp;
 								</td>
 								<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 								<td nowrap="nowrap"><asp:dropdownlist id="cboProductCode" CssClass="ms-short" Width="100%" runat="server" OnSelectedIndexChanged="cboProductCode_SelectedIndexChanged" AutoPostBack="True"></asp:dropdownlist>
 								</td>
 								<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-								<td nowrap="nowrap"><asp:TextBox id="txtProductCode" accesskey="C" CssClass="ms-short" runat="server" BorderStyle="Groove"></asp:TextBox>
+								<td nowrap="nowrap">
+                                    <label>Variation</label>&nbsp;
 								</td>
-								<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
-								<td nowrap="nowrap"><asp:ImageButton id="cmdProductCode" title="Search by product code" style="CURSOR: hand" accesskey="P" runat="server" ImageUrl="../../_layouts/images/SPSSearch2.gif" alt="Search by product code" border="0" OnClick="cmdProductCode_Click"></asp:ImageButton>
+                                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+                                <td nowrap="nowrap">
+                                    <asp:dropdownlist id="cboVariation" runat="server" CssClass="ms-short"></asp:dropdownlist>
+                                    <asp:TextBox id="txtProductCode" accesskey="C" CssClass="ms-short" runat="server" BorderStyle="Groove"></asp:TextBox>
+                                    <asp:ImageButton id="cmdProductCode" title="Search by product code" style="CURSOR: hand" accesskey="P" runat="server" ImageUrl="../../_layouts/images/SPSSearch2.gif" alt="Search by product code" border="0" OnClick="cmdProductCode_Click"></asp:ImageButton>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <asp:ImageButton id="imgProductHistory" runat="server" CausesValidation="false" ImageUrl="../../_layouts/images/prodhist.gif"
                                         OnClick="imgProductHistory_Click" Style="cursor: hand" ToolTip="Show product inventory history report"
@@ -119,7 +123,8 @@
                                             Visible="false" />
                                     <asp:ImageButton id="imgEditNow" runat="server" CausesValidation="false"
                                                 ImageUrl="../../_layouts/images/edit.gif" OnClick="imgEditNow_Click" Style="cursor: hand"
-                                                ToolTip="Edit this product" Visible="false" /></td>
+                                                ToolTip="Edit this product" Visible="false" />
+                                </td>
 								<td width="99%" id="align02" nowrap="nowrap" align="right" style="HEIGHT: 15px"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>
 							</tr>
@@ -162,10 +167,11 @@
 								<td nowrap="nowrap">
 									<asp:TextBox id="txtEndDate" accesskey="E" ToolTip="Double click to select date from Calendar" ondblclick="ontime(this)" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10"></asp:TextBox>
 									<asp:TextBox id="txtEndTime" accesskey="M" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="5" Width="46px">23:59</asp:TextBox>
+                                    <asp:Label id="Label3" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
+									<asp:Label id="Label1" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>
 								</td>
 								<td width="99%" id="align05" nowrap="nowrap" align="left">&nbsp;
-									<asp:Label id="Label3" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
-									<asp:Label id="Label1" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>
+									
 								</td>
 							</tr>
                             </asp:PlaceHolder>
@@ -173,7 +179,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../_layouts/images/empty.gif"></td>
+					<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td colspan="3" height="2" align="center">

@@ -193,6 +193,7 @@ namespace AceSoft.RetailPlus.Reports
 			ReportDataset rptds = new ReportDataset();
 
             long lngProductID = long.Parse(cboProductCode.SelectedItem.Value);
+            long lngMatrixID = long.Parse(cboVariation.SelectedItem.Value);
 
 			DateTime DateFrom = DateTime.MinValue;
 			try
@@ -212,7 +213,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.ProductHistoryMovement:
                     #region Product History Movement
                     StockItem clsStockItem = new StockItem();
-                    System.Data.DataTable dtProductHistoryMovement = clsStockItem.ProductMovementReport(lngProductID, DateFrom, DateTo);
+                    System.Data.DataTable dtProductHistoryMovement = clsStockItem.ProductMovementReport(lngProductID, lngMatrixID, DateFrom, DateTo);
                     clsStockItem.CommitAndDispose();
                     foreach (DataRow dr in dtProductHistoryMovement.Rows)
                     {
@@ -328,7 +329,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.ProductHistoryMovement:
                     #region Product History Movement
                     Products clsProduct = new Products();
-                    ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value));
+                    ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value), Convert.ToInt64(cboVariation.SelectedItem.Value), Constants.BRANCH_ID_MAIN);
                     clsProduct.CommitAndDispose();
 
                     paramField = Report.DataDefinition.ParameterFields["ProductCode"];
@@ -456,6 +457,10 @@ namespace AceSoft.RetailPlus.Reports
                     imgProductPriceHistory.Visible = false;
                     imgInventoryAdjustment.Visible = false;
                     imgEditNow.Visible = false;
+
+                    cboVariation.Items.Clear();
+                    { cboVariation.Items.Add(new ListItem("No Variation", "0")); }
+                    cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
                 }
                 else
                 {
@@ -464,6 +469,18 @@ namespace AceSoft.RetailPlus.Reports
                     imgInventoryAdjustment.Visible = true;
                     imgEditNow.Visible = true;
                     txtProductCode.Text = cboProductCode.SelectedItem.Text;
+
+                    long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
+
+                    ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
+                    cboVariation.DataTextField = "MatrixDescription";
+                    cboVariation.DataValueField = "MatrixID";
+                    cboVariation.DataSource = clsProductVariationsMatrix.BaseListSimpleAsDataTable(ProductID, SortField: "VariationDesc").DefaultView;
+                    cboVariation.DataBind();
+
+                    if (cboVariation.Items.Count == 0)
+                    { cboVariation.Items.Add(new ListItem("No Variation", "0")); }
+                    cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
                 }
             }
             catch { }

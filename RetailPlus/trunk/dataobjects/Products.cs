@@ -44,7 +44,8 @@ namespace AceSoft.RetailPlus.Data
 		public decimal EVAT;
 		public decimal LocalTax;
 		public decimal Quantity;
-		public string ConvertedQuantity;
+        public string ConvertedQuantity;
+        public decimal ReservedQuantity;
 		public decimal MinThreshold;
 		public decimal MaxThreshold;
 		public long RID;
@@ -241,7 +242,7 @@ namespace AceSoft.RetailPlus.Data
 		ADD_REFUND_ITEM,
 		ADD_SALES_RETURN,
 		ADD_RESERVE_AND_COMMIT_VOID_ITEM,
-		ADD_RESERVE_AND_COMMIT_CHANGE_QTY,
+		
 		ADD_PRODUCT_VARIATION_CREATION,
 		DEDUCT_PURCHASE_RETURN,
 		DEDUCT_SOLD_RETAIL,
@@ -250,6 +251,7 @@ namespace AceSoft.RetailPlus.Data
         DEDUCT_BRANCH_TRANSFER_FROM,
 		DEDUCT_STOCK_INVENTORY,
 		DEDUCT_INVENTORY_ADJUSTMENT,
+        DEDUCT_QTY_RESERVE_AND_COMMIT_CHANGE_QTY,
 		DEDUCT_QTY_RESERVE_AND_COMMIT_VOID_ITEM,
 		DEDUCT_QTY_RESERVE_AND_COMMIT_RETURN_ITEM,
 		DEDUCT_PRODUCT_VARIATION_DELETE,
@@ -1287,76 +1289,6 @@ namespace AceSoft.RetailPlus.Data
 		}
 
 		/// <summary>
-		/// Depreciated, use "public void Products.AddQuantity(long ProductID, long MatrixID, decimal Quantity, string Remarks, DateTime TransactionDate, string TransactionNo)" instead
-		/// </summary>
-		/// <param name="ProductID"></param>
-		/// <param name="Quantity"></param>
-		//public void AddQuantity(Int64 ProductID, decimal Quantity)
-		//{
-		//    try 
-		//    {
-		//        string SQL =	"UPDATE tblProducts SET " +
-		//                            "Quantity			= Quantity + @Quantity, " +
-		//                            "QuantityIN			= QuantityIN + @Quantity " +
-		//                        "WHERE ProductID	= @ProductID;";
-				  
-		//        
-				
-		//        MySqlCommand cmd = new MySqlCommand();
-		//        
-		//        
-		//        cmd.CommandType = System.Data.CommandType.Text;
-		//        cmd.CommandText = SQL;
-				
-		//        MySqlParameter prmQuantity = new MySqlParameter("@Quantity",MySqlDbType.Decimal);			
-		//        prmQuantity.Value = Quantity;
-		//        cmd.Parameters.Add(prmQuantity);
-
-		//        MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-		//        prmProductID.Value = ProductID;
-		//        cmd.Parameters.Add(prmProductID);
-
-		//        base.ExecuteNonQuery(cmd);
-
-		//        /*** 
-		//         * July 26, 2011 Remove this 
-		//         * 
-		//            //ProductComposition clsProductComposition = new ProductComposition(base.Connection, base.Transaction);
-		//            //MySqlDataReader myReader = clsProductComposition.List(ProductID, "CompositionID", SortOption.Ascending);
-		//            //while (myReader.Read())
-		//            //{
-		//            //    long compProductID = myReader.GetInt64("ProductID");
-		//            //    long compVariationMatrixID = myReader.GetInt64("VariationMatrixID");
-		//            //    decimal comQuantity = myReader.GetDecimal("Quantity");
-
-		//            //    if (compVariationMatrixID !=0)
-		//            //    {
-		//            //        ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
-		//            //        clsProductVariationsMatrix.AddQuantity(compVariationMatrixID, Quantity * comQuantity);
-		//            //    }
-
-		//            //    AddQuantity(compProductID, Quantity * comQuantity);
-		//            //}
-		//            //myReader.Close();
-		//         * **/
-		//    }
-
-		//    catch (Exception ex)
-		//    {
-		//        
-		//        
-		//        {
-		//            
-		//            
-		//            
-		//            
-		//        }
-
-		//        throw base.ThrowException(ex);
-		//    }	
-		//}
-
-		/// <summary>
 		/// Jul 26, 2011: Lemuel E. Aceron
 		/// Subtract the quantity from Products and tblProductBaseVariationsMatrix then save to tblProductMovement for historical record
 		/// </summary>
@@ -1397,73 +1329,66 @@ namespace AceSoft.RetailPlus.Data
 			return boRetValue;
 		}
 
-		/// <summary>
-		/// Depreciated, use "public void Products.SubtractQuantity(long ProductID, long MatrixID, decimal Quantity, string Remarks, DateTime TransactionDate, string TransactionNo, string CreatedBy)" instead
-		/// </summary>
-		/// <param name="ProductID"></param>
-		/// <param name="Quantity"></param>
-		//public void SubtractQuantity(Int64 ProductID, decimal Quantity)
-		//{
-		//    try 
-		//    {
-		//        string SQL =	"UPDATE tblProducts SET " +
-		//                            "Quantity			= Quantity - @Quantity, " +
-		//                            "ActualQuantity		= ActualQuantity - @Quantity, " +
-		//                            "QuantityOUT		= QuantityOUT + @Quantity " +
-		//                        "WHERE ProductID	= @ProductID;";
-				  
-		//        
-				
-		//        MySqlCommand cmd = new MySqlCommand();
-		//        
-		//        
-		//        cmd.CommandType = System.Data.CommandType.Text;
-		//        cmd.CommandText = SQL;
-				
-		//        MySqlParameter prmQuantity = new MySqlParameter("@Quantity",MySqlDbType.Decimal);			
-		//        prmQuantity.Value = Quantity;
-		//        cmd.Parameters.Add(prmQuantity);
+        public bool AddReservedQuantity(int BranchID, long ProductID, long MatrixID, decimal Quantity, string Remarks, DateTime TransactionDate, string TransactionNo, string CreatedBy)
+        {
+            bool boRetValue = false;
+            try
+            {
+                string SQL = "CALL procProductAddReservedQuantity(@intBranchID, @lngProductID, @lngMatrixID, @decQuantity, @strRemarks, @dteTransactionDate, @strTransactionNo, @strCreatedBy)";
 
-		//        MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-		//        prmProductID.Value = ProductID;
-		//        cmd.Parameters.Add(prmProductID);
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
 
-		//        base.ExecuteNonQuery(cmd);
+                cmd.Parameters.AddWithValue("@intBranchID", BranchID);
+                cmd.Parameters.AddWithValue("@lngProductID", ProductID);
+                cmd.Parameters.AddWithValue("@lngMatrixID", MatrixID);
+                cmd.Parameters.AddWithValue("@decQuantity", Quantity);
+                cmd.Parameters.AddWithValue("@strRemarks", Remarks);
+                cmd.Parameters.AddWithValue("@dteTransactionDate", TransactionDate);
+                cmd.Parameters.AddWithValue("@strTransactionNo", TransactionNo);
+                cmd.Parameters.AddWithValue("@strCreatedBy", CreatedBy);
 
-		//        ProductComposition clsProductComposition = new ProductComposition(base.Connection, base.Transaction);
-		//        MySqlDataReader myReader = clsProductComposition.List(ProductID, "CompositionID", SortOption.Ascending);
-		//        while (myReader.Read())
-		//        {
-		//            long compProductID = myReader.GetInt64("ProductID");
-		//            long compVariationMatrixID = myReader.GetInt64("VariationMatrixID");
-		//            decimal comQuantity = myReader.GetDecimal("Quantity");
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
 
-		//            if (compVariationMatrixID !=0)
-		//            {
-		//                ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
-		//                clsProductVariationsMatrix.SubtractQuantity(compVariationMatrixID, Quantity * comQuantity);
-		//            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
 
-		//            SubtractQuantity(compProductID, Quantity * comQuantity);
-		//        }
-		//        myReader.Close();
-		//    }
+            return boRetValue;
+        }
+        public bool SubtractReservedQuantity(int BranchID, long ProductID, long MatrixID, decimal Quantity, string Remarks, DateTime TransactionDate, string TransactionNo, string CreatedBy)
+        {
+            bool boRetValue = false;
+            try
+            {
+                string SQL = "CALL procProductSubtractReservedQuantity(@intBranchID, @lngProductID, @lngMatrixID, @decQuantity, @strRemarks, @dteTransactionDate, @strTransactionNo, @strCreatedBy)";
 
-		//    catch (Exception ex)
-		//    {
-		//        
-		//        
-		//        {
-		//            
-		//            
-		//            
-		//            
-		//        }
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
 
-		//        throw base.ThrowException(ex);
-		//    }	
-		//}
+                cmd.Parameters.AddWithValue("@intBranchID", BranchID);
+                cmd.Parameters.AddWithValue("@lngProductID", ProductID);
+                cmd.Parameters.AddWithValue("@lngMatrixID", MatrixID);
+                cmd.Parameters.AddWithValue("@decQuantity", Quantity);
+                cmd.Parameters.AddWithValue("@strRemarks", Remarks);
+                cmd.Parameters.AddWithValue("@dteTransactionDate", TransactionDate);
+                cmd.Parameters.AddWithValue("@strTransactionNo", TransactionNo);
+                cmd.Parameters.AddWithValue("@strCreatedBy", CreatedBy);
 
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+
+            return boRetValue;
+        }
 
 		public bool AddActualQuantity(int BranchID, string Barcode, decimal ActualQuantity)
 		{
@@ -2589,84 +2514,85 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-		private ProductDetails SetDetails(MySqlDataReader myReader)
-		{
-			try
-			{
-				ProductDetails Details = new ProductDetails();
-				Details.ProductID = 0;
+        //private ProductDetails SetDetails(MySqlDataReader myReader)
+        //{
+        //    try
+        //    {
+        //        ProductDetails Details = new ProductDetails();
+        //        Details.ProductID = 0;
 
-				while (myReader.Read())
-				{
-					Details.ProductID = myReader.GetInt64("ProductID");
-					Details.ProductCode = "" + myReader["ProductCode"].ToString();
-					Details.BarCode = "" + myReader["BarCode"].ToString();
-					Details.BarCode2 = "" + myReader["BarCode2"].ToString();
-					Details.BarCode3 = "" + myReader["BarCode3"].ToString();
-					Details.ProductDesc = "" + myReader["ProductDesc"].ToString();
-					Details.ProductGroupID = myReader.GetInt64("ProductGroupID");
-					Details.ProductGroupCode = "" + myReader["ProductGroupCode"].ToString();
-					Details.ProductGroupName = "" + myReader["ProductGroupName"].ToString();
-					Details.ProductSubGroupID = myReader.GetInt64("ProductSubGroupID");
-					Details.ProductSubGroupCode = "" + myReader["ProductSubGroupCode"].ToString();
-					Details.ProductSubGroupName = "" + myReader["ProductSubGroupName"].ToString();
-					Details.BaseUnitID = myReader.GetInt32("BaseUnitID");
-					Details.BaseUnitCode = "" + myReader["UnitCode"].ToString();
-					Details.BaseUnitName = "" + myReader["UnitName"].ToString();
-					Details.DateCreated = myReader.GetDateTime("DateCreated");
-					Details.Deleted = myReader.GetBoolean("Deleted");
-					Details.Active = myReader.GetBoolean("Active");
-					Details.Price = myReader.GetDecimal("Price");
-					Details.WSPrice = myReader.GetDecimal("WSPrice");
-					Details.PurchasePrice = myReader.GetDecimal("PurchasePrice");
-					Details.PercentageCommision = myReader.GetDecimal("PercentageCommision");
-					Details.IncludeInSubtotalDiscount = myReader.GetBoolean("IncludeInSubtotalDiscount");
-					Details.VAT = myReader.GetDecimal("VAT");
-					Details.EVAT = myReader.GetDecimal("EVAT");
-					Details.LocalTax = myReader.GetDecimal("LocalTax");
-					Details.Quantity = myReader.GetDecimal("Quantity");
-					Details.ConvertedQuantity = "" + myReader["ConvertedQuantity"].ToString();
-                    Details.IsLock = myReader.GetBoolean("IsLock");
-					Details.MinThreshold = myReader.GetDecimal("MinThreshold");
-					Details.MaxThreshold = myReader.GetDecimal("MaxThreshold");
-					Details.RID = myReader.GetInt64("RID");
-					Details.SupplierID = myReader.GetInt64("SupplierID");
-					Details.SupplierCode = "" + myReader["SupplierCode"].ToString();
-					Details.SupplierName = "" + myReader["SupplierName"].ToString();
-                    Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), myReader.GetString("OrderSlipPrinter"));
+        //        while (myReader.Read())
+        //        {
+        //            Details.ProductID = myReader.GetInt64("ProductID");
+        //            Details.ProductCode = "" + myReader["ProductCode"].ToString();
+        //            Details.BarCode = "" + myReader["BarCode"].ToString();
+        //            Details.BarCode2 = "" + myReader["BarCode2"].ToString();
+        //            Details.BarCode3 = "" + myReader["BarCode3"].ToString();
+        //            Details.ProductDesc = "" + myReader["ProductDesc"].ToString();
+        //            Details.ProductGroupID = myReader.GetInt64("ProductGroupID");
+        //            Details.ProductGroupCode = "" + myReader["ProductGroupCode"].ToString();
+        //            Details.ProductGroupName = "" + myReader["ProductGroupName"].ToString();
+        //            Details.ProductSubGroupID = myReader.GetInt64("ProductSubGroupID");
+        //            Details.ProductSubGroupCode = "" + myReader["ProductSubGroupCode"].ToString();
+        //            Details.ProductSubGroupName = "" + myReader["ProductSubGroupName"].ToString();
+        //            Details.BaseUnitID = myReader.GetInt32("BaseUnitID");
+        //            Details.BaseUnitCode = "" + myReader["UnitCode"].ToString();
+        //            Details.BaseUnitName = "" + myReader["UnitName"].ToString();
+        //            Details.DateCreated = myReader.GetDateTime("DateCreated");
+        //            Details.Deleted = myReader.GetBoolean("Deleted");
+        //            Details.Active = myReader.GetBoolean("Active");
+        //            Details.Price = myReader.GetDecimal("Price");
+        //            Details.WSPrice = myReader.GetDecimal("WSPrice");
+        //            Details.PurchasePrice = myReader.GetDecimal("PurchasePrice");
+        //            Details.PercentageCommision = myReader.GetDecimal("PercentageCommision");
+        //            Details.IncludeInSubtotalDiscount = myReader.GetBoolean("IncludeInSubtotalDiscount");
+        //            Details.VAT = myReader.GetDecimal("VAT");
+        //            Details.EVAT = myReader.GetDecimal("EVAT");
+        //            Details.LocalTax = myReader.GetDecimal("LocalTax");
+        //            Details.Quantity = myReader.GetDecimal("Quantity");
+        //            Details.ConvertedQuantity = "" + myReader["ConvertedQuantity"].ToString();
+        //            Details.ReservedQuantity = myReader.GetDecimal("ReservedQuantity");
+        //            Details.IsLock = myReader.GetBoolean("IsLock");
+        //            Details.MinThreshold = myReader.GetDecimal("MinThreshold");
+        //            Details.MaxThreshold = myReader.GetDecimal("MaxThreshold");
+        //            Details.RID = myReader.GetInt64("RID");
+        //            Details.SupplierID = myReader.GetInt64("SupplierID");
+        //            Details.SupplierCode = "" + myReader["SupplierCode"].ToString();
+        //            Details.SupplierName = "" + myReader["SupplierName"].ToString();
+        //            Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), myReader.GetString("OrderSlipPrinter"));
 
-					/*** Added for Financial Information  ***/
-					/*** January 12, 2009 ***/
-					Details.ChartOfAccountIDPurchase = myReader.GetInt32("ChartOfAccountIDPurchase");
-					Details.ChartOfAccountIDSold = myReader.GetInt32("ChartOfAccountIDSold");
-					Details.ChartOfAccountIDInventory = myReader.GetInt32("ChartOfAccountIDInventory");
-					Details.ChartOfAccountIDTaxPurchase = myReader.GetInt32("ChartOfAccountIDTaxPurchase");
-					Details.ChartOfAccountIDTaxSold = myReader.GetInt32("ChartOfAccountIDTaxSold");
+        //            /*** Added for Financial Information  ***/
+        //            /*** January 12, 2009 ***/
+        //            Details.ChartOfAccountIDPurchase = myReader.GetInt32("ChartOfAccountIDPurchase");
+        //            Details.ChartOfAccountIDSold = myReader.GetInt32("ChartOfAccountIDSold");
+        //            Details.ChartOfAccountIDInventory = myReader.GetInt32("ChartOfAccountIDInventory");
+        //            Details.ChartOfAccountIDTaxPurchase = myReader.GetInt32("ChartOfAccountIDTaxPurchase");
+        //            Details.ChartOfAccountIDTaxSold = myReader.GetInt32("ChartOfAccountIDTaxSold");
 
-					Details.IsItemSold = myReader.GetBoolean("IsItemSold");
-					Details.WillPrintProductComposition = myReader.GetBoolean("WillPrintProductComposition");
+        //            Details.IsItemSold = myReader.GetBoolean("IsItemSold");
+        //            Details.WillPrintProductComposition = myReader.GetBoolean("WillPrintProductComposition");
 
-					/*** Inventory Tracking ***/
-					/*** May 10, 2010 ***/
-					Details.QuantityIN = myReader.GetDecimal("QuantityIN");
-					Details.QuantityOUT = myReader.GetDecimal("QuantityOUT");
+        //            /*** Inventory Tracking ***/
+        //            /*** May 10, 2010 ***/
+        //            Details.QuantityIN = myReader.GetDecimal("QuantityIN");
+        //            Details.QuantityOUT = myReader.GetDecimal("QuantityOUT");
 
-					Details.ActualQuantity = myReader.GetDecimal("ActualQuantity");
+        //            Details.ActualQuantity = myReader.GetDecimal("ActualQuantity");
 
-					Details.RewardPoints = myReader.GetDecimal("RewardPoints");
+        //            Details.RewardPoints = myReader.GetDecimal("RewardPoints");
 
-                    Details.PackageID = myReader.GetInt64("PackageID");
-				}
-                myReader.Close();
+        //            Details.PackageID = myReader.GetInt64("PackageID");
+        //        }
+        //        myReader.Close();
 
-				return Details;
-			}
+        //        return Details;
+        //    }
 
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}
-		}
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
         private ProductDetails SetDetails(System.Data.DataTable dt)
         {
             try
@@ -2705,6 +2631,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.LocalTax = Decimal.Parse(dr["LocalTax"].ToString());
                     Details.Quantity = Decimal.Parse(dr["Quantity"].ToString());
                     Details.ConvertedQuantity = dr["ConvertedQuantity"].ToString();
+                    Details.ReservedQuantity = Decimal.Parse(dr["ReservedQuantity"].ToString());
                     Details.IsLock = Convert.ToBoolean(int.Parse(dr["IsLock"].ToString()));
                     Details.MinThreshold = Decimal.Parse(dr["MinThreshold"].ToString());
                     Details.MaxThreshold = Decimal.Parse(dr["MaxThreshold"].ToString());
@@ -4625,7 +4552,7 @@ namespace AceSoft.RetailPlus.Data
 				case PRODUCT_INVENTORY_MOVEMENT.ADD_REFUND_ITEM: stRetValue = "REFUND ITEM"; break;
 				case PRODUCT_INVENTORY_MOVEMENT.ADD_SALES_RETURN: stRetValue = "SALES RETURN"; break;
 				case PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_VOID_ITEM: stRetValue = "RESERVED AND COMMIT VOID ITEM"; break;
-				case PRODUCT_INVENTORY_MOVEMENT.ADD_RESERVE_AND_COMMIT_CHANGE_QTY: stRetValue = "RESERVED AND COMMIT CHANGE QTY"; break;
+				
 				case PRODUCT_INVENTORY_MOVEMENT.ADD_PRODUCT_VARIATION_CREATION: stRetValue = "SYSTEM AUTO ADD DURING VARIATION CREATION"; break;
 				case PRODUCT_INVENTORY_MOVEMENT.DEDUCT_PURCHASE_RETURN: stRetValue = "PURCHASE RETURN"; break;
 				case PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL: stRetValue = "SOLD AS RETAIL"; break;
@@ -4634,6 +4561,7 @@ namespace AceSoft.RetailPlus.Data
                 case PRODUCT_INVENTORY_MOVEMENT.DEDUCT_BRANCH_TRANSFER_FROM: stRetValue = "BRANCH TRANSFER FROM"; break;
 				case PRODUCT_INVENTORY_MOVEMENT.DEDUCT_STOCK_INVENTORY: stRetValue = "STOCK OUT"; break;
 				case PRODUCT_INVENTORY_MOVEMENT.DEDUCT_INVENTORY_ADJUSTMENT: stRetValue = "DEDUCT INVENTORY_ADJUSTMENT"; break;
+                case PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_CHANGE_QTY: stRetValue = "RESERVED AND COMMIT CHANGE QTY"; break;
 				case PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_VOID_ITEM: stRetValue = "RESERVED AND COMMIT VOID ITEM REFUND"; break;
 				case PRODUCT_INVENTORY_MOVEMENT.DEDUCT_QTY_RESERVE_AND_COMMIT_RETURN_ITEM: stRetValue = "RESERVED AND COMMIT RETURN ITEM"; break;
 				case PRODUCT_INVENTORY_MOVEMENT.DEDUCT_PRODUCT_VARIATION_DELETE: stRetValue = "DELETE PRODUCT VARIATION"; break;

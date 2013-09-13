@@ -60,8 +60,8 @@ BEGIN
 	CALL procsysAuditInsert(dteProcessDate, 'SYSTEM', 'sysProductInventorySnapshot: DAILY INV START', 'localhost', 'Start processing daily inventory');
 
 	INSERT INTO tblProductInventoryDaily (
-					 BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,IsLock ,DateCreated)
-			SELECT   BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,IsLock , dteProcessDate FROM tblProductInventory;
+					 BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,ReservedQuantity ,IsLock ,DateCreated)
+			SELECT   BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,ReservedQuantity ,IsLock , dteProcessDate FROM tblProductInventory;
 
 	CALL procsysAuditInsert(NOW(), 'SYSTEM', 'sysProductInventorySnapshot: DAILY INV FINISH', 'localhost', 'Finish processing daily inventory');
 
@@ -71,8 +71,8 @@ BEGIN
 	DELETE FROM tblProductInventoryMonthly WHERE DateMonth = DATE_FORMAT(dteProcessDate, '%Y-%m');
 
 	INSERT INTO tblProductInventoryMonthly (
-				BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,IsLock ,DateMonth ,DateCreated)
-	SELECT   BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,IsLock ,DATE_FORMAT(dteProcessDate, '%Y-%m') ,dteProcessDate FROM tblProductInventory;
+				BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,ReservedQuantity ,IsLock ,DateMonth ,DateCreated)
+		SELECT  BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,ReservedQuantity ,IsLock ,DATE_FORMAT(dteProcessDate, '%Y-%m') ,dteProcessDate FROM tblProductInventory;
 	
 	CALL procsysAuditInsert(NOW(), 'SYSTEM', 'sysProductInventorySnapshot: MONTHLY INV FINISH', 'localhost', 'Start processing monthly inventory');	
 END;

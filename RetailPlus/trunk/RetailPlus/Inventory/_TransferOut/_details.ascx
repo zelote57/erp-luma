@@ -163,7 +163,7 @@
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<td><asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0" OnItemDataBound="lstItem_ItemDataBound">
+		<td><asp:datalist id="lstItem" runat="server" Width="100%" CellPadding="0" ShowFooter="false" OnItemDataBound="lstItem_ItemDataBound">
 				<HeaderTemplate>
 					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						<colgroup>
@@ -188,11 +188,25 @@
 							<th class="ms-vh2" style="padding-bottom:4px; padding-top:4px; text-align:right"><asp:hyperlink id="SortByAmount" runat="server">Total Cost</asp:hyperlink></th>
 							<th class="ms-vh2" style="padding-bottom:4px; padding-top:4px;"></th>
 						</tr>
+                    </table>
 				</HeaderTemplate>
 				<ItemTemplate>
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
+						<colgroup>
+							<col width="10">
+							<col width="20%">
+							<col width="20%">
+							<col width="12%">
+							<col width="12%">
+							<col width="12%">
+							<col width="12%">
+							<col width="12%">
+							<col width="10">
+						</colgroup>
 						<tr onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 							<td class="ms-vb-user">
 								<input type="checkbox" id="chkList" runat="server" name="chkList" visible="false" />
+                                <asp:Label id="lblTransferOutItemReceivedStatus" CssClass="ms-vh2" runat="server" text="0" visible="false"></asp:Label>
 							</td>
 							<td class="ms-vb-user">
 								<asp:HyperLink ID="lnkDescription" Runat="server" Target="_blank"></asp:HyperLink>
@@ -287,6 +301,7 @@
 							</td>
 							<td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 						</tr>
+                    </table>
 				</ItemTemplate>
                 <FooterTemplate>
                     </table>

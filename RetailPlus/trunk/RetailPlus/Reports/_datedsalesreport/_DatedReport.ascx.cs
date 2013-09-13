@@ -50,6 +50,7 @@ namespace AceSoft.RetailPlus.Reports
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactions, ReportTypes.SalesTransactions));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomer, ReportTypes.SalesTransactionPerCustomer));
+            cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerWithCheque, ReportTypes.SalesTransactionPerCustomerWithCheque));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCashier, ReportTypes.SalesTransactionPerCashier));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCashierPerCustomer, ReportTypes.SalesTransactionPerCashierPerCustomer));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerTerminal, ReportTypes.SalesTransactionPerTerminal));
@@ -72,6 +73,11 @@ namespace AceSoft.RetailPlus.Reports
             cboReportType.Items.Add(new ListItem(ReportTypes.Disburse, ReportTypes.Disburse));
             cboReportType.Items.Add(new ListItem(ReportTypes.RecieveOnAccount, ReportTypes.RecieveOnAccount));
 			cboReportType.SelectedIndex = 0;
+
+            cboConsignment.Items.Clear();
+            cboConsignment.Items.Add(new ListItem("Both", "-1"));
+            cboConsignment.Items.Add(new ListItem("Yes", true.ToString()));
+            cboConsignment.Items.Add(new ListItem("No", false.ToString()));
 
 			cboTransactionStatus.Items.Clear();
 			foreach(string status in Enum.GetNames(typeof(TransactionStatus)))
@@ -179,6 +185,9 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                 case ReportTypes.SalesTransactionPerCustomer:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerCustomer.rpt"));
+                    break;
+                case ReportTypes.SalesTransactionPerCustomerWithCheque:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerCustomerWithCheque.rpt"));
                     break;
                 case ReportTypes.SalesTransactionPerCashier:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerCashier.rpt"));
@@ -338,6 +347,12 @@ namespace AceSoft.RetailPlus.Reports
             clsSearchKey.TransactionStatus = Status;
             clsSearchKey.PaymentType = PaymentType;
 
+            clsSearchKey.isConsignmentSearch = cboConsignment.SelectedItem.Value;
+            if (clsSearchKey.isConsignmentSearch != "-1")
+            {
+                clsSearchKey.isConsignment = bool.Parse(cboConsignment.SelectedItem.Value);
+            }
+
             bool boWithTrustFund = true;
 
 			string strReportType = cboReportType.SelectedValue;
@@ -422,6 +437,7 @@ namespace AceSoft.RetailPlus.Reports
                     #endregion
 
                 case ReportTypes.SalesTransactionPerCustomer:
+                case ReportTypes.SalesTransactionPerCustomerWithCheque:
                 case ReportTypes.SalesTransactionPerCashierPerCustomer:
                     #region Sales Transaction Per Customer
                     clsSalesTransactions = new SalesTransactions();
@@ -867,6 +883,7 @@ namespace AceSoft.RetailPlus.Reports
 
                 case ReportTypes.SalesTransactions:
                 case ReportTypes.SalesTransactionPerCustomer:
+                case ReportTypes.SalesTransactionPerCustomerWithCheque:
                 case ReportTypes.SalesTransactionPerCashier:
                 case ReportTypes.DailySalesTransaction:
                 case ReportTypes.WeeklySalesTransaction:

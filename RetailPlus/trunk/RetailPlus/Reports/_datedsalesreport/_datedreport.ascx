@@ -139,11 +139,11 @@
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
 					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
-						                
+						                <label>Filter if Consignment</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 					                <td>
-						                
+						                <asp:DropDownList id="cboConsignment" runat="server" CssClass="ms-short"></asp:DropDownList>
 					                </td>
 					                <td width="99%" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					                </td>

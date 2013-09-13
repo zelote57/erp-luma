@@ -124,6 +124,10 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
                 Label lblRemarks = (Label)e.Item.FindControl("lblRemarks");
                 lblRemarks.Text = dr["Remarks"].ToString();
 
+                Label lblTransferOutItemReceivedStatus = (Label)e.Item.FindControl("lblTransferOutItemReceivedStatus");
+                TransferOutItemReceivedStatus clsTransferOutItemReceivedStatus = (TransferOutItemReceivedStatus)Enum.Parse(typeof(TransferOutItemReceivedStatus), dr["TransferOutItemReceivedStatus"].ToString());
+                lblTransferOutItemReceivedStatus.Text = clsTransferOutItemReceivedStatus.ToString("d");
+
                 //For anchor
                 HtmlGenericControl divExpCollAsst = (HtmlGenericControl)e.Item.FindControl("divExpCollAsst");
 
@@ -228,7 +232,23 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsTransferOutItem.List(Convert.ToInt64(lblTransferOutID.Text), "TransferOutItemID",SortOption.Ascending)).DefaultView;
 			lstItem.DataBind();
 			clsTransferOutItem.CommitAndDispose();
+            lstItemFixCssClass();
 		}
+        private void lstItemFixCssClass()
+        {
+            foreach (DataListItem item in lstItem.Items)
+            {
+                Label lblitemTransferOutItemReceivedStatus = (Label)item.FindControl("lblTransferOutItemReceivedStatus");
+                TransferOutItemReceivedStatus itemTransferOutItemReceivedStatus = (TransferOutItemReceivedStatus)Enum.Parse(typeof(TransferOutItemReceivedStatus), lblitemTransferOutItemReceivedStatus.Text);
+                if (itemTransferOutItemReceivedStatus == TransferOutItemReceivedStatus.Received)
+                    item.CssClass = "ms-item-received";
+                else if (item.ItemType == ListItemType.Item)
+                    item.CssClass = "";
+                else if (item.ItemType == ListItemType.AlternatingItem)
+                    item.CssClass = "ms-alternating";
+
+            }
+        }
         private void PrintTransferOut()
         {
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("TransferOutreport", Session.SessionID) + "&TransferOutid=" + Common.Encrypt(lblTransferOutID.Text, Session.SessionID);

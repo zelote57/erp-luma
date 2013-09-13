@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RetailPlus.Reports._customercredit {
+namespace RetailPlus.Reports._datedsalesreport {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace RetailPlus.Reports._customercredit {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class _CustomerCreditBill : ReportClass {
+    public class _DatedReportSalesTransactionPerCustomerWithCheque : ReportClass {
         
-        public _CustomerCreditBill() {
+        public _DatedReportSalesTransactionPerCustomerWithCheque() {
         }
         
         public override string ResourceName {
             get {
-                return "_CustomerCreditBill.rpt";
+                return "_DatedReportSalesTransactionPerCustomerWithCheque.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,8 @@ namespace RetailPlus.Reports._customercredit {
         
         public override string FullResourceName {
             get {
-                return "RetailPlus.Reports._customercredit._CustomerCreditBill.rpt";
+                return "RetailPlus.Reports._datedsalesreport._DatedReportSalesTransactionPerCustomerWithC" +
+                    "heque.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +67,7 @@ namespace RetailPlus.Reports._customercredit {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section7 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section9 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +75,7 @@ namespace RetailPlus.Reports._customercredit {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section6 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,7 +83,7 @@ namespace RetailPlus.Reports._customercredit {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section6 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -90,7 +91,7 @@ namespace RetailPlus.Reports._customercredit {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section7 {
             get {
                 return this.ReportDefinition.Sections[5];
             }
@@ -130,7 +131,7 @@ namespace RetailPlus.Reports._customercredit {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_CreditPurcStartDateToProcess {
+        public CrystalDecisions.Shared.IParameterField Parameter_StartTransactionDate {
             get {
                 return this.DataDefinition.ParameterFields[2];
             }
@@ -138,25 +139,17 @@ namespace RetailPlus.Reports._customercredit {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_CreditPurcEndDateToProcess {
+        public CrystalDecisions.Shared.IParameterField Parameter_EndTransactionDate {
             get {
                 return this.DataDefinition.ParameterFields[3];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_CreditCutOffDate {
-            get {
-                return this.DataDefinition.ParameterFields[4];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class Cached_CustomerCreditBill : Component, ICachedReport {
+    public class Cached_DatedReportSalesTransactionPerCustomerWithCheque : Component, ICachedReport {
         
-        public Cached_CustomerCreditBill() {
+        public Cached_DatedReportSalesTransactionPerCustomerWithCheque() {
         }
         
         [Browsable(false)]
@@ -193,7 +186,7 @@ namespace RetailPlus.Reports._customercredit {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            _CustomerCreditBill rpt = new _CustomerCreditBill();
+            _DatedReportSalesTransactionPerCustomerWithCheque rpt = new _DatedReportSalesTransactionPerCustomerWithCheque();
             rpt.Site = this.Site;
             return rpt;
         }

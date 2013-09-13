@@ -190,6 +190,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 
             ComputeItemAmount();
             cboVariation_SelectedIndexChanged(null, null);
+            lstItemFixCssClass();
 
             //if (ProductID != 0)
             //{
@@ -611,7 +612,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             }
             clsProductPackage.CommitAndDispose();
 
-            
             txtPrice.Text = clsDetails.PurchasePrice.ToString("#####0.##0");
             txtSellingPrice.Text = clsDetails.Price.ToString("#####0.##0");
             txtOldSellingPrice.Text = clsDetails.Price.ToString("#####0.##0");
@@ -625,6 +625,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             txtLocalTax.Text = clsDetails.LocalTax.ToString("#,##0.##0");
 
             ComputeItemAmount();
+            lstItemFixCssClass();
         }
         protected void imgImport_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
@@ -1065,6 +1066,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			lstItem.DataSource = clsPOItem.ListAsDataTable(Convert.ToInt64(lblPOID.Text)).DefaultView;
 			lstItem.DataBind();
 			clsPOItem.CommitAndDispose();
+            lstItemFixCssClass();
 		}
 		private void IssueGRN()
 		{

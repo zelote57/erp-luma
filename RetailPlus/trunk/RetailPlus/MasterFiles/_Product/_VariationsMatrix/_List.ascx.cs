@@ -230,7 +230,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 
 		private void LoadList()
 		{	
-			string SortField = "mtrx.Description";
+			string SortField = "prd.Description";
 			if (Request.QueryString["sortfield"]!=null)
 			{	SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID);	}
 			

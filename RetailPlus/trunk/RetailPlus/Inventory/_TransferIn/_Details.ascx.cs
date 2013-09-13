@@ -122,6 +122,10 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                 Label lblRemarks = (Label)e.Item.FindControl("lblRemarks");
                 lblRemarks.Text = dr["Remarks"].ToString();
 
+                Label lblTransferInItemReceivedStatus = (Label)e.Item.FindControl("lblTransferInItemReceivedStatus");
+                TransferInItemReceivedStatus clsTransferInItemReceivedStatus = (TransferInItemReceivedStatus)Enum.Parse(typeof(TransferInItemReceivedStatus), dr["TransferInItemReceivedStatus"].ToString());
+                lblTransferInItemReceivedStatus.Text = clsTransferInItemReceivedStatus.ToString("d");
+
                 //For anchor
                 HtmlGenericControl divExpCollAsst = (HtmlGenericControl)e.Item.FindControl("divExpCollAsst");
 
@@ -221,7 +225,23 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
 			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsTransferInItem.List(Convert.ToInt64(lblTransferInID.Text), "TransferInItemID",SortOption.Ascending)).DefaultView;
 			lstItem.DataBind();
 			clsTransferInItem.CommitAndDispose();
+            lstItemFixCssClass();
 		}
+        private void lstItemFixCssClass()
+        {
+            foreach (DataListItem item in lstItem.Items)
+            {
+                Label lblitemTransferInItemReceivedStatus = (Label)item.FindControl("lblTransferInItemReceivedStatus");
+                TransferInItemReceivedStatus itemTransferInItemReceivedStatus = (TransferInItemReceivedStatus)Enum.Parse(typeof(TransferInItemReceivedStatus), lblitemTransferInItemReceivedStatus.Text);
+                if (itemTransferInItemReceivedStatus == TransferInItemReceivedStatus.Received)
+                    item.CssClass = "ms-item-received";
+                else if (item.ItemType == ListItemType.Item)
+                    item.CssClass = "";
+                else if (item.ItemType == ListItemType.AlternatingItem)
+                    item.CssClass = "ms-alternating";
+
+            }
+        }
 
         private void PrintTransferIn()
         {

@@ -4,59 +4,59 @@
 	<tr>
 		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
-	<TR>
+	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<TD>
+		<td>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
-				<TR>
+				<tr>
 					<td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSave" ToolTip="Add New Charge Type" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Add New Charge Type" border="0" width="16" height="16" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSave" ToolTip="Add New Charge Type" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Add New Charge Type" border="0" width="16" height="16" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
 								</td>
-								<td noWrap><asp:linkbutton id="cmdSave" ToolTip="Add New Charge Type" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSave_Click">Save and New</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdSave" ToolTip="Add New Charge Type" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSave_Click">Save and New</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<TD class="ms-separator">|</TD>
+					<td class="ms-separator">|</td>
 					<td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveBack" ToolTip="Add New Charge Type" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Add New Charge Type" border="0" width="16" height="16" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveBack" ToolTip="Add New Charge Type" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Add New Charge Type" border="0" width="16" height="16" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
 								</td>
-								<td noWrap><asp:linkbutton id="cmdSaveBack" ToolTip="Add New Charge Type" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdSaveBack" ToolTip="Add New Charge Type" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<TD class="ms-separator">|</TD>
+					<td class="ms-separator">|</td>
 					<td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Cancel Adding New Charge Type" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Cancel Adding New Charge Type" border="0" width="16" height="16" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdCancel" title="Cancel Adding New Charge Type" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Cancel Adding New Charge Type" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Cancel Adding New Charge Type" border="0" width="16" height="16" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdCancel" title="Cancel Adding New Charge Type" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
 					<td class="ms-toolbar" id="align02" noWrap align="right" width="99%"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>
-				</TR>
-			</TABLE>
-			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label></TD>
+				</tr>
+			</table>
+			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label></td>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-	</TR>
+	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<TD>
+		<td>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 			    <tr>
 					<td class="ms-descriptiontext" style="PADDING-BOTTOM: 4px; PADDING-TOP: 8px" colSpan="3"><font color="red">*</font>
 						Indicates a required field
 					</td>
 				</tr>
-				<TR>
-					<TD class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px" colSpan="3">
-						<asp:ValidationSummary id="ValidationSummary2" runat="server" CssClass="ms-error" ForeColor=" "></asp:ValidationSummary></TD>
-				</TR>
+				<tr>
+					<td class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px" colSpan="3">
+						<asp:ValidationSummary id="ValidationSummary2" runat="server" CssClass="ms-error" ForeColor=" "></asp:ValidationSummary></td>
+				</tr>
 				<tr>
 					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
@@ -90,7 +90,7 @@
                                     <asp:requiredfieldvalidator id="Requiredfieldvalidator3" CssClass="ms-error" runat="server" ControlToValidate="txtChargeAmount" Display="Dynamic" ErrorMessage="'Charge amount' must not be left blank." ForeColor=" "></asp:requiredfieldvalidator>
                                     <asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server" ControlToValidate="txtChargeAmount"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Charge Amount' must be in number, max of 3 decimal places."
-                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                                ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
@@ -108,7 +108,7 @@
 					<td class="ms-sectionline" colSpan="3" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 			</table>
-		</TD>
+		</td>
 	</tr>
 	<tr>
 		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>

@@ -211,6 +211,15 @@ namespace AceSoft.RetailPlus.Reports {
         protected global::System.Web.UI.WebControls.TextBox txtTransactionNo;
         
         /// <summary>
+        /// cboConsignment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboConsignment;
+        
+        /// <summary>
         /// cboTransactionStatus control.
         /// </summary>
         /// <remarks>

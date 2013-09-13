@@ -127,6 +127,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                 Label lblRemarks = (Label)e.Item.FindControl("lblRemarks");
                 lblRemarks.Text = dr["Remarks"].ToString();
 
+                Label lblPODebitItemReceivedStatus = (Label)e.Item.FindControl("lblPODebitItemReceivedStatus");
+                DebitMemoItemReceivedStatus clsDebitMemoItemReceivedStatus = (DebitMemoItemReceivedStatus)Enum.Parse(typeof(DebitMemoItemReceivedStatus), dr["DebitMemoItemReceivedStatus"].ToString());
+                lblPODebitItemReceivedStatus.Text = clsDebitMemoItemReceivedStatus.ToString("d");
+
 				//For anchor
 				HtmlGenericControl divExpCollAsst = (HtmlGenericControl) e.Item.FindControl("divExpCollAsst");
 
@@ -188,7 +192,23 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsPOReturnItems.List(Convert.ToInt64(lblDebitMemoID.Text), "DebitMemoItemID",SortOption.Ascending)).DefaultView;
 			lstItem.DataBind();
 			clsPOReturnItems.CommitAndDispose();
+            lstItemFixCssClass();
 		}
+        private void lstItemFixCssClass()
+        {
+            foreach (DataListItem item in lstItem.Items)
+            {
+                Label lblPODebitItemReceivedStatus = (Label)item.FindControl("lblPODebitItemReceivedStatus");
+                DebitMemoItemReceivedStatus itemDebitMemoItemReceivedStatus = (DebitMemoItemReceivedStatus)Enum.Parse(typeof(DebitMemoItemReceivedStatus), lblPODebitItemReceivedStatus.Text);
+                if (itemDebitMemoItemReceivedStatus == DebitMemoItemReceivedStatus.Received)
+                    item.CssClass = "ms-item-received";
+                else if (item.ItemType == ListItemType.Item)
+                    item.CssClass = "";
+                else if (item.ItemType == ListItemType.AlternatingItem)
+                    item.CssClass = "ms-alternating";
+
+            }
+        }
         private void UpdateFooter(POReturnDetails clsPOReturnDetails)
         {
             lblPODiscount.Text = clsPOReturnDetails.Discount.ToString("#,##0.#0");

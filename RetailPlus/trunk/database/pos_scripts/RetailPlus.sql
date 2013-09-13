@@ -210,9 +210,9 @@ CREATE TABLE tblContacts (
 `BusinessName` VARCHAR(75) NOT NULL DEFAULT '',
 `TelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
 `Remarks` VARCHAR(150) NOT NULL DEFAULT '',
-`Debit` DECIMAL(18,2) NOT NULL DEFAULT 0,
-`Credit` DECIMAL(18,2) NOT NULL DEFAULT 0,
-`CreditLimit` DECIMAL(18,2) NOT NULL DEFAULT 0,
+`Debit` decimal(18,3) NOT NULL DEFAULT 0,
+`Credit` decimal(18,3) NOT NULL DEFAULT 0,
+`CreditLimit` decimal(18,3) NOT NULL DEFAULT 0,
 `IsCreditAllowed` TINYINT(1) NOT NULL DEFAULT 0,
 `DateCreated` DATETIME NOT NULL,
 `Deleted` TINYINT(1) NOT NULL DEFAULT 0,
@@ -6683,9 +6683,9 @@ CREATE TABLE `tblContactsAudit` (
   `BusinessName` varchar(75) NOT NULL DEFAULT '',
   `TelephoneNo` varchar(75) NOT NULL DEFAULT '',
   `Remarks` varchar(150) NOT NULL DEFAULT '',
-  `Debit` decimal(18,2) NOT NULL DEFAULT '0.00',
-  `Credit` decimal(18,2) NOT NULL DEFAULT '0.00',
-  `CreditLimit` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `Debit` decimal(18,3) NOT NULL DEFAULT '0.00',
+  `Credit` decimal(18,3) NOT NULL DEFAULT '0.00',
+  `CreditLimit` decimal(18,3) NOT NULL DEFAULT '0.00',
   `IsCreditAllowed` tinyint(1) NOT NULL DEFAULT '0',
   `DateCreated` DATETIME NOT NULL,
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -6698,3 +6698,11 @@ CREATE TABLE `tblContactsAudit` (
 );
 
 /*********************************  v_4.0.1.0.sql END  *******************************************************/ 
+
+ALTER TABLE tblTransactions ADD `isConsignment` tinyint(1) unsigned NOT NULL DEFAULT 0;
+
+ALTER TABLE tblProductInventory ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryAudit ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryDaily ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryMonthly ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+

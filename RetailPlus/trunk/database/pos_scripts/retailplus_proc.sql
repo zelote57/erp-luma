@@ -90,7 +90,7 @@ CREATE TRIGGER trgr_tblProductInventory_Insert AFTER INSERT ON tblProductInvento
 FOR EACH ROW 
 BEGIN
 	CALL procProductInventoryAuditInsert(NEW.BranchID ,NEW.ProductID ,NEW.MatrixID ,NEW.Quantity ,NEW.QuantityIn 
-										,NEW.QuantityOut ,NEW.ActualQuantity ,NEW.IsLock );
+										,NEW.QuantityOut ,NEW.ActualQuantity ,NEW.ReservedQuantity ,NEW.IsLock );
 END;
 GO
 
@@ -108,7 +108,7 @@ CREATE TRIGGER trgr_tblProductInventory_Update AFTER UPDATE ON tblProductInvento
 FOR EACH ROW 
 BEGIN
 	CALL procProductInventoryAuditInsert(NEW.BranchID ,NEW.ProductID ,NEW.MatrixID ,NEW.Quantity ,NEW.QuantityIn 
-										,NEW.QuantityOut ,NEW.ActualQuantity ,NEW.IsLock );
+										,NEW.QuantityOut ,NEW.ActualQuantity ,NEW.ReservedQuantity ,NEW.IsLock );
 
 END;
 GO
@@ -129,13 +129,14 @@ create procedure procProductInventoryAuditInsert(
 	IN decQuantityIn DECIMAL(18,3),
 	IN decQuantityOut DECIMAL(18,3),
 	IN decActualQuantity DECIMAL(18,3),
+	IN decReservedQuantity DECIMAL(18,3),
 	IN intIsLock TINYINT(1)
 	)
 BEGIN
 	INSERT INTO tblProductInventoryAudit (
-			 BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,IsLock ,DateCreated)
+			 BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,ReservedQuantity ,IsLock ,DateCreated)
 	VALUES (intBranchID ,lngProductID ,lngMatrixID ,decQuantity ,decQuantityIn ,decQuantityOut 
-			,decActualQuantity ,intIsLock ,NOW());
+			,decActualQuantity ,decReservedQuantity ,intIsLock ,NOW());
 
 END;
 GO
@@ -5632,7 +5633,7 @@ BEGIN
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
 														AND prd.BaseUnitID = pkg.UnitID
 														AND pkg.Quantity = 1
-							  WHERE prd.deleted = 0 ',SQLWhere,' LIMIT 1) prd
+							  WHERE 1=1 ',SQLWhere,' LIMIT 1) prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
@@ -6613,12 +6614,151 @@ GO
 delimiter ;
 
 
+/*********************************
+	procTransactionIsConsignmentUpdate
+	Lemuel E. Aceron
+	
+	[09/09/2013]  - create this procedure
+	
+*********************************/
+DROP PROCEDURE IF EXISTS procTransactionIsConsignmentUpdate;
+delimiter GO
+
+create procedure procTransactionIsConsignmentUpdate(IN lngTransactionID bigint(20), IN intIsConsignment tinyint(1))
+BEGIN
+
+	UPDATE tblTransactions SET isConsignment = intIsConsignment WHERE TransactionID = lngTransactionID;
+	
+END;
+GO
+delimiter ;
+
+
+
+/********************************************
+	procProductAddReservedQuantity
+	
+	CALL procProductAddReservedQuantity(1, 1203, 0, 1, 'Remarks', NOW(), '1000001', 'Lemuel');
+	
+	Sep 14, 2013: Created this procedure
+	
+********************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductAddReservedQuantity
+GO
+
+create procedure procProductAddReservedQuantity(
+	IN intBranchID INT(4),
+	IN lngProductID BIGINT,
+	IN lngMatrixID BIGINT,
+	IN decQuantity DECIMAL(18,3),
+	IN strRemarks VARCHAR(100),
+	IN dteTransactionDate DateTime,
+	IN strTransactionNo VARCHAR(100),
+	IN strCreatedBy VARCHAR(100)
+	)
+BEGIN
+	DECLARE strProductCode VARCHAR(30) DEFAULT '';
+	DECLARE strProductDesc VARCHAR(50) DEFAULT '';
+	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
+	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
+	DECLARE decProductQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE decProductReservedQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE strAuditRemarks VARCHAR(8000) DEFAULT '';
+
+	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
+	SELECT ProductCode, ProductDesc, UnitCode, IFNULL(Description,'')
+		INTO strProductCode, strProductDesc, strUnitCode, strMatrixDescription
+	FROM tblProducts a 
+	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
+	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = lngMatrixID
+	WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
+	
+	SELECT IFNULL(SUM(Quantity),0), IFNULL(SUM(ReservedQuantity),0)  INTO decProductQuantity, decProductReservedQuantity
+	FROM tblProductInventory inv
+	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
+	
+	SET strAuditRemarks = CONCAT('Reserved for: ',strTransactionNo,' ; Curr Reserved: ',decProductReservedQuantity,'; Curr Quantity:',decProductQuantity,' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode + ' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
+
+	-- Insert to audit instead of product movement history
+	CALL procsysAuditInsert(NOW(), strCreatedBy, 'PRODUCT RESERVED ADD', 'localhost', strAuditRemarks);
+	
+	IF EXISTS(SELECT ReservedQuantity FROM tblProductInventory WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID) THEN 
+		UPDATE tblProductInventory SET
+			ReservedQuantity	= decQuantity + ReservedQuantity
+		WHERE ProductID = lngProductID AND MatrixID = lngMatrixID AND BranchID = intBranchID;
+	ELSE
+		INSERT INTO tblProductInventory(BranchID, ProductID, MatrixID, ReservedQuantity)
+		VALUES(intBranchID, lngProductID, lngMatrixID, decQuantity);
+	END IF;
+									
+	
+END;
+GO
+delimiter ;
 
 
 
 
+/********************************************
+	procProductSubtractReservedQuantity
+	
+	CALL procProductSubtractReservedQuantity(1, 1203, 0, 1, 'Remarks', NOW(), '1000001', 'Lemuel');
+	
+	Sep 14, 2013: Created this procedure
+	
+********************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductSubtractReservedQuantity
+GO
 
+create procedure procProductSubtractReservedQuantity(
+	IN intBranchID INT(4),
+	IN lngProductID BIGINT,
+	IN lngMatrixID BIGINT,
+	IN decQuantity DECIMAL(18,2),
+	IN strRemarks VARCHAR(100),
+	IN dteTransactionDate DateTime,
+	IN strTransactionNo VARCHAR(100),
+	IN strCreatedBy VARCHAR(100)
+	)
+BEGIN
+	DECLARE strProductCode VARCHAR(30) DEFAULT '';
+	DECLARE strProductDesc VARCHAR(50) DEFAULT '';
+	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
+	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
+	DECLARE decProductQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE decProductReservedQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE strAuditRemarks VARCHAR(8000) DEFAULT '';
 
+	-- Set the value of strProductCode, strProductDesc, decProductQuantity, strUnitCode
+	SELECT ProductCode, ProductDesc, UnitCode, IFNULL(Description,'')
+		INTO strProductCode, strProductDesc, strUnitCode, strMatrixDescription
+	FROM tblProducts a 
+	INNER JOIN tblUnit b ON a.BaseUnitID = b.UnitID 
+	LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = a.ProductID AND mtrx.MatrixID = lngMatrixID
+	WHERE a.Deleted = 0 AND a.ProductID = lngProductID AND IFNULL(mtrx.MatrixID,0) = lngMatrixID;
+	
+	SELECT IFNULL(SUM(Quantity),0), IFNULL(SUM(ReservedQuantity),0)  INTO decProductQuantity, decProductReservedQuantity
+	FROM tblProductInventory inv
+	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
+	
+	SET strAuditRemarks = CONCAT('Unreserved for: ',strTransactionNo,' ; Curr Reserved: ',decProductReservedQuantity,'; Curr Quantity:',decProductQuantity,' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode + ' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
+
+	-- Insert to audit instead of product movement history
+	CALL procsysAuditInsert(NOW(), strCreatedBy, 'PRODUCT RESERVED SUBTRACT', 'localhost', strAuditRemarks);
+	
+	-- Subtract the quantity from Product table
+	UPDATE tblProductInventory SET 
+		ReservedQuantity	= ReservedQuantity - decQuantity
+	WHERE MatrixID	= lngMatrixID 
+		AND ProductID = lngProductID
+		AND BranchID = intBranchID;
+		
+									
+END;
+GO
+delimiter ;
 
 
 

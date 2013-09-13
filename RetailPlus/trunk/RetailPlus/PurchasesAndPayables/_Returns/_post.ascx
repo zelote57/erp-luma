@@ -468,7 +468,7 @@
 		<td>
 		    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                 <ContentTemplate>
-                    <asp:datalist id="lstItem" runat="server" Width="100%" cellpadding="0" OnItemCommand="lstItem_ItemCommand" OnItemDataBound="lstItem_ItemDataBound" AlternatingItemStyle-CssClass="ms-alternating">
+                    <asp:datalist id="lstItem" runat="server" Width="100%" cellpadding="0" ShowFooter="false" OnItemCommand="lstItem_ItemCommand" OnItemDataBound="lstItem_ItemDataBound" AlternatingItemStyle-CssClass="ms-alternating">
 		                <HeaderTemplate>
 			                <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 				                <colgroup>
@@ -484,20 +484,34 @@
 					                <col width="10">
 				                </colgroup>
 				                <tr>
-					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></TH>
-					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"></TH>
-					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"></TH>
-					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"><asp:hyperlink id="SortByDescription" runat="server">Description</asp:hyperlink></TH>
-					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByQuantity" runat="server">Quantity</asp:hyperlink></TH>
-					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"><asp:hyperlink id="SortByProductUnitCode" runat="server">Unit of Measure</asp:hyperlink></TH>
-					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByUntCost" runat="server">Unit Cost</asp:hyperlink></TH>
-					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByDiscount" runat="server">Discount</asp:hyperlink></TH>
-					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByAmount" runat="server">Total Cost</asp:hyperlink></TH>
-					                <TH class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
-					                </TH>
+					                <th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /></th>
+					                <th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"></th>
+					                <th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"></th>
+					                <th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"><asp:hyperlink id="SortByDescription" runat="server">Description</asp:hyperlink></th>
+					                <th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByQuantity" runat="server">Quantity</asp:hyperlink></th>
+					                <th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px"><asp:hyperlink id="SortByProductUnitCode" runat="server">Unit of Measure</asp:hyperlink></th>
+					                <th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByUntCost" runat="server">Unit Cost</asp:hyperlink></th>
+					                <th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByDiscount" runat="server">Discount</asp:hyperlink></th>
+					                <th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px; text-align: right"><asp:hyperlink id="SortByAmount" runat="server">Total Cost</asp:hyperlink></th>
+					                <th class="ms-vh2" style="padding-bottom: 4px; padding-top: 4px">
+					                </th>
 				                </tr>
+                            </table>
 		                </HeaderTemplate>
 		                <ItemTemplate>
+                            <table id="tblItemTemplate" cellspacing="0" cellpadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
+				                <colgroup>
+					                <col width="10">
+					                <col width="10">
+					                <col width="10">
+					                <col width="40%">
+					                <col width="12%">
+					                <col width="12%">
+					                <col width="12%">
+					                <col width="12%">
+					                <col width="12%">
+					                <col width="10">
+				                </colgroup>
 				                <tr onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 					                <td class="ms-vb-user">
 						                <input type="checkbox" id="chkList" runat="server" name="chkList" />
@@ -601,6 +615,7 @@
 					                </td>
 					                <td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 				                </tr>
+                            </table>
 		                </ItemTemplate>
                         <FooterTemplate>
                             </table>

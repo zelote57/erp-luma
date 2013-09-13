@@ -151,6 +151,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 Label lblRemarks = (Label)e.Item.FindControl("lblRemarks");
                 lblRemarks.Text = dr["Remarks"].ToString();
 
+                Label lblPOItemReceivedStatus = (Label)e.Item.FindControl("lblPOItemReceivedStatus");
+                POItemReceivedStatus clsPOItemReceivedStatus = (POItemReceivedStatus)Enum.Parse(typeof(POItemReceivedStatus), dr["POItemReceivedStatus"].ToString());
+                lblPOItemReceivedStatus.Text = clsPOItemReceivedStatus.ToString("d");
+
                 //For anchor
                 HtmlGenericControl divExpCollAsst = (HtmlGenericControl)e.Item.FindControl("divExpCollAsst");
 
@@ -242,7 +246,23 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsPOItem.List(Convert.ToInt64(lblPOID.Text), "POItemID",SortOption.Ascending)).DefaultView;
 			lstItem.DataBind();
 			clsPOItem.CommitAndDispose();
+            lstItemFixCssClass();
 		}
+        private void lstItemFixCssClass()
+        {
+            foreach (DataListItem item in lstItem.Items)
+            {
+                Label lblitemPOItemReceivedStatus = (Label)item.FindControl("lblPOItemReceivedStatus");
+                POItemReceivedStatus itemPOItemReceivedStatus = (POItemReceivedStatus)Enum.Parse(typeof(POItemReceivedStatus), lblitemPOItemReceivedStatus.Text);
+                if (itemPOItemReceivedStatus == POItemReceivedStatus.Received)
+                    item.CssClass = "ms-item-received";
+                else if (item.ItemType == ListItemType.Item)
+                    item.CssClass = "";
+                else if (item.ItemType == ListItemType.AlternatingItem)
+                    item.CssClass = "ms-alternating";
+
+            }
+        }
         private void PrintPO()
         {
             string stParam = "?task=" + Common.Encrypt("reports", Session.SessionID) + "&target=" + Common.Encrypt("po", Session.SessionID) + "&poid=" + Common.Encrypt(lblPOID.Text, Session.SessionID);

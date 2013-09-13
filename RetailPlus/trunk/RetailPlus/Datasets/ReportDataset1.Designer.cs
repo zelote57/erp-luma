@@ -2654,6 +2654,14 @@ namespace RetailPlus.Datasets {
             
             private global::System.Data.DataColumn columnCreatedByName;
             
+            private global::System.Data.DataColumn columnChequeNo;
+            
+            private global::System.Data.DataColumn columnValidityDate;
+            
+            private global::System.Data.DataColumn columnisConsignment;
+            
+            private global::System.Data.DataColumn columnConsignmentPayment;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public TransactionsDataTable() {
@@ -2897,6 +2905,38 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ChequeNoColumn {
+                get {
+                    return this.columnChequeNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ValidityDateColumn {
+                get {
+                    return this.columnValidityDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn isConsignmentColumn {
+                get {
+                    return this.columnisConsignment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ConsignmentPaymentColumn {
+                get {
+                    return this.columnConsignmentPayment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2958,7 +2998,11 @@ namespace RetailPlus.Datasets {
                         decimal ItemsDiscount, 
                         decimal Charge, 
                         decimal CreditPayment, 
-                        string CreatedByName) {
+                        string CreatedByName, 
+                        string ChequeNo, 
+                        System.DateTime ValidityDate, 
+                        bool isConsignment, 
+                        decimal ConsignmentPayment) {
                 TransactionsRow rowTransactionsRow = ((TransactionsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         TransactionID,
@@ -2986,7 +3030,11 @@ namespace RetailPlus.Datasets {
                         ItemsDiscount,
                         Charge,
                         CreditPayment,
-                        CreatedByName};
+                        CreatedByName,
+                        ChequeNo,
+                        ValidityDate,
+                        isConsignment,
+                        ConsignmentPayment};
                 rowTransactionsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTransactionsRow);
                 return rowTransactionsRow;
@@ -3035,6 +3083,10 @@ namespace RetailPlus.Datasets {
                 this.columnCharge = base.Columns["Charge"];
                 this.columnCreditPayment = base.Columns["CreditPayment"];
                 this.columnCreatedByName = base.Columns["CreatedByName"];
+                this.columnChequeNo = base.Columns["ChequeNo"];
+                this.columnValidityDate = base.Columns["ValidityDate"];
+                this.columnisConsignment = base.Columns["isConsignment"];
+                this.columnConsignmentPayment = base.Columns["ConsignmentPayment"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3092,6 +3144,14 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnCreditPayment);
                 this.columnCreatedByName = new global::System.Data.DataColumn("CreatedByName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCreatedByName);
+                this.columnChequeNo = new global::System.Data.DataColumn("ChequeNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnChequeNo);
+                this.columnValidityDate = new global::System.Data.DataColumn("ValidityDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnValidityDate);
+                this.columnisConsignment = new global::System.Data.DataColumn("isConsignment", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnisConsignment);
+                this.columnConsignmentPayment = new global::System.Data.DataColumn("ConsignmentPayment", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnConsignmentPayment);
                 this.columnTransactionID.AllowDBNull = false;
                 this.columnTransactionNo.AllowDBNull = false;
                 this.columnCustomerName.AllowDBNull = false;
@@ -3118,6 +3178,7 @@ namespace RetailPlus.Datasets {
                 this.columnCharge.AllowDBNull = false;
                 this.columnCreditPayment.AllowDBNull = false;
                 this.columnCreatedByName.AllowDBNull = false;
+                this.columnisConsignment.DefaultValue = ((bool)(false));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -28624,6 +28685,118 @@ namespace RetailPlus.Datasets {
                 set {
                     this[this.tableTransactions.CreatedByNameColumn] = value;
                 }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ChequeNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransactions.ChequeNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ChequeNo\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.ChequeNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime ValidityDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableTransactions.ValidityDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ValidityDate\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.ValidityDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool isConsignment {
+                get {
+                    try {
+                        return ((bool)(this[this.tableTransactions.isConsignmentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'isConsignment\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.isConsignmentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal ConsignmentPayment {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTransactions.ConsignmentPaymentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ConsignmentPayment\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.ConsignmentPaymentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsChequeNoNull() {
+                return this.IsNull(this.tableTransactions.ChequeNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetChequeNoNull() {
+                this[this.tableTransactions.ChequeNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsValidityDateNull() {
+                return this.IsNull(this.tableTransactions.ValidityDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetValidityDateNull() {
+                this[this.tableTransactions.ValidityDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsisConsignmentNull() {
+                return this.IsNull(this.tableTransactions.isConsignmentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetisConsignmentNull() {
+                this[this.tableTransactions.isConsignmentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsConsignmentPaymentNull() {
+                return this.IsNull(this.tableTransactions.ConsignmentPaymentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetConsignmentPaymentNull() {
+                this[this.tableTransactions.ConsignmentPaymentColumn] = global::System.Convert.DBNull;
             }
         }
         

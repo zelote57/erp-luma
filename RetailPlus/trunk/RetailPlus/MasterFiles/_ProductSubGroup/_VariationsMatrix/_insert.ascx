@@ -5,51 +5,51 @@
 	<tr>
 		<td colSpan="3"><IMG height="10" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
 	</tr>
-	<TR>
+	<tr>
 		<td><IMG height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
-		<TD>
+		<td>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
-				<TR>
+				<tr>
 					<td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSave" ToolTip="Add New Product Variation" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Product Variation" ImageUrl="../../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSave" ToolTip="Add New Product Variation" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Product Variation" ImageUrl="../../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
 								</td>
-								<td noWrap><asp:linkbutton id="cmdSave" ToolTip="Add New Product Variation" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSave_Click">Save and New</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdSave" ToolTip="Add New Product Variation" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSave_Click">Save and New</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<TD class="ms-separator">|</TD>
+					<td class="ms-separator">|</td>
 					<td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveBack" ToolTip="Add New Product Variation" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Product Variation" ImageUrl="../../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveBack" ToolTip="Add New Product Variation" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Product Variation" ImageUrl="../../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
 								</td>
-								<td noWrap><asp:linkbutton id="cmdSaveBack" ToolTip="Add New Product Variation" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdSaveBack" ToolTip="Add New Product Variation" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<TD class="ms-separator">|</TD>
+					<td class="ms-separator">|</td>
 					<td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Cancel Adding New Product Variation" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Cancel Adding New Product Variation" ImageUrl="../../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdCancel" title="Cancel Adding New Product Variation" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Cancel Adding New Product Variation" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Cancel Adding New Product Variation" ImageUrl="../../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdCancel" title="Cancel Adding New Product Variation" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
 					<td width="99%" class="ms-toolbar" id="align02" noWrap align="right"><IMG height="1" alt="" src="../../../_layouts/images/blank.gif" width="1">
 					</td>
-				</TR>
-			</TABLE>
+				</tr>
+			</table>
 			<asp:Label id="lblReferrer" runat="server" Visible="False"></asp:Label>
 			<asp:Label id="lblSubGroupID" runat="server" Visible="False"></asp:Label>
-		</TD>
+		</td>
 		<td><IMG height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
-	</TR>
+	</tr>
 	<tr>
 		<td><IMG height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
-		<TD>
+		<td>
 		    <table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td colspan="3" class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px">
@@ -77,7 +77,7 @@
 										<col width="30%" align="left">
 										<col width="66%" align="left">
 									</colgroup>
-									<TR>
+									<tr>
 										<TH class="ms-vh2" style="padding-bottom: 4px">
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TH>
 										<TH class="ms-vh2" style="padding-bottom: 4px">
@@ -85,27 +85,27 @@
 										<TH class="ms-vh2" style="padding-bottom: 4px">
 											Description
 										</TH>
-									</TR>
+									</tr>
 								</table>
 							</HeaderTemplate>
 							<ItemTemplate>
-								<TABLE id="Table5" cellSpacing="0" cellPadding="0" width="100%" border="0">
+								<table id="Table5" cellSpacing="0" cellPadding="0" width="100%" border="0">
 									<COLGROUP>
 										<COL width="4%">
 										<COL align="left" width="30%">
 										<COL align="left" width="66%">
 									</COLGROUP>
-									<TR>
-										<TD class="ms-vb-user">
+									<tr>
+										<td class="ms-vb-user">
 											<INPUT id="chkList" type="checkbox" name="chkList" runat="server" visible="false">
-										</TD>
-										<TD class="ms-vb-user">
-											<asp:HyperLink id="lnkVariationType" Runat="server"></asp:HyperLink></TD>
-										<TD class="ms-vb2">
+										</td>
+										<td class="ms-vb-user">
+											<asp:HyperLink id="lnkVariationType" Runat="server"></asp:HyperLink></td>
+										<td class="ms-vb2">
 											<asp:TextBox id="txtDescription" CssClass="ms-short" Runat="server"></asp:TextBox> <label style="font-style: italic; color: red;">(if this is EXPIRATION enter format as YYYY-MM-DD)</label>
-											<asp:RequiredFieldValidator id="RequiredFieldValidator5" CssClass="ms-error" runat="server" ErrorMessage="'Description' must not be left blank." Display="Dynamic" ControlToValidate="txtDescription" ForeColor=" "></asp:RequiredFieldValidator></TD>
-									</TR>
-								</TABLE>
+											<asp:RequiredFieldValidator id="RequiredFieldValidator5" CssClass="ms-error" runat="server" ErrorMessage="'Description' must not be left blank." Display="Dynamic" ControlToValidate="txtDescription" ForeColor=" "></asp:RequiredFieldValidator></td>
+									</tr>
+								</table>
 							</ItemTemplate>
 						</asp:datalist>
 					</td>
@@ -137,7 +137,7 @@
 								<td class="ms-authoringcontrols">
 								    <asp:textbox id="txtPurchasePrice" accessKey="P" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()" onKeyUp="InsertComputeMargin()"></asp:textbox>
 									<asp:RequiredFieldValidator id="Requiredfieldvalidator2" CssClass="ms-error" runat="server" ControlToValidate="txtPurchasePrice" Display="Dynamic" ErrorMessage="'Product Purchase Price' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator7" CssClass="ms-error" runat="server" ErrorMessage="'Product Purchase Price' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtPurchasePrice" ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator7" CssClass="ms-error" runat="server" ErrorMessage="'Product Purchase Price' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtPurchasePrice" ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
 							    </td>
 								<td class="ms-formspacer"><IMG src="../../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols">
@@ -147,16 +147,16 @@
 								<td class="ms-authoringcontrols">
 								    <asp:textbox id="txtProductPrice" accessKey="P" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()" onKeyUp="InsertComputeMarginByPrice()"></asp:textbox>
 									<asp:RequiredFieldValidator id="Requiredfieldvalidator7" CssClass="ms-error" runat="server" ControlToValidate="txtProductPrice" Display="Dynamic" ErrorMessage="'Product Price' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator6" CssClass="ms-error" runat="server" ErrorMessage="'Product Price' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtProductPrice" ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator6" CssClass="ms-error" runat="server" ErrorMessage="'Product Price' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtProductPrice" ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
 								</td>
 								<td class="ms-formspacer"><IMG src="../../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols">
 									<asp:CheckBox id="chkIncludeInSubtotalDiscount" runat="server" Text=" Check if included in subtotal discount." Checked="True"></asp:CheckBox>
 								</td>
 							</tr>
-							<TR>
-								<TD class="ms-formspacer" height=20></TD>
-							</TR>
+							<tr>
+								<td class="ms-formspacer" height=20></td>
+							</tr>
 							<tr>
 								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2">
 								    <label>VAT (in percent)<font color="red">*</font></label></td>
@@ -172,19 +172,19 @@
 								<td class="ms-authoringcontrols">
 								    <asp:textbox id="txtVAT" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0</asp:textbox>&nbsp;%
 									<asp:RequiredFieldValidator id="Requiredfieldvalidator12" runat="server" CssClass="ms-error" ErrorMessage="'Value Added Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtVAT" ForeColor=" "></asp:RequiredFieldValidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Value Added Tax' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtVAT" ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator1" CssClass="ms-error" runat="server" ErrorMessage="'Value Added Tax' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtVAT" ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
 							    </td>
 								<td class="ms-formspacer"><IMG src="../../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols">
 									<asp:textbox id="txtEVAT" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0</asp:textbox>&nbsp;%
 									<asp:RequiredFieldValidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'Expanded Value Added Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtEVAT" ForeColor=" "></asp:RequiredFieldValidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator8" CssClass="ms-error" runat="server" ErrorMessage="'Expanded Value Added Tax' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtEVAT" ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator8" CssClass="ms-error" runat="server" ErrorMessage="'Expanded Value Added Tax' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtEVAT" ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
 								</td>
 								<td class="ms-formspacer"><IMG src="../../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols">
 								    <asp:textbox id="txtLocalTax" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0</asp:textbox>&nbsp;%
 									<asp:RequiredFieldValidator id="Requiredfieldvalidator13" runat="server" CssClass="ms-error" ErrorMessage="'Local Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtLocalTax" ForeColor=" "></asp:RequiredFieldValidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator2" CssClass="ms-error" runat="server" ErrorMessage="'Local Tax' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtLocalTax" ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator id="RegularExpressionValidator2" CssClass="ms-error" runat="server" ErrorMessage="'Local Tax' must be in number, max of 3 decimal places." Display="Dynamic" ControlToValidate="txtLocalTax" ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
 								</td>
 								<td class="ms-formspacer"><IMG src="../../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols">
@@ -192,9 +192,9 @@
 									<asp:RequiredFieldValidator id="Requiredfieldvalidator1" CssClass="ms-error" runat="server" ControlToValidate="cboUnit" Display="Dynamic" ErrorMessage="'Product Unit' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
 								</td>
 							</tr>
-							<TR>
-								<TD class="ms-formspacer"></TD>
-							</TR>
+							<tr>
+								<td class="ms-formspacer"></td>
+							</tr>
 						</table>
 					</td>
 				</tr>
@@ -202,7 +202,7 @@
 		            <td colspan="3" class="ms-sectionline" height="2"><img src="../../../_layouts/images/empty.gif"></td>
 	            </tr>
 			</table>
-		</TD>
+		</td>
 	</tr>
 	<tr>
 		<td colSpan="3"><IMG height="10" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>

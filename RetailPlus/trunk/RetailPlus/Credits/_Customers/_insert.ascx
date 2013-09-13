@@ -4,59 +4,59 @@
 	<tr>
 		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
-	<TR>
+	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<TD>
+		<td>
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
-				<TR>
+				<tr>
 					<td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSave" ToolTip="Add New Customer" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Save New Customer" border="0" width="16" height="16" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSave" ToolTip="Add New Customer" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Save New Customer" border="0" width="16" height="16" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
 								</td>
-								<td noWrap><asp:linkbutton id="cmdSave" ToolTip="Add New Customer" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSave_Click">Save and New</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdSave" ToolTip="Add New Customer" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSave_Click">Save and New</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<TD class="ms-separator">|</TD>
+					<td class="ms-separator">|</td>
 					<td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveBack" ToolTip="Add New Customer" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Add New Customer" border="0" width="16" height="16" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveBack" ToolTip="Add New Customer" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Add New Customer" border="0" width="16" height="16" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
 								</td>
-								<td noWrap><asp:linkbutton id="cmdSaveBack" ToolTip="Add New Customer" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdSaveBack" ToolTip="Add New Customer" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<TD class="ms-separator">|</TD>
+					<td class="ms-separator">|</td>
 					<td class="ms-toolbar">
 						<table cellSpacing="0" cellPadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Cancel Adding New Customer" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Cancel Adding New Customer" border="0" width="16" height="16" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdCancel" title="Cancel Adding New Customer" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Cancel Adding New Customer" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Cancel Adding New Customer" border="0" width="16" height="16" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdCancel" title="Cancel Adding New Customer" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
 					<td class="ms-toolbar" id="align02" noWrap align="right" width="99%"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>
-				</TR>
-			</TABLE>
-			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label></TD>
+				</tr>
+			</table>
+			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label></td>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-	</TR>
+	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<TD>
+		<td>
 			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 			    <tr>
 					<td class="ms-descriptiontext" style="PADDING-BOTTOM: 4px; PADDING-TOP: 8px" colspan="3"><font color="red">*</font>
 						Indicates a required field
 					</td>
 				</tr>
-				<TR>
-					<TD class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px" colspan="3">
-						<asp:ValidationSummary id="ValidationSummary2" runat="server" CssClass="ms-error" ForeColor=" "></asp:ValidationSummary></TD>
-				</TR>
+				<tr>
+					<td class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px" colspan="3">
+						<asp:ValidationSummary id="ValidationSummary2" runat="server" CssClass="ms-error" ForeColor=" "></asp:ValidationSummary></td>
+				</tr>
 				<tr>
 					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
@@ -154,7 +154,7 @@
                                                 ForeColor=" "></asp:RequiredFieldValidator>
                                     <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="txtTerms"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Terms' must be in number, max of 3 decimal places."
-                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                                ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
@@ -164,7 +164,7 @@
                                                 ForeColor=" "></asp:RequiredFieldValidator>
                                     <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="txtDebit"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Debit' must be in number, max of 3 decimal places."
-                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                                ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
@@ -174,7 +174,7 @@
                                                 ForeColor=" "></asp:RequiredFieldValidator>
                                     <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtCredit"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Credit' must be in number, max of 3 decimal places."
-                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                                ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>
@@ -212,7 +212,7 @@
                                                 ForeColor=" "></asp:RequiredFieldValidator>
                                     <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtCreditLimit"
                                                 CssClass="ms-error" Display="Dynamic" ErrorMessage="'Credit Limit' must be in number, max of 3 decimal places."
-                                                ValidationExpression="^\s*?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                                ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>
@@ -248,7 +248,7 @@
 					<td class="ms-sectionline" colspan="3" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 			</table>
-		</TD>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>

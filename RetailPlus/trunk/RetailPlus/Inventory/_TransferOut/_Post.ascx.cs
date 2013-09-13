@@ -186,6 +186,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 
             ComputeItemAmount();
             cboVariation_SelectedIndexChanged(null, null);
+            lstItemFixCssClass();
         }
         protected void cboVariation_SelectedIndexChanged(object sender, System.EventArgs e)
         {
@@ -559,6 +560,9 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
             txtVAT.Text = clsDetails.VAT.ToString("#,##0.##0");
             txtEVAT.Text = clsDetails.EVAT.ToString("#,##0.##0");
             txtLocalTax.Text = clsDetails.LocalTax.ToString("#,##0.##0");
+
+            ComputeItemAmount();
+            lstItemFixCssClass();
         }
         protected void imgImport_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
@@ -981,6 +985,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
             lstItem.DataSource = clsTransferOutItem.ListAsDataTable(Convert.ToInt64(lblTransferOutID.Text)).DefaultView;
             lstItem.DataBind();
             clsTransferOutItem.CommitAndDispose();
+            lstItemFixCssClass();
         }
         private void IssueGRN()
         {

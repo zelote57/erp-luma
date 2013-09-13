@@ -207,7 +207,8 @@
 						<tr>
 							<td class="ms-vb-user">
 								<input type="checkbox" id="chkList" runat="server" name="chkList" visible="false" />
-							</td>
+							    <asp:Label id="lblTransferInItemReceivedStatus" CssClass="ms-vh2" runat="server" text="0" visible="false"></asp:Label>
+                            </td>
 							<td class="ms-vb-user">
 								<asp:HyperLink ID="lnkDescription" Runat="server"></asp:HyperLink>
 							</td>

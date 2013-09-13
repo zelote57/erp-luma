@@ -165,6 +165,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 
             ComputeItemAmount();
 			cboVariation_SelectedIndexChanged(null, null);
+            lstItemFixCssClass();
 		}
         protected void cboVariation_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
@@ -313,6 +314,21 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 
                 Label lblRemarks = (Label)e.Item.FindControl("lblRemarks");
                 lblRemarks.Text = dr["Remarks"].ToString();
+
+                ImageButton imgItemReceive = (ImageButton)e.Item.FindControl("imgItemReceive");
+                Label lblPODebitItemReceivedStatus = (Label)e.Item.FindControl("lblPODebitItemReceivedStatus");
+                DebitMemoItemReceivedStatus clsDebitMemoItemReceivedStatus = (DebitMemoItemReceivedStatus)Enum.Parse(typeof(DebitMemoItemReceivedStatus), dr["DebitMemoItemReceivedStatus"].ToString());
+                lblPODebitItemReceivedStatus.Text = clsDebitMemoItemReceivedStatus.ToString("d");
+
+                if (clsDebitMemoItemReceivedStatus == DebitMemoItemReceivedStatus.Received)
+                {
+                    imgItemReceive.ToolTip = "Tag item as " + POItemReceivedStatus.NotYetReceived.ToString("G");
+                    e.Item.CssClass = "ms-item-received";
+                }
+                else
+                {
+                    imgItemReceive.ToolTip = "Tag item as " + DebitMemoItemReceivedStatus.Received.ToString("G");
+                }
 
                 //For anchor
                 HtmlGenericControl divExpCollAsst = (HtmlGenericControl)e.Item.FindControl("divExpCollAsst");
@@ -530,6 +546,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
             txtVAT.Text = clsDetails.VAT.ToString("#,##0.##0");
             txtEVAT.Text = clsDetails.EVAT.ToString("#,##0.##0");
             txtLocalTax.Text = clsDetails.LocalTax.ToString("#,##0.##0");
+
+            ComputeItemAmount();
+            lstItemFixCssClass();
         }
         protected void chkIsVatInclusive_CheckedChanged(object sender, EventArgs e)
         {
@@ -965,6 +984,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsPOReturnItems.List(Convert.ToInt64(lblDebitMemoID.Text), "DebitMemoItemID",SortOption.Ascending)).DefaultView;
 			lstItem.DataBind();
 			clsPOReturnItems.CommitAndDispose();
+            lstItemFixCssClass();
 		}
 		private void Post()
 		{

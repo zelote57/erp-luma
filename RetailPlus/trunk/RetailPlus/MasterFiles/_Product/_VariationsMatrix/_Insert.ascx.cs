@@ -43,25 +43,29 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 
         protected void imgSave_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
-			SaveRecord();
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID) + "&prodid=" + Common.Encrypt(lblProductID.Text,Session.SessionID);
-			Response.Redirect("Default.aspx" + stParam);
+            if (SaveRecord())
+            {
+                string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&prodid=" + Common.Encrypt(lblProductID.Text, Session.SessionID);
+                Response.Redirect("Default.aspx" + stParam);
+            }
 		}
 		protected void cmdSave_Click(object sender, System.EventArgs e)
 		{
-			SaveRecord();
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID) + "&prodid=" + Common.Encrypt(lblProductID.Text,Session.SessionID);
-			Response.Redirect("Default.aspx" + stParam);
+            if (SaveRecord())
+            {
+                string stParam = "?task=" + Common.Encrypt("add", Session.SessionID) + "&prodid=" + Common.Encrypt(lblProductID.Text, Session.SessionID);
+                Response.Redirect("Default.aspx" + stParam);
+            }
 		}
         protected void imgSaveBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
-			SaveRecord();
-			Response.Redirect(lblReferrer.Text);
+            if (SaveRecord())
+			    Response.Redirect(lblReferrer.Text);
 		}
 		protected void cmdSaveBack_Click(object sender, System.EventArgs e)
 		{
-			SaveRecord();
-			Response.Redirect(lblReferrer.Text);
+            if (SaveRecord())
+			    Response.Redirect(lblReferrer.Text);
 		}
         protected void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
@@ -136,6 +140,27 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 		}
 		private bool SaveRecord()
 		{
+            foreach (DataListItem item in lstItem.Items)
+            {
+                HyperLink lnkVariationType = (HyperLink)item.FindControl("lnkVariationType");
+
+                if (lnkVariationType.Text.ToUpper() == CONSTANT_VARIATIONS.EXPIRATION.ToString("G"))
+                {
+                    TextBox txtDescription = (TextBox)item.FindControl("txtDescription");
+                    try
+                    {
+                        DateTime Expiry = DateTime.Parse(txtDescription.Text);
+                    }
+                    catch
+                    {
+                        string javaScript = "window.alert('Please enter a valid expiration date in YYYY-MM-DD format');";
+                        System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
+
+                        return false;
+                    }
+                }
+            }
+
             string stringVariationDesc = null;
             foreach (DataListItem item in lstItem.Items)
             {

@@ -708,7 +708,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                     clsBranchContactDetails.Remarks = xmlReader.GetAttribute("Remarks");
                                     clsBranchContactDetails.Debit = Convert.ToDecimal(xmlReader.GetAttribute("Debit"));
                                     clsBranchContactDetails.Credit = Convert.ToDecimal(xmlReader.GetAttribute("Credit"));
-                                    clsBranchContactDetails.IsCreditAllowed = Convert.ToInt16(xmlReader.GetAttribute("IsCreditAllowed"));
+                                    clsBranchContactDetails.IsCreditAllowed = Convert.ToBoolean(xmlReader.GetAttribute("IsCreditAllowed"));
                                     clsBranchContactDetails.CreditLimit = Convert.ToDecimal(xmlReader.GetAttribute("CreditLimit"));
                                     clsBranchContactDetails.ContactID = clsBranchContact.Insert(clsBranchContactDetails);
                                 }
@@ -941,7 +941,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 clsBranchContactDetails.Remarks = xmlReader.GetAttribute("Remarks");
                                 clsBranchContactDetails.Debit = Convert.ToDecimal(xmlReader.GetAttribute("Debit"));
                                 clsBranchContactDetails.Credit = Convert.ToDecimal(xmlReader.GetAttribute("Credit"));
-                                clsBranchContactDetails.IsCreditAllowed = Convert.ToInt16(xmlReader.GetAttribute("IsCreditAllowed"));
+                                clsBranchContactDetails.IsCreditAllowed = Convert.ToBoolean(xmlReader.GetAttribute("IsCreditAllowed"));
                                 clsBranchContactDetails.CreditLimit = Convert.ToDecimal(xmlReader.GetAttribute("CreditLimit"));
                                 clsBranchContactDetails.ContactID = clsBranchContact.Insert(clsBranchContactDetails);
                             }

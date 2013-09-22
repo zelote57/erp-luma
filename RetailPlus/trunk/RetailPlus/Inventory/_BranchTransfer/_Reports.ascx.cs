@@ -34,14 +34,16 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
                     GenerateHTML();
 
                 Session["ReportDocument"] = null;
+                Session["ReportType"] = "branchtransfer";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                if (Session["ReportType"].ToString() == "branchtransfer")
+                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 

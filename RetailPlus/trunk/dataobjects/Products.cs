@@ -1810,69 +1810,20 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Delete
 
-		public bool Delete(string IDs)
+		public bool Delete(string IDs, string CreatedBy)
 		{
 			try 
 			{
-				
-				MySqlCommand cmd = new MySqlCommand();
-				string SQL;
+                string SQL = "CALL procProductDelete(@IDs, @CreatedBy);";
 
-                //SQL=	"DELETE FROM tblProductPackage WHERE ProductID IN (" + IDs + ");";
-                //cmd = new MySqlCommand(); 
-				
-				
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = SQL;
-                //base.ExecuteNonQuery(cmd);
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
 
-                //SQL=	"DELETE FROM tblProductUnitMatrix WHERE ProductID IN (" + IDs + ");";
-                //cmd = new MySqlCommand(); 
-				
-				
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = SQL;
-                //base.ExecuteNonQuery(cmd);
+                cmd.Parameters.AddWithValue("@IDs", IDs);
+                cmd.Parameters.AddWithValue("@CreatedBy", CreatedBy);
 
-                //SQL=	"DELETE FROM tblMatrixPackage WHERE MatrixID IN (SELECT MatrixID FROM tblProductBaseVariationsMatrix WHERE ProductID IN (" + IDs + "));";
-                //cmd = new MySqlCommand(); 
-				
-				
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = SQL;
-                //base.ExecuteNonQuery(cmd);
-
-                //SQL=	"DELETE FROM tblProductVariationsMatrix WHERE MatrixID IN (SELECT MatrixID FROM tblProductBaseVariationsMatrix WHERE ProductID IN (" + IDs + "));";
-                //cmd = new MySqlCommand(); 
-				
-				
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = SQL;
-                //base.ExecuteNonQuery(cmd);
-
-                //SQL=	"DELETE FROM tblProductBaseVariationsMatrix WHERE ProductID IN (" + IDs + ");";
-                //cmd = new MySqlCommand(); 
-				
-				
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = SQL;
-                //base.ExecuteNonQuery(cmd);
-
-                //SQL=	"DELETE FROM tblProductVariations WHERE ProductID IN (" + IDs + ");";
-                //cmd = new MySqlCommand(); 
-				
-				
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = SQL;
-                //base.ExecuteNonQuery(cmd);
-
-				SQL=	"UPDATE tblProducts SET deleted = 1 WHERE ProductID IN (" + IDs + ");";
-				cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				base.ExecuteNonQuery(cmd);
+                base.ExecuteNonQuery(cmd);
 				return true;
 			}
 
@@ -3718,15 +3669,7 @@ namespace AceSoft.RetailPlus.Data
             cmd.Parameters.AddWithValue("@isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
             cmd.Parameters.AddWithValue("@lngLimit", Limit);
             cmd.Parameters.AddWithValue("@SortField", SortField);
-            switch (SortOrder)
-            {
-                case SortOption.Ascending:
-                    cmd.Parameters.AddWithValue("@SortOrder", "ASC");
-                    break;
-                case SortOption.Desscending:
-                    cmd.Parameters.AddWithValue("@SortOrder", "DESC");
-                    break;
-            } 
+            cmd.Parameters.AddWithValue("@SortOrder", SortOrder == SortOption.Ascending ? "ASC" : "DESC");
 
             string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
@@ -4001,7 +3944,7 @@ namespace AceSoft.RetailPlus.Data
                                     "prd.EVAT, " +
                                     "prd.LocalTax, " +
 
-                                    "SUM(IFNULL(inv.Quantity,0)) Quantity, " +
+                                    "SUM(IFNULL(inv.Quantity,0)) - SUM(IFNULL(inv.ReservedQuantity,0)) Quantity, " +
                                     "MAX(IFNULL(inv.IsLock,0)) IsLock, " +
                                     //"fnProductQuantityConvert(inv.ProductID, inv.Quantity, prd.BaseUnitID) AS ConvertedQuantity, " +
                                     "SUM(IFNULL(inv.ActualQuantity,0)) ActualQuantity, " +
@@ -4189,7 +4132,7 @@ namespace AceSoft.RetailPlus.Data
 						clsProductVariationsMatrixDetails.ProductID = ProductID;
 						clsProductVariationsMatrixDetails.VariationID = Convert.ToInt64(clsProductSubGroupVariationsMatrixList["VariationID"]);
 						clsProductVariationsMatrixDetails.Description = "" + clsProductSubGroupVariationsMatrixList["Description"].ToString();
-						clsProductVariationsMatrix.InsertVariation(clsProductVariationsMatrixDetails);
+						clsProductVariationsMatrix.Save(clsProductVariationsMatrixDetails);
 					}
 					clsProductSubGroupVariationsMatrixList.Close(); 
 
@@ -4200,15 +4143,6 @@ namespace AceSoft.RetailPlus.Data
 				
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -4423,76 +4357,15 @@ namespace AceSoft.RetailPlus.Data
 		/// <param name="NewVAT"></param>
 		/// <param name="NewEVAT"></param>
 		/// <param name="NewLocalTax"></param>
-		public void ChangeTax(long ProductGroupID, long ProductSubGroupID, long ProductID, decimal NewVAT, decimal NewEVAT, decimal NewLocalTax)
+		public void ChangeTax(long ProductGroupID, long ProductSubGroupID, long ProductID, decimal NewVAT, decimal NewEVAT, decimal NewLocalTax, string CreatedBy)
 		{
 			try
 			{
-				string SQL = "UPDATE tblProducts SET " +
-									"VAT		= @NewVAT, " +
-									"EVAT		= @NewEVAT, " +
-									"LocalTax	= @NewLocalTax ";
-				if (ProductID != 0) SQL += "WHERE ProductID = @ProductID;";
-				else if (ProductSubGroupID != 0) SQL += "WHERE ProductSubGroupID = @ProductSubGroupID;";
-				else if (ProductGroupID != 0) SQL += "WHERE ProductSubGroupID IN (SELECT DISTINCT(ProductSubGroupID) FROM tblProductSubGroup WHERE ProductGroupID = @ProductGroupID);";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmNewVAT = new MySqlParameter("@NewVAT",MySqlDbType.Decimal);
-				prmNewVAT.Value = NewVAT;
-				cmd.Parameters.Add(prmNewVAT);
-
-				MySqlParameter prmNewEVAT = new MySqlParameter("@NewEVAT",MySqlDbType.Decimal);
-				prmNewEVAT.Value = NewEVAT;
-				cmd.Parameters.Add(prmNewEVAT);
-
-				MySqlParameter prmNewLocalTax = new MySqlParameter("@NewLocalTax",MySqlDbType.Decimal);
-				prmNewLocalTax.Value = NewLocalTax;
-				cmd.Parameters.Add(prmNewLocalTax);
-
-				if (ProductID != 0)
-				{
-					MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);
-					prmProductID.Value = ProductID;
-					cmd.Parameters.Add(prmProductID);
-				}
-				else if (ProductSubGroupID != 0)
-				{
-					MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);
-					prmProductSubGroupID.Value = ProductSubGroupID;
-					cmd.Parameters.Add(prmProductSubGroupID);
-				}
-				else if (ProductGroupID != 0)
-				{
-					MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);
-					prmProductGroupID.Value = ProductGroupID;
-					cmd.Parameters.Add(prmProductGroupID);
-				}
-
-				base.ExecuteNonQuery(cmd);
-
 				ProductPackage clsProductPackage = new ProductPackage(base.Connection, base.Transaction);
-				clsProductPackage.ChangeTax(ProductGroupID, ProductSubGroupID, ProductID, NewVAT, NewEVAT, NewLocalTax);
-
-				ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
-				clsProductVariationsMatrix.ChangeTax(ProductGroupID, ProductSubGroupID, ProductID, NewVAT, NewEVAT, NewLocalTax);
+                clsProductPackage.ChangeTax(ProductGroupID, ProductSubGroupID, ProductID, NewVAT, NewEVAT, NewLocalTax, CreatedBy);
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}
 		}

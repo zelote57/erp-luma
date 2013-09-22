@@ -25,20 +25,22 @@ namespace AceSoft.RetailPlus.Reports
 				lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				LoadOptions();
                 Session["ReportDocument"] = null;
+                Session["ReportType"] = "inventory";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                if (Session["ReportType"].ToString() == "inventory")
+                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 
 		private void LoadOptions()
 		{
-            txtExpiryDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            txtExpiryDate.Text = DateTime.Now.AddMonths(6).ToString("yyyy-MM-dd");
 
             cboReportType.Items.Clear();
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION, ReportTypes.REPORT_SELECTION));
@@ -119,7 +121,12 @@ namespace AceSoft.RetailPlus.Reports
             else if (strReportType == ReportTypes.SummarizedInventoryWQtyInOut)
                 rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_inventory/_ProductInventoryReportSummarizedQTYINOUT.rpt"));
             else if (strReportType == ReportTypes.ForPhysicalInventory)
-                rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_inventory/_ProductInventoryReportPhysicalCount.rpt"));
+            {
+                //rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_inventory/_ProductInventoryReportPhysicalCount.rpt"));
+                string javaScript = "window.alert('This is report is obsolete. Please print the report from Closing Inventory Module.')";
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
+                return null;
+            }
             else if (strReportType == ReportTypes.TotalStockInventoryDetailed)
                 rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_inventory/_ProductInventoryReportTotalStock.rpt"));
             else if (strReportType == ReportTypes.TotalStockInventorySummarized)
@@ -143,14 +150,17 @@ namespace AceSoft.RetailPlus.Reports
         {
             ReportDocument rpt = getReportDocument();
 
-            SetDataSource(rpt);
-            CRViewer.ReportSource = rpt;
-            Session["ReportDocument"] = rpt;
-
-            if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
+            if (rpt != null)
             {
-                string strFileName = Session["UserName"].ToString() + "_inventory";
-                CRSHelper.GenerateReport(strFileName, rpt, this.updPrint, pvtExportFormatType);
+                SetDataSource(rpt);
+                CRViewer.ReportSource = rpt;
+                Session["ReportDocument"] = rpt;
+
+                if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
+                {
+                    string strFileName = Session["UserName"].ToString() + "_inventory";
+                    CRSHelper.GenerateReport(strFileName, rpt, this.updPrint, pvtExportFormatType);
+                }
             }
         }
 
@@ -188,8 +198,12 @@ namespace AceSoft.RetailPlus.Reports
             string stProductCode = txtProductCode.Text;
             #endregion
 
+            string ExpirationDate = Constants.C_DATE_MIN_VALUE_STRING;
+            if (strReportType == ReportTypes.ExpiredInventory)
+                ExpirationDate = txtExpiryDate.Text;
+
             ProductInventories clsProductInventories = new ProductInventories();
-            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID);
+            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, ExpirationDate: ExpirationDate);
             clsProductInventories.CommitAndDispose();
             
             foreach (DataRow dr in dt.Rows)

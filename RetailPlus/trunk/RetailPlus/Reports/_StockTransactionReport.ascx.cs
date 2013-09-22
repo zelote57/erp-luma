@@ -24,14 +24,16 @@ namespace AceSoft.RetailPlus.Reports
 				lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				LoadOptions();
                 Session["ReportDocument"] = null;
+                Session["ReportType"] = "stocktran";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                if (Session["ReportType"].ToString() == "stocktran")
+                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 
@@ -53,6 +55,8 @@ namespace AceSoft.RetailPlus.Reports
 
         private void Export(ExportFormatType pvtExportFormatType)
         {
+            if (string.IsNullOrEmpty(txtTransactionNo.Text)) return;
+
             ReportDocument rpt = getReportDocument();
 
             SetDataSource(rpt);
@@ -151,6 +155,13 @@ namespace AceSoft.RetailPlus.Reports
 			currentValues = new ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
+
+            paramField = Report.DataDefinition.ParameterFields["IncludePurchasePrice"];
+            discreteParam = new ParameterDiscreteValue();
+            discreteParam.Value = chkIncludePurchasePrice.Checked;
+            currentValues = new ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);   
             
 		}
 

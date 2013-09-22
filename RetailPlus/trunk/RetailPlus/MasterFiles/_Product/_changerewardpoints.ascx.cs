@@ -89,20 +89,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             txtProductCode.ToolTip = intProductBaseUnitID.ToString();
             lblProductID.ToolTip = decCommision.ToString();
 
-            ProductPurchasePriceHistory clsProductPurchasePriceHistory = new ProductPurchasePriceHistory(clsProduct.Connection, clsProduct.Transaction);
-            System.Data.DataTable dtProductPurchasePriceHistory = clsProductPurchasePriceHistory.ListAsDataTable(Convert.ToInt64(cboProductCode.SelectedValue), "PurchasePrice", SortOption.Ascending);
-
-            string strPurchasePriceHistory = string.Empty;
-            foreach (System.Data.DataRow dr in dtProductPurchasePriceHistory.Rows)
-            {
-                DateTime dtePurchaseDate = DateTime.Parse(dr["PurchaseDate"].ToString());
-                decimal decPurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
-                string strSupplierName = "" + dr["SupplierName"].ToString();
-
-                strPurchasePriceHistory += dtePurchaseDate.ToString("ddMMMyyyy HH:mm") + ": " + decPurchasePrice.ToString("#,##0.#0").PadLeft(10) + " " + strSupplierName + "\r\n<br>" + Environment.NewLine;
-            }
-            lblPurchasePriceHistory.Text = "<br><b>PURCHASE PRICE HISTORY: </b><br><br>" + strPurchasePriceHistory;
-
             clsProduct.CommitAndDispose();
 
         }
@@ -193,7 +179,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100).DefaultView;
+            cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100).DefaultView;
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
 
@@ -206,26 +192,22 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             long lngProductSubGroupID = long.Parse(cboProductSubGroup.SelectedItem.Value);
             long lngProductID = long.Parse(cboProductCode.SelectedItem.Value);
             decimal decRewardPoints = 0;
-            string stScript;
+            string javaScript;
             try
             { decRewardPoints = decimal.Parse(txtRewardPoints.Text); }
             catch 
             {
-                stScript = "<Script>";
-                stScript += "window.alert('Please enter a valid Reward Points.')";
-                stScript += "</Script>";
-                Response.Write(stScript);	
-                return; 
+                javaScript = "window.alert('Please enter a valid Reward Points.')";
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
+                return;
             }
 
             Products clsProduct = new Products();
             clsProduct.UpdateRewardPoints(lngProductGroupID, lngProductSubGroupID, lngProductID, decRewardPoints);
             clsProduct.CommitAndDispose();
 
-            stScript = "<Script>";
-            stScript += "window.alert('Reward points has been updated.')";
-            stScript += "</Script>";
-            Response.Write(stScript);	
+            javaScript = "window.alert('Reward Points has been updated.')";
+            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
 
 		}
 

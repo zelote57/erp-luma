@@ -437,71 +437,28 @@ namespace AceSoft.RetailPlus.Data
         //    }	
         //}
 
-        public void ChangeTax(long ProductGroupID, long ProductSubGroupID, long ProductID, decimal NewVAT, decimal NewEVAT, decimal NewLocalTax)
+        public void ChangeTax(long ProductGroupID, long ProductSubGroupID, long ProductID, decimal NewVAT, decimal NewEVAT, decimal NewLocalTax, string CreatedBy)
         {
             try
             {
-                string SQL = "UPDATE tblProductPackage SET " +
-                                    "VAT		= @NewVAT, " +
-                                    "EVAT		= @NewEVAT, " +
-                                    "LocalTax	= @NewLocalTax ";
-                if (ProductID != 0) SQL += "WHERE ProductID = @ProductID;";
-                else if (ProductSubGroupID != 0) SQL += "WHERE ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID = @ProductSubGroupID);";
-                else if (ProductGroupID != 0) SQL += "WHERE ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID IN (SELECT DISTINCT(ProductSubGroupID) FROM tblProductSubGroup WHERE ProductGroupID = @ProductGroupID));";
-
-                
+                string SQL = "CALL productProductUpdateVAT(@ProductGroupID, @ProductSubGroupID, @ProductID, @NewVAT, @NewEVAT, @NewLocalTax, @CreatedBy);";
 
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmNewVAT = new MySqlParameter("@NewVAT",MySqlDbType.Decimal);
-                prmNewVAT.Value = NewVAT;
-                cmd.Parameters.Add(prmNewVAT);
-
-                MySqlParameter prmNewEVAT = new MySqlParameter("@NewEVAT",MySqlDbType.Decimal);
-                prmNewEVAT.Value = NewEVAT;
-                cmd.Parameters.Add(prmNewEVAT);
-
-                MySqlParameter prmNewLocalTax = new MySqlParameter("@NewLocalTax",MySqlDbType.Decimal);
-                prmNewLocalTax.Value = NewLocalTax;
-                cmd.Parameters.Add(prmNewLocalTax);
-
-                if (ProductID != 0)
-                {
-                    MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);
-                    prmProductID.Value = ProductID;
-                    cmd.Parameters.Add(prmProductID);
-                }
-                else if (ProductSubGroupID != 0)
-                {
-                    MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);
-                    prmProductSubGroupID.Value = ProductSubGroupID;
-                    cmd.Parameters.Add(prmProductSubGroupID);
-                }
-                else if (ProductGroupID != 0)
-                {
-                    MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);
-                    prmProductGroupID.Value = ProductGroupID;
-                    cmd.Parameters.Add(prmProductGroupID);
-                }
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@NewVAT", NewVAT);
+                cmd.Parameters.AddWithValue("@NewEVAT", NewEVAT);
+                cmd.Parameters.AddWithValue("@NewLocalTax", NewLocalTax);
+                cmd.Parameters.AddWithValue("@CreatedBy", CreatedBy);
 
                 base.ExecuteNonQuery(cmd);
-
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -921,29 +878,14 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-
-				
 				
 				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

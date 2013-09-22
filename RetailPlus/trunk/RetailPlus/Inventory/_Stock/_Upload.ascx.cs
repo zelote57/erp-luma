@@ -139,7 +139,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									clsContactDetails.Remarks = reader.GetAttribute("Remarks");
 									clsContactDetails.Debit = Convert.ToDecimal(reader.GetAttribute("Debit"));
 									clsContactDetails.Credit = Convert.ToDecimal(reader.GetAttribute("Credit"));
-									clsContactDetails.IsCreditAllowed = Convert.ToInt16(reader.GetAttribute("IsCreditAllowed"));
+									clsContactDetails.IsCreditAllowed = Convert.ToBoolean(reader.GetAttribute("IsCreditAllowed"));
 									clsContactDetails.CreditLimit = Convert.ToDecimal(reader.GetAttribute("CreditLimit"));
 									ContactID = clsContact.Insert(clsContactDetails);
 								}
@@ -307,7 +307,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									clsProductVariationsMatrixDetails.MatrixID = ProductBaseMatrixID;
 									clsProductVariationsMatrixDetails.VariationID = VariationID;
 									clsProductVariationsMatrixDetails.Description = reader.GetAttribute("Description");
-									clsProductVariationsMatrix.InsertVariation(clsProductVariationsMatrixDetails);
+									clsProductVariationsMatrix.Save(clsProductVariationsMatrixDetails);
 								}
 							}
 							else

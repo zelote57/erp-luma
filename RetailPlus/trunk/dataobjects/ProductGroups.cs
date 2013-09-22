@@ -398,66 +398,32 @@ namespace AceSoft.RetailPlus.Data
         //    }	
         //}
 
-        public void ChangeTax(long ProductGroupID, decimal NewVAT, decimal NewEVAT, decimal NewLocalTax)
-        {
-            try
-            {
-                string SQL = "UPDATE tblProductGroup SET " +
-                                    "VAT		= @NewVAT, " +
-                                    "EVAT		= @NewEVAT, " +
-                                    "LocalTax	= @NewLocalTax ";
-                if (ProductGroupID !=0) SQL += "WHERE ProductGroupID		= @ProductGroupID;";
-
+        //public void ChangeTax(long ProductGroupID, decimal NewVAT, decimal NewEVAT, decimal NewLocalTax)
+        //{
+        //    try
+        //    {
                 
+        //        ProductGroupVariationsMatrix clsProductGroupVariationsMatrix = new ProductGroupVariationsMatrix(base.Connection, base.Transaction);
+        //        clsProductGroupVariationsMatrix.ChangeTax(ProductGroupID, NewVAT, NewEVAT, NewLocalTax);
 
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        ProductSubGroup clsProductSubGroup = new ProductSubGroup(base.Connection, base.Transaction);
+        //        clsProductSubGroup.ChangeTax(ProductGroupID, 0, NewVAT, NewEVAT, NewLocalTax);
+        //    }
 
-                MySqlParameter prmNewVAT = new MySqlParameter("@NewVAT",MySqlDbType.Decimal);
-                prmNewVAT.Value = NewVAT;
-                cmd.Parameters.Add(prmNewVAT);
-
-                MySqlParameter prmNewEVAT = new MySqlParameter("@NewEVAT",MySqlDbType.Decimal);
-                prmNewEVAT.Value = NewEVAT;
-                cmd.Parameters.Add(prmNewEVAT);
-
-                MySqlParameter prmNewLocalTax = new MySqlParameter("@NewLocalTax",MySqlDbType.Decimal);
-                prmNewLocalTax.Value = NewLocalTax;
-                cmd.Parameters.Add(prmNewLocalTax);
-
-                if (ProductGroupID != 0)
-                {
-                    MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);
-                    prmProductGroupID.Value = ProductGroupID;
-                    cmd.Parameters.Add(prmProductGroupID);
-                }
-
-                base.ExecuteNonQuery(cmd);
-
-                ProductGroupVariationsMatrix clsProductGroupVariationsMatrix = new ProductGroupVariationsMatrix(base.Connection, base.Transaction);
-                clsProductGroupVariationsMatrix.ChangeTax(ProductGroupID, NewVAT, NewEVAT, NewLocalTax);
-
-                ProductSubGroup clsProductSubGroup = new ProductSubGroup(base.Connection, base.Transaction);
-                clsProductSubGroup.ChangeTax(ProductGroupID, 0, NewVAT, NewEVAT, NewLocalTax);
-            }
-
-            catch (Exception ex)
-            {
+        //    catch (Exception ex)
+        //    {
                 
                 
-                {
+        //        {
                     
                     
                     
                     
-                }
+        //        }
 
-                throw base.ThrowException(ex);
-            }
-        }
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 
         public void UpdateFinancialInformation(int ChartOfAccountIDPurchase, int ChartOfAccountIDSold, int ChartOfAccountIDInventory, int ChartOfAccountIDTaxPurchase, int ChartOfAccountIDTaxSold)
         {

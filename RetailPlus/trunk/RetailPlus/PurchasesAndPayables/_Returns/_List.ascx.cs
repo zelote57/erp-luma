@@ -34,6 +34,9 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                 }
                 catch { }
 
+                txtOrderStartDate.Text = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd");
+                txtOrderEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+
 				ManageSecurity();
 				LoadList();
 				cmdDelete.Attributes.Add("onClick", "return confirm_cancel();");

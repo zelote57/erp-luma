@@ -25,14 +25,16 @@ namespace AceSoft.RetailPlus.Reports
 				lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				LoadOptions();
                 Session["ReportDocument"] = null;
+                Session["ReportType"] = "branchinventory";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                //CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                //if (Session["ReportType"].ToString() == "branchinventory")
+                    //CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 

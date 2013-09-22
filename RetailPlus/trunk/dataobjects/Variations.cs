@@ -273,11 +273,7 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblVariations " +
 							"WHERE VariationCode = @VariationCode;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -303,15 +299,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -321,72 +308,55 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                if (SortField == null || SortField == string.Empty) SortField = "VariationID";
+        //public MySqlDataReader List(string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        if (SortField == null || SortField == string.Empty) SortField = "VariationID";
 
-				string SQL = SQLSelect() + "ORDER BY " + SortField;
+        //        string SQL = SQLSelect() + "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
 				
 
-				MySqlCommand cmd = new MySqlCommand();
+        //        MySqlCommand cmd = new MySqlCommand();
 				
 				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 				
 				
 				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-        public DataTable ListAsDataTable(string SortField, SortOption SortOrder)
+        //        return base.ExecuteReader(cmd);			
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+        public DataTable ListAsDataTable(string SortField = "VariationCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
         {
             if (SortField == null || SortField == string.Empty) SortField = "VariationID";
 
-            string SQL = SQLSelect() + "ORDER BY " + SortField;
+            SortField = string.IsNullOrEmpty(SortField) ? "VariationCode" : SortField;
 
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC ";
-            else
-                SQL += " DESC ";
-
-            
+            string SQL = SQLSelect() + "ORDER BY " + SortField + " ";
+            SQL += SortOrder == System.Data.SqlClient.SortOrder.Descending ? "DESC " : "ASC ";
 
             MySqlCommand cmd = new MySqlCommand();
-            
-            
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
-
-            System.Data.DataTable dt = new System.Data.DataTable("tblVariations");
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
-            
 
             return dt;
         }
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
+        public MySqlDataReader Search(string SearchKey, string SortField, System.Data.SqlClient.SortOrder SortOrder)
 		{
 			try
 			{
@@ -397,39 +367,20 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblVariations " +
 							"WHERE VariationType LIKE @SearchKey " +
 							"ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
 
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
 				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
-
-				
 				
 				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

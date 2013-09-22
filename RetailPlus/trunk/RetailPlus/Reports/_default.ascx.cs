@@ -24,14 +24,16 @@ namespace AceSoft.RetailPlus.Reports
 				lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				LoadOptions();
                 Session["ReportDocument"] = null;
+                Session["ReportType"] = "reportsdefault";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                if (Session["ReportType"].ToString() == "reportsdefault")
+                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 
@@ -226,8 +228,8 @@ namespace AceSoft.RetailPlus.Reports
             Products clsProduct = new Products();
             System.Data.DataTable dtProductInventoryReport = clsProduct.InventoryReport(ProductGroupName, SubGroupName, txtProductCode.Text);
 
-            ProductVariationsMatrix clsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
-            System.Data.DataTable dtMatrixInventoryReport = clsMatrix.InventoryReport(ProductGroupName, SubGroupName, txtProductCode.Text);
+            //ProductVariationsMatrix clsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
+            //System.Data.DataTable dtMatrixInventoryReport = clsMatrix.InventoryReport(ProductGroupName, SubGroupName, txtProductCode.Text);
             clsProduct.CommitAndDispose();
 
             foreach (System.Data.DataRow dr in dtProductInventoryReport.Rows)
@@ -238,15 +240,6 @@ namespace AceSoft.RetailPlus.Reports
                     drNew[dc] = dr[dc.ColumnName];
 
                 rptds.Products.Rows.Add(drNew);
-            }
-            foreach (System.Data.DataRow dr in dtMatrixInventoryReport.Rows)
-            {
-                DataRow drNew = rptds.ProductVariations.NewRow();
-
-                foreach (DataColumn dc in rptds.ProductVariations.Columns)
-                    drNew[dc] = dr[dc.ColumnName];
-
-                rptds.ProductVariations.Rows.Add(drNew);
             }
 
             Report.SetDataSource(rptds);

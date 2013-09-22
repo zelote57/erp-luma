@@ -1,25 +1,25 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.GeneralLedger._Setup.__ProductFinancialSetup" Codebehind="_ProductFinancialSetup.ascx.cs" %>
 <script language="JavaScript" src="../../_Scripts/SelectAll.js"></script>
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
-<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<TD>
-			<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+		<td>
+			<table cellspacing="0" cellpadding="0" width="100%" border="0">
 				<tr>
-					<td class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px" colSpan="3"><font color="red">*</font>
+					<td class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px" colspan="3"><font color="red">*</font>
 						Indicates a required field<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label>
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
-				<TR>
-					<td style="PADDING-BOTTOM: 10px" vAlign="top" colSpan="3">
-						<table class="ms-authoringcontrols" cellSpacing="0" cellPadding="0" width="100%" border="0">
+				<tr>
+					<td style="PADDING-BOTTOM: 10px" vAlign="top" colspan="3">
+						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr style="PADDING-BOTTOM: 10px">
 								<td><IMG alt="" src="../../_layouts/images/company_logo.gif"></td>
 								<td style="HEIGHT: 70px" borderColor="white" align="left" colspan="5"><label class="ms-sectionheader" style="FONT-WEIGHT: bold; FONT-SIZE: 40px">
@@ -27,9 +27,9 @@
 							</tr>
 						</table>
 					</td>
-				</TR>
+				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td style="PADDING-BOTTOM: 20px; HEIGHT: 67px" vAlign="top">
@@ -46,9 +46,9 @@
 					<td class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px; HEIGHT: 67px" vAlign="top">
                         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                             <ContentTemplate>
-						<table class="ms-authoringcontrols" cellSpacing="0" cellPadding="0" width="100%" border="0">
+						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2">
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2">
                                     Select product group to be updated<font color="red">*</font></td>
 							</tr>
 							<tr>
@@ -62,7 +62,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr >
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2">
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2">
 								    Select product sub group to be updated<font color="red">*</font>
 								</td>
 							</tr>
@@ -73,11 +73,11 @@
                                     </asp:DropDownList>
 								</td>
 							</tr>
-							<TR>
-								<td class="ms-formspacer"></td>
-							</TR>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2">
+								<td class="ms-formspacer"></td>
+							</tr>
+							<tr>
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2">
 								    Select product code to be updated<font color="red">*</font>
 								</td>
 							</tr>
@@ -96,7 +96,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td style="PADDING-BOTTOM: 20px; HEIGHT: 67px" vAlign="top">
@@ -116,9 +116,9 @@
 					<td class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px; HEIGHT: 67px" vAlign="top">
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                             <ContentTemplate>
-						<table class="ms-authoringcontrols" cellSpacing="0" cellPadding="0" width="100%" border="0">
+						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2"><label for="txtAccountNo">
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>
                                     Select account type when buying or purchasing<font color="red">*</font></label></td>
 							</tr>
 							<tr>
@@ -133,7 +133,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2"><label for="txtAccountNo">
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>
                                     Select account type when selling this item<font color="red">*</font></label></td>
 							</tr>
 							<tr>
@@ -144,11 +144,11 @@
 									<asp:RequiredFieldValidator id="RequiredFieldValidator2" runat="server" CssClass="ms-error" ControlToValidate="cboChartOfAccountSold" Display="Dynamic" ErrorMessage="'Account Type' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
 								</td>
 							</tr>
-							<TR>
-								<td class="ms-formspacer"></td>
-							</TR>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2"><label for="txtAccountNo">
+								<td class="ms-formspacer"></td>
+							</tr>
+							<tr>
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>
                                     Select account type to be use for inventory of this item<font color="red">*</font></label>
 								</td>
 							</tr>
@@ -159,10 +159,10 @@
                                     </asp:DropDownList>
 									<asp:RequiredFieldValidator id="RequiredFieldValidator3" runat="server" CssClass="ms-error" ControlToValidate="cboChartOfAccountInventory" Display="Dynamic" ErrorMessage="'Account Type' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator></td>
 							</tr>
-							<TR>
-								<TD class="ms-formspacer" style="height: 19px"></TD>
-								<TD class="ms-authoringcontrols" width="100%" style="height: 19px"></TD>
-							</TR>
+							<tr>
+								<td class="ms-formspacer" style="height: 19px"></td>
+								<td class="ms-authoringcontrols" width="100%" style="height: 19px"></td>
+							</tr>
 						</table>
                             </ContentTemplate>
                             <Triggers>
@@ -172,7 +172,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td style="PADDING-BOTTOM: 20px; HEIGHT: 67px" vAlign="top">
@@ -188,9 +188,9 @@
 					<td class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px; HEIGHT: 67px" vAlign="top">
                         <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                             <ContentTemplate>
-						<table class="ms-authoringcontrols" cellSpacing="0" cellPadding="0" width="100%" border="0">
+						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2"><label for="txtAccountNo">
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>
                                     Select TAX ACCOUNT TYPE when buying or purchasing<font color="red">*</font></label></td>
 							</tr>
 							<tr>
@@ -205,7 +205,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colSpan="2"><label for="txtAccountNo">
+								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>
                                     Select TAX ACCOUNT TYPE when selling this item<font color="red">*</font></label></td>
 							</tr>
 							<tr>
@@ -216,10 +216,10 @@
 									<asp:RequiredFieldValidator id="RequiredFieldValidator5" runat="server" CssClass="ms-error" ControlToValidate="cboChartOfAccountSold" Display="Dynamic" ErrorMessage="'Account Type' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
 								</td>
 							</tr>
-							<TR>
-								<TD class="ms-formspacer"></TD>
-								<TD class="ms-authoringcontrols" width="100%"></TD>
-							</TR>
+							<tr>
+								<td class="ms-formspacer"></td>
+								<td class="ms-authoringcontrols" width="100%"></td>
+							</tr>
 						</table>
                             </ContentTemplate>
                             <Triggers>
@@ -229,42 +229,42 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif" /></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1">
+					<td class="ms-sectionline" colspan="3" height="1">
 						<table class="ms-toolbar" id="twotidGrpsTB" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
-							<TR>
+							<tr>
 								<td class="ms-toolbar" noWrap align="right" width="99%"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>
 								<td class="ms-toolbar">
-									<table cellSpacing="0" cellPadding="1" border="0">
+									<table cellspacing="0" cellpadding="1" border="0">
 										<tr>
 										    <td class="ms-toolbar">
-						                        <table cellSpacing="0" cellPadding="1" border="0">
+						                        <table cellspacing="0" cellpadding="1" border="0">
 							                        <tr>
-								                        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgSave" title="Update Product" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Update Product" border="0" width="16" height="16" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
+								                        <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSave" title="Update Product" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Update Product" border="0" width="16" height="16" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
 								                        </td>
-								                        <td noWrap><asp:linkbutton id="cmdSave" title="Update Product" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSave_Click">Save</asp:linkbutton></td>
+								                        <td nowrap="nowrap"><asp:linkbutton id="cmdSave" title="Update Product" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSave_Click">Save</asp:linkbutton></td>
 							                        </tr>
 						                        </table>
 					                        </td>
-					                        <TD class="ms-separator">|</TD>
+					                        <td class="ms-separator">|</td>
 					                        <td class="ms-toolbar">
-						                        <table cellSpacing="0" cellPadding="1" border="0">
+						                        <table cellspacing="0" cellpadding="1" border="0">
 							                        <tr>
-								                        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveBack" title="Update Product" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Update Product" border="0" width="16" height="16" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
+								                        <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveBack" title="Update Product" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/saveitem.gif" alt="Update Product" border="0" width="16" height="16" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
 								                        </td>
-								                        <td noWrap><asp:linkbutton id="cmdSaveBack" title="Update Product" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
+								                        <td nowrap="nowrap"><asp:linkbutton id="cmdSaveBack" title="Update Product" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
 							                        </tr>
 						                        </table>
 					                        </td>
-					                        <TD class="ms-separator">|</TD>
+					                        <td class="ms-separator">|</td>
 					                        <td class="ms-toolbar">
-						                        <table cellSpacing="0" cellPadding="1" border="0">
+						                        <table cellspacing="0" cellpadding="1" border="0">
 							                        <tr>
-								                        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Cancel Updating Product" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Cancel Updating Product" border="0" width="16" height="16" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
-								                        <td noWrap><asp:linkbutton id="cmdCancel" title="Cancel Updating Product" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
+								                        <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Cancel Updating Product" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Cancel Updating Product" border="0" width="16" height="16" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
+								                        <td nowrap="nowrap"><asp:linkbutton id="cmdCancel" title="Cancel Updating Product" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
 							                        </tr>
 						                        </table>
 					                        </td>
@@ -273,15 +273,15 @@
 										</tr>
 									</table>
 								</td>
-							</TR>
-						</TABLE>
+							</tr>
+						</table>
 					</td>
 				</tr>
 			</table>
-		</TD>
+		</td>
 	</tr>
 	
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>

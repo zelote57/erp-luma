@@ -102,10 +102,11 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
             txtRemarks.Text = clsDetails.Remarks;
             txtDebit.Text = clsDetails.Debit.ToString("#,##0.#0");
             txtCredit.Text = clsDetails.Credit.ToString("#,##0.#0");
-            if (clsDetails.IsCreditAllowed == 0)
-                chkIsCreditAllowed.Checked = false;
-            else
-                chkIsCreditAllowed.Checked = true;
+            clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
+            //if (clsDetails.IsCreditAllowed == 0)
+            //    chkIsCreditAllowed.Checked = false;
+            //else
+            //    chkIsCreditAllowed.Checked = true;
             txtCreditLimit.Text = clsDetails.CreditLimit.ToString("#,##0.#0");
             cboDepartment.SelectedIndex = cboDepartment.Items.IndexOf(cboDepartment.Items.FindByValue(clsDetails.DepartmentID.ToString()));
             cboPosition.SelectedIndex = cboPosition.Items.IndexOf(cboPosition.Items.FindByValue(clsDetails.PositionID.ToString()));

@@ -32,6 +32,9 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
                     }
                     catch { }
 
+                    txtTransferStartDate.Text = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd");
+                    txtTransferEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+
 					ManageSecurity();
 					LoadList();
 					cmdDelete.Attributes.Add("onClick", "return confirm_cancel();");

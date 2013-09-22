@@ -86,9 +86,8 @@
 									    <label>Filter by Customer Group</label>
 								    </td>
 								    <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
-								    <td style="HEIGHT: 15px" colspan="3">
+								    <td style="HEIGHT: 15px">
 									    <asp:dropdownlist id="cboCustomerGroup" CssClass="ms-long" runat="server"></asp:dropdownlist>
-                                    
 								    </td>
                                     <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
                                         <asp:textbox id="txtCustomerGroup" accesskey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>

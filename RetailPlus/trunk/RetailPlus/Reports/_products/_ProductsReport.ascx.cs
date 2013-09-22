@@ -24,14 +24,16 @@ namespace AceSoft.RetailPlus.Reports
 				lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				LoadOptions();
                 Session["ReportDocument"] = null;
+                Session["ReportType"] = "products";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                if (Session["ReportType"].ToString() == "products")
+                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 
@@ -193,6 +195,7 @@ namespace AceSoft.RetailPlus.Reports
             clsProduct.GetConnection();
             ProductInventories clsProductInventories = new ProductInventories(clsProduct.Connection, clsProduct.Transaction);
 
+            
             DataTable dt;
             string ProductIDs = null;
 
@@ -200,10 +203,10 @@ namespace AceSoft.RetailPlus.Reports
             {
                 case ReportTypes.ProductList:
                     #region Products List
-                    dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKey);
-
-                    ProductVariationsMatrix clsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
-                    System.Data.DataTable dtMatrixInventoryReport = clsMatrix.InventoryReport(ProductGroupName, SubGroupName, txtProductCode.Text);
+                    //dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKey);
+                    dt = clsProductInventories.ListAsDataTable(int.Parse(cboBranch.SelectedItem.Value), SupplierID: long.Parse(cboContact.SelectedItem.Value), ProductGroupID: long.Parse(cboProductGroup.SelectedItem.Value), ProductSubGroupID: long.Parse(cboSubGroup.SelectedItem.Value), ProductCode: txtProductCode.Text);
+                    //ProductVariationsMatrix clsMatrix = new ProductVariationsMatrix(clsProduct.Connection, clsProduct.Transaction);
+                    //System.Data.DataTable dtMatrixInventoryReport = clsMatrix.InventoryReport(ProductGroupName, SubGroupName, txtProductCode.Text);
                     clsProduct.CommitAndDispose();
 
                     foreach (System.Data.DataRow dr in dt.Rows)
@@ -215,21 +218,12 @@ namespace AceSoft.RetailPlus.Reports
 
                         rptds.Products.Rows.Add(drNew);
                     }
-                    foreach (System.Data.DataRow dr in dtMatrixInventoryReport.Rows)
-                    {
-                        DataRow drNew = rptds.ProductVariations.NewRow();
-
-                        foreach (DataColumn dc in rptds.ProductVariations.Columns)
-                            drNew[dc] = dr[dc.ColumnName];
-
-                        rptds.ProductVariations.Rows.Add(drNew);
-                    }
                     break;
                     #endregion
 
                 case ReportTypes.ProductPriceList:
                     #region Products Price List
-                    dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKey);
+                    dt = clsProductInventories.ListAsDataTable(int.Parse(cboBranch.SelectedItem.Value), SupplierID: long.Parse(cboContact.SelectedItem.Value), ProductGroupID: long.Parse(cboProductGroup.SelectedItem.Value), ProductSubGroupID: long.Parse(cboSubGroup.SelectedItem.Value), ProductCode: txtProductCode.Text);
                     clsProduct.CommitAndDispose();
                     foreach (DataRow dr in dt.Rows)
                     {

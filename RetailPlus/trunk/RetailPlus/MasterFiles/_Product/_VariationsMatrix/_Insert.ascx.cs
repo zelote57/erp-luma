@@ -153,7 +153,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
                     }
                     catch
                     {
-                        string javaScript = "window.alert('Please enter a valid expiration date in YYYY-MM-DD format');";
+                        string javaScript = "window.alert('Please enter a valid expiration date in YYYY-MM-DD format.');";
                         System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
 
                         return false;
@@ -205,7 +205,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 				clsDetails.VariationID = Convert.ToInt32(chkList.Value);
 				clsDetails.Description = txtDescription.Text;
 				
-				clsProductVariationsMatrix.InsertVariation(clsDetails);
+				clsProductVariationsMatrix.Save(clsDetails);
 			}
 			clsProductVariationsMatrix.CommitAndDispose();
 

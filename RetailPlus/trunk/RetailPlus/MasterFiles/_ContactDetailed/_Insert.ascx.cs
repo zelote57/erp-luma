@@ -127,24 +127,21 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 
             ContactDetails clsDetails = new ContactDetails();
 
-            //clsDetails.ContactCode = txtFirstName.Text;
-            //clsDetails.ContactName = txtLastName.Text;
-            //clsDetails.ContactGroupID = Convert.ToInt32(cboGroup.SelectedItem.Value);
-            //clsDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), cboModeOfTerms.SelectedItem.Value);
-            //clsDetails.Terms = Convert.ToInt32(txtTerms.Text);
-            //clsDetails.Address = txtAddress.Text;
-            //clsDetails.BusinessName = txtBusinessName.Text;
-            //clsDetails.TelephoneNo = txtTelephoneNo.Text;
-            //clsDetails.Remarks = txtRemarks.Text;
-            //clsDetails.Debit = Convert.ToDecimal(txtDebit.Text);
-            //clsDetails.Credit = Convert.ToDecimal(txtCredit.Text);
-            //if (chkIsCreditAllowed.Checked == false)
-            //    clsDetails.IsCreditAllowed = 0;
-            //else
-            //    clsDetails.IsCreditAllowed = 1;
-            //clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
-            //clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
-            //clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
+            clsDetails.ContactCode = txtFirstName.Text;
+            clsDetails.ContactName = txtLastName.Text;
+            clsDetails.ContactGroupID = Convert.ToInt32(cboGroup.SelectedItem.Value);
+            clsDetails.ModeOfTerms = ModeOfTerms.Months;
+            clsDetails.Terms = 0;
+            clsDetails.Address = txtAddress1.Text + " " + txtAddress2.Text + " " + txtCity.Text + " " + txtState.Text + " " + txtZipCode.Text;
+            clsDetails.BusinessName = txtBusinessName.Text;
+            clsDetails.TelephoneNo = txtBusinessName.Text;
+            clsDetails.Remarks = txtRemarks.Text;
+            clsDetails.Debit = 0;
+            clsDetails.Credit = 0;
+            clsDetails.IsCreditAllowed = false;
+            clsDetails.CreditLimit = 0;
+            clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
+            clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
 
             Contacts clsContact = new Contacts();
             Int64 id = clsContact.Insert(clsDetails);

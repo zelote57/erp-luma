@@ -96,7 +96,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
 				ARLinkConfigDetails clsARLinkConfigDetails = clsERPConfig.ARLinkDetails();
 
 				string SQL = "INSERT INTO tblSO (" +
@@ -262,7 +262,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
 				ARLinkConfigDetails clsARLinkConfigDetails = clsERPConfig.ARLinkDetails();
 
 				string SQL = "UPDATE tblSO SET " +
@@ -597,7 +597,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 
 			SODetails clsSODetails = Details(SOID);
-            ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+            SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
 			ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
             SOItem clsSOItem = new SOItem(base.Connection, base.Transaction);
@@ -1450,7 +1450,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string stRetValue = String.Empty;
 
-				ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+				SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
 				stRetValue = clsERPConfig.get_LastSONo();
 
 				return stRetValue;

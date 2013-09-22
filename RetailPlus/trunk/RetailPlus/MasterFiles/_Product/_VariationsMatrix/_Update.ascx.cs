@@ -215,7 +215,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 				clsDetails.VariationID = Convert.ToInt32(chkList.Value);
 				clsDetails.Description = txtDescription.Text;
 				
-				clsProductVariationsMatrix.Update(clsDetails);
+				clsProductVariationsMatrix.Save(clsDetails);
 
 				Label lblVariationType = (Label) item.FindControl("lblVariationType");
 				//stringVariationDesc += lblVariationType.Text + ":" + txtDescription.Text + "; ";

@@ -133,6 +133,11 @@ namespace AceSoft.RetailPlus
 			Session.Add("FaxPhone", clsDetails.FaxPhone);
 			Session.Add("MobilePhone", clsDetails.MobilePhone);
 			Session.Add("EmailAddress", clsDetails.EmailAddress);
+
+            Data.SysConfig clsSysConfig = new Data.SysConfig();
+            Session.Add(Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE, clsSysConfig.get_BackendVariationType());
+            clsSysConfig.CommitAndDispose();
+
 		}
 	}
 }

@@ -32,9 +32,9 @@ namespace AceSoft.RetailPlus.Data
 		public decimal Debit;
 		public decimal Credit;
 		public decimal CreditLimit;
-		public Int16 IsCreditAllowed;
+		public bool IsCreditAllowed;
 		public DateTime DateCreated;
-		public int Deleted;
+		public bool Deleted;
         public int DepartmentID;
         public string DepartmentName;
         public int PositionID;
@@ -48,6 +48,10 @@ namespace AceSoft.RetailPlus.Data
 
         // May 14, 2013
         public bool isLock;
+
+        // Sep 15, 2013 : for additional contact info
+        public ContactAddOnDetails AdditionalDetails;
+
 	}
 
     public struct ContactColumns
@@ -121,18 +125,20 @@ namespace AceSoft.RetailPlus.Data
 		public const long DEFAULT_SUPPLIER_ID = 2;
         public const string DEFAULT_SUPPLIER_NAME = "RetailPlus Supplier ™";
 
+        public ContactAddOns _ContactAddOns;
 
 		#region Constructors and Destructors
 
 		public Contacts()
             : base(null, null)
         {
+            _ContactAddOns = new ContactAddOns(this.Connection, this.Transaction);
         }
 
         public Contacts(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
-
+            _ContactAddOns = new ContactAddOns(this.Connection, this.Transaction);
 		}
 
 		#endregion
@@ -219,6 +225,9 @@ namespace AceSoft.RetailPlus.Data
 
 				myReader.Close();
 
+                //Sep 15, 2013 Include the sepecific details if there's any
+                _ContactAddOns.Save(Details.AdditionalDetails);
+
 				return iID;
 			}
 
@@ -272,6 +281,10 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@ContactID", Details.ContactID);
 
 				base.ExecuteNonQuery(cmd);
+
+                //Sep 15, 2013 Include the sepecific details if there's any
+
+                _ContactAddOns.Save(Details.AdditionalDetails);
 			}
 
 			catch (Exception ex)
@@ -324,6 +337,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                //Sep 15, 2013 Include the sepecific details if there's any
+                _ContactAddOns.Delete(IDs);
+
 				string SQL=	"DELETE FROM tblContacts WHERE ContactID IN (" + IDs + ");";
 				  
 				MySqlCommand cmd = new MySqlCommand();
@@ -456,17 +472,19 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=	SQLSelect() + "WHERE a.ContactID = @ContactID;";
+                //string SQL=	SQLSelect() + "WHERE a.ContactID = @ContactID;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                //MySqlCommand cmd = new MySqlCommand();
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                //cmd.Parameters.AddWithValue("@ContactID", ContactID);
 				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                //string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                //base.MySqlDataAdapterFill(cmd, dt);
 
-                ContactDetails clsContactDetails = Details(myReader);
+                System.Data.DataTable dt = ListAsDataTable(ContactGroupCategory.BOTH, ContactID);
+                ContactDetails clsContactDetails = setDetails(dt);
 
                 return clsContactDetails;
 			}
@@ -480,17 +498,20 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-		        string SQL=	SQLSelect() + "WHERE ContactCode = @ContactCode;";
+                //string SQL=	SQLSelect() + "WHERE ContactCode = @ContactCode;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                //MySqlCommand cmd = new MySqlCommand();
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
+                //cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                //MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 
-                ContactDetails clsContactDetails = Details(myReader);
+                //ContactDetails clsContactDetails = Details(myReader);
+
+                System.Data.DataTable dt = ListAsDataTable(ContactGroupCategory.BOTH, ContactCode: ContactCode);
+                ContactDetails clsContactDetails = setDetails(dt);
 
                 return clsContactDetails;
 			}
@@ -573,9 +594,9 @@ namespace AceSoft.RetailPlus.Data
                     Details.Debit = myReader.GetDecimal("Debit");
                     Details.Credit = myReader.GetDecimal("Credit");
                     Details.CreditLimit = myReader.GetDecimal("CreditLimit");
-                    Details.IsCreditAllowed = myReader.GetInt16("IsCreditAllowed");
+                    Details.IsCreditAllowed = myReader.GetBoolean("IsCreditAllowed");
                     Details.DateCreated = myReader.GetDateTime("DateCreated");
-                    Details.Deleted = myReader.GetByte("Deleted");
+                    Details.Deleted = myReader.GetBoolean("Deleted");
                     Details.DepartmentID = myReader.GetInt16("DepartmentID");
                     Details.DepartmentName = "" + myReader["DepartmentName"].ToString();
                     Details.PositionID = myReader.GetInt16("PositionID");
@@ -598,32 +619,58 @@ namespace AceSoft.RetailPlus.Data
             catch (Exception ex) { throw base.ThrowException(ex); }
             return Details;
         }
+
+        private ContactDetails setDetails(System.Data.DataTable dt)
+        {
+            ContactDetails Details = new ContactDetails();
+
+            try
+            {
+                foreach(System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.ContactID = Int64.Parse(dr["ContactID"].ToString());
+                    Details.ContactCode = "" + dr["ContactCode"].ToString();
+                    Details.ContactName = "" + dr["ContactName"].ToString();
+                    Details.ContactGroupID = Int32.Parse(dr["ContactGroupID"].ToString());
+                    Details.ContactGroupName = "" + dr["ContactGroupName"].ToString();
+                    Details.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), dr["ModeOfTerms"].ToString());
+                    Details.Terms = Int32.Parse(dr["Terms"].ToString());
+                    Details.Address = "" + dr["Address"].ToString();
+                    Details.BusinessName = "" + dr["BusinessName"].ToString();
+                    Details.TelephoneNo = "" + dr["TelephoneNo"].ToString();
+                    Details.Remarks = "" + dr["Remarks"].ToString();
+                    Details.Debit = decimal.Parse(dr["Debit"].ToString());
+                    Details.Credit =decimal.Parse(dr["Credit"].ToString());
+                    Details.CreditLimit = decimal.Parse(dr["CreditLimit"].ToString());
+                    Details.IsCreditAllowed = bool.Parse(dr["IsCreditAllowed"].ToString());
+                    Details.DateCreated = DateTime.Parse(dr["DateCreated"].ToString());
+                    Details.Deleted = bool.Parse(dr["Deleted"].ToString());
+                    Details.DepartmentID = Int16.Parse(dr["DepartmentID"].ToString());
+                    Details.DepartmentName = "" + dr["DepartmentName"].ToString();
+                    Details.PositionID = Int16.Parse(dr["PositionID"].ToString());
+                    Details.PositionName = "" + dr["PositionName"].ToString();
+
+                    Details.isLock = Convert.ToBoolean(Int16.Parse(dr["isLock"].ToString()));
+                }
+
+                // Sep 14, 2011 : Lemu - for reward points
+                ContactReward clsContactReward = new ContactReward(base.Connection, base.Transaction);
+                Details.RewardDetails = clsContactReward.Details(Details.ContactID);
+
+                // Nov 2, 2011 : Lemu - for credit
+                ContactCredit clsContactCredit = new ContactCredit(base.Connection, base.Transaction);
+                Details.CreditDetails = clsContactCredit.Details(Details.ContactID);
+                Details.CreditDetails.CreditLimit = Details.CreditLimit;
+                Details.CreditDetails.CreditActive = Convert.ToBoolean(Details.IsCreditAllowed);
+            }
+            catch (Exception ex) { throw base.ThrowException(ex); }
+            return Details;
+        }
+
 		#endregion
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE 1=1 AND deleted = '0' ORDER BY " + SortField; 
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-                return base.ExecuteReader(cmd);
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
 		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
 		{
 			try
@@ -983,204 +1030,9 @@ namespace AceSoft.RetailPlus.Data
             }
         }		
 		
-        //public MySqlDataReader AdvanceSearch(ContactGroupCategory ContactGroupCategory, string ContactCode, string ContactName, Int16 Deleted, Int32 ContactGroupID, bool HasCreditOnly, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-
-        //        string SQL = SQLSelect() + "WHERE 1=1 ";
-
-        //        if (ContactGroupCategory == ContactGroupCategory.CUSTOMER)
-        //        {
-        //            SQL += "AND (b.ContactGroupCategory = @CustomerCategory OR b.ContactGroupCategory = @BothCategory) ";
-        //            SQL += "OR (ContactID IN (SELECT CustomerID FROM tblContactRewards WHERE RewardCardNo LIKE @SearchKey)) ";
-        //            cmd.Parameters.AddWithValue("@CustomerCategory", ContactGroupCategory.CUSTOMER.ToString("d"));
-        //            cmd.Parameters.AddWithValue("@BothCategory", ContactGroupCategory.BOTH.ToString("d"));
-        //        }
-
-        //        if (ContactGroupCategory == ContactGroupCategory.SUPPLIER)
-        //        {
-        //            SQL += "AND (b.ContactGroupCategory = @SupplierCategory OR b.ContactGroupCategory = @BothCategory) ";
-        //            cmd.Parameters.AddWithValue("@SupplierCategory", ContactGroupCategory.SUPPLIER.ToString("d"));
-        //            cmd.Parameters.AddWithValue("@BothCategory", ContactGroupCategory.BOTH.ToString("d"));
-        //        }
-
-        //        if (ContactCode != null && ContactCode != string.Empty && ContactCode != "" && ContactCode != "0")
-        //        {
-        //            SQL += " AND a.ContactCode = @ContactCode ";
-        //            cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
-        //        }
-        //        if (ContactName != null && ContactName != string.Empty && ContactName != "" && ContactName != "0")
-        //        {
-        //            SQL += " AND a.ContactName = @ContactName ";
-        //            cmd.Parameters.AddWithValue("@ContactName", ContactName);
-        //        }
-
-        //        if (ContactGroupID != 0)
-        //        {
-        //            SQL += "AND a.ContactGroupID = @ContactGroupID ";
-        //            cmd.Parameters.AddWithValue("@ContactGroupID", ContactGroupID);
-        //        }
-        //        if (HasCreditOnly == true)
-        //            SQL += "AND Credit > 0 ";
-
-        //        if (Deleted != 2)
-        //        {
-        //            SQL += "AND a.Deleted = @Deleted ";
-        //            cmd.Parameters.AddWithValue("@Deleted", Deleted);
-        //        }
-
-        //        SQL += "ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        cmd.CommandText = SQL;
-
-        //        return base.ExecuteReader(cmd);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }
-        //}		
-        //public MySqlDataReader CustomerAdvanceSearch(string ContactCode, string ContactName, string ContactGroupCode, bool HasCreditOnly, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-
-        //        string SQL = SQLSelect() + "WHERE 1=1 ";
-				
-        //        SQL += "AND (b.ContactGroupCategory = @CustomerCategory OR b.ContactGroupCategory = @BothCategory) ";
-
-        //        MySqlParameter prmCustomerCategory = new MySqlParameter("@CustomerCategory",MySqlDbType.Int16);
-        //        prmCustomerCategory.Value = ContactGroupCategory.CUSTOMER.ToString("d");
-        //        cmd.Parameters.Add(prmCustomerCategory);
-
-        //        MySqlParameter prmBothCategory = new MySqlParameter("@BothCategory",MySqlDbType.Int16);
-        //        prmBothCategory.Value = ContactGroupCategory.BOTH.ToString("d");
-        //        cmd.Parameters.Add(prmBothCategory);
-
-        //        if (ContactCode != null && ContactCode != string.Empty && ContactCode != "" && ContactCode != "0")
-        //        {
-        //            SQL += " AND a.ContactCode = @ContactCode ";
-
-        //            MySqlParameter prmContactCode = new MySqlParameter("@ContactCode",MySqlDbType.String);
-        //            prmContactCode.Value = ContactCode;
-        //            cmd.Parameters.Add(prmContactCode);
-        //        }
-        //        if (ContactName != null && ContactName != string.Empty && ContactName != "" && ContactName != "0")
-        //        {
-        //            SQL += " AND a.ContactName = @ContactName ";
-
-        //            MySqlParameter prmContactName = new MySqlParameter("@ContactName",MySqlDbType.String);
-        //            prmContactName.Value = ContactName;
-        //            cmd.Parameters.Add(prmContactName);
-        //        }
-				
-        //        if (HasCreditOnly == true)
-        //            SQL += "AND Credit > 0 ";
-
-        //        if (ContactGroupCode != null & ContactGroupCode != string.Empty && ContactGroupCode != "" && ContactGroupCode != "0")
-        //        {
-        //            SQL += "AND b.ContactGroupCode = @ContactGroupCode ";
-
-        //            MySqlParameter prmContactGroupCode = new MySqlParameter("@ContactGroupCode",MySqlDbType.String);
-        //            prmContactGroupCode.Value = ContactGroupCode;
-        //            cmd.Parameters.Add(prmContactGroupCode);
-        //        }
-				
-
-        //        SQL += "ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        cmd.CommandText = SQL;
-				
-        //        return base.ExecuteReader(cmd);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
-
         public System.Data.DataTable CustomerAdvanceSearch(string ContactCode, string ContactName, string ContactGroupCode, bool HasCreditOnly, string SortField, SortOption SortOrder)
         {
-            try
-            {
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-
-                string SQL = SQLSelect() + "WHERE 1=1 ";
-
-                SQL += "AND (b.ContactGroupCategory = @CustomerCategory OR b.ContactGroupCategory = @BothCategory) ";
-
-                MySqlParameter prmCustomerCategory = new MySqlParameter("@CustomerCategory", MySqlDbType.Int16);
-                prmCustomerCategory.Value = ContactGroupCategory.CUSTOMER.ToString("d");
-                cmd.Parameters.Add(prmCustomerCategory);
-
-                MySqlParameter prmBothCategory = new MySqlParameter("@BothCategory", MySqlDbType.Int16);
-                prmBothCategory.Value = ContactGroupCategory.BOTH.ToString("d");
-                cmd.Parameters.Add(prmBothCategory);
-
-                if (ContactCode != null && ContactCode != string.Empty && ContactCode != "" && ContactCode != "0")
-                {
-                    SQL += " AND a.ContactCode = @ContactCode ";
-
-                    MySqlParameter prmContactCode = new MySqlParameter("@ContactCode", MySqlDbType.String);
-                    prmContactCode.Value = ContactCode;
-                    cmd.Parameters.Add(prmContactCode);
-                }
-                if (ContactName != null && ContactName != string.Empty && ContactName != "" && ContactName != "0")
-                {
-                    SQL += " AND a.ContactName = @ContactName ";
-
-                    MySqlParameter prmContactName = new MySqlParameter("@ContactName", MySqlDbType.String);
-                    prmContactName.Value = ContactName;
-                    cmd.Parameters.Add(prmContactName);
-                }
-
-                if (HasCreditOnly == true)
-                    SQL += "AND Credit > 0 ";
-
-                if (ContactGroupCode != null & ContactGroupCode != string.Empty && ContactGroupCode != "" && ContactGroupCode != "0")
-                {
-                    SQL += "AND b.ContactGroupCode = @ContactGroupCode ";
-
-                    MySqlParameter prmContactGroupCode = new MySqlParameter("@ContactGroupCode", MySqlDbType.String);
-                    prmContactGroupCode.Value = ContactGroupCode;
-                    cmd.Parameters.Add(prmContactGroupCode);
-                }
-
-
-                SQL += "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                cmd.CommandText = SQL;
-
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
-
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
+            return ListAsDataTable(ContactGroupCategory.CUSTOMER, ContactCode: ContactCode, ContactName: ContactName, ContactGroupCode: ContactGroupCode, hasCreditOnly: HasCreditOnly, intDeleted: 0, SortField: SortField, SortOrder: SortOrder);
         }
 
 		#endregion
@@ -1327,201 +1179,25 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }		
-        //public DataTable CustomersDataTable(string SearchKey, Int32 Limit, bool HasCreditOnly, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-
-        //        dt.Columns.Add("ContactID");
-        //        dt.Columns.Add("ContactCode");
-        //        dt.Columns.Add("ContactName");
-        //        dt.Columns.Add("Debit");
-        //        dt.Columns.Add("Credit");
-        //        dt.Columns.Add("CreditLimit");
-        //        dt.Columns.Add("IsCreditAllowed");
-        //        dt.Columns.Add("PositionName");
-        //        dt.Columns.Add("DepartmentName");
-
-        //        MySqlDataReader myReader = Customers(SearchKey, Limit, HasCreditOnly, SortField, SortOrder);
-
-        //        while (myReader.Read())
-        //        {
-        //            System.Data.DataRow dr = dt.NewRow();
-
-        //            dr["ContactID"] = myReader.GetInt64("ContactID");
-        //            dr["ContactCode"] = "" + myReader["ContactCode"].ToString();
-        //            dr["ContactName"] = "" + myReader["ContactName"].ToString();
-        //            dr["Debit"] = myReader.GetDecimal("Debit");
-        //            dr["Credit"] = myReader.GetDecimal("Credit");
-        //            dr["CreditLimit"] = myReader.GetDecimal("CreditLimit");
-        //            dr["IsCreditAllowed"] = myReader.GetInt16("IsCreditAllowed");
-        //            dr["PositionName"] = "" + myReader["PositionName"].ToString();
-        //            dr["DepartmentName"] = "" + myReader["DepartmentName"].ToString();
-
-        //            dt.Rows.Add(dr);
-        //        }
-        //        myReader.Close();
-
-        //        return dt;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
         public DataTable CustomersDataTable(string SearchKey, Int32 Limit = Constants.C_DEFAULT_LIMIT_OF_RECORD_TO_SHOW, bool HasCreditOnly= false, string SortField = "ContactName", SortOption SortOrder=SortOption.Ascending)
 		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE deleted = '0' " +
-							    "AND (ContactCode LIKE @SearchKey " +
-							    "OR ContactName LIKE @SearchKey) ";
-
-				SQL += "AND (b.ContactGroupCategory = @CustomerCategory OR b.ContactGroupCategory = @BothCategory) ";
-                if (HasCreditOnly)
-                    SQL += "AND Credit > 0 ";
-
-				SQL += "ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC ";
-				else
-					SQL += " DESC ";
-
-				if (Limit != 0)
-					SQL += "LIMIT " + Limit;
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				MySqlParameter prmCustomerCategory = new MySqlParameter("@CustomerCategory",MySqlDbType.Int16);
-				prmCustomerCategory.Value = ContactGroupCategory.CUSTOMER.ToString("d");
-				cmd.Parameters.Add(prmCustomerCategory);
-
-				MySqlParameter prmBothCategory = new MySqlParameter("@BothCategory",MySqlDbType.Int16);
-				prmBothCategory.Value = ContactGroupCategory.BOTH.ToString("d");
-				cmd.Parameters.Add(prmBothCategory);
-
-				string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-				base.MySqlDataAdapterFill(cmd, dt);
-				
-				return dt;
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
+            return ListAsDataTable(ContactGroupCategory.CUSTOMER, ContactCode: SearchKey, ContactName: SearchKey, hasCreditOnly: HasCreditOnly, intDeleted: 0, Limit: Limit, SortField: SortField, SortOrder: SortOrder);
 		}
         public DataTable ListAsDataTable(string SortField, SortOption SortOrder)
         {
-            string SQL = SQLSelect() + "WHERE deleted = '0' ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
+            return ListAsDataTable(intDeleted: 0, SortField: SortField, SortOrder: SortOrder);
         }
         public DataTable SearchAsDataTable(string SearchKey, string SortField, SortOption SortOrder)
         {
-            string SQL = SQLSelect() + "WHERE deleted = '0' AND (ContactCode LIKE @SearchKey or ContactName LIKE @SearchKey) ";
-
-            SQL += "ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            cmd.Parameters.AddWithValue("@SearchKey", SearchKey + "%");
-
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
+            return ListAsDataTable(ContactCode: SearchKey, ContactName: SearchKey, intDeleted: 0, SortField: SortField, SortOrder: SortOrder);
         }
         public DataTable SuppliersAsDataTable(string SearchKey = "", Int32 Limit = 0, string SortField = "ContactCode", SortOption SortOrder = SortOption.Ascending)
         {
-            MySqlCommand cmd = new MySqlCommand();
-
-            string SQL = SQLSelect() + "WHERE 1=1 AND deleted = 0 ";
-
-            if (SearchKey != string.Empty)
-            {
-                SQL += "AND (ContactCode LIKE @SearchKey OR ContactName LIKE @SearchKey) ";
-                cmd.Parameters.AddWithValue("@SearchKey", SearchKey + "%");
-            }
-            SQL += "AND (b.ContactGroupCategory = @SupplierCategory OR b.ContactGroupCategory = @BothCategory) ";
-            
-            SQL += "ORDER BY " + SortField;
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC ";
-            else
-                SQL += " DESC ";
-
-            if (Limit != 0)
-                SQL += "LIMIT " + Limit;
-
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            cmd.Parameters.AddWithValue("@SupplierCategory", ContactGroupCategory.SUPPLIER.ToString("d"));
-            cmd.Parameters.AddWithValue("@BothCategory", ContactGroupCategory.BOTH.ToString("d"));
-
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
+            return ListAsDataTable(ContactGroupCategory.SUPPLIER, ContactCode: SearchKey, ContactName: SearchKey, intDeleted: 0, Limit: Limit, SortField: SortField, SortOrder: SortOrder);
         }
         public DataTable AgentsAsDataTable(string SearchKey = "", Int32 Limit = 0, string SortField = "ContactCode", SortOption SortOrder = SortOption.Ascending)
         {
-            if (SearchKey == null) SearchKey = string.Empty;
-
-            string SQL = SQLSelect() + "WHERE 1=1 AND deleted = '0' " +
-                                "AND (ContactCode LIKE @SearchKey " +
-                                "OR ContactName LIKE @SearchKey) ";
-
-            SQL += "AND (b.ContactGroupCategory = @AgentCategory OR b.ContactGroupCategory = @BothCategory) ";
-            SQL += "ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC ";
-            else
-                SQL += " DESC ";
-
-            if (Limit != 0)
-                SQL += "LIMIT " + Limit;
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            cmd.Parameters.AddWithValue("@SearchKey", SearchKey + "%");
-            cmd.Parameters.AddWithValue("@AgentCategory", ContactGroupCategory.AGENT.ToString("d"));
-            cmd.Parameters.AddWithValue("@BothCategory", ContactGroupCategory.BOTH.ToString("d"));
-
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
+            return ListAsDataTable(ContactGroupCategory.AGENT, ContactCode: SearchKey, ContactName: SearchKey, intDeleted: 0, Limit: Limit, SortField: SortField, SortOrder: SortOrder);
         }
 
         public DataTable CustomersWithRewards(ContactColumns clsContactColumns, long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, Int32 Limit, string CustomerCode_RewardCardNo, DateTime RewardExpiryDateFrom, DateTime RewardExpiryDateTo, Constants.DateSelectionString BirthDate = Constants.DateSelectionString.ALL, Int16 RewardCardStatus = -1, string SortField = "ContactCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
@@ -1683,6 +1359,33 @@ namespace AceSoft.RetailPlus.Data
             {
                 throw base.ThrowException(ex);
             }
+        }
+
+        public DataTable ListAsDataTable(ContactGroupCategory groupCategory=ContactGroupCategory.BOTH, long ContactID=0, string ContactCode="", string ContactName="", string ContactGroupCode="", string RewardCardNo = "", string Name="", bool hasCreditOnly=false, int intDeleted = -1, int Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending)
+        {
+            string SQL = "CALL procContactSelect(@ContactGroupCategory, @ContactID, @ContactCode, @ContactName, @ContactGroupCode, @RewardCardNo, @Name, @hasCreditOnly, @intDeleted, @lngLimit, @SortField, @SortOrder)";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            cmd.Parameters.AddWithValue("@ContactGroupCategory", groupCategory.ToString("d"));
+            cmd.Parameters.AddWithValue("@ContactID", ContactID);
+            cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
+            cmd.Parameters.AddWithValue("@ContactName", ContactName);
+            cmd.Parameters.AddWithValue("@ContactGroupCode", ContactGroupCode);
+            cmd.Parameters.AddWithValue("@RewardCardNo", RewardCardNo);
+            cmd.Parameters.AddWithValue("@Name", Name);
+            cmd.Parameters.AddWithValue("@hasCreditOnly", hasCreditOnly);
+            cmd.Parameters.AddWithValue("@intDeleted", intDeleted);
+            cmd.Parameters.AddWithValue("@lngLimit", Limit);
+            cmd.Parameters.AddWithValue("@SortField", SortField);
+            cmd.Parameters.AddWithValue("@SortOrder", SortOrder == SortOption.Ascending ? "ASC" : "DESC");
+
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            return dt;
         }
 
 		#endregion

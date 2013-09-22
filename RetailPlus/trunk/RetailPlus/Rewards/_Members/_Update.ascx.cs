@@ -128,10 +128,11 @@ namespace AceSoft.RetailPlus.Rewards._Members
             txtRemarks.Text = clsDetails.Remarks;
             txtDebit.Text = clsDetails.Debit.ToString("###0.#0");
             txtCredit.Text = clsDetails.Credit.ToString("###0.#0");
-            if (clsDetails.IsCreditAllowed == 0)
-                chkIsCreditAllowed.Checked = false;
-            else
-                chkIsCreditAllowed.Checked = true;
+            clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
+            //if (clsDetails.IsCreditAllowed == 0)
+            //    chkIsCreditAllowed.Checked = false;
+            //else
+            //    chkIsCreditAllowed.Checked = true;
             txtCreditLimit.Text = clsDetails.CreditLimit.ToString("###0.#0");
             cboDepartment.SelectedIndex = cboDepartment.Items.IndexOf(cboDepartment.Items.FindByValue(clsDetails.DepartmentID.ToString()));
             cboPosition.SelectedIndex = cboPosition.Items.IndexOf(cboPosition.Items.FindByValue(clsDetails.PositionID.ToString()));
@@ -153,10 +154,11 @@ namespace AceSoft.RetailPlus.Rewards._Members
             clsDetails.Remarks = txtRemarks.Text;
             clsDetails.Debit = Convert.ToDecimal(txtDebit.Text);
             clsDetails.Credit = Convert.ToDecimal(txtCredit.Text);
-            if (chkIsCreditAllowed.Checked == false)
-                clsDetails.IsCreditAllowed = 0;
-            else
-                clsDetails.IsCreditAllowed = 1;
+            clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
+            //if (chkIsCreditAllowed.Checked == false)
+            //    clsDetails.IsCreditAllowed = 0;
+            //else
+            //    clsDetails.IsCreditAllowed = 1;
             clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
             clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
             clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);

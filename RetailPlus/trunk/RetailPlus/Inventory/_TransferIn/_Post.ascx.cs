@@ -1444,7 +1444,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                                             clsContactDetails.Remarks = "Added in XML import";
                                             clsContactDetails.Debit = 0;
                                             clsContactDetails.Credit = 0;
-                                            clsContactDetails.IsCreditAllowed = 0;
+                                            clsContactDetails.IsCreditAllowed = false;
                                             clsContactDetails.CreditLimit = 0;
                                             clsProductDetails.SupplierID = clsContact.Insert(clsContactDetails);
                                         }

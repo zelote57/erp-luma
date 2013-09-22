@@ -534,7 +534,7 @@ namespace AceSoft.RetailPlus.Client.UI
             if ((mCreditCardStatus == CreditCardStatus.New && clsContactCreditDetails.ContactID == Constants.ZERO) ||
                     mCreditCardStatus == CreditCardStatus.Replaced_Lost)
             {
-                Data.ERPConfig clsERPConfig = new Data.ERPConfig(clsContactCredit.Connection, clsContactCredit.Transaction);
+                Data.SysConfig clsERPConfig = new Data.SysConfig(clsContactCredit.Connection, clsContactCredit.Transaction);
                 txtCreditCardNo.Text = clsERPConfig.get_LastCreditCardNo();
             }
             clsContactCredit.CommitAndDispose();

@@ -530,8 +530,6 @@ namespace AceSoft.RetailPlus.Data
                 
 
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -553,70 +551,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
-                throw base.ThrowException(ex);
-            }
-        }
-        public void ChangeTax(long ProductGroupID, decimal NewVAT, decimal NewEVAT, decimal NewLocalTax)
-        {
-            try
-            {
-                string SQL = "UPDATE tblProductGroupBaseVariationsMatrix SET " +
-                                    "VAT		= @NewVAT, " +
-                                    "EVAT		= @NewEVAT, " +
-                                    "LocalTax	= @NewLocalTax ";
-                if (ProductGroupID !=0) SQL += "WHERE GroupID		= @ProductGroupID;";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmNewVAT = new MySqlParameter("@NewVAT",MySqlDbType.Decimal);
-                prmNewVAT.Value = NewVAT;
-                cmd.Parameters.Add(prmNewVAT);
-
-                MySqlParameter prmNewEVAT = new MySqlParameter("@NewEVAT",MySqlDbType.Decimal);
-                prmNewEVAT.Value = NewEVAT;
-                cmd.Parameters.Add(prmNewEVAT);
-
-                MySqlParameter prmNewLocalTax = new MySqlParameter("@NewLocalTax",MySqlDbType.Decimal);
-                prmNewLocalTax.Value = NewLocalTax;
-                cmd.Parameters.Add(prmNewLocalTax);
-
-                if (ProductGroupID != 0)
-                {
-                    MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);
-                    prmProductGroupID.Value = ProductGroupID;
-                    cmd.Parameters.Add(prmProductGroupID);
-                }
-
-                base.ExecuteNonQuery(cmd);
-
-            }
-
-            catch (Exception ex)
-            {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }

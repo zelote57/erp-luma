@@ -8,7 +8,7 @@ using AceSoft.RetailPlus.Data;
 
 namespace AceSoft.RetailPlus.MasterFiles._Product
 {
-	public partial  class __ChangeTax : System.Web.UI.UserControl
+    public partial class __AddProductVariation : System.Web.UI.UserControl
 	{
 
 		#region Web Form Methods
@@ -56,35 +56,12 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		}
         protected void cmdProductGroup_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            try
-            {
-                LoadProductGroup();
-                cboProductGroup_SelectedIndexChanged(null, null);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            LoadProductGroup();
+            cboProductGroup_SelectedIndexChanged(null, null);
         }
         protected void cboProductGroup_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            try
-            {
-                LoadSubGroup();
-                if (cboProductGroup.SelectedItem.Value != Constants.ZERO_STRING)
-                {
-                    ProductGroup clsProductGroup = new ProductGroup();
-                    ProductGroupDetails clsProductGroupDetails = clsProductGroup.Details(long.Parse(cboProductGroup.SelectedItem.Value));
-                    clsProductGroup.CommitAndDispose();
-                    txtVAT.Text = clsProductGroupDetails.VAT.ToString("#,##0.#0");
-                    txtEVAT.Text = clsProductGroupDetails.EVAT.ToString("#,##0.#0");
-                    txtLocalTax.Text = clsProductGroupDetails.LocalTax.ToString("#,##0.#0");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            LoadSubGroup();
         }
         protected void cmdProductSubGroup_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
@@ -93,23 +70,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
         }
         protected void cboProductSubGroup_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            try
-            {
-                LoadProduct();
-                if (cboProductSubGroup.SelectedItem.Value != Constants.ZERO_STRING)
-                {
-                    ProductSubGroup clsProductSubGroup = new ProductSubGroup();
-                    ProductSubGroupDetails clsProductSubGroupDetails = clsProductSubGroup.Details(long.Parse(cboProductSubGroup.SelectedItem.Value));
-                    clsProductSubGroup.CommitAndDispose();
-                    txtVAT.Text = clsProductSubGroupDetails.VAT.ToString("#,##0.#0");
-                    txtEVAT.Text = clsProductSubGroupDetails.EVAT.ToString("#,##0.#0");
-                    txtLocalTax.Text = clsProductSubGroupDetails.LocalTax.ToString("#,##0.#0");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            LoadProduct();
         }
         protected void cmdProductCode_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
@@ -117,28 +78,25 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
         }
         protected void cboProductCode_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            try
-            {
-                if (cboProductCode.SelectedItem.Value != Constants.ZERO_STRING)
-                {
-                    Products clsProduct = new Products();
-                    ProductDetails clsProductDetails = clsProduct.Details(long.Parse(cboProductCode.SelectedItem.Value));
-                    clsProduct.CommitAndDispose();
-                    txtVAT.Text = clsProductDetails.VAT.ToString("#,##0.#0");
-                    txtEVAT.Text = clsProductDetails.EVAT.ToString("#,##0.#0");
-                    txtLocalTax.Text = clsProductDetails.LocalTax.ToString("#,##0.#0");
-                }
+            Products clsProduct = new Products();
+            int intProductBaseUnitID = 0;
+            decimal decCommision = 0;
+            try {
+                ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedValue));
+                intProductBaseUnitID = clsDetails.BaseUnitID; decCommision = clsDetails.PercentageCommision;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            catch { }
+            txtProductCode.ToolTip = intProductBaseUnitID.ToString();
+            lblProductID.ToolTip = decCommision.ToString();
+
+            clsProduct.CommitAndDispose();
+
         }
-        protected void imgSaveTax_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        protected void imgSave_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             SaveRecord(); 
         }
-        protected void cmdSaveTax_Click(object sender, EventArgs e)
+        protected void cmdSave_Click(object sender, EventArgs e)
         {
             SaveRecord(); 
         }
@@ -172,6 +130,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             lblProductGroupID.Text = Constants.ZERO_STRING;
             lblProductSubGroup.Text = Constants.ZERO_STRING;
             lblProductID.Text = Constants.ZERO_STRING;
+
+            LoadVariation();
 		}
         private void LoadProductGroup()
         {
@@ -228,49 +188,38 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             if (cboProductCode.Items.Count == 0) cboProductCode.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             cboProductCode.SelectedIndex = 0;
         }
+        private void LoadVariation()
+        {
+            Variation clsVariation = new Variation();
+            cboVariationType.DataTextField = "VariationType";
+            cboVariationType.DataValueField = "VariationID";
+            cboVariationType.DataSource = clsVariation.ListAsDataTable().DefaultView;
+            cboVariationType.DataBind();
+            cboVariationType.SelectedIndex = 0;
+
+            clsVariation.CommitAndDispose();	
+        }
 		private void SaveRecord()
 		{
             long lngProductGroupID = long.Parse(cboProductGroup.SelectedItem.Value);
             long lngProductSubGroupID = long.Parse(cboProductSubGroup.SelectedItem.Value);
             long lngProductID = long.Parse(cboProductCode.SelectedItem.Value);
-            decimal decVAT = 0; decimal decEVAT = 0; decimal decLocalTax = 0;
-            string javaScript;
-            try
-            { decVAT = decimal.Parse(txtVAT.Text); }
-            catch 
-            {
-                javaScript = "window.alert('Please enter a valid VAT.')";
-                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
-                return; 
-            }
-            try
-            { decEVAT = decimal.Parse(txtEVAT.Text); }
-            catch
-            {
-                javaScript = "window.alert('Please enter a valid EVAT.')";
-                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
-                return;
-            }
-            try
-            { decLocalTax = decimal.Parse(txtLocalTax.Text); }
-            catch
-            {
-                javaScript = "window.alert('Please enter a valid LocalTax.')";
-                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
-                return;
-            }
+            long lngVariationID = long.Parse(cboVariationType.SelectedItem.Value);
+            string javaScript = "";
 
-            Products clsProduct = new Products();
-            clsProduct.ChangeTax(lngProductGroupID, lngProductSubGroupID, lngProductID, decVAT, decEVAT, decLocalTax, Convert.ToString(Session["Name"]));
-            clsProduct.CommitAndDispose();
+            if (lngVariationID == 0)
+            {
+                javaScript = "window.alert('Please select at least one variation to add.')";
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
+            }
+            else {
+                ProductVariation clsProductVariation = new ProductVariation();
+                clsProductVariation.AddEasyVariation(lngProductGroupID, lngProductSubGroupID, lngProductID, lngVariationID, Convert.ToString(Session["Name"]));
+                clsProductVariation.CommitAndDispose();
 
-            txtVAT.Text = decVAT.ToString("#,##0.#0");
-            txtEVAT.Text = decEVAT.ToString("#,##0.#0");
-            txtLocalTax.Text = decLocalTax.ToString("#,##0.#0");
-
-            javaScript = "window.alert('Taxes has been updated.')";
-            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
-            
+                javaScript = "window.alert('Variation has been saved.')";
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
+            }
 		}
 
 		#endregion

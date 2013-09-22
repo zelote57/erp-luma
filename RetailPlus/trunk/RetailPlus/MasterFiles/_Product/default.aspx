@@ -1,13 +1,14 @@
 <%@ Reference Page="~/masterfiles/default.aspx" %>
 <%@ Page language="c#" Inherits="AceSoft.RetailPlus.MasterFiles._Product._Default" Codebehind="Default.aspx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
-<%@ Register TagPrefix="CTRL" TagName="ctrlMenu" Src="../../MasterFiles/_Menu.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlMenu" Src="../_Menu.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlExpiry" Src="../../_Expiry.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlProcessing" Src="../../_Processing.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlInsert" Src="_Insert.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlDetails" Src="_Details.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlChangeTax" Src="_ChangeTax.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlChangeRewardPoints" Src="_ChangeRewardPoints.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlAddProductVariation" Src="_AddProductVariation.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlChangePrice" Src="_ChangePrice.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlSynchronize" Src="_Synchronize.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlUpdate" Src="_Update.ascx" %>
@@ -22,7 +23,7 @@
 <%@ Register TagPrefix="CTRL" TagName="RightBodySectionSearch" Src="../../_RightBodySectionSearch.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="PageLevelError" Src="../../_PageLevelError.ascx" %>
 
-<%@ Register TagPrefix="CTRL" TagName="ctrlUnitsMatrixList" Src="../../MasterFiles/_Product/_UnitsMatrix/_list.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlUnitsMatrixList" Src="_UnitsMatrix/_list.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
 	<HEAD>
@@ -123,7 +124,8 @@
 									<CTRL:ctrlInsert id="ctrlInsert" runat="server" Visible="False"></CTRL:ctrlInsert>
 									<CTRL:ctrlUpdate id="ctrlUpdate" runat="server" Visible="False"></CTRL:ctrlUpdate>
 									<CTRL:ctrlChangeTax id="ctrlChangeTax" runat="server" Visible="False"></CTRL:ctrlChangeTax>
-									<CTRL:ctrlChangeRewardPoints id="ctrlChangeRewardPoints" runat="server" Visible="False"></CTRL:ctrlChangeRewardPoints>
+									<CTRL:ctrlAddProductVariation id="ctrlAddProductVariation" runat="server" Visible="False"></CTRL:ctrlAddProductVariation>
+                                    <CTRL:ctrlChangeRewardPoints id="ctrlChangeRewardPoints" runat="server" Visible="False"></CTRL:ctrlChangeRewardPoints>
 									<CTRL:ctrlChangePrice id="ctrlChangePrice" runat="server" Visible="False"></CTRL:ctrlChangePrice>
 									<CTRL:ctrlDetails id="ctrlDetails" runat="server" Visible="False"></CTRL:ctrlDetails>
 									<CTRL:ctrlUnitsMatrixList id="ctrlUnitsMatrixList" runat="server" Visible="False"></CTRL:ctrlUnitsMatrixList>

@@ -34,14 +34,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                     GenerateHTML();
 
                 Session["ReportDocument"] = null;
+                Session["ReportType"] = "poreturns";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                if (Session["ReportType"].ToString() == "poreturns")
+                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 

@@ -85,10 +85,12 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Vendor
 			clsDetails.Remarks = txtRemarks.Text;
 			clsDetails.Debit = Convert.ToDecimal(txtDebit.Text);
 			clsDetails.Credit = Convert.ToDecimal(txtCredit.Text);
-			if (chkIsCreditAllowed.Checked == false)
-				clsDetails.IsCreditAllowed = 0;
-			else
-				clsDetails.IsCreditAllowed = 1;
+            clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
+
+            //if (chkIsCreditAllowed.Checked == false)
+                
+            //else
+            //    clsDetails.IsCreditAllowed = 1;
 			clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
             clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
             clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);

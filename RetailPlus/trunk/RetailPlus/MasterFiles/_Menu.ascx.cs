@@ -20,6 +20,7 @@ namespace AceSoft.RetailPlus.MasterFiles
 			{
 				ManageSecurity();
 
+                lnkAddvariationType.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("addproductvariation", Session.SessionID);
                 lnkChangeRewardPoints.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changerewardpoints", Session.SessionID);
                 lnkChangeProductPrice.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changeprice", Session.SessionID);
                 lnkChangeTax.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("changetax", Session.SessionID);
@@ -59,6 +60,7 @@ namespace AceSoft.RetailPlus.MasterFiles
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.Products);
             Menu_Product.Visible = clsDetails.Read;
             lnkProducts.Visible = clsDetails.Read;
+            lnkAddvariationType.Visible = clsDetails.Read;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ProductGroups);
             lnkProductGroup.Visible = Menu_Product.Visible && clsDetails.Read;

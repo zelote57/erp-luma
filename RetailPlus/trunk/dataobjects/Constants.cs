@@ -128,6 +128,13 @@ namespace AceSoft.RetailPlus
         }
 
         public const Int32 C_DEFAULT_MYSQL_PROCESS_TIMEOUT = 90;
+
+        public const string SYS_CONFIG_BACKEND_VARIATION_TYPE = "BACKEND_VARIATION_TYPE";
+
+        public const string SYS_CONFIG_BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO = "EXPIRATION;LOTNO";
+
+        public static DateTime C_DATE_MIN_VALUE = Convert.ToDateTime("1900-01-01");
+        public const string C_DATE_MIN_VALUE_STRING = "1900-01-01";
     }
 
     

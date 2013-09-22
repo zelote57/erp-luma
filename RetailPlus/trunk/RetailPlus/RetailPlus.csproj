@@ -392,6 +392,13 @@
     <Compile Include="Inventory\_BranchTransfer\_Update.ascx.designer.cs">
       <DependentUpon>_update.ascx</DependentUpon>
     </Compile>
+    <Compile Include="MasterFiles\_Product\_AddProductVariation.ascx.cs">
+      <DependentUpon>_AddProductVariation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_AddProductVariation.ascx.designer.cs">
+      <DependentUpon>_AddProductVariation.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Reports\_ClosingInventoryCount.cs">
       <DependentUpon>_ClosingInventoryCount.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -2414,10 +2421,10 @@
       <DependentUpon>_ProductBranchInventoryReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\ProductHistoryRepor.cs">
+    <Compile Include="Reports\ProductHistoryReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ProductHistoryRepor.rpt</DependentUpon>
+      <DependentUpon>ProductHistoryReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\SalesReturn.cs">
@@ -3320,6 +3327,7 @@
     <Content Include="Credits\_default.ascx" />
     <Content Include="Credits\_menu.ascx" />
     <Content Include="Inventory\_closeinventory.ascx" />
+    <Content Include="MasterFiles\_Product\_AddProductVariation.ascx" />
     <Content Include="packages.config" />
     <None Include="Scripts\jquery-2.0.0.min.map" />
     <None Include="User Guide - Backend.pdf" />
@@ -3890,9 +3898,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_ProductBranchInventoryReport.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ProductHistoryRepor.rpt">
+    <EmbeddedResource Include="Reports\ProductHistoryReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>ProductHistoryRepor.cs</LastGenOutput>
+      <LastGenOutput>ProductHistoryReport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\SalesReturn.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

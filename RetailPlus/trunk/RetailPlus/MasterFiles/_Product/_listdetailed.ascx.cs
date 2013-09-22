@@ -566,7 +566,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			if (boRetValue)
 			{
 				Products clsProduct = new Products();
-				clsProduct.Delete( stIDs.Substring(0,stIDs.Length-1));
+				clsProduct.Delete( stIDs.Substring(0,stIDs.Length-1), Convert.ToString(Session["Name"]));
 				clsProduct.CommitAndDispose();
 
 				Security.AuditTrailDetails clsAuditDetails = new Security.AuditTrailDetails();

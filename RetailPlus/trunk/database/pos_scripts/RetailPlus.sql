@@ -3058,11 +3058,11 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 
 /*****************************
 **	Products Default Definition
 *****************************/
-INSERT INTO tblVariations (VariationCode, VariationType) VALUES ('EXP', 'EXPIRATION');
-INSERT INTO tblVariations (VariationCode, VariationType) VALUES ('SZE', 'SIZE');
-INSERT INTO tblVariations (VariationCode, VariationType) VALUES ('COL', 'COLOR');
-INSERT INTO tblVariations (VariationCode, VariationType) VALUES ('LEN', 'LENGTH');
-INSERT INTO tblVariations (VariationCode, VariationType) VALUES ('WID', 'WIDTH');
+INSERT INTO tblVariations (VariationID, VariationCode, VariationType) VALUES (1, 'EXP', 'EXPIRATION');
+INSERT INTO tblVariations (VariationID, VariationCode, VariationType) VALUES (2, 'SZE', 'SIZE');
+INSERT INTO tblVariations (VariationID, VariationCode, VariationType) VALUES (3, 'COL', 'COLOR');
+INSERT INTO tblVariations (VariationID, VariationCode, VariationType) VALUES (4, 'LEN', 'LENGTH');
+INSERT INTO tblVariations (VariationID, VariationCode, VariationType) VALUES (5, 'WID', 'WIDTH');
 
 INSERT INTO tblUnit (UnitCode, UnitName) VALUES ('PC', 'PIECE (S)');
 INSERT INTO tblUnit (UnitCode, UnitName) VALUES ('CTN', 'CARTON');
@@ -6571,39 +6571,6 @@ INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VA
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 147, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 10, Category = '11: Backend - MasterFiles' WHERE TypeID = 147;
 
-
-/*****************************
-**	tblContactDetails
-*****************************/
-DROP TABLE IF EXISTS tblContactDetails;
-CREATE TABLE tblContactDetails (
-	`ContactID` BIGINT(20) NOT NULL DEFAULT 0,
-	`Salutation` VARCHAR(25) NOT NULL,
-	`FirstName` VARCHAR(85) NOT NULL,
-	`MiddleName` VARCHAR(85) NOT NULL,
-	`LastName` VARCHAR(85) NOT NULL,	
-	`SpouseName` VARCHAR(85) NOT NULL,
-	
-	`BirthDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`SpouseBirthDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
-	`AnniversaryDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
-	
-	`Address1` VARCHAR (150) NULL ,
-	`Address2` VARCHAR (150) NULL ,
-	`City` VARCHAR (30) NULL ,
-	`State` VARCHAR (30) NULL ,
-	`Zip` VARCHAR (15) NULL ,
-	`CountryID` TINYINT NOT NULL DEFAULT 0,
-
-	`BussinessphoneNo` VARCHAR(75) NOT NULL DEFAULT '',
-	`HomephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
-	`MobileNo` VARCHAR(75) NOT NULL DEFAULT '',
-	`FaxNo` VARCHAR(75) NOT NULL DEFAULT '',
-
-	`EmailAddress` VARCHAR(85) NOT NULL,
-INDEX `IX_tblContactDetails`(`ContactID`)
-);
-
 ALTER TABLE sysConfig ADD Category VARCHAR(100);
 
 ALTER TABLE tblContactGroup MODIFY ContactGroupCode VARCHAR(10);
@@ -6706,3 +6673,43 @@ ALTER TABLE tblProductInventoryAudit ADD ReservedQuantity DECIMAL(18,3) NOT NULL
 ALTER TABLE tblProductInventoryDaily ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
 ALTER TABLE tblProductInventoryMonthly ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
 
+
+/*****************************
+**	tblContactAddOn
+*****************************/
+DROP TABLE IF EXISTS tblContactDetails;
+DROP TABLE IF EXISTS tblContactAddOn;
+CREATE TABLE tblContactAddOn (
+    `ContactDetailID` bigint(20) unsigned NOT NULL DEFAULT 0,
+	`ContactID` BIGINT(20) NOT NULL DEFAULT 0,
+	`Salutation` VARCHAR(25) NOT NULL,
+	`FirstName` VARCHAR(85) NOT NULL,
+	`MiddleName` VARCHAR(85) NOT NULL,
+	`LastName` VARCHAR(85) NOT NULL,	
+	`SpouseName` VARCHAR(85) NOT NULL,
+	
+	`BirthDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`SpouseBirthDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`AnniversaryDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
+	
+	`Address1` VARCHAR (150) NULL ,
+	`Address2` VARCHAR (150) NULL ,
+	`City` VARCHAR (30) NULL ,
+	`State` VARCHAR (30) NULL ,
+	`ZipCode` VARCHAR (15) NULL ,
+	`CountryID` TINYINT NOT NULL DEFAULT 0,
+
+	`BusinessphoneNo` VARCHAR(75) NOT NULL DEFAULT '',
+	`HomephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
+	`MobileNo` VARCHAR(75) NOT NULL DEFAULT '',
+	`FaxNo` VARCHAR(75) NOT NULL DEFAULT '',
+
+	`EmailAddress` VARCHAR(85) NOT NULL,
+INDEX `IX_tblContactAddOn`(`ContactID`)
+);
+
+DELETE FROM sysConfig WHERE ConfigName = 'BACKEND_VARIATION_TYPE';
+INSERT INTO sysConfig (ConfigName, ConfigValue, Category) VALUES ('BACKEND_VARIATION_TYPE',	'EXPIRATION;LOTNO', 'BACKEND_VARIATION_TYPE');
+
+
+INSERT INTO tblVariations (VariationID, VariationCode, VariationType) VALUES (6, 'LOT', 'LOTNO');

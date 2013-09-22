@@ -10,7 +10,7 @@
 namespace AceSoft.RetailPlus.MasterFiles._Product {
     
     
-    public partial class @__ChangePrice {
+    public partial class @__AddProductVariation {
         
         /// <summary>
         /// lblReferrer control.
@@ -20,6 +20,96 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblReferrer;
+        
+        /// <summary>
+        /// lblProductGroupID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblProductGroupID;
+        
+        /// <summary>
+        /// UpdatePanel4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel4;
+        
+        /// <summary>
+        /// cboProductGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboProductGroup;
+        
+        /// <summary>
+        /// txtProductGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtProductGroup;
+        
+        /// <summary>
+        /// cmdProductGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton cmdProductGroup;
+        
+        /// <summary>
+        /// lblProductSubGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblProductSubGroup;
+        
+        /// <summary>
+        /// UpdatePanel6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel6;
+        
+        /// <summary>
+        /// cboProductSubGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboProductSubGroup;
+        
+        /// <summary>
+        /// txtProductSubGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtProductSubGroup;
+        
+        /// <summary>
+        /// cmdProductSubGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton cmdProductSubGroup;
         
         /// <summary>
         /// lblProductID control.
@@ -58,15 +148,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         protected global::System.Web.UI.WebControls.TextBox txtProductCode;
         
         /// <summary>
-        /// Requiredfieldvalidator1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator1;
-        
-        /// <summary>
         /// cmdProductCode control.
         /// </summary>
         /// <remarks>
@@ -76,112 +157,49 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         protected global::System.Web.UI.WebControls.ImageButton cmdProductCode;
         
         /// <summary>
-        /// imgProductHistory control.
+        /// UpdatePanel2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgProductHistory;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
-        /// imgProductPriceHistory control.
+        /// cboVariationType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgProductPriceHistory;
+        protected global::System.Web.UI.WebControls.DropDownList cboVariationType;
         
         /// <summary>
-        /// imgInventoryAdjustment control.
+        /// updSave control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgInventoryAdjustment;
+        protected global::System.Web.UI.UpdatePanel updSave;
         
         /// <summary>
-        /// imgEditNow control.
+        /// imgSave control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgEditNow;
+        protected global::System.Web.UI.WebControls.ImageButton imgSave;
         
         /// <summary>
-        /// UpdatePanel5 control.
+        /// cmdSave control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel5;
-        
-        /// <summary>
-        /// lblProductPackage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblProductPackage;
-        
-        /// <summary>
-        /// lnkProductPackageAdd control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkProductPackageAdd;
-        
-        /// <summary>
-        /// UpdatePanel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
-        
-        /// <summary>
-        /// lstProductPackages control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DataList lstProductPackages;
-        
-        /// <summary>
-        /// lblPurchasePriceHistory control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPurchasePriceHistory;
-        
-        /// <summary>
-        /// imgSaveCopyToAllMatrix control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgSaveCopyToAllMatrix;
-        
-        /// <summary>
-        /// cmdSaveCopyToAllMatrix control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSaveCopyToAllMatrix;
+        protected global::System.Web.UI.WebControls.LinkButton cmdSave;
         
         /// <summary>
         /// imgCancel control.

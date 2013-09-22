@@ -96,7 +96,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
                 ARLinkConfigDetails clsARLinkConfigDetails = clsERPConfig.ARLinkDetails();
 
 				string SQL = "INSERT INTO tblSOCreditMemo (" +
@@ -218,7 +218,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
                 ARLinkConfigDetails clsARLinkConfigDetails = clsERPConfig.ARLinkDetails();
 
 				string SQL=	"UPDATE tblSOCreditMemo SET " + 
@@ -574,7 +574,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 
 			SOReturnDetails clsSOReturnDetails = Details(CreditMemoID);
-			ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+			SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
 			ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
 			SOReturnItems clsSOReturnItems = new SOReturnItems(base.Connection, base.Transaction);
@@ -1258,7 +1258,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string stRetValue = String.Empty;
 				
-				ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+				SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
 				stRetValue = clsERPConfig.get_LastSOReturnNo();
 
 				return stRetValue;

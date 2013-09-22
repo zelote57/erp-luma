@@ -24,14 +24,16 @@ namespace AceSoft.RetailPlus.Reports
 				lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				LoadOptions();
                 Session["ReportDocument"] = null;
+                Session["ReportType"] = "contacts";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                if (Session["ReportType"].ToString() == "contacts")
+                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 		private void LoadOptions()
@@ -42,14 +44,14 @@ namespace AceSoft.RetailPlus.Reports
 
 			cboContactCode.DataTextField = "ContactCode";
 			cboContactCode.DataValueField = "ContactCode";
-			cboContactCode.DataSource = clsDataClass.DataReaderToDataTable(clsContact.List("ContactCode",SortOption.Ascending));
+			cboContactCode.DataSource = clsContact.ListAsDataTable("ContactCode",SortOption.Ascending);
 			cboContactCode.DataBind();
 			cboContactCode.Items.Add( new ListItem("All Codes","0"));
 			cboContactCode.SelectedIndex = cboContactCode.Items.Count - 1;
 
 			cboContactName.DataTextField = "ContactName";
 			cboContactName.DataValueField = "ContactName";
-			cboContactName.DataSource = clsDataClass.DataReaderToDataTable(clsContact.List("ContactName",SortOption.Ascending));
+			cboContactName.DataSource = clsContact.ListAsDataTable("ContactName",SortOption.Ascending);
 			cboContactName.DataBind();
 			cboContactName.Items.Add( new ListItem("All Contacts","0"));
 			cboContactName.SelectedIndex = cboContactName.Items.Count - 1;

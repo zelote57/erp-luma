@@ -89,6 +89,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                         SearchIndex = SearchCategoryID.Products;
                         ctrlChangeTax.Visible = true;
                         break;	
+                    case "addproductvariation":
+                        stHeading = "Add Product Variation.";
+                        SearchIndex = SearchCategoryID.Products;
+                        ctrlAddProductVariation.Visible = true;
+                        break;
                     case "changerewardpoints":
                         stHeading = "Change the Reward Points of Products.";
                         SearchIndex = SearchCategoryID.Products;

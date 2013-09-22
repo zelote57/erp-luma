@@ -72,14 +72,16 @@
 						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 							<tr>
 								<td style="PADDING-BOTTOM:2px" nowrap="nowrap">
-									<label for="txtAccountNo">Enter Transaction # to print</label>&nbsp;
+									<label>Enter Transaction # to print</label>&nbsp;
 								</td>
 								<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 								<td>
 									<asp:TextBox id="txtTransactionNo" accesskey="C" CssClass="ms-short" runat="server" BorderStyle="Groove"></asp:TextBox>
 								</td>
 								<td class="ms-separator"></td>
-								<td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+								<td class="ms-toolbar" nowrap="nowrap">
+                                    <asp:CheckBox id="chkIncludePurchasePrice" runat="server" Checked="true" Text="Include Purchase Price"/>
+								</td>
 								</td>
 								<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
 								<td>

@@ -211,6 +211,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         protected global::System.Web.UI.WebControls.TextBox txtLocalTax;
         
         /// <summary>
+        /// updSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updSave;
+        
+        /// <summary>
         /// imgSaveTax control.
         /// </summary>
         /// <remarks>

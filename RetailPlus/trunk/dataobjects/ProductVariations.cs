@@ -106,58 +106,6 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-//		public void Update(ProductSubGroupDetails Details)
-//		{
-//			try 
-//			{
-//				string SQL = "UPDATE tblProductSubGroup SET " + 
-//					"ProductGroupID = @ProductGroupID, " +
-//					"ProductSubGroupCode = @ProductSubGroupCode, " +  
-//					"ProductSubGroupName = @ProductSubGroupName " +  
-//					"WHERE ProductSubGroupID = @ProductSubGroupID;";
-//				  
-//				
-//	 			
-//				MySqlCommand cmd = new MySqlCommand();
-//				
-//				
-//				cmd.CommandType = System.Data.CommandType.Text;
-//				cmd.CommandText = SQL;
-//
-//				MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int16);			
-//				prmProductGroupID.Value = Details.ProductGroupID;
-//				cmd.Parameters.Add(prmProductGroupID);
-//				
-//				MySqlParameter prmProductSubGroupCode = new MySqlParameter("@ProductSubGroupCode",MySqlDbType.String);			
-//				prmProductSubGroupCode.Value = Details.ProductSubGroupCode;
-//				cmd.Parameters.Add(prmProductSubGroupCode);
-//
-//				MySqlParameter prmProductSubGroupName = new MySqlParameter("@ProductSubGroupName",MySqlDbType.String);			
-//				prmProductSubGroupName.Value = Details.ProductSubGroupName;
-//				cmd.Parameters.Add(prmProductSubGroupName);
-//
-//				MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int16);			
-//				prmProductSubGroupID.Value = Details.ProductSubGroupID;
-//				cmd.Parameters.Add(prmProductSubGroupID);
-//
-//				base.ExecuteNonQuery(cmd);
-//			}
-//
-//			catch (Exception ex)
-//			{
-//				
-//				
-//				{
-//					
-//					
-//					
-//					
-//				}
-//
-//				throw base.ThrowException(ex);
-//			}	
-//		}
-
 		public void Update(ProductVariationDetails Details, Int32 ProductVariationIDOld)
 		{
 			try 
@@ -205,6 +153,29 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
+        public void AddEasyVariation(long ProductGroupID, long ProductSubGroupID, long ProductID, long VariationID, string CreatedBy)
+        {
+            try
+            {
+                string SQL = "CALL procProductVariationAddEasy(@ProductGroupID, @ProductSubGroupID, @ProductID, @VariationID, @CreatedBy);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@VariationID", VariationID);
+                cmd.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -359,10 +330,13 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-        public System.Data.DataTable ListAsDataTable(Int64 ProductID, string SortField, System.Data.SqlClient.SortOrder SortOrder)
+        public System.Data.DataTable ListAsDataTable(Int64 ProductID, string SortField = "VariationCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                
                 string SQL = "SELECT a.ProductID, " +
                                 "a.VariationID, " +
                                 "b.VariationCode, " +
@@ -371,40 +345,21 @@ namespace AceSoft.RetailPlus.Data
                             "LEFT JOIN tblVariations b ON a.VariationID = b.VariationID " +
                             "WHERE ProductID = @ProductID ";
 
-                if (SortField != string.Empty && SortField != null)
-                {
-                    SQL += "ORDER BY " + SortField + " ";
+                SortField = string.IsNullOrEmpty(SortField) ? "VariationCode" : SortField;
 
-                    if (SortOrder != System.Data.SqlClient.SortOrder.Descending) SQL += "ASC ";
-                    else SQL += "DESC ";
-                }
-
+                SQL += "ORDER BY " + SortField + " "; 
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Descending ? "DESC " : "ASC ";
                 
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
+
                 cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
                 System.Data.DataTable dt = new System.Data.DataTable("tblVariations");
                 base.MySqlDataAdapterFill(cmd, dt);
-                
-
                 return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }

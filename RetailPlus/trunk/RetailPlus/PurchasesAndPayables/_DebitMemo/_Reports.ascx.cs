@@ -33,14 +33,16 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
                     GenerateHTML();
 
                 Session["ReportDocument"] = null;
+                Session["ReportType"] = "debitmemo";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                if (Session["ReportType"].ToString() == "debitmemo")
+                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 

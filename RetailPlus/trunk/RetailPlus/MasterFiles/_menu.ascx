@@ -203,6 +203,13 @@
 								<li>Sync Branch Product</li></asp:HyperLink>
 						</td>
 					</tr>
+                    <tr>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
+							<asp:HyperLink id="lnkAddvariationType" runat="server" title="Add Product Variation">
+								<li>Add Product Variation</li></asp:HyperLink>
+						</td>
+					</tr>
 					<tr>
 						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">

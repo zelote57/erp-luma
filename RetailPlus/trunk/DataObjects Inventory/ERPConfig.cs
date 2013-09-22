@@ -77,12 +77,12 @@ namespace AceSoft.RetailPlus.Data
 	{
 		#region Constructors and Destructors
 
-		public ERPConfig()
+		public SysConfig()
             : base(null, null)
         {
         }
 
-        public ERPConfig(MySqlConnection Connection, MySqlTransaction Transaction) 
+        public SysConfig(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
 

@@ -461,9 +461,9 @@ BEGIN
 	DECLARE strSessionID varchar(30);
 	set strSessionID = '1';
 	
-	DROP TABLE IF EXISTS tblProductHistoryAll;
+	DROP table IF EXISTS tblProductHistoryAll;
 	
-	CREATE TABLE tblProductHistoryAll (
+	CREATE table tblProductHistoryAll (
 		`SessionID` VARCHAR(30) NOT NULL,
 		`HistoryID` BIGINT NOT NULL DEFAULT 0,
 		`ProductID` BIGINT NOT NULL DEFAULT 0,
@@ -1684,14 +1684,15 @@ GO
 create procedure procZeroOutProductQuantityAndDropVariations()
 BEGIN
 
-	TRUNCATE TABLE tblProductInventory;
+	SET FOREIGN_KEY_CHECKS = 0;
 
-	TRUNCATE TABLE tblBranchInventoryMatrix;
-	TRUNCATE TABLE tblProductVariationsMatrix;
+	TRUNCATE table tblProductInventory;
+	TRUNCATE table tblProductVariationsMatrix;
+	TRUNCATE table tblProductBaseVariationsMatrix;
+
+	DELETE FROM tblProductPackage WHERE MatrixID <> 0;
 	
-	TRUNCATE TABLE tblProductBaseVariationsMatrix;
-	
-	
+	SET FOREIGN_KEY_CHECKS = 1;
 END;
 GO
 delimiter ;
@@ -1912,8 +1913,8 @@ BEGIN
 	/*****************************
 	**	tblProductPrices
 	*****************************/
-	DROP TABLE IF EXISTS tblProductPrices;
-	CREATE TABLE tblProductPrices (
+	DROP table IF EXISTS tblProductPrices;
+	CREATE table tblProductPrices (
 		`SessionID` VARCHAR(30) NOT NULL,
 		`ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 		`ProductCode` VARCHAR(30) NOT NULL,
@@ -4731,8 +4732,8 @@ CALL procSetupCalendarDate('2013');
 	Mar 6, 2013 - Save all previous history of products to tblProductMovement
 **************************************************************/
 
-ALTER TABLE tblProductMovement MODIFY MatrixDescription VARCHAR(100);
-ALTER TABLE tblProductMovement MODIFY Remarks VARCHAR(150);
+ALTER table tblProductMovement MODIFY MatrixDescription VARCHAR(100);
+ALTER table tblProductMovement MODIFY Remarks VARCHAR(150);
 
 delimiter GO
 DROP PROCEDURE IF EXISTS procGenerateProductHistoryToProductMovement
@@ -5029,7 +5030,7 @@ delimiter ;
 	
 	Desc: This will get the all product package list
 
-	CALL procProductInventorySelect(1, 0,0,'TEST','',0,0,0,2,0,1,0,null,null);
+	CALL procProductInventorySelect(1, 0,0,'TEST','',0,0,0,2,0,1,0,'1900-01-01',null,null);
 	
 **************************************************************/
 delimiter GO
@@ -5049,6 +5050,7 @@ create procedure procProductInventorySelect(
 			 IN isQuantityGreaterThanZERO TINYINT(1),
 			 IN lngLimit int,
 			 IN isSummary int,
+			 IN dteExpiration datetime,
 			 IN SortField varchar(60),
 			 IN SortOrder varchar(4))
 BEGIN
@@ -5081,6 +5083,12 @@ BEGIN
 	IF ShowActiveAndInactive = 0 OR ShowActiveAndInactive = 1  THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.Active = ',ShowActiveAndInactive,' ');
 	END IF;
+
+	/***
+	IF (DATE_FORMAT(dteExpiration, '%Y-%m-%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
+		SET SQLWhere = CONCAT(SQLWhere,'AND prd.ProductID IN (SELECT DISTINCT mtrx.ProductID FROM tblProductVariationsMatrix prdmtrx INNER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.MatrixID = prdmtrx.MatrixID AND prdmtrx.VariationID = 1 WHERE DATE_FORMAT(prdmtrx.Description, ''%Y-%m-%d'') <= DATE_FORMAT(''',dteExpiration,''', ''%Y-%m-%d'')) ');
+	END IF;
+	***/
 
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
@@ -5179,6 +5187,12 @@ BEGIN
 	
 	IF isSummary = 0 THEN
 		SET @SQL = CONCAT(@SQL, 'AND IFNULL(mtrx.MatrixID,0) = ',MatrixID,' ');
+	END IF;
+
+	-- check only those with Quantity
+	IF (DATE_FORMAT(dteExpiration, '%Y-%m-%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
+		SET @SQL = CONCAT(@SQL,'AND prd.ProductID IN (SELECT DISTINCT mtrx.ProductID FROM tblProductVariationsMatrix prdmtrx INNER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.MatrixID = prdmtrx.MatrixID AND prdmtrx.VariationID = 1 WHERE DATE_FORMAT(prdmtrx.Description, ''%Y-%m-%d'') <= DATE_FORMAT(''',dteExpiration,''', ''%Y-%m-%d'')) ');
+		SET @SQL = CONCAT(@SQL,'AND IFNULL(inv.Quantity,0) > 0 ');
 	END IF;
 
 	SET @SQL = CONCAT(@SQL, '
@@ -5333,6 +5347,8 @@ BEGIN
 							,prd.BaseUnitID
 							,unt.UnitCode BaseUnitCode
 							,unt.UnitName BaseUnitName
+							,unt.UnitCode
+							,unt.UnitName
 							,prd.DateCreated
 							,prd.Active
 
@@ -5350,9 +5366,22 @@ BEGIN
 							,prd.LocalTax
 							,prd.RewardPoints
 
+							,prd.MinThreshold
+							,prd.MaxThreshold
+
+							,prd.RID
+
+							,prd.MaxThreshold - SUM(IFNULL(inv.Quantity,0)) ReorderQty
+                            ,prd.RIDMinThreshold
+                            ,prd.RIDMaxThreshold
+                            ,prd.RIDMaxThreshold -  SUM(IFNULL(inv.Quantity,0)) AS RIDReorderQty
+
 							,SUM(IFNULL(inv.Quantity,0)) Quantity
                             ,SUM(IFNULL(inv.ActualQuantity,0)) ActualQuantity
                             ,fnProductQuantityConvert(prd.ProductID, SUM(IFNULL(inv.Quantity,0)), prd.BaseUnitID)  ConvertedQuantity
+							,SUM(IFNULL(inv.QuantityIN,0)) QuantityIN
+							,SUM(IFNULL(inv.QuantityOUT,0)) QuantityOUT
+							,SUM(IFNULL(inv.ActualQuantity,0)) ActualQuantity
                             ,IFNULL(MAX(inv.IsLock),0) IsLock
 						FROM (SELECT prd.* ,pkg.PackageID, pkg.MatrixID
 									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
@@ -5402,7 +5431,14 @@ BEGIN
 							,prd.VAT
 							,prd.EVAT
 							,prd.LocalTax
-							,prd.RewardPoints ');
+							,prd.RewardPoints 
+							,prd.MinThreshold
+							,prd.MaxThreshold 
+							
+							,prd.RID
+
+                            ,prd.RIDMinThreshold
+                            ,prd.RIDMaxThreshold ');
 
 	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','prd.ProductCode',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
 
@@ -6583,6 +6619,36 @@ delimiter ;
 
 
 
+/**************************************************************
+
+	procSysConfigSelectByName
+	Lemuel E. Aceron
+	Sep 9, 2013
+	
+	Desc: This will get any value from sysConfig
+
+	CALL procSysConfigSelectByName('BACKEND_VARIATION_TYPE');
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procSysConfigSelectByName
+GO
+
+create procedure procSysConfigSelectByName(
+			IN ConfigValue varchar(30))
+BEGIN
+	SET @SQL = CONCAT('	SELECT 
+							ConfigValue
+						FROM sysConfig cnfg
+						WHERE ConfigName = ''',IFNULL(ConfigValue,''),''' ');
+	
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;
 
 
 /*********************************
@@ -6642,7 +6708,7 @@ delimiter ;
 /********************************************
 	procProductAddReservedQuantity
 	
-	CALL procProductAddReservedQuantity(1, 1203, 0, 1, 'Remarks', NOW(), '1000001', 'Lemuel');
+	CALL procProductAddReservedQuantity(1, 4338, 0, 1, 'Remarks', NOW(), '1000001', 'Lemuel');
 	
 	Sep 14, 2013: Created this procedure
 	
@@ -6682,7 +6748,8 @@ BEGIN
 	FROM tblProductInventory inv
 	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
 	
-	SET strAuditRemarks = CONCAT('Reserved for: ',strTransactionNo,' ; Curr Reserved: ',decProductReservedQuantity,'; Curr Quantity:',decProductQuantity,' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode + ' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
+	
+	SET strAuditRemarks = CONCAT('Reserved for: ',strTransactionNo,' ; Curr Reserved: ',IFNULL(decProductReservedQuantity,'0'),'; Curr Quantity:',IFNULL(decProductQuantity,'0'),' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode,' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
 
 	-- Insert to audit instead of product movement history
 	CALL procsysAuditInsert(NOW(), strCreatedBy, 'PRODUCT RESERVED ADD', 'localhost', strAuditRemarks);
@@ -6707,7 +6774,7 @@ delimiter ;
 /********************************************
 	procProductSubtractReservedQuantity
 	
-	CALL procProductSubtractReservedQuantity(1, 1203, 0, 1, 'Remarks', NOW(), '1000001', 'Lemuel');
+	CALL procProductSubtractReservedQuantity(1, 4338, 0, 1, 'Remarks', NOW(), '1000001', 'Lemuel');
 	
 	Sep 14, 2013: Created this procedure
 	
@@ -6747,11 +6814,12 @@ BEGIN
 	FROM tblProductInventory inv
 	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
 	
-	SET strAuditRemarks = CONCAT('Unreserved for: ',strTransactionNo,' ; Curr Reserved: ',decProductReservedQuantity,'; Curr Quantity:',decProductQuantity,' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode + ' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
-
+	SET strAuditRemarks = CONCAT('Unreserved for: ',strTransactionNo,' ; Curr Reserved: ',IFNULL(decProductReservedQuantity,'0'),'; Curr Quantity:',IFNULL(decProductQuantity,'0'),' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode,' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
+	
 	-- Insert to audit instead of product movement history
 	CALL procsysAuditInsert(NOW(), strCreatedBy, 'PRODUCT RESERVED SUBTRACT', 'localhost', strAuditRemarks);
 	
+		
 	-- Subtract the quantity from Product table
 	UPDATE tblProductInventory SET 
 		ReservedQuantity	= ReservedQuantity - decQuantity
@@ -6759,7 +6827,102 @@ BEGIN
 		AND ProductID = lngProductID
 		AND BranchID = intBranchID;
 		
-									
+							
+END;
+GO
+delimiter ;
+
+
+
+/**************************************************************
+
+	procContactSelect
+	Lemuel E. Aceron
+	Sep 15, 2013
+	
+	Desc: This will get the all information of a contact
+
+	CALL procContactSelect(1,0, null, '0', '0', null, null, 1, 0, 0, 'ContactID','');
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procContactSelect
+GO
+
+create procedure procContactSelect(
+			IN ContactGroupCategory  int,
+			IN ContactID  bigint,
+			IN ContactCode varchar(50),
+			IN ContactName varchar(75),
+			IN ContactGroupCode varchar(30),
+			IN RewardCardNo varchar(30),
+			IN Name varchar(30),
+			IN hasCreditOnly tinyint(1),
+			IN intDeleted int,
+			IN lngLimit int,
+			IN SortField varchar(60),
+			IN SortOrder varchar(4))
+BEGIN
+	SET @SQL = CONCAT('	SELECT 
+							 cntct.ContactID
+							,cntct.ContactCode ,cntct.ContactName ,cntct.BusinessName
+							,grp.ContactGroupID ,grp.ContactGroupName
+							,ModeOfTerms ,cntct.Terms ,cntct.Address
+							,TelephoneNo ,cntct.Remarks ,cntct.Debit ,cntct.Credit ,cntct.CreditLimit ,cntct.IsCreditAllowed
+							,DateCreated ,cntct.Deleted ,dept.DepartmentID ,dept.DepartmentName
+							,pos.PositionID ,pos.PositionName ,cntct.isLock
+							,IFNULL(LastName,'''') LastName ,IFNULL(Middlename,'''') Middlename ,IFNULL(FirstName,'''') FirstName ,IFNULL(Spousename,'''') Spousename
+							,BirthDate ,SpouseBirthDate ,AnniversaryDate
+							,Address1 ,Address2 ,City ,State ,ZipCode ,IFNULL(cntry.CountryID,0) CountryID ,CountryName
+							,BusinessPhoneNo ,HomePhoneNo ,MobileNo ,FaxNo ,EmailAddress 
+						FROM tblContacts cntct
+							INNER JOIN tblContactGroup grp ON cntct.ContactGroupID = grp.ContactGroupID
+							INNER JOIN tblDepartments dept ON cntct.DepartmentID = dept.DepartmentID
+							INNER JOIN tblPositions pos ON cntct.PositionID = pos.PositionID
+							LEFT OUTER JOIN tblContactAddOn addon ON addon.ContactID = cntct.ContactID
+							LEFT OUTER JOIN tblCountry cntry ON addon.CountryID = cntry.CountryID
+						WHERE 1=1 ');
+
+	IF intDeleted <> -1 THEN -- Customer Group
+		SET @SQL = CONCAT(@SQL, 'AND cntct.deleted = ',intDeleted,' ');
+	END IF;
+	IF hasCreditOnly = true THEN -- Customer Group
+		SET @SQL = CONCAT(@SQL, 'AND cntct.Credit > 0 ');
+	END IF;
+
+	IF ContactGroupCategory = 1 THEN -- Customer Group
+		SET @SQL = CONCAT(@SQL, 'AND (ContactGroupCategory = 1 OR ContactGroupCategory = 3) ');
+	ELSEIF ContactGroupCategory = 2 THEN -- Supplier Group
+		SET @SQL = CONCAT(@SQL, 'AND (ContactGroupCategory = 2 OR ContactGroupCategory = 3) ');
+	ELSEIF ContactGroupCategory = 4 THEN -- Agent Group
+		SET @SQL = CONCAT(@SQL, 'AND (ContactGroupCategory = 4) ');
+	END IF;
+
+	IF ContactID <> 0 THEN -- Customer Group
+		SET @SQL = CONCAT(@SQL, 'AND cntct.ContactID = ',ContactID,' ');
+	ELSEIF IFNULL(ContactCode,'') <> '' AND IFNULL(ContactName,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND (ContactCode LIKE ''%',ContactCode,'%'' OR ContactName LIKE ''%',ContactName,'%'') ');
+	ELSEIF IFNULL(ContactCode,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND ContactCode LIKE ''%',ContactCode,'%'' ');
+	ELSEIF IFNULL(ContactName,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND ContactName LIKE ''%',ContactName,'%'' ');
+	ELSEIF IFNULL(Name,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND (LastName LIKE ''%',Name,'%'' OR MiddleName LIKE ''%',Name,'%'' OR FirstName LIKE ''%',Name,'%'') ');
+	END IF;
+
+	IF IFNULL(ContactGroupCode,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND ContactGroupCode LIKE ''%',ContactGroupCode,'%'' ');
+	END IF;
+
+	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','ContactCode, ContactName, LastName',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
+
+	SET @SQL = CONCAT(@SQL,IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')));
+
+	
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
 END;
 GO
 delimiter ;
@@ -6767,6 +6930,250 @@ delimiter ;
 
 
 
+/********************************************
+	procProductUpdateVAT
+	
+	CALL procProductUpdateVAT(1, 1, 1, 12, 12, 12, 'Lemuel');
+	
+	Sep 21, 2013: Created this procedure
+	
+********************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductUpdateVAT
+GO
+
+create procedure procProductUpdateVAT(
+	IN lngProductGroupID BIGINT,
+	IN lngProductSubGroupID BIGINT,
+	IN lngProductID BIGINT,
+	IN decNewVAT DECIMAL(18,3),
+	IN decNewEVAT DECIMAL(18,3),
+	IN decNewLocalTax DECIMAL(18,3),
+	IN strCreatedBy VARCHAR(100)
+	)
+BEGIN
+	SET @SQL = CONCAT('	UPDATE tblProductPackage SET
+							 VAT = ',decNewVAT,'
+							,EVAT = ',decNewEVAT,'
+							,LocalTax = ',decNewLocalTax,' ');
+
+	IF lngProductID <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'WHERE ProductID = ',lngProductID,' ');
+	ELSEIF lngProductSubGroupID <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'WHERE ProductID IN (SELECT DISTINCT ProductID FROM tblProducts WHERE ProductSubGroupID = ',lngProductSubGroupID,') ');
+	ELSEIF lngProductGroupID <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'WHERE ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID IN (SELECT DISTINCT(ProductSubGroupID) FROM tblProductSubGroup WHERE ProductGroupID = ',lngProductGroupID,')) ');
+	END IF;
+	
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+	
+	-- update also the subgroup and group
+	IF lngProductID = 0 AND lngProductGroupID = 0 THEN
+		SET @SQL = CONCAT('	UPDATE tblProductSubGroup SET
+							 VAT = ',decNewVAT,'
+							,EVAT = ',decNewEVAT,'
+							,LocalTax = ',decNewLocalTax,' ');
+		IF lngProductSubGroupID <> 0 THEN
+			SET @SQL = CONCAT(@SQL, 'WHERE ProductSubGroupID = ',lngProductSubGroupID,' ');
+		END IF;
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+	END IF;
+
+	IF lngProductSubGroupID = 0 AND lngProductID = 0 THEN
+		SET @SQL = CONCAT('	UPDATE tblProductSubGroup SET
+							 VAT = ',decNewVAT,'
+							,EVAT = ',decNewEVAT,'
+							,LocalTax = ',decNewLocalTax,' ');
+		IF lngProductGroupID <> 0 THEN
+			SET @SQL = CONCAT(@SQL, 'WHERE ProductGroupID = ',lngProductGroupID,' ');
+		END IF;
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+
+		SET @SQL = CONCAT('	UPDATE tblProductGroupBaseVariationsMatrix SET
+							 VAT = ',decNewVAT,'
+							,EVAT = ',decNewEVAT,'
+							,LocalTax = ',decNewLocalTax,' ');
+		IF lngProductGroupID <> 0 THEN
+			SET @SQL = CONCAT(@SQL, 'WHERE GroupID = ',lngProductGroupID,' ');
+		END IF;
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+
+		SET @SQL = CONCAT('	UPDATE tblProductGroup SET
+							 VAT = ',decNewVAT,'
+							,EVAT = ',decNewEVAT,'
+							,LocalTax = ',decNewLocalTax,' ');
+		IF lngProductGroupID <> 0 THEN
+			SET @SQL = CONCAT(@SQL, 'WHERE ProductGroupID = ',lngProductGroupID,' ');
+		END IF;
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+
+	END IF;	
+
+	CALL procsysAuditInsert(NOW(), strCreatedBy, 'UPDATE VAT', 'localhost', CONCAT('ProductID:',lngProductID,' ProductSubGroupID:',lngProductSubGroupID,' ProductGroupID:',lngProductGroupID,' VAT:',decNewVAT,' EVAT:',decNewEVAT,' LocalTax:',decNewLocalTax));
+
+END;
+GO
+delimiter ;
+
+
+
+/********************************************
+	procProductDelete
+	
+	CALL procProductDelete('0', 'Lemuel');
+	
+	Sep 21, 2013: Created this procedure
+	
+********************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductDelete
+GO
+
+create procedure procProductDelete(
+	IN IDs VARCHAR(1000),
+	IN strCreatedBy VARCHAR(100)
+	)
+BEGIN
+
+	-- execute only if there are IDs
+	IF IFNULL(IDs,'0') <> '0' THEN
+		SET FOREIGN_KEY_CHECKS = 0;
+
+		SET @SQL = CONCAT('DELETE FROM tblProductPackage WHERE ProductID IN (',IDs,') ');
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+
+		SET @SQL = CONCAT('DELETE FROM tblProductInventory WHERE ProductID IN (',IDs,') ');
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+		
+		SET @SQL = CONCAT('DELETE FROM tblProductUnitMatrix WHERE ProductID IN (',IDs,') ');
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+
+		SET @SQL = CONCAT('DELETE FROM tblProductVariationsMatrix WHERE MatrixID IN (SELECT MatrixID FROM tblProductBaseVariationsMatrix WHERE ProductID IN (',IDs,')) ');
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+
+		SET @SQL = CONCAT('DELETE FROM tblProductBaseVariationsMatrix WHERE ProductID IN (',IDs,') ');
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+		
+		SET @SQL = CONCAT('DELETE FROM tblProductVariations WHERE ProductID IN (',IDs,') ');
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+
+		SET @SQL = CONCAT('DELETE FROM tblProducts WHERE ProductID IN (',IDs,') ');
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+
+		SET FOREIGN_KEY_CHECKS = 1;
+
+		CALL procsysAuditInsert(NOW(), strCreatedBy, 'DELETE PRODUCTS', 'localhost', CONCAT('IDS:',IDs));
+	END IF;			
+END;
+GO
+delimiter ;
+
+
+
+
+/********************************************
+	procProductVariationAddEasy
+	
+	CALL procProductVariationAddEasy(36, 0, 0, 6, 'Lemuel');
+	
+	Sep 21, 2013: Created this procedure
+	
+********************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductVariationAddEasy
+GO
+
+create procedure procProductVariationAddEasy(
+	IN lngProductGroupID BIGINT,
+	IN lngProductSubGroupID BIGINT,
+	IN lngProductID BIGINT,
+	IN lngVariationID BIGINT,
+	IN strCreatedBy VARCHAR(100)
+	)
+BEGIN
+	IF lngVariationID <> 0 THEN
+
+		SET @SQL = 'INSERT tblProductVariations	(ProductID, VariationID)  ';
+	
+		IF lngProductID <> 0 THEN
+			SET @SQL = CONCAT(@SQL, 'SELECT ProductID, ',lngVariationID,' FROM tblProducts WHERE ProductID NOT IN (SELECT ProductID FROM tblProductVariations WHERE VariationID = ',lngVariationID,') 
+																								 AND ProductID = ',lngProductID,' ');
+		ELSEIF lngProductSubGroupID <> 0 THEN
+			SET @SQL = CONCAT(@SQL, 'SELECT ProductID, ',lngVariationID,' FROM tblProducts WHERE ProductID NOT IN (SELECT ProductID FROM tblProductVariations WHERE VariationID = ',lngVariationID,')
+																								 AND ProductID IN (SELECT DISTINCT ProductID FROM tblProducts WHERE ProductSubGroupID = ',lngProductSubGroupID,') ');
+		
+		ELSEIF lngProductGroupID <> 0 THEN
+			SET @SQL = CONCAT(@SQL, 'SELECT ProductID, ',lngVariationID,' FROM tblProducts WHERE ProductID NOT IN (SELECT ProductID FROM tblProductVariations WHERE VariationID = ',lngVariationID,') 
+																								 AND ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID IN (SELECT DISTINCT(ProductSubGroupID) FROM tblProductSubGroup WHERE ProductGroupID = ',lngProductGroupID,')) ');
+		ELSE
+			SET @SQL = CONCAT(@SQL, 'SELECT ProductID, ',lngVariationID,' FROM tblProducts WHERE ProductID NOT IN (SELECT ProductID FROM tblProductVariations WHERE VariationID = ',lngVariationID,') ');
+		END IF;
+		
+		SELECT @SQL;
+		PREPARE cmd FROM @SQL;
+		EXECUTE cmd;
+		DEALLOCATE PREPARE cmd;
+
+		-- update also the subgroup and group
+		IF lngProductID = 0 AND lngProductGroupID = 0 THEN
+			SET @SQL = CONCAT('	INSERT tblProductSubGroupVariations	(SubGroupID, VariationID)
+								SELECT ProductSubGroupID, ',lngVariationID,' FROM tblProductSubGroup WHERE ProductSubGroupID NOT IN (SELECT DISTINCT SubGroupID FROM tblProductSubGroupVariations WHERE VariationID = ',lngVariationID,') ');
+			SET @SQL = CONCAT(@SQL, IF(lngProductSubGroupID=0,'',CONCAT('AND ProductSubGroupID = ',lngProductSubGroupID,' ')));
+		
+			PREPARE cmd FROM @SQL;
+			EXECUTE cmd;
+			DEALLOCATE PREPARE cmd;
+		END IF;
+		
+		IF lngProductSubGroupID = 0 AND lngProductID = 0 THEN
+			SET @SQL = CONCAT('	INSERT tblProductSubGroupVariations	(SubGroupID, VariationID)
+								SELECT ProductSubGroupID, ',lngVariationID,' FROM tblProductSubGroup WHERE ProductSubGroupID NOT IN (SELECT DISTINCT SubGroupID FROM tblProductSubGroupVariations WHERE VariationID = ',lngVariationID,') ');
+			SET @SQL = CONCAT(@SQL, IF(lngProductGroupID=0,'',CONCAT('AND ProductSubGroupID IN (SELECT DISTINCT ProductSubGroupID FROM tblProductSubGroup WHERE ProductGroupID=',lngProductGroupID,') ')));
+
+			PREPARE cmd FROM @SQL;
+			EXECUTE cmd;
+			DEALLOCATE PREPARE cmd;
+		
+			SET @SQL = CONCAT('	INSERT tblProductGroupVariations (GroupID, VariationID)');
+			SET @SQL = CONCAT(@SQL, 'SELECT ProductGroupID, ',lngVariationID,' FROM tblProductGroup WHERE ProductGroupID NOT IN (SELECT DISTINCT GroupID FROM tblProductGroupVariations WHERE VariationID = ',lngVariationID,') ');
+			SET @SQL = CONCAT(@SQL, IF(lngProductGroupID=0,'',CONCAT('AND ProductGroupID=',lngProductGroupID,' ')));
+
+			PREPARE cmd FROM @SQL;
+			EXECUTE cmd;
+			DEALLOCATE PREPARE cmd;
+		
+		END IF;	
+		
+		CALL procsysAuditInsert(NOW(), strCreatedBy, 'ADD MULTIPLE VARIATION', 'localhost', CONCAT('ProductID:',lngProductID,' ProductSubGroupID:',lngProductSubGroupID,' ProductGroupID:',lngProductGroupID,' VriationID:',lngVariationID));
+	END IF;
+END;
+GO
+delimiter ;
 
 
 

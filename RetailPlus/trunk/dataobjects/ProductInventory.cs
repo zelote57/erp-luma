@@ -31,9 +31,13 @@ namespace AceSoft.RetailPlus.Data
 
 
         public System.Data.DataTable ListAsDataTable(int BranchID = 0, long ProductID = 0, long MatrixID =0, string BarCode = "", string ProductCode = "", Int64 ProductGroupID = 0, Int64 ProductSubGroupID = 0, Int64 SupplierID = 0, ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive,
-                bool isQuantityGreaterThanZERO = false, Int32 Limit = 0, Int32 isSummary = 1, string SortField = "", SortOption SortOrder = SortOption.Ascending)
+                bool isQuantityGreaterThanZERO = false, Int32 Limit = 0, Int32 isSummary = 1, string ExpirationDate = Constants.C_DATE_MIN_VALUE_STRING, string SortField = "", SortOption SortOrder = SortOption.Ascending)
         {
-            string SQL = "CALL procProductInventorySelect(@BranchID, @ProductID, @MatrixID, @BarCode, @ProductCode, @ProductGroupID, @ProductSubGroupID, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, @lngLimit, @isSummary, @SortField, @SortOrder)";
+            DateTime dteExpiration = Constants.C_DATE_MIN_VALUE;
+
+            DateTime.TryParse(ExpirationDate, out dteExpiration);
+
+            string SQL = "CALL procProductInventorySelect(@BranchID, @ProductID, @MatrixID, @BarCode, @ProductCode, @ProductGroupID, @ProductSubGroupID, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, @lngLimit, @isSummary, @dteExpiration, @SortField, @SortOrder)";
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
@@ -51,6 +55,7 @@ namespace AceSoft.RetailPlus.Data
             cmd.Parameters.AddWithValue("@isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
             cmd.Parameters.AddWithValue("@lngLimit", Limit);
             cmd.Parameters.AddWithValue("@isSummary", isSummary);
+            cmd.Parameters.AddWithValue("@dteExpiration", dteExpiration.ToString("yyyy-MM-dd"));
             cmd.Parameters.AddWithValue("@SortField", SortField);
             switch (SortOrder)
             {

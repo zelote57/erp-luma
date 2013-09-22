@@ -24,14 +24,16 @@ namespace AceSoft.RetailPlus.Reports
 				lblReferrer.Text = Request.UrlReferrer == null ? Constants.ROOT_DIRECTORY : Request.UrlReferrer.ToString();
 				LoadOptions();
                 Session["ReportDocument"] = null;
+                Session["ReportType"] = "customercredit";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                if (Session["ReportType"].ToString() == "customercredit")
+                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 
@@ -170,7 +172,7 @@ namespace AceSoft.RetailPlus.Reports
                     #region  Customers List With Credit
 
                     Contacts clsContact = new Contacts();
-                    dt = clsContact.CustomerAdvanceSearch(null, cboContactName.Text, cboCustomerGroup.SelectedValue, true, "ContactID", SortOption.Ascending);
+                    dt = clsContact.CustomerAdvanceSearch(null, cboContactName.SelectedItem.Text, cboCustomerGroup.SelectedItem.Value, true, "ContactID", SortOption.Ascending);
                     clsContact.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)

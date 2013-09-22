@@ -91,7 +91,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
 				string SQL = "INSERT INTO tblBranchTransfer (" +
@@ -192,7 +192,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
                 string SQL=	"UPDATE tblBranchTransfer SET " +
@@ -519,7 +519,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 
 			BranchTransferDetails clsBranchTransferDetails = Details(BranchTransferID);
-            ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+            SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
 			ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
 			BranchTransferItem clsBranchTransferItem = new BranchTransferItem(base.Connection, base.Transaction);
@@ -1301,7 +1301,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string stRetValue = String.Empty;
 				
-				ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+				SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
 				stRetValue = clsERPConfig.get_LastBranchTransferNo();
 
 				return stRetValue;

@@ -1,8 +1,8 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.MasterFiles._Discount.__Insert" Codebehind="_Insert.ascx.cs" %>
 <script language="JavaScript" src="../../_Scripts/DocumentScripts.js"></script>
-<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
@@ -10,7 +10,7 @@
 			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
+						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
 								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSave" ToolTip="Add New Discount" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Discount" ImageUrl="../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>&nbsp;
 								</td>
@@ -20,7 +20,7 @@
 					</td>
 					<td class="ms-separator">|</td>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
+						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
 								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveBack" ToolTip="Add New Discount" accessKey="B" tabIndex="1" height="16" width="16" border="0" alt="Add New Discount" ImageUrl="../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>&nbsp;
 								</td>
@@ -30,7 +30,7 @@
 					</td>
 					<td class="ms-separator">|</td>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
+						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
 								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Cancel Adding New Discount" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Cancel Adding New Discount" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False"></asp:imagebutton></td>
 								<td nowrap="nowrap"><asp:linkbutton id="cmdCancel" title="Cancel Adding New Discount" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
@@ -56,7 +56,7 @@
 				</tr>
 				<tr>
 					<td colspan="3" class="ms-sectionline" height="1">
-						<A name="InputFormSection1"></A><img alt="" src="../../_layouts/images/empty.gif" /></td>
+						<img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td valign="top" style="PADDING-BOTTOM: 20px">
@@ -73,10 +73,10 @@
 					</td>
 					<td class="ms-colspace">&nbsp;</td>
 					<td class="ms-authoringcontrols ms-formwidth" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 1px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	20px">
-						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellSpacing="0" cellPadding="0" border="0" width="100%">
+						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 							<tr>
 								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
-									<label for="txtAccountNo">Discount Code<font color="red">*</font></label>
+									<label>Discount Code<font color="red">*</font></label>
 								</td>
 							</tr>
 							<tr>
@@ -91,7 +91,7 @@
 							</tr>
 							<tr>
 								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
-									<label for="txtAccountNo">Discount&nbsp;Type<font color="red">*</font></label>
+									<label>Discount&nbsp;Type<font color="red">*</font></label>
 								</td>
 							</tr>
 							<tr>
@@ -106,7 +106,7 @@
 							</tr>
 							<tr>
 								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
-									<label for="txtAccountNo">Discount Price<font color="red">*</font></label>
+									<label>Discount Price<font color="red">*</font></label>
 								</td>
 							</tr>
 							<tr>
@@ -141,6 +141,6 @@
 		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>

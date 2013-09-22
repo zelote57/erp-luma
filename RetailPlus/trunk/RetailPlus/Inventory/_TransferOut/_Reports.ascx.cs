@@ -34,14 +34,16 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
                     GenerateHTML();
 						
 				Session["ReportDocument"] = null;
+                Session["ReportType"] = "transferout";
             }
         }
 
         protected void Page_Init(object sender, System.EventArgs e)
         {
-            if (Session["ReportDocument"] != null)
+            if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
+                if (Session["ReportType"].ToString() == "transferout")
+                    CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
 

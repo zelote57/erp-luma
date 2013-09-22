@@ -101,7 +101,8 @@ namespace AceSoft.RetailPlus
 		SIZE			=	2,
 		COLOR			=	3,
 		LENGTH			=	4,
-		WIDTH		=	5
+		WIDTH		    =	5,
+        LOTNO           =   6
 	}
 
 	public enum StockStatus

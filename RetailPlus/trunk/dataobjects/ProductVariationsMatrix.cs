@@ -211,7 +211,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-        public void InsertBaseVariationEasy(long pvtProductID, string pvtDescription, string UserName)
+        public Int64 InsertBaseVariationEasy(long pvtProductID, string pvtDescription, string UserName)
         {
             try
             {
@@ -236,7 +236,7 @@ namespace AceSoft.RetailPlus.Data
                 clsBaseDetails.MaxThreshold = clsProductDetails.MaxThreshold;
                 clsBaseDetails.CreatedBy = UserName;
 
-                InsertBaseVariation(clsBaseDetails);
+                return InsertBaseVariation(clsBaseDetails);
             }
             catch (Exception ex)
             {
@@ -293,49 +293,38 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-        public void UpdatePurchasing(long MatrixID, long SupplierID, int UnitID, decimal PurchasePrice)
-        {
-            try
-            {
-                string SQL = "UPDATE tblProductBaseVariationsMatrix SET " +
-                                    "PurchasePrice	= @PurchasePrice, " +
-                                    "SupplierID		= @SupplierID " +
-                            "WHERE MatrixID = @MatrixID;";
+        //public void UpdatePurchasing(long MatrixID, long SupplierID, int UnitID, decimal PurchasePrice)
+        //{
+        //    try
+        //    {
+        //        string SQL = "UPDATE tblProductBaseVariationsMatrix SET " +
+        //                            "PurchasePrice	= @PurchasePrice, " +
+        //                            "SupplierID		= @SupplierID " +
+        //                    "WHERE MatrixID = @MatrixID;";
 
-                
-
-                MySqlCommand cmd = new MySqlCommand();
+        //        MySqlCommand cmd = new MySqlCommand();
                 
                 
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@PurchasePrice", PurchasePrice);
-                cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
-                cmd.Parameters.AddWithValue("@MatrixID", MatrixID); 
-                //cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        //        cmd.Parameters.AddWithValue("@PurchasePrice", PurchasePrice);
+        //        cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
+        //        cmd.Parameters.AddWithValue("@MatrixID", MatrixID); 
+        //        //cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-                base.ExecuteNonQuery(cmd);
+        //        base.ExecuteNonQuery(cmd);
 
-                MatrixPackage clsMatrixPackage = new MatrixPackage(base.Connection, base.Transaction);
-                clsMatrixPackage.UpdatePurchasing(MatrixID, UnitID, 1, PurchasePrice);
+        //        MatrixPackage clsMatrixPackage = new MatrixPackage(base.Connection, base.Transaction);
+        //        clsMatrixPackage.UpdatePurchasing(MatrixID, UnitID, 1, PurchasePrice);
 
-            }
+        //    }
 
-            catch (Exception ex)
-            {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
-                throw base.ThrowException(ex);
-            }
-        }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 
         public void UpdateByPackage(Int64 MatrixID, Int32 UnitID, decimal Price, decimal WSPrice, decimal PurchasePrice, decimal VAT, decimal EVAT, decimal LocalTax)
 		{
@@ -842,136 +831,125 @@ namespace AceSoft.RetailPlus.Data
 
 		#region tblProductBaseVariationsMatrix Streams for Report 
 
-		public System.Data.DataTable InventoryReport(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                //string SQL =	"SELECT MatriXID, " +
-                //                    "a.ProductID, " +
-                //                    "Description, " +
-                //                    "CONCAT(ProductDesc, ':' , Description) AS VariationDesc, " +
-                //                    "ProductDesc, " + 
-                //                    "c.UnitName, " + 
-                //                    "a.Price, " +
-                //                    "a.WSPrice, " +
-                //                    "a.Quantity, " +
-                //                    "a.MinThreshold, " +
-                //                    "a.MaxThreshold, " +
-                //                    "a.PurchasePrice, " +
-                //                    "e.ContactName AS SupplierName, " +
-                //                    "a.QuantityIN, " +
-                //                    "a.QuantityOUT " +
-                //                "FROM tblProductBaseVariationsMatrix a " +
-                //                    "INNER JOIN tblProducts b ON a.ProductID = b.ProductID " +
-                //                    "INNER JOIN tblUnit c ON a.UnitID = c.UnitID " +	
-                //                    "INNER JOIN tblContacts e ON a.SupplierID = e.ContactID " +
-                //                "WHERE 1=1 ORDER BY " + SortField;
+        //public System.Data.DataTable InventoryReport(string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        //string SQL =	"SELECT MatriXID, " +
+        //        //                    "a.ProductID, " +
+        //        //                    "Description, " +
+        //        //                    "CONCAT(ProductDesc, ':' , Description) AS VariationDesc, " +
+        //        //                    "ProductDesc, " + 
+        //        //                    "c.UnitName, " + 
+        //        //                    "a.Price, " +
+        //        //                    "a.WSPrice, " +
+        //        //                    "a.Quantity, " +
+        //        //                    "a.MinThreshold, " +
+        //        //                    "a.MaxThreshold, " +
+        //        //                    "a.PurchasePrice, " +
+        //        //                    "e.ContactName AS SupplierName, " +
+        //        //                    "a.QuantityIN, " +
+        //        //                    "a.QuantityOUT " +
+        //        //                "FROM tblProductBaseVariationsMatrix a " +
+        //        //                    "INNER JOIN tblProducts b ON a.ProductID = b.ProductID " +
+        //        //                    "INNER JOIN tblUnit c ON a.UnitID = c.UnitID " +	
+        //        //                    "INNER JOIN tblContacts e ON a.SupplierID = e.ContactID " +
+        //        //                "WHERE 1=1 ORDER BY " + SortField;
 
-                string SQL = SQLSelect() + "ORDER BY " + SortField;
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-				System.Data.DataTable dt = new System.Data.DataTable("ProductVariations");
-				base.MySqlDataAdapterFill(SQL, dt);
-				
-
-				return dt;	
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-		public System.Data.DataTable InventoryReport(DateTime ExpiryDate, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                string SQL = SQLSelect();
-
-				if (ExpiryDate != DateTime.MinValue)
-				{
-					SQL += "AND VariationID = " + CONSTANT_VARIATIONS.EXPIRATION.ToString("d") + " "; 
-					SQL += "AND DATE_FORMAT(g.Description, '%Y-%m-%d %H:%i') <= DATE_FORMAT('" + ExpiryDate.ToString("yyyy-MM-dd HH:mm:ss") + "', '%Y-%m-%d %H:%i') ";
-				}
-
-				SQL += "ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+        //        string SQL = SQLSelect() + "ORDER BY " + SortField;
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
 
 				
-				System.Data.DataTable dt = new System.Data.DataTable("ProductVariations");
-				base.MySqlDataAdapterFill(SQL, dt);
+        //        System.Data.DataTable dt = new System.Data.DataTable("ProductVariations");
+        //        base.MySqlDataAdapterFill(SQL, dt);
 				
 
-				return dt;	
-			}
-			catch (Exception ex)
-			{
+        //        return dt;	
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+        //public System.Data.DataTable InventoryReport(DateTime ExpiryDate, string SortField, SortOption SortOrder)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelect();
+
+        //        if (ExpiryDate != DateTime.MinValue)
+        //        {
+        //            SQL += "AND VariationID = " + CONSTANT_VARIATIONS.EXPIRATION.ToString("d") + " "; 
+        //            SQL += "AND DATE_FORMAT(g.Description, '%Y-%m-%d %H:%i') <= DATE_FORMAT('" + ExpiryDate.ToString("yyyy-MM-dd HH:mm:ss") + "', '%Y-%m-%d %H:%i') ";
+        //        }
+
+        //        SQL += "ORDER BY " + SortField;
+
+        //        if (SortOrder == SortOption.Ascending)
+        //            SQL += " ASC";
+        //        else
+        //            SQL += " DESC";
+
+				
+        //        System.Data.DataTable dt = new System.Data.DataTable("ProductVariations");
+        //        base.MySqlDataAdapterFill(SQL, dt);
+				
+
+        //        return dt;	
+        //    }
+        //    catch (Exception ex)
+        //    {
 				
 				
-				{
+        //        {
 					
 					
 					
 					
-				}
+        //        }
 
-				throw base.ThrowException(ex);
-			}	
-		}
-        public System.Data.DataTable InventoryReport(string ProductGroupName, string ProductSubGroupName, string ProductCode)
-        {
-            try
-            {
-                string SQL = SQLSelect();
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+        //public System.Data.DataTable InventoryReport(string ProductGroupName, string ProductSubGroupName, string ProductCode)
+        //{
+        //    try
+        //    {
+        //        string SQL = SQLSelect();
 
-                if (ProductGroupName != "" && ProductGroupName != null)
-                {
-                    SQL += "AND ProductGroupName = '" + ProductGroupName + "' ";
-                }
-                if (ProductSubGroupName != "" && ProductSubGroupName != null)
-                {
-                    SQL += "AND ProductSubGroupName = '" + ProductSubGroupName + "' ";
-                }
+        //        if (ProductGroupName != "" && ProductGroupName != null)
+        //        {
+        //            SQL += "AND ProductGroupName = '" + ProductGroupName + "' ";
+        //        }
+        //        if (ProductSubGroupName != "" && ProductSubGroupName != null)
+        //        {
+        //            SQL += "AND ProductSubGroupName = '" + ProductSubGroupName + "' ";
+        //        }
 
-                if (ProductCode != "" && ProductCode != null)
-                {
-                    string stSQL = "";
-                    foreach (string stProductCode in ProductCode.Split(';'))
-                    {
-                        stSQL += "OR ProductCode LIKE '%" + stProductCode + "%' ";
-                    }
-                    SQL += "AND (" + stSQL.Remove(0, 2) + ")";
-                }
-                SQL += "ORDER BY a.Quantity ASC";
+        //        if (ProductCode != "" && ProductCode != null)
+        //        {
+        //            string stSQL = "";
+        //            foreach (string stProductCode in ProductCode.Split(';'))
+        //            {
+        //                stSQL += "OR ProductCode LIKE '%" + stProductCode + "%' ";
+        //            }
+        //            SQL += "AND (" + stSQL.Remove(0, 2) + ")";
+        //        }
+        //        SQL += "ORDER BY ProductDesc ASC";
 
-                
-                System.Data.DataTable dt = new System.Data.DataTable("ProductVariations");
-                base.MySqlDataAdapterFill(SQL, dt);
-                
+        //        System.Data.DataTable dt = new System.Data.DataTable("ProductVariations");
+        //        base.MySqlDataAdapterFill(SQL, dt);
 
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
-                throw base.ThrowException(ex);
-            }
-        }
+        //        return dt;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 
         private string SQLSelectForReorder()
         {
@@ -998,15 +976,6 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -1079,7 +1048,18 @@ namespace AceSoft.RetailPlus.Data
 
 		#region ProductVariationsMatrixList Insert and Update
 
-		public bool InsertVariation(ProductVariationsMatrixDetails Details)
+        public void Save(ProductVariationsMatrixDetails Details)
+        {
+            if (IsVariationExists(Details.MatrixID, Details.VariationID))
+            {
+                Update(Details);
+            }
+            else
+            {
+                InsertVariation(Details);
+            }
+        }
+		private bool InsertVariation(ProductVariationsMatrixDetails Details)
 		{
 			try 
 			{
@@ -1125,7 +1105,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public void Update(ProductVariationsMatrixDetails Details)
+        private void Update(ProductVariationsMatrixDetails Details)
 		{
 			try 
 			{
@@ -1170,7 +1150,6 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-
 		
 		#endregion
 
@@ -1524,69 +1503,69 @@ namespace AceSoft.RetailPlus.Data
         //    }	
         //}
 
-        public void ChangeTax(long ProductGroupID, long ProductSubGroupID, long ProductID, decimal NewVAT, decimal NewEVAT, decimal NewLocalTax)
-        {
-            try
-            {
-                string SQL = "UPDATE tblProductBaseVariationsMatrix SET " +
-                                    "VAT		= @NewVAT, " +
-                                    "EVAT		= @NewEVAT, " +
-                                    "LocalTax	= @NewLocalTax ";
+        //public void ChangeTax(long ProductGroupID, long ProductSubGroupID, long ProductID, decimal NewVAT, decimal NewEVAT, decimal NewLocalTax)
+        //{
+        //    try
+        //    {
+        //        string SQL = "UPDATE tblProductBaseVariationsMatrix SET " +
+        //                            "VAT		= @NewVAT, " +
+        //                            "EVAT		= @NewEVAT, " +
+        //                            "LocalTax	= @NewLocalTax ";
 
-                if (ProductID != 0) SQL += "WHERE ProductID = @ProductID;";
-                else if (ProductSubGroupID != 0) SQL += "WHERE ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID = @ProductSubGroupID);";
-                else if (ProductGroupID != 0) SQL += "WHERE ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID IN (SELECT DISTINCT(ProductSubGroupID) FROM tblProductSubGroup WHERE ProductGroupID = @ProductGroupID));";
+        //        if (ProductID != 0) SQL += "WHERE ProductID = @ProductID;";
+        //        else if (ProductSubGroupID != 0) SQL += "WHERE ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID = @ProductSubGroupID);";
+        //        else if (ProductGroupID != 0) SQL += "WHERE ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID IN (SELECT DISTINCT(ProductSubGroupID) FROM tblProductSubGroup WHERE ProductGroupID = @ProductGroupID));";
 
                 
 
-                MySqlCommand cmd = new MySqlCommand();
+        //        MySqlCommand cmd = new MySqlCommand();
                 
                 
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                MySqlParameter prmNewVAT = new MySqlParameter("@NewVAT",MySqlDbType.Decimal);
-                prmNewVAT.Value = NewVAT;
-                cmd.Parameters.Add(prmNewVAT);
+        //        MySqlParameter prmNewVAT = new MySqlParameter("@NewVAT",MySqlDbType.Decimal);
+        //        prmNewVAT.Value = NewVAT;
+        //        cmd.Parameters.Add(prmNewVAT);
 
-                MySqlParameter prmNewEVAT = new MySqlParameter("@NewEVAT",MySqlDbType.Decimal);
-                prmNewEVAT.Value = NewEVAT;
-                cmd.Parameters.Add(prmNewEVAT);
+        //        MySqlParameter prmNewEVAT = new MySqlParameter("@NewEVAT",MySqlDbType.Decimal);
+        //        prmNewEVAT.Value = NewEVAT;
+        //        cmd.Parameters.Add(prmNewEVAT);
 
-                MySqlParameter prmNewLocalTax = new MySqlParameter("@NewLocalTax",MySqlDbType.Decimal);
-                prmNewLocalTax.Value = NewLocalTax;
-                cmd.Parameters.Add(prmNewLocalTax);
+        //        MySqlParameter prmNewLocalTax = new MySqlParameter("@NewLocalTax",MySqlDbType.Decimal);
+        //        prmNewLocalTax.Value = NewLocalTax;
+        //        cmd.Parameters.Add(prmNewLocalTax);
 
-                if (ProductID != 0)
-                {
-                    MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);
-                    prmProductID.Value = ProductID;
-                    cmd.Parameters.Add(prmProductID);
-                }
-                else if (ProductSubGroupID != 0)
-                {
-                    MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);
-                    prmProductSubGroupID.Value = ProductSubGroupID;
-                    cmd.Parameters.Add(prmProductSubGroupID);
-                }
-                else if (ProductGroupID != 0)
-                {
-                    MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);
-                    prmProductGroupID.Value = ProductGroupID;
-                    cmd.Parameters.Add(prmProductGroupID);
-                }
+        //        if (ProductID != 0)
+        //        {
+        //            MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);
+        //            prmProductID.Value = ProductID;
+        //            cmd.Parameters.Add(prmProductID);
+        //        }
+        //        else if (ProductSubGroupID != 0)
+        //        {
+        //            MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);
+        //            prmProductSubGroupID.Value = ProductSubGroupID;
+        //            cmd.Parameters.Add(prmProductSubGroupID);
+        //        }
+        //        else if (ProductGroupID != 0)
+        //        {
+        //            MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);
+        //            prmProductGroupID.Value = ProductGroupID;
+        //            cmd.Parameters.Add(prmProductGroupID);
+        //        }
 
-                base.ExecuteNonQuery(cmd);
+        //        base.ExecuteNonQuery(cmd);
 
-                MatrixPackage clsMatrixPackage = new MatrixPackage(base.Connection, base.Transaction);
-                clsMatrixPackage.ChangeTax(ProductGroupID, ProductSubGroupID, ProductID, NewVAT, NewEVAT, NewLocalTax);
-            }
+        //        MatrixPackage clsMatrixPackage = new MatrixPackage(base.Connection, base.Transaction);
+        //        clsMatrixPackage.ChangeTax(ProductGroupID, ProductSubGroupID, ProductID, NewVAT, NewEVAT, NewLocalTax);
+        //    }
 
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 
 		#endregion
 

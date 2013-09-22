@@ -260,7 +260,7 @@ namespace AceSoft.RetailPlus.Inventory
 			if (boRetValue)
 			{
 				Products clsProduct = new Products();
-				clsProduct.Delete( stIDs.Substring(0,stIDs.Length-1));
+                clsProduct.Delete(stIDs.Substring(0, stIDs.Length - 1), Convert.ToString(Session["Name"]));
 				clsProduct.CommitAndDispose();
 			}
 

@@ -46,24 +46,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 		#region Web Control Methods
 
-        protected void imgSave_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            SaveRecord();
-        }
-        protected void cmdSave_Click(object sender, EventArgs e)
-        {
-            SaveRecord();
-        }
-        protected void imgSaveBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-		{
-			SaveRecord();
-			Response.Redirect(lblReferrer.Text);
-		}
-        protected void cmdSaveBack_Click(object sender, System.EventArgs e)
-		{
-			SaveRecord();
-			Response.Redirect(lblReferrer.Text);
-		}
         protected void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
 			Response.Redirect(lblReferrer.Text);
@@ -156,7 +138,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100).DefaultView;
+            cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100).DefaultView;
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
 

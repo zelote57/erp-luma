@@ -153,15 +153,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Variation
 		}
 		private void LoadSortFieldOptions(DataListItemEventArgs e)
 		{
-			string stParam = null;		
+			string stParam = null;
 
-			SortOption sortoption = SortOption.Ascending;
+            System.Data.SqlClient.SortOrder sortoption = System.Data.SqlClient.SortOrder.Ascending;
 			if (Request.QueryString["sortoption"]!=null)
-				sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);
+                sortoption = (System.Data.SqlClient.SortOrder)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);
 
-			if (sortoption == SortOption.Ascending)
+            if (sortoption == System.Data.SqlClient.SortOrder.Ascending)
 				stParam += "?sortoption=" + Common.Encrypt(SortOption.Desscending.ToString("G"), Session.SessionID);
-			else if (sortoption == SortOption.Desscending)
+            else if (sortoption == System.Data.SqlClient.SortOrder.Descending)
 				stParam += "?sortoption=" + Common.Encrypt(SortOption.Ascending.ToString("G"), Session.SessionID);
 
 			System.Collections.Specialized.NameValueCollection querystrings = Request.QueryString;;
@@ -185,14 +185,14 @@ namespace AceSoft.RetailPlus.MasterFiles._Variation
 			string SortField = "VariationType";
 			if (Request.QueryString["sortfield"]!=null)
 			{	SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID);	}
-			
-			SortOption sortoption = SortOption.Ascending;
+
+            System.Data.SqlClient.SortOrder sortoption = System.Data.SqlClient.SortOrder.Ascending;
 			if (Request.QueryString["sortoption"]!=null)
-			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
+            { sortoption = (System.Data.SqlClient.SortOrder)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true); }
 
 			if (Request.QueryString["Search"]==null)
 			{
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsVariation.List(SortField, sortoption)).DefaultView;
+				PageData.DataSource = clsVariation.ListAsDataTable(SortField, sortoption).DefaultView;
 			}
 			else
 			{						

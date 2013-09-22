@@ -559,12 +559,61 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
         {
             try 
             {
-                long.Parse(cboProductCode.SelectedItem.Value);
-                if (txtVariation.Text != null || txtVariation.Text.Trim() != string.Empty || txtVariation.Text.Trim() != "")
+                if (!string.IsNullOrEmpty(txtVariation.Text))
                 {
+                    DateTime dteExpiration = Constants.C_DATE_MIN_VALUE;
+                    string LotNo = "";
+
+                    if (Session[Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE].ToString() == Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO)
+                    {
+                        string javaScript = "";
+                        string[] variation = txtVariation.Text.Split(';');
+                        
+                        if (!DateTime.TryParse(variation[0], out dteExpiration))
+                        {
+                            javaScript = "window.alert('Please enter a valid expiration date in YYYY-MM-DD format. Variation format must be: EXPIRATION;LOTNO');";
+                            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
+                            return;
+                        }
+                        if (variation.Length == 1)
+                        {
+                            javaScript = "window.alert('Please enter a valid LOTNO, it must not be blank. If there is no LOTNO please enter NA.');";
+                            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
+                            return;
+                        }
+                        
+                        LotNo = variation[1];
+                        if (string.IsNullOrEmpty(LotNo))
+                        {
+                            javaScript = "window.alert('Please enter a valid LOTNO, it must not be blank. If there is no LOTNO please enter NA.');";
+                            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updPrint, this.updPrint.GetType(), "openwindow", javaScript, true);
+                            return;
+                        }
+                        
+                    }
+                    long lngProdductID = long.Parse(cboProductCode.SelectedItem.Value);
+
                     Security.AccessUserDetails clsAccessUserDetails = (Security.AccessUserDetails)Session["AccessUserDetails"];
                     ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-                    clsProductVariationsMatrix.InsertBaseVariationEasy(long.Parse(cboProductCode.SelectedItem.Value), txtVariation.Text, clsAccessUserDetails.Name);
+                    long lngMatrixID = clsProductVariationsMatrix.InsertBaseVariationEasy(long.Parse(cboProductCode.SelectedItem.Value), txtVariation.Text, clsAccessUserDetails.Name);
+
+                    if (Session[Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE].ToString() == Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO)
+                    {
+                        ProductVariationsMatrixDetails clsDetails;
+                        clsDetails = new ProductVariationsMatrixDetails();
+                        clsDetails.MatrixID = lngMatrixID;
+                        clsDetails.ProductID = lngProdductID;
+
+                        // save the expiration
+                        clsDetails.VariationID = long.Parse(CONSTANT_VARIATIONS.EXPIRATION.ToString("d"));
+                        clsDetails.Description = dteExpiration.ToString("yyyy-MM-dd");
+                        clsProductVariationsMatrix.Save(clsDetails);
+
+                        // save the lotno
+                        clsDetails.VariationID = long.Parse(CONSTANT_VARIATIONS.LOTNO.ToString("d"));
+                        clsDetails.Description = LotNo;
+                        clsProductVariationsMatrix.Save(clsDetails);
+                    }
                     clsProductVariationsMatrix.CommitAndDispose();
 
                     cmdVariationSearch_Click(null, null);
@@ -1732,7 +1781,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                                             clsContactDetails.Remarks = "Added in XML import";
                                             clsContactDetails.Debit = 0;
                                             clsContactDetails.Credit = 0;
-                                            clsContactDetails.IsCreditAllowed = 0;
+                                            clsContactDetails.IsCreditAllowed = false;
                                             clsContactDetails.CreditLimit = 0;
                                             clsProductDetails.SupplierID = clsContact.Insert(clsContactDetails);
                                         }

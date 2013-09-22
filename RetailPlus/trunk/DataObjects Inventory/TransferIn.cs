@@ -103,7 +103,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
                 string SQL = "INSERT INTO tblTransferIn (" +
@@ -269,7 +269,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
                 string SQL = "UPDATE tblTransferIn SET " +
@@ -671,7 +671,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 TransferInDetails clsTransferInDetails = Details(TransferInID);
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
                 ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
                 TransferInItem clsTransferInItem = new TransferInItem(base.Connection, base.Transaction);
@@ -1622,7 +1622,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string stRetValue = String.Empty;
 
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
+                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
                 stRetValue = clsERPConfig.get_LastTransferInNo();
 
                 return stRetValue;

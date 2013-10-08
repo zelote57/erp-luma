@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Threading;
 using System.Text;
+using System.Management;
 
 using AceSoft.RetailPlus.Reports;
 using AceSoft.RetailPlus.Security;
@@ -103,6 +104,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private bool mboLocked;
 		private bool mbodgItemRowClick;
 		private bool mboIsCashCountInitialized;
+        private bool mboWillWriteSysLog;
 		//private bool mboIsDiscountAuthorized;
 		private DateTime mdtCurrentDateTime;
 
@@ -1922,6 +1924,9 @@ namespace AceSoft.RetailPlus.Client.UI
 				clsEvent.AddEvent("Loading transaction defaults...");
 
 				Cursor.Current = Cursors.WaitCursor;
+
+                this.KeyPreview = true;
+                mboWillWriteSysLog = CONFIG.WillWriteSystemLog;
 
 				lblCurrency.Text = CompanyDetails.Currency;
 				lblTransNo.Text = "READY...";
@@ -4518,6 +4523,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				{
 					clsEvent.AddEventLn("[" + lblCashier.Text + "] Closing transaction no. " + lblTransNo.Text, true);
 
+                    clsEvent.AddEventLn("[" + lblCashier.Text + "]      showing payment screen", true);
+
 					//insert payment details
 					PaymentsWnd payment = new PaymentsWnd();
 					payment.TerminalDetails = mclsTerminalDetails;
@@ -4552,10 +4559,12 @@ namespace AceSoft.RetailPlus.Client.UI
 					payment.Close();
 					payment.Dispose();
 
+                    this.KeyPreview = false;
+                    clsEvent.AddEventLn("[" + lblCashier.Text + "]      payment screen closed.", true);
+
 					if (paymentResult == DialogResult.OK)
 					{
-						
-						mclsSalesTransactionDetails.AmountPaid = AmountPaid;
+                        mclsSalesTransactionDetails.AmountPaid = AmountPaid;
 						mclsSalesTransactionDetails.CashPayment = CashPayment;
 						mclsSalesTransactionDetails.ChequePayment = ChequePayment;
 						mclsSalesTransactionDetails.CreditCardPayment = CreditCardPayment;
@@ -4587,8 +4596,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 						// Mar 17, 2009
 						// open drawer first before printing.
-						OpenDrawerDelegate opendrawerDel = new OpenDrawerDelegate(OpenDrawer);
-						Invoke(opendrawerDel);
+                        //OpenDrawerDelegate opendrawerDel = new OpenDrawerDelegate(OpenDrawer);
+						//Invoke(opendrawerDel);
+                        OpenDrawer();
 
 						// start a connection for the database.
 						//update the transaction table 
@@ -4599,6 +4609,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						mclsSalesTransactionDetails.ChangeAmount = ChangeAmount;
 
 						Cursor.Current = Cursors.WaitCursor;
+                        clsEvent.AddEventLn("[" + lblCashier.Text + "]      saving payments...", true);
 						SavePayments(arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
 
 						//insert to log file
@@ -4629,17 +4640,21 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         if (mboIsRefund && !mclsTerminalDetails.IsParkingTerminal)
 						{
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      updating refund terminal no...", true, mboWillWriteSysLog);
 							clsSalesTransactions.UpdateTerminalNo(mclsSalesTransactionDetails.TransactionID, lblTerminalNo.Text);
 							clsSalesTransactions.Refund(mclsSalesTransactionDetails.TransactionID, -mclsSalesTransactionDetails.SubTotal, -mclsSalesTransactionDetails.ItemsDiscount, -mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, -mclsSalesTransactionDetails.VAT, -mclsSalesTransactionDetails.VatableAmount, -mclsSalesTransactionDetails.EVAT, -mclsSalesTransactionDetails.EVatableAmount, -mclsSalesTransactionDetails.LocalTax, -mclsSalesTransactionDetails.AmountPaid, -CashPayment, -ChequePayment, -CreditCardPayment, -CreditPayment, -DebitPayment, -RewardPointsPayment, -RewardConvertedPayment, -BalanceAmount, -ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, -mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, lblCashier.Text);
 
 							//UpdateTerminalReportDelegate updateterminalDel = new UpdateTerminalReportDelegate(UpdateTerminalReport);
-							UpdateTerminalReport(TransactionStatus.Refund, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      updating refund terminal report...", true, mboWillWriteSysLog);
+                            UpdateTerminalReport(TransactionStatus.Refund, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
 							//UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
-							UpdateCashierReport(TransactionStatus.Refund, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      updating redunf cashier report...", true, mboWillWriteSysLog);
+                            UpdateCashierReport(TransactionStatus.Refund, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
 							if (mclsTerminalDetails.AutoPrint == PrintingPreference.Normal)	//print items if not yet printed
 							{
+                                clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing refund items...", true, mboWillWriteSysLog);
 								foreach (System.Data.DataRow dr in ItemDataTable.Rows)
 								{
 									if (dr["Quantity"].ToString() != "VOID")
@@ -4677,6 +4692,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             //if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.ReservedAndCommit && !mclsTerminalDetails.IsParkingTerminal)
                             if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER && !mclsTerminalDetails.IsParkingTerminal)
                             {
+                                clsEvent.AddEventLn("[" + lblCashier.Text + "]      adding the refund items quantity to inv...", true, mboWillWriteSysLog);
                                 Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
 
                                 foreach (System.Data.DataRow dr in ItemDataTable.Rows)
@@ -4701,14 +4717,17 @@ namespace AceSoft.RetailPlus.Client.UI
 						}
                         else if (!mboIsRefund)
 						{
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      closing transaction...", true, mboWillWriteSysLog);
 							clsSalesTransactions.UpdateTerminalNo(mclsSalesTransactionDetails.TransactionID, lblTerminalNo.Text);
 							clsSalesTransactions.Close(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, BalanceAmount, ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, mclsSalesTransactionDetails.CashierName);
 
 							//UpdateTerminalReportDelegate updateterminalDel = new UpdateTerminalReportDelegate(UpdateTerminalReport);
-							UpdateTerminalReport(TransactionStatus.Closed, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      updating terminal report...", true, mboWillWriteSysLog);
+                            UpdateTerminalReport(TransactionStatus.Closed, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVatableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
 							//UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
-							UpdateCashierReport(TransactionStatus.Closed, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      updating cashier's report...", true, mboWillWriteSysLog);
+                            UpdateCashierReport(TransactionStatus.Closed, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VatableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
                             // Sep 24, 2011      Lemuel E. Aceron
 							// Added order slip wherein all punch items will not change sales and inventory
@@ -4719,6 +4738,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             // !mclsTerminalDetails.ReservedAndCommit
                             if (mclsTerminalDetails.IsParkingTerminal)
                             {
+                                clsEvent.AddEventLn("[" + lblCashier.Text + "]      adding back the parking slot to inv...", true, mboWillWriteSysLog);
                                 Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
                                 Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
 
@@ -4745,7 +4765,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             }
                             else if (lblCustomer.Text.Trim().ToUpper() != Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
                             {
-							    Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
+                                Data.ProductUnit clsProductUnit = new Data.ProductUnit(mConnection, mTransaction);
 							    Data.ProductVariationsMatrix clsProductVariationsMatrix = new Data.ProductVariationsMatrix(mConnection, mTransaction);
 
 							    foreach (System.Data.DataRow dr in ItemDataTable.Rows)
@@ -4765,14 +4785,16 @@ namespace AceSoft.RetailPlus.Client.UI
 									    decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
 									    decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
 
+                                        clsEvent.AddEventLn("[" + lblCashier.Text + "]      adding return item: prdid-" + lProductID.ToString() + " to inv: qty-" + decNewQuantity .ToString() + "...", true, mboWillWriteSysLog);
                                         clsProduct.AddQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.ADD_RETURN_ITEM), mclsSalesTransactionDetails.TransactionDate, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 								    }
 								    else if (dr["Quantity"].ToString() != "VOID")
 								    {
-									    decQuantity = Convert.ToDecimal(dr["Quantity"]);
+                                        decQuantity = Convert.ToDecimal(dr["Quantity"]);
 									    decPackageQuantity = Convert.ToDecimal(dr["PackageQuantity"]);
 									    decNewQuantity = clsProductUnit.GetBaseUnitValue(lProductID, iProductUnitID, decQuantity * decPackageQuantity);
 
+                                        clsEvent.AddEventLn("[" + lblCashier.Text + "]      subtracting sold item: prdid-" + lProductID.ToString() + " from inv/rsrvd: qty-" + decNewQuantity.ToString() + "...", true, mboWillWriteSysLog);
                                         clsProduct.SubtractQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + decPrice.ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
                                         clsProduct.SubtractReservedQuantity(Constants.TerminalBranchID, lProductID, lVariationsMatrixID, decNewQuantity, Data.Products.getPRODUCT_INVENTORY_MOVEMENT_VALUE(Data.PRODUCT_INVENTORY_MOVEMENT.DEDUCT_SOLD_RETAIL) + " @ " + decPrice.ToString("#,##0.#0") + " Buying: " + decPurchasePrice.ToString("#,##0.#0") + " to " + mclsSalesTransactionDetails.CustomerName, DateTime.Now, mclsSalesTransactionDetails.TransactionNo, mclsSalesTransactionDetails.CashierName);
 								    }
@@ -4780,6 +4802,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							}
 
                             // Nov 1, 2011 : Lemu - disabled reward points if product is exempted 
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      checking if rewards is enabled...", true, mboWillWriteSysLog);
                             if (mclsSalesTransactionDetails.RewardCardActive && mclsTerminalDetails.RewardPointsDetails.EnableRewardPoints)
                             {
                                 foreach (System.Data.DataRow dr in ItemDataTable.Rows)
@@ -4801,9 +4824,10 @@ namespace AceSoft.RetailPlus.Client.UI
                         }
 
 						// Oct 23, 2011 : Lemu - Added Reward Points
-
+                        
 						if (mclsSalesTransactionDetails.RewardPointsPayment != 0)
 						{
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      deducting rewards payment...", true, mboWillWriteSysLog);
 							// this should comes before earning of points otherwise this will be wrong.
 							Data.ContactReward clsContactReward = new Data.ContactReward(mConnection, mTransaction);
 							clsContactReward.DeductPoints(mclsSalesTransactionDetails.CustomerID, mclsSalesTransactionDetails.RewardPointsPayment);
@@ -4814,6 +4838,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							mclsSalesTransactionDetails.RewardCurrentPoints -= mclsSalesTransactionDetails.RewardPointsPayment;
 							mclsSalesTransactionDetails.RewardEarnedPoints = 0;
 
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing rewards slip...", true, mboWillWriteSysLog);
 							PrintRewardsRedemptionSlip();
 						}
 
@@ -4848,33 +4873,39 @@ namespace AceSoft.RetailPlus.Client.UI
 						}
                         // commit the transactions here.
                         // in case error s encoutered n printing. transaction is already committed.
+                        clsEvent.AddEventLn("[" + lblCashier.Text + "]      commiting transaction to database...", true, mboWillWriteSysLog);
                         clsSalesTransactions.CommitAndDispose();
 
 						/**
 							* print the transaction
 							* */
-							
+						
 						if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice)
 						{
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing sales invoice...", true, mboWillWriteSysLog);
 							PrintSalesInvoice();
 						}
 						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.DeliveryReceipt)
 						{
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing delivery receipt...", true, mboWillWriteSysLog);
 							PrintDeliveryReceipt();
 						}
 						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceAndDR)
-						{
+                        {
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing sales invoice & delivery receipt...", true, mboWillWriteSysLog);
 							PrintSalesInvoice();
 							PrintDeliveryReceipt();
 						}
 						//Added February 10, 2010
 						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300Printer)
 						{
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing sales invoice for LX300...", true, mboWillWriteSysLog);
 							PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300Printer);
 						}
 						//Added May 11, 2010
 						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceOrDR)
 						{
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing sales invoice or OR...", true, mboWillWriteSysLog);
 							if (mclsSalesTransactionDetails.CashPayment != 0 || mclsSalesTransactionDetails.CreditCardPayment != 0)
 								PrintSalesInvoice();
 							if (mclsSalesTransactionDetails.ChequePayment != 0 || mclsSalesTransactionDetails.CreditPayment != 0)
@@ -4883,17 +4914,20 @@ namespace AceSoft.RetailPlus.Client.UI
 						//Added January 17, 2011
 						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300PlusPrinter)
 						{
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing sales invoice for LX300 Plus...", true, mboWillWriteSysLog);
 							PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300PlusPrinter);
 						}
 						//Added February 22, 2011
 						else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoiceForLX300PlusAmazon)
 						{
+                            clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing sales invoice for LX300 Plus Amazon...", true, mboWillWriteSysLog);
 							PrintSalesInvoiceToLX(TerminalReceiptType.SalesInvoiceForLX300PlusAmazon);
 						}
 						else
 						{
 							if (mclsTerminalDetails.AutoPrint == PrintingPreference.Normal)	//print items if not yet printed
 							{
+                                clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing items to POS printer...", true, mboWillWriteSysLog);
 								foreach (System.Data.DataRow dr in ItemDataTable.Rows)
 								{
 									string stItemNo = "" + dr["ItemNo"].ToString();
@@ -4928,6 +4962,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
                                     if (mclsTerminalDetails.WillPrintChargeSlip)
                                     {
+                                        clsEvent.AddEventLn("[" + lblCashier.Text + "]      printing charge slip...", true, mboWillWriteSysLog);
+
                                         // Nov 05, 2011 : Print Charge Slip
                                         if (!mclsTerminalDetails.IncludeCreditChargeAgreement) //do not print the guarantor if there is not agreement printed
                                         {
@@ -4944,11 +4980,14 @@ namespace AceSoft.RetailPlus.Client.UI
 						
                         clsEvent.AddEventLn("Done! Transaction no. " + lblTransNo.Text + " has been closed. Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + CashPayment.ToString("#,###.#0") + " ChequePayment: " + ChequePayment.ToString("#,###.#0") + " CreditCardPayment: " + CreditCardPayment + " CreditPayment: " + CreditPayment.ToString("#,###.#0") + " DebitPayment: " + DebitPayment.ToString("#,###.#0") + " ChangeAmount: " + ChangeAmount.ToString("#,###.#0"), true);
 
+                        clsEvent.AddEventLn("[" + lblCashier.Text + "] Loading Options...", true, mboWillWriteSysLog);
                         this.LoadOptions();
 					}
+                    this.KeyPreview = true;
 				}
 				catch (Exception ex)
 				{
+                    this.KeyPreview = true;
 					InsertErrorLogToFile(ex, "ERROR!!! Closing transaction.");
 				}
 			}
@@ -8403,16 +8442,22 @@ namespace AceSoft.RetailPlus.Client.UI
 						{
 							Directory.CreateDirectory(logsdir + logdate.ToString("MMM"));
 						}
-						string logFile = logsdir + logdate.ToString("MMM") + "/OR_" + logdate.ToString("yyyyMMddhhmmss") + ".doc";
+                        string logFile = logsdir + logdate.ToString("MMM") + "/OR_" + clsSalesTransactionDetails.TransactionNo + logdate.ToString("yyyyMMddhhmmss") + ".doc";
 
 						rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
 					}
 					catch { }
 
-				   
-					rpt.PrintOptions.PrinterName = mclsTerminalDetails.SalesInvoicePrinterName;
-					rpt.PrintToPrinter(1, false, 0, 0);
-					
+                    if (isPrinterOnline(mclsTerminalDetails.SalesInvoicePrinterName))
+                    {
+                        rpt.PrintOptions.PrinterName = mclsTerminalDetails.SalesInvoicePrinterName;
+                        rpt.PrintToPrinter(1, false, 0, 0);
+                    }
+                    else
+                    {
+                        clsEvent.AddEventLn("will not print sales invoice. printer is offline.", true, mboWillWriteSysLog);
+                    }
+
 					rpt.Close();
 					rpt.Dispose();
 					
@@ -8583,7 +8628,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         {
                             Directory.CreateDirectory(logsdir + logdate.ToString("MMM"));
                         }
-                        string logFile = logsdir + logdate.ToString("MMM") + "/OR_" + logdate.ToString("yyyyMMddhhmmss") + ".doc";
+                        string logFile = logsdir + logdate.ToString("MMM") + "/OR_" + clsSalesTransactionDetails.TransactionNo + logdate.ToString("yyyyMMddhhmmss") + ".doc";
 
                         rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
                     }
@@ -8601,9 +8646,18 @@ namespace AceSoft.RetailPlus.Client.UI
 							break;
 						}
 					}
-					rpt.PrintOptions.PaperSize = (CrystalDecisions.Shared.PaperSize)rawKind;
-					rpt.PrintOptions.PrinterName = mclsTerminalDetails.SalesInvoicePrinterName;
-					rpt.PrintToPrinter(1, false, 0, 0);
+
+                    if (isPrinterOnline(mclsTerminalDetails.SalesInvoicePrinterName))
+                    {
+                        rpt.PrintOptions.PaperSize = (CrystalDecisions.Shared.PaperSize)rawKind;
+                        rpt.PrintOptions.PrinterName = mclsTerminalDetails.SalesInvoicePrinterName;
+                        rpt.PrintToPrinter(1, false, 0, 0);
+                    }
+                    else
+                    {
+                        clsEvent.AddEventLn("will not print sales invoice to LX. printer is offline.", true, mboWillWriteSysLog);
+                    }
+
 
 					rpt.Close();
 					rpt.Dispose();
@@ -8768,8 +8822,30 @@ namespace AceSoft.RetailPlus.Client.UI
 					//CRViewer.ReportSource = rpt;
 					//CRViewer.Show();
 
-					rpt.PrintOptions.PrinterName = mclsTerminalDetails.SalesInvoicePrinterName;
-					rpt.PrintToPrinter(1, false, 0, 0);
+                    try
+                    {
+                        DateTime logdate = DateTime.Now;
+                        string logsdir = System.Configuration.ConfigurationManager.AppSettings["logsdir"].ToString();
+
+                        if (!Directory.Exists(logsdir + logdate.ToString("MMM")))
+                        {
+                            Directory.CreateDirectory(logsdir + logdate.ToString("MMM"));
+                        }
+                        string logFile = logsdir + logdate.ToString("MMM") + "/DR_" + clsSalesTransactionDetails.TransactionNo + logdate.ToString("yyyyMMddhhmmss") + ".doc";
+
+                        rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
+                    }
+                    catch { }
+
+                    if (isPrinterOnline(mclsTerminalDetails.SalesInvoicePrinterName))
+                    {
+                        rpt.PrintOptions.PrinterName = mclsTerminalDetails.SalesInvoicePrinterName;
+                        rpt.PrintToPrinter(1, false, 0, 0);
+                    }
+                    else
+                    {
+                        clsEvent.AddEventLn("will not print delivery receipt. printer is offline.", true, mboWillWriteSysLog);
+                    }
 
 					rpt.Close();
 					rpt.Dispose();
@@ -11058,6 +11134,47 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			return stRetValue;
 		}
+
+        private static void PrintProps(ManagementObject o, string prop)
+        {
+            try { Console.WriteLine(prop + "|" + o[prop]); }
+            catch (Exception e) { Console.Write(e.ToString()); }
+        }
+
+        private bool isPrinterOnline(string objPrinterName)
+        {
+            bool boretValue = false;
+            try {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer");
+
+                foreach (ManagementObject printer in searcher.Get())
+                {
+                    string printerName = printer["Name"].ToString().ToLower();
+
+                    if (printerName == objPrinterName.ToLower()) {
+                        boretValue = true;
+                        break;
+                    }
+                    //Console.WriteLine("Printer :" + printerName);
+
+                    //PrintProps(printer, "Caption");
+                    //PrintProps(printer, "ExtendedPrinterStatus");
+                    //PrintProps(printer, "Availability");
+                    //PrintProps(printer, "Default");
+                    //PrintProps(printer, "DetectedErrorState");
+                    //PrintProps(printer, "ExtendedDetectedErrorState");
+                    //PrintProps(printer, "ExtendedPrinterStatus");
+                    //PrintProps(printer, "LastErrorCode");
+                    //PrintProps(printer, "PrinterState");
+                    //PrintProps(printer, "PrinterStatus");
+                    //PrintProps(printer, "Status");
+                    //PrintProps(printer, "WorkOffline");
+                    //PrintProps(printer, "Local");
+                }
+            }
+            catch { }
+            return boretValue;
+        }
 
 
 		#region PrintZRead

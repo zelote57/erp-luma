@@ -169,6 +169,21 @@ namespace AceSoft.RetailPlus.Client
                 return bolRetValue;
             }
         }
+
+        public static bool WillWriteSystemLog
+        {
+            get
+            {
+                bool bolRetValue = false;
+                try { bolRetValue = Convert.ToBoolean(Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["WillWriteSystemLog"])); }
+                catch
+                {
+                    try { bolRetValue = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["WillWriteSystemLog"]); }
+                    catch { }
+                }
+                return bolRetValue;
+            }
+        }
 	}
 
     public struct AYALA_CONFIG

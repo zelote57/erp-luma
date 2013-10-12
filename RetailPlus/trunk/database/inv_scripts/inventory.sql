@@ -898,4 +898,7 @@ ALTER TABLE tblInventory ADD `ProductGroupName` VARCHAR(50);
 
 /*********************************  v_4.0.1.0.sql END  *******************************************************/ 
 
+-- 10Oct2013 Added for automatic getting of customer code as membership no of GLA. Applicable also for auto generated code.
+ALTER TABLE tblERPConfig ADD LastCustomerCode VARCHAR(15) NOT NULL DEFAULT '0000000001';
+
 

@@ -63,6 +63,18 @@ BEGIN
 					 BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,ReservedQuantity ,IsLock ,DateCreated)
 			SELECT   BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,ReservedQuantity ,IsLock , dteProcessDate FROM tblProductInventory;
 
+
+	UPDATE tblProductInventoryDaily, tblProducts, tblProductPackage
+	SET
+		tblProductInventoryDaily.PurchasePrice = tblProductPackage.PurchasePrice,
+		tblProductInventoryDaily.Price = tblProductPackage.Price
+	WHERE tblProductInventoryDaily.ProductID = tblProducts.ProductID
+		AND tblProductInventoryDaily.ProductID = tblProductPackage.ProductID
+		AND tblProducts.BaseUnitID = tblProductPackage.UnitID
+		AND tblProductInventoryDaily.MatrixID = tblProductPackage.MatrixID
+		AND tblProductPackage.Quantity = 1
+		AND DATE_FORMAT(tblProductInventoryDaily.DateCreated, '%Y-%m-%d') = DATE_FORMAT(dteProcessDate, '%Y-%m-%d');
+	
 	CALL procsysAuditInsert(NOW(), 'SYSTEM', 'sysProductInventorySnapshot: DAILY INV FINISH', 'localhost', 'Finish processing daily inventory');
 
 	SET dteProcessDate = NOW();
@@ -74,7 +86,19 @@ BEGIN
 				BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,ReservedQuantity ,IsLock ,DateMonth ,DateCreated)
 		SELECT  BranchID ,ProductID ,MatrixID ,Quantity ,QuantityIn ,QuantityOut ,ActualQuantity ,ReservedQuantity ,IsLock ,DATE_FORMAT(dteProcessDate, '%Y-%m') ,dteProcessDate FROM tblProductInventory;
 	
-	CALL procsysAuditInsert(NOW(), 'SYSTEM', 'sysProductInventorySnapshot: MONTHLY INV FINISH', 'localhost', 'Start processing monthly inventory');	
+	
+	UPDATE tblProductInventoryMonthly, tblProducts, tblProductPackage
+		SET
+			tblProductInventoryMonthly.PurchasePrice = tblProductPackage.PurchasePrice,
+			tblProductInventoryMonthly.Price = tblProductPackage.Price
+	WHERE tblProductInventoryMonthly.ProductID = tblProducts.ProductID
+		AND tblProductInventoryMonthly.ProductID = tblProductPackage.ProductID
+		AND tblProducts.BaseUnitID = tblProductPackage.UnitID
+		AND tblProductInventoryMonthly.MatrixID = tblProductPackage.MatrixID
+		AND tblProductPackage.Quantity = 1
+		AND DATE_FORMAT(tblProductInventoryMonthly.DateCreated, '%Y-%m-%d') = DATE_FORMAT(dteProcessDate, '%Y-%m-%d');
+
+	CALL procsysAuditInsert(NOW(), 'SYSTEM', 'sysProductInventorySnapshot: MONTHLY INV FINISH', 'localhost', 'Finish processing monthly inventory');	
 END;
 GO
 delimiter ;

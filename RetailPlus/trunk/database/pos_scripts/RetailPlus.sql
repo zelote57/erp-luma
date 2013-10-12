@@ -6680,13 +6680,13 @@ ALTER TABLE tblProductInventoryMonthly ADD ReservedQuantity DECIMAL(18,3) NOT NU
 DROP TABLE IF EXISTS tblContactDetails;
 DROP TABLE IF EXISTS tblContactAddOn;
 CREATE TABLE tblContactAddOn (
-    `ContactDetailID` bigint(20) unsigned NOT NULL DEFAULT 0,
+    `ContactDetailID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 	`ContactID` BIGINT(20) NOT NULL DEFAULT 0,
 	`Salutation` VARCHAR(25) NOT NULL,
 	`FirstName` VARCHAR(85) NOT NULL,
-	`MiddleName` VARCHAR(85) NOT NULL,
+	`MiddleName` VARCHAR(85) NULL,
 	`LastName` VARCHAR(85) NOT NULL,	
-	`SpouseName` VARCHAR(85) NOT NULL,
+	`SpouseName` VARCHAR(85) NULL,
 	
 	`BirthDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
 	`SpouseBirthDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
@@ -6705,6 +6705,7 @@ CREATE TABLE tblContactAddOn (
 	`FaxNo` VARCHAR(75) NOT NULL DEFAULT '',
 
 	`EmailAddress` VARCHAR(85) NOT NULL,
+PRIMARY KEY (ContactDetailID),
 INDEX `IX_tblContactAddOn`(`ContactID`)
 );
 
@@ -6713,3 +6714,38 @@ INSERT INTO sysConfig (ConfigName, ConfigValue, Category) VALUES ('BACKEND_VARIA
 
 
 INSERT INTO tblVariations (VariationID, VariationCode, VariationType) VALUES (6, 'LOT', 'LOTNO');
+
+ALTER TABLE tblProductInventoryDaily ADD PurchasePrice DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryMonthly ADD PurchasePrice DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+
+ALTER TABLE tblProductInventoryDaily ADD Price DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryMonthly ADD Price DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+
+UPDATE tblProductInventoryDaily, tblProducts, tblProductPackage
+	SET
+		tblProductInventoryDaily.PurchasePrice = tblProductPackage.PurchasePrice,
+		tblProductInventoryDaily.Price = tblProductPackage.Price
+WHERE tblProductInventoryDaily.ProductID = tblProducts.ProductID
+	AND tblProductInventoryDaily.ProductID = tblProductPackage.ProductID
+	AND tblProducts.BaseUnitID = tblProductPackage.UnitID
+	AND tblProductInventoryDaily.MatrixID = tblProductPackage.MatrixID
+	AND tblProductPackage.Quantity = 1
+	AND DATE_FORMAT(tblProductInventoryDaily.DateCreated, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d');
+	
+UPDATE tblProductInventoryMonthly, tblProducts, tblProductPackage
+	SET
+		tblProductInventoryMonthly.PurchasePrice = tblProductPackage.PurchasePrice,
+		tblProductInventoryMonthly.Price = tblProductPackage.Price
+WHERE tblProductInventoryMonthly.ProductID = tblProducts.ProductID
+	AND tblProductInventoryMonthly.ProductID = tblProductPackage.ProductID
+	AND tblProducts.BaseUnitID = tblProductPackage.UnitID
+	AND tblProductInventoryMonthly.MatrixID = tblProductPackage.MatrixID
+	AND tblProductPackage.Quantity = 1
+	AND DATE_FORMAT(tblProductInventoryMonthly.DateCreated, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d');
+
+
+ALTER TABLE tblDiscount MODIFY DiscountType VARCHAR(60) NOT NULL;
+ALTER TABLE tblContactAddon MODIFY MiddleName VARCHAR(85) NULL;
+
+-- IMPORTANT: recreate the tblContactAddOn above......
+-- see also changes in inventory.sql

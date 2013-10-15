@@ -100,7 +100,7 @@ namespace AceSoft.RetailPlus.Credits {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl ctrlMenu;
+        protected global::AceSoft.RetailPlus.Credits.@__Menu ctrlMenu;
         
         /// <summary>
         /// PageLevelError control.

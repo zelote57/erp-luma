@@ -19,8 +19,9 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
         protected void Page_Load(object sender, System.EventArgs e)
         {
             if (!IsPostBack && Visible)
-            {
+            { 
                 ManageSecurity();
+                LoadOptions();
                 LoadList();
                 cmdDelete.Attributes.Add("onClick", "return confirm_delete();");
                 imgDelete.Attributes.Add("onClick", "return confirm_delete();");
@@ -116,31 +117,50 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
                 lnkContactName.Text = dr["ContactName"].ToString();
                 lnkContactName.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(chkList.Value, Session.SessionID);
 
-                Label lblBirthDate = (Label)e.Item.FindControl("lblBirthDate");
-                lblBirthDate.Text = Convert.ToDateTime(dr["BirthDate"].ToString()).ToString("dd-MMM-yyyy");
+                HyperLink lnkBusinessName = (HyperLink)e.Item.FindControl("lnkBusinessName");
+                lnkBusinessName.Text = dr["BusinessName"].ToString();
+                lnkBusinessName.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(chkList.Value, Session.SessionID);
 
+                HyperLink lnkContactGroupName = (HyperLink)e.Item.FindControl("lnkContactGroupName");
+                lnkContactGroupName.Text = dr["ContactGroupName"].ToString();
+                lnkContactGroupName.NavigateUrl =  Constants.ROOT_DIRECTORY + "/MasterFiles/_ContactGroup/Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(dr["ContactGroupID"].ToString(), Session.SessionID);
+                
                 Label lblRewardCardNo = (Label)e.Item.FindControl("lblRewardCardNo");
                 lblRewardCardNo.Text = dr["RewardCardNo"].ToString();
 
-                Label lblRewardCardStatus = (Label)e.Item.FindControl("lblRewardCardStatus");
-                lblRewardCardStatus.Text = Enum.Parse(typeof(RewardCardStatus), dr["RewardCardStatus"].ToString()).ToString();
+                if (!string.IsNullOrEmpty(lblRewardCardNo.Text)) {
+                    Label lblRewardCardStatus = (Label)e.Item.FindControl("lblRewardCardStatus");
+                    lblRewardCardStatus.Text = Enum.Parse(typeof(RewardCardStatus), dr["RewardCardStatus"].ToString()).ToString();
 
-                if (Convert.ToBoolean(dr["RewardActive"].ToString()))
-                {
-                    lblRewardCardStatus.Text += "(Active)";
-                }else {lblRewardCardStatus.Text += "(InActive)";}
+                    if (Convert.ToBoolean(dr["RewardActive"].ToString()))
+                    {
+                        lblRewardCardStatus.Text += "(Active)";
+                    }else {lblRewardCardStatus.Text += "(InActive)";}
 
-                Label lblRewardExpiryDate = (Label)e.Item.FindControl("lblRewardExpiryDate");
-                lblRewardExpiryDate.Text = Convert.ToDateTime(dr["ExpiryDate"].ToString()).ToString("dd-MMM-yyyy");
+                    Label lblRewardExpiryDate = (Label)e.Item.FindControl("lblRewardExpiryDate");
+                    lblRewardExpiryDate.Text = string.IsNullOrEmpty(dr["ExpiryDate"].ToString()) ? "" : Convert.ToDateTime(dr["ExpiryDate"].ToString()).ToString("dd-MMM-yyyy");
+                }
 
-                Label lblRewardPoints = (Label)e.Item.FindControl("lblRewardPoints");
-                lblRewardPoints.Text = dr["RewardPoints"].ToString();
+                DateTime dteBirthDate = Constants.C_DATE_MIN_VALUE;
+                DateTime dteSpouseBirthDate = Constants.C_DATE_MIN_VALUE;
+                DateTime dteAnniversaryDate = Constants.C_DATE_MIN_VALUE;
 
-                Label lblRewardRedeemedPoints = (Label)e.Item.FindControl("lblRewardRedeemedPoints");
-                lblRewardRedeemedPoints.Text = dr["RedeemedPoints"].ToString();
+                dteBirthDate = DateTime.TryParse(dr["BirthDate"].ToString(), out dteBirthDate) ? dteBirthDate : Constants.C_DATE_MIN_VALUE;
+                dteSpouseBirthDate = DateTime.TryParse(dr["SpouseBirthDate"].ToString(), out dteSpouseBirthDate) ? dteSpouseBirthDate : Constants.C_DATE_MIN_VALUE;
+                dteAnniversaryDate = DateTime.TryParse(dr["AnniversaryDate"].ToString(), out dteAnniversaryDate) ? dteAnniversaryDate : Constants.C_DATE_MIN_VALUE;
 
-                Label lblRewardTotalPurchases = (Label)e.Item.FindControl("lblRewardTotalPurchases");
-                lblRewardTotalPurchases.Text = dr["TotalPurchases"].ToString();
+                Label lblBirthDate = (Label)e.Item.FindControl("lblBirthDate");
+                lblBirthDate.Text = dteBirthDate == Constants.C_DATE_MIN_VALUE ? "" : dteBirthDate.ToString("dd-MMM-yyyy");
+
+                Label lblSpouseName = (Label)e.Item.FindControl("lblSpouseName");
+                lblSpouseName.Text = dr["SpouseName"].ToString();
+
+                Label lblSpouseBirthDate = (Label)e.Item.FindControl("lblSpouseBirthDate");
+                lblSpouseBirthDate.Text = dteSpouseBirthDate == Constants.C_DATE_MIN_VALUE ? "" : dteSpouseBirthDate.ToString("dd-MMM-yyyy");
+
+                Label lblAnniversaryDate = (Label)e.Item.FindControl("lblAnniversaryDate");
+                lblAnniversaryDate.Text = dteAnniversaryDate == Constants.C_DATE_MIN_VALUE ? "" : dteAnniversaryDate.ToString("dd-MMM-yyyy");
+
             }
         }
         protected void lstItem_ItemCommand(object sender, DataListCommandEventArgs e)
@@ -207,24 +227,69 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 
 			HyperLink SortByContactCode = (HyperLink) e.Item.FindControl("SortByContactCode");
 			HyperLink SortByContactName = (HyperLink) e.Item.FindControl("SortByContactName");
-            HyperLink SortByBirthDate = (HyperLink)e.Item.FindControl("SortByBirthDate");
+            HyperLink SortByBusinessName = (HyperLink)e.Item.FindControl("SortByBusinessName");
+            HyperLink SortByContactGroupName = (HyperLink)e.Item.FindControl("SortByContactGroupName");
 			HyperLink SortByRewardCardNo = (HyperLink) e.Item.FindControl("SortByRewardCardNo");
-            HyperLink SortByRewardCardStatus = (HyperLink)e.Item.FindControl("SortByRewardCardNo");
             HyperLink SortByRewardExpiryDate = (HyperLink)e.Item.FindControl("SortByRewardExpiryDate");
-            HyperLink SortByRewardPoints = (HyperLink)e.Item.FindControl("SortByRewardPoints");
-            HyperLink SortByRewardRedeemedPoints = (HyperLink)e.Item.FindControl("SortByRewardRedeemedPoints");
-            HyperLink SortByRewardTotalPurchases = (HyperLink)e.Item.FindControl("SortByRewardTotalPurchases");
+            HyperLink SortByBirthDate = (HyperLink)e.Item.FindControl("SortByBirthDate");
+            HyperLink SortBySpouseName = (HyperLink)e.Item.FindControl("SortBySpouseName");
+            HyperLink SortBySpouseBirthDate = (HyperLink)e.Item.FindControl("SortBySpouseBirthDate");
+            HyperLink SortByAnniversaryDate = (HyperLink)e.Item.FindControl("SortByAnniversaryDate");
 
 			SortByContactCode.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ContactCode", Session.SessionID);
 			SortByContactName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ContactName", Session.SessionID);
-            SortByBirthDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("BirthDate", Session.SessionID);
+            SortByBusinessName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("BusinessName", Session.SessionID);
+            SortByContactGroupName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ContactGroupName", Session.SessionID);
             SortByRewardCardNo.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RewardCardNo", Session.SessionID);
-            SortByRewardCardStatus.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RewardCardStatus", Session.SessionID);
             SortByRewardExpiryDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ExpiryDate", Session.SessionID);
-            SortByRewardPoints.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RewardPoints", Session.SessionID);
-            SortByRewardRedeemedPoints.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RedeemedPoints", Session.SessionID);
-            SortByRewardTotalPurchases.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("TotalPurchases", Session.SessionID);
+            SortByBirthDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("addon.BirthDate", Session.SessionID);
+            SortBySpouseName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("SpouseName", Session.SessionID);
+            SortBySpouseBirthDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("SpouseBirthDate", Session.SessionID);
+            SortByAnniversaryDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("AnniversaryDate", Session.SessionID);
 		}
+
+        private void LoadOptions()
+        {
+            ContactGroup clsContactGroup = new ContactGroup();
+
+            cboGroup.DataTextField = "ContactGroupName";
+            cboGroup.DataValueField = "ContactGroupID";
+            cboGroup.DataSource = clsContactGroup.ListAsDataTable(ContactGroupCategory.CUSTOMER).DefaultView;
+            cboGroup.DataBind();
+            cboGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            cboGroup.SelectedIndex = 0;
+
+            cboBirthMonth.Items.Add(new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            cboBirthMonth.Items.Add(new ListItem("January", "1"));
+            cboBirthMonth.Items.Add(new ListItem("February", "2"));
+            cboBirthMonth.Items.Add(new ListItem("March", "3"));
+            cboBirthMonth.Items.Add(new ListItem("April", "4"));
+            cboBirthMonth.Items.Add(new ListItem("May", "5"));
+            cboBirthMonth.Items.Add(new ListItem("June", "6"));
+            cboBirthMonth.Items.Add(new ListItem("July", "7"));
+            cboBirthMonth.Items.Add(new ListItem("August", "8"));
+            cboBirthMonth.Items.Add(new ListItem("September", "9"));
+            cboBirthMonth.Items.Add(new ListItem("October", "10"));
+            cboBirthMonth.Items.Add(new ListItem("November", "11"));
+            cboBirthMonth.Items.Add(new ListItem("December", "12"));
+            cboBirthMonth.SelectedIndex = DateTime.Now.Month;
+
+            cboAnniversaryMonth.Items.Add(new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            cboAnniversaryMonth.Items.Add(new ListItem("January", "1"));
+            cboAnniversaryMonth.Items.Add(new ListItem("February", "2"));
+            cboAnniversaryMonth.Items.Add(new ListItem("March", "3"));
+            cboAnniversaryMonth.Items.Add(new ListItem("April", "4"));
+            cboAnniversaryMonth.Items.Add(new ListItem("May", "5"));
+            cboAnniversaryMonth.Items.Add(new ListItem("June", "6"));
+            cboAnniversaryMonth.Items.Add(new ListItem("July", "7"));
+            cboAnniversaryMonth.Items.Add(new ListItem("August", "8"));
+            cboAnniversaryMonth.Items.Add(new ListItem("September", "9"));
+            cboAnniversaryMonth.Items.Add(new ListItem("October", "10"));
+            cboAnniversaryMonth.Items.Add(new ListItem("November", "11"));
+            cboAnniversaryMonth.Items.Add(new ListItem("December", "12"));
+            cboAnniversaryMonth.SelectedIndex = 0;
+
+        }
 		private void LoadList()
 		{	
 			Contacts clsContact = new Contacts();
@@ -233,26 +298,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
             clsContactColumns.ContactID = true;
             clsContactColumns.ContactCode = true;
             clsContactColumns.ContactName = true;
-            //clsContactColumns.ContactGroupID = true;
-            //clsContactColumns.ContactGroupName = true;
-            //clsContactColumns.ModeOfTerms = true;
-            //clsContactColumns.Terms = true;
-            //clsContactColumns.Address = true;
-            //clsContactColumns.BusinessName = true;
-            //clsContactColumns.TelephoneNo = true;
-            //clsContactColumns.Remarks = true;
-            //clsContactColumns.Debit = true;
-            //clsContactColumns.Credit = true;
-            //clsContactColumns.CreditLimit = true;
-            //clsContactColumns.IsCreditAllowed = true;
-            //clsContactColumns.DateCreated = true;
-            //clsContactColumns.Deleted = true;
-            //clsContactColumns.DepartmentID = true;
-            //clsContactColumns.DepartmentName = true;
-            //clsContactColumns.PositionID = true;
-            //clsContactColumns.PositionName = true;
             clsContactColumns.RewardDetails = true;
-            //clsContactColumns.CreditDetails = true;
 
             ContactColumns clsSearchColumns = new ContactColumns();
             clsSearchColumns.ContactCode = true;
@@ -267,12 +313,23 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-            string SearchKey = string.Empty;
-			if (Request.QueryString["Search"]!=null)
-			{
-                SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-			}
-            PageData.DataSource = clsContact.Customers(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 0, false, null, System.Data.SqlClient.SortOrder.Ascending).DefaultView;
+            string SearchKey = txtSearch.Text;
+            string ContactGroupCode = "";
+            ContactGroupCode = cboGroup.SelectedIndex == 0 ? "" : cboGroup.SelectedItem.Text;
+
+            DateTime dteBirthDateFrom = Constants.C_DATE_MIN_VALUE;
+            DateTime dteBirthDateTo = Constants.C_DATE_MIN_VALUE;
+            DateTime dteAnniversaryDateFrom = Constants.C_DATE_MIN_VALUE;
+            DateTime dteAnniversaryDateTo = Constants.C_DATE_MIN_VALUE;
+
+            dteBirthDateFrom = DateTime.TryParse(txtBirthStartDate.Text, out dteBirthDateFrom) ? dteBirthDateFrom : Constants.C_DATE_MIN_VALUE;
+            dteBirthDateTo = DateTime.TryParse(txtBirthEndDate.Text, out dteBirthDateTo) ? dteBirthDateTo : Constants.C_DATE_MIN_VALUE;
+            dteAnniversaryDateFrom = DateTime.TryParse(txtAnnivStartDate.Text, out dteAnniversaryDateFrom) ? dteAnniversaryDateFrom : Constants.C_DATE_MIN_VALUE;
+            dteAnniversaryDateTo = DateTime.TryParse(txtAnnivEndDate.Text, out dteAnniversaryDateTo) ? dteAnniversaryDateTo : Constants.C_DATE_MIN_VALUE;
+
+            //PageData.DataSource = clsContact.Customers(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, clsSearchColumns, SearchKey, 0, false, null, System.Data.SqlClient.SortOrder.Ascending).DefaultView;
+            PageData.DataSource = clsContact.ListAsDataTable(ContactGroupCategory.CUSTOMER, ContactCode: SearchKey, ContactName: SearchKey, ContactGroupCode: ContactGroupCode, SortField: SortField, SortOrder: sortoption, BirthDateFrom: dteBirthDateFrom.ToString("yyyy-MM-dd"), BirthDateTo: dteBirthDateTo.ToString("yyyy-MM-dd"), AnniversaryDateFrom: dteAnniversaryDateFrom.ToString("yyyy-MM-dd"), AnniversaryDateTo: dteAnniversaryDateTo.ToString("yyyy-MM-dd"), BirthMonth: cboBirthMonth.SelectedIndex, AnniversaryMonth: cboAnniversaryMonth.SelectedIndex).DefaultView;
+                //clsContact.CustomersDataTable(SearchKey, SortField: SortField, SortOrder: sortoption).DefaultView;
 
 			clsContact.CommitAndDispose();
 
@@ -387,5 +444,10 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 		}
 
 		#endregion
-}
+
+        protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            LoadList();
+        }
+    }
 }

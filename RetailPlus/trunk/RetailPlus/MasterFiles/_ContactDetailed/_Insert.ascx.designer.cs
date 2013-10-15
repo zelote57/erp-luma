@@ -85,6 +85,15 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed {
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary2;
         
         /// <summary>
+        /// lblCustomerCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCustomerCode;
+        
+        /// <summary>
         /// cboGroup control.
         /// </summary>
         /// <remarks>
@@ -119,33 +128,6 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator3;
-        
-        /// <summary>
-        /// txtBusinessName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBusinessName;
-        
-        /// <summary>
-        /// cboPosition control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboPosition;
-        
-        /// <summary>
-        /// Requiredfieldvalidator4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator4;
         
         /// <summary>
         /// cboSalutation control.
@@ -184,15 +166,6 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed {
         protected global::System.Web.UI.WebControls.TextBox txtMiddleName;
         
         /// <summary>
-        /// Requiredfieldvalidator2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator2;
-        
-        /// <summary>
         /// txtLastName control.
         /// </summary>
         /// <remarks>
@@ -209,6 +182,33 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator5;
+        
+        /// <summary>
+        /// txtBusinessName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBusinessName;
+        
+        /// <summary>
+        /// cboPosition control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboPosition;
+        
+        /// <summary>
+        /// Requiredfieldvalidator4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator4;
         
         /// <summary>
         /// txtAddress1 control.

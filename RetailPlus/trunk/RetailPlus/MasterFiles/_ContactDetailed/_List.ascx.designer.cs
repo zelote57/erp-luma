@@ -112,40 +112,40 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed {
         protected global::System.Web.UI.WebControls.Label lblDataCount;
         
         /// <summary>
-        /// txtOrderStartDate control.
+        /// cboBirthMonth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOrderStartDate;
+        protected global::System.Web.UI.WebControls.DropDownList cboBirthMonth;
         
         /// <summary>
-        /// txtOrderStartTime control.
+        /// cboAnniversaryMonth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOrderStartTime;
+        protected global::System.Web.UI.WebControls.DropDownList cboAnniversaryMonth;
         
         /// <summary>
-        /// txtOrderEndDate control.
+        /// txtBirthStartDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOrderEndDate;
+        protected global::System.Web.UI.WebControls.TextBox txtBirthStartDate;
         
         /// <summary>
-        /// txtOrderEndTime control.
+        /// txtBirthEndDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOrderEndTime;
+        protected global::System.Web.UI.WebControls.TextBox txtBirthEndDate;
         
         /// <summary>
         /// Label3 control.
@@ -166,40 +166,22 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed {
         protected global::System.Web.UI.WebControls.Label Label2;
         
         /// <summary>
-        /// txtPostingStartDate control.
+        /// txtAnnivStartDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPostingStartDate;
+        protected global::System.Web.UI.WebControls.TextBox txtAnnivStartDate;
         
         /// <summary>
-        /// txtPostingStartTime control.
+        /// txtAnnivEndDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPostingStartTime;
-        
-        /// <summary>
-        /// txtPostingEndDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPostingEndDate;
-        
-        /// <summary>
-        /// txtPostingEndTime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPostingEndTime;
+        protected global::System.Web.UI.WebControls.TextBox txtAnnivEndDate;
         
         /// <summary>
         /// Label4 control.
@@ -229,13 +211,13 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed {
         protected global::System.Web.UI.WebControls.TextBox txtSearch;
         
         /// <summary>
-        /// cboStatus control.
+        /// cboGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboStatus;
+        protected global::System.Web.UI.WebControls.DropDownList cboGroup;
         
         /// <summary>
         /// cmdSearch control.

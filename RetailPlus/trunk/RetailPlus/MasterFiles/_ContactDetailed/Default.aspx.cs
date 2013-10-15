@@ -18,15 +18,15 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 		protected void Page_Load(object sender, System.EventArgs e)
 		{
 			const string defaultHeading = "Loyalty Program";
-			string stHeading = defaultHeading;			
+			string stHeading = defaultHeading;
 
-			const string defaultTitle = "Customer reward's information";
+            const string defaultTitle = "Customer Information Management";
 			SiteTitle.Title = defaultTitle;
 
 			const SearchCategoryID defaultSearchIndex = SearchCategoryID.Customers;
 			SearchCategoryID SearchIndex = defaultSearchIndex;			
 
-			HorizontalNavBar.PageNavigatorid = HorizontalNavID.Rewards;
+			HorizontalNavBar.PageNavigatorid = HorizontalNavID.MasterFiles;
 			
 			if (Request.QueryString["task"]!=null)
 			{
@@ -34,23 +34,23 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 				switch(task)
 				{
 					case "add":
-						stHeading = "Create New Customer Reward";
-                        SearchIndex = SearchCategoryID.CustomerDetailed;
+						stHeading = "Create New Customer with complete details ";
+                        SearchIndex = SearchCategoryID.NotApplicable;
 						ctrlInsert.Visible = true;
 						break;
 					case "edit":
 						stHeading = "Modify Customer Reward Info";
-                        SearchIndex = SearchCategoryID.CustomerDetailed;
+                        SearchIndex = SearchCategoryID.NotApplicable;
 						ctrlUpdate.Visible = true;
 						break;   
 					case "details":
-						stHeading = "Customer Reward Information";
-                        SearchIndex = SearchCategoryID.CustomerDetailed;
+						stHeading = "Customer Detailed Information";
+                        SearchIndex = SearchCategoryID.NotApplicable;
 						ctrlDetails.Visible = true;
 						break;   
 					case "list":
 						stHeading = "Members List";
-                        SearchIndex = SearchCategoryID.CustomerDetailed;
+                        SearchIndex = SearchCategoryID.NotApplicable;
                         ctrlList.Visible = true;
 						break;
 					default:	

@@ -72,7 +72,7 @@ namespace AceSoft.RetailPlus.Credits
 			clsAccessRights.CommitAndDispose();
 
 			if (clsDetails.Read==false)
-				Server.Transfer("/RetailPlus/Home.aspx");
+				Server.Transfer("/RetailPlus/Home/Default.aspx");
 		}
 
 		#region Web Form Designer generated code

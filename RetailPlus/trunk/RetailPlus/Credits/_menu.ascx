@@ -1,4 +1,4 @@
-<%@ Reference Control="~/_Menu.ascx" %>
+<%--<%@ Reference Control="~/_Menu.ascx" %>--%>
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Credits.__Menu" Codebehind="_Menu.ascx.cs" %>
 <table height="100%" border="0" cellpadding="0" cellspacing="0" class="ms-navframe">
 	<tr valign="top">
@@ -17,9 +17,9 @@
 							<div id="Menu_0_0">
 								<table width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnavtableone1">
 									<tr>
-										<td class="Ms-pvnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif" alt=""></td>
+										<td class="Ms-pvnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 										<td class="Ms-pvnavtopc1"></td>
-										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt=""></td>
+										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 									</tr>
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
@@ -42,9 +42,9 @@
 							<div id="Menu_0_1">
 								<table width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnavtableone1">
 									<tr>
-										<td class="Ms-pvnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif" alt=""></td>
+										<td class="Ms-pvnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 										<td class="Ms-pvnavtopc1"></td>
-										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt=""></td>
+										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 									</tr>
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
@@ -71,9 +71,9 @@
 				<img src="/RetailPlus/_layouts/images/trans.gif" height="1" width="180" alt="">
 			</div>
 			<table id="ActionBar" class="ms-pvtb" width="100%" cellspacing="0" cellpadding="0">
-				<TBODY>
+				<tbody>
 					
-				</TBODY>
+				</tbody>
 			</table>
 			<img src="/RetailPlus/_layouts/images/trans.gif" height="1" width="126" alt="">
 		</td>

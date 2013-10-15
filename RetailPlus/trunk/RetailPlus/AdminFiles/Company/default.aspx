@@ -19,99 +19,99 @@
 		<META content="C#" name="CODE_LANGUAGE">
 		<META content="JavaScript" name="vs_defaultClientScript">
 		<META content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
-		<LINK href="../../menu.css" type="text/css" rel="stylesheet">
-		<LINK href="../../ows.css" type="text/css" rel="stylesheet">
-		<LINK href="../../sps.css" type="text/css" rel="stylesheet">
+		<LINK href="../../_layouts/css/menu.css" type="text/css" rel="stylesheet">
+		<LINK href="../../_layouts/css/ows.css" type="text/css" rel="stylesheet">
+		<LINK href="../../_layouts/css/sps.css" type="text/css" rel="stylesheet">
 	</HEAD>
-	<BODY id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
-		<FORM id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">
+	<body id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
+		<form id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">
 		    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
 		    <CTRL:ctrlProcessing id="ctrlProcessing" runat="server" ></CTRL:ctrlProcessing>
-			<TABLE class="ms-main" height="100%" cellSpacing="0" cellPadding="0" width="100%" border="0">
-				<TR>
-					<TD width="100%" colSpan="3">
+			<table class="ms-main" height="100%" cellspacing="0" cellpadding="0" width="100%" border="0">
+				<tr>
+					<td width="100%" colspan="3">
 						<CTRL:PageHeader id="PageHeader" runat="server"></CTRL:PageHeader>
-						<DIV class="ms-phnav1wrapper ms-navframe">
+						<div class="ms-phnav1wrapper ms-navframe">
 							<CTRL:HORIZONTALNAVBAR id="HorizontalNavBar" runat="server"></CTRL:HORIZONTALNAVBAR>
-							<CTRL:ctrlExpiry id="ctrlExpiry" runat="server"></CTRL:ctrlExpiry></DIV>
-					</TD>
-				</TR>
-				<TR>
-					<TD class="ms-titleareaframe" colSpan="3">
-						<DIV class="ms-titleareaframe">
-							<TABLE class="ms-titleareaframe" cellSpacing="0" cellPadding="0" width="100%" border="0">
-								<TR>
-									<TD>
-										<table style="PADDING-LEFT: 2px; PADDING-TOP: 0px" cellSpacing="0" cellPadding="0" border="0" width="100%">
-											<TR>
-												<TD style="PADDING-TOP: 2px" noWrap align="middle" width="132" height="46"><IMG id="spsPageTitleIcon" alt="" src="../../_layouts/images/Settings.gif">
-												</TD>
-												<TD><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="15">
-												</TD>
-												<TD noWrap width="100%">
-													<TABLE cellSpacing="0" cellPadding="0">
-														<TR>
-															<TD class="ms-titlearea" noWrap>
-																<CTRL:SITETITLE id="SiteTitle" runat="server"></CTRL:SITETITLE></TD>
-														</TR>
-														<TR>
-															<TD class="ms-pagetitle" id="onetidPageTitle">
-																<CTRL:LARGEHEADING id="LargeHeading" runat="server"></CTRL:LARGEHEADING></TD>
-														</TR>
-													</TABLE>
-												</TD>
-												<td align="right" valign="top">
-													<table cellpadding="0" cellspacing="0" height="100%">
-														<TR>
-															<TD vAlign="top" noWrap align="right" colSpan="5">
-																<!-- _locID@align="align4" _locComment="{Locked=!1025,1037}{ValidString=left,right}" -->
-																<CTRL:RIGHTBODYSECTIONSEARCH id="RightBodySectionSearch" runat="server"></CTRL:RIGHTBODYSECTIONSEARCH>
-															</TD>
-														</TR>
-														<TR>
-															<TD class="ms-vb" noWrap align="right" colSpan="5"></TD>
-														</TR>
+							<CTRL:ctrlExpiry id="ctrlExpiry" runat="server"></CTRL:ctrlExpiry></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="ms-titleareaframe" colspan="3">
+						<div class="ms-titleareaframe">
+							<table class="ms-titleareaframe" cellspacing="0" cellpadding="0" width="100%" border="0">
+								<tr>
+									<td>
+										<table style="padding-left: 2px; padding-TOP: 0px" cellspacing="0" cellpadding="0" border="0" width="100%">
+											<tr>
+												<td style="padding-TOP: 2px" nowrap="nowrap" align="middle" width="132" height="46"><img id="spsPageTitleIcon" alt="" src="../../_layouts/images/Settings.gif">
+												</td>
+												<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="15">
+												</td>
+												<td nowrap="nowrap" width="100%">
+													<table cellspacing="0" cellpadding="0">
+														<tr>
+															<td class="ms-titlearea" noWrap>
+																<CTRL:SITETITLE id="SiteTitle" runat="server"></CTRL:SITETITLE></td>
+														</tr>
+														<tr>
+															<td class="ms-pagetitle" id="onetidPageTitle">
+																<CTRL:LARGEHEADING id="LargeHeading" runat="server"></CTRL:LARGEHEADING></td>
+														</tr>
 													</table>
 												</td>
-											</TR>
-										</TABLE>
-										<table cellpadding="0" cellspacing="0" border="0" width="100%">
-											<tr>
-												<td height="2" colspan="5"><IMG SRC="../../_layouts/images/blank.gif" width="1" height="1" alt=""></td>
-											</tr>
-											<tr>
-												<td class="ms-titlearealine" height="1" colspan="5"><IMG SRC="../../_layouts/images/blank.gif" width="1" height="1" alt=""></td>
+												<td align="right" valign="top">
+													<table cellpadding="0" cellspacing="0" height="100%">
+														<tr>
+															<td valign="top" nowrap="nowrap" align="right" colspan="5">
+																<!-- _locID@align="align4" _locComment="{Locked=!1025,1037}{ValidString=left,right}" -->
+																<CTRL:RIGHTBODYSECTIONSEARCH id="RightBodySectionSearch" runat="server"></CTRL:RIGHTBODYSECTIONSEARCH>
+															</td>
+														</tr>
+														<tr>
+															<td class="ms-vb" nowrap="nowrap" align="right" colspan="5"></td>
+														</tr>
+													</table>
+												</td>
 											</tr>
 										</table>
-									</TD>
-								</TR>
-							</TABLE>
-						</DIV>
-					</TD>
-				</TR>
-				<TR vAlign="top" height="100%">
-					<TD class="ms-nav" id="webpartpagenavbar" height="100%" widthchange="175">
-						<TABLE class="ms-navframe" id="Table7" height="100%" cellSpacing="0" cellPadding="0" border="0">
-							<TR vAlign="top">
-								<TD class="ms-navwatermark" id="onetidWatermark" dir="ltr"></TD>
-								<TD style="PADDING-RIGHT: 2px" width="150">
-									<IMG height="1" alt="" src="../../_layouts/images/trans.gif" width="150">
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tr>
+												<td height="2" colspan="5"><img SRC="../../_layouts/images/blank.gif" width="1" height="1" alt=""></td>
+											</tr>
+											<tr>
+												<td class="ms-titlearealine" height="1" colspan="5"><img SRC="../../_layouts/images/blank.gif" width="1" height="1" alt=""></td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</td>
+				</tr>
+				<tr valign="top" height="100%">
+					<td class="ms-nav" id="webpartpagenavbar" height="100%" widthchange="175">
+						<table class="ms-navframe" id="Table7" height="100%" cellspacing="0" cellpadding="0" border="0">
+							<tr valign="top">
+								<td class="ms-navwatermark" id="onetidWatermark" dir="ltr"></td>
+								<td style="padding-RIGHT: 2px" width="150">
+									<img height="1" alt="" src="../../_layouts/images/trans.gif" width="150">
 									<CTRL:ctrlMenu id="ctrlMenu" runat="server"></CTRL:ctrlMenu>&nbsp;
-								</TD>
-							</TR>
-						</TABLE>
-					</TD>
-					<TD><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="5"></TD>
-					<TD class="ms-bodyareaframe" vAlign="top" width="100%"><CTRL:PAGELEVELERROR id="PageLevelError" runat="server"></CTRL:PAGELEVELERROR>
-						<TABLE class="ms-tztable" id="ZoneTable" cellSpacing="0" cellPadding="0" width="100%" border="0">
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="5"></td>
+					<td class="ms-bodyareaframe" valign="top" width="100%"><CTRL:PAGELEVELERROR id="PageLevelError" runat="server"></CTRL:PAGELEVELERROR>
+						<table class="ms-tztable" id="ZoneTable" cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr id="TopRow">
-								<td class="ms-tztop" id="TopCell" vAlign="top" width="100%">
+								<td class="ms-tztop" id="TopCell" valign="top" width="100%">
 									<CTRL:ctrlDetails id="ctrlDetails" runat="server" Visible="False"></CTRL:ctrlDetails></td>
 							</tr>
-						</TABLE>
-					</TD>
-				</TR>
-			</TABLE>
-		</FORM>
-	</BODY>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
 </HTML>

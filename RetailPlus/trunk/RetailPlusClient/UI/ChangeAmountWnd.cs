@@ -522,9 +522,9 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             try
             {
-                if (Convert.ToDecimal(txtAmount.Text.Trim()) <= 0)
+                if (Convert.ToDecimal(txtAmount.Text.Trim()) < 0)
                 {
-                    MessageBox.Show("The amount you entered will yield a ZERO Amount." +
+                    MessageBox.Show("The amount you entered will yield a LESS THAN ZERO Amount." +
                         "Please type a higher amount.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }

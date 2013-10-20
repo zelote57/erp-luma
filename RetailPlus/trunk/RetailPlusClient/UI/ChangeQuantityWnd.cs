@@ -447,9 +447,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			try 
 			{
-				if (Convert.ToDecimal(lblTotalAmount.Text.Trim()) <= 0)
+				if (Convert.ToDecimal(lblTotalAmount.Text.Trim()) < 0)
 				{
-					MessageBox.Show("The quantity you entered will yield a ZERO Amount." +
+					MessageBox.Show("The quantity you entered will yield a LESS THAN ZERO Amount." +
 						"Please type a higher quantity.","RetailPlus",MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					return false;
 				}

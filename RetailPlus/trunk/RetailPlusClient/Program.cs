@@ -149,7 +149,28 @@ namespace AceSoft.RetailPlus.Client
 			Data.Terminal clsTerminal = new Data.Terminal(clsAuditTrail.Connection, clsAuditTrail.Transaction);
 			Data.TerminalDetails clsTerminalDetails = clsTerminal.Details(Constants.TerminalBranchID, CompanyDetails.TerminalNo);
 
-			clsAuditTrail.CommitAndDispose();
+            //overwrite the companydetails from the database
+            Data.SysConfig clsSysConfig = new Data.SysConfig(clsAuditTrail.Connection, clsAuditTrail.Transaction);
+            Data.SysConfigDetails clsSysConfigDetails = clsSysConfig.get_SysConfigDetails();
+            clsAuditTrail.CommitAndDispose();
+
+            CompanyDetails.CompanyCode = string.IsNullOrEmpty(clsSysConfigDetails.CompanyCode) ? CompanyDetails.CompanyCode : clsSysConfigDetails.CompanyCode;
+            CompanyDetails.CompanyName = string.IsNullOrEmpty(clsSysConfigDetails.CompanyName) ? CompanyDetails.CompanyName : clsSysConfigDetails.CompanyName;
+            CompanyDetails.Currency = string.IsNullOrEmpty(clsSysConfigDetails.Currency) ? CompanyDetails.Currency : clsSysConfigDetails.Currency;
+            CompanyDetails.TIN = string.IsNullOrEmpty(clsSysConfigDetails.TIN) ? CompanyDetails.TIN : clsSysConfigDetails.TIN;
+
+            CompanyDetails.Address1 = string.IsNullOrEmpty(clsSysConfigDetails.Address1) ? CompanyDetails.Address1 : clsSysConfigDetails.Address1;
+            CompanyDetails.Address2 = string.IsNullOrEmpty(clsSysConfigDetails.Address2) ? CompanyDetails.Address2 : clsSysConfigDetails.Address2;
+            CompanyDetails.City = string.IsNullOrEmpty(clsSysConfigDetails.City) ? CompanyDetails.City : clsSysConfigDetails.City;
+            CompanyDetails.State = string.IsNullOrEmpty(clsSysConfigDetails.State) ? CompanyDetails.State : clsSysConfigDetails.State;
+            CompanyDetails.Zip = string.IsNullOrEmpty(clsSysConfigDetails.Zip) ? CompanyDetails.Zip : clsSysConfigDetails.Zip;
+            CompanyDetails.Country = string.IsNullOrEmpty(clsSysConfigDetails.Country) ? CompanyDetails.Country : clsSysConfigDetails.Country;
+            CompanyDetails.OfficePhone = string.IsNullOrEmpty(clsSysConfigDetails.OfficePhone) ? CompanyDetails.OfficePhone : clsSysConfigDetails.OfficePhone;
+            CompanyDetails.DirectPhone = string.IsNullOrEmpty(clsSysConfigDetails.DirectPhone) ? CompanyDetails.DirectPhone : clsSysConfigDetails.DirectPhone;
+            CompanyDetails.FaxPhone = string.IsNullOrEmpty(clsSysConfigDetails.FaxPhone) ? CompanyDetails.FaxPhone : clsSysConfigDetails.FaxPhone;
+            CompanyDetails.MobilePhone = string.IsNullOrEmpty(clsSysConfigDetails.MobilePhone) ? CompanyDetails.MobilePhone : clsSysConfigDetails.MobilePhone;
+            CompanyDetails.EmailAddress = string.IsNullOrEmpty(clsSysConfigDetails.EmailAddress) ? CompanyDetails.EmailAddress : clsSysConfigDetails.EmailAddress;
+            CompanyDetails.WebSite = string.IsNullOrEmpty(clsSysConfigDetails.WebSite) ? CompanyDetails.WebSite : clsSysConfigDetails.WebSite;
 
 			try 
 			{

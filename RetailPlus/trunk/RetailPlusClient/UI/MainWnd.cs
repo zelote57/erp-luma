@@ -2248,6 +2248,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 dgItems.CurrentRowIndex = iOldRow;
                                 dgItems.Select(iOldRow);
                             }
+                            Details = getCurrentRowItemDetails();
 
                             // Added May 7, 2011 to Cater Reserved and Commit functionality    
                             // Details.Quantity = -oldQuantity + Details.Quantity;

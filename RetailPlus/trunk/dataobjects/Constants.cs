@@ -39,10 +39,12 @@ namespace AceSoft.RetailPlus
         public const string C_RETAILPLUS_AGENT_DEPARTMENT_NAME = "System Default Department";
 
         public const int C_DEFAULT_TERMINAL_ID_01 = 1;
+        public const string C_DEFAULT_TERMINAL_01 = "01";
 
         public const int C_DEFAULT_LIMIT_OF_RECORD_TO_SHOW = 100;
 
         public const int BRANCH_ID_MAIN = 1;
+        public const string BRANCH_MAIN = "MAIN";
         public static int TerminalBranchID
         {
             get
@@ -59,7 +61,7 @@ namespace AceSoft.RetailPlus
             get
             {
                 string strRetValue = "";
-                try { strRetValue = System.Configuration.ConfigurationManager.AppSettings["MaskProductSearch"].Replace("*","%"); }
+                try { strRetValue = System.Configuration.ConfigurationManager.AppSettings["MaskProductSearch"].Replace("*", "%"); }
                 catch { }
                 return strRetValue;
             }
@@ -118,6 +120,8 @@ namespace AceSoft.RetailPlus
 
         public const string C_FE_DEFAULT_DECIMAL_FORMAT = "#,##0.##0";
 
+        public const string C_FE_NOT_VALID_AS_RECEIPT = "NOT VALID AS RECEIPT";
+
         public enum DateSelectionString
         {
             ALL = 0,
@@ -129,13 +133,18 @@ namespace AceSoft.RetailPlus
 
         public const Int32 C_DEFAULT_MYSQL_PROCESS_TIMEOUT = 90;
 
-        public const string SYS_CONFIG_BACKEND_VARIATION_TYPE = "BACKEND_VARIATION_TYPE";
-
-        public const string SYS_CONFIG_BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO = "EXPIRATION;LOTNO";
-
         public static DateTime C_DATE_MIN_VALUE = Convert.ToDateTime("1900-01-01");
         public const string C_DATE_MIN_VALUE_STRING = "1900-01-01";
-    }
 
-    
+        public const string SYS_CONFIG_BACKEND_VARIATION_TYPE = "BACKEND_VARIATION_TYPE";
+        public const string SYS_CONFIG_BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO = "EXPIRATION;LOTNO";
+        public const string SYS_CONFIG_COMPANY_CODE = "CompanyCode";
+        public const string SYS_CONFIG_COMPANY_NAME = "CompanyName";
+        public const string SYS_CONFIG_CURRENCY = "Currency";
+        public const string SYS_CONFIG_TIN = "TIN";
+        public const string SYS_CONFIG_VERSION_FTP_IPADDRESS = "VersionFTPIPAddress";
+        public const string SYS_CONFIG_CHECK_OUT_BILL_HEADER_LABEL = "CheckOutBillHeaderLabel";
+        public const string SYS_CONFIG_CHARGE_SLIP_HEADER_LABEL = "ChargeSlipHeaderLabel";
+        
+    }
 }

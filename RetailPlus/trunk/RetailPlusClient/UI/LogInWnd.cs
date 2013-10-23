@@ -309,7 +309,7 @@ namespace AceSoft.RetailPlus.Client.UI
             Int64 iUID = clsAccessUser.Login(strUserName, strPassword, mAccessType, out strName);
 
             AuditTrail clsAuditTrail = new AuditTrail(clsAccessUser.Connection, clsAccessUser.Transaction);
-            AuditTrailDetails[] clsAuditTrailDetails = clsAuditTrail.DetailedList(DateTime.Today, DateTime.MinValue, strName, AccessTypes.None, "FE:", 1, "ActivityDate", SortOption.Desscending);
+            AuditTrailDetails[] clsAuditTrailDetails = clsAuditTrail.DetailedList(DateTime.Today, DateTime.MinValue, strName, AccessTypes.None, "FE:%", 1, "ActivityDate", SortOption.Desscending);
             clsAccessUser.CommitAndDispose();
 
             if (mintUserID != 0)
@@ -341,7 +341,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (iUID != 0 && mintUserID == 0 && clsAuditTrailDetails.Length > 0 && mAccessType == AccessTypes.LoginFE)
             {
-                if (clsAuditTrailDetails[0].Activity != AccessTypes.LogoutFE.ToString("G"))
+                if (clsAuditTrailDetails[0].Activity != AccessTypes.LogoutFE.ToString("G") || clsAuditTrailDetails[0].Activity != "Close Terminal")
                 {
                     if (clsAuditTrailDetails[0].IPAddress != System.Net.Dns.GetHostName())
                     {

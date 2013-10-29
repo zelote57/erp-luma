@@ -76,6 +76,7 @@
     <Folder Include="pos_scripts\ver 5 below support" />
     <Folder Include="sales_scripts" />
     <Folder Include="Properties" />
+    <Folder Include="credit" />
   </ItemGroup>
   <ItemGroup>
     <NotInBuild Include="acc_scripts\accounts.sql" />
@@ -83,7 +84,6 @@
     <NotInBuild Include="acc_scripts\accounts_proc.sql" />
     <NotInBuild Include="acc_scripts\ver 5 below support\v_1.0.0.1.sql" />
     <NotInBuild Include="acc_scripts\ver 5 below support\v_1.0.0.2.sql" />
-    <NotInBuild Include="All.sql" />
     <NotInBuild Include="client_update_scripts\7newlife_20090811_update.sql" />
     <NotInBuild Include="client_update_scripts\abot_makati_20090911.sql" />
     <NotInBuild Include="client_update_scripts\abot_san_juan_20090911.sql" />
@@ -117,7 +117,6 @@
     <NotInBuild Include="client_update_scripts\sync_quantitybyMatrix.sql" />
     <NotInBuild Include="client_update_scripts\tgp_20090511_update.sql" />
     <NotInBuild Include="client_update_scripts\zero_out_product_qty.sql" />
-    <NotInBuild Include="hw_plaza.sql" />
     <NotInBuild Include="inv_scripts\inventory.sql" />
     <NotInBuild Include="inv_scripts\inventory_access.sql" />
     <NotInBuild Include="inv_scripts\inventory_proc.sql" />
@@ -130,7 +129,6 @@
     <NotInBuild Include="pos_scripts\retailplus_access.sql" />
     <NotInBuild Include="pos_scripts\retailplus_event.sql" />
     <NotInBuild Include="pos_scripts\retailplus_proc.sql" />
-    <NotInBuild Include="pos_scripts\retailplus_proc_old.sql" />
     <NotInBuild Include="pos_scripts\retailplus_trigger.sql" />
     <NotInBuild Include="pos_scripts\ver 5 below support\Rebirth Transaction.sql" />
     <NotInBuild Include="pos_scripts\ver 5 below support\update_20071123.sql" />
@@ -172,25 +170,40 @@
     <NotInBuild Include="sales_scripts\sales_access.sql" />
     <NotInBuild Include="sales_scripts\sales_proc.sql" />
     <NotInBuild Include="test.sql" />
-    <NotInBuild Include="credit.sql">
-      <SubType>NotInBuild</SubType>
-    </NotInBuild>
     <NotInBuild Include="tester.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
     <NotInBuild Include="testing.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
-    <NotInBuild Include="credit_proc.sql">
-      <SubType>NotInBuild</SubType>
-    </NotInBuild>
-    <NotInBuild Include="credit_test.sql">
-      <SubType>NotInBuild</SubType>
-    </NotInBuild>
     <NotInBuild Include="client_update_scripts\aj_gla.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
-    <NotInBuild Include="sysProcs.sql">
+    <NotInBuild Include="pos_scripts\sysProcs.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="credit\credit_test.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="credit\credit.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="credit\credit_proc.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="client_update_scripts\hw_plaza.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="pos_scripts\Optimize Tables.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="client_update_scripts\houseware_plaza.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="acc_scripts\access.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="pos_scripts\x.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
   </ItemGroup>

@@ -887,6 +887,41 @@ END;
 GO
 delimiter ;
 
+/*********************************
+	procTransactionDateClosedUpdate
+	Lemuel E. Aceron
+	May 1, 2009
+*********************************/
+DROP PROCEDURE IF EXISTS procTransactionDateClosedUpdate;
+delimiter GO
+
+create procedure procTransactionDateClosedUpdate(IN lngTransactionID bigint(20), IN dteDateClosed DateTime)
+BEGIN
+	
+	UPDATE tblTransactions SET TerminalNo = DATE_FORMAT(dteDateClosed, '%Y-%m-%d %H:%i') WHERE TransactionID = lngTransactionID;
+
+END;
+GO
+delimiter ;
+
+/*********************************
+	procTransactionDeleteByDataSource
+	Lemuel E. Aceron
+	Oct 15, 2013
+*********************************/
+DROP PROCEDURE IF EXISTS procTransactionDeleteByDataSource;
+delimiter GO
+
+create procedure procTransactionDeleteByDataSource(IN strDataSource varchar(30))
+BEGIN
+	
+	DELETE FROM tblTransactionItems WHERE TransactionID IN (SELECT DISTINCT TransactionID FROM tblTransactions WHERE DataSource = strDataSource);
+
+	DELETE FROM tblTransactions WHERE DataSource = strDataSource;
+
+END;
+GO
+delimiter ;
 
 /*********************************
 	procGenerateDiscountByTerminalNo
@@ -3511,6 +3546,7 @@ END;
 GO
 delimiter ;
 
+
 /**************************************************************
 
 	procUpdateProductReorderOverStockPerProductID
@@ -3518,7 +3554,7 @@ delimiter ;
 	Aug 26, 2011 : Lemu
 	- create this procedure
 
-	CALL procUpdateProductReorderOverStockPerProductID(3011, 1, '2011-09-25 00:00:00', '2011-09-27 23:59:59');
+	CALL procUpdateProductReorderOverStockPerProductID(3011, 1, '2013-09-25 00:00:00', '2013-09-27 23:59:59');
 	
 **************************************************************/
 delimiter GO
@@ -3534,7 +3570,9 @@ BEGIN
 	DECLARE intValidTransactionItemStatus INTEGER DEFAULT 0;
 	DECLARE intOrderSlipItemStatus INTEGER DEFAULT 5;
 	
-	SELECT Quantity, RID INTO decQuantity, lngRID FROM tblProducts WHERE ProductID = lngProductID;
+	SELECT IFNULL(inv.Quantity,0) Quantity, prd.RID INTO decQuantity, lngRID 
+	FROM (SELECT ProductID, RID FROM tblProducts WHERE ProductID = lngProductID) prd
+	LEFT OUTER JOIN (SELECT SUM(Quantity) Quantity, ProductID FROM tblProductInventory WHERE ProductID = lngProductID AND BranchID = 1) inv ON prd.productID = inv.ProductID;
 	
 	SET intValidTransactionItemStatus = 0; SET intOrderSlipItemStatus = 5;
 	SET intAvgCounter = 0; SET decTotalAverageSales = 0;
@@ -3601,7 +3639,7 @@ delimiter ;
 	Aug 26, 2011 : Lemu
 	- create this procedure
 
-	CALL procUpdateProductReorderOverStockPerSupplierPerRID(1019, 10, '2011-09-10', '2011-09-16');
+	CALL procUpdateProductReorderOverStockPerSupplierPerRID(3, 0, '2013-09-10', '2013-10-23');
 	
 **************************************************************/
 delimiter GO
@@ -5022,6 +5060,266 @@ GO
 delimiter ;
 
 
+
+/**************************************************************
+
+	procProductInventoryMonthlySelect
+	Lemuel E. Aceron
+	March 22, 2013
+	
+	Desc: This will get the all product package list
+
+	CALL procProductInventoryMonthlySelect('2013-10', 1, 0,0,'','',0,0,0,2,0,1,0,'1900-01-01',0,1,null,null);
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductInventoryMonthlySelect
+GO
+
+create procedure procProductInventoryMonthlySelect(
+			 IN DateMonth varchar(7),
+			 IN BranchID bigint,
+			 IN ProductID bigint,
+			 IN MatrixID bigint,
+			 IN BarCode varchar(30),
+			 IN ProductCode varchar(30),
+			 IN ProductGroupID bigint,
+			 IN ProductSubGroupID bigint,
+			 IN SupplierID bigint,
+			 IN ShowActiveAndInactive INT(1),
+			 IN isQuantityGreaterThanZERO TINYINT(1),
+			 IN lngLimit int,
+			 IN isSummary int,
+			 IN dteExpiration datetime,
+			 IN ForReorder int,
+			 IN OverStock int,
+			 IN SortField varchar(60),
+			 IN SortOrder varchar(4))
+BEGIN
+	DECLARE SQLWhere VARCHAR(8000) DEFAULT '';
+
+	SET BarCode = REPLACE(BarCode, '''', '''''');
+	SET ProductCode = REPLACE(ProductCode, '''', '''''');
+
+	IF ProductID <> 0 THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductID = ',ProductID,' ');
+	ELSEIF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 LIKE ''%',BarCode,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR prd.ProductCode LIKE ''%',BarCode,'%'') ');
+	ELSEIF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 LIKE ''%',BarCode,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'') ');
+	ELSEIF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') = '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode LIKE ''%',ProductCode,'%'' ');
+	END IF;
+
+	IF SupplierID <> 0 THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.SupplierID = ',SupplierID,' ');
+	END IF;
+
+	IF ShowActiveAndInactive = 0 OR ShowActiveAndInactive = 1  THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.Active = ',ShowActiveAndInactive,' ');
+	END IF;
+
+	/***
+	IF (DATE_FORMAT(dteExpiration, '%Y-%m-%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
+		SET SQLWhere = CONCAT(SQLWhere,'AND prd.ProductID IN (SELECT DISTINCT mtrx.ProductID FROM tblProductVariationsMatrix prdmtrx INNER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.MatrixID = prdmtrx.MatrixID AND prdmtrx.VariationID = 1 WHERE DATE_FORMAT(prdmtrx.Description, ''%Y-%m-%d'') <= DATE_FORMAT(''',dteExpiration,''', ''%Y-%m-%d'')) ');
+	END IF;
+	***/
+
+	SET @SQL = CONCAT('	SELECT 
+							 prd.ProductID
+							,prd.PackageID
+							,IFNULL(prd.BarCode1,prd.BarCode4) BarCode
+							,prd.BarCode1
+							,prd.BarCode2
+							,prd.BarCode3
+							,prd.BarCode4
+							,prd.ProductCode
+							,prd.ProductDesc
+							
+							,prdsg.ProductGroupID
+							,prdg.ProductGroupCode
+							,prdg.ProductGroupName
+							,prdg.OrderSlipPrinter
+
+							,prd.ProductSubGroupID
+							,prdsg.ProductSubGroupCode
+							,prdsg.ProductSubGroupName
+
+							,prd.BaseUnitID
+							,unt.UnitCode BaseUnitCode
+							,unt.UnitName BaseUnitName
+							,prd.BaseUnitID UnitID
+							,unt.UnitCode
+							,unt.UnitName
+
+							,prd.DateCreated
+							,prd.Active
+							,prd.Deleted
+
+							,prd.SupplierID
+							,supp.ContactCode SupplierCode
+							,supp.ContactName SupplierName
+
+							,prd.IsItemSold
+							,prd.Price
+							,prd.WSPrice
+							,prd.PurchasePrice
+							,prd.PercentageCommision
+							,prd.IncludeInSubtotalDiscount
+							,prd.VAT
+							,prd.EVAT
+							,prd.LocalTax
+							,prd.RewardPoints
+
+							,SUM(IFNULL(inv.Quantity,0)) Quantity
+							,fnProductQuantityConvert(prd.ProductID, SUM(IFNULL(inv.Quantity,0)), prd.BaseUnitID)  ConvertedQuantity
+							,SUM(IFNULL(inv.QuantityIN,0)) QuantityIN
+							,SUM(IFNULL(inv.QuantityOUT,0)) QuantityOUT
+							,SUM(IFNULL(inv.ActualQuantity,0)) ActualQuantity
+                            ,IFNULL(MAX(inv.IsLock),0) IsLock
+
+							,prd.WillPrintProductComposition
+
+							,IFNULL(mtrx.MinThreshold, prd.MinThreshold) MinThreshold
+							,IFNULL(mtrx.MaxThreshold, prd.MaxThreshold) MaxThreshold
+							,prd.RID
+
+							,IFNULL(mtrx.MaxThreshold, prd.MaxThreshold) - SUM(IFNULL(inv.Quantity,0)) ReorderQty
+                            ,prd.RIDMinThreshold
+                            ,prd.RIDMaxThreshold
+                            ,prd.RIDMaxThreshold -  SUM(IFNULL(inv.Quantity,0)) AS RIDReorderQty
+
+							,prd.ChartOfAccountIDPurchase
+							,prd.ChartOfAccountIDSold
+							,prd.ChartOfAccountIDInventory
+							,prd.ChartOfAccountIDTaxPurchase
+							,prd.ChartOfAccountIDTaxSold
+
+							,IFNULL(mtrx.MatrixID,0) MatrixID
+							,CONCAT(prd.ProductDesc, '':'' , IFNULL(mtrx.Description,'''')) AS VariationDesc
+							,IFNULL(mtrx.Description,'''') AS MatrixDescription
+							,',IF(isSummary=1,'0','IFNULL(brnch.BranchID,0)'),' AS BranchID
+							,',IF(isSummary=1,'''All''','IFNULL(brnch.BranchCode,''All'')'),' AS BranchCode
+						FROM (SELECT prd.* ,pkg.PackageID, pkg.MatrixID
+									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
+									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
+							  FROM tblProducts prd 
+							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND prd.BaseUnitID = pkg.UnitID
+														AND pkg.Quantity = 1
+							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
+						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID ', IF(ProductSubGroupID=0,'',CONCAT('AND prdsg.ProductSubGroupID =',ProductSubGroupID)),'
+						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID ', IF(ProductGroupID=0,'',CONCAT('AND prdg.ProductGroupID =',ProductGroupID)),'
+						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
+						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND prd.MatrixID = mtrx.MatrixID
+						INNER JOIN tblBranch brnch ON ',IF(BranchID=0,'1=1',Concat('brnch.BranchID=',BranchID)),'						
+						INNER JOIN tblProductInventoryMonthly inv ON inv.ProductID = prd.ProductID AND prd.MatrixID = inv.MatrixID 
+														',IF(BranchID=0,'AND brnch.BranchID = INV.BranchID ',Concat('AND INV.BranchID=',BranchID)),' 
+														', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						WHERE IFNULL(mtrx.deleted, 0) = 0 AND inv.DateMonth = ''',DateMonth,''' ');
+	
+	
+	IF isSummary = 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND IFNULL(mtrx.MatrixID,0) = ',MatrixID,' ');
+	END IF;
+
+	-- check only those with Quantity
+	IF (DATE_FORMAT(dteExpiration, '%Y-%m-%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
+		SET @SQL = CONCAT(@SQL,'AND prd.ProductID IN (SELECT DISTINCT mtrx.ProductID FROM tblProductVariationsMatrix prdmtrx INNER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.MatrixID = prdmtrx.MatrixID AND prdmtrx.VariationID = 1 WHERE DATE_FORMAT(prdmtrx.Description, ''%Y-%m-%d'') <= DATE_FORMAT(''',dteExpiration,''', ''%Y-%m-%d'')) ');
+		SET @SQL = CONCAT(@SQL,'AND IFNULL(inv.Quantity,0) > 0 ');
+	END IF;
+
+	SET @SQL = CONCAT(@SQL, '
+						GROUP BY prd.ProductID
+                            ,prd.PackageID
+                            ,prd.BarCode1
+                            ,prd.BarCode2
+                            ,prd.BarCode3
+                            ,prd.BarCode4
+                            ,prd.ProductCode
+                            ,prd.ProductDesc
+
+                            ,prdsg.ProductGroupID
+                            ,prdg.ProductGroupCode
+                            ,prdg.ProductGroupName
+                            ,prdg.OrderSlipPrinter
+
+                            ,prd.ProductSubGroupID
+                            ,prdsg.ProductSubGroupCode
+                            ,prdsg.ProductSubGroupName
+
+                            ,prd.BaseUnitID
+                            ,unt.UnitCode
+                            ,unt.UnitName
+                            ,prd.BaseUnitID
+                            ,unt.UnitCode
+                            ,unt.UnitName
+
+                            ,prd.DateCreated
+                            ,prd.Active
+                            ,prd.Deleted
+
+                            ,prd.SupplierID
+                            ,supp.ContactCode
+                            ,supp.ContactName
+
+                            ,prd.IsItemSold
+                            ,prd.Price
+                            ,prd.WSPrice
+                            ,prd.PurchasePrice
+                            ,prd.PercentageCommision
+                            ,prd.IncludeInSubtotalDiscount
+                            ,prd.VAT
+                            ,prd.EVAT
+                            ,prd.LocalTax
+                            ,prd.RewardPoints
+
+                            ,prd.WillPrintProductComposition
+
+                            ,mtrx.MinThreshold, prd.MinThreshold
+                            ,mtrx.MaxThreshold, prd.MaxThreshold
+                            ,prd.RID
+                            ,prd.RIDMinThreshold
+                            ,prd.RIDMaxThreshold
+
+                            ,prd.ChartOfAccountIDPurchase
+                            ,prd.ChartOfAccountIDSold
+                            ,prd.ChartOfAccountIDInventory
+                            ,prd.ChartOfAccountIDTaxPurchase
+                            ,prd.ChartOfAccountIDTaxSold
+
+                            ,mtrx.MatrixID
+                            ,mtrx.Description
+                            ',IF(isSummary=1,'',',IFNULL(brnch.BranchID,0)'),'
+							',IF(isSummary=1,'',',IFNULL(brnch.BranchCode,''All'')'),' ');
+
+	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','prd.ProductCode, MatrixDescription',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
+
+	SET @SQL = CONCAT(@SQL, IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')));
+
+	IF ForReorder <> 0 THEN
+		SET @SQL = CONCAT('SELECT * FROM (',@SQL,') INV WHERE Quantity <= MinThreshold ');
+	ELSEIF OverStock <> 0 THEN
+		SET @SQL = CONCAT('SELECT * FROM (',@SQL,') INV WHERE Quantity > MaxThreshold ');
+	END IF;
+
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;
+
+
 /**************************************************************
 
 	procProductInventorySelect
@@ -5030,7 +5328,7 @@ delimiter ;
 	
 	Desc: This will get the all product package list
 
-	CALL procProductInventorySelect(1, 0,0,'TEST','',0,0,0,2,0,1,0,'1900-01-01',null,null);
+	CALL procProductInventorySelect(1, 0,0,'TEST','',0,0,0,2,0,1,0,'1900-01-01',1,0,null,null);
 	
 **************************************************************/
 delimiter GO
@@ -5051,6 +5349,8 @@ create procedure procProductInventorySelect(
 			 IN lngLimit int,
 			 IN isSummary int,
 			 IN dteExpiration datetime,
+			 IN ForReorder int,
+			 IN OverStock int,
 			 IN SortField varchar(60),
 			 IN SortOrder varchar(4))
 BEGIN
@@ -5263,6 +5563,13 @@ BEGIN
 
 	SET @SQL = CONCAT(@SQL, IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')));
 
+
+	IF ForReorder <> 0 THEN
+		SET @SQL = CONCAT('SELECT * FROM (',@SQL,') INV WHERE Quantity <= MinThreshold ');
+	ELSEIF OverStock <> 0 THEN
+		SET @SQL = CONCAT('SELECT * FROM (',@SQL,') INV WHERE Quantity > MaxThreshold ');
+	END IF;
+
 	PREPARE cmd FROM @SQL;
 	EXECUTE cmd;
 	DEALLOCATE PREPARE cmd;
@@ -5280,7 +5587,7 @@ delimiter ;
 	
 	Desc: This will get the main product list
 
-	CALL procProductSelect(0, 'TEST','',0,2,0,100,null,null);
+	CALL procProductSelect(0, '','HallsCoolMenthoBP24g',0,2,0,100,null,null);
 
 	
 **************************************************************/
@@ -6601,7 +6908,7 @@ BEGIN
 							 ConfigValue SalutationCode
 							,ConfigName SalutationName
 						FROM sysConfig cnfg
-						WHERE Category = ''Salutation'' ');
+						WHERE Category = ''SALUTATION'' ');
 	
 	IF IFNULL(Salutation,'') <> '' THEN
 		SET @SQL = CONCAT(@SQL, 'AND ConfigName LIKE ''%',Salutation,'%'' ');
@@ -6834,6 +7141,7 @@ delimiter ;
 
 
 
+
 /**************************************************************
 
 	procContactSelect
@@ -6842,7 +7150,7 @@ delimiter ;
 	
 	Desc: This will get the all information of a contact
 
-	CALL procContactSelect(1,0, null, '0', '0', null, null, 1, 0, 0, 'ContactID','');
+	CALL procContactSelect(1, 0, null, null, null, null, null, 0, 0, '1900-01-01', '1900-01-01', '1900-01-01', '1900-01-01', 0, 0, 0, 'ContactID','');
 	
 **************************************************************/
 delimiter GO
@@ -6857,6 +7165,12 @@ create procedure procContactSelect(
 			IN ContactGroupCode varchar(30),
 			IN RewardCardNo varchar(30),
 			IN Name varchar(30),
+			IN BirthMonth int,
+			IN AnniversaryMonth int,
+			IN BirthDateFrom varchar(30),
+			IN BirthDateTo varchar(30),
+			IN AnniversaryDateFrom datetime,
+			IN AnniversaryDateTo datetime,
 			IN hasCreditOnly tinyint(1),
 			IN intDeleted int,
 			IN lngLimit int,
@@ -6872,14 +7186,17 @@ BEGIN
 							,DateCreated ,cntct.Deleted ,dept.DepartmentID ,dept.DepartmentName
 							,pos.PositionID ,pos.PositionName ,cntct.isLock
 							,IFNULL(LastName,'''') LastName ,IFNULL(Middlename,'''') Middlename ,IFNULL(FirstName,'''') FirstName ,IFNULL(Spousename,'''') Spousename
-							,BirthDate ,SpouseBirthDate ,AnniversaryDate
+							,SpouseBirthDate ,AnniversaryDate
 							,Address1 ,Address2 ,City ,State ,ZipCode ,IFNULL(cntry.CountryID,0) CountryID ,CountryName
 							,BusinessPhoneNo ,HomePhoneNo ,MobileNo ,FaxNo ,EmailAddress 
+							,RewardCardNo ,RewardActive, RewardPoints, RewardAwardDate, TotalPurchases, RedeemedPoints, RewardCardStatus, ExpiryDate
+							,IFNULL(addon.BirthDate,rwrd.BirthDate) BirthDate 
 						FROM tblContacts cntct
 							INNER JOIN tblContactGroup grp ON cntct.ContactGroupID = grp.ContactGroupID
 							INNER JOIN tblDepartments dept ON cntct.DepartmentID = dept.DepartmentID
 							INNER JOIN tblPositions pos ON cntct.PositionID = pos.PositionID
 							LEFT OUTER JOIN tblContactAddOn addon ON addon.ContactID = cntct.ContactID
+							LEFT OUTER JOIN tblContactRewards rwrd ON rwrd.CustomerID = cntct.ContactID
 							LEFT OUTER JOIN tblCountry cntry ON addon.CountryID = cntry.CountryID
 						WHERE 1=1 ');
 
@@ -6911,14 +7228,91 @@ BEGIN
 	END IF;
 
 	IF IFNULL(ContactGroupCode,'') <> '' THEN
-		SET @SQL = CONCAT(@SQL, 'AND ContactGroupCode LIKE ''%',ContactGroupCode,'%'' ');
+		SET @SQL = CONCAT(@SQL, 'AND (ContactGroupCode LIKE ''%',ContactGroupCode,'%'' ');
+		SET @SQL = CONCAT(@SQL, '	  OR ContactGroupName LIKE ''%',ContactGroupCode,'%'') ');
 	END IF;
+
+	-- Added 10Oct2013 
+	IF IFNULL(BirthMonth,0) <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND (DATE_FORMAT(IFNULL(IFNULL(addon.BirthDate,rwrd.BirthDate),0),''%m'') = ''',BirthMonth,''' ');
+		SET @SQL = CONCAT(@SQL, '	  OR DATE_FORMAT(IFNULL(addon.SpouseBirthDate,0),''%m'') = ''',BirthMonth,''') ');
+	END IF;
+
+	IF IFNULL(AnniversaryMonth,0) <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND DATE_FORMAT(IFNULL(addon.AnniversaryDate,0),''%m'') = ''',AnniversaryMonth,''' ');
+	END IF;
+
+	
+	SET BirthDateFrom = IF(NOT ISNULL(BirthDateFrom), BirthDateFrom, '1900-01-01');
+	IF DATE_FORMAT(BirthDateFrom, '%Y-%m-%d') <> '1900-01-01' THEN
+		SET @SQL = CONCAT(@SQL, 'AND (IFNULL(addon.BirthDate,rwrd.BirthDate) >= ''',DATE_FORMAT(BirthDateFrom, '%Y-%m-%d'),''' ');
+		SET @SQL = CONCAT(@SQL, '	  OR SpouseBirthDate >= ''',DATE_FORMAT(BirthDateFrom, '%Y-%m-%d'),''') ');
+	END IF;
+
+	SET BirthDateTo = IF(NOT ISNULL(BirthDateTo), BirthDateTo, '1900-01-01');
+	IF DATE_FORMAT(BirthDateTo, '%Y-%m-%d') <> '1900-01-01' THEN
+		SET @SQL = CONCAT(@SQL, 'AND (IFNULL(addon.BirthDate,rwrd.BirthDate) <= ''',DATE_FORMAT(BirthDateTo, '%Y-%m-%d'),''' ');
+		SET @SQL = CONCAT(@SQL, '	  OR SpouseBirthDate <= ''',DATE_FORMAT(BirthDateTo, '%Y-%m-%d'),''') ');
+	END IF;
+	
+	SET AnniversaryDateFrom = IF(NOT ISNULL(AnniversaryDateFrom), AnniversaryDateFrom, '1900-01-01');
+	IF DATE_FORMAT(AnniversaryDateFrom, '%Y-%m-%d') <> '1900-01-01' THEN
+		SET @SQL = CONCAT(@SQL, 'AND addon.AnniversaryDate >= ''',DATE_FORMAT(AnniversaryDateFrom, '%Y-%m-%d'),''' ');
+	END IF;
+
+	SET AnniversaryDateTo = IF(NOT ISNULL(AnniversaryDateTo), AnniversaryDateTo, '1900-01-01');
+	IF DATE_FORMAT(AnniversaryDateTo, '%Y-%m-%d') <> '1900-01-01' THEN
+		SET @SQL = CONCAT(@SQL, 'AND addon.AnniversaryDate <= ''',DATE_FORMAT(AnniversaryDateTo, '%Y-%m-%d'),''' ');
+	END IF;
+	
 
 	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','ContactCode, ContactName, LastName',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
 
 	SET @SQL = CONCAT(@SQL,IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')));
 
+
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;
+
+
+
+/**************************************************************
+
+	procContactAddOnSelect
+	Lemuel E. Aceron
+	Sep 15, 2013
 	
+	Desc: This will get the all information of a contact
+
+	CALL procContactAddOnSelect(0, '');
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procContactAddOnSelect
+GO
+
+create procedure procContactAddOnSelect(
+			IN ContactID  bigint,
+			IN Name varchar(50))
+BEGIN
+	SET @SQL = CONCAT('	SELECT 
+							 AddOn.*
+							,IFNULL(cntry.CountryName,'''') CountryName
+						FROM tblContactAddOn addon
+						LEFT OUTER JOIN tblCountry cntry ON cntry.CountryID = addon.CountryID
+						WHERE 1=1 ');
+
+	IF ContactID <> 0 THEN
+		SET @SQL = CONCAT(@SQL, 'AND addon.ContactID = ',ContactID,' ');
+	ELSEIF IFNULL(Name,'') <> '' THEN
+		SET @SQL = CONCAT(@SQL, 'AND (addon.LastName LIKE ''%',Name,'%'' OR addon.MiddleName LIKE ''%',Name,'%'' OR addon.FirstName LIKE ''%',Name,'%'') ');
+	END IF;
+
 	PREPARE cmd FROM @SQL;
 	EXECUTE cmd;
 	DEALLOCATE PREPARE cmd;
@@ -7175,6 +7569,7 @@ END;
 GO
 delimiter ;
 
+-- COLLATE ILLEGAL MIX ISSUE
+ALTER DATABASE pos CHARACTER SET utf8;
 
-
-
+SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schema_name = 'pos';

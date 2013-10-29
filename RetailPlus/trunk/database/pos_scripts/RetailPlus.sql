@@ -6099,12 +6099,6 @@ CREATE TABLE sysConfig (
 	UNIQUE `PK_sysConfig`(`ConfigName`)
 );
 
-INSERT INTO sysConfig (ConfigName, ConfigValue) VALUES ('CompanyCode',						'RBS');
-INSERT INTO sysConfig (ConfigName, ConfigValue) VALUES ('CompanyName',						'RETAILPLUS BUSINESS SOLUTIONS');
-INSERT INTO sysConfig (ConfigName, ConfigValue) VALUES ('TIN',								'104-384-077-000');
-INSERT INTO sysConfig (ConfigName, ConfigValue) VALUES ('Currency',							'PHP');
-INSERT INTO sysConfig (ConfigName, ConfigValue) VALUES ('VersionFTPIPAddress',			    'Localhost');
-
 
 ALTER TABLE tblTerminal MODIFY `Status` INT (1) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminal MODIFY `AutoPrint` INT (1) NOT NULL DEFAULT 0;
@@ -6673,6 +6667,91 @@ ALTER TABLE tblProductInventoryAudit ADD ReservedQuantity DECIMAL(18,3) NOT NULL
 ALTER TABLE tblProductInventoryDaily ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
 ALTER TABLE tblProductInventoryMonthly ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
 
+INSERT INTO tblVariations (VariationID, VariationCode, VariationType) VALUES (6, 'LOT', 'LOTNO');
+
+ALTER TABLE tblProductInventoryDaily ADD PurchasePrice DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryMonthly ADD PurchasePrice DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+
+ALTER TABLE tblProductInventoryDaily ADD Price DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+ALTER TABLE tblProductInventoryMonthly ADD Price DECIMAL(18,3) NOT NULL DEFAULT '0.000';
+
+UPDATE tblProductInventoryDaily, tblProducts, tblProductPackage
+	SET
+		tblProductInventoryDaily.PurchasePrice = tblProductPackage.PurchasePrice,
+		tblProductInventoryDaily.Price = tblProductPackage.Price
+WHERE tblProductInventoryDaily.ProductID = tblProducts.ProductID
+	AND tblProductInventoryDaily.ProductID = tblProductPackage.ProductID
+	AND tblProducts.BaseUnitID = tblProductPackage.UnitID
+	AND tblProductInventoryDaily.MatrixID = tblProductPackage.MatrixID
+	AND tblProductPackage.Quantity = 1
+	AND DATE_FORMAT(tblProductInventoryDaily.DateCreated, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d');
+	
+UPDATE tblProductInventoryMonthly, tblProducts, tblProductPackage
+	SET
+		tblProductInventoryMonthly.PurchasePrice = tblProductPackage.PurchasePrice,
+		tblProductInventoryMonthly.Price = tblProductPackage.Price
+WHERE tblProductInventoryMonthly.ProductID = tblProducts.ProductID
+	AND tblProductInventoryMonthly.ProductID = tblProductPackage.ProductID
+	AND tblProducts.BaseUnitID = tblProductPackage.UnitID
+	AND tblProductInventoryMonthly.MatrixID = tblProductPackage.MatrixID
+	AND tblProductPackage.Quantity = 1
+	AND DATE_FORMAT(tblProductInventoryMonthly.DateCreated, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d');
+
+-- Oct 10, 2013
+
+/*****************************
+**	tblgla_f_dtl_chk_headers
+*****************************/
+DROP TABLE IF EXISTS tblgla_f_dtl_chk_headers;
+CREATE TABLE tblgla_f_dtl_chk_headers (
+	`fk_business_date` DATETIME NULL,
+	`fk_location_def` INT NOT NULL DEFAULT 0,
+	`fk_emp_def` INT NOT NULL DEFAULT 0,
+	`status_flag` VARCHAR(8),
+	`chk_headers_seq_number` INT NULL,
+	`chk_num` INT NOT NULL DEFAULT 0,
+	`chk_id` VARCHAR(60) NULL,
+	`ot_number` INT NOT NULL DEFAULT 0,
+	`Ot_Name` VARCHAR(60) NULL,
+	`Tbl_Number` INT NOT NULL DEFAULT 0,
+	`Chk_Open_Date_Time` DATETIME,
+	`Chk_Closed_Date_Time` DATETIME,
+	`Uws_Number` INT NOT NULL DEFAULT 0,
+	`Is_HotelMark_Promo` TINYINT(1) NOT NULL DEFAULT 0,
+	`Sub_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Tax_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Auto_Svc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Other_Svc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Dsc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Pymnt_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Chk_Prntd_Cnt` INT NOT NULL DEFAULT 0,
+	`Cov_Cnt` INT NOT NULL DEFAULT 0,
+	`Num_Dtl` INT NOT NULL DEFAULT 0,
+	`Itemizer1` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer2` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer3` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer4` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer5` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer6` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer7` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer8` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer9` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer10` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer11` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer12` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer13` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer14` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer15` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer16` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Tip_ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`DateCreated` DATETIME NOT NULL DEFAULT NOW(),
+	`CreatedBy` VARCHAR(120) NULL,
+	`Filename` VARCHAR(120) NULL,
+	`BatchID` VARCHAR(30) NULL,
+INDEX `IX_tblgla_f_dtl_chk_headers`(`chk_headers_seq_number`),
+INDEX `IX1_tblgla_f_dtl_chk_headers`(`chk_num`)
+);
+
 
 /*****************************
 **	tblContactAddOn
@@ -6709,43 +6788,36 @@ PRIMARY KEY (ContactDetailID),
 INDEX `IX_tblContactAddOn`(`ContactID`)
 );
 
-DELETE FROM sysConfig WHERE ConfigName = 'BACKEND_VARIATION_TYPE';
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category) VALUES ('BACKEND_VARIATION_TYPE',	'EXPIRATION;LOTNO', 'BACKEND_VARIATION_TYPE');
-
-
-INSERT INTO tblVariations (VariationID, VariationCode, VariationType) VALUES (6, 'LOT', 'LOTNO');
-
-ALTER TABLE tblProductInventoryDaily ADD PurchasePrice DECIMAL(18,3) NOT NULL DEFAULT '0.000';
-ALTER TABLE tblProductInventoryMonthly ADD PurchasePrice DECIMAL(18,3) NOT NULL DEFAULT '0.000';
-
-ALTER TABLE tblProductInventoryDaily ADD Price DECIMAL(18,3) NOT NULL DEFAULT '0.000';
-ALTER TABLE tblProductInventoryMonthly ADD Price DECIMAL(18,3) NOT NULL DEFAULT '0.000';
-
-UPDATE tblProductInventoryDaily, tblProducts, tblProductPackage
-	SET
-		tblProductInventoryDaily.PurchasePrice = tblProductPackage.PurchasePrice,
-		tblProductInventoryDaily.Price = tblProductPackage.Price
-WHERE tblProductInventoryDaily.ProductID = tblProducts.ProductID
-	AND tblProductInventoryDaily.ProductID = tblProductPackage.ProductID
-	AND tblProducts.BaseUnitID = tblProductPackage.UnitID
-	AND tblProductInventoryDaily.MatrixID = tblProductPackage.MatrixID
-	AND tblProductPackage.Quantity = 1
-	AND DATE_FORMAT(tblProductInventoryDaily.DateCreated, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d');
-	
-UPDATE tblProductInventoryMonthly, tblProducts, tblProductPackage
-	SET
-		tblProductInventoryMonthly.PurchasePrice = tblProductPackage.PurchasePrice,
-		tblProductInventoryMonthly.Price = tblProductPackage.Price
-WHERE tblProductInventoryMonthly.ProductID = tblProducts.ProductID
-	AND tblProductInventoryMonthly.ProductID = tblProductPackage.ProductID
-	AND tblProducts.BaseUnitID = tblProductPackage.UnitID
-	AND tblProductInventoryMonthly.MatrixID = tblProductPackage.MatrixID
-	AND tblProductPackage.Quantity = 1
-	AND DATE_FORMAT(tblProductInventoryMonthly.DateCreated, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d');
-
-
 ALTER TABLE tblDiscount MODIFY DiscountType VARCHAR(60) NOT NULL;
 ALTER TABLE tblContactAddon MODIFY MiddleName VARCHAR(85) NULL;
 
+ALTER TABLE tblTransactions ADD DataSource VARCHAR(30) NULL;
+
 -- IMPORTANT: recreate the tblContactAddOn above......
 -- see also changes in inventory.sql
+
+-- COLLATE ILLEGAL MIX ISSUE
+ALTER DATABASE pos CHARACTER SET utf8;
+
+SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schema_name = 'pos';
+
+DELETE FROM sysConfig;
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('BACKEND_VARIATION_TYPE',	'BACKEND_VARIATION_TYPE',			'EXPIRATION;LOTNO');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyCode',			'CompanyDetails',					'RBS');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyName',			'CompanyDetails',					'RETAILPLUS BUSINESS SOLUTIONS');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('TIN',					'CompanyDetails',					'104-384-077-000');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('Currency',				'CompanyDetails',					'PHP');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('VersionFTPIPAddress',	'CompanyDetails',					'Localhost');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CheckOutBillHeaderLabel','FE',								'-/- CHECK-OUT BILL -/-');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ChargeSlipHeaderLabel',  'FE',								'');
+
+INSERT INTO sysConfig (ConfigName, ConfigValue, Category) VALUES('MR',						'MR',								'Salutation');
+INSERT INTO sysConfig (ConfigName, ConfigValue, Category) VALUES('MRS',						'MRS',								'Salutation');
+INSERT INTO sysConfig (ConfigName, ConfigValue, Category) VALUES('MS',						'MS',								'Salutation');
+
+
+ALTER TABLE tblTerminal ADD `IncludeTermsAndConditions` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+
+UPDATE sysConfig set ConfigValue = '' where ConfigName = 'CompanyCode';
+UPDATE sysConfig set ConfigValue = '' where ConfigName = 'CompanyName';
+UPDATE sysConfig set ConfigValue = '' where ConfigName = 'TIN';

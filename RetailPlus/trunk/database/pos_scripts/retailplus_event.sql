@@ -1,4 +1,9 @@
 ﻿
+-- login as root to enable the event
+SET GLOBAL event_scheduler = ON;
+
+-- login as POSUser to access create the events
+
 /********************************************
 	eventExpireContactRewardCard
 	-- Expires all advantage card(s) that is less than the current date.
@@ -78,3 +83,5 @@ CREATE EVENT eventUpdatetblInventorySG
 	END;
 GO
 delimiter ;
+
+SHOW EVENTS\G

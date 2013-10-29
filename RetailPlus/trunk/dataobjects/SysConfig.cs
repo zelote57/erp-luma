@@ -13,6 +13,34 @@ namespace AceSoft.RetailPlus.Data
          "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
          "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
          "FF52834EAFB5A7A1FDFD5851A3")]
+
+    public struct SysConfigDetails
+    {
+        public string BACKEND_VARIATION_TYPE;
+        public string BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO;
+        public string CompanyCode;
+        public string CompanyName;
+        
+        public string Currency;
+        public string TIN;
+        public string VersionFTPAddress;
+
+        public string Address1;
+        public string Address2;
+        public string City;
+        public string State;
+        public string Zip;
+        public string Country;
+        public string OfficePhone;
+        public string DirectPhone;
+        public string FaxPhone;
+        public string MobilePhone;
+        public string EmailAddress;
+        public string WebSite;
+
+        public string CheckOutBillHeaderLabel;
+        public string ChargeSlipHeaderLabel;
+    }
     public class SysConfig : POSConnection
     {
         #region Constructors and Destructors
@@ -35,6 +63,72 @@ namespace AceSoft.RetailPlus.Data
 
         public string get_BackendVariationType()
         {
+            return get_Sysconfig(Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE);
+        }
+
+        public string get_BackendVariationTypeExpirationLotNo()
+        {
+            return get_Sysconfig(Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO);
+        }
+
+        #endregion
+
+        public string get_CompanyCode()
+        {
+            return get_Sysconfig(Constants.SYS_CONFIG_COMPANY_CODE);
+        }
+
+        public string get_CompanyName()
+        {
+            return get_Sysconfig(Constants.SYS_CONFIG_COMPANY_NAME);
+        }
+
+        public string get_Currency()
+        {
+            return get_Sysconfig(Constants.SYS_CONFIG_CURRENCY);
+        }
+
+        public string get_TIN()
+        {
+            return get_Sysconfig(Constants.SYS_CONFIG_TIN);
+        }
+
+        public string get_VersionFTPIPAddress()
+        {
+            return get_Sysconfig(Constants.SYS_CONFIG_VERSION_FTP_IPADDRESS);
+        }
+
+        public string get_CheckOutBillHeaderLabel()
+        {
+            return get_Sysconfig(Constants.SYS_CONFIG_CHECK_OUT_BILL_HEADER_LABEL);
+        }
+
+        public string get_ChargeSlipHeaderLabel()
+        {
+            return get_Sysconfig(Constants.SYS_CONFIG_CHARGE_SLIP_HEADER_LABEL);
+        }
+
+        public SysConfigDetails get_SysConfigDetails()
+        {
+            SysConfigDetails clsSysConfigDetails = new SysConfigDetails();
+            
+            clsSysConfigDetails.BACKEND_VARIATION_TYPE = get_BackendVariationType();
+            clsSysConfigDetails.BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO = get_BackendVariationTypeExpirationLotNo();
+            clsSysConfigDetails.CompanyCode = get_CompanyCode();
+            clsSysConfigDetails.CompanyName = get_CompanyName();
+            
+            clsSysConfigDetails.Currency = get_Currency();
+            clsSysConfigDetails.TIN = get_TIN();
+            clsSysConfigDetails.VersionFTPAddress = get_VersionFTPIPAddress();
+
+            clsSysConfigDetails.CheckOutBillHeaderLabel = get_CheckOutBillHeaderLabel();
+            clsSysConfigDetails.ChargeSlipHeaderLabel = get_ChargeSlipHeaderLabel();
+            
+            return clsSysConfigDetails;
+        }
+
+        private string get_Sysconfig(string Configname)
+        {
             string stRetValue = String.Empty;
 
             try
@@ -45,7 +139,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@Configname", Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE);
+                cmd.Parameters.AddWithValue("@Configname", Configname);
 
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
@@ -53,7 +147,10 @@ namespace AceSoft.RetailPlus.Data
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
                     if (!string.IsNullOrEmpty(dr["ConfigValue"].ToString()))
+                    {
                         stRetValue = "" + dr["ConfigValue"].ToString();
+                    }
+                    break;
                 }
 
             }
@@ -64,6 +161,6 @@ namespace AceSoft.RetailPlus.Data
             return stRetValue;
         }
 
-        #endregion
+        
     }
 }

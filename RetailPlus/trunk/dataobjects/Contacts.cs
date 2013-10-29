@@ -226,7 +226,11 @@ namespace AceSoft.RetailPlus.Data
 				myReader.Close();
 
                 //Sep 15, 2013 Include the sepecific details if there's any
-                _ContactAddOns.Save(Details.AdditionalDetails);
+                if (!string.IsNullOrEmpty(Details.AdditionalDetails.Salutation))
+                {
+                    Details.AdditionalDetails.ContactID = iID;
+                    _ContactAddOns.Save(Details.AdditionalDetails);
+                }
 
 				return iID;
 			}
@@ -283,7 +287,6 @@ namespace AceSoft.RetailPlus.Data
 				base.ExecuteNonQuery(cmd);
 
                 //Sep 15, 2013 Include the sepecific details if there's any
-
                 _ContactAddOns.Save(Details.AdditionalDetails);
 			}
 
@@ -662,6 +665,9 @@ namespace AceSoft.RetailPlus.Data
                 Details.CreditDetails = clsContactCredit.Details(Details.ContactID);
                 Details.CreditDetails.CreditLimit = Details.CreditLimit;
                 Details.CreditDetails.CreditActive = Convert.ToBoolean(Details.IsCreditAllowed);
+
+                // Oct 12, 2013 : - get additional details
+                Details.AdditionalDetails = new ContactAddOns().Details(Details.ContactID);
             }
             catch (Exception ex) { throw base.ThrowException(ex); }
             return Details;
@@ -1361,9 +1367,9 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public DataTable ListAsDataTable(ContactGroupCategory groupCategory=ContactGroupCategory.BOTH, long ContactID=0, string ContactCode="", string ContactName="", string ContactGroupCode="", string RewardCardNo = "", string Name="", bool hasCreditOnly=false, int intDeleted = -1, int Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending)
+        public DataTable ListAsDataTable(ContactGroupCategory groupCategory = ContactGroupCategory.BOTH, long ContactID = 0, string ContactCode = "", string ContactName = "", string ContactGroupCode = "", string RewardCardNo = "", string Name = "", bool hasCreditOnly = false, int intDeleted = -1, int Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending, string BirthDateFrom = Constants.C_DATE_MIN_VALUE_STRING, string BirthDateTo = Constants.C_DATE_MIN_VALUE_STRING, string AnniversaryDateFrom = Constants.C_DATE_MIN_VALUE_STRING, string AnniversaryDateTo = Constants.C_DATE_MIN_VALUE_STRING, int BirthMonth = 0, int AnniversaryMonth = 0)
         {
-            string SQL = "CALL procContactSelect(@ContactGroupCategory, @ContactID, @ContactCode, @ContactName, @ContactGroupCode, @RewardCardNo, @Name, @hasCreditOnly, @intDeleted, @lngLimit, @SortField, @SortOrder)";
+            string SQL = "CALL procContactSelect(@ContactGroupCategory, @ContactID, @ContactCode, @ContactName, @ContactGroupCode, @RewardCardNo, @Name, @BirthMonth, @AnniversaryMonth, @BirthDateFrom, @BirthDateTo, @AnniversaryDateFrom, @AnniversaryDateTo, @hasCreditOnly, @intDeleted, @lngLimit, @SortField, @SortOrder)";
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
@@ -1376,6 +1382,12 @@ namespace AceSoft.RetailPlus.Data
             cmd.Parameters.AddWithValue("@ContactGroupCode", ContactGroupCode);
             cmd.Parameters.AddWithValue("@RewardCardNo", RewardCardNo);
             cmd.Parameters.AddWithValue("@Name", Name);
+            cmd.Parameters.AddWithValue("@BirthMonth", BirthMonth);
+            cmd.Parameters.AddWithValue("@AnniversaryMonth", AnniversaryMonth); 
+            cmd.Parameters.AddWithValue("@BirthDateFrom", BirthDateFrom);
+            cmd.Parameters.AddWithValue("@BirthDateTo", BirthDateTo);
+            cmd.Parameters.AddWithValue("@AnniversaryDateFrom", AnniversaryDateFrom);
+            cmd.Parameters.AddWithValue("@AnniversaryDateTo", AnniversaryDateTo);
             cmd.Parameters.AddWithValue("@hasCreditOnly", hasCreditOnly);
             cmd.Parameters.AddWithValue("@intDeleted", intDeleted);
             cmd.Parameters.AddWithValue("@lngLimit", Limit);

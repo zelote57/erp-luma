@@ -77,20 +77,16 @@ namespace AceSoft.RetailPlus.Data
                     {
                         decimal decPurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
                         long lngProductPurchasePriceHistoryID = long.Parse(dr["ProductPurchasePriceHistoryID"].ToString());
+                        Details.ProductPurchasePriceHistoryID = lngProductPurchasePriceHistoryID;
+
                         lngCtr += 1;
                         if (decPurchasePrice >= Details.PurchasePrice )
-                        {
-                            Details.ProductPurchasePriceHistoryID = lngProductPurchasePriceHistoryID;
-                            Update(Details);
                             break;
-                        }
-                        else if(dt.Rows.Count == lngCtr && decPurchasePrice ==0)
-                        {
-                            Details.ProductPurchasePriceHistoryID = lngProductPurchasePriceHistoryID;
-                            Update(Details);
+                        else if(dt.Rows.Count == lngCtr && decPurchasePrice == 0)
                             break;
-                        }
                     }
+                    //if it comes here then update the most oldest with the latest
+                    Update(Details);
                 }
             }
 

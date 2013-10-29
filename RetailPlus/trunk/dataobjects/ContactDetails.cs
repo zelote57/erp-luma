@@ -271,6 +271,61 @@ namespace AceSoft.RetailPlus.Data
 
 		#endregion
 
+        #region Details
+
+        public ContactAddOnDetails Details(long ContactID)
+        {
+            try
+            {
+                System.Data.DataTable dt = ListAsDataTable(ContactID);
+                ContactAddOnDetails clsContactAddOnDetails = setDetails(dt);
+
+                return clsContactAddOnDetails;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        private ContactAddOnDetails setDetails(System.Data.DataTable dt)
+        {
+            ContactAddOnDetails Details = new ContactAddOnDetails();
+
+            try
+            {
+                foreach(System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.ContactID = Int64.Parse(dr["ContactID"].ToString());
+                    Details.Salutation = "" + dr["Salutation"].ToString();
+                    Details.FirstName = "" + dr["FirstName"].ToString();
+                    Details.MiddleName = "" + dr["MiddleName"].ToString();
+                    Details.LastName = "" + dr["LastName"].ToString();
+                    Details.SpouseName = "" + dr["SpouseName"].ToString();
+                    Details.BirthDate = DateTime.Parse(dr["BirthDate"].ToString());
+                    Details.SpouseBirthDate = DateTime.Parse(dr["SpouseBirthDate"].ToString());
+                    Details.AnniversaryDate = DateTime.Parse(dr["AnniversaryDate"].ToString());
+                    Details.Address1 = "" + dr["Address1"].ToString();
+                    Details.Address2 = "" + dr["Address2"].ToString();
+                    Details.City = "" + dr["City"].ToString();
+                    Details.State = "" + dr["State"].ToString();
+                    Details.ZipCode = "" + dr["ZipCode"].ToString();
+                    Details.CountryID = Int32.Parse(dr["CountryID"].ToString());
+                    Details.CountryCode = "" + dr["CountryName"].ToString();
+                    Details.BusinessPhoneNo = "" + dr["BusinessPhoneNo"].ToString();
+                    Details.HomePhoneNo = "" + dr["HomePhoneNo"].ToString();
+                    Details.MobileNo = "" + dr["MobileNo"].ToString();
+                    Details.FaxNo = "" + dr["FaxNo"].ToString();
+                    Details.EmailAddress = "" + dr["EmailAddress"].ToString();
+                }
+            }
+            catch (Exception ex) { throw base.ThrowException(ex); }
+            return Details;
+        }
+
+        #endregion
+
         #region Streams
 
         private bool isExist(long ContactID)
@@ -299,6 +354,23 @@ namespace AceSoft.RetailPlus.Data
             {
                 throw base.ThrowException(ex);
             }
+        }
+
+        public DataTable ListAsDataTable(long ContactID = 0,string Name = "")
+        {
+            string SQL = "CALL procContactAddOnSelect(@ContactID, @Name)";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            cmd.Parameters.AddWithValue("@ContactID", ContactID);
+            cmd.Parameters.AddWithValue("@Name", Name);
+
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            return dt;
         }
 
         #endregion

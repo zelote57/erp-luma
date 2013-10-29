@@ -93,6 +93,9 @@ namespace AceSoft.RetailPlus.Data
         public bool IsParkingTerminal;
 
         public bool WillPrintChargeSlip;
+
+        // [04/29/2013] Include to know whether to print agreement or not
+        public bool IncludeTermsAndConditions;
 	}
 
     public struct RewardPointsDetails
@@ -543,6 +546,7 @@ namespace AceSoft.RetailPlus.Data
                             "DBVersion, " +
                             "ProductSearchType, " +
                             "IncludeCreditChargeAgreement, " +
+                            "IncludeTermsAndConditions, " +
                             "IsParkingTerminal, " +
                             "WillPrintChargeSlip " +
 						"FROM tblTerminal ";
@@ -775,6 +779,10 @@ namespace AceSoft.RetailPlus.Data
                 Details.IsParkingTerminal = myReader.GetBoolean("IsParkingTerminal");
 
                 Details.WillPrintChargeSlip = myReader.GetBoolean("WillPrintChargeSlip");
+
+                // Added Oct 20, 2013
+                Details.IncludeTermsAndConditions = myReader.GetBoolean("IncludeTermsAndConditions");
+
             }
             myReader.Close();
 

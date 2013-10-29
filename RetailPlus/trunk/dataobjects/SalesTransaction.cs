@@ -119,6 +119,7 @@ namespace AceSoft.RetailPlus.Data
         public bool isConsignment;
         public string isConsignmentSearch;
 
+        public string DataSource;
 	}
 
 	public struct SalesTransactionsColumns
@@ -684,7 +685,7 @@ namespace AceSoft.RetailPlus.Data
 								"WaiterID, " +
 								"WaiterName," +
 								"ChargeCode, ChargeRemarks,OrderType, " +
-								"AgentPositionName, AgentDepartmentName" +
+								"AgentPositionName, AgentDepartmentName,DataSource" +
 							")VALUES(" +
                                 "@TransactionType, " +
 								"@TransactionNo, " +
@@ -707,7 +708,7 @@ namespace AceSoft.RetailPlus.Data
 								"@WaiterID, " +
 								"@WaiterName," +
 								"@ChargeCode, @ChargeRemarks,@OrderType," +
-								"@AgentPositionName, @AgentDepartmentName" +
+                                "@AgentPositionName, @AgentDepartmentName,@DataSource" +
 								");";
 
 				MySqlCommand cmd = new MySqlCommand();
@@ -739,6 +740,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.AddWithValue("@OrderType", Details.OrderType.ToString("d"));
 				cmd.Parameters.AddWithValue("@AgentPositionName", Details.AgentPositionName);
 				cmd.Parameters.AddWithValue("@AgentDepartmentName", Details.AgentDepartmentName);
+                cmd.Parameters.AddWithValue("@DataSource", Details.DataSource);
 
 				base.ExecuteNonQuery(cmd);
 
@@ -1318,6 +1320,27 @@ namespace AceSoft.RetailPlus.Data
 		#endregion
 
 		#region Public Modifiers
+
+        public void DeleteByDataSource(string DataSource)
+        {
+            try
+            {
+                string SQL = "CALL procTransactionDeleteByDataSource(@DataSource);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@DataSource", DataSource);
+
+                base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		public void UpdateCreditChargeAmount(Int64 TransactionID, decimal CreditChargeAmount)
 		{
@@ -2132,13 +2155,8 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);
-				prmTransactionID.Value = TransactionID;
-				cmd.Parameters.Add(prmTransactionID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
 
 				base.ExecuteNonQuery(cmd);
 			}
@@ -2148,6 +2166,34 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
+
+        /// <summary>
+        /// This will overwrite the DateClosed. Applicable for uploaded transactions like GLA.
+        /// </summary>
+        /// <param name="TransactionID"></param>
+        /// <param name="DateClosed"></param>
+        public void UpdateDateClosed(Int64 TransactionID, DateTime DateClosed)
+        {
+            try
+            {
+                string SQL = "CALL procTransactionDateClosedUpdate(@TransactionID, @DateClosed);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
+                cmd.Parameters.AddWithValue("@DateClosed", DateClosed.ToString("yyyy-MM-dd HH;mm:ss"));
+
+                base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		public void UpdatePaxNo(Int64 TransactionID, int PaxNo)
 		{
 			try

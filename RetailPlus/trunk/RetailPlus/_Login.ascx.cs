@@ -56,7 +56,7 @@ namespace AceSoft.RetailPlus
 					{
 						Int64 iUID = 1;
 						AssignUserSession(iUID);
-						Response.Redirect(Constants.ROOT_DIRECTORY + "/Home.aspx");
+						Response.Redirect(Constants.ROOT_DIRECTORY + "/Home/Default.aspx");
 					}
 					else	//Not a global userl check the database.
 					{
@@ -80,7 +80,7 @@ namespace AceSoft.RetailPlus
 							clsAuditTrail.CommitAndDispose();
 
 							lblError.Text = "Sorry the account you provided is not permitted in our system.";
-							lblError.Text += "<br>Please type a valid user name and password.";
+							lblError.Text += "<br />Please type a valid user name and password.";
 						}
 						else
 						{
@@ -95,7 +95,7 @@ namespace AceSoft.RetailPlus
 							Security.AuditTrail clsAuditTrail = new Security.AuditTrail();
 							clsAuditTrail.Insert(clsAuditDetails);
 							clsAuditTrail.CommitAndDispose();
-							Response.Redirect(Constants.ROOT_DIRECTORY + "/Home.aspx");
+                            Response.Redirect(Constants.ROOT_DIRECTORY + "/Home/Default.aspx");
 						}
 					}
                 //}
@@ -134,10 +134,34 @@ namespace AceSoft.RetailPlus
 			Session.Add("MobilePhone", clsDetails.MobilePhone);
 			Session.Add("EmailAddress", clsDetails.EmailAddress);
 
+            //Data.SysConfig clsSysConfig = new Data.SysConfig();
+            //Session.Add(Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE, clsSysConfig.get_BackendVariationType());
+            //clsSysConfig.CommitAndDispose();
+
+            //overwrite the companydetails from the database
             Data.SysConfig clsSysConfig = new Data.SysConfig();
-            Session.Add(Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE, clsSysConfig.get_BackendVariationType());
+            Data.SysConfigDetails clsSysConfigDetails = clsSysConfig.get_SysConfigDetails();
             clsSysConfig.CommitAndDispose();
 
+            Session.Add(Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE, clsSysConfigDetails.BACKEND_VARIATION_TYPE);
+
+            CompanyDetails.CompanyCode = string.IsNullOrEmpty(clsSysConfigDetails.CompanyCode) ? CompanyDetails.CompanyCode : clsSysConfigDetails.CompanyCode;
+            CompanyDetails.CompanyName = string.IsNullOrEmpty(clsSysConfigDetails.CompanyName) ? CompanyDetails.CompanyName : clsSysConfigDetails.CompanyName;
+            CompanyDetails.Currency = string.IsNullOrEmpty(clsSysConfigDetails.Currency) ? CompanyDetails.Currency : clsSysConfigDetails.Currency;
+            CompanyDetails.TIN = string.IsNullOrEmpty(clsSysConfigDetails.TIN) ? CompanyDetails.TIN : clsSysConfigDetails.TIN;
+
+            CompanyDetails.Address1 = string.IsNullOrEmpty(clsSysConfigDetails.Address1) ? CompanyDetails.Address1 : clsSysConfigDetails.Address1;
+            CompanyDetails.Address2 = string.IsNullOrEmpty(clsSysConfigDetails.Address2) ? CompanyDetails.Address2 : clsSysConfigDetails.Address2;
+            CompanyDetails.City = string.IsNullOrEmpty(clsSysConfigDetails.City) ? CompanyDetails.City : clsSysConfigDetails.City;
+            CompanyDetails.State = string.IsNullOrEmpty(clsSysConfigDetails.State) ? CompanyDetails.State : clsSysConfigDetails.State;
+            CompanyDetails.Zip = string.IsNullOrEmpty(clsSysConfigDetails.Zip) ? CompanyDetails.Zip : clsSysConfigDetails.Zip;
+            CompanyDetails.Country = string.IsNullOrEmpty(clsSysConfigDetails.Country) ? CompanyDetails.Country : clsSysConfigDetails.Country;
+            CompanyDetails.OfficePhone = string.IsNullOrEmpty(clsSysConfigDetails.OfficePhone) ? CompanyDetails.OfficePhone : clsSysConfigDetails.OfficePhone;
+            CompanyDetails.DirectPhone = string.IsNullOrEmpty(clsSysConfigDetails.DirectPhone) ? CompanyDetails.DirectPhone : clsSysConfigDetails.DirectPhone;
+            CompanyDetails.FaxPhone = string.IsNullOrEmpty(clsSysConfigDetails.FaxPhone) ? CompanyDetails.FaxPhone : clsSysConfigDetails.FaxPhone;
+            CompanyDetails.MobilePhone = string.IsNullOrEmpty(clsSysConfigDetails.MobilePhone) ? CompanyDetails.MobilePhone : clsSysConfigDetails.MobilePhone;
+            CompanyDetails.EmailAddress = string.IsNullOrEmpty(clsSysConfigDetails.EmailAddress) ? CompanyDetails.EmailAddress : clsSysConfigDetails.EmailAddress;
+            CompanyDetails.WebSite = string.IsNullOrEmpty(clsSysConfigDetails.WebSite) ? CompanyDetails.WebSite : clsSysConfigDetails.WebSite;
 		}
 	}
 }

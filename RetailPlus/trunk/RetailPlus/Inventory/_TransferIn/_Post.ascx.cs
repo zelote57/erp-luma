@@ -161,9 +161,9 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                 if (lngSupplierID == long.Parse(lblSupplierID.Text))
                     clsDetails.PurchasePrice = decPurchasePrice;
 
-                strPurchasePriceHistory += dtePurchaseDate.ToString("ddMMMyyyy HH:mm") + ": " + decPurchasePrice.ToString("#,##0.##0").PadLeft(10) + " " + strSupplierName + "\r\n<br>" + Environment.NewLine;
+                strPurchasePriceHistory += dtePurchaseDate.ToString("ddMMMyyyy HH:mm") + ": " + decPurchasePrice.ToString("#,##0.##0").PadLeft(10) + " " + strSupplierName + "\r\n<br />" + Environment.NewLine;
             }
-            lblPurchasePriceHistory.Text = "<br>" + strPurchasePriceHistory;
+            lblPurchasePriceHistory.Text = "<br />" + strPurchasePriceHistory;
 
             cboProductUnit.Items.Insert(0, new ListItem(clsDetails.BaseUnitCode, clsDetails.BaseUnitID.ToString()));
 
@@ -1541,11 +1541,11 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                             }
                             else
                             {
-                                //lblError.Text += "<b>" + xmlReader.Name + ":</b>" + xmlReader.Value + "<br>";
+                                //lblError.Text += "<b>" + xmlReader.Name + ":</b>" + xmlReader.Value + "<br />";
                             }
                             break;
                         case XmlNodeType.Text:
-                            //lblError.Text += "<b>" + xmlReader.LocalName + ":</b>" + xmlReader.Value + "<br>";
+                            //lblError.Text += "<b>" + xmlReader.LocalName + ":</b>" + xmlReader.Value + "<br />";
                             break;
                     }
                 }

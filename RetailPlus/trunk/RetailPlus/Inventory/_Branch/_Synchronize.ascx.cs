@@ -110,13 +110,13 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 
                 if (IPAddress.IsOpen(clsBranchDetails.DBIP, int.Parse(clsBranchDetails.DBPort)) == false)
                 {
-                    lblError.Text = "Sorry cannot connect to Branch '" + cboBranch.SelectedItem.Text + "'. Please check you connection to IP Address :" + clsBranchDetails.DBIP + ". <br><br>";
-                    lblError.Text += "HOW TO CHECK : <br><br>";
-                    lblError.Text += "  1. Open command prompt<br>";
-                    lblError.Text += "  2. Type ping[space][IP Address]<br><br>";
-                    lblError.Text += "If the answer is 'Request timed out.' then contact system administrator.<br>";
-                    lblError.Text += "Else if the answer is 'Reply...' Follow the next steps.<br><br>";
-                    lblError.Text += "  3. Type telnet[space][IP Address][sapce][IP Port]<br><br>";
+                    lblError.Text = "Sorry cannot connect to Branch '" + cboBranch.SelectedItem.Text + "'. Please check you connection to IP Address :" + clsBranchDetails.DBIP + ". <br /><br />";
+                    lblError.Text += "HOW TO CHECK : <br /><br />";
+                    lblError.Text += "  1. Open command prompt<br />";
+                    lblError.Text += "  2. Type ping[space][IP Address]<br /><br />";
+                    lblError.Text += "If the answer is 'Request timed out.' then contact system administrator.<br />";
+                    lblError.Text += "Else if the answer is 'Reply...' Follow the next steps.<br /><br />";
+                    lblError.Text += "  3. Type telnet[space][IP Address][sapce][IP Port]<br /><br />";
 
                     return;
                 }
@@ -136,10 +136,10 @@ namespace AceSoft.RetailPlus.Inventory._Branch
                     try
                     {
                         clsBranchInventory.Insert(InsertStatement);
-                        lblError.Text += InsertStatement + "<br><br>";
+                        lblError.Text += InsertStatement + "<br /><br />";
                     }
                     catch {
-                        lblError.Text += "<div class=ms-alternating> ERROR INSERTING ITEM: " + InsertStatement + "</div><br><br>";
+                        lblError.Text += "<div class=ms-alternating> ERROR INSERTING ITEM: " + InsertStatement + "</div><br /><br />";
                         clsBranchInventory.Insert("';");
                     }
                     
@@ -147,7 +147,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 
                 clsBranchInventory.CommitAndDispose();
 
-                lblError.Text = "Done synchronizing Branch: " + clsBranchDetails.BranchCode + "<br><br>" + lblError.Text;
+                lblError.Text = "Done synchronizing Branch: " + clsBranchDetails.BranchCode + "<br /><br />" + lblError.Text;
             }
             catch (Exception ex)
             {

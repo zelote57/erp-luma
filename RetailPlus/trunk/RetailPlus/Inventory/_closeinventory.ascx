@@ -12,7 +12,7 @@
 	<tr>
 		<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10" /></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
 						
@@ -48,23 +48,23 @@
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
-					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	10px" colspan="3">
+					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; padding-bottom:	10px" colspan="3">
                         <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
                             <tr>
-					            <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+					            <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 						            <label>Select Branch to process</label>
 					            </td>
 					            <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
 					            <td style="HEIGHT: 15px" colspan="3">
 						            <asp:dropdownlist id="cboBranch" CssClass="ms-short" runat="server" OnSelectedIndexChanged="cboBranch_SelectedIndexChanged" AutoPostBack="true" CausesValidation="false" ></asp:dropdownlist>
 					            </td>
-                                <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+                                <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 					            </td>
 					            <td width="99%" id="Td4" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					            </td>
 				            </tr>
 				            <tr>
-					            <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+					            <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 						            <label>Select Product Group to process</label>
 					            </td>
 					            <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
@@ -78,7 +78,7 @@
                                         </Triggers>
                                     </asp:UpdatePanel>
 					            </td>
-                                <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+                                <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
                                     <asp:textbox id="txtProductGroup" accessKey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                     <asp:imagebutton id="imgProductGroupSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand; width: 16px;" accessKey="P" 
@@ -89,7 +89,7 @@
 					            </td>
 				            </tr>
                             <tr>
-					            <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+					            <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 					            </td>
 					            <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
 					            <td style="PADDING-TOP:8px; HEIGHT: 15px" colspan="4">
@@ -225,7 +225,7 @@
 	<tr>
 		<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 				    <td class="ms-toolbar" id="td1" nowrap align="right" width="99%">
 						<table cellspacing="0" cellpadding="0" width="100%" border="0">

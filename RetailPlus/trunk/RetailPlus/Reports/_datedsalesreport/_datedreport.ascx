@@ -7,12 +7,12 @@
 <ContentTemplate>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img src="../../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
 						<table cellpadding="1" cellspacing="0" border="0">
@@ -95,7 +95,7 @@
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	10px" colspan="3">
+					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; padding-bottom:	10px" colspan="3">
 						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 							<%--<tr>
 							    <td colspan=8>
@@ -104,7 +104,7 @@
 							</tr>--%>
                             <asp:PlaceHolder id="holderTranDate" runat="server" Visible="true">
 				                <tr>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Transaction Start &nbsp;Date</label>&nbsp;
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -113,7 +113,7 @@
 						                <asp:TextBox id="txtStartTime" runat="server" AccessKey="I" BorderStyle="Groove" CssClass="ms-short" MaxLength="5" Width="65px">00:00</asp:TextBox>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Transaction End Date</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -130,7 +130,7 @@
 					        </asp:PlaceHolder>
 							<asp:PlaceHolder id="holderTransaction" runat="server" Visible="false">
 				                <tr>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Filter by Transaction #</label>&nbsp;
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -138,7 +138,7 @@
 						                <asp:TextBox id="txtTransactionNo" accesskey="O" CssClass="ms-short" runat="server" BorderStyle="Groove"></asp:TextBox>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Filter if Consignment</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -149,7 +149,7 @@
 					                </td>
 				                </tr>
                                 <tr>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Filter by&nbsp;Status</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -157,7 +157,7 @@
 						                <asp:DropDownList id="cboTransactionStatus" runat="server" CssClass="ms-short"></asp:DropDownList>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Filter by Payment Type</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -168,7 +168,7 @@
 					                </td>
 				                </tr>
                                 <tr>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Filter by Customer</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -186,7 +186,7 @@
 					                </td>
 				                </tr>
 				                <tr>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Filter by Cashier</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -206,7 +206,7 @@
 				            </asp:PlaceHolder>
                             <asp:PlaceHolder id="holderTerminaNo" runat="server" Visible="false">
                                 <tr>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Filter by Terminal No</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -226,7 +226,7 @@
                             </asp:PlaceHolder>
 							<asp:PlaceHolder id="holderSalesperItem" runat="server" Visible="false">
 					            <tr>
-				                    <td style="PADDING-BOTTOM:2px" nowrap="nowrap" colspan=3>
+				                    <td style="padding-bottom:2px" nowrap="nowrap" colspan="3">
 						                <label>Filter the Sales Per Item report by group</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
@@ -238,7 +238,7 @@
 					                </td>
 				                </tr>
 				                <tr>
-				                    <td style="PADDING-BOTTOM:2px" nowrap="nowrap" colspan="7">
+				                    <td style="padding-bottom:2px" nowrap="nowrap" colspan="7">
                                         <asp:RadioButton id="rdoShowAll" GroupName="FilterSalesPerItem" runat="server" Text="Show both positive and negative margins " Checked="true" />
                                         <asp:RadioButton id="rdoShowPositiveOnly" GroupName="FilterSalesPerItem" runat="server" Text="Show items with positive margins only " />
                                         <asp:RadioButton id="rdoShowNegativeOnly" GroupName="FilterSalesPerItem" runat="server" Text="Show items with negative margins only "/>
@@ -250,7 +250,7 @@
 					        </asp:PlaceHolder>
                             <asp:PlaceHolder id="holderSummarizedDailySales" runat="server" Visible="false">
 				                <tr>
-				                    <td style="PADDING-BOTTOM:2px" nowrap="nowrap" colspan="7">
+				                    <td style="padding-bottom:2px" nowrap="nowrap" colspan="7">
                                         &nbsp;&nbsp;&nbsp;&nbsp;<asp:RadioButton id="optActualAndEffective" runat="server" GroupName="SummarizedDailySalesReportType" Text="Use actual reporting & effective date" Checked="True" />
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:RadioButton id="optActual" runat="server" GroupName="SummarizedDailySalesReportType" Text="Use actual reporting date" />
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:RadioButton id="optEffective" runat="server" GroupName="SummarizedDailySalesReportType" Text="Use effective date" />
@@ -262,7 +262,7 @@
 					        </asp:PlaceHolder>
                             <asp:PlaceHolder id="holderSalesPerDay" runat="server" Visible="false">
 				                <tr>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Select month</label>&nbsp;
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -270,7 +270,7 @@
 						                <asp:DropDownList id="cboMonth" runat="server" CssClass="ms-short"></asp:DropDownList>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-					                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Select Year</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -297,7 +297,7 @@
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 </table>
 </ContentTemplate>

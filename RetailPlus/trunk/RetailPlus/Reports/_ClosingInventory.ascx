@@ -10,7 +10,7 @@
 	<tr>
 		<td><img src="../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar" style="WIDTH: 234px">
 						<table cellpadding="1" cellspacing="0" border="0">
@@ -70,10 +70,10 @@
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	10px" colspan="3">
+					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; padding-bottom:	10px" colspan="3">
 						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 							<tr>
-				                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+				                <td style="padding-bottom:2px" nowrap="nowrap">
 					                <label>Posting Date From & To</label>&nbsp;
 				                &nbsp;&nbsp;&nbsp;</td>
 				                <td colspan="35">
@@ -86,7 +86,7 @@
 					                <asp:Label id="Label4" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label>
                                 </td>
 				                <%--<%--<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				                <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+				                <td style="padding-bottom:2px" nowrap="nowrap">
 					                <%--<label>Posting Date To</label>
 				                    
 				                </td>
@@ -95,7 +95,7 @@
 								</td>
 			                </tr>
 			                <tr>
-								<td style="PADDING-BOTTOM:2px;" nowrap="nowrap">
+								<td style="padding-bottom:2px;" nowrap="nowrap">
 									<label>Filter by Inventory No.</label>&nbsp;&nbsp;&nbsp;</td>
 								<td colspan=5>
                                     <asp:UpdatePanel id="UpdatePanel4" runat="server">
@@ -111,7 +111,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td style="PADDING-BOTTOM:2px;" nowrap="nowrap">
+								<td style="padding-bottom:2px;" nowrap="nowrap">
 									<label>Filter by Contact</label>
 								&nbsp;&nbsp;&nbsp;</td>
 								<td>
@@ -125,7 +125,7 @@
                                     </asp:UpdatePanel>
 								</td>
 								<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                <td style="PADDING-BOTTOM:2px;" nowrap="nowrap">
+                                <td style="padding-bottom:2px;" nowrap="nowrap">
 									<label>Filter by Group</label>
 								</td>
                                 <td>
@@ -143,7 +143,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td style="PADDING-BOTTOM:2px;" nowrap="nowrap">
+								<td style="padding-bottom:2px;" nowrap="nowrap">
 									<label>Include products without short/over </label>&nbsp;&nbsp;&nbsp;</td>
 								<td colspan="5">
 									<asp:CheckBox id="chkIncludeShortOverProducts" runat="server" CssClass="ms-short" Checked=true></asp:CheckBox>

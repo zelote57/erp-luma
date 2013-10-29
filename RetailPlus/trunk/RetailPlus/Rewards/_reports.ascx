@@ -5,12 +5,12 @@
 <ContentTemplate>
     <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	    <tr>
-		    <td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		    <td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	    </tr>
 	    <tr>
 		    <td><img src="../../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
 		    <td>
-			    <table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			    <table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				    <tr>
 					    <td class="ms-toolbar">
 						    <table cellpadding="1" cellspacing="0" border="0">
@@ -78,18 +78,18 @@
 		    <td>
 			    <table cellpadding="0" cellspacing="0" border="0" width="100%">
 				    <tr>
-					    <td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	10px" colspan="3">
+					    <td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; padding-bottom:	10px" colspan="3">
 						    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <asp:PlaceHolder id="holderSelectCustomer" runat="server" Visible="true">
 							        <tr>
-								        <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+								        <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 									        <label>Filter by Customer</label>
 								        </td>
 								        <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
 								        <td style="HEIGHT: 15px" colspan="3">
 									        <asp:dropdownlist id="cboContactName" CssClass="ms-long" runat="server"></asp:dropdownlist>
 								        </td>
-                                        <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+                                        <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
                                             <asp:textbox id="txtContactName" accesskey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                             <asp:imagebutton id="imgContactNameSearch" ToolTip="Execute search" 
                                                 style="CURSOR: hand; width: 16px;" accesskey="P" 
@@ -102,7 +102,7 @@
                                 </asp:PlaceHolder>
                                 <asp:PlaceHolder id="holderTranDate" runat="server" Visible="true">
 				                    <tr>
-					                    <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                    <td style="padding-bottom:2px" nowrap="nowrap">
 						                    <label>Transaction Start &nbsp;Date</label>&nbsp;
 					                    </td>
 					                    <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -110,7 +110,7 @@
 						                    <asp:TextBox id="txtStartTransactionDate" ondblclick="ontime(this)" accesskey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10" ToolTip="Double click to select date from Calendar" Width="100px"></asp:TextBox>
 					                    </td>
 					                    <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-					                    <td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+					                    <td style="padding-bottom:2px" nowrap="nowrap">
 						                    <label>Transaction End Date</label>
 					                    </td>
 					                    <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -140,7 +140,7 @@
 		    <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	    </tr>
 	    <tr>
-		    <td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		    <td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	    </tr>
     </table>
     </ContentTemplate>

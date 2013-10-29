@@ -3,7 +3,7 @@
 <script language="JavaScript" src="../../_Scripts/ComputeMargin.js"></script>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/blank.gif" /></td>
@@ -12,11 +12,11 @@
         <td class="ms-sectionline" colspan="3" height="1"><asp:Label ID="lblReferrer" runat="server" Visible="False"></asp:Label></td>
     </tr>
     <tr>
-        <td class="ms-authoringcontrols" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px" vAlign="top" colspan="3">
+        <td class="ms-authoringcontrols" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top" colspan="3">
             <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                 <tr>
                     <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" /></td>
-	                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px; PADDING-TOP: 10px" colspan=3>
+	                <td class="ms-authoringcontrols" style="padding-bottom: 2px; PADDING-TOP: 10px" colspan="3">
                         <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                             <tr>
                                 <td nowrap="nowrap"><label>Apply to Product Group</label><asp:label id="lblProductGroupID" runat="server" CssClass="ms-error" Visible="False">0</asp:label></td>
@@ -107,7 +107,7 @@
                             </tr>
                         </table>
                     </td>
-	                <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
                 </tr>
                 <tr>
 	                <td class="ms-formspacer" colspan="5"></td>
@@ -120,7 +120,7 @@
 		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/blank.gif" /></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td class="ms-sectionline" colspan="3" height="1">
@@ -139,7 +139,7 @@
                             </ContentTemplate>
                         </asp:UpdatePanel>
 	                </td>
-	                <TD class="ms-separator">|</TD>
+	                <td class="ms-separator">|</td>
 	                <td class="ms-toolbar">
 			            <table cellspacing="0" cellpadding="1" border="0">
 				            <tr>
@@ -148,11 +148,11 @@
 				            </tr>
 			            </table>
 		            </td>
-		            <TD class="ms-toolbar" id="TD3" nowrap="nowrap" align="right" width="99%"></TD>
+		            <td class="ms-toolbar" id="TD3" nowrap="nowrap" align="right" width="99%"></td>
 				    <td class="ms-toolbar" id="Td4" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
 				</tr>
 			</table>
-		</TD>
+		</td>
 	</tr>
 	
 </table>

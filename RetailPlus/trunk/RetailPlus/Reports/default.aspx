@@ -31,16 +31,16 @@
 		<META content="C#" name="CODE_LANGUAGE" />
 		<META content="JavaScript" name="vs_defaultClientScript">
 		<META content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
-		<LINK href="../menu.css" type="text/css" rel="stylesheet">
-		<LINK href="../ows.css" type="text/css" rel="stylesheet">
-		<LINK href="../sps.css" type="text/css" rel="stylesheet">
+		<LINK href="../_layouts/css/menu.css" type="text/css" rel="stylesheet">
+		<LINK href="../_layouts/css/ows.css" type="text/css" rel="stylesheet">
+		<LINK href="../_layouts/css/sps.css" type="text/css" rel="stylesheet">
 		<link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css"
                 rel="stylesheet" type="text/css" />
 		<script language="JavaScript" src="../_Scripts/DocumentScripts.js"></script>
 		<script language="JavaScript" src="../_Scripts/Calendar.js"></script>
 	</HEAD>
-	<BODY id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
-		<FORM id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">
+	<body id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
+		<form id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">
             <asp:ToolkitScriptManager id="ToolkitScriptManager1" runat="server" />
 		    <CTRL:ctrlProcessing id="ctrlProcessing" runat="server" ></CTRL:ctrlProcessing>
 			<table class="ms-main" height="100%" cellspacing="0" cellpadding="0" width="100%" border="0">
@@ -58,9 +58,9 @@
 							<table class="ms-titleareaframe" cellspacing="0" cellpadding="0" width="100%" border="0">
 								<tr>
 									<td>
-										<table style="PADDING-LEFT: 2px; PADDING-TOP: 0px" cellspacing="0" cellpadding="0" border="0" width="100%">
+										<table style="padding-left: 2px; padding-TOP: 0px" cellspacing="0" cellpadding="0" border="0" width="100%">
 											<tr>
-												<td style="PADDING-TOP: 2px" nowrap="nowrap" align="center" width="132" height="46"><img id="spsPageTitleIcon" alt="" src="../_layouts/images/reports.gif">
+												<td style="padding-TOP: 2px" nowrap="nowrap" align="center" width="132" height="46"><img id="spsPageTitleIcon" alt="" src="../_layouts/images/reports.gif">
 												</td>
 												<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="15">
 												</td>
@@ -79,7 +79,7 @@
 												<td align="right" valign="top">
 													<table cellpadding="0" cellspacing="0" height="100%">
 														<tr>
-															<td vAlign="top" nowrap="nowrap" align="right" colspan="5">
+															<td valign="top" nowrap="nowrap" align="right" colspan="5">
 																<!-- _locID@align="align4" _locComment="{Locked=!1025,1037}{ValidString=left,right}" -->
 																<CTRL:RIGHTBODYSECTIONSEARCH id="RightBodySectionSearch" runat="server"></CTRL:RIGHTBODYSECTIONSEARCH>
 															</td>
@@ -105,12 +105,12 @@
 						</div>
 					</td>
 				</tr>
-				<tr vAlign="top" height="100%">
+				<tr valign="top" height="100%">
 					<td class="ms-nav" id="webpartpagenavbar" height="100%" widthchange="175">
 						<table class="ms-navframe" id="Table7" height="100%" cellspacing="0" cellpadding="0" border="0">
-							<tr vAlign="top">
+							<tr valign="top">
 								<td class="ms-navwatermark" id="onetidWatermark" dir="ltr"></td>
-								<td style="PADDING-RIGHT: 2px" width="150">
+								<td style="padding-RIGHT: 2px" width="150">
 									<img height="1" alt="" src="../_layouts/images/trans.gif" width="150">
 									<CTRL:ctrlMenu id="ctrlMenu" runat="server"></CTRL:ctrlMenu>&nbsp;
 								</td>
@@ -118,10 +118,10 @@
 						</table>
 					</td>
 					<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="5"></td>
-					<td class="ms-bodyareaframe" vAlign="top" width="100%"><CTRL:PAGELEVELERROR id="PageLevelError" runat="server"></CTRL:PAGELEVELERROR>
+					<td class="ms-bodyareaframe" valign="top" width="100%"><CTRL:PAGELEVELERROR id="PageLevelError" runat="server"></CTRL:PAGELEVELERROR>
 						<table class="ms-tztable" id="ZoneTable" cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr id="TopRow">
-								<td class="ms-tztop" id="TopCell" vAlign="top" width="100%">
+								<td class="ms-tztop" id="TopCell" valign="top" width="100%">
 								    <CTRL:ctrlDefault id="ctrlDefault" runat="server" visible="False"></CTRL:ctrlDefault>
 									<CTRL:ctrlContacts id="ctrlContacts" runat="server" visible="False"></CTRL:ctrlContacts>
 									<CTRL:ctrlProducts id="ctrlProducts" runat="server" visible="False"></CTRL:ctrlProducts>
@@ -142,6 +142,6 @@
 					</td>
 				</tr>
 			</table>
-		</FORM>
-	</BODY>
+		</form>
+	</body>
 </HTML>

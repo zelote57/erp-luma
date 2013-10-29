@@ -3,7 +3,7 @@
 <script language="JavaScript" src="../../_Scripts/ComputeMargin.js"></script>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/blank.gif" /></td>
@@ -12,11 +12,11 @@
         <td class="ms-sectionline" colspan="3" height="1"><asp:Label ID="lblReferrer" runat="server" Visible="False"></asp:Label></td>
     </tr>
     <tr>
-        <td class="ms-authoringcontrols" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px" vAlign="top" colspan="3">
+        <td class="ms-authoringcontrols" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top" colspan="3">
             <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                 <tr>
                     <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" /></td>
-	                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px; PADDING-TOP: 10px" colspan=3>
+	                <td class="ms-authoringcontrols" style="padding-bottom: 2px; PADDING-TOP: 10px" colspan="3">
                         <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                             <tr>
                                 <td nowrap="nowrap"><label>Select Product Code<font color="red">*</font></label><asp:label id="lblProductID" runat="server" CssClass="ms-error" Visible="False">0</asp:label></td>
@@ -44,14 +44,14 @@
                             </tr>
                         </table>
                     </td>
-	                <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
                 </tr>
                 <tr>
 	                <td class="ms-formspacer" colspan="5"></td>
                 </tr>
                 <tr>
 	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" /></td>
-	                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="3">
+	                <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="3">
 	                    
 	                    <asp:UpdatePanel ID="UpdatePanel5" runat="server" >
                             <ContentTemplate >
@@ -66,11 +66,11 @@
                             </Triggers> 
                         </asp:UpdatePanel>
 	                </td>
-	                <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
                 </tr>
                 <tr>
 	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" /></td>
-	                <td colspan=3>
+	                <td colspan="3">
 	                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" >
                             <ContentTemplate >
 	                            <asp:datalist id="lstProductPackages" runat="server" Width="100%" ShowFooter="False" cellpadding="0" OnItemDataBound="lstProductPackages_ItemDataBound" OnItemCommand="lstProductPackages_ItemCommand">
@@ -130,7 +130,7 @@
 			                            </table>
 		                            </HeaderTemplate>
 		                            <ItemTemplate>
-			                            <TABLE id="tblItemTemplate" cellspacing="0" cellpadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
+			                            <table id="tblItemTemplate" cellspacing="0" cellpadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 				                            <colgroup>
 					                            <col width="10">
 					                            <col width="10">
@@ -149,55 +149,55 @@
 					                            <col width="1%">
 				                            </colgroup>
 				                            <tr>
-					                            <TD class="ms-vb-user" align=right>
+					                            <td class="ms-vb-user" align="right">
 						                            <input type="checkbox" id="chkProductPackageID" runat="server" NAME="chkProductPackageID" visible=false>
 						                            &nbsp;<asp:ImageButton id="cmdDelProductPackage" runat="server" ImageUrl="../../_layouts/images/delitem.gif" height="16" width="16" ToolTip="Delete this Package" CommandName="cmdDelProductPackage" CausesValidation="false"></asp:ImageButton>
-					                            </TD>
-					                            <TD class="ms-vb-user" align=right>
-					                                <asp:ImageButton id="cmdPrintShelvesBarCode1" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" CommandName="cmdPrintShelvesBarCode1" CausesValidation="false"></asp:ImageButton></TD>
-					                            <TD class="ms-vb-user" align=right>
-					                                <asp:ImageButton id="cmdPrintShelvesBarCode2" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" CommandName="cmdPrintShelvesBarCode2" CausesValidation="false"></asp:ImageButton></TD>
-					                            <TD class="ms-vb-user" align=right>
-					                                <asp:ImageButton id="cmdPrintShelvesBarCode3" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" CommandName="cmdPrintShelvesBarCode3" CausesValidation="false"></asp:ImageButton></TD>
-					                            <TD class="ms-vb-user" nowrap="nowrap">
+					                            </td>
+					                            <td class="ms-vb-user" align="right">
+					                                <asp:ImageButton id="cmdPrintShelvesBarCode1" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" CommandName="cmdPrintShelvesBarCode1" CausesValidation="false"></asp:ImageButton></td>
+					                            <td class="ms-vb-user" align="right">
+					                                <asp:ImageButton id="cmdPrintShelvesBarCode2" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" CommandName="cmdPrintShelvesBarCode2" CausesValidation="false"></asp:ImageButton></td>
+					                            <td class="ms-vb-user" align="right">
+					                                <asp:ImageButton id="cmdPrintShelvesBarCode3" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" CommandName="cmdPrintShelvesBarCode3" CausesValidation="false"></asp:ImageButton></td>
+					                            <td class="ms-vb-user" nowrap="nowrap">
 						                            <asp:Label ID="lblProductDesc" Runat="server"></asp:Label>
-					                            </TD>
-                                                <TD class="ms-vb-user" nowrap="nowrap">
+					                            </td>
+                                                <td class="ms-vb-user" nowrap="nowrap">
 					                                <asp:Label ID="lblProductPackageID" Runat="server" Visible=false></asp:Label>
 						                            <asp:Label ID="lblUnitName" Runat="server"></asp:Label>
-					                            </TD>
+					                            </td>
                                                 <td>
 						                            <asp:TextBox accessKey="C" id="txtQuantity" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" Enabled="false" Width="95%"></asp:TextBox>
-					                            </TD>
-					                            <TD class="ms-vb-user">
+					                            </td>
+					                            <td class="ms-vb-user">
 					                                <asp:TextBox accessKey="C" id="txtPurchasePrice" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginPP(this)" CssClass="ms-short" BorderStyle="Groove" Width="95%">0</asp:TextBox>
-					                            </TD>
-					                            <TD class="ms-vb-user">
+					                            </td>
+					                            <td class="ms-vb-user">
 					                                <asp:TextBox accessKey="C" id="txtMargin" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginPP(this)" CssClass="ms-short" BorderStyle="Groove" BackColor="YellowGreen" Width="45%">0</asp:TextBox>
 					                                <asp:TextBox accessKey="C" id="txtSellingPrice" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginByPricePP(this)" CssClass="ms-short" BorderStyle="Groove" Width="45%">0</asp:TextBox>
-					                            </TD>
-					                            <TD class="ms-vb-user">
+					                            </td>
+					                            <td class="ms-vb-user">
 					                                <asp:TextBox accessKey="C" id="txtWSPriceMarkUp" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginPP(this)" CssClass="ms-short" BorderStyle="Groove" BackColor="YellowGreen" Width="45%">0</asp:TextBox>
 					                                <asp:TextBox accessKey="C" id="txtWSPrice" runat="server" onkeypress="AllNum()" onKeyUp="ChangePriceComputeMarginByPricePP(this)" CssClass="ms-short" BorderStyle="Groove" Width="45%">0</asp:TextBox>
-					                            </TD>
-					                            <TD class="ms-vb-user">
+					                            </td>
+					                            <td class="ms-vb-user">
 					                                <asp:TextBox accessKey="C" id="txtCommision" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" BackColor="Yellow" Width=95%>0</asp:TextBox>
-					                            </TD>
-					                            <TD class="ms-vb-user">
+					                            </td>
+					                            <td class="ms-vb-user">
 					                                <asp:TextBox accessKey="C" id="txtBarCode1" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" MaxLength="15" Width=95%></asp:TextBox>
 						                            <asp:Label id="lblVAT" runat="server" Visible="false"></asp:Label>
-					                            </TD>
-					                            <TD class="ms-vb-user">
+					                            </td>
+					                            <td class="ms-vb-user">
 						                            <asp:TextBox accessKey="C" id="txtBarCode2" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" MaxLength="15" Width=95%></asp:TextBox>
 						                            <asp:Label id="lblEVAT" runat="server" Visible="false"></asp:Label>
-					                            </TD>
-					                            <TD class="ms-vb-user">
+					                            </td>
+					                            <td class="ms-vb-user">
 						                            <asp:TextBox accessKey="C" id="txtBarCode3" runat="server" onkeypress="AllNum()" CssClass="ms-short" BorderStyle="Groove" MaxLength="15" Width=95%></asp:TextBox>
 						                            <asp:Label id="lblLocalTax" runat="server" Visible="false"></asp:Label>
-					                            </TD>
-					                            <TD class="ms-vb2"><A class="DropDown" id="anchorDown" href="" runat="server">
+					                            </td>
+					                            <td class="ms-vb2"><A class="DropDown" id="anchorDown" href="" runat="server">
 							                            <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show" Visible="False"></asp:Image></A>
-					                            </TD>
+					                            </td>
 				                            </tr>
 			                            </table>
 		                            </ItemTemplate>
@@ -212,7 +212,7 @@
                             </Triggers> 
                         </asp:UpdatePanel>
 	                </td>
-	                <td class="ms-formspacer"><IMG alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
                 </tr>
                 <tr>
 	                <td class="ms-formspacer" colspan="5" style="height: 21px"></td>
@@ -226,11 +226,11 @@
 	</tr>
 	
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td class="ms-sectionline" colspan="3" height="1">
-	        <TABLE class="ms-toolbar" id="TABLE2" cellspacing="0" cellpadding="2" border="0" width="100%">
+	        <table class="ms-toolbar" id="TABLE2" cellspacing="0" cellpadding="2" border="0" width="100%">
 				<tr>
 				    
 		            <td class="ms-toolbar">
@@ -242,7 +242,7 @@
 			                </tr>
 		                </table>
 	                </td>
-                    <TD class="ms-separator">|</TD>
+                    <td class="ms-separator">|</td>
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
@@ -251,11 +251,11 @@
 							</tr>
 						</table>
 					</td>
-					<TD class="ms-toolbar" id="TD3" noWrap align="right" width="99%"></TD>
-					<td class="ms-toolbar" id="Td4" noWrap align="right"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="TD3" nowrap="nowrap" align="right" width="99%"></td>
+					<td class="ms-toolbar" id="Td4" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 					</td>
 				</tr>
-			</TABLE>
-		</TD>
+			</table>
+		</td>
 	</tr>
 </table>

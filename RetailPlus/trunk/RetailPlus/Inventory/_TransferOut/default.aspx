@@ -25,15 +25,15 @@
 		<META content="C#" name="CODE_LANGUAGE">
 		<META content="JavaScript" name="vs_defaultClientScript">
 		<META content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
-		<LINK href="../../menu.css" type="text/css" rel="stylesheet">
-		<LINK href="../../ows.css" type="text/css" rel="stylesheet">
-		<LINK href="../../sps.css" type="text/css" rel="stylesheet">
+		<LINK href="../../_layouts/css/menu.css" type="text/css" rel="stylesheet">
+		<LINK href="../../_layouts/css/ows.css" type="text/css" rel="stylesheet">
+		<LINK href="../../_layouts/css/sps.css" type="text/css" rel="stylesheet">
 		<script language="JavaScript" src="../../_Scripts/DocumentScripts.js"></script>
 		<script language="JavaScript" src="../../_Scripts/Calendar.js"></script>
 		<script language="JavaScript" src="../../_Scripts/TransferOut.js"></script>
 	</HEAD>
-	<BODY id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
-		<FORM id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">
+	<body id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
+		<form id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">
             <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
 		    <CTRL:ctrlProcessing id="ctrlProcessing" runat="server" ></CTRL:ctrlProcessing>
 			<table class="ms-main" height="100%" cellspacing="0" cellpadding="0" width="100%" border="0">
@@ -51,13 +51,13 @@
 							<table class="ms-titleareaframe" cellspacing="0" cellpadding="0" width="100%" border="0">
 								<tr>
 									<td>
-										<table style="PADDING-LEFT: 2px; PADDING-TOP: 0px" cellspacing="0" cellpadding="0" border="0" width="100%">
+										<table style="padding-left: 2px; padding-TOP: 0px" cellspacing="0" cellpadding="0" border="0" width="100%">
 											<tr>
-												<td style="PADDING-TOP: 2px" noWrap align="center" width="132" height="46"><img id="spsPageTitleIcon" alt="" src="../../_layouts/images/inventory.gif">
+												<td style="padding-TOP: 2px" nowrap="nowrap" align="center" width="132" height="46"><img id="spsPageTitleIcon" alt="" src="../../_layouts/images/inventory.gif">
 												</td>
 												<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="15">
 												</td>
-												<td noWrap width="100%">
+												<td nowrap="nowrap" width="100%">
 													<table cellspacing="0" cellpadding="0">
 														<tr>
 															<td class="ms-titlearea" noWrap>
@@ -72,13 +72,13 @@
 												<td align="right" valign="top">
 													<table cellpadding="0" cellspacing="0" height="100%">
 														<tr>
-															<td valign="top" noWrap align="right" colspan="5">
+															<td valign="top" nowrap="nowrap" align="right" colspan="5">
 																<!-- _locID@align="align4" _locComment="{Locked=!1025,1037}{ValidString=left,right}" -->
 																<CTRL:RIGHTBODYSECTIONSEARCH id="RightBodySectionSearch" runat="server"></CTRL:RIGHTBODYSECTIONSEARCH>
 															</td>
 														</tr>
 														<tr>
-															<td class="ms-vb" noWrap align="right" colspan="5"></td>
+															<td class="ms-vb" nowrap="nowrap" align="right" colspan="5"></td>
 														</tr>
 													</table>
 												</td>
@@ -103,7 +103,7 @@
 						<table class="ms-navframe" id="Table7" height="100%" cellspacing="0" cellpadding="0" border="0">
 							<tr valign="top">
 								<td class="ms-navwatermark" id="onetidWatermark" dir="ltr"></td>
-								<td style="PADDING-RIGHT: 2px" width="126">
+								<td style="padding-RIGHT: 2px" width="126">
 									<img height="1" alt="" src="../../_layouts/images/trans.gif" width="126">
 									<CTRL:ctrlMenu id="ctrlMenu" runat="server"></CTRL:ctrlMenu>&nbsp;
 								</td>
@@ -127,6 +127,6 @@
 					</td>
 				</tr>
 			</table>
-		</FORM>
-	</BODY>
+		</form>
+	</body>
 </HTML>

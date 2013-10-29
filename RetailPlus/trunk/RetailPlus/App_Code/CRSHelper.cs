@@ -64,10 +64,14 @@ namespace AceSoft.RetailPlus
                 }
                 else
                 {
-                    System.Diagnostics.Process p = new System.Diagnostics.Process();
-                    p.StartInfo.FileName = System.Web.HttpContext.Current.Server.MapPath(Constants.ROOT_DIRECTORY + "/temp/" + strFileName);
-                    p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
-                    p.Start();
+                    string newWindowUrl = Constants.ROOT_DIRECTORY + "/temp/" + strFileName;
+                    string javaScript = "window.open('" + newWindowUrl + "','_self');";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(ClientScriptBlockControl, ClientScriptBlockControl.GetType(), "openwindow", javaScript, true);
+
+                    //System.Diagnostics.Process p = new System.Diagnostics.Process();
+                    //p.StartInfo.FileName = System.Web.HttpContext.Current.Server.MapPath(Constants.ROOT_DIRECTORY + "/temp/" + strFileName);
+                    //p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+                    //p.Start();
                 }
             }
             catch (Exception ex) { throw ex; }

@@ -91,7 +91,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InventoryMenu); 
 			if (clsDetails.Read==false)
-				Server.Transfer(Constants.ROOT_DIRECTORY + "/Home.aspx");
+				Server.Transfer(Constants.ROOT_DIRECTORY + "/Home/Default.aspx");
 			clsAccessRights.CommitAndDispose();
 		}
 

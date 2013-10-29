@@ -2,52 +2,52 @@
 <script language="JavaScript" src="../_Scripts/sExpCollapse.js"></script>
 <script language="JavaScript" src="../_Scripts/SelectAll.js"></script>
 <script language="JavaScript" src="../_Scripts/ConfirmDelete.js"></script>
-<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
+						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgAdd" ToolTip="Add New Product" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/newuser.gif" alt="Add New Product" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgAdd" ToolTip="Add New Product" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/newuser.gif" alt="Add New Product" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
 								</td>
-								<td noWrap><asp:linkbutton id="cmdAdd" ToolTip="Add New Product" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdAdd_Click">Add Product</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdAdd" ToolTip="Add New Product" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdAdd_Click">Add Product</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
 					<td class="ms-separator"><asp:label id="lblSeparator1" runat="server">|</asp:label></td>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
+						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgDelete" ToolTip="Remove Selected Product" accessKey="X" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/delitem.gif" alt="Remove Selected Product" border="0" width="16" height="16"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdDelete" ToolTip="Remove Selected Product" accessKey="X" tabIndex="4" CssClass="ms-toolbar" runat="server" onclick="cmdDelete_Click">Remove Selected Product</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgDelete" ToolTip="Remove Selected Product" accessKey="X" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/delitem.gif" alt="Remove Selected Product" border="0" width="16" height="16"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdDelete" ToolTip="Remove Selected Product" accessKey="X" tabIndex="4" CssClass="ms-toolbar" runat="server" onclick="cmdDelete_Click">Remove Selected Product</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
 					<td class="ms-separator"><asp:label id="lblSeparator2" runat="server">|</asp:label></td>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
+						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="idEdit" ToolTip="Edit Selected Product" accessKey="E" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/edit.gif" alt="Update Selected Product" border="0" width="16" height="16"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdEdit" ToolTip="Edit Selected Product" accessKey="E" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdEdit_Click">Edit Selected Product</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="idEdit" ToolTip="Edit Selected Product" accessKey="E" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/edit.gif" alt="Update Selected Product" border="0" width="16" height="16"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdEdit" ToolTip="Edit Selected Product" accessKey="E" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdEdit_Click">Edit Selected Product</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<td class="ms-toolbar" id="align01" noWrap align="right" width="99%">
-						<TABLE cellSpacing="0" cellPadding="0" width="100%" border="0">
+					<td class="ms-toolbar" id="align01" nowrap="nowrap" align="right" width="99%">
+						<table cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap align="right"><asp:label id="lblDataCount1" CssClass="Normal" runat="server"> Go to page </asp:label><asp:dropdownlist id="cboCurrentPage" runat="server" AutoPostBack="True" onselectedindexchanged="cboCurrentPage_SelectedIndexChanged">
+								<td class="ms-toolbar" nowrap="nowrap" align="right"><asp:label id="lblDataCount1" CssClass="Normal" runat="server"> Go to page </asp:label><asp:dropdownlist id="cboCurrentPage" runat="server" AutoPostBack="True" onselectedindexchanged="cboCurrentPage_SelectedIndexChanged">
 										<asp:ListItem Value="1" Selected="True">1</asp:ListItem>
 									</asp:dropdownlist><asp:label id="lblDataCount" CssClass="class=ms-vb-user" runat="server"> of 0</asp:label></td>
 							</tr>
 						</TABLE>
 					</td>
-					<td class="ms-toolbar" id="align02" noWrap align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					</td>
 				</tr>
 			</TABLE>
@@ -142,7 +142,7 @@
 					</td>
 				</tr>
                 <tr>
-					<td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+					<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 						<label>Product Code like</label>&nbsp;
 					</td>
 					<td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
@@ -240,6 +240,6 @@
 		<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10"></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
 	</tr>
 </table>

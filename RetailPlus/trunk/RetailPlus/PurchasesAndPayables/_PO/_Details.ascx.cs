@@ -255,7 +255,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 Label lblitemPOItemReceivedStatus = (Label)item.FindControl("lblPOItemReceivedStatus");
                 POItemReceivedStatus itemPOItemReceivedStatus = (POItemReceivedStatus)Enum.Parse(typeof(POItemReceivedStatus), lblitemPOItemReceivedStatus.Text);
                 if (itemPOItemReceivedStatus == POItemReceivedStatus.Received)
-                    item.CssClass = "ms-item-received";
+                    item.CssClass = "ms-item-received-det";
                 else if (item.ItemType == ListItemType.Item)
                     item.CssClass = "";
                 else if (item.ItemType == ListItemType.AlternatingItem)

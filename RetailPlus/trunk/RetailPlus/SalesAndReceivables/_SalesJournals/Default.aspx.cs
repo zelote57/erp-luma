@@ -60,7 +60,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SalesJournals
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SalesAndReceivablesMenu); 
 			if (clsDetails.Read==false)
-				Server.Transfer("/RetailPlus/Home.aspx");
+				Server.Transfer("/RetailPlus/Home/Default.aspx");
 			clsAccessRights.CommitAndDispose();
 		}
 

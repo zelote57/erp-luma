@@ -4,12 +4,12 @@
 <asp:UpdatePanel id="UpdatePanel1" runat="server"><ContentTemplate>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
     <tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img src="../../_layouts/images/blank.gif" width="10" height="1" alt="" /></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
 						<table cellpadding="1" cellspacing="0" border="0">
@@ -78,7 +78,7 @@
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	10px" colspan="3">
+					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; padding-bottom:	10px" colspan="3">
 						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 				            <asp:PlaceHolder id="holderExpiry" runat="server" Visible="false">
                             <tr>
@@ -100,6 +100,31 @@
 					            </td>
 				            </tr>
                             </asp:PlaceHolder>
+                            <tr>
+					            <td style="HEIGHT:15px" nowrap="nowrap">
+						            <label>Filter Inv Month/Year</label>
+					            </td>
+					            <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
+					            <td style="HEIGHT: 15px" colspan="5">
+						            <asp:dropdownlist id="cboMonth" CssClass="ms-short" Width="75px" runat="server"></asp:dropdownlist>
+                                    <asp:dropdownlist id="cboYear" CssClass="ms-short" Width="75px" runat="server"></asp:dropdownlist>
+                                    <label class="ms-error">&nbsp;&nbsp;&nbsp;(Current month will get from Current Inventory)</label>
+					            </td>
+                                <%--<td style="HEIGHT:15px" nowrap="nowrap" colspan="4">
+                                    
+                                </td>--%>
+                               <%-- <td style="HEIGHT:15px;  width:25px; text-align:center;" nowrap="nowrap">
+                                </td>
+                                <td style="HEIGHT:15px" nowrap="nowrap">
+					            </td>
+					            <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>--%>
+					            <td style="HEIGHT: 15px">
+					            </td>
+                                <td style="HEIGHT:15px" nowrap="nowrap">
+					            </td>
+					            <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
+					            </td>
+				            </tr>
                             <tr>
 					            <td style="HEIGHT:15px" nowrap="nowrap">
 						            <label>Filter by Branch</label>
@@ -164,7 +189,7 @@
 					            </td>
 				            </tr>
                             <tr>
-					            <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+					            <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 						            <label>Product Code like</label>&nbsp;
 					            </td>
 					            <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
@@ -191,7 +216,7 @@
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 </ContentTemplate>
 </asp:UpdatePanel>

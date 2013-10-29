@@ -63,7 +63,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Setup
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.PurchasesAndPayablesMenu); 
 			if (clsDetails.Read==false)
-				Server.Transfer("/RetailPlus/Home.aspx");
+				Server.Transfer("/RetailPlus/Home/Default.aspx");
 			clsAccessRights.CommitAndDispose();
 		}
 

@@ -4,24 +4,24 @@
 <script language="JavaScript" src="../_Scripts/DocumentScripts.js"></script>
 <script language="JavaScript" src="../_Scripts/ComputeMargin.js"></script>
 <script language="JavaScript" src="../_Scripts/Rewards.js"></script>
-<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
 	</tr>
 	<tr>
 		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../_layouts/images/blank.gif"></td>
 	</tr>
 	<tr>
-        <td class="ms-sectionline" colSpan="3" height="1">
+        <td class="ms-sectionline" colspan="3" height="1">
             <asp:Label ID="lblReferrer" runat="server" Visible="False"></asp:Label></td>
     </tr>
-    <TR>
-        <td class="ms-authoringcontrols" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px" vAlign="top" colSpan="3">
-            <table class="ms-authoringcontrols" cellSpacing="0" cellPadding="0" width="100%" border="0">
+    <tr>
+        <td class="ms-authoringcontrols" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top" colspan="3">
+            <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                 <tr>
-                    <td class="ms-formspacer"><IMG alt="" src="../_layouts/images/trans.gif"></td>
-	                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px; PADDING-TOP: 10px" colspan=3>
-                        <table class="ms-authoringcontrols" cellSpacing="0" cellPadding="0" width="100%" border="0">
+                    <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif"></td>
+	                <td class="ms-authoringcontrols" style="padding-bottom: 2px; PADDING-TOP: 10px" colspan="3">
+                        <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                             <tr >
                                 <td nowrap>&nbsp;
                                 </td>
@@ -62,16 +62,16 @@
                                 <td width="100%"></td>
                             </tr>
                             <tr>
-	                            <td class="ms-formspacer" colSpan="3">
+	                            <td class="ms-formspacer" colspan="3">
                                     
                                 </td>
                             </tr>
                         </table>
                     </td>
-	                <td class="ms-formspacer"><IMG alt="" src="../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif" width="10"></td>
                 </tr>
                 <tr>
-	                <td class="ms-formspacer" colSpan="5"></td>
+	                <td class="ms-formspacer" colspan="5"></td>
                 </tr>
             </table>
         </td>
@@ -80,7 +80,7 @@
 		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../_layouts/images/blank.gif"></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><IMG height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
 	</tr>
 </table>
 

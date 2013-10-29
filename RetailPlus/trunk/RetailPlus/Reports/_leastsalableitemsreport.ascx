@@ -10,7 +10,7 @@
 	<tr>
 		<td><img src="../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar" >
 						<table cellpadding="1" cellspacing="0" border="0">
@@ -87,10 +87,10 @@
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	10px" colspan="3">
+					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; padding-bottom:	10px" colspan="3">
 						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 							<tr>
-								<td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+								<td style="padding-bottom:2px" nowrap="nowrap">
 									<label>Transaction Start &nbsp;Date</label>&nbsp;
 								</td>
 								<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -100,7 +100,7 @@
                                         CssClass="ms-short" MaxLength="5" Width="46px">00:00</asp:TextBox>
 								</td>
 								<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-								<td style="PADDING-BOTTOM:2px" nowrap="nowrap">
+								<td style="padding-bottom:2px" nowrap="nowrap">
 									<label>Transaction End Date</label>
 								</td>
 								<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -110,18 +110,18 @@
                                         MaxLength="5" Width="46px">23:59</asp:TextBox>
 								</td>
 								<td width="99%" id="align05" nowrap="nowrap" align="left">
-									<div class="ms-descriptiontext" style="PADDING-BOTTOM:	1px">&nbsp;
+									<div class="ms-descriptiontext" style="padding-bottom:	1px">&nbsp;
 										<asp:Label id="Label3" CssClass="ms-error" runat="server" Font-Names="Wingdings">l</asp:Label>
 										<asp:Label id="Label4" CssClass="ms-error" runat="server"> Date must be in yyyy-mm-dd format.</asp:Label></div>
 								</td>
 							</tr>
 							<tr>
-								<td style="PADDING-BOTTOM: 2px" nowrap="nowrap">No. of Products to Display</td>
+								<td style="padding-bottom: 2px" nowrap="nowrap">No. of Products to Display</td>
 								<td class="ms-separator"></td>
 								<td>
 									<asp:TextBox id="txtLimit" accesskey="O" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="10">0</asp:TextBox></td>
 								<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-								<td style="PADDING-BOTTOM: 2px" nowrap="nowrap">
+								<td style="padding-bottom: 2px" nowrap="nowrap">
 									Show&nbsp;Items by Group</td>
 								<td class="ms-separator"></td>
 								<td nowrap="nowrap">

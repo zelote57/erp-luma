@@ -341,7 +341,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (iUID != 0 && mintUserID == 0 && clsAuditTrailDetails.Length > 0 && mAccessType == AccessTypes.LoginFE)
             {
-                if (clsAuditTrailDetails[0].Activity != AccessTypes.LogoutFE.ToString("G") || clsAuditTrailDetails[0].Activity != "Close Terminal")
+                if (clsAuditTrailDetails[0].Activity != AccessTypes.LogoutFE.ToString("G") && clsAuditTrailDetails[0].Activity != "Close Terminal")
                 {
                     if (clsAuditTrailDetails[0].IPAddress != System.Net.Dns.GetHostName())
                     {

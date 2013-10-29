@@ -118,20 +118,23 @@ namespace AceSoft.RetailPlus.Client
 			AddEvent("Stack trace: " + ex.StackTrace, false);
 		}
 
-		public void AddEventLn(string Message, bool IncludeDateLog = false )
-		{		
-			InitializeWriter();
-			if (IncludeDateLog == true)
-			{
-				writer.WriteLine(DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt") + " : " + Message);
-			}
-			else
-			{
-				writer.WriteLine(" " + Message);
-			}
+		public void AddEventLn(string Message, bool IncludeDateLog = false, bool willLogThis = true)
+		{
+            if (willLogThis)
+            {
+                InitializeWriter();
+                if (IncludeDateLog == true)
+                {
+                    writer.WriteLine(DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt") + " : " + Message);
+                }
+                else
+                {
+                    writer.WriteLine(" " + Message);
+                }
 
-			writer.Flush();
-			writer.Close();
+                writer.Flush();
+                writer.Close();
+            }
 		}
 	}
 }

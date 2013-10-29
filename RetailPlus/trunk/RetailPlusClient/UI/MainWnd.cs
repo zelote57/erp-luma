@@ -1376,6 +1376,17 @@ namespace AceSoft.RetailPlus.Client.UI
 			{ this.cmdRLCClose.Image = new Bitmap(Application.StartupPath + "/images/close.gif"); }
 			catch { }
 
+            Data.SysConfig clsSysConfig = new Data.SysConfig(mConnection, mTransaction);
+            try
+            {
+                mclsSysConfigDetails = clsSysConfig.get_SysConfigDetails();
+            }
+            catch (Exception ex)
+            {
+                clsEvent.AddErrorEventLn(ex);
+            }
+            clsSysConfig.CommitAndDispose();
+
 			this.LoadOptions();
 
 			txtBarCode.Focus();
@@ -1930,11 +1941,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 mboWillWriteSysLog = CONFIG.WillWriteSystemLog;
 
-                Data.SysConfig clsSysConfig = new Data.SysConfig();
-                mclsSysConfigDetails = clsSysConfig.get_SysConfigDetails();
-                clsSysConfig.CommitAndDispose();
-
-				lblCurrency.Text = CompanyDetails.Currency;
+                lblCurrency.Text = CompanyDetails.Currency;
 				lblTransNo.Text = "READY...";
 				lblCustomer.Text = Constants.C_RETAILPLUS_CUSTOMER;
 				lblCustomer.Tag = Constants.C_RETAILPLUS_CUSTOMERID.ToString();
@@ -13507,36 +13514,40 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void DrawMovingText()
 		{
-			string marqueemessage = mclsTerminalDetails.MarqueeMessage;
+            try
+            {
+                string marqueemessage = mclsTerminalDetails.MarqueeMessage;
 
-			if (marqueemessage.Length < 140) //97
-				marqueemessage = marqueemessage + " " + marqueemessage;
+                if (marqueemessage.Length < 140) //97
+                    marqueemessage = marqueemessage + " " + marqueemessage;
 
-			// 
-			// StringBuilder is used to allow for efficient manipulation of one string, 
-			// rather than generating many separate strings
-			//
-			StringBuilder str = new StringBuilder(marqueemessage);
+                // 
+                // StringBuilder is used to allow for efficient manipulation of one string, 
+                // rather than generating many separate strings
+                //
+                StringBuilder str = new StringBuilder(marqueemessage);
 
-			int numCycles = lblMessage.Width * 3 + 1;
-			for (int i = 0; i < numCycles; ++i)
-			{
-				//lblMessage.Text = str.ToString();
-				this.SetText(str.ToString());
+                int numCycles = lblMessage.Width * 3 + 1;
+                for (int i = 0; i < numCycles; ++i)
+                {
+                    //lblMessage.Text = str.ToString();
+                    this.SetText(str.ToString());
 
-				if (!mboIsInTransaction)
-				{
-					if (lblMessage.Text.Length <= 40)
-						SendStringToTurret(lblMessage.Text);
-					else
-						SendStringToTurret(lblMessage.Text.Substring(0, 40));
-				}
-				// relocate the first char to the end of the string
-				str.Append(str[0]);
-				str.Remove(0, 1);
-				// pause for visual effect
-				Thread.Sleep(800);
-			}
+                    if (!mboIsInTransaction)
+                    {
+                        if (lblMessage.Text.Length <= 40)
+                            SendStringToTurret(lblMessage.Text);
+                        else
+                            SendStringToTurret(lblMessage.Text.Substring(0, 40));
+                    }
+                    // relocate the first char to the end of the string
+                    str.Append(str[0]);
+                    str.Remove(0, 1);
+                    // pause for visual effect
+                    Thread.Sleep(800);
+                }
+            }
+            catch { }
 		}
 		delegate void SetTextCallback(string text);
 		private void SetText(string text)

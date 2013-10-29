@@ -44,9 +44,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit, Version=4.1.51116.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>temp\AjaxControlToolkit.dll</HintPath>
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>..\referencedll\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Engine">
       <HintPath>..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
@@ -322,6 +321,34 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportDataset.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Home\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Home\GLA\Default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home\GLA\Default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Home\_Menu.ascx.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home\_Menu.ascx.designer.cs">
+      <DependentUpon>_menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Home\GLA\_uploadsales.ascx.cs">
+      <DependentUpon>_uploadsales.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home\GLA\_uploadsales.ascx.designer.cs">
+      <DependentUpon>_uploadsales.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Inventory\_closeinventory.ascx.cs">
       <DependentUpon>_closeinventory.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -407,6 +434,12 @@
     </Compile>
     <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerWithCheque.cs">
       <DependentUpon>_DatedReportSalesTransactionPerCustomerWithCheque.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_inventory\_ProductInventoryReportMonthly.cs">
+      <DependentUpon>_ProductInventoryReportMonthly.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -575,13 +608,6 @@
     <Compile Include="Test.aspx.cs">
       <DependentUpon>Test.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="_Home.ascx.cs">
-      <DependentUpon>_Home.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="_Home.ascx.designer.cs">
-      <DependentUpon>_Home.ascx</DependentUpon>
     </Compile>
     <Compile Include="_Processing.ascx.cs">
       <DependentUpon>_Processing.ascx</DependentUpon>
@@ -894,13 +920,6 @@
     </Compile>
     <Compile Include="GenericError.aspx.designer.cs">
       <DependentUpon>GenericError.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Home.aspx.cs">
-      <DependentUpon>Home.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Home.aspx.designer.cs">
-      <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
     <Compile Include="Inventory\Default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
@@ -3266,13 +3285,6 @@
     <Compile Include="_Login.ascx.designer.cs">
       <DependentUpon>_Login.ascx</DependentUpon>
     </Compile>
-    <Compile Include="_Menu.ascx.cs">
-      <DependentUpon>_Menu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="_Menu.ascx.designer.cs">
-      <DependentUpon>_Menu.ascx</DependentUpon>
-    </Compile>
     <Compile Include="_PageHeader.ascx.cs">
       <DependentUpon>_PageHeader.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3326,11 +3338,14 @@
     <Content Include="Credits\_Customers\_update.ascx" />
     <Content Include="Credits\_default.ascx" />
     <Content Include="Credits\_menu.ascx" />
+    <Content Include="Home\default.aspx" />
+    <Content Include="Home\GLA\default.aspx" />
+    <Content Include="Home\_menu.ascx" />
+    <Content Include="Home\GLA\_uploadsales.ascx" />
     <Content Include="Inventory\_closeinventory.ascx" />
     <Content Include="MasterFiles\_Product\_AddProductVariation.ascx" />
     <Content Include="packages.config" />
     <None Include="Scripts\jquery-2.0.0.min.map" />
-    <None Include="User Guide - Backend.pdf" />
     <None Include="vwd.webinfo" />
     <None Include="_layouts\images\Thumbs.db" />
     <Content Include="MasterFiles\_ContactDetailed\default.aspx" />
@@ -3352,7 +3367,6 @@
     <Content Include="Scripts\jquery-2.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-2.0.0.js" />
     <Content Include="Scripts\jquery-2.0.0.min.js" />
-    <Content Include="temp\AjaxControlToolkit.dll" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -3391,7 +3405,6 @@
     <Content Include="Inventory\_BranchTransfer\_update.ascx" />
     <Content Include="MasterFiles\_Product\_changetax.ascx" />
     <Content Include="Test.aspx" />
-    <Content Include="_Home.ascx" />
     <Content Include="_layouts\images\headcornerp.gif" />
     <Content Include="_layouts\images\loading.gif" />
     <Content Include="_layouts\images\processing_old.gif" />
@@ -3443,7 +3456,6 @@
     <Content Include="GeneralLedger\_Setup\_ProductFinancialSetup.ascx" />
     <Content Include="GenericError.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="Home.aspx" />
     <Content Include="Inventory\default.aspx" />
     <Content Include="Inventory\_Branch\default.aspx" />
     <Content Include="Inventory\_Branch\_details.ascx" />
@@ -3614,9 +3626,9 @@
     <Content Include="MasterFiles\_Variation\_insert.ascx" />
     <Content Include="MasterFiles\_Variation\_list.ascx" />
     <Content Include="MasterFiles\_Variation\_update.ascx" />
-    <Content Include="menu.css" />
-    <Content Include="ont.css" />
-    <Content Include="ows.css" />
+    <Content Include="_layouts\css\menu.css" />
+    <Content Include="_layouts\css\ont.css" />
+    <Content Include="_layouts\css\ows.css" />
     <Content Include="PurchasesAndPayables\default.aspx" />
     <Content Include="PurchasesAndPayables\_DebitMemo\default.aspx" />
     <Content Include="PurchasesAndPayables\_DebitMemo\_cancel.ascx" />
@@ -3705,7 +3717,7 @@
     <Content Include="SalesAndReceivables\_SO\_post.ascx" />
     <Content Include="SalesAndReceivables\_SO\_reports.ascx" />
     <Content Include="SalesAndReceivables\_SO\_update.ascx" />
-    <Content Include="sps.css" />
+    <Content Include="_layouts\css\sps.css" />
     <Content Include="_Expiry.ascx" />
     <Content Include="_HorizontalNavBar.ascx" />
     <Content Include="_HorizontalNavBarCorner.ascx" />
@@ -3783,7 +3795,6 @@
     <Content Include="_layouts\images\varmatrix.GIF" />
     <Content Include="_layouts\images\vgradp.gif" />
     <Content Include="_Login.ascx" />
-    <Content Include="_Menu.ascx" />
     <Content Include="_PageHeader.ascx" />
     <Content Include="_PageLevelError.ascx" />
     <Content Include="_RightBodySectionSearch.ascx" />
@@ -3845,6 +3856,10 @@
     <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerWithCheque.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_DatedReportSalesTransactionPerCustomerWithCheque.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportMonthly.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ProductInventoryReportMonthly.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_products\_ProductsReportPricesForWeighingScale.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -4255,6 +4270,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GeneralLedger\_FundTransfers\" />
+    <Folder Include="Home\Help\" />
     <Folder Include="Inventory\_Transfer\" />
     <Folder Include="temp\html\" />
   </ItemGroup>

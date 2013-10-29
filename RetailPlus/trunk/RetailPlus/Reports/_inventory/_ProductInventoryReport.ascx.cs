@@ -56,6 +56,28 @@ namespace AceSoft.RetailPlus.Reports
             cboReportType.Items.Add(new ListItem(ReportTypes.TotalStockInventoryWSupplier, ReportTypes.TotalStockInventoryWSupplier));
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
 
+            cboMonth.Items.Clear();
+            cboMonth.Items.Add(new ListItem("Jan", "01"));
+            cboMonth.Items.Add(new ListItem("Feb", "02"));
+            cboMonth.Items.Add(new ListItem("Mar", "03"));
+            cboMonth.Items.Add(new ListItem("Apr", "04"));
+            cboMonth.Items.Add(new ListItem("May", "05"));
+            cboMonth.Items.Add(new ListItem("Jun", "06"));
+            cboMonth.Items.Add(new ListItem("Jul", "07"));
+            cboMonth.Items.Add(new ListItem("Aug", "08"));
+            cboMonth.Items.Add(new ListItem("Sep", "09"));
+            cboMonth.Items.Add(new ListItem("Oct", "10"));
+            cboMonth.Items.Add(new ListItem("Nov", "11"));
+            cboMonth.Items.Add(new ListItem("Dec", "12"));
+            cboMonth.SelectedIndex = DateTime.Now.Month-1;
+
+            cboYear.Items.Clear();
+            for (int year = 2013; year <= DateTime.Now.Year; year++)
+            {
+                cboYear.Items.Add(new ListItem(year.ToString(), year.ToString()));
+            }
+            cboYear.SelectedIndex = cboYear.Items.Count - 1;
+
             Branch clsBranch = new Branch();
             clsBranch.GetConnection();
 
@@ -188,6 +210,13 @@ namespace AceSoft.RetailPlus.Reports
 		{
             string strReportType = cboReportType.SelectedValue;
 
+            Int32 ForReorder = 0;
+            Int32 OverStock = 0;
+            if (strReportType == ReportTypes.ItemsForReOrder)
+                ForReorder = 1;
+            else if (strReportType == ReportTypes.OverStockItems)
+                OverStock = 1;
+
             ReportDataset rptds = new ReportDataset();
 
             #region Search Key
@@ -203,13 +232,19 @@ namespace AceSoft.RetailPlus.Reports
                 ExpirationDate = txtExpiryDate.Text;
 
             ProductInventories clsProductInventories = new ProductInventories();
-            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, ExpirationDate: ExpirationDate);
+            System.Data.DataTable dt;
+            if (cboMonth.SelectedItem.Value == DateTime.Now.Month.ToString("0#") && cboYear.SelectedItem.Value == DateTime.Now.Year.ToString())
+            {
+                dt = clsProductInventories.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, ExpirationDate: ExpirationDate, ForReorder: ForReorder, OverStock: OverStock);
+            }else {
+                dt = clsProductInventories.ListAsDataTable(Month: int.Parse(cboMonth.SelectedItem.Value), Year: int.Parse(cboYear.SelectedItem.Value.ToString()), BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, ExpirationDate: ExpirationDate, ForReorder: ForReorder, OverStock: OverStock);
+            }
             clsProductInventories.CommitAndDispose();
             
             foreach (DataRow dr in dt.Rows)
             {
-                if (dr[ProductColumnNames.BarCode].ToString() != null && dr[ProductColumnNames.BarCode].ToString() != string.Empty)
-                {
+                //if (dr[ProductColumnNames.BarCode].ToString() != null && dr[ProductColumnNames.BarCode].ToString() != string.Empty)
+                //{
                     DataRow drNew = rptds.Products.NewRow();
 
                     foreach (DataColumn dc in rptds.Products.Columns)
@@ -217,7 +252,7 @@ namespace AceSoft.RetailPlus.Reports
                         drNew[dc] = dr[dc.ColumnName];
                     }
                     rptds.Products.Rows.Add(drNew);
-                }
+                //}
             }
 
             Report.SetDataSource(rptds); 

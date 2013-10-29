@@ -15,9 +15,9 @@
 					            <td class="ms-toolbar">
 						            <table cellspacing="0" cellpadding="1" border="0">
 							            <tr>
-								            <td class="ms-toolbar" noWrap><asp:imagebutton id="imgSave" title="Apply new quantity" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/saveitem.gif" alt="Apply new quantity" border="0" width="16" height="16" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
+								            <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSave" title="Apply new quantity" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/saveitem.gif" alt="Apply new quantity" border="0" width="16" height="16" OnClick="imgSave_Click"></asp:imagebutton>&nbsp;
 								            </td>
-								            <td noWrap><asp:linkbutton id="cmdSave" title="Apply new quantity" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" OnClick="cmdSave_Click">Save and new</asp:linkbutton></td>
+								            <td nowrap="nowrap"><asp:linkbutton id="cmdSave" title="Apply new quantity" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" OnClick="cmdSave_Click">Save and new</asp:linkbutton></td>
 							            </tr>
 						            </table>
 					            </td>
@@ -25,9 +25,9 @@
 						        <td class="ms-toolbar">
 						            <table cellspacing="0" cellpadding="1" border="0">
 							            <tr>
-								            <td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveBack" title="Apply new quantity" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/saveitem.gif" alt="Apply new quantity" border="0" width="16" height="16" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
+								            <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveBack" title="Apply new quantity" accessKey="S" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/saveitem.gif" alt="Apply new quantity" border="0" width="16" height="16" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
 								            </td>
-								            <td noWrap><asp:linkbutton id="cmdSaveBack" title="Apply new quantity" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
+								            <td nowrap="nowrap"><asp:linkbutton id="cmdSaveBack" title="Apply new quantity" accessKey="S" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
 							            </tr>
 						            </table>
 					            </td>
@@ -35,37 +35,37 @@
 					            <td class="ms-toolbar">
 						            <table cellspacing="0" cellpadding="1" border="0">
 							            <tr>
-								            <td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Cancel Inventory Adjustment" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/impitem.gif" alt="Cancel Inventory Adjustment" border="0" width="16" height="16" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
-								            <td noWrap><asp:linkbutton id="cmdCancel" title="Cancel Inventory Adjustment" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
+								            <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Cancel Inventory Adjustment" accessKey="C" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/impitem.gif" alt="Cancel Inventory Adjustment" border="0" width="16" height="16" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
+								            <td nowrap="nowrap"><asp:linkbutton id="cmdCancel" title="Cancel Inventory Adjustment" accessKey="C" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
 							            </tr>
 						            </table>
 					            </td>
 					            <td class="ms-toolbar">
 						            <table cellspacing="0" cellpadding="1" border="0">
 							            <tr>
-								            <td class="ms-toolbar" noWrap>Select branch to process: </td>
-								            <td noWrap><asp:DropDownList ID="cboBranch" runat="server" AutoPostBack="True" CssClass="ms-short" CausesValidation="false" OnSelectedIndexChanged="cboBranch_SelectedIndexChanged"> </asp:DropDownList></td>
+								            <td class="ms-toolbar" nowrap="nowrap">Select branch to process: </td>
+								            <td nowrap="nowrap"><asp:DropDownList ID="cboBranch" runat="server" AutoPostBack="True" CssClass="ms-short" CausesValidation="false" OnSelectedIndexChanged="cboBranch_SelectedIndexChanged"> </asp:DropDownList></td>
 							            </tr>
 						            </table>
 					            </td>
 					            
-					            <td class="ms-toolbar" id="align02" noWrap align="right" width="99%"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
+					            <td class="ms-toolbar" id="align02" nowrap="nowrap" align="right" width="99%"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					            </td>
 					        </tr>
 				        </table>
 			        </td>
-			        <td class="ms-toolbar" id="Td1" noWrap align="right" width="99%"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
+			        <td class="ms-toolbar" id="Td1" nowrap="nowrap" align="right" width="99%"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					</td>
 		        </tr>
 	        </table>
             <asp:Label ID="lblReferrer" runat="server" Visible="False"></asp:Label></td>
     </tr>
     <tr>
-        <td class="ms-authoringcontrols" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px" vAlign="top" colspan="3">
+        <td class="ms-authoringcontrols" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top" colspan="3">
             <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                 <tr>
                     <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif"></td>
-	                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan=3>
+	                <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="3">
                         <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                             <tr>
                                 <td><label>Select Product Code<font color="red">*</font></label><asp:label id="lblProductID" runat="server" CssClass="ms-error" Visible="False">0</asp:label></td>
@@ -169,7 +169,7 @@
                 </tr>
                 <tr>
 	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif"></td>
-	                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="3">
+	                <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="3">
 	                    <asp:UpdatePanel ID="UpdatePanel5" runat="server" >
                             <ContentTemplate >
                                 <asp:Label ID="lblVariationMatrix" Runat="server" Visible="False">Product Matrix </asp:Label>
@@ -184,7 +184,7 @@
                 </tr>
                 <tr>
 	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif"></td>
-	                <td colspan=3>
+	                <td colspan="3">
 	                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" >
                             <ContentTemplate >
 	                            <asp:datalist id="lstVariationMatrix" runat="server" Width="100%" cellpadding="0" OnItemDataBound="lstVariationMatrix_ItemDataBound">
@@ -266,11 +266,11 @@
 		<td id="AddUserTextTDID2"  colspan="3">
 			<table class="ms-toolbar" id="onetidGrpsTC" cellspacing="0" cellpadding="2" border="0" width="100%">
 				<tr>
-					<td class="ms-toolbar" align="left" noWrap width="99%">
+					<td class="ms-toolbar" align="left" nowrap="nowrap" width="99%">
 						<table cellspacing="0" cellpadding="1" border="0" width="99%">
 							<tr>
-								<td class="ms-toolbar" noWrap>Remarks :</td>
-								<td noWrap width="99%">
+								<td class="ms-toolbar" nowrap="nowrap">Remarks :</td>
+								<td nowrap="nowrap" width="99%">
                                     <br />
                                     <asp:textbox id="txtRemarks" accessKey="Q" runat="server" CssClass="ms-long" BorderStyle="Groove" Width="100%" TextMode="MultiLine" Rows="5" BorderColor="Red"></asp:textbox></td>
 							</tr>
@@ -280,12 +280,12 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveTwo" title="Save This Adjustment" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/edit.gif" alt="Save this adjustment" border="0" width="16" height="16" OnClick="imgSaveTwo_Click" ></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdSaveTwo" title="Save This Adjustment" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" OnClick="cmdSaveTwo_Click" >Save Adjustment</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveTwo" title="Save This Adjustment" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../_layouts/images/edit.gif" alt="Save this adjustment" border="0" width="16" height="16" OnClick="imgSaveTwo_Click" ></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdSaveTwo" title="Save This Adjustment" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" OnClick="cmdSaveTwo_Click" >Save Adjustment</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<td class="ms-toolbar" id="align052" noWrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="align052" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>
 				</tr>
 			</table>

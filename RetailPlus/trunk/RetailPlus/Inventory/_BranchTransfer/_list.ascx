@@ -4,19 +4,19 @@
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellspacing="0" cellpadding="2" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellspacing="0" cellpadding="2" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgAdd" ToolTip="Add New Branch Transfer" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/newuser.gif" alt="Add New Branch Transfer" border="0" width="16" height="16" OnClick="imgAdd_Click"></asp:imagebutton>&nbsp;
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgAdd" ToolTip="Add New Branch Transfer" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/newuser.gif" alt="Add New Branch Transfer" border="0" width="16" height="16" OnClick="imgAdd_Click"></asp:imagebutton>&nbsp;
 								</td>
-								<td noWrap><asp:linkbutton id="cmdAdd" ToolTip="Add New Branch Transfer" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdAdd_Click">Add Branch Transfer</asp:linkbutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdAdd" ToolTip="Add New Branch Transfer" accessKey="N" tabIndex="2" CssClass="ms-toolbar" runat="server" onclick="cmdAdd_Click">Add Branch Transfer</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -24,8 +24,8 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgDelete" ToolTip="Cancel Selected Branch Transfer" accessKey="X" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/delitem.gif" alt="Cancel Selected Branch Transfer" border="0" width="16" height="16" OnClick="imgDelete_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdDelete" ToolTip="Cancel Selected Branch Transfer" accessKey="X" tabIndex="4" CssClass="ms-toolbar" runat="server" onclick="cmdDelete_Click">Cancel Selected Branch Transfer</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgDelete" ToolTip="Cancel Selected Branch Transfer" accessKey="X" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/delitem.gif" alt="Cancel Selected Branch Transfer" border="0" width="16" height="16" OnClick="imgDelete_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdDelete" ToolTip="Cancel Selected Branch Transfer" accessKey="X" tabIndex="4" CssClass="ms-toolbar" runat="server" onclick="cmdDelete_Click">Cancel Selected Branch Transfer</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -33,8 +33,8 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgEdit" ToolTip="Update Purchase order" accessKey="E" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/edit.gif" alt="Update Branch Transfer" border="0" width="16" height="16" OnClick="imgEdit_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdEdit" ToolTip="Update Branch Transfer" accessKey="E" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdEdit_Click">Update Branch Transfer</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgEdit" ToolTip="Update Purchase order" accessKey="E" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/edit.gif" alt="Update Branch Transfer" border="0" width="16" height="16" OnClick="imgEdit_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdEdit" ToolTip="Update Branch Transfer" accessKey="E" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdEdit_Click">Update Branch Transfer</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -42,8 +42,8 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgGRN" ToolTip="Post &amp; Issue GRN" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/issuegrn.gif" alt="Issue Goods Receive Note" border="0" width="16" height="16" OnClick="imgGRN_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdGRN" ToolTip="Issue GRN" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdGRN_Click">Issue GRN</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgGRN" ToolTip="Post &amp; Issue GRN" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/issuegrn.gif" alt="Issue Goods Receive Note" border="0" width="16" height="16" OnClick="imgGRN_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdGRN" ToolTip="Issue GRN" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdGRN_Click">Issue GRN</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -95,7 +95,7 @@
 		<td class="ms-authoringcontrols">
 		    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 				<tr>
-					<td style="PADDING-BOTTOM:2px" nowrap>
+					<td style="padding-bottom:2px" nowrap>
 						<label>
                             Transfer Start &nbsp;Date</label>&nbsp;
 					</td>
@@ -105,7 +105,7 @@
 						<asp:TextBox id="txtTransferStartTime" accessKey="I" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="5" Width="46px">00:00</asp:TextBox>
 					</td>
 					<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-					<td style="PADDING-BOTTOM:2px" nowrap>
+					<td style="padding-bottom:2px" nowrap>
 						<label>
                             Transfer End Date</label>
 					</td>
@@ -120,7 +120,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="PADDING-BOTTOM:2px" nowrap>
+					<td style="padding-bottom:2px" nowrap>
 						<label>
                             Posting Start &nbsp;Date</label>&nbsp;
 					</td>
@@ -130,7 +130,7 @@
 						<asp:TextBox id="txtPostingStartTime" accessKey="I" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="5" Width="46px">00:00</asp:TextBox>
 					</td>
 					<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-					<td style="PADDING-BOTTOM:2px" nowrap>
+					<td style="padding-bottom:2px" nowrap>
 						<label>
                             Posting End Date</label>
 					</td>
@@ -145,7 +145,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="PADDING-BOTTOM:2px" nowrap>
+					<td style="padding-bottom:2px" nowrap>
 						<label>BranchTransfer No/Remarks</label>&nbsp;
 					</td>
 					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -282,6 +282,6 @@
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colspan="3" style="PADDING-BOTTOM: 10px"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3" style="padding-bottom: 10px"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 </table>

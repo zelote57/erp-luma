@@ -3,38 +3,38 @@
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
 <asp:UpdatePanel ID="UpdatePanel5" runat="server">
 <ContentTemplate>
-<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
-	<TR>
+	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<TD>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
-				<TR>
+		<td>
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+				<tr>
 					<td class="ms-toolbar">
-						<table cellSpacing="0" cellPadding="1" border="0">
+						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Cancel Adding New Promo" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Cancel Adding New Promo" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdCancel" title="Cancel Adding New Promo" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Cancel Adding New Promo" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Cancel Adding New Promo" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdCancel" title="Cancel Adding New Promo" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Cancel</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<td width="99%" class="ms-toolbar" id="align02" noWrap align="right"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 					</td>
-				</TR>
-			</TABLE>
+				</tr>
+			</table>
 			<asp:Label id="lblReferrer" runat="server" Visible="False"></asp:Label>
 			<asp:Label id="lblPromoID" runat="server" Visible="False"></asp:Label>
-		</TD>
+		</td>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-	</TR>
+	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
-		<TD>
+		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td colspan="3" class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px">
+					<td colspan="3" class="ms-descriptiontext" style="padding-bottom: 10px; PADDING-TOP: 8px">
 						<font color="red">*</font> Indicates a required field
 					</td>
 				</tr>
@@ -42,17 +42,17 @@
 					<td colspan="3" class="ms-sectionline" height="1"></td>
 				</tr>
 				<tr>
-					<td valign="top" style="PADDING-BOTTOM: 20px">
-						<div class="ms-sectionheader" style="PADDING-BOTTOM: 8px">Step 1:&nbsp;Promo 
+					<td valign="top" style="padding-bottom: 20px">
+						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 1:&nbsp;Promo 
 							General Information</div>
-						<div class="ms-descriptiontext" style="PADDING-BOTTOM:	20px">
+						<div class="ms-descriptiontext" style="padding-bottom:	20px">
 							Promo information in which you will add promotional items.</div>
 					</td>
 					<td class="ms-colspace">&nbsp;</td>
-					<td class="ms-authoringcontrols ms-formwidth" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 1px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	20px">
-						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellSpacing="0" cellPadding="0" border="0" width="100%">
+					<td class="ms-authoringcontrols ms-formwidth" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 1px solid; PADDING-LEFT:	8px; padding-bottom:	20px">
+						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px">
 									<label>Promo Code<font color="blue">:</font></label>
 								</td>
 								<td class="ms-authoringcontrols" width="100%">&nbsp;
@@ -63,7 +63,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px">
 									<label>Promo&nbsp;Name<font color="blue">:</font></label>
 								</td>
 								<td class="ms-authoringcontrols" width="100%">&nbsp;
@@ -74,7 +74,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px">
 									<label>Promo&nbsp;Type<font color="blue">:</font></label>
 								</td>
 								<td class="ms-authoringcontrols" width="100%">&nbsp;
@@ -85,7 +85,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px">
 									<label>Start Date<font color="blue">:</font></label>
 								</td>
 								<td class="ms-authoringcontrols" width="100%">&nbsp;
@@ -96,7 +96,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px">
 									<label>End Date<font color="blue">:</font></label>
 								</td>
 								<td class="ms-authoringcontrols" width="100%">&nbsp;
@@ -113,17 +113,17 @@
 					<td colspan="3" class="ms-sectionline" height="1"></td>
 				</tr>
 				<tr>
-					<td valign="top" style="PADDING-BOTTOM: 20px">
-						<div class="ms-sectionheader" style="PADDING-BOTTOM: 8px">Step 2:&nbsp;Customer 
+					<td valign="top" style="padding-bottom: 20px">
+						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 2:&nbsp;Customer 
 							Information</div>
-						<div class="ms-descriptiontext" style="PADDING-BOTTOM:	20px">
+						<div class="ms-descriptiontext" style="padding-bottom:	20px">
 							Select contact(s) to be affected by the promo.</div>
 					</td>
 					<td class="ms-colspace">&nbsp;</td>
-					<td class="ms-authoringcontrols ms-formwidth" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 1px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	20px">
-						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellSpacing="0" cellPadding="0" border="0" width="100%">
+					<td class="ms-authoringcontrols ms-formwidth" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 1px solid; PADDING-LEFT:	8px; padding-bottom:	20px">
+						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px" colspan="2">
 									<label>Select contact<font color="red">*</font></label>
 								</td>
 							</tr>
@@ -149,20 +149,20 @@
 					<td colspan="3" class="ms-sectionline" height="1"></td>
 				</tr>
 				<tr>
-					<td valign="top" style="PADDING-BOTTOM: 20px">
-						<div class="ms-sectionheader" style="PADDING-BOTTOM: 8px">Step 3:&nbsp;Product 
+					<td valign="top" style="padding-bottom: 20px">
+						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 3:&nbsp;Product 
 							Information</div>
-						<div class="ms-descriptiontext" style="PADDING-BOTTOM:	20px">
+						<div class="ms-descriptiontext" style="padding-bottom:	20px">
 							Select products that will be affected of the promotion.</div>
-						<div class="ms-descriptiontext" style="PADDING-BOTTOM:	30px">
+						<div class="ms-descriptiontext" style="padding-bottom:	30px">
 							Promotion can be applied to product group, sub&nbsp;group, product and up to 
 							product variation.</div>
 					</td>
 					<td class="ms-colspace">&nbsp;</td>
-					<td class="ms-authoringcontrols ms-formwidth" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 1px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	20px">
-						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellSpacing="0" cellPadding="0" border="0" width="100%">
+					<td class="ms-authoringcontrols ms-formwidth" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 1px solid; PADDING-LEFT:	8px; padding-bottom:	20px">
+						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px" colspan="2">
 									<label>Select product group<font color="red">*</font></label>
 								</td>
 							</tr>
@@ -182,7 +182,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px" colspan="2">
 									<label>Select product sub group<font color="red">*</font></label>
 								</td>
 							</tr>
@@ -202,7 +202,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px" colspan="2">
 									<label>Select product<font color="red">*</font></label>
 								</td>
 							</tr>
@@ -219,7 +219,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px" colspan="2">
 									<label>Select product variation<font color="red">*</font></label>
 								</td>
 							</tr>
@@ -240,16 +240,16 @@
 					<td colspan="3" class="ms-sectionline" height="1"></td>
 				</tr>
 				<tr>
-					<td valign="top" style="PADDING-BOTTOM: 20px">
-						<div class="ms-sectionheader" style="PADDING-BOTTOM: 8px">Step 4:&nbsp;Promo Rates</div>
-						<div class="ms-descriptiontext" style="PADDING-BOTTOM:	10px">
+					<td valign="top" style="padding-bottom: 20px">
+						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 4:&nbsp;Promo Rates</div>
+						<div class="ms-descriptiontext" style="padding-bottom:	10px">
 							Enter qualifying quantity if items, promo will take effect.</div>
 					</td>
 					<td class="ms-colspace">&nbsp;</td>
-					<td class="ms-authoringcontrols ms-formwidth" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 1px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	20px">
-						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellSpacing="0" cellPadding="0" border="0" width="100%">
+					<td class="ms-authoringcontrols ms-formwidth" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 1px solid; PADDING-LEFT:	8px; padding-bottom:	20px">
+						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px" colspan="2">
 									<label>Enter quantity of items purchased promo will take effect<font color="red">*</font></label>
 								</td>
 							</tr>
@@ -265,7 +265,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px" colspan="2">
 									<label>Enter promo value (this can be in amount or in percentage)<font color="red">*</font></label>
 								</td>
 							</tr>
@@ -281,7 +281,7 @@
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM:2px" colspan="2">
+								<td class="ms-authoringcontrols" style="padding-bottom:2px" colspan="2">
 									<label></label>
 								</td>
 							</tr>
@@ -292,9 +292,9 @@
 									<asp:CheckBox id="chkInPercentage" runat="server" Enabled="False"></asp:CheckBox>
 								</td>
 							</tr>
-							<TR>
+							<tr>
 								<td class="ms-formspacer"></td>
-							</TR>
+							</tr>
 						</table>
 					</td>
 				</tr>
@@ -303,48 +303,48 @@
 				</tr>
 				<tr>
 					<td colspan="3" height="1" align="right">
-						<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
-							<TR>
-								<td width="99%" class="ms-toolbar" id="align02" noWrap align="right"><IMG height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+						<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+							<tr>
+								<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" />
 								</td>
 								<td class="ms-toolbar">
-									<table cellSpacing="0" cellPadding="1" border="0">
+									<table cellspacing="0" cellpadding="1" border="0">
 										<tr>
-											<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSave" ToolTip="Add New Item" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Item" ImageUrl="../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>&nbsp;
+											<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSave" ToolTip="Add New Item" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Item" ImageUrl="../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>&nbsp;
 											</td>
-											<td noWrap><asp:linkbutton id="cmdSave" ToolTip="Add New Item" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSave_Click">Save and New</asp:linkbutton></td>
+											<td nowrap="nowrap"><asp:linkbutton id="cmdSave" ToolTip="Add New Item" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSave_Click">Save and New</asp:linkbutton></td>
 										</tr>
 									</table>
 								</td>
-								<TD class="ms-separator">|</TD>
+								<td class="ms-separator">|</td>
 								<td class="ms-toolbar">
-									<table cellSpacing="0" cellPadding="1" border="0">
+									<table cellspacing="0" cellpadding="1" border="0">
 										<tr>
-											<td class="ms-toolbar" noWrap><asp:imagebutton id="imgSaveBack" ToolTip="Add New Item" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Item" ImageUrl="../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>&nbsp;
+											<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveBack" ToolTip="Add New Item" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Add New Item" ImageUrl="../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>&nbsp;
 											</td>
-											<td noWrap><asp:linkbutton id="cmdSaveBack" ToolTip="Add New Item" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
+											<td nowrap="nowrap"><asp:linkbutton id="cmdSaveBack" ToolTip="Add New Item" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" onclick="cmdSaveBack_Click">Save and Back</asp:linkbutton></td>
 										</tr>
 									</table>
 								</td>
-								<TD class="ms-separator">
-									<asp:Label id="lblSeparator1" runat="server">|</asp:Label></TD>
+								<td class="ms-separator">
+									<asp:Label id="lblSeparator1" runat="server">|</asp:Label></td>
 								<td class="ms-toolbar">
-									<table cellSpacing="0" cellPadding="1" border="0">
+									<table cellspacing="0" cellpadding="1" border="0">
 										<tr>
-											<td class="ms-toolbar" noWrap><asp:imagebutton id="imgDelete" ToolTip="Remove Selected Item" accessKey="N" tabIndex="3" height="16" width="16" border="0" alt="Remove Selected Item" ImageUrl="../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False"></asp:imagebutton></td>
-											<td noWrap><asp:linkbutton id="cmdDelete" ToolTip="Remove Selected Item" accessKey="X" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdDelete_Click">Remove Selected Item</asp:linkbutton></td>
+											<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgDelete" ToolTip="Remove Selected Item" accessKey="N" tabIndex="3" height="16" width="16" border="0" alt="Remove Selected Item" ImageUrl="../../_layouts/images/delitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False"></asp:imagebutton></td>
+											<td nowrap="nowrap"><asp:linkbutton id="cmdDelete" ToolTip="Remove Selected Item" accessKey="X" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdDelete_Click">Remove Selected Item</asp:linkbutton></td>
 										</tr>
 									</table>
 								</td>
-							</TR>
-						</TABLE>
+							</tr>
+						</table>
 					</td>
 				</tr>
 				<tr>
-					<td valign="top" style="PADDING-BOTTOM: 20px" colspan="3">
-						<div class="ms-sectionheader" style="PADDING-BOTTOM: 8px">&nbsp;Stuffed Items in 
+					<td valign="top" style="padding-bottom: 20px" colspan="3">
+						<div class="ms-sectionheader" style="padding-bottom: 8px">&nbsp;Stuffed Items in 
 							the promo.</div>
-						<div class="ms-descriptiontext" style="PADDING-BOTTOM:	5px">
+						<div class="ms-descriptiontext" style="padding-bottom:	5px">
 							Below are the list of items stuffed in the promo.</div>
 					</td>
 				</tr>
@@ -365,7 +365,7 @@
 										<col width="10%" align="right">
 										<col width="1">
 									</colgroup>
-									<TR>
+									<tr>
 										<TH class="ms-vh2" style="padding-bottom: 4px">
 											&nbsp;&nbsp;&nbsp;&nbsp;</TH>
 										<TH class="ms-vh2" style="padding-bottom: 4px">
@@ -388,7 +388,7 @@
 											<asp:hyperlink id="Hyperlink10" runat="server">In Percent</asp:hyperlink></TH>
 										<TH class="ms-vh2" style="padding-bottom: 4px">
 										</TH>
-									</TR>
+									</tr>
 								</table>
 							</HeaderTemplate>
 							<ItemTemplate>
@@ -405,39 +405,39 @@
 										<col width="10%" align="right">
 										<col width="1">
 									</colgroup>
-									<TR>
-										<TD class="ms-vb-user">
+									<tr>
+										<td class="ms-vb-user">
 											<input type="checkbox" id="chkList" runat="server" name="chkList" />
-										</TD>
-										<TD class="ms-vb-user">
+										</td>
+										<td class="ms-vb-user">
 											<asp:Label ID="lblContactName" Runat="server"></asp:Label>
-										</TD>
-										<TD class="ms-vb-user">
+										</td>
+										<td class="ms-vb-user">
 											<asp:Label ID="lblProductGroup" Runat="server"></asp:Label>
-										</TD>
-										<TD class="ms-vb-user">
+										</td>
+										<td class="ms-vb-user">
 											<asp:Label ID="lblProductSubGroup" Runat="server"></asp:Label>
-										</TD>
-										<TD class="ms-vb-user">
+										</td>
+										<td class="ms-vb-user">
 											<asp:Label ID="lblProduct" Runat="server"></asp:Label>
-										</TD>
-										<TD class="ms-vb-user">
+										</td>
+										<td class="ms-vb-user">
 											<asp:Label ID="lblVariation" Runat="server"></asp:Label>
-										</TD>
-										<TD class="ms-vb-user">
+										</td>
+										<td class="ms-vb-user">
 											<asp:Label ID="lblQuantity" Runat="server"></asp:Label>
-										</TD>
-										<TD class="ms-vb-user">
+										</td>
+										<td class="ms-vb-user">
 											<asp:Label ID="lblPromoValue" Runat="server"></asp:Label>
-										</TD>
-										<TD class="ms-vb-user">
+										</td>
+										<td class="ms-vb-user">
 											<asp:CheckBox id="chkInPercent" Runat="server" Enabled="False"></asp:CheckBox>
-										</TD>
-										<TD class="ms-vb2">
+										</td>
+										<td class="ms-vb2">
 											<A class="DropDown" id="A1" href="" runat="server">
 												<asp:Image id="Image1" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show" Visible="false"></asp:Image></A>
-										</TD>
-									</TR>
+										</td>
+									</tr>
 								</table>
 							</ItemTemplate>
 						</asp:datalist>
@@ -447,13 +447,13 @@
 					<td class="ms-formspacer" colspan="3"></td>
 				</tr>
 			</table>
-		</TD>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 </table>
 </ContentTemplate>

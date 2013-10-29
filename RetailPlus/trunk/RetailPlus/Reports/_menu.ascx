@@ -1,4 +1,4 @@
-<%@ Reference Control="~/_Menu.ascx" %>
+<%--<%@ Reference Control="~/_Menu.ascx" %>--%>
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Reports.__Menu" Codebehind="_Menu.ascx.cs" %>
 <table height="100%" border="0" cellpadding="0" cellspacing="0" class="ms-navframe">
 	<tr valign="top">
@@ -61,34 +61,34 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>--%>
-									<%--<TR>
-										<TD class="Ms-pvnavmidl1" style="HEIGHT: 18px"></TD>
-										<TD class="Ms-pvtbbutton" style="HEIGHT: 18px">
+									<%--<tr>
+										<td class="Ms-pvnavmidl1" style="HEIGHT: 18px"></td>
+										<td class="Ms-pvtbbutton" style="HEIGHT: 18px">
 											<asp:HyperLink id="lnkReorder" title="Display Items For Re-Order" runat="server">
-													Items For Re-Order</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1" style="HEIGHT: 18px"></TD>
-									</TR>
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+													Items For Re-Order</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1" style="HEIGHT: 18px"></td>
+									</tr>
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkOverStock" title="Display Over Stock Items List Report" runat="server">
-													Over Stock Items</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>--%>
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+													Over Stock Items</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>--%>
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="HyperLink3" title="Display Reports of Items returned" runat="server" Visible="False">
-													Returned Items</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+													Returned Items</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkReturnedItemsReport" title="Display Reports of items VOID" runat="server" Visible="False">
-													Void Items</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>
+													Void Items</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
 									<%--<tr>
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
@@ -97,20 +97,20 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkLeastSalableItems" title="Display Least Salable Items Report" runat="server">
-													Least Salable Items</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>--%>
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+													Least Salable Items</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>--%>
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkStockTransaction" title="Display Stock Transaction Item Report" runat="server" Visible="False">
-													Stock Transaction</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>
+													Stock Transaction</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
 									<tr>
 										<td class="Ms-pvnavbotl1" background="../_layouts/images/trans.gif" alt=""></td>
 										<td class="Ms-pvnavbotc1"></td>
@@ -149,13 +149,13 @@
 										<td class="Ms-pvnavtopr1"><img src="../_layouts/images/trans.gif" alt=""></td>
 									</tr>
 									
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkTransaction" title="Display Sales Transaction Report" runat="server">
-													per Transaction</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>
+													per Transaction</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
 									<%--<tr>
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
@@ -196,20 +196,20 @@
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkDiscountReports" title="Display Reports with discounts" runat="server" Visible="False">
-													Discounts Reports</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+													Discounts Reports</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkElectroniJournal" title="Display Electronic Journal" runat="server" Visible="False">
-													Electronic Journal</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>
+													Electronic Journal</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
 								</table>
 								<IMG height="1" alt="" src="../_layouts/images/trans.gif" width="126">
 							</div>
@@ -227,34 +227,34 @@
 										<td class="Ms-pvnavtopc1"></td>
 										<td class="Ms-pvnavtopr1"><img src="../_layouts/images/trans.gif" alt=""></td>
 									</tr>
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkAgentsSales" title="Extract Agents Sales Report" runat="server">
-													Agents Sales</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+													Agents Sales</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkAgentsCommision" title="Extract Agents Commision Report" runat="server">
-													Agents Commision</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>
-									<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+													Agents Commision</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+									<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkCustomerCredit" title="Display Customer Credit Report" runat="server">
-													Customer Credit</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>
-									<%--<TR>
-										<TD class="Ms-pvnavmidl1"></TD>
-										<TD class="Ms-pvtbbutton">
+													Customer Credit</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+									<%--<tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkCustomersWithCreditReport" title="Display Customer Credit Report" runat="server">
-													Customers W/ Credit</asp:HyperLink></TD>
-										<TD class="Ms-pvnavmidr1"></TD>
-									</TR>--%>
+													Customers W/ Credit</asp:HyperLink></td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>--%>
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">

@@ -7,7 +7,7 @@
 	<tr>
 		<td><img height="1" alt="" src="../../../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
@@ -37,7 +37,7 @@
 							</tr>
 						</table>
 					</td>
-					<td class="ms-toolbar" id="align02" noWrap align="right" width="99%"><IMG height="1" alt="" src="../../../../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="align02" nowrap="nowrap" align="right" width="99%"><img height="1" alt="" src="../../../../_layouts/images/blank.gif" width="1">
 					</td>
 				</tr>
 			</table>
@@ -49,53 +49,53 @@
 		<td>
 			<table cellspacing="0" cellpadding="0" width="100%" border="0">
 				<tr>
-					<td class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px" colspan="3"><font color="red">*</font>
+					<td class="ms-descriptiontext" style="padding-bottom: 10px; PADDING-TOP: 8px" colspan="3"><font color="red">*</font>
 						Indicates a required field
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colspan="3" height="1"><IMG alt="" src="../../../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../../../_layouts/images/empty.gif"></td>
 				</tr>
 				<tr>
-					<td style="PADDING-BOTTOM: 20px" vAlign="top">
-						<div class="ms-sectionheader" style="PADDING-BOTTOM: 8px">Step 1:&nbsp;General 
+					<td style="padding-bottom: 20px" valign="top">
+						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 1:&nbsp;General 
 							Information</div>
-						<div class="ms-descriptiontext" style="PADDING-BOTTOM: 10px">Select&nbsp; charge 
+						<div class="ms-descriptiontext" style="padding-bottom: 10px">Select&nbsp; charge 
 							type.</div>
-						<div class="ms-descriptiontext" style="PADDING-BOTTOM: 10px">Change the default 
+						<div class="ms-descriptiontext" style="padding-bottom: 10px">Change the default 
 							charge amount.</div>
-						<div class="ms-descriptiontext" style="PADDING-BOTTOM: 10px">Check if the charge is 
+						<div class="ms-descriptiontext" style="padding-bottom: 10px">Check if the charge is 
 							in percent or uncheck if the charge is in amount.</div>
 					</td>
 					<td class="ms-colspace">&nbsp;</td>
-					<td class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px" vAlign="top">
+					<td class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top">
 						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>Charge 
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2"><label>Charge 
 										Type<font color="red">*</font></label>
 								</td>
 							</tr>
 							<tr>
-								<td class="ms-formspacer"><IMG alt="" src="../../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" width="100%"><asp:dropdownlist id="cboChargeType" CssClass="ms-long" runat="server" Width="157px" AutoPostBack="True" onselectedindexchanged="cboChargeType_SelectedIndexChanged"></asp:dropdownlist><asp:imagebutton id="imgAdd" ToolTip="Add New Charge" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../../../_layouts/images/newuser.gif" alt="Add New Charge" border="0" width="16" height="16" CausesValidation="False"></asp:imagebutton><asp:requiredfieldvalidator id="Requiredfieldvalidator1" CssClass="ms-error" runat="server" ControlToValidate="cboChargeType" Display="Dynamic" ErrorMessage="'Charge type' must not be left blank."></asp:requiredfieldvalidator></td>
 							</tr>
 							<tr>
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>Charge 
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2"><label>Charge 
 										Amount<font color="red">*</font></label>
 								</td>
 							</tr>
 							<tr>
-								<td class="ms-formspacer"><IMG alt="" src="../../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" width="100%"><asp:textbox id="txtChargeAmount" accessKey="P" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="20">0</asp:textbox><asp:requiredfieldvalidator id="Requiredfieldvalidator3" CssClass="ms-error" runat="server" ControlToValidate="txtChargeAmount" Display="Dynamic" ErrorMessage="'Charge amount' must not be left blank."></asp:requiredfieldvalidator></td>
 							</tr>
 							<tr>
 								<td class="ms-formspacer"></td>
 							</tr>
 							<tr>
-								<td class="ms-formspacer"><IMG alt="" src="../../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../../_layouts/images/trans.gif" width="10"></td>
 								<td class="ms-authoringcontrols" width="100%"><asp:checkbox id="chkInPercent" accessKey="I" CssClass="ms-short" runat="server" BorderStyle="Groove" Text="In Percent"></asp:checkbox></td>
 							</tr>
 							<tr>
@@ -112,19 +112,19 @@
 		<td>
 			<table cellspacing="0" cellpadding="0" width="100%" border="0">
 			    <tr>
-					<td class="ms-descriptiontext" style="PADDING-BOTTOM: 4px; PADDING-TOP: 8px" colspan="3"><font color="red">*</font>
+					<td class="ms-descriptiontext" style="padding-bottom: 4px; PADDING-TOP: 8px" colspan="3"><font color="red">*</font>
 						Indicates a required field
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px" colspan="3">
+					<td class="ms-descriptiontext" style="padding-bottom: 10px; PADDING-TOP: 8px" colspan="3">
 						<asp:ValidationSummary id="ValidationSummary2" runat="server" CssClass="ms-error" ForeColor=" "></asp:ValidationSummary></td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colspan="3" height="1"><IMG alt="" src="../../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../../_layouts/images/empty.gif"></td>
 				</tr>
 				<tr>
-					<td colspan=3 class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px" vAlign="top">
+					<td colspan="3" class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top">
                         <table border="0" cellpadding="0" cellspacing="0" class="ms-authoringcontrols" width="90%">
                             <tr>
                                 <td class="ms-authoringcontrols" colspan="4" style="padding-bottom: 2px">
@@ -134,12 +134,12 @@
                             </tr>
                             <tr>
                                 <td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10" /></td>
-                                <td class="ms-authoringcontrols" colspan=3>
+                                <td class="ms-authoringcontrols" colspan="3">
                                     <asp:TextBox id="txtCardTypeCode" runat="server" accesskey="C" CssClass="ms-short" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Card Type Code' must not be left blank." Display="Dynamic" ControlToValidate="txtCardTypeCode"></asp:requiredfieldvalidator>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10" /></td>
-                                <td class="ms-authoringcontrols"  colspan=3>
+                                <td class="ms-authoringcontrols"  colspan="3">
                                 </td>
                             </tr>
                             <tr>
@@ -150,7 +150,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colspan="3" height="2"><IMG alt="" src="../../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colspan="3" height="2"><img alt="" src="../../../_layouts/images/empty.gif"></td>
 				</tr>
 			</table>
 		</td>

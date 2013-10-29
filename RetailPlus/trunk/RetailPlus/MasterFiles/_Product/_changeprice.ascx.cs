@@ -89,9 +89,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     string strSupplierName = "" + dr["PurchaserName"].ToString();
                     string strPurchaserName = "" + dr["SupplierName"].ToString();
 
-                    strPurchasePriceHistory += dtePurchaseDate.ToString("ddMMMyyyy HH:mm") + ": " + strPurchaserName.PadRight(50) + " - " + decPurchasePrice.ToString("#,##0.#0").PadLeft(10) + " " + strSupplierName + "\r\n<br>" + Environment.NewLine;
+                    strPurchasePriceHistory += dtePurchaseDate.ToString("ddMMMyyyy HH:mm") + ": " + strPurchaserName.PadRight(50) + " - " + decPurchasePrice.ToString("#,##0.#0").PadLeft(10) + " " + strSupplierName + "\r\n<br />" + Environment.NewLine;
                 }
-                lblPurchasePriceHistory.Text = "<br><b>PURCHASE PRICE HISTORY: </b><br><br>" + strPurchasePriceHistory;
+                lblPurchasePriceHistory.Text = "<br /><b>PURCHASE PRICE HISTORY: </b><br /><br />" + strPurchasePriceHistory;
 
                 lblProductPackage.Visible = true;
                 lnkProductPackageAdd.Visible = true;

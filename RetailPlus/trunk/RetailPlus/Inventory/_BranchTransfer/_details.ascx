@@ -3,20 +3,20 @@
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
                         <asp:UpdatePanel ID="updPrint" runat="server">
                             <ContentTemplate>
 						        <table cellspacing="0" cellpadding="1" border="0">
 							        <tr>
-								        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgPrint" title="Print this Branch Transfer" accessKey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this Branch Transfer" ImageUrl="../../_layouts/images/print.gif" runat="server" CssClass="ms-toolbar" OnClick="imgPrint_Click"></asp:imagebutton></td>
-								        <td noWrap><asp:linkbutton id="cmdPrint" title="Print this Branch Transfer" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" onclick="cmdPrint_Click">Print</asp:linkbutton></td>
+								        <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgPrint" title="Print this Branch Transfer" accessKey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this Branch Transfer" ImageUrl="../../_layouts/images/print.gif" runat="server" CssClass="ms-toolbar" OnClick="imgPrint_Click"></asp:imagebutton></td>
+								        <td nowrap="nowrap"><asp:linkbutton id="cmdPrint" title="Print this Branch Transfer" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" onclick="cmdPrint_Click">Print</asp:linkbutton></td>
 							        </tr>
 						        </table>
                             </ContentTemplate>
@@ -28,8 +28,8 @@
                             <ContentTemplate>
 				                <table cellspacing="0" cellpadding="1" border="0">
 					                <tr>
-						                <td class="ms-toolbar" noWrap><asp:imagebutton id="imgPrintSelling" ToolTip="Print this Branch Transfer Selling Price" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/print.gif" border="0" width="16" height="16" onclick="imgPrintSelling_Click" ></asp:imagebutton></td>
-						                <td noWrap><asp:linkbutton id="cmdPrintSelling" ToolTip="Print this Branch Transfer Selling Price" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrintSelling_Click">Print Selling Price</asp:linkbutton></td>
+						                <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgPrintSelling" ToolTip="Print this Branch Transfer Selling Price" accessKey="G" tabIndex="5" runat="server" CssClass="ms-toolbar" CausesValidation="False" ImageUrl="../../_layouts/images/print.gif" border="0" width="16" height="16" onclick="imgPrintSelling_Click" ></asp:imagebutton></td>
+						                <td nowrap="nowrap"><asp:linkbutton id="cmdPrintSelling" ToolTip="Print this Branch Transfer Selling Price" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrintSelling_Click">Print Selling Price</asp:linkbutton></td>
 					                </tr>
 				                </table>
                             </ContentTemplate>
@@ -39,8 +39,8 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" ToolTip="Back To Branch Transfer List" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Back To Branch Transfer List" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdCancel" ToolTip="Back To Branch Transfer List" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Back To Branch Transfer List</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" ToolTip="Back To Branch Transfer List" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Back To Branch Transfer List" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdCancel" ToolTip="Back To Branch Transfer List" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Back To Branch Transfer List</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
@@ -48,8 +48,8 @@
 				    <td class="ms-toolbar">
 					    <table cellspacing="0" cellpadding="1" border="0">
 						    <tr>
-							    <td class="ms-toolbar" noWrap><asp:imagebutton id="imgBack" accessKey="B" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
-							    <td noWrap><asp:linkbutton id="cmdBack" accessKey="B" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" OnClick="cmdBack_Click">Back to previous window</asp:linkbutton></td>
+							    <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgBack" accessKey="B" tabIndex="3" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/impitem.gif" alt="Back to previous window" border="0" width="16" height="16" CausesValidation="False" OnClick="imgBack_Click"></asp:imagebutton></td>
+							    <td nowrap="nowrap"><asp:linkbutton id="cmdBack" accessKey="B" tabIndex="4" CssClass="ms-toolbar" runat="server" CausesValidation="False" OnClick="cmdBack_Click">Back to previous window</asp:linkbutton></td>
 						    </tr>
 					    </table>
 				    </td>
@@ -73,48 +73,48 @@
 					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
-					<td style="PADDING-BOTTOM: 10px" valign="top" colspan="3">
+					<td style="padding-bottom: 10px" valign="top" colspan="3">
 						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
-							<tr style="PADDING-BOTTOM: 10px">
+							<tr style="padding-bottom: 10px">
 								<td class="ms-formspacer"></td>
-								<td width="30%" rowSpan="4"><img alt="" src="../../_layouts/images/company_logo.gif"></td>
+								<td width="30%" rowspan="4"><img alt="" src="../../_layouts/images/company_logo.gif" /></td>
 								<td class="ms-formspacer"></td>
-								<td style="HEIGHT: 70px" borderColor="white" align="center" width="40%" rowSpan="3"><label class="ms-sectionheader" style="FONT-WEIGHT: bold; FONT-SIZE: 40px">Branch Transfer</label></td>
-								<td style="PADDING-BOTTOM: 2px" width="30%" colspan="2"><label>Branch Transfer no:</label></td>
+								<td style="HEIGHT: 70px" borderColor="white" align="center" width="40%" rowspan="3"><label class="ms-sectionheader" style="FONT-WEIGHT: bold; FONT-SIZE: 40px">Branch Transfer</label></td>
+								<td style="padding-bottom: 2px" width="30%" colspan="2"><label>Branch Transfer no:</label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td class="ms-formspacer"></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblBranchTransferNo" runat="server" CssClass="ms-error"></asp:label></td>
+								<td style="padding-bottom: 2px" width="30%"><asp:label id="lblBranchTransferNo" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer" style="HEIGHT: 52px"></td>
 								<td class="ms-formspacer" style="HEIGHT: 52px"></td>
-								<td style="PADDING-BOTTOM: 2px; HEIGHT: 52px" valign="top" width="30%" colspan="2"><label>Date Prepared: </label>
+								<td style="padding-bottom: 2px; HEIGHT: 52px" valign="top" width="30%" colspan="2"><label>Date Prepared: </label>
 									<asp:label id="lblBranchTransferDate" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 							<tr>
 								<td class="ms-formspacer" colspan="6"></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colspan="2"><label>Deliver From Branch:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colspan="2"><label>To Branch:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colspan="2"><label>Required Delivery Date:</label></td>
+							<tr style="padding-bottom: 5px">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Deliver From Branch:</label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%" colspan="2"><label>To Branch:</label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Required Delivery Date:</label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblBranchCodeFrom" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblBranchCodeFrom" runat="server" CssClass="ms-error"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblBranchCodeTo" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%"><asp:label id="lblBranchCodeTo" runat="server" CssClass="ms-error"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblRequiredDeliveryDate" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblRequiredDeliveryDate" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 							<tr>
 								<td class="ms-formspacer" colspan="6"></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colspan="6"><label>BranchTransfer 
+							<tr style="padding-bottom: 5px">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="6"><label>BranchTransfer 
 										Remarks:</label><asp:label id="lblBranchTransferRemarks" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 						</table>
@@ -257,7 +257,7 @@
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
@@ -269,7 +269,7 @@
 				<tr>
 					<td valign="top" colspan="3">
 						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
-							<tr style="PADDING-BOTTOM: auto">
+							<tr style="padding-bottom: auto">
 								<td class="ms-formspacer"></td>
 								<td></td>
 								<td align="left"><label>   &nbsp; &nbsp; Applicable Discount:</label></td>
@@ -280,38 +280,38 @@
                                 </asp:dropdownlist>
                                 </td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td width="50%"></td>
 								<td align="left"><label><b>Subtotal Discount:</b></label></td>
 								<td align="right"><asp:label id="lblBranchTransferDiscount" runat="server" CssClass="ms-error">0.00</asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td></td>
 								<td align="left"><label><b>VATable Amount:</b></label></td>
 								<td align="right"><asp:label id="lblBranchTransferVatableAmount" runat="server" CssClass="ms-error">0.00</asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td width="50%"></td>
 								<td align="left"><label><b>Subtotal:</b></label></td>
 								<td align="right"><asp:label id="lblBranchTransferSubTotal" runat="server" CssClass="ms-error">0.00</asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td></td>
 								<td align="left"><label><b>VAT:</b></label></td>
 								<td align="right"><asp:label id="lblBranchTransferVAT" runat="server" CssClass="ms-error">0.00</asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td width="50%"></td>
 								<td align="left"><label><b>Freight:</b></label></td>
 								<td align="right"><asp:textbox onkeypress="AllNum()" id="txtBranchTransferFreight" accessKey="" runat="server" CssClass="ms-short" BorderStyle="Groove" Text="0.00" Enabled="False"></asp:textbox>
 								                                            </td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td></td>
 								<td align="left"><label><b>BranchTransfer Deposit:</b></label></td>
@@ -323,7 +323,7 @@
 								<td></td>
 								<td class="ms-sectionline" colspan="2" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td width="50%"></td>
 								<td align="left"><label><b>Total:</b></label></td>

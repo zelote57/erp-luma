@@ -160,13 +160,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
                 if (IPAddress.IsOpen(clsBranchDetails.DBIP, int.Parse(clsBranchDetails.DBPort)) == false)
                 {
-                    lblError.Text = "Sorry cannot connect to Branch '" + cboSynchronizeToBranch.SelectedItem.Text + "'. Please check you connection to IP Address :" + clsBranchDetails.DBIP + ". <br><br>";
-                    lblError.Text += "HOW TO CHECK : <br><br>";
-                    lblError.Text += "  1. Open command prompt<br>";
-                    lblError.Text += "  2. Type ping[space][IP Address]<br><br>";
-                    lblError.Text += "If the answer is 'Request timed out.' then contact system administrator.<br>";
-                    lblError.Text += "Else if the answer is 'Reply...' Follow the next steps.<br><br>";
-                    lblError.Text += "  3. Type telnet[space][IP Address][sapce][IP Port]<br><br>";
+                    lblError.Text = "Sorry cannot connect to Branch '" + cboSynchronizeToBranch.SelectedItem.Text + "'. Please check you connection to IP Address :" + clsBranchDetails.DBIP + ". <br /><br />";
+                    lblError.Text += "HOW TO CHECK : <br /><br />";
+                    lblError.Text += "  1. Open command prompt<br />";
+                    lblError.Text += "  2. Type ping[space][IP Address]<br /><br />";
+                    lblError.Text += "If the answer is 'Request timed out.' then contact system administrator.<br />";
+                    lblError.Text += "Else if the answer is 'Reply...' Follow the next steps.<br /><br />";
+                    lblError.Text += "  3. Type telnet[space][IP Address][sapce][IP Port]<br /><br />";
 
                     return;
                 }
@@ -203,7 +203,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                         clsBranchProductDetails.ProductID = clsBranchProduct.Details(Constants.BRANCH_ID_MAIN, clsBranchProductDetails.BarCode).ProductID;
                         if (clsBranchProductDetails.ProductID != 0)
                         {
-                            lblError.Text += clsBranchProductDetails.BarCode + " already exist.<br><br>";
+                            lblError.Text += clsBranchProductDetails.BarCode + " already exist.<br /><br />";
                             clsBranchProduct.UpdatePurchasing(clsBranchProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsBranchProductDetails.SupplierID, clsBranchProductDetails.BaseUnitID, clsBranchProductDetails.PurchasePrice);
                             clsBranchProduct.UpdateSellingPrice(clsBranchProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsBranchProductDetails.SupplierID, clsBranchProductDetails.BaseUnitID, clsBranchProductDetails.Price);
                         }
@@ -212,7 +212,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             clsBranchProductDetails.ProductID = clsBranchProduct.DetailsByCode(Constants.BRANCH_ID_MAIN, clsBranchProductDetails.ProductCode).ProductID;
                             if (clsBranchProductDetails.ProductID != 0)
                             {
-                                lblError.Text += clsBranchProductDetails.ProductCode + " already exist.<br><br>";
+                                lblError.Text += clsBranchProductDetails.ProductCode + " already exist.<br /><br />";
                                 clsBranchProduct.UpdateBarcode(clsBranchProductDetails.ProductID, clsBranchProductDetails.BarCode);
                                 clsBranchProduct.UpdatePurchasing(clsBranchProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsBranchProductDetails.SupplierID, clsBranchProductDetails.BaseUnitID, clsBranchProductDetails.PurchasePrice);
                                 clsBranchProduct.UpdateSellingPrice(clsBranchProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsBranchProductDetails.SupplierID, clsBranchProductDetails.BaseUnitID, clsBranchProductDetails.Price);
@@ -257,12 +257,12 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 clsBranchProductDetails.QuantityOUT = 0;
 
                                 clsBranchProductDetails.ProductID = clsBranchProduct.Insert(clsBranchProductDetails);
-                                lblError.Text += clsBranchProductDetails.ProductCode + " inserted.<br><br>";
+                                lblError.Text += clsBranchProductDetails.ProductCode + " inserted.<br /><br />";
                             }
                         }
                     }
                     catch {
-                        lblError.Text += "<div class=ms-alternating> ERROR INSERTING ITEM: " + clsBranchProductDetails.ProductCode + "</div><br><br>";
+                        lblError.Text += "<div class=ms-alternating> ERROR INSERTING ITEM: " + clsBranchProductDetails.ProductCode + "</div><br /><br />";
                         if (clsBranchInventory.Connection.State == ConnectionState.Closed)
                         {
                             clsBranchInventory = new RemoteBranchInventory();
@@ -281,7 +281,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 clsProduct.CommitAndDispose();
                 clsBranchInventory.CommitAndDispose();
 
-                lblError.Text = "Done synchronizing products of Branch: " + clsBranchDetails.BranchCode + "<br><br>" + lblError.Text;
+                lblError.Text = "Done synchronizing products of Branch: " + clsBranchDetails.BranchCode + "<br /><br />" + lblError.Text;
             }
             catch (Exception ex)
             {
@@ -300,13 +300,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
                 if (IPAddress.IsOpen(clsBranchDetails.DBIP, int.Parse(clsBranchDetails.DBPort)) == false)
                 {
-                    lblError.Text = "Sorry cannot connect to Branch '" + cboSynchronizeFromBranch.SelectedItem.Text + "'. Please check you connection to IP Address :" + clsBranchDetails.DBIP + ". <br><br>";
-                    lblError.Text += "HOW TO CHECK : <br><br>";
-                    lblError.Text += "  1. Open command prompt<br>";
-                    lblError.Text += "  2. Type ping[space][IP Address]<br><br>";
-                    lblError.Text += "If the answer is 'Request timed out.' then contact system administrator.<br>";
-                    lblError.Text += "Else if the answer is 'Reply...' Follow the next steps.<br><br>";
-                    lblError.Text += "  3. Type telnet[space][IP Address][sapce][IP Port]<br><br>";
+                    lblError.Text = "Sorry cannot connect to Branch '" + cboSynchronizeFromBranch.SelectedItem.Text + "'. Please check you connection to IP Address :" + clsBranchDetails.DBIP + ". <br /><br />";
+                    lblError.Text += "HOW TO CHECK : <br /><br />";
+                    lblError.Text += "  1. Open command prompt<br />";
+                    lblError.Text += "  2. Type ping[space][IP Address]<br /><br />";
+                    lblError.Text += "If the answer is 'Request timed out.' then contact system administrator.<br />";
+                    lblError.Text += "Else if the answer is 'Reply...' Follow the next steps.<br /><br />";
+                    lblError.Text += "  3. Type telnet[space][IP Address][sapce][IP Port]<br /><br />";
 
                     return;
                 }
@@ -344,7 +344,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                         clsProductDetails.ProductID = clsProduct.Details(clsProductDetails.BarCode).ProductID;
                         if (clsProductDetails.ProductID != 0)
                         {
-                            lblError.Text += clsProductDetails.BarCode + " already exist.<br><br>";
+                            lblError.Text += clsProductDetails.BarCode + " already exist.<br /><br />";
                             clsProduct.UpdatePurchasing(clsProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsProductDetails.SupplierID, clsProductDetails.BaseUnitID, clsProductDetails.PurchasePrice);
                             clsProduct.UpdateSellingPrice(clsProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsProductDetails.SupplierID, clsProductDetails.BaseUnitID, clsProductDetails.Price);
                         }
@@ -353,7 +353,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             clsProductDetails.ProductID = clsProduct.DetailsByCode(Constants.BRANCH_ID_MAIN, clsProductDetails.BarCode).ProductID;
                             if (clsProductDetails.ProductID != 0)
                             {
-                                lblError.Text += clsProductDetails.ProductCode + " already exist.<br><br>";
+                                lblError.Text += clsProductDetails.ProductCode + " already exist.<br /><br />";
                                 clsProduct.UpdateBarcode(clsProductDetails.ProductID, clsProductDetails.BarCode);
                                 clsProduct.UpdatePurchasing(clsProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsProductDetails.SupplierID, clsProductDetails.BaseUnitID, clsProductDetails.PurchasePrice);
                                 clsProduct.UpdateSellingPrice(clsProductDetails.ProductID, clsBranchProductDetails.MatrixID, clsProductDetails.SupplierID, clsProductDetails.BaseUnitID, clsProductDetails.Price);
@@ -400,10 +400,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 try
                                 {
                                     clsProductDetails.ProductID = clsProduct.Insert(clsProductDetails);
-                                    lblError.Text += clsProductDetails.ProductCode + " inserted.<br><br>";
+                                    lblError.Text += clsProductDetails.ProductCode + " inserted.<br /><br />";
                                 }
                                 catch (Exception exProduct){
-                                    lblError.Text += "<div class=ms-alternating> ERROR INSERTING ITEM: " + clsProductDetails.ProductCode + " err: " + exProduct.Message + ".</div><br><br>";
+                                    lblError.Text += "<div class=ms-alternating> ERROR INSERTING ITEM: " + clsProductDetails.ProductCode + " err: " + exProduct.Message + ".</div><br /><br />";
                                     if (clsProduct.Connection.State == ConnectionState.Closed)
                                     {
                                         clsProduct = new Products();
@@ -421,7 +421,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     }
                     catch (Exception exProducts)
                     {
-                        lblError.Text += "<div class=ms-alternating> ERROR INSERTING ITEM: " + clsProductDetails.ProductCode + " err: " + exProducts.Message + ".</div><br><br>";
+                        lblError.Text += "<div class=ms-alternating> ERROR INSERTING ITEM: " + clsProductDetails.ProductCode + " err: " + exProducts.Message + ".</div><br /><br />";
                         if (clsProduct.Connection.State == ConnectionState.Closed)
                         {
                             clsProduct = new Products();
@@ -439,7 +439,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 clsProduct.CommitAndDispose();
                 clsBranchInventory.CommitAndDispose();
 
-                lblError.Text = "Done synchronizing products from Branch: " + clsBranchDetails.BranchCode + "<br><br>" + lblError.Text;
+                lblError.Text = "Done synchronizing products from Branch: " + clsBranchDetails.BranchCode + "<br /><br />" + lblError.Text;
             }
             catch (Exception ex)
             {
@@ -463,7 +463,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			DataTable dtaProductVariation;
 
             try{
-                lblError.Text += "Creating xml file...<br><br>";
+                lblError.Text += "Creating xml file...<br /><br />";
                 string xmlFileName = Server.MapPath(@"\RetailPlus\temp\ExportedProductList_" + CompanyDetails.CompanyCode + "_" + dteProcessingDate.ToString("yyyyMMddHHmm") + ".xml");
                 XmlTextWriter writer = new XmlTextWriter(xmlFileName, System.Text.Encoding.UTF8);
                 
@@ -472,7 +472,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 writer.WriteComment("This file represents the latest list of " + CompanyDetails.CompanyName + " products as of '" + dteProcessingDate.ToString("yyyyMMddHHmm")  + "'.");
                 writer.WriteComment("Save this in your local file. Goto 'File', click 'Save As', select the location in your local directory, click 'Save'.");
                 writer.WriteStartElement("Products");
-                lblError.Text += "Creating Products...<br><br>";
+                lblError.Text += "Creating Products...<br /><br />";
                 foreach(ProductDetails clsProductDetails in arrProductDetails)
                 {
                     writer.WriteStartElement("Item");
@@ -551,15 +551,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     }
 
                     writer.WriteEndElement();
-                    lblError.Text += " Done.<br><br>";
+                    lblError.Text += " Done.<br /><br />";
                 }
                 writer.WriteEndElement();
 
                 //Write the XML to file and close the writer
                 writer.Flush();
                 writer.Close();
-                lblError.Text += "Done creating XML file. <br><br>";
-                //lblError.Text = "/RetailPlus/temp/ExportedProductList_" + CompanyDetails.CompanyCode + "_" + dteProcessingDate.ToString("yyyyMMddHHmm") + ".xml<br><br>" + lblError.Text;
+                lblError.Text += "Done creating XML file. <br /><br />";
+                //lblError.Text = "/RetailPlus/temp/ExportedProductList_" + CompanyDetails.CompanyCode + "_" + dteProcessingDate.ToString("yyyyMMddHHmm") + ".xml<br /><br />" + lblError.Text;
                 clsProduct.CommitAndDispose();
 
                 string stScript = "<Script>";
@@ -634,7 +634,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 lngBranchProductID = clsBranchProductDetails.ProductID;
                                 if (clsBranchProductDetails.ProductID != 0)
                                 {
-                                    lblError.Text += " [Y] barcode exist... next item...<br>";
+                                    lblError.Text += " [Y] barcode exist... next item...<br />";
                                     break;
                                 }
 
@@ -644,7 +644,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 if (clsBranchProductDetails.ProductID != 0)
                                 {
                                     clsBranchProduct.UpdateBarcode(clsBranchProductDetails.ProductID, clsBranchProductDetails.BarCode);
-                                    lblError.Text += " [Y] barcode not exist, product code exist. barcode updated. next item...<br>";
+                                    lblError.Text += " [Y] barcode not exist, product code exist. barcode updated. next item...<br />";
                                     break;
                                 }
 
@@ -765,7 +765,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 lngBranchProductID = clsBranchProductDetails.ProductID;
                                 lngProductInserted++;
 
-                                lblError.Text += " [done]. next item...<br>";
+                                lblError.Text += " [done]. next item...<br />";
                             }
                             else if (xmlReader.Name == "Variation")
                             {
@@ -786,18 +786,18 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             }
                             else
                             {
-                                lblError.Text += "<b>" + xmlReader.Name + ":</b>" + xmlReader.Value + "<br>";
+                                lblError.Text += "<b>" + xmlReader.Name + ":</b>" + xmlReader.Value + "<br />";
                             }
                             break;
                         case XmlNodeType.Text:
-                            lblError.Text += "<b>" + xmlReader.LocalName + ":</b>" + xmlReader.Value + "<br>";
+                            lblError.Text += "<b>" + xmlReader.LocalName + ":</b>" + xmlReader.Value + "<br />";
                             break;
                     }
                 }
                 xmlReader.Close();
 
                 clsBranchInventory.CommitAndDispose();
-                lblError.Text = "<b>" + lngProductInserted.ToString() + " out of " + lngProductCtr.ToString() + " has been successfully transferred.</b><br><br>" + lblError.Text;
+                lblError.Text = "<b>" + lngProductInserted.ToString() + " out of " + lngProductCtr.ToString() + " has been successfully transferred.</b><br /><br />" + lblError.Text;
             }
             else
             {
@@ -867,7 +867,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             lngBranchProductID = clsBranchProductDetails.ProductID;
                             if (clsBranchProductDetails.ProductID != 0)
                             {
-                                lblError.Text += " [Y] barcode exist... next item...<br>";
+                                lblError.Text += " [Y] barcode exist... next item...<br />";
                                 break;
                             }
 
@@ -877,7 +877,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             if (clsBranchProductDetails.ProductID != 0)
                             {
                                 clsBranchProduct.UpdateBarcode(clsBranchProductDetails.ProductID, clsBranchProductDetails.BarCode);
-                                lblError.Text += " [Y] barcode not exist, product code exist. barcode updated. next item...<br>";
+                                lblError.Text += " [Y] barcode not exist, product code exist. barcode updated. next item...<br />";
                                 break;
                             }
 
@@ -998,7 +998,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             lngBranchProductID = clsBranchProductDetails.ProductID;
                             lngProductInserted++;
 
-                            lblError.Text += " [done]. next item...<br>";
+                            lblError.Text += " [done]. next item...<br />";
                         }
                         else if (xmlReader.Name == "Variation")
                         {
@@ -1019,18 +1019,18 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                         }
                         else
                         {
-                            lblError.Text += "<b>" + xmlReader.Name + ":</b>" + xmlReader.Value + "<br>";
+                            lblError.Text += "<b>" + xmlReader.Name + ":</b>" + xmlReader.Value + "<br />";
                         }
                         break;
                     case XmlNodeType.Text:
-                        lblError.Text += "<b>" + xmlReader.LocalName + ":</b>" + xmlReader.Value + "<br>";
+                        lblError.Text += "<b>" + xmlReader.LocalName + ":</b>" + xmlReader.Value + "<br />";
                         break;
                 }
             }
             xmlReader.Close();
 
             clsBranchInventory.CommitAndDispose();
-            lblError.Text = "<b>" + lngProductInserted.ToString() + " out of " + lngProductCtr.ToString() + " has been successfully transferred.</b><br><br>" + lblError.Text;
+            lblError.Text = "<b>" + lngProductInserted.ToString() + " out of " + lngProductCtr.ToString() + " has been successfully transferred.</b><br /><br />" + lblError.Text;
         }
 
 		#endregion

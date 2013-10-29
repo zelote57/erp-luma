@@ -100,7 +100,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.BranchTransfer); 
 			if (clsDetails.Read==false)
-				Server.Transfer(Constants.ROOT_DIRECTORY + "/Home.aspx");
+				Server.Transfer(Constants.ROOT_DIRECTORY + "/Home/Default.aspx");
 			clsAccessRights.CommitAndDispose();
 		}
 

@@ -66,7 +66,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Payments
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.GeneralLedgerMenu); 
 			if (clsDetails.Read==false)
-				Server.Transfer(Constants.ROOT_DIRECTORY + "/Home.aspx");
+				Server.Transfer(Constants.ROOT_DIRECTORY + "/Home/Default.aspx");
 			clsAccessRights.CommitAndDispose();
 		}
 

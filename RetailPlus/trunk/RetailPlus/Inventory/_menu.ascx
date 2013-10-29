@@ -1,4 +1,4 @@
-<%@ Reference Control="~/_Menu.ascx" %>
+<%--<%@ Reference Control="~/_Menu.ascx" %>--%>
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Inventory.__Menu" Codebehind="_Menu.ascx.cs" %>
 <table height="100%" border="0" cellpadding="0" cellspacing="0" class="ms-navframe">
 	<tr valign="top">
@@ -17,9 +17,9 @@
 							<div id="Menu_0_0">
 								<table width="100%" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" class="Ms-pvnavtableone1">
 									<tr>
-										<td class="Ms-pvnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif" alt=""></td>
+										<td class="Ms-pvnavtopl1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 										<td class="Ms-pvnavtopc1"></td>
-										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt=""></td>
+										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 									</tr>
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
@@ -93,12 +93,12 @@
 			</div>
 			<IMG height="1" alt="" src="/RetailPlus/_layouts/images/trans.gif" width="180">
 			<table id="ActionBar" class="ms-pvtb" width="100%" cellspacing="0" cellpadding="0">
-				<TBODY>
+				<tbody>
 					<tr>
 						<td colspan="2" id="ActionBar1" class="ms-pvtbt">Actions</td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkInventoryAnalyst" runat="server" ToolTip="Inventory Analyst">
 								<li>
@@ -106,7 +106,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkCloseInventory" runat="server" ToolTip="Close Inventory">
 								<li>
@@ -114,7 +114,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word" nowrap>
 							<asp:HyperLink id="lnkCloseInventoryDetailed" runat="server" ToolTip="Close Inventory using detailed variation">
 								<li>
@@ -122,42 +122,42 @@
 						</td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkUpload" runat="server" ToolTip="Upload Stocks to Inventory">
 								<li>
 									Upload Stock Inventory</li></asp:HyperLink>
 						</td>
 					</tr>
-					<TR><td colspan="2" class="Ms-pvtbt"></td></TR>
+					<tr><td colspan="2" class="Ms-pvtbt"></td></tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkSynchronize" runat="server" ToolTip="Synchronize Inventory Count">
 								<li>Synchronize Inv Count</li></asp:HyperLink>
 						</td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkExport" runat="server" ToolTip="Export Branch Inventory Count">
 								<li>Export Inventory Count</li></asp:HyperLink>
 						</td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkImport" runat="server" ToolTip="Import Branch Inventory Count">
 								<li>Import Inventory Count</li></asp:HyperLink>
 						</td>
 					</tr>
-					<TR>
-						<td colspan="2" class="Ms-pvtbt"></td></TR>
+					<tr>
+						<td colspan="2" class="Ms-pvtbt"></td></tr>
 					<tr>
 						<td colspan="2" id="ActionBar2" class="ms-pvtbt">Reports</td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkInventory" runat="server" ToolTip="Display Inventory List Report">
 								<li>
@@ -165,7 +165,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkBranchInventory" runat="server" ToolTip="Display Inventory List Report per Branch">
 								<li>
@@ -173,7 +173,7 @@
 						</td>
 					</tr>
 					<%--<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkExpiredInventory" runat="server" ToolTip="Display Expired Inventory List Report">
 								<li>
@@ -181,32 +181,32 @@
 						</td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkReorder" ToolTip="Display Items For Re-Order" runat="server"><li>
 													Items For Re-Order</asp:HyperLink></td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkOverStock" ToolTip="Display Over Stock Items List Report" runat="server"><li>
 													Over Stock Items</asp:HyperLink></td>
 					</tr>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkTotalStock" runat="server" ToolTip="Display Inventory List of Stock">
 								<li>Total Stock</li></asp:HyperLink>
 						</td>
 					</tr>--%>
 					<tr>
-						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif"></td>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkCLosingInventoryReport" runat="server" ToolTip="Display Closing Inventory Reports">
 								<li>Closing Inventory Report</li></asp:HyperLink>
 						</td>
 					</tr>
-				</TBODY>
+				</tbody>
 			</table>
 			<img src="/RetailPlus/_layouts/images/trans.gif" height="1" width="126" alt="">
 		</td>

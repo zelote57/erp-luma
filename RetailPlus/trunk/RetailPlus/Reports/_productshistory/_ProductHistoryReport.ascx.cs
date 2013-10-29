@@ -461,8 +461,8 @@ namespace AceSoft.RetailPlus.Reports
                     imgEditNow.Visible = false;
 
                     cboVariation.Items.Clear();
-                    { cboVariation.Items.Add(new ListItem("No Variation", "0")); }
-                    cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
+                    cboVariation.Items.Insert(0, new ListItem("Main Product", "0"));
+                    cboVariation.SelectedIndex = 0;
                 }
                 else
                 {
@@ -480,9 +480,8 @@ namespace AceSoft.RetailPlus.Reports
                     cboVariation.DataSource = clsProductVariationsMatrix.BaseListSimpleAsDataTable(ProductID, SortField: "VariationDesc").DefaultView;
                     cboVariation.DataBind();
 
-                    if (cboVariation.Items.Count == 0)
-                    { cboVariation.Items.Add(new ListItem("No Variation", "0")); }
-                    cboVariation.SelectedIndex = cboVariation.Items.Count - 1;
+                    cboVariation.Items.Insert(0, new ListItem("Main Product", "0"));
+                    cboVariation.SelectedIndex = 0;
                 }
             }
             catch { }

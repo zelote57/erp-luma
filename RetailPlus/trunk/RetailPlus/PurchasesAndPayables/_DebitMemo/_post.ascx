@@ -4,14 +4,14 @@
 <script language="JavaScript" src="../../_Scripts/PurchasesAndPayables.js"></script>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 			<table cellspacing="0" cellpadding="0" width="100%" border="0">
 				<tr>
-					<td class="ms-descriptiontext" style="PADDING-BOTTOM: 10px; PADDING-TOP: 8px" colspan="3"><font color="red">*</font>
+					<td class="ms-descriptiontext" style="padding-bottom: 10px; PADDING-TOP: 8px" colspan="3"><font color="red">*</font>
 						Indicates a required field<asp:label id="lblReferrer" runat="server" Visible="false" ></asp:label><asp:label id="lblDebitMemoID" runat="server" Visible="false" ></asp:label>
 					</td>
 				</tr>
@@ -19,83 +19,83 @@
 					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
-					<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 5px" valign="top" colspan="3">
+					<td class="ms-authoringcontrols" style="padding-bottom: 5px" valign="top" colspan="3">
 						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
-							<tr style="PADDING-BOTTOM: 10px">
+							<tr style="padding-bottom: 10px">
 								<td class="ms-formspacer"></td>
-								<td width="30%" rowspan="4"><img alt="" src="../../_layouts/images/company_logo.gif"></td>
+								<td width="30%" rowspan="4"><img alt="" src="../../_layouts/images/company_logo.gif" /></td>
 								<td class="ms-formspacer"></td>
 								<td style="HEIGHT: 70px" bordercolor="white" align="center" width="40%" rowspan="3"><label class="ms-sectionheader" style="FONT-WEIGHT: bold; FONT-SIZE: 40px">Purchase 
 										Debit Memo</label></td>
-								<td style="PADDING-BOTTOM: 2px" width="30%" colspan="2"><label>Purchase Memo no:</label></td>
+								<td style="padding-bottom: 2px" width="30%" colspan="2"><label>Purchase Memo no:</label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td class="ms-formspacer"></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-								<td style="PADDING-BOTTOM: 2px" width="30%"><asp:HyperLink id="lnkMemoNo" runat="server" CssClass="ms-error"></asp:HyperLink></td>
+								<td style="padding-bottom: 2px" width="30%"><asp:HyperLink id="lnkMemoNo" runat="server" CssClass="ms-error"></asp:HyperLink></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer" style="HEIGHT: 52px"></td>
 								<td class="ms-formspacer" style="HEIGHT: 52px"></td>
-								<td style="PADDING-BOTTOM: 2px; HEIGHT: 52px" valign="top" width="30%" colspan="2"><label>Date 
+								<td style="padding-bottom: 2px; HEIGHT: 52px" valign="top" width="30%" colspan="2"><label>Date 
 										Prepared: </label>
 									<asp:label id="lblMemoDate" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 20px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colspan="2"><label>Supplier 
+							<tr style="padding-bottom: 20px">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Supplier 
 										Name:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colspan="2"><label>Contact:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colspan="2"><label>Terms:</label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%" colspan="2"><label>Contact:</label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Terms:</label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblSupplierID" runat="server" CssClass="ms-error" Visible="false" ></asp:label>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblSupplierID" runat="server" CssClass="ms-error" Visible="false" ></asp:label>
 									<asp:HyperLink id="lblSupplierCode" runat="server" Target="_blank">[lblSupplierCode]</asp:HyperLink></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblSupplierContact" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%"><asp:label id="lblSupplierContact" runat="server" CssClass="ms-error"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblTerms" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblModeOfterms" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblTerms" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblModeOfterms" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 							<tr>
 								<td class="ms-formspacer" colspan="6"></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colspan="2"><label>Supplier 
+							<tr style="padding-bottom: 5px">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Supplier 
 										Address:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colspan="2"><label>Telephone 
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%" colspan="2"><label>Telephone 
 										no:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colspan="2"><label>Required 
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Required 
 										Memo Date:</label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblSupplierAddress" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblSupplierAddress" runat="server" CssClass="ms-error"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblSupplierTelephoneNo" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%"><asp:label id="lblSupplierTelephoneNo" runat="server" CssClass="ms-error"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblRequiredPostingDate" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblRequiredPostingDate" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 							<tr>
 								<td class="ms-formspacer" colspan="6"></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colspan="2"><label>Memo 
+							<tr style="padding-bottom: 5px">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Memo 
 										from branch:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colspan="4"><label>Branch 
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%" colspan="4"><label>Branch 
 										Address:</label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblBranchCode" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblBranchID" runat="server" CssClass="ms-error" Visible="false" ></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblBranchCode" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblBranchID" runat="server" CssClass="ms-error" Visible="false" ></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colspan="3"><asp:label id="lblBranchAddress" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%" colspan="3"><asp:label id="lblBranchAddress" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 							<tr>
 								<td class="ms-formspacer" colspan="6"></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colspan="6"><label>
+							<tr style="padding-bottom: 5px">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="6"><label>
 										Remarks:</label><asp:label id="lblRemarks" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 						</table>
@@ -151,21 +151,21 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="PADDING-BOTTOM: 4px; PADDING-TOP: 4px" valign="top" colspan="3">
-						<div class="ms-sectionheader" style="PADDING-BOTTOM: 8px; PADDING-TOP: 8px">Step 1: 
+					<td style="padding-bottom: 4px; PADDING-TOP: 4px" valign="top" colspan="3">
+						<div class="ms-sectionheader" style="padding-bottom: 8px; PADDING-TOP: 8px">Step 1: 
 							Add Item Information</div>
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 20px" valign="top" colspan="3">
+					<td class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top" colspan="3">
 		                <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
 			                <tr>
-				                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>Select 
+				                <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2"><label>Select 
 						                Product Code<font color="red">*
 							                <asp:label id="lblDebitMemoItemID" runat="server" CssClass="ms-error" Visible="false" >0</asp:label></font></label></td>
-				                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>Select 
+				                <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2"><label>Select 
 						                Variation<font color="red">*</font></label></td>
-				                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>Select 
+				                <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2"><label>Select 
 						                unit<font color="red">*</font></label></td>
 			                </tr>
 			                <tr>
@@ -278,17 +278,17 @@
                                         <ContentTemplate>
 					                        <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
 						                        <tr>
-							                        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>Enter 
+							                        <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2"><label>Enter 
 									                        Quantity<font color="red">*</font></label></td>
-							                        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>Enter 
+							                        <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2"><label>Enter 
 									                        Previous Unit Cost<font color="red">*</font></label></td>
-									                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>Enter 
+									                <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2"><label>Enter 
 									                        Current Unit Cost<font color="red">*</font></label></td>
-							                        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>Enter 
+							                        <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2"><label>Enter 
 									                        Discount<font color="red">*<input id="chkInPercent" type="checkbox" onchange="ComputeAmountPost()" checked name="chkInPercent" runat="server" /></font></label><label style="FONT-SIZE: 10px">(check 
 									                        if in percent)</label></td>
-							                        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="2"><label>Amount</label></td>
-							                        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" align="center"><label>Check 
+							                        <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2"><label>Amount</label></td>
+							                        <td class="ms-authoringcontrols" style="padding-bottom: 2px" align="center"><label>Check 
 									                        if taxable</label></td>
 						                        </tr>
 						                        <tr>
@@ -302,7 +302,7 @@
 							                        <td class="ms-authoringcontrols"><asp:textbox onkeypress="AllNum()" id="txtDiscount" onkeyup="ComputeAmountPost()" accessKey="D" runat="server" CssClass="ms-short" BorderStyle="Groove">0</asp:textbox><asp:requiredfieldvalidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'Discount' must not be left blank." Display="Dynamic" ControlToValidate="txtDiscount"></asp:requiredfieldvalidator></td>
 							                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
 							                        <td class="ms-authoringcontrols"><asp:textbox onkeypress="AllNum()" id="txtAmount" onkeyup="ComputeAmountPost()" accessKey="A" runat="server" CssClass="ms-short" BorderStyle="Groove" ReadOnly="True">0</asp:textbox><asp:requiredfieldvalidator id="Requiredfieldvalidator9" runat="server" CssClass="ms-error" ErrorMessage="'Amount' must not be left blank." Display="Dynamic" ControlToValidate="txtAmount"></asp:requiredfieldvalidator></td>
-							                        <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" align="center"><input id="chkIsTaxable" type="checkbox" checked name="chkIsTaxable" runat="server" onchange="ComputeAmountPost()" /></td>
+							                        <td class="ms-authoringcontrols" style="padding-bottom: 2px" align="center"><input id="chkIsTaxable" type="checkbox" checked name="chkIsTaxable" runat="server" onchange="ComputeAmountPost()" /></td>
 						                        </tr>
 					                        </table>
 					                    </ContentTemplate>
@@ -321,7 +321,7 @@
 				                <td class="ms-formspacer" colspan="6"></td>
 			                </tr>
 			                <tr>
-				                <td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" colspan="6"><label>Remarks</label></td>
+				                <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="6"><label>Remarks</label></td>
 			                </tr>
 			                <tr>
 				                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -548,7 +548,7 @@
 		<td><a name="itemsection"></a><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
@@ -562,13 +562,13 @@
 						<asp:UpdatePanel ID="UpdatePanel1" runat="server">
                             <ContentTemplate>
 		                        <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
-		                            <tr style="PADDING-BOTTOM: 15px">
+		                            <tr style="padding-bottom: 15px">
 				                        <td class="ms-formspacer"></td>
 				                        <td width="50%"></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; <b>Total Before Discount:</b></label></td>
 				                        <td align="right"><asp:label id="lblTotalDiscount1" runat="server" CssClass="ms-error">0.00</asp:label></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: auto">
+			                        <tr style="padding-bottom: auto">
 				                        <td class="ms-formspacer"></td>
 				                        <td></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; Applicable Discount (1):</label></td>
@@ -579,7 +579,7 @@
                                         </asp:dropdownlist>
                                         <asp:requiredfieldvalidator id="Requiredfieldvalidator6" runat="server" CssClass="ms-error" ControlToValidate="txtPODebitMemoDiscountApplied" Display="Dynamic" ErrorMessage="'Discount' must not be left blank."></asp:requiredfieldvalidator></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: 15px">
+			                        <tr style="padding-bottom: 15px">
 				                        <td class="ms-formspacer"></td>
 				                        <td></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; Subtotal Discount (1):</label></td>
@@ -590,13 +590,13 @@
 				                        <td></td>
 				                        <td class="ms-sectionline" colspan="2" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: 15px">
+			                        <tr style="padding-bottom: 15px">
 				                        <td class="ms-formspacer"></td>
 				                        <td width="50%"></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; <b>Total Before Discount:</b></label></td>
 				                        <td align="right"><asp:label id="lblTotalDiscount2" runat="server" CssClass="ms-error">0.00</asp:label></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: auto">
+			                        <tr style="padding-bottom: auto">
 				                        <td class="ms-formspacer"></td>
 				                        <td></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; Applicable Discount (2):</label></td>
@@ -607,7 +607,7 @@
                                         </asp:dropdownlist>
                                         <asp:requiredfieldvalidator id="Requiredfieldvalidator16" runat="server" CssClass="ms-error" ControlToValidate="txtPODebitMemoDiscount2Applied" Display="Dynamic" ErrorMessage="'Discount' must not be left blank."></asp:requiredfieldvalidator></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: 15px">
+			                        <tr style="padding-bottom: 15px">
 				                        <td class="ms-formspacer"></td>
 				                        <td width="50%"></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; Subtotal Discount (2):</b></label></td>
@@ -618,13 +618,13 @@
 				                        <td></td>
 				                        <td class="ms-sectionline" colspan="2" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: 15px">
+			                        <tr style="padding-bottom: 15px">
 				                        <td class="ms-formspacer"></td>
 				                        <td width="50%"></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; <b>Total Before Discount:</b></label></td>
 				                        <td align="right"><asp:label id="lblTotalDiscount3" runat="server" CssClass="ms-error">0.00</asp:label></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: auto">
+			                        <tr style="padding-bottom: auto">
 				                        <td class="ms-formspacer"></td>
 				                        <td></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; Applicable Discount (3):</label></td>
@@ -635,7 +635,7 @@
                                         </asp:dropdownlist>
                                         <asp:requiredfieldvalidator id="Requiredfieldvalidator17" runat="server" CssClass="ms-error" ControlToValidate="txtPODebitMemoDiscount3Applied" Display="Dynamic" ErrorMessage="'Discount' must not be left blank."></asp:requiredfieldvalidator></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: 25px">
+			                        <tr style="padding-bottom: 25px">
 				                        <td class="ms-formspacer"></td>
 				                        <td width="50%"></td>
 				                        <td align="left"><label>   &nbsp; &nbsp; Subtotal Discount (3):</label></td>
@@ -646,32 +646,32 @@
 				                        <td></td>
 				                        <td class="ms-sectionline" colspan="2" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 			                        </tr>
-			                        <tr style="PADDING-TOP: 5px;PADDING-BOTTOM: 5px">
+			                        <tr style="PADDING-TOP: 5px;padding-bottom: 5px">
 				                        <td class="ms-formspacer"></td>
 				                        <td></td>
 				                        <td align="left"><label><b>VATable Amount:</b></label><asp:CheckBox ID="chkIsVatInclusive" runat="server" Checked="true" Text="(Is-Vat-Inclusive)" OnCheckedChanged="chkIsVatInclusive_CheckedChanged" AutoPostBack="true"/></td>
 				                        <td align="right"><asp:label id="lblPODebitMemoVatableAmount" runat="server" CssClass="ms-error">0.00</asp:label></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: 5px">
+			                        <tr style="padding-bottom: 5px">
 				                        <td class="ms-formspacer"></td>
 				                        <td width="50%"></td>
 				                        <td align="left"><label><b>Subtotal:</b></label></td>
 				                        <td align="right"><asp:label id="lblPODebitMemoSubTotal" runat="server" CssClass="ms-error">0.00</asp:label></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: 5px">
+			                        <tr style="padding-bottom: 5px">
 				                        <td class="ms-formspacer"></td>
 				                        <td></td>
 				                        <td align="left"><label><b>VAT:</b></label></td>
 				                        <td align="right"><asp:label id="lblPODebitMemoVAT" runat="server" CssClass="ms-error">0.00</asp:label></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: 5px">
+			                        <tr style="padding-bottom: 5px">
 				                        <td class="ms-formspacer"></td>
 				                        <td width="50%"></td>
 				                        <td align="left"><label><b>Freight:</b></label></td>
 				                        <td align="right"><asp:textbox onkeypress="AllNum()" id="txtPODebitMemoFreight" accessKey="" runat="server" CssClass="ms-short-numeric" BorderStyle="Groove" Text="0.00" AutoPostBack="True" OnTextChanged="txtPODebitMemoFreight_TextChanged"></asp:textbox>
 				                                                                    <asp:requiredfieldvalidator id="Requiredfieldvalidator11" runat="server" CssClass="ms-error" ControlToValidate="txtPODebitMemoFreight" Display="Dynamic" ErrorMessage="'Freight' must not be left blank."></asp:requiredfieldvalidator></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: 5px">
+			                        <tr style="padding-bottom: 5px">
 				                        <td class="ms-formspacer"></td>
 				                        <td></td>
 				                        <td align="left"><label><b>PODebitMemo Deposit:</b></label></td>
@@ -683,7 +683,7 @@
 				                        <td></td>
 				                        <td class="ms-sectionline" colspan="2" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 			                        </tr>
-			                        <tr style="PADDING-BOTTOM: 5px">
+			                        <tr style="padding-bottom: 5px">
 				                        <td class="ms-formspacer"></td>
 				                        <td width="50%"></td>
 				                        <td align="left"><label><b>Total:</b></label></td>
@@ -708,7 +708,7 @@
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td id="AddUserTextTDID2">
-			<table class="ms-toolbar" id="onetidGrpsTC" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" id="onetidGrpsTC" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar" id="align01" nowrap align="right" width="99%">
 					</td>

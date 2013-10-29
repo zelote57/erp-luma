@@ -4,12 +4,12 @@
 <ContentTemplate>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img src="../../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
 						<table cellpadding="1" cellspacing="0" border="0">
@@ -78,10 +78,10 @@
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; PADDING-BOTTOM:	10px" colspan="3">
+					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; padding-bottom:	10px" colspan="3">
 						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
                             <tr>
-								<td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+								<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 									<label>Filter by Branch</label>
 								<img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>
@@ -90,14 +90,14 @@
 									<asp:dropdownlist id="cboBranch" CssClass="ms-long" runat="server"></asp:dropdownlist>
                                     
 								</td>
-                                <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+                                <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 									<label>Filter by Branch</label>
 								</td>
 								<td width="99%" id="Td2" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>
 							</tr>
 							<tr>
-								<td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+								<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 									<label>Filter by Supplier</label>
 								<img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>
@@ -106,7 +106,7 @@
 									<asp:dropdownlist id="cboContact" CssClass="ms-long" runat="server"></asp:dropdownlist>
                                     
 								</td>
-                                <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+                                <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
                                     <asp:textbox id="txtContactCode" accesskey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                     <asp:imagebutton id="imgContactCodeSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand; width: 16px;" accesskey="P" 
@@ -118,7 +118,7 @@
 								</td>
 							</tr>
                             <tr>
-								<td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+								<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
                                     <label>Filter by Group</label>
 								<img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>
@@ -126,7 +126,7 @@
 								<td style="HEIGHT: 15px" colspan="3">
                                     <asp:dropdownlist id="cboProductGroup" CssClass="ms-long" runat="server" AutoPostBack="True" onselectedindexchanged="cboProductGroup_SelectedIndexChanged"></asp:dropdownlist>
 								</td>
-                                <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+                                <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
                                     <asp:textbox id="txtProductGroupCode" accesskey="G" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                     <asp:imagebutton id="imgProductGroupCodeSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand" accesskey="P" 
@@ -138,7 +138,7 @@
 								</td>
 							</tr>
                             <tr>
-								<td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+								<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 									<label>Filter by Sub Group</label>
 								<img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>
@@ -146,7 +146,7 @@
 								<td style="HEIGHT: 15px" colspan="3">
 									<asp:DropDownList id="cboSubGroup" runat="server" CssClass="ms-long"></asp:DropDownList>
 								</td>
-                                <td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+                                <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
                                     <asp:textbox id="txtSubGroupCode" accesskey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
                                     <asp:imagebutton id="imgSubGroupCodeSearch" ToolTip="Execute search" 
                                         style="CURSOR: hand" accesskey="P" 
@@ -159,7 +159,7 @@
 							</tr>
 							<asp:PlaceHolder id="holderWeighted" runat="server" Visible=false>
 							<tr>
-								<td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+								<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 									<label>Check if will Include Buying Price</label>
 								<img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>
@@ -168,7 +168,7 @@
 									<asp:CheckBox id="chkIncludeBuying" runat=server Checked=true text="" />
 								</td>
 								<td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-								<td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+								<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 									<label>Check if will Include MarginCheck if will Include Buying Price</label>
 								</td>
 								<td style="HEIGHT: 15px">
@@ -180,7 +180,7 @@
 							</tr>
 							</asp:PlaceHolder>
 							<tr>
-								<td style="PADDING-BOTTOM:2px; HEIGHT:15px" nowrap="nowrap">
+								<td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
 									<label>Product Code like</label>&nbsp;
 								</td>
 								<td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
@@ -207,7 +207,7 @@
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 </table>
 </ContentTemplate>

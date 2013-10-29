@@ -12,7 +12,7 @@
 				<tr>
 					<td class="Ms-phnavmidl1"></td>
 					<td nowrap>
-						<a id="NavCatH0_C_0_1" href="/RetailPlus/Home.aspx" target="_self" title="Home" accesskey="H">
+						<a id="NavCatH0_C_0_1" href="/RetailPlus/Home/Default.aspx" target="_self" title="Home" accesskey="H">
 							Home</a></td>
 					<td class="Ms-phnavmidr1"></td>
 				</tr>
@@ -222,7 +222,7 @@
 				</tr>
 			</table>
 		</td>
-		<td class="ms-banner" vAlign="middle" noWrap align="left" width="99%">
+		<td class="ms-banner" valign="middle" nowrap="nowrap" align="left" width="99%">
 			<CTRL:ctrlHorizontalNavBarCorner id="ctrlHorizontalNavBarCorner" runat="server"></CTRL:ctrlHorizontalNavBarCorner>
 		</td>
 	</tr>

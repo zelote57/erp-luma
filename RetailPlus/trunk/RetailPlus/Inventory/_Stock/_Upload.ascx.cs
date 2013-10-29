@@ -118,7 +118,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 								if (StockID > 0)
 								{
 									clsStock.CommitAndDispose();
-									Label1.Text = "<b>This file has already been added to inventory.<br>";
+									Label1.Text = "<b>This file has already been added to inventory.<br />";
 									Label1.Text += "Please refer to transaction No: " + strStockTransactionNo + ".</b>";
 									reader.Close();
 									return;
@@ -312,18 +312,18 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 							}
 							else
 							{
-								Label1.Text = "<b>Reader Name:<b>" + reader.Name + "<br>";
+								Label1.Text = "<b>Reader Name:<b>" + reader.Name + "<br />";
 							}
 							break;
 						case XmlNodeType.Text:
-							Label1.Text = "<b>" + reader.LocalName + ":<b>" + reader.Value + "<br>";
+							Label1.Text = "<b>" + reader.LocalName + ":<b>" + reader.Value + "<br />";
 							break;
 					}       
 				}
 				reader.Close();
 				
 				clsStock.CommitAndDispose();
-				Label1.Text = "<b>Transaction No.: " + strStockTransactionNo + " has been successfully transferred.<br>";
+				Label1.Text = "<b>Transaction No.: " + strStockTransactionNo + " has been successfully transferred.<br />";
 			}
 			else
 			{

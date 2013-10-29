@@ -4,12 +4,12 @@
 <script language="JavaScript" src="../../_Scripts/ConfirmDelete.js"></script>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
@@ -89,7 +89,7 @@
 		<td class="ms-authoringcontrols">
 		    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 				<tr>
-					<td style="PADDING-BOTTOM:2px" nowrap>
+					<td style="padding-bottom:2px" nowrap>
 						<label>
                             Order Start &nbsp;Date</label>&nbsp;
 					</td>
@@ -99,7 +99,7 @@
 						<asp:TextBox id="txtOrderStartTime" accessKey="I" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="5" Width="46px">00:00</asp:TextBox>
 					</td>
 					<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-					<td style="PADDING-BOTTOM:2px" nowrap>
+					<td style="padding-bottom:2px" nowrap>
 						<label>
                             Order End Date</label>
 					</td>
@@ -114,7 +114,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="PADDING-BOTTOM:2px" nowrap>
+					<td style="padding-bottom:2px" nowrap>
 						<label>
                             Posting Start &nbsp;Date</label>&nbsp;
 					</td>
@@ -124,7 +124,7 @@
 						<asp:TextBox id="txtPostingStartTime" accessKey="I" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="5" Width="46px">00:00</asp:TextBox>
 					</td>
 					<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-					<td style="PADDING-BOTTOM:2px" nowrap>
+					<td style="padding-bottom:2px" nowrap>
 						<label>
                             Posting End Date</label>
 					</td>
@@ -139,7 +139,7 @@
 					</td>
 				</tr>
                 <tr>
-					<td style="PADDING-BOTTOM:2px" nowrap>
+					<td style="padding-bottom:2px" nowrap>
 						<label>Transfer Out No/Remarks</label>&nbsp;
 					</td>
 					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
@@ -254,6 +254,6 @@
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colspan="3" style="PADDING-BOTTOM: 10px"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3" style="padding-bottom: 10px"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 </table>

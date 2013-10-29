@@ -55,7 +55,7 @@ namespace AceSoft.RetailPlus
 				if (Session["UID"] != null)
 				{
 					Login.AssignUserSession(Convert.ToInt16(Session["UID"]));
-                    Response.Redirect(Constants.ROOT_DIRECTORY + "/Home.aspx");
+                    Response.Redirect(Constants.ROOT_DIRECTORY + "/Home/Default.aspx");
 				}
 				else
 				{	HorizontalNavBar.Visible = false;

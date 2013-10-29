@@ -4,20 +4,20 @@
 <script language="JavaScript" src="../../_Scripts/PurchasesAndPayables.js"></script>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
-			<table class="ms-toolbar" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-toolbar">
                         <asp:UpdatePanel ID="updPrint" runat="server">
                             <ContentTemplate>
 						        <table cellspacing="0" cellpadding="1" border="0">
 							        <tr>
-								        <td class="ms-toolbar" noWrap><asp:imagebutton id="imgPrint" title="Print this Purchase Return" accessKey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this Purchase Return" ImageUrl="../../_layouts/images/print.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgPrint_Click"></asp:imagebutton></td>
-								        <td noWrap><asp:linkbutton id="cmdPrint" title="Print this Purchase Return" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrint_Click">Print</asp:linkbutton></td>
+								        <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgPrint" title="Print this Purchase Return" accessKey="G" tabIndex="5" height="16" width="16" border="0" alt="Print this Purchase Return" ImageUrl="../../_layouts/images/print.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgPrint_Click"></asp:imagebutton></td>
+								        <td nowrap="nowrap"><asp:linkbutton id="cmdPrint" title="Print this Purchase Return" accessKey="E" tabIndex="6" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdPrint_Click">Print</asp:linkbutton></td>
 							        </tr>
 						        </table>
                             </ContentTemplate>
@@ -27,12 +27,12 @@
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" noWrap><asp:imagebutton id="imgCancel" title="Back To PO Returns List" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Back To PO Returns List" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
-								<td noWrap><asp:linkbutton id="cmdCancel" title="Back To PO Returns List" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Back To PO Returns List</asp:linkbutton></td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgCancel" title="Back To PO Returns List" accessKey="C" tabIndex="3" height="16" width="16" border="0" alt="Back To PO Returns List" ImageUrl="../../_layouts/images/impitem.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgCancel_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdCancel" title="Back To PO Returns List" accessKey="C" tabIndex="4" runat="server" CssClass="ms-toolbar" CausesValidation="False" onclick="cmdCancel_Click">Back To PO Returns List</asp:linkbutton></td>
 							</tr>
 						</table>
 					</td>
-					<td class="ms-toolbar" id="align02" noWrap align="right" width="99%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="align02" nowrap="nowrap" align="right" width="99%"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>
 				</tr>
 			</table>
@@ -44,94 +44,94 @@
 		<td>
 			<table cellspacing="0" cellpadding="0" width="100%" border="0">
 				<tr>
-					<td class="ms-descriptiontext" colSpan="3">
+					<td class="ms-descriptiontext" colspan="3">
 						<asp:label id="lblDebitMemoID" runat="server" Visible="False"></asp:label>
 						<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label>
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
-					<td style="PADDING-BOTTOM: 10px" vAlign="top" colSpan="3">
+					<td style="padding-bottom: 10px" valign="top" colspan="3">
 						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
-							<tr style="PADDING-BOTTOM: 10px">
+							<tr style="padding-bottom: 10px">
 								<td class="ms-formspacer"></td>
-								<td width="30%" rowSpan="4"><img alt="" src="../../_layouts/images/company_logo.gif"></td>
+								<td width="30%" rowspan="4"><img alt="" src="../../_layouts/images/company_logo.gif" /></td>
 								<td class="ms-formspacer"></td>
-								<td style="HEIGHT: 70px" borderColor="white" align="center" width="40%" rowSpan="3"><label class="ms-sectionheader" style="FONT-WEIGHT: bold; FONT-SIZE: 40px">Purchase 
+								<td style="HEIGHT: 70px" borderColor="white" align="center" width="40%" rowspan="3"><label class="ms-sectionheader" style="FONT-WEIGHT: bold; FONT-SIZE: 40px">Purchase 
 										Return</label></td>
-								<td style="PADDING-BOTTOM: 2px" width="30%" colSpan="2"><label>Purchase Return no:</label></td>
+								<td style="padding-bottom: 2px" width="30%" colspan="2"><label>Purchase Return no:</label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td class="ms-formspacer"></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td style="PADDING-BOTTOM: 2px" width="30%">
+								<td style="padding-bottom: 2px" width="30%">
 									<asp:label id="lblReturnNo" CssClass="ms-error" runat="server"></asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer" style="HEIGHT: 52px"></td>
 								<td class="ms-formspacer" style="HEIGHT: 52px"></td>
-								<td style="PADDING-BOTTOM: 2px; HEIGHT: 52px" vAlign="top" width="30%" colSpan="2"><label>Date 
+								<td style="padding-bottom: 2px; HEIGHT: 52px" valign="top" width="30%" colspan="2"><label>Date 
 										Prepared: </label>
 									<asp:label id="lblReturnDate" CssClass="ms-error" runat="server"></asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 20px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="2"><label>Supplier 
+							<tr style="padding-bottom: 20px">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Supplier 
 										Name:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colSpan="2"><label>Contact:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="2"><label>Terms:</label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%" colspan="2"><label>Contact:</label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Terms:</label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblSupplierID" runat="server" CssClass="ms-error" Visible="False"></asp:label>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblSupplierID" runat="server" CssClass="ms-error" Visible="False"></asp:label>
 									<asp:HyperLink id="lblSupplierCode" runat="server">lblSupplierCode</asp:HyperLink></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblSupplierContact" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%"><asp:label id="lblSupplierContact" runat="server" CssClass="ms-error"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblTerms" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblModeOfterms" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblTerms" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblModeOfterms" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 							<tr>
-								<td class="ms-formspacer" colSpan="6"></td>
+								<td class="ms-formspacer" colspan="6"></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="2"><label>Supplier 
+							<tr style="padding-bottom: 5px">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Supplier 
 										Address:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colSpan="2"><label>Telephone 
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%" colspan="2"><label>Telephone 
 										no:</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="2"><label>Required 
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Required 
 										Delivery Date:</label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblSupplierAddress" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblSupplierAddress" runat="server" CssClass="ms-error"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%"><asp:label id="lblSupplierTelephoneNo" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%"><asp:label id="lblSupplierTelephoneNo" runat="server" CssClass="ms-error"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%">
 									<asp:label id="lblRequiredReturnDate" CssClass="ms-error" runat="server"></asp:label></td>
 							</tr>
 							<tr>
-								<td class="ms-formspacer" colSpan="6"></td>
+								<td class="ms-formspacer" colspan="6"></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="2"><label>Deliver 
+							<tr style="padding-bottom: 5px">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="2"><label>Deliver 
 										to branch: (Specify complete address)</label></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colSpan="4"><label>Branch 
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%" colspan="4"><label>Branch 
 										Address:</label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%"><asp:label id="lblBranchCode" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblBranchID" runat="server" CssClass="ms-error" Visible="False"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%"><asp:label id="lblBranchCode" runat="server" CssClass="ms-error"></asp:label><asp:label id="lblBranchID" runat="server" CssClass="ms-error" Visible="False"></asp:label></td>
 								<td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="40%" colSpan="3"><asp:label id="lblBranchAddress" runat="server" CssClass="ms-error"></asp:label></td>
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="40%" colspan="3"><asp:label id="lblBranchAddress" runat="server" CssClass="ms-error"></asp:label></td>
 							</tr>
 							<tr>
-								<td class="ms-formspacer" colSpan="6"></td>
+								<td class="ms-formspacer" colspan="6"></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
-								<td class="ms-authoringcontrols" style="PADDING-BOTTOM: 2px" width="30%" colSpan="6"><label> 
+							<tr style="padding-bottom: 5px">
+								<td class="ms-authoringcontrols" style="padding-bottom: 2px" width="30%" colspan="6"><label> 
 										Remarks:</label>
 									<asp:label id="lblReturnRemarks" CssClass="ms-error" runat="server"></asp:label></td>
 							</tr>
@@ -139,7 +139,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 			</table>
 		</td>
@@ -207,12 +207,12 @@
 						</tr>
 						<tr>
 							<td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
-							<td colSpan="7" height="1">
+							<td colspan="7" height="1">
 								<div class="ACECollapsed" id="divExpCollAsst" runat="server" border="0">
 									<asp:panel id="panItem" runat="server" Width="100%" Height="100%" CssClass="ms-authoringcontrols">
 										<table id="tblpanItem" cellspacing="0" cellpadding="0" width="100%" border="0">
 											<tr>
-												<td class="ms-formspacer" colSpan="1"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
+												<td class="ms-formspacer" colspan="1"><img alt="" src="../../_layouts/images/trans.gif" width="10"></td>
 											</tr>
 											<tr>
 												<td width="19%">
@@ -278,19 +278,19 @@
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 			<table cellspacing="0" cellpadding="0" width="100%" border="0">
 				<tr>
-					<td class="ms-sectionline" colSpan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
-					<td vAlign="top" colSpan="3">
+					<td valign="top" colspan="3">
 						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
-							<tr style="PADDING-BOTTOM: auto">
+							<tr style="padding-bottom: auto">
 								<td class="ms-formspacer"></td>
 								<td></td>
 								<td align="left"><label>   &nbsp; &nbsp; Applicable Discount:</label></td>
@@ -301,38 +301,38 @@
                                 </asp:dropdownlist>
                                 </td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td width="50%"></td>
 								<td align="left"><label><b>Subtotal Discount:</b></label></td>
 								<td align="right"><asp:label id="lblPODiscount" runat="server" CssClass="ms-error">0.00</asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td></td>
 								<td align="left"><label><b>VATable Amount:</b></label></td>
 								<td align="right"><asp:label id="lblPOVatableAmount" runat="server" CssClass="ms-error">0.00</asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td width="50%"></td>
 								<td align="left"><label><b>Subtotal:</b></label></td>
 								<td align="right"><asp:label id="lblPOSubTotal" runat="server" CssClass="ms-error">0.00</asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td></td>
 								<td align="left"><label><b>VAT:</b></label></td>
 								<td align="right"><asp:label id="lblPOVAT" runat="server" CssClass="ms-error">0.00</asp:label></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td width="50%"></td>
 								<td align="left"><label><b>Freight:</b></label></td>
 								<td align="right"><asp:textbox onkeypress="AllNum()" id="txtPOFreight" accessKey="" runat="server" CssClass="ms-short" BorderStyle="Groove" Text="0.00" Enabled="False"></asp:textbox>
 								                                            </td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td></td>
 								<td align="left"><label><b> Deposit:</b></label></td>
@@ -342,9 +342,9 @@
 							<tr>
 								<td class="ms-formspacer"></td>
 								<td></td>
-								<td class="ms-sectionline" colSpan="2" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+								<td class="ms-sectionline" colspan="2" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 							</tr>
-							<tr style="PADDING-BOTTOM: 5px">
+							<tr style="padding-bottom: 5px">
 								<td class="ms-formspacer"></td>
 								<td width="50%"></td>
 								<td align="left"><label><b>Total:</b></label></td>
@@ -359,13 +359,13 @@
 	<tr>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 		<td id="AddUserTextTDID2">
-			<table class="ms-toolbar" id="onetidGrpsTC" style="MARGIN-LEFT: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
+			<table class="ms-toolbar" id="onetidGrpsTC" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td class="ms-toolbar" align="left" noWrap width="99%">
+					<td class="ms-toolbar" align="left" nowrap="nowrap" width="99%">
 						<table cellspacing="0" cellpadding="1" border="0" width="99%">
 							<tr>
-								<td class="ms-toolbar" noWrap>Remarks :</td>
-								<td noWrap width="99%">
+								<td class="ms-toolbar" nowrap="nowrap">Remarks :</td>
+								<td nowrap="nowrap" width="99%">
 								<asp:Label ID="Label1" runat="server" CssClass="ms-error">Enter remarks to of cancellation. Remarks should not be blank.</asp:Label><br />
 								<asp:textbox id="txtRemarks" accessKey="Q" runat="server" CssClass="ms-long" BorderStyle="Groove" Width="100%" TextMode="MultiLine" Rows="5" BorderColor="Red"></asp:textbox></td>
 							</tr>
@@ -378,14 +378,14 @@
                             <ContentTemplate>
 						        <table cellspacing="0" cellpadding="1" border="0">
 							        <tr>
-								        <td class="ms-toolbar" noWrap style="width: 19px"><asp:imagebutton id="imgCancelPOReturn" title="Cancel This Purchase Order Return" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/cancel.gif" alt="Cancel this purchase order return" border="0" width="16" height="16" OnClick="imgCancelPOReturn_Click"></asp:imagebutton></td>
-								        <td noWrap><asp:linkbutton id="cmdCancelPOReturn" title="Cancel this purchase order return" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdCancelPO_Click">Cancel PO Return</asp:linkbutton></td>
+								        <td class="ms-toolbar" nowrap="nowrap" style="width: 19px"><asp:imagebutton id="imgCancelPOReturn" title="Cancel This Purchase Order Return" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/cancel.gif" alt="Cancel this purchase order return" border="0" width="16" height="16" OnClick="imgCancelPOReturn_Click"></asp:imagebutton></td>
+								        <td nowrap="nowrap"><asp:linkbutton id="cmdCancelPOReturn" title="Cancel this purchase order return" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdCancelPO_Click">Cancel PO Return</asp:linkbutton></td>
 							        </tr>
 						        </table>
                             </ContentTemplate>
                         </asp:UpdatePanel>
 					</td>
-					<td class="ms-toolbar" id="align052" noWrap align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="align052" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>
 				</tr>
 			</table>

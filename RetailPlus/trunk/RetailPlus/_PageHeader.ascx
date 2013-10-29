@@ -37,17 +37,17 @@
 <head><link rel="shortcut icon" href="/RetailPlus/_layouts/images/rbs.ico" /></head>
 <table width="100%" border="0" cellspacing="5" cellpadding="0">
 	<tr>
-		<td><table cellSpacing="0" cellPadding="0" width="100%" border="0">
+		<td><table cellspacing="0" cellpadding="0" width="100%" border="0">
 				<tr>
-					<td vAlign="center" noWrap align="left" width="12%"><A title="Site Logo" href="/RetailPlus" target="_self">
+					<td valign="center" noWrap align="left" width="12%"><A title="Site Logo" href="/RetailPlus" target="_self">
 							<IMG alt="Site Logo" src="/RetailPlus/_layouts/images/company_logo.gif" border="0">
 						</A>
 					</td>
-					<td vAlign="center" noWrap align="right"><A title="RetailPlus Business Solutions Logo" href="http://www.myRetailPlus.com" target="_blank">
+					<td valign="center" noWrap align="right"><A title="RetailPlus Business Solutions Logo" href="http://www.myRetailPlus.com" target="_blank">
 							<IMG alt="RetailPlus Business Solutions Logo" src="/RetailPlus/_layouts/images/rbs_logo.gif" border="0">
 						</A>
 					</td>
-					<!--td width="88%" align="left" vAlign="top" background="/RetailPlus/_layouts/images/top4_bg.jpg">
+					<!--td width="88%" align="left" valign="top" background="/RetailPlus/_layouts/images/top4_bg.jpg">
 						<div align="right"><img src="/RetailPlus/_layouts/images/top4_right.jpg"></div>
 					</td-->
 				</tr>

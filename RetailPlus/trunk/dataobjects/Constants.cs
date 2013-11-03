@@ -145,6 +145,8 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_VERSION_FTP_IPADDRESS = "VersionFTPIPAddress";
         public const string SYS_CONFIG_CHECK_OUT_BILL_HEADER_LABEL = "CheckOutBillHeaderLabel";
         public const string SYS_CONFIG_CHARGE_SLIP_HEADER_LABEL = "ChargeSlipHeaderLabel";
+        public const string SYS_CONFIG_WILL_PRINT_CREDITPAYMENT_HEADER = "WillPrintCreditPaymentHeader";
+        public const string SYS_CONFIG_WILL_WRITE_SYSTEM_LOG = "WillWriteSystemLog";
         
     }
 }

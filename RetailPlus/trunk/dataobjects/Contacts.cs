@@ -667,7 +667,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.CreditDetails.CreditActive = Convert.ToBoolean(Details.IsCreditAllowed);
 
                 // Oct 12, 2013 : - get additional details
-                Details.AdditionalDetails = new ContactAddOns().Details(Details.ContactID);
+                Details.AdditionalDetails = new ContactAddOns(base.Connection, base.Transaction).Details(Details.ContactID);
             }
             catch (Exception ex) { throw base.ThrowException(ex); }
             return Details;

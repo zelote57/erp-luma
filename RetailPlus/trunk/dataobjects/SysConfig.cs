@@ -40,6 +40,13 @@ namespace AceSoft.RetailPlus.Data
 
         public string CheckOutBillHeaderLabel;
         public string ChargeSlipHeaderLabel;
+
+        public bool WillPrintCreditPaymentHeader;
+        public bool WillWriteSystemLog;
+
+        public bool WillDeductTFInXRead;
+        public bool WillDeductTFInZRead;
+        public bool WillDeductTFInTerminalReport;
     }
     public class SysConfig : POSConnection
     {
@@ -72,6 +79,61 @@ namespace AceSoft.RetailPlus.Data
         }
 
         #endregion
+
+        public bool get_WillPrintCreditPaymentHeader()
+        {
+            bool boRetValue = true;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_PRINT_CREDITPAYMENT_HEADER));
+            }
+            catch { }
+            return boRetValue;
+        }
+        public bool get_WillWriteSystemLog()
+        {
+            bool boRetValue = true;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_WRITE_SYSTEM_LOG));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public bool get_WillDeductTFInXRead()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_DEDUCT_TF_IN_XREAD));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public bool get_WillDeductTFInZRead()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_DEDUCT_TF_IN_ZREAD));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public bool get_WillDeductTFInTerminalReport()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_DEDUCT_TF_IN_TERMINAL_REPORT));
+            }
+            catch { }
+            return boRetValue;
+        }
+
 
         public string get_CompanyCode()
         {
@@ -123,6 +185,12 @@ namespace AceSoft.RetailPlus.Data
 
             clsSysConfigDetails.CheckOutBillHeaderLabel = get_CheckOutBillHeaderLabel();
             clsSysConfigDetails.ChargeSlipHeaderLabel = get_ChargeSlipHeaderLabel();
+            clsSysConfigDetails.WillPrintCreditPaymentHeader = get_WillPrintCreditPaymentHeader();
+            clsSysConfigDetails.WillWriteSystemLog = get_WillWriteSystemLog();
+
+            clsSysConfigDetails.WillDeductTFInXRead = get_WillDeductTFInXRead();
+            clsSysConfigDetails.WillDeductTFInZRead = get_WillDeductTFInZRead();
+            clsSysConfigDetails.WillDeductTFInTerminalReport = get_WillDeductTFInTerminalReport();
             
             return clsSysConfigDetails;
         }

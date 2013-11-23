@@ -1619,6 +1619,10 @@ namespace AceSoft.RetailPlus.Client.UI
 							case Keys.Enter:
 								EnterCreditPayment();
 								break;
+
+                            case Keys.Delete:
+                                InitializeZRead(true);
+                                break;
 						}
 					}
 					else if (Control.ModifierKeys == Keys.Alt)
@@ -1778,7 +1782,7 @@ namespace AceSoft.RetailPlus.Client.UI
 								}
 
 							case Keys.Delete:
-								InitializeZRead();
+								InitializeZRead(false);
 								break;
 
 							case Keys.PageDown:
@@ -4215,7 +4219,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
 			}
 		}
-		private void InitializeZRead()
+        private void InitializeZRead(bool boWithOutTF)
 		{
 			if (mboIsInTransaction)
 			{
@@ -4276,7 +4280,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						clsTerminal.UpdateIsCashCountInitialized(Constants.TerminalBranchID, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierID, false);
 
 						//initialize Z-Read
-						clsTerminalReport.InitializeZRead(Constants.TerminalBranchID, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierName);
+                        clsTerminalReport.InitializeZRead(Constants.TerminalBranchID, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierName, boWithOutTF);
 
                         InsertAuditLog(AccessTypes.InitializeZRead, "Initialize Z-Read." + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 
@@ -11379,7 +11383,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				XZReadReportWnd clsXZReadReportWnd = new XZReadReportWnd();
 				clsXZReadReportWnd.Details = Details;
 				clsXZReadReportWnd.CashierName = lblCashier.Text;
-				clsXZReadReportWnd.TrustFund = 0;
+				//clsXZReadReportWnd.TrustFund = 0;
+                clsXZReadReportWnd.TrustFund = mclsTerminalDetails.TrustFund;
 				clsXZReadReportWnd.TerminalReportType = TerminalReportType.ZRead;
 				clsXZReadReportWnd.ShowDialog(this);
 				result = clsXZReadReportWnd.Result;
@@ -11429,11 +11434,28 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				if (mclsTerminalDetails.WillPrintGrandTotal == true)
 				{
-					mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
-					mstrToPrint += "OLD GRAND TOTAL     :" + Convert.ToDecimal(Details.OldGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
-					mstrToPrint += "This Total Amount   :" + Convert.ToDecimal(TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
-					mstrToPrint += "                    :" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21, ' ') + Environment.NewLine;
-					mstrToPrint += "NEW GRAND TOTAL     :" + Convert.ToDecimal(Details.NewGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                    Data.SysConfig clsSysConfig = new Data.SysConfig(mConnection, mTransaction);
+                    mclsSysConfigDetails.WillDeductTFInZRead = clsSysConfig.get_WillDeductTFInZRead();
+                    clsSysConfig.CommitAndDispose();
+
+                    if (mclsSysConfigDetails.WillDeductTFInZRead)
+                    {
+                        mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
+                        mstrToPrint += "OLD GRAND TOTAL     :" + Convert.ToDecimal(Details.OldGrandTotal - (Details.OldGrandTotal * (mclsTerminalDetails.TrustFund / 100))).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "This Total Amount   :" + Convert.ToDecimal(TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "                    :" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21, ' ') + Environment.NewLine;
+                        mstrToPrint += "NEW GRAND TOTAL     :" + Convert.ToDecimal((Details.OldGrandTotal - (Details.OldGrandTotal * (mclsTerminalDetails.TrustFund / 100))) + TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        
+                        // need to update the old grand total 
+                    }
+                    else
+                    {
+                        mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
+                        mstrToPrint += "OLD GRAND TOTAL     :" + Convert.ToDecimal(Details.OldGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "This Total Amount   :" + Convert.ToDecimal(TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "                    :" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21, ' ') + Environment.NewLine;
+                        mstrToPrint += "NEW GRAND TOTAL     :" + Convert.ToDecimal(Details.NewGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                    }
 				}
 
 				mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
@@ -11554,9 +11576,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			try
 			{
+                // override the Trustfund coz its a reprint
+                // Nov 20, 2013 put this coz sometimes the TF is zero
+                decimal oldTrustFund = mclsTerminalDetails.TrustFund;
+                mclsTerminalDetails.TrustFund = Details.TrustFund;
+
 				// override the cashiername to be printed in the receipt
 				mclsSalesTransactionDetails.CashierName = Details.InitializedBy;
-
+                
 				PrintingPreference oldCONFIG_AutoPrint = mclsTerminalDetails.AutoPrint;
 				mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
 
@@ -11689,6 +11716,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				// revert override the cashiername to be printed in the receipt
 				mclsSalesTransactionDetails.CashierName = lblCashier.Text;
 				mclsTerminalDetails.AutoPrint = oldCONFIG_AutoPrint;
+                mclsTerminalDetails.TrustFund = oldTrustFund;
 
 				InsertAuditLog(AccessTypes.PrintZRead, "Print ZRead report: TerminalNo=" + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 			}
@@ -11792,7 +11820,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				XZReadReportWnd clsXZReadReportWnd = new XZReadReportWnd();
 				clsXZReadReportWnd.Details = Details;
 				clsXZReadReportWnd.CashierName = lblCashier.Text;
-				clsXZReadReportWnd.TrustFund = 0; // mclsTerminalDetails.TrustFund;
+				//clsXZReadReportWnd.TrustFund = 0; // mclsTerminalDetails.TrustFund;
+                clsXZReadReportWnd.TrustFund = mclsTerminalDetails.TrustFund;
 				clsXZReadReportWnd.TerminalReportType = TerminalReportType.XRead;
 				clsXZReadReportWnd.ShowDialog(this);
 				result = clsXZReadReportWnd.Result;
@@ -11837,11 +11866,26 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				if (mclsTerminalDetails.WillPrintGrandTotal == true)
 				{
-					mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
-					mstrToPrint += "OLD GRAND TOTAL     :" + Convert.ToDecimal(Details.OldGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
-					mstrToPrint += "This Total Amount   :" + Convert.ToDecimal(TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
-					mstrToPrint += "                    :" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21, ' ') + Environment.NewLine;
-					mstrToPrint += "NEW GRAND TOTAL     :" + Convert.ToDecimal(Details.NewGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                    Data.SysConfig clsSysConfig = new Data.SysConfig(mConnection, mTransaction);
+                    mclsSysConfigDetails.WillDeductTFInXRead = clsSysConfig.get_WillDeductTFInXRead();
+                    clsSysConfig.CommitAndDispose();
+
+                    if (mclsSysConfigDetails.WillDeductTFInXRead)
+                    {
+                        mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
+                        mstrToPrint += "OLD GRAND TOTAL     :" + Convert.ToDecimal(Details.OldGrandTotal - (Details.OldGrandTotal * (mclsTerminalDetails.TrustFund / 100))).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "This Total Amount   :" + Convert.ToDecimal(TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "                    :" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21, ' ') + Environment.NewLine;
+                        mstrToPrint += "NEW GRAND TOTAL     :" + Convert.ToDecimal((Details.OldGrandTotal - (Details.OldGrandTotal * (mclsTerminalDetails.TrustFund / 100))) + TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                    }
+                    else
+                    {
+                        mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
+                        mstrToPrint += "OLD GRAND TOTAL     :" + Convert.ToDecimal(Details.OldGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "This Total Amount   :" + Convert.ToDecimal(TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "                    :" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21, ' ') + Environment.NewLine;
+                        mstrToPrint += "NEW GRAND TOTAL     :" + Convert.ToDecimal(Details.NewGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                    }
 				}
 
 				mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
@@ -12744,6 +12788,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					clsTerminalReportWnd.Details = Details;
 					clsTerminalReportWnd.CashierName = lblCashier.Text;
 					clsTerminalReportWnd.TrustFund = 0; // mclsTerminalDetails.TrustFund;
+                    // override this. handle the checking in wnd itself
+                    clsTerminalReportWnd.TrustFund = mclsTerminalDetails.TrustFund;
 					clsTerminalReportWnd.ShowDialog(this);
 					result = clsTerminalReportWnd.Result;
 					clsTerminalReportWnd.Close();
@@ -12787,11 +12833,26 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				if (mclsTerminalDetails.WillPrintGrandTotal == true)
 				{
-					mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
-					mstrToPrint += "OLD GRAND TOTAL     :" + Convert.ToDecimal(Details.OldGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
-					mstrToPrint += "This Total Amount   :" + Convert.ToDecimal(TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
-					mstrToPrint += "                    :" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21, ' ') + Environment.NewLine;
-					mstrToPrint += "NEW GRAND TOTAL     :" + Convert.ToDecimal(Details.NewGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                    Data.SysConfig clsSysConfig = new Data.SysConfig(mConnection, mTransaction);
+                    mclsSysConfigDetails.WillDeductTFInTerminalReport = clsSysConfig.get_WillDeductTFInTerminalReport();
+                    clsSysConfig.CommitAndDispose();
+
+                    if (mclsSysConfigDetails.WillDeductTFInTerminalReport)
+                    {
+                        mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
+                        mstrToPrint += "OLD GRAND TOTAL     :" + Convert.ToDecimal(Details.OldGrandTotal - (Details.OldGrandTotal * (mclsTerminalDetails.TrustFund / 100))).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "This Total Amount   :" + Convert.ToDecimal(TotalAmount - (TotalAmount * (mclsTerminalDetails.TrustFund / 100))).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "                    :" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21, ' ') + Environment.NewLine;
+                        mstrToPrint += "NEW GRAND TOTAL     :" + Convert.ToDecimal((Details.OldGrandTotal - (Details.OldGrandTotal * (mclsTerminalDetails.TrustFund / 100))) + TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                    }
+                    else
+                    {
+                        mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;
+                        mstrToPrint += "OLD GRAND TOTAL     :" + Convert.ToDecimal(Details.OldGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "This Total Amount   :" + Convert.ToDecimal(TotalAmount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                        mstrToPrint += "                    :" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21, ' ') + Environment.NewLine;
+                        mstrToPrint += "NEW GRAND TOTAL     :" + Convert.ToDecimal(Details.NewGrandTotal).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21) + Environment.NewLine;
+                    }
 				}
 
 				mstrToPrint += "-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine;

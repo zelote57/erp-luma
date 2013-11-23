@@ -2170,52 +2170,99 @@ namespace AceSoft.RetailPlus.Client.UI
             lblBeginningTransactionNo.Text = mDetails.BeginningTransactionNo;
             lblEndingTransactionNo.Text = mDetails.EndingTransactionNo;
 
-            lblGrossSales.Text = Convert.ToDecimal(mDetails.GrossSales - (mDetails.GrossSales * (mTrustFund / 100))).ToString("#,##0.00");
-            lblTotalDiscount.Text = Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.00");
+            lblGrossSales.Text = Convert.ToDecimal(mDetails.GrossSales).ToString("#,##0.00");
+            lblTotalDiscount.Text = Convert.ToDecimal(mDetails.TotalDiscount).ToString("#,##0.00");
 
-            lblNetSales.Text = Convert.ToDecimal(mDetails.DailySales - (mDetails.DailySales * (mTrustFund / 100))).ToString("#,##0.00");
-            lblVAT.Text = Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.00");
-            lblCharge.Text = Convert.ToDecimal(mDetails.TotalCharge - (mDetails.TotalCharge * (mTrustFund / 100))).ToString("#,##0.00");
+            lblNetSales.Text = Convert.ToDecimal(mDetails.DailySales).ToString("#,##0.00");
+            lblVAT.Text = Convert.ToDecimal(mDetails.VAT).ToString("#,##0.00");
+            lblCharge.Text = Convert.ToDecimal(mDetails.TotalCharge).ToString("#,##0.00");
             decimal TotalAmount = mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
-            lblTotalAmount.Text = Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
+            lblTotalAmount.Text = Convert.ToDecimal(TotalAmount).ToString("#,##0.00");
 
             lblOldGrandTotal.Text = Convert.ToDecimal(mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
-            lblDailySales.Text = Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
-            lblNewGrandTotal.Text = Convert.ToDecimal(mDetails.NewGrandTotal - (mDetails.NewGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
+            lblDailySales.Text = Convert.ToDecimal(TotalAmount).ToString("#,##0.00");
+            lblNewGrandTotal.Text = Convert.ToDecimal((mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))) + TotalAmount).ToString("#,##0.00");
 
-            lblTaxableAmount.Text = Convert.ToDecimal(mDetails.VATableAmount - (mDetails.VATableAmount * (mTrustFund / 100))).ToString("#,##0.00");
-            lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVaTableAmount - (mDetails.NonVaTableAmount * (mTrustFund / 100))).ToString("#,##0.00");
-            lblVAT1.Text = Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblLocalTax.Text = Convert.ToDecimal(mDetails.LocalTax - (mDetails.LocalTax * (mTrustFund / 100))).ToString("#,##0.#0");
+            lblTaxableAmount.Text = Convert.ToDecimal(mDetails.VATableAmount).ToString("#,##0.00");
+            lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVaTableAmount).ToString("#,##0.00");
+            lblVAT1.Text = Convert.ToDecimal(mDetails.VAT).ToString("#,##0.#0");
+            lblLocalTax.Text = Convert.ToDecimal(mDetails.LocalTax).ToString("#,##0.#0");
 
-            lblCashSales.Text = Convert.ToDecimal(mDetails.CashSales - (mDetails.CashSales * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblChequeSales.Text = Convert.ToDecimal(mDetails.ChequeSales - (mDetails.ChequeSales * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblCreditCardSales.Text = Convert.ToDecimal(mDetails.CreditCardSales - (mDetails.CreditCardSales * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblCreditSales.Text = Convert.ToDecimal(mDetails.CreditSales - (mDetails.CreditSales * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblCreditPayment.Text = Convert.ToDecimal(mDetails.CreditPayment - (mDetails.CreditPayment * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblDebitPayment.Text = Convert.ToDecimal(mDetails.DebitPayment - (mDetails.DebitPayment * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblVoidSales.Text = Convert.ToDecimal(mDetails.VoidSales - (mDetails.VoidSales * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblRefundSales.Text = Convert.ToDecimal(mDetails.RefundSales - (mDetails.RefundSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            lblCashSales.Text = Convert.ToDecimal(mDetails.CashSales).ToString("#,##0.#0");
+            lblChequeSales.Text = Convert.ToDecimal(mDetails.ChequeSales).ToString("#,##0.#0");
+            lblCreditCardSales.Text = Convert.ToDecimal(mDetails.CreditCardSales).ToString("#,##0.#0");
+            lblCreditSales.Text = Convert.ToDecimal(mDetails.CreditSales).ToString("#,##0.#0");
+            lblCreditPayment.Text = Convert.ToDecimal(mDetails.CreditPayment).ToString("#,##0.#0");
+            lblDebitPayment.Text = Convert.ToDecimal(mDetails.DebitPayment).ToString("#,##0.#0");
+            lblVoidSales.Text = Convert.ToDecimal(mDetails.VoidSales).ToString("#,##0.#0");
+            lblRefundSales.Text = Convert.ToDecimal(mDetails.RefundSales).ToString("#,##0.#0");
 
-            lblItemsDiscount.Text = Convert.ToDecimal(mDetails.ItemsDiscount - (mDetails.ItemsDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblSubtotalDiscount.Text = Convert.ToDecimal(mDetails.SubTotalDiscount - (mDetails.SubTotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblTotalDiscounts.Text = Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
+            lblItemsDiscount.Text = Convert.ToDecimal(mDetails.ItemsDiscount).ToString("#,##0.#0");
+            lblSubtotalDiscount.Text = Convert.ToDecimal(mDetails.SubTotalDiscount).ToString("#,##0.#0");
+            lblTotalDiscounts.Text = Convert.ToDecimal(mDetails.TotalDiscount).ToString("#,##0.#0");
 
-            lblBeginningBalance.Text = Convert.ToDecimal(mDetails.BeginningBalance - (mDetails.BeginningBalance * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblCashInDrawer.Text = Convert.ToDecimal(mDetails.CashInDrawer - (mDetails.CashInDrawer * (mTrustFund / 100))).ToString("#,##0.#0");
+            lblBeginningBalance.Text = Convert.ToDecimal(mDetails.BeginningBalance).ToString("#,##0.#0");
+            lblCashInDrawer.Text = Convert.ToDecimal(mDetails.CashInDrawer).ToString("#,##0.#0");
 
-            lblPaidOut.Text = Convert.ToDecimal(mDetails.TotalPaidOut - (mDetails.TotalPaidOut * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblCashDisburse.Text = Convert.ToDecimal(mDetails.CashDisburse - (mDetails.CashDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblChequeDisburse.Text = Convert.ToDecimal(mDetails.ChequeDisburse - (mDetails.ChequeDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblCreditCardDisburse.Text = Convert.ToDecimal(mDetails.CreditCardDisburse - (mDetails.CreditCardDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
+            lblPaidOut.Text = Convert.ToDecimal(mDetails.TotalPaidOut).ToString("#,##0.#0");
+            lblCashDisburse.Text = Convert.ToDecimal(mDetails.CashDisburse).ToString("#,##0.#0");
+            lblChequeDisburse.Text = Convert.ToDecimal(mDetails.ChequeDisburse).ToString("#,##0.#0");
+            lblCreditCardDisburse.Text = Convert.ToDecimal(mDetails.CreditCardDisburse).ToString("#,##0.#0");
 
-            lblCashWithHold.Text = Convert.ToDecimal(mDetails.CashWithHold - (mDetails.CashWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblChequeWithHold.Text = Convert.ToDecimal(mDetails.ChequeWithHold - (mDetails.ChequeWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblCreditCardWithHold.Text = Convert.ToDecimal(mDetails.CreditCardWithHold - (mDetails.CreditCardWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
+            lblCashWithHold.Text = Convert.ToDecimal(mDetails.CashWithHold).ToString("#,##0.#0");
+            lblChequeWithHold.Text = Convert.ToDecimal(mDetails.ChequeWithHold).ToString("#,##0.#0");
+            lblCreditCardWithHold.Text = Convert.ToDecimal(mDetails.CreditCardWithHold).ToString("#,##0.#0");
 
-            lblCashDeposit.Text = Convert.ToDecimal(mDetails.CashDeposit - (mDetails.CashDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblChequeDeposit.Text = Convert.ToDecimal(mDetails.ChequeDeposit - (mDetails.ChequeDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
-            lblCreditCardDeposit.Text = Convert.ToDecimal(mDetails.CreditCardDeposit - (mDetails.CreditCardDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
+            lblCashDeposit.Text = Convert.ToDecimal(mDetails.CashDeposit).ToString("#,##0.#0");
+            lblChequeDeposit.Text = Convert.ToDecimal(mDetails.ChequeDeposit).ToString("#,##0.#0");
+            lblCreditCardDeposit.Text = Convert.ToDecimal(mDetails.CreditCardDeposit).ToString("#,##0.#0");
+
+            //lblGrossSales.Text = Convert.ToDecimal(mDetails.GrossSales - (mDetails.GrossSales * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblTotalDiscount.Text = Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.00");
+
+            //lblNetSales.Text = Convert.ToDecimal(mDetails.DailySales - (mDetails.DailySales * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblVAT.Text = Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblCharge.Text = Convert.ToDecimal(mDetails.TotalCharge - (mDetails.TotalCharge * (mTrustFund / 100))).ToString("#,##0.00");
+            //decimal TotalAmount = mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
+            //lblTotalAmount.Text = Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
+
+            //lblOldGrandTotal.Text = Convert.ToDecimal(mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblDailySales.Text = Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblNewGrandTotal.Text = Convert.ToDecimal(mDetails.NewGrandTotal - (mDetails.NewGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
+
+            //lblTaxableAmount.Text = Convert.ToDecimal(mDetails.VATableAmount - (mDetails.VATableAmount * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVaTableAmount - (mDetails.NonVaTableAmount * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblVAT1.Text = Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblLocalTax.Text = Convert.ToDecimal(mDetails.LocalTax - (mDetails.LocalTax * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblCashSales.Text = Convert.ToDecimal(mDetails.CashSales - (mDetails.CashSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeSales.Text = Convert.ToDecimal(mDetails.ChequeSales - (mDetails.ChequeSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardSales.Text = Convert.ToDecimal(mDetails.CreditCardSales - (mDetails.CreditCardSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditSales.Text = Convert.ToDecimal(mDetails.CreditSales - (mDetails.CreditSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditPayment.Text = Convert.ToDecimal(mDetails.CreditPayment - (mDetails.CreditPayment * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblDebitPayment.Text = Convert.ToDecimal(mDetails.DebitPayment - (mDetails.DebitPayment * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblVoidSales.Text = Convert.ToDecimal(mDetails.VoidSales - (mDetails.VoidSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblRefundSales.Text = Convert.ToDecimal(mDetails.RefundSales - (mDetails.RefundSales * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblItemsDiscount.Text = Convert.ToDecimal(mDetails.ItemsDiscount - (mDetails.ItemsDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblSubtotalDiscount.Text = Convert.ToDecimal(mDetails.SubTotalDiscount - (mDetails.SubTotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblTotalDiscounts.Text = Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblBeginningBalance.Text = Convert.ToDecimal(mDetails.BeginningBalance - (mDetails.BeginningBalance * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCashInDrawer.Text = Convert.ToDecimal(mDetails.CashInDrawer - (mDetails.CashInDrawer * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblPaidOut.Text = Convert.ToDecimal(mDetails.TotalPaidOut - (mDetails.TotalPaidOut * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCashDisburse.Text = Convert.ToDecimal(mDetails.CashDisburse - (mDetails.CashDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeDisburse.Text = Convert.ToDecimal(mDetails.ChequeDisburse - (mDetails.ChequeDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardDisburse.Text = Convert.ToDecimal(mDetails.CreditCardDisburse - (mDetails.CreditCardDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblCashWithHold.Text = Convert.ToDecimal(mDetails.CashWithHold - (mDetails.CashWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeWithHold.Text = Convert.ToDecimal(mDetails.ChequeWithHold - (mDetails.ChequeWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardWithHold.Text = Convert.ToDecimal(mDetails.CreditCardWithHold - (mDetails.CreditCardWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblCashDeposit.Text = Convert.ToDecimal(mDetails.CashDeposit - (mDetails.CashDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeDeposit.Text = Convert.ToDecimal(mDetails.ChequeDeposit - (mDetails.ChequeDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardDeposit.Text = Convert.ToDecimal(mDetails.CreditCardDeposit - (mDetails.CreditCardDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
 
             lblNoOfCashTransactions.Text = mDetails.NoOfCashTransactions.ToString("#,##0");
             lblNoOfChequeTransactions.Text = mDetails.NoOfChequeTransactions.ToString("#,##0");

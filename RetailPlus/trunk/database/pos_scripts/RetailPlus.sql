@@ -4861,6 +4861,7 @@ INSERT INTO sysTerminalkey VALUE ('K834T9A2BJNB', 'VWHt9ZteRBNQZb9gBbnOGZDpjD70U
 INSERT INTO sysTerminalkey VALUE ('WD-WXEY08TPJ153', 'XzdDZGO4tkW2IfafQSh7kXs8JEeCK0r2Qqc7yI9arTtPtcLG5r874HU4uaX/pEAq');
 INSERT INTO sysTerminalkey VALUE ('587OCI98T', 'lLJPu/BhLTcF0XpSVZ/p3JH3Hp/zbCwy+5rUF/kj/YpVaZwDBjOxgzaT15jJY8Qu');
 INSERT INTO sysTerminalkey VALUE ('9VP7QL84', 'VuQyYqBleUyCjuWIonIDCnxS3dBaZOsV0/0mn3znbktrXn4EfKsOTpxVOAxVw+Jw');
+INSERT INTO sysTerminalkey VALUE ('081117FB0F06LLCXX95', 'jvqH+QDO7AqRo3e1h7PJAe0eHZkaHGVhl7MLylqmWvzLVRiM9C+UiamWfYNogI+nj9B6Y74heJHmalUoHvOw6A==');
 
 ALTER TABLE tblProducts ADD `RID` BIGINT NOT NULL DEFAULT 0;
 
@@ -6801,6 +6802,7 @@ ALTER DATABASE pos CHARACTER SET utf8;
 
 SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schema_name = 'pos';
 
+-- additional in sysConfig
 DELETE FROM sysConfig;
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('BACKEND_VARIATION_TYPE',	'BACKEND_VARIATION_TYPE',			'EXPIRATION;LOTNO');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyCode',			'CompanyDetails',					'RBS');
@@ -6821,3 +6823,33 @@ ALTER TABLE tblTerminal ADD `IncludeTermsAndConditions` TINYINT(1) UNSIGNED NOT 
 UPDATE sysConfig set ConfigValue = '' where ConfigName = 'CompanyCode';
 UPDATE sysConfig set ConfigValue = '' where ConfigName = 'CompanyName';
 UPDATE sysConfig set ConfigValue = '' where ConfigName = 'TIN';
+
+DELETE FROM sysConfig WHERE ConfigName = 'WillPrintCreditPaymentHeader';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillPrintCreditPaymentHeader',	'FE',						'true');
+DELETE FROM sysConfig WHERE ConfigName = 'WillWriteSystemLog';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillWriteSystemLog',				'FE',						'true');
+
+
+-- 18Nov2013 settings to show if will print the values with TF
+--			 set to true
+DELETE FROM sysConfig WHERE ConfigName = 'WillDeductTFInXRead';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDeductTFInXRead',			'FE',						'false');
+DELETE FROM sysConfig WHERE ConfigName = 'WillDeductTFInZRead';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDeductTFInZRead',			'FE',						'false');
+DELETE FROM sysConfig WHERE ConfigName = 'WillDeductTFInTerminalReport';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillDeductTFInTerminalReport',	'FE',						'false');
+
+-- 20Nov2013 settings to show if will print the values with TF
+--			hold the actual values.
+--			
+ALTER TABLE tblTerminalReport ADD `ActualOldGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `ActualNewGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `ActualOldGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `ActualNewGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+UPDATE tblTerminalReport SET ActualOldGrandTotal = OldGrandTotal WHERE ActualOldGrandTotal = 0;
+UPDATE tblTerminalReport SET ActualNewGrandTotal = NewGrandTotal WHERE ActualNewGrandTotal = 0;
+UPDATE tblTerminalReportHistory SET ActualOldGrandTotal = OldGrandTotal WHERE ActualOldGrandTotal = 0;
+UPDATE tblTerminalReportHistory SET ActualNewGrandTotal = NewGrandTotal WHERE ActualNewGrandTotal = 0;
+
+

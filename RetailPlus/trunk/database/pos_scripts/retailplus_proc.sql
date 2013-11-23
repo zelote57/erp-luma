@@ -284,7 +284,8 @@ BEGIN
 					QuantitySold						=  QuantitySold							+  decQuantitySold, 
 					GroupSales							=  GroupSales							+  decGroupSales, 
 					OldGrandTotal						=  OldGrandTotal						+  decOldGrandTotal, 
-					NewGrandTotal						=  NewGrandTotal						+  decNewGrandTotal, 
+					NewGrandTotal						=  NewGrandTotal						+  decNewGrandTotal,
+					ActualNewGrandTotal					=  ActualNewGrandTotal					+  decNewGrandTotal, 
 					VATableAmount						=  VATableAmount						+  decVATableAmount, 
 					NonVaTableAmount					=  NonVaTableAmount						+  decNonVaTableAmount, 
 					VAT									=  VAT									+  decVAT, 
@@ -1008,6 +1009,7 @@ GO
 delimiter ;
 
 
+
 /*********************************
 	procTerminalReportInitializeZRead
 	Lemuel E. Aceron
@@ -1025,16 +1027,36 @@ delimiter GO
 DROP PROCEDURE IF EXISTS procTerminalReportInitializeZRead
 GO
 
-create procedure procTerminalReportInitializeZRead(IN intBranchID int(4), IN strTerminalNo varchar(10), IN dteDateLastInitialized DateTime, IN strInitializedBy varchar(150))
+create procedure procTerminalReportInitializeZRead(IN intBranchID int(4), IN strTerminalNo varchar(10), IN dteDateLastInitialized DateTime, IN strInitializedBy varchar(150),IN intWithOutTF tinyint(1))
 BEGIN
 	DECLARE decTrustFund DECIMAL(18,3) DEFAULT 0;
-	
-	SET decTrustFund = (SELECT TRUSTFUND FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-	
+
+	-- use to remove the TF in the newgrandtotal
+	-- use to add the TF in the new oldgrandtotal
+	DECLARE decVirtualTrustFund DECIMAL(18,3) DEFAULT 0;
+
+	DECLARE decOldGrandTotal DECIMAL(18,3) DEFAULT 0;
+	DECLARE decNewGrandTotal DECIMAL(18,3) DEFAULT 0;
+
+	IF (intWithOutTF = 1 OR intWithOutTF = -1) THEN
+		SET decTrustFund = 0;
+		SET decVirtualTrustFund = (SELECT TRUSTFUND FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+
+		SET decOldGrandTotal = (SELECT OldGrandTotal - (OldGrandTotal * decVirtualTrustFund / 100) FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		SET decNewGrandTotal = (SELECT OldGrandTotal - (OldGrandTotal * decVirtualTrustFund / 100) + VATableAmount + NonVaTableAmount + VAT + EVAT + LocalTax + TotalCharge FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+	ELSE
+		SET decTrustFund = (SELECT TRUSTFUND FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		SET decVirtualTrustFund = 0;
+
+		SET decOldGrandTotal = (SELECT OldGrandTotal FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		SET decNewGrandTotal = (SELECT NewGrandTotal FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		
+	END IF;
+
 	INSERT INTO tblTerminalReportHistory (
 					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, ZReadCount, 
 					XReadCount, GrossSales, TotalDiscount, TotalCharge, DailySales, 
-					QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, VATableAmount, 
+					QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, VATableAmount, 
 					NonVATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
 					ChequeSales, CreditCardSales, CreditSales, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
 					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
@@ -1053,7 +1075,7 @@ BEGIN
 				(SELECT 
 					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, ZReadCount, 
 					XReadCount, GrossSales, TotalDiscount, TotalCharge, DailySales, 
-					QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, VATableAmount, 
+					QuantitySold, GroupSales, decOldGrandTotal, decNewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, VATableAmount, 
 					NonVATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
 					ChequeSales, CreditCardSales, CreditSales, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
 					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
@@ -1070,7 +1092,11 @@ BEGIN
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
 					PromotionalItems, CreditSalesTax, BatchCounter, strInitializedBy FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 					
-	UPDATE tblTerminalReport SET OldGrandTotal =  NewGrandTotal WHERE TerminalNo = strTerminalNo;
+	UPDATE tblTerminalReport SET 
+		OldGrandTotal =  decNewGrandTotal / ((100 - decVirtualTrustFund) / 100),
+		NewGrandTotal =  decNewGrandTotal / ((100 - decVirtualTrustFund) / 100),
+		ActualOldGrandTotal = ActualNewGrandTotal
+	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
 	
 	UPDATE tblTerminalReport SET 
 					BeginningTransactionNo				=  EndingTransactionNo, 
@@ -5856,7 +5882,7 @@ delimiter ;
 	
 	Desc: This will get the main product list
 
-	CALL procProductMainDetails(0, 3057, 0, '');
+	CALL procProductMainDetails(1, 44, 0, '','',1;
 	
 **************************************************************/
 delimiter GO
@@ -6934,7 +6960,7 @@ delimiter ;
 	
 	Desc: This will get any value from sysConfig
 
-	CALL procSysConfigSelectByName('BACKEND_VARIATION_TYPE');
+	CALL procSysConfigSelectByName('WillDeductTFInZRead');
 	
 **************************************************************/
 delimiter GO
@@ -7573,3 +7599,5 @@ delimiter ;
 ALTER DATABASE pos CHARACTER SET utf8;
 
 SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schema_name = 'pos';
+
+update tblproducts set SupplierID = 2 where supplierid not in (select distinct contactid from tblcontacts);

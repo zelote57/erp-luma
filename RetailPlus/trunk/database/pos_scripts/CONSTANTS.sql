@@ -31,10 +31,14 @@ INSERT INTO tblProductGroup(ProductGroupID, ProductGroupCode, ProductGroupName, 
 DELETE FROM tblProductSubGroup WHERE ProductSubGroupID = 1;  
 INSERT INTO tblProductSubGroup(ProductSubGroupID, ProductGroupID, ProductSubGroupCode, ProductSubGroupName, BaseUnitID) VALUES (1, 1,'DEFAULT','DEFAULT',1); 
 
-DELETE FROM tblProductPackage WHERE PackageID = 1;
+DELETE FROM tblProductInventory WHERE ProductID = 1;  
+DELETE FROM tblProductPackage WHERE PackageID = 1 or (ProductID = 1 AND UnitID=1);
 DELETE FROM tblProducts WHERE ProductID = 1;  
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted) VALUES (1, 'CREDIT PAYMENT','CREDIT PAYMENT',1,1,2,1);
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 1, 'CREDIT PAYMENT', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'CREDIT PAYMENT';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity)VALUES(1, 1,999999999);
+UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'CREDIT PAYMENT');
+
 
 DELETE FROM tblProductPackage WHERE PackageID = 2;
 DELETE FROM tblProducts WHERE ProductID = 2;

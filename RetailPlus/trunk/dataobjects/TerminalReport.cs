@@ -1398,11 +1398,11 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Public Methods
 
-        public void InitializeZRead(int BranchID, string pvtTerminalNo, string pvtInitializedBy)
+        public void InitializeZRead(int BranchID, string pvtTerminalNo, string pvtInitializedBy, bool pvtWithOutTF)
 		{
 			try 
 			{
-                string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy);";
+                string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy, @WithOutTF);";
 	 			
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
@@ -1423,6 +1423,8 @@ namespace AceSoft.RetailPlus.Data
                 MySqlParameter prmInitializedBy = new MySqlParameter("@InitializedBy",MySqlDbType.String);
                 prmInitializedBy.Value = pvtInitializedBy;
                 cmd.Parameters.Add(prmInitializedBy);
+
+                cmd.Parameters.AddWithValue("@WithOutTF", pvtWithOutTF);
 
 				base.ExecuteNonQuery(cmd);
 

@@ -147,6 +147,9 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_CHARGE_SLIP_HEADER_LABEL = "ChargeSlipHeaderLabel";
         public const string SYS_CONFIG_WILL_PRINT_CREDITPAYMENT_HEADER = "WillPrintCreditPaymentHeader";
         public const string SYS_CONFIG_WILL_WRITE_SYSTEM_LOG = "WillWriteSystemLog";
+        public const string SYS_CONFIG_WILL_DEDUCT_TF_IN_XREAD = "WillDeductTFInXRead";
+        public const string SYS_CONFIG_WILL_DEDUCT_TF_IN_ZREAD = "WillDeductTFInZRead";
+        public const string SYS_CONFIG_WILL_DEDUCT_TF_IN_TERMINAL_REPORT = "WillDeductTFInTerminalReport";
         
     }
 }

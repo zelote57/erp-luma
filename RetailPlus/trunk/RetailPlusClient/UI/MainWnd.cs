@@ -107,6 +107,7 @@ namespace AceSoft.RetailPlus.Client.UI
         //private bool mboIsDiscountAuthorized;
 		private DateTime mdtCurrentDateTime;
 
+        private bool mboDoNotPrintTransactionDate;
         Data.SysConfigDetails mclsSysConfigDetails;
 		Data.TerminalDetails mclsTerminalDetails;
 		Data.SalesTransactionDetails mclsSalesTransactionDetails;
@@ -1974,6 +1975,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 lblConsignment.Visible = false;
 
 				mboIsRefund = false;
+                mboDoNotPrintTransactionDate = false;
 				//mboIsDiscountAuthorized = false;
 
 				mclsSalesTransactionDetails = new Data.SalesTransactionDetails();
@@ -4640,10 +4642,17 @@ namespace AceSoft.RetailPlus.Client.UI
 						 * Oct 17, 2011 : Move this code here.
 						 * check if will print transaction or not before opening any connection to database.
 						 * */
+                        mboDoNotPrintTransactionDate = false;
 						if (mclsTerminalDetails.AutoPrint == PrintingPreference.AskFirst)
 						{
-							if (MessageBox.Show("Would you like to print this transaction?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-								mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
+                            if (MessageBox.Show("Would you like to print this transaction?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                            {
+                                mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
+
+                                if (mclsSysConfigDetails.WillAskDoNotPrintTransactionDate)
+                                    if (MessageBox.Show("Would you like the system NOT to print the transaction date?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                                        mboDoNotPrintTransactionDate = true;
+                            }
 						}
 
 						// Mar 17, 2009
@@ -7798,6 +7807,13 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				if (result == DialogResult.OK)
 				{
+                    if (mclsTerminalDetails.AutoPrint == PrintingPreference.AskFirst)
+                    {
+                        if (mclsSysConfigDetails.WillAskDoNotPrintTransactionDate)
+                            if (MessageBox.Show("Would you like the system NOT to print the transaction date?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                                mboDoNotPrintTransactionDate = true;
+                    }
+
 					clsEvent.AddEventLn("Reprinting transaction #: " + strTransactionNo, true);
 
 					mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
@@ -10300,27 +10316,27 @@ namespace AceSoft.RetailPlus.Client.UI
 				{
 					case ReportFormatOrientation.Justify:
 						if (clsReceiptDetails.Text == "" || clsReceiptDetails.Text == null)
-							mstrToPrint +=GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + Environment.NewLine; 
+                            mstrToPrint += GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + Environment.NewLine; 
 						else
 						{
 							if (clsReceiptDetails.Value == ReceiptFieldFormats.AmountDue && !mclsTerminalDetails.IsPrinterDotMatrix)
-								mstrToPrint += clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + Environment.NewLine; 
+                                mstrToPrint += clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + Environment.NewLine; 
 							else if (clsReceiptDetails.Value == ReceiptFieldFormats.Change && !mclsTerminalDetails.IsPrinterDotMatrix)
                                 mstrToPrint += RawPrinterHelper.escEmphasizedOn + clsReceiptDetails.Text.PadRight(10) + RawPrinterHelper.escAlignRight + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 10) + RawPrinterHelper.escEmphasizedOff + Environment.NewLine; 
 							else
-								mstrToPrint +=clsReceiptDetails.Text.PadRight(13) + ":" + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 14) + Environment.NewLine; 
+                                mstrToPrint += clsReceiptDetails.Text.PadRight(13) + ":" + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 14) + Environment.NewLine; 
 						}
 						break;
 					case ReportFormatOrientation.Center:
 						if (clsReceiptDetails.Text == "" || clsReceiptDetails.Text == null)
-							mstrToPrint +=CenterString(GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
+                            mstrToPrint += CenterString(GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 						else
 							if (clsReceiptDetails.Value == ReceiptFieldFormats.AmountDue && !mclsTerminalDetails.IsPrinterDotMatrix)
-								mstrToPrint += RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + Environment.NewLine;
+                                mstrToPrint += RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + Environment.NewLine;
 							else if (clsReceiptDetails.Value == ReceiptFieldFormats.Change && !mclsTerminalDetails.IsPrinterDotMatrix)
                                 mstrToPrint += RawPrinterHelper.escEmphasizedOn + RawPrinterHelper.escAlignCenter + clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate) + RawPrinterHelper.escAlignLeft + RawPrinterHelper.escEmphasizedOff + Environment.NewLine;
 							else
-								mstrToPrint +=CenterString(clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
+                                mstrToPrint += CenterString(clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value, IsReceipt, OverRidingPrintDate), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 						
 						break;
 				}
@@ -10339,7 +10355,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				stModule = "PageHeader" + iCtr;
 				clsReceiptDetails = clsReceipt.Details(stModule);
 
-				PrintReportValue(clsReceiptDetails, IsReceipt, DateTime.MinValue);
+                PrintReportValue(clsReceiptDetails, IsReceipt, DateTime.MinValue);
 			}
 
 			PrintItemHeader();
@@ -10407,7 +10423,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				stModule = "ReportHeader" + iCtr;
 				clsReceiptDetails = clsReceipt.Details(stModule);
 
-				PrintReportValue(clsReceiptDetails, IsReceipt, OverRidingPrintDate);
+                PrintReportValue(clsReceiptDetails, IsReceipt, OverRidingPrintDate);
 			}
 			clsReceipt.CommitAndDispose();
 		}
@@ -10416,7 +10432,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		 * use for printing the PageHeader 
 		 * if the configuration is Autocutter
 		 * **********************/
-		private void PrintReportPageHeaderSectionChecked(bool IsReceipt)
+        private void PrintReportPageHeaderSectionChecked(bool IsReceipt)
 		{
 			if (IsReceipt)
 			{
@@ -10432,7 +10448,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					stModule = "PageHeader" + iCtr;
 					clsReceiptDetails = clsReceipt.Details(stModule);
 
-					PrintReportValue(clsReceiptDetails, IsReceipt, DateTime.MinValue);
+                    PrintReportValue(clsReceiptDetails, IsReceipt, DateTime.MinValue);
 				}
 
 				PrintItemHeader();
@@ -10601,7 +10617,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			mstrToPrint += Environment.NewLine;
 		}
 
-		private void PrintPageFooterASection()
+        private void PrintPageFooterASection()
 		{
 			int iCtr = 0;
 			string stModule = "";
@@ -10614,12 +10630,12 @@ namespace AceSoft.RetailPlus.Client.UI
 				stModule = "PageFooterA" + iCtr;
 				clsReceiptDetails = clsReceipt.Details(stModule);
 
-				PrintReportValue(clsReceiptDetails, false, DateTime.MinValue);
+                PrintReportValue(clsReceiptDetails, false, DateTime.MinValue);
 			}
 
 			clsReceipt.CommitAndDispose();
 		}
-		private void PrintPageFooterBSection()
+        private void PrintPageFooterBSection()
 		{
 			int iCtr = 0;
 			string stModule = "";
@@ -10632,7 +10648,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				stModule = "PageFooterB" + iCtr;
 				clsReceiptDetails = clsReceipt.Details(stModule);
 
-				PrintReportValue(clsReceiptDetails, false, DateTime.MinValue);
+                PrintReportValue(clsReceiptDetails, false, DateTime.MinValue);
 			}
 
 			clsReceipt.CommitAndDispose();
@@ -10650,7 +10666,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				stModule = "ReportFooter" + iCtr;
 				clsReceiptDetails = clsReceipt.Details(stModule);
 
-				PrintReportValue(clsReceiptDetails, IsReceipt, DateTime.MinValue);
+                PrintReportValue(clsReceiptDetails, IsReceipt, DateTime.MinValue);
 			}
 
             if (mclsTerminalDetails.IncludeTermsAndConditions & boPrintTermsAndConditions)
@@ -10685,7 +10701,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						stModule = "PageFooterA" + iCtr;
 						clsReceiptDetails = clsReceipt.Details(stModule);
 
-						PrintReportValue(clsReceiptDetails, IsReceipt, OverRidingPrintDate);
+                        PrintReportValue(clsReceiptDetails, IsReceipt, OverRidingPrintDate);
 					}
 					// print page footer
 					for (iCtr = 1; iCtr <= 5; iCtr++)
@@ -10693,7 +10709,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						stModule = "PageFooterB" + iCtr;
 						clsReceiptDetails = clsReceipt.Details(stModule);
 
-						PrintReportValue(clsReceiptDetails, IsReceipt, OverRidingPrintDate);
+                        PrintReportValue(clsReceiptDetails, IsReceipt, OverRidingPrintDate);
 					}
 				}
 
@@ -10703,7 +10719,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					stModule = "ReportFooter" + iCtr;
 					clsReceiptDetails = clsReceipt.Details(stModule);
 
-					PrintReportValue(clsReceiptDetails, IsReceipt, OverRidingPrintDate);
+                    PrintReportValue(clsReceiptDetails, IsReceipt, OverRidingPrintDate);
 				}
 
                 if (mclsTerminalDetails.IncludeTermsAndConditions & boPrintTermsAndConditions)
@@ -11008,7 +11024,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
 
                     if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID && mclsContactDetails.CreditDetails.GuarantorID != 0)
-					{ if (GetReceiptFormatParameter(ReceiptFieldFormats.InHouseGroupCreditPermitNo, false, DateTime.MinValue) != string.Empty) mstrToPrint += CenterString("BIR Permit No." + GetReceiptFormatParameter(ReceiptFieldFormats.InHouseGroupCreditPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
+                    { if (GetReceiptFormatParameter(ReceiptFieldFormats.InHouseGroupCreditPermitNo, false, DateTime.MinValue) != string.Empty) mstrToPrint += CenterString("BIR Permit No." + GetReceiptFormatParameter(ReceiptFieldFormats.InHouseGroupCreditPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
 					else
 					{ if (GetReceiptFormatParameter(ReceiptFieldFormats.InHouseIndividualCreditPermitNo, false, DateTime.MinValue) != string.Empty) mstrToPrint += CenterString("BIR Permit No." + GetReceiptFormatParameter(ReceiptFieldFormats.InHouseIndividualCreditPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine; }
 
@@ -11175,16 +11191,22 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			else if (stReceiptFormat == ReceiptFieldFormats.DateNow)
 			{
-				if (OverRidingPrintDate != DateTime.MinValue)
-					stRetValue = OverRidingPrintDate.ToString("MMM. dd, yyyy hh:mm:ss tt");
-				else
-					stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
-                //stRetValue = DateTime.Now.ToLocalTime().ToString("MMM. dd, yyyy hh:mm:ss tt");
+                if (!mboDoNotPrintTransactionDate)
+                {
+                    if (OverRidingPrintDate != DateTime.MinValue)
+                        stRetValue = OverRidingPrintDate.ToString("MMM. dd, yyyy hh:mm:ss tt");
+                    else
+                        stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
+                    //stRetValue = DateTime.Now.ToLocalTime().ToString("MMM. dd, yyyy hh:mm:ss tt");
+                }
 			}
 			else if (stReceiptFormat == ReceiptFieldFormats.TransactionDate)
 			{
-				//stRetValue = mclsSalesTransactionDetails.TransactionDate.ToLocalTime().ToString("MMM. dd, yyyy hh:mm:ss tt");
-                stRetValue = mclsSalesTransactionDetails.TransactionDate.ToString("MMM. dd, yyyy hh:mm:ss tt");
+                if (!mboDoNotPrintTransactionDate)
+                {
+                    //stRetValue = mclsSalesTransactionDetails.TransactionDate.ToLocalTime().ToString("MMM. dd, yyyy hh:mm:ss tt");
+                    stRetValue = mclsSalesTransactionDetails.TransactionDate.ToString("MMM. dd, yyyy hh:mm:ss tt");
+                }
 			}
 			else if (stReceiptFormat == ReceiptFieldFormats.Cashier)
 			{

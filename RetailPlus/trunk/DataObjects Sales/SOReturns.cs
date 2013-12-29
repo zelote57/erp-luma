@@ -96,7 +96,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 ARLinkConfigDetails clsARLinkConfigDetails = clsERPConfig.ARLinkDetails();
 
 				string SQL = "INSERT INTO tblSOCreditMemo (" +
@@ -218,7 +218,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 ARLinkConfigDetails clsARLinkConfigDetails = clsERPConfig.ARLinkDetails();
 
 				string SQL=	"UPDATE tblSOCreditMemo SET " + 
@@ -574,7 +574,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 
 			SOReturnDetails clsSOReturnDetails = Details(CreditMemoID);
-			SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+            ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 			ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
 			SOReturnItems clsSOReturnItems = new SOReturnItems(base.Connection, base.Transaction);
@@ -1257,8 +1257,8 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				string stRetValue = String.Empty;
-				
-				SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 				stRetValue = clsERPConfig.get_LastSOReturnNo();
 
 				return stRetValue;
@@ -1266,15 +1266,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -1283,12 +1274,8 @@ namespace AceSoft.RetailPlus.Data
 			try 
 			{
                 string SQL = "CALL procSOCreditMemoSynchronizeAmount(@CreditMemoID);";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
+
+                MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -1299,15 +1286,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

@@ -234,7 +234,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
                 Label lblitemTransferInItemReceivedStatus = (Label)item.FindControl("lblTransferInItemReceivedStatus");
                 TransferInItemReceivedStatus itemTransferInItemReceivedStatus = (TransferInItemReceivedStatus)Enum.Parse(typeof(TransferInItemReceivedStatus), lblitemTransferInItemReceivedStatus.Text);
                 if (itemTransferInItemReceivedStatus == TransferInItemReceivedStatus.Received)
-                    item.CssClass = "ms-item-received";
+                    item.CssClass = "ms-item-received-det";
                 else if (item.ItemType == ListItemType.Item)
                     item.CssClass = "";
                 else if (item.ItemType == ListItemType.AlternatingItem)

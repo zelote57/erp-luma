@@ -76,7 +76,9 @@
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtBaseUnitValue" CssClass="ms-short" runat="server" onkeypress="AllNum()">1</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Base Unit Value' must not be left blank." Display="Dynamic" ControlToValidate="txtBaseUnitValue" ForeColor=" "></asp:requiredfieldvalidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtBaseUnitValue" Display="Dynamic" ErrorMessage="'Base Unit Value' must be in number, max of 3 decimal places." ForeColor=" " Type="Double" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtBaseUnitValue"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Base Unit Value' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
@@ -88,7 +90,9 @@
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtBottomUnitValue" CssClass="ms-short" runat="server" onkeypress="AllNum()">1</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'Bottom Unit Value' must not be left blank." Display="Dynamic" ControlToValidate="txtBottomUnitValue" ForeColor=" "></asp:requiredfieldvalidator>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator3" CssClass="ms-error" runat="server" ControlToValidate="txtBottomUnitValue" Display="Dynamic" ErrorMessage="'Bottom Unit Value' must be in number, max of 3 decimal places." ForeColor=" " Type="Double" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
+									<asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="txtBottomUnitValue"
+                                                CssClass="ms-error" Display="Dynamic" ErrorMessage="'Bottom Unit Value' must be in number, max of 3 decimal places."
+                                                ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">

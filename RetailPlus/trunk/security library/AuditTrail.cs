@@ -232,8 +232,8 @@ namespace AceSoft.RetailPlus.Security
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@ActivityDateFrom", ActivityDateFrom);
-                cmd.Parameters.AddWithValue("@ActivityDateTo", ActivityDateTo);
+                cmd.Parameters.AddWithValue("@ActivityDateFrom", ActivityDateFrom.ToString("yyyy-MM-dd HH:mm"));
+                cmd.Parameters.AddWithValue("@ActivityDateTo", ActivityDateTo.ToString("yyyy-MM-dd HH:mm"));
                 cmd.Parameters.AddWithValue("@User", User);
                 cmd.Parameters.AddWithValue("@Activity", Activity);
                 cmd.Parameters.AddWithValue("@Remarks", Remarks);

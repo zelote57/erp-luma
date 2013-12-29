@@ -96,7 +96,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 ARLinkConfigDetails clsARLinkConfigDetails = clsERPConfig.ARLinkDetails();
 
                 string SQL = "INSERT INTO tblSOCreditMemo (" +
@@ -218,7 +218,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 ARLinkConfigDetails clsARLinkConfigDetails = clsERPConfig.ARLinkDetails();
 
                 string SQL = "UPDATE tblSOCreditMemo SET " +
@@ -565,7 +565,7 @@ namespace AceSoft.RetailPlus.Data
         {
 
             CreditMemoDetails clsCreditMemoDetails = Details(CreditMemoID);
-            SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+            ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
             ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
             CreditMemoItems clsCreditMemoItems = new CreditMemoItems(base.Connection, base.Transaction);
@@ -1187,7 +1187,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string stRetValue = String.Empty;
 
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 stRetValue = clsERPConfig.get_LastCreditMemoNo();
 
                 return stRetValue;

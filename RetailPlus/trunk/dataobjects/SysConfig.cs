@@ -47,6 +47,9 @@ namespace AceSoft.RetailPlus.Data
         public bool WillDeductTFInXRead;
         public bool WillDeductTFInZRead;
         public bool WillDeductTFInTerminalReport;
+
+        public bool WillAskDoNotPrintTransactionDate;
+
     }
     public class SysConfig : POSConnection
     {
@@ -134,6 +137,17 @@ namespace AceSoft.RetailPlus.Data
             return boRetValue;
         }
 
+        public bool get_WillAskDoNotPrintTransactionDate()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_ASK_DO_NOT_PRINT_TRANSACTIONDATE));
+            }
+            catch { }
+            return boRetValue;
+        }
+
 
         public string get_CompanyCode()
         {
@@ -191,7 +205,8 @@ namespace AceSoft.RetailPlus.Data
             clsSysConfigDetails.WillDeductTFInXRead = get_WillDeductTFInXRead();
             clsSysConfigDetails.WillDeductTFInZRead = get_WillDeductTFInZRead();
             clsSysConfigDetails.WillDeductTFInTerminalReport = get_WillDeductTFInTerminalReport();
-            
+            clsSysConfigDetails.WillAskDoNotPrintTransactionDate = get_WillAskDoNotPrintTransactionDate();
+
             return clsSysConfigDetails;
         }
 

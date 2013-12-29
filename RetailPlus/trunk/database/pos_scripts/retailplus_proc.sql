@@ -167,6 +167,13 @@ END;
 GO
 delimiter ;
 
+/**************************************************************
+	procGenerateSalesPerItem
+	Lemuel E. Aceron
+	CALL procGenerateSalesPerItem (1, '', '', '', '', '2013-12-12 00:00', '2013-12-14 23:59');
+	
+	May 15, 2008 - 
+**************************************************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procGenerateSalesPerItem
 GO
@@ -196,11 +203,12 @@ BEGIN
 	SET dteStartTransactionDate = IF(NOT ISNULL(dteStartTransactionDate), dteStartTransactionDate, '0001-01-01');
 	SET dteEndTransactionDate = IF(NOT ISNULL(dteEndTransactionDate), dteEndTransactionDate, now());
 	
-	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount)
+	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount, Discount)
 	SELECT strSessionID, ProductGroup,
 		ProductCode, ProductUnitCode,
 		SUM(IF(TransactionItemStatus=3,-a.Quantity,a.Quantity)) 'Quantity', SUM(IF(TransactionItemStatus=3,-a.Amount,a.amount)) Amount, 
-		SUM(IF(TransactionItemStatus=3,-PurchaseAmount,IF(TransactionItemStatus=4,-PurchaseAmount,PurchaseAmount))) PurchaseAmount
+		SUM(IF(TransactionItemStatus=3,-PurchaseAmount,IF(TransactionItemStatus=4,-PurchaseAmount,PurchaseAmount))) PurchaseAmount,
+		SUM(IF(TransactionItemStatus=3,-a.Discount + -a.TransactionDiscount,IF(TransactionItemStatus=4,-a.Discount + -a.TransactionDiscount,a.Discount + a.TransactionDiscount))) Discount
 	FROM tblTransactionItems a 
 	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
 	WHERE 1=1 
@@ -1417,10 +1425,11 @@ END;
 GO
 delimiter ;
 
+
 /**************************************************************
 	procGenerateSalesPerItemByGroup
 	Lemuel E. Aceron
-	CALL procGenerateSalesPerItemByGroup('1', null, null, null, null, null, null, null);
+	CALL procGenerateSalesPerItemByGroup('1', null, null, null, null, null, '2013-12-12 00:00', '2013-12-14 23:59');
 	
 	May 15, 2009 - as requested by Malou of Baguio
 **************************************************************/
@@ -1454,11 +1463,12 @@ BEGIN
 	SET dteStartTransactionDate = IF(NOT ISNULL(dteStartTransactionDate), dteStartTransactionDate, '0001-01-01');
 	SET dteEndTransactionDate = IF(NOT ISNULL(dteEndTransactionDate), dteEndTransactionDate, now());
 	
-	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount)
+	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount, Discount)
 	SELECT strSessionID, ProductGroup,
 		ProductCode, ProductUnitCode,
 		SUM(IF(TransactionItemStatus=3,-a.Quantity,a.Quantity)) 'Quantity', SUM(IF(TransactionItemStatus=3,-a.Amount,a.amount)) Amount, 
-		SUM(IF(TransactionItemStatus=3,-PurchaseAmount,IF(TransactionItemStatus=4,-PurchaseAmount,PurchaseAmount))) PurchaseAmount
+		SUM(IF(TransactionItemStatus=3,-PurchaseAmount,IF(TransactionItemStatus=4,-PurchaseAmount,PurchaseAmount))) PurchaseAmount,
+		SUM(IF(TransactionItemStatus=3,-a.Discount + -a.TransactionDiscount,IF(TransactionItemStatus=4,-a.Discount + -a.TransactionDiscount,a.Discount + a.TransactionDiscount))) Discount
 	FROM tblTransactionItems a 
 	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
 	WHERE 1=1 
@@ -2517,13 +2527,13 @@ BEGIN
 	
 	CALL procGenerateSalesPerItem(strSessionID, strTransactionNo, strCustomerName, strCashierName, strTerminalNo, dteStartTransactionDate, dteEndTransactionDate);
 	
-	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount)
+	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount, Discount)
 	SELECT strSessionID,
 		ProductGroupCode,
 		a.ProductCode 'ProductCode',
 		UnitCode 'ProductUnitCode',
 		0 'Quantity', 0 Amount, 
-		0 PurchaseAmount
+		0 PurchaseAmount, 0 Discount
 	FROM tblProducts a 
 		INNER JOIN tblProductSubGroup b ON b.ProductSubGroupID = a.ProductSubGroupID
 		INNER JOIN tblProductGroup c ON c.ProductGroupID = b.ProductGroupID
@@ -3398,6 +3408,7 @@ END;
 GO
 delimiter ;
 
+
 /**************************************************************
 
 	procProductMovementSelect
@@ -3426,10 +3437,10 @@ BEGIN
 						ProductDescription,
 						MatrixID,
 						MatrixDescription, 
-						QuantityFrom,
-						Quantity,
-						QuantityTo,
-						matrixQuantity,
+						SUM(QuantityFrom) QuantityFrom,
+						SUM(Quantity) Quantity,
+						SUM(QuantityTo) QuantityTo,
+						SUM(matrixQuantity) matrixQuantity,
 						UnitCode,
 						Remarks,
 						TransactionDate,
@@ -3442,7 +3453,9 @@ BEGIN
 		SET @SQL = CONCAT(@SQL,'AND ProductID = ', lngProductID,' ');
 	END IF;
 	
-	SET @SQL = CONCAT(@SQL,'AND MatrixID = ', lngMatrixID,' ');
+	IF (lngMatrixID <> -1) THEN
+		SET @SQL = CONCAT(@SQL,'AND MatrixID = ', lngMatrixID,' ');
+	END IF;
 	
 
 	IF (DATE_FORMAT(dteStartTransactionDate, '%Y%m%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
@@ -3453,6 +3466,17 @@ BEGIN
 		SET @SQL = CONCAT(@SQL,'AND TransactionDate <= ''', dteEndTransactionDate,''' ');
 	END IF;
 	
+	SET @SQL = CONCAT(@SQL,'GROUP BY ProductID,
+									ProductCode, 
+									ProductDescription,
+									MatrixID,
+									MatrixDescription, 
+									UnitCode,
+									Remarks,
+									TransactionDate,
+									TransactionNo,
+									CreatedBy ');
+
 	SET @SQL = CONCAT(@SQL,'ORDER BY TransactionDate DESC, QuantityTo ASC ');
 
 	PREPARE stmt FROM @SQL;
@@ -5882,7 +5906,7 @@ delimiter ;
 	
 	Desc: This will get the main product list
 
-	CALL procProductMainDetails(1, 44, 0, '','',1;
+	CALL procProductMainDetails(1, 3494, 0, '','',1);
 	
 **************************************************************/
 delimiter GO
@@ -5910,7 +5934,7 @@ BEGIN
 	ELSEIF IFNULL(ProductCode,'') <> '' THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode = ''',ProductCode,''' ');
 	END IF;
-	IF MatrixID <> 0 THEN
+	IF MatrixID <> 0 AND MatrixID <> -1 THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND pkg.MatrixID = ',MatrixID,' ');
 	END IF;
 
@@ -5983,10 +6007,17 @@ BEGIN
 							,prd.ChartOfAccountIDSold
 							,prd.ChartOfAccountIDInventory
 							,prd.ChartOfAccountIDTaxPurchase
-							,prd.ChartOfAccountIDTaxSold
-
+							,prd.ChartOfAccountIDTaxSold ');
+	IF MatrixID <> -1 THEN
+		SET @SQL = CONCAT(@SQL, '	
 							,IFNULL(mtrx.MatrixID,0) MatrixID
-							,IFNULL(CONCAT(prd.ProductDesc, '':'' , mtrx.Description),'''') AS VariationDesc
+							,IFNULL(CONCAT(prd.ProductDesc, '':'' , mtrx.Description),'''') AS VariationDesc ');
+	ELSE
+		SET @SQL = CONCAT(@SQL, '	
+							,0 MatrixID
+							,MAX(IFNULL(CONCAT(prd.ProductDesc, '':'' , mtrx.Description),'''')) AS VariationDesc ');
+	END IF;
+	SET @SQL = CONCAT(@SQL, '	
 							,IFNULL(mtrx.Description,'''') MatrixDescription
 						FROM (SELECT prd.*
 									,pkg.PackageID
@@ -6076,11 +6107,14 @@ BEGIN
 						   ,prd.ChartOfAccountIDSold
 						   ,prd.ChartOfAccountIDInventory
 						   ,prd.ChartOfAccountIDTaxPurchase
-						   ,prd.ChartOfAccountIDTaxSold
+						   ,prd.ChartOfAccountIDTaxSold ');
 
+	IF MatrixID <> -1 THEN
+		SET @SQL = CONCAT(@SQL, '	
 						   ,mtrx.MatrixID
 						   ,mtrx.Description ');
-	
+	END IF;
+
 	PREPARE cmd FROM @SQL;
 	EXECUTE cmd;
 	DEALLOCATE PREPARE cmd;

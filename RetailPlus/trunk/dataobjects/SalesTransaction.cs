@@ -654,6 +654,40 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
+        public long getTransactionIDByNo(string TransactionNo, string TerminalNo, int BranchID)
+        {
+
+            try
+            {
+                string SQL = "SELECT DISTINCT(TransactionID) TransactionID FROM  tblTransactions " +
+                            "WHERE TransactionNo = @TransactionNo AND TerminalNo = @TerminalNo AND BranchID = @BranchID LIMIT 1;";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@TransactionNo", TransactionNo);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                Int64 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int64.Parse(dr[0].ToString());
+                }
+
+                return iID;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 
 		#region Insert and Update

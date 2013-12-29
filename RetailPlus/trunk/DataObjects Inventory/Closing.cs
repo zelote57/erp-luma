@@ -387,7 +387,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 
 			ClosingDetails clsClosingDetails = Details(ClosingID);
-			SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+			ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 			ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
 			ClosingItem clsClosingItem = new ClosingItem(base.Connection, base.Transaction);
@@ -1027,7 +1027,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string stRetValue = String.Empty;
 				
-				SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+				ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 				stRetValue = clsERPConfig.get_LastClosingNo();
 
 				return stRetValue;

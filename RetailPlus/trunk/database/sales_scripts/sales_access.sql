@@ -17,6 +17,10 @@
 **	Added on October 9, 2007 for Sales
 **	Lemuel E. Aceron
 *****************************/
+DELETE FROM sysAccessRights WHERE TranTypeID in (104, 107, 108, 109, 110, 111);
+DELETE FROM sysAccessGroupRights WHERE TranTypeID in (104, 107, 108, 109, 110, 111);
+DELETE FROM sysAccessTypes WHERE TypeID in (104, 107, 108, 109, 110, 111);
+
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (104, 'Sales & Receivable Menu');
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (107, 'Sales Orders');
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (108, 'Sales Journals');

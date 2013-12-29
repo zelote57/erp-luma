@@ -103,7 +103,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
                 string SQL = "INSERT INTO tblTransferOut (" +
@@ -269,7 +269,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
                 string SQL = "UPDATE tblTransferOut SET " +
@@ -672,7 +672,7 @@ namespace AceSoft.RetailPlus.Data
         {
 
             TransferOutDetails clsTransferOutDetails = Details(TransferOutID);
-            SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+            ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
             ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
             TransferOutItem clsTransferOutItem = new TransferOutItem(base.Connection, base.Transaction);
@@ -1662,7 +1662,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string stRetValue = String.Empty;
 
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 stRetValue = clsERPConfig.get_LastTransferOutNo();
 
                 return stRetValue;

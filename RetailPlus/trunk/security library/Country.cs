@@ -58,16 +58,14 @@ namespace AceSoft.RetailPlus.Security
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
+        public MySqlDataReader List(string SortField = "CountryName", SortOption SortOrder = SortOption.Ascending)
 		{
 			try
 			{
-				string SQL = "SELECT * FROM tblCountry ORDER BY " + SortField;
+                SortField = string.IsNullOrEmpty(SortField) ? "Countryname" : SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+                string SQL = "SELECT * FROM tblCountry ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
 
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
@@ -79,7 +77,31 @@ namespace AceSoft.RetailPlus.Security
 			{
 				throw base.ThrowException(ex);
 			}	
-		}		
+		}
+
+        public System.Data.DataTable ListAsDataTable(string SortField="CountryName", SortOption SortOrder=SortOption.Ascending)
+        {
+            try
+            {
+                SortField = string.IsNullOrEmpty(SortField) ? "Countryname" : SortField;
+                
+                string SQL = "SELECT * FROM tblCountry ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }		
 
 		#endregion
 	}

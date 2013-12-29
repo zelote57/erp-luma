@@ -201,7 +201,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
                 Label lblPODebitItemReceivedStatus = (Label)item.FindControl("lblPODebitItemReceivedStatus");
                 DebitMemoItemReceivedStatus itemDebitMemoItemReceivedStatus = (DebitMemoItemReceivedStatus)Enum.Parse(typeof(DebitMemoItemReceivedStatus), lblPODebitItemReceivedStatus.Text);
                 if (itemDebitMemoItemReceivedStatus == DebitMemoItemReceivedStatus.Received)
-                    item.CssClass = "ms-item-received";
+                    item.CssClass = "ms-item-received-det";
                 else if (item.ItemType == ListItemType.Item)
                     item.CssClass = "";
                 else if (item.ItemType == ListItemType.AlternatingItem)

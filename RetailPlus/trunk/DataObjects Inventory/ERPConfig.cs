@@ -73,16 +73,16 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class ERPConfig : POSConnection
+    public class ERPConfig : POSConnection
 	{
 		#region Constructors and Destructors
 
-		public SysConfig()
+		public ERPConfig()
             : base(null, null)
         {
         }
 
-        public SysConfig(MySqlConnection Connection, MySqlTransaction Transaction) 
+        public ERPConfig(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
 
@@ -583,6 +583,19 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public string get_LastCustomerCode()
+        {
+            try
+            {
+                return getNewTransactionNo(LastCustomerCode);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         #endregion
 
         private static string LastPONo = "LastPONo";
@@ -598,6 +611,8 @@ namespace AceSoft.RetailPlus.Data
         private static string LastClosingNo = "LastClosingNo";
         private static string LastCreditCardNo = "LastCreditCardNo";
         private static string LastRewardCardNo = "LastRewardCardNo";
+
+        private static string LastCustomerCode = "LastCustomerCode";
 
         private string getNewTransactionNo(string ColumnName)
         {

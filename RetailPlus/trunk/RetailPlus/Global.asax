@@ -16,23 +16,35 @@
         
     void Application_Error(object sender, EventArgs e) 
     {
-        if (Session != null)
+        try
         {
-            // Code that runs when an unhandled error occurs
-            Exception lastError = Server.GetLastError();
-
-            if (lastError != null)
+            if (Session != null)
             {
-                lastError = lastError.InnerException;
-                Session["ErrorMessage"] = lastError.Message;
-                Session["ErrorSource"] = lastError.Source;
-                Session["ErrorExceptionType"] = lastError.GetType().ToString();
-                Session["ErrorStackTrace"] = lastError.StackTrace;
+                // Code that runs when an unhandled error occurs
+                Exception lastError = Server.GetLastError();
+
+                if (lastError != null)
+                {
+                    lastError = lastError.InnerException;
+                    if (lastError.Message.IndexOf("Cannot delete or update a parent row: a foreign key constraint fails") != -1)
+                    {
+                        Session["ErrorMessage"] = "This record is currently in use and cannot be deleted.";
+
+                        Session["ErrorMessage"] = Session["ErrorMessage"].ToString() + "<br/></br>&nbsp;<b>Actual Error :</b>" + lastError.Message;
+                    }
+                    else
+                    {
+                        Session["ErrorMessage"] = lastError.Message;
+                    }
+                    Session["ErrorSource"] = lastError.Source;
+                    Session["ErrorExceptionType"] = lastError.GetType().ToString();
+                    Session["ErrorStackTrace"] = lastError.StackTrace;
+                }
+
+                Response.Redirect(AceSoft.RetailPlus.Constants.ROOT_DIRECTORY + "/GenericError.aspx");
             }
-
-            Response.Redirect(AceSoft.RetailPlus.Constants.ROOT_DIRECTORY + "/GenericError.aspx");
         }
-
+        catch { }
     }
 
     void Session_Start(object sender, EventArgs e) 

@@ -150,6 +150,7 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_WILL_DEDUCT_TF_IN_XREAD = "WillDeductTFInXRead";
         public const string SYS_CONFIG_WILL_DEDUCT_TF_IN_ZREAD = "WillDeductTFInZRead";
         public const string SYS_CONFIG_WILL_DEDUCT_TF_IN_TERMINAL_REPORT = "WillDeductTFInTerminalReport";
+        public const string SYS_CONFIG_WILL_ASK_DO_NOT_PRINT_TRANSACTIONDATE = "WillAskDoNotPrintTransactionDate";
         
     }
 }

@@ -6700,59 +6700,6 @@ WHERE tblProductInventoryMonthly.ProductID = tblProducts.ProductID
 
 -- Oct 10, 2013
 
-/*****************************
-**	tblgla_f_dtl_chk_headers
-*****************************/
-DROP TABLE IF EXISTS tblgla_f_dtl_chk_headers;
-CREATE TABLE tblgla_f_dtl_chk_headers (
-	`fk_business_date` DATETIME NULL,
-	`fk_location_def` INT NOT NULL DEFAULT 0,
-	`fk_emp_def` INT NOT NULL DEFAULT 0,
-	`status_flag` VARCHAR(8),
-	`chk_headers_seq_number` INT NULL,
-	`chk_num` INT NOT NULL DEFAULT 0,
-	`chk_id` VARCHAR(60) NULL,
-	`ot_number` INT NOT NULL DEFAULT 0,
-	`Ot_Name` VARCHAR(60) NULL,
-	`Tbl_Number` INT NOT NULL DEFAULT 0,
-	`Chk_Open_Date_Time` DATETIME,
-	`Chk_Closed_Date_Time` DATETIME,
-	`Uws_Number` INT NOT NULL DEFAULT 0,
-	`Is_HotelMark_Promo` TINYINT(1) NOT NULL DEFAULT 0,
-	`Sub_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Tax_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Auto_Svc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Other_Svc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Dsc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Pymnt_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Chk_Prntd_Cnt` INT NOT NULL DEFAULT 0,
-	`Cov_Cnt` INT NOT NULL DEFAULT 0,
-	`Num_Dtl` INT NOT NULL DEFAULT 0,
-	`Itemizer1` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer2` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer3` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer4` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer5` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer6` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer7` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer8` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer9` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer10` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer11` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer12` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer13` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer14` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer15` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer16` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Tip_ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`DateCreated` DATETIME NOT NULL DEFAULT NOW(),
-	`CreatedBy` VARCHAR(120) NULL,
-	`Filename` VARCHAR(120) NULL,
-	`BatchID` VARCHAR(30) NULL,
-INDEX `IX_tblgla_f_dtl_chk_headers`(`chk_headers_seq_number`),
-INDEX `IX1_tblgla_f_dtl_chk_headers`(`chk_num`)
-);
-
 
 /*****************************
 **	tblContactAddOn
@@ -6802,7 +6749,7 @@ ALTER DATABASE pos CHARACTER SET utf8;
 
 SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schema_name = 'pos';
 
--- additional in sysConfig
+-- additional in sysConfig this will override the .config
 DELETE FROM sysConfig;
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('BACKEND_VARIATION_TYPE',	'BACKEND_VARIATION_TYPE',			'EXPIRATION;LOTNO');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyCode',			'CompanyDetails',					'RBS');
@@ -6820,9 +6767,11 @@ INSERT INTO sysConfig (ConfigName, ConfigValue, Category) VALUES('MS',						'MS'
 
 ALTER TABLE tblTerminal ADD `IncludeTermsAndConditions` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
 
+/*******
 UPDATE sysConfig set ConfigValue = '' where ConfigName = 'CompanyCode';
 UPDATE sysConfig set ConfigValue = '' where ConfigName = 'CompanyName';
 UPDATE sysConfig set ConfigValue = '' where ConfigName = 'TIN';
+*******/
 
 DELETE FROM sysConfig WHERE ConfigName = 'WillPrintCreditPaymentHeader';
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillPrintCreditPaymentHeader',	'FE',						'true');
@@ -6853,3 +6802,61 @@ UPDATE tblTerminalReportHistory SET ActualOldGrandTotal = OldGrandTotal WHERE Ac
 UPDATE tblTerminalReportHistory SET ActualNewGrandTotal = NewGrandTotal WHERE ActualNewGrandTotal = 0;
 
 
+-- GLA
+-- October 10, 2013 
+/*****************************
+**	tblgla_f_dtl_chk_headers
+*****************************/
+DROP TABLE IF EXISTS tblgla_f_dtl_chk_headers;
+CREATE TABLE po (
+	`fk_business_date` DATETIME NULL,
+	`fk_location_def` INT NOT NULL DEFAULT 0,
+	`fk_emp_def` BIGINT NOT NULL DEFAULT 0,
+	`status_flag` VARCHAR(8),
+	`chk_headers_seq_number` BIGINT NOT NULL DEFAULT 0,
+	`chk_num` INT NOT NULL DEFAULT 0,
+	`chk_id` VARCHAR(60) NULL,
+	`ot_number` INT NOT NULL DEFAULT 0,
+	`Ot_Name` VARCHAR(60) NULL,
+	`Tbl_Number` INT NOT NULL DEFAULT 0,
+	`Chk_Open_Date_Time` DATETIME,
+	`Chk_Closed_Date_Time` DATETIME,
+	`Uws_Number` INT NOT NULL DEFAULT 0,
+	`Is_HotelMark_Promo` TINYINT(1) NOT NULL DEFAULT 0,
+	`Sub_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Tax_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Auto_Svc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Other_Svc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Dsc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Pymnt_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Chk_Prntd_Cnt` INT NOT NULL DEFAULT 0,
+	`Cov_Cnt` INT NOT NULL DEFAULT 0,
+	`Num_Dtl` INT NOT NULL DEFAULT 0,
+	`Itemizer1` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer2` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer3` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer4` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer5` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer6` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer7` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer8` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer9` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer10` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer11` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer12` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer13` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer14` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer15` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Itemizer16` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`Tip_ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`DateCreated` DATETIME NOT NULL ,
+	`CreatedBy` VARCHAR(120) NULL,
+	`Filename` VARCHAR(120) NULL,
+	`BatchID` VARCHAR(30) NULL,
+INDEX `IX_tblgla_f_dtl_chk_headers`(`chk_headers_seq_number`),
+INDEX `IX1_tblgla_f_dtl_chk_headers`(`chk_num`)
+);
+
+-- Added to get the discount given
+ALTER TABLE tblTransactionItems ADD `TransactionDiscount` DECIMAL(18,2) NOT NULL DEFAULT 0 COMMENT 'This is an applied discount computed evenly from transaction discount';
+ALTER TABLE tblSalesPerItem ADD `Discount` DECIMAL(18,2) NOT NULL DEFAULT 0;

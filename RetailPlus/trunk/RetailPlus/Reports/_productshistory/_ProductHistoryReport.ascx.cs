@@ -331,7 +331,9 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.ProductHistoryMovement:
                     #region Product History Movement
                     Products clsProduct = new Products();
-                    ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value), Convert.ToInt64(cboVariation.SelectedItem.Value), Constants.BRANCH_ID_MAIN);
+                    long lngMatrixID = Convert.ToInt64(cboVariation.SelectedItem.Value);
+                    lngMatrixID = lngMatrixID == -1 ? 0 : lngMatrixID;
+                    ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(cboProductCode.SelectedItem.Value), lngMatrixID, Constants.BRANCH_ID_MAIN);
                     clsProduct.CommitAndDispose();
 
                     paramField = Report.DataDefinition.ParameterFields["ProductCode"];
@@ -481,6 +483,7 @@ namespace AceSoft.RetailPlus.Reports
                     cboVariation.DataBind();
 
                     cboVariation.Items.Insert(0, new ListItem("Main Product", "0"));
+                    cboVariation.Items.Insert(0, new ListItem(Constants.ALL, "-1"));
                     cboVariation.SelectedIndex = 0;
                 }
             }

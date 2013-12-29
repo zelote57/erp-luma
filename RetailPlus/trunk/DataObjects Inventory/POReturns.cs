@@ -103,7 +103,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
 				string SQL = "INSERT INTO tblPODebitMemo (" +
@@ -276,7 +276,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
 				string SQL=	"UPDATE tblPODebitMemo SET " + 
@@ -677,7 +677,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 
 			POReturnDetails clsPOReturnDetails = Details(DebitMemoID);
-			SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+			ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 			ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
 			POReturnItems clsPOReturnItems = new POReturnItems(base.Connection, base.Transaction);
@@ -1354,7 +1354,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string stRetValue = String.Empty;
 				
-				SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+				ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 				stRetValue = clsERPConfig.get_LastPOReturnNo();
 
 				return stRetValue;

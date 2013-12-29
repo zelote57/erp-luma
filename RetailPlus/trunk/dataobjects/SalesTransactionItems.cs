@@ -621,41 +621,15 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandText = SQL;
 
                 Random clsRandom = new Random();
-                MySqlParameter prmSessionID = new MySqlParameter("@SessionID",MySqlDbType.String);
-                prmSessionID.Value = clsRandom.Next(1234567, 99999999);
+                MySqlParameter prmSessionID = new MySqlParameter("@SessionID", clsRandom.Next(1234567, 99999999));
+
                 cmd.Parameters.Add(prmSessionID);
-
-                MySqlParameter prmTransactionNo = new MySqlParameter("@TransactionNo",MySqlDbType.String);
-                prmTransactionNo.Value = TransactionNo;
-                cmd.Parameters.Add(prmTransactionNo);
-
-                MySqlParameter prmCustomerName = new MySqlParameter("@CustomerName",MySqlDbType.String);
-                prmCustomerName.Value = CustomerName;
-                cmd.Parameters.Add(prmCustomerName);
-
-                MySqlParameter prmCashierName = new MySqlParameter("@CashierName",MySqlDbType.String);
-                prmCashierName.Value = CashierName;
-                cmd.Parameters.Add(prmCashierName);
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmStartTransactionDate = new MySqlParameter("@StartTransactionDate",MySqlDbType.DateTime);
-                prmStartTransactionDate.Value = StartTransactionDate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmStartTransactionDate);
-
-                MySqlParameter prmEndTransactionDate = new MySqlParameter("@EndTransactionDate",MySqlDbType.DateTime);
-                prmEndTransactionDate.Value = EndTransactionDate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmEndTransactionDate);
-
-                //MySqlParameter prmTransactionStatus = new MySqlParameter("@TransactionStatus",MySqlDbType.Int16);
-                //prmTransactionStatus.Value = Status.ToString("d");
-                //cmd.Parameters.Add(prmTransactionStatus);
-
-                //MySqlParameter prmPaymentType = new MySqlParameter("@PaymentType",MySqlDbType.Int16);			
-                //prmPaymentType.Value = PaymentType.ToString("d");
-                //cmd.Parameters.Add(prmPaymentType);
+                cmd.Parameters.AddWithValue("@TransactionNo", TransactionNo);
+                cmd.Parameters.AddWithValue("@CustomerName", CustomerName);
+                cmd.Parameters.AddWithValue("@CashierName", CashierName);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@StartTransactionDate", StartTransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@EndTransactionDate", EndTransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
                 base.ExecuteNonQuery(cmd);
 
@@ -663,7 +637,8 @@ namespace AceSoft.RetailPlus.Data
                         "ProductCode," +
                         "SUM(Quantity) 'Quantity'," +
                         "SUM(Amount) 'Amount'," +
-                        "SUM(PurchaseAmount) 'PurchaseAmount' " +
+                        "SUM(PurchaseAmount) 'PurchaseAmount', " +
+                        "SUM(Discount) 'Discount' " +
                     "FROM tblSalesPerItem " +
                     "WHERE SessionID = @SessionID ";
 
@@ -728,7 +703,8 @@ namespace AceSoft.RetailPlus.Data
                         "ProductCode," +
                         "SUM(Quantity) 'Quantity'," +
                         "SUM(Amount) 'Amount'," +
-                        "SUM(PurchaseAmount) 'PurchaseAmount' " +
+                        "SUM(PurchaseAmount) 'PurchaseAmount', " +
+                        "SUM(Discount) 'Discount' " +
                     "FROM tblSalesPerItem " +
                     "WHERE SessionID = @SessionID ";
 

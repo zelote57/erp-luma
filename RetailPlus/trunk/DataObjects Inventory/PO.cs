@@ -109,7 +109,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
 				string SQL = "INSERT INTO tblPO (" +
@@ -279,7 +279,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
                 APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
 
                 string SQL=	"UPDATE tblPO SET " +
@@ -709,7 +709,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 
 			PODetails clsPODetails = Details(POID);
-            SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+            ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 			ERPConfigDetails clsERPConfigDetails = clsERPConfig.Details();
 
 			POItem clsPOItem = new POItem(base.Connection, base.Transaction);
@@ -889,12 +889,11 @@ namespace AceSoft.RetailPlus.Data
 				TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
 
 				PODetails clsPODetails = Details(POID);
-				
-				Products clsProduct = new Products(base.Connection, base.Transaction);
-				System.Data.DataTable dt = clsProduct.ForReorder(clsPODetails.SupplierID);
 
-				POItem clsPOItem = new POItem(base.Connection, base.Transaction);
-                ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
+                POItem clsPOItem = new POItem(base.Connection, base.Transaction);
+
+                ProductInventories clsProductInventories = new ProductInventories(base.Connection, base.Transaction);
+                System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: Constants.BRANCH_ID_MAIN, SupplierID: clsPODetails.SupplierID, ForReorder: 1);
 
 				foreach(System.Data.DataRow dr in dt.Rows)
 				{
@@ -947,59 +946,11 @@ namespace AceSoft.RetailPlus.Data
                             clsDetails.LocalTax = 0;
                             clsDetails.IsVatable = false;
                         }
-                        clsDetails.Amount = amount + clsDetails.VAT;
+                        clsDetails.Amount = amount;
 
-                        System.Data.DataTable dtmatrix = clsProductVariationsMatrix.ForReorder(clsDetails.ProductID, clsPODetails.SupplierID);
-                        if (dtmatrix.Rows.Count > 0)
-                            foreach (System.Data.DataRow drmatrix in dtmatrix.Rows)
-                            {
-                                // Aug 26, 2011 : Lemu
-                                //clsDetails.ProductUnitID = Convert.ToInt32(drmatrix["UnitID"]);
-                                //clsDetails.ProductUnitCode = drmatrix["UnitName"].ToString();
-                                //clsDetails.Quantity = Convert.ToDecimal(drmatrix["ReorderQty"]);
-                                clsDetails.UnitCost = Convert.ToDecimal(drmatrix["PurchasePrice"]);
-
-                                amount = clsDetails.Quantity * clsDetails.UnitCost;
-
-                                // Added Sep 27, 2010 4:20PM : for selling information
-                                clsDetails.SellingPrice = decimal.Parse(dr["Price"].ToString());
-                                clsDetails.SellingVAT = clsTerminalDetails.VAT;
-                                clsDetails.SellingEVAT = clsTerminalDetails.EVAT;
-                                clsDetails.SellingLocalTax = clsTerminalDetails.LocalTax;
-                                clsDetails.OldSellingPrice = clsDetails.SellingPrice;
-
-                                if (Convert.ToDecimal(drmatrix["VAT"]) > 0)
-                                {
-                                    clsDetails.VatableAmount = amount;
-                                    clsDetails.EVatableAmount = amount;
-                                    clsDetails.LocalTax = amount;
-
-                                    clsDetails.VAT = clsDetails.VatableAmount * (clsTerminalDetails.VAT / 100);
-                                    clsDetails.EVAT = clsDetails.EVatableAmount * (clsTerminalDetails.EVAT / 100);
-                                    clsDetails.LocalTax = clsDetails.LocalTax * (clsTerminalDetails.LocalTax / 100);
-                                    clsDetails.IsVatable = true;
-                                }
-                                else
-                                {
-                                    clsDetails.VAT = 0;
-                                    clsDetails.VatableAmount = 0;
-                                    clsDetails.EVAT = 0;
-                                    clsDetails.EVatableAmount = 0;
-                                    clsDetails.LocalTax = 0;
-                                    clsDetails.IsVatable = false;
-                                }
-                                clsDetails.Amount = amount + clsDetails.VAT;
-
-                                clsDetails.VariationMatrixID = Convert.ToInt64(drmatrix["MatrixID"]);
-                                clsDetails.MatrixDescription = drmatrix["VariationDesc"].ToString();
-                                clsPOItem.Insert(clsDetails);
-                            }
-                        else
-                        {
-                            clsDetails.VariationMatrixID = 0;
-                            clsDetails.MatrixDescription = string.Empty;
-                            clsPOItem.Insert(clsDetails);
-                        }
+                        clsDetails.VariationMatrixID = Convert.ToInt64(dr["MatrixID"]);
+                        clsDetails.MatrixDescription = dr["MatrixDescription"].ToString();
+                        clsPOItem.Insert(clsDetails);
                     }
 				}
 			}
@@ -1027,10 +978,10 @@ namespace AceSoft.RetailPlus.Data
                 clsProduct.UpdateProductReorderOverStockPerSupplier(clsPODetails.SupplierID, RID, IDC_StartDate, IDC_EndDate);
                 // end
 
-                System.Data.DataTable dt = clsProduct.ForReorder(clsPODetails.SupplierID);
-
                 POItem clsPOItem = new POItem(base.Connection, base.Transaction);
-                ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(base.Connection, base.Transaction);
+
+                ProductInventories clsProductInventories = new ProductInventories(base.Connection, base.Transaction);
+                System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: Constants.BRANCH_ID_MAIN, SupplierID: clsPODetails.SupplierID, ForReorder: 1);
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
@@ -1087,60 +1038,9 @@ namespace AceSoft.RetailPlus.Data
                         }
                         clsDetails.Amount = amount;
 
-                        System.Data.DataTable dtmatrix = clsProductVariationsMatrix.ForReorder(clsDetails.ProductID, clsPODetails.SupplierID);
-                        if (dtmatrix.Rows.Count > 0)
-                            foreach (System.Data.DataRow drmatrix in dtmatrix.Rows)
-                            {
-                                // Aug 26, 2011 : Lemu
-                                // Do not overwrite the quantity, used the computed based on RID
-                                // clsDetails.ProductUnitID = Convert.ToInt32(drmatrix["UnitID"]);
-                                // clsDetails.ProductUnitCode = drmatrix["UnitName"].ToString();
-                                // clsDetails.Quantity = Convert.ToDecimal(drmatrix["ReorderQty"]);
-                                clsDetails.UnitCost = Convert.ToDecimal(drmatrix["PurchasePrice"]);
-
-                                amount = clsDetails.Quantity * clsDetails.UnitCost;
-
-                                // Added Sep 27, 2010 4:20PM : for selling information
-                                clsDetails.SellingPrice = decimal.Parse(dr["Price"].ToString());
-                                clsDetails.SellingVAT = clsTerminalDetails.VAT;
-                                clsDetails.SellingEVAT = clsTerminalDetails.EVAT;
-                                clsDetails.SellingLocalTax = clsTerminalDetails.LocalTax;
-                                clsDetails.OldSellingPrice = clsDetails.SellingPrice;
-
-                                if (Convert.ToDecimal(drmatrix["VAT"]) > 0)
-                                {
-                                    clsDetails.VatableAmount = amount;
-                                    clsDetails.EVatableAmount = amount;
-                                    clsDetails.LocalTax = amount;
-
-                                    clsDetails.VatableAmount = (clsDetails.VatableAmount) / (1 + (clsTerminalDetails.VAT / 100));
-                                    clsDetails.EVatableAmount = (clsDetails.EVatableAmount) / (1 + (clsTerminalDetails.VAT / 100));
-                                    clsDetails.LocalTax = (clsDetails.LocalTax) / (1 + (clsTerminalDetails.LocalTax / 100));
-                                    clsDetails.IsVatable = true;
-                                }
-                                else
-                                {
-                                    clsDetails.VAT = 0;
-                                    clsDetails.VatableAmount = 0;
-                                    clsDetails.EVAT = 0;
-                                    clsDetails.EVatableAmount = 0;
-                                    clsDetails.LocalTax = 0;
-                                    clsDetails.IsVatable = false;
-                                }
-                                clsDetails.Amount = amount;
-
-                                clsDetails.VariationMatrixID = Convert.ToInt64(drmatrix["MatrixID"]);
-                                clsDetails.MatrixDescription = drmatrix["VariationDesc"].ToString();
-                                clsPOItem.Insert(clsDetails);
-
-                                break;
-                            }
-                        else
-                        {
-                            clsDetails.VariationMatrixID = 0;
-                            clsDetails.MatrixDescription = string.Empty;
-                            clsPOItem.Insert(clsDetails);
-                        }
+                        clsDetails.VariationMatrixID = Convert.ToInt64(dr["MatrixID"]);
+                        clsDetails.MatrixDescription = dr["MatrixDescription"].ToString();
+                        clsPOItem.Insert(clsDetails);
                     }
                 }
             }
@@ -1842,7 +1742,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string stRetValue = String.Empty;
 				
-				SysConfig clsERPConfig = new SysConfig(base.Connection, base.Transaction);
+				ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
 				stRetValue = clsERPConfig.get_LastPONo();
 
 				return stRetValue;

@@ -154,7 +154,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ContactDetails.cs" />
-    <Compile Include="TransactionGLA.cs" />
+    <Compile Include="GLA\OrderTenderGLA.cs" />
+    <Compile Include="GLA\TransactionGLA.cs" />
     <Compile Include="SysConfig.cs" />
     <Compile Include="Salutation.cs" />
     <Compile Include="ParkingRates.cs" />

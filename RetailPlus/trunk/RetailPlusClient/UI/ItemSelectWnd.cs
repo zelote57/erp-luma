@@ -35,8 +35,11 @@ namespace AceSoft.RetailPlus.Client.UI
 		private bool mboShowItemMoreThanZeroQty;
         private bool mboShowInActiveProducts;
         private TerminalDetails mclsTerminalDetails;
+        private SysConfigDetails mclsSysConfigDetails;
         private System.Windows.Forms.PictureBox imgIcon;
         private Timer tmrSearch;
+        private Label lblProductCode;
+        private Label lblProductQuantity;
         private System.ComponentModel.IContainer components;
 
 		public DialogResult Result
@@ -64,6 +67,11 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			set	{	mboShowItemMoreThanZeroQty = value;	}
 		}
+
+        public SysConfigDetails SysConfigDetails
+        {
+            set { mclsSysConfigDetails = value; }
+        }
 
         public TerminalDetails TerminalDetails
         {
@@ -116,8 +124,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.MatrixID = new System.Windows.Forms.DataGridTextBoxColumn();
             this.BarCode = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductCode = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.MatrixDescription = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductDesc = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.MatrixDescription = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductGroup = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductSubGroup = new System.Windows.Forms.DataGridTextBoxColumn();
             this.ProductUnitID = new System.Windows.Forms.DataGridTextBoxColumn();
@@ -125,10 +133,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Price = new System.Windows.Forms.DataGridTextBoxColumn();
             this.VAT = new System.Windows.Forms.DataGridTextBoxColumn();
             this.LocalTax = new System.Windows.Forms.DataGridTextBoxColumn();
+            this.Quantity = new AceSoft.RetailPlus.Client.UI.DataGridQuantityTextBoxColumn();
             this.MinThreshold = new System.Windows.Forms.DataGridTextBoxColumn();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.tmrSearch = new System.Windows.Forms.Timer(this.components);
-            this.Quantity = new AceSoft.RetailPlus.Client.UI.DataGridQuantityTextBoxColumn();
+            this.lblProductCode = new System.Windows.Forms.Label();
+            this.lblProductQuantity = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.SuspendLayout();
@@ -271,16 +281,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ProductCode.ReadOnly = true;
             this.ProductCode.Width = 0;
             // 
-            // MatrixDescription
-            // 
-            this.MatrixDescription.Format = "";
-            this.MatrixDescription.FormatInfo = null;
-            this.MatrixDescription.HeaderText = "";
-            this.MatrixDescription.MappingName = "MatrixDescription";
-            this.MatrixDescription.NullText = "";
-            this.MatrixDescription.ReadOnly = true;
-            this.MatrixDescription.Width = 0;
-            // 
             // ProductDesc
             // 
             this.ProductDesc.Format = "";
@@ -290,6 +290,15 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ProductDesc.NullText = "";
             this.ProductDesc.ReadOnly = true;
             this.ProductDesc.Width = 0;
+            // 
+            // MatrixDescription
+            // 
+            this.MatrixDescription.Format = "";
+            this.MatrixDescription.FormatInfo = null;
+            this.MatrixDescription.MappingName = "MatrixDescription";
+            this.MatrixDescription.NullText = "";
+            this.MatrixDescription.ReadOnly = true;
+            this.MatrixDescription.Width = 0;
             // 
             // ProductGroup
             // 
@@ -356,6 +365,17 @@ namespace AceSoft.RetailPlus.Client.UI
             this.LocalTax.ReadOnly = true;
             this.LocalTax.Width = 0;
             // 
+            // Quantity
+            // 
+            this.Quantity.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Quantity.Format = "";
+            this.Quantity.FormatInfo = null;
+            this.Quantity.HeaderText = "Qty";
+            this.Quantity.MappingName = "Quantity";
+            this.Quantity.NullText = "0";
+            this.Quantity.ReadOnly = true;
+            this.Quantity.Width = 0;
+            // 
             // MinThreshold
             // 
             this.MinThreshold.Format = "";
@@ -380,16 +400,29 @@ namespace AceSoft.RetailPlus.Client.UI
             this.tmrSearch.Interval = 300;
             this.tmrSearch.Tick += new System.EventHandler(this.tmrSearch_Tick);
             // 
-            // Quantity
+            // lblProductCode
             // 
-            this.Quantity.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.Quantity.Format = "";
-            this.Quantity.FormatInfo = null;
-            this.Quantity.HeaderText = "Qty";
-            this.Quantity.MappingName = "Quantity";
-            this.Quantity.NullText = "0";
-            this.Quantity.ReadOnly = true;
-            this.Quantity.Width = 0;
+            this.lblProductCode.BackColor = System.Drawing.Color.Transparent;
+            this.lblProductCode.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProductCode.ForeColor = System.Drawing.Color.LightSlateGray;
+            this.lblProductCode.Location = new System.Drawing.Point(371, 34);
+            this.lblProductCode.Name = "lblProductCode";
+            this.lblProductCode.Size = new System.Drawing.Size(486, 23);
+            this.lblProductCode.TabIndex = 80;
+            this.lblProductCode.Text = "Total Quantity:";
+            this.lblProductCode.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // lblProductQuantity
+            // 
+            this.lblProductQuantity.AutoSize = true;
+            this.lblProductQuantity.BackColor = System.Drawing.Color.Transparent;
+            this.lblProductQuantity.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProductQuantity.ForeColor = System.Drawing.Color.Red;
+            this.lblProductQuantity.Location = new System.Drawing.Point(854, 31);
+            this.lblProductQuantity.Name = "lblProductQuantity";
+            this.lblProductQuantity.Size = new System.Drawing.Size(44, 19);
+            this.lblProductQuantity.TabIndex = 81;
+            this.lblProductQuantity.Text = "0.00";
             // 
             // ItemSelectWnd
             // 
@@ -397,6 +430,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.lblProductQuantity);
+            this.Controls.Add(this.lblProductCode);
             this.Controls.Add(this.dgItems);
             this.Controls.Add(this.lblHeader);
             this.Controls.Add(this.txtSearch);
@@ -455,6 +490,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         dgItems.CurrentRowIndex -= 1;
                         dgItems.Select(dgItems.CurrentRowIndex);
                         dgItems.UnSelect(index);
+                        ShowProductTotalQuantity();
                     }
                     break;
 
@@ -467,6 +503,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         dgItems.CurrentRowIndex += 1;
                         dgItems.Select(dgItems.CurrentRowIndex);
                         dgItems.UnSelect(index);
+                        ShowProductTotalQuantity();
                     }
                     break;
 			}
@@ -629,6 +666,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.lblHeader.Text = "Select Item. Enter search criteria:";
                 this.txtSearch.Text = mstSearchCode;
 			}
+
+            lblProductCode.Text = "";
+            lblProductQuantity.Text = "";
 		}
 
 		private void LoadItemData()
@@ -645,8 +685,10 @@ namespace AceSoft.RetailPlus.Client.UI
 				dgItems.DataSource = dt;
 				dgItems.Select(0);
 				dgItems.CurrentRowIndex=0;
+
+                ShowProductTotalQuantity();
 			}
-			catch (IndexOutOfRangeException){}
+            catch (IndexOutOfRangeException) { lblProductCode.Visible = false; lblProductQuantity.Visible = false; }
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message,"RetailPlus",MessageBoxButtons.OK,MessageBoxIcon.Error); 
@@ -666,8 +708,45 @@ namespace AceSoft.RetailPlus.Client.UI
             tmrSearch.Enabled = false;
         }
 
-    }
+        
+        private void ShowProductTotalQuantity()
+        {
+            try
+            {
+                if (mclsSysConfigDetails.WillShowProductTotalQuantityInItemSelect)
+                {
+                    if (dgItems.CurrentRowIndex < 0)
+                    {
+                        lblProductCode.Visible = false;
+                        lblProductQuantity.Visible = false;
+                    }
+                    else 
+                    {
+                        
+                        ProductModel.ProductID = Int64.Parse(dgItems[dgItems.CurrentRowIndex, 1].ToString());
+                        ProductModel.MatrixID = Int64.Parse(dgItems[dgItems.CurrentRowIndex, 2].ToString());
 
+                        Data.Products clsProduct = new Data.Products();
+                        Data.ProductDetails clsProductDetails = clsProduct.Details(ProductModel.ProductID, ProductModel.MatrixID);
+
+                        lblProductCode.Text = clsProductDetails.ProductCode + " Qty:";
+                        lblProductQuantity.Text = clsProductDetails.ConvertedQuantity;
+                        clsProduct.CommitAndDispose();
+
+                        lblProductCode.Visible = true;
+                        lblProductQuantity.Visible = true;
+                    }
+                }
+                else
+                {
+                    lblProductCode.Visible = false;
+                    lblProductQuantity.Visible = false;
+                }
+            }
+            catch { }
+        }
+
+    }
 
     public class DataGridQuantityTextBoxColumn : DataGridTextBoxColumn
     {

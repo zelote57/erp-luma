@@ -926,13 +926,11 @@ namespace AceSoft.RetailPlus.Data
             return dt;
 		}
 
-		public MySqlDataReader List(long BranchTransferID, string SortField, SortOption SortOrder)
+		public MySqlDataReader List(long BranchTransferID, string SortField = "BranchTransferID", SortOption SortOrder = SortOption.Ascending)
 		{
 			try
 			{
-                if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
-
-				string SQL = SQLSelect() + "ORDER BY " + SortField;
+                string SQL = SQLSelect() + "WHERE BranchTransferID = @BranchTransferID ORDER BY " + SortField;
 
 				if (SortOrder == SortOption.Ascending)
 					SQL += " ASC";
@@ -942,7 +940,9 @@ namespace AceSoft.RetailPlus.Data
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
+
+                cmd.Parameters.AddWithValue("@BranchTransferID", BranchTransferID);
+
 				MySqlDataReader myReader = base.ExecuteReader(cmd);
 				
 				return myReader;			
@@ -953,12 +953,10 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
+		public MySqlDataReader List(string SortField = "BranchTransferID", SortOption SortOrder = SortOption.Ascending)
 		{
 			try
 			{
-                if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
-
 				string SQL = SQLSelect() + "ORDER BY " + SortField;
 
 				if (SortOrder == SortOption.Ascending)

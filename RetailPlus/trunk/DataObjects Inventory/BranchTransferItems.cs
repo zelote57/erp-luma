@@ -705,12 +705,10 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-		public MySqlDataReader List(long BranchTransferID, string SortField, SortOption SortOrder)
+		public MySqlDataReader List(long BranchTransferID, string SortField = "BranchTransferItemID", SortOption SortOrder = SortOption.Ascending)
 		{
 			try
 			{
-                if (SortField == string.Empty || SortField == null) SortField = "BranchTransferItemID";
-
 				string SQL = SQLSelect() + "WHERE BranchTransferID = @BranchTransferID ORDER BY " + SortField;
 
 				if (SortOrder == SortOption.Ascending)

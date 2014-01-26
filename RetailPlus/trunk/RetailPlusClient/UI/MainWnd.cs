@@ -5169,6 +5169,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						ItemSelectWnd ItemWnd = new ItemSelectWnd();
 
 						ItemWnd.TerminalDetails = mclsTerminalDetails;
+                        ItemWnd.SysConfigDetails = mclsSysConfigDetails;
 						ItemWnd.IsPriceInq = isPriceInq;
 						ItemWnd.SearchCode = strSearchCode;
 
@@ -8741,6 +8742,13 @@ namespace AceSoft.RetailPlus.Client.UI
 					currentValues.Add(discreteParam);
 					paramField.ApplyCurrentValues(currentValues);
 
+                    paramField = rpt.DataDefinition.ParameterFields["ORHeader"];
+                    discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                    discreteParam.Value = mclsSysConfigDetails.ORHeader;
+                    currentValues = new CrystalDecisions.Shared.ParameterValues();
+                    currentValues.Add(discreteParam);
+                    paramField.ApplyCurrentValues(currentValues);
+
 					//foreach (CrystalDecisions.CrystalReports.Engine.ReportObject objPic in rpt.Section1.ReportObjects)
 					//{
 					//    if (objPic.Name.ToUpper() == "PICLOGO1")
@@ -10912,7 +10920,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				{
 					mstrToPrint += CenterString("*******THIS TRANSACTION IS VOID*******", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 				}
-				else if (status == TransactionStatus.Reprinted)
+				else if (status == TransactionStatus.Reprinted && !mclsSysConfigDetails.WillNotPrintReprintMessage)
 				{
 					mstrToPrint += CenterString("**THIS TRANSACTION IS REPRINTED AS OF**", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;
 					mstrToPrint += CenterString(DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine;

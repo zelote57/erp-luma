@@ -6808,7 +6808,7 @@ UPDATE tblTerminalReportHistory SET ActualNewGrandTotal = NewGrandTotal WHERE Ac
 **	tblgla_f_dtl_chk_headers
 *****************************/
 DROP TABLE IF EXISTS tblgla_f_dtl_chk_headers;
-CREATE TABLE po (
+CREATE TABLE tblgla_f_dtl_chk_headers (
 	`fk_business_date` DATETIME NULL,
 	`fk_location_def` INT NOT NULL DEFAULT 0,
 	`fk_emp_def` BIGINT NOT NULL DEFAULT 0,
@@ -6860,3 +6860,17 @@ INDEX `IX1_tblgla_f_dtl_chk_headers`(`chk_num`)
 -- Added to get the discount given
 ALTER TABLE tblTransactionItems ADD `TransactionDiscount` DECIMAL(18,2) NOT NULL DEFAULT 0 COMMENT 'This is an applied discount computed evenly from transaction discount';
 ALTER TABLE tblSalesPerItem ADD `Discount` DECIMAL(18,2) NOT NULL DEFAULT 0;
+
+ALTER TABLE sysConfig MODIFY ConfigName VARCHAR(100);
+
+DELETE FROM sysConfig WHERE ConfigName = 'WillAskDoNotPrintTransactionDate';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillAskDoNotPrintTransactionDate',			'FE',						'false');
+
+DELETE FROM sysConfig WHERE ConfigName = 'WillShowProductTotalQuantityInItemSelect';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillShowProductTotalQuantityInItemSelect',	'FE',						'true');
+
+DELETE FROM sysConfig WHERE ConfigName = 'WillNotPrintReprintMessage';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillNotPrintReprintMessage',					'FE',						'true');
+
+DELETE FROM sysConfig WHERE ConfigName = 'ORHeader';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ORHeader',									'FE',						'WARRANTY RECEIPT');

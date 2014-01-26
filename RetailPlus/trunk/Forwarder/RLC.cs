@@ -104,6 +104,13 @@ namespace AceSoft.RetailPlus.Forwarder
                 writer.WriteLine("22{0}", pvtTerminalReportDetails.CreditCardSales.ToString("####.#0").PadLeft(16, '0'));
                 writer.WriteLine("23{0}", deCreditCardSalesTax.ToString("####.#0").PadLeft(16, '0'));
                 writer.WriteLine("24{0}", pvtTerminalReportDetails.NonVaTableAmount.ToString("####.#0").PadLeft(16, '0'));
+                //08Jan2014 added as per new requirement
+                writer.WriteLine("25{0}", "0.00".PadLeft(16, '0'));         // Pharma Sales
+                writer.WriteLine("26{0}", "0.00".PadLeft(16, '0'));         // Non Pharma Sales
+                writer.WriteLine("27{0}", "0.00".PadLeft(16, '0'));         // PWD - Persons with Disability Discount
+                writer.WriteLine("28{0}", "0.00".PadLeft(16, '0'));         // SALES NOT SUBJECT TO PERCENTAGE RENT (ex. sales from fixed rent kiosks)
+                writer.WriteLine("29{0}", "0.00".PadLeft(16, '0'));         // Total Sales of Reprinted Transaction
+                writer.WriteLine("30{0}", "000".PadLeft(16, '0'));          // No. of Reprinted Transaction
 
                 writer.Flush();
                 writer.Close();

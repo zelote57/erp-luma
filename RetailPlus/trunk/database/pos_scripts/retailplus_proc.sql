@@ -5176,6 +5176,14 @@ BEGIN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.Active = ',ShowActiveAndInactive,' ');
 	END IF;
 
+	IF ProductGroupID <> 0 THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductSubgroupID IN (SELECT DISTINCT ProductSubGroupID FROM tblProductSubGroup WHERE ProductGroupID = ',ProductGroupID,') ');
+	END IF;
+
+	IF ProductSubGroupID <> 0 THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductSubgroupID = ',ProductSubGroupID,' ');
+	END IF;
+
 	/***
 	IF (DATE_FORMAT(dteExpiration, '%Y-%m-%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
 		SET SQLWhere = CONCAT(SQLWhere,'AND prd.ProductID IN (SELECT DISTINCT mtrx.ProductID FROM tblProductVariationsMatrix prdmtrx INNER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.MatrixID = prdmtrx.MatrixID AND prdmtrx.VariationID = 1 WHERE DATE_FORMAT(prdmtrx.Description, ''%Y-%m-%d'') <= DATE_FORMAT(''',dteExpiration,''', ''%Y-%m-%d'')) ');
@@ -5379,6 +5387,8 @@ delimiter ;
 	Desc: This will get the all product package list
 
 	CALL procProductInventorySelect(1, 0,0,'TEST','',0,0,0,2,0,1,0,'1900-01-01',1,0,null,null);
+
+	CALL procProductInventorySelect(0, 0,0,'','',21,0,0,2,0,100,0,'1900-01-01',0,0,null,null);
 	
 **************************************************************/
 delimiter GO
@@ -5432,6 +5442,14 @@ BEGIN
 
 	IF ShowActiveAndInactive = 0 OR ShowActiveAndInactive = 1  THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.Active = ',ShowActiveAndInactive,' ');
+	END IF;
+
+	IF ProductGroupID <> 0 THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductSubgroupID IN (SELECT DISTINCT ProductSubGroupID FROM tblProductSubGroup WHERE ProductGroupID = ',ProductGroupID,') ');
+	END IF;
+
+	IF ProductSubGroupID <> 0 THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductSubgroupID = ',ProductSubGroupID,' ');
 	END IF;
 
 	/***
@@ -5637,7 +5655,7 @@ delimiter ;
 	
 	Desc: This will get the main product list
 
-	CALL procProductSelect(0, '','HallsCoolMenthoBP24g',0,2,0,100,null,null);
+	CALL procProductSelect(0, '','',0,2,0,100,null,null);
 
 	
 **************************************************************/
@@ -5684,6 +5702,7 @@ BEGIN
 	IF ShowActiveAndInactive = 0 OR ShowActiveAndInactive = 1  THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.Active = ',ShowActiveAndInactive,' ');
 	END IF;
+
 
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
@@ -7002,7 +7021,7 @@ DROP PROCEDURE IF EXISTS procSysConfigSelectByName
 GO
 
 create procedure procSysConfigSelectByName(
-			IN ConfigValue varchar(30))
+			IN ConfigValue varchar(100))
 BEGIN
 	SET @SQL = CONCAT('	SELECT 
 							ConfigValue

@@ -25,7 +25,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
                 if (!string.IsNullOrEmpty(Request.QueryString["reporttype"]))
                     lblReportType.Text = Common.Decrypt(Request.QueryString["reporttype"].ToString(), Session.SessionID);
                 else
-                    lblReportType.Text = "BranchTransfer";
+                    lblReportType.Text = "BranchTransferReport";
 
 				LoadOptions();
                 if (!string.IsNullOrEmpty(Request.QueryString["target"]))
@@ -34,7 +34,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
                     GenerateHTML();
 
                 Session["ReportDocument"] = null;
-                Session["ReportType"] = "branchtransfer";
+                Session["ReportType"] = "branchtransferreport";
             }
         }
 
@@ -42,7 +42,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
         {
             if (Session["ReportDocument"] != null && Session["ReportType"] != null)
             {
-                if (Session["ReportType"].ToString() == "branchtransfer")
+                if (Session["ReportType"].ToString() == "branchtransferreport")
                     CRViewer.ReportSource = (ReportDocument)Session["ReportDocument"];
             }
         }
@@ -74,7 +74,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 
             if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
             {
-                string strFileName = Session["UserName"].ToString() + "_branchtransfer";
+                string strFileName = Session["UserName"].ToString() + "_branchtransferreport";
                 CRSHelper.GenerateReport(strFileName, rpt, this.updPrint, pvtExportFormatType);
             }
         }
@@ -104,42 +104,42 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
             long iID = 0;
             try
             {
-                if (Request.QueryString["task"].ToString().ToLower() == "reportfromposted" && Request.QueryString["transferinid"].ToString() != null)
-                { iID = Convert.ToInt64(Request.QueryString["transferinid"].ToString()); }
+                if (Request.QueryString["task"].ToString().ToLower() == "reportfromposted" && Request.QueryString["branchtransferid"].ToString() != null)
+                { iID = Convert.ToInt64(Request.QueryString["branchtransferid"].ToString()); }
                 else
-                { iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["transferinid"].ToString(), Session.SessionID)); }
+                { iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["branchtransferid"].ToString(), Session.SessionID)); }
             }
-            catch { iID = Convert.ToInt64(Common.Decrypt(lblReferrer.Text.Substring(lblReferrer.Text.IndexOf("transferinid") + 13), Session.SessionID)); }
+            catch { iID = Convert.ToInt64(Common.Decrypt(lblReferrer.Text.Substring(lblReferrer.Text.IndexOf("branchtransferid") + 13), Session.SessionID)); }
 
 			ReportDataset rptds = new ReportDataset();
 
-			TransferIn clsTransferIn = new TransferIn();
-			MySqlDataReader myreader = clsTransferIn.List(iID, "TransferInID", SortOption.Ascending);
+            BranchTransfer clsBranchTransfer = new BranchTransfer();
+			MySqlDataReader myreader = clsBranchTransfer.List(iID);
             
 			while(myreader.Read())
 			{
-				DataRow drNew = rptds.TransferIn.NewRow();
-				
-				foreach (DataColumn dc in rptds.TransferIn.Columns)
-					drNew[dc] = "" + myreader[dc.ColumnName]; 
-				
-				rptds.TransferIn.Rows.Add(drNew);
+				DataRow drNew = rptds.BranchTransfer.NewRow();
+
+                foreach (DataColumn dc in rptds.BranchTransfer.Columns)
+					drNew[dc] = "" + myreader[dc.ColumnName];
+
+                rptds.BranchTransfer.Rows.Add(drNew);
 			}
             myreader.Close();
 
-            TransferInItem clsTransferInItem = new TransferInItem(clsTransferIn.Connection, clsTransferIn.Transaction);
-            MySqlDataReader myreaderitems = clsTransferInItem.List(iID, "TransferInItemID", SortOption.Ascending);
+            BranchTransferItem clsBranchTransferItem = new BranchTransferItem(clsBranchTransfer.Connection, clsBranchTransfer.Transaction);
+            MySqlDataReader myreaderitems = clsBranchTransferItem.List(iID);
 			while(myreaderitems.Read())
 			{
-				DataRow drNew = rptds.TransferInItems.NewRow();
-				
-				foreach (DataColumn dc in rptds.TransferInItems.Columns)
-					drNew[dc] = "" + myreaderitems[dc.ColumnName]; 
-				
-				rptds.TransferInItems.Rows.Add(drNew);
+				DataRow drNew = rptds.BranchTransferItems.NewRow();
+
+                foreach (DataColumn dc in rptds.BranchTransferItems.Columns)
+					drNew[dc] = "" + myreaderitems[dc.ColumnName];
+
+                rptds.BranchTransferItems.Rows.Add(drNew);
 			}
             myreaderitems.Close();
-            clsTransferIn.CommitAndDispose();
+            clsBranchTransfer.CommitAndDispose();
 
 			Report.SetDataSource(rptds); 
 			SetParameters(Report);

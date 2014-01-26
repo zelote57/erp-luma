@@ -136,6 +136,10 @@ namespace RetailPlus.Datasets {
         
         private ProductInventoryDataTable tableProductInventory;
         
+        private BranchTransferDataTable tableBranchTransfer;
+        
+        private BranchTransferItemsDataTable tableBranchTransferItems;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -331,6 +335,12 @@ namespace RetailPlus.Datasets {
                 }
                 if ((ds.Tables["ProductInventory"] != null)) {
                     base.Tables.Add(new ProductInventoryDataTable(ds.Tables["ProductInventory"]));
+                }
+                if ((ds.Tables["BranchTransfer"] != null)) {
+                    base.Tables.Add(new BranchTransferDataTable(ds.Tables["BranchTransfer"]));
+                }
+                if ((ds.Tables["BranchTransferItems"] != null)) {
+                    base.Tables.Add(new BranchTransferItemsDataTable(ds.Tables["BranchTransferItems"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -912,6 +922,26 @@ namespace RetailPlus.Datasets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public BranchTransferDataTable BranchTransfer {
+            get {
+                return this.tableBranchTransfer;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public BranchTransferItemsDataTable BranchTransferItems {
+            get {
+                return this.tableBranchTransferItems;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.BrowsableAttribute(true)]
         [global::System.ComponentModel.DesignerSerializationVisibilityAttribute(global::System.ComponentModel.DesignerSerializationVisibility.Visible)]
         public override global::System.Data.SchemaSerializationMode SchemaSerializationMode {
@@ -1144,6 +1174,12 @@ namespace RetailPlus.Datasets {
                 }
                 if ((ds.Tables["ProductInventory"] != null)) {
                     base.Tables.Add(new ProductInventoryDataTable(ds.Tables["ProductInventory"]));
+                }
+                if ((ds.Tables["BranchTransfer"] != null)) {
+                    base.Tables.Add(new BranchTransferDataTable(ds.Tables["BranchTransfer"]));
+                }
+                if ((ds.Tables["BranchTransferItems"] != null)) {
+                    base.Tables.Add(new BranchTransferItemsDataTable(ds.Tables["BranchTransferItems"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -1514,6 +1550,18 @@ namespace RetailPlus.Datasets {
                     this.tableProductInventory.InitVars();
                 }
             }
+            this.tableBranchTransfer = ((BranchTransferDataTable)(base.Tables["BranchTransfer"]));
+            if ((initTable == true)) {
+                if ((this.tableBranchTransfer != null)) {
+                    this.tableBranchTransfer.InitVars();
+                }
+            }
+            this.tableBranchTransferItems = ((BranchTransferItemsDataTable)(base.Tables["BranchTransferItems"]));
+            if ((initTable == true)) {
+                if ((this.tableBranchTransferItems != null)) {
+                    this.tableBranchTransferItems.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1636,6 +1684,10 @@ namespace RetailPlus.Datasets {
             base.Tables.Add(this.tableRewardsMovement);
             this.tableProductInventory = new ProductInventoryDataTable();
             base.Tables.Add(this.tableProductInventory);
+            this.tableBranchTransfer = new BranchTransferDataTable();
+            base.Tables.Add(this.tableBranchTransfer);
+            this.tableBranchTransferItems = new BranchTransferItemsDataTable();
+            base.Tables.Add(this.tableBranchTransferItems);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1976,6 +2028,18 @@ namespace RetailPlus.Datasets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        private bool ShouldSerializeBranchTransfer() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        private bool ShouldSerializeBranchTransferItems() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void SchemaChanged(object sender, global::System.ComponentModel.CollectionChangeEventArgs e) {
             if ((e.Action == global::System.ComponentModel.CollectionChangeAction.Remove)) {
                 this.InitVars();
@@ -2196,6 +2260,12 @@ namespace RetailPlus.Datasets {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public delegate void ProductInventoryRowChangeEventHandler(object sender, ProductInventoryRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public delegate void BranchTransferRowChangeEventHandler(object sender, BranchTransferRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public delegate void BranchTransferItemsRowChangeEventHandler(object sender, BranchTransferItemsRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -28270,6 +28340,1104 @@ namespace RetailPlus.Datasets {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class BranchTransferDataTable : global::System.Data.TypedTableBase<BranchTransferRow> {
+            
+            private global::System.Data.DataColumn columnBranchTransferID;
+            
+            private global::System.Data.DataColumn columnBranchTransferNo;
+            
+            private global::System.Data.DataColumn columnBranchTransferDate;
+            
+            private global::System.Data.DataColumn columnRequiredDeliveryDate;
+            
+            private global::System.Data.DataColumn columnBranchIDFrom;
+            
+            private global::System.Data.DataColumn columnBranchCodeFrom;
+            
+            private global::System.Data.DataColumn columnBranchIDTo;
+            
+            private global::System.Data.DataColumn columnBranchCodeTo;
+            
+            private global::System.Data.DataColumn columnTransferrerID;
+            
+            private global::System.Data.DataColumn columnTransferrerName;
+            
+            private global::System.Data.DataColumn columnSubTotal;
+            
+            private global::System.Data.DataColumn columnDiscount;
+            
+            private global::System.Data.DataColumn columnDiscountApplied;
+            
+            private global::System.Data.DataColumn columnDiscountType;
+            
+            private global::System.Data.DataColumn columnVAT;
+            
+            private global::System.Data.DataColumn columnVatableAmount;
+            
+            private global::System.Data.DataColumn columnEVAT;
+            
+            private global::System.Data.DataColumn columnEVATableAmount;
+            
+            private global::System.Data.DataColumn columnLocalTax;
+            
+            private global::System.Data.DataColumn columnStatus;
+            
+            private global::System.Data.DataColumn columnRemarks;
+            
+            private global::System.Data.DataColumn columnRequestedBy;
+            
+            private global::System.Data.DataColumn columnReceivedBy;
+            
+            private global::System.Data.DataColumn columnDeliveryDate;
+            
+            private global::System.Data.DataColumn columnCancelledDate;
+            
+            private global::System.Data.DataColumn columnCancelledRemarks;
+            
+            private global::System.Data.DataColumn columnCancelledByID;
+            
+            private global::System.Data.DataColumn columnUnpaidAmount;
+            
+            private global::System.Data.DataColumn columnPaidAmount;
+            
+            private global::System.Data.DataColumn columnFreight;
+            
+            private global::System.Data.DataColumn columnDeposit;
+            
+            private global::System.Data.DataColumn columnTotalItemDiscount;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferDataTable() {
+                this.TableName = "BranchTransfer";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal BranchTransferDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected BranchTransferDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BranchTransferIDColumn {
+                get {
+                    return this.columnBranchTransferID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BranchTransferNoColumn {
+                get {
+                    return this.columnBranchTransferNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BranchTransferDateColumn {
+                get {
+                    return this.columnBranchTransferDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RequiredDeliveryDateColumn {
+                get {
+                    return this.columnRequiredDeliveryDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BranchIDFromColumn {
+                get {
+                    return this.columnBranchIDFrom;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BranchCodeFromColumn {
+                get {
+                    return this.columnBranchCodeFrom;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BranchIDToColumn {
+                get {
+                    return this.columnBranchIDTo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BranchCodeToColumn {
+                get {
+                    return this.columnBranchCodeTo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TransferrerIDColumn {
+                get {
+                    return this.columnTransferrerID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TransferrerNameColumn {
+                get {
+                    return this.columnTransferrerName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn SubTotalColumn {
+                get {
+                    return this.columnSubTotal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DiscountColumn {
+                get {
+                    return this.columnDiscount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DiscountAppliedColumn {
+                get {
+                    return this.columnDiscountApplied;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DiscountTypeColumn {
+                get {
+                    return this.columnDiscountType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn VATColumn {
+                get {
+                    return this.columnVAT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn VatableAmountColumn {
+                get {
+                    return this.columnVatableAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EVATColumn {
+                get {
+                    return this.columnEVAT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EVATableAmountColumn {
+                get {
+                    return this.columnEVATableAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn LocalTaxColumn {
+                get {
+                    return this.columnLocalTax;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn StatusColumn {
+                get {
+                    return this.columnStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RemarksColumn {
+                get {
+                    return this.columnRemarks;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RequestedByColumn {
+                get {
+                    return this.columnRequestedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ReceivedByColumn {
+                get {
+                    return this.columnReceivedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DeliveryDateColumn {
+                get {
+                    return this.columnDeliveryDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CancelledDateColumn {
+                get {
+                    return this.columnCancelledDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CancelledRemarksColumn {
+                get {
+                    return this.columnCancelledRemarks;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CancelledByIDColumn {
+                get {
+                    return this.columnCancelledByID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn UnpaidAmountColumn {
+                get {
+                    return this.columnUnpaidAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PaidAmountColumn {
+                get {
+                    return this.columnPaidAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn FreightColumn {
+                get {
+                    return this.columnFreight;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DepositColumn {
+                get {
+                    return this.columnDeposit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TotalItemDiscountColumn {
+                get {
+                    return this.columnTotalItemDiscount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferRow this[int index] {
+                get {
+                    return ((BranchTransferRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event BranchTransferRowChangeEventHandler BranchTransferRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event BranchTransferRowChangeEventHandler BranchTransferRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event BranchTransferRowChangeEventHandler BranchTransferRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event BranchTransferRowChangeEventHandler BranchTransferRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void AddBranchTransferRow(BranchTransferRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferRow AddBranchTransferRow(
+                        long BranchTransferID, 
+                        string BranchTransferNo, 
+                        System.DateTime BranchTransferDate, 
+                        System.DateTime RequiredDeliveryDate, 
+                        int BranchIDFrom, 
+                        string BranchCodeFrom, 
+                        int BranchIDTo, 
+                        string BranchCodeTo, 
+                        long TransferrerID, 
+                        string TransferrerName, 
+                        double SubTotal, 
+                        double Discount, 
+                        double DiscountApplied, 
+                        int DiscountType, 
+                        double VAT, 
+                        double VatableAmount, 
+                        double EVAT, 
+                        double EVATableAmount, 
+                        double LocalTax, 
+                        int Status, 
+                        string Remarks, 
+                        string RequestedBy, 
+                        string ReceivedBy, 
+                        System.DateTime DeliveryDate, 
+                        System.DateTime CancelledDate, 
+                        string CancelledRemarks, 
+                        long CancelledByID, 
+                        double UnpaidAmount, 
+                        double PaidAmount, 
+                        double Freight, 
+                        double Deposit, 
+                        double TotalItemDiscount) {
+                BranchTransferRow rowBranchTransferRow = ((BranchTransferRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        BranchTransferID,
+                        BranchTransferNo,
+                        BranchTransferDate,
+                        RequiredDeliveryDate,
+                        BranchIDFrom,
+                        BranchCodeFrom,
+                        BranchIDTo,
+                        BranchCodeTo,
+                        TransferrerID,
+                        TransferrerName,
+                        SubTotal,
+                        Discount,
+                        DiscountApplied,
+                        DiscountType,
+                        VAT,
+                        VatableAmount,
+                        EVAT,
+                        EVATableAmount,
+                        LocalTax,
+                        Status,
+                        Remarks,
+                        RequestedBy,
+                        ReceivedBy,
+                        DeliveryDate,
+                        CancelledDate,
+                        CancelledRemarks,
+                        CancelledByID,
+                        UnpaidAmount,
+                        PaidAmount,
+                        Freight,
+                        Deposit,
+                        TotalItemDiscount};
+                rowBranchTransferRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowBranchTransferRow);
+                return rowBranchTransferRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                BranchTransferDataTable cln = ((BranchTransferDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new BranchTransferDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal void InitVars() {
+                this.columnBranchTransferID = base.Columns["BranchTransferID"];
+                this.columnBranchTransferNo = base.Columns["BranchTransferNo"];
+                this.columnBranchTransferDate = base.Columns["BranchTransferDate"];
+                this.columnRequiredDeliveryDate = base.Columns["RequiredDeliveryDate"];
+                this.columnBranchIDFrom = base.Columns["BranchIDFrom"];
+                this.columnBranchCodeFrom = base.Columns["BranchCodeFrom"];
+                this.columnBranchIDTo = base.Columns["BranchIDTo"];
+                this.columnBranchCodeTo = base.Columns["BranchCodeTo"];
+                this.columnTransferrerID = base.Columns["TransferrerID"];
+                this.columnTransferrerName = base.Columns["TransferrerName"];
+                this.columnSubTotal = base.Columns["SubTotal"];
+                this.columnDiscount = base.Columns["Discount"];
+                this.columnDiscountApplied = base.Columns["DiscountApplied"];
+                this.columnDiscountType = base.Columns["DiscountType"];
+                this.columnVAT = base.Columns["VAT"];
+                this.columnVatableAmount = base.Columns["VatableAmount"];
+                this.columnEVAT = base.Columns["EVAT"];
+                this.columnEVATableAmount = base.Columns["EVATableAmount"];
+                this.columnLocalTax = base.Columns["LocalTax"];
+                this.columnStatus = base.Columns["Status"];
+                this.columnRemarks = base.Columns["Remarks"];
+                this.columnRequestedBy = base.Columns["RequestedBy"];
+                this.columnReceivedBy = base.Columns["ReceivedBy"];
+                this.columnDeliveryDate = base.Columns["DeliveryDate"];
+                this.columnCancelledDate = base.Columns["CancelledDate"];
+                this.columnCancelledRemarks = base.Columns["CancelledRemarks"];
+                this.columnCancelledByID = base.Columns["CancelledByID"];
+                this.columnUnpaidAmount = base.Columns["UnpaidAmount"];
+                this.columnPaidAmount = base.Columns["PaidAmount"];
+                this.columnFreight = base.Columns["Freight"];
+                this.columnDeposit = base.Columns["Deposit"];
+                this.columnTotalItemDiscount = base.Columns["TotalItemDiscount"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            private void InitClass() {
+                this.columnBranchTransferID = new global::System.Data.DataColumn("BranchTransferID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchTransferID);
+                this.columnBranchTransferNo = new global::System.Data.DataColumn("BranchTransferNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchTransferNo);
+                this.columnBranchTransferDate = new global::System.Data.DataColumn("BranchTransferDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchTransferDate);
+                this.columnRequiredDeliveryDate = new global::System.Data.DataColumn("RequiredDeliveryDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRequiredDeliveryDate);
+                this.columnBranchIDFrom = new global::System.Data.DataColumn("BranchIDFrom", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchIDFrom);
+                this.columnBranchCodeFrom = new global::System.Data.DataColumn("BranchCodeFrom", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCodeFrom);
+                this.columnBranchIDTo = new global::System.Data.DataColumn("BranchIDTo", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchIDTo);
+                this.columnBranchCodeTo = new global::System.Data.DataColumn("BranchCodeTo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCodeTo);
+                this.columnTransferrerID = new global::System.Data.DataColumn("TransferrerID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransferrerID);
+                this.columnTransferrerName = new global::System.Data.DataColumn("TransferrerName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransferrerName);
+                this.columnSubTotal = new global::System.Data.DataColumn("SubTotal", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSubTotal);
+                this.columnDiscount = new global::System.Data.DataColumn("Discount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDiscount);
+                this.columnDiscountApplied = new global::System.Data.DataColumn("DiscountApplied", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDiscountApplied);
+                this.columnDiscountType = new global::System.Data.DataColumn("DiscountType", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDiscountType);
+                this.columnVAT = new global::System.Data.DataColumn("VAT", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVAT);
+                this.columnVatableAmount = new global::System.Data.DataColumn("VatableAmount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVatableAmount);
+                this.columnEVAT = new global::System.Data.DataColumn("EVAT", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEVAT);
+                this.columnEVATableAmount = new global::System.Data.DataColumn("EVATableAmount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEVATableAmount);
+                this.columnLocalTax = new global::System.Data.DataColumn("LocalTax", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLocalTax);
+                this.columnStatus = new global::System.Data.DataColumn("Status", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStatus);
+                this.columnRemarks = new global::System.Data.DataColumn("Remarks", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRemarks);
+                this.columnRequestedBy = new global::System.Data.DataColumn("RequestedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRequestedBy);
+                this.columnReceivedBy = new global::System.Data.DataColumn("ReceivedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReceivedBy);
+                this.columnDeliveryDate = new global::System.Data.DataColumn("DeliveryDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliveryDate);
+                this.columnCancelledDate = new global::System.Data.DataColumn("CancelledDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCancelledDate);
+                this.columnCancelledRemarks = new global::System.Data.DataColumn("CancelledRemarks", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCancelledRemarks);
+                this.columnCancelledByID = new global::System.Data.DataColumn("CancelledByID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCancelledByID);
+                this.columnUnpaidAmount = new global::System.Data.DataColumn("UnpaidAmount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnUnpaidAmount);
+                this.columnPaidAmount = new global::System.Data.DataColumn("PaidAmount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPaidAmount);
+                this.columnFreight = new global::System.Data.DataColumn("Freight", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFreight);
+                this.columnDeposit = new global::System.Data.DataColumn("Deposit", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeposit);
+                this.columnTotalItemDiscount = new global::System.Data.DataColumn("TotalItemDiscount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalItemDiscount);
+                this.columnTransferrerID.DefaultValue = ((long)(0));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferRow NewBranchTransferRow() {
+                return ((BranchTransferRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new BranchTransferRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(BranchTransferRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.BranchTransferRowChanged != null)) {
+                    this.BranchTransferRowChanged(this, new BranchTransferRowChangeEvent(((BranchTransferRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.BranchTransferRowChanging != null)) {
+                    this.BranchTransferRowChanging(this, new BranchTransferRowChangeEvent(((BranchTransferRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.BranchTransferRowDeleted != null)) {
+                    this.BranchTransferRowDeleted(this, new BranchTransferRowChangeEvent(((BranchTransferRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.BranchTransferRowDeleting != null)) {
+                    this.BranchTransferRowDeleting(this, new BranchTransferRowChangeEvent(((BranchTransferRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void RemoveBranchTransferRow(BranchTransferRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ReportDataset ds = new ReportDataset();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "BranchTransferDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class BranchTransferItemsDataTable : global::System.Data.TypedTableBase<BranchTransferItemsRow> {
+            
+            private global::System.Data.DataColumn columnProductCode;
+            
+            private global::System.Data.DataColumn columnDescription;
+            
+            private global::System.Data.DataColumn columnProductUnitCode;
+            
+            private global::System.Data.DataColumn columnQuantity;
+            
+            private global::System.Data.DataColumn columnUnitCost;
+            
+            private global::System.Data.DataColumn columnDiscount;
+            
+            private global::System.Data.DataColumn columnAmount;
+            
+            private global::System.Data.DataColumn columnVAT;
+            
+            private global::System.Data.DataColumn columnBranchTransferID;
+            
+            private global::System.Data.DataColumn columnSellingPrice;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferItemsDataTable() {
+                this.TableName = "BranchTransferItems";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal BranchTransferItemsDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected BranchTransferItemsDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ProductCodeColumn {
+                get {
+                    return this.columnProductCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DescriptionColumn {
+                get {
+                    return this.columnDescription;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ProductUnitCodeColumn {
+                get {
+                    return this.columnProductUnitCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn QuantityColumn {
+                get {
+                    return this.columnQuantity;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn UnitCostColumn {
+                get {
+                    return this.columnUnitCost;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DiscountColumn {
+                get {
+                    return this.columnDiscount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AmountColumn {
+                get {
+                    return this.columnAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn VATColumn {
+                get {
+                    return this.columnVAT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BranchTransferIDColumn {
+                get {
+                    return this.columnBranchTransferID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn SellingPriceColumn {
+                get {
+                    return this.columnSellingPrice;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferItemsRow this[int index] {
+                get {
+                    return ((BranchTransferItemsRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event BranchTransferItemsRowChangeEventHandler BranchTransferItemsRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event BranchTransferItemsRowChangeEventHandler BranchTransferItemsRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event BranchTransferItemsRowChangeEventHandler BranchTransferItemsRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event BranchTransferItemsRowChangeEventHandler BranchTransferItemsRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void AddBranchTransferItemsRow(BranchTransferItemsRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferItemsRow AddBranchTransferItemsRow(string ProductCode, string Description, string ProductUnitCode, decimal Quantity, decimal UnitCost, decimal Discount, decimal Amount, decimal VAT, long BranchTransferID, decimal SellingPrice) {
+                BranchTransferItemsRow rowBranchTransferItemsRow = ((BranchTransferItemsRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ProductCode,
+                        Description,
+                        ProductUnitCode,
+                        Quantity,
+                        UnitCost,
+                        Discount,
+                        Amount,
+                        VAT,
+                        BranchTransferID,
+                        SellingPrice};
+                rowBranchTransferItemsRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowBranchTransferItemsRow);
+                return rowBranchTransferItemsRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                BranchTransferItemsDataTable cln = ((BranchTransferItemsDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new BranchTransferItemsDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal void InitVars() {
+                this.columnProductCode = base.Columns["ProductCode"];
+                this.columnDescription = base.Columns["Description"];
+                this.columnProductUnitCode = base.Columns["ProductUnitCode"];
+                this.columnQuantity = base.Columns["Quantity"];
+                this.columnUnitCost = base.Columns["UnitCost"];
+                this.columnDiscount = base.Columns["Discount"];
+                this.columnAmount = base.Columns["Amount"];
+                this.columnVAT = base.Columns["VAT"];
+                this.columnBranchTransferID = base.Columns["BranchTransferID"];
+                this.columnSellingPrice = base.Columns["SellingPrice"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            private void InitClass() {
+                this.columnProductCode = new global::System.Data.DataColumn("ProductCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProductCode);
+                this.columnDescription = new global::System.Data.DataColumn("Description", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDescription);
+                this.columnProductUnitCode = new global::System.Data.DataColumn("ProductUnitCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProductUnitCode);
+                this.columnQuantity = new global::System.Data.DataColumn("Quantity", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnQuantity);
+                this.columnUnitCost = new global::System.Data.DataColumn("UnitCost", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnUnitCost);
+                this.columnDiscount = new global::System.Data.DataColumn("Discount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDiscount);
+                this.columnAmount = new global::System.Data.DataColumn("Amount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAmount);
+                this.columnVAT = new global::System.Data.DataColumn("VAT", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVAT);
+                this.columnBranchTransferID = new global::System.Data.DataColumn("BranchTransferID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchTransferID);
+                this.columnSellingPrice = new global::System.Data.DataColumn("SellingPrice", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSellingPrice);
+                this.columnProductCode.AllowDBNull = false;
+                this.columnDescription.AllowDBNull = false;
+                this.columnProductUnitCode.AllowDBNull = false;
+                this.columnQuantity.AllowDBNull = false;
+                this.columnUnitCost.AllowDBNull = false;
+                this.columnDiscount.AllowDBNull = false;
+                this.columnAmount.AllowDBNull = false;
+                this.columnVAT.AllowDBNull = false;
+                this.columnBranchTransferID.AllowDBNull = false;
+                this.columnBranchTransferID.Caption = "TransferInID";
+                this.columnSellingPrice.AllowDBNull = false;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferItemsRow NewBranchTransferItemsRow() {
+                return ((BranchTransferItemsRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new BranchTransferItemsRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(BranchTransferItemsRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.BranchTransferItemsRowChanged != null)) {
+                    this.BranchTransferItemsRowChanged(this, new BranchTransferItemsRowChangeEvent(((BranchTransferItemsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.BranchTransferItemsRowChanging != null)) {
+                    this.BranchTransferItemsRowChanging(this, new BranchTransferItemsRowChangeEvent(((BranchTransferItemsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.BranchTransferItemsRowDeleted != null)) {
+                    this.BranchTransferItemsRowDeleted(this, new BranchTransferItemsRowChangeEvent(((BranchTransferItemsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.BranchTransferItemsRowDeleting != null)) {
+                    this.BranchTransferItemsRowDeleting(this, new BranchTransferItemsRowChangeEvent(((BranchTransferItemsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void RemoveBranchTransferItemsRow(BranchTransferItemsRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ReportDataset ds = new ReportDataset();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "BranchTransferItemsDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class ContactsRow : global::System.Data.DataRow {
@@ -39966,6 +41134,1042 @@ namespace RetailPlus.Datasets {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class BranchTransferRow : global::System.Data.DataRow {
+            
+            private BranchTransferDataTable tableBranchTransfer;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal BranchTransferRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableBranchTransfer = ((BranchTransferDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public long BranchTransferID {
+                get {
+                    try {
+                        return ((long)(this[this.tableBranchTransfer.BranchTransferIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchTransferID\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.BranchTransferIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string BranchTransferNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableBranchTransfer.BranchTransferNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchTransferNo\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.BranchTransferNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime BranchTransferDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableBranchTransfer.BranchTransferDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchTransferDate\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.BranchTransferDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime RequiredDeliveryDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableBranchTransfer.RequiredDeliveryDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RequiredDeliveryDate\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.RequiredDeliveryDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int BranchIDFrom {
+                get {
+                    try {
+                        return ((int)(this[this.tableBranchTransfer.BranchIDFromColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchIDFrom\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.BranchIDFromColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string BranchCodeFrom {
+                get {
+                    try {
+                        return ((string)(this[this.tableBranchTransfer.BranchCodeFromColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCodeFrom\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.BranchCodeFromColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int BranchIDTo {
+                get {
+                    try {
+                        return ((int)(this[this.tableBranchTransfer.BranchIDToColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchIDTo\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.BranchIDToColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string BranchCodeTo {
+                get {
+                    try {
+                        return ((string)(this[this.tableBranchTransfer.BranchCodeToColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCodeTo\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.BranchCodeToColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public long TransferrerID {
+                get {
+                    try {
+                        return ((long)(this[this.tableBranchTransfer.TransferrerIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransferrerID\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.TransferrerIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TransferrerName {
+                get {
+                    try {
+                        return ((string)(this[this.tableBranchTransfer.TransferrerNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransferrerName\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.TransferrerNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double SubTotal {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.SubTotalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SubTotal\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.SubTotalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double Discount {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.DiscountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Discount\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.DiscountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double DiscountApplied {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.DiscountAppliedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DiscountApplied\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.DiscountAppliedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int DiscountType {
+                get {
+                    try {
+                        return ((int)(this[this.tableBranchTransfer.DiscountTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DiscountType\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.DiscountTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double VAT {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.VATColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'VAT\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.VATColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double VatableAmount {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.VatableAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'VatableAmount\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.VatableAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double EVAT {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.EVATColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EVAT\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.EVATColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double EVATableAmount {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.EVATableAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EVATableAmount\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.EVATableAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double LocalTax {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.LocalTaxColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LocalTax\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.LocalTaxColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int Status {
+                get {
+                    try {
+                        return ((int)(this[this.tableBranchTransfer.StatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Status\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.StatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Remarks {
+                get {
+                    try {
+                        return ((string)(this[this.tableBranchTransfer.RemarksColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Remarks\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.RemarksColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string RequestedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableBranchTransfer.RequestedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RequestedBy\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.RequestedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ReceivedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableBranchTransfer.ReceivedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReceivedBy\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.ReceivedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime DeliveryDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableBranchTransfer.DeliveryDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliveryDate\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.DeliveryDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime CancelledDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableBranchTransfer.CancelledDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CancelledDate\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.CancelledDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CancelledRemarks {
+                get {
+                    try {
+                        return ((string)(this[this.tableBranchTransfer.CancelledRemarksColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CancelledRemarks\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.CancelledRemarksColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public long CancelledByID {
+                get {
+                    try {
+                        return ((long)(this[this.tableBranchTransfer.CancelledByIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CancelledByID\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.CancelledByIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double UnpaidAmount {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.UnpaidAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'UnpaidAmount\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.UnpaidAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double PaidAmount {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.PaidAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PaidAmount\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.PaidAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double Freight {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.FreightColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Freight\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.FreightColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double Deposit {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.DepositColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Deposit\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.DepositColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double TotalItemDiscount {
+                get {
+                    try {
+                        return ((double)(this[this.tableBranchTransfer.TotalItemDiscountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalItemDiscount\' in table \'BranchTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBranchTransfer.TotalItemDiscountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBranchTransferIDNull() {
+                return this.IsNull(this.tableBranchTransfer.BranchTransferIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBranchTransferIDNull() {
+                this[this.tableBranchTransfer.BranchTransferIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBranchTransferNoNull() {
+                return this.IsNull(this.tableBranchTransfer.BranchTransferNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBranchTransferNoNull() {
+                this[this.tableBranchTransfer.BranchTransferNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBranchTransferDateNull() {
+                return this.IsNull(this.tableBranchTransfer.BranchTransferDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBranchTransferDateNull() {
+                this[this.tableBranchTransfer.BranchTransferDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRequiredDeliveryDateNull() {
+                return this.IsNull(this.tableBranchTransfer.RequiredDeliveryDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRequiredDeliveryDateNull() {
+                this[this.tableBranchTransfer.RequiredDeliveryDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBranchIDFromNull() {
+                return this.IsNull(this.tableBranchTransfer.BranchIDFromColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBranchIDFromNull() {
+                this[this.tableBranchTransfer.BranchIDFromColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBranchCodeFromNull() {
+                return this.IsNull(this.tableBranchTransfer.BranchCodeFromColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBranchCodeFromNull() {
+                this[this.tableBranchTransfer.BranchCodeFromColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBranchIDToNull() {
+                return this.IsNull(this.tableBranchTransfer.BranchIDToColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBranchIDToNull() {
+                this[this.tableBranchTransfer.BranchIDToColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBranchCodeToNull() {
+                return this.IsNull(this.tableBranchTransfer.BranchCodeToColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBranchCodeToNull() {
+                this[this.tableBranchTransfer.BranchCodeToColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTransferrerIDNull() {
+                return this.IsNull(this.tableBranchTransfer.TransferrerIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTransferrerIDNull() {
+                this[this.tableBranchTransfer.TransferrerIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTransferrerNameNull() {
+                return this.IsNull(this.tableBranchTransfer.TransferrerNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTransferrerNameNull() {
+                this[this.tableBranchTransfer.TransferrerNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsSubTotalNull() {
+                return this.IsNull(this.tableBranchTransfer.SubTotalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetSubTotalNull() {
+                this[this.tableBranchTransfer.SubTotalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDiscountNull() {
+                return this.IsNull(this.tableBranchTransfer.DiscountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDiscountNull() {
+                this[this.tableBranchTransfer.DiscountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDiscountAppliedNull() {
+                return this.IsNull(this.tableBranchTransfer.DiscountAppliedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDiscountAppliedNull() {
+                this[this.tableBranchTransfer.DiscountAppliedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDiscountTypeNull() {
+                return this.IsNull(this.tableBranchTransfer.DiscountTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDiscountTypeNull() {
+                this[this.tableBranchTransfer.DiscountTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsVATNull() {
+                return this.IsNull(this.tableBranchTransfer.VATColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetVATNull() {
+                this[this.tableBranchTransfer.VATColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsVatableAmountNull() {
+                return this.IsNull(this.tableBranchTransfer.VatableAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetVatableAmountNull() {
+                this[this.tableBranchTransfer.VatableAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEVATNull() {
+                return this.IsNull(this.tableBranchTransfer.EVATColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEVATNull() {
+                this[this.tableBranchTransfer.EVATColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEVATableAmountNull() {
+                return this.IsNull(this.tableBranchTransfer.EVATableAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEVATableAmountNull() {
+                this[this.tableBranchTransfer.EVATableAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsLocalTaxNull() {
+                return this.IsNull(this.tableBranchTransfer.LocalTaxColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetLocalTaxNull() {
+                this[this.tableBranchTransfer.LocalTaxColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsStatusNull() {
+                return this.IsNull(this.tableBranchTransfer.StatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetStatusNull() {
+                this[this.tableBranchTransfer.StatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRemarksNull() {
+                return this.IsNull(this.tableBranchTransfer.RemarksColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRemarksNull() {
+                this[this.tableBranchTransfer.RemarksColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRequestedByNull() {
+                return this.IsNull(this.tableBranchTransfer.RequestedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRequestedByNull() {
+                this[this.tableBranchTransfer.RequestedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsReceivedByNull() {
+                return this.IsNull(this.tableBranchTransfer.ReceivedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetReceivedByNull() {
+                this[this.tableBranchTransfer.ReceivedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDeliveryDateNull() {
+                return this.IsNull(this.tableBranchTransfer.DeliveryDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDeliveryDateNull() {
+                this[this.tableBranchTransfer.DeliveryDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCancelledDateNull() {
+                return this.IsNull(this.tableBranchTransfer.CancelledDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCancelledDateNull() {
+                this[this.tableBranchTransfer.CancelledDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCancelledRemarksNull() {
+                return this.IsNull(this.tableBranchTransfer.CancelledRemarksColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCancelledRemarksNull() {
+                this[this.tableBranchTransfer.CancelledRemarksColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCancelledByIDNull() {
+                return this.IsNull(this.tableBranchTransfer.CancelledByIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCancelledByIDNull() {
+                this[this.tableBranchTransfer.CancelledByIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsUnpaidAmountNull() {
+                return this.IsNull(this.tableBranchTransfer.UnpaidAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetUnpaidAmountNull() {
+                this[this.tableBranchTransfer.UnpaidAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPaidAmountNull() {
+                return this.IsNull(this.tableBranchTransfer.PaidAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPaidAmountNull() {
+                this[this.tableBranchTransfer.PaidAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsFreightNull() {
+                return this.IsNull(this.tableBranchTransfer.FreightColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetFreightNull() {
+                this[this.tableBranchTransfer.FreightColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDepositNull() {
+                return this.IsNull(this.tableBranchTransfer.DepositColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDepositNull() {
+                this[this.tableBranchTransfer.DepositColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTotalItemDiscountNull() {
+                return this.IsNull(this.tableBranchTransfer.TotalItemDiscountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTotalItemDiscountNull() {
+                this[this.tableBranchTransfer.TotalItemDiscountColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class BranchTransferItemsRow : global::System.Data.DataRow {
+            
+            private BranchTransferItemsDataTable tableBranchTransferItems;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal BranchTransferItemsRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableBranchTransferItems = ((BranchTransferItemsDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ProductCode {
+                get {
+                    return ((string)(this[this.tableBranchTransferItems.ProductCodeColumn]));
+                }
+                set {
+                    this[this.tableBranchTransferItems.ProductCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Description {
+                get {
+                    return ((string)(this[this.tableBranchTransferItems.DescriptionColumn]));
+                }
+                set {
+                    this[this.tableBranchTransferItems.DescriptionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ProductUnitCode {
+                get {
+                    return ((string)(this[this.tableBranchTransferItems.ProductUnitCodeColumn]));
+                }
+                set {
+                    this[this.tableBranchTransferItems.ProductUnitCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Quantity {
+                get {
+                    return ((decimal)(this[this.tableBranchTransferItems.QuantityColumn]));
+                }
+                set {
+                    this[this.tableBranchTransferItems.QuantityColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal UnitCost {
+                get {
+                    return ((decimal)(this[this.tableBranchTransferItems.UnitCostColumn]));
+                }
+                set {
+                    this[this.tableBranchTransferItems.UnitCostColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Discount {
+                get {
+                    return ((decimal)(this[this.tableBranchTransferItems.DiscountColumn]));
+                }
+                set {
+                    this[this.tableBranchTransferItems.DiscountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Amount {
+                get {
+                    return ((decimal)(this[this.tableBranchTransferItems.AmountColumn]));
+                }
+                set {
+                    this[this.tableBranchTransferItems.AmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal VAT {
+                get {
+                    return ((decimal)(this[this.tableBranchTransferItems.VATColumn]));
+                }
+                set {
+                    this[this.tableBranchTransferItems.VATColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public long BranchTransferID {
+                get {
+                    return ((long)(this[this.tableBranchTransferItems.BranchTransferIDColumn]));
+                }
+                set {
+                    this[this.tableBranchTransferItems.BranchTransferIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal SellingPrice {
+                get {
+                    return ((decimal)(this[this.tableBranchTransferItems.SellingPriceColumn]));
+                }
+                set {
+                    this[this.tableBranchTransferItems.SellingPriceColumn] = value;
+                }
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -41855,6 +44059,74 @@ namespace RetailPlus.Datasets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ProductInventoryRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public class BranchTransferRowChangeEvent : global::System.EventArgs {
+            
+            private BranchTransferRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferRowChangeEvent(BranchTransferRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public class BranchTransferItemsRowChangeEvent : global::System.EventArgs {
+            
+            private BranchTransferItemsRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferItemsRowChangeEvent(BranchTransferItemsRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public BranchTransferItemsRow Row {
                 get {
                     return this.eventRow;
                 }

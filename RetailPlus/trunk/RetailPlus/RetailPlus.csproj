@@ -426,6 +426,18 @@
     <Compile Include="MasterFiles\_Product\_AddProductVariation.ascx.designer.cs">
       <DependentUpon>_AddProductVariation.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Reports\BranchTransferReport.cs">
+      <DependentUpon>BranchTransferReport.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\BranchTransferReportSellingPrice.cs">
+      <DependentUpon>BranchTransferReportSellingPrice.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reports\_ClosingInventoryCount.cs">
       <DependentUpon>_ClosingInventoryCount.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -3838,6 +3850,14 @@
     <EmbeddedResource Include="Reports\ChartOfAccountsSummary.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ChartOfAccountsSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BranchTransferReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BranchTransferReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BranchTransferReportSellingPrice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BranchTransferReportSellingPrice.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_ClosingInventoryCount.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

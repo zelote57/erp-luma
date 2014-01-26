@@ -50,6 +50,11 @@ namespace AceSoft.RetailPlus.Data
 
         public bool WillAskDoNotPrintTransactionDate;
 
+        public bool WillShowProductTotalQuantityInItemSelect;
+        public bool WillNotPrintReprintMessage;
+
+        public string ORHeader;
+
     }
     public class SysConfig : POSConnection
     {
@@ -148,7 +153,39 @@ namespace AceSoft.RetailPlus.Data
             return boRetValue;
         }
 
+        public bool get_WillShowProductTotalQuantityInItemSelect()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_SHOW_PRODUCT_TOTAL_QUANTITY_IN_ITEMSELECT));
+            }
+            catch { }
+            return boRetValue;
+        }
 
+        public bool get_WillNotPrintReprintMessage()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_NOT_PRINT_REPRINT_MESSAGE));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public string get_ORHeader()
+        {
+            string strRetValue = "SALES INVOICE";
+            try
+            {
+                strRetValue = get_Sysconfig(Constants.SYS_CONFIG_OR_HEADER);
+            }
+            catch { }
+            return strRetValue;
+        }
+        
         public string get_CompanyCode()
         {
             return get_Sysconfig(Constants.SYS_CONFIG_COMPANY_CODE);
@@ -206,6 +243,9 @@ namespace AceSoft.RetailPlus.Data
             clsSysConfigDetails.WillDeductTFInZRead = get_WillDeductTFInZRead();
             clsSysConfigDetails.WillDeductTFInTerminalReport = get_WillDeductTFInTerminalReport();
             clsSysConfigDetails.WillAskDoNotPrintTransactionDate = get_WillAskDoNotPrintTransactionDate();
+            clsSysConfigDetails.WillShowProductTotalQuantityInItemSelect = get_WillShowProductTotalQuantityInItemSelect();
+            clsSysConfigDetails.WillNotPrintReprintMessage = get_WillNotPrintReprintMessage();
+            clsSysConfigDetails.ORHeader = get_ORHeader();
 
             return clsSysConfigDetails;
         }

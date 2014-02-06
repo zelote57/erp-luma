@@ -223,10 +223,12 @@ INDEX `IX1_tblContacts`(`ContactGroupID`),
 FOREIGN KEY (`ContactGroupID`) REFERENCES tblContactGroup(`ContactGroupID`) ON DELETE RESTRICT
 );
 
-INSERT INTO tblContacts (ContactCode, ContactName, ContactGroupID, ModeOfTerms, Address, BusinessName, TelephoneNo, Remarks, DateCreated) VALUES
-('RC', 'RetailPlus Customer ™', 1, 0, 'RBS', 'RBS', '', '', NOW());
-INSERT INTO tblContacts (ContactCode, ContactName, ContactGroupID, ModeOfTerms, Address, BusinessName, TelephoneNo, Remarks, DateCreated) VALUES
-('RS', 'RetailPlus Supplier ™', 2, 0, 'RBS', 'RBS', '', '', NOW());
+INSERT INTO tblContacts (ContactID, ContactCode, ContactName, ContactGroupID, ModeOfTerms, Address, BusinessName, TelephoneNo, Remarks, DateCreated) VALUES
+(1, 'RC', 'RetailPlus Customer ™', 1, 0, 'RBS', 'RBS', '', '', NOW());
+INSERT INTO tblContacts (ContactID, ContactCode, ContactName, ContactGroupID, ModeOfTerms, Address, BusinessName, TelephoneNo, Remarks, DateCreated) VALUES
+(2, 'RS', 'RetailPlus Supplier ™', 2, 0, 'RBS', 'RBS', '', '', NOW());
+INSERT INTO tblContacts (ContactID, ContactCode, ContactName, ContactGroupID, ModeOfTerms, Address, BusinessName, TelephoneNo, Remarks, DateCreated) VALUES
+(3, 'RA', 'RetailPlus Agent ™', 3, 0, 'RBS', 'RBS', '', '', NOW());
 
 /*****************************
 **	tblUnit
@@ -6709,7 +6711,7 @@ DROP TABLE IF EXISTS tblContactAddOn;
 CREATE TABLE tblContactAddOn (
     `ContactDetailID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 	`ContactID` BIGINT(20) NOT NULL DEFAULT 0,
-	`Salutation` VARCHAR(25) NOT NULL,
+	`Salutation` VARCHAR(30) NOT NULL,
 	`FirstName` VARCHAR(85) NOT NULL,
 	`MiddleName` VARCHAR(85) NULL,
 	`LastName` VARCHAR(85) NOT NULL,	
@@ -6759,11 +6761,6 @@ INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('Currency',			
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('VersionFTPIPAddress',	'CompanyDetails',					'Localhost');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CheckOutBillHeaderLabel','FE',								'-/- CHECK-OUT BILL -/-');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ChargeSlipHeaderLabel',  'FE',								'');
-
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category) VALUES('MR',						'MR',								'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category) VALUES('MRS',						'MRS',								'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category) VALUES('MS',						'MS',								'Salutation');
-
 
 ALTER TABLE tblTerminal ADD `IncludeTermsAndConditions` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
 
@@ -6874,3 +6871,38 @@ INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('WillNotPrintR
 
 DELETE FROM sysConfig WHERE ConfigName = 'ORHeader';
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ORHeader',									'FE',						'WARRANTY RECEIPT');
+
+ALTER TABLE tblTerminal ADD PWDDiscountCode VARCHAR(100) DEFAULT 'PWD Discount';
+
+INSERT INTO tblPositions VALUES(1, 'System Default Position', 'System Default Position');
+
+
+/*****************************
+**	tblSalutations
+*****************************/
+DROP TABLE IF EXISTS tblSalutations;
+CREATE TABLE tblSalutations (
+	`SalutationID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`SalutationCode` VARCHAR(30) NOT NULL,
+	`SalutationName` VARCHAR(30) NOT NULL,
+PRIMARY KEY (`SalutationID`),
+INDEX `IX_tblSalutations`(`SalutationID`, `SalutationCode`, `SalutationName`),
+UNIQUE `PK_tblSalutations`(`SalutationCode`),
+INDEX `IX1_tblSalutations`(`SalutationID`),
+INDEX `IX2_tblSalutations`(`SalutationCode`),
+INDEX `IX3_tblSalutations`(`SalutationName`)
+);
+
+DELETE FROM sysConfig WHERE Category = 'Salutation';
+
+ALTER TABLE tblContactRewards ADD `SoldByID` BIGINT NOT NULL DEFAULT 3;
+ALTER TABLE tblContactRewards ADD `SoldByName` VARCHAR(150);
+ALTER TABLE tblContactRewards ADD `ConfirmedByID` BIGINT NOT NULL DEFAULT 1;
+ALTER TABLE tblContactRewards ADD `ConfirmedByName` VARCHAR(150);
+
+
+-- 06Feb2014 Added for RLC accreditation
+ALTER TABLE tblTerminalReport ADD `NoOfReprintedTransaction` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `TotalReprintedTransaction` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `NoOfReprintedTransaction` INT(10) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `TotalReprintedTransaction` DECIMAL(18,2) NOT NULL DEFAULT 0;

@@ -1589,6 +1589,10 @@ namespace AceSoft.RetailPlus.Client.UI
 					{
 						switch (e.KeyCode)
 						{
+                            case Keys.F1:
+                                ShowMallForwarder();
+                                break;
+
 							case Keys.F2:
 								ChangePrice();
 								break;
@@ -7824,6 +7828,9 @@ namespace AceSoft.RetailPlus.Client.UI
                     mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
 					LoadTransaction(strTransactionNo, strTerminalNo);
+
+                    AddToReprintedTransaction(strTransactionNo, strTerminalNo);
+
                     clsSalesTransactions.CommitAndDispose();
 
 					//insert to logfile
@@ -9653,6 +9660,28 @@ namespace AceSoft.RetailPlus.Client.UI
 				lblProperties.Text = " " + lblProperties.Text.Replace(";", "\n");
 			}
 		}
+        private void AddToReprintedTransaction(string strTransactionNo, string pstrTerminalNo)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                clsEvent.AddEvent("Adding To no of reprinted transaction : " + strTransactionNo);
+
+                Data.TerminalReport clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
+                mConnection = clsTerminalReport.Connection; mTransaction = clsTerminalReport.Transaction;
+
+                clsTerminalReport.UpdateReprintedTransaction(mclsTerminalDetails.BranchID, pstrTerminalNo, strTransactionNo);
+
+                clsTerminalReport.CommitAndDispose();
+
+                clsEvent.AddEventLn("Done");
+            }
+            catch (Exception ex)
+            {
+                InsertErrorLogToFile(ex, "ERROR!!! adding to reprinted transaction. TRACE: ");
+            }
+            Cursor.Current = Cursors.Default;
+        }
 
 		#region UpdateTerminalReport
 		

@@ -376,7 +376,7 @@ namespace AceSoft.RetailPlus.Client
 			Event clsEvent = new Event();
 			try
 			{
-				clsEvent.AddEvent("Checking teminal if exist in the database. [" + CompanyDetails.TerminalNo + "]");
+				clsEvent.AddEvent("Checking terminal if exist in the database. [" + CompanyDetails.TerminalNo + "]");
 
 				Data.Terminal clsTerminal = new Data.Terminal();
 				Data.TerminalDetails clsDetails = new Data.TerminalDetails();

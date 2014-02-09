@@ -67,15 +67,6 @@ namespace AceSoft.RetailPlus.Home.GLA {
         protected global::System.Web.UI.HtmlControls.HtmlInputFile txtTransactionGLAPath;
         
         /// <summary>
-        /// Requiredfieldvalidator4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator4;
-        
-        /// <summary>
         /// txtOrderTenderPath control.
         /// </summary>
         /// <remarks>
@@ -83,15 +74,6 @@ namespace AceSoft.RetailPlus.Home.GLA {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputFile txtOrderTenderPath;
-        
-        /// <summary>
-        /// Requiredfieldvalidator2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator2;
         
         /// <summary>
         /// Label1 control.

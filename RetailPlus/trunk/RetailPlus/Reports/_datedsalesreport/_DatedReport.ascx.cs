@@ -49,14 +49,17 @@ namespace AceSoft.RetailPlus.Reports
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDay, ReportTypes.SalesPerDay));
             cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySales, ReportTypes.SummarizeDailySales));
             cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySalesWithTF, ReportTypes.SummarizeDailySalesWithTF));
+
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactions, ReportTypes.SalesTransactions));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomer, ReportTypes.SalesTransactionPerCustomer));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerWithCheque, ReportTypes.SalesTransactionPerCustomerWithCheque));
+            cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerPerItem, ReportTypes.SalesTransactionPerCustomerPerItem));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCashier, ReportTypes.SalesTransactionPerCashier));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCashierPerCustomer, ReportTypes.SalesTransactionPerCashierPerCustomer));
             cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerTerminal, ReportTypes.SalesTransactionPerTerminal));
 			cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerItem, ReportTypes.SalesTransactionPerItem));
+
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
 			cboReportType.Items.Add(new ListItem(ReportTypes.CashSalesDaily, ReportTypes.CashSalesDaily));
 			cboReportType.Items.Add(new ListItem(ReportTypes.CashSalesMonthly, ReportTypes.CashSalesMonthly));
@@ -190,6 +193,9 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                 case ReportTypes.SalesTransactionPerCustomerWithCheque:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerCustomerWithCheque.rpt"));
+                    break;
+                case ReportTypes.SalesTransactionPerCustomerPerItem:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerCustomerPerItem.rpt"));
                     break;
                 case ReportTypes.SalesTransactionPerCashier:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesTransactionPerCashier.rpt"));
@@ -456,6 +462,43 @@ namespace AceSoft.RetailPlus.Reports
                         rptds.Transactions.Rows.Add(drNew);
                     }
                     break;
+                    #endregion
+                case ReportTypes.SalesTransactionPerCustomerPerItem:
+                    #region Sales Transaction Per Customer
+                    clsSalesTransactions = new SalesTransactions();
+                    dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "CustomerName", System.Data.SqlClient.SortOrder.Ascending);
+                    clsSalesTransactions.CommitAndDispose();
+
+                    string stIDs = "";
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.Transactions.NewRow();
+
+                        foreach (DataColumn dc in rptds.Transactions.Columns)
+                            drNew[dc] = dr[dc.ColumnName];
+
+                        rptds.Transactions.Rows.Add(drNew);
+
+                        stIDs += "," + dr["TransactionID"].ToString();
+                    }
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        clsSalesTransactionItems = new SalesTransactionItems();
+                        dt = clsSalesTransactionItems.List(stIDs.Remove(0,1));
+
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            DataRow drNew = rptds.TransactionItems.NewRow();
+
+                            foreach (DataColumn dc in rptds.TransactionItems.Columns)
+                                drNew[dc] = dr[dc.ColumnName];
+
+                            rptds.TransactionItems.Rows.Add(drNew);
+                        }
+                    }
+                    break;
+
                     #endregion
                 case ReportTypes.SalesTransactionPerCashier:
                     #region Sales Transaction Per Cashier/Customer & Per Cashier
@@ -886,6 +929,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SalesTransactions:
                 case ReportTypes.SalesTransactionPerCustomer:
                 case ReportTypes.SalesTransactionPerCustomerWithCheque:
+                case ReportTypes.SalesTransactionPerCustomerPerItem:
                 case ReportTypes.SalesTransactionPerCashier:
                 case ReportTypes.DailySalesTransaction:
                 case ReportTypes.WeeklySalesTransaction:

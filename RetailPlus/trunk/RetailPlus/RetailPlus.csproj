@@ -444,6 +444,12 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerItem.cs">
+      <DependentUpon>_DatedReportSalesTransactionPerCustomerPerItem.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerWithCheque.cs">
       <DependentUpon>_DatedReportSalesTransactionPerCustomerWithCheque.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -3874,6 +3880,10 @@
     <EmbeddedResource Include="Reports\_customercredit\_CustomerCreditListWCredit.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_CustomerCreditListWCredit1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerItem.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerCustomerPerItem.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerWithCheque.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

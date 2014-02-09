@@ -45,16 +45,14 @@
 				<tr>
 					<td style="padding-bottom: 20px" valign="top"></td>
 					<td class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 10px; padding-bottom: 20px" valign="top" colspan="2">
-                        Select Transaction Batch<font color="red">*&nbsp;</font><input type="file" id="txtBatch" name="txtBatch" accept=".dat" runat="server" borderstyle="Groove" />
+                        Select Transaction Batch<font color="red">*&nbsp;</font><input type="file" id="txtBatch" name="txtBatch" accept=".dat,.txt" runat="server" borderstyle="Groove" multiple="true" />
 					    <asp:requiredfieldvalidator id="Requiredfieldvalidator1" CssClass="ms-error" runat="server" ControlToValidate="txtBatch" Display="Dynamic" ErrorMessage="'Batch' must not be left blank."></asp:requiredfieldvalidator>
 					    <br />
 
 					    Select Transaction Headers<font color="red">*&nbsp;</font><input type="file" id="txtTransactionGLAPath" name="txtTransactionGLAPath" accept=".dat" runat="server" borderstyle="Groove" />
-					    <asp:requiredfieldvalidator id="Requiredfieldvalidator4" CssClass="ms-error" runat="server" ControlToValidate="txtTransactionGLAPath" Display="Dynamic" ErrorMessage="'Path' must not be left blank."></asp:requiredfieldvalidator>
 					    <br />
 
                         Select Order Tenders<font color="red">*&nbsp;</font><input type="file" id="txtOrderTenderPath" name="txtOrderTenderPath" accept=".txt" runat="server" borderstyle="Groove" />
-					    <asp:requiredfieldvalidator id="Requiredfieldvalidator2" CssClass="ms-error" runat="server" ControlToValidate="txtOrderTenderPath" Display="Dynamic" ErrorMessage="'Path' must not be left blank."></asp:requiredfieldvalidator>
 					    <br />
                         
                         <asp:Label id="Label1" runat="server"></asp:Label><br />

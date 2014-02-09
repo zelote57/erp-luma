@@ -185,8 +185,7 @@
 							<col width="10">
 							<col width="10">
 							<col width="10%">
-							<col width="20%">
-							<col width="8%">
+							<col width="28%">
                             <col width="10%">
                             <col width="13%">
                             <col width="8%">
@@ -204,8 +203,6 @@
 								<asp:hyperlink id="SortByContactCode" runat="server">Membership No</asp:hyperlink></th>
 							<th class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByContactName" runat="server">Member Name</asp:hyperlink></th>
-                            <th class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByBusinessName" runat="server">Business Name</asp:hyperlink></th>
                             <th class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByContactGroupName" runat="server">Group</asp:hyperlink></th>
                             <th class="ms-vh2" style="padding-bottom: 4px">
@@ -239,9 +236,7 @@
 							</td>
 							<td class="ms-vb-user">
 								<asp:HyperLink ID="lnkContactName" Runat="server" Target="_blank"></asp:HyperLink>
-							</td>
-                            <td class="ms-vb-user">
-								<asp:HyperLink ID="lnkBusinessName" Runat="server" Target="_blank"></asp:HyperLink>
+                                <asp:HyperLink ID="lnkBusinessName" Runat="server" Target="_blank"></asp:HyperLink>
 							</td>
                             <td class="ms-vb-user">
 								<asp:HyperLink ID="lnkContactGroupName" Runat="server" Target="_blank"></asp:HyperLink>

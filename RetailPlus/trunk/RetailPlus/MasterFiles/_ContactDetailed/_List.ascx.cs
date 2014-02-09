@@ -227,7 +227,6 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 
 			HyperLink SortByContactCode = (HyperLink) e.Item.FindControl("SortByContactCode");
 			HyperLink SortByContactName = (HyperLink) e.Item.FindControl("SortByContactName");
-            HyperLink SortByBusinessName = (HyperLink)e.Item.FindControl("SortByBusinessName");
             HyperLink SortByContactGroupName = (HyperLink)e.Item.FindControl("SortByContactGroupName");
 			HyperLink SortByRewardCardNo = (HyperLink) e.Item.FindControl("SortByRewardCardNo");
             HyperLink SortByRewardExpiryDate = (HyperLink)e.Item.FindControl("SortByRewardExpiryDate");
@@ -238,7 +237,6 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 
 			SortByContactCode.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ContactCode", Session.SessionID);
 			SortByContactName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ContactName", Session.SessionID);
-            SortByBusinessName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("BusinessName", Session.SessionID);
             SortByContactGroupName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ContactGroupName", Session.SessionID);
             SortByRewardCardNo.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("RewardCardNo", Session.SessionID);
             SortByRewardExpiryDate.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ExpiryDate", Session.SessionID);

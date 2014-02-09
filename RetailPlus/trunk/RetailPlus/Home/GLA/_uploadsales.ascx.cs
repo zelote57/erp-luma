@@ -17,7 +17,7 @@ namespace AceSoft.RetailPlus.Home.GLA
 	/// </summary>
 	public partial  class __UploadSales : System.Web.UI.UserControl
 	{
-
+        
 		#region Web Form Methods
 
 		protected void Page_Load(object sender, System.EventArgs e)
@@ -85,36 +85,62 @@ namespace AceSoft.RetailPlus.Home.GLA
             {
                 string BatchID = string.Empty;
 
-                if ((txtBatch.PostedFile == null) || (txtBatch.PostedFile.ContentLength == 0))
+                List<HttpPostedFile> pfiles = new List<HttpPostedFile>();
+                List<string> pfilesName = new List<string>();
+
+                for (int i = 0; i < Request.Files.Count; i++)
                 {
-                    Label1.Text = "<br /><br /><b><font class='ms-error'>Please select a batch file to upload.</font></b><br />";
-                    return;
+                    HttpPostedFile file = Request.Files[i];
+                    if (file.ContentLength > 0)
+                    {
+                        pfiles.Add(file); pfilesName.Add(System.IO.Path.GetFileName(file.FileName.ToLower()));
+                    }
                 }
 
-                if ((txtTransactionGLAPath.PostedFile == null) || (txtTransactionGLAPath.PostedFile.ContentLength == 0))
+                Label1.Text = "";
+                // Label1.Text = "Files to upload:";
+                //Label1.Text += "      <br />"
+                if (pfilesName.IndexOf(Constants.GLA_file_batch) < 0)
+                    Label1.Text = "<br /><br /><b><font class='ms-error'>Please include the batch file in the upload. Filename: " + Constants.GLA_file_batch + "</font></b><br />";
+                if (pfilesName.IndexOf(Constants.GLA_file_discount) < 0)
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the discount file in the upload. Filename: " + Constants.GLA_file_discount + "</font></b><br />";
+                if (pfilesName.IndexOf(Constants.GLA_file_employee) < 0)
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the employees file in the upload. Filename: " + Constants.GLA_file_employee + "</font></b><br />";
+                if (pfilesName.IndexOf(Constants.GLA_file_location) < 0)
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the location file in the upload. Filename: " + Constants.GLA_file_location + "</font></b><br />";
+                //remove ths first: check why is 14MB not allowed in upload
+                //if (pfilesName.IndexOf(Constants.GLA_file_menuitems) < 0)
+                //    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the menu items file in the upload. Filename: " + Constants.GLA_file_menuitems + "</font></b><br />";
+                if (pfilesName.IndexOf(Constants.GLA_file_servicecharge) < 0)
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the service charge file in the upload. Filename: " + Constants.GLA_file_servicecharge + "</font></b><br />";
+                if (pfilesName.IndexOf(Constants.GLA_file_tender) < 0)
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the tender definitions file in the upload. Filename: " + Constants.GLA_file_tender + "</font></b><br />";
+                if (pfilesName.IndexOf(Constants.GLA_file_checkdiscount) < 0)
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the discount details file in the upload. Filename: " + Constants.GLA_file_checkdiscount + "</font></b><br />";
+                if (pfilesName.IndexOf(Constants.GLA_file_checkheaders) < 0)
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the check information file in the upload. Filename: " + Constants.GLA_file_checkheaders + "</font></b><br />";
+                if (pfilesName.IndexOf(Constants.GLA_file_checksvscharge) < 0)
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the service charge file in the upload. Filename: " + Constants.GLA_file_checksvscharge + "</font></b><br />";
+                if (pfilesName.IndexOf(Constants.GLA_file_checktenders) < 0)
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the tender detail file in the upload. Filename: " + Constants.GLA_file_checktenders + "</font></b><br />";
+                if (pfilesName.IndexOf(Constants.GLA_file_otntender) < 0)
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Please include the OTN_Tender file in the upload. Filename: " + Constants.GLA_file_otntender + "</font></b><br />";
+
+                if (!string.IsNullOrEmpty(Label1.Text)) return;
+
+                string strfile = "";
+                string strfolder = "/RetailPlus/temp/uploaded/gla/";
+
+                if (1==1)    //process batchfile
                 {
-                    Label1.Text = "<br /><br /><b><font class='ms-error'>Please select a batch or transaction header file to upload.</font></b><br />";
-                    return;
-                }
+                    strfile = Server.MapPath(strfolder + Constants.GLA_file_batch);
 
-                if ((txtOrderTenderPath.PostedFile == null) || (txtOrderTenderPath.PostedFile.ContentLength == 0))
-                {
-                    Label1.Text = "<br /><br /><b><font class='ms-error'>Please select order tender to upload.</font></b><br />";
-                    return;
-                }
+                    if (System.IO.File.Exists(strfile))
+                        System.IO.File.Delete(strfile);
 
-                if ((txtBatch.PostedFile != null) && (txtBatch.PostedFile.ContentLength > 0))
-                {
-                    string fn = System.IO.Path.GetFileName(txtBatch.PostedFile.FileName);
-                    string SaveLocation = Server.MapPath("/RetailPlus/temp/uploaded/gla/" + fn);
+                    pfiles[pfilesName.IndexOf(Constants.GLA_file_batch)].SaveAs(strfile);
 
-                    if (System.IO.File.Exists(SaveLocation))
-                        System.IO.File.Delete(SaveLocation);
-
-                    txtBatch.PostedFile.SaveAs(SaveLocation);
-                    txtBatch.PostedFile.SaveAs(SaveLocation + "." + DateTime.Now.ToString("yyyyMMddHHmmss"));
-
-                    using (var reader = new StreamReader(SaveLocation))
+                    using (var reader = new StreamReader(strfile))
                     {
                         string line;
                         while ((line = reader.ReadLine()) != null)
@@ -124,117 +150,120 @@ namespace AceSoft.RetailPlus.Home.GLA
                             break;
                         }
                     }
-
-                    Label1.Text += "<br /><br /><b><font class='ms-error'>Uploading Batch ID: " + BatchID + "</font></b><br />";
                 }
 
-                if ((txtTransactionGLAPath.PostedFile != null) && (txtTransactionGLAPath.PostedFile.ContentLength > 0))
+                if (string.IsNullOrEmpty(BatchID))
                 {
-                    string fn = System.IO.Path.GetFileName(txtTransactionGLAPath.PostedFile.FileName);
-                    string SaveLocation = Server.MapPath("/RetailPlus/temp/uploaded/gla/" + fn);
+                    Label1.Text += "<br /><br /><b><font class='ms-error'>Cannot get any information from batch file. Please double check the batch file: " + Constants.GLA_file_batch + "</font></b><br />";
+                    return;
+                }
 
-                    if (System.IO.File.Exists(SaveLocation))
-                        System.IO.File.Delete(SaveLocation);
+                Label1.Text += "<br /><br /><b><font class='ms-error'>Uploading Batch ID: " + BatchID + "</font></b><br />";
 
-                    txtTransactionGLAPath.PostedFile.SaveAs(SaveLocation);
-                    txtTransactionGLAPath.PostedFile.SaveAs(SaveLocation + "." + DateTime.Now.ToString("yyyyMMddHHmmss"));
+                // delete the temporary batch file
+                if (System.IO.File.Exists(strfile))
+                    System.IO.File.Delete(strfile);
 
-                    Label1.Text = "Files to upload:";
-                    Label1.Text += "      <br />" + "/RetailPlus/temp/uploaded/gla/" + fn;
+                // save it again in a folder
+                strfolder = strfolder + BatchID + "/";
 
-                    Security.AccessUserDetails clsAccessUserDetails = (Security.AccessUserDetails)Session["AccessUserDetails"];
-                    DateTime DateCreated = DateTime.Now;
+                foreach (HttpPostedFile pfile in pfiles)
+                {
+                    strfile = Server.MapPath(strfolder + System.IO.Path.GetFileName(pfile.FileName));
 
-                    List<TransactionGLADetails> lstDetails = new List<TransactionGLADetails>();
-                    TransactionGLADetails clsDetails = new TransactionGLADetails();
-                    int iTranCount = 0;
-                    using (var reader = new StreamReader(SaveLocation))
+                    if (!System.IO.Directory.Exists(Server.MapPath(strfolder)))
+                        System.IO.Directory.CreateDirectory(Server.MapPath(strfolder));
+                    
+                    if (System.IO.File.Exists(strfile))
+                        System.IO.File.Delete(strfile);
+
+                    pfile.SaveAs(strfile);
+                }
+
+                //pfiles[pfilesName.IndexOf(Constants.GLA_file_batch)].SaveAs(strfile);
+                
+                //pfiles[pfilesName.IndexOf(Constants.GLA_file_batch)].SaveAs(strfile + Constants.GLA_file_batch);
+
+                /***** upload the transaction *****/
+                Label1.Text = "Processing" + Constants.GLA_file_checkheaders + " ...";
+                strfile = Server.MapPath(strfolder + System.IO.Path.GetFileName(Constants.GLA_file_checkheaders));
+
+                Security.AccessUserDetails clsAccessUserDetails = (Security.AccessUserDetails)Session["AccessUserDetails"];
+                DateTime DateCreated = DateTime.Now;
+
+                List<TransactionGLADetails> lstTransactionGLADetails = new List<TransactionGLADetails>();
+                TransactionGLADetails clsTransactionGLADetails = new TransactionGLADetails();
+                int iTranCount = 0;
+                using (var reader = new StreamReader(strfile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        string line;
-                        while ((line = reader.ReadLine()) != null)
-                        {
-                            clsDetails = setHdrDetails(line, DateCreated, clsAccessUserDetails.Name, fn, BatchID);
-                            lstDetails.Add(clsDetails);
+                        clsTransactionGLADetails = setHdrDetails(line, DateCreated, clsAccessUserDetails.Name, Constants.GLA_file_checkheaders, BatchID);
+                        lstTransactionGLADetails.Add(clsTransactionGLADetails);
                             
-                            iTranCount++;
-                        }
+                        iTranCount++;
                     }
-
-                    TransactionGLA clsTransactionGLA = new TransactionGLA();
-                    Data.SalesTransactions clsTransaction = new SalesTransactions(clsTransactionGLA.Connection, clsTransactionGLA.Transaction);
-                    Data.SalesTransactionDetails clsSalesTransactionDetails = new SalesTransactionDetails();
-
-                    clsTransaction.DeleteByDataSource(BatchID);
-                    foreach(TransactionGLADetails det in lstDetails)
-                    {
-                        clsTransactionGLA.Insert(det);
-                        clsSalesTransactionDetails = setSalesTransactionDetails(det);
-
-                        clsSalesTransactionDetails.TransactionID = clsTransaction.Insert(clsSalesTransactionDetails);
-                        clsTransaction.Close(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.SubTotal, clsSalesTransactionDetails.ItemsDiscount, clsSalesTransactionDetails.Discount, clsSalesTransactionDetails.TransDiscount, clsSalesTransactionDetails.TransDiscountType, clsSalesTransactionDetails.VAT, clsSalesTransactionDetails.VatableAmount, clsSalesTransactionDetails.EVAT, clsSalesTransactionDetails.EVatableAmount, clsSalesTransactionDetails.LocalTax, clsSalesTransactionDetails.AmountPaid, clsSalesTransactionDetails.CashPayment, clsSalesTransactionDetails.ChequePayment, clsSalesTransactionDetails.CreditCardPayment, clsSalesTransactionDetails.CreditPayment, clsSalesTransactionDetails.DebitPayment, clsSalesTransactionDetails.RewardPointsPayment, clsSalesTransactionDetails.RewardConvertedPayment, clsSalesTransactionDetails.BalanceAmount, clsSalesTransactionDetails.ChangeAmount, clsSalesTransactionDetails.PaymentType, clsSalesTransactionDetails.DiscountCode, clsSalesTransactionDetails.DiscountRemarks, clsSalesTransactionDetails.Charge, clsSalesTransactionDetails.ChargeAmount, clsSalesTransactionDetails.ChargeCode, clsSalesTransactionDetails.ChargeRemarks, clsSalesTransactionDetails.CashierID, clsSalesTransactionDetails.CashierName);
-                        clsTransaction.UpdateDateClosed(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.DateClosed);
-                    }
-                    clsTransactionGLA.CommitAndDispose();
-                    Label1.Text += "<br /><br /><b><font class='ms-error'>" + lstDetails.Count.ToString() + " has been successfully uploaded...</font></b><br />";
                 }
 
-                if ((txtOrderTenderPath.PostedFile != null) && (txtOrderTenderPath.PostedFile.ContentLength > 0))
+                TransactionGLA clsTransactionGLA = new TransactionGLA();
+                Data.SalesTransactions clsTransaction = new SalesTransactions(clsTransactionGLA.Connection, clsTransactionGLA.Transaction);
+                Data.SalesTransactionDetails clsSalesTransactionDetails = new SalesTransactionDetails();
+
+                clsTransaction.DeleteByDataSource(BatchID);
+                foreach (TransactionGLADetails det in lstTransactionGLADetails)
                 {
-                    string fn = System.IO.Path.GetFileName(txtOrderTenderPath.PostedFile.FileName);
-                    string SaveLocation = Server.MapPath("/RetailPlus/temp/uploaded/gla/" + fn);
+                    clsTransactionGLA.Insert(det);
+                    clsSalesTransactionDetails = setSalesTransactionDetails(det);
 
-                    if (System.IO.File.Exists(SaveLocation))
-                        System.IO.File.Delete(SaveLocation);
-
-                    txtOrderTenderPath.PostedFile.SaveAs(SaveLocation);
-                    txtOrderTenderPath.PostedFile.SaveAs(SaveLocation + "." + DateTime.Now.ToString("yyyyMMddHHmmss"));
-
-                    Label1.Text = "Files to upload:";
-                    Label1.Text += "      <br />" + "/RetailPlus/temp/uploaded/gla/" + fn;
-
-                    Security.AccessUserDetails clsAccessUserDetails = (Security.AccessUserDetails)Session["AccessUserDetails"];
-                    DateTime DateCreated = DateTime.Now;
-
-                    List<OrderTenderGLADetails> lstDetails = new List<OrderTenderGLADetails>();
-                    OrderTenderGLADetails clsDetails = new OrderTenderGLADetails();
-                    int iTranCount = 0;
-                    using (var reader = new StreamReader(SaveLocation))
-                    {
-                        string line;
-                        while ((line = reader.ReadLine()) != null)
-                        {
-                            clsDetails = setOrderTenderDetails(line, DateCreated, clsAccessUserDetails.Name, fn, BatchID);
-                            lstDetails.Add(clsDetails);
-
-                            iTranCount++;
-                        }
-                    }
-
-                    OrderTenderGLA clsOrderTenderGLA = new OrderTenderGLA();
-                    Data.SalesTransactions clsTransaction = new SalesTransactions(clsOrderTenderGLA.Connection, clsOrderTenderGLA.Transaction);
-                    Data.SalesTransactionDetails clsSalesTransactionDetails = new SalesTransactionDetails();
-
-                    Data.Contacts clsContacts = new Contacts(clsOrderTenderGLA.Connection, clsOrderTenderGLA.Transaction);
-                    Data.ContactDetails clsContactDetails = new ContactDetails();
-
-                    foreach (OrderTenderGLADetails det in lstDetails)
-                    {
-
-                        clsOrderTenderGLA.Insert(det);
-                        clsSalesTransactionDetails = clsTransaction.Details(det.tender_seq.ToString(), Constants.C_DEFAULT_TERMINAL_01, Constants.BRANCH_ID_MAIN);
-                        
-                        // update the customer information
-                        clsSalesTransactionDetails = setSalesTransactionDetails(det, clsSalesTransactionDetails);
-                        clsContactDetails = clsContacts.Details(det.auth_acct_no);
-
-                        clsTransaction.UpdateContact(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, clsContactDetails);
-                        
-                        //clsTransaction.Close(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.SubTotal, clsSalesTransactionDetails.ItemsDiscount, clsSalesTransactionDetails.Discount, clsSalesTransactionDetails.TransDiscount, clsSalesTransactionDetails.TransDiscountType, clsSalesTransactionDetails.VAT, clsSalesTransactionDetails.VatableAmount, clsSalesTransactionDetails.EVAT, clsSalesTransactionDetails.EVatableAmount, clsSalesTransactionDetails.LocalTax, clsSalesTransactionDetails.AmountPaid, clsSalesTransactionDetails.CashPayment, clsSalesTransactionDetails.ChequePayment, clsSalesTransactionDetails.CreditCardPayment, clsSalesTransactionDetails.CreditPayment, clsSalesTransactionDetails.DebitPayment, clsSalesTransactionDetails.RewardPointsPayment, clsSalesTransactionDetails.RewardConvertedPayment, clsSalesTransactionDetails.BalanceAmount, clsSalesTransactionDetails.ChangeAmount, clsSalesTransactionDetails.PaymentType, clsSalesTransactionDetails.DiscountCode, clsSalesTransactionDetails.DiscountRemarks, clsSalesTransactionDetails.Charge, clsSalesTransactionDetails.ChargeAmount, clsSalesTransactionDetails.ChargeCode, clsSalesTransactionDetails.ChargeRemarks, clsSalesTransactionDetails.CashierID, clsSalesTransactionDetails.CashierName);
-                        //clsTransaction.UpdateDateClosed(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.DateClosed);
-                    }
-                    clsOrderTenderGLA.CommitAndDispose();
-                    Label1.Text += "<br /><br /><b><font class='ms-error'>" + lstDetails.Count.ToString() + " has been successfully uploaded...</font></b><br />";
+                    clsSalesTransactionDetails.TransactionID = clsTransaction.Insert(clsSalesTransactionDetails);
+                    clsTransaction.Close(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.SubTotal, clsSalesTransactionDetails.ItemsDiscount, clsSalesTransactionDetails.Discount, clsSalesTransactionDetails.TransDiscount, clsSalesTransactionDetails.TransDiscountType, clsSalesTransactionDetails.VAT, clsSalesTransactionDetails.VatableAmount, clsSalesTransactionDetails.EVAT, clsSalesTransactionDetails.EVatableAmount, clsSalesTransactionDetails.LocalTax, clsSalesTransactionDetails.AmountPaid, clsSalesTransactionDetails.CashPayment, clsSalesTransactionDetails.ChequePayment, clsSalesTransactionDetails.CreditCardPayment, clsSalesTransactionDetails.CreditPayment, clsSalesTransactionDetails.DebitPayment, clsSalesTransactionDetails.RewardPointsPayment, clsSalesTransactionDetails.RewardConvertedPayment, clsSalesTransactionDetails.BalanceAmount, clsSalesTransactionDetails.ChangeAmount, clsSalesTransactionDetails.PaymentType, clsSalesTransactionDetails.DiscountCode, clsSalesTransactionDetails.DiscountRemarks, clsSalesTransactionDetails.Charge, clsSalesTransactionDetails.ChargeAmount, clsSalesTransactionDetails.ChargeCode, clsSalesTransactionDetails.ChargeRemarks, clsSalesTransactionDetails.CashierID, clsSalesTransactionDetails.CashierName);
+                    clsTransaction.UpdateDateClosed(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.DateClosed);
                 }
+                Label1.Text += "      <br /><b><font class='ms-error'>" + lstTransactionGLADetails.Count.ToString() + " has been successfully uploaded...</font></b><br />";
+                /***** upload the transaction end *****/
+
+                /***** upload the otn tender *****/
+                Label1.Text = "Processing" + Constants.GLA_file_otntender + " ...";
+                strfile = Server.MapPath(strfolder + System.IO.Path.GetFileName(Constants.GLA_file_otntender));
+
+                List<OrderTenderGLADetails> lstOrderTenderGLADetails = new List<OrderTenderGLADetails>();
+                OrderTenderGLADetails clsOrderTenderGLADetails = new OrderTenderGLADetails();
+                iTranCount = 0;
+                using (var reader = new StreamReader(strfile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        clsOrderTenderGLADetails = setOrderTenderDetails(line, DateCreated, clsAccessUserDetails.Name, Constants.GLA_file_otntender, BatchID);
+                        lstOrderTenderGLADetails.Add(clsOrderTenderGLADetails);
+
+                        iTranCount++;
+                    }
+                }
+
+                OrderTenderGLA clsOrderTenderGLA = new OrderTenderGLA(clsTransactionGLA.Connection, clsTransactionGLA.Transaction);
+
+                Data.Contacts clsContacts = new Contacts(clsTransactionGLA.Connection, clsTransactionGLA.Transaction);
+                Data.ContactDetails clsContactDetails = new ContactDetails();
+
+                foreach (OrderTenderGLADetails det in lstOrderTenderGLADetails)
+                {
+
+                    clsOrderTenderGLA.Insert(det);
+                    clsSalesTransactionDetails = clsTransaction.Details(det.tender_seq.ToString(), Constants.C_DEFAULT_TERMINAL_01, Constants.BRANCH_ID_MAIN);
+                        
+                    // update the customer information
+                    clsSalesTransactionDetails = setSalesTransactionDetails(det, clsSalesTransactionDetails);
+                    clsContactDetails = clsContacts.Details(det.auth_acct_no);
+
+                    clsTransaction.UpdateContact(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.TransactionDate, clsContactDetails);
+                        
+                    //clsTransaction.Close(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.SubTotal, clsSalesTransactionDetails.ItemsDiscount, clsSalesTransactionDetails.Discount, clsSalesTransactionDetails.TransDiscount, clsSalesTransactionDetails.TransDiscountType, clsSalesTransactionDetails.VAT, clsSalesTransactionDetails.VatableAmount, clsSalesTransactionDetails.EVAT, clsSalesTransactionDetails.EVatableAmount, clsSalesTransactionDetails.LocalTax, clsSalesTransactionDetails.AmountPaid, clsSalesTransactionDetails.CashPayment, clsSalesTransactionDetails.ChequePayment, clsSalesTransactionDetails.CreditCardPayment, clsSalesTransactionDetails.CreditPayment, clsSalesTransactionDetails.DebitPayment, clsSalesTransactionDetails.RewardPointsPayment, clsSalesTransactionDetails.RewardConvertedPayment, clsSalesTransactionDetails.BalanceAmount, clsSalesTransactionDetails.ChangeAmount, clsSalesTransactionDetails.PaymentType, clsSalesTransactionDetails.DiscountCode, clsSalesTransactionDetails.DiscountRemarks, clsSalesTransactionDetails.Charge, clsSalesTransactionDetails.ChargeAmount, clsSalesTransactionDetails.ChargeCode, clsSalesTransactionDetails.ChargeRemarks, clsSalesTransactionDetails.CashierID, clsSalesTransactionDetails.CashierName);
+                    //clsTransaction.UpdateDateClosed(clsSalesTransactionDetails.TransactionID, clsSalesTransactionDetails.DateClosed);
+                }
+                clsTransactionGLA.CommitAndDispose();
+                Label1.Text += "      <br /><b><font class='ms-error'>" + lstOrderTenderGLADetails.Count.ToString() + " has been successfully uploaded...</font></b><br />";
 
             }
             catch (Exception ex){

@@ -16,14 +16,14 @@ namespace RetailPlus.Reports._datedsalesreport {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class _DatedReportSalesTransactionPerCustomerWithCheque : ReportClass {
+    public class _DatedReportSalesTransactionPerCustomerPerItem : ReportClass {
         
-        public _DatedReportSalesTransactionPerCustomerWithCheque() {
+        public _DatedReportSalesTransactionPerCustomerPerItem() {
         }
         
         public override string ResourceName {
             get {
-                return "_DatedReportSalesTransactionPerCustomerWithCheque.rpt";
+                return "_DatedReportSalesTransactionPerCustomerPerItem.rpt";
             }
             set {
                 // Do nothing
@@ -41,8 +41,8 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         public override string FullResourceName {
             get {
-                return "RetailPlus.Reports._datedsalesreport._DatedReportSalesTransactionPerCustomerWithC" +
-                    "heque.rpt";
+                return "RetailPlus.Reports._datedsalesreport._DatedReportSalesTransactionPerCustomerPerIt" +
+                    "em.rpt";
             }
             set {
                 // Do nothing
@@ -83,7 +83,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -91,7 +91,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section7 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[5];
             }
@@ -99,7 +99,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
             get {
                 return this.ReportDefinition.Sections[6];
             }
@@ -107,9 +107,25 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section7 {
             get {
                 return this.ReportDefinition.Sections[7];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+            get {
+                return this.ReportDefinition.Sections[8];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+            get {
+                return this.ReportDefinition.Sections[9];
             }
         }
         
@@ -147,9 +163,9 @@ namespace RetailPlus.Reports._datedsalesreport {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class Cached_DatedReportSalesTransactionPerCustomerWithCheque : Component, ICachedReport {
+    public class Cached_DatedReportSalesTransactionPerCustomerPerItem : Component, ICachedReport {
         
-        public Cached_DatedReportSalesTransactionPerCustomerWithCheque() {
+        public Cached_DatedReportSalesTransactionPerCustomerPerItem() {
         }
         
         [Browsable(false)]
@@ -186,7 +202,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            _DatedReportSalesTransactionPerCustomerWithCheque rpt = new _DatedReportSalesTransactionPerCustomerWithCheque();
+            _DatedReportSalesTransactionPerCustomerPerItem rpt = new _DatedReportSalesTransactionPerCustomerPerItem();
             rpt.Site = this.Site;
             return rpt;
         }

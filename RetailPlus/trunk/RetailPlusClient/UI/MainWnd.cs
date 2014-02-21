@@ -224,6 +224,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.PercentageCommision = new System.Windows.Forms.DataGridTextBoxColumn();
             this.Commision = new System.Windows.Forms.DataGridTextBoxColumn();
             this.grpItems = new System.Windows.Forms.GroupBox();
+            this.lblConsignment = new System.Windows.Forms.Label();
             this.lblProperties = new System.Windows.Forms.Label();
             this.lblCategory = new System.Windows.Forms.Label();
             this.lblPropertiesName = new System.Windows.Forms.Label();
@@ -265,7 +266,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCurrency = new System.Windows.Forms.Label();
             this.lblOrderType = new System.Windows.Forms.Label();
             this.tmrLogo = new System.Windows.Forms.Timer(this.components);
-            this.lblConsignment = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).BeginInit();
             this.grpItems.SuspendLayout();
             this.panLocked.SuspendLayout();
@@ -754,6 +754,19 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpItems.TabStop = false;
             this.grpItems.Text = "Item Details";
             // 
+            // lblConsignment
+            // 
+            this.lblConsignment.BackColor = System.Drawing.Color.RoyalBlue;
+            this.lblConsignment.Font = new System.Drawing.Font("Tahoma", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.lblConsignment.ForeColor = System.Drawing.Color.Maroon;
+            this.lblConsignment.Location = new System.Drawing.Point(2, 323);
+            this.lblConsignment.Name = "lblConsignment";
+            this.lblConsignment.Size = new System.Drawing.Size(223, 85);
+            this.lblConsignment.TabIndex = 6;
+            this.lblConsignment.Text = "C O N S I G N M E N T";
+            this.lblConsignment.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblConsignment.Visible = false;
+            // 
             // lblProperties
             // 
             this.lblProperties.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1050,7 +1063,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblMessage.Size = new System.Drawing.Size(1012, 24);
             this.lblMessage.TabIndex = 80;
             this.lblMessage.Text = " Your suggestive selling message and/or description.  Your suggestive selling mes" +
-    "sage and/or    .dasdasdas";
+                "sage and/or    .dasdasdas";
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblAgentPositionDepartment
@@ -1216,29 +1229,16 @@ namespace AceSoft.RetailPlus.Client.UI
             this.tmrLogo.Interval = 90000;
             this.tmrLogo.Tick += new System.EventHandler(this.tmrLogo_Tick);
             // 
-            // lblConsignment
-            // 
-            this.lblConsignment.BackColor = System.Drawing.Color.RoyalBlue;
-            this.lblConsignment.Font = new System.Drawing.Font("Tahoma", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.lblConsignment.ForeColor = System.Drawing.Color.Maroon;
-            this.lblConsignment.Location = new System.Drawing.Point(2, 323);
-            this.lblConsignment.Name = "lblConsignment";
-            this.lblConsignment.Size = new System.Drawing.Size(223, 85);
-            this.lblConsignment.TabIndex = 6;
-            this.lblConsignment.Text = "C O N S I G N M E N T";
-            this.lblConsignment.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblConsignment.Visible = false;
-            // 
             // MainWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1017, 714);
+            this.Controls.Add(this.grpRLC);
             this.Controls.Add(this.grpItems);
             this.Controls.Add(this.panLocked);
             this.Controls.Add(this.lblAgentPositionDepartment);
             this.Controls.Add(this.dgItems);
-            this.Controls.Add(this.grpRLC);
             this.Controls.Add(this.grptxtBarcode);
             this.Controls.Add(this.imgCompanyLogo);
             this.Controls.Add(this.panSubTotal);
@@ -2670,7 +2670,12 @@ namespace AceSoft.RetailPlus.Client.UI
 
 								if (clsItemDetails.ItemDiscountType == DiscountTypes.Percentage)
 								{
-									clsItemDetails.Discount = (clsItemDetails.Amount * (clsItemDetails.ItemDiscount / 100));
+                                    //overwrite the discountable amount if its SENIORCITIZEN
+                                    if (clsItemDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN && mclsTerminalDetails.IsVATInclusive)
+                                    {
+                                        clsItemDetails.Amount = clsItemDetails.Amount / (1 + (mclsTerminalDetails.VAT / 100));
+                                    }
+                                    clsItemDetails.Discount = clsItemDetails.Amount * (clsItemDetails.ItemDiscount / 100);
 								}
 
                                 if (clsItemDetails.Discount >= clsItemDetails.Amount && clsItemDetails.DiscountCode != Constants.C_DISCOUNT_CODE_FREE)
@@ -2810,11 +2815,15 @@ namespace AceSoft.RetailPlus.Client.UI
 									clsItemDetails.DiscountCode = TransDiscountCode;
 									clsItemDetails.DiscountRemarks = TransDiscountRemarks;
 
-									if (clsItemDetails.ItemDiscountType == DiscountTypes.Percentage)
-									{
-										clsItemDetails.Discount = (clsItemDetails.Amount * (clsItemDetails.ItemDiscount / 100));
-									}
-
+                                    if (clsItemDetails.ItemDiscountType == DiscountTypes.Percentage)
+                                    {
+                                        //overwrite the discountable amount if its SENIORCITIZEN
+                                        if (clsItemDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN && mclsTerminalDetails.IsVATInclusive)
+                                        {
+                                            clsItemDetails.Amount = clsItemDetails.Amount / (1 + (mclsTerminalDetails.VAT / 100));
+                                        }
+                                        clsItemDetails.Discount = clsItemDetails.Amount * (clsItemDetails.ItemDiscount / 100);
+                                    }
 									//if (clsItemDetails.Discount >= clsItemDetails.Amount)
 									//{
 									//    MessageBox.Show("Sorry the input discount will yield a less than ZERO amount. Please type another discount.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
@@ -2950,7 +2959,8 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			try
 			{
-                if ((mclsTerminalDetails.ShowCustomerSelection || pContactDetails.ContactID != 0) && enumContactGroupCategory == Data.ContactGroupCategory.CUSTOMER)
+                if ((mclsTerminalDetails.ShowCustomerSelection || pContactDetails.ContactID != 0) && 
+                    (enumContactGroupCategory == Data.ContactGroupCategory.CUSTOMER || enumContactGroupCategory == Data.ContactGroupCategory.AGENT))
 					mclsContactDetails = pContactDetails;
 				else
 				{
@@ -7413,12 +7423,19 @@ namespace AceSoft.RetailPlus.Client.UI
 				foreach (System.Data.DataRow dr in ItemDataTable.Rows)
 				{
 					DiscountTypes ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["ItemDiscountType"].ToString());
+                    string itemDiscountCode = dr["DiscountCode"].ToString();
 					decimal itemTrueAmt = Convert.ToDecimal(dr["Amount"]);
 					decimal itemVAT = Convert.ToDecimal(dr["VAT"]);
+                    decItemDiscount += Convert.ToDecimal(dr["Discount"]);
 
-					decItemAmount = itemTrueAmt;
-
-					decItemDiscount += Convert.ToDecimal(dr["Discount"]);
+                    // feb 8, 2014
+                    // overwrite the itemtrueAmount if it's a SNR and no discount per item yet
+                    if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode &&
+                        string.IsNullOrEmpty(itemDiscountCode))
+                    {
+                        itemTrueAmt = itemTrueAmt / (1 + (mclsTerminalDetails.VAT / 100));
+                    }
+                    decItemAmount = itemTrueAmt;
 
 					if (dr["Quantity"].ToString().IndexOf("RETURN") != -1) //2. check if the item is return
 					{
@@ -7452,7 +7469,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						if (mclsSalesTransactionDetails.DiscountCode == Constants.C_DISCOUNT_CODE_SENIORCITIZEN || dr["DiscountCode"].ToString() == Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
 						{
 							if (ItemDiscountType != DiscountTypes.NotApplicable && dr["DiscountCode"].ToString() != Constants.C_DISCOUNT_CODE_SENIORCITIZEN)
-								decVATableAmount += decItemAmount;    
+								decVATableAmount += decItemAmount; 
 							else
 								decNONVATableAmount += decItemAmount;                
 						}
@@ -10269,8 +10286,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						try { grpRLC.Visible = true; }
 						catch { }
 					Back:
-
-						lblMallForwarderStatus.Text = "RLC Notification: Trying to send unsent files...";
+                        SetText("RLC Notification: Trying to send unsent files...", "lblMallForwarderStatus");
 
 						AceSoft.RetailPlus.Forwarder.RLCDetails clsRLCDetails = new AceSoft.RetailPlus.Forwarder.RLCDetails();
 						clsRLCDetails.TenantCode = RLC_CONFIG.TenantCode;
@@ -10286,9 +10302,9 @@ namespace AceSoft.RetailPlus.Client.UI
 						bool bolCreateAndTransferFile = clsRLC.CreateAndTransferFile(dteDateToProcess);
 
 						if (bolCreateAndTransferFile)
-						{ tmrRLC.Enabled = false; lblMallForwarderStatus.Text = "Success in sending file(s) to RLC server. Press [Ctrl+C] to close this notification."; }
+						{ tmrRLC.Enabled = false; SetText("Success in sending file(s) to RLC server. Press [Ctrl+C] to close this notification.", "lblMallForwarderStatus"); }
 						else
-						{ tmrRLC.Enabled = true; lblMallForwarderStatus.Text = "ERROR!!! sending file(s) to RLC server. Press [Ctrl+C] to close this notification."; }
+						{ tmrRLC.Enabled = true; SetText("ERROR!!! sending file(s) to RLC server. Press [Ctrl+C] to close this notification.", "lblMallForwarderStatus"); }
 
 						clsTerminalReportHistory = new Data.TerminalReportHistory(mConnection, mTransaction);
                         mConnection = clsTerminalReportHistory.Connection; mTransaction = clsTerminalReportHistory.Transaction;
@@ -10301,8 +10317,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 					catch
                     { 
-                        tmrRLC.Enabled = true; 
-                        lblMallForwarderStatus.Text = "ERROR!!! sending file(s) to RLC server. Press [Ctrl+C] to close this notification.";
+                        tmrRLC.Enabled = true;
+                        SetText("ERROR!!! sending file(s) to RLC server. Press [Ctrl+C] to close this notification.", "lblMallForwarderStatus");
                     }
 				}
 			}
@@ -13810,21 +13826,36 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             catch { }
 		}
-		delegate void SetTextCallback(string text);
-		private void SetText(string text)
+        delegate void SetTextCallback(string text, string labelname = "lblMessage");
+        private void SetText(string text, string labelname = "lblMessage")
 		{
 			// InvokeRequired required compares the thread ID of the
 			// calling thread to the thread ID of the creating thread.
 			// If these threads are different, it returns true.
-			if (this.lblMessage.InvokeRequired)
-			{
-				SetTextCallback d = new SetTextCallback(SetText);
-				this.Invoke(d, new object[] { text });
-			}
-			else
-			{
-				this.lblMessage.Text = text;
-			}
+            if (labelname == "lblMallForwarderStatus")
+            {
+                if (this.lblMallForwarderStatus.InvokeRequired)
+                {
+                    SetTextCallback d = new SetTextCallback(SetText);
+                    this.Invoke(d, new object[] { text, "lblMallForwarderStatus" });
+                }
+                else
+                {
+                    this.lblMallForwarderStatus.Text = text;
+                }
+            }
+            else
+            {
+                if (this.lblMessage.InvokeRequired)
+                {
+                    SetTextCallback d = new SetTextCallback(SetText);
+                    this.Invoke(d, new object[] { text, "lblMessage" });
+                }
+                else
+                {
+                    this.lblMessage.Text = text;
+                }
+            }
 		}
 
 		#endregion

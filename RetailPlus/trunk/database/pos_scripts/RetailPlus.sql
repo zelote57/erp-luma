@@ -6799,60 +6799,6 @@ UPDATE tblTerminalReportHistory SET ActualOldGrandTotal = OldGrandTotal WHERE Ac
 UPDATE tblTerminalReportHistory SET ActualNewGrandTotal = NewGrandTotal WHERE ActualNewGrandTotal = 0;
 
 
--- GLA
--- October 10, 2013 
-/*****************************
-**	tblgla_f_dtl_chk_headers
-*****************************/
-DROP TABLE IF EXISTS tblgla_f_dtl_chk_headers;
-CREATE TABLE tblgla_f_dtl_chk_headers (
-	`fk_business_date` DATETIME NULL,
-	`fk_location_def` INT NOT NULL DEFAULT 0,
-	`fk_emp_def` BIGINT NOT NULL DEFAULT 0,
-	`status_flag` VARCHAR(8),
-	`chk_headers_seq_number` BIGINT NOT NULL DEFAULT 0,
-	`chk_num` INT NOT NULL DEFAULT 0,
-	`chk_id` VARCHAR(60) NULL,
-	`ot_number` INT NOT NULL DEFAULT 0,
-	`Ot_Name` VARCHAR(60) NULL,
-	`Tbl_Number` INT NOT NULL DEFAULT 0,
-	`Chk_Open_Date_Time` DATETIME,
-	`Chk_Closed_Date_Time` DATETIME,
-	`Uws_Number` INT NOT NULL DEFAULT 0,
-	`Is_HotelMark_Promo` TINYINT(1) NOT NULL DEFAULT 0,
-	`Sub_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Tax_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Auto_Svc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Other_Svc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Dsc_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Pymnt_Ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Chk_Prntd_Cnt` INT NOT NULL DEFAULT 0,
-	`Cov_Cnt` INT NOT NULL DEFAULT 0,
-	`Num_Dtl` INT NOT NULL DEFAULT 0,
-	`Itemizer1` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer2` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer3` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer4` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer5` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer6` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer7` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer8` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer9` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer10` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer11` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer12` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer13` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer14` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer15` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Itemizer16` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`Tip_ttl` DECIMAL(18,3) NOT NULL DEFAULT 0,
-	`DateCreated` DATETIME NOT NULL ,
-	`CreatedBy` VARCHAR(120) NULL,
-	`Filename` VARCHAR(120) NULL,
-	`BatchID` VARCHAR(30) NULL,
-INDEX `IX_tblgla_f_dtl_chk_headers`(`chk_headers_seq_number`),
-INDEX `IX1_tblgla_f_dtl_chk_headers`(`chk_num`)
-);
 
 -- Added to get the discount given
 ALTER TABLE tblTransactionItems ADD `TransactionDiscount` DECIMAL(18,2) NOT NULL DEFAULT 0 COMMENT 'This is an applied discount computed evenly from transaction discount';
@@ -6906,3 +6852,27 @@ ALTER TABLE tblTerminalReport ADD `NoOfReprintedTransaction` INT(10) NOT NULL DE
 ALTER TABLE tblTerminalReport ADD `TotalReprintedTransaction` DECIMAL(18,2) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminalReportHistory ADD `NoOfReprintedTransaction` INT(10) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminalReportHistory ADD `TotalReprintedTransaction` DECIMAL(18,2) NOT NULL DEFAULT 0;
+
+
+
+--19Feb2014 Added for HP
+DELETE FROM sysAccessRights WHERE TranTypeID = 148; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 148;
+DELETE FROM sysAccessTypes WHERE TypeID = 148;
+INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (148, 'Summarized Daily Sales');
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 148, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 148, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '11: Backend - Sales Reports' WHERE TypeID = 148;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 149; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 149;
+DELETE FROM sysAccessTypes WHERE TypeID = 149;
+INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (149, 'Summarized Daily Sales With TF');
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 149, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 149, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '11: Backend - Sales Reports' WHERE TypeID = 149;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 150; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 150;
+DELETE FROM sysAccessTypes WHERE TypeID = 150;
+INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (150, 'PaidOut Disburse ROC');
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 150, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 150, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '11: Backend - Sales Reports' WHERE TypeID = 150;

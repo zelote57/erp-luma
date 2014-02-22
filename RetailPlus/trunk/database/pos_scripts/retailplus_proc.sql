@@ -237,34 +237,34 @@ DROP PROCEDURE IF EXISTS procTerminalReportUpdateTransactionSales
 GO
 
 create procedure procTerminalReportUpdateTransactionSales(IN intBranchID int(4), IN strTerminalNo varchar(10), 
-														IN decGrossSales decimal(10,2),
-														IN decTotalDiscount decimal(10,2),
-														IN decTotalCharge decimal(10,2),
-														IN decDailySales decimal(10,2),
-														IN decQuantitySold decimal(10,2),
-														IN decGroupSales decimal(10,2),
-														IN decOldGrandTotal decimal(10,2),
-														IN decNewGrandTotal decimal(10,2),
-														IN decVATableAmount decimal(10,2),
-														IN decNonVaTableAmount decimal(10,2),
-														IN decVAT decimal(10,2),
-														IN decEVATableAmount decimal(10,2),
-														IN decNonEVaTableAmount decimal(10,2),
-														IN decEVAT decimal(10,2),
-														IN decLocalTax decimal(10,2),
-														IN decCashSales decimal(10,2),
-														IN decChequeSales decimal(10,2),
-														IN decCreditCardSales decimal(10,2),
-														IN decCreditSales decimal(10,2),
-														IN decCreditPayment decimal(10,2),
-														IN decDebitPayment decimal(10,2),
-														IN decRewardPointsPayment decimal(10,2),
-														IN decRewardConvertedPayment decimal(10,2),
-														IN decCashInDrawer decimal(10,2),
-														IN decVoidSales decimal(10,2),
-														IN decRefundSales decimal(10,2),
-														IN decItemsDiscount decimal(10,2),
-														IN decSubTotalDiscount decimal(10,2),
+														IN decGrossSales decimal(18,2),
+														IN decTotalDiscount decimal(18,2),
+														IN decTotalCharge decimal(18,2),
+														IN decDailySales decimal(18,2),
+														IN decQuantitySold decimal(18,2),
+														IN decGroupSales decimal(18,2),
+														IN decOldGrandTotal decimal(18,2),
+														IN decNewGrandTotal decimal(18,2),
+														IN decVATableAmount decimal(18,2),
+														IN decNonVaTableAmount decimal(18,2),
+														IN decVAT decimal(18,2),
+														IN decEVATableAmount decimal(18,2),
+														IN decNonEVaTableAmount decimal(18,2),
+														IN decEVAT decimal(18,2),
+														IN decLocalTax decimal(18,2),
+														IN decCashSales decimal(18,2),
+														IN decChequeSales decimal(18,2),
+														IN decCreditCardSales decimal(18,2),
+														IN decCreditSales decimal(18,2),
+														IN decCreditPayment decimal(18,2),
+														IN decDebitPayment decimal(18,2),
+														IN decRewardPointsPayment decimal(18,2),
+														IN decRewardConvertedPayment decimal(18,2),
+														IN decCashInDrawer decimal(18,2),
+														IN decVoidSales decimal(18,2),
+														IN decRefundSales decimal(18,2),
+														IN decItemsDiscount decimal(18,2),
+														IN decSubTotalDiscount decimal(18,2),
 														IN intNoOfCashTransactions int(10),
 														IN intNoOfChequeTransactions int(10),
 														IN intNoOfCreditCardTransactions int(10),
@@ -367,27 +367,27 @@ DROP PROCEDURE IF EXISTS procCashierReportUpdateTransactionSales
 GO
 
 create procedure procCashierReportUpdateTransactionSales(IN intBranchID INT(4), IN strTerminalNo varchar(10), IN lngCashierID int(10),
-														IN decGrossSales decimal(10,2),
-														IN decTotalDiscount decimal(10,2),
-														IN decTotalCharge decimal(10,2),
-														IN decDailySales decimal(10,2),
-														IN decQuantitySold decimal(10,2),
-														IN decGroupSales decimal(10,2),
-														IN decVAT decimal(10,2),
-														IN decLocalTax decimal(10,2),
-														IN decCashSales decimal(10,2),
-														IN decChequeSales decimal(10,2),
-														IN decCreditCardSales decimal(10,2),
-														IN decCreditSales decimal(10,2),
-														IN decCreditPayment decimal(10,2),
-														IN decDebitPayment decimal(10,2),
-														IN decRewardPointsPayment decimal(10,2),
-														IN decRewardConvertedPayment decimal(10,2),
-														IN decCashInDrawer decimal(10,2),
-														IN decVoidSales decimal(10,2),
-														IN decRefundSales decimal(10,2),
-														IN decItemsDiscount decimal(10,2),
-														IN decSubTotalDiscount decimal(10,2),
+														IN decGrossSales decimal(18,2),
+														IN decTotalDiscount decimal(18,2),
+														IN decTotalCharge decimal(18,2),
+														IN decDailySales decimal(18,2),
+														IN decQuantitySold decimal(18,2),
+														IN decGroupSales decimal(18,2),
+														IN decVAT decimal(18,2),
+														IN decLocalTax decimal(18,2),
+														IN decCashSales decimal(18,2),
+														IN decChequeSales decimal(18,2),
+														IN decCreditCardSales decimal(18,2),
+														IN decCreditSales decimal(18,2),
+														IN decCreditPayment decimal(18,2),
+														IN decDebitPayment decimal(18,2),
+														IN decRewardPointsPayment decimal(18,2),
+														IN decRewardConvertedPayment decimal(18,2),
+														IN decCashInDrawer decimal(18,2),
+														IN decVoidSales decimal(18,2),
+														IN decRefundSales decimal(18,2),
+														IN decItemsDiscount decimal(18,2),
+														IN decSubTotalDiscount decimal(18,2),
 														IN intNoOfCashTransactions int(10),
 														IN intNoOfChequeTransactions int(10),
 														IN intNoOfCreditCardTransactions int(10),
@@ -907,7 +907,7 @@ delimiter GO
 create procedure procTransactionDateClosedUpdate(IN lngTransactionID bigint(20), IN dteDateClosed DateTime)
 BEGIN
 	
-	UPDATE tblTransactions SET TerminalNo = DATE_FORMAT(dteDateClosed, '%Y-%m-%d %H:%i') WHERE TransactionID = lngTransactionID;
+	UPDATE tblTransactions SET TransactionDate = DATE_FORMAT(dteDateClosed, '%Y-%m-%d %H:%i') WHERE TransactionID = lngTransactionID;
 
 END;
 GO
@@ -1570,7 +1570,7 @@ delimiter ;
 	
 
 	30May2013 Combine procProductPackageInsert and procProductPackageUpdate
-	CALL procProductPackageSave(0, 4355, 26719, 5, 69, 66.3, 65, 1, 12, 0, 0, 'test7', NULL, NULL);
+	CALL procProductPackageSave(0, 3, 0, 5, 0, 388800, 388800, 0, 12, 0, 0, 'JVS100000451', NULL, NULL);
 *********************************/
 
 delimiter GO
@@ -1602,7 +1602,11 @@ create procedure procProductPackageSave(
 	IN pvtBarCode3 VARCHAR(30))
 BEGIN
 	IF pvtPackageID = 0 THEN
-		SET pvtPackageID = IFNULL((SELECT PackageID FROM tblProductPackage WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND Quantity = 1),0);
+		IF pvtUnitID = 0 THEN
+			SET pvtPackageID = IFNULL((SELECT PackageID FROM tblProductPackage WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND Quantity = 1),0);
+		ELSE
+			SET pvtPackageID = IFNULL((SELECT PackageID FROM tblProductPackage WHERE ProductID = pvtProductID AND MatrixID = pvtMatrixID AND UnitID = pvtUnitID AND Quantity = pvtQuantity),0);
+		END IF;
 	END IF;
 
 	IF pvtPackageID = 0 THEN
@@ -3431,7 +3435,8 @@ create procedure procProductMovementSelect(
 									IN lngProductID BIGINT, 
 									IN lngMatrixID BIGINT, 
 									IN dteStartTransactionDate DATETIME,
-									in dteEndTransactionDate DATETIME)
+									IN dteEndTransactionDate DATETIME,
+									IN intBranchID INT)
 BEGIN
 	SET @SQL := '';
 	
@@ -3460,7 +3465,10 @@ BEGIN
 	IF (lngMatrixID <> -1) THEN
 		SET @SQL = CONCAT(@SQL,'AND MatrixID = ', lngMatrixID,' ');
 	END IF;
-	
+
+	IF (intBranchID <> 0) THEN
+		SET @SQL = CONCAT(@SQL,'AND BranchIDTo = ', intBranchID,' ');
+	END IF;
 
 	IF (DATE_FORMAT(dteStartTransactionDate, '%Y%m%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
 		SET @SQL = CONCAT(@SQL,'AND TransactionDate >= ''', dteStartTransactionDate,''' ');
@@ -5274,8 +5282,13 @@ BEGIN
 									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
 							  FROM tblProducts prd 
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND pkg.Quantity = 1 ');
+	IF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') = '' THEN
+		SET @SQL = CONCAT(@SQL, '
 														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1
+						');
+	END IF;
+	SET @SQL = CONCAT(@SQL, '
 							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID ', IF(ProductSubGroupID=0,'',CONCAT('AND prdsg.ProductSubGroupID =',ProductSubGroupID)),'
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID ', IF(ProductGroupID=0,'',CONCAT('AND prdg.ProductGroupID =',ProductGroupID)),'
@@ -5542,8 +5555,13 @@ BEGIN
 									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
 							  FROM tblProducts prd 
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND pkg.Quantity = 1 ');
+	IF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') = '' THEN
+		SET @SQL = CONCAT(@SQL, '
 														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1
+						');
+	END IF;
+	SET @SQL = CONCAT(@SQL, '
 							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID ', IF(ProductSubGroupID=0,'',CONCAT('AND prdsg.ProductSubGroupID =',ProductSubGroupID)),'
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID ', IF(ProductGroupID=0,'',CONCAT('AND prdg.ProductGroupID =',ProductGroupID)),'
@@ -5767,9 +5785,14 @@ BEGIN
 									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
 									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
 							  FROM tblProducts prd 
-							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID
+														AND pkg.Quantity = 1 ');
+	IF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') = '' THEN
+		SET @SQL = CONCAT(@SQL, '
 														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1
+						');
+	END IF;
+	SET @SQL = CONCAT(@SQL, '
 							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
@@ -5896,8 +5919,13 @@ BEGIN
 								,pkg.MatrixID
 							  FROM tblProducts prd 
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND pkg.Quantity = 1 ');
+	IF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') = '' THEN
+		SET @SQL = CONCAT(@SQL, '
 														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1
+						');
+	END IF;
+	SET @SQL = CONCAT(@SQL, '
 							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
@@ -5929,7 +5957,7 @@ delimiter ;
 	
 	Desc: This will get the main product list
 
-	CALL procProductMainDetails(1, 3494, 0, '','',1);
+	CALL procProductMainDetails(1, 0, 0, 'JVS100000451','',1);
 	
 **************************************************************/
 delimiter GO
@@ -6057,9 +6085,14 @@ BEGIN
 									,pkg.EVAT
 									,pkg.LocalTax
 							  FROM tblProducts prd 
-							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID
+														AND pkg.Quantity = 1 ');
+	IF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') = '' THEN
+		SET @SQL = CONCAT(@SQL, '
 														AND prd.BaseUnitID = pkg.UnitID
-														AND pkg.Quantity = 1
+						');
+	END IF;
+	SET @SQL = CONCAT(@SQL, '
 							  WHERE 1=1 ',SQLWhere,' LIMIT 1) prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
@@ -6292,9 +6325,14 @@ BEGIN
 							  FROM tblProducts prd 
 							  INNER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
-														AND prd.BaseUnitID = pkg.UnitID
 														AND pkg.Quantity = 1
-														AND pkg.MatrixID = mtrx.MatrixID
+														AND pkg.MatrixID = mtrx.MatrixID ');
+	IF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') = '' THEN
+		SET @SQL = CONCAT(@SQL, '
+														AND prd.BaseUnitID = pkg.UnitID
+						');
+	END IF;
+	SET @SQL = CONCAT(@SQL, '
 							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID

@@ -575,7 +575,7 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public System.Data.DataTable ProductMovementReport(long ProductID, long MatrixID, DateTime StartDate, DateTime EndDate)
+        public System.Data.DataTable ProductMovementReport(long ProductID, long MatrixID, DateTime StartDate, DateTime EndDate, int intBranchID = 0)
         {
             try
             {
@@ -587,6 +587,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@lngMatrixID", MatrixID);
                 cmd.Parameters.AddWithValue("@dteStartTransactionDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@dteEndTransactionDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@intBranchID", intBranchID);
 
                 //SQL = "SELECT " +
                 //        "ProductID, " +

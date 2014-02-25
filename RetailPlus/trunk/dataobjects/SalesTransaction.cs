@@ -950,18 +950,19 @@ namespace AceSoft.RetailPlus.Data
 
 				if (clsSearchKeys.CustomerName != string.Empty && clsSearchKeys.CustomerName != null)
 				{
-					SQL += "AND tblTransactions.CustomerName = @CustomerName ";
-					MySqlParameter prmCustomerName = new MySqlParameter("@CustomerName",MySqlDbType.String);
-					prmCustomerName.Value = clsSearchKeys.CustomerName;
-					cmd.Parameters.Add(prmCustomerName);
+					SQL += "AND tblTransactions.CustomerName LIKE @CustomerName ";
+                    cmd.Parameters.AddWithValue("@CustomerName", "%" + clsSearchKeys.CustomerName + "%");
 				}
 				if (clsSearchKeys.CashierName != string.Empty && clsSearchKeys.CashierName != null)
 				{
-					SQL += "AND tblTransactions.CashierName = @CashierName ";
-					MySqlParameter prmCashierName = new MySqlParameter("@CashierName",MySqlDbType.String);
-					prmCashierName.Value = clsSearchKeys.CashierName;
-					cmd.Parameters.Add(prmCashierName);
+					SQL += "AND tblTransactions.CashierName LIKE @CashierName ";
+                    cmd.Parameters.AddWithValue("@CashierName", "%" + clsSearchKeys.CashierName + "%");
 				}
+                if (clsSearchKeys.AgentName != string.Empty && clsSearchKeys.AgentName != null)
+                {
+                    SQL += "AND tblTransactions.AgentName LIKE @AgentName ";
+                    cmd.Parameters.AddWithValue("@AgentName", "%" + clsSearchKeys.AgentName + "%");
+                }
 				if (clsSearchKeys.TerminalNo != string.Empty && clsSearchKeys.TerminalNo != null)
 				{
 					SQL += "AND tblTransactions.TerminalNo = @TerminalNo ";
@@ -1231,7 +1232,72 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
+        public decimal PersonWithDisabilityDiscounts(string TerminalNo, string TransactionNoFrom, string TransactionNoTo, out long DiscountCount)
+        {
+            try
+            {
+                string SQL = "CALL procGenerateDiscountByTerminalNo(@SessionID, @TerminalNo, @TransactionNoFrom, @TransactionNoTo);";
 
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                Random clsRandom = new Random();
+                MySqlParameter prmSessionID = new MySqlParameter("@SessionID", MySqlDbType.String);
+                prmSessionID.Value = clsRandom.Next(1234567, 99999999);
+                cmd.Parameters.Add(prmSessionID);
+
+                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo", MySqlDbType.String);
+                prmTerminalNo.Value = TerminalNo;
+                cmd.Parameters.Add(prmTerminalNo);
+
+                MySqlParameter prmTransactionNoFrom = new MySqlParameter("@TransactionNoFrom", MySqlDbType.String);
+                prmTransactionNoFrom.Value = TransactionNoFrom;
+                cmd.Parameters.Add(prmTransactionNoFrom);
+
+                MySqlParameter prmTransactionNoTo = new MySqlParameter("@TransactionNoTo", MySqlDbType.String);
+                prmTransactionNoTo.Value = TransactionNoTo;
+                cmd.Parameters.Add(prmTransactionNoTo);
+
+                base.ExecuteNonQuery(cmd);
+
+                SQL = "SELECT " +
+                        "DiscountCount, " +
+                        "Discount " +
+                    "FROM tblDiscountHistory " +
+                    "WHERE SessionID = @SessionID " +
+                        "AND DiscountCode = (SELECT PWDDiscountCode FROM tblTerminal WHERE TerminalNo = @TerminalNo) " +
+                    "ORDER BY DiscountCode;";
+
+                cmd.CommandText = SQL;
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(prmSessionID);
+                cmd.Parameters.Add(prmTerminalNo);
+
+                decimal decRetValue = 0;
+                DiscountCount = 0;
+
+                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                while (myReader.Read())
+                {
+                    DiscountCount = myReader.GetInt64("DiscountCount");
+                    decRetValue = myReader.GetDecimal("Discount");
+                }
+                myReader.Close();
+
+                SQL = "CALL procDeleteDiscountHistory(@SessionID);";
+
+                cmd.CommandText = SQL;
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(prmSessionID);
+
+                return decRetValue;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 		public System.Data.DataTable Discounts(string TerminalNo, string TransactionNoFrom, string TransactionNoTo)
 		{
 			try

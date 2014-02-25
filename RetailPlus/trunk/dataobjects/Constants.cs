@@ -154,6 +154,23 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_WILL_SHOW_PRODUCT_TOTAL_QUANTITY_IN_ITEMSELECT = "WillShowProductTotalQuantityInItemSelect";
         public const string SYS_CONFIG_WILL_NOT_PRINT_REPRINT_MESSAGE = "WillNotPrintReprintMessage";
         public const string SYS_CONFIG_OR_HEADER = "ORHeader";
+
+        /// <summary>
+        /// GLA Files
+        /// </summary>
+        public const string GLA_file_batch_id = "batch_id.dat";
+        public const string GLA_file_d_dsc_def = "d_dsc_def.dat";
+        public const string GLA_file_d_emp_def = "d_emp_def.dat";
+        public const string GLA_file_d_location_def = "d_location_def.dat";
+        public const string GLA_file_d_mi_def = "d_mi_def.dat";
+        public const string GLA_file_d_svc_def = "d_svc_def.dat";
+        public const string GLA_file_d_tmd_def = "d_tmd_def.dat";
+        public const string GLA_file_f_dtl_chk_dsc = "f_dtl_chk_dsc.dat";
+        public const string GLA_file_f_dtl_chk_headers = "f_dtl_chk_headers.dat";
+        public const string GLA_file_f_dtl_chk_mi = "f_dtl_chk_mi.dat";
+        public const string GLA_file_f_dtl_chk_svc = "f_dtl_chk_svc.dat";
+        public const string GLA_file_f_dtl_chk_tmd = "f_dtl_chk_tmd.dat";
+        public const string GLA_file_otntender = "otn_tender.txt";
         
     }
 }

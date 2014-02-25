@@ -15,7 +15,7 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct BranchDetails
 	{
-		public int BranchID;
+		public Int32 BranchID;
 		public string BranchCode;
 		public string BranchName;
 		public string DBIP;
@@ -51,7 +51,7 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Insert and Update
 
-		public Int16 Insert(BranchDetails Details)
+		public Int32 Insert(BranchDetails Details)
 		{
 			try 
 			{
@@ -61,30 +61,13 @@ namespace AceSoft.RetailPlus.Data
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-				MySqlParameter prmBranchCode = new MySqlParameter("@BranchCode",MySqlDbType.String);			
-				prmBranchCode.Value = Details.BranchCode;
-				cmd.Parameters.Add(prmBranchCode);
 
-				MySqlParameter prmBranchName = new MySqlParameter("@BranchName",MySqlDbType.String);			
-				prmBranchName.Value = Details.BranchName;
-				cmd.Parameters.Add(prmBranchName);
-
-				MySqlParameter prmDBIP = new MySqlParameter("@DBIP",MySqlDbType.String);			
-				prmDBIP.Value = Details.DBIP;
-				cmd.Parameters.Add(prmDBIP);
-
-				MySqlParameter prmDBPort = new MySqlParameter("@DBPort",MySqlDbType.String);			
-				prmDBPort.Value = Details.DBPort;
-				cmd.Parameters.Add(prmDBPort);
-
-				MySqlParameter prmAddress = new MySqlParameter("@Address",MySqlDbType.String);			
-				prmAddress.Value = Details.Address;
-				cmd.Parameters.Add(prmAddress);
-
-				MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);			
-				prmRemarks.Value = Details.Remarks;
-				cmd.Parameters.Add(prmRemarks);
+                cmd.Parameters.AddWithValue("@BranchCode", Details.BranchCode);
+                cmd.Parameters.AddWithValue("@BranchName", Details.BranchName);
+                cmd.Parameters.AddWithValue("@DBIP", Details.DBIP);
+                cmd.Parameters.AddWithValue("@DBPort", Details.DBPort);
+                cmd.Parameters.AddWithValue("@Address", Details.Address);
+                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
 
 				base.ExecuteNonQuery(cmd);
 
@@ -96,10 +79,10 @@ namespace AceSoft.RetailPlus.Data
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
                 base.MySqlDataAdapterFill(cmd, dt);
 
-                Int16 iID = 0;
+                Int32 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    iID = Int16.Parse(dr[0].ToString());
+                    iID = Int32.Parse(dr[0].ToString());
                 }
 
 				return iID;
@@ -107,15 +90,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -132,57 +106,24 @@ namespace AceSoft.RetailPlus.Data
 								"Address = @Address, " +  
 								"Remarks = @Remarks " +  
 							"WHERE BranchID = @BranchID;";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int16);			
-				prmBranchID.Value = Details.BranchID;
-				cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmBranchCode = new MySqlParameter("@BranchCode",MySqlDbType.String);			
-				prmBranchCode.Value = Details.BranchCode;
-				cmd.Parameters.Add(prmBranchCode);
-
-				MySqlParameter prmBranchName = new MySqlParameter("@BranchName",MySqlDbType.String);			
-				prmBranchName.Value = Details.BranchName;
-				cmd.Parameters.Add(prmBranchName);
-
-				MySqlParameter prmDBIP = new MySqlParameter("@DBIP",MySqlDbType.String);			
-				prmDBIP.Value = Details.DBIP;
-				cmd.Parameters.Add(prmDBIP);
-
-				MySqlParameter prmDBPort = new MySqlParameter("@DBPort",MySqlDbType.String);			
-				prmDBPort.Value = Details.DBPort;
-				cmd.Parameters.Add(prmDBPort);
-
-				MySqlParameter prmAddress = new MySqlParameter("@Address",MySqlDbType.String);			
-				prmAddress.Value = Details.Address;
-				cmd.Parameters.Add(prmAddress);
-
-				MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);			
-				prmRemarks.Value = Details.Remarks;
-				cmd.Parameters.Add(prmRemarks);
+                cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("@BranchCode", Details.BranchCode);
+                cmd.Parameters.AddWithValue("@BranchName", Details.BranchName);
+                cmd.Parameters.AddWithValue("@DBIP", Details.DBIP);
+                cmd.Parameters.AddWithValue("@DBPort", Details.DBPort);
+                cmd.Parameters.AddWithValue("@Address", Details.Address);
+                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
 
 				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -246,7 +187,7 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Details
 
-		public BranchDetails Details(Int16 BranchID)
+		public BranchDetails Details(Int32 BranchID)
 		{
 			try
 			{
@@ -261,20 +202,13 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblBranch " +
 							"WHERE BranchID = @BranchID;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int16);
-				prmBranchID.Value = BranchID;
-				cmd.Parameters.Add(prmBranchID);
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
 
 				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
 				BranchDetails Details = new BranchDetails();
 
 				while (myReader.Read()) 
@@ -294,15 +228,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

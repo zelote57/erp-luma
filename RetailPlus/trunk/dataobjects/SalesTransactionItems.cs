@@ -823,6 +823,75 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public System.Data.DataTable List(string TransactionIDs)
+        {
+            try
+            {
+                string SQL = "SELECT " +
+                                "TransactionItemsID, " +
+                                "TransactionID, " +
+                                "ProductID, " +
+                                "ProductCode, " +
+                                "BarCode, " +
+                                "Description, " +
+                                "ProductUnitID, " +
+                                "ProductUnitCode, " +
+                                "ProductUnitCode AS ProductUnitName, " +
+                                "Quantity, " +
+                                "Price, " +
+                                "Discount, " +
+                                "ItemDiscount, " +
+                                "ItemDiscountType, " +
+                                "Amount, " +
+                                "VAT, " +
+                                "EVAT, " +
+                                "LocalTax, " +
+                                "VariationsMatrixID, " +
+                                "MatrixDescription, " +
+                                "ProductGroup, " +
+                                "ProductSubGroup, " +
+                                "TransactionItemStatus, " +
+                                "DiscountCode, " +
+                                "DiscountRemarks, " +
+                                "ProductPackageID, " +
+                                "MatrixPackageID, " +
+                                "PackageQuantity, " +
+                                "PromoQuantity, " +
+                                "PromoValue, " +
+                                "PromoInPercent, " +
+                                "PromoType, " +
+                                "PromoApplied, " +
+                                "PurchasePrice, " +
+                                "PurchaseAmount, " +
+                                "IncludeInSubtotalDiscount, " +
+                                "OrderSlipPrinter, " +
+                                "OrderSlipPrinted, " +
+                                "PercentageCommision, " +
+                                "Commision, " +
+                                "PaxNo " +
+                            "FROM tblTransactionItems " +
+                            "WHERE TransactionID IN (" + TransactionIDs + ") AND TransactionItemStatus <> @TransactionItemStatusTrash " +
+                                "AND TransactionItemStatus <> @TransactionItemStatusVoid ";
+
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@TransactionItemStatusTrash", TransactionItemStatus.Trash.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionItemStatusVoid", TransactionItemStatus.Void.ToString("d"));
+
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         public System.Data.DataTable MostSalableItems(DateTime StartTransactionDate, DateTime EndTransactionDate, Int32 Limit)
         {
             try

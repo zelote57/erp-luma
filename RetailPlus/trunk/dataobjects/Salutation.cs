@@ -32,7 +32,7 @@ namespace AceSoft.RetailPlus.Data
 
         #region Streams
 
-        public System.Data.DataTable ListAsDataTable(string Salutation = "", string SortField = "ConfigValue", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        public System.Data.DataTable ListAsDataTable(string Salutation = "", string SortField = "SalutationCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
         {
             try
             {

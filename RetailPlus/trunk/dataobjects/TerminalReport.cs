@@ -63,6 +63,7 @@ namespace AceSoft.RetailPlus.Data
 		public decimal CashDeposit;
 		public decimal ChequeDeposit;
 		public decimal CreditCardDeposit;
+        public decimal DebitDeposit;
 		public decimal BeginningBalance;
 		public decimal VoidSales;
 		public decimal RefundSales;
@@ -104,6 +105,12 @@ namespace AceSoft.RetailPlus.Data
 		 * for checking who initialized the zread
 		 * */
         public string InitializedBy;
+        /**
+		 * Feb 6, 2014
+		 * for RLC
+		 * */
+        public Int32 NoOfReprintedTransaction;
+        public decimal TotalReprintedTransaction;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -201,7 +208,10 @@ namespace AceSoft.RetailPlus.Data
                                 "NoOfNegativeAdjustmentTransactions, " +
                                 "PromotionalItems, " +
                                 "CreditSalesTax, " +
-                                "BatchCounter " +
+                                "BatchCounter, " +
+                                "DebitDeposit, " +
+                                "NoOfReprintedTransaction, " +
+                                "TotalReprintedTransaction " +
 					        "FROM tblTerminalReport ";
             return stSQL;
         }
@@ -294,6 +304,9 @@ namespace AceSoft.RetailPlus.Data
                     Details.PromotionalItems = myReader.GetDecimal("PromotionalItems");
                     Details.CreditSalesTax = myReader.GetDecimal("CreditSalesTax");
                     Details.BatchCounter = myReader.GetInt32("BatchCounter");
+                    Details.DebitDeposit = myReader.GetDecimal("DebitDeposit");
+                    Details.NoOfReprintedTransaction = myReader.GetInt32("NoOfReprintedTransaction");
+                    Details.TotalReprintedTransaction = myReader.GetDecimal("TotalReprintedTransaction");
 				}
 				myReader.Close();
 
@@ -1322,6 +1335,30 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
+        // 06Feb2014 RLC Accreditation:
+        // Update no of reprinted transaction
+        public void UpdateReprintedTransaction(int intBranchID, string strTerminalNo, string strTransactionNo)
+        {
+            try
+            {
+                string SQL = "CALL procTerminalReportRePrintedUpdate(@intBranchID, @strTerminalNo, @strTransactionNo);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@intBranchID", intBranchID);
+                cmd.Parameters.AddWithValue("@strTerminalNo", strTerminalNo);
+                cmd.Parameters.AddWithValue("@strTransactionNo", strTransactionNo);
+
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 
 		#region Insert and Update
@@ -1440,7 +1477,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy);";
+                string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy, @WithOutTF);";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -1461,6 +1498,8 @@ namespace AceSoft.RetailPlus.Data
                 MySqlParameter prmInitializedBy = new MySqlParameter("@InitializedBy",MySqlDbType.String);
                 prmInitializedBy.Value = pvtInitializedBy;
                 cmd.Parameters.Add(prmInitializedBy);
+
+                cmd.Parameters.AddWithValue("@WithOutTF", true);
 
                 base.ExecuteNonQuery(cmd);
 

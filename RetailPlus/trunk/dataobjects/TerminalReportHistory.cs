@@ -183,6 +183,9 @@ namespace AceSoft.RetailPlus.Data
                                 "PromotionalItems, " +
                                 "CreditSalesTax, " +
                                 "BatchCounter, " +
+                                "DebitDeposit, " +
+                                "NoOfReprintedTransaction, " +
+                                "TotalReprintedTransaction, " +
                                 "InitializedBy " +
                             "FROM tblTerminalReportHistory ";
             return SQL;
@@ -264,6 +267,9 @@ namespace AceSoft.RetailPlus.Data
                 Details.PromotionalItems = myReader.GetDecimal("PromotionalItems");
                 Details.CreditSalesTax = myReader.GetDecimal("CreditSalesTax");
                 Details.BatchCounter = myReader.GetInt32("BatchCounter");
+                Details.DebitDeposit = myReader.GetDecimal("DebitDeposit");
+                Details.NoOfReprintedTransaction = myReader.GetInt32("NoOfReprintedTransaction");
+                Details.TotalReprintedTransaction = myReader.GetDecimal("TotalReprintedTransaction");
                 Details.InitializedBy = "" + myReader["InitializedBy"].ToString();
             }
 

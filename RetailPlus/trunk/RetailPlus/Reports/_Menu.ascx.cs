@@ -36,6 +36,8 @@ namespace AceSoft.RetailPlus.Reports
                     //lnkMostSalableItems.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("mostsalableitems",Session.SessionID);
                     //lnkLeastSalableItems.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("leastsalableitems",Session.SessionID);
 					lnkDatedReport.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("datedreport",Session.SessionID);
+                    lnkManagementReport.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("managementreport", Session.SessionID);
+                    lnkAnalyticsReport.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("analyticsreport", Session.SessionID);
 
                     //lnkSalesReport.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("salesreport",Session.SessionID);
 
@@ -64,31 +66,39 @@ namespace AceSoft.RetailPlus.Reports
             lnkProductHistory.Visible = clsDetails.Read || clsAccessRights.Details(UID, (int)AccessTypes.PricesReport).Read; 
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.InventoryReport); 
-			lnkInventory.Visible = clsDetails.Read; 
+			lnkInventory.Visible = clsDetails.Read;
 
-            //lnkExpiredInventory.Visible = clsDetails.Read; 
+            lnkTransaction.Visible = false;
+            lnkDatedReport.Visible = false;
+            lnkTerminalReports.Visible = false;
 
-            //clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.ReorderReport); 
-            //lnkReorder.Visible = clsDetails.Read; 
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SalesTransactionReport);
+            if (clsDetails.Read)
+            {
+                lnkTransaction.Visible = true;
+                lnkDatedReport.Visible = true;
+                lnkTerminalReports.Visible = true;
+            }
+            else if (clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySales).Read)
+            {
+                lnkDatedReport.Visible = true;
+            }
+            else if (clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySalesWithTF).Read)
+            {
+                lnkDatedReport.Visible = true;
+            }
+            else if (clsAccessRights.Details(UID, (int)AccessTypes.PaidOutDisburseROC).Read)
+            {
+                lnkDatedReport.Visible = true;
+            }
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ManagementReports);
+            lnkManagementReport.Visible = clsDetails.Read;
 
-            //clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.OverStockReport); 
-            //lnkOverStock.Visible = clsDetails.Read; 
-
-            clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SalesTransactionReport); 
-			lnkTransaction.Visible = clsDetails.Read; 
-
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SalesTransactionReport); 
-			lnkTerminalReports.Visible = clsDetails.Read; 
-			lnkDatedReport.Visible = clsDetails.Read;
-            //lnkSalesReport.Visible = clsDetails.Read;
-            //lnkSalesPerDay.Visible = clsDetails.Read;
-            //lnkSalesPerHour.Visible = clsDetails.Read;
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.AnalyticsReports);
+            lnkAnalyticsReport.Visible = clsDetails.Read;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SalesTransactionReport); 
 			lnkStockTransaction.Visible = clsDetails.Read; 
-
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Terminal); 
-			lnkTerminalReports.Visible = clsDetails.Read; 
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.ContactsReport); 
 			lnkContacts.Visible = clsDetails.Read; 

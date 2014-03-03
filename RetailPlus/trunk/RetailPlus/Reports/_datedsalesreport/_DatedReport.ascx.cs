@@ -40,43 +40,56 @@ namespace AceSoft.RetailPlus.Reports
 
 		private void LoadOptions()
 		{
-			cboReportType.Items.Clear();
+            Int64 UID = Convert.ToInt64(Session["UID"]);
+            Security.AccessRights clsAccessRights = new Security.AccessRights();
 
             cboReportType.Items.Clear();
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION, ReportTypes.REPORT_SELECTION));
-            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerHour, ReportTypes.SalesPerHour));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDay, ReportTypes.SalesPerDay));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySales, ReportTypes.SummarizeDailySales));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySalesWithTF, ReportTypes.SummarizeDailySalesWithTF));
-
-            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactions, ReportTypes.SalesTransactions));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomer, ReportTypes.SalesTransactionPerCustomer));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerWithCheque, ReportTypes.SalesTransactionPerCustomerWithCheque));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerPerItem, ReportTypes.SalesTransactionPerCustomerPerItem));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCashier, ReportTypes.SalesTransactionPerCashier));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCashierPerCustomer, ReportTypes.SalesTransactionPerCashierPerCustomer));
-            cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerTerminal, ReportTypes.SalesTransactionPerTerminal));
-			cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerItem, ReportTypes.SalesTransactionPerItem));
-
-            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
-			cboReportType.Items.Add(new ListItem(ReportTypes.CashSalesDaily, ReportTypes.CashSalesDaily));
-			cboReportType.Items.Add(new ListItem(ReportTypes.CashSalesMonthly, ReportTypes.CashSalesMonthly));
-            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
-			cboReportType.Items.Add(new ListItem(ReportTypes.ChequeSalesDaily, ReportTypes.ChequeSalesDaily));
-			cboReportType.Items.Add(new ListItem(ReportTypes.ChequeSalesMonthly, ReportTypes.ChequeSalesMonthly));
-            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
-            cboReportType.Items.Add(new ListItem(ReportTypes.CreditCardSalesDaily, ReportTypes.CreditCardSalesDaily));
-            cboReportType.Items.Add(new ListItem(ReportTypes.CreditCardSalesMonthly, ReportTypes.CreditCardSalesMonthly));
-            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
-            cboReportType.Items.Add(new ListItem(ReportTypes.DailySalesTransaction, ReportTypes.DailySalesTransaction));
-            cboReportType.Items.Add(new ListItem(ReportTypes.WeeklySalesTransaction, ReportTypes.WeeklySalesTransaction));
-            cboReportType.Items.Add(new ListItem(ReportTypes.MonthlySalesTransaction, ReportTypes.MonthlySalesTransaction));
-            cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
-            cboReportType.Items.Add(new ListItem(ReportTypes.PaidOut, ReportTypes.PaidOut));
-            cboReportType.Items.Add(new ListItem(ReportTypes.Disburse, ReportTypes.Disburse));
-            cboReportType.Items.Add(new ListItem(ReportTypes.RecieveOnAccount, ReportTypes.RecieveOnAccount));
+            if (clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySales).Read)
+            {
+                cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySales, ReportTypes.SummarizeDailySales));
+            }
+            if (clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySalesWithTF).Read)
+            {
+                cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySalesWithTF, ReportTypes.SummarizeDailySalesWithTF));
+            }
+            if (clsAccessRights.Details(UID, (int)AccessTypes.SalesTransactionReport).Read)
+            {
+                cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerHour, ReportTypes.SalesPerHour));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDay, ReportTypes.SalesPerDay));
+                cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactions, ReportTypes.SalesTransactions));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomer, ReportTypes.SalesTransactionPerCustomer));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerWithCheque, ReportTypes.SalesTransactionPerCustomerWithCheque));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomerPerItem, ReportTypes.SalesTransactionPerCustomerPerItem));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCashier, ReportTypes.SalesTransactionPerCashier));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCashierPerCustomer, ReportTypes.SalesTransactionPerCashierPerCustomer));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerTerminal, ReportTypes.SalesTransactionPerTerminal));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerItem, ReportTypes.SalesTransactionPerItem));
+                cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+                cboReportType.Items.Add(new ListItem(ReportTypes.CashSalesDaily, ReportTypes.CashSalesDaily));
+                cboReportType.Items.Add(new ListItem(ReportTypes.CashSalesMonthly, ReportTypes.CashSalesMonthly));
+                cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+                cboReportType.Items.Add(new ListItem(ReportTypes.ChequeSalesDaily, ReportTypes.ChequeSalesDaily));
+                cboReportType.Items.Add(new ListItem(ReportTypes.ChequeSalesMonthly, ReportTypes.ChequeSalesMonthly));
+                cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+                cboReportType.Items.Add(new ListItem(ReportTypes.CreditCardSalesDaily, ReportTypes.CreditCardSalesDaily));
+                cboReportType.Items.Add(new ListItem(ReportTypes.CreditCardSalesMonthly, ReportTypes.CreditCardSalesMonthly));
+                cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+                cboReportType.Items.Add(new ListItem(ReportTypes.DailySalesTransaction, ReportTypes.DailySalesTransaction));
+                cboReportType.Items.Add(new ListItem(ReportTypes.WeeklySalesTransaction, ReportTypes.WeeklySalesTransaction));
+                cboReportType.Items.Add(new ListItem(ReportTypes.MonthlySalesTransaction, ReportTypes.MonthlySalesTransaction));
+            }
+            if (clsAccessRights.Details(UID, (int)AccessTypes.PaidOutDisburseROC).Read)
+            {
+                cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+                cboReportType.Items.Add(new ListItem(ReportTypes.PaidOut, ReportTypes.PaidOut));
+                cboReportType.Items.Add(new ListItem(ReportTypes.Disburse, ReportTypes.Disburse));
+                cboReportType.Items.Add(new ListItem(ReportTypes.RecieveOnAccount, ReportTypes.RecieveOnAccount));
+            }
 			cboReportType.SelectedIndex = 0;
 
             cboConsignment.Items.Clear();
@@ -106,24 +119,50 @@ namespace AceSoft.RetailPlus.Reports
             cboContactName.DataValueField = "ContactID";
             cboContactName.DataSource = clsCustomer.CustomersDataTable(txtContactName.Text, 0, false, "ContactName", SortOption.Ascending);
             cboContactName.DataBind();
-            cboContactName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
-            if (txtContactName.Text.Trim() != string.Empty) cboContactName.SelectedIndex = 1; else cboContactName.SelectedIndex = 0;
+            if (string.IsNullOrEmpty(txtContactName.Text))
+                cboContactName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            else
+                cboContactName.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtContactName.Text, Constants.ZERO_STRING));
+            cboContactName.SelectedIndex = 0;
+
+            cboAgent.Items.Clear();
+            Contacts clsContact = new Contacts(clsCustomer.Connection, clsCustomer.Transaction);
+            cboAgent.DataTextField = "ContactName";
+            cboAgent.DataValueField = "ContactID";
+            cboAgent.DataSource = clsContact.AgentsAsDataTable(txtAgent.Text, 0, "ContactName", SortOption.Ascending);
+            cboAgent.DataBind();
+            if (string.IsNullOrEmpty(txtAgent.Text))
+                cboAgent.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            else
+                cboAgent.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtAgent.Text, Constants.ZERO_STRING));
+            cboAgent.SelectedIndex = 0;
 
             Terminal clsTerminal = new Terminal(clsCustomer.Connection, clsCustomer.Transaction);
             cboTerminalNo.DataTextField = "TerminalNo";
             cboTerminalNo.DataValueField = "TerminalNo";
-            cboTerminalNo.DataSource = clsTerminal.ListAsDataTable(txtTerminalNo.Text);
+            cboTerminalNo.DataSource = clsTerminal.ListAsDataTable();
             cboTerminalNo.DataBind();
             cboTerminalNo.Items.Insert(0, new ListItem(Constants.ALL, Constants.ALL));
-            if (txtTerminalNo.Text.Trim() != string.Empty) cboTerminalNo.SelectedIndex = 1; else cboTerminalNo.SelectedIndex = 0;
+            cboTerminalNo.SelectedIndex = 0;
+
+            Branch clsBranch = new Branch(clsCustomer.Connection, clsCustomer.Transaction);
+            cboBranch.DataTextField = "BranchCode";
+            cboBranch.DataValueField = "BranchID";
+            cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
+            cboBranch.DataBind();
+            cboBranch.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            cboBranch.SelectedIndex = 0;
 
             Security.AccessUser clsAccessUser = new Security.AccessUser(clsCustomer.Connection, clsCustomer.Transaction);
             cboCashierName.DataTextField = "Name";
             cboCashierName.DataValueField = "UID";
             cboCashierName.DataSource = clsAccessUser.Cashiers(txtCashierName.Text, 0);
             cboCashierName.DataBind();
-            cboCashierName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
-            if (txtCashierName.Text.Trim() != string.Empty) cboCashierName.SelectedIndex = 1; else cboCashierName.SelectedIndex = 0;
+            if (string.IsNullOrEmpty(txtCashierName.Text))
+                cboCashierName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            else
+                cboCashierName.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtCashierName.Text, Constants.ZERO_STRING));
+            cboCashierName.SelectedIndex = 0;
 
             ProductGroup clsProductGroup = new ProductGroup(clsCustomer.Connection, clsCustomer.Transaction);
             cboProductGroup.DataTextField = "ProductGroupName";
@@ -292,8 +331,9 @@ namespace AceSoft.RetailPlus.Reports
 		{
             string strProductGroup = cboProductGroup.SelectedItem.Text == Constants.ALL ? string.Empty : cboProductGroup.SelectedItem.Text;
             string TransactionNo = txtTransactionNo.Text;
-            string CustomerName = cboContactName.SelectedItem.Text == Constants.ALL ? string.Empty : cboContactName.SelectedItem.Text;
-            string CashierName = cboCashierName.SelectedItem.Text == Constants.ALL ? string.Empty : cboCashierName.SelectedItem.Text;
+            string CustomerName = cboContactName.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboContactName.SelectedItem.Text.Replace("ALL", "").Replace("LIKE","").Trim() : cboContactName.SelectedItem.Text;
+            string AgentName = cboAgent.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboAgent.SelectedItem.Text.Replace("ALL", "").Replace("LIKE", "").Trim() : cboAgent.SelectedItem.Text;
+            string CashierName = cboCashierName.SelectedItem.Text.Substring(0, 3).Trim() == Constants.ALL ? cboCashierName.SelectedItem.Text.Replace("ALL", "").Replace("LIKE", "").Trim() : cboCashierName.SelectedItem.Text;
             string TerminalNo = cboTerminalNo.SelectedItem.Text == Constants.ALL ? string.Empty : cboTerminalNo.SelectedItem.Text;
             DateTime StartTransactionDate = DateTime.MinValue;
             try
@@ -316,8 +356,10 @@ namespace AceSoft.RetailPlus.Reports
             SalesTransactionsColumns clsSalesTransactionsColumns = new SalesTransactionsColumns();
             #region clsSalesTransactionsColumns
 
+            clsSalesTransactionsColumns.BranchCode = true;
             clsSalesTransactionsColumns.TransactionNo = true;
             clsSalesTransactionsColumns.CustomerName = true;
+            clsSalesTransactionsColumns.CustomerGroupName = true;
             clsSalesTransactionsColumns.CashierName = true;
             clsSalesTransactionsColumns.TerminalNo = true;
             clsSalesTransactionsColumns.TransactionDate = true;
@@ -341,6 +383,8 @@ namespace AceSoft.RetailPlus.Reports
             clsSalesTransactionsColumns.Charge = true;
             clsSalesTransactionsColumns.CreditPayment = true;
             clsSalesTransactionsColumns.CreatedByName = true;
+            clsSalesTransactionsColumns.AgentName = true;
+            clsSalesTransactionsColumns.PaxNo = true;
 
             #endregion
 
@@ -350,11 +394,12 @@ namespace AceSoft.RetailPlus.Reports
             clsSearchKey.CustomerName = CustomerName;
             clsSearchKey.CashierName = CashierName;
             clsSearchKey.TerminalNo = TerminalNo;
+            clsSearchKey.BranchID = int.Parse(cboBranch.SelectedItem.Value);
             clsSearchKey.TransactionDateFrom = StartTransactionDate;
             clsSearchKey.TransactionDateTo = EndTransactionDate;
             clsSearchKey.TransactionStatus = Status;
             clsSearchKey.PaymentType = PaymentType;
-
+            clsSearchKey.AgentName = AgentName;
             clsSearchKey.isConsignmentSearch = cboConsignment.SelectedItem.Value;
             if (clsSearchKey.isConsignmentSearch != "-1")
             {
@@ -517,7 +562,6 @@ namespace AceSoft.RetailPlus.Reports
                     }
 					break;
                     #endregion
-
                 case ReportTypes.DailySalesTransaction:
                 case ReportTypes.WeeklySalesTransaction:
                 case ReportTypes.MonthlySalesTransaction:
@@ -965,17 +1009,17 @@ namespace AceSoft.RetailPlus.Reports
             }
         }
 
-        protected void imgTerminalNoSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            Terminal clsTerminal = new Terminal();
-            cboTerminalNo.DataTextField = "TerminalNo";
-            cboTerminalNo.DataValueField = "TerminalNo";
-            cboTerminalNo.DataSource = clsTerminal.ListAsDataTable(txtTerminalNo.Text);
-            cboTerminalNo.DataBind();
-            cboTerminalNo.Items.Insert(0, new ListItem(Constants.ALL, Constants.ALL));
-            if (cboTerminalNo.Items.Count > 1 && txtTerminalNo.Text.Trim() != string.Empty) cboTerminalNo.SelectedIndex = 1; else cboTerminalNo.SelectedIndex = 0;
-            clsTerminal.CommitAndDispose();
-        }
+        //protected void imgTerminalNoSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        //{
+        //    Terminal clsTerminal = new Terminal();
+        //    cboTerminalNo.DataTextField = "TerminalNo";
+        //    cboTerminalNo.DataValueField = "TerminalNo";
+        //    cboTerminalNo.DataSource = clsTerminal.ListAsDataTable(txtTerminalNo.Text);
+        //    cboTerminalNo.DataBind();
+        //    cboTerminalNo.Items.Insert(0, new ListItem(Constants.ALL, Constants.ALL));
+        //    if (cboTerminalNo.Items.Count > 1 && txtTerminalNo.Text.Trim() != string.Empty) cboTerminalNo.SelectedIndex = 1; else cboTerminalNo.SelectedIndex = 0;
+        //    clsTerminal.CommitAndDispose();
+        //}
 
         protected void imgContactNameSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
@@ -984,9 +1028,13 @@ namespace AceSoft.RetailPlus.Reports
             cboContactName.DataValueField = "ContactID";
             cboContactName.DataSource = clsCustomer.CustomersDataTable(txtContactName.Text, 0, false, "ContactName", SortOption.Ascending);
             cboContactName.DataBind();
-            cboContactName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
-            if (cboContactName.Items.Count > 1 && txtContactName.Text.Trim() != string.Empty) cboContactName.SelectedIndex = 1; else cboContactName.SelectedIndex = 0;
             clsCustomer.CommitAndDispose();
+            if (string.IsNullOrEmpty(txtContactName.Text))
+                cboContactName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            else
+                cboContactName.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtContactName.Text, Constants.ZERO_STRING));
+            cboContactName.SelectedIndex = 0;
+            
         }
 
         protected void imgCashierNameSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -996,11 +1044,29 @@ namespace AceSoft.RetailPlus.Reports
             cboCashierName.DataValueField = "UID";
             cboCashierName.DataSource = clsAccessUser.Cashiers(txtCashierName.Text, 0);
             cboCashierName.DataBind();
-            cboCashierName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
-            if (cboCashierName.Items.Count > 1 && txtCashierName.Text.Trim() != string.Empty) cboCashierName.SelectedIndex = 1; else cboCashierName.SelectedIndex = 0;
             clsAccessUser.CommitAndDispose();
+            if (string.IsNullOrEmpty(txtCashierName.Text))
+                cboCashierName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            else
+                cboCashierName.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtCashierName.Text, Constants.ZERO_STRING));
+            cboCashierName.SelectedIndex = 0;            
         }
 
+        protected void imgAgentSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            cboAgent.Items.Clear();
+            Contacts clsContact = new Contacts();
+            cboAgent.DataTextField = "ContactName";
+            cboAgent.DataValueField = "ContactID";
+            cboAgent.DataSource = clsContact.AgentsAsDataTable(txtAgent.Text, 0, "ContactName", SortOption.Ascending); 
+            cboAgent.DataBind();
+            if (string.IsNullOrEmpty(txtAgent.Text))
+                cboAgent.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            else
+                cboAgent.Items.Insert(0, new ListItem(Constants.ALL + " LIKE " + txtAgent.Text, Constants.ZERO_STRING));
+            cboAgent.SelectedIndex = 0;
+            clsContact.CommitAndDispose();
+        }
         #endregion
 
     }

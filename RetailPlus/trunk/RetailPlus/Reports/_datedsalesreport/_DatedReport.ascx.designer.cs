@@ -283,6 +283,33 @@ namespace AceSoft.RetailPlus.Reports {
         protected global::System.Web.UI.WebControls.ImageButton imgCashierNameSearch;
         
         /// <summary>
+        /// cboAgent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboAgent;
+        
+        /// <summary>
+        /// txtAgent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAgent;
+        
+        /// <summary>
+        /// imgAgentSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgAgentSearch;
+        
+        /// <summary>
         /// holderTerminaNo control.
         /// </summary>
         /// <remarks>
@@ -301,22 +328,13 @@ namespace AceSoft.RetailPlus.Reports {
         protected global::System.Web.UI.WebControls.DropDownList cboTerminalNo;
         
         /// <summary>
-        /// txtTerminalNo control.
+        /// cboBranch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTerminalNo;
-        
-        /// <summary>
-        /// imgTerminalNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgTerminalNo;
+        protected global::System.Web.UI.WebControls.DropDownList cboBranch;
         
         /// <summary>
         /// holderSalesperItem control.

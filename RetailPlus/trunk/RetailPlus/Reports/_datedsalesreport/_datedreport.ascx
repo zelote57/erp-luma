@@ -202,25 +202,44 @@
 					                </td>
 					                <td width="99%" id="align03" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					                </td>
+				                </tr>
+                                <tr>
+					                <td style="padding-bottom:2px" nowrap="nowrap">
+						                <label>Filter by Agent</label>
+					                </td>
+					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					                <td colspan="4">
+						                <asp:dropdownlist id="cboAgent" CssClass="ms-long" runat="server"></asp:dropdownlist>
+                                    </td>
+                                    <td>
+                                        <asp:textbox id="txtAgent" accesskey="H" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
+                                        <asp:imagebutton id="imgAgentSearch" ToolTip="Execute search" 
+                                            style="CURSOR: hand; width: 16px;" accesskey="P" 
+                                            ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
+                                            CausesValidation="False" onclick="imgAgentSearch_Click"></asp:imagebutton>
+					                </td>
+					                <td width="99%" id="Td7" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					                </td>
 				                </tr> 
 				            </asp:PlaceHolder>
                             <asp:PlaceHolder id="holderTerminaNo" runat="server" Visible="false">
                                 <tr>
-					                <td style="padding-bottom:2px" nowrap="nowrap">
+                                    <td style="padding-bottom:2px" nowrap="nowrap">
 						                <label>Filter by Terminal No</label>
 					                </td>
 					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
-					                <td colspan="4">
-                                        <asp:dropdownlist id="cboTerminalNo" CssClass="ms-long" runat="server"></asp:dropdownlist>
-                                    </td>
-                                    <td>
-                                        <asp:textbox id="txtTerminalNo" accesskey="C" runat="server" CssClass="ms-short" BorderStyle="Groove" MaxLength="30" ></asp:textbox>
-                                        <asp:imagebutton id="imgTerminalNo" ToolTip="Execute search" 
-                                            style="CURSOR: hand; width: 16px;" accesskey="P" 
-                                            ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
-                                            CausesValidation="False" onclick="imgTerminalNoSearch_Click"></asp:imagebutton>
+					                <td>
+						                <asp:dropdownlist id="cboTerminalNo" CssClass="ms-short" runat="server"></asp:dropdownlist>
 					                </td>
-					                <td width="99%" id="Td4" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+					                <td style="padding-bottom:2px" nowrap="nowrap">
+						                <label>Filter by Branch</label>
+					                </td>
+					                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					                <td nowrap="nowrap">
+						                <asp:DropDownList id="cboBranch" CssClass="ms-short" runat="server"></asp:DropDownList>
+					                </td>
+					                <td width="99%" id="Td8" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					                </td>
 				                </tr>
                             </asp:PlaceHolder>
@@ -301,4 +320,5 @@
 	</tr>
 </table>
 </ContentTemplate>
+<Triggers><asp:AsyncPostBackTrigger ControlID="CRViewer" /></Triggers>
 </asp:UpdatePanel>

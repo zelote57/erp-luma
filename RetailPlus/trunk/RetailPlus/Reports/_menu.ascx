@@ -156,19 +156,28 @@
 													per Transaction</asp:HyperLink></td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									<%--<tr>
-										<td class="Ms-pvnavmidl1"></td>
-										<td class="Ms-pvtbbutton">
-											<asp:HyperLink id="lnkSalesReport" runat="server" title="Display Sales Reports with selected dates" Visible="False">
-													Sales Reports</asp:HyperLink>
-										</td>
-										<td class="Ms-pvnavmidr1"></td>
-									</tr>--%>
+									
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton" >
 											<asp:HyperLink id="lnkDatedReport" runat="server" title="Display Reports with selected dates" Visible="False">
 													Sales Reports</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkManagementReport" runat="server" title="Display Management Reports" Visible="False">
+													Management Reports</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkAnalyticsReport" runat="server" title="Display Analytical Reports" Visible="False">
+													Analytics Reports</asp:HyperLink>
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>

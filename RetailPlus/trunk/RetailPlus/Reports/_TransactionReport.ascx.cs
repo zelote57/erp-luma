@@ -117,7 +117,8 @@ namespace AceSoft.RetailPlus.Reports
 			if (clsDetails.isExist == true )
 			{
 				drNew = rptds.Transactions.NewRow();
-				
+
+                drNew["BranchCode"]         = clsDetails.BranchCode;
 				drNew["TransactionID"]		= clsDetails.TransactionID;
 				drNew["TransactionNo"]		= clsDetails.TransactionNo;
 				drNew["CustomerName"]		= clsDetails.CustomerName;

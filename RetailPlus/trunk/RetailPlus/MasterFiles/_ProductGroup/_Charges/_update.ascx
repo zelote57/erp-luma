@@ -37,7 +37,7 @@
 							</tr>
 						</table>
 					</td>
-					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1">
+					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1" />
 					</td>
 				</tr>
 			</table>
@@ -81,7 +81,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10"></td>
+									<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 									<td class="ms-authoringcontrols" width="100%"><asp:dropdownlist id="cboChargeType" CssClass="ms-long" runat="server" Width="157px" AutoPostBack="True" onselectedindexchanged="cboChargeType_SelectedIndexChanged"></asp:dropdownlist><asp:imagebutton id="imgAdd" ToolTip="Add New Charge" accessKey="N" tabIndex="1" CssClass="ms-toolbar" runat="server" ImageUrl="../../../_layouts/images/newuser.gif" alt="Add New Charge" border="0" width="16" height="16" CausesValidation="False"></asp:imagebutton><asp:requiredfieldvalidator id="Requiredfieldvalidator1" CssClass="ms-error" runat="server" ControlToValidate="cboChargeType" Display="Dynamic" ErrorMessage="'Charge type' must not be left blank."></asp:requiredfieldvalidator></td>
 								</tr>
 								<tr>
@@ -93,14 +93,14 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10"></td>
+									<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 									<td class="ms-authoringcontrols" width="100%"><asp:textbox id="txtChargeAmount" accessKey="P" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="20">0</asp:textbox><asp:requiredfieldvalidator id="Requiredfieldvalidator3" CssClass="ms-error" runat="server" ControlToValidate="txtChargeAmount" Display="Dynamic" ErrorMessage="'Charge amount' must not be left blank."></asp:requiredfieldvalidator></td>
 								</tr>
 								<tr>
 									<td class="ms-formspacer"></td>
 								</tr>
 								<tr>
-									<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10"></td>
+									<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 									<td class="ms-authoringcontrols" width="100%"><asp:checkbox id="chkInPercent" accessKey="I" CssClass="ms-short" runat="server" BorderStyle="Groove" Text="In Percent"></asp:checkbox></td>
 								</tr>
 								<tr>

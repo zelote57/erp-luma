@@ -3,10 +3,10 @@
 <script language="JavaScript" src="../../../_Scripts/ComputeMargin.js"></script>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -18,7 +18,7 @@
 							</tr>
 						</table>
 					</td>
-					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1">
+					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1" />
 					</td>
 				</tr>
 			</table>
@@ -26,14 +26,14 @@
 			<asp:Label id="lblMatrixID" runat="server" Visible="False"></asp:Label>
 			<asp:Label id="lblGroupID" runat="server" Visible="False"></asp:Label>
 		</td>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td colspan="3" class="ms-sectionline" height="1"><img src="../../../_layouts/images/empty.gif"></td>
+					<td colspan="3" class="ms-sectionline" height="1"><img alt="" src="../../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td style="padding-bottom: 10px;" valign="top" colspan="3">
@@ -85,7 +85,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colspan="3" height="1"><img src="../../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td style="padding-bottom: 5px;" valign="top" colspan="3">
@@ -107,21 +107,21 @@
 								    <label>Check if included in subtotal discount.<font color="red">*</font></label></td>
 							</tr>
 							<tr>
-								<td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols">
 								    <asp:textbox id="txtPurchasePrice" accessKey="P" runat="server" CssClass="ms-short-disabled" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()" onKeyUp="UpdateComputeMargin()" ReadOnly="True"></asp:textbox>
                                     &nbsp;
 							    </td>
-								<td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols">
 									<asp:textbox id="txtMargin" accessKey="P" runat="server" CssClass="ms-short-disabled" MaxLength="5" BorderStyle="Groove" onKeyPress="AllNum()" onKeyUp="UpdateComputeMargin()" ReadOnly="True">0</asp:textbox>%
 								</td>
-								<td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols">
 								    <asp:textbox id="txtProductPrice" accessKey="P" runat="server" CssClass="ms-short-disabled" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()" onKeyUp="UpdateComputeMarginByPrice()" ReadOnly="True"></asp:textbox>
                                     &nbsp;
 								</td>
-								<td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols">
 									<asp:CheckBox id="chkIncludeInSubtotalDiscount" runat="server" Text=" Check if included in subtotal discount." Checked="True" Enabled="False"></asp:CheckBox>
 								</td>
@@ -140,22 +140,22 @@
 								    <label>Unit Code<font color="red">*</font></label></td>
 							</tr>
 							<tr>
-								<td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols">
 								    <asp:textbox id="txtVAT" accessKey="D" runat="server" CssClass="ms-short-disabled" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()" ReadOnly="True">0</asp:textbox>&nbsp;%
                                     &nbsp;
 							    </td>
-								<td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols">
 									<asp:textbox id="txtEVAT" accessKey="D" runat="server" CssClass="ms-short-disabled" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()" ReadOnly="True">0</asp:textbox>&nbsp;%
                                     &nbsp;
 								</td>
-								<td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols">
 								    <asp:textbox id="txtLocalTax" accessKey="D" runat="server" CssClass="ms-short-disabled" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()" ReadOnly="True">0</asp:textbox>&nbsp;%
                                     &nbsp;
 								</td>
-								<td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols">
 								    <asp:dropdownlist id="cboUnit" CssClass="ms-short-disabled" runat="server" Enabled="False"></asp:dropdownlist>&nbsp;
 								</td>
@@ -167,12 +167,12 @@
 					</td>
 				</tr>
 				<tr>
-		            <td colspan="3" class="ms-sectionline" height="2"><img src="../../../_layouts/images/empty.gif"></td>
+		            <td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../../_layouts/images/empty.gif" /></td>
 	            </tr>
 			</table>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>

@@ -121,7 +121,7 @@
 						<asp:ValidationSummary id="ValidationSummary2" runat="server" CssClass="ms-error" ForeColor=" "></asp:ValidationSummary></td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td colspan="3" class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top">
@@ -133,12 +133,12 @@
                                     <label>Card type Name<font color="red">*</font></label></td>
                             </tr>
                             <tr>
-                                <td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
                                     <asp:TextBox id="txtCardTypeCode" runat="server" accesskey="C" CssClass="ms-short" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Card Type Code' must not be left blank." Display="Dynamic" ControlToValidate="txtCardTypeCode"></asp:requiredfieldvalidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols"  colspan="3">
                                 </td>
                             </tr>
@@ -150,7 +150,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colspan="3" height="2"><img alt="" src="../../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colspan="3" height="2"><img alt="" src="../../../_layouts/images/empty.gif" /></td>
 				</tr>
 			</table>
 		</td>

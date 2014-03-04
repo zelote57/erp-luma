@@ -2,10 +2,10 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.MasterFiles._Product._Variations.__Update" Codebehind="_Update.ascx.cs" %>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -37,7 +37,7 @@
 							</tr>
 						</table>
 					</td>
-					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1">
+					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1" />
 					</td>
 				</tr>
 			</table>
@@ -45,10 +45,10 @@
 			<asp:Label id="lblProductVariationID" runat="server" Visible="False"></asp:Label>
 			<asp:Label id="lblProductID" runat="server" Visible="False"></asp:Label>
 		</td>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -58,7 +58,7 @@
 				</tr>
 				<tr>
 					<td colspan="3" class="ms-sectionline" height="1">
-						<A name="InputFormSection1"></A><img alt="" src="../../../_layouts/images/empty.gif"></td>
+						<A name="InputFormSection1"></A><img alt="" src="../../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td valign="top" style="padding-bottom: 20px">
@@ -80,7 +80,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" width="100%">
 									<asp:dropdownlist id="cboVariationType" CssClass="ms-long" runat="server" Width="157px"></asp:dropdownlist>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator1" CssClass="ms-error" runat="server" ControlToValidate="cboVariationType" Display="Dynamic" ErrorMessage="'Variation type' must not be left blank." ForeColor=" "></asp:requiredfieldvalidator>
@@ -96,9 +96,9 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../../_layouts/images/empty.gif"></td>
+		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../../../_layouts/images/empty.gif" /></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>

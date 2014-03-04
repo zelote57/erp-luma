@@ -160,11 +160,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
                 clsProductPackageDetails.ProductID = Convert.ToInt64(lblProductID.Text);
                 clsProductPackageDetails.UnitID = Convert.ToInt32(cboBottomUnit.SelectedItem.Value);
                 clsProductPackageDetails.Price = clsProductDetails.Price * Convert.ToDecimal(txtBaseUnitValue.Text);
+                clsProductPackageDetails.WSPrice = clsProductDetails.WSPrice * Convert.ToDecimal(txtBaseUnitValue.Text);
                 clsProductPackageDetails.PurchasePrice = clsProductDetails.PurchasePrice * Convert.ToDecimal(txtBaseUnitValue.Text);
                 clsProductPackageDetails.Quantity = 1;
                 clsProductPackageDetails.VAT = clsTerminalDetails.VAT;
                 clsProductPackageDetails.EVAT = clsTerminalDetails.EVAT;
                 clsProductPackageDetails.LocalTax = clsTerminalDetails.LocalTax;
+                if (!string.IsNullOrEmpty(clsProductDetails.BarCode1)) clsProductPackageDetails.BarCode1 = clsProductDetails.BarCode1 + clsProductPackageDetails.UnitID.ToString() + clsProductPackageDetails.Quantity.ToString();
+                if (!string.IsNullOrEmpty(clsProductDetails.BarCode2)) clsProductPackageDetails.BarCode2 = clsProductDetails.BarCode2 + clsProductPackageDetails.UnitID.ToString() + clsProductPackageDetails.Quantity.ToString();
+                if (!string.IsNullOrEmpty(clsProductDetails.BarCode3)) clsProductPackageDetails.BarCode3 = clsProductDetails.BarCode3 + clsProductPackageDetails.UnitID.ToString() + clsProductPackageDetails.Quantity.ToString();
                 clsProductPackage.Insert(clsProductPackageDetails);
             }
 			clsUnitMatrix.CommitAndDispose();

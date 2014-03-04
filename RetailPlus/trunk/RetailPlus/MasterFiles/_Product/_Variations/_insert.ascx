@@ -37,7 +37,7 @@
 							</tr>
 						</table>
 					</td>
-					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1">
+					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1" />
 					</td>
 				</tr>
 			</table>
@@ -75,7 +75,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10"></td>
+								<td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
 								<td class="ms-authoringcontrols" width="100%">
 									<asp:dropdownlist id="cboVariationType" CssClass="ms-long" runat="server" Width="157px"></asp:dropdownlist>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Variation type' must not be left blank." Display="Dynamic" ControlToValidate="cboVariationType" ForeColor=" "></asp:requiredfieldvalidator>

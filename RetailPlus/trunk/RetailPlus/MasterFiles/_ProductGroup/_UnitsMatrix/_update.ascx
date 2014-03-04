@@ -2,10 +2,10 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.MasterFiles._ProductGroup._UnitsMatrix.__Update" Codebehind="_Update.ascx.cs" %>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -37,7 +37,7 @@
 							</tr>
 						</table>
 					</td>
-					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1">
+					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1" />
 					</td>
 				</tr>
 			</table>
@@ -45,10 +45,10 @@
 			<asp:Label id="lblGroupID" runat="server" Visible="False"></asp:Label>
 			<asp:Label id="lblMatrixID" runat="server" Visible="False"></asp:Label>
 		</td>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -57,7 +57,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../../_layouts/images/empty.gif" /></td>
 				</tr>
 				<tr>
 					<td colspan="3" class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top">
@@ -73,25 +73,25 @@
                                     <label>Bottom unit<font color="red">*</font></label></td>
                             </tr>
                             <tr>
-                                <td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtBaseUnitValue" CssClass="ms-short" runat="server" onkeypress="AllNum()">1</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Base Unit Value' must not be left blank." Display="Dynamic" ControlToValidate="txtBaseUnitValue" ForeColor=" "></asp:requiredfieldvalidator>
 									<asp:RegularExpressionValidator id="RegularExpressionValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtBaseUnitValue" Display="Dynamic" ErrorMessage="'Base Unit Value' must be in number, max of 3 decimal places." ForeColor=" " Type="Double" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtBaseUnit" CssClass="ms-short" runat="server" Width="157" Enabled="False"></asp:TextBox>
 									<asp:Label id="lblBaseUnitID" runat="server" Visible="False"></asp:Label>
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
                                 </td>
-                                <td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtBottomUnitValue" CssClass="ms-short" runat="server" onkeypress="AllNum()">1</asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'Bottom Unit Value' must not be left blank." Display="Dynamic" ControlToValidate="txtBottomUnitValue" ForeColor=" "></asp:requiredfieldvalidator>
 									<asp:RegularExpressionValidator id="RegularExpressionValidator3" CssClass="ms-error" runat="server" ControlToValidate="txtBottomUnitValue" Display="Dynamic" ErrorMessage="'Bottom Unit Value' must be in number, max of 3 decimal places." ForeColor=" " Type="Double" Operator="DataTypeCheck"></asp:RegularExpressionValidator>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:DropDownList id="cboBottomUnit" CssClass="ms-short" runat="server" Width="157"></asp:DropDownList>
                                     <asp:ImageButton ID="imgAdd" runat="server" AccessKey="N" alt="Add New Unit" border="0"
@@ -108,12 +108,12 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="ms-sectionline" colspan="3" height="2"><img alt="" src="../../../_layouts/images/empty.gif"></td>
+					<td class="ms-sectionline" colspan="3" height="2"><img alt="" src="../../../_layouts/images/empty.gif" /></td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 </table>

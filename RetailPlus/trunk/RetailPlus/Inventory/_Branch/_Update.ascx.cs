@@ -88,7 +88,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 		}
 		private void LoadRecord()
 		{
-			Int16 iID = Convert.ToInt16(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
+			Int32 iID = Convert.ToInt32(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
 			Branch clsBranch = new Branch();
 			BranchDetails clsDetails = clsBranch.Details(iID);
 			clsBranch.CommitAndDispose();
@@ -106,7 +106,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 			Branch clsBranch = new Branch();
 			BranchDetails clsDetails = new BranchDetails();
 
-			clsDetails.BranchID = Convert.ToInt16(lblBranchID.Text);
+			clsDetails.BranchID = Convert.ToInt32(lblBranchID.Text);
 			clsDetails.BranchCode = txtBranchCode.Text;
 			clsDetails.BranchName = txtBranchName.Text;
 			clsDetails.DBIP = txtDBIP.Text;

@@ -59,7 +59,7 @@
 											<tr>
 												<td style="padding-TOP: 2px" nowrap="nowrap" align="center" width="132" height="46"><img id="spsPageTitleIcon" alt="" src="../../_layouts/images/Settings.gif">
 												</td>
-												<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="15">
+												<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="15" />
 												</td>
 												<td nowrap="nowrap" width="100%">
 													<table cellspacing="0" cellpadding="0">

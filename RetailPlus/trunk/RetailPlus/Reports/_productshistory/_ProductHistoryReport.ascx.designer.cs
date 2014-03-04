@@ -139,6 +139,15 @@ namespace AceSoft.RetailPlus.Reports {
         protected global::System.Web.UI.WebControls.PlaceHolder holderProductCode;
         
         /// <summary>
+        /// cboBranch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboBranch;
+        
+        /// <summary>
         /// cboProductCode control.
         /// </summary>
         /// <remarks>

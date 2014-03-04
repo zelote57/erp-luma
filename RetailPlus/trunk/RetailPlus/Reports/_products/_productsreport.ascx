@@ -91,7 +91,7 @@
                                     
 								</td>
                                 <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">
-									<label>Filter by Branch</label>
+									<label></label>
 								</td>
 								<td width="99%" id="Td2" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 								</td>

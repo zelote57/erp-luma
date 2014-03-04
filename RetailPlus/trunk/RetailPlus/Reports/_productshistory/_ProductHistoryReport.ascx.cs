@@ -102,6 +102,15 @@ namespace AceSoft.RetailPlus.Reports
 			cboProductCode.DataValueField = "ProductID";
             cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: txtProductCode.Text, Limit: 100);
             cboProductCode.DataBind();
+
+            Branch clsBranch = new Branch(clsProduct.Connection, clsProduct.Transaction);
+            cboBranch.DataTextField = "BranchCode";
+            cboBranch.DataValueField = "BranchID";
+            cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
+            cboBranch.DataBind();
+            cboBranch.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            cboBranch.SelectedIndex = 0;
+
 			clsProduct.CommitAndDispose();
 			
 			if (cboProductCode.Items.Count == 0)
@@ -210,12 +219,17 @@ namespace AceSoft.RetailPlus.Reports
             { Limit = Convert.ToInt32(txtLimit.Text); }
             catch { }
 
+            Int32 intBranchID = 0;
+            try
+            { intBranchID = Convert.ToInt32(cboBranch.SelectedItem.Value); }
+            catch { }
+
             switch (cboReportType.SelectedValue)
             {
                 case ReportTypes.ProductHistoryMovement:
                     #region Product History Movement
                     StockItem clsStockItem = new StockItem();
-                    System.Data.DataTable dtProductHistoryMovement = clsStockItem.ProductMovementReport(lngProductID, lngMatrixID, DateFrom, DateTo);
+                    System.Data.DataTable dtProductHistoryMovement = clsStockItem.ProductMovementReport(lngProductID, lngMatrixID, DateFrom, DateTo, intBranchID);
                     clsStockItem.CommitAndDispose();
                     foreach (DataRow dr in dtProductHistoryMovement.Rows)
                     {

@@ -93,7 +93,23 @@
 				<tr>
 					<td class="ms-authoringcontrols" valign="top" style="PADDING-RIGHT:	10px; BORDER-TOP:	white 10px solid; PADDING-LEFT:	8px; padding-bottom:	10px" colspan="3">
 						<table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
-							<asp:PlaceHolder id="holderProductCode" runat="server" Visible="false">
+                            <asp:PlaceHolder id="holderProductCode" runat="server" Visible="false">
+                            <tr>
+								<td style="padding-bottom:2px" nowrap="nowrap">
+									<label>Branch<label>&nbsp;
+								</td>
+								<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+								<td nowrap="nowrap"><asp:dropdownlist id="cboBranch" CssClass="ms-long" runat="server"></asp:dropdownlist>
+								</td>
+								<td class="ms-separator">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+								<td nowrap="nowrap">
+								</td>
+                                <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+                                <td nowrap="nowrap">
+                                </td>
+								<td width="99%" id="Td2" nowrap="nowrap" align="right" style="HEIGHT: 15px"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+								</td>
+							</tr>
                             <tr>
 								<td style="padding-bottom:2px" nowrap="nowrap">
 									<label>Product Code<label>&nbsp;

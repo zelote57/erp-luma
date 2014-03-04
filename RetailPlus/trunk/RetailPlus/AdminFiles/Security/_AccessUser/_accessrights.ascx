@@ -2,10 +2,10 @@
 <script language="JavaScript" src="../../../_Scripts/SelectAll.js"></script>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -54,13 +54,13 @@
 							</tr>
 						</table>
 					</td>
-					<td class="ms-toolbar" id="align02" nowrap="nowrap" align="right" width="99%"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="align02" nowrap="nowrap" align="right" width="99%"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1" />
 					</td>
 				</tr>
 			</table>
 			<asp:label id="lblReferrer" runat="server" Visible="False"></asp:label>
 			<asp:Label id="lblUID" runat="server" Visible="False"></asp:Label></td>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
 		<td class="ms-vb2">
@@ -68,11 +68,11 @@
 		<td class="ms-vb2" style="BORDER-TOP-WIDTH: 0px">
 		    
 		</td>
-		<td class="ms-vb2" style="BORDER-TOP: 0px" colspan="2"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
+		<td class="ms-vb2" style="BORDER-TOP: 0px" colspan="2"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
 		<th class="ms-vh2">
-			<img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1"></th>
+			<img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1" /></th>
 		<th class="ms-vh2">
 			<img height="5" alt="" src="../../../_layouts/images/blank.gif" width="1"></th>
 		<th class="ms-vh2">
@@ -86,10 +86,10 @@
 		<td class="ms-vb2" style="BORDER-TOP-WIDTH: 0px"><INPUT id="idSelectAllRead" onclick="SelectAllRead();" type="checkbox" name="selectallread"><label for="idSelectAll"><B>Check 
 					All 'Read'</B></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<INPUT id="idSelectAllWrite" onclick="SelectAllWrite();" type="checkbox" name="selectallwrite"><label for="idSelectAll"><B>Check 
 					All 'Write'</B></label></td>
-		<td class="ms-vb2" style="BORDER-TOP: 0px" colspan="2"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
+		<td class="ms-vb2" style="BORDER-TOP: 0px" colspan="2"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="1" /></td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 		    <asp:UpdatePanel ID="UpdatePanel1" runat="server" >
                 <ContentTemplate >
@@ -220,6 +220,6 @@
             </asp:UpdatePanel>
 			<br />
 			</td>
-		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10"></td>
+		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 </table>

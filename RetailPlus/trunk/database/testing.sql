@@ -1,12 +1,26 @@
-﻿
-
-
-
-select transactionno, transactiondate, CustomerName from tbltransactions
-where transactionno in (75762,	75758,	74045,	75760,	75793,	75769,	75773,	75767,	75775,	75777,	74681,	74340,	74358,	74348,	74341,	75797,	75779,	74365,	75785,	75799,	75802,	75805,	75787,	75789,	75791,	75795,	75771,	75764)
-
-
-
-UPDATE tblproducts SET deleted = 1 where ProductSubGroupID in (select ProductSubGroupID from tblproductsubgroup where productgroupid = 3 );
-
-select * from tblproductgroup where productgroupname like '%others%';
+﻿SELECT
+	DATE_FORMAT(IFNULL(addon.AnniversaryDate,0),'%m')
+                ,cntct.ContactID
+            ,cntct.ContactCode ,cntct.ContactName ,cntct.BusinessName
+            ,grp.ContactGroupID ,grp.ContactGroupName
+            ,ModeOfTerms ,cntct.Terms ,cntct.Address
+            ,TelephoneNo ,cntct.Remarks ,cntct.Debit ,cntct.Credit ,cntct.CreditLimit ,cntct.IsCreditAllowed
+            ,DateCreated ,cntct.Deleted ,dept.DepartmentID ,dept.DepartmentName
+            ,pos.PositionID ,pos.PositionName ,cntct.isLock
+            ,IFNULL(LastName,'') LastName ,IFNULL(Middlename,'') Middlename ,IFNULL(FirstName,'') FirstName ,IFNULL(Spousename,'') Spousename
+            ,SpouseBirthDate ,AnniversaryDate
+            ,Address1 ,Address2 ,City ,State ,ZipCode ,IFNULL(cntry.CountryID,0) CountryID ,CountryName
+            ,BusinessPhoneNo ,HomePhoneNo ,MobileNo ,FaxNo ,EmailAddress
+            ,RewardCardNo ,RewardActive, RewardPoints, RewardAwardDate, TotalPurchases, RedeemedPoints, RewardCardStatus, ExpiryDate
+            ,IFNULL(addon.BirthDate,rwrd.BirthDate) BirthDate
+    FROM tblContacts cntct
+            INNER JOIN tblContactGroup grp ON cntct.ContactGroupID = grp.ContactGroupID
+            INNER JOIN tblDepartments dept ON cntct.DepartmentID = dept.DepartmentID
+            INNER JOIN tblPositions pos ON cntct.PositionID = pos.PositionID
+            LEFT OUTER JOIN tblContactAddOn addon ON addon.ContactID = cntct.ContactID
+            LEFT OUTER JOIN tblContactRewards rwrd ON rwrd.CustomerID = cntct.ContactID
+            LEFT OUTER JOIN tblCountry cntry ON addon.CountryID = cntry.CountryID
+    WHERE 1=1 AND cntct.deleted = 0 AND (ContactGroupCategory = 1 OR ContactGroupCategory = 3) AND DATE_FORMAT(IFNULL(addon.AnniversaryDate,0),'%m') = 1
+	
+	ORDER BY ContactID  limit 10
+	

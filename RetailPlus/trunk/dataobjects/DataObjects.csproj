@@ -154,8 +154,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ContactDetails.cs" />
-    <Compile Include="GLA\OrderTenderGLA.cs" />
-    <Compile Include="GLA\TransactionGLA.cs" />
+    <Compile Include="GLA\GLAItem.cs" />
+    <Compile Include="GLA\GLADiscount.cs" />
+    <Compile Include="GLA\GLATransactionTender.cs" />
+    <Compile Include="GLA\GLATransactionSvc.cs" />
+    <Compile Include="GLA\GLATransactionItems.cs" />
+    <Compile Include="GLA\GLATender.cs" />
+    <Compile Include="GLA\GLAServiceCharge.cs" />
+    <Compile Include="GLA\GLALocation.cs" />
+    <Compile Include="GLA\GLAEmployee.cs" />
+    <Compile Include="GLA\GLATransactionDiscount.cs" />
+    <Compile Include="GLA\GLAOrderTender.cs" />
+    <Compile Include="GLA\GLATransaction.cs" />
     <Compile Include="SysConfig.cs" />
     <Compile Include="Salutation.cs" />
     <Compile Include="ParkingRates.cs" />

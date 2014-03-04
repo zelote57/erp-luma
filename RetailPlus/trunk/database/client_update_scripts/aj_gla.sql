@@ -2,6 +2,11 @@
 -- Script Template
 -- =============================================
 
+TRUNCATE TABLE tblContractGroup;
+INSERT INTO tblContactGroup (ContactGroupID, ContactGroupCode, ContactGroupName, ContactGroupCategory) VALUES (1, 'CUS', 'Default Customer Group', 1);
+INSERT INTO tblContactGroup (ContactGroupID, ContactGroupCode, ContactGroupName, ContactGroupCategory) VALUES (2, 'SUP', 'Default Supplier Group', 2);
+
+
 
 TRUNCATE TABLE tblPositions;
 
@@ -142,36 +147,33 @@ INSERT INTO tblPositions(PositionCode, PositionName) VALUES ('BM',    'BM'  );
 
 -- Salutations
 DELETE FROM sysConfig WHERE Category = 'Salutation';
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('ARCH',    'ARCH', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('ATTY',    'ATTY', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('ATY',    'ATY', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('CAPT',    'CAPT', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('COL',    'COL', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('CONG.',    'CONG.', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('DEAN',    'DEAN', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('DIR',    'DIR', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('DR',    'DR', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('DRMORA',    'DRMORA', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('ENGR',    'ENGR', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('ENGR.',    'ENGR.', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('FR',    'FR', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('GOV',    'GOV', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('JUDGE',    'JUDGE', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('JUSTICE',    'JUSTICE', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('MAR',    'MAR', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('MAYOR',    'MAYOR', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('MR',    'MR', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('MRS',    'MRS', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('MS',    'MS', 'Salutation');
-INSERT INTO sysConfig (ConfigName, ConfigValue, Category)VALUES('MSGR',    'MSGR', 'Salutation');
-
-
+TRUNCATE TABLE tblSalutations;
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('ARCH', 'ARCH');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('ATTY', 'ATTY');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('ATY', 'ATY');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('CAPT', 'CAPT');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('COL', 'COL');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('CONG.', 'CONG.');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('DEAN', 'DEAN');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('DIR', 'DIR');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('DR', 'DR');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('DRMORA', 'DRMORA');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('ENGR', 'ENGR');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('ENGR.', 'ENGR.');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('FR', 'FR');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('GOV', 'GOV');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('JUDGE', 'JUDGE');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('JUSTICE', 'JUSTICE');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MAR', 'MAR');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MAYOR', 'MAYOR');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MR', 'MR');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MRS', 'MRS');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MS', 'MS');
+INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MSGR', 'MSGR');
 
 DELETE FROM sysAccessRights WHERE TranTypeID IN (SELECT TypeID FROM sysAccessTypes WHERE Category = '05: Backend - MasterFiles - Product');
 DELETE FROM sysAccessGroupRights WHERE TranTypeID IN (SELECT TypeID FROM sysAccessTypes WHERE Category = '05: Backend - MasterFiles - Product');
 DELETE FROM sysAccessTypes WHERE Category = '05: Backend - MasterFiles - Product';
-
-
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 145; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 145;
 DELETE FROM sysAccessTypes WHERE TypeID = 145;

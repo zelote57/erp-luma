@@ -18,6 +18,8 @@
 <%@ Register TagPrefix="CTRL" TagName="ctrlPurchasesAndPayables" Src="_PurchasesAndPayables.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlCustomerCredit" Src="_customercredit/_CustomerCredit.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlDatedReport" Src="_datedsalesreport/_DatedReport.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlManagementReport" Src="_managementreport/_ManagementReport.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlAnalyticsReport" Src="_analyticsreport/_AnalyticsReport.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlProductInventoryReport" Src="_inventory/_ProductInventoryReport.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlContacts" Src="_ContactsReport.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlAgentsCommision" Src="_AgentsCommisionReport.ascx" %>
@@ -129,6 +131,8 @@
 									<CTRL:ctrlStockTransactionReport id="ctrlStockTransactionReport" runat="server" visible="False"></CTRL:ctrlStockTransactionReport>
 									<CTRL:ctrlTransactionReport id="ctrlTransactionReport" runat="server" visible="False"></CTRL:ctrlTransactionReport>
 									<CTRL:ctrlDatedReport id="ctrlDatedReport" runat="server" visible="False"></CTRL:ctrlDatedReport>
+                                    <CTRL:ctrlManagementReport id="ctrlManagementReport" runat="server" visible="False"></CTRL:ctrlManagementReport>
+                                    <CTRL:ctrlAnalyticsReport id="ctrlAnalyticsReport" runat="server" visible="False"></CTRL:ctrlAnalyticsReport>
 									<CTRL:ctrlCustomerCredit id="ctrlCustomerCredit" runat="server" visible="False"></CTRL:ctrlCustomerCredit>
 									<CTRL:ctrlTerminalReport id="ctrlTerminalReport" runat="server" visible="False"></CTRL:ctrlTerminalReport>
 									<CTRL:ctrlLoginLogoutReport id="ctrlLoginLogoutReport" runat="server" visible="False"></CTRL:ctrlLoginLogoutReport>

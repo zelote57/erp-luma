@@ -112,6 +112,14 @@ namespace AceSoft.RetailPlus.Reports
                             stHeading = "Dated Transactions Report";
                             ctrlDatedReport.Visible = true;
                             break;
+                        case "managementreport":
+                            stHeading = "Management Report";
+                            ctrlManagementReport.Visible = true;
+                            break;
+                        case "analyticsreport":
+                            stHeading = "Analytics Report";
+                            ctrlAnalyticsReport.Visible = true;
+                            break;
                         case "terminalreport":
                             stHeading = "Terminal Report";
                             ctrlTerminalReport.Visible = true;

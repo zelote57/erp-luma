@@ -6741,8 +6741,6 @@ INDEX `IX_tblContactAddOn`(`ContactID`)
 ALTER TABLE tblDiscount MODIFY DiscountType VARCHAR(60) NOT NULL;
 ALTER TABLE tblContactAddon MODIFY MiddleName VARCHAR(85) NULL;
 
-ALTER TABLE tblTransactions ADD DataSource VARCHAR(30) NULL;
-
 -- IMPORTANT: recreate the tblContactAddOn above......
 -- see also changes in inventory.sql
 
@@ -6753,10 +6751,16 @@ SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schem
 
 -- additional in sysConfig this will override the .config
 DELETE FROM sysConfig;
+
+DELETE FROM sysConfig WHERE ConfigName = 'CompanyCode';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyCode',			'CompanyDetails',					'ACERON MINI DRUG STORE');
+DELETE FROM sysConfig WHERE ConfigName = 'CompanyName';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyName',			'CompanyDetails',					'ACERON MINI DRUG STORE');
+
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('BACKEND_VARIATION_TYPE',	'BACKEND_VARIATION_TYPE',			'EXPIRATION;LOTNO');
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyCode',			'CompanyDetails',					'RBS');
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CompanyName',			'CompanyDetails',					'RETAILPLUS BUSINESS SOLUTIONS');
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('TIN',					'CompanyDetails',					'104-384-077-000');
+
+
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('TIN',					'CompanyDetails',					'229-191-536-000');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('Currency',				'CompanyDetails',					'PHP');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('VersionFTPIPAddress',	'CompanyDetails',					'Localhost');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CheckOutBillHeaderLabel','FE',								'-/- CHECK-OUT BILL -/-');
@@ -6876,3 +6880,34 @@ INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (150, 'PaidOut Disburse ROC
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 150, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 150, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 8, Category = '11: Backend - Sales Reports' WHERE TypeID = 150;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 151; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 151;
+DELETE FROM sysAccessTypes WHERE TypeID = 151;
+INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (151, 'Management Reports Menu');
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 151, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 151, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '11: Backend - Management Reports' WHERE TypeID = 151;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 152; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 152;
+DELETE FROM sysAccessTypes WHERE TypeID = 152;
+INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (152, 'Analytics Reports Menu');
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 152, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 152, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '11: Backend - Analytics Reports' WHERE TypeID = 152;
+
+
+ALTER TABLE tblTerminal MODIFY SeniorCitizenDiscountCode VARCHAR(50);
+ALTER TABLE tblChargeType MODIFY ChargeTypeCode VARCHAR(60);
+
+ALTER TABLE tblTransactions ADD DataSource VARCHAR(30) NULL;
+ALTER TABLE tblTransactions MODIFY DiscountCode VARCHAR(60);
+ALTER TABLE tblTransactions MODIFY ChargeCode VARCHAR(60);
+ALTER TABLE tblTransactionItems ADD DataSource VARCHAR(30) NULL;
+ALTER TABLE tblTransactions ADD CustomerGroupName VARCHAR(60) NULL;
+
+UPDATE tblTransactions trx
+INNER JOIN tblContacts cntct ON trx.CustomerID = cntct.ContactID
+INNER JOIN tblContactGroup grp ON cntct.ContactGroupID = grp.ContactGroupID
+SET
+	CustomerGroupName = grp.ContactGroupName
+WHERE IFNULL(trx.CustomerGroupName,'') = ''

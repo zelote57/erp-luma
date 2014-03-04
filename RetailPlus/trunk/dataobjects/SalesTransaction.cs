@@ -25,6 +25,7 @@ namespace AceSoft.RetailPlus.Data
 		public string BranchCode;
 		public Int64 CustomerID;
 		public string CustomerName;
+        public string CustomerGroupName;
 		public Int64 CashierID;
 		public string CashierName;
 		public string TerminalNo;
@@ -131,6 +132,7 @@ namespace AceSoft.RetailPlus.Data
 		public bool BranchCode;
 		public bool CustomerID;
 		public bool CustomerName;
+        public bool CustomerGroupName;
 		public bool CashierID;
 		public bool CashierName;
 		public bool TerminalNo;
@@ -232,6 +234,7 @@ namespace AceSoft.RetailPlus.Data
 		public const string BranchCode = "BranchCode";
 		public const string CustomerID = "CustomerID";
 		public const string CustomerName = "CustomerName";
+        public const string CustomerGroupName = "CustomerGroupName";
 		public const string CashierID = "CashierID";
 		public const string CashierName = "CashierName";
 		public const string TerminalNo = "TerminalNo";
@@ -356,70 +359,71 @@ namespace AceSoft.RetailPlus.Data
 			//	Apr 30, 2007 : Added "Charge, ChargeAmount, ChargeCode, ChargeRemarks "
 			//	Feb 07, 2008 : Added "WaiterID, WaiterName "
 
-			string stSQL = "SELECT " +
+            string stSQL = "SELECT " +
                                 "tblTransactions.TransactionID, " +
                                 "TransactionType, " +
                                 "tblTransactions.TransactionNo, " +
-								"BranchID, " +
-								"BranchCode, " +
-								"PaxNo, " +
-								"CustomerID, " +
-								"CustomerName, " +
-								"AgentID, " +
-								"AgentName, " +
-								"CreatedByID, " +
-								"CreatedByName, " +
-								"CashierID, " +
-								"CashierName, " +
-								"TerminalNo, " +
-								"TransactionDate, " +
-								"DateSuspended, " +
-								"DateResumed, " +
-								"TransactionStatus, " +
+                                "BranchID, " +
+                                "BranchCode, " +
+                                "PaxNo, " +
+                                "CustomerID, " +
+                                "CustomerName, " +
+                                "CustomerGroupName, " +
+                                "AgentID, " +
+                                "AgentName, " +
+                                "CreatedByID, " +
+                                "CreatedByName, " +
+                                "CashierID, " +
+                                "CashierName, " +
+                                "TerminalNo, " +
+                                "TransactionDate, " +
+                                "DateSuspended, " +
+                                "DateResumed, " +
+                                "TransactionStatus, " +
                                 "CASE TransactionStatus " +
-									"WHEN 0 THEN 'Open' " +
-									"WHEN 1 THEN 'Closed' " +
-									"WHEN 2 THEN 'Suspended' " +
-									"WHEN 3 THEN 'Void' " +
-									"WHEN 4 THEN 'Reprinted' " +
-									"WHEN 5 THEN 'Refund' " +
-									"WHEN 6 THEN 'NotYetApplied' " +
-									"WHEN 7 THEN 'NotYetApplied' " +
-									"WHEN 8 THEN 'DebitPayment' " +
-									"WHEN 9 THEN 'Released' " +
-									"WHEN 10 THEN 'OrderSlip' " +
-								"END 'TransactionStatusName', " +
-								"SubTotal, " +
-								"ItemsDiscount, " +
-								"Discount, " +
-								"DiscountCode, " +
-								"DiscountRemarks, " +
-								"TransDiscount, " +
-								"TransDiscountType, " +
-								"VAT, " +
-								"VatableAmount, " +
-								"EVAT, " +
-								"EVatableAmount, " +
-								"LocalTax, " +
-								"AmountPaid, " +
-								"CashPayment, " +
-								"ChequePayment, " +
-								"CreditCardPayment, " +
+                                    "WHEN 0 THEN 'Open' " +
+                                    "WHEN 1 THEN 'Closed' " +
+                                    "WHEN 2 THEN 'Suspended' " +
+                                    "WHEN 3 THEN 'Void' " +
+                                    "WHEN 4 THEN 'Reprinted' " +
+                                    "WHEN 5 THEN 'Refund' " +
+                                    "WHEN 6 THEN 'NotYetApplied' " +
+                                    "WHEN 7 THEN 'NotYetApplied' " +
+                                    "WHEN 8 THEN 'DebitPayment' " +
+                                    "WHEN 9 THEN 'Released' " +
+                                    "WHEN 10 THEN 'OrderSlip' " +
+                                "END 'TransactionStatusName', " +
+                                "SubTotal, " +
+                                "ItemsDiscount, " +
+                                "Discount, " +
+                                "DiscountCode, " +
+                                "DiscountRemarks, " +
+                                "TransDiscount, " +
+                                "TransDiscountType, " +
+                                "VAT, " +
+                                "VatableAmount, " +
+                                "EVAT, " +
+                                "EVatableAmount, " +
+                                "LocalTax, " +
+                                "AmountPaid, " +
+                                "CashPayment, " +
+                                "ChequePayment, " +
+                                "CreditCardPayment, " +
                                 "IF(isConsignment=0,CreditPayment,0) 'CreditPayment', " +
                                 "IF(isConsignment<>0,CreditPayment,0) 'ConsignmentPayment', " +
-								"DebitPayment, " +
-								"RewardPointsPayment, " +
-								"RewardConvertedPayment, " +
-								"BalanceAmount, " +
-								"ChangeAmount, " +
-								"DateClosed, " +
-								"PaymentType, " +
-								"WaiterID, " +
-								"WaiterName, " +
-								"Charge, ChargeAmount, ChargeCode, ChargeRemarks, " +
-								"CreditChargeAmount, " +
-								"OrderType, " +
-								"AgentPositionName, AgentDepartmentName, isConsignment, " +
+                                "DebitPayment, " +
+                                "RewardPointsPayment, " +
+                                "RewardConvertedPayment, " +
+                                "BalanceAmount, " +
+                                "ChangeAmount, " +
+                                "DateClosed, " +
+                                "PaymentType, " +
+                                "WaiterID, " +
+                                "WaiterName, " +
+                                "Charge, ChargeAmount, ChargeCode, ChargeRemarks, " +
+                                "CreditChargeAmount, " +
+                                "OrderType, " +
+                                "AgentPositionName, AgentDepartmentName, isConsignment, " +
                                 "IFNULL(ChequeNo,'') AS ChequeNo, IFNULL(ValidityDate,'" + DateTime.MinValue.ToString("yyyy-MM-dd") + "') AS ValidityDate " +
                             "FROM tblTransactions " +
                             "LEFT OUTER JOIN tblChequePayment chque ON tblTransactions.TransactionID = chque.TransactionID ";
@@ -437,6 +441,7 @@ namespace AceSoft.RetailPlus.Data
 			if (clsSalesTransactionsColumns.PaxNo) stSQL += "" + SalesTransactionsColumnNames.PaxNo + ", ";
 			if (clsSalesTransactionsColumns.CustomerID) stSQL += "" + SalesTransactionsColumnNames.CustomerID + ", ";
 			if (clsSalesTransactionsColumns.CustomerName) stSQL += "" + SalesTransactionsColumnNames.CustomerName + ", ";
+            if (clsSalesTransactionsColumns.CustomerGroupName) stSQL += "" + SalesTransactionsColumnNames.CustomerGroupName + ", ";
 			if (clsSalesTransactionsColumns.AgentID) stSQL += "" + SalesTransactionsColumnNames.AgentID + ", ";
 			if (clsSalesTransactionsColumns.AgentName) stSQL += "" + SalesTransactionsColumnNames.AgentName + ", ";
 			if (clsSalesTransactionsColumns.CreatedByID) stSQL += "" + SalesTransactionsColumnNames.CreatedByID + ", ";
@@ -547,6 +552,7 @@ namespace AceSoft.RetailPlus.Data
 					Details.PaxNo = Int32.Parse(dr["PaxNo"].ToString());
 					Details.CustomerID = Int32.Parse(dr["CustomerID"].ToString());
                     Details.CustomerName = "" + dr["CustomerName"].ToString();
+                    Details.CustomerGroupName = "" + dr["CustomerGroupName"].ToString();
 					Details.AgentID = Int32.Parse(dr["AgentID"].ToString());
                     Details.AgentName = "" + dr["AgentName"].ToString();
 					Details.CreatedByID = Int64.Parse(dr["CreatedByID"].ToString());
@@ -704,6 +710,7 @@ namespace AceSoft.RetailPlus.Data
 								"BranchCode, " + 
 								"CustomerID, " +
 								"CustomerName, " +
+                                "CustomerGroupName, " +
 								"AgentID, " +
 								"AgentName, " +
 								"CreatedByID, " +
@@ -727,6 +734,7 @@ namespace AceSoft.RetailPlus.Data
 								"@BranchCode, " +
 								"@CustomerID, " +
 								"@CustomerName, " +
+                                "@CustomerGroupName, " +
 								"@AgentID, " +
 								"@AgentName, " +
 								"@CreatedByID, " +
@@ -755,6 +763,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.AddWithValue("@BranchCode", Details.BranchCode);
 				cmd.Parameters.AddWithValue("@CustomerID", Details.CustomerID);
 				cmd.Parameters.AddWithValue("@CustomerName", Details.CustomerName);
+                cmd.Parameters.AddWithValue("@CustomerGroupName", Details.CustomerGroupName);
 				cmd.Parameters.AddWithValue("@AgentID", Details.AgentID);
 				cmd.Parameters.AddWithValue("@AgentName", Details.AgentName);
 				cmd.Parameters.AddWithValue("@CreatedByID", Details.CreatedByID);
@@ -804,7 +813,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL = "CALL procTransactionContactUpdate(@TransactionID, @CustomerID, @CustomerName);";
+                string SQL = "CALL procTransactionContactUpdate(@TransactionID, @CustomerID, @CustomerName, @CustomerGroupName);";
 
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
@@ -813,6 +822,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
 				cmd.Parameters.AddWithValue("@CustomerID", details.ContactID);
 				cmd.Parameters.AddWithValue("@CustomerName", details.ContactName);
+                cmd.Parameters.AddWithValue("@CustomerGroupName", details.ContactGroupName);
 
 				base.ExecuteNonQuery(cmd);
 			}
@@ -940,25 +950,29 @@ namespace AceSoft.RetailPlus.Data
 					prmTransactionID.Value = clsSearchKeys.TransactionID;
 					cmd.Parameters.Add(prmTransactionID);
 				}
-				if (clsSearchKeys.TransactionNo != string.Empty && clsSearchKeys.TransactionNo != null)
+                if (!string.IsNullOrEmpty(clsSearchKeys.TransactionNo))
 				{
 					SQL += "AND tblTransactions.TransactionNo = @TransactionNo ";
 					MySqlParameter prmTransactionNo = new MySqlParameter("@TransactionNo",MySqlDbType.String);
 					prmTransactionNo.Value = clsSearchKeys.TransactionNo;
 					cmd.Parameters.Add(prmTransactionNo);
 				}
-
-				if (clsSearchKeys.CustomerName != string.Empty && clsSearchKeys.CustomerName != null)
+                if (!string.IsNullOrEmpty(clsSearchKeys.CustomerName))
 				{
 					SQL += "AND tblTransactions.CustomerName LIKE @CustomerName ";
                     cmd.Parameters.AddWithValue("@CustomerName", "%" + clsSearchKeys.CustomerName + "%");
 				}
-				if (clsSearchKeys.CashierName != string.Empty && clsSearchKeys.CashierName != null)
+                if (!string.IsNullOrEmpty(clsSearchKeys.CustomerGroupName))
+                {
+                    SQL += "AND tblTransactions.CustomerGroupName LIKE @CustomerGroupName ";
+                    cmd.Parameters.AddWithValue("@CustomerGroupName", "%" + clsSearchKeys.CustomerGroupName + "%");
+                }
+                if (!string.IsNullOrEmpty(clsSearchKeys.CashierName))
 				{
 					SQL += "AND tblTransactions.CashierName LIKE @CashierName ";
                     cmd.Parameters.AddWithValue("@CashierName", "%" + clsSearchKeys.CashierName + "%");
 				}
-                if (clsSearchKeys.AgentName != string.Empty && clsSearchKeys.AgentName != null)
+                if (!string.IsNullOrEmpty(clsSearchKeys.AgentName))
                 {
                     SQL += "AND tblTransactions.AgentName LIKE @AgentName ";
                     cmd.Parameters.AddWithValue("@AgentName", "%" + clsSearchKeys.AgentName + "%");
@@ -1615,6 +1629,7 @@ namespace AceSoft.RetailPlus.Data
 				string SQL = "UPDATE tblTransactions SET " +
 								"CustomerID			=	@CustomerID," +
 								"CustomerName		=	@CustomerName, " +
+                                "CustomerGroupName	=	@CustomerGroupName, " +
 								"TransactionStatus	=	@TransactionStatus, " +
 								"SubTotal			=	@SubTotal, " +
 								"DateSuspended		=	NOW() " +
@@ -1624,25 +1639,12 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmCustomerID = new MySqlParameter("@CustomerID",MySqlDbType.Int64);
-				prmCustomerID.Value = details.ContactID;
-				cmd.Parameters.Add(prmCustomerID);
-
-				MySqlParameter prmCustomerName = new MySqlParameter("@CustomerName",MySqlDbType.String);
-				prmCustomerName.Value = details.ContactName;
-				cmd.Parameters.Add(prmCustomerName);
-
-				MySqlParameter prmSubTotal = new MySqlParameter("@SubTotal",MySqlDbType.Decimal);
-				prmSubTotal.Value = SubTotal;
-				cmd.Parameters.Add(prmSubTotal);
-
-				MySqlParameter prmTransStatus = new MySqlParameter("@TransactionStatus",MySqlDbType.Int16);
-				prmTransStatus.Value = TransactionStatus.Suspended.ToString("d");
-				cmd.Parameters.Add(prmTransStatus);
-
-				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);
-				prmTransactionID.Value = TransactionID;
-				cmd.Parameters.Add(prmTransactionID);
+                cmd.Parameters.AddWithValue("@CustomerID", details.ContactID);
+                cmd.Parameters.AddWithValue("@CustomerName", details.ContactName);
+                cmd.Parameters.AddWithValue("@CustomerGroupName", details.ContactGroupName);
+                cmd.Parameters.AddWithValue("@SubTotal", SubTotal);
+                cmd.Parameters.AddWithValue("@TransactionStatus", TransactionStatus.Suspended.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
 
 				base.ExecuteNonQuery(cmd);
 			}
@@ -2644,120 +2646,121 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-        public MySqlDataReader TerminalReport(string CashierName, string TerminalNo)
-		{
-			try
-			{
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
+        //public MySqlDataReader TerminalReport(string CashierName, string TerminalNo)
+        //{
+        //    try
+        //    {
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
 
-				string TableName = "tblTransactions";
-				string SQL = "";
+        //        string TableName = "tblTransactions";
+        //        string SQL = "";
 
-				for (int i = 1; i < 13; i++)
-				{
-					TableName = "tblTransactions" + i.ToString("0#");
-					SQL += "UNION (SELECT " +
-										"TransactionID, " +
-										"TransactionNo, " +
-										"PaxNo, " +
-										"CustomerID, " +
-										"CustomerName, " +
-										"AgentID, " +
-										"AgentName, " +
-										"CashierID, " +
-										"CashierName, " +
-										"TerminalNo, " +
-										"TransactionDate, " +
-										"DateSuspended, " +
-										"DateResumed, " +
-										"TransactionStatus, " +
-										"SubTotal, " +
-										"ItemsDiscount, " +
-										"Discount, " +
-										"TransDiscount, " +
-										"TransDiscountType, " +
-										"VAT, " +
-										"VatableAmount, " +
-										"EVAT, " +
-										"EVatableAmount, " +
-										"LocalTax, " +
-										"AmountPaid, " +
-										"CashPayment, " +
-										"ChequePayment, " +
-										"CreditCardPayment, " +
-										"CreditPayment, " +
-										"DebitPayment, " +
-										"RewardPointsPayment, " +
-										"RewardConvertedPayment, " +
-										"BalanceAmount, " +
-										"ChangeAmount, " +
-										"DateClosed, " +
-										"PaymentType, " +
-										"DiscountCode, " +
-										"DiscountRemarks, " +
-										"WaiterID, " +
-										"WaiterName, " +
-										"Charge, ChargeAmount, ChargeCode, ChargeRemarks, " +
-										"AgentPositionName, AgentDepartmentName " +
-									"FROM  " + TableName + " " +
-									"WHERE 1=1 ";
-					if (TerminalNo != null && TerminalNo != "")
-					{
-						SQL += "AND TerminalNo = TerminalNo ";
-						MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-						prmTerminalNo.Value = TerminalNo;
-						cmd.Parameters.Add(prmTerminalNo);
-					}
-					if (CashierName != null && CashierName != "")
-					{
-						SQL += "AND CashierName LIKE @CashierName ";
-						MySqlParameter prmCashierName = new MySqlParameter("@CashierName",MySqlDbType.String);
-						prmCashierName.Value = CashierName;
-						cmd.Parameters.Add(prmCashierName);
-					}
-					SQL += "AND (TransactionStatus = @TransactionStatusClosed " +
-						"OR TransactionStatus = @TransactionStatusVoid " +
-						"OR TransactionStatus = @TransactionStatusReprinted " +
-						"OR TransactionStatus = @TransactionStatusRefund " +
-						"OR TransactionStatus = @TransactionStatusCreditPayment) " +
-						"AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport " +
-						"WHERE TerminalNo = @TerminalNo) ";
-					SQL += ") ";
-				}
+        //        for (int i = 1; i < 13; i++)
+        //        {
+        //            TableName = "tblTransactions" + i.ToString("0#");
+        //            SQL += "UNION (SELECT " +
+        //                                "TransactionID, " +
+        //                                "TransactionNo, " +
+        //                                "PaxNo, " +
+        //                                "CustomerID, " +
+        //                                "CustomerName, " +
+        //                                "CustomerGroupName, " +
+        //                                "AgentID, " +
+        //                                "AgentName, " +
+        //                                "CashierID, " +
+        //                                "CashierName, " +
+        //                                "TerminalNo, " +
+        //                                "TransactionDate, " +
+        //                                "DateSuspended, " +
+        //                                "DateResumed, " +
+        //                                "TransactionStatus, " +
+        //                                "SubTotal, " +
+        //                                "ItemsDiscount, " +
+        //                                "Discount, " +
+        //                                "TransDiscount, " +
+        //                                "TransDiscountType, " +
+        //                                "VAT, " +
+        //                                "VatableAmount, " +
+        //                                "EVAT, " +
+        //                                "EVatableAmount, " +
+        //                                "LocalTax, " +
+        //                                "AmountPaid, " +
+        //                                "CashPayment, " +
+        //                                "ChequePayment, " +
+        //                                "CreditCardPayment, " +
+        //                                "CreditPayment, " +
+        //                                "DebitPayment, " +
+        //                                "RewardPointsPayment, " +
+        //                                "RewardConvertedPayment, " +
+        //                                "BalanceAmount, " +
+        //                                "ChangeAmount, " +
+        //                                "DateClosed, " +
+        //                                "PaymentType, " +
+        //                                "DiscountCode, " +
+        //                                "DiscountRemarks, " +
+        //                                "WaiterID, " +
+        //                                "WaiterName, " +
+        //                                "Charge, ChargeAmount, ChargeCode, ChargeRemarks, " +
+        //                                "AgentPositionName, AgentDepartmentName " +
+        //                            "FROM  " + TableName + " " +
+        //                            "WHERE 1=1 ";
+        //            if (TerminalNo != null && TerminalNo != "")
+        //            {
+        //                SQL += "AND TerminalNo = TerminalNo ";
+        //                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
+        //                prmTerminalNo.Value = TerminalNo;
+        //                cmd.Parameters.Add(prmTerminalNo);
+        //            }
+        //            if (CashierName != null && CashierName != "")
+        //            {
+        //                SQL += "AND CashierName LIKE @CashierName ";
+        //                MySqlParameter prmCashierName = new MySqlParameter("@CashierName",MySqlDbType.String);
+        //                prmCashierName.Value = CashierName;
+        //                cmd.Parameters.Add(prmCashierName);
+        //            }
+        //            SQL += "AND (TransactionStatus = @TransactionStatusClosed " +
+        //                "OR TransactionStatus = @TransactionStatusVoid " +
+        //                "OR TransactionStatus = @TransactionStatusReprinted " +
+        //                "OR TransactionStatus = @TransactionStatusRefund " +
+        //                "OR TransactionStatus = @TransactionStatusCreditPayment) " +
+        //                "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport " +
+        //                "WHERE TerminalNo = @TerminalNo) ";
+        //            SQL += ") ";
+        //        }
 
-				SQL = SQL.Remove(0, 6);
-				SQL += "ORDER BY TransactionID DESC ";
+        //        SQL = SQL.Remove(0, 6);
+        //        SQL += "ORDER BY TransactionID DESC ";
 
-				MySqlParameter prmTransactionStatusClosed = new MySqlParameter("@TransactionStatusClosed",MySqlDbType.Int16);
-				prmTransactionStatusClosed.Value = (Int16)TransactionStatus.Closed;
-				cmd.Parameters.Add(prmTransactionStatusClosed);
+        //        MySqlParameter prmTransactionStatusClosed = new MySqlParameter("@TransactionStatusClosed",MySqlDbType.Int16);
+        //        prmTransactionStatusClosed.Value = (Int16)TransactionStatus.Closed;
+        //        cmd.Parameters.Add(prmTransactionStatusClosed);
 
-				MySqlParameter prmTransactionStatusVoid = new MySqlParameter("@TransactionStatusVoid",MySqlDbType.Int16);
-				prmTransactionStatusVoid.Value = (Int16)TransactionStatus.Void;
-				cmd.Parameters.Add(prmTransactionStatusVoid);
+        //        MySqlParameter prmTransactionStatusVoid = new MySqlParameter("@TransactionStatusVoid",MySqlDbType.Int16);
+        //        prmTransactionStatusVoid.Value = (Int16)TransactionStatus.Void;
+        //        cmd.Parameters.Add(prmTransactionStatusVoid);
 
-				MySqlParameter prmTransactionStatusReprinted = new MySqlParameter("@TransactionStatusReprinted",MySqlDbType.Int16);
-				prmTransactionStatusReprinted.Value = (Int16)TransactionStatus.Reprinted;
-				cmd.Parameters.Add(prmTransactionStatusReprinted);
+        //        MySqlParameter prmTransactionStatusReprinted = new MySqlParameter("@TransactionStatusReprinted",MySqlDbType.Int16);
+        //        prmTransactionStatusReprinted.Value = (Int16)TransactionStatus.Reprinted;
+        //        cmd.Parameters.Add(prmTransactionStatusReprinted);
 
-				MySqlParameter prmTransactionStatusRefund = new MySqlParameter("@TransactionStatusRefund",MySqlDbType.Int16);
-				prmTransactionStatusRefund.Value = (Int16)TransactionStatus.Refund;
-				cmd.Parameters.Add(prmTransactionStatusRefund);
+        //        MySqlParameter prmTransactionStatusRefund = new MySqlParameter("@TransactionStatusRefund",MySqlDbType.Int16);
+        //        prmTransactionStatusRefund.Value = (Int16)TransactionStatus.Refund;
+        //        cmd.Parameters.Add(prmTransactionStatusRefund);
 
-				MySqlParameter prmTransactionStatusCreditPayment = new MySqlParameter("@TransactionStatusCreditPayment",MySqlDbType.Int16);
-				prmTransactionStatusCreditPayment.Value = (Int16)TransactionStatus.CreditPayment;
-				cmd.Parameters.Add(prmTransactionStatusCreditPayment);
+        //        MySqlParameter prmTransactionStatusCreditPayment = new MySqlParameter("@TransactionStatusCreditPayment",MySqlDbType.Int16);
+        //        prmTransactionStatusCreditPayment.Value = (Int16)TransactionStatus.CreditPayment;
+        //        cmd.Parameters.Add(prmTransactionStatusCreditPayment);
 
-				cmd.CommandText = SQL;
+        //        cmd.CommandText = SQL;
 
-				return base.ExecuteReader(cmd);
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}
-		}
+        //        return base.ExecuteReader(cmd);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 
 		public System.Data.DataTable SalesPerDay(DateTime StartTransactionDate, DateTime EndTransactionDate, bool WithTrustFund = false)
 		{

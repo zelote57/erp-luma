@@ -296,7 +296,7 @@ namespace AceSoft.RetailPlus.Reports
             {
                 paramField = Report.DataDefinition.ParameterFields["InDetails"];
                 discreteParam = new ParameterDiscreteValue();
-                if (strReportType == ReportTypes.TotalStockInventoryDetailed || strReportType == ReportTypes.TotalStockInventorySummarized)
+                if (strReportType == ReportTypes.TotalStockInventoryDetailed || strReportType == ReportTypes.TotalStockInventoryWSupplier)
                     discreteParam.Value = true;
                 else
                     discreteParam.Value = false;

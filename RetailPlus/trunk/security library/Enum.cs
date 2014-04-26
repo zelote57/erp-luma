@@ -256,7 +256,16 @@ namespace AceSoft.RetailPlus
        * For Reward Membership information
        * Added: Aug 8, 2013 Lemuel E. Aceron
        *******************************/
-        CustomerManagement = 147
+        CustomerManagement = 147,
+        /******************************
+       * For Additional reporting of salestransaction
+       * Added: Feb 19, 2014 Lemuel E. Aceron
+       *******************************/
+        SummarizedDailySales = 148,
+        SummarizedDailySalesWithTF = 149,
+        PaidOutDisburseROC = 150,
+        ManagementReports = 151,
+        AnalyticsReports = 152
     }
 
     /// <summary>

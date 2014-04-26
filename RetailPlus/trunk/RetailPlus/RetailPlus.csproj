@@ -349,6 +349,13 @@
     <Compile Include="Home\GLA\_uploadsales.ascx.designer.cs">
       <DependentUpon>_uploadsales.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Inventory\_closeinventoryproduct.ascx.cs">
+      <DependentUpon>_closeinventoryproduct.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_closeinventoryproduct.ascx.designer.cs">
+      <DependentUpon>_closeinventoryproduct.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Inventory\_closeinventory.ascx.cs">
       <DependentUpon>_closeinventory.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -438,8 +445,63 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Reports\_analyticsreport\_analyticsreport.ascx.cs">
+      <DependentUpon>_analyticsreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_analyticsreport\_analyticsreport.ascx.designer.cs">
+      <DependentUpon>_analyticsreport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\_analyticsreport\_ItemsForPOBasedOnSales.cs">
+      <DependentUpon>_ItemsForPOBasedOnSales.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reports\_ClosingInventoryCount.cs">
       <DependentUpon>_ClosingInventoryCount.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_managementreport\_PerBranchPerMonthOld.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_PerBranchPerMonthOld.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\_managementreport\_PerBranchPerMonthCovers.cs">
+      <DependentUpon>_PerBranchPerMonthCovers.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_managementreport\_PerCustomerGroupPerMonth.cs">
+      <DependentUpon>_PerCustomerGroupPerMonth.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_managementreport\_PerBranchPerDay.cs">
+      <DependentUpon>_PerBranchPerDay.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_managementreport\_x_deleted_PerBranchPerDay.cs">
+      <DependentUpon>_x_deleted_PerBranchPerDay.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_managementreport\_PerBranch.cs">
+      <DependentUpon>_PerBranch.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_analyticsreport\_TransactionsAll.cs">
+      <DependentUpon>_TransactionsAll.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -461,6 +523,13 @@
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_managementreport\_managementreport.ascx.cs">
+      <DependentUpon>_managementreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_managementreport\_managementreport.ascx.designer.cs">
+      <DependentUpon>_managementreport.ascx</DependentUpon>
     </Compile>
     <Compile Include="Reports\_rewards\_rewardssummary.cs">
       <DependentUpon>_rewardssummary.rpt</DependentUpon>
@@ -3360,6 +3429,7 @@
     <Content Include="Home\GLA\default.aspx" />
     <Content Include="Home\_menu.ascx" />
     <Content Include="Home\GLA\_uploadsales.ascx" />
+    <Content Include="Inventory\_closeinventoryproduct.ascx" />
     <Content Include="Inventory\_closeinventory.ascx" />
     <Content Include="MasterFiles\_Product\_AddProductVariation.ascx" />
     <Content Include="packages.config" />
@@ -3371,6 +3441,8 @@
     <Content Include="MasterFiles\_ContactDetailed\_insert.ascx" />
     <Content Include="MasterFiles\_ContactDetailed\_list.ascx" />
     <Content Include="MasterFiles\_ContactDetailed\_update.ascx" />
+    <Content Include="Reports\_analyticsreport\_analyticsreport.ascx" />
+    <Content Include="Reports\_managementreport\_managementreport.ascx" />
     <Content Include="Rewards\_reports.ascx" />
     <Content Include="Rewards\_default.ascx" />
     <Content Include="Rewards\default.aspx" />
@@ -3865,6 +3937,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BranchTransferReportSellingPrice.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_analyticsreport\_ItemsForPOBasedOnSales.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_ItemsForPOBasedOnSales.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\_ClosingInventoryCount.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_ClosingInventoryCount.cs</LastGenOutput>
@@ -3880,6 +3956,34 @@
     <EmbeddedResource Include="Reports\_customercredit\_CustomerCreditListWCredit.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_CustomerCreditListWCredit1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_managementreport\_PerBranchPerMonthCovers.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_PerBranchPerMonthCovers.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_managementreport\_PerCustomerGroupPerMonth.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_PerCustomerGroupPerMonth.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_managementreport\_PerBranchPerDay.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_PerBranchPerDay.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_managementreport\_x_deleted_PerBranchPerDay.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_x_deleted_PerBranchPerDay.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_managementreport\_PerBranchPerMonthOld.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_PerBranchPerMonthOld.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_managementreport\_PerBranch.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_PerBranch.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_analyticsreport\_TransactionsAll.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_TransactionsAll.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerItem.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

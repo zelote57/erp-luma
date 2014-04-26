@@ -128,11 +128,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact
             txtRemarks.Text = clsDetails.Remarks;
             txtDebit.Text = clsDetails.Debit.ToString("###0.#0");
             txtCredit.Text = clsDetails.Credit.ToString("###0.#0");
-            clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
-            //if (clsDetails.IsCreditAllowed == 0)
-            //    chkIsCreditAllowed.Checked = false;
-            //else
-            //    chkIsCreditAllowed.Checked = true;
+            chkIsCreditAllowed.Checked = clsDetails.IsCreditAllowed;
             txtCreditLimit.Text = clsDetails.CreditLimit.ToString("###0.#0");
             cboDepartment.SelectedIndex = cboDepartment.Items.IndexOf(cboDepartment.Items.FindByValue(clsDetails.DepartmentID.ToString()));
             cboPosition.SelectedIndex = cboPosition.Items.IndexOf(cboPosition.Items.FindByValue(clsDetails.PositionID.ToString()));

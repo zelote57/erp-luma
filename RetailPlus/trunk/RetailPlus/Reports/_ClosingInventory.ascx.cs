@@ -74,10 +74,14 @@ namespace AceSoft.RetailPlus.Reports
 
             clsContact.CommitAndDispose();
 
-            lblType.Text = "";
+            lblType.Text = ""; lblType.ToolTip = "";
             if (Request.QueryString["type"] != null)
             {
                 lblType.Text = Common.Decrypt(Request.QueryString["type"].ToString(), Session.SessionID);
+            }
+            if (Request.QueryString["typedet"] != null)
+            {
+                lblType.ToolTip = Common.Decrypt(Request.QueryString["typedet"].ToString(), Session.SessionID);
             }
             lblBranchID.Text = "0";
             if (Request.QueryString["branchid"] != null)
@@ -269,6 +273,16 @@ namespace AceSoft.RetailPlus.Reports
             currentValues = new ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
+
+            if (lblType.Text == "invcount")
+            {
+                paramField = Report.DataDefinition.ParameterFields["TypeDet"];
+                discreteParam = new ParameterDiscreteValue();
+                discreteParam.Value = lblType.ToolTip; // byprod means by productdesc
+                currentValues = new ParameterValues();
+                currentValues.Add(discreteParam);
+                paramField.ApplyCurrentValues(currentValues);
+            }
 		}
 
 		#endregion

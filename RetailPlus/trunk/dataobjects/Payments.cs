@@ -73,6 +73,7 @@ namespace AceSoft.RetailPlus.Data
 	public struct CreditPaymentDetails
 	{
 		public Int64 TransactionID;
+        public bool IsRefund;
         public string TerminalNo;
         public string TransactionNo;
         public DateTime TransactionDate;
@@ -85,6 +86,7 @@ namespace AceSoft.RetailPlus.Data
 	public struct DebitPaymentDetails
 	{
 		public Int64 TransactionID;
+        public bool IsRefund;
         public string TransactionNo;
 		public decimal Amount;
         public ContactDetails CustomerDetails;
@@ -174,11 +176,7 @@ namespace AceSoft.RetailPlus.Data
 			{
                 string SQL = "CALL procCashPaymentInsert(@TransactionID, @TransactionNo, @Amount, @Remarks);";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -192,15 +190,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -210,11 +199,7 @@ namespace AceSoft.RetailPlus.Data
 			{
                 string SQL = "CALL procChequePaymentInsert(@TransactionID, @TransactionNo, @ChequeNo, @Amount, @ValidityDate, @Remarks);";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -292,7 +277,10 @@ namespace AceSoft.RetailPlus.Data
 
                 //add credit to masterfile
 				Contacts clsContact = new Contacts(base.Connection, base.Transaction);
-				clsContact.AddCredit(Details.CustomerDetails.ContactID, Details.Amount);
+                if (!Details.IsRefund)
+				    clsContact.AddCredit(Details.CustomerDetails.ContactID, Details.Amount);
+                else
+                    clsContact.AddCredit(Details.CustomerDetails.ContactID, -Details.Amount);
 
 			}
 
@@ -350,7 +338,6 @@ namespace AceSoft.RetailPlus.Data
                 Contacts clsContact = new Contacts(base.Connection, base.Transaction);
                 clsContact.SubtractCredit(pvtlngContactID, pvtdecAmountPaid);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);

@@ -56,29 +56,14 @@ namespace AceSoft.RetailPlus.Data
 				string SQL = "INSERT INTO tblChargeType (ChargeTypeCode, ChargeType, ChargeAmount, InPercent) " +
 					"VALUES (@ChargeTypeCode, @ChargeType, @ChargeAmount, @InPercent) ;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-				MySqlParameter prmChargeTypeCode = new MySqlParameter("@ChargeTypeCode",MySqlDbType.String);			
-				prmChargeTypeCode.Value = Details.ChargeTypeCode;
-				cmd.Parameters.Add(prmChargeTypeCode);
 
-				MySqlParameter prmChargeType = new MySqlParameter("@ChargeType",MySqlDbType.String);			
-				prmChargeType.Value = Details.ChargeType;
-				cmd.Parameters.Add(prmChargeType);
-
-				MySqlParameter prmChargeAmount = new MySqlParameter("@ChargeAmount",MySqlDbType.Decimal);			
-				prmChargeAmount.Value = Details.ChargeAmount;
-				cmd.Parameters.Add(prmChargeAmount);
-
-				MySqlParameter prmInPercent = new MySqlParameter("@InPercent",MySqlDbType.Byte);			
-				prmInPercent.Value = Details.InPercent;
-				cmd.Parameters.Add(prmInPercent);
+                cmd.Parameters.AddWithValue("@ChargeTypeCode", Details.ChargeTypeCode);
+                cmd.Parameters.AddWithValue("@ChargeType", Details.ChargeType);
+                cmd.Parameters.AddWithValue("@ChargeAmount", Details.ChargeAmount);
+                cmd.Parameters.AddWithValue("@InPercent", Details.InPercent);
 
 				base.ExecuteNonQuery(cmd);
 
@@ -103,15 +88,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -127,48 +103,21 @@ namespace AceSoft.RetailPlus.Data
 					"InPercent = @InPercent " +  
 					"WHERE ChargeTypeID = " + Details.ChargeTypeID + ";";
 
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-				MySqlParameter prmChargeTypeCode = new MySqlParameter("@ChargeTypeCode",MySqlDbType.String);			
-				prmChargeTypeCode.Value = Details.ChargeTypeCode;
-				cmd.Parameters.Add(prmChargeTypeCode);
 
-				MySqlParameter prmChargeType = new MySqlParameter("@ChargeType",MySqlDbType.String);			
-				prmChargeType.Value = Details.ChargeType;
-				cmd.Parameters.Add(prmChargeType);
-
-				MySqlParameter prmChargeAmount = new MySqlParameter("@ChargeAmount",MySqlDbType.Decimal);			
-				prmChargeAmount.Value = Details.ChargeAmount;
-				cmd.Parameters.Add(prmChargeAmount);
-
-				MySqlParameter prmInPercent = new MySqlParameter("@InPercent",MySqlDbType.Byte);			
-				prmInPercent.Value = Details.InPercent;
-				cmd.Parameters.Add(prmInPercent);
-
-				MySqlParameter prmChargeTypeID = new MySqlParameter("@ChargeTypeID",MySqlDbType.Int16);			
-				prmChargeTypeID.Value = Details.ChargeTypeID;
-				cmd.Parameters.Add(prmChargeTypeID);
+                cmd.Parameters.AddWithValue("@ChargeTypeCode", Details.ChargeTypeCode);
+                cmd.Parameters.AddWithValue("@ChargeType", Details.ChargeType);
+                cmd.Parameters.AddWithValue("@ChargeAmount", Details.ChargeAmount);
+                cmd.Parameters.AddWithValue("@InPercent", Details.InPercent);
+                cmd.Parameters.AddWithValue("@ChargeTypeID", Details.ChargeTypeID);
 
 				base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -234,18 +183,12 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				string SQL=	SQLSelect() + "WHERE ChargeTypeID = @ChargeTypeID;";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmChargeTypeID = new MySqlParameter("@ChargeTypeID",MySqlDbType.Int16);
-				prmChargeTypeID.Value = ChargeTypeID;
-				cmd.Parameters.Add(prmChargeTypeID);
+                cmd.Parameters.AddWithValue("@ChargeTypeID", ChargeTypeID);
 
 				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
@@ -266,15 +209,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -284,17 +218,11 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = SQLSelect() + "WHERE ChargeTypeCode = @ChargeTypeCode;";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prmChargeTypeCode = new MySqlParameter("@ChargeTypeCode",MySqlDbType.String);
-                prmChargeTypeCode.Value = ChargeTypeCode;
-                cmd.Parameters.Add(prmChargeTypeCode);
+                cmd.Parameters.AddWithValue("@ChargeTypeCode", ChargeTypeCode);
 
                 MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 
@@ -316,15 +244,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -374,29 +293,14 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-				
 				
 				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -415,11 +319,7 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				
-
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
@@ -427,21 +327,10 @@ namespace AceSoft.RetailPlus.Data
 				prmSearchKey.Value = "%" + SearchKey + "%";
 				cmd.Parameters.Add(prmSearchKey);
 
-				
-				
 				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

@@ -48,6 +48,10 @@ namespace AceSoft.RetailPlus.Data
 		public decimal CreditCardSales;
 		public decimal CreditSales;
 		public decimal CreditPayment;
+        public decimal CreditPaymentCash;
+        public decimal CreditPaymentCheque;
+        public decimal CreditPaymentCreditCard;
+        public decimal CreditPaymentDebit;
 		public decimal DebitPayment;
 		public decimal CashInDrawer;
 		public decimal TotalDisburse;
@@ -167,6 +171,10 @@ namespace AceSoft.RetailPlus.Data
 					            "CreditCardSales, " +
 					            "CreditSales, " +
 					            "CreditPayment, " +
+                                "CreditPaymentCash, " +
+                                "CreditPaymentCheque, " +
+                                "CreditPaymentCreditCard, " +
+                                "CreditPaymentDebit, " +
 					            "DebitPayment, " +
                                 "RewardPointsPayment, " +
                                 "RewardConvertedPayment, " +
@@ -262,6 +270,10 @@ namespace AceSoft.RetailPlus.Data
 					Details.CreditCardSales = myReader.GetDecimal("CreditCardSales");
 					Details.CreditSales = myReader.GetDecimal("CreditSales");
 					Details.CreditPayment = myReader.GetDecimal("CreditPayment");
+                    Details.CreditPaymentCash = myReader.GetDecimal("CreditPaymentCash");
+                    Details.CreditPaymentCheque = myReader.GetDecimal("CreditPaymentCheque");
+                    Details.CreditPaymentCreditCard = myReader.GetDecimal("CreditPaymentCreditCard");
+                    Details.CreditPaymentDebit = myReader.GetDecimal("CreditPaymentDebit");
 					Details.DebitPayment = myReader.GetDecimal("DebitPayment");
                     Details.RewardPointsPayment = myReader.GetDecimal("RewardPointsPayment");
                     Details.RewardConvertedPayment = myReader.GetDecimal("RewardConvertedPayment");
@@ -579,6 +591,10 @@ namespace AceSoft.RetailPlus.Data
                                     "@CreditCardSales, " +
                                     "@CreditSales, " +
                                     "@CreditPayment, " +
+                                    "@CreditPaymentCash, " +
+                                    "@CreditPaymentCheque, " +
+                                    "@CreditPaymentCreditCard, " +
+                                    "@CreditPaymentDebit, " +
                                     "@DebitPayment, " +
                                     "@RewardPointsPayment, " +
                                     "@RewardConvertedPayment, " +
@@ -689,15 +705,14 @@ namespace AceSoft.RetailPlus.Data
 				prmCreditSales.Value = Details.CreditSales;
 				cmd.Parameters.Add(prmCreditSales);
 
-				MySqlParameter prmCreditPayment = new MySqlParameter("@CreditPayment",MySqlDbType.Decimal);			
-				prmCreditPayment.Value = Details.CreditPayment;
-				cmd.Parameters.Add(prmCreditPayment);
+                cmd.Parameters.AddWithValue("@CreditPayment", Details.CreditPayment);
+                cmd.Parameters.AddWithValue("@CreditPaymentCash", Details.CreditPaymentCash);
+                cmd.Parameters.AddWithValue("@CreditPaymentCheque", Details.CreditPaymentCheque);
+                cmd.Parameters.AddWithValue("@CreditPaymentCreditCard", Details.CreditPaymentCreditCard);
+                cmd.Parameters.AddWithValue("@CreditPaymentDebit", Details.CreditPaymentDebit);
+                cmd.Parameters.AddWithValue("@DebitPayment", Details.DebitPayment);
 
-				MySqlParameter prmDebitPayment = new MySqlParameter("@DebitPayment",MySqlDbType.Decimal);			
-				prmDebitPayment.Value = Details.DebitPayment;
-				cmd.Parameters.Add(prmDebitPayment);
-
-                MySqlParameter prmRewardPointsPayment = new MySqlParameter("@RewardPointsPayment",MySqlDbType.Decimal);
+				MySqlParameter prmRewardPointsPayment = new MySqlParameter("@RewardPointsPayment",MySqlDbType.Decimal);
                 prmRewardPointsPayment.Value = Details.RewardPointsPayment;
                 cmd.Parameters.Add(prmRewardPointsPayment);
 
@@ -705,8 +720,10 @@ namespace AceSoft.RetailPlus.Data
                 prmRewardConvertedPayment.Value = Details.RewardConvertedPayment;
                 cmd.Parameters.Add(prmRewardConvertedPayment);
 
-				MySqlParameter prmCashInDrawer = new MySqlParameter("@CashInDrawer",MySqlDbType.Decimal);			
-				prmCashInDrawer.Value = Details.CashSales; //refer to cash sales
+				MySqlParameter prmCashInDrawer = new MySqlParameter("@CashInDrawer",MySqlDbType.Decimal);	
+				// prmCashInDrawer.Value = Details.CashSales; //refer to cash sales
+                // Apr 12, 2014 make an override use the cash in drawer due to credit payment
+                prmCashInDrawer.Value = Details.CashInDrawer == 0 ? Details.CashSales : Details.CashInDrawer;
 				cmd.Parameters.Add(prmCashInDrawer);
 
 				MySqlParameter prmVoidSales = new MySqlParameter("@VoidSales",MySqlDbType.Decimal);			

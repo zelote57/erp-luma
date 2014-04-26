@@ -36,8 +36,8 @@
 		<LINK href="../_layouts/css/menu.css" type="text/css" rel="stylesheet">
 		<LINK href="../_layouts/css/ows.css" type="text/css" rel="stylesheet">
 		<LINK href="../_layouts/css/sps.css" type="text/css" rel="stylesheet">
-		<link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css"
-                rel="stylesheet" type="text/css" />
+        <link href="/aspnet_client/System_Web/4_0_30319/crystalreportviewers13/css/default.css" rel="stylesheet" type="text/css" />
+		<%--<link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css" rel="stylesheet" type="text/css" />--%>
 		<script language="JavaScript" src="../_Scripts/DocumentScripts.js"></script>
 		<script language="JavaScript" src="../_Scripts/Calendar.js"></script>
 	</HEAD>

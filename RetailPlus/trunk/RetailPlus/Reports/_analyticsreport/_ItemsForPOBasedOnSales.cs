@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RetailPlus.Reports {
+namespace RetailPlus.Reports._analyticsreport {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace RetailPlus.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class _ClosingInventoryCount : ReportClass {
+    public class _ItemsForPOBasedOnSales : ReportClass {
         
-        public _ClosingInventoryCount() {
+        public _ItemsForPOBasedOnSales() {
         }
         
         public override string ResourceName {
             get {
-                return "_ClosingInventoryCount.rpt";
+                return "_ItemsForPOBasedOnSales.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace RetailPlus.Reports {
         
         public override string FullResourceName {
             get {
-                return "RetailPlus.Reports._ClosingInventoryCount.rpt";
+                return "RetailPlus.Reports._analyticsreport._ItemsForPOBasedOnSales.rpt";
             }
             set {
                 // Do nothing
@@ -114,7 +114,7 @@ namespace RetailPlus.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_ProductGroupName {
+        public CrystalDecisions.Shared.IParameterField Parameter_StartTransactionDate {
             get {
                 return this.DataDefinition.ParameterFields[2];
             }
@@ -122,41 +122,17 @@ namespace RetailPlus.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_ContactCode {
+        public CrystalDecisions.Shared.IParameterField Parameter_EndTransactionDate {
             get {
                 return this.DataDefinition.ParameterFields[3];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_TypeDet {
-            get {
-                return this.DataDefinition.ParameterFields[4];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_ClosingInventoryID {
-            get {
-                return this.DataDefinition.ParameterFields[5];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_PostingDate {
-            get {
-                return this.DataDefinition.ParameterFields[6];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class Cached_ClosingInventoryCount : Component, ICachedReport {
+    public class Cached_ItemsForPOBasedOnSales : Component, ICachedReport {
         
-        public Cached_ClosingInventoryCount() {
+        public Cached_ItemsForPOBasedOnSales() {
         }
         
         [Browsable(false)]
@@ -193,7 +169,7 @@ namespace RetailPlus.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            _ClosingInventoryCount rpt = new _ClosingInventoryCount();
+            _ItemsForPOBasedOnSales rpt = new _ItemsForPOBasedOnSales();
             rpt.Site = this.Site;
             return rpt;
         }

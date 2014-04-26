@@ -634,11 +634,15 @@ namespace AceSoft.RetailPlus.Data
                 base.ExecuteNonQuery(cmd);
 
                 SQL = "SELECT " +
+                        "ProductGroup," +
+                        "ProductID," +
                         "ProductCode," +
                         "SUM(Quantity) 'Quantity'," +
                         "SUM(Amount) 'Amount'," +
                         "SUM(PurchaseAmount) 'PurchaseAmount', " +
-                        "SUM(Discount) 'Discount' " +
+                        "SUM(Discount) 'Discount', " +
+                        "MIN(PurchasePrice) 'PurchasePrice', " +
+                        "MAX(InvQuantity) 'InvQuantity' " +
                     "FROM tblSalesPerItem " +
                     "WHERE SessionID = @SessionID ";
 
@@ -652,7 +656,7 @@ namespace AceSoft.RetailPlus.Data
                         break;
                 }
 
-                SQL += "GROUP BY ProductCode ORDER BY ProductCode;";
+                SQL += "GROUP BY ProductGroup, ProductCode ORDER BY ProductCode;";
 
                 cmd.CommandText = SQL;
                 cmd.Parameters.Clear();
@@ -700,11 +704,15 @@ namespace AceSoft.RetailPlus.Data
                 base.ExecuteNonQuery(cmd);
 
                 SQL = "SELECT " +
+                        "ProductGroup," +
+                        "ProductID," +
                         "ProductCode," +
                         "SUM(Quantity) 'Quantity'," +
                         "SUM(Amount) 'Amount'," +
                         "SUM(PurchaseAmount) 'PurchaseAmount', " +
-                        "SUM(Discount) 'Discount' " +
+                        "SUM(Discount) 'Discount', " +
+                        "MIN(PurchasePrice) 'PurchasePrice', " +
+                        "MAX(InvQuantity) 'InvQuantity' " +
                     "FROM tblSalesPerItem " +
                     "WHERE SessionID = @SessionID ";
 
@@ -718,7 +726,7 @@ namespace AceSoft.RetailPlus.Data
                         break;
                 }
 
-                SQL += "GROUP BY ProductCode ORDER BY ProductCode;";
+                SQL += "GROUP BY ProductGroup, ProductID, ProductCode ORDER BY ProductCode;";
 
                 cmd.CommandText = SQL;
                 cmd.Parameters.Clear();

@@ -855,6 +855,15 @@ namespace AceSoft.RetailPlus.Client.UI
 				lblChangeName.Text = "OVER";
 				cmdF4.Visible = false;
 				lblCredit.Visible = false;
+
+                if (mboIsCreditAllowed)
+                {
+                    cmdF4.Visible = mboIsCreditAllowed;
+                    lblCredit.Visible = mboIsCreditAllowed;
+                    grpDebit.Visible = false;
+
+                    lblCredit.Text = mclsSalesTransactionDetails.isConsignment ? "CONSIGNMENT" : "IN-HOUSE CREDIT";
+                }
 			}
 			else
 			{
@@ -904,15 +913,15 @@ namespace AceSoft.RetailPlus.Client.UI
 					break;
 
 				case Keys.F3:
-					ShowCreditCardPaymentWindow();
+                    ShowCreditCardPaymentWindow();
 					break;
 
 				case Keys.F4:
-					ShowCreditPaymentWindow();
+                    if (mboIsCreditAllowed) ShowCreditPaymentWindow();
 					break;
 
 				case Keys.F5:
-					ShowDebitPaymentWindow();
+                    if (mboIsCreditAllowed) ShowDebitPaymentWindow();
 					break;
 
                 case Keys.F6:
@@ -1108,7 +1117,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				CreditPaymentWnd credit = new CreditPaymentWnd();
 				credit.SalesTransactionDetails = mclsSalesTransactionDetails;
                 credit.CustomerDetails = mclsCustomerDetails;
-				credit.AllowedCredit = mdecAllowedCredit;
+                credit.AllowedCredit = mdecAllowedCredit;
 
                 decimal decBalance = Convert.ToDecimal(lblBalance.Text);
                 decimal decAdditionalCreditCharge = 0;
@@ -1142,8 +1151,9 @@ namespace AceSoft.RetailPlus.Client.UI
                             decAdditionalCreditCharge = mdecAllowedCredit + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
                     }
                 }
+
                 credit.BalanceAmount = decBalance + Convert.ToDecimal(decAdditionalCreditCharge.ToString("#,##0.#0"));
-				
+                credit.IsRefund = mboIsRefund;
 				credit.ShowDialog(this);
 				DialogResult result = credit.Result;
 				Data.CreditPaymentDetails creditDetails = credit.Details;
@@ -1164,6 +1174,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         mclsSalesTransactionDetails.CreditChargeAmount = decAdditionalCreditCharge;
                         Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
                         clsSalesTransactions.UpdateCreditChargeAmount(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.CreditChargeAmount);
+                        clsSalesTransactions.CommitAndDispose();
                     }
 
                     mdecAllowedCredit -= creditDetails.Amount;
@@ -1179,7 +1190,6 @@ namespace AceSoft.RetailPlus.Client.UI
 					else
 						mPaymentType = PaymentTypes.Combination;
 				}
-				
 			}
 		}
 		private void ShowDebitPaymentWindow()

@@ -32,7 +32,8 @@ namespace AceSoft.RetailPlus.Inventory
                 lnkInvAdjustment.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("invadjustment", Session.SessionID);
 
                 lnkInventoryAnalyst.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("inventoryanalyst", Session.SessionID);
-				lnkCloseInventory.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("closeinventory",Session.SessionID);
+                lnkCloseInventoryProduct.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("closeinventoryproduct", Session.SessionID);
+                lnkCloseInventory.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("closeinventory",Session.SessionID);
                 lnkCloseInventoryDetailed.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/Default.aspx?task=" + Common.Encrypt("closeinventorydetailed", Session.SessionID);
 				lnkUpload.NavigateUrl = Constants.ROOT_DIRECTORY + "/Inventory/_Stock/Default.aspx?task=" + Common.Encrypt("upload",Session.SessionID);
 
@@ -85,6 +86,7 @@ namespace AceSoft.RetailPlus.Inventory
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.CloseInventory);
             lnkCloseInventory.Visible = clsDetails.Read;
+            lnkCloseInventoryProduct.Visible = clsDetails.Read;
             lnkCloseInventoryDetailed.Visible = clsDetails.Read;
             lnkCLosingInventoryReport.Visible = clsDetails.Read;
 

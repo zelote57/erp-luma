@@ -409,7 +409,8 @@ namespace AceSoft.RetailPlus.Data
                                 "CashPayment, " +
                                 "ChequePayment, " +
                                 "CreditCardPayment, " +
-                                "IF(isConsignment=0,CreditPayment,0) 'CreditPayment', " +
+                                "CreditPayment, " +
+                                //"IF(isConsignment=0,CreditPayment,0) 'CreditPayment', " +
                                 "IF(isConsignment<>0,CreditPayment,0) 'ConsignmentPayment', " +
                                 "DebitPayment, " +
                                 "RewardPointsPayment, " +
@@ -1094,15 +1095,13 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmContactID = new MySqlParameter("@ContactID",MySqlDbType.Int64);
-				prmContactID.Value = ContactID;
-				cmd.Parameters.Add(prmContactID);
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
 
 				System.Data.DataTable dt = new System.Data.DataTable("tblForPayment");
 				base.MySqlDataAdapterFill(cmd, dt);
-				
 				return dt;
-			}
+			
+            }
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -1461,7 +1460,7 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				string SQL = "UPDATE tblTransactions SET " +
-								"SubTotal			=	@SubTotal + @CreditChargeAmount, " +
+								"SubTotal			=	SubTotal + @CreditChargeAmount, " +
 								"CreditChargeAmount =	@CreditChargeAmount " +
 							"WHERE TransactionID	=	@TransactionID;";
 
@@ -1469,13 +1468,8 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-				MySqlParameter prmCreditChargeAmount = new MySqlParameter("@CreditChargeAmount",MySqlDbType.Decimal);
-				prmCreditChargeAmount.Value = CreditChargeAmount;
-				cmd.Parameters.Add(prmCreditChargeAmount);
-
-				MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);
-				prmTransactionID.Value = TransactionID;
-				cmd.Parameters.Add(prmTransactionID);
+                cmd.Parameters.AddWithValue("@CreditChargeAmount", CreditChargeAmount);
+                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
 
 				base.ExecuteNonQuery(cmd);
 			}

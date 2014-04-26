@@ -101,16 +101,21 @@
 						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkInventoryAnalyst" runat="server" ToolTip="Inventory Analyst">
-								<li>
-									Inventory Analyst</li></asp:HyperLink>
+								<li>Inventory Analyst</li></asp:HyperLink>
 						</td>
 					</tr>
 					<tr>
 						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
 						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
 							<asp:HyperLink id="lnkCloseInventory" runat="server" ToolTip="Close Inventory">
-								<li>
-									Close Inventory By Group</li></asp:HyperLink>
+								<li>Close Inventory By Group</li></asp:HyperLink>
+						</td>
+					</tr>
+                    <tr>
+						<td width="0" class="ms-pvtbicon"><img alt="" src="/RetailPlus/_layouts/images/trans.gif" /></td>
+						<td class="ms-pvtbbutton" style="WIDTH:170px;WORD-WRAP:break-word">
+							<asp:HyperLink id="lnkCloseInventoryProduct" runat="server" ToolTip="Close Inventory">
+								<li>Close Inventory By Product</li></asp:HyperLink>
 						</td>
 					</tr>
 					<tr>

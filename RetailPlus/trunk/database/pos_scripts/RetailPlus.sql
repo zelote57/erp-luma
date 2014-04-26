@@ -6911,3 +6911,30 @@ INNER JOIN tblContactGroup grp ON cntct.ContactGroupID = grp.ContactGroupID
 SET
 	CustomerGroupName = grp.ContactGroupName
 WHERE IFNULL(trx.CustomerGroupName,'') = ''
+
+ALTER TABLE tblSalesPerItem ADD ProductID BIGINT NOT NULL DEFAULT 0;
+ALTER TABLE tblSalesPerItem ADD PurchasePrice DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblSalesPerItem ADD InvQuantity DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+-- Apr 12, 2014 for the breakdown of credits
+
+ALTER TABLE tblTerminalReport ADD `CreditPaymentCash` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `CreditPaymentCheque` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `CreditPaymentCreditCard` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `CreditPaymentDebit` DECIMAL(18,2) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblTerminalReportHistory ADD `CreditPaymentCash` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `CreditPaymentCheque` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `CreditPaymentCreditCard` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `CreditPaymentDebit` DECIMAL(18,2) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReport ADD `CreditPaymentCash` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `CreditPaymentCheque` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `CreditPaymentCreditCard` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `CreditPaymentDebit` DECIMAL(18,2) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReportHistory ADD `CreditPaymentCash` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `CreditPaymentCheque` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `CreditPaymentCreditCard` DECIMAL(18,2) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `CreditPaymentDebit` DECIMAL(18,2) NOT NULL DEFAULT 0;
+

@@ -14,7 +14,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private GroupBox groupBox1;
 		private Label lblCash;
 		private TextBox txtAmount;
-		private Label label8;
+		private Label lblBalance;
 		private Label lblBalanceAmount;
         private PictureBox imgIcon;
 		private Label lblRemarks;
@@ -25,6 +25,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private DialogResult dialog;
 		private decimal mdecBalanceAmount;
+        public bool mboIsRefund;
 		private Data.CashPaymentDetails mDetails = new Data.CashPaymentDetails();
         private Data.SalesTransactionDetails mclsSalesTransactionDetails;
 
@@ -49,6 +50,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				mdecBalanceAmount = value;
 			}
 		}
+        public bool IsRefund { set { mboIsRefund = value; } }
 		public Data.CashPaymentDetails Details
 		{
 			get
@@ -91,7 +93,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCash = new System.Windows.Forms.Label();
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.txtAmount = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lblBalance = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
@@ -129,7 +131,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.Controls.Add(this.lblCash);
             this.groupBox1.Controls.Add(this.txtRemarks);
             this.groupBox1.Controls.Add(this.txtAmount);
-            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.lblBalance);
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Blue;
             this.groupBox1.Location = new System.Drawing.Point(9, 67);
@@ -198,17 +200,17 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtAmount.GotFocus += new System.EventHandler(this.txtAmount_GotFocus);
             this.txtAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
-            // label8
+            // lblBalance
             // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.Transparent;
-            this.label8.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.label8.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label8.Location = new System.Drawing.Point(801, 17);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(201, 19);
-            this.label8.TabIndex = 5;
-            this.label8.Text = "Current Balance to be paid.";
+            this.lblBalance.AutoSize = true;
+            this.lblBalance.BackColor = System.Drawing.Color.Transparent;
+            this.lblBalance.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.lblBalance.ForeColor = System.Drawing.Color.LightSlateGray;
+            this.lblBalance.Location = new System.Drawing.Point(801, 17);
+            this.lblBalance.Name = "lblBalance";
+            this.lblBalance.Size = new System.Drawing.Size(201, 19);
+            this.lblBalance.TabIndex = 5;
+            this.lblBalance.Text = "Current Balance to be paid.";
             // 
             // cmdCancel
             // 
@@ -317,6 +319,12 @@ namespace AceSoft.RetailPlus.Client.UI
             lblBalanceAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
             txtAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
             lblCash.Text = "Cash Amount (" + CompanyDetails.Currency + ")";
+
+            if (mboIsRefund)
+            {
+                lblHeader.Text = "Tender Cash Amount to refund";
+                lblBalance.Text = "Current Balance to be refunded.";
+            }
 		}
 
         #endregion

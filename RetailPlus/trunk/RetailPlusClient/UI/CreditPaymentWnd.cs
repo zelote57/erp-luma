@@ -26,6 +26,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private decimal mdecAllowedCredit = 0;
         private DialogResult dialog;
         private decimal mdecBalanceAmount;
+        public bool mboIsRefund;
         private Data.ContactDetails mclsCustomerDetails;
         private Data.CreditPaymentDetails mDetails = new Data.CreditPaymentDetails();
         private Data.SalesTransactionDetails mclsSalesTransactionDetails;
@@ -59,6 +60,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mdecBalanceAmount = value;
             }
         }
+        public bool IsRefund { set { mboIsRefund = value; } }
         public Data.CreditPaymentDetails Details
         {
             get
@@ -353,7 +355,7 @@ namespace AceSoft.RetailPlus.Client.UI
             lblBalanceAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
             txtAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
             lblCredit.Text = "Credit Amount (" + CompanyDetails.Currency + ")";
-
+            
             if (mclsSalesTransactionDetails.isConsignment) {
                 lblHeader.Text = "Tender Consignment Amount";
                 lblAllowedCreditLabel.Text = "Allowed consignment amount.";
@@ -362,6 +364,17 @@ namespace AceSoft.RetailPlus.Client.UI
                 lblHeader.Text = "Tender Credit Amount";
                 lblAllowedCreditLabel.Text = "Allowed credit amount.";
             }
+            if (mboIsRefund)
+            {
+                lblHeader.Text = "Tender Credit Amount to refund";
+                lblBalance.Text = "Current Balance to be refunded.";
+                lblAllowedCreditLabel.Text = "Current credit amount.";
+
+                //overwrite the allowable credit if it's refund
+                // set the allowable credit to highest if refund
+                mdecAllowedCredit = 10000000;
+            }
+
         }
 
         #endregion
@@ -431,6 +444,8 @@ namespace AceSoft.RetailPlus.Client.UI
             mDetails.CustomerDetails = mclsCustomerDetails;
             mDetails.Amount = Amount;
             mDetails.Remarks = txtRemarks.Text;
+            // set this to check if the transaction will be added or deducted in the credit of customer
+            mDetails.IsRefund = mboIsRefund;
 
             return true;
         }

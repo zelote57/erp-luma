@@ -160,6 +160,14 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.Label lblShortOverName;
         private Button cmdCancel;
         private Button cmdEnter;
+        private Label lblCreditPaymentDebit;
+        private Label label11;
+        private Label lblCreditPaymentCreditCard;
+        private Label label30;
+        private Label lblCreditPaymentCheque;
+        private Label label48;
+        private Label lblCreditPaymentCash;
+        private Label label80;
 		private string mCashierName;
 
 		public DialogResult Result
@@ -223,6 +231,14 @@ namespace AceSoft.RetailPlus.Client.UI
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panReport = new System.Windows.Forms.Panel();
+            this.lblCreditPaymentDebit = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.lblCreditPaymentCreditCard = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.lblCreditPaymentCheque = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.lblCreditPaymentCash = new System.Windows.Forms.Label();
+            this.label80 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.lblShortOver = new System.Windows.Forms.Label();
             this.lblShortOverName = new System.Windows.Forms.Label();
@@ -393,6 +409,14 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.panReport.AutoScroll = true;
             this.panReport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panReport.Controls.Add(this.lblCreditPaymentDebit);
+            this.panReport.Controls.Add(this.label11);
+            this.panReport.Controls.Add(this.lblCreditPaymentCreditCard);
+            this.panReport.Controls.Add(this.label30);
+            this.panReport.Controls.Add(this.lblCreditPaymentCheque);
+            this.panReport.Controls.Add(this.label48);
+            this.panReport.Controls.Add(this.lblCreditPaymentCash);
+            this.panReport.Controls.Add(this.label80);
             this.panReport.Controls.Add(this.label7);
             this.panReport.Controls.Add(this.lblShortOver);
             this.panReport.Controls.Add(this.lblShortOverName);
@@ -532,15 +556,95 @@ namespace AceSoft.RetailPlus.Client.UI
             this.panReport.Size = new System.Drawing.Size(385, 515);
             this.panReport.TabIndex = 109;
             // 
+            // lblCreditPaymentDebit
+            // 
+            this.lblCreditPaymentDebit.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentDebit.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentDebit.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentDebit.Location = new System.Drawing.Point(176, 476);
+            this.lblCreditPaymentDebit.Name = "lblCreditPaymentDebit";
+            this.lblCreditPaymentDebit.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentDebit.TabIndex = 435;
+            this.lblCreditPaymentDebit.Text = "0.00";
+            this.lblCreditPaymentDebit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label11
+            // 
+            this.label11.Location = new System.Drawing.Point(16, 476);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(137, 14);
+            this.label11.TabIndex = 434;
+            this.label11.Text = "       Debit";
+            // 
+            // lblCreditPaymentCreditCard
+            // 
+            this.lblCreditPaymentCreditCard.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentCreditCard.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentCreditCard.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentCreditCard.Location = new System.Drawing.Point(176, 460);
+            this.lblCreditPaymentCreditCard.Name = "lblCreditPaymentCreditCard";
+            this.lblCreditPaymentCreditCard.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentCreditCard.TabIndex = 433;
+            this.lblCreditPaymentCreditCard.Text = "0.00";
+            this.lblCreditPaymentCreditCard.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label30
+            // 
+            this.label30.Location = new System.Drawing.Point(16, 460);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(137, 14);
+            this.label30.TabIndex = 432;
+            this.label30.Text = "       Credit Card";
+            // 
+            // lblCreditPaymentCheque
+            // 
+            this.lblCreditPaymentCheque.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentCheque.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentCheque.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentCheque.Location = new System.Drawing.Point(176, 444);
+            this.lblCreditPaymentCheque.Name = "lblCreditPaymentCheque";
+            this.lblCreditPaymentCheque.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentCheque.TabIndex = 431;
+            this.lblCreditPaymentCheque.Text = "0.00";
+            this.lblCreditPaymentCheque.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label48
+            // 
+            this.label48.Location = new System.Drawing.Point(16, 444);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(137, 14);
+            this.label48.TabIndex = 430;
+            this.label48.Text = "       Cheque";
+            // 
+            // lblCreditPaymentCash
+            // 
+            this.lblCreditPaymentCash.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentCash.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentCash.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentCash.Location = new System.Drawing.Point(176, 428);
+            this.lblCreditPaymentCash.Name = "lblCreditPaymentCash";
+            this.lblCreditPaymentCash.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentCash.TabIndex = 429;
+            this.lblCreditPaymentCash.Text = "0.00";
+            this.lblCreditPaymentCash.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label80
+            // 
+            this.label80.Location = new System.Drawing.Point(16, 428);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(137, 14);
+            this.label80.TabIndex = 428;
+            this.label80.Text = "       Cash";
+            // 
             // label7
             // 
             this.label7.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label7.Location = new System.Drawing.Point(9, 1174);
+            this.label7.Location = new System.Drawing.Point(9, 1233);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(353, 5);
             this.label7.TabIndex = 426;
             this.label7.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblShortOver
@@ -548,7 +652,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblShortOver.BackColor = System.Drawing.Color.Transparent;
             this.lblShortOver.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblShortOver.ForeColor = System.Drawing.Color.Red;
-            this.lblShortOver.Location = new System.Drawing.Point(176, 1158);
+            this.lblShortOver.Location = new System.Drawing.Point(176, 1217);
             this.lblShortOver.Name = "lblShortOver";
             this.lblShortOver.Size = new System.Drawing.Size(174, 14);
             this.lblShortOver.TabIndex = 425;
@@ -557,7 +661,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblShortOverName
             // 
-            this.lblShortOverName.Location = new System.Drawing.Point(16, 1158);
+            this.lblShortOverName.Location = new System.Drawing.Point(16, 1217);
             this.lblShortOverName.Name = "lblShortOverName";
             this.lblShortOverName.Size = new System.Drawing.Size(137, 14);
             this.lblShortOverName.TabIndex = 424;
@@ -568,7 +672,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCashCount.BackColor = System.Drawing.Color.Transparent;
             this.lblCashCount.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCashCount.ForeColor = System.Drawing.Color.Red;
-            this.lblCashCount.Location = new System.Drawing.Point(176, 1142);
+            this.lblCashCount.Location = new System.Drawing.Point(176, 1201);
             this.lblCashCount.Name = "lblCashCount";
             this.lblCashCount.Size = new System.Drawing.Size(174, 14);
             this.lblCashCount.TabIndex = 423;
@@ -577,7 +681,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label24
             // 
-            this.label24.Location = new System.Drawing.Point(16, 1142);
+            this.label24.Location = new System.Drawing.Point(16, 1201);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(137, 14);
             this.label24.TabIndex = 422;
@@ -585,7 +689,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(9, 1118);
+            this.label1.Location = new System.Drawing.Point(9, 1177);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(353, 14);
             this.label1.TabIndex = 421;
@@ -595,29 +699,29 @@ namespace AceSoft.RetailPlus.Client.UI
             // label3
             // 
             this.label3.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label3.Location = new System.Drawing.Point(9, 1134);
+            this.label3.Location = new System.Drawing.Point(9, 1193);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(353, 5);
             this.label3.TabIndex = 420;
             this.label3.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label4
             // 
             this.label4.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label4.Location = new System.Drawing.Point(9, 1110);
+            this.label4.Location = new System.Drawing.Point(9, 1169);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(353, 5);
             this.label4.TabIndex = 419;
             this.label4.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label74
             // 
             this.label74.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label74.Location = new System.Drawing.Point(176, 1086);
+            this.label74.Location = new System.Drawing.Point(176, 1145);
             this.label74.Name = "label74";
             this.label74.Size = new System.Drawing.Size(174, 5);
             this.label74.TabIndex = 418;
@@ -629,7 +733,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfDebitPaymentTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfDebitPaymentTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfDebitPaymentTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfDebitPaymentTransactions.Location = new System.Drawing.Point(176, 1039);
+            this.lblNoOfDebitPaymentTransactions.Location = new System.Drawing.Point(176, 1098);
             this.lblNoOfDebitPaymentTransactions.Name = "lblNoOfDebitPaymentTransactions";
             this.lblNoOfDebitPaymentTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfDebitPaymentTransactions.TabIndex = 417;
@@ -638,7 +742,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label10
             // 
-            this.label10.Location = new System.Drawing.Point(16, 1039);
+            this.label10.Location = new System.Drawing.Point(16, 1098);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(137, 14);
             this.label10.TabIndex = 416;
@@ -649,7 +753,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfCreditPaymentTran.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfCreditPaymentTran.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfCreditPaymentTran.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfCreditPaymentTran.Location = new System.Drawing.Point(176, 1023);
+            this.lblNoOfCreditPaymentTran.Location = new System.Drawing.Point(176, 1082);
             this.lblNoOfCreditPaymentTran.Name = "lblNoOfCreditPaymentTran";
             this.lblNoOfCreditPaymentTran.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfCreditPaymentTran.TabIndex = 415;
@@ -658,7 +762,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblNoOfCreditPaymentTran1
             // 
-            this.lblNoOfCreditPaymentTran1.Location = new System.Drawing.Point(16, 1023);
+            this.lblNoOfCreditPaymentTran1.Location = new System.Drawing.Point(16, 1082);
             this.lblNoOfCreditPaymentTran1.Name = "lblNoOfCreditPaymentTran1";
             this.lblNoOfCreditPaymentTran1.Size = new System.Drawing.Size(137, 14);
             this.lblNoOfCreditPaymentTran1.TabIndex = 414;
@@ -669,7 +773,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfCreditTran.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfCreditTran.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfCreditTran.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfCreditTran.Location = new System.Drawing.Point(176, 991);
+            this.lblNoOfCreditTran.Location = new System.Drawing.Point(176, 1050);
             this.lblNoOfCreditTran.Name = "lblNoOfCreditTran";
             this.lblNoOfCreditTran.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfCreditTran.TabIndex = 413;
@@ -678,7 +782,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblNoOfCreditTran1
             // 
-            this.lblNoOfCreditTran1.Location = new System.Drawing.Point(16, 991);
+            this.lblNoOfCreditTran1.Location = new System.Drawing.Point(16, 1050);
             this.lblNoOfCreditTran1.Name = "lblNoOfCreditTran1";
             this.lblNoOfCreditTran1.Size = new System.Drawing.Size(137, 14);
             this.lblNoOfCreditTran1.TabIndex = 412;
@@ -689,7 +793,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfVoidTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfVoidTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfVoidTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfVoidTransactions.Location = new System.Drawing.Point(176, 1071);
+            this.lblNoOfVoidTransactions.Location = new System.Drawing.Point(176, 1130);
             this.lblNoOfVoidTransactions.Name = "lblNoOfVoidTransactions";
             this.lblNoOfVoidTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfVoidTransactions.TabIndex = 411;
@@ -698,7 +802,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label33
             // 
-            this.label33.Location = new System.Drawing.Point(16, 1071);
+            this.label33.Location = new System.Drawing.Point(16, 1130);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(137, 14);
             this.label33.TabIndex = 410;
@@ -709,7 +813,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfRefundTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfRefundTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfRefundTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfRefundTransactions.Location = new System.Drawing.Point(176, 1055);
+            this.lblNoOfRefundTransactions.Location = new System.Drawing.Point(176, 1114);
             this.lblNoOfRefundTransactions.Name = "lblNoOfRefundTransactions";
             this.lblNoOfRefundTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfRefundTransactions.TabIndex = 409;
@@ -718,7 +822,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label37
             // 
-            this.label37.Location = new System.Drawing.Point(16, 1055);
+            this.label37.Location = new System.Drawing.Point(16, 1114);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(137, 14);
             this.label37.TabIndex = 408;
@@ -729,7 +833,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfCombPayTran.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfCombPayTran.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfCombPayTran.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfCombPayTran.Location = new System.Drawing.Point(176, 1007);
+            this.lblNoOfCombPayTran.Location = new System.Drawing.Point(176, 1066);
             this.lblNoOfCombPayTran.Name = "lblNoOfCombPayTran";
             this.lblNoOfCombPayTran.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfCombPayTran.TabIndex = 407;
@@ -738,7 +842,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label18
             // 
-            this.label18.Location = new System.Drawing.Point(16, 1007);
+            this.label18.Location = new System.Drawing.Point(16, 1066);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(137, 14);
             this.label18.TabIndex = 406;
@@ -749,7 +853,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfCreditCardTran.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfCreditCardTran.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfCreditCardTran.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfCreditCardTran.Location = new System.Drawing.Point(176, 975);
+            this.lblNoOfCreditCardTran.Location = new System.Drawing.Point(176, 1034);
             this.lblNoOfCreditCardTran.Name = "lblNoOfCreditCardTran";
             this.lblNoOfCreditCardTran.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfCreditCardTran.TabIndex = 405;
@@ -758,7 +862,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblNoOfCreditCardTran1
             // 
-            this.lblNoOfCreditCardTran1.Location = new System.Drawing.Point(16, 975);
+            this.lblNoOfCreditCardTran1.Location = new System.Drawing.Point(16, 1034);
             this.lblNoOfCreditCardTran1.Name = "lblNoOfCreditCardTran1";
             this.lblNoOfCreditCardTran1.Size = new System.Drawing.Size(137, 14);
             this.lblNoOfCreditCardTran1.TabIndex = 404;
@@ -769,7 +873,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfChequeTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfChequeTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfChequeTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfChequeTransactions.Location = new System.Drawing.Point(176, 959);
+            this.lblNoOfChequeTransactions.Location = new System.Drawing.Point(176, 1018);
             this.lblNoOfChequeTransactions.Name = "lblNoOfChequeTransactions";
             this.lblNoOfChequeTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfChequeTransactions.TabIndex = 403;
@@ -778,7 +882,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label14
             // 
-            this.label14.Location = new System.Drawing.Point(16, 959);
+            this.label14.Location = new System.Drawing.Point(16, 1018);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(137, 14);
             this.label14.TabIndex = 402;
@@ -789,7 +893,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfCashTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfCashTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfCashTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfCashTransactions.Location = new System.Drawing.Point(176, 943);
+            this.lblNoOfCashTransactions.Location = new System.Drawing.Point(176, 1002);
             this.lblNoOfCashTransactions.Name = "lblNoOfCashTransactions";
             this.lblNoOfCashTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfCashTransactions.TabIndex = 401;
@@ -798,7 +902,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label16
             // 
-            this.label16.Location = new System.Drawing.Point(16, 943);
+            this.label16.Location = new System.Drawing.Point(16, 1002);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(137, 14);
             this.label16.TabIndex = 400;
@@ -806,7 +910,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label22
             // 
-            this.label22.Location = new System.Drawing.Point(9, 918);
+            this.label22.Location = new System.Drawing.Point(9, 977);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(353, 14);
             this.label22.TabIndex = 399;
@@ -816,28 +920,28 @@ namespace AceSoft.RetailPlus.Client.UI
             // label71
             // 
             this.label71.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label71.Location = new System.Drawing.Point(9, 934);
+            this.label71.Location = new System.Drawing.Point(9, 993);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(353, 5);
             this.label71.TabIndex = 398;
             this.label71.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label71.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label72
             // 
             this.label72.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label72.Location = new System.Drawing.Point(9, 910);
+            this.label72.Location = new System.Drawing.Point(9, 969);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(353, 5);
             this.label72.TabIndex = 397;
             this.label72.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label72.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label57
             // 
-            this.label57.Location = new System.Drawing.Point(9, 839);
+            this.label57.Location = new System.Drawing.Point(9, 898);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(353, 14);
             this.label57.TabIndex = 396;
@@ -847,28 +951,28 @@ namespace AceSoft.RetailPlus.Client.UI
             // label65
             // 
             this.label65.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label65.Location = new System.Drawing.Point(9, 855);
+            this.label65.Location = new System.Drawing.Point(9, 914);
             this.label65.Name = "label65";
             this.label65.Size = new System.Drawing.Size(353, 5);
             this.label65.TabIndex = 395;
             this.label65.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label65.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label70
             // 
             this.label70.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label70.Location = new System.Drawing.Point(9, 831);
+            this.label70.Location = new System.Drawing.Point(9, 808);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(353, 5);
             this.label70.TabIndex = 394;
             this.label70.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label64
             // 
-            this.label64.Location = new System.Drawing.Point(9, 758);
+            this.label64.Location = new System.Drawing.Point(9, 817);
             this.label64.Name = "label64";
             this.label64.Size = new System.Drawing.Size(353, 14);
             this.label64.TabIndex = 393;
@@ -878,28 +982,28 @@ namespace AceSoft.RetailPlus.Client.UI
             // label66
             // 
             this.label66.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label66.Location = new System.Drawing.Point(9, 774);
+            this.label66.Location = new System.Drawing.Point(9, 833);
             this.label66.Name = "label66";
             this.label66.Size = new System.Drawing.Size(353, 5);
             this.label66.TabIndex = 392;
             this.label66.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label68
             // 
             this.label68.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label68.Location = new System.Drawing.Point(9, 750);
+            this.label68.Location = new System.Drawing.Point(9, 809);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(353, 5);
             this.label68.TabIndex = 391;
             this.label68.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label60
             // 
-            this.label60.Location = new System.Drawing.Point(9, 678);
+            this.label60.Location = new System.Drawing.Point(9, 737);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(353, 14);
             this.label60.TabIndex = 390;
@@ -909,28 +1013,28 @@ namespace AceSoft.RetailPlus.Client.UI
             // label62
             // 
             this.label62.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label62.Location = new System.Drawing.Point(9, 694);
+            this.label62.Location = new System.Drawing.Point(9, 753);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(353, 5);
             this.label62.TabIndex = 389;
             this.label62.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label63
             // 
             this.label63.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label63.Location = new System.Drawing.Point(9, 670);
+            this.label63.Location = new System.Drawing.Point(9, 729);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(353, 5);
             this.label63.TabIndex = 388;
             this.label63.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label54
             // 
-            this.label54.Location = new System.Drawing.Point(9, 632);
+            this.label54.Location = new System.Drawing.Point(9, 691);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(353, 14);
             this.label54.TabIndex = 387;
@@ -940,23 +1044,23 @@ namespace AceSoft.RetailPlus.Client.UI
             // label56
             // 
             this.label56.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label56.Location = new System.Drawing.Point(9, 648);
+            this.label56.Location = new System.Drawing.Point(9, 707);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(353, 5);
             this.label56.TabIndex = 386;
             this.label56.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label58
             // 
             this.label58.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label58.Location = new System.Drawing.Point(9, 624);
+            this.label58.Location = new System.Drawing.Point(9, 683);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(353, 5);
             this.label58.TabIndex = 385;
             this.label58.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label58.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblBeginningBalance
@@ -964,7 +1068,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBeginningBalance.BackColor = System.Drawing.Color.Transparent;
             this.lblBeginningBalance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBeginningBalance.ForeColor = System.Drawing.Color.Red;
-            this.lblBeginningBalance.Location = new System.Drawing.Point(176, 594);
+            this.lblBeginningBalance.Location = new System.Drawing.Point(176, 653);
             this.lblBeginningBalance.Name = "lblBeginningBalance";
             this.lblBeginningBalance.Size = new System.Drawing.Size(174, 14);
             this.lblBeginningBalance.TabIndex = 384;
@@ -973,7 +1077,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblBeginningBalance1
             // 
-            this.lblBeginningBalance1.Location = new System.Drawing.Point(16, 594);
+            this.lblBeginningBalance1.Location = new System.Drawing.Point(16, 653);
             this.lblBeginningBalance1.Name = "lblBeginningBalance1";
             this.lblBeginningBalance1.Size = new System.Drawing.Size(137, 14);
             this.lblBeginningBalance1.TabIndex = 383;
@@ -981,7 +1085,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label50
             // 
-            this.label50.Location = new System.Drawing.Point(9, 571);
+            this.label50.Location = new System.Drawing.Point(9, 630);
             this.label50.Name = "label50";
             this.label50.Size = new System.Drawing.Size(353, 14);
             this.label50.TabIndex = 382;
@@ -991,23 +1095,23 @@ namespace AceSoft.RetailPlus.Client.UI
             // label52
             // 
             this.label52.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label52.Location = new System.Drawing.Point(9, 587);
+            this.label52.Location = new System.Drawing.Point(9, 646);
             this.label52.Name = "label52";
             this.label52.Size = new System.Drawing.Size(353, 5);
             this.label52.TabIndex = 381;
             this.label52.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label53
             // 
             this.label53.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label53.Location = new System.Drawing.Point(9, 564);
+            this.label53.Location = new System.Drawing.Point(9, 623);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(353, 5);
             this.label53.TabIndex = 380;
             this.label53.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label53.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTotalDiscounts
@@ -1015,7 +1119,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblTotalDiscounts.BackColor = System.Drawing.Color.Transparent;
             this.lblTotalDiscounts.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalDiscounts.ForeColor = System.Drawing.Color.Red;
-            this.lblTotalDiscounts.Location = new System.Drawing.Point(176, 546);
+            this.lblTotalDiscounts.Location = new System.Drawing.Point(176, 605);
             this.lblTotalDiscounts.Name = "lblTotalDiscounts";
             this.lblTotalDiscounts.Size = new System.Drawing.Size(174, 14);
             this.lblTotalDiscounts.TabIndex = 379;
@@ -1024,7 +1128,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label49
             // 
-            this.label49.Location = new System.Drawing.Point(16, 546);
+            this.label49.Location = new System.Drawing.Point(16, 605);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(137, 14);
             this.label49.TabIndex = 378;
@@ -1033,7 +1137,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label46
             // 
             this.label46.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label46.Location = new System.Drawing.Point(176, 539);
+            this.label46.Location = new System.Drawing.Point(176, 598);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(174, 5);
             this.label46.TabIndex = 377;
@@ -1045,7 +1149,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblSubtotalDiscount.BackColor = System.Drawing.Color.Transparent;
             this.lblSubtotalDiscount.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSubtotalDiscount.ForeColor = System.Drawing.Color.Red;
-            this.lblSubtotalDiscount.Location = new System.Drawing.Point(176, 525);
+            this.lblSubtotalDiscount.Location = new System.Drawing.Point(176, 584);
             this.lblSubtotalDiscount.Name = "lblSubtotalDiscount";
             this.lblSubtotalDiscount.Size = new System.Drawing.Size(174, 14);
             this.lblSubtotalDiscount.TabIndex = 376;
@@ -1054,7 +1158,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label21
             // 
-            this.label21.Location = new System.Drawing.Point(16, 525);
+            this.label21.Location = new System.Drawing.Point(16, 584);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(137, 14);
             this.label21.TabIndex = 375;
@@ -1065,7 +1169,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblItemsDiscount.BackColor = System.Drawing.Color.Transparent;
             this.lblItemsDiscount.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblItemsDiscount.ForeColor = System.Drawing.Color.Red;
-            this.lblItemsDiscount.Location = new System.Drawing.Point(176, 509);
+            this.lblItemsDiscount.Location = new System.Drawing.Point(176, 568);
             this.lblItemsDiscount.Name = "lblItemsDiscount";
             this.lblItemsDiscount.Size = new System.Drawing.Size(174, 14);
             this.lblItemsDiscount.TabIndex = 374;
@@ -1074,7 +1178,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label69
             // 
-            this.label69.Location = new System.Drawing.Point(16, 509);
+            this.label69.Location = new System.Drawing.Point(16, 568);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(137, 14);
             this.label69.TabIndex = 373;
@@ -1082,7 +1186,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label13
             // 
-            this.label13.Location = new System.Drawing.Point(9, 486);
+            this.label13.Location = new System.Drawing.Point(9, 545);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(353, 14);
             this.label13.TabIndex = 372;
@@ -1092,23 +1196,23 @@ namespace AceSoft.RetailPlus.Client.UI
             // label44
             // 
             this.label44.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label44.Location = new System.Drawing.Point(9, 502);
+            this.label44.Location = new System.Drawing.Point(9, 561);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(353, 5);
             this.label44.TabIndex = 371;
             this.label44.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label44.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label45
             // 
             this.label45.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label45.Location = new System.Drawing.Point(9, 478);
+            this.label45.Location = new System.Drawing.Point(9, 540);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(353, 5);
             this.label45.TabIndex = 370;
             this.label45.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label45.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblRefundSales
@@ -1116,7 +1220,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblRefundSales.BackColor = System.Drawing.Color.Transparent;
             this.lblRefundSales.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRefundSales.ForeColor = System.Drawing.Color.Red;
-            this.lblRefundSales.Location = new System.Drawing.Point(176, 462);
+            this.lblRefundSales.Location = new System.Drawing.Point(176, 524);
             this.lblRefundSales.Name = "lblRefundSales";
             this.lblRefundSales.Size = new System.Drawing.Size(174, 14);
             this.lblRefundSales.TabIndex = 369;
@@ -1125,7 +1229,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label19
             // 
-            this.label19.Location = new System.Drawing.Point(16, 462);
+            this.label19.Location = new System.Drawing.Point(16, 524);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(137, 14);
             this.label19.TabIndex = 368;
@@ -1136,7 +1240,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblVoidSales.BackColor = System.Drawing.Color.Transparent;
             this.lblVoidSales.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVoidSales.ForeColor = System.Drawing.Color.Red;
-            this.lblVoidSales.Location = new System.Drawing.Point(176, 446);
+            this.lblVoidSales.Location = new System.Drawing.Point(176, 508);
             this.lblVoidSales.Name = "lblVoidSales";
             this.lblVoidSales.Size = new System.Drawing.Size(174, 14);
             this.lblVoidSales.TabIndex = 367;
@@ -1145,7 +1249,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label15
             // 
-            this.label15.Location = new System.Drawing.Point(16, 446);
+            this.label15.Location = new System.Drawing.Point(16, 508);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(137, 14);
             this.label15.TabIndex = 366;
@@ -1156,7 +1260,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblDebitPayment.BackColor = System.Drawing.Color.Transparent;
             this.lblDebitPayment.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDebitPayment.ForeColor = System.Drawing.Color.Red;
-            this.lblDebitPayment.Location = new System.Drawing.Point(176, 430);
+            this.lblDebitPayment.Location = new System.Drawing.Point(176, 492);
             this.lblDebitPayment.Name = "lblDebitPayment";
             this.lblDebitPayment.Size = new System.Drawing.Size(174, 14);
             this.lblDebitPayment.TabIndex = 365;
@@ -1165,7 +1269,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(16, 430);
+            this.label8.Location = new System.Drawing.Point(16, 492);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(137, 14);
             this.label8.TabIndex = 364;
@@ -1288,7 +1392,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label43.Size = new System.Drawing.Size(353, 5);
             this.label43.TabIndex = 352;
             this.label43.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label43.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label41
@@ -1299,7 +1403,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label41.Size = new System.Drawing.Size(353, 5);
             this.label41.TabIndex = 351;
             this.label41.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLocalTax
@@ -1359,7 +1463,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label36.Size = new System.Drawing.Size(353, 5);
             this.label36.TabIndex = 341;
             this.label36.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label32
@@ -1370,7 +1474,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label32.Size = new System.Drawing.Size(353, 5);
             this.label32.TabIndex = 336;
             this.label32.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTotalAmount
@@ -1478,7 +1582,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCreditCardDeposit.BackColor = System.Drawing.Color.Transparent;
             this.lblCreditCardDeposit.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCreditCardDeposit.ForeColor = System.Drawing.Color.Red;
-            this.lblCreditCardDeposit.Location = new System.Drawing.Point(176, 894);
+            this.lblCreditCardDeposit.Location = new System.Drawing.Point(176, 953);
             this.lblCreditCardDeposit.Name = "lblCreditCardDeposit";
             this.lblCreditCardDeposit.Size = new System.Drawing.Size(174, 14);
             this.lblCreditCardDeposit.TabIndex = 316;
@@ -1487,7 +1591,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(16, 894);
+            this.label5.Location = new System.Drawing.Point(16, 953);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(137, 14);
             this.label5.TabIndex = 315;
@@ -1498,7 +1602,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblChequeDeposit.BackColor = System.Drawing.Color.Transparent;
             this.lblChequeDeposit.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChequeDeposit.ForeColor = System.Drawing.Color.Red;
-            this.lblChequeDeposit.Location = new System.Drawing.Point(176, 878);
+            this.lblChequeDeposit.Location = new System.Drawing.Point(176, 937);
             this.lblChequeDeposit.Name = "lblChequeDeposit";
             this.lblChequeDeposit.Size = new System.Drawing.Size(174, 14);
             this.lblChequeDeposit.TabIndex = 314;
@@ -1507,7 +1611,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(16, 878);
+            this.label9.Location = new System.Drawing.Point(16, 937);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(137, 14);
             this.label9.TabIndex = 313;
@@ -1518,7 +1622,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCashDeposit.BackColor = System.Drawing.Color.Transparent;
             this.lblCashDeposit.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCashDeposit.ForeColor = System.Drawing.Color.Red;
-            this.lblCashDeposit.Location = new System.Drawing.Point(176, 862);
+            this.lblCashDeposit.Location = new System.Drawing.Point(176, 921);
             this.lblCashDeposit.Name = "lblCashDeposit";
             this.lblCashDeposit.Size = new System.Drawing.Size(174, 14);
             this.lblCashDeposit.TabIndex = 312;
@@ -1527,7 +1631,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label17
             // 
-            this.label17.Location = new System.Drawing.Point(16, 862);
+            this.label17.Location = new System.Drawing.Point(16, 921);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(137, 14);
             this.label17.TabIndex = 311;
@@ -1538,7 +1642,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblPaidOut.BackColor = System.Drawing.Color.Transparent;
             this.lblPaidOut.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPaidOut.ForeColor = System.Drawing.Color.Red;
-            this.lblPaidOut.Location = new System.Drawing.Point(176, 654);
+            this.lblPaidOut.Location = new System.Drawing.Point(176, 713);
             this.lblPaidOut.Name = "lblPaidOut";
             this.lblPaidOut.Size = new System.Drawing.Size(174, 14);
             this.lblPaidOut.TabIndex = 286;
@@ -1547,7 +1651,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(16, 654);
+            this.label6.Location = new System.Drawing.Point(16, 713);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(137, 14);
             this.label6.TabIndex = 285;
@@ -1558,7 +1662,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCreditCardWithHold.BackColor = System.Drawing.Color.Transparent;
             this.lblCreditCardWithHold.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCreditCardWithHold.ForeColor = System.Drawing.Color.Red;
-            this.lblCreditCardWithHold.Location = new System.Drawing.Point(176, 814);
+            this.lblCreditCardWithHold.Location = new System.Drawing.Point(176, 873);
             this.lblCreditCardWithHold.Name = "lblCreditCardWithHold";
             this.lblCreditCardWithHold.Size = new System.Drawing.Size(174, 14);
             this.lblCreditCardWithHold.TabIndex = 284;
@@ -1567,7 +1671,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label47
             // 
-            this.label47.Location = new System.Drawing.Point(16, 814);
+            this.label47.Location = new System.Drawing.Point(16, 873);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(137, 14);
             this.label47.TabIndex = 283;
@@ -1578,7 +1682,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblChequeWithHold.BackColor = System.Drawing.Color.Transparent;
             this.lblChequeWithHold.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChequeWithHold.ForeColor = System.Drawing.Color.Red;
-            this.lblChequeWithHold.Location = new System.Drawing.Point(176, 798);
+            this.lblChequeWithHold.Location = new System.Drawing.Point(176, 857);
             this.lblChequeWithHold.Name = "lblChequeWithHold";
             this.lblChequeWithHold.Size = new System.Drawing.Size(174, 14);
             this.lblChequeWithHold.TabIndex = 282;
@@ -1587,7 +1691,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label51
             // 
-            this.label51.Location = new System.Drawing.Point(16, 798);
+            this.label51.Location = new System.Drawing.Point(16, 857);
             this.label51.Name = "label51";
             this.label51.Size = new System.Drawing.Size(137, 14);
             this.label51.TabIndex = 281;
@@ -1598,7 +1702,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCashWithHold.BackColor = System.Drawing.Color.Transparent;
             this.lblCashWithHold.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCashWithHold.ForeColor = System.Drawing.Color.Red;
-            this.lblCashWithHold.Location = new System.Drawing.Point(176, 782);
+            this.lblCashWithHold.Location = new System.Drawing.Point(176, 841);
             this.lblCashWithHold.Name = "lblCashWithHold";
             this.lblCashWithHold.Size = new System.Drawing.Size(174, 14);
             this.lblCashWithHold.TabIndex = 280;
@@ -1607,7 +1711,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label55
             // 
-            this.label55.Location = new System.Drawing.Point(16, 782);
+            this.label55.Location = new System.Drawing.Point(16, 841);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(137, 14);
             this.label55.TabIndex = 279;
@@ -1618,7 +1722,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCreditCardDisburse.BackColor = System.Drawing.Color.Transparent;
             this.lblCreditCardDisburse.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCreditCardDisburse.ForeColor = System.Drawing.Color.Red;
-            this.lblCreditCardDisburse.Location = new System.Drawing.Point(176, 734);
+            this.lblCreditCardDisburse.Location = new System.Drawing.Point(176, 793);
             this.lblCreditCardDisburse.Name = "lblCreditCardDisburse";
             this.lblCreditCardDisburse.Size = new System.Drawing.Size(174, 14);
             this.lblCreditCardDisburse.TabIndex = 276;
@@ -1627,7 +1731,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label59
             // 
-            this.label59.Location = new System.Drawing.Point(16, 734);
+            this.label59.Location = new System.Drawing.Point(16, 793);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(137, 14);
             this.label59.TabIndex = 275;
@@ -1638,7 +1742,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblChequeDisburse.BackColor = System.Drawing.Color.Transparent;
             this.lblChequeDisburse.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChequeDisburse.ForeColor = System.Drawing.Color.Red;
-            this.lblChequeDisburse.Location = new System.Drawing.Point(176, 718);
+            this.lblChequeDisburse.Location = new System.Drawing.Point(176, 777);
             this.lblChequeDisburse.Name = "lblChequeDisburse";
             this.lblChequeDisburse.Size = new System.Drawing.Size(174, 14);
             this.lblChequeDisburse.TabIndex = 274;
@@ -1647,7 +1751,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label61
             // 
-            this.label61.Location = new System.Drawing.Point(16, 718);
+            this.label61.Location = new System.Drawing.Point(16, 777);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(137, 14);
             this.label61.TabIndex = 273;
@@ -1658,7 +1762,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCashDisburse.BackColor = System.Drawing.Color.Transparent;
             this.lblCashDisburse.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCashDisburse.ForeColor = System.Drawing.Color.Red;
-            this.lblCashDisburse.Location = new System.Drawing.Point(176, 702);
+            this.lblCashDisburse.Location = new System.Drawing.Point(176, 761);
             this.lblCashDisburse.Name = "lblCashDisburse";
             this.lblCashDisburse.Size = new System.Drawing.Size(174, 14);
             this.lblCashDisburse.TabIndex = 272;
@@ -1667,7 +1771,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblCashDisburse1
             // 
-            this.lblCashDisburse1.Location = new System.Drawing.Point(16, 702);
+            this.lblCashDisburse1.Location = new System.Drawing.Point(16, 761);
             this.lblCashDisburse1.Name = "lblCashDisburse1";
             this.lblCashDisburse1.Size = new System.Drawing.Size(137, 14);
             this.lblCashDisburse1.TabIndex = 271;
@@ -1678,7 +1782,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCashInDrawer.BackColor = System.Drawing.Color.Transparent;
             this.lblCashInDrawer.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCashInDrawer.ForeColor = System.Drawing.Color.Red;
-            this.lblCashInDrawer.Location = new System.Drawing.Point(176, 610);
+            this.lblCashInDrawer.Location = new System.Drawing.Point(176, 669);
             this.lblCashInDrawer.Name = "lblCashInDrawer";
             this.lblCashInDrawer.Size = new System.Drawing.Size(174, 14);
             this.lblCashInDrawer.TabIndex = 268;
@@ -1687,7 +1791,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblCashInDrawer1
             // 
-            this.lblCashInDrawer1.Location = new System.Drawing.Point(16, 610);
+            this.lblCashInDrawer1.Location = new System.Drawing.Point(16, 669);
             this.lblCashInDrawer1.Name = "lblCashInDrawer1";
             this.lblCashInDrawer1.Size = new System.Drawing.Size(137, 14);
             this.lblCashInDrawer1.TabIndex = 267;
@@ -1743,7 +1847,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblReportFooter3
             // 
-            this.lblReportFooter3.Location = new System.Drawing.Point(20, 1223);
+            this.lblReportFooter3.Location = new System.Drawing.Point(20, 1282);
             this.lblReportFooter3.Name = "lblReportFooter3";
             this.lblReportFooter3.Size = new System.Drawing.Size(331, 15);
             this.lblReportFooter3.TabIndex = 227;
@@ -1752,7 +1856,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblReportFooter2
             // 
-            this.lblReportFooter2.Location = new System.Drawing.Point(20, 1207);
+            this.lblReportFooter2.Location = new System.Drawing.Point(20, 1266);
             this.lblReportFooter2.Name = "lblReportFooter2";
             this.lblReportFooter2.Size = new System.Drawing.Size(331, 15);
             this.lblReportFooter2.TabIndex = 226;
@@ -1761,7 +1865,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblReportFooter1
             // 
-            this.lblReportFooter1.Location = new System.Drawing.Point(20, 1191);
+            this.lblReportFooter1.Location = new System.Drawing.Point(20, 1250);
             this.lblReportFooter1.Name = "lblReportFooter1";
             this.lblReportFooter1.Size = new System.Drawing.Size(331, 15);
             this.lblReportFooter1.TabIndex = 225;
@@ -1770,7 +1874,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblPanelBot
             // 
-            this.lblPanelBot.Location = new System.Drawing.Point(20, 1239);
+            this.lblPanelBot.Location = new System.Drawing.Point(20, 1298);
             this.lblPanelBot.Name = "lblPanelBot";
             this.lblPanelBot.Size = new System.Drawing.Size(331, 15);
             this.lblPanelBot.TabIndex = 168;
@@ -1782,7 +1886,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfTotalTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfTotalTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfTotalTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfTotalTransactions.Location = new System.Drawing.Point(176, 1094);
+            this.lblNoOfTotalTransactions.Location = new System.Drawing.Point(176, 1153);
             this.lblNoOfTotalTransactions.Name = "lblNoOfTotalTransactions";
             this.lblNoOfTotalTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfTotalTransactions.TabIndex = 161;
@@ -1791,7 +1895,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label28
             // 
-            this.label28.Location = new System.Drawing.Point(16, 1094);
+            this.label28.Location = new System.Drawing.Point(16, 1153);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(137, 14);
             this.label28.TabIndex = 160;
@@ -1864,7 +1968,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label20.Size = new System.Drawing.Size(353, 5);
             this.label20.TabIndex = 322;
             this.label20.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -1877,7 +1981,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2.Size = new System.Drawing.Size(353, 5);
             this.label2.TabIndex = 323;
             this.label2.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblReportDesc
@@ -2079,6 +2183,11 @@ namespace AceSoft.RetailPlus.Client.UI
 			lblCreditCardSales.Text			= mDetails.CreditCardSales.ToString("#,##0.#0");
 			lblCreditSales.Text				= mDetails.CreditSales.ToString("#,##0.#0");
 			lblCreditPayment.Text			= mDetails.CreditPayment.ToString("#,##0.#0");
+            lblCreditPaymentCash.Text       = mDetails.CreditPaymentCash.ToString("#,##0.#0");
+            lblCreditPaymentCheque.Text     = mDetails.CreditPaymentCheque.ToString("#,##0.#0");
+            lblCreditPaymentCreditCard.Text = mDetails.CreditPaymentCreditCard.ToString("#,##0.#0");
+            lblCreditPaymentDebit.Text      = mDetails.CreditPaymentDebit.ToString("#,##0.#0");
+
 			lblDebitPayment.Text			= mDetails.DebitPayment.ToString("#,##0.#0");
 			lblVoidSales.Text				= mDetails.VoidSales.ToString("#,##0.#0");
 			lblRefundSales.Text				= mDetails.RefundSales.ToString("#,##0.#0");

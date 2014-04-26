@@ -471,8 +471,31 @@ namespace AceSoft
 				}
 
 				main_sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-				main_ipEndPoint = new IPEndPoint(Dns.GetHostEntry(ServerIP).AddressList[0], Port);
+                try
+                {
+                    try
+                    {
+                        main_ipEndPoint = new IPEndPoint(Dns.GetHostByAddress(ServerIP).AddressList[0], Port);
+                    }
+                    catch
+                    {
+                        main_ipEndPoint = new IPEndPoint(Dns.GetHostEntry(ServerIP).AddressList[0], Port);
+                    }
+                }
+                catch {
+                    // this is to resolve all ipaddress in case the above wont connect
+                    System.Net.IPAddress[] ips = Dns.GetHostAddresses(ServerIP);
 
+                    foreach (System.Net.IPAddress ip in ips)
+                    {
+                        try
+                        {
+                            main_ipEndPoint = new IPEndPoint(ip, Port);
+                            break;
+                        }
+                        catch { }
+                    }
+                }
 				try
 				{
 					main_sock.Connect(main_ipEndPoint);

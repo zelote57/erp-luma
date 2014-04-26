@@ -76,6 +76,14 @@ namespace AceSoft.RetailPlus.Client
 			writer.Close();
 			writer.Dispose();
 		}
+        public void Write(System.Text.StringBuilder Message)
+        {
+            InitializeWriter();
+            writer.Write(Message);
+            writer.Flush();
+            writer.Close();
+            writer.Dispose();
+        }
 		public void DeleteFile()
 		{
 			try

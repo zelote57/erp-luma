@@ -12,6 +12,7 @@
 <%@ Register TagPrefix="CTRL" TagName="PageHeader" Src="../_PageHeader.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlList" Src="_List.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlCloseInventory" Src="_CloseInventory.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlCloseInventoryProduct" Src="_CloseInventoryProduct.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlCloseInventoryDetailed" Src="_CloseInventoryDetailed.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlInvAdjustment" Src="_invadjustment.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlMenu" Src="../Inventory/_Menu.ascx" %>
@@ -117,6 +118,7 @@
 								<td class="ms-tztop" id="TopCell" valign="top" width="100%" style="height: 217px">
 									<CTRL:ctrlList id="ctrlList" runat="server" Visible="False"></CTRL:ctrlList>
 									<CTRL:ctrlCloseInventory id="ctrlCloseInventory" runat="server" Visible="False"></CTRL:ctrlCloseInventory>
+                                    <CTRL:ctrlCloseInventoryProduct id="ctrlCloseInventoryProduct" runat="server" Visible="False"></CTRL:ctrlCloseInventoryProduct>
 									<CTRL:ctrlCloseInventoryDetailed id="ctrlCloseInventoryDetailed" runat="server" Visible="False"></CTRL:ctrlCloseInventoryDetailed>
 									<CTRL:ctrlInvAdjustment id="ctrlInvAdjustment" runat="server" Visible="False"></CTRL:ctrlInvAdjustment>
                                     <CTRL:ctrlProductInventoryReport ID="ctrlProductInventoryReport" runat="server" Visible="false" />

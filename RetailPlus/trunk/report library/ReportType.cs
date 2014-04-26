@@ -44,8 +44,9 @@ namespace AceSoft.RetailPlus
         public const string SalesTransactions = "Sales Transactions";
         public const string SalesTransactionPerCustomer = "Sales Transaction Per Customer";
         public const string SalesTransactionPerCustomerWithCheque = "Sales Transaction Per Customer With Cheque Details";
+        public const string SalesTransactionPerCustomerPerItem = "Sales Transaction Per Customer Per Item";
         public const string SalesTransactionPerCashier= "Sales Transaction Per Cashier";
-        public const string SalesTransactionPerCashierPerCustomer = "Sales Transaction Per Cashier PerCustomer";
+        public const string SalesTransactionPerCashierPerCustomer = "Sales Transaction Per Cashier Per Customer";
         public const string SalesTransactionPerTerminal = "Sales Transaction Per Terminal";
         public const string SalesTransactionPerItem = "Sales Transaction Per Item";
         public const string CashSalesDaily = "Cash-Sales Daily";
@@ -64,6 +65,15 @@ namespace AceSoft.RetailPlus
 
         public const string RewardsHistory = "Rewards History";
         public const string RewardsSummary = "Rewards Summary";
+
+        public const string MANAGEMENT_PerBranch = "Transactions per branch";
+        public const string MANAGEMENT_PerBranchPerMonth = "Transactions per branch/monthly";
+        public const string MANAGEMENT_PerBranchPerMonthWithCovers = "Transactions per branch/monthly w/ Covers";
+        public const string MANAGEMENT_PerBranchPerDay = "Transactions per branch/daily";
+        public const string MANAGEMENT_PerCustomerGroupPerDay = "Transactions per customer group/monthly";
+
+        public const string ANALYTICS_All = "All Transactions";
+        public const string ANALYTICS_ItemsForPOBasedOnSales = "Items For PO based on Sales";
 
         public const string REPORT_SELECTION_SEPARATOR = "---------------------------------------------";
         public const string REPORT_SELECTION = "Select Report Type";

@@ -203,10 +203,13 @@
     <NotInBuild Include="acc_scripts\access.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
-    <NotInBuild Include="pos_scripts\x.sql">
+    <NotInBuild Include="pos_scripts\x_prod.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
     <NotInBuild Include="mgla.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="pos_scripts\x_trx.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
   </ItemGroup>

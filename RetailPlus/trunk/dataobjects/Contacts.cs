@@ -226,10 +226,24 @@ namespace AceSoft.RetailPlus.Data
 				myReader.Close();
 
                 //Sep 15, 2013 Include the sepecific details if there's any
+                
                 if (!string.IsNullOrEmpty(Details.AdditionalDetails.Salutation))
                 {
                     Details.AdditionalDetails.ContactID = iID;
                     _ContactAddOns.Save(Details.AdditionalDetails);
+                }
+                else
+                {
+                    Details.AdditionalDetails.ContactID = iID;
+                    Details.AdditionalDetails.Salutation = "Mr";
+                    Details.AdditionalDetails.FirstName = Details.ContactCode;
+                    Details.AdditionalDetails.LastName = Details.ContactName;
+                    Details.AdditionalDetails.Address1 = Details.Address;
+                    Details.AdditionalDetails.AnniversaryDate = DateTime.Now;
+                    Details.AdditionalDetails.BirthDate = Details.DateCreated;
+                    Details.AdditionalDetails.BusinessPhoneNo = Details.TelephoneNo;
+                    Details.AdditionalDetails.CountryCode = "PH";
+                    Details.AdditionalDetails.CountryID = 1;
                 }
 
 				return iID;

@@ -62,7 +62,7 @@ namespace AceSoft.RetailPlus.Forwarder
 
         #region Public Methods
 
-        private string CreateDailySales(DateTime pvtProcessDate, Data.TerminalReportDetails pvtTerminalReportDetails, decimal decSeniorCitizenDiscount, long lngSeniorCitizenDiscountCount)
+        private string CreateDailySales(DateTime pvtProcessDate, Data.TerminalReportDetails pvtTerminalReportDetails, decimal decSeniorCitizenDiscount, long lngSeniorCitizenDiscountCount, decimal decPWDDiscount, long lngPWDDiscountCount)
         {
             string strRetValue = "";
             try
@@ -70,17 +70,21 @@ namespace AceSoft.RetailPlus.Forwarder
                 string stDailyTableName = mclsRLCDetails.OutputDirectory + "\\" + mclsRLCDetails.TenantCode.Substring(mclsRLCDetails.TenantCode.Length - 4) + pvtTerminalReportDetails.DateLastInitializedToDisplay.ToString("MMdd") + "." + pvtTerminalReportDetails.TerminalNo + pvtTerminalReportDetails.BatchCounter.ToString();
                 if (File.Exists(stDailyTableName)) File.Delete(stDailyTableName);
 
-                decimal decGrossSales = pvtTerminalReportDetails.DailySales + pvtTerminalReportDetails.VAT + pvtTerminalReportDetails.TotalDiscount + pvtTerminalReportDetails.TotalCharge;
-                decimal decVAT = decGrossSales / Convert.ToDecimal(1.12) * Convert.ToDecimal(0.12);
-                long lngDiscountCountNetOfSeniorCitizen = pvtTerminalReportDetails.NoOfDiscountedTransactions - lngSeniorCitizenDiscountCount;
-                decimal decDiscountNetOfSeniorCitizen = pvtTerminalReportDetails.TotalDiscount - decSeniorCitizenDiscount;
+                // remove the + pvtTerminalReportDetails.TotalCharge in decGrossSales 
+                decimal decGrossSales = pvtTerminalReportDetails.DailySales + pvtTerminalReportDetails.VAT + pvtTerminalReportDetails.LocalTax + pvtTerminalReportDetails.TotalDiscount; //+ pvtTerminalReportDetails.TotalCharge
+                //decimal decVAT = (pvtTerminalReportDetails.DailySales + pvtTerminalReportDetails.VAT - pvtTerminalReportDetails.NonVaTableAmount) / Convert.ToDecimal(1.12) * Convert.ToDecimal(0.12); //decGrossSales
+                
+                long lngDiscountCountNetOfSeniorCitizen = pvtTerminalReportDetails.NoOfDiscountedTransactions - lngSeniorCitizenDiscountCount - lngPWDDiscountCount;
+                decimal decDiscountNetOfSeniorCitizen = pvtTerminalReportDetails.TotalDiscount - decSeniorCitizenDiscount - decPWDDiscount;
                 decimal deCreditCardSalesTax = pvtTerminalReportDetails.CreditCardSales / Convert.ToDecimal(1.12) * Convert.ToDecimal(0.12);
+
+                decimal decVAT = (decGrossSales - decSeniorCitizenDiscount - pvtTerminalReportDetails.NonVaTableAmount - decPWDDiscount) / Convert.ToDecimal(1.12) * Convert.ToDecimal(0.12); //decGrossSales
 
                 writer = File.AppendText(stDailyTableName);
                 writer.WriteLine("01{0}", mclsRLCDetails.TenantCode.PadLeft(16, '0'));
                 writer.WriteLine("02{0}", pvtTerminalReportDetails.TerminalNo.PadLeft(16, '0'));
-                writer.WriteLine("03{0}", decGrossSales.ToString("####.#0").PadLeft(16, '0'));
-                writer.WriteLine("04{0}", decVAT.ToString("####.#0").PadLeft(16, '0'));
+                writer.WriteLine("03{0}", decGrossSales.ToString("####.#0").PadLeft(16, '0')); //gross of VAT, regular discount, sr citizen, local tax, pwd,  / net of void ,refund and service charge
+                writer.WriteLine("04{0}", decVAT.ToString("####.#0").PadLeft(16, '0')); // Line 3 less Line 11, Line 24, Line 27 & Line 28 / 1.12 x 12%
                 writer.WriteLine("05{0}", pvtTerminalReportDetails.VoidSales.ToString("####.#0").PadLeft(16, '0'));
                 writer.WriteLine("06{0}", pvtTerminalReportDetails.NoOfVoidTransactions.ToString("####").PadLeft(16, '0'));
                 writer.WriteLine("07{0}", decDiscountNetOfSeniorCitizen.ToString("####.#0").PadLeft(16, '0'));
@@ -96,7 +100,7 @@ namespace AceSoft.RetailPlus.Forwarder
                     writer.WriteLine("14{0}", Convert.ToInt64(pvtTerminalReportDetails.ZReadCount - 1).ToString("####").PadLeft(16, '0'));
                 writer.WriteLine("15{0}", pvtTerminalReportDetails.OldGrandTotal.ToString("####.#0").PadLeft(16, '0')); // line 15
                 writer.WriteLine("16{0}", pvtTerminalReportDetails.ZReadCount.ToString("####").PadLeft(16, '0'));
-                writer.WriteLine("17{0}", pvtTerminalReportDetails.NewGrandTotal.ToString("####.#0").PadLeft(16, '0')); // line 3 - line 7 - line 11
+                writer.WriteLine("17{0}", pvtTerminalReportDetails.NewGrandTotal.ToString("####.#0").PadLeft(16, '0')); // line 3 - line 7 - line 11 - line 27 + Line 15
                 writer.WriteLine("18{0}", pvtTerminalReportDetails.DateLastInitializedToDisplay.ToString("MM/dd/yyyy").PadLeft(16, '0'));
                 writer.WriteLine("19{0}", pvtTerminalReportDetails.PromotionalItems.ToString("####.#0").PadLeft(16, '0'));
                 writer.WriteLine("20{0}", "0.00".PadLeft(16, '0'));
@@ -106,12 +110,12 @@ namespace AceSoft.RetailPlus.Forwarder
                 writer.WriteLine("24{0}", pvtTerminalReportDetails.NonVaTableAmount.ToString("####.#0").PadLeft(16, '0'));
                 //08Jan2014 added as per new requirement
                 writer.WriteLine("25{0}", "0.00".PadLeft(16, '0'));         // Pharma Sales
-                writer.WriteLine("26{0}", "0.00".PadLeft(16, '0'));         // Non Pharma Sales
-                writer.WriteLine("27{0}", "0.00".PadLeft(16, '0'));         // PWD - Persons with Disability Discount
-                writer.WriteLine("28{0}", "0.00".PadLeft(16, '0'));         // SALES NOT SUBJECT TO PERCENTAGE RENT (ex. sales from fixed rent kiosks)
-                writer.WriteLine("29{0}", "0.00".PadLeft(16, '0'));         // Total Sales of Reprinted Transaction
-                writer.WriteLine("30{0}", "000".PadLeft(16, '0'));          // No. of Reprinted Transaction
-
+                writer.WriteLine("26{0}", "0.00".PadLeft(16, '0'));                                                 // Non Pharma Sales
+                writer.WriteLine("27{0}", decPWDDiscount.ToString("####.#0").PadLeft(16, '0'));           // PWD - Persons with Disability Discount
+                writer.WriteLine("28{0}", "0.00".PadLeft(16, '0'));                                                 // SALES NOT SUBJECT TO PERCENTAGE RENT (ex. sales from fixed rent kiosks)
+                writer.WriteLine("29{0}", pvtTerminalReportDetails.TotalReprintedTransaction.ToString("####.#0").PadLeft(16, '0'));     // Total Sales of Reprinted Transaction
+                writer.WriteLine("30{0}", pvtTerminalReportDetails.NoOfReprintedTransaction.ToString("####").PadLeft(16, '0'));             // No. of Reprinted Transaction
+                
                 writer.Flush();
                 writer.Close();
 
@@ -167,10 +171,13 @@ namespace AceSoft.RetailPlus.Forwarder
 
                 Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(clsTerminalReportHistory.Connection, clsTerminalReportHistory.Transaction);
 
-                long lngSeniorSitizenDiscountCount = 0;
-                decimal decSeniorSitizenDiscount = clsSalesTransactions.SeniorCitizenDiscounts(clsTerminalReportDetail.TerminalNo, clsTerminalReportDetail.BeginningTransactionNo, clsTerminalReportDetail.EndingTransactionNo, out lngSeniorSitizenDiscountCount);
+                long lngSeniorCitizenDiscountCount = 0;
+                decimal decSeniorCitizenDiscount = clsSalesTransactions.SeniorCitizenDiscounts(clsTerminalReportDetail.TerminalNo, clsTerminalReportDetail.BeginningTransactionNo, clsTerminalReportDetail.EndingTransactionNo, out lngSeniorCitizenDiscountCount);
 
-                string stDailyTableName = CreateDailySales(dteDateToprocess, clsTerminalReportDetail, decSeniorSitizenDiscount, lngSeniorSitizenDiscountCount);
+                long lngPWDDiscountCount = 0;
+                decimal decPWDDiscount = clsSalesTransactions.PersonWithDisabilityDiscounts(clsTerminalReportDetail.TerminalNo, clsTerminalReportDetail.BeginningTransactionNo, clsTerminalReportDetail.EndingTransactionNo, out lngPWDDiscountCount);
+
+                string stDailyTableName = CreateDailySales(dteDateToprocess, clsTerminalReportDetail, decSeniorCitizenDiscount, lngSeniorCitizenDiscountCount, decPWDDiscount, lngPWDDiscountCount);
 
                 clsTerminalReportHistory.CommitAndDispose();
 

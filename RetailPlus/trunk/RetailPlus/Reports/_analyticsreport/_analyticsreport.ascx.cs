@@ -43,6 +43,7 @@ namespace AceSoft.RetailPlus.Reports
             cboReportType.Items.Clear();
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION, ReportTypes.REPORT_SELECTION));
             cboReportType.Items.Add(new ListItem(ReportTypes.ANALYTICS_All, ReportTypes.ANALYTICS_All));
+            cboReportType.Items.Add(new ListItem(ReportTypes.ANALYTICS_ItemsForPOBasedOnSales, ReportTypes.ANALYTICS_ItemsForPOBasedOnSales));
 			cboReportType.SelectedIndex = 0;
 
             cboConsignment.Items.Clear();
@@ -161,6 +162,9 @@ namespace AceSoft.RetailPlus.Reports
             {
                 case ReportTypes.ANALYTICS_All:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_analyticsreport/_TransactionsAll.rpt"));
+                    break;
+                case ReportTypes.ANALYTICS_ItemsForPOBasedOnSales:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_analyticsreport/_ItemsForPOBasedOnSales.rpt"));
                     break;
                 default:
                     return null;
@@ -309,6 +313,35 @@ namespace AceSoft.RetailPlus.Reports
 					break;
                     #endregion
 
+                case ReportTypes.ANALYTICS_ItemsForPOBasedOnSales:
+                    #region Items For PO Based On Sales
+
+                    SaleperItemFilterType enumSaleperItemFilterType = SaleperItemFilterType.ShowBothPositiveAndNegative;
+                    if (rdoShowPositiveOnly.Checked) enumSaleperItemFilterType = SaleperItemFilterType.ShowPositiveOnly;
+                    if (rdoShowNegativeOnly.Checked) enumSaleperItemFilterType = SaleperItemFilterType.ShowNegativeOnly;
+
+                    clsSalesTransactionItems = new SalesTransactionItems();
+                    if (cboProductGroup.Text == Constants.ALL)
+                        dt = clsSalesTransactionItems.SalesPerItem(TransactionNo + "%", CustomerName + "%", CashierName + "%",
+                            TerminalNo + "%", StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
+                    else
+                        dt = clsSalesTransactionItems.SalesPerItemByGroup(strProductGroup + "%", TransactionNo + "%", CustomerName + "%", CashierName + "%",
+                            TerminalNo + "%", StartTransactionDate, EndTransactionDate, Status, PaymentType, enumSaleperItemFilterType);
+
+                    clsSalesTransactionItems.CommitAndDispose();
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        DataRow drNew = rptds.SalesTransactionPerItem.NewRow();
+
+                        foreach (DataColumn dc in rptds.SalesTransactionPerItem.Columns)
+                            drNew[dc] = dr[dc.ColumnName];
+
+                        rptds.SalesTransactionPerItem.Rows.Add(drNew);
+                    }
+                    break;
+                    #endregion
+
 				default:
 					break;
 			}
@@ -434,6 +467,9 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.ANALYTICS_All:
                     holderTransaction.Visible = true;
                     holderTerminaNo.Visible = true;
+                    break;
+                case ReportTypes.ANALYTICS_ItemsForPOBasedOnSales:
+                    holderSalesperItem.Visible = true;
                     break;
 
                 default:

@@ -354,7 +354,8 @@ namespace AceSoft.RetailPlus
         SalesInvoiceOrDR = 5,
         SalesInvoiceForLX300Printer = 4,
         SalesInvoiceForLX300PlusPrinter = 6,
-        SalesInvoiceForLX300PlusAmazon = 7
+        SalesInvoiceForLX300PlusAmazon = 7,
+        OfficialReceiptAndDR = 8
     }
 
     public enum OrderSlipPrinter

@@ -203,14 +203,21 @@ BEGIN
 	SET dteStartTransactionDate = IF(NOT ISNULL(dteStartTransactionDate), dteStartTransactionDate, '0001-01-01');
 	SET dteEndTransactionDate = IF(NOT ISNULL(dteEndTransactionDate), dteEndTransactionDate, now());
 	
-	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount, Discount)
+	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductID, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount, Discount, PurchasePrice, InvQuantity)
 	SELECT strSessionID, ProductGroup,
-		ProductCode, ProductUnitCode,
+		a.ProductID, IF(MatrixDescription <> NULL, MatrixDescription, ProductCode) ProductCode, ProductUnitCode,
 		SUM(IF(TransactionItemStatus=3,-a.Quantity,a.Quantity)) 'Quantity', SUM(IF(TransactionItemStatus=3,-a.Amount,a.amount)) Amount, 
 		SUM(IF(TransactionItemStatus=3,-PurchaseAmount,IF(TransactionItemStatus=4,-PurchaseAmount,PurchaseAmount))) PurchaseAmount,
-		SUM(IF(TransactionItemStatus=3,-a.Discount + -a.TransactionDiscount,IF(TransactionItemStatus=4,-a.Discount + -a.TransactionDiscount,a.Discount + a.TransactionDiscount))) Discount
+		SUM(IF(TransactionItemStatus=3,-a.Discount + -a.TransactionDiscount,IF(TransactionItemStatus=4,-a.Discount + -a.TransactionDiscount,a.Discount + a.TransactionDiscount))) Discount,
+		MIN(pkg.PurchasePrice) PurchasePrice,
+		MAX(inv.InvQuantity) InvQuantity
 	FROM tblTransactionItems a 
 	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
+	LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1
+	LEFT OUTER JOIN (
+		SELECT ProductID, SUM(Quantity) InvQuantity FROM tblProductInventory
+		GROUP BY ProductID
+	) inv ON a.ProductID = inv.ProductID
 	WHERE 1=1 
 		AND TransactionStatus <> intOpenTransactionStatus 
 		AND (TransactionItemStatus = intValidTransactionItemStatus or
@@ -222,7 +229,7 @@ BEGIN
 		AND TerminalNo LIKE strTerminalNo
 		AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
 		AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i')
-	GROUP BY IF(MatrixDescription <> NULL, MatrixDescription, ProductCode);
+	GROUP BY ProductGroup, a.ProductID, IF(MatrixDescription <> NULL, MatrixDescription, ProductCode), ProductUnitCode;
 
 END;
 GO
@@ -257,6 +264,10 @@ create procedure procTerminalReportUpdateTransactionSales(IN intBranchID int(4),
 														IN decCreditCardSales decimal(18,2),
 														IN decCreditSales decimal(18,2),
 														IN decCreditPayment decimal(18,2),
+														IN decCreditPaymentCash decimal(18,2),
+														IN decCreditPaymentCheque decimal(18,2),
+														IN decCreditPaymentCreditCard decimal(18,2),
+														IN decCreditPaymentDebit decimal(18,2),
 														IN decDebitPayment decimal(18,2),
 														IN decRewardPointsPayment decimal(18,2),
 														IN decRewardConvertedPayment decimal(18,2),
@@ -306,6 +317,12 @@ BEGIN
 					CreditCardSales						=  CreditCardSales						+  decCreditCardSales, 
 					CreditSales							=  CreditSales							+  decCreditSales, 
 					CreditPayment						=  CreditPayment						+  decCreditPayment, 
+
+					CreditPaymentCash					=  CreditPaymentCash					+  decCreditPaymentCash, 
+					CreditPaymentCheque					=  CreditPaymentCheque					+  decCreditPaymentCheque, 
+					CreditPaymentCreditCard				=  CreditPaymentCreditCard				+  decCreditPaymentCreditCard, 
+					CreditPaymentDebit					=  CreditPaymentDebit					+  decCreditPaymentDebit, 
+
 					DebitPayment						=  DebitPayment						    +  decDebitPayment, 
 					RewardPointsPayment					=  RewardPointsPayment					+  decRewardPointsPayment, 
 					RewardConvertedPayment				=  RewardConvertedPayment			    +  decRewardConvertedPayment, 
@@ -380,6 +397,10 @@ create procedure procCashierReportUpdateTransactionSales(IN intBranchID INT(4), 
 														IN decCreditCardSales decimal(18,2),
 														IN decCreditSales decimal(18,2),
 														IN decCreditPayment decimal(18,2),
+														IN decCreditPaymentCash decimal(18,2),
+														IN decCreditPaymentCheque decimal(18,2),
+														IN decCreditPaymentCreditCard decimal(18,2),
+														IN decCreditPaymentDebit decimal(18,2),
 														IN decDebitPayment decimal(18,2),
 														IN decRewardPointsPayment decimal(18,2),
 														IN decRewardConvertedPayment decimal(18,2),
@@ -420,6 +441,12 @@ BEGIN
 		CreditCardSales							=  CreditCardSales						+  decCreditCardSales, 
 		CreditSales								=  CreditSales							+  decCreditSales, 
 		CreditPayment							=  CreditPayment						+  decCreditPayment, 
+
+		CreditPaymentCash						=  CreditPaymentCash					+  decCreditPaymentCash, 
+		CreditPaymentCheque						=  CreditPaymentCheque					+  decCreditPaymentCheque, 
+		CreditPaymentCreditCard					=  CreditPaymentCreditCard				+  decCreditPaymentCreditCard, 
+		CreditPaymentDebit						=  CreditPaymentDebit					+  decCreditPaymentDebit, 
+
 		DebitPayment							=  DebitPayment						   	+  decDebitPayment, 
 		RewardPointsPayment						=  RewardPointsPayment					+  decRewardPointsPayment, 
 		RewardConvertedPayment					=  RewardConvertedPayment				+  decRewardConvertedPayment, 
@@ -1066,7 +1093,8 @@ BEGIN
 					XReadCount, GrossSales, TotalDiscount, TotalCharge, DailySales, 
 					QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, VATableAmount, 
 					NonVATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
-					ChequeSales, CreditCardSales, CreditSales, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
+					ChequeSales, CreditCardSales, CreditSales, CreditPayment, CreditPaymentCash, CreditPaymentCheque,
+					CreditPaymentCreditCard, CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
 					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
 					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
 					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
@@ -1086,7 +1114,8 @@ BEGIN
 					XReadCount, GrossSales, TotalDiscount, TotalCharge, DailySales, 
 					QuantitySold, GroupSales, decOldGrandTotal, decNewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, VATableAmount, 
 					NonVATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
-					ChequeSales, CreditCardSales, CreditSales, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
+					ChequeSales, CreditCardSales, CreditSales, CreditPayment, CreditPaymentCash, CreditPaymentCheque,
+					CreditPaymentCreditCard, CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
 					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
 					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
 					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
@@ -1128,6 +1157,10 @@ BEGIN
 					CreditCardSales						=  0, 
 					CreditSales							=  0, 
 					CreditPayment						=  0, 
+					CreditPaymentCash					=  0, 
+					CreditPaymentCheque					=  0, 
+					CreditPaymentCreditCard				=  0, 
+					CreditPaymentDebit					=  0, 
 					DebitPayment						=  0, 
 					RewardPointsPayment					=  0,
 					RewardConvertedPayment				=  0,
@@ -1183,7 +1216,8 @@ BEGIN
 					TotalDiscount, TotalCharge, DailySales, 
 					QuantitySold, GroupSales, VAT, LocalTax, 
 					CashSales, ChequeSales, CreditCardSales, CreditSales, 
-					CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
+					CreditPayment, CreditPaymentCash, CreditPaymentCheque, CreditPaymentCreditCard, 
+					CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
 					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
 					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
 					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
@@ -1203,7 +1237,8 @@ BEGIN
 					TotalDiscount, TotalCharge, DailySales, 
 					QuantitySold, GroupSales, VAT, LocalTax, 
 					CashSales, ChequeSales, CreditCardSales, CreditSales, 
-					CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
+					CreditPayment, CreditPaymentCash, CreditPaymentCheque, CreditPaymentCreditCard, 
+					CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
 					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
 					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
 					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
@@ -1233,6 +1268,10 @@ BEGIN
 			CreditCardSales						=  0, 
 			CreditSales							=  0, 
 			CreditPayment						=  0, 
+			CreditPaymentCash					=  0, 
+			CreditPaymentCheque					=  0, 
+			CreditPaymentCreditCard				=  0, 
+			CreditPaymentDebit					=  0, 
 			DebitPayment						=  0, 
 			RewardPointsPayment					=  0,
 			RewardConvertedPayment				=  0,
@@ -1467,14 +1506,21 @@ BEGIN
 	SET dteStartTransactionDate = IF(NOT ISNULL(dteStartTransactionDate), dteStartTransactionDate, '0001-01-01');
 	SET dteEndTransactionDate = IF(NOT ISNULL(dteEndTransactionDate), dteEndTransactionDate, now());
 	
-	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount, Discount)
+	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductID, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount, Discount, PurchasePrice, InvQuantity)
 	SELECT strSessionID, ProductGroup,
-		ProductCode, ProductUnitCode,
+		a.ProductID, IF(MatrixDescription <> NULL, MatrixDescription, ProductCode) ProductCode, ProductUnitCode,
 		SUM(IF(TransactionItemStatus=3,-a.Quantity,a.Quantity)) 'Quantity', SUM(IF(TransactionItemStatus=3,-a.Amount,a.amount)) Amount, 
 		SUM(IF(TransactionItemStatus=3,-PurchaseAmount,IF(TransactionItemStatus=4,-PurchaseAmount,PurchaseAmount))) PurchaseAmount,
-		SUM(IF(TransactionItemStatus=3,-a.Discount + -a.TransactionDiscount,IF(TransactionItemStatus=4,-a.Discount + -a.TransactionDiscount,a.Discount + a.TransactionDiscount))) Discount
+		SUM(IF(TransactionItemStatus=3,-a.Discount + -a.TransactionDiscount,IF(TransactionItemStatus=4,-a.Discount + -a.TransactionDiscount,a.Discount + a.TransactionDiscount))) Discount,
+		MIN(pkg.PurchasePrice) PurchasePrice,
+		MAX(inv.InvQuantity) InvQuantity
 	FROM tblTransactionItems a 
 	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
+	LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1
+	LEFT OUTER JOIN (
+		SELECT ProductID, SUM(Quantity) InvQuantity FROM tblProductInventory
+		GROUP BY ProductID
+	) inv ON a.ProductID = inv.ProductID
 	WHERE 1=1 
 		AND TransactionStatus <> intOpenTransactionStatus 
 		AND (TransactionItemStatus = intValidTransactionItemStatus or
@@ -1487,7 +1533,7 @@ BEGIN
 		AND ProductGroup LIKE strProductGroup
 		AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d %H:%i')
 		AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d %H:%i')
-	GROUP BY IF(MatrixDescription <> NULL, MatrixDescription, ProductCode);
+	GROUP BY ProductGroup, a.ProductID, IF(MatrixDescription <> NULL, MatrixDescription, ProductCode), ProductUnitCode;
 
 END;
 GO
@@ -2535,17 +2581,25 @@ BEGIN
 	
 	CALL procGenerateSalesPerItem(strSessionID, strTransactionNo, strCustomerName, strCashierName, strTerminalNo, dteStartTransactionDate, dteEndTransactionDate);
 	
-	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount, Discount)
+	INSERT INTO tblSalesPerItem (SessionID, ProductGroup, ProductID, ProductCode, ProductUnitCode, Quantity, Amount, PurchaseAmount, Discount, PurchasePrice, InvQuantity)
 	SELECT strSessionID,
 		ProductGroupCode,
+		a.ProductID,
 		a.ProductCode 'ProductCode',
 		UnitCode 'ProductUnitCode',
 		0 'Quantity', 0 Amount, 
-		0 PurchaseAmount, 0 Discount
+		0 PurchaseAmount, 0 Discount,
+		pkg.PurchasePrice,
+		inv.InvQuantity
 	FROM tblProducts a 
 		INNER JOIN tblProductSubGroup b ON b.ProductSubGroupID = a.ProductSubGroupID
 		INNER JOIN tblProductGroup c ON c.ProductGroupID = b.ProductGroupID
 		INNER JOIN tblUnit d ON d.UnitID = a.BaseUnitID
+		LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1 AND a.BaseUnitID = pkg.UnitID
+		LEFT OUTER JOIN (
+			SELECT ProductID, SUM(Quantity) InvQuantity FROM tblProductInventory
+			GROUP BY ProductID
+		) inv ON a.ProductID = inv.ProductID
 	WHERE ProductCode NOT IN (SELECT ProductCode FROM tblSalesPerItem WHERE ProductCode NOT LIKE '%-%');
 	
 	-- exclude the ProductCode with '-' coz it's sure that's is with sales [ProductCode NOT LIKE '%-%']
@@ -3236,7 +3290,7 @@ create procedure procProductAddQuantity(
 	IN lngProductID BIGINT,
 	IN lngMatrixID BIGINT,
 	IN decQuantity DECIMAL(18,2),
-	IN strRemarks VARCHAR(100),
+	IN strRemarks VARCHAR(8000),
 	IN dteTransactionDate DateTime,
 	IN strTransactionNo VARCHAR(100),
 	IN strCreatedBy VARCHAR(100)
@@ -3326,7 +3380,7 @@ create procedure procProductSubtractQuantity(
 	IN lngProductID BIGINT,
 	IN lngMatrixID BIGINT,
 	IN decQuantity DECIMAL(18,2),
-	IN strRemarks VARCHAR(100),
+	IN strRemarks VARCHAR(8000),
 	IN dteTransactionDate DateTime,
 	IN strTransactionNo VARCHAR(100),
 	IN strCreatedBy VARCHAR(100)
@@ -7150,7 +7204,7 @@ create procedure procProductAddReservedQuantity(
 	IN lngProductID BIGINT,
 	IN lngMatrixID BIGINT,
 	IN decQuantity DECIMAL(18,3),
-	IN strRemarks VARCHAR(100),
+	IN strRemarks VARCHAR(8000),
 	IN dteTransactionDate DateTime,
 	IN strTransactionNo VARCHAR(100),
 	IN strCreatedBy VARCHAR(100)
@@ -7176,9 +7230,10 @@ BEGIN
 	FROM tblProductInventory inv
 	WHERE inv.BranchID = intBranchID AND inv.ProductID = lngProductID;
 	
-	
+	-- Apr 20, 2014 remove the remarks
 	SET strAuditRemarks = CONCAT('Reserved for: ',strTransactionNo,' ; Curr Reserved: ',IFNULL(decProductReservedQuantity,'0'),'; Curr Quantity:',IFNULL(decProductQuantity,'0'),' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode,' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription,' ; ',strRemarks);
-
+	-- SET strAuditRemarks = CONCAT('Reserved for: ',strTransactionNo,' ; Curr Reserved: ',IFNULL(decProductReservedQuantity,'0'),'; Curr Quantity:',IFNULL(decProductQuantity,'0'),' ; prodid: ',lngProductID,' ; matrixid: ',lngMatrixID,' ; ',strProductCode,' ; ',strProductDesc,' ; ',strUnitCode,' ; ',strMatrixDescription);
+	
 	-- Insert to audit instead of product movement history
 	CALL procsysAuditInsert(NOW(), strCreatedBy, 'PRODUCT RESERVED ADD', 'localhost', strAuditRemarks);
 	
@@ -7216,7 +7271,7 @@ create procedure procProductSubtractReservedQuantity(
 	IN lngProductID BIGINT,
 	IN lngMatrixID BIGINT,
 	IN decQuantity DECIMAL(18,2),
-	IN strRemarks VARCHAR(100),
+	IN strRemarks VARCHAR(8000),
 	IN dteTransactionDate DateTime,
 	IN strTransactionNo VARCHAR(100),
 	IN strCreatedBy VARCHAR(100)

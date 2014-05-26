@@ -393,8 +393,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			try
 			{
-				DataClass clsData = new DataClass(); 
-				System.Data.DataTable dt = clsData.DataReaderToDataTable(clsProductPackage.List(mDetails.ProductID,"ProductDesc",SortOption.Ascending));
+				DataClass clsData = new DataClass();
+                System.Data.DataTable dt = clsData.DataReaderToDataTable(clsProductPackage.List("ProductDesc", SortOption.Ascending, mDetails.ProductID.ToString()));
 				clsProductPackage.CommitAndDispose();
 				
 				dt.TableName = "tblProductPackage";

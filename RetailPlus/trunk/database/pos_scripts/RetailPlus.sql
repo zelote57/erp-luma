@@ -6910,7 +6910,7 @@ INNER JOIN tblContacts cntct ON trx.CustomerID = cntct.ContactID
 INNER JOIN tblContactGroup grp ON cntct.ContactGroupID = grp.ContactGroupID
 SET
 	CustomerGroupName = grp.ContactGroupName
-WHERE IFNULL(trx.CustomerGroupName,'') = ''
+WHERE IFNULL(trx.CustomerGroupName,'') = '';
 
 ALTER TABLE tblSalesPerItem ADD ProductID BIGINT NOT NULL DEFAULT 0;
 ALTER TABLE tblSalesPerItem ADD PurchasePrice DECIMAL(18,3) NOT NULL DEFAULT 0;
@@ -6938,3 +6938,4 @@ ALTER TABLE tblCashierReportHistory ADD `CreditPaymentCheque` DECIMAL(18,2) NOT 
 ALTER TABLE tblCashierReportHistory ADD `CreditPaymentCreditCard` DECIMAL(18,2) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReportHistory ADD `CreditPaymentDebit` DECIMAL(18,2) NOT NULL DEFAULT 0;
 
+ALTER TABLE tblPLUReport ADD `ProductGroup` VARCHAR(50);

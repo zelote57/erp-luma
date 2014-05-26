@@ -3065,7 +3065,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 InsertErrorLogToFile(ex, "ERROR!!! Loading contact."); 
             }
 		}
-		private bool SuspendTransaction()
+        private bool SuspendTransaction(bool ShowNotificationWindow = true)
 		{
 			bool boRetValue = false;
 
@@ -3905,6 +3905,10 @@ namespace AceSoft.RetailPlus.Client.UI
 				case Keys.F11:
 					ReprintDeliveryReceipt();
 					break;
+
+                case Keys.F12:
+                    PrintPLUGroup();
+                    break;
 			}
 		}
 		private void ShowMallForwarder()
@@ -9569,6 +9573,35 @@ namespace AceSoft.RetailPlus.Client.UI
 				PrintPLUReport();
 			}
 		}
+        private void PrintPLUGroup()
+        {
+            if (mboIsInTransaction)
+            {
+                if (MessageBox.Show("Active Transaction Found! Suspend current transaction first?", "RetailPlus", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.OK)
+                { if (!SuspendTransaction()) return; }
+                else
+                    return;
+            }
+
+            DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.PrintPLUReport);
+
+            if (loginresult == DialogResult.None)
+            {
+                LogInWnd login = new LogInWnd();
+
+                login.AccessType = AccessTypes.PrintPLUReport;
+                login.Header = "Print PLU Group Report Access Validation";
+                login.ShowDialog(this);
+                loginresult = login.Result;
+                login.Close();
+                login.Dispose();
+            }
+
+            if (loginresult == DialogResult.OK)
+            {
+                PrintPLUReportPerGroup();
+            }
+        }
 		private void PrintEJournal()
 		{
 			if (mboIsInTransaction)
@@ -12761,6 +12794,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				decimal TotalQuantity = 0;
 				decimal TotalAmount = 0;
+                //string stProductGroup = "";
+                //string stProductGroupOld = "";
 
 				msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
 				msbToPrint.Append(CenterString("PLU REPORT", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
@@ -12771,6 +12806,15 @@ namespace AceSoft.RetailPlus.Client.UI
 				msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
 				foreach (System.Data.DataRow dr in dtPLUReport.Rows)
 				{
+                    //stProductGroup = dr["ProductGroup"].ToString();
+                    //if (stProductGroup != stProductGroupOld)
+                    //{
+                    //    stProductGroupOld = stProductGroup;
+
+                    //    msbToPrint.Append(stProductGroupOld.PadRight(40));
+                    //    msbToPrint.Append(Environment.NewLine);
+                    //}
+
 					string stProductCode = dr["ProductCode"].ToString();
 					string stQuantity = Convert.ToDecimal(dr["Quantity"].ToString()).ToString("#,##0.#0");
 					string stAmount = Convert.ToDecimal(dr["Amount"].ToString()).ToString("#,##0.#0");
@@ -12832,6 +12876,213 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 
 		#endregion
+
+        #region PrintPLUReportPerGroup
+        private void PrintPLUReportPerGroup()
+        {
+            Reports.ReceiptFormat clsReceiptFormat = new Reports.ReceiptFormat(mConnection, mTransaction);
+            mConnection = clsReceiptFormat.Connection; mTransaction = clsReceiptFormat.Transaction;
+
+            ReceiptFormatDetails clsReceiptFormatDetails = clsReceiptFormat.Details();
+
+            Data.CashierReport clsCashierReport = new Data.CashierReport(mConnection, mTransaction);
+            mConnection = clsCashierReport.Connection; mTransaction = clsCashierReport.Transaction;
+
+            Data.CashierReportDetails clsCashierReportDetails = clsCashierReport.Details(mclsSalesTransactionDetails.CashierID, Constants.TerminalBranchID, mclsTerminalDetails.TerminalNo);
+            clsCashierReport.GeneratePLUReport(Constants.TerminalBranchID, lblCashier.Text, mclsTerminalDetails.TerminalNo, false);
+
+            Data.PLUReport clsPLUReport = new Data.PLUReport(mConnection, mTransaction);
+            mConnection = clsPLUReport.Connection; mTransaction = clsPLUReport.Transaction;
+
+            System.Data.DataTable dtpluReport = clsPLUReport.dtList(mclsTerminalDetails.TerminalNo, "ProductGroup", SortOption.Ascending, false);
+
+            clsReceiptFormat.CommitAndDispose();
+
+            DateTime StartDate = clsCashierReportDetails.LastLoginDate;
+            DateTime EndDate = DateTime.Now;
+
+            DialogResult result = DialogResult.OK;
+
+            if (result == DialogResult.OK)
+            {
+                //PrintPLUReportPerGroupDelegate plureportDel = new PrintPLUReportPerGroupDelegate(PrintPLUReportPerGroup);
+                PrintPLUReportPerGroup(dtpluReport, clsCashierReportDetails, clsReceiptFormatDetails, StartDate, EndDate);
+            }
+        }
+
+        private delegate void PrintPLUReportPerGroupDelegate(System.Data.DataTable dtPLUReportPerGroup, Data.CashierReportDetails clsCashierReportDetails, Reports.ReceiptFormatDetails clsDetails, DateTime StartDate, DateTime EndDate);
+        private void PrintPLUReportPerGroup(System.Data.DataTable dtPLUReportPerGroup, Data.CashierReportDetails clsCashierReportDetails, Reports.ReceiptFormatDetails clsDetails, DateTime StartDate, DateTime EndDate)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                PrintingPreference oldCONFIG_AutoPrint = mclsTerminalDetails.AutoPrint;
+                mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
+
+                PrintReportHeadersSection(false);
+
+                decimal TotalQuantity = 0;
+                decimal TotalAmount = 0;
+                string stProductGroup = "";
+                string stProductGroupOld = "";
+
+                msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+                msbToPrint.Append(CenterString("PLU INVENTORY", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+                msbToPrint.Append(CenterString("Start Date: " + StartDate.ToString("MM/dd/yyyy hh:mm:ss tt"), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                msbToPrint.Append(CenterString("End Date  : " + EndDate.ToString("MM/dd/yyyy hh:mm:ss tt"), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine + Environment.NewLine);
+                msbToPrint.Append("Item                            Quantity" + Environment.NewLine);
+                msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+                foreach (System.Data.DataRow dr in dtPLUReportPerGroup.Rows)
+                {
+                    stProductGroup = dr["ProductGroup"].ToString();
+                    if (stProductGroup != stProductGroupOld)
+                    {
+                        stProductGroupOld = stProductGroup;
+
+                        msbToPrint.Append(stProductGroupOld.PadRight(40));
+                        msbToPrint.Append(Environment.NewLine);
+                    }
+
+                    string stProductCode = "   " + dr["ProductCode"].ToString();
+                    string stQuantity = Convert.ToDecimal(dr["Quantity"].ToString()).ToString("#,##0.#0");
+
+                    if (stProductCode.Length <= 28)
+                    {
+                        msbToPrint.Append(stProductCode.PadRight(28));
+                        msbToPrint.Append(stQuantity.PadLeft(12));
+                        msbToPrint.Append(Environment.NewLine);
+                    }
+                    else
+                    {
+                        msbToPrint.Append(stProductCode + Environment.NewLine);
+                        msbToPrint.Append(stQuantity.PadLeft(40));
+                        msbToPrint.Append(Environment.NewLine);
+                    }
+
+                    TotalQuantity += Convert.ToDecimal(dr["Quantity"]);
+                }
+                msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+                msbToPrint.Append("Total:".PadRight(28));
+                msbToPrint.Append(TotalQuantity.ToString("#,##0.#0").PadLeft(12));
+                msbToPrint.Append(Environment.NewLine);
+                //msbToPrint.Append("Less Discount :".PadRight(16));
+                //msbToPrint.Append(clsCashierReportDetails.SubTotalDiscount.ToString("#,##0.#0").PadLeft(24));
+                //msbToPrint.Append(Environment.NewLine);
+                //msbToPrint.Append("Plus Charges  :".PadRight(16));
+                //msbToPrint.Append(clsCashierReportDetails.TotalCharge.ToString("#,##0.#0").PadLeft(24));
+                //msbToPrint.Append(Environment.NewLine);
+                //if (!mclsTerminalDetails.IsVATInclusive)
+                //{
+                //    msbToPrint.Append("Plus 12% VAT  :".PadRight(16));
+                //    msbToPrint.Append(clsCashierReportDetails.VAT.ToString("#,##0.#0").PadLeft(24));
+                //    msbToPrint.Append(Environment.NewLine);
+                //}
+
+                //decimal GrandTotal = clsCashierReportDetails.DailySales + clsCashierReportDetails.VAT + clsCashierReportDetails.TotalCharge;
+                //msbToPrint.Append("Grand Total   :".PadRight(16));
+                //msbToPrint.Append(GrandTotal.ToString("#,##0.#0").PadLeft(24));
+                //msbToPrint.Append(Environment.NewLine);
+
+                msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+
+                PrintReportFooterSection(false, DateTime.MinValue);
+
+                mclsTerminalDetails.AutoPrint = oldCONFIG_AutoPrint;
+
+                InsertAuditLog(AccessTypes.PrintPLUReport, "Print PLU report: TerminalNo=" + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+            }
+            catch (Exception ex)
+            {
+                InsertErrorLogToFile(ex, "ERROR!!! Printing PLU report. Err Description: ");
+            }
+            Cursor.Current = Cursors.Default;
+        }
+
+        //private delegate void PrintPLUReportPerGroupDelegate(System.Data.DataTable dtPLUReportPerGroup, Data.CashierReportDetails clsCashierReportDetails, Reports.ReceiptFormatDetails clsDetails, DateTime StartDate, DateTime EndDate);
+        //private void PrintPLUReportPerGroup(System.Data.DataTable dtPLUReportPerGroup, Data.CashierReportDetails clsCashierReportDetails, Reports.ReceiptFormatDetails clsDetails, DateTime StartDate, DateTime EndDate)
+        //{
+        //    Cursor.Current = Cursors.WaitCursor;
+        //    try
+        //    {
+        //        PrintingPreference oldCONFIG_AutoPrint = mclsTerminalDetails.AutoPrint;
+        //        mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
+
+        //        PrintReportHeadersSection(false);
+
+        //        decimal TotalQuantity = 0;
+        //        decimal TotalAmount = 0;
+
+        //        msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+        //        msbToPrint.Append(CenterString("PLU REPORT PER GROUP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+        //        msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+        //        msbToPrint.Append(CenterString("Start Date: " + StartDate.ToString("MM/dd/yyyy hh:mm:ss tt"), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+        //        msbToPrint.Append(CenterString("End Date  : " + EndDate.ToString("MM/dd/yyyy hh:mm:ss tt"), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine + Environment.NewLine);
+        //        msbToPrint.Append("Item           Quantity           Amount" + Environment.NewLine);
+        //        msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+        //        foreach (System.Data.DataRow dr in dtPLUReportPerGroup.Rows)
+        //        {
+        //            string stProductGroup = dr["ProductGroup"].ToString();
+        //            string stQuantity = Convert.ToDecimal(dr["Quantity"].ToString()).ToString("#,##0.#0");
+        //            string stAmount = Convert.ToDecimal(dr["Amount"].ToString()).ToString("#,##0.#0");
+
+        //            if (stProductGroup.Length <= 11)
+        //            {
+        //                msbToPrint.Append(stProductGroup.PadRight(11));
+        //                msbToPrint.Append(stQuantity.PadLeft(12));
+        //                msbToPrint.Append(stAmount.PadLeft(17));
+        //                msbToPrint.Append(Environment.NewLine);
+        //            }
+        //            else
+        //            {
+        //                msbToPrint.Append(stProductGroup + Environment.NewLine);
+        //                msbToPrint.Append(stQuantity.PadLeft(23));
+        //                msbToPrint.Append(stAmount.PadLeft(17));
+        //                msbToPrint.Append(Environment.NewLine);
+        //            }
+
+        //            TotalQuantity += Convert.ToDecimal(dr["Quantity"]);
+        //            TotalAmount += Convert.ToDecimal(dr["Amount"]);
+        //        }
+        //        msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+        //        msbToPrint.Append("Total:".PadRight(6));
+        //        msbToPrint.Append(TotalQuantity.ToString("#,##0.#0").PadLeft(17));
+        //        msbToPrint.Append(TotalAmount.ToString("#,##0.#0").PadLeft(17));
+        //        msbToPrint.Append(Environment.NewLine);
+        //        msbToPrint.Append("Less Discount :".PadRight(16));
+        //        msbToPrint.Append(clsCashierReportDetails.SubTotalDiscount.ToString("#,##0.#0").PadLeft(24));
+        //        msbToPrint.Append(Environment.NewLine);
+        //        msbToPrint.Append("Plus Charges  :".PadRight(16));
+        //        msbToPrint.Append(clsCashierReportDetails.TotalCharge.ToString("#,##0.#0").PadLeft(24));
+        //        msbToPrint.Append(Environment.NewLine);
+        //        if (!mclsTerminalDetails.IsVATInclusive)
+        //        {
+        //            msbToPrint.Append("Plus 12% VAT  :".PadRight(16));
+        //            msbToPrint.Append(clsCashierReportDetails.VAT.ToString("#,##0.#0").PadLeft(24));
+        //            msbToPrint.Append(Environment.NewLine);
+        //        }
+
+        //        decimal GrandTotal = clsCashierReportDetails.DailySales + clsCashierReportDetails.VAT + clsCashierReportDetails.TotalCharge;
+        //        msbToPrint.Append("Grand Total   :".PadRight(16));
+        //        msbToPrint.Append(GrandTotal.ToString("#,##0.#0").PadLeft(24));
+        //        msbToPrint.Append(Environment.NewLine);
+
+        //        msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+
+        //        PrintReportFooterSection(false, DateTime.MinValue);
+
+        //        mclsTerminalDetails.AutoPrint = oldCONFIG_AutoPrint;
+
+        //        InsertAuditLog(AccessTypes.PrintPLUReport, "Print PLU report per Group: TerminalNo=" + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        InsertErrorLogToFile(ex, "ERROR!!! Printing PLU report. Err Description: ");
+        //    }
+        //    Cursor.Current = Cursors.Default;
+        //}
+
+        #endregion
 
 		#region PrintEJournalReport
 		private void PrintEJournalReport()

@@ -73,6 +73,7 @@ namespace AceSoft.RetailPlus
         public const string MANAGEMENT_PerCustomerGroupPerDay = "Transactions per customer group/monthly";
 
         public const string ANALYTICS_All = "All Transactions";
+        public const string ANALYTICS_All_Covers = "All Transactions W/ Covers";
         public const string ANALYTICS_ItemsForPOBasedOnSales = "Items For PO based on Sales";
 
         public const string REPORT_SELECTION_SEPARATOR = "---------------------------------------------";

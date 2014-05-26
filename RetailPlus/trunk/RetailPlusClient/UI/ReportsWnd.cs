@@ -42,6 +42,8 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdCancel;
         private Button cmdF11;
         private Label label5;
+        private Button cmdF12;
+        private Label label6;
         private DialogResult dialog;
 
         #region Public Get/Set Properties
@@ -101,6 +103,8 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmdF12 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.cmdF11 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.cmdF10 = new System.Windows.Forms.Button();
@@ -142,6 +146,8 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
+            this.groupBox1.Controls.Add(this.cmdF12);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.cmdF11);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.cmdF10);
@@ -172,6 +178,31 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.TabIndex = 66;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Select Report Type To Print";
+            // 
+            // cmdF12
+            // 
+            this.cmdF12.AutoSize = true;
+            this.cmdF12.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmdF12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdF12.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdF12.ForeColor = System.Drawing.Color.White;
+            this.cmdF12.Location = new System.Drawing.Point(98, 339);
+            this.cmdF12.Name = "cmdF12";
+            this.cmdF12.Size = new System.Drawing.Size(78, 62);
+            this.cmdF12.TabIndex = 90;
+            this.cmdF12.Text = "F12";
+            this.cmdF12.UseVisualStyleBackColor = true;
+            this.cmdF12.Click += new System.EventHandler(this.cmdF12_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.Blue;
+            this.label6.Location = new System.Drawing.Point(218, 365);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(148, 13);
+            this.label6.TabIndex = 91;
+            this.label6.Text = "Print PLU Inventory By Group";
             // 
             // cmdF11
             // 
@@ -490,7 +521,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1026, 788);
+            this.ClientSize = new System.Drawing.Size(1026, 772);
             this.ControlBox = false;
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.label8);
@@ -540,6 +571,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.cmdF9.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
                 this.cmdF10.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
                 this.cmdF11.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
+                this.cmdF12.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
             }
             catch { }
 
@@ -684,6 +716,11 @@ namespace AceSoft.RetailPlus.Client.UI
         private void cmdF11_Click(object sender, EventArgs e)
         {
             AssignValues(Keys.F11);
+        }
+
+        private void cmdF12_Click(object sender, EventArgs e)
+        {
+            AssignValues(Keys.F12);
         }
 
 

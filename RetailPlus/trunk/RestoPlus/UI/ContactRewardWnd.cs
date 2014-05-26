@@ -525,7 +525,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 if ((mRewardCardStatus == RewardCardStatus.New && clsContactRewardDetails.ContactID == Constants.ZERO) ||
                         mRewardCardStatus == RewardCardStatus.Replaced_Lost)
                 {
-                    Data.SysConfig clsERPConfig = new Data.SysConfig(clsContactReward.Connection, clsContactReward.Transaction);
+                    Data.ERPConfig clsERPConfig = new Data.ERPConfig(clsContactReward.Connection, clsContactReward.Transaction);
                     txtRewardCardNo.Text = clsERPConfig.get_LastRewardCardNo();
                 }
             }

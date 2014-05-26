@@ -241,7 +241,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			{
 				DataClass clsData = new DataClass(); 
                 ProductPackage clsProductPackage = new ProductPackage();
-                System.Data.DataTable dt = clsData.DataReaderToDataTable(clsProductPackage.List(mDetails.ProductID, "ProductDesc", SortOption.Ascending));
+                System.Data.DataTable dt = clsData.DataReaderToDataTable(clsProductPackage.List("ProductDesc", SortOption.Ascending, mDetails.ProductID.ToString()));
                 clsProductPackage.CommitAndDispose();
 
                 lstItems.Items.Clear(); int iImgCtr = 0;

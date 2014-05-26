@@ -386,7 +386,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
             clsDetails.Debit = 0;
             clsDetails.Credit = 0;
-            clsDetails.IsCreditAllowed = 0;
+            clsDetails.IsCreditAllowed = true;
             clsDetails.CreditLimit = 0;
             clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
             clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;

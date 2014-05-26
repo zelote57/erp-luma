@@ -563,68 +563,17 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             try
             {
-                Data.ProductColumns clsProductColumns = new Data.ProductColumns();
-                clsProductColumns.ProductID = true;
-                clsProductColumns.BarCode = true;
-                clsProductColumns.ProductCode = true;
-                clsProductColumns.MainQuantity = true;
-                clsProductColumns.Price = true;
-                clsProductColumns.IncludeAllPackages = true;
-                clsProductColumns.MinThreshold = true;
-
                 string strSearchKey = Constants.MaskProductSearch + txtSearch.Text;
-                Data.ProductDetails clsSearchKeys = new Data.ProductDetails();
-
-                if (mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeOnly ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeProductCode ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeProductCodeProductDesc)
-                {
-                    clsSearchKeys.BarCode = strSearchKey;
-                    clsSearchKeys.BarCode2 = strSearchKey;
-                    clsSearchKeys.BarCode3 = strSearchKey;
-                }
-                if (mclsTerminalDetails.ProductSearchType == ProductSearchType.ProductCode ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.ProductCodeProductDesc ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeProductCode ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeProductCodeProductDesc)
-                {
-                    clsSearchKeys.ProductCode = strSearchKey;
-                }
-                if (mclsTerminalDetails.ProductSearchType == ProductSearchType.ProductDesc ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.ProductCodeProductDesc ||
-                    mclsTerminalDetails.ProductSearchType == ProductSearchType.BarcodeProductCodeProductDesc)
-                {
-                    clsSearchKeys.ProductDesc = strSearchKey;
-                }
-
                 Products clsProduct = new Products();
-
-                System.Data.DataTable dt;
-                //if (mboShowInActiveProducts == false)
-                //{ dt = clsProduct.SearchDataTableSimple(Constants.TerminalBranchID, ProductListFilterType.ShowActiveOnly, SearchKey, 0, 0, string.Empty, 0, string.Empty, 16, mboShowItemMoreThanZeroQty, true, "ProductCode", SortOption.Ascending); }
-                //else
-                //{ dt = clsProduct.SearchDataTableSimple(Constants.TerminalBranchID, ProductListFilterType.ShowActiveAndInactive, SearchKey, 0, 0, string.Empty, 0, string.Empty, 16, mboShowItemMoreThanZeroQty, true, "ProductCode", SortOption.Ascending); }
-                if (mboShowInActiveProducts == false)
-                { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
-                else
-                { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
-
-                if (dt.Rows.Count == 0)
-                {
-                    clsSearchKeys = new Data.ProductDetails();
-                    clsSearchKeys.ProductCode = strSearchKey;
-                    if (mboShowInActiveProducts == false)
-                    { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowActiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
-                    else
-                    { dt = clsProduct.ListAsDataTable(clsProductColumns, clsSearchKeys, ProductListFilterType.ShowInactiveOnly, 0, System.Data.SqlClient.SortOrder.Ascending, 16, false, "ProductCode", SortOption.Ascending); }
-
-                }
+                // System.Data.DataTable dt = clsProduct.ListAsDataTable(mclsTerminalDetails.BranchID, clsSearchKeys: new ProductDetails(), mboShowInActiveProducts ? ProductListFilterType.ShowInactiveOnly : ProductListFilterType.ShowActiveOnly, Limit: 100, 
+                System.Data.DataTable dt = clsProduct.ListAsDataTableFE(mclsTerminalDetails.BranchID, strSearchKey, mboShowInActiveProducts ? ProductListFilterType.ShowInactiveOnly : ProductListFilterType.ShowActiveOnly, 100, mboShowItemMoreThanZeroQty);
                 clsProduct.CommitAndDispose();
 
                 this.dgStyle.MappingName = dt.TableName;
                 dgItems.DataSource = dt;
                 dgItems.Select(0);
                 dgItems.CurrentRowIndex = 0;
+
             }
             catch (IndexOutOfRangeException) { }
             catch (Exception ex)

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RetailPlus.Reports._datedsalesreport {
+namespace RetailPlus.Reports._analyticsreport {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace RetailPlus.Reports._datedsalesreport {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class _DatedReportSalesTransactionPerDay : ReportClass {
+    public class _TransactionsAllCovers : ReportClass {
         
-        public _DatedReportSalesTransactionPerDay() {
+        public _TransactionsAllCovers() {
         }
         
         public override string ResourceName {
             get {
-                return "_DatedReportSalesTransactionPerDay.rpt";
+                return "_TransactionsAllCovers.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         public override string FullResourceName {
             get {
-                return "RetailPlus.Reports._datedsalesreport._DatedReportSalesTransactionPerDay.rpt";
+                return "RetailPlus.Reports._analyticsreport._TransactionsAllCovers.rpt";
             }
             set {
                 // Do nothing
@@ -74,7 +74,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,7 +82,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -90,25 +90,9 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
-            get {
-                return this.ReportDefinition.Sections[5];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
-            get {
-                return this.ReportDefinition.Sections[6];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
-                return this.ReportDefinition.Sections[7];
+                return this.ReportDefinition.Sections[5];
             }
         }
         
@@ -143,12 +127,20 @@ namespace RetailPlus.Reports._datedsalesreport {
                 return this.DataDefinition.ParameterFields[3];
             }
         }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_AdditionalHeader {
+            get {
+                return this.DataDefinition.ParameterFields[4];
+            }
+        }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class Cached_DatedReportSalesTransactionPerDay : Component, ICachedReport {
+    public class Cached_TransactionsAllCovers : Component, ICachedReport {
         
-        public Cached_DatedReportSalesTransactionPerDay() {
+        public Cached_TransactionsAllCovers() {
         }
         
         [Browsable(false)]
@@ -185,7 +177,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            _DatedReportSalesTransactionPerDay rpt = new _DatedReportSalesTransactionPerDay();
+            _TransactionsAllCovers rpt = new _TransactionsAllCovers();
             rpt.Site = this.Site;
             return rpt;
         }

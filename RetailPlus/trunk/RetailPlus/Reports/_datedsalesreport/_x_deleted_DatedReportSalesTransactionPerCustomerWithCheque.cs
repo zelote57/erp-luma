@@ -16,14 +16,14 @@ namespace RetailPlus.Reports._datedsalesreport {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class _DatedReportSalesTransactionPerDay : ReportClass {
+    public class _x_deleted_DatedReportSalesTransactionPerCustomerWithCheque : ReportClass {
         
-        public _DatedReportSalesTransactionPerDay() {
+        public _x_deleted_DatedReportSalesTransactionPerCustomerWithCheque() {
         }
         
         public override string ResourceName {
             get {
-                return "_DatedReportSalesTransactionPerDay.rpt";
+                return "_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,8 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         public override string FullResourceName {
             get {
-                return "RetailPlus.Reports._datedsalesreport._DatedReportSalesTransactionPerDay.rpt";
+                return "RetailPlus.Reports._datedsalesreport._x_deleted_DatedReportSalesTransactionPerCus" +
+                    "tomerWithCheque.rpt";
             }
             set {
                 // Do nothing
@@ -74,7 +75,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section6 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -90,7 +91,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section7 {
             get {
                 return this.ReportDefinition.Sections[5];
             }
@@ -146,9 +147,9 @@ namespace RetailPlus.Reports._datedsalesreport {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class Cached_DatedReportSalesTransactionPerDay : Component, ICachedReport {
+    public class Cached_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque : Component, ICachedReport {
         
-        public Cached_DatedReportSalesTransactionPerDay() {
+        public Cached_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque() {
         }
         
         [Browsable(false)]
@@ -185,7 +186,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            _DatedReportSalesTransactionPerDay rpt = new _DatedReportSalesTransactionPerDay();
+            _x_deleted_DatedReportSalesTransactionPerCustomerWithCheque rpt = new _x_deleted_DatedReportSalesTransactionPerCustomerWithCheque();
             rpt.Site = this.Site;
             return rpt;
         }

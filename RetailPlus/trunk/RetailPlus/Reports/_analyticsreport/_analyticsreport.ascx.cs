@@ -43,6 +43,7 @@ namespace AceSoft.RetailPlus.Reports
             cboReportType.Items.Clear();
             cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION, ReportTypes.REPORT_SELECTION));
             cboReportType.Items.Add(new ListItem(ReportTypes.ANALYTICS_All, ReportTypes.ANALYTICS_All));
+            cboReportType.Items.Add(new ListItem(ReportTypes.ANALYTICS_All_Covers, ReportTypes.ANALYTICS_All_Covers));
             cboReportType.Items.Add(new ListItem(ReportTypes.ANALYTICS_ItemsForPOBasedOnSales, ReportTypes.ANALYTICS_ItemsForPOBasedOnSales));
 			cboReportType.SelectedIndex = 0;
 
@@ -162,6 +163,9 @@ namespace AceSoft.RetailPlus.Reports
             {
                 case ReportTypes.ANALYTICS_All:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_analyticsreport/_TransactionsAll.rpt"));
+                    break;
+                case ReportTypes.ANALYTICS_All_Covers:
+                    rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_analyticsreport/_TransactionsAllCovers.rpt"));
                     break;
                 case ReportTypes.ANALYTICS_ItemsForPOBasedOnSales:
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_analyticsreport/_ItemsForPOBasedOnSales.rpt"));
@@ -295,6 +299,7 @@ namespace AceSoft.RetailPlus.Reports
             switch (strReportType)
 			{
                 case ReportTypes.ANALYTICS_All:
+                case ReportTypes.ANALYTICS_All_Covers:
                     #region Daily, Weekely, Monthly Sales Transaction
 
                     clsSalesTransactions = new SalesTransactions();
@@ -399,6 +404,21 @@ namespace AceSoft.RetailPlus.Reports
                     currentValues = new ParameterValues();
                     currentValues.Add(discreteParam);
                     paramField.ApplyCurrentValues(currentValues);
+
+                    string strAdditionalHdr = string.Empty;
+                    strAdditionalHdr += string.IsNullOrEmpty(txtTransactionNo.Text) ? "" : " Trx No: " + txtTransactionNo.Text;
+                    strAdditionalHdr += " Customer: " + cboContactName.SelectedItem.Text;
+                    strAdditionalHdr += " Cashier: " + cboCashierName.SelectedItem.Text;
+                    strAdditionalHdr += " Agent: " + cboAgent.SelectedItem.Text;
+                    strAdditionalHdr += " Terminal No: " + cboTerminalNo.SelectedItem.Text;
+                    strAdditionalHdr += " Branch: " + cboBranch.SelectedItem.Text;
+
+                    paramField = Report.DataDefinition.ParameterFields["AdditionalHeader"];
+			        discreteParam = new ParameterDiscreteValue();
+                    discreteParam.Value = strAdditionalHdr;
+			        currentValues = new ParameterValues();
+			        currentValues.Add(discreteParam);
+			        paramField.ApplyCurrentValues(currentValues);
                     break;
         }
 		}
@@ -465,6 +485,7 @@ namespace AceSoft.RetailPlus.Reports
             switch (cboReportType.SelectedItem.Text)
             {
                 case ReportTypes.ANALYTICS_All:
+                case ReportTypes.ANALYTICS_All_Covers:
                     holderTransaction.Visible = true;
                     holderTerminaNo.Visible = true;
                     break;

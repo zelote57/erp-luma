@@ -445,6 +445,18 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Reports\_analyticsreport\_TransactionsAll.cs">
+      <DependentUpon>_TransactionsAll.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_analyticsreport\_TransactionsAllCovers.cs">
+      <DependentUpon>_TransactionsAllCovers.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reports\_analyticsreport\_analyticsreport.ascx.cs">
       <DependentUpon>_analyticsreport.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -460,6 +472,12 @@
     </Compile>
     <Compile Include="Reports\_ClosingInventoryCount.cs">
       <DependentUpon>_ClosingInventoryCount.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerWithCheque.cs">
+      <DependentUpon>_DatedReportSalesTransactionPerCustomerWithCheque.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -500,20 +518,14 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Reports\_analyticsreport\_TransactionsAll.cs">
-      <DependentUpon>_TransactionsAll.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerItem.cs">
       <DependentUpon>_DatedReportSalesTransactionPerCustomerPerItem.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerWithCheque.cs">
-      <DependentUpon>_DatedReportSalesTransactionPerCustomerWithCheque.rpt</DependentUpon>
+    <Compile Include="Reports\_datedsalesreport\_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.cs">
+      <DependentUpon>_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -3937,6 +3949,14 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BranchTransferReportSellingPrice.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_analyticsreport\_TransactionsAll.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_TransactionsAll.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_analyticsreport\_TransactionsAllCovers.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_TransactionsAllCovers.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\_analyticsreport\_ItemsForPOBasedOnSales.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_ItemsForPOBasedOnSales.cs</LastGenOutput>
@@ -3956,6 +3976,10 @@
     <EmbeddedResource Include="Reports\_customercredit\_CustomerCreditListWCredit.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_CustomerCreditListWCredit1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerWithCheque.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesTransactionPerCustomerWithCheque.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_managementreport\_PerBranchPerMonthCovers.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -3981,17 +4005,13 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_PerBranch.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\_analyticsreport\_TransactionsAll.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>_TransactionsAll.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerPerItem.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_DatedReportSalesTransactionPerCustomerPerItem.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerWithCheque.rpt">
+    <EmbeddedResource Include="Reports\_datedsalesreport\_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>_DatedReportSalesTransactionPerCustomerWithCheque.cs</LastGenOutput>
+      <LastGenOutput>_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportMonthly.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

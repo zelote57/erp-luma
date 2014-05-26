@@ -2067,8 +2067,7 @@ namespace AceSoft.RetailPlus.Data
 			if (clsProductColumns.ProductCode) stSQL += "tblProducts." + ProductColumnNames.ProductCode + ", ";
 
             if (clsProductColumns.BarCode) stSQL += "tblProductPackage." + ProductColumnNames.PackageID + ", ";
-            if (clsProductColumns.BarCode) stSQL += "tblProductPackage." + ProductColumnNames.BarCode + " AS BarCode, ";
-            if (clsProductColumns.BarCode) stSQL += "tblProductPackage." + ProductColumnNames.BarCode + ", ";
+            if (clsProductColumns.BarCode) stSQL += "tblProductPackage." + ProductColumnNames.BarCode1 + " AS BarCode, ";
             if (clsProductColumns.BarCode) stSQL += "tblProductPackage." + ProductColumnNames.BarCode1 + ", ";
             if (clsProductColumns.BarCode2) stSQL += "tblProductPackage." + ProductColumnNames.BarCode2 + ", ";
             if (clsProductColumns.BarCode3) stSQL += "tblProductPackage." + ProductColumnNames.BarCode3 + ", ";
@@ -3706,13 +3705,13 @@ namespace AceSoft.RetailPlus.Data
                     string SQLSearch = string.Empty;
 
                     if (SearchColumns.BarCode)
-                    { if (SQLSearch == string.Empty) SQLSearch += "tblProducts.Barcode LIKE @SearchKey "; else SQLSearch += "OR tblProducts.Barcode LIKE @SearchKey "; }
+                    { if (SQLSearch == string.Empty) SQLSearch += "tblProductPackage.Barcode1 LIKE @SearchKey "; else SQLSearch += "OR tblProductPackage.Barcode1 LIKE @SearchKey "; }
 
                     if (SearchColumns.BarCode2)
-                    { if (SQLSearch == string.Empty) SQLSearch += "tblProducts.Barcode2 LIKE @SearchKey "; else SQLSearch += "OR tblProducts.Barcode2 LIKE @SearchKey "; }
+                    { if (SQLSearch == string.Empty) SQLSearch += "tblProductPackage.Barcode2 LIKE @SearchKey "; else SQLSearch += "OR tblProductPackage.Barcode2 LIKE @SearchKey "; }
 
                     if (SearchColumns.BarCode3)
-                    { if (SQLSearch == string.Empty) SQLSearch += "tblProducts.Barcode3 LIKE @SearchKey "; else SQLSearch += "OR tblProducts.Barcode3 LIKE @SearchKey "; }
+                    { if (SQLSearch == string.Empty) SQLSearch += "tblProductPackage.Barcode3 LIKE @SearchKey "; else SQLSearch += "OR tblProductPackage.Barcode3 LIKE @SearchKey "; }
 
                     if (SearchColumns.ProductCode)
                     { if (SQLSearch == string.Empty) SQLSearch += "tblProducts.ProductCode LIKE @SearchKey "; else SQLSearch += "OR tblProducts.ProductCode LIKE @SearchKey "; }
@@ -3754,14 +3753,9 @@ namespace AceSoft.RetailPlus.Data
                 if (Limit != 0)
                     SQL += "LIMIT " + Limit + " ";
 
-
-
                 MySqlCommand cmd = new MySqlCommand();
-
-
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-
 
                 MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey", MySqlDbType.String);
                 prmSearchKey.Value = SearchKey + "%";
@@ -3769,7 +3763,6 @@ namespace AceSoft.RetailPlus.Data
 
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-
 
                 return dt;
             }

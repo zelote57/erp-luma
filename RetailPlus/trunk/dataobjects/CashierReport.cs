@@ -1179,12 +1179,12 @@ namespace AceSoft.RetailPlus.Data
 
 		#endregion
 
-		public System.Data.DataTable PLUReport(int BranchID, string CashierName, string TerminalNo)
+        public System.Data.DataTable PLUReport(int BranchID, string CashierName, string TerminalNo, bool isPerGroup = false)
 		{
 			try
 			{
                 string SQL = "SELECT " +
-                                    "a.ProductID, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) AS ProductCode, OrderSlipPrinter, " +
+                                    "a.ProductID, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) AS ProductCode, OrderSlipPrinter, ProductGroup, " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Quantity, a.Quantity))) 'Quantity', " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Amount, a.Amount))) 'Amount' " +
                                     "FROM tblTransactionItems a " +
@@ -1198,75 +1198,43 @@ namespace AceSoft.RetailPlus.Data
                                     "OR TransactionStatus = @TransactionStatusCreditPayment) " +
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport " +
                                     "WHERE TerminalNo = @TerminalNo) " +
-                                    "GROUP BY OrderSlipPrinter, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) ORDER BY OrderSlipPrinter, ProductCode ASC ";
+                                    "GROUP BY OrderSlipPrinter, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) ORDER BY OrderSlipPrinter, ProductCode ASC, ProductGroup";
+
+                if (isPerGroup)
+                {
+                    SQL = "SELECT " +
+                                    "0 AS ProductID, '' AS ProductCode, ProductGroup, OrderSlipPrinter, " +
+                                    "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Quantity, a.Quantity))) 'Quantity', " +
+                                    "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Amount, a.Amount))) 'Amount' " +
+                                    "FROM tblTransactionItems a " +
+                                    "INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID " +
+                                "WHERE BranchID = @BranchID " +
+                                    "AND TerminalNo = @TerminalNo " +
+                                    "AND CashierName = @CashierName " +
+                                    "AND (TransactionStatus = @TransactionStatusClosed " +
+                                    "OR TransactionStatus = @TransactionStatusReprinted " +
+                                    "OR TransactionStatus = @TransactionStatusRefund " +
+                                    "OR TransactionStatus = @TransactionStatusCreditPayment) " +
+                                    "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport " +
+                                    "WHERE TerminalNo = @TerminalNo) " +
+                                    "GROUP BY OrderSlipPrinter, ProductGroup ORDER BY OrderSlipPrinter, ProductGroup ASC ";
+                }
 
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 
-				MySqlParameter prmTransactionItemStatusVoid = new MySqlParameter("@VoidStatus",MySqlDbType.Int16);			
-				prmTransactionItemStatusVoid.Value = (Int16) TransactionItemStatus.Void;
-				cmd.Parameters.Add(prmTransactionItemStatusVoid);
-
-				MySqlParameter prmReturnStatus = new MySqlParameter("@ReturnStatus",MySqlDbType.Int16);			
-				prmReturnStatus.Value = TransactionItemStatus.Return.ToString("d");
-				cmd.Parameters.Add(prmReturnStatus);
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlParameter prmCashierName = new MySqlParameter("@CashierName",MySqlDbType.String);			
-				prmCashierName.Value = CashierName;
-				cmd.Parameters.Add(prmCashierName);
-
-				MySqlParameter prmTransactionStatusClosed = new MySqlParameter("@TransactionStatusClosed",MySqlDbType.Int16);			
-				prmTransactionStatusClosed.Value = (Int16) TransactionStatus.Closed;
-				cmd.Parameters.Add(prmTransactionStatusClosed);
-
-				MySqlParameter prmTransactionStatusVoid = new MySqlParameter("@TransactionStatusVoid",MySqlDbType.Int16);			
-				prmTransactionStatusVoid.Value = (Int16) TransactionStatus.Void;
-				cmd.Parameters.Add(prmTransactionStatusVoid);
-
-				MySqlParameter prmTransactionStatusReprinted = new MySqlParameter("@TransactionStatusReprinted",MySqlDbType.Int16);			
-				prmTransactionStatusReprinted.Value = (Int16) TransactionStatus.Reprinted;
-				cmd.Parameters.Add(prmTransactionStatusReprinted);
-
-				MySqlParameter prmTransactionStatusRefund = new MySqlParameter("@TransactionStatusRefund",MySqlDbType.Int16);			
-				prmTransactionStatusRefund.Value = (Int16) TransactionStatus.Refund;
-				cmd.Parameters.Add(prmTransactionStatusRefund);
-
-				MySqlParameter prmTransactionStatusCreditPayment = new MySqlParameter("@TransactionStatusCreditPayment",MySqlDbType.Int16);			
-				prmTransactionStatusCreditPayment.Value = (Int16) TransactionStatus.CreditPayment;
-				cmd.Parameters.Add(prmTransactionStatusCreditPayment);
+                cmd.Parameters.AddWithValue("@VoidStatus", (Int16) TransactionItemStatus.Void);
+                cmd.Parameters.AddWithValue("@ReturnStatus", TransactionItemStatus.Return.ToString("d"));
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@CashierName", CashierName);
+                cmd.Parameters.AddWithValue("@TransactionStatusClosed", (Int16)TransactionStatus.Closed);
+                cmd.Parameters.AddWithValue("@TransactionStatusVoid", (Int16)TransactionStatus.Void);
+                cmd.Parameters.AddWithValue("@TransactionStatusReprinted", (Int16)TransactionStatus.Reprinted);
+                cmd.Parameters.AddWithValue("@TransactionStatusRefund", (Int16)TransactionStatus.Refund);
+                cmd.Parameters.AddWithValue("@TransactionStatusCreditPayment", (Int16)TransactionStatus.CreditPayment);
 
 				cmd.CommandText = SQL;
-
-                //System.Data.DataTable dt = new System.Data.DataTable("tblPLUReport");
-
-                //dt.Columns.Add("OrderSlipPrinter");
-                //dt.Columns.Add("ProductID");
-                //dt.Columns.Add("ProductCode");
-                //dt.Columns.Add("Quantity");
-                //dt.Columns.Add("Amount");
-
-                //MySqlDataReader myReader = base.ExecuteReader(cmd);
-                //while (myReader.Read())
-                //{
-                //    System.Data.DataRow dr = dt.NewRow();
-                //    dr["OrderSlipPrinter"] = myReader["OrderSlipPrinter"].ToString();
-                //    dr["ProductID"] = "" + myReader["ProductID"].ToString();
-                //    dr["ProductCode"] = "" + myReader["ProductCode"].ToString();
-                //    dr["Quantity"] = myReader.GetDecimal("Quantity").ToString("#,##0.#0");
-                //    dr["Amount"] = myReader.GetDecimal("Amount").ToString("#,##0.#0");
-                //    dt.Rows.Add(dr);
-                //}
-
-                //myReader.Close();
-
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
@@ -1278,12 +1246,11 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-
-		public void GeneratePLUReport(int BranchID, string CashierName, string TerminalNo)
+        public void GeneratePLUReport(int BranchID, string CashierName, string TerminalNo, bool isPerGroup = false)
 		{
 			try
 			{
-				System.Data.DataTable dtPLUReport = this.PLUReport(BranchID, CashierName, TerminalNo);
+                System.Data.DataTable dtPLUReport = this.PLUReport(BranchID, CashierName, TerminalNo, isPerGroup);
 				
 				Data.PLUReport clsPLUReport = new Data.PLUReport(base.Connection, base.Transaction);
 
@@ -1297,6 +1264,7 @@ namespace AceSoft.RetailPlus.Data
 				{
 					long lProductID = Convert.ToInt64(dr["ProductID"]);
 					string stProductCode = dr["ProductCode"].ToString();
+                    string stProductGroup = dr["ProductGroup"].ToString();
 					decimal decQuantity = Convert.ToDecimal(dr["Quantity"]);
 					decimal decAmount = Convert.ToDecimal(dr["Amount"]);
                     OrderSlipPrinter locOrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
@@ -1305,13 +1273,15 @@ namespace AceSoft.RetailPlus.Data
                     clsPLUReportDetails.TerminalNo = TerminalNo;
                     clsPLUReportDetails.ProductID = lProductID;
                     clsPLUReportDetails.ProductCode = stProductCode;
+                    clsPLUReportDetails.ProductGroup = stProductGroup;
                     clsPLUReportDetails.Quantity = decQuantity;
                     clsPLUReportDetails.Amount = decAmount;
                     clsPLUReportDetails.OrderSlipPrinter = locOrderSlipPrinter;
 
                     clsPLUReport.Insert(clsPLUReportDetails);
 
-                    clsProductComposition.GeneratePLUReport(TerminalNo, lProductID, stProductCode, decQuantity);
+                    // generate if per item
+                    if (!isPerGroup) clsProductComposition.GeneratePLUReport(TerminalNo, lProductID, stProductCode, decQuantity);
 				}		
 
 			}

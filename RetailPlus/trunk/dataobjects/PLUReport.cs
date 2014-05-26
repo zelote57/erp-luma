@@ -21,7 +21,8 @@ namespace AceSoft.RetailPlus.Data
 		public string TerminalNo;
 		public Int64 ProductID;
 		public string ProductCode;
-		public decimal Quantity;
+        public string ProductGroup;
+        public decimal Quantity;
 		public decimal Amount;
         public OrderSlipPrinter OrderSlipPrinter;
 	}
@@ -63,50 +64,31 @@ namespace AceSoft.RetailPlus.Data
 				string SQL =	"INSERT INTO tblPLUReport (" +
 									"TerminalNo, " +
 									"ProductID, " + 
-									"ProductCode, " + 
+									"ProductCode, " +
+                                    "ProductGroup, " + 
 									"Quantity, " +  
 									"Amount, " +
                                     "OrderSlipPrinter" +
 								") VALUES (" +
 									"@TerminalNo, " +
 									"@ProductID, " + 
-									"@ProductCode, " + 
-									"@Quantity, " +  
+									"@ProductCode, " +
+                                    "@ProductGroup, " + 
+                                    "@Quantity, " +  
 									"@Amount," +
                                     "@OrderSlipPrinter);"; 
 
-				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = Details.ProductID;
-				cmd.Parameters.Add(prmProductID);
-
-				MySqlParameter prmProductCode = new MySqlParameter("@ProductCode",MySqlDbType.String);			
-				prmProductCode.Value = Details.ProductCode;
-				cmd.Parameters.Add(prmProductCode);
-
-				MySqlParameter prmQuantity = new MySqlParameter("@Quantity",MySqlDbType.Decimal);			
-				prmQuantity.Value = Details.Quantity;
-				cmd.Parameters.Add(prmQuantity);
-
-				MySqlParameter prmAmount = new MySqlParameter("@Amount",MySqlDbType.Decimal);			
-				prmAmount.Value = Details.Amount;
-				cmd.Parameters.Add(prmAmount);
-
-                MySqlParameter prmOrderSlipPrinter = new MySqlParameter("@OrderSlipPrinter",MySqlDbType.Int16);
-                prmOrderSlipPrinter.Value = (int)Details.OrderSlipPrinter;
-                cmd.Parameters.Add(prmOrderSlipPrinter);
+                cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
+                cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
+                cmd.Parameters.AddWithValue("@ProductCode", Details.ProductCode);
+                cmd.Parameters.AddWithValue("@ProductGroup", Details.ProductGroup);
+                cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
+                cmd.Parameters.AddWithValue("@Amount", Details.Amount);
+                cmd.Parameters.AddWithValue("@OrderSlipPrinter", (int) Details.OrderSlipPrinter);
 
 				base.ExecuteNonQuery(cmd);
 
@@ -114,32 +96,21 @@ namespace AceSoft.RetailPlus.Data
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int64 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				myReader.Close();
+                Int64 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int64.Parse(dr[0].ToString());
+                }
 
 				return iID;
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -199,19 +170,20 @@ namespace AceSoft.RetailPlus.Data
 			return SQL;
 		}
 
-		public System.Data.DataTable dtList(string TerminalNo, string SortField, SortOption SortOrder)
+		public System.Data.DataTable dtList(string TerminalNo, string SortField, SortOption SortOrder, bool isPerGroup = false)
 		{
 			try
 			{
                 string SQL =    "SELECT " +
                                     "TerminalNo, " +
                                     "OrderSlipPrinter, " +
+                                    "ProductGroup, " +
                                     "ProductCode, " +
                                     "SUM(Quantity) 'Quantity', " +
                                     "SUM(Amount) 'Amount' " +
                                 "FROM tblPLUReport " +
                                 "WHERE TerminalNo = @TerminalNo " +
-                                "GROUP BY TerminalNo, OrderSlipPrinter, ProductCode ";
+                                "GROUP BY TerminalNo, OrderSlipPrinter, ProductGroup, ProductCode ";
 
 				SQL = SQL + "ORDER BY " + SortField; 
 				
@@ -220,41 +192,26 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				
+                if (isPerGroup)
+                {
+                    SQL = "SELECT " +
+                                    "TerminalNo, " +
+                                    "OrderSlipPrinter, " +
+                                    "ProductGroup, " +
+                                    "SUM(Quantity) 'Quantity', " +
+                                    "SUM(Amount) 'Amount' " +
+                                "FROM tblPLUReport " +
+                                "WHERE TerminalNo = @TerminalNo " +
+                                "GROUP BY TerminalNo, OrderSlipPrinter, ProductGroup " +
+                                "ORDER BY TerminalNo, OrderSlipPrinter, ProductGroup ";
+                }
 
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
 
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
 
-
-                //System.Data.DataTable dt = new System.Data.DataTable("tblPLUReport");
-
-                //dt.Columns.Add("TerminalNo");
-                //dt.Columns.Add("OrderSlipPrinter");
-                //dt.Columns.Add("ProductCode");
-                //dt.Columns.Add("Quantity");
-                //dt.Columns.Add("Amount");
-
-                //while (myReader.Read())
-                //{
-                //    System.Data.DataRow dr = dt.NewRow();
-
-                //    dr["TerminalNo"] = "" + myReader["TerminalNo"].ToString();
-                //    dr["OrderSlipPrinter"] = myReader.GetInt16("OrderSlipPrinter").ToString();
-                //    dr["ProductCode"] = "" + myReader["ProductCode"].ToString();
-                //    dr["Quantity"] = myReader.GetDecimal("Quantity").ToString("#,##0.#0");
-                //    dr["Amount"] = myReader.GetDecimal("Amount").ToString("#,##0.#0");
-                //    dt.Rows.Add(dr);
-                //}
-
-                //myReader.Close();
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
@@ -265,70 +222,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-
 		
-//		public void Generate(Int64 TerminalNo, string SortField, SortOption SortOrder)
-//		{
-//			try
-//			{
-//				string SQL = SQLSelect() + "WHERE TerminalNo = @TerminalNo ORDER BY " + SortField; 
-//				
-//				if (SortOrder == SortOption.Ascending)
-//					SQL += " ASC";
-//				else
-//					SQL += " DESC";
-//
-//				
-//
-//				MySqlCommand cmd = new MySqlCommand();
-//				
-//				
-//				cmd.CommandType = System.Data.CommandType.Text;
-//				cmd.CommandText = SQL;
-//				
-//				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.Int64);						
-//				prmTerminalNo.Value = TerminalNo;
-//				cmd.Parameters.Add(prmTerminalNo);
-//
-//				
-//				
-//				System.Data.DataTable dt = new System.Data.DataTable("tblCompositionList");
-//
-//				dt.Columns.Add("TerminalNo");
-//				dt.Columns.Add("ProductCode");
-//				dt.Columns.Add("Quantity");
-//				dt.Columns.Add("Amount");
-//
-//				while (myReader.Read())
-//				{
-//					System.Data.DataRow dr = dt.NewRow();
-//
-//					dr["TerminalNo"] = "" + myReader["TerminalNo"].ToString();
-//					dr["ProductCode"] = "" + myReader["ProductCode"].ToString();
-//					dr["Quantity"] = myReader.GetDecimal("Quantity").ToString("#,##0.#0");
-//					dr["Amount"] = myReader.GetDecimal("Amount").ToString("#,##0.#0");
-//					dt.Rows.Add(dr);
-//				}
-//
-//				myReader.Close();
-//
-//				return dt;				
-//			}
-//			catch (Exception ex)
-//			{
-//				
-//				
-//				{
-//					
-//					
-//					
-//					
-//				}
-//
-//				throw base.ThrowException(ex);
-//			}	
-//		}
-//		
 		#endregion
 	}
 }

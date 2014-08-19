@@ -67,7 +67,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Position
         private void LoadRecord()
         {
             Int16 iID = Convert.ToInt16(Common.Decrypt(Request.QueryString["id"], Session.SessionID));
-            Position clsPosition = new Position();
+            Positions clsPosition = new Positions();
             PositionDetails clsDetails = clsPosition.Details(iID);
             clsPosition.CommitAndDispose();
 

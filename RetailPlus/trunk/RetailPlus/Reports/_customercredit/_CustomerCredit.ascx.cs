@@ -57,7 +57,7 @@ namespace AceSoft.RetailPlus.Reports
             cboContactName.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             if (cboContactName.Items.Count > 1 && txtContactName.Text.Trim() != string.Empty) cboContactName.SelectedIndex = 1; else cboContactName.SelectedIndex = 0;
 
-            ContactGroup clsContactGroup = new ContactGroup(clsCustomer.Connection, clsCustomer.Transaction);
+            ContactGroups clsContactGroup = new ContactGroups(clsCustomer.Connection, clsCustomer.Transaction);
             cboCustomerGroup.DataTextField = "ContactGroupName";
             cboCustomerGroup.DataValueField = "ContactGroupCode";
             cboCustomerGroup.DataSource = clsContactGroup.ListAsDataTable(ContactGroupCategory.CUSTOMER);
@@ -306,7 +306,7 @@ namespace AceSoft.RetailPlus.Reports
 
         protected void imgCustomerGroupSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            ContactGroup clsContactGroup = new ContactGroup();
+            ContactGroups clsContactGroup = new ContactGroups();
             cboCustomerGroup.DataTextField = "ContactGroupName";
             cboCustomerGroup.DataValueField = "ContactGroupCode";
             cboCustomerGroup.DataSource = clsContactGroup.ListAsDataTable(ContactGroupCategory.CUSTOMER, txtCustomerGroup.Text.TrimEnd());

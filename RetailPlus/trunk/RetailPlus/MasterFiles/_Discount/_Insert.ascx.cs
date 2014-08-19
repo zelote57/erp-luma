@@ -112,7 +112,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Discount
 			clsDetails.DiscountCode = txtDiscountCode.Text;
 			clsDetails.DiscountType = txtDiscountType.Text;
 			clsDetails.DiscountPrice = Convert.ToDecimal(txtDiscountPrice.Text);
-			clsDetails.InPercent = Convert.ToByte(chkInPercent.Checked);
+			clsDetails.InPercent = Convert.ToBoolean(chkInPercent.Checked);
 
 			int id = clsDiscount.Insert(clsDetails);
 			

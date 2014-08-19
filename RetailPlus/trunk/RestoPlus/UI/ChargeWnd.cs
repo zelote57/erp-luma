@@ -580,7 +580,7 @@ namespace AceSoft.RetailPlus.Client.UI
             //    lblChargeType.Visible = false;
             //}
             //else 
-            if (clsChargeTypeDetails.InPercent == 1)
+            if (clsChargeTypeDetails.InPercent)
             {
                 mChargeType = ChargeTypes.Percentage;
                 lblHeader.Text = clsChargeTypeDetails.ChargeType + ": Percentage Charge";

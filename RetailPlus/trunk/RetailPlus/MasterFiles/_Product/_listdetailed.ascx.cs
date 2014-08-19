@@ -195,7 +195,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 imgVariationsAdd.HRef = "javascript:ToggleDiv('" + divInsertVariation.ClientID + "')";
 
                 DropDownList cboVariationType = (DropDownList)e.Item.FindControl("cboVariationType");
-			    ProductVariation clsVariation = new ProductVariation();
+			    ProductVariations clsVariation = new ProductVariations();
 			    cboVariationType.DataTextField = "VariationType";
 			    cboVariationType.DataValueField = "VariationID";
 			    cboVariationType.DataSource = clsVariation.AvailableVariationsDataTable(long.Parse(chkList.Value), "VariationType",SortOption.Ascending).DefaultView;
@@ -292,7 +292,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     {
                         DropDownList cboVariationType = (DropDownList)e.Item.FindControl("cboVariationType");
                         SaveVariation(long.Parse(chkList.Value), int.Parse(cboVariationType.SelectedItem.Value), cboVariationType.SelectedItem.Text);
-                        ProductVariation clsVariation = new ProductVariation();
+                        ProductVariations clsVariation = new ProductVariations();
                         cboVariationType.DataTextField = "VariationType";
                         cboVariationType.DataValueField = "VariationID";
                         cboVariationType.DataSource = clsVariation.AvailableVariationsDataTable(long.Parse(chkList.Value), "VariationType", SortOption.Ascending).DefaultView;
@@ -305,7 +305,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     {
                         DropDownList cboVariationType = (DropDownList)e.Item.FindControl("cboVariationType");
                         SaveVariation(long.Parse(chkList.Value), int.Parse(cboVariationType.SelectedItem.Value), cboVariationType.SelectedItem.Text);
-                        ProductVariation clsVariation = new ProductVariation();
+                        ProductVariations clsVariation = new ProductVariations();
                         cboVariationType.DataTextField = "VariationType";
                         cboVariationType.DataValueField = "VariationID";
                         cboVariationType.DataSource = clsVariation.AvailableVariationsDataTable(long.Parse(chkList.Value), "VariationType", SortOption.Ascending).DefaultView;
@@ -707,7 +707,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsDetails.VariationID = VariationID;
             clsDetails.VariationType = VariationType;
 
-            ProductVariation clsProdVariation = new ProductVariation();
+            ProductVariations clsProdVariation = new ProductVariations();
             int id = clsProdVariation.Insert(clsDetails);
             clsProdVariation.CommitAndDispose();
         }

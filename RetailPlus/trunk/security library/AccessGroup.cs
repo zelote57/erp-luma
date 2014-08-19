@@ -29,6 +29,9 @@ namespace AceSoft.RetailPlus.Security
 		public int GroupID;
 		public string GroupName;
 		public string Remarks;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	
@@ -63,37 +66,42 @@ namespace AceSoft.RetailPlus.Security
 		{
 			try 
 			{
-				string SQL="INSERT INTO sysAccessGroups (GroupName, Remarks) VALUES (@GroupName, @Remarks);";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                // Aug 2, 2014 : change to save only
+                Details.CreatedOn = Details.CreatedOn == Constants.C_DATE_MIN_VALUE ? DateTime.Now : Details.CreatedOn;
+                Details.LastModified = Details.LastModified == Constants.C_DATE_MIN_VALUE ? DateTime.Now : Details.LastModified;
+
+                Save(Details);
+
+                string SQL = "INSERT INTO sysAccessGroups (GroupName, Remarks) VALUES (@GroupName, @Remarks);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
 				
-				MySqlParameter prmGroupName = new MySqlParameter("@GroupName",MySqlDbType.String);			
-				prmGroupName.Value = Details.GroupName;
-				cmd.Parameters.Add(prmGroupName);
+                //MySqlParameter prmGroupName = new MySqlParameter("@GroupName",MySqlDbType.String);			
+                //prmGroupName.Value = Details.GroupName;
+                //cmd.Parameters.Add(prmGroupName);
 
-				MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);
-				prmRemarks.Value = Details.Remarks;
-				cmd.Parameters.Add(prmRemarks);
+                //MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);
+                //prmRemarks.Value = Details.Remarks;
+                //cmd.Parameters.Add(prmRemarks);
 
-				base.ExecuteNonQuery(cmd);
+                //base.ExecuteNonQuery(cmd);
 
 				SQL = "SELECT LAST_INSERT_ID();";
 				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int32 iID = 0;
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt32(0);
-				}
+                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				myReader.Close();
+
+                Int32 iID = 0;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = Int32.Parse(dr[0].ToString());
+                }
 
 				return iID;
 			}
@@ -108,28 +116,34 @@ namespace AceSoft.RetailPlus.Security
 		{
 			try 
 			{
-				string SQL=	"UPDATE sysAccessGroups SET " + 
-							"GroupName = @GroupName," +  
-							"Remarks = @Remarks " + 
-							"WHERE GroupID = @GroupID;";
+                // Aug 2, 2014 : change to save only
+                Details.CreatedOn = Details.CreatedOn == Constants.C_DATE_MIN_VALUE ? DateTime.Now : Details.CreatedOn;
+                Details.LastModified = Details.LastModified == Constants.C_DATE_MIN_VALUE ? DateTime.Now : Details.LastModified;
+
+                Save(Details);
+
+                //string SQL=	"UPDATE sysAccessGroups SET " + 
+                //            "GroupName = @GroupName," +  
+                //            "Remarks = @Remarks " + 
+                //            "WHERE GroupID = @GroupID;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                //MySqlCommand cmd = new MySqlCommand();
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = SQL;
 				
-				MySqlParameter prmGroupName = new MySqlParameter("@GroupName",MySqlDbType.String);			
-				prmGroupName.Value = Details.GroupName;
-				cmd.Parameters.Add(prmGroupName);
+                //MySqlParameter prmGroupName = new MySqlParameter("@GroupName",MySqlDbType.String);			
+                //prmGroupName.Value = Details.GroupName;
+                //cmd.Parameters.Add(prmGroupName);
 
-				MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);
-				prmRemarks.Value = Details.Remarks;
-				cmd.Parameters.Add(prmRemarks);
+                //MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);
+                //prmRemarks.Value = Details.Remarks;
+                //cmd.Parameters.Add(prmRemarks);
 
-				MySqlParameter prmGroupID = new MySqlParameter("@GroupID",MySqlDbType.Int16);			
-				prmGroupID.Value = Details.GroupID;
-				cmd.Parameters.Add(prmGroupID);
+                //MySqlParameter prmGroupID = new MySqlParameter("@GroupID",MySqlDbType.Int16);			
+                //prmGroupID.Value = Details.GroupID;
+                //cmd.Parameters.Add(prmGroupID);
 
-				base.ExecuteNonQuery(cmd);
+                //base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
@@ -138,6 +152,30 @@ namespace AceSoft.RetailPlus.Security
 			}	
 		}
 
+        public Int32 Save(AccessGroupDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveSysAccessGroups(@GroupID, @GroupName, @Remarks, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("GroupID", Details.GroupID);
+                cmd.Parameters.AddWithValue("GroupName", Details.GroupName);
+                cmd.Parameters.AddWithValue("Remarks", Details.Remarks);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 		
 		#endregion
 

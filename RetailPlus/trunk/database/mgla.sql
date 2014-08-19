@@ -366,7 +366,7 @@ CREATE TABLE tblgla_order_tender (
 	`post_system5_flag` TINYINT(1) NOT NULL DEFAULT 0,
 	`post_system6_flag` TINYINT(1) NOT NULL DEFAULT 0,
 	`post_system7_flag` TINYINT(1) NOT NULL DEFAULT 0,
-	`DateCreated` DATETIME NOT NULL DEFAULT NOW(),
+	`DateCreated` DATETIME NOT NULL ,
 	`CreatedBy` VARCHAR(120) NULL,
 	`Filename` VARCHAR(120) NULL,
 	`BatchID` VARCHAR(30) NULL,

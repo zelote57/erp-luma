@@ -29,7 +29,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Charges
 			DataClass clsDataClass = new DataClass();
 			lblProductGroupID.Text = Common.Decrypt((string)Request.QueryString["groupid"],Session.SessionID);
 
-			ProductGroupCharge clsCharge = new ProductGroupCharge();
+			ProductGroupCharges clsCharge = new ProductGroupCharges();
 			
 			cboChargeType.DataTextField = "ChargeType";
 			cboChargeType.DataValueField = "ChargeTypeID";
@@ -66,14 +66,14 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Charges
 
 		private Int64 SaveRecord()
 		{
-			ProductGroupCharge clsProdCharge = new ProductGroupCharge();
+			ProductGroupCharges clsProdCharge = new ProductGroupCharges();
 			ProductGroupChargeDetails clsDetails = new ProductGroupChargeDetails();
 
 			clsDetails.GroupID = Convert.ToInt64(lblProductGroupID.Text);
 			clsDetails.ChargeTypeID = Convert.ToInt32(cboChargeType.SelectedItem.Value);
 			clsDetails.ChargeType = cboChargeType.SelectedItem.Text;
 			clsDetails.ChargeAmount = Convert.ToDecimal(txtChargeAmount.Text);
-			clsDetails.InPercent = Convert.ToByte(chkInPercent.Checked);
+			clsDetails.InPercent = chkInPercent.Checked;
 
 			Int64 id = clsProdCharge.Insert(clsDetails);
 			

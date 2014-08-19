@@ -77,7 +77,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 			{
 				ProductGroup clsProductGroup = new ProductGroup();
 				ProductGroupDetails clsProductGroupDetails = clsProductGroup.Details(Convert.ToInt32(cboGroup.SelectedItem.Value));
-				cboProductSubGroupUnit.SelectedIndex = cboProductSubGroupUnit.Items.IndexOf( cboProductSubGroupUnit.Items.FindByValue(clsProductGroupDetails.BaseUnitID.ToString()));
+				cboProductSubGroupUnit.SelectedIndex = cboProductSubGroupUnit.Items.IndexOf( cboProductSubGroupUnit.Items.FindByValue(clsProductGroupDetails.UnitDetails.UnitID.ToString()));
 				txtProductPrice.Text = clsProductGroupDetails.Price.ToString("#,##0.#0");
 				txtPurchasePrice.Text = clsProductGroupDetails.PurchasePrice.ToString("#,##0.#0");
                 chkIncludeInSubtotalDiscount.Checked = clsProductGroupDetails.IncludeInSubtotalDiscount;
@@ -104,16 +104,16 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 			
 			cboGroup.DataTextField = "ProductGroupName";
 			cboGroup.DataValueField = "ProductGroupID";
-			cboGroup.DataSource = clsDataClass.DataReaderToDataTable(clsProductGroup.List("ProductGroupName",SortOption.Ascending)).DefaultView;
+			cboGroup.DataSource = clsProductGroup.ListAsDataTable(SortField:"ProductGroupName").DefaultView;
 			cboGroup.DataBind();
 			cboGroup.SelectedIndex = cboGroup.Items.Count - 1;
 			cboGroup_SelectedIndexChanged(null, System.EventArgs.Empty);
 
-			UnitMeasurements clsUnit = new UnitMeasurements();
+            Data.Unit clsUnit = new Data.Unit();
 			
 			cboProductSubGroupUnit.DataTextField = "UnitName";
 			cboProductSubGroupUnit.DataValueField = "UnitID";
-			cboProductSubGroupUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List("UnitName",SortOption.Ascending)).DefaultView;
+			cboProductSubGroupUnit.DataSource = clsUnit.ListAsDataTable(SortField:"UnitName").DefaultView;
 			cboProductSubGroupUnit.DataBind();
 			cboProductSubGroupUnit.SelectedIndex = cboProductSubGroupUnit.Items.Count - 1;
 
@@ -127,7 +127,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 
 			if (cboGroup.Items.Count != 0)
 			{
-				Int32 BaseUnitID= clsProductGroup.Details(Convert.ToInt32(cboGroup.SelectedItem.Value)).BaseUnitID;
+				Int32 BaseUnitID= clsProductGroup.Details(Convert.ToInt32(cboGroup.SelectedItem.Value)).UnitDetails.UnitID;
 				cboProductSubGroupUnit.SelectedIndex = cboProductSubGroupUnit.Items.IndexOf( cboProductSubGroupUnit.Items.FindByValue(BaseUnitID.ToString()));
 			}
 			clsProductGroup.CommitAndDispose();	

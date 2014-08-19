@@ -106,7 +106,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Variations
 			string VariationType = clsVariation.Details( Convert.ToInt32(lblProductVariationID.Text)).VariationType;
 			clsVariation.CommitAndDispose();
 
-			ProductVariation clsProductVariation = new ProductVariation();
+			ProductVariations clsProductVariation = new ProductVariations();
 			
 			cboVariationType.DataTextField = "VariationType";
 			cboVariationType.DataValueField = "VariationID";
@@ -126,7 +126,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Variations
 
 		private void SaveRecord()
 		{
-			ProductVariation clsProductVariation = new ProductVariation();
+			ProductVariations clsProductVariation = new ProductVariations();
 			ProductVariationDetails clsDetails = new ProductVariationDetails();
 
 			clsDetails.ProductID = Convert.ToInt32(lblProductID.Text);

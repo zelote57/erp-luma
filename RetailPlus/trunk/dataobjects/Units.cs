@@ -18,6 +18,9 @@ namespace AceSoft.RetailPlus.Data
 		public int UnitID;
 		public string UnitCode;
 		public string UnitName;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -53,54 +56,13 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "INSERT INTO tblUnit (UnitCode, UnitName) VALUES (@UnitCode, @UnitName);";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmUnitCode = new MySqlParameter("@UnitCode",MySqlDbType.String);			
-				prmUnitCode.Value = Details.UnitCode;
-				cmd.Parameters.Add(prmUnitCode);
+                Save(Details);
 
-				MySqlParameter prmUnitName = new MySqlParameter("@UnitName",MySqlDbType.String);			
-				prmUnitName.Value = Details.UnitName;
-				cmd.Parameters.Add(prmUnitName);
-
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-                Int32 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int32.Parse(dr[0].ToString());
-                }
-
-				return iID;
+                return Int32.Parse(base.getLAST_INSERT_ID(this));
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -109,48 +71,39 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblUnit SET " + 
-							"UnitCode = @UnitCode, " +  
-							"UnitName = @UnitName " +  
-							"WHERE UnitID = @UnitID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmUnitCode = new MySqlParameter("@UnitCode",MySqlDbType.String);			
-				prmUnitCode.Value = Details.UnitCode;
-				cmd.Parameters.Add(prmUnitCode);
-
-				MySqlParameter prmUnitName = new MySqlParameter("@UnitName",MySqlDbType.String);			
-				prmUnitName.Value = Details.UnitName;
-				cmd.Parameters.Add(prmUnitName);
-
-				MySqlParameter prmUnitID = new MySqlParameter("@UnitID",MySqlDbType.Int16);			
-				prmUnitID.Value = Details.UnitID;
-				cmd.Parameters.Add(prmUnitID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
+        public Int32 Save(UnitDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveUnit(@UnitID, @UnitCode, @UnitName, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("UnitID", Details.UnitID);
+                cmd.Parameters.AddWithValue("UnitCode", Details.UnitCode);
+                cmd.Parameters.AddWithValue("UnitName", Details.UnitName);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -162,11 +115,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL=	"DELETE FROM tblUnit WHERE UnitID IN (" + IDs + ");";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -177,14 +126,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -198,51 +139,30 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"UnitID, " +
-								"UnitCode, " +
-								"UnitName " +
-							"FROM tblUnit " +
-							"WHERE UnitID = @UnitID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				MySqlParameter prmUnitID = new MySqlParameter("@UnitID",MySqlDbType.Int32);
-				prmUnitID.Value = UnitID;
-				cmd.Parameters.Add(prmUnitID);
+				string SQL=	"SELECT UnitID, UnitCode, UnitName FROM tblUnit WHERE UnitID = @UnitID;";
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				UnitDetails Details = new UnitDetails();
+                cmd.Parameters.AddWithValue("@UnitID", UnitID);
+                cmd.CommandText = SQL;
 
-				while (myReader.Read()) 
-				{
-					Details.UnitID = myReader.GetInt32("UnitID");
-					Details.UnitCode = "" + myReader["UnitCode"].ToString();
-					Details.UnitName = "" + myReader["UnitName"].ToString();
-				}
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				myReader.Close();
+                UnitDetails Details = new UnitDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.UnitID = Int32.Parse(dr["UnitID"].ToString());
+                    Details.UnitCode = dr["UnitCode"].ToString();
+                    Details.UnitName = dr["UnitName"].ToString();
+                }
 
-				return Details;
+                return Details;
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -251,52 +171,30 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"UnitID, " +
-								"UnitCode, " +
-								"UnitName " +
-							"FROM tblUnit " +
-							"WHERE UnitCode = @UnitCode;";
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+				string SQL=	"SELECT UnitID, UnitCode, UnitName FROM tblUnit WHERE UnitCode = @UnitCode;";
 				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmUnitCode = new MySqlParameter("@UnitCode",MySqlDbType.String);
-				prmUnitCode.Value = UnitCode;
-				cmd.Parameters.Add(prmUnitCode);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.Parameters.AddWithValue("@UnitCode", UnitCode);
+                cmd.CommandText = SQL;
+                
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 UnitDetails Details = new UnitDetails();
-
-				while (myReader.Read()) 
-				{
-					Details.UnitID = myReader.GetInt32("UnitID");
-					Details.UnitCode = "" + myReader["UnitCode"].ToString();
-					Details.UnitName = "" + myReader["UnitName"].ToString();
-				}
-
-				myReader.Close();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.UnitID = Int32.Parse(dr["UnitID"].ToString());
+                    Details.UnitCode = dr["UnitCode"].ToString();
+                    Details.UnitName = dr["UnitName"].ToString();
+                }
 
 				return Details;
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -306,147 +204,26 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
+		public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "UnitCode", SortOption SortOrder = SortOption.Ascending)
 		{
-			try
-			{
-                if (SortField == null || SortField == string.Empty) SortField = "UnitID";
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
 
-				string SQL = "SELECT " +
-					"UnitID, " +
-					"UnitCode, " +
-					"UnitName " +
-					"FROM tblUnit " +
-					"ORDER BY " + SortField;
+            string SQL = "SELECT UnitID, UnitCode, UnitName FROM tblUnit ";
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+            if (!string.IsNullOrEmpty(SearchKey))
+            {
+                SQL += "WHERE UnitCode LIKE @SearchKey OR UnitName LIKE @SearchKey ";
+                cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+            }
+            SQL += "ORDER BY " + SortField + " ";
+            SQL += SortOrder == SortOption.Ascending ? "ASC" : "DESC";
+            
+            cmd.CommandText = SQL;
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public System.Data.DataTable DataList(string SortField, SortOption SortOrder)
-		{
-			MySqlDataReader myReader = List(SortField,SortOption.Ascending);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblUnit");
-
-			dt.Columns.Add("UnitID");
-			dt.Columns.Add("UnitCode");
-			dt.Columns.Add("UnitName");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-
-				dr["UnitID"] = "" + myReader["UnitID"].ToString();
-				dr["UnitCode"] = "" + myReader["UnitCode"].ToString();
-				dr["UnitName"] = "" + myReader["UnitName"].ToString();
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
-
-			return dt;
-		}
-
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL ="SELECT " +
-								"UnitID, " +
-								"UnitCode, " +
-								"UnitName " +
-							"FROM tblUnit " +
-							"WHERE UnitName LIKE @SearchKey " +
-							"ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public System.Data.DataTable DataSearch(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			MySqlDataReader myReader = Search(SearchKey,SortField,SortOption.Ascending);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblUnit");
-
-			dt.Columns.Add("UnitID");
-			dt.Columns.Add("UnitCode");
-			dt.Columns.Add("UnitName");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-
-				dr["UnitID"] = myReader.GetInt32("UnitID");
-				dr["UnitCode"] = "" + myReader["UnitCode"].ToString();
-				dr["UnitName"] = "" + myReader["UnitName"].ToString();
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
-
-			return dt;
+            return dt;
 		}
 
 		#endregion

@@ -239,7 +239,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._GJournals
 		{
 			DataClass clsDataClass = new DataClass();
 
-			ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+			ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
 			cboAccount.DataTextField = "ChartOfAccountName";
 			cboAccount.DataValueField = "ChartOfAccountID";
 			cboAccount.DataSource = clsDataClass.DataReaderToDataTable(clsChartOfAccount.List("ChartOfAccountName", SortOption.Ascending)).DefaultView;

@@ -85,7 +85,7 @@ namespace AceSoft.RetailPlus.MasterFiles._CardType
         {
 
         }
-        private Int16 SaveRecord()
+        private Int32 SaveRecord()
         {
             CardType clsCardType = new CardType();
             CardTypeDetails clsDetails = new CardTypeDetails();
@@ -93,7 +93,7 @@ namespace AceSoft.RetailPlus.MasterFiles._CardType
             clsDetails.CardTypeCode = txtCardTypeCode.Text;
             clsDetails.CardTypeName = txtCardTypeName.Text;
 
-            Int16 id = clsCardType.Insert(clsDetails);
+            Int32 id = clsCardType.Insert(clsDetails);
 
             clsCardType.CommitAndDispose();
 

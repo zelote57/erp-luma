@@ -67,7 +67,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactGroup
         private void LoadRecord()
         {
             Int32 iID = Convert.ToInt32(Common.Decrypt(Request.QueryString["id"], Session.SessionID));
-            ContactGroup clsContactGroup = new ContactGroup();
+            ContactGroups clsContactGroup = new ContactGroups();
             ContactGroupDetails clsDetails = clsContactGroup.Details(iID);
             clsContactGroup.CommitAndDispose();
 

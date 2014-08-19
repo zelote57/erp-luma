@@ -248,7 +248,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
 
         private void LoadOptions()
         {
-            ContactGroup clsContactGroup = new ContactGroup();
+            ContactGroups clsContactGroup = new ContactGroups();
 
             cboGroup.DataTextField = "ContactGroupName";
             cboGroup.DataValueField = "ContactGroupID";

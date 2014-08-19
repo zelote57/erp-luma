@@ -339,7 +339,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.lblHeader.Text = "Select Item to purchase";
 
             ProductGroup clsProductGroup = new ProductGroup();
-            System.Data.DataTable dtaProductGroup = clsProductGroup.DataTable("ProductGroupCode", SortOption.Ascending);
+            System.Data.DataTable dtaProductGroup = clsProductGroup.ListAsDataTable(SortField:"ProductGroupCode");
             clsProductGroup.CommitAndDispose();
 
             lstGroup.Items.Clear(); int iImgCtr = 0;

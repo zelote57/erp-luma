@@ -283,7 +283,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
             Products clsProduct = new Products(clsTransferOut.Connection, clsTransferOut.Transaction);
             ProductDetails clsProductDetails;
 
-            ProductVariation clsProductVariation = new ProductVariation(clsTransferOut.Connection, clsTransferOut.Transaction);
+            ProductVariations clsProductVariation = new ProductVariations(clsTransferOut.Connection, clsTransferOut.Transaction);
             DataTable dtaProductVariation;
 
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsTransferOut.Connection, clsTransferOut.Transaction);

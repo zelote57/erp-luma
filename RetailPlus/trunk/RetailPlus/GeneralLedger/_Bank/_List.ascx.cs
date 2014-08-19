@@ -187,7 +187,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Bank
 		}
 		private void LoadList()
 		{	
-			Bank clsBank = new Bank();
+			Banks clsBank = new Banks();
 
 			string SortField = "BankID";
 			if (Request.QueryString["sortfield"]!=null)
@@ -197,16 +197,12 @@ namespace AceSoft.RetailPlus.GeneralLedger._Bank
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
+            string SearchKey = "";
+			if (Request.QueryString["Search"]!=null)
 			{
-				PageData.DataSource = clsBank.ListAsDataTable(SortField, sortoption).DefaultView;
+				SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
 			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsBank.SearchDataTable(SearchKey, SortField, sortoption).DefaultView;
-			}
-
+            PageData.DataSource = clsBank.ListAsDataTable(SearchKey, SortField, sortoption).DefaultView;
 			clsBank.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;
@@ -257,7 +253,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Bank
 			}
 			if (boRetValue)
 			{
-				Bank clsBank = new Bank();
+				Banks clsBank = new Banks();
 				clsBank.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsBank.CommitAndDispose();
 			}

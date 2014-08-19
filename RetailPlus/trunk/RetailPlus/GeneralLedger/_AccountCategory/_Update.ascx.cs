@@ -26,7 +26,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountCategory
 
 		private void LoadOptions()
 		{
-			AccountSummary clsAccountSummary = new AccountSummary();
+			AccountSummaries clsAccountSummary = new AccountSummaries();
 			DataClass clsDataClass = new DataClass();
 			
 			cboAccountSummary.DataTextField = "AccountSummaryName";
@@ -40,12 +40,12 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountCategory
 		private void LoadRecord()
 		{
 			Int32 iID = Convert.ToInt32(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
-			AccountCategory clsAccountCategory = new AccountCategory();
+			AccountCategories clsAccountCategory = new AccountCategories();
 			AccountCategoryDetails clsDetails = clsAccountCategory.Details(iID);
 			clsAccountCategory.CommitAndDispose();
 
 			lblAccountCategoryID.Text = clsDetails.AccountCategoryID.ToString();
-			cboAccountSummary.SelectedIndex = cboAccountSummary.Items.IndexOf( cboAccountSummary.Items.FindByValue(clsDetails.AccountSummaryID.ToString()));
+			cboAccountSummary.SelectedIndex = cboAccountSummary.Items.IndexOf( cboAccountSummary.Items.FindByValue(clsDetails.AccountSummaryDetails.AccountSummaryID.ToString()));
 			txtAccountCategoryCode.Text = clsDetails.AccountCategoryCode;
 			txtAccountCategoryName.Text = clsDetails.AccountCategoryName;
 		}
@@ -77,11 +77,14 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountCategory
 			AccountCategoryDetails clsDetails = new AccountCategoryDetails();
 
 			clsDetails.AccountCategoryID = Convert.ToInt16(lblAccountCategoryID.Text);
-			clsDetails.AccountSummaryID = Convert.ToInt32(cboAccountSummary.SelectedItem.Value);
+            clsDetails.AccountSummaryDetails = new AccountSummaryDetails
+            {
+                AccountSummaryID = Convert.ToInt32(cboAccountSummary.SelectedItem.Value)
+            };
 			clsDetails.AccountCategoryCode = txtAccountCategoryCode.Text;
 			clsDetails.AccountCategoryName = txtAccountCategoryName.Text;
 			
-			AccountCategory clsAccountCategory = new AccountCategory();
+			AccountCategories clsAccountCategory = new AccountCategories();
 			clsAccountCategory.Update(clsDetails);
 			clsAccountCategory.CommitAndDispose();
 		}

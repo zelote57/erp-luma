@@ -43,7 +43,7 @@ namespace AceSoft.RetailPlus.Reports
                 Branch clsBranch = new Branch();
                 cboBranch.DataTextField = "BranchCode";
                 cboBranch.DataValueField = "BranchID";
-                cboBranch.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
+                cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
                 cboBranch.DataBind();
                 clsBranch.CommitAndDispose();
                 if (cboBranch.Items.Count == 0) cboBranch.Items.Add(new ListItem(Constants.ALL, Constants.ZERO_STRING));

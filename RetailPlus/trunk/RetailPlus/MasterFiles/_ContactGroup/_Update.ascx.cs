@@ -32,7 +32,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactGroup
 		private void LoadRecord()
 		{
 			Int32 iID = Convert.ToInt32(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
-			ContactGroup clsContactGroup = new ContactGroup();
+			ContactGroups clsContactGroup = new ContactGroups();
 			ContactGroupDetails clsDetails = clsContactGroup.Details(iID);
 			clsContactGroup.CommitAndDispose();
 
@@ -73,7 +73,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactGroup
 			clsDetails.ContactGroupName = txtContactGroupName.Text;
 			clsDetails.ContactGroupCategory = (ContactGroupCategory) Enum.Parse(typeof(ContactGroupCategory), cboContactGroupCategory.SelectedItem.Value);
 			
-			ContactGroup clsContactGroup = new ContactGroup();
+			ContactGroups clsContactGroup = new ContactGroups();
 			clsContactGroup.Update(clsDetails);
 			clsContactGroup.CommitAndDispose();
 		}

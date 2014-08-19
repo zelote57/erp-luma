@@ -176,7 +176,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountCategory
 
         private void LoadAccountSummaryList()
         {
-            AccountSummary clsAccountSummary = new AccountSummary();
+            AccountSummaries clsAccountSummary = new AccountSummaries();
             DataClass clsDataClass = new DataClass();
 
             string SortField = "AccountSummaryCode";
@@ -230,7 +230,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountCategory
         }
         private void LoadAccountCategoryList(DataList lstAccountCategory, int AccountSummaryID)
         {
-            AccountCategory clsAccountCategory = new AccountCategory();
+            AccountCategories clsAccountCategory = new AccountCategories();
             DataClass clsDataClass = new DataClass();
             System.Data.DataTable dt = clsDataClass.DataReaderToDataTable(clsAccountCategory.List(AccountSummaryID, "AccountCategoryCode", SortOption.Ascending));
             clsAccountCategory.CommitAndDispose();
@@ -262,7 +262,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountCategory
 			}
 			if (boRetValue)
 			{
-				AccountCategory clsAccountCategory = new AccountCategory();
+				AccountCategories clsAccountCategory = new AccountCategories();
 				clsAccountCategory.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsAccountCategory.CommitAndDispose();
 			}

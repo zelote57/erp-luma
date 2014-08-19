@@ -87,7 +87,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Position
         }
         private Int16 SaveRecord()
         {
-            Position clsPosition = new Position();
+            Positions clsPosition = new Positions();
             PositionDetails clsDetails = new PositionDetails();
 
             clsDetails.PositionCode = txtPositionCode.Text;

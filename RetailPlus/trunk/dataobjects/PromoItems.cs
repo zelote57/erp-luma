@@ -24,7 +24,10 @@ namespace AceSoft.RetailPlus.Data
 		public Int64 VariationMatrixID;
 		public decimal Quantity;
 		public decimal PromoValue;
-		public byte InPercent;
+		public bool InPercent;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -58,81 +61,16 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL =	"INSERT INTO tblPromoItems (" + 
-									"PromoID, " +
-									"ContactID, " +
-									"ProductGroupID, " +
-									"ProductSubGroupID, " +
-									"ProductID, " +
-									"VariationMatrixID, " +
-									"Quantity, " +
-									"PromoValue, " +
-									"InPercent " +
-								")VALUES (" +
-									"@PromoID, " +
-									"@ContactID, " +
-									"@ProductGroupID, " +
-									"@ProductSubGroupID, " +
-									"@ProductID, " +
-									"@VariationMatrixID, " +
-									"@Quantity, " +
-									"@PromoValue, " +
-									"@InPercent);";
-				  
-				
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmPromoID = new MySqlParameter("@PromoID",MySqlDbType.Int64);			
-				prmPromoID.Value = Details.PromoID;
-				cmd.Parameters.Add(prmPromoID);
-
-				MySqlParameter prmContactID = new MySqlParameter("@ContactID",MySqlDbType.Int64);			
-				prmContactID.Value = Details.ContactID;
-				cmd.Parameters.Add(prmContactID);
-
-				MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);			
-				prmProductGroupID.Value = Details.ProductGroupID;
-				cmd.Parameters.Add(prmProductGroupID);
-
-				MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);			
-				prmProductSubGroupID.Value = Details.ProductSubGroupID;
-				cmd.Parameters.Add(prmProductSubGroupID);
-
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = Details.ProductID;
-				cmd.Parameters.Add(prmProductID);
-
-				MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",MySqlDbType.Int64);			
-				prmVariationMatrixID.Value = Details.VariationMatrixID;
-				cmd.Parameters.Add(prmVariationMatrixID);
-
-				MySqlParameter prmQuantity = new MySqlParameter("@Quantity",MySqlDbType.Decimal);			
-				prmQuantity.Value = Details.Quantity;
-				cmd.Parameters.Add(prmQuantity);
-				
-				MySqlParameter prmPromoValue = new MySqlParameter("@PromoValue",MySqlDbType.Decimal);			
-				prmPromoValue.Value = Details.PromoValue;
-				cmd.Parameters.Add(prmPromoValue);
-
-				MySqlParameter prmInPercent = new MySqlParameter("@InPercent",MySqlDbType.Int32);			
-				prmInPercent.Value = Details.InPercent;
-				cmd.Parameters.Add(prmInPercent);
-
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 Int64 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)
@@ -145,15 +83,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -162,83 +91,48 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblPromoItems SET " + 
-							"PromoID = @PromoID, " +  
-							"ProductGroupID = @ProductGroupID, " +  
-							"ProductSubGroupID = @ProductSubGroupID, " +  
-							"ProductID = @ProductID, " +  
-							"Quantity = @Quantity, " +  
-							"PromoValue = @PromoValue, " +  
-							"InPercent = @InPercent " +  
-							"WHERE PromoItemsID = @PromoItemsID;";
-							
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmPromoID = new MySqlParameter("@PromoID",MySqlDbType.Int64);			
-				prmPromoID.Value = Details.PromoID;
-				cmd.Parameters.Add(prmPromoID);
-
-				MySqlParameter prmContactID = new MySqlParameter("@ContactID",MySqlDbType.Int64);			
-				prmContactID.Value = Details.ContactID;
-				cmd.Parameters.Add(prmContactID);
-
-				MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);			
-				prmProductGroupID.Value = Details.ProductGroupID;
-				cmd.Parameters.Add(prmProductGroupID);
-
-				MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);			
-				prmProductSubGroupID.Value = Details.ProductSubGroupID;
-				cmd.Parameters.Add(prmProductSubGroupID);
-
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int32);			
-				prmProductID.Value = Details.ProductID;
-				cmd.Parameters.Add(prmProductID);
-
-				MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",MySqlDbType.Int64);			
-				prmVariationMatrixID.Value = Details.VariationMatrixID;
-				cmd.Parameters.Add(prmVariationMatrixID);
-
-				MySqlParameter prmQuantity = new MySqlParameter("@Quantity",MySqlDbType.Decimal);			
-				prmQuantity.Value = Details.Quantity;
-				cmd.Parameters.Add(prmQuantity);
-				
-				MySqlParameter prmPromoValue = new MySqlParameter("@PromoValue",MySqlDbType.Decimal);			
-				prmPromoValue.Value = Details.PromoValue;
-				cmd.Parameters.Add(prmPromoValue);
-
-				MySqlParameter prmInPercent = new MySqlParameter("@InPercent",MySqlDbType.Int32);			
-				prmInPercent.Value = Details.InPercent;
-				cmd.Parameters.Add(prmInPercent);
-
-				MySqlParameter prmPromoItemsID = new MySqlParameter("@PromoItemsID",MySqlDbType.Int32);	
-				prmPromoItemsID.Value = Details.PromoItemsID;
-				cmd.Parameters.Add(prmPromoItemsID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
+        public Int32 Save(PromoItemsDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSavePromoItems(@PromoItemsID, @PromoID, @ContactID, @ProductGroupID," +
+                                                "@ProductSubGroupID, @ProductID, @VariationMatrixID, @Quantity," +
+                                                "@PromoValue, @InPercent, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("PromoItemsID", Details.PromoItemsID);
+                cmd.Parameters.AddWithValue("PromoID", Details.PromoID);
+                cmd.Parameters.AddWithValue("ContactID", Details.ContactID);
+                cmd.Parameters.AddWithValue("ProductGroupID", Details.ProductGroupID);
+                cmd.Parameters.AddWithValue("ProductSubGroupID", Details.ProductSubGroupID);
+                cmd.Parameters.AddWithValue("ProductID", Details.ProductID);
+                cmd.Parameters.AddWithValue("VariationMatrixID", Details.VariationMatrixID);
+                cmd.Parameters.AddWithValue("Quantity", Details.Quantity);
+                cmd.Parameters.AddWithValue("PromoValue", Details.PromoValue);
+                cmd.Parameters.AddWithValue("InPercent", Details.InPercent);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -300,11 +194,7 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblPromoItems " +
 							"WHERE PromoItemsID = @PromoItemsID;"; 
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -327,7 +217,7 @@ namespace AceSoft.RetailPlus.Data
 					Details.VariationMatrixID = myReader.GetInt64("VariationMatrixID");
 					Details.Quantity = myReader.GetDecimal(6);
 					Details.PromoValue = myReader.GetDecimal("PromoValue");
-					Details.InPercent = myReader.GetByte("InPercent");
+					Details.InPercent = myReader.GetBoolean("InPercent");
 				}
 
 				myReader.Close();
@@ -337,15 +227,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -372,12 +253,8 @@ namespace AceSoft.RetailPlus.Data
 						"WHERE ProductID = @ProductID " + 
 						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') >= CURRENT_DATE " +
 						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') <= CURRENT_DATE;";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -400,7 +277,7 @@ namespace AceSoft.RetailPlus.Data
 					clsDetails.VariationMatrixID = myReader.GetInt64("VariationMatrixID");
                     clsDetails.Quantity = myReader.GetDecimal("Quantity");
 					clsDetails.PromoValue = myReader.GetDecimal("PromoValue");
-					clsDetails.InPercent = myReader.GetByte("InPercent");
+                    clsDetails.InPercent = myReader.GetBoolean("InPercent");
 				}
 				myReader.Close();
 
@@ -409,15 +286,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}

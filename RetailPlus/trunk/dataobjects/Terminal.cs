@@ -49,6 +49,7 @@ namespace AceSoft.RetailPlus.Data
         public string SalesInvoicePrinterName;
         public bool CashCountBeforeReport;
         public bool PreviewTerminalReport;
+        public OrderSlipPrinter OrderSlipPrinter;
 
         public bool IsPrinterDotMatrix;
         public bool IsChargeEditable;
@@ -58,6 +59,7 @@ namespace AceSoft.RetailPlus.Data
         public string EndCutOffTime;
         public bool WithRestaurantFeatures;
         public string SeniorCitizenDiscountCode;
+        public string PWDDiscountCode;
 
         public bool IsTouchScreen;
 
@@ -71,6 +73,8 @@ namespace AceSoft.RetailPlus.Data
         public bool ReservedAndCommit;
 
         public string DBVersion;
+        public string FEVersion;
+        public string BEVersion;
 
         public bool ShowCustomerSelection;
         public bool AutoGenerateRewardCardNo;
@@ -79,7 +83,7 @@ namespace AceSoft.RetailPlus.Data
         public string InHouseIndividualCreditPermitNo;
         public string InHouseGroupCreditPermitNo;
 
-        public bool IsFineDIning;
+        public bool IsFineDining;
         public ChargeTypeDetails PersonalChargeType;
         public ChargeTypeDetails GroupChargeType;
 
@@ -96,6 +100,9 @@ namespace AceSoft.RetailPlus.Data
 
         // [04/29/2013] Include to know whether to print agreement or not
         public bool IncludeTermsAndConditions;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
     public struct RewardPointsDetails
@@ -166,10 +173,8 @@ namespace AceSoft.RetailPlus.Data
 								"@AccreditationNo" +
 							");";
 				
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -448,6 +453,120 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public Int32 Save(TerminalDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveTerminal(@TerminalID, @TerminalNo, @TerminalCode, @TerminalName, @Status, @DateCreated, " +
+                                "@IsPrinterAutoCutter, @MaxReceiptWidth, @TransactionNoLength, @AutoPrint, @PrinterName, " +
+                                "@TurretName, @CashDrawerName, @MachineSerialNo, @AccreditationNo, @ItemVoidConfirmation, " +
+                                "@EnableEVAT, @FORM_Behavior, @MarqueeMessage, @TrustFund, @IsVATInclusive, @VAT, @EVAT, " +
+                                "@LocalTax, @ShowItemMoreThanZeroQty, @ShowOneTerminalSuspendedTransactions, " +
+                                "@ShowOnlyPackedTransactions, @TerminalReceiptType, @SalesInvoicePrinterName, " +
+                                "@CashCountBeforeReport, @PreviewTerminalReport, @OrderSlipPrinter, @DBVersion, @FEVersion, " +
+                                "@BEVersion, @IsPrinterDotmatrix, @IsChargeEditable, @IsDiscountEditable, @CheckCutOffTime, " +
+                                "@StartCutOffTime, @EndCutOffTime, @WithRestaurantFeatures, @SeniorCitizenDiscountCode, " +
+                                "@IsTouchScreen, @WillContinueSelectionVariation, @WillContinueSelectionProduct, " +
+                                "@RETPriceMarkUp, @WSPriceMarkUp, @WillPrintGrandTotal, @ReservedAndCommit, " +
+                                "@ShowCustomerSelection, @EnableRewardPoints, @RewardPointsMinimum, @RewardPointsEvery, " +
+                                "@RewardPoints, @RoundDownRewardPoints, @AutoGenerateRewardCardNo,  " +
+                                "@EnableRewardPointsAsPayment, @RewardPointsMaxPercentageForPayment, " +
+                                "@RewardPointsPaymentValue, @RewardPointsPaymentCashEquivalent, @RewardsPermitNo, " +
+                                "@InHouseIndividualCreditPermitNo, @InHouseGroupCreditPermitNo, @IsFineDining, " +
+                                "@PersonalChargeTypeID, @GroupChargeTypeID, @BranchID, @ProductSearchType, " +
+                                "@IncludeCreditChargeAgreement, @IsParkingTerminal, @WillPrintChargeSlip, " +
+                                "@IncludeTermsAndConditions, @PWDDiscountCode, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("TerminalID", Details.TerminalID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
+                cmd.Parameters.AddWithValue("TerminalCode", Details.TerminalCode);
+                cmd.Parameters.AddWithValue("TerminalName", Details.TerminalName);
+                cmd.Parameters.AddWithValue("Status", Details.Status);
+                cmd.Parameters.AddWithValue("DateCreated", Details.DateCreated);
+                cmd.Parameters.AddWithValue("IsPrinterAutoCutter", Details.IsPrinterAutoCutter);
+                cmd.Parameters.AddWithValue("MaxReceiptWidth", Details.MaxReceiptWidth);
+                cmd.Parameters.AddWithValue("TransactionNoLength", Details.TransactionNoLength);
+                cmd.Parameters.AddWithValue("AutoPrint", Details.AutoPrint);
+                cmd.Parameters.AddWithValue("PrinterName", Details.PrinterName);
+                cmd.Parameters.AddWithValue("TurretName", Details.TurretName);
+                cmd.Parameters.AddWithValue("CashDrawerName", Details.CashDrawerName);
+                cmd.Parameters.AddWithValue("MachineSerialNo", Details.MachineSerialNo);
+                cmd.Parameters.AddWithValue("AccreditationNo", Details.AccreditationNo);
+                cmd.Parameters.AddWithValue("ItemVoidConfirmation", Details.ItemVoidConfirmation);
+                cmd.Parameters.AddWithValue("EnableEVAT", Details.EnableEVAT);
+                cmd.Parameters.AddWithValue("FORM_Behavior", Details.FORM_Behavior);
+                cmd.Parameters.AddWithValue("MarqueeMessage", Details.MarqueeMessage);
+                cmd.Parameters.AddWithValue("TrustFund", Details.TrustFund);
+                cmd.Parameters.AddWithValue("IsVATInclusive", Details.IsVATInclusive);
+                cmd.Parameters.AddWithValue("VAT", Details.VAT);
+                cmd.Parameters.AddWithValue("EVAT", Details.EVAT);
+                cmd.Parameters.AddWithValue("LocalTax", Details.LocalTax);
+                cmd.Parameters.AddWithValue("ShowItemMoreThanZeroQty", Details.ShowItemMoreThanZeroQty);
+                cmd.Parameters.AddWithValue("ShowOneTerminalSuspendedTransactions", Details.ShowOneTerminalSuspendedTransactions);
+                cmd.Parameters.AddWithValue("ShowOnlyPackedTransactions", Details.ShowOnlyPackedTransactions);
+                cmd.Parameters.AddWithValue("TerminalReceiptType", Details.ReceiptType.ToString("d"));
+                cmd.Parameters.AddWithValue("SalesInvoicePrinterName", Details.SalesInvoicePrinterName);
+                cmd.Parameters.AddWithValue("CashCountBeforeReport", Details.CashCountBeforeReport);
+                cmd.Parameters.AddWithValue("PreviewTerminalReport", Details.PreviewTerminalReport);
+                cmd.Parameters.AddWithValue("OrderSlipPrinter", Details.OrderSlipPrinter.ToString("d"));
+                cmd.Parameters.AddWithValue("DBVersion", Details.DBVersion);
+                cmd.Parameters.AddWithValue("FEVersion", Details.FEVersion);
+                cmd.Parameters.AddWithValue("BEVersion", Details.BEVersion);
+                cmd.Parameters.AddWithValue("IsPrinterDotMatrix", Details.IsPrinterDotMatrix);
+                cmd.Parameters.AddWithValue("IsChargeEditable", Details.IsChargeEditable);
+                cmd.Parameters.AddWithValue("IsDiscountEditable", Details.IsDiscountEditable);
+                cmd.Parameters.AddWithValue("CheckCutOffTime", Details.CheckCutOffTime);
+                cmd.Parameters.AddWithValue("StartCutOffTime", Details.StartCutOffTime);
+                cmd.Parameters.AddWithValue("EndCutOffTime", Details.EndCutOffTime);
+                cmd.Parameters.AddWithValue("WithRestaurantFeatures", Details.WithRestaurantFeatures);
+                cmd.Parameters.AddWithValue("SeniorCitizenDiscountCode", Details.SeniorCitizenDiscountCode);
+                cmd.Parameters.AddWithValue("IsTouchScreen", Details.IsTouchScreen);
+                cmd.Parameters.AddWithValue("WillContinueSelectionVariation", Details.WillContinueSelectionVariation);
+                cmd.Parameters.AddWithValue("WillContinueSelectionProduct", Details.WillContinueSelectionProduct);
+                cmd.Parameters.AddWithValue("RETPriceMarkUp", Details.RETPriceMarkUp);
+                cmd.Parameters.AddWithValue("WSPriceMarkUp", Details.WSPriceMarkUp);
+                cmd.Parameters.AddWithValue("WillPrintGrandTotal", Details.WillPrintGrandTotal);
+                cmd.Parameters.AddWithValue("ReservedAndCommit", Details.ReservedAndCommit);
+                cmd.Parameters.AddWithValue("ShowCustomerSelection", Details.ShowCustomerSelection);
+                cmd.Parameters.AddWithValue("EnableRewardPoints", Details.RewardPointsDetails.EnableRewardPoints);
+                cmd.Parameters.AddWithValue("RewardPointsMinimum", Details.RewardPointsDetails.RewardPointsMinimum);
+                cmd.Parameters.AddWithValue("RewardPointsEvery", Details.RewardPointsDetails.RewardPointsEvery);
+                cmd.Parameters.AddWithValue("RewardPoints", Details.RewardPointsDetails.RewardPoints);
+                cmd.Parameters.AddWithValue("RoundDownRewardPoints", Details.RewardPointsDetails.RoundDownRewardPoints);
+                cmd.Parameters.AddWithValue("AutoGenerateRewardCardNo", Details.AutoGenerateRewardCardNo);
+                cmd.Parameters.AddWithValue("EnableRewardPointsAsPayment", Details.RewardPointsDetails.EnableRewardPointsAsPayment);
+                cmd.Parameters.AddWithValue("RewardPointsMaxPercentageForPayment", Details.RewardPointsDetails.RewardPointsMaxPercentageForPayment);
+                cmd.Parameters.AddWithValue("RewardPointsPaymentValue", Details.RewardPointsDetails.RewardPointsPaymentValue);
+                cmd.Parameters.AddWithValue("RewardPointsPaymentCashEquivalent", Details.RewardPointsDetails.RewardPointsPaymentCashEquivalent);
+                cmd.Parameters.AddWithValue("RewardsPermitNo", Details.RewardPointsDetails.RewardsPermitNo);
+                cmd.Parameters.AddWithValue("InHouseIndividualCreditPermitNo", Details.InHouseIndividualCreditPermitNo);
+                cmd.Parameters.AddWithValue("InHouseGroupCreditPermitNo", Details.InHouseGroupCreditPermitNo);
+                cmd.Parameters.AddWithValue("IsFineDining", Details.IsFineDining);
+                cmd.Parameters.AddWithValue("PersonalChargeTypeID", Details.PersonalChargeType.ChargeTypeID);
+                cmd.Parameters.AddWithValue("GroupChargeTypeID", Details.GroupChargeType.ChargeTypeID);
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("ProductSearchType", Details.ProductSearchType);
+                cmd.Parameters.AddWithValue("IncludeCreditChargeAgreement", Details.IncludeCreditChargeAgreement);
+                cmd.Parameters.AddWithValue("IsParkingTerminal", Details.IsParkingTerminal);
+                cmd.Parameters.AddWithValue("WillPrintChargeSlip", Details.WillPrintChargeSlip);
+                cmd.Parameters.AddWithValue("IncludeTermsAndConditions", Details.IncludeTermsAndConditions);
+                cmd.Parameters.AddWithValue("PWDDiscountCode", Details.PWDDiscountCode);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 
 		#region Delete
@@ -717,7 +836,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.WithRestaurantFeatures = myReader.GetBoolean("WithRestaurantFeatures");
 
                 // Added Nov 8, 2011
-                Details.IsFineDIning = myReader.GetBoolean("IsFineDIning");
+                Details.IsFineDining = myReader.GetBoolean("IsFineDIning");
 
                 // -- end
                 

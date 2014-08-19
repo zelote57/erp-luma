@@ -86,7 +86,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Group._Variations
 			DataClass clsDataClass = new DataClass();
 			lblProductGroupID.Text = Common.Decrypt((string)Request.QueryString["groupid"],Session.SessionID);
 
-			ProductGroupVariation clsVariation = new ProductGroupVariation();
+			ProductGroupVariations clsVariation = new ProductGroupVariations();
 			
 			cboVariationType.DataTextField = "VariationType";
 			cboVariationType.DataValueField = "VariationID";
@@ -98,7 +98,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Group._Variations
 		}
 		private Int32 SaveRecord()
 		{
-			ProductGroupVariation clsProdVariation = new ProductGroupVariation();
+			ProductGroupVariations clsProdVariation = new ProductGroupVariations();
 			ProductGroupVariationDetails clsDetails = new ProductGroupVariationDetails();
 
 			clsDetails.GroupID = Convert.ToInt16(lblProductGroupID.Text);

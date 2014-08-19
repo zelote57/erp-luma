@@ -97,8 +97,8 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._UnitsMatrix
 				ProductGroupDetails clsDetails = clsProductGroup.Details(groupid);
 				clsProductGroup.CommitAndDispose();
 
-				txtBaseUnit.Text = clsDetails.BaseUnitName;
-				lblBaseUnitID.Text = Convert.ToString(clsDetails.BaseUnitID);
+				txtBaseUnit.Text = clsDetails.UnitDetails.UnitName;
+				lblBaseUnitID.Text = clsDetails.UnitDetails.UnitID.ToString();
 			}
 			else
 			{

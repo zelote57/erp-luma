@@ -163,7 +163,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			ProductGroup clsProductGroup = new ProductGroup();
 			cboProductGroup.DataTextField = "ProductGroupName";
 			cboProductGroup.DataValueField = "ProductGroupID";
-			cboProductGroup.DataSource = clsDataClass.DataReaderToDataTable(clsProductGroup.List("ProductGroupName",SortOption.Ascending)).DefaultView;
+			cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(SortField:"ProductGroupName").DefaultView;
 			cboProductGroup.DataBind();
 			cboProductGroup.SelectedIndex = cboProductGroup.Items.Count - 1;
 
@@ -180,10 +180,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			cboProductSubGroup.DataBind();
 			cboProductSubGroup.SelectedIndex = cboProductSubGroup.Items.Count - 1;
 
-			UnitMeasurements clsUnit = new UnitMeasurements(clsProductGroup.Connection , clsProductGroup.Transaction);
+            Data.Unit clsUnit = new Data.Unit(clsProductGroup.Connection, clsProductGroup.Transaction);
 			cboProductUnit.DataTextField = "UnitName";
 			cboProductUnit.DataValueField = "UnitID";
-			cboProductUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List("UnitName",SortOption.Ascending)).DefaultView;
+			cboProductUnit.DataSource = clsUnit.ListAsDataTable(SortField:"UnitName").DefaultView;
 			cboProductUnit.DataBind();
 			cboProductUnit.SelectedIndex = cboProductUnit.Items.Count - 1;
 

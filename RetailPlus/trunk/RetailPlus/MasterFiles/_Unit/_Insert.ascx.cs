@@ -85,12 +85,12 @@ namespace AceSoft.RetailPlus.MasterFiles._Unit
 		}
 		private Int32 SaveRecord()
 		{
-			UnitMeasurementsDetails clsDetails = new UnitMeasurementsDetails();
+			Data.UnitDetails clsDetails = new Data.UnitDetails();
 
 			clsDetails.UnitCode = txtUnitCode.Text;
 			clsDetails.UnitName = txtUnitName.Text;
 
-			UnitMeasurements clsUnit = new UnitMeasurements();
+            Data.Unit clsUnit = new Data.Unit();
 			int id = clsUnit.Insert(clsDetails);
 			clsUnit.CommitAndDispose();
 

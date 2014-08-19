@@ -19,7 +19,10 @@ namespace AceSoft.RetailPlus.Data
 		public string	ChargeTypeCode;
 		public string	ChargeType;
 		public decimal	ChargeAmount;
-		public byte		InPercent;
+		public bool		InPercent;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -122,7 +125,33 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		
+        public Int32 Save(ChargeTypeDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveChargeType(@ChargeTypeID, @ChargeTypeCode, @ChargeType, @ChargeAmount, @InPercent, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("ChargeTypeID", Details.ChargeTypeID);
+                cmd.Parameters.AddWithValue("ChargeTypeCode", Details.ChargeTypeCode);
+                cmd.Parameters.AddWithValue("ChargeType", Details.ChargeType);
+                cmd.Parameters.AddWithValue("ChargeAmount", Details.ChargeAmount);
+                cmd.Parameters.AddWithValue("InPercent", Details.InPercent);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 
 		#region Delete
@@ -171,7 +200,9 @@ namespace AceSoft.RetailPlus.Data
 					        "ChargeTypeCode, " +
 					        "ChargeType, " +
 					        "ChargeAmount, " + 
-					        "InPercent " +
+					        "InPercent, " +
+                            "CreatedOn, " +
+                            "LastModified " +
 					       "FROM tblChargeType ";
             return stSQL;
         }
@@ -190,19 +221,21 @@ namespace AceSoft.RetailPlus.Data
 
                 cmd.Parameters.AddWithValue("@ChargeTypeID", ChargeTypeID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				ChargeTypeDetails Details = new ChargeTypeDetails();
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.ChargeTypeID = myReader.GetInt32("ChargeTypeID");
-					Details.ChargeTypeCode = "" + myReader["ChargeTypeCode"].ToString();
-					Details.ChargeType = "" + myReader["ChargeType"].ToString();
-					Details.ChargeAmount = myReader.GetDecimal("ChargeAmount");
-					Details.InPercent = myReader.GetByte("InPercent");
-				}
-				myReader.Close();
+                ChargeTypeDetails Details = new ChargeTypeDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.ChargeTypeID = Int32.Parse(dr["ChargeTypeID"].ToString());
+                    Details.ChargeTypeCode = dr["ChargeTypeCode"].ToString();
+                    Details.ChargeType = dr["ChargeType"].ToString();
+                    Details.ChargeAmount = decimal.Parse(dr["ChargeAmount"].ToString());
+                    Details.InPercent = bool.Parse(dr["InPercent"].ToString());
+
+                    Details.CreatedOn = DateTime.Parse(dr["CreatedOn"].ToString());
+                    Details.LastModified = DateTime.Parse(dr["LastModified"].ToString());
+                }
 
 				return Details;
 			}
@@ -220,24 +253,25 @@ namespace AceSoft.RetailPlus.Data
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+                cmd.CommandText = SQL;  
 
                 cmd.Parameters.AddWithValue("@ChargeTypeCode", ChargeTypeCode);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 ChargeTypeDetails Details = new ChargeTypeDetails();
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    Details.ChargeTypeID = myReader.GetInt32("ChargeTypeID");
-                    Details.ChargeTypeCode = "" + myReader["ChargeTypeCode"].ToString();
-                    Details.ChargeType = "" + myReader["ChargeType"].ToString();
-                    Details.ChargeAmount = myReader.GetDecimal("ChargeAmount");
-                    Details.InPercent = myReader.GetByte("InPercent");
-                }
+                    Details.ChargeTypeID = Int32.Parse(dr["ChargeTypeID"].ToString());
+                    Details.ChargeTypeCode = dr["ChargeTypeCode"].ToString();
+                    Details.ChargeType = dr["ChargeType"].ToString();
+                    Details.ChargeAmount = decimal.Parse(dr["ChargeAmount"].ToString());
+                    Details.InPercent = bool.Parse(dr["InPercent"].ToString());
 
-                myReader.Close();
+                    Details.CreatedOn = DateTime.Parse(dr["CreatedOn"].ToString());
+                    Details.LastModified = DateTime.Parse(dr["LastModified"].ToString());
+                }
 
                 return Details;
             }
@@ -254,30 +288,19 @@ namespace AceSoft.RetailPlus.Data
 
 		public System.Data.DataTable DataList(string SortField, SortOption SortOrder)
 		{
-			MySqlDataReader myReader = List(SortField,SortOption.Ascending);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblCharge");
+            string SQL = SQLSelect() + "WHERE 1=1 ORDER BY " + SortField;
 
-			dt.Columns.Add("ChargeTypeID");
-			dt.Columns.Add("ChargeTypeCode");
-			dt.Columns.Add("ChargeType");
-			dt.Columns.Add("ChargeAmount");
-			dt.Columns.Add("InPercent");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
+            if (SortOrder == SortOption.Ascending)
+                SQL += " ASC";
+            else
+                SQL += " DESC";
 
-				dr["ChargeTypeID"] = myReader.GetInt32("ChargeTypeID");
-				dr["ChargeTypeCode"] = "" + myReader["ChargeTypeCode"].ToString();
-				dr["ChargeType"] = "" + myReader["ChargeType"].ToString();
-				dr["ChargeAmount"] = myReader.GetDecimal("ChargeAmount");
-				dr["InPercent"] = myReader.GetByte("InPercent");
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
 			return dt;
 		}

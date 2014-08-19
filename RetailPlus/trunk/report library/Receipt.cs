@@ -26,10 +26,14 @@ namespace AceSoft.RetailPlus.Reports
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct ReceiptDetails
 	{
+        public Int32 ReceiptID;
 		public string Module;
 		public string Text;
 		public string Value;
 		public ReportFormatOrientation Orientation;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -72,7 +76,6 @@ namespace AceSoft.RetailPlus.Reports
 								"Module	=	@Module ";
 	 			
 				MySqlCommand cmd = new MySqlCommand();
-
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -101,6 +104,32 @@ namespace AceSoft.RetailPlus.Reports
             }
 		}
 
+        public Int32 Save(ReceiptDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveReceipt(@ReceiptID, @Module, @Text, @Value, @Orientation, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("ReceiptID", Details.ReceiptID);
+                cmd.Parameters.AddWithValue("Module", Details.Module);
+                cmd.Parameters.AddWithValue("Text", Details.Text);
+                cmd.Parameters.AddWithValue("Value", Details.Value);
+                cmd.Parameters.AddWithValue("Orientation", Details.Orientation.ToString("d"));
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -158,10 +187,13 @@ namespace AceSoft.RetailPlus.Reports
 			try
 			{
 				string SQL=	"SELECT " +
+                                "ReceiptID," +
 								"Module," +
 								"Text," +
 								"Value, " +
-								"Orientation " +
+								"Orientation, " +
+                                "CreatedOn, " +
+                                "LastModified " +
 							"FROM tblReceipt;"; 
 				  
 				MySqlCommand cmd = new MySqlCommand();

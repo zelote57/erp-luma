@@ -14,10 +14,13 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct AccountClassificationDetails
 	{
-		public int AccountClassificationID;
+		public Int32 AccountClassificationID;
 		public string AccountClassificationCode;
         public string AccountClassificationName;
         public AccountClassificationType AccountClassificationType;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -28,17 +31,17 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class AccountClassification : POSConnection
+	public class AccountClassifications : POSConnection
 	{
 
 		#region Constructors and Destructors
 
-		public AccountClassification()
+		public AccountClassifications()
             : base(null, null)
         {
         }
 
-        public AccountClassification(MySqlConnection Connection, MySqlTransaction Transaction) 
+        public AccountClassifications(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
 
@@ -52,31 +55,14 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                string SQL = "INSERT INTO tblAccountClassification (AccountClassificationCode, AccountClassificationName, AccountClassificationType) VALUES (@AccountClassificationCode, @AccountClassificationName, @AccountClassificationType);";
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
 				  
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmAccountClassificationCode = new MySqlParameter("@AccountClassificationCode",MySqlDbType.String);			
-				prmAccountClassificationCode.Value = Details.AccountClassificationCode;
-				cmd.Parameters.Add(prmAccountClassificationCode);
-
-                MySqlParameter prmAccountClassificationName = new MySqlParameter("@AccountClassificationName",MySqlDbType.String);
-                prmAccountClassificationName.Value = Details.AccountClassificationName;
-                cmd.Parameters.Add(prmAccountClassificationName);
-
-                MySqlParameter prmAccountClassificationType = new MySqlParameter("@AccountClassificationType",MySqlDbType.Int16);
-                prmAccountClassificationType.Value = Details.AccountClassificationType.ToString("d");
-                cmd.Parameters.Add(prmAccountClassificationType);
-     
-				base.ExecuteNonQuery(cmd);
-
-                SQL = "SELECT LAST_INSERT_ID();";
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = SQL;
-
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
@@ -100,29 +86,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "UPDATE tblAccountClassification SET " + 
-								"AccountClassificationCode		= @AccountClassificationCode, " +
-                                "AccountClassificationName		= @AccountClassificationName, " +
-								"AccountClassificationType		= @AccountClassificationType " +
-							"WHERE AccountClassificationID = @AccountClassificationID;";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmAccountClassificationCode = new MySqlParameter("@AccountClassificationCode",MySqlDbType.String);			
-				prmAccountClassificationCode.Value = Details.AccountClassificationCode;
-				cmd.Parameters.Add(prmAccountClassificationCode);
-
-                MySqlParameter prmAccountClassificationName = new MySqlParameter("@AccountClassificationName",MySqlDbType.String);
-                prmAccountClassificationName.Value = Details.AccountClassificationName;
-                cmd.Parameters.Add(prmAccountClassificationName);
-
-                MySqlParameter prmAccountClassificationType = new MySqlParameter("@AccountClassificationType",MySqlDbType.Int16);
-                prmAccountClassificationType.Value = Details.AccountClassificationType.ToString("d");
-                cmd.Parameters.Add(prmAccountClassificationType);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
@@ -131,6 +95,31 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
+        public Int32 Save(AccountClassificationDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveAccountClassification(@AccountClassificationID, @AccountClassificationCode, @AccountClassificationName, @AccountClassificationType, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("AccountClassificationID", Details.AccountClassificationID);
+                cmd.Parameters.AddWithValue("AccountClassificationCode", Details.AccountClassificationCode);
+                cmd.Parameters.AddWithValue("AccountClassificationName", Details.AccountClassificationName);
+                cmd.Parameters.AddWithValue("AccountClassificationType", Details.AccountClassificationType.ToString("d"));
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -215,60 +204,44 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "ORDER BY " + SortField;
+        public System.Data.DataTable ListAsDataTable(string SortField = "AccountClassificationCode", SortOption SortOrder = SortOption.Ascending)
+        {
+            string SQL = SQLSelect() + "ORDER BY " + SortField;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+            if (SortOrder == SortOption.Ascending)
+                SQL += " ASC";
+            else
+                SQL += " DESC";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE AccountClassificationName LIKE @SearchKey " +
-							                "ORDER BY " + SortField;
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey +"%";
-				cmd.Parameters.Add(prmSearchKey);
+            return dt;
+        }
+        public System.Data.DataTable SearchAsDataTable(string SearchKey, string SortField = "AccountClassificationCode", SortOption SortOrder = SortOption.Ascending)
+        {
+            string SQL = SQLSelect() + "WHERE AccountClassificationName LIKE @SearchKey ORDER BY " + SortField;
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}		
+            if (SortOrder == SortOption.Ascending)
+                SQL += " ASC";
+            else
+                SQL += " DESC";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = SQL;
+
+            cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            return dt;
+        }
 
 		#endregion
 	}

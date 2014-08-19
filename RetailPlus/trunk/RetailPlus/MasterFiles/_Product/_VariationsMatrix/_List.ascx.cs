@@ -162,12 +162,17 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			string stParam = null;
 
 			chkList = (HtmlInputCheckBox) e.Item.FindControl("chkList");
-			stParam = "?task=" + Common.Encrypt("list",Session.SessionID) + 
-				"&matrixid=" + Common.Encrypt(chkList.Value,Session.SessionID) + "&prodid=" + Common.Encrypt(lblProductID.Text,Session.SessionID) ;
+			
 
 			switch(e.CommandName)
 			{
+                case "imgEditNowClick":
+                    stParam = "?task=" + Common.Encrypt("edit", Session.SessionID) + "&prodid=" + Common.Encrypt(lblProductID.Text, Session.SessionID) + "&id=" + Common.Encrypt(chkList.Value, Session.SessionID);	
+                    Response.Redirect("Default.aspx" + stParam);
+                    break;
 				case "imgPackageMatrixClick":
+                    stParam = "?task=" + Common.Encrypt("list", Session.SessionID) + 
+                        "&matrixid=" + Common.Encrypt(chkList.Value, Session.SessionID) + "&prodid=" + Common.Encrypt(lblProductID.Text, Session.SessionID);
 					Response.Redirect(Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/_MatrixPackage/Default.aspx" + stParam);
 					break;
 			}
@@ -249,11 +254,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
             if (stSearchKey == null) { stSearchKey = string.Empty; }
             else if (stSearchKey != string.Empty) { Session.Add("Search", Common.Encrypt(stSearchKey, Session.SessionID)); }
 
-            ProductBaseMatrixDetails clsSearchKeys = new ProductBaseMatrixDetails();
+            ProductBaseVariationsMatrixDetails clsSearchKeys = new ProductBaseVariationsMatrixDetails();
             clsSearchKeys.Description = stSearchKey;
 
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-            System.Data.DataTable dt = clsProductVariationsMatrix.BaseListAsDataTable(Int64.Parse(lblProductID.Text), MatrixDescription: stSearchKey, SortField: SortField, SortOrder: sortoption);
+            System.Data.DataTable dt = clsProductVariationsMatrix.BaseListAsDataTable(Int64.Parse(lblProductID.Text), Constants.BRANCH_ID_MAIN, MatrixDescription: stSearchKey, SortField: SortField, SortOrder: sortoption);
 			clsProductVariationsMatrix.CommitAndDispose();
 
             PageData.DataSource = dt.DefaultView;

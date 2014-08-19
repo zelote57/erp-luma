@@ -496,7 +496,7 @@ namespace AceSoft.RetailPlus.Data
 			try 
 			{
 				GetConnection();
-				ChartOfAccount clsChartOfAccount = new ChartOfAccount(Connection, Transaction);
+				ChartOfAccounts clsChartOfAccount = new ChartOfAccounts(Connection, Transaction);
 
 				MySqlDataReader myReader = List(GJournalID, "GJournalCreditID",SortOption.Ascending);
 				while (myReader.Read())

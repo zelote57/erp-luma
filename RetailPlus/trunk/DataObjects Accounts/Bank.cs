@@ -14,11 +14,14 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct BankDetails
 	{
-		public int BankID;
+		public Int32 BankID;
 		public string BankCode;
 		public string BankName;
         public string ChequeCode;
         public string ChequeCounter;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -29,16 +32,16 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class Bank : POSConnection
+	public class Banks : POSConnection
 	{
 		#region Bank and Destructors
 
-        public Bank()
+        public Banks()
             : base(null, null)
         {
         }
 
-        public Bank(MySqlConnection Connection, MySqlTransaction Transaction) 
+        public Banks(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
 
@@ -52,53 +55,10 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                string SQL = "INSERT INTO tblBank (BankCode, BankName, ChequeCode, ChequeCounter) " +
-                                                    "VALUES (@BankCode, @BankName, @ChequeCode, @ChequeCounter);";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                Save(Details);
 
-                MySqlParameter prmBankCode = new MySqlParameter("@BankCode",MySqlDbType.String);			
-				prmBankCode.Value = Details.BankCode;
-				cmd.Parameters.Add(prmBankCode);
-
-                MySqlParameter prmBankName = new MySqlParameter("@BankName",MySqlDbType.String);
-				prmBankName.Value = Details.BankName;
-				cmd.Parameters.Add(prmBankName);
-
-                MySqlParameter prmChequeCode = new MySqlParameter("@ChequeCode",MySqlDbType.String);
-                prmChequeCode.Value = Details.ChequeCode;
-                cmd.Parameters.Add(prmChequeCode);
-
-                MySqlParameter prmChequeCounter = new MySqlParameter("@ChequeCounter",MySqlDbType.String);
-                prmChequeCounter.Value = Details.ChequeCounter;
-                cmd.Parameters.Add(prmChequeCounter);
-     
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
-				
-				Int32 iID = 0;
-
-				foreach(System.Data.DataRow dr in dt.Rows)
-				{
-					iID = Int32.Parse(dr[0].ToString());
-				}
-
-				return iID;
+                return Int32.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -108,96 +68,34 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "UPDATE tblBank SET " + 
-								"BankCode		= @BankCode, " +
-								"BankName		= @BankName, " +
-                                "ChequeCode     = @ChequeCode, " +
-                                "ChequeCounter  = @ChequeCounter " +
-							"WHERE BankID = @BankID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmBankCode = new MySqlParameter("@BankCode",MySqlDbType.String);			
-				prmBankCode.Value = Details.BankCode;
-				cmd.Parameters.Add(prmBankCode);		
-
-				MySqlParameter prmBankName = new MySqlParameter("@BankName",MySqlDbType.String);			
-				prmBankName.Value = Details.BankName;
-				cmd.Parameters.Add(prmBankName);
-
-                MySqlParameter prmChequeCode = new MySqlParameter("@ChequeCode",MySqlDbType.String);
-                prmChequeCode.Value = Details.ChequeCode;
-                cmd.Parameters.Add(prmChequeCode);
-
-                MySqlParameter prmChequeCounter = new MySqlParameter("@ChequeCounter",MySqlDbType.String);
-                prmChequeCounter.Value = Details.ChequeCounter;
-                cmd.Parameters.Add(prmChequeCounter);
-
-				MySqlParameter prmBankID = new MySqlParameter("@BankID",MySqlDbType.Int16);			
-				prmBankID.Value = Details.BankID;
-				cmd.Parameters.Add(prmBankID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
-        public void UpdateChequeCounter(int BankID, string ChequeCounter)
+        public void UpdateChequeCounter(Int32 BankID, string ChequeCounter)
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                
                 string SQL = "UPDATE tblBank SET " +
                                 "ChequeCounter  = @ChequeCounter " +
                             "WHERE BankID = @BankID;";
 
-                
+                cmd.Parameters.Add("@ChequeCounter", ChequeCounter);
+                cmd.Parameters.Add("@BankID", BankID);
 
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmChequeCounter = new MySqlParameter("@ChequeCounter",MySqlDbType.String);
-                prmChequeCounter.Value = ChequeCounter;
-                cmd.Parameters.Add(prmChequeCounter);
-
-                MySqlParameter prmBankID = new MySqlParameter("@BankID",MySqlDbType.Int16);
-                prmBankID.Value = BankID;
-                cmd.Parameters.Add(prmBankID);
-
                 base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -205,40 +103,49 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblBank SET " +
                                 "ChequeCounter  = @ChequeCounter " +
                             "WHERE BankCode	    = @BankCode ";
 
-                
+                cmd.Parameters.Add("@BankCode", BankCode);
+                cmd.Parameters.Add("@ChequeCounter", ChequeCounter);
 
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmBankCode = new MySqlParameter("@BankCode",MySqlDbType.String);
-                prmBankCode.Value = BankCode;
-                cmd.Parameters.Add(prmBankCode);
-
-                MySqlParameter prmChequeCounter = new MySqlParameter("@ChequeCounter",MySqlDbType.String);
-                prmChequeCounter.Value = ChequeCounter;
-                cmd.Parameters.Add(prmChequeCounter);
-
                 base.ExecuteNonQuery(cmd);
             }
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
+                throw base.ThrowException(ex);
+            }
+        }
 
+        public Int32 Save(BankDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveBank(@BankID, @BankCode, @BankName, @ChequeCode, @ChequeCounter, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("BankID", Details.BankID);
+                cmd.Parameters.AddWithValue("BankCode", Details.BankCode);
+                cmd.Parameters.AddWithValue("BankName", Details.BankName);
+                cmd.Parameters.AddWithValue("ChequeCode", Details.ChequeCode);
+                cmd.Parameters.AddWithValue("ChequeCounter", Details.ChequeCounter);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
                 throw base.ThrowException(ex);
             }
         }
@@ -302,49 +209,32 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL =	SQLSelect() + "WHERE BankID = @BankID;";
 				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+				cmd.Parameters.AddWithValue("@BankID", BankID);
 
-				MySqlParameter prmBankID = new MySqlParameter("@BankID",MySqlDbType.Int16);
-				prmBankID.Value = BankID;
-				cmd.Parameters.Add(prmBankID);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 				
 				BankDetails Details = new BankDetails();
-
-				while (myReader.Read()) 
-				{
-					Details.BankID = BankID;
-					Details.BankCode = "" + myReader["BankCode"].ToString();
-					Details.BankName = "" + myReader["BankName"].ToString();
-                    Details.ChequeCode = "" + myReader["ChequeCode"].ToString();
-                    Details.ChequeCounter = "" + myReader["ChequeCounter"].ToString();
-				}
-
-				myReader.Close();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.BankID = BankID;
+                    Details.BankCode = dr["BankCode"].ToString();
+                    Details.BankName = dr["BankName"].ToString();
+                    Details.ChequeCode = dr["ChequeCode"].ToString();
+                    Details.ChequeCounter = dr["ChequeCounter"].ToString();
+                }
 
 				return Details;
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -354,171 +244,32 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL =SQLSelect() + "ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-        public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "BankCode", SortOption SortOrder = SortOption.Ascending)
         {
             try
             {
-                string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC";
-                else
-                    SQL += " DESC";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
 
-                System.Data.DataTable dt = new System.Data.DataTable("tblBank");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
+                string SQL = SQLSelect() + " ";
+
+                if (!string.IsNullOrEmpty(SearchKey))
+                {
+                    SQL += "WHERE (BankCode LIKE @SearchKey or BankName LIKE @SearchKey or ChequeCode LIKE @SearchKey) ";
+                    cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+                }
+
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC" : "DESC";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
-                throw base.ThrowException(ex);
-            }
-        }
-
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                string SQL = SQLSelect() + 
-                            "WHERE BankCode LIKE @SearchKey " +
-								"or BankName LIKE @SearchKey " +
-                                "or ChequeCode LIKE @SearchKey " +
-							"ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey +"%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
-				
-				return myReader;			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-        public System.Data.DataTable SearchDataTable(string SearchKey, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                string SQL = SQLSelect() +
-                            "WHERE BankCode LIKE @SearchKey " +
-                                "or BankName LIKE @SearchKey " +
-                                "or ChequeCode LIKE @SearchKey " +
-                            "ORDER BY " + SortField;
-
-                if (SortOrder == SortOption.Ascending)
-                    SQL += " ASC ";
-                else
-                    SQL += " DESC ";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblBank");
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
-
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -526,97 +277,35 @@ namespace AceSoft.RetailPlus.Data
 		#endregion
 
         #region Public Modifiers
-
-        public string getChequeNo()
+       
+        public string getChequeNo(Int32 BankID = 1)
         {
             try
             {
-                string SQL = "SELECT " +
-                                    "ChequeCode, " +
-                                    "ChequeCounter " +
-                                "FROM tblBank WHERE BankID = 1";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                string SQL = "SELECT ChequeCounter FROM tblBank WHERE BankID = @BankID ";
+
+                cmd.Parameters.AddWithValue("@BankID", BankID);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 string stRetValue = "";
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    long lChequeCounter = myReader.GetInt64("ChequeCounter") + 1;
-                    stRetValue = "" + myReader["ChequeCounter"].ToString();
+                    Int64 lChequeCounter = Int64.Parse(dr["ChequeCounter"].ToString()) + 1;
+                    stRetValue = dr["ChequeCounter"].ToString();
                     stRetValue = lChequeCounter.ToString().PadLeft(stRetValue.Length, '0');
                 }
-
+                
                 return stRetValue;
             }
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
-                throw base.ThrowException(ex);
-            }
-        }
-        public string getChequeNo(int BankID)
-        {
-            try
-            {
-                string SQL = "SELECT " +
-                                    "ChequeCounter " +
-                                "FROM tblBank WHERE BankID = @BankID ";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmBankID = new MySqlParameter("@BankID",MySqlDbType.Int32);
-                prmBankID.Value = BankID;
-                cmd.Parameters.Add(prmBankID);
-
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-
-                string stRetValue = "";
-
-                while (myReader.Read())
-                {
-                    long lChequeCounter = myReader.GetInt64("ChequeCounter") + 1;
-                    stRetValue = "" + myReader["ChequeCounter"].ToString();
-                    stRetValue = lChequeCounter.ToString().PadLeft(stRetValue.Length, '0');
-                }
-
-                return stRetValue;
-            }
-
-            catch (Exception ex)
-            {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -624,30 +313,22 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "SELECT " +
-                                    "ChequeCounter " +
-                                "FROM tblBank WHERE BankID = @BankCode ";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT ChequeCounter FROM tblBank WHERE BankID = @BankCode ";
+
+                cmd.Parameters.AddWithValue("@BankCode", BankCode);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmBankCode = new MySqlParameter("@BankCode",MySqlDbType.String);
-                prmBankCode.Value = BankCode;
-                cmd.Parameters.Add(prmBankCode);
-
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 string stRetValue = "";
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    long lChequeCounter = myReader.GetInt64("ChequeCounter") + 1;
-                    stRetValue = "" + myReader["ChequeCounter"].ToString();
+                    Int64 lChequeCounter = Int64.Parse(dr["ChequeCounter"].ToString()) + 1;
+                    stRetValue = dr["ChequeCounter"].ToString();
                     stRetValue = lChequeCounter.ToString().PadLeft(stRetValue.Length, '0');
                 }
 
@@ -656,44 +337,32 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
-        public string getChequeNo(out string ChequeCode)
+       
+        public string getChequeNo(out string ChequeCode, Int32 BankID = 1)
         {
             try
             {
-                string SQL = "SELECT " +
-                                    "ChequeCounter " +
-                                "FROM tblBank WHERE BankID = 1";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+                
+                string SQL = "SELECT ChequeCode, ChequeCounter FROM tblBank WHERE BankID = @BankID ";
 
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                cmd.Parameters.AddWithValue("@BankID", BankID);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 ChequeCode = "";
                 string stRetValue = "";
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    ChequeCode = "" + myReader["ChequeCode"].ToString();
-                    long lChequeCounter = myReader.GetInt64("ChequeCounter") + 1;
-                    stRetValue = "" + myReader["ChequeCounter"].ToString();
+                    ChequeCode = dr["ChequeCode"].ToString();
+                    long lChequeCounter = Int64.Parse(dr["ChequeCounter"].ToString()) + 1;
+                    stRetValue = dr["ChequeCounter"].ToString();
                     stRetValue = lChequeCounter.ToString().PadLeft(stRetValue.Length, '0');
                 }
 
@@ -702,66 +371,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
-                throw base.ThrowException(ex);
-            }
-        }
-        public string getChequeNo(int BankID, out string ChequeCode)
-        {
-            try
-            {
-                string SQL = "SELECT " +
-                                    "ChequeCode, " +
-                                    "ChequeCounter " +
-                                "FROM tblBank WHERE BankID = @BankID ";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmBankID = new MySqlParameter("@BankID",MySqlDbType.Int32);
-                prmBankID.Value = BankID;
-                cmd.Parameters.Add(prmBankID);
-
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-
-                ChequeCode = "";
-                string stRetValue = "";
-
-                while (myReader.Read())
-                {
-                    ChequeCode = "" + myReader["ChequeCode"].ToString();
-                    long lChequeCounter = myReader.GetInt64("ChequeCounter") + 1;
-                    stRetValue = "" + myReader["ChequeCounter"].ToString();
-                    stRetValue = lChequeCounter.ToString().PadLeft(stRetValue.Length, '0');
-                }
-
-                return stRetValue;
-            }
-
-            catch (Exception ex)
-            {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -769,33 +378,24 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "SELECT " +
-                                    "ChequeCode, " +
-                                    "ChequeCounter " +
-                                "FROM tblBank WHERE BankID = @BankCode ";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT ChequeCode, ChequeCounter FROM tblBank WHERE BankID = @BankCode ";
+
+                cmd.Parameters.AddWithValue("@BankCode", BankCode);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmBankCode = new MySqlParameter("@BankCode",MySqlDbType.String);
-                prmBankCode.Value = BankCode;
-                cmd.Parameters.Add(prmBankCode);
-
-                MySqlDataReader myReader = (MySqlDataReader)cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 ChequeCode = "";
                 string stRetValue = "";
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    ChequeCode = "" + myReader["ChequeCode"].ToString();
-                    long lChequeCounter = myReader.GetInt64("ChequeCounter") + 1;
-                    stRetValue = "" + myReader["ChequeCounter"].ToString();
+                    ChequeCode = dr["ChequeCode"].ToString();
+                    long lChequeCounter = Int64.Parse(dr["ChequeCounter"].ToString()) + 1;
+                    stRetValue = dr["ChequeCounter"].ToString();
                     stRetValue = lChequeCounter.ToString().PadLeft(stRetValue.Length, '0');
                 }
 
@@ -804,15 +404,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }

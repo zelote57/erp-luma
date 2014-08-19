@@ -126,7 +126,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Variations
             switch (e.CommandName)
             {
                 case "imgItemDelete":
-                    ProductSubGroupVariation clsProductSubGroupVariation = new ProductSubGroupVariation();
+                    ProductSubGroupVariations clsProductSubGroupVariation = new ProductSubGroupVariations();
                     clsProductSubGroupVariation.Delete(long.Parse(lblSubGroupID.Text), chkList.Value);
                     clsProductSubGroupVariation.CommitAndDispose();
 
@@ -187,7 +187,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Variations
 		}
 		private void LoadList()
 		{	
-			ProductSubGroupVariation clsProductSubGroupVariation = new ProductSubGroupVariation();
+			ProductSubGroupVariations clsProductSubGroupVariation = new ProductSubGroupVariations();
 			DataClass clsDataClass = new DataClass();
 
 			string SortField = "VariationType";
@@ -258,7 +258,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Variations
 			}
 			if (boRetValue)
 			{
-				ProductSubGroupVariation clsProductSubGroupVariation = new ProductSubGroupVariation();
+				ProductSubGroupVariations clsProductSubGroupVariation = new ProductSubGroupVariations();
 				clsProductSubGroupVariation.Delete(Convert.ToInt16(lblSubGroupID.Text),stIDs.Substring(0,stIDs.Length-1));
 				clsProductSubGroupVariation.CommitAndDispose();
 			}

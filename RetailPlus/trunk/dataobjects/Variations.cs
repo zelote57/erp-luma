@@ -19,6 +19,9 @@ namespace AceSoft.RetailPlus.Data
 		public int VariationID;
 		public string VariationCode;
 		public string VariationType;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -53,34 +56,16 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "INSERT INTO tblVariations (VariationCode, VariationType) VALUES (@VariationCode, @VariationType);";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
+
+                MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmVariationCode = new MySqlParameter("@VariationCode",MySqlDbType.String);			
-				prmVariationCode.Value = Details.VariationCode;
-				cmd.Parameters.Add(prmVariationCode);
-
-				MySqlParameter prmVariationType = new MySqlParameter("@VariationType",MySqlDbType.String);			
-				prmVariationType.Value = Details.VariationType;
-				cmd.Parameters.Add(prmVariationType);
-
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 Int32 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)
@@ -93,15 +78,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -110,49 +86,39 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblVariations SET " + 
-							"VariationCode = @VariationCode, " +  
-							"VariationType = @VariationType " +  
-							"WHERE VariationID = @VariationID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmVariationCode = new MySqlParameter("@VariationCode",MySqlDbType.String);			
-				prmVariationCode.Value = Details.VariationCode;
-				cmd.Parameters.Add(prmVariationCode);
-
-				MySqlParameter prmVariationType = new MySqlParameter("@VariationType",MySqlDbType.String);			
-				prmVariationType.Value = Details.VariationType;
-				cmd.Parameters.Add(prmVariationType);
-
-				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",MySqlDbType.Int16);			
-				prmVariationID.Value = Details.VariationID;
-				cmd.Parameters.Add(prmVariationID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
+        public Int32 Save(VariationDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveVariation(@VariationID, @VariationCode, @VariationType, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("VariationID", Details.VariationID);
+                cmd.Parameters.AddWithValue("VariationCode", Details.VariationCode);
+                cmd.Parameters.AddWithValue("VariationType", Details.VariationType);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 

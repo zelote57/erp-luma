@@ -87,12 +87,11 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup
 
 		private void LoadOptions()
 		{
-			DataClass clsDataClass = new DataClass();
-			UnitMeasurements clsUnit = new UnitMeasurements();
+            Data.Unit clsUnit = new Data.Unit();
 			
 			cboProductGroupUnit.DataTextField = "UnitName";
 			cboProductGroupUnit.DataValueField = "UnitID";
-			cboProductGroupUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List("UnitName",SortOption.Ascending)).DefaultView;
+			cboProductGroupUnit.DataSource = clsUnit.ListAsDataTable(SortField: "UnitName").DefaultView;
 			cboProductGroupUnit.DataBind();
 			cboProductGroupUnit.SelectedIndex = cboProductGroupUnit.Items.Count - 1;
 
@@ -116,7 +115,10 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup
 
 			clsDetails.ProductGroupCode = txtProductGroupCode.Text;
 			clsDetails.ProductGroupName = txtProductGroupName.Text;
-			clsDetails.BaseUnitID = Convert.ToInt32(cboProductGroupUnit.SelectedItem.Value);
+            clsDetails.UnitDetails = new UnitDetails
+            {
+                UnitID = Convert.ToInt32(cboProductGroupUnit.SelectedItem.Value)
+            };
 			clsDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
 			clsDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
 			clsDetails.IncludeInSubtotalDiscount = chkIncludeInSubtotalDiscount.Checked;

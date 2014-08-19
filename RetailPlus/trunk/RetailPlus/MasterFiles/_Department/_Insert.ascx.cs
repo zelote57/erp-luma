@@ -85,7 +85,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Department
         {
 
         }
-        private Int16 SaveRecord()
+        private Int32 SaveRecord()
         {
             Department clsDepartment = new Department();
             DepartmentDetails clsDetails = new DepartmentDetails();
@@ -93,7 +93,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Department
             clsDetails.DepartmentCode = txtDepartmentCode.Text;
             clsDetails.DepartmentName = txtDepartmentName.Text;
 
-            Int16 id = clsDepartment.Insert(clsDetails);
+            Int32 id = clsDepartment.Insert(clsDetails);
 
             clsDepartment.CommitAndDispose();
 

@@ -1123,14 +1123,14 @@ namespace AceSoft.RetailPlus.Client.UI
                 decimal decAdditionalCreditCharge = 0;
                 if (mclsCustomerDetails.CreditDetails.CreditType == CreditType.Group && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
                 {
-                    if (mclsTerminalDetails.GroupChargeType.InPercent == 1)
+                    if (mclsTerminalDetails.GroupChargeType.InPercent)
                         decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
                     else
                         decAdditionalCreditCharge = decBalance + mclsTerminalDetails.GroupChargeType.ChargeAmount;
 
                     if ((decBalance + decAdditionalCreditCharge) > mdecAllowedCredit)
                     {
-                        if (mclsTerminalDetails.GroupChargeType.InPercent == 1)
+                        if (mclsTerminalDetails.GroupChargeType.InPercent)
                             decAdditionalCreditCharge = mdecAllowedCredit * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
                         else
                             decAdditionalCreditCharge = mdecAllowedCredit + mclsTerminalDetails.GroupChargeType.ChargeAmount;
@@ -1138,14 +1138,14 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 else if (mclsCustomerDetails.CreditDetails.CreditType == CreditType.Individual && mclsTerminalDetails.PersonalChargeType.ChargeTypeID != 0)
                 {
-                    if (mclsTerminalDetails.PersonalChargeType.InPercent == 1)
+                    if (mclsTerminalDetails.PersonalChargeType.InPercent)
                         decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
                     else
                         decAdditionalCreditCharge = decBalance + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
 
                     if ((decBalance + decAdditionalCreditCharge) > mdecAllowedCredit)
                     {
-                        if (mclsTerminalDetails.PersonalChargeType.InPercent == 1)
+                        if (mclsTerminalDetails.PersonalChargeType.InPercent)
                             decAdditionalCreditCharge = mdecAllowedCredit * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
                         else
                             decAdditionalCreditCharge = mdecAllowedCredit + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
@@ -1165,7 +1165,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (mclsCustomerDetails.CreditDetails.CreditType == CreditType.Group && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
                     {
                         // update transaction with additional charge
-                        if (mclsTerminalDetails.GroupChargeType.InPercent == 1)
+                        if (mclsTerminalDetails.GroupChargeType.InPercent)
                             decAdditionalCreditCharge = creditDetails.Amount * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
                         else
                             decAdditionalCreditCharge = creditDetails.Amount + mclsTerminalDetails.GroupChargeType.ChargeAmount;

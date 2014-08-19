@@ -147,13 +147,18 @@
     <Compile Include="CashierReport.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Characteristics.cs">
+    <Compile Include="MasterFiles\CalDate.cs" />
+    <Compile Include="Config\SysAccessTypes.cs" />
+    <Compile Include="Config\SysTerminalKey.cs" />
+    <Compile Include="Config\SysCreditConfig.cs" />
+    <Compile Include="Products\RewardItems.cs" />
+    <Compile Include="Products\Characteristics.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChargeTypes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ContactDetails.cs" />
+    <Compile Include="Contacts\ContactAddOns.cs" />
     <Compile Include="GLA\GLAItem.cs" />
     <Compile Include="GLA\GLADiscount.cs" />
     <Compile Include="GLA\GLATransactionTender.cs" />
@@ -166,28 +171,31 @@
     <Compile Include="GLA\GLATransactionDiscount.cs" />
     <Compile Include="GLA\GLAOrderTender.cs" />
     <Compile Include="GLA\GLATransaction.cs" />
-    <Compile Include="SysConfig.cs" />
+    <Compile Include="Config\SysConfig.cs" />
+    <Compile Include="Products\ProductBaseVariationsMatrix.cs" />
+    <Compile Include="Products\ProductSubGroupBaseVariationsMatrix.cs" />
+    <Compile Include="Products\ProductGroupBaseVariationsMatrix.cs" />
     <Compile Include="Salutation.cs" />
-    <Compile Include="ParkingRates.cs" />
-    <Compile Include="Customer.cs" />
+    <Compile Include="Products\ParkingRates.cs" />
+    <Compile Include="Contacts\Customer.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="ContactGroups.cs">
+    <Compile Include="Contacts\ContactGroups.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Contacts.cs">
+    <Compile Include="Contacts\Contacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ContactCredits.cs" />
-    <Compile Include="ProductInventory.cs" />
+    <Compile Include="Contacts\ContactCreditCardInfos.cs" />
+    <Compile Include="Products\ProductInventory.cs" />
     <Compile Include="RemoteBranchInventory.cs" />
-    <Compile Include="ContactRewards.cs" />
+    <Compile Include="Contacts\ContactRewards.cs" />
     <Compile Include="DataClass.cs" />
     <Compile Include="Departments.cs" />
-    <Compile Include="Positions.cs" />
-    <Compile Include="ProductPurchasePriceHistory.cs" />
-    <Compile Include="MatrixPackagePriceHistory.cs" />
-    <Compile Include="ProductPrices.cs" />
-    <Compile Include="ProductPackagePriceHistory.cs" />
+    <Compile Include="MasterFiles\Positions.cs" />
+    <Compile Include="Products\ProductPurchasePriceHistory.cs" />
+    <Compile Include="Products\MatrixPackagePriceHistory.cs" />
+    <Compile Include="Products\ProductPrices.cs" />
+    <Compile Include="Products\ProductPackagePriceHistory.cs" />
     <Compile Include="CreditCardTypes.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -212,10 +220,10 @@
     <Compile Include="HourlyReport.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Inventory.cs">
+    <Compile Include="Products\Inventory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MatrixPackage.cs">
+    <Compile Include="Products\MatrixPackage.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PaidOut.cs">
@@ -233,61 +241,61 @@
     <Compile Include="ProductAttributes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductCharacteristicsMatrix.cs">
+    <Compile Include="Products\ProductCharacteristicsMatrix.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductComposition.cs">
+    <Compile Include="Products\ProductComposition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductGroupCharges.cs">
+    <Compile Include="Products\ProductGroupCharges.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductGroups.cs">
+    <Compile Include="Products\ProductGroups.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductGroupUnitsMatrix.cs">
+    <Compile Include="Products\ProductGroupUnitsMatrix.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductGroupVariations.cs">
+    <Compile Include="Products\ProductGroupVariations.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductGroupVariationsMatrix.cs">
+    <Compile Include="Products\ProductGroupVariationsMatrix.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductPackage.cs">
+    <Compile Include="Products\ProductPackage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Products.cs">
+    <Compile Include="Products\Products.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductSubAttributes.cs">
+    <Compile Include="Products\ProductSubAttributes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductSubGroupCharges.cs">
+    <Compile Include="Products\ProductSubGroupCharges.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductSubGroups.cs">
+    <Compile Include="Products\ProductSubGroups.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductSubGroupUnitsMatrix.cs">
+    <Compile Include="Products\ProductSubGroupUnitsMatrix.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductSubGroupVariations.cs">
+    <Compile Include="Products\ProductSubGroupVariations.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductSubGroupVariationsMatrix.cs">
+    <Compile Include="Products\ProductSubGroupVariationsMatrix.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductUnits.cs">
+    <Compile Include="Products\ProductUnits.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductUnitsMatrix.cs">
+    <Compile Include="Products\ProductUnitsMatrix.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductVariations.cs">
+    <Compile Include="Products\ProductVariations.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProductVariationsMatrix.cs">
+    <Compile Include="Products\ProductVariationsMatrix.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Promo.cs">
@@ -309,7 +317,7 @@
     <Compile Include="StockItems.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StockTypes.cs">
+    <Compile Include="MasterFiles\StockTypes.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Terminal.cs">
@@ -324,7 +332,7 @@
     <Compile Include="Transaction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UnitMeasurements.cs">
+    <Compile Include="x_UnitMeasurements.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Units.cs">
@@ -360,6 +368,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

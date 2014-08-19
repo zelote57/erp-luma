@@ -103,11 +103,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
                 lnkVariationType.Text = dr["VariationType"].ToString(); //VariationID
                 lnkVariationType.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Variation/Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(dr["VariationID"].ToString(), Session.SessionID);
 
+                TextBox txtDescription = (TextBox)e.Item.FindControl("txtDescription");
+
 				ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-
-				TextBox txtDescription = (TextBox) e.Item.FindControl("txtDescription");
-				txtDescription.Text = clsProductVariationsMatrix.Details(Convert.ToInt32(lblMatrixID.Text), Convert.ToInt32(chkList.Value)).Description;
-
+				txtDescription.Text = clsProductVariationsMatrix.Details(Convert.ToInt64(lblMatrixID.Text), Convert.ToInt32(chkList.Value)).Description;
 				clsProductVariationsMatrix.CommitAndDispose();
 
 			}
@@ -125,24 +124,28 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			lblProductID.Text = Common.Decrypt((string)Request.QueryString["prodid"],Session.SessionID);
 			lblMatrixID.Text = Common.Decrypt(Request.QueryString["id"],Session.SessionID);
 
-			ProductVariation clsProductVariation = new ProductVariation();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariation.List(Convert.ToInt32(lblProductID.Text),"VariationType",SortOption.Ascending)).DefaultView;
+			ProductVariations clsProductVariation = new ProductVariations();
+			lstItem.DataSource = clsProductVariation.ListAsDataTable(Convert.ToInt64(lblProductID.Text)).DefaultView;
 			lstItem.DataBind();
 			clsProductVariation.CommitAndDispose();	
 
-			ProductUnitsMatrix clsUnit = new ProductUnitsMatrix();
+			ProductUnitsMatrix clsProductUnitsMatrix = new ProductUnitsMatrix();
 			cboUnit.DataTextField = "BottomUnitName";
 			cboUnit.DataValueField = "BottomUnitID";
-			cboUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List(Convert.ToInt64(lblProductID.Text),"MatrixID",SortOption.Ascending)).DefaultView;
+			cboUnit.DataSource = clsProductUnitsMatrix.ListAsDataTable(Convert.ToInt64(lblProductID.Text)).DefaultView;
 			cboUnit.DataBind();
 			cboUnit.SelectedIndex = cboUnit.Items.Count - 1;
-			clsUnit.CommitAndDispose();	
+			clsProductUnitsMatrix.CommitAndDispose();	
 
 			Products clsProduct = new Products();
             ProductDetails clsDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
 			cboUnit.Items.Add(new ListItem(clsDetails.BaseUnitName, clsDetails.BaseUnitID.ToString()));
 			clsProduct.CommitAndDispose();
 			cboUnit.SelectedIndex = cboUnit.Items.Count - 1;
+
+            string stParam = "?task=" + Common.Encrypt("list", Session.SessionID) + "&prodid=" + Common.Encrypt(lblProductID.Text, Session.SessionID);
+            lnkVariations.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/_Variations/Default.aspx" + stParam;
+
 		}
 		private void LoadRecord()
 		{
@@ -152,6 +155,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
             Products clsProducts = new Products();
             ProductDetails clsDetails = clsProducts.Details(ProductID: ProductID, MatrixID: MatrixID);
             clsProducts.CommitAndDispose();
+
+            txtBarcode.Text = clsDetails.BarCode1;
+            txtBarcode2.Text = clsDetails.BarCode2;
+            txtBarcode3.Text = clsDetails.BarCode3;
 
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsDetails.BaseUnitID.ToString()));
 			txtProductPrice.Text = clsDetails.Price.ToString("#,##0.#0");
@@ -215,7 +222,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 				clsDetails.VariationID = Convert.ToInt32(chkList.Value);
 				clsDetails.Description = txtDescription.Text;
 				
-				clsProductVariationsMatrix.Save(clsDetails);
+				clsProductVariationsMatrix.SaveVariation(clsDetails);
 
 				Label lblVariationType = (Label) item.FindControl("lblVariationType");
 				//stringVariationDesc += lblVariationType.Text + ":" + txtDescription.Text + "; ";
@@ -223,9 +230,14 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			}
 			
 			//update base variation matrix 
-			ProductBaseMatrixDetails clsBaseDetails = new ProductBaseMatrixDetails();
+            ProductDetails clsProductDetails = new Products(clsProductVariationsMatrix.Connection, clsProductVariationsMatrix.Transaction).Details(Int64.Parse(lblProductID.Text));
+
+			ProductBaseVariationsMatrixDetails clsBaseDetails = new ProductBaseVariationsMatrixDetails();
 			clsBaseDetails.MatrixID = Convert.ToInt64(lblMatrixID.Text);
 			clsBaseDetails.ProductID = Convert.ToInt64(lblProductID.Text);
+            clsBaseDetails.BarCode1 = txtBarcode.Text;
+            clsBaseDetails.BarCode2 = txtBarcode2.Text;
+            clsBaseDetails.BarCode3 = txtBarcode3.Text;
 			clsBaseDetails.Description = stringVariationDesc;
 			clsBaseDetails.UnitID = Convert.ToInt32(cboUnit.SelectedItem.Value);
 			clsBaseDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
@@ -238,6 +250,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			clsBaseDetails.Quantity = Convert.ToDecimal(txtQuantity.Text);
 			clsBaseDetails.MinThreshold = Convert.ToDecimal(txtMinThreshold.Text);
 			clsBaseDetails.MaxThreshold = Convert.ToDecimal(txtMaxThreshold.Text);
+            clsBaseDetails.SupplierID = clsProductDetails.SupplierID;
             clsBaseDetails.UpdatedBy = Convert.ToInt64(Session["UID"].ToString());
             clsBaseDetails.UpdatedOn = DateTime.Now;
 

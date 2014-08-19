@@ -85,7 +85,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 
 		private void LoadOptions()
 		{
-			AccountCategory clsAccountCategory = new AccountCategory();
+			AccountCategories clsAccountCategory = new AccountCategories();
 			DataClass clsDataClass = new DataClass();
 			
 			cboAccountCategory.DataTextField = "AccountCategoryName";
@@ -100,11 +100,14 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 		{
 			ChartOfAccountDetails clsDetails = new ChartOfAccountDetails();
 
-			clsDetails.AccountCategoryID = Convert.ToInt32(cboAccountCategory.SelectedItem.Value);
+            clsDetails.AccountCategoryDetails = new AccountCategoryDetails
+            {
+                AccountCategoryID = Convert.ToInt32(cboAccountCategory.SelectedItem.Value),
+            };
 			clsDetails.ChartOfAccountCode = txtAccountCode.Text;
 			clsDetails.ChartOfAccountName = txtAccountName.Text;
 			
-			ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+			ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
 			Int32 id = clsChartOfAccount.Insert(clsDetails);
 			clsChartOfAccount.CommitAndDispose();
 

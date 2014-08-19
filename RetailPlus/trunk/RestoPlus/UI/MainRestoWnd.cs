@@ -2471,8 +2471,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 clsTerminal.CommitAndDispose();
 
-                cmdPaxAdd.Visible = mclsTerminalDetails.IsFineDIning;
-                cmdPaxDeduct.Visible = mclsTerminalDetails.IsFineDIning;
+                cmdPaxAdd.Visible = mclsTerminalDetails.IsFineDining;
+                cmdPaxDeduct.Visible = mclsTerminalDetails.IsFineDining;
 
 				cmdSubGroupLeft.Tag = "0";
 				cmdSubGroupRight.Tag = "0";
@@ -3856,10 +3856,10 @@ namespace AceSoft.RetailPlus.Client.UI
                         else
                         {
                             Data.ChargeType clsChargeType = new Data.ChargeType(mConnection, mTransaction);
-                            byte bytelInPercent = clsChargeType.Details(mclsSalesTransactionDetails.ChargeCode).InPercent;
+                            bool bolInPercent = clsChargeType.Details(mclsSalesTransactionDetails.ChargeCode).InPercent;
                             clsChargeType.CommitAndDispose();
 
-                            if (bytelInPercent == 1)
+                            if (bolInPercent)
                             {
                                 lblTransCharge.Tag = ChargeTypes.Percentage.ToString("d");
                             }
@@ -4973,7 +4973,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         // 21Jul2013 Include getting of rates for parking
                         if (mclsTerminalDetails.IsParkingTerminal)
                         {
-                            Data.ParkingRate clsParkingRate = new Data.ParkingRate(mConnection, mTransaction);
+                            Data.ParkingRates clsParkingRate = new Data.ParkingRates(mConnection, mTransaction);
                             mConnection = clsParkingRate.Connection; mTransaction = clsParkingRate.Transaction;
 
                             Data.ParkingRateDetails clsParkingRateDetails = clsParkingRate.Details(clsProductDetails.ProductID, DateTime.Now.ToString("dddd"));

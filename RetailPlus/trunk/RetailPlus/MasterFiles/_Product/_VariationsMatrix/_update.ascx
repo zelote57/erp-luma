@@ -70,6 +70,7 @@
 					<td style="padding-bottom: 10px;" valign="top" colspan="3">
 						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 1:&nbsp;Apply 
 							description for each applicable variations
+                            <asp:HyperLink CssClass="ms-vb-user" ID="lnkVariations" runat="server" ToolTip="Setup Product Variations" Font-Underline="true" Target="_blank" CausesValidation="false" OnClientClick="NewWindow();">&nbsp;[Add/Edit/Delete Variations]&nbsp;</asp:HyperLink>
 						</div>
 					</td>
 				</tr>
@@ -129,6 +130,35 @@
 					<td colspan="3" class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top">
 						<table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="90%" border="0">
 							<tr>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Barcode (Primary)</td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Barcode (Secondary)</label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                </td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Barcode (Tertiary)</label></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:TextBox ID="txtBarcode" runat="server" AccessKey="B" BorderStyle="Groove" CssClass="ms-short" MaxLength="25"></asp:TextBox>
+                                </td>
+                                <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:TextBox ID="txtBarcode2" runat="server" AccessKey="B" BorderStyle="Groove" CssClass="ms-short" MaxLength="25"></asp:TextBox>
+                                </td>
+                                <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                </td>
+                                <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:TextBox ID="txtBarcode3" runat="server" AccessKey="B" BorderStyle="Groove" CssClass="ms-short" MaxLength="25"></asp:TextBox>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">
 								    <label>Purchase Price<font color="red">*</font></label></td>
 								<td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="2">

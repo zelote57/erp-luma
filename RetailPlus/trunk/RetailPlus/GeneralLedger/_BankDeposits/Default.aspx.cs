@@ -27,7 +27,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._BankDeposit
 			const string defaultTitle = "Bank Accounts";
 			SiteTitle.Title = defaultTitle;
 
-			const SearchCategoryID defaultSearchIndex = SearchCategoryID.AccountSummary;
+			const SearchCategoryID defaultSearchIndex = SearchCategoryID.Banks;
 			SearchCategoryID SearchIndex = defaultSearchIndex;			
 
 			HorizontalNavBar.PageNavigatorid = HorizontalNavID.GeneralLedger;

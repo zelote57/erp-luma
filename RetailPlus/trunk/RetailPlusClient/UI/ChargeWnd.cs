@@ -149,10 +149,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblChargeTypes = new System.Windows.Forms.Label();
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.lblCash = new System.Windows.Forms.Label();
-            this.txtAmount = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.lblDescription = new System.Windows.Forms.Label();
             this.lblBalanceAmount = new System.Windows.Forms.Label();
+            this.txtAmount = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
@@ -241,11 +241,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblChargeTypes.AutoSize = true;
             this.lblChargeTypes.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChargeTypes.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblChargeTypes.Location = new System.Drawing.Point(421, 16);
+            this.lblChargeTypes.Location = new System.Drawing.Point(374, 16);
             this.lblChargeTypes.Name = "lblChargeTypes";
-            this.lblChargeTypes.Size = new System.Drawing.Size(116, 13);
+            this.lblChargeTypes.Size = new System.Drawing.Size(213, 13);
             this.lblChargeTypes.TabIndex = 3;
-            this.lblChargeTypes.Text = "Select Charge Type";
+            this.lblChargeTypes.Text = "Select Charge Type (press up/down)";
             // 
             // txtRemarks
             // 
@@ -270,33 +270,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCash.TabIndex = 4;
             this.lblCash.Text = "Charge to be applied.";
             // 
-            // txtAmount
-            // 
-            this.txtAmount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtAmount.Enabled = false;
-            this.txtAmount.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAmount.Location = new System.Drawing.Point(302, 99);
-            this.txtAmount.MaxLength = 16;
-            this.txtAmount.Name = "txtAmount";
-            this.txtAmount.Size = new System.Drawing.Size(355, 30);
-            this.txtAmount.TabIndex = 1;
-            this.txtAmount.Text = "0.00";
-            this.txtAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.txtAmount.GotFocus += new System.EventHandler(this.txtAmount_GotFocus);
-            this.txtAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(35, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "ENTER";
-            // 
             // lblDescription
             // 
             this.lblDescription.AutoSize = true;
@@ -320,6 +293,33 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBalanceAmount.TabIndex = 5;
             this.lblBalanceAmount.Text = "0.00";
             this.lblBalanceAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtAmount
+            // 
+            this.txtAmount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtAmount.Enabled = false;
+            this.txtAmount.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAmount.Location = new System.Drawing.Point(302, 99);
+            this.txtAmount.MaxLength = 16;
+            this.txtAmount.Name = "txtAmount";
+            this.txtAmount.Size = new System.Drawing.Size(355, 30);
+            this.txtAmount.TabIndex = 1;
+            this.txtAmount.Text = "0.00";
+            this.txtAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtAmount.GotFocus += new System.EventHandler(this.txtAmount_GotFocus);
+            this.txtAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(39, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(39, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "ENTER";
             // 
             // cmdCancel
             // 
@@ -538,7 +538,7 @@ namespace AceSoft.RetailPlus.Client.UI
             //    lblChargeType.Visible = false;
             //}
             //else 
-            if (clsChargeTypeDetails.InPercent == 1)
+            if (clsChargeTypeDetails.InPercent)
             {
                 mChargeType = ChargeTypes.Percentage;
                 lblHeader.Text = clsChargeTypeDetails.ChargeType + ": Percentage Charge";

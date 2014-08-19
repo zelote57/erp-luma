@@ -92,8 +92,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Unit
 		private void LoadRecord()
 		{
 			Int32 iID = Convert.ToInt32(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
-			UnitMeasurements clsUnit = new UnitMeasurements();
-			UnitMeasurementsDetails clsDetails = clsUnit.Details(iID);
+            Data.Unit clsUnit = new Data.Unit();
+            Data.UnitDetails clsDetails = clsUnit.Details(iID);
 			clsUnit.CommitAndDispose();
 
 			lblUnitID.Text = clsDetails.UnitID.ToString();
@@ -102,8 +102,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Unit
 		}
 		private void SaveRecord()
 		{
-			UnitMeasurements clsUnit = new UnitMeasurements();
-			UnitMeasurementsDetails clsDetails = new UnitMeasurementsDetails();
+            Data.Unit clsUnit = new Data.Unit();
+            Data.UnitDetails clsDetails = new Data.UnitDetails();
 
 			clsDetails.UnitID = Convert.ToInt16(lblUnitID.Text);
 			clsDetails.UnitCode = txtUnitCode.Text;

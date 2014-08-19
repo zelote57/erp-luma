@@ -97,6 +97,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\dataobjects\DataObjects.csproj">
+      <Project>{75D37B92-76F5-4C25-AF1A-394619DE4835}</Project>
+      <Name>DataObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\security library\Security Library.csproj">
       <Project>{88C68179-9BB1-4A08-92E7-7B003449A2AE}</Project>
       <Name>Security Library</Name>

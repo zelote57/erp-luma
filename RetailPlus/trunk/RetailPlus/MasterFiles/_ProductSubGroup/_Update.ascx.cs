@@ -75,7 +75,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 			if (cboGroup.Items.Count != 0)
 			{
 				ProductGroup clsProductGroup = new ProductGroup();
-				int BaseUnitID= clsProductGroup.Details(Convert.ToInt32(cboGroup.SelectedItem.Value)).BaseUnitID;
+				Int32 BaseUnitID= clsProductGroup.Details(Convert.ToInt32(cboGroup.SelectedItem.Value)).UnitDetails.UnitID;
 				cboProductSubGroupUnit.SelectedIndex = cboProductSubGroupUnit.Items.IndexOf( cboProductSubGroupUnit.Items.FindByValue(BaseUnitID.ToString()));
 				clsProductGroup.CommitAndDispose();	
 			}
@@ -97,15 +97,15 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 			
 			cboGroup.DataTextField = "ProductGroupName";
 			cboGroup.DataValueField = "ProductGroupID";
-			cboGroup.DataSource = clsDataClass.DataReaderToDataTable(clsProductGroup.List("ProductGroupName",SortOption.Ascending)).DefaultView;
+			cboGroup.DataSource = clsProductGroup.ListAsDataTable(SortField:"ProductGroupName").DefaultView;
 			cboGroup.DataBind();
 			cboGroup.SelectedIndex = cboGroup.Items.Count - 1;
 
-			UnitMeasurements clsUnit = new UnitMeasurements();
+            Data.Unit clsUnit = new Data.Unit();
 			
 			cboProductSubGroupUnit.DataTextField = "UnitName";
 			cboProductSubGroupUnit.DataValueField = "UnitID";
-			cboProductSubGroupUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List("UnitName",SortOption.Ascending)).DefaultView;
+			cboProductSubGroupUnit.DataSource = clsUnit.ListAsDataTable(SortField:"UnitName").DefaultView;
 			cboProductSubGroupUnit.DataBind();
 			cboProductSubGroupUnit.SelectedIndex = cboProductSubGroupUnit.Items.Count - 1;
 
@@ -113,7 +113,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 	
 			if (cboGroup.Items.Count != 0)
 			{
-				int BaseUnitID= clsProductGroup.Details(Convert.ToInt32(cboGroup.SelectedItem.Value)).BaseUnitID;
+				int BaseUnitID= clsProductGroup.Details(Convert.ToInt32(cboGroup.SelectedItem.Value)).UnitDetails.UnitID;
 				cboProductSubGroupUnit.SelectedIndex = cboProductSubGroupUnit.Items.IndexOf( cboProductSubGroupUnit.Items.FindByValue(BaseUnitID.ToString()));
 			}
 			clsProductGroup.CommitAndDispose();	

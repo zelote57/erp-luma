@@ -110,7 +110,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 			Branch clsBranch = new Branch();
 			cboBranch.DataTextField = "BranchCode";
 			cboBranch.DataValueField = "BranchID";
-			cboBranch.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
+			cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
 			cboBranch.DataBind();
 			clsBranch.CommitAndDispose();
             cboBranch.SelectedIndex = cboBranch.Items.IndexOf(cboBranch.Items.FindByValue(Constants.BRANCH_ID_MAIN.ToString()));

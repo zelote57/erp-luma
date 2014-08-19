@@ -519,7 +519,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 CreditMemoDetails clsCreditMemoDetails = Details(CreditMemoID);
-                ChartOfAccount clsChartOfAccount = new ChartOfAccount(base.Connection, base.Transaction);
+                ChartOfAccounts clsChartOfAccount = new ChartOfAccounts(base.Connection, base.Transaction);
 
                 // update ChartOfAccountIDARTracking as credit
                 clsChartOfAccount.UpdateCredit(clsCreditMemoDetails.ChartOfAccountIDARTracking, clsCreditMemoDetails.SubTotal);

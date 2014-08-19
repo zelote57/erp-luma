@@ -260,16 +260,12 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
+            string SearchKey = "";
+			if (Request.QueryString["Search"]!=null)
 			{
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsProductGroup.List(SortField, sortoption)).DefaultView;
+                SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
 			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsProductGroup.Search(SearchKey, SortField, sortoption)).DefaultView;
-			}
-
+            PageData.DataSource = clsProductGroup.ListAsDataTable(SearchKey, SortField, sortoption).DefaultView;
 			clsProductGroup.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;

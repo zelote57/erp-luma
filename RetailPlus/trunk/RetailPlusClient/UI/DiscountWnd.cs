@@ -242,11 +242,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblDicountTypes.AutoSize = true;
             this.lblDicountTypes.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDicountTypes.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblDicountTypes.Location = new System.Drawing.Point(417, 18);
+            this.lblDicountTypes.Location = new System.Drawing.Point(369, 18);
             this.lblDicountTypes.Name = "lblDicountTypes";
-            this.lblDicountTypes.Size = new System.Drawing.Size(125, 13);
+            this.lblDicountTypes.Size = new System.Drawing.Size(222, 13);
             this.lblDicountTypes.TabIndex = 3;
-            this.lblDicountTypes.Text = "Select Discount Type";
+            this.lblDicountTypes.Text = "Select Discount Type (press up/down)";
             // 
             // txtRemarks
             // 
@@ -290,7 +290,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(35, 0);
+            this.label1.Location = new System.Drawing.Point(39, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 7;
@@ -509,7 +509,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 //}
                 //else 
                 lblHeader.Text = mstHeader;
-                if (clsDiscountDetails.InPercent == 1)
+                if (clsDiscountDetails.InPercent)
                 {
                     mDiscountType = DiscountTypes.Percentage;
                     lblDiscountType.Visible = true;

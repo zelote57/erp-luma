@@ -103,6 +103,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix {
         protected global::System.Web.UI.WebControls.Label lblProductID;
         
         /// <summary>
+        /// lnkVariations control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkVariations;
+        
+        /// <summary>
         /// lstItem control.
         /// </summary>
         /// <remarks>
@@ -110,6 +119,33 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DataList lstItem;
+        
+        /// <summary>
+        /// txtBarcode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBarcode;
+        
+        /// <summary>
+        /// txtBarcode2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBarcode2;
+        
+        /// <summary>
+        /// txtBarcode3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBarcode3;
         
         /// <summary>
         /// txtPurchasePrice control.

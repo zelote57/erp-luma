@@ -254,7 +254,7 @@ namespace AceSoft.RetailPlus.Inventory
             Branch clsBranch = new Branch();
             cboBranch.DataTextField = "BranchCode";
             cboBranch.DataValueField = "BranchID";
-            cboBranch.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
+            cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
             cboBranch.DataBind();
             clsBranch.CommitAndDispose();
 

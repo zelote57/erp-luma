@@ -131,7 +131,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactGroup
             switch (e.CommandName)
             {
                 case "imgItemDelete":
-                    ContactGroup clsContactGroup = new ContactGroup();
+                    ContactGroups clsContactGroup = new ContactGroups();
                     clsContactGroup.Delete(chkList.Value);
                     clsContactGroup.CommitAndDispose();
 
@@ -196,7 +196,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactGroup
 		}
 		private void LoadList()
 		{	
-			ContactGroup clsContactGroup = new ContactGroup();
+			ContactGroups clsContactGroup = new ContactGroups();
 			DataClass clsDataClass = new DataClass();
 
 			string SortField = "ContactGroupID";
@@ -267,7 +267,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactGroup
 			}
 			if (boRetValue)
 			{
-				ContactGroup clsContactGroup = new ContactGroup();
+				ContactGroups clsContactGroup = new ContactGroups();
 				clsContactGroup.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsContactGroup.CommitAndDispose();
 			}

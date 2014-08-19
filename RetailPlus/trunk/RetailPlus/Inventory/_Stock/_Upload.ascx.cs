@@ -176,7 +176,10 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									ProductGroupDetails clsProductGroupDetails = new ProductGroupDetails();
 									clsProductGroupDetails.ProductGroupCode = reader.GetAttribute("ProductGroupCode");
 									clsProductGroupDetails.ProductGroupName = reader.GetAttribute("ProductGroupName");
-									clsProductGroupDetails.BaseUnitID = UnitID;
+                                    clsProductGroupDetails.UnitDetails = new UnitDetails
+                                    {
+                                        UnitID = UnitID
+                                    };
 									clsProductGroupDetails.Price = Convert.ToDecimal(reader.GetAttribute("Price"));
 									clsProductGroupDetails.PurchasePrice = Convert.ToDecimal(reader.GetAttribute("PurchasePrice"));
 									clsProductGroupDetails.IncludeInSubtotalDiscount = Convert.ToBoolean(reader.GetAttribute("IncludeInSubtotalDiscount"));
@@ -281,7 +284,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 								clsProductVariationDetails.ProductID = ProductID;
 								clsProductVariationDetails.VariationID = VariationID;
 
-								ProductVariation clsProductVariation = new ProductVariation(clsStock.Connection, clsStock.Transaction);
+								ProductVariations clsProductVariation = new ProductVariations(clsStock.Connection, clsStock.Transaction);
 								if (clsProductVariation.isExist(clsProductVariationDetails) == false)
 								{
 									long ProductVariationID = clsProductVariation.Insert(clsProductVariationDetails);
@@ -307,7 +310,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 									clsProductVariationsMatrixDetails.MatrixID = ProductBaseMatrixID;
 									clsProductVariationsMatrixDetails.VariationID = VariationID;
 									clsProductVariationsMatrixDetails.Description = reader.GetAttribute("Description");
-									clsProductVariationsMatrix.Save(clsProductVariationsMatrixDetails);
+									clsProductVariationsMatrix.SaveVariation(clsProductVariationsMatrixDetails);
 								}
 							}
 							else

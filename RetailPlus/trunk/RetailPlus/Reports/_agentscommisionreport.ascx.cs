@@ -54,12 +54,12 @@ namespace AceSoft.RetailPlus.Reports
             cboReportType.Items.Add(new ListItem("Summarized With Details", "1"));
             cboReportType.SelectedIndex = cboReportType.Items.Count - 1;
 
-            Position clsPosition = new Position(clsContact.Connection, clsContact.Transaction);
+            Positions clsPosition = new Positions(clsContact.Connection, clsContact.Transaction);
             cboPosition.DataTextField = "PositionName";
             cboPosition.DataValueField = "PositionID";
             cboPosition.DataSource = clsPosition.ListAsDataTable(null, SortOption.Ascending, 0);
             cboPosition.DataBind();
-            cboPosition.Items.Add(new ListItem(Position.DEFAULT_ALL_POSITIONS, "0"));
+            cboPosition.Items.Add(new ListItem(Positions.DEFAULT_ALL_POSITIONS, "0"));
             cboPosition.SelectedIndex = cboPosition.Items.Count - 1;
 
             Department clsDepartment = new Department(clsContact.Connection, clsContact.Transaction);

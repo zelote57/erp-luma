@@ -80,11 +80,11 @@
 					<th class="ms-vh2">
 						<img height="10" alt="" src="../../../_layouts/images/blank.gif" width="1" /></th>
 					<th class="ms-vh2">
-						<img height="5" alt="" src="../../../_layouts/images/blank.gif" width="1"></th>
+						<img height="5" alt="" src="../../../_layouts/images/blank.gif" width="1" /></th>
 					<th class="ms-vh2">
-						<img height="5" alt="" src="../../../_layouts/images/blank.gif" width="1"></th>
+						<img height="5" alt="" src="../../../_layouts/images/blank.gif" width="1" /></th>
 					<th class="ms-vh2">
-						<img height="5" alt="" src="../../../_layouts/images/blank.gif" width="1"></th>
+						<img height="5" alt="" src="../../../_layouts/images/blank.gif" width="1" /></th>
 				</tr>
 				<tr>
 					<td colspan="4" height="5"><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
@@ -94,18 +94,20 @@
 				<HeaderTemplate>
 					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						<colgroup>
-							<col width="10">
+							<col width="10" align="center">
+							<col>
+							<col>
+					        <col>
 							<col width="30%">
 							<col width="69%">
-							<col width="1%">
+							<col width="1%" align="center">
 						</colgroup>
 						<tr>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 								<INPUT id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" value="on">&nbsp;&nbsp;&nbsp;&nbsp;</TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-							</TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
-							</TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"></TH>
+							<TH class="ms-vh2" style="padding-bottom: 4px"></TH>
+                            <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByGroupName" runat="server">Group Name</asp:hyperlink></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">

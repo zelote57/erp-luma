@@ -296,6 +296,7 @@
     <Compile Include="Resolution.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LocalDB.cs" />
     <Compile Include="SingleInstance.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -350,6 +351,9 @@
     <Compile Include="UI\CreditsItemizeWnd.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\ItemSelectRestoWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\RewardPointPaymentWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -361,9 +365,6 @@
     </Compile>
     <Compile Include="UI\ItemReleaseWnd.Designer.cs">
       <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\ItemSelectRestoWnd.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\ForwarderWnd.cs">
       <SubType>Form</SubType>
@@ -830,6 +831,10 @@
       <DependentUpon>CreditsItemizeWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemSelectRestoWnd.resx">
+      <DependentUpon>ItemSelectRestoWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\RewardPointPaymentWnd.resx">
       <DependentUpon>RewardPointPaymentWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -840,10 +845,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ItemReleaseWnd.resx">
       <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemSelectRestoWnd.resx">
-      <DependentUpon>ItemSelectRestoWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ForwarderWnd.resx">

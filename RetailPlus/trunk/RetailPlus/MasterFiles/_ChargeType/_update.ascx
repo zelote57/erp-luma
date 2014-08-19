@@ -78,7 +78,8 @@
                             <tr>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:textbox id="txtChargeTypeCode" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="3"></asp:textbox>
+                                    <asp:textbox id="txtChargeTypeCode" accessKey="G" CssClass="ms-short" 
+                                        runat="server" BorderStyle="Groove" MaxLength="10"></asp:textbox>
                                     <asp:requiredfieldvalidator id="Requiredfieldvalidator1" CssClass="ms-error" runat="server" ControlToValidate="txtChargeTypeCode" Display="Dynamic" ErrorMessage="'Charge Type code' must not be left blank." ></asp:requiredfieldvalidator>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>

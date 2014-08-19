@@ -58,7 +58,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Customer
 
         private void LoadOptions()
         {
-            ContactGroup clsContactGroup = new ContactGroup();
+            ContactGroups clsContactGroup = new ContactGroups();
 
             cboGroup.DataTextField = "ContactGroupName";
             cboGroup.DataValueField = "ContactGroupID";
@@ -73,7 +73,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Customer
             cboDepartment.DataBind();
             cboDepartment.SelectedIndex = 0;
 
-            Position clsPosition = new Position(clsContactGroup.Connection, clsContactGroup.Transaction);
+            Positions clsPosition = new Positions(clsContactGroup.Connection, clsContactGroup.Transaction);
             cboPosition.DataTextField = "PositionName";
             cboPosition.DataValueField = "PositionID";
             cboPosition.DataSource = clsPosition.ListAsDataTable("PositionName", SortOption.Ascending, 0).DefaultView;

@@ -30,6 +30,9 @@ namespace AceSoft.RetailPlus.Security
 		public int TranTypeID;
 		public bool Read;
 		public bool Write;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -360,6 +363,31 @@ namespace AceSoft.RetailPlus.Security
 			}	
 		}
 
+        public Int32 Save(AccessGroupRightsDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveSysAccessGroupRights(@GroupID, @TranTypeID, @AllowRead, @AllowWrite, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("GroupID", Details.GroupID);
+                cmd.Parameters.AddWithValue("TranTypeID", Details.TranTypeID);
+                cmd.Parameters.AddWithValue("AllowRead", Details.Read);
+                cmd.Parameters.AddWithValue("AllowWrite", Details.Write);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 		#endregion
 
 		#region Details

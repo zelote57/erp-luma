@@ -607,12 +607,12 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                         // save the expiration
                         clsDetails.VariationID = long.Parse(CONSTANT_VARIATIONS.EXPIRATION.ToString("d"));
                         clsDetails.Description = dteExpiration.ToString("yyyy-MM-dd");
-                        clsProductVariationsMatrix.Save(clsDetails);
+                        clsProductVariationsMatrix.SaveVariation(clsDetails);
 
                         // save the lotno
                         clsDetails.VariationID = long.Parse(CONSTANT_VARIATIONS.LOTNO.ToString("d"));
                         clsDetails.Description = LotNo;
-                        clsProductVariationsMatrix.Save(clsDetails);
+                        clsProductVariationsMatrix.SaveVariation(clsDetails);
                     }
                     clsProductVariationsMatrix.CommitAndDispose();
 
@@ -1361,7 +1361,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             Products clsProduct = new Products(clsPO.Connection, clsPO.Transaction);
             ProductDetails clsProductDetails;
 
-            ProductVariation clsProductVariation = new ProductVariation(clsPO.Connection, clsPO.Transaction);
+            ProductVariations clsProductVariation = new ProductVariations(clsPO.Connection, clsPO.Transaction);
             DataTable dtaProductVariation;
 
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsPO.Connection, clsPO.Transaction);
@@ -1575,7 +1575,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 Contacts clsContact = new Contacts(clsPO.Connection, clsPO.Transaction);
                 ContactDetails clsContactDetails;
 
-                ContactGroup clsContactGroup = new ContactGroup(clsPO.Connection, clsPO.Transaction);
+                ContactGroups clsContactGroup = new ContactGroups(clsPO.Connection, clsPO.Transaction);
                 ContactGroupDetails clsContactGroupDetails;
 
                 Data.Unit clsUnit = new Data.Unit(clsPO.Connection, clsPO.Transaction);
@@ -1590,7 +1590,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 Products clsProduct = new Products(clsPO.Connection, clsPO.Transaction);
                 ProductDetails clsProductDetails;
 
-                ProductVariation clsProductVariation = new ProductVariation(clsPO.Connection, clsPO.Transaction);
+                ProductVariations clsProductVariation = new ProductVariations(clsPO.Connection, clsPO.Transaction);
                 ProductVariationDetails clsProductVariationDetails;
 
                 Branch clsBranch = new Branch(clsPO.Connection, clsPO.Transaction);
@@ -1801,7 +1801,10 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                                             clsProductGroupDetails = new ProductGroupDetails();
                                             clsProductGroupDetails.ProductGroupCode = clsProductDetails.ProductGroupCode;
                                             clsProductGroupDetails.ProductGroupName = clsProductDetails.ProductGroupName;
-                                            clsProductGroupDetails.BaseUnitID = clsProductDetails.BaseUnitID;
+                                            clsProductGroupDetails.UnitDetails = new UnitDetails
+                                            {
+                                                UnitID = clsProductDetails.BaseUnitID
+                                            };
                                             clsProductGroupDetails.Price = clsProductDetails.Price;
                                             clsProductGroupDetails.PurchasePrice = clsProductDetails.PurchasePrice;
                                             clsProductGroupDetails.IncludeInSubtotalDiscount = clsProductDetails.IncludeInSubtotalDiscount;

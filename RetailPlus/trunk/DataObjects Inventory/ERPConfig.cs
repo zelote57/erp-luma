@@ -18,9 +18,30 @@ namespace AceSoft.RetailPlus.Data
 
 	public struct ERPConfigDetails
 	{
+        public Int64 ERPConfigID;
 		public string LastPONo;
-		public DateTime PostingDateFrom;
-		public DateTime PostingDateTo;
+        public string LastPOReturnNo;
+        public string LastDebitMemoNo;
+        public string LastSONo;
+        public string LastSOReturnNo;
+        public string LastCreditMemoNo;
+        public string LastTransferInNo;
+        public string LastTransferOutNo;
+        public string LastInvAdjustmentNo;
+        public string LastClosingNo;
+        public DateTime PostingDateFrom;
+        public DateTime PostingDateTo;
+        public APLinkConfigDetails APLinkConfigDetails;
+        public ARLinkConfigDetails ARLinkConfigDetails;
+        public string LastCreditCardNo;
+        public string LastRewardCardNo;
+        public string DBVersion;
+        public string DBVersionSales;
+        public string LastBranchTransferNo;
+        public string LastCustomerCode;        
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	#endregion
@@ -179,6 +200,67 @@ namespace AceSoft.RetailPlus.Data
                     
                 }
 
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public Int32 Save(ERPConfigDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveERPConfig(@ERPConfigID, @LastPONo, @LastPOReturnNo, @LastDebitMemoNo, @LastSONo, " +
+                                "@LastSOReturnNo, @LastCreditMemoNo, @LastTransferInNo, @LastTransferOutNo, " +
+                                "@LastInvAdjustmentNo, @LastClosingNo, @PostingDateFrom, @PostingDateTo, " +
+                                "@ChartOfAccountIDAPTracking, @ChartOfAccountIDAPBills, @ChartOfAccountIDAPFreight, " +
+                                "@ChartOfAccountIDAPVDeposit, @ChartOfAccountIDAPContra, @ChartOfAccountIDAPLatePayment, " +
+                                "@ChartOfAccountIDARTracking, @ChartOfAccountIDARBills, @ChartOfAccountIDARFreight, " +
+                                "@ChartOfAccountIDARVDeposit, @ChartOfAccountIDARContra, @ChartOfAccountIDARLatePayment, " +
+                                "@LastCreditCardNo, @LastRewardCardNo, @DBVersion, @DBVersionSales, @LastBranchTransferNo,  " +
+								"@LastCustomerCode, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("ERPConfigID", Details.ERPConfigID);
+                cmd.Parameters.AddWithValue("LastPONo", Details.LastPONo);
+                cmd.Parameters.AddWithValue("LastPOReturnNo", Details.LastPOReturnNo);
+                cmd.Parameters.AddWithValue("LastDebitMemoNo", Details.LastDebitMemoNo);
+                cmd.Parameters.AddWithValue("LastSONo", Details.LastSONo);
+                cmd.Parameters.AddWithValue("LastSOReturnNo", Details.LastSOReturnNo);
+                cmd.Parameters.AddWithValue("LastCreditMemoNo", Details.LastCreditMemoNo);
+                cmd.Parameters.AddWithValue("LastTransferInNo", Details.LastTransferInNo);
+                cmd.Parameters.AddWithValue("LastTransferOutNo", Details.LastTransferOutNo);
+                cmd.Parameters.AddWithValue("LastInvAdjustmentNo", Details.LastInvAdjustmentNo);
+                cmd.Parameters.AddWithValue("LastClosingNo", Details.LastClosingNo);
+                cmd.Parameters.AddWithValue("PostingDateFrom", Details.PostingDateFrom);
+                cmd.Parameters.AddWithValue("PostingDateTo", Details.PostingDateTo);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDAPTracking", Details.APLinkConfigDetails.ChartOfAccountIDAPTracking);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDAPBills", Details.APLinkConfigDetails.ChartOfAccountIDAPBills);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDAPFreight", Details.APLinkConfigDetails.ChartOfAccountIDAPFreight);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDAPVDeposit", Details.APLinkConfigDetails.ChartOfAccountIDAPVDeposit);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDAPContra", Details.APLinkConfigDetails.ChartOfAccountIDAPContra);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDAPLatePayment", Details.APLinkConfigDetails.ChartOfAccountIDAPLatePayment);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDARTracking", Details.ARLinkConfigDetails.ChartOfAccountIDARTracking);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDARBills", Details.ARLinkConfigDetails.ChartOfAccountIDARBills);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDARFreight", Details.ARLinkConfigDetails.ChartOfAccountIDARFreight);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDARVDeposit", Details.ARLinkConfigDetails.ChartOfAccountIDARVDeposit);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDARContra", Details.ARLinkConfigDetails.ChartOfAccountIDARContra);
+                cmd.Parameters.AddWithValue("ChartOfAccountIDARLatePayment", Details.ARLinkConfigDetails.ChartOfAccountIDARLatePayment);
+                cmd.Parameters.AddWithValue("LastCreditCardNo", Details.LastCreditCardNo);
+                cmd.Parameters.AddWithValue("LastRewardCardNo", Details.LastRewardCardNo);
+                cmd.Parameters.AddWithValue("DBVersion", Details.DBVersion);
+                cmd.Parameters.AddWithValue("DBVersionSales", Details.DBVersionSales);
+                cmd.Parameters.AddWithValue("LastBranchTransferNo", Details.LastBranchTransferNo);
+                cmd.Parameters.AddWithValue("LastCustomerCode", Details.LastCustomerCode);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
                 throw base.ThrowException(ex);
             }
         }

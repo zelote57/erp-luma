@@ -26,7 +26,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Setup
 
 		private void LoadOptions()
 		{
-            ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+            ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
             System.Data.DataTable dtList = clsChartOfAccount.ListAsDataTable("ChartOfAccountID", SortOption.Ascending);
             clsChartOfAccount.CommitAndDispose();
 

@@ -68,7 +68,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Group._Variations
 			string VariationType = clsVariation.Details( Convert.ToInt32(lblProductGroupVariationID.Text)).VariationType;
 			clsVariation.CommitAndDispose();
 
-			ProductGroupVariation clsProductGroupVariation = new ProductGroupVariation();
+			ProductGroupVariations clsProductGroupVariation = new ProductGroupVariations();
 			
 			cboVariationType.DataTextField = "VariationType";
 			cboVariationType.DataValueField = "VariationID";

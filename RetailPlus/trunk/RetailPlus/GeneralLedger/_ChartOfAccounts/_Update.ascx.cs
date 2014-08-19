@@ -26,7 +26,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 
 		private void LoadOptions()
 		{
-			AccountCategory clsAccountCategory = new AccountCategory();
+			AccountCategories clsAccountCategory = new AccountCategories();
 			DataClass clsDataClass = new DataClass();
 			
 			cboAccountCategory.DataTextField = "AccountCategoryName";
@@ -40,12 +40,12 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 		private void LoadRecord()
 		{
 			Int32 iID = Convert.ToInt32(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
-			ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+			ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
 			ChartOfAccountDetails clsDetails = clsChartOfAccount.Details(iID);
 			clsChartOfAccount.CommitAndDispose();
 
 			lblAccountID.Text = clsDetails.ChartOfAccountID.ToString();
-			cboAccountCategory.SelectedIndex = cboAccountCategory.Items.IndexOf( cboAccountCategory.Items.FindByValue(clsDetails.AccountCategoryID.ToString()));
+			cboAccountCategory.SelectedIndex = cboAccountCategory.Items.IndexOf( cboAccountCategory.Items.FindByValue(clsDetails.AccountCategoryDetails.AccountCategoryID.ToString()));
 			txtAccountCode.Text = clsDetails.ChartOfAccountCode;
 			txtAccountName.Text = clsDetails.ChartOfAccountName;
             txtDebit.Text = clsDetails.Debit.ToString("###0.#0");
@@ -70,13 +70,16 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 			ChartOfAccountDetails clsDetails = new ChartOfAccountDetails();
 
 			clsDetails.ChartOfAccountID = Convert.ToInt16(lblAccountID.Text);
-			clsDetails.AccountCategoryID = Convert.ToInt32(cboAccountCategory.SelectedItem.Value);
+            clsDetails.AccountCategoryDetails = new AccountCategoryDetails
+            {
+                AccountCategoryID = Convert.ToInt32(cboAccountCategory.SelectedItem.Value)
+            };
 			clsDetails.ChartOfAccountCode = txtAccountCode.Text;
 			clsDetails.ChartOfAccountName = txtAccountName.Text;
             clsDetails.Debit = Convert.ToDecimal(txtDebit.Text);
             clsDetails.Credit = Convert.ToDecimal(txtCredit.Text);
 
-			ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+			ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
 			clsChartOfAccount.Update(clsDetails);
 			clsChartOfAccount.CommitAndDispose();
 		}

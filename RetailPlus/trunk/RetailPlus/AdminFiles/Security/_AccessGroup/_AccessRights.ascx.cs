@@ -118,7 +118,8 @@ namespace AceSoft.RetailPlus.Security._AccessGroup
 				HtmlInputCheckBox chkWrite = (HtmlInputCheckBox) e.Item.FindControl("chkWrite");
 				chkWrite.Checked = Convert.ToBoolean(dr["Write"].ToString());
 
-                if (!Convert.ToBoolean(Convert.ToInt16(dr["Enabled"].ToString())))
+                //if (!Convert.ToBoolean(Convert.ToInt16(dr["Enabled"].ToString())))
+                if (!bool.Parse(dr["Enabled"].ToString()))
                 {
                     chkRead.Attributes.Add("disabled", "false");
                     chkWrite.Attributes.Add("disabled", "false");

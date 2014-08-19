@@ -1545,6 +1545,10 @@ namespace AceSoft.RetailPlus.Client.UI
 								Float();
 								break;
 
+                            case Keys.F5:
+                                UpdateContact();
+                                break;
+
 							case Keys.F6:
 								SelectContact(AceSoft.RetailPlus.Data.ContactGroupCategory.AGENT);
 								break;
@@ -1693,124 +1697,134 @@ namespace AceSoft.RetailPlus.Client.UI
 							
 						}
 					}
-					else
-					{
-						switch (e.KeyData)
-						{
-							case Keys.Up:
-								MoveItemUp();
-								break;
+                    else if (Control.ModifierKeys == Keys.Control && Control.ModifierKeys == Keys.Shift)
+                    {
+                        switch (e.KeyCode)
+                        {
+                            case Keys.F6:
+                                UpdateContact();
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (e.KeyData)
+                        {
+                            case Keys.Up:
+                                MoveItemUp();
+                                break;
 
-							case Keys.Down:
-								MoveItemDown();
-								break;
+                            case Keys.Down:
+                                MoveItemDown();
+                                break;
 
-							case Keys.Escape:
-								this.Exit();
-								break;
+                            case Keys.Escape:
+                                this.Exit();
+                                break;
 
-							case Keys.F1:
-								ShowHelp();
-								break;
+                            case Keys.F1:
+                                ShowHelp();
+                                break;
 
-							case Keys.F2:
-								ChangeQuantity();
-								break;
+                            case Keys.F2:
+                                ChangeQuantity();
+                                break;
 
-							case Keys.F3:
-								ReturnItem();
-								break;
+                            case Keys.F3:
+                                ReturnItem();
+                                break;
 
-							case Keys.F4:
-								ApplyItemDiscount();
-								break;
+                            case Keys.F4:
+                                ApplyItemDiscount();
+                                break;
 
-							case Keys.F5:
-								ApplyTransDiscount();
-								break;
+                            case Keys.F5:
+                                ApplyTransDiscount();
+                                break;
 
-							case Keys.F6:
-								SelectContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER);
-								break;
+                            case Keys.F6:
+                                SelectContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER);
+                                break;
 
-							case Keys.F7:
-								SuspendTransaction();
-								break;
+                            case Keys.F7:
+                                SuspendTransaction();
+                                break;
 
-							case Keys.F8:
-								ResumeTransaction();
-								break;
+                            case Keys.F8:
+                                ResumeTransaction();
+                                break;
 
-							case Keys.F9:
-								VoidTransaction();
-								break;
+                            case Keys.F9:
+                                VoidTransaction();
+                                break;
 
-							case Keys.F10:
-								Disburse();
-								break;
+                            case Keys.F10:
+                                Disburse();
+                                break;
 
-							case Keys.F11:
-								WithHold();
-								break;
+                            case Keys.F11:
+                                WithHold();
+                                break;
 
-							case Keys.F12:
-								ShowPrintWindow();
-								break;
+                            case Keys.F12:
+                                ShowPrintWindow();
+                                break;
 
-							case Keys.Enter:
-								if (txtBarCode.Text.Trim() != "" && txtBarCode.Text.Trim() != null)
-									if (txtBarCode.Text.Contains(Constants.SWIPE_REWARD_CARD))
-									{
-										clsEvent.AddEventLn("[" + lblCashier.Text + "] Selecting customer.", true);
-										LoadContact(Data.ContactGroupCategory.CUSTOMER, new Data.ContactDetails()); }
-									else
-										ReadBarCode();
-								else if (lblCustomer.Text.Trim().ToUpper() == Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
-									CloseTransactionAsOrderSlip();
-								else
-									CloseTransaction();
-								break;
+                            case Keys.Enter:
+                                if (txtBarCode.Text.Trim() != "" && txtBarCode.Text.Trim() != null)
+                                    if (txtBarCode.Text.Contains(Constants.SWIPE_REWARD_CARD))
+                                    {
+                                        clsEvent.AddEventLn("[" + lblCashier.Text + "] Selecting customer.", true);
+                                        LoadContact(Data.ContactGroupCategory.CUSTOMER, new Data.ContactDetails());
+                                    }
+                                    else
+                                        ReadBarCode();
+                                else if (lblCustomer.Text.Trim().ToUpper() == Constants.C_RETAILPLUS_ORDER_SLIP_CUSTOMER)
+                                    CloseTransactionAsOrderSlip();
+                                else
+                                    CloseTransaction();
+                                break;
 
-							case Keys.Back:
-								if (txtBarCode.Text.Trim() == "")
-									VoidItem();
-								break;
+                            case Keys.Back:
+                                if (txtBarCode.Text.Trim() == "")
+                                    VoidItem();
+                                break;
 
-							case Keys.Insert:
-								{
-									if (mclsTerminalDetails.CashCountBeforeReport)
-									{ 
-                                        if (!mboIsCashCountInitialized) 
+                            case Keys.Insert:
+                                {
+                                    if (mclsTerminalDetails.CashCountBeforeReport)
+                                    {
+                                        if (!mboIsCashCountInitialized)
                                             CashCount();
                                         else
                                             MessageBox.Show("Sorry, cash count has been already initialized for the day. You can only initialize cash count once a day.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 
                                     }
-									else { CashCount(); }
-									break;
-								}
+                                    else { CashCount(); }
+                                    break;
+                                }
 
-							case Keys.Delete:
-								InitializeZRead(false);
-								break;
+                            case Keys.Delete:
+                                InitializeZRead(false);
+                                break;
 
-							case Keys.PageDown:
+                            case Keys.PageDown:
                                 SelectProduct(false);
-								break;
+                                break;
 
-							case Keys.Right:
-								SelectProduct(false); // 13May2013 LEAceron: by right, price should be visible.
-								break;
+                            case Keys.Right:
+                                SelectProduct(false); // 13May2013 LEAceron: by right, price should be visible.
+                                break;
 
-							case Keys.PageUp:
-								SelectProduct(true);
-								break;
+                            case Keys.PageUp:
+                                SelectProduct(true);
+                                break;
 
-							case Keys.Left:
-								PriceInquiry();
-								break;
-						}
-					}
+                            case Keys.Left:
+                                PriceInquiry();
+                                break;
+                        }
+                    }
 				}
 			}
 			catch (Exception ex)
@@ -3065,6 +3079,51 @@ namespace AceSoft.RetailPlus.Client.UI
                 InsertErrorLogToFile(ex, "ERROR!!! Loading contact."); 
             }
 		}
+        private void UpdateContact()
+        {
+            try {
+                if (mclsSalesTransactionDetails.CustomerID != 0 && mclsSalesTransactionDetails.CustomerID != Constants.C_RETAILPLUS_CUSTOMERID)
+                {
+                    DialogResult loginresult = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.Contacts);
+
+                    if (loginresult == DialogResult.None)
+                    {
+                        LogInWnd login = new LogInWnd();
+
+                        login.AccessType = AccessTypes.Contacts;
+                        login.Header = "Update customer information";
+                        login.ShowDialog(this);
+                        loginresult = login.Result;
+                        login.Close();
+                        login.Dispose();
+                    }
+                    if (loginresult == DialogResult.OK)
+                    {
+                        Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
+                        mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
+
+                        mclsContactDetails = clsContact.Details(mclsSalesTransactionDetails.CustomerID);
+                        clsContact.CommitAndDispose();
+
+                        ContactAddWnd clsContactAddWnd = new ContactAddWnd();
+                        clsContactAddWnd.Caption = "Update Customer [" + mclsContactDetails.ContactName + "]";
+                        clsContactAddWnd.ContactDetails = mclsContactDetails;
+                        clsContactAddWnd.ShowDialog(this);
+                        DialogResult addresult = clsContactAddWnd.Result;
+                        Data.ContactDetails details = clsContactAddWnd.ContactDetails;
+                        clsContactAddWnd.Close();
+                        clsContactAddWnd.Dispose();
+
+                        if (addresult == DialogResult.OK)
+                        {
+                            LoadContact(Data.ContactGroupCategory.CUSTOMER, details);
+                            MessageBox.Show("Customer has been updated and the details has been reloaded for this transaction.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+            }
+            catch { }
+        }
         private bool SuspendTransaction(bool ShowNotificationWindow = true)
 		{
 			bool boRetValue = false;
@@ -3335,10 +3394,10 @@ namespace AceSoft.RetailPlus.Client.UI
                             Data.ChargeType clsChargeType = new Data.ChargeType(mConnection, mTransaction);
                             mConnection = clsChargeType.Connection; mTransaction = clsChargeType.Transaction;
 
-							byte bytelInPercent = clsChargeType.Details(mclsSalesTransactionDetails.ChargeCode).InPercent;
+							bool boInPercent = clsChargeType.Details(mclsSalesTransactionDetails.ChargeCode).InPercent;
 							clsChargeType.CommitAndDispose();
 
-							if (bytelInPercent == 1)
+                            if (boInPercent)
 							{
 								lblTransCharge.Tag = ChargeTypes.Percentage.ToString("d");
 							}
@@ -4446,7 +4505,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         // 21Jul2013 Include getting of rates for parking
                         if (mclsTerminalDetails.IsParkingTerminal)
                         {
-                            Data.ParkingRate clsParkingRate = new Data.ParkingRate(mConnection, mTransaction);
+                            Data.ParkingRates clsParkingRate = new Data.ParkingRates(mConnection, mTransaction);
                             mConnection = clsParkingRate.Connection; mTransaction = clsParkingRate.Transaction;
 
                             Data.ParkingRateDetails clsParkingRateDetails = clsParkingRate.Details(clsProductDetails.ProductID, DateTime.Now.ToString("dddd"));
@@ -7193,7 +7252,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 //21Jul2013 Add Parking rate if parking
                 if (mclsTerminalDetails.IsParkingTerminal)
                 {
-                    Data.ParkingRate clsParkingRate = new Data.ParkingRate(mConnection, mTransaction);
+                    Data.ParkingRates clsParkingRate = new Data.ParkingRates(mConnection, mTransaction);
                     mConnection = clsParkingRate.Connection; mTransaction = clsParkingRate.Transaction;
 
                     Data.ParkingRateDetails clsParkingRateDetails = clsParkingRate.Details(Details.ProductID, mclsSalesTransactionDetails.TransactionDate.ToString("dddd"));

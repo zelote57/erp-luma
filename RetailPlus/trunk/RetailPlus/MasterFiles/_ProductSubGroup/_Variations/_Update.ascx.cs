@@ -95,7 +95,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Variations
 			string VariationType = clsVariation.Details( Convert.ToInt32(lblProductSubGroupVariationID.Text)).VariationType;
 			clsVariation.CommitAndDispose();
 
-			ProductSubGroupVariation clsProductSubGroupVariation = new ProductSubGroupVariation();
+			ProductSubGroupVariations clsProductSubGroupVariation = new ProductSubGroupVariations();
 			
 			cboVariationType.DataTextField = "VariationType";
 			cboVariationType.DataValueField = "VariationID";
@@ -112,7 +112,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Variations
 		}
 		private void SaveRecord()
 		{
-			ProductSubGroupVariation clsProductSubGroupVariation = new ProductSubGroupVariation();
+			ProductSubGroupVariations clsProductSubGroupVariation = new ProductSubGroupVariations();
 			ProductSubGroupVariationDetails clsDetails = new ProductSubGroupVariationDetails();
 
 			clsDetails.SubGroupID = Convert.ToInt64(lblProductSubGroupID.Text);

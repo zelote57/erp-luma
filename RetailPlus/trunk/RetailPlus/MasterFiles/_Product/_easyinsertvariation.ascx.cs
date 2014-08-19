@@ -99,7 +99,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             DataClass clsDataClass = new DataClass();
             //lblProductID.Text = "0"; // Common.Decrypt((string)Request.QueryString["prodid"], Session.SessionID);
 
-			ProductVariation clsVariation = new ProductVariation();
+			ProductVariations clsVariation = new ProductVariations();
 			
 			cboVariationType.DataTextField = "VariationType";
 			cboVariationType.DataValueField = "VariationID";
@@ -118,7 +118,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			clsDetails.VariationID = Convert.ToInt32(cboVariationType.SelectedItem.Value);
 			clsDetails.VariationType = cboVariationType.SelectedItem.Text;
 
-			ProductVariation clsProdVariation = new ProductVariation();
+			ProductVariations clsProdVariation = new ProductVariations();
 			int id = clsProdVariation.Insert(clsDetails);
 			clsProdVariation.CommitAndDispose();
 		}

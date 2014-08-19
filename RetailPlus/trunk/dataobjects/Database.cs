@@ -155,7 +155,31 @@ namespace AceSoft.RetailPlus.Data
             {
                 throw base.ThrowException(ex);
             }
-        }	
+        }
+
+        public bool SetForeignKey(bool Enable = true)
+        {
+            try
+            {
+                bool boRetValue = false;
+                string strEnable = Enable ? "1" : "0";
+
+                string SQL = "SET FOREIGN_KEY_CHECKS = " + strEnable + ";";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+
+                return boRetValue;
+
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 	}
 }
 

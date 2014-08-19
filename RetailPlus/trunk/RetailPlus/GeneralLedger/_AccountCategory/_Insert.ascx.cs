@@ -102,7 +102,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountCategory
 
 		private void LoadOptions()
 		{
-			AccountSummary clsAccountSummary = new AccountSummary();
+			AccountSummaries clsAccountSummary = new AccountSummaries();
 			DataClass clsDataClass = new DataClass();
 			
 			cboAccountSummary.DataTextField = "AccountSummaryName";
@@ -117,11 +117,14 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountCategory
 		{
 			AccountCategoryDetails clsDetails = new AccountCategoryDetails();
 
-			clsDetails.AccountSummaryID = Convert.ToInt32(cboAccountSummary.SelectedItem.Value);
+            clsDetails.AccountSummaryDetails = new AccountSummaryDetails
+            {
+                AccountSummaryID = Convert.ToInt32(cboAccountSummary.SelectedItem.Value)
+            };
 			clsDetails.AccountCategoryCode = txtAccountCategoryCode.Text;
 			clsDetails.AccountCategoryName = txtAccountCategoryName.Text;
 			
-			AccountCategory clsAccountCategory = new AccountCategory();
+			AccountCategories clsAccountCategory = new AccountCategories();
 			Int32 id = clsAccountCategory.Insert(clsDetails);
 			clsAccountCategory.CommitAndDispose();
 

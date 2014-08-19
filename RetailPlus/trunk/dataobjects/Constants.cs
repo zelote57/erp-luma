@@ -171,6 +171,17 @@ namespace AceSoft.RetailPlus
         public const string GLA_file_f_dtl_chk_svc = "f_dtl_chk_svc.dat";
         public const string GLA_file_f_dtl_chk_tmd = "f_dtl_chk_tmd.dat";
         public const string GLA_file_otntender = "otn_tender.txt";
+
+        /// <summary>
+        /// SysCreditConfig
+        /// </summary>
+        public const string SYS_CONFIG_CRED_MIN_AMOUNT_DUE = "SYS_CONFIG_CRED_MIN_AMOUNT_DUE";
+        public const string SYS_CONFIG_CRED_MIN_PERCENTAGE_DUE = "SYS_CONFIG_CRED_MIN_PERCENTAGE_DUE";
+        public const string SYS_CREDIT_FINANCE_CHARGE = "SYS_CREDIT_FINANCE_CHARGE";
+        public const string SYS_CREDIT_LATE_PENALTY_CHARGE = "SYS_CREDIT_LATE_PENALTY_CHARGE";
+        public const string SYS_CREDIT_USE_LASTDAY_CUTT_OFF_DATE = "SYS_CREDIT_USE_LASTDAY_CUTT_OFF_DATE";
         
+        public const string SYS_BILLING_DATE = "SYS_BILLING_DATE";
+        public const string SYS_CREDIT_CUTOFF_DATE = "SYS_CREDIT_CUTOFF_DATE";
     }
 }

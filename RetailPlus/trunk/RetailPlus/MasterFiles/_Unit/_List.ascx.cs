@@ -174,8 +174,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Unit
 			SortByUnitName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("UnitName", Session.SessionID);
 		}
 		private void LoadList()
-		{	
-			UnitMeasurements clsUnit = new UnitMeasurements();
+		{
+            Data.Unit clsUnit = new Data.Unit();
 			DataClass clsDataClass = new DataClass();
 
 			string SortField = "UnitName";
@@ -186,16 +186,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Unit
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
-			{
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List(SortField, sortoption)).DefaultView;
-			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.Search(SearchKey, SortField, sortoption)).DefaultView;
-			}
+            string SearchKey = "";
 
+			if (Request.QueryString["Search"]!=null)
+            {
+                SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
+			}
+            PageData.DataSource = clsUnit.ListAsDataTable(SearchKey, SortField: SortField, SortOrder: sortoption).DefaultView;
 			clsUnit.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;
@@ -246,7 +243,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Unit
 			}
 			if (boRetValue)
 			{
-				UnitMeasurements clsUnit = new UnitMeasurements();
+                Data.Unit clsUnit = new Data.Unit();
 				clsUnit.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsUnit.CommitAndDispose();
 			}

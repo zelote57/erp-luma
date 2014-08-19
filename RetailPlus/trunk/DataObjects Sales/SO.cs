@@ -553,7 +553,7 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				SODetails clsSODetails = Details(SOID);
-				ChartOfAccount clsChartOfAccount = new ChartOfAccount(base.Connection, base.Transaction);
+				ChartOfAccounts clsChartOfAccount = new ChartOfAccounts(base.Connection, base.Transaction);
 
 				// update ChartOfAccountIDARTracking as credit
 				clsChartOfAccount.UpdateCredit(clsSODetails.ChartOfAccountIDARTracking, clsSODetails.SubTotal);

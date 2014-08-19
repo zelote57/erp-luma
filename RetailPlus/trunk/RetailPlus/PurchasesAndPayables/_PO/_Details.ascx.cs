@@ -296,7 +296,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             Products clsProduct = new Products(clsPO.Connection, clsPO.Transaction);
             ProductDetails clsProductDetails;
 
-            ProductVariation clsProductVariation = new ProductVariation(clsPO.Connection, clsPO.Transaction);
+            ProductVariations clsProductVariation = new ProductVariations(clsPO.Connection, clsPO.Transaction);
             DataTable dtaProductVariation;
 
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsPO.Connection, clsPO.Transaction);

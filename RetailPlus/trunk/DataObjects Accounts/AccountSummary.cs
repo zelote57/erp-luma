@@ -14,13 +14,18 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct AccountSummaryDetails
 	{
-		public int AccountSummaryID;
+		public Int32 AccountSummaryID;
 		public string AccountSummaryCode;
 		public string AccountSummaryName;
-        public short AccountClassificationID;
-        public string AccountClassificationCode;
-        public string AccountClassificationName;
-        public AccountClassificationType AccountClassificationType;
+        public AccountClassificationDetails AccountClassificationDetails;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
+
+        //public short AccountClassificationID;
+        //public string AccountClassificationCode;
+        //public string AccountClassificationName;
+        //public AccountClassificationType AccountClassificationType;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -31,16 +36,16 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class AccountSummary : POSConnection
+	public class AccountSummaries : POSConnection
 	{
 		#region Constructors and Destructors
 
-		public AccountSummary()
+		public AccountSummaries()
             : base(null, null)
         {
         }
 
-        public AccountSummary(MySqlConnection Connection, MySqlTransaction Transaction) 
+        public AccountSummaries(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
 
@@ -54,30 +59,12 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                string SQL = "INSERT INTO tblAccountSummary (AccountSummaryCode, AccountSummaryName, AccountClassificationID) " +
-                                                    "VALUES (@AccountSummaryCode, @AccountSummaryName, @AccountClassificationID);";
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
 				  
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                MySqlParameter prmAccountSummaryCode = new MySqlParameter("@AccountSummaryCode",MySqlDbType.String);			
-				prmAccountSummaryCode.Value = Details.AccountSummaryCode;
-				cmd.Parameters.Add(prmAccountSummaryCode);
-
-                MySqlParameter prmAccountSummaryName = new MySqlParameter("@AccountSummaryName",MySqlDbType.String);
-				prmAccountSummaryName.Value = Details.AccountSummaryName;
-				cmd.Parameters.Add(prmAccountSummaryName);
-
-                MySqlParameter prmAccountClassificationID = new MySqlParameter("@AccountClassificationID",MySqlDbType.Int16);
-                prmAccountClassificationID.Value = Details.AccountClassificationID;
-                cmd.Parameters.Add(prmAccountClassificationID);
-     
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
 
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
@@ -103,33 +90,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "UPDATE tblAccountSummary SET " + 
-								"AccountSummaryCode		= @AccountSummaryCode, " +
-								"AccountSummaryName		= @AccountSummaryName, " +
-                                "AccountClassificationID= @AccountClassificationID " +
-							"WHERE AccountSummaryID = @AccountSummaryID;";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmAccountSummaryCode = new MySqlParameter("@AccountSummaryCode",MySqlDbType.String);			
-				prmAccountSummaryCode.Value = Details.AccountSummaryCode;
-				cmd.Parameters.Add(prmAccountSummaryCode);		
-
-				MySqlParameter prmAccountSummaryName = new MySqlParameter("@AccountSummaryName",MySqlDbType.String);			
-				prmAccountSummaryName.Value = Details.AccountSummaryName;
-				cmd.Parameters.Add(prmAccountSummaryName);
-
-                MySqlParameter prmAccountClassificationID = new MySqlParameter("@AccountClassificationID",MySqlDbType.Int16);
-                prmAccountClassificationID.Value = Details.AccountClassificationID;
-                cmd.Parameters.Add(prmAccountClassificationID);
-
-				MySqlParameter prmAccountSummaryID = new MySqlParameter("@AccountSummaryID",MySqlDbType.Int16);			
-				prmAccountSummaryID.Value = Details.AccountSummaryID;
-				cmd.Parameters.Add(prmAccountSummaryID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
@@ -138,6 +99,31 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
+        public Int32 Save(AccountSummaryDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveAccountSummary(@AccountSummaryID, @AccountClassificationID, @AccountSummaryCode, @AccountSummaryName, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("AccountSummaryID", Details.AccountSummaryID);
+                cmd.Parameters.AddWithValue("AccountClassificationID", Details.AccountClassificationDetails.AccountClassificationID);
+                cmd.Parameters.AddWithValue("AccountSummaryCode", Details.AccountSummaryCode);
+                cmd.Parameters.AddWithValue("AccountSummaryName", Details.AccountSummaryName);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -202,16 +188,14 @@ namespace AceSoft.RetailPlus.Data
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 AccountSummaryDetails Details = new AccountSummaryDetails();
-
+                AccountClassifications clsAccountClassification = new AccountClassifications(this.Connection, this.Transaction);
+ 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
                     Details.AccountSummaryID = AccountSummaryID;
                     Details.AccountSummaryCode = "" + dr["AccountSummaryCode"].ToString();
                     Details.AccountSummaryName = "" + dr["AccountSummaryName"].ToString();
-                    Details.AccountClassificationID = Int16.Parse(dr["AccountClassificationID"].ToString());
-                    Details.AccountClassificationCode = "" + dr["AccountClassificationCode"].ToString();
-                    Details.AccountClassificationName = "" + dr["AccountClassificationName"].ToString();
-                    Details.AccountClassificationType = (AccountClassificationType)Enum.Parse(typeof(AccountClassificationType), dr["AccountClassificationType"].ToString());
+                    Details.AccountClassificationDetails = clsAccountClassification.Details(Int16.Parse(dr["AccountClassificationID"].ToString()));
                 }
 
 				return Details;

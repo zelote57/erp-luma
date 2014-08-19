@@ -14,21 +14,27 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct ChartOfAccountDetails
 	{
-		public int ChartOfAccountID;
+		public Int32 ChartOfAccountID;
 		public string ChartOfAccountCode;
 		public string ChartOfAccountName;
-		public int AccountCategoryID;
-		public string AccountCategoryCode;
-		public string AccountCategoryName;
-		public int AccountSummaryID;
-		public string AccountSummaryCode;
-		public string AccountSummaryName;
-        public short AccountClassificationID;
-        public string AccountClassificationCode;
-        public string AccountClassificationName;
-        public AccountClassificationType AccountClassificationType;
+        //public Int32 AccountCategoryID;
+        //public string AccountCategoryCode;
+        //public string AccountCategoryName;
+        //public Int32 AccountSummaryID;
+        //public string AccountSummaryCode;
+        //public string AccountSummaryName;
+        public AccountCategoryDetails AccountCategoryDetails; 
+        //public AccountSummaryDetails AccountSummaryDetails;
+        //public AccountClassificationDetails AccountClassificationDetails;
+        //public short AccountClassificationID;
+        //public string AccountClassificationCode;
+        //public string AccountClassificationName;
+        //public AccountClassificationType AccountClassificationType;
 		public decimal Credit;
 		public decimal Debit;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -39,16 +45,16 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class ChartOfAccount : POSConnection
+	public class ChartOfAccounts : POSConnection
 	{
 		#region Constructors and Destructors
 
-		public ChartOfAccount()
+		public ChartOfAccounts()
             : base(null, null)
         {
         }
 
-        public ChartOfAccount(MySqlConnection Connection, MySqlTransaction Transaction) 
+        public ChartOfAccounts(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
 
@@ -62,43 +68,14 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "INSERT INTO tblChartOfAccount (" +
-								"AccountCategoryID, " +
-								"ChartOfAccountCode, " +
-								"ChartOfAccountName" +
-							") VALUES (" +
-								"@AccountCategoryID, " +
-								"@ChartOfAccountCode, " +
-								"@ChartOfAccountName" +
-							");";
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmAccountCategoryID = new MySqlParameter("@AccountCategoryID",MySqlDbType.Int16);			
-				prmAccountCategoryID.Value = Details.AccountCategoryID;
-				cmd.Parameters.Add(prmAccountCategoryID);
-
-				MySqlParameter prmChartOfAccountCode = new MySqlParameter("@ChartOfAccountCode",MySqlDbType.String);			
-				prmChartOfAccountCode.Value = Details.ChartOfAccountCode;
-				cmd.Parameters.Add(prmChartOfAccountCode);
-
-				MySqlParameter prmChartOfAccountName = new MySqlParameter("@ChartOfAccountName",MySqlDbType.String);			
-				prmChartOfAccountName.Value = Details.ChartOfAccountName;
-				cmd.Parameters.Add(prmChartOfAccountName);
-
-				base.ExecuteNonQuery(cmd);
-
-                SQL = "SELECT LAST_INSERT_ID();";
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = SQL;
-
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
@@ -114,15 +91,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -131,64 +99,43 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "UPDATE tblChartOfAccount SET " + 
-								"AccountCategoryID		= @AccountCategoryID, " +
-								"ChartOfAccountCode		= @ChartOfAccountCode, " +
-								"ChartOfAccountName		= @ChartOfAccountName, " +
-                                "Debit		    = @Debit, " +
-                                "Credit	        = @Credit " +
-							"WHERE ChartOfAccountID = @ChartOfAccountID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmAccountCategoryID = new MySqlParameter("@AccountCategoryID",MySqlDbType.Int16);			
-				prmAccountCategoryID.Value = Details.AccountCategoryID;
-				cmd.Parameters.Add(prmAccountCategoryID);
-
-				MySqlParameter prmChartOfAccountCode = new MySqlParameter("@ChartOfAccountCode",MySqlDbType.String);			
-				prmChartOfAccountCode.Value = Details.ChartOfAccountCode;
-				cmd.Parameters.Add(prmChartOfAccountCode);		
-
-				MySqlParameter prmChartOfAccountName = new MySqlParameter("@ChartOfAccountName",MySqlDbType.String);			
-				prmChartOfAccountName.Value = Details.ChartOfAccountName;
-				cmd.Parameters.Add(prmChartOfAccountName);
-
-                MySqlParameter prmDebit = new MySqlParameter("@Debit",MySqlDbType.Decimal);
-                prmDebit.Value = Details.Debit;
-                cmd.Parameters.Add(prmDebit);
-
-                MySqlParameter prmCredit = new MySqlParameter("@Credit",MySqlDbType.Decimal);
-                prmCredit.Value = Details.Credit;
-                cmd.Parameters.Add(prmCredit);
-
-				MySqlParameter prmChartOfAccountID = new MySqlParameter("@ChartOfAccountID",MySqlDbType.Int16);			
-				prmChartOfAccountID.Value = Details.ChartOfAccountID;
-				cmd.Parameters.Add(prmChartOfAccountID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					 
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
+        public Int32 Save(ChartOfAccountDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveChartOfAccount(@ChartOfAccountID, @AccountCategoryID, @ChartOfAccountCode, @ChartOfAccountName, " +
+                                                    "@Debit, @Credit, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("ChartOfAccountID", Details.ChartOfAccountID);
+                cmd.Parameters.AddWithValue("AccountCategoryID", Details.AccountCategoryDetails.AccountCategoryID);
+                cmd.Parameters.AddWithValue("ChartOfAccountCode", Details.ChartOfAccountCode);
+                cmd.Parameters.AddWithValue("ChartOfAccountName", Details.ChartOfAccountName);
+                cmd.Parameters.AddWithValue("Debit", Details.Debit);
+                cmd.Parameters.AddWithValue("Credit", Details.Credit);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -265,11 +212,7 @@ namespace AceSoft.RetailPlus.Data
 			{
 				string SQL = SQLSelect() + "WHERE ChartOfAccountID = @ChartOfAccountID;";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
@@ -283,6 +226,10 @@ namespace AceSoft.RetailPlus.Data
 				
 				ChartOfAccountDetails Details = new ChartOfAccountDetails();
 
+                AccountCategories clsAccountCategory = new AccountCategories(this.Connection, this.Transaction);
+                AccountSummaries clsAccountSummary = new AccountSummaries(this.Connection, this.Transaction);
+                AccountClassifications clsAccountClassification = new AccountClassifications(this.Connection, this.Transaction);
+
 				foreach(System.Data.DataRow dr in dt.Rows)
 				{
 					Details.ChartOfAccountID = ChartOfAccountID;
@@ -290,16 +237,10 @@ namespace AceSoft.RetailPlus.Data
 					Details.ChartOfAccountName = "" + dr["ChartOfAccountName"].ToString();
                     Details.Debit = decimal.Parse(dr["Debit"].ToString());
                     Details.Credit = decimal.Parse(dr["Credit"].ToString());
-					Details.AccountCategoryID = Int32.Parse(dr["AccountCategoryID"].ToString());
-					Details.AccountCategoryCode = "" + dr["AccountCategoryCode"].ToString();
-					Details.AccountCategoryName = "" + dr["AccountCategoryName"].ToString();
-					Details.AccountSummaryID = Int32.Parse(dr["AccountSummaryID"].ToString());
-					Details.AccountSummaryCode = "" + dr["AccountSummaryCode"].ToString();
-					Details.AccountSummaryName = "" + dr["AccountSummaryName"].ToString();
-                    Details.AccountClassificationID = Int16.Parse(dr["AccountClassificationID"].ToString());
-                    Details.AccountClassificationCode = "" + dr["AccountClassificationCode"].ToString();
-                    Details.AccountClassificationName = "" + dr["AccountClassificationName"].ToString();
-                    Details.AccountClassificationType = (AccountClassificationType)Enum.Parse(typeof(AccountClassificationType), dr["AccountClassificationType"].ToString());
+                    
+                    Details.AccountCategoryDetails = clsAccountCategory.Details(Int32.Parse(dr["AccountCategoryID"].ToString()));
+                    //Details.AccountSummaryDetails = clsAccountSummary.Details(Int32.Parse(dr["AccountSummaryID"].ToString()));
+                    //Details.AccountClassificationDetails = clsAccountClassification.Details(Int16.Parse(dr["AccountClassificationID"].ToString()));
 				}
 
 				return Details;

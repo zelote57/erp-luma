@@ -217,7 +217,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 		{
 			ReportDataset rptds = new ReportDataset();
 
-            ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+            ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
             MySqlDataReader myreader = clsChartOfAccount.List("ChartOfAccountID", SortOption.Ascending);
 			clsChartOfAccount.CommitAndDispose();
 

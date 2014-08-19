@@ -643,7 +643,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 PODetails clsPODetails = Details(POID);
-                ChartOfAccount clsChartOfAccount = new ChartOfAccount(base.Connection, base.Transaction);
+                ChartOfAccounts clsChartOfAccount = new ChartOfAccounts(base.Connection, base.Transaction);
 
                 // update ChartOfAccountIDAPTracking as credit
                 clsChartOfAccount.UpdateCredit(clsPODetails.ChartOfAccountIDAPTracking, clsPODetails.SubTotal);

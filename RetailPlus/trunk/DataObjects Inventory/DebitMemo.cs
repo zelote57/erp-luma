@@ -471,7 +471,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 DebitMemoDetails clsDebitMemoDetails = Details(DebitMemoID);
-                ChartOfAccount clsChartOfAccount = new ChartOfAccount(base.Connection, base.Transaction);
+                ChartOfAccounts clsChartOfAccount = new ChartOfAccounts(base.Connection, base.Transaction);
 
                 // update ChartOfAccountIDAPTracking as credit
                 clsChartOfAccount.UpdateCredit(clsDebitMemoDetails.ChartOfAccountIDAPTracking, clsDebitMemoDetails.SubTotal);

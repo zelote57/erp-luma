@@ -90,7 +90,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactGroup
 			clsDetails.ContactGroupName = txtContactGroupName.Text;
 			clsDetails.ContactGroupCategory = (ContactGroupCategory) Enum.Parse(typeof(ContactGroupCategory), cboContactGroupCategory.SelectedItem.Value);
 			
-			ContactGroup clsContactGroup = new ContactGroup();
+			ContactGroups clsContactGroup = new ContactGroups();
 			Int32 id = clsContactGroup.Insert(clsDetails);
 			clsContactGroup.CommitAndDispose();
 

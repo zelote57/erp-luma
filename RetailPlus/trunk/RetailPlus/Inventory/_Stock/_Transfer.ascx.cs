@@ -127,7 +127,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 			Branch clsBranch = new Branch();
 			cboBranch.DataTextField = "BranchCode";
 			cboBranch.DataValueField = "BranchID";
-			cboBranch.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
+			cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
 			cboBranch.DataBind();
 			cboBranch.SelectedIndex = 0;
 			clsBranch.CommitAndDispose();
@@ -187,7 +187,7 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 			Products clsProduct = new Products(clsStock.Connection, clsStock.Transaction);
 			ProductDetails clsProductDetails;
 
-			ProductVariation clsProductVariation = new ProductVariation(clsStock.Connection, clsStock.Transaction);
+			ProductVariations clsProductVariation = new ProductVariations(clsStock.Connection, clsStock.Transaction);
 			DataTable dtaProductVariation;
 
 			ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix(clsStock.Connection, clsStock.Transaction);

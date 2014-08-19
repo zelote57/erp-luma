@@ -34,6 +34,9 @@ namespace AceSoft.RetailPlus.Security
 		public bool Enabled;
 		public int SequenceNo;
 		public string Category;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	
@@ -61,6 +64,34 @@ namespace AceSoft.RetailPlus.Security
 		}
 
 		#endregion
+
+        public Int32 Save(AccessTypeDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveSysAccessTypes(@TypeID, @TypeName, @Remarks, @Enabled, @SequenceNo, @Category, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("TypeID", Details.TypeID);
+                cmd.Parameters.AddWithValue("TypeName", Details.TypeName);
+                cmd.Parameters.AddWithValue("Remarks", Details.Remarks);
+                cmd.Parameters.AddWithValue("Enabled", Details.Enabled);
+                cmd.Parameters.AddWithValue("SequenceNo", Details.SequenceNo);
+                cmd.Parameters.AddWithValue("Category", Details.Category);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#region Streams
 
@@ -150,6 +181,7 @@ namespace AceSoft.RetailPlus.Security
         }				
 
 		#endregion
+
 
     }
 }

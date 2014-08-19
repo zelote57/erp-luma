@@ -30,6 +30,9 @@ namespace AceSoft.RetailPlus.Data
 		//Used this fields when getting details
 		public string PromoTypeCode;
 		public string PromoTypeName;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -63,58 +66,17 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL =	"INSERT INTO tblPromo (" + 
-									"PromoCode, " +
-									"PromoName, " +
-									"StartDate, " +
-									"EndDate, " +
-									"PromoTypeID" +
-								")VALUES (" +
-									"@PromoCode, " +
-									"@PromoName, " +
-									"@StartDate, " +
-									"@EndDate, " +
-									"@PromoTypeID);";
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmPromoCode = new MySqlParameter("@PromoCode",MySqlDbType.String);			
-				prmPromoCode.Value = Details.PromoCode;
-				cmd.Parameters.Add(prmPromoCode);
-
-				MySqlParameter prmPromoName = new MySqlParameter("@PromoName",MySqlDbType.String);	
-				prmPromoName.Value = Details.PromoName;
-				cmd.Parameters.Add(prmPromoName);
-				
-				MySqlParameter prmStartDate = new MySqlParameter("@StartDate",MySqlDbType.DateTime);	
-				prmStartDate.Value = Details.StartDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmStartDate);
-
-				MySqlParameter prmEndDate = new MySqlParameter("@EndDate",MySqlDbType.DateTime);	
-				prmEndDate.Value = Details.EndDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmEndDate);
-
-				MySqlParameter prmPromoTypeID = new MySqlParameter("@PromoTypeID",MySqlDbType.Int32);			
-				prmPromoTypeID.Value = Details.PromoTypeID;
-				cmd.Parameters.Add(prmPromoTypeID);
-
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
                 base.MySqlDataAdapterFill(cmd, dt);
                 
-
                 Int64 iID = 0;
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
@@ -126,15 +88,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -143,64 +96,43 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblPromo SET " + 
-								"PromoCode = @PromoCode, " +  
-								"PromoName = @PromoName, " +  
-								"StartDate = @StartDate, " +  
-								"EndDate = @EndDate, " +  
-								"PromoTypeID = @PromoTypeID " +  
-							"WHERE PromoID = @PromoID;";
-							
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmPromoCode = new MySqlParameter("@PromoCode",MySqlDbType.String);			
-				prmPromoCode.Value = Details.PromoCode;
-				cmd.Parameters.Add(prmPromoCode);
-
-				MySqlParameter prmPromoName = new MySqlParameter("@PromoName",MySqlDbType.String);	
-				prmPromoName.Value = Details.PromoName;
-				cmd.Parameters.Add(prmPromoName);
-
-				MySqlParameter prmStartDate = new MySqlParameter("@StartDate",MySqlDbType.DateTime);	
-				prmStartDate.Value = Details.StartDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmStartDate);
-
-				MySqlParameter prmEndDate = new MySqlParameter("@EndDate",MySqlDbType.DateTime);	
-				prmEndDate.Value = Details.EndDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmEndDate);
-
-				MySqlParameter prmPromoTypeID = new MySqlParameter("@PromoTypeID",MySqlDbType.Int32);			
-				prmPromoTypeID.Value = Details.PromoTypeID;
-				cmd.Parameters.Add(prmPromoTypeID);
-
-				MySqlParameter prmPromoID = new MySqlParameter("@PromoID",MySqlDbType.Int64);	
-				prmPromoID.Value = Details.PromoID;
-				cmd.Parameters.Add(prmPromoID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
+
+        public Int32 Save(PromoDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSavePromo(@PromoID, @PromoCode, @PromoName, @StartDate, @EndDate, @PromoTypeID, @Status, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("PromoID", Details.PromoID);
+                cmd.Parameters.AddWithValue("PromoCode", Details.PromoCode);
+                cmd.Parameters.AddWithValue("PromoName", Details.PromoName);
+                cmd.Parameters.AddWithValue("StartDate", Details.StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("EndDate", Details.EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("PromoTypeID", Details.PromoTypeID);
+                cmd.Parameters.AddWithValue("Status", Details.Status);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		
 		#endregion

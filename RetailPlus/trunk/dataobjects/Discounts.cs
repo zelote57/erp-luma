@@ -15,11 +15,14 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct DiscountDetails
 	{
-		public int DiscountID;
+		public Int32 DiscountID;
 		public string DiscountCode;
 		public string DiscountType;
 		public decimal DiscountPrice;
-		public byte InPercent;
+		public bool InPercent;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -53,37 +56,11 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "INSERT INTO tblDiscount (DiscountCode, DiscountType, DiscountPrice, InPercent) " +
-							"VALUES (@DiscountCode, @DiscountType, @DiscountPrice, @InPercent);";
-				  
-				
-	 			
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
+
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmDiscountCode = new MySqlParameter("@DiscountCode",MySqlDbType.String);			
-				prmDiscountCode.Value = Details.DiscountCode;
-				cmd.Parameters.Add(prmDiscountCode);
-
-				MySqlParameter prmDiscountType = new MySqlParameter("@DiscountType",MySqlDbType.String);			
-				prmDiscountType.Value = Details.DiscountType;
-				cmd.Parameters.Add(prmDiscountType);
-
-				MySqlParameter prmDiscountPrice = new MySqlParameter("@DiscountPrice",MySqlDbType.Decimal);			
-				prmDiscountPrice.Value = Details.DiscountPrice;
-				cmd.Parameters.Add(prmDiscountPrice);
-
-				MySqlParameter prmInPercent = new MySqlParameter("@InPercent",MySqlDbType.Byte);			
-				prmInPercent.Value = Details.InPercent;
-				cmd.Parameters.Add(prmInPercent);
-
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
 				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
 				
@@ -103,15 +80,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -120,59 +88,40 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblDiscount SET " + 
-							"DiscountCode = @DiscountCode, " +  
-							"DiscountType = @DiscountType, " +  
-							"DiscountPrice = @DiscountPrice, " +  
-							"InPercent = @InPercent " +  
-							"WHERE DiscountID = @DiscountID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmDiscountCode = new MySqlParameter("@DiscountCode",MySqlDbType.String);			
-				prmDiscountCode.Value = Details.DiscountCode;
-				cmd.Parameters.Add(prmDiscountCode);
-
-				MySqlParameter prmDiscountType = new MySqlParameter("@DiscountType",MySqlDbType.String);			
-				prmDiscountType.Value = Details.DiscountType;
-				cmd.Parameters.Add(prmDiscountType);
-
-				MySqlParameter prmDiscountPrice = new MySqlParameter("@DiscountPrice",MySqlDbType.Decimal);			
-				prmDiscountPrice.Value = Details.DiscountPrice;
-				cmd.Parameters.Add(prmDiscountPrice);
-
-				MySqlParameter prmInPercent = new MySqlParameter("@InPercent",MySqlDbType.Byte);			
-				prmInPercent.Value = Details.InPercent;
-				cmd.Parameters.Add(prmInPercent);
-
-				MySqlParameter prmDiscountID = new MySqlParameter("@DiscountID",MySqlDbType.Int16);			
-				prmDiscountID.Value = Details.DiscountID;
-				cmd.Parameters.Add(prmDiscountID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
+        public Int32 Save(DiscountDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveDiscount(@DiscountID, @DiscountCode, @DiscountType, @DiscountPrice, @InPercent, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("DiscountID", Details.DiscountID);
+                cmd.Parameters.AddWithValue("DiscountCode", Details.DiscountCode);
+                cmd.Parameters.AddWithValue("DiscountType", Details.DiscountType);
+                cmd.Parameters.AddWithValue("DiscountPrice", Details.DiscountPrice);
+                cmd.Parameters.AddWithValue("InPercent", Details.InPercent);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 		
 		#endregion
 
@@ -254,7 +203,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.DiscountCode = "" + myReader["DiscountCode"].ToString();
                     Details.DiscountType = "" + myReader["DiscountType"].ToString();
                     Details.DiscountPrice = myReader.GetDecimal("DiscountPrice");
-                    Details.InPercent = myReader.GetByte("InPercent");
+                    Details.InPercent = myReader.GetBoolean("InPercent");
 				}
 
 				myReader.Close();
@@ -305,7 +254,7 @@ namespace AceSoft.RetailPlus.Data
 					Details.DiscountCode = "" + myReader["DiscountCode"].ToString();
 					Details.DiscountType = "" + myReader["DiscountType"].ToString();
 					Details.DiscountPrice = myReader.GetDecimal("DiscountPrice");
-					Details.InPercent =  myReader.GetByte("InPercent");
+					Details.InPercent =  myReader.GetBoolean("InPercent");
 				}
 
 				myReader.Close();

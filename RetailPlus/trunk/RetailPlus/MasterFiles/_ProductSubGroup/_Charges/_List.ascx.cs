@@ -50,7 +50,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Charges
 
 		private void LoadList()
 		{	
-			ProductGroupCharge clsProductGroupCharge = new ProductGroupCharge();
+			ProductGroupCharges clsProductGroupCharge = new ProductGroupCharges();
 			DataClass clsDataClass = new DataClass();
 
 			if (Request.QueryString["Search"]==null)
@@ -187,7 +187,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Charges
 			}
 			if (boRetValue)
 			{
-				ProductGroupCharge clsProductGroupCharge = new ProductGroupCharge();
+				ProductGroupCharges clsProductGroupCharge = new ProductGroupCharges();
 				clsProductGroupCharge.Delete(Convert.ToInt64(lblGroupID.Text),stIDs.Substring(0,stIDs.Length-1));
 				clsProductGroupCharge.CommitAndDispose();
 			}

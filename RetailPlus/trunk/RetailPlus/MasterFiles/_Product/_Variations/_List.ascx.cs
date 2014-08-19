@@ -187,7 +187,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Variations
 
 		private void LoadList()
 		{	
-			ProductVariation clsProductVariation = new ProductVariation();
+			ProductVariations clsProductVariation = new ProductVariations();
 			DataClass clsDataClass = new DataClass();
 
 			string SortField = "a.VariationID";
@@ -200,7 +200,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Variations
 
 			if (Request.QueryString["Search"]==null)
 			{
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariation.List(Convert.ToInt64(lblProductID.Text), SortField, sortoption)).DefaultView;
+				PageData.DataSource = clsProductVariation.ListAsDataTable(Convert.ToInt64(lblProductID.Text), SortField, sortoption == SortOption.Ascending ? System.Data.SqlClient.SortOrder.Ascending : System.Data.SqlClient.SortOrder.Descending).DefaultView;
 			}
 			else
 			{	
@@ -260,7 +260,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Variations
 			}
 			if (boRetValue)
 			{
-				ProductVariation clsProductVariation = new ProductVariation();
+				ProductVariations clsProductVariation = new ProductVariations();
 				clsProductVariation.Delete(Convert.ToInt16(lblProductID.Text),stIDs.Substring(0,stIDs.Length-1));
 				clsProductVariation.CommitAndDispose();
 			}

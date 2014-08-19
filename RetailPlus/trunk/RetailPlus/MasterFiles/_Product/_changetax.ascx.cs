@@ -180,7 +180,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             cboProductGroup.DataValueField = "ProductGroupID";
 
             string stSearchKey = "%" + txtProductGroup.Text;
-            cboProductGroup.DataSource = clsProductGroup.SearchDataTable(stSearchKey, "ProductGroupName", SortOption.Ascending, 100);
+            cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(stSearchKey, "ProductGroupName", SortOption.Ascending, 100);
             cboProductGroup.DataBind();
             clsProductGroup.CommitAndDispose();
 

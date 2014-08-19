@@ -222,7 +222,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 
 		private void LoadAccountSummaryList()
 		{
-            AccountSummary clsAccountSummary = new AccountSummary();
+            AccountSummaries clsAccountSummary = new AccountSummaries();
 			DataClass clsDataClass = new DataClass();
 
             string SortField = "AccountSummaryCode";
@@ -276,7 +276,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 		}
         private void LoadAccountCategoryList(DataList lstAccountCategory, int AccountSummaryID)
         {
-            AccountCategory clsAccountCategory = new AccountCategory();
+            AccountCategories clsAccountCategory = new AccountCategories();
             DataClass clsDataClass = new DataClass();
             System.Data.DataTable dt = clsDataClass.DataReaderToDataTable(clsAccountCategory.List(AccountSummaryID, "AccountCategoryCode", SortOption.Ascending));
             clsAccountCategory.CommitAndDispose();
@@ -285,7 +285,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
         }
         private void LoadChartOfAccountList(DataList lstChartOfAccount, int AccountCategoryID)
         {
-            ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+            ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
             DataClass clsDataClass = new DataClass();
             System.Data.DataTable dt = clsDataClass.DataReaderToDataTable(clsChartOfAccount.List(AccountCategoryID, "ChartOfAccountCode", SortOption.Ascending));
             clsChartOfAccount.CommitAndDispose();
@@ -320,7 +320,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._ChartOfAccounts
 			}
 			if (boRetValue)
 			{
-				ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+				ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
 				clsChartOfAccount.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsChartOfAccount.CommitAndDispose();
 			}

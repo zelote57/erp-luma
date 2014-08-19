@@ -124,6 +124,25 @@ namespace AceSoft.RetailPlus
             }
         }
 
+        //public System.Data.DataTable MySqlDataAdapterFill(MySqlCommand cmd, object sender)
+        //{
+        //    try
+        //    {
+        //        string strDataTableName = "tbl" + sender.GetType().FullName.Split(new Char[] { '.' })[sender.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+
+        //        cmd.Connection = GetConnection();
+
+        //        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+        //        adapter.Fill(dt);
+
+        //        return dt;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ThrowException(ex);
+        //    }
+        //}
+
         public int MySqlDataAdapterFill(string SQL, System.Data.DataTable dt)
         {
             try
@@ -149,5 +168,35 @@ namespace AceSoft.RetailPlus
             }
             throw ex;
         }
+
+        public string getLAST_INSERT_ID(object sender)
+        {
+            try
+            {
+                string SQL = "SELECT LAST_INSERT_ID();";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                string strDataTableName = "tbl" + sender.GetType().FullName.Split(new Char[] { '.' })[sender.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                MySqlDataAdapterFill(cmd, dt);
+
+                string iID = "0";
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iID = dr[0].ToString();
+                }
+
+                return iID;
+
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex);
+            }
+        }
     }
+
 }

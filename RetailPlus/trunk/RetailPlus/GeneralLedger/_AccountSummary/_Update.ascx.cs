@@ -26,12 +26,12 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountSummary
 
 		private void LoadOptions()
 		{
-            AccountClassification clsAccountClassification = new AccountClassification();
+            AccountClassifications clsAccountClassification = new AccountClassifications();
             DataClass clsDataClass = new DataClass();
 
             cboAccountClassification.DataTextField = "AccountClassificationName";
             cboAccountClassification.DataValueField = "AccountClassificationID";
-            cboAccountClassification.DataSource = clsDataClass.DataReaderToDataTable(clsAccountClassification.List("AccountClassificationID", SortOption.Ascending)).DefaultView;
+            cboAccountClassification.DataSource = clsAccountClassification.ListAsDataTable().DefaultView;
             cboAccountClassification.DataBind();
             cboAccountClassification.SelectedIndex = 1;
             clsAccountClassification.CommitAndDispose();		
@@ -40,12 +40,12 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountSummary
 		private void LoadRecord()
 		{
 			Int32 iID = Convert.ToInt32(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
-			AccountSummary clsAccountSummary = new AccountSummary();
+			AccountSummaries clsAccountSummary = new AccountSummaries();
 			AccountSummaryDetails clsDetails = clsAccountSummary.Details(iID);
 			clsAccountSummary.CommitAndDispose();
 
 			lblAccountSummaryID.Text = clsDetails.AccountSummaryID.ToString();
-            cboAccountClassification.SelectedIndex = cboAccountClassification.Items.IndexOf(cboAccountClassification.Items.FindByValue(clsDetails.AccountClassificationID.ToString()));
+            cboAccountClassification.SelectedIndex = cboAccountClassification.Items.IndexOf(cboAccountClassification.Items.FindByValue(clsDetails.AccountClassificationDetails.AccountClassificationID.ToString()));
 			txtAccountSummaryCode.Text = clsDetails.AccountSummaryCode;
 			txtAccountSummaryName.Text = clsDetails.AccountSummaryName;
 		}
@@ -77,11 +77,14 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountSummary
 			AccountSummaryDetails clsDetails = new AccountSummaryDetails();
 
 			clsDetails.AccountSummaryID = Convert.ToInt16(lblAccountSummaryID.Text);
-            clsDetails.AccountClassificationID = Convert.ToInt16(cboAccountClassification.SelectedItem.Value);
+            clsDetails.AccountClassificationDetails = new AccountClassificationDetails
+            {
+                AccountClassificationID = Convert.ToInt16(cboAccountClassification.SelectedItem.Value)
+            };
 			clsDetails.AccountSummaryCode = txtAccountSummaryCode.Text;
 			clsDetails.AccountSummaryName = txtAccountSummaryName.Text;
 			
-			AccountSummary clsAccountSummary = new AccountSummary();
+			AccountSummaries clsAccountSummary = new AccountSummaries();
 			clsAccountSummary.Update(clsDetails);
 			clsAccountSummary.CommitAndDispose();
 		}

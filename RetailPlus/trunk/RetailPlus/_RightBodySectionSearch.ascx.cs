@@ -85,7 +85,8 @@ namespace AceSoft.RetailPlus
                     cboSearchID.Items.Add(new ListItem("Departments", SearchCategoryID.Departments.ToString("G")));
                     cboSearchID.Items.Add(new ListItem("Reward Members", SearchCategoryID.RewardMembers.ToString("G")));
                     cboSearchID.Items.Add(new ListItem("Customer Management", SearchCategoryID.CustomerDetailed.ToString("G")));
-			
+                    cboSearchID.Items.Add(new ListItem("Banks", SearchCategoryID.Banks.ToString("G")));
+
 					cboSearchID.SelectedIndex  = Convert.ToInt16(mSearchIDSelectedItem);
 				}
 			}
@@ -267,6 +268,9 @@ namespace AceSoft.RetailPlus
 						break;
                     case SearchCategoryID.RewardMembers:
                         Response.Redirect(Constants.ROOT_DIRECTORY + "/Rewards/_Members/Default.aspx" + stParam);
+                        break;
+                    case SearchCategoryID.Banks:
+                        Response.Redirect(Constants.ROOT_DIRECTORY + "/GeneralLedger/_Bank/Default.aspx" + stParam);
                         break;
 					default:
 						break;

@@ -66,16 +66,13 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup
 
 		private void LoadOptions()
 		{
-
-			DataClass clsDataClass = new DataClass();
-
 			Int64 iID = Convert.ToInt64(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
 
-			UnitMeasurements clsUnit = new UnitMeasurements();
+            Data.Unit clsUnit = new Data.Unit();
 			
 			cboProductGroupUnit.DataTextField = "UnitName";
 			cboProductGroupUnit.DataValueField = "UnitID";
-			cboProductGroupUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List("UnitName",SortOption.Ascending)).DefaultView;
+			cboProductGroupUnit.DataSource = clsUnit.ListAsDataTable(SortField: "UnitName").DefaultView;
 			cboProductGroupUnit.DataBind();
 			cboProductGroupUnit.SelectedIndex = cboProductGroupUnit.Items.Count - 1;
 
@@ -97,7 +94,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup
 			lblProductGroupID.Text = clsDetails.ProductGroupID.ToString();
 			txtProductGroupCode.Text = clsDetails.ProductGroupCode;
 			txtProductGroupName.Text = clsDetails.ProductGroupName;
-			cboProductGroupUnit.SelectedIndex = cboProductGroupUnit.Items.IndexOf( cboProductGroupUnit.Items.FindByText(clsDetails.BaseUnitName));
+			cboProductGroupUnit.SelectedIndex = cboProductGroupUnit.Items.IndexOf( cboProductGroupUnit.Items.FindByText(clsDetails.UnitDetails.UnitName));
 			txtProductPrice.Text = clsDetails.Price.ToString("#,##0.#0");
 			txtPurchasePrice.Text = clsDetails.PurchasePrice.ToString("#,##0.#0");
             chkIncludeInSubtotalDiscount.Checked = clsDetails.IncludeInSubtotalDiscount;

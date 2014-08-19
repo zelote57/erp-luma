@@ -239,7 +239,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { mDetails.VariationsMatrixID = Convert.ToInt64(item.SubItems[0].Name); break; }
 
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-            ProductBaseMatrixDetails clsDetails = new ProductBaseMatrixDetails(); // clsProductVariationsMatrix.BaseDetailsByMatrixID(mDetails.VariationsMatrixID);
+            ProductBaseVariationsMatrixDetails clsDetails = new ProductBaseVariationsMatrixDetails(); // clsProductVariationsMatrix.BaseDetailsByMatrixID(mDetails.VariationsMatrixID);
             clsProductVariationsMatrix.CommitAndDispose();
             if (mDetails.VariationsMatrixID != 0)
             {

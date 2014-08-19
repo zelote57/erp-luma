@@ -90,7 +90,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		{
             
             DataClass clsDataClass = new DataClass();
-            ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+            ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
             System.Data.DataTable dtList = clsDataClass.DataReaderToDataTable(clsChartOfAccount.List("ChartOfAccountName", SortOption.Ascending));
             clsChartOfAccount.CommitAndDispose();
 

@@ -191,7 +191,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountSummary
 
 		private void LoadList()
 		{	
-			AccountSummary clsAccountSummary = new AccountSummary();
+			AccountSummaries clsAccountSummary = new AccountSummaries();
 			DataClass clsDataClass = new DataClass();
 
 			string SortField = "AccountSummaryID";
@@ -264,7 +264,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._AccountSummary
 			}
 			if (boRetValue)
 			{
-				AccountSummary clsAccountSummary = new AccountSummary();
+				AccountSummaries clsAccountSummary = new AccountSummaries();
 				clsAccountSummary.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsAccountSummary.CommitAndDispose();
 			}

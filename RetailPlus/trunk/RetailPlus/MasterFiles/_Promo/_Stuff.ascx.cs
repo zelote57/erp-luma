@@ -63,7 +63,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
             ProductGroup clsProductGroup = new ProductGroup(clsContact.Connection, clsContact.Transaction);
 			cboProductGroup.DataTextField = "ProductGroupName";
 			cboProductGroup.DataValueField = "ProductGroupID";
-            cboProductGroup.DataSource = clsProductGroup.SearchDataTable(txtProductGroupCode.Text).DefaultView;
+            cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroupCode.Text, "ProductGroupName").DefaultView;
 			cboProductGroup.DataBind();
 			cboProductGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
 			cboProductGroup.SelectedIndex = 0;
@@ -122,7 +122,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 			clsDetails.VariationMatrixID = Convert.ToInt64(cboProductVariation.SelectedItem.Value);
 			clsDetails.Quantity = Convert.ToDecimal(txtQuantity.Text);
 			clsDetails.PromoValue = Convert.ToDecimal(txtPromoValue.Text);
-			clsDetails.InPercent = Convert.ToByte(chkInPercentage.Checked);
+			clsDetails.InPercent = chkInPercentage.Checked;
 
 			PromoItems clsPromoItems = new PromoItems();
 			clsPromoItems.Insert(clsDetails);
@@ -310,7 +310,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 
             cboProductGroup.DataTextField = "ProductGroupName";
             cboProductGroup.DataValueField = "ProductGroupID";
-            cboProductGroup.DataSource = clsProductGroup.SearchDataTable(txtProductGroupCode.Text).DefaultView;
+            cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroupCode.Text).DefaultView;
             cboProductGroup.DataBind();
             cboProductGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             if (cboProductGroup.Items.Count > 1 && txtProductGroupCode.Text.Trim() != string.Empty) cboProductGroup.SelectedIndex = 1; else cboProductGroup.SelectedIndex = 0;

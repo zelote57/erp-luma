@@ -1218,7 +1218,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
                 Contacts clsContact = new Contacts(clsTransferOut.Connection, clsTransferOut.Transaction);
                 ContactDetails clsContactDetails;
 
-                ContactGroup clsContactGroup = new ContactGroup(clsTransferOut.Connection, clsTransferOut.Transaction);
+                ContactGroups clsContactGroup = new ContactGroups(clsTransferOut.Connection, clsTransferOut.Transaction);
                 ContactGroupDetails clsContactGroupDetails;
 
                 Data.Unit clsUnit = new Data.Unit(clsTransferOut.Connection, clsTransferOut.Transaction);
@@ -1233,7 +1233,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
                 Products clsProduct = new Products(clsTransferOut.Connection, clsTransferOut.Transaction);
                 ProductDetails clsProductDetails;
 
-                ProductVariation clsProductVariation = new ProductVariation(clsTransferOut.Connection, clsTransferOut.Transaction);
+                ProductVariations clsProductVariation = new ProductVariations(clsTransferOut.Connection, clsTransferOut.Transaction);
                 ProductVariationDetails clsProductVariationDetails;
 
                 Branch clsBranch = new Branch(clsTransferOut.Connection, clsTransferOut.Transaction);
@@ -1444,7 +1444,10 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
                                             clsProductGroupDetails = new ProductGroupDetails();
                                             clsProductGroupDetails.ProductGroupCode = clsProductDetails.ProductGroupCode;
                                             clsProductGroupDetails.ProductGroupName = clsProductDetails.ProductGroupName;
-                                            clsProductGroupDetails.BaseUnitID = clsProductDetails.BaseUnitID;
+                                            clsProductGroupDetails.UnitDetails = new UnitDetails
+                                            {
+                                                UnitID = clsProductDetails.BaseUnitID
+                                            };
                                             clsProductGroupDetails.Price = clsProductDetails.Price;
                                             clsProductGroupDetails.PurchasePrice = clsProductDetails.PurchasePrice;
                                             clsProductGroupDetails.IncludeInSubtotalDiscount = clsProductDetails.IncludeInSubtotalDiscount;

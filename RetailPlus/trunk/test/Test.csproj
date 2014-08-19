@@ -95,12 +95,29 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataObjects Accounts\DataObjects Accounts.csproj">
+      <Project>{4CBAE4B5-2073-43AB-9EC4-981D2CA31DCC}</Project>
+      <Name>DataObjects Accounts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects Inventory\DataObjects Inventory.csproj">
+      <Project>{98B7F5B1-2F87-4E62-B2BF-926975D02C73}</Project>
+      <Name>DataObjects Inventory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\report library\Report Library.csproj">
+      <Project>{E43FD0B2-AF54-49AD-9FCD-BC3B67EE16F9}</Project>
+      <Name>Report Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\security library\Security Library.csproj">
+      <Project>{88C68179-9BB1-4A08-92E7-7B003449A2AE}</Project>
+      <Name>Security Library</Name>
+    </ProjectReference>
+    <Reference Include="MySql.Data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
@@ -123,6 +140,10 @@
       <Project>{75D37B92-76F5-4C25-AF1A-394619DE4835}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\dbconnection\DBConnection.csproj">
+      <Project>{18F0CB07-90C3-4DAC-9241-3F13052FBEED}</Project>
+      <Name>DBConnection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logistics\AceSoft.csproj">
       <Name>AceSoft</Name>
       <Project>{A800354C-F064-4836-9178-1DC7B752822E}</Project>
@@ -143,9 +164,13 @@
     <Compile Include="Class3.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DB.cs" />
+    <Compile Include="MasterDB.cs" />
+    <Compile Include="Sync.cs" />
     <Compile Include="KeyGen.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LocalDB.cs" />
     <Compile Include="SetTime.cs" />
   </ItemGroup>
   <ItemGroup>

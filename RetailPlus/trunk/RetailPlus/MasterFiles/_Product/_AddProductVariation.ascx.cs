@@ -140,7 +140,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             cboProductGroup.DataValueField = "ProductGroupID";
 
             string stSearchKey = "%" + txtProductGroup.Text;
-            cboProductGroup.DataSource = clsProductGroup.SearchDataTable(stSearchKey, "ProductGroupName", SortOption.Ascending, 100);
+            cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(stSearchKey, "ProductGroupName", SortOption.Ascending, 100);
             cboProductGroup.DataBind();
             clsProductGroup.CommitAndDispose();
 
@@ -213,7 +213,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
             }
             else {
-                ProductVariation clsProductVariation = new ProductVariation();
+                ProductVariations clsProductVariation = new ProductVariations();
                 clsProductVariation.AddEasyVariation(lngProductGroupID, lngProductSubGroupID, lngProductID, lngVariationID, Convert.ToString(Session["Name"]));
                 clsProductVariation.CommitAndDispose();
 

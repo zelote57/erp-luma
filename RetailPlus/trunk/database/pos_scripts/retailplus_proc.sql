@@ -209,7 +209,7 @@ BEGIN
 		SUM(IF(TransactionItemStatus=3,-a.Quantity,a.Quantity)) 'Quantity', SUM(IF(TransactionItemStatus=3,-a.Amount,a.amount)) Amount, 
 		SUM(IF(TransactionItemStatus=3,-PurchaseAmount,IF(TransactionItemStatus=4,-PurchaseAmount,PurchaseAmount))) PurchaseAmount,
 		SUM(IF(TransactionItemStatus=3,-a.Discount + -a.TransactionDiscount,IF(TransactionItemStatus=4,-a.Discount + -a.TransactionDiscount,a.Discount + a.TransactionDiscount))) Discount,
-		MIN(pkg.PurchasePrice) PurchasePrice,
+		IFNULL(MIN(pkg.PurchasePrice), a.PurchasePrice) PurchasePrice,
 		MAX(inv.InvQuantity) InvQuantity
 	FROM tblTransactionItems a 
 	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
@@ -1512,7 +1512,7 @@ BEGIN
 		SUM(IF(TransactionItemStatus=3,-a.Quantity,a.Quantity)) 'Quantity', SUM(IF(TransactionItemStatus=3,-a.Amount,a.amount)) Amount, 
 		SUM(IF(TransactionItemStatus=3,-PurchaseAmount,IF(TransactionItemStatus=4,-PurchaseAmount,PurchaseAmount))) PurchaseAmount,
 		SUM(IF(TransactionItemStatus=3,-a.Discount + -a.TransactionDiscount,IF(TransactionItemStatus=4,-a.Discount + -a.TransactionDiscount,a.Discount + a.TransactionDiscount))) Discount,
-		MIN(pkg.PurchasePrice) PurchasePrice,
+		IFNULL(MIN(pkg.PurchasePrice), a.PurchasePrice) PurchasePrice,
 		MAX(inv.InvQuantity) InvQuantity
 	FROM tblTransactionItems a 
 	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
@@ -3073,23 +3073,12 @@ delimiter ;
 	CALL procDepartmentInsert();
 	
 	September 21, 2010 - create this procedure
+	August 4, 2014 - deleted and replaced with procSaveDepartment
 *********************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procDepartmentInsert
 GO
-
-create procedure procDepartmentInsert(
-	IN pvtDepartmentCode VARCHAR(30),
-	IN pvtDepartmentName VARCHAR(30))
-BEGIN
-
-	INSERT INTO tblDepartments(DepartmentCode, DepartmentName)
-	VALUES (pvtDepartmentCode, pvtDepartmentName);
-		
-END;
-GO
 delimiter ;
-
 
 /*********************************
 	procDepartmentUpdate
@@ -3097,23 +3086,10 @@ delimiter ;
 	CALL procDepartmentUpdate();
 	
 	September 21, 2010 - create this procedure
+	August 4, 2014 - deleted and replaced with procSaveDepartment
 *********************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procDepartmentUpdate
-GO
-
-create procedure procDepartmentUpdate(
-	IN pvtDepartmentID INT(10),
-	IN pvtDepartmentCode VARCHAR(30),
-	IN pvtDepartmentName VARCHAR(30))
-BEGIN
-
-	UPDATE tblDepartments SET 
-		DepartmentCode	= pvtDepartmentCode, 
-		DepartmentName	= pvtDepartmentName
-	WHERE DepartmentID	= pvtDepartmentID;
-		
-END;
 GO
 delimiter ;
 
@@ -6011,7 +5987,7 @@ delimiter ;
 	
 	Desc: This will get the main product list
 
-	CALL procProductMainDetails(1, 0, 0, 'JVS100000451','',1);
+	CALL procProductMainDetails(1, 57, 168 '','', false);
 	
 **************************************************************/
 delimiter GO
@@ -6228,7 +6204,7 @@ BEGIN
 	PREPARE cmd FROM @SQL;
 	EXECUTE cmd;
 	DEALLOCATE PREPARE cmd;
-
+	
 END;
 GO
 delimiter ;
@@ -6942,55 +6918,11 @@ delimiter ;
 /********************************************
 	procSaveParkingRate
 	
-	CALL procSaveParkingRate(0, 5448, 'Monday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
-	CALL procSaveParkingRate(0, 5448, 'Tuesday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
-	CALL procSaveParkingRate(0, 5448, 'Wednesday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
-	CALL procSaveParkingRate(0, 5448, 'Thursday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
-	CALL procSaveParkingRate(0, 5448, 'Friday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
-	CALL procSaveParkingRate(0, 5448, 'Saturday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
-	CALL procSaveParkingRate(0, 5448, 'Sunday', '00:00', '23:59', 60, 10, 360, 100, 'Lemuel');
-
-	Jul 21, 2013 : Lem
-	- create this procedure
-	
-	
+	Jul 21, 2013 - create this procedure
+	August 17, 2014 - deleted and replaced with procSaveParkingRates
 ********************************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procSaveParkingRate
-GO
-
-create procedure procSaveParkingRate(
-	IN lngParkingRateID BIGINT,
-	IN lngProductID BIGINT,
-	IN strDayOfWeek VARCHAR(9),
-	IN strStartTime VARCHAR(5),
-	IN strEndtime VARCHAR(5),
-	IN intNoOfUnitPerMin INT,
-	IN decPerUnitPrice DECIMAL(18,3),
-	IN intMinimumStayInMin INT,
-	IN decMinimumStayPrice DECIMAL(18,3),
-	IN strCreatedByName VARCHAR(100)
-	)
-BEGIN
-	
-	IF EXISTS(SELECT ProductID FROM tblParkingRates WHERE ParkingRateID = lngParkingRateID) THEN 
-		UPDATE tblParkingRates SET
-			DayOfWeek			= strDayOfWeek,
-			StartTime			= strStartTime,
-			EndTime				= strEndTime,
-			NoofUnitPerMin		= intNoOfUnitPerMin,
-			PerUnitPrice		= decPerUnitPrice,
-			MinimumStayInMin	= intMinimumStayInMin,
-			MinimumStayPrice	= decMinimumStayPrice,
-			LastUpdatedByName	= strCreatedByName,
-			LastUpdatedOn		= NOW()
-		WHERE ParkingRateID		= lngParkingRateID;
-	ELSE
-		INSERT INTO tblParkingRates(ProductID, DayOfWeek, StartTime, EndTime, NoOfUnitperMin, PerUnitPrice, MinimumStayInMin, MinimumStayPrice, CreatedByName, CreatedOn)
-			VALUES(lngProductID, strDayOfWeek, strStartTime, strEndTime, intNoOfUnitperMin, decPerUnitPrice, intMinimumStayInMin, decMinimumStayPrice, strCreatedByName, NOW());
-	END IF;
-				
-END;
 GO
 delimiter ;
 
@@ -7030,9 +6962,9 @@ BEGIN
 							,rte.MinimumStayInMin
 							,rte.MinimumStayPrice
 							,rte.CreatedByName
-							,rte.CreatedOn
 							,rte.LastUpdatedByName
-							,rte.LastUpdatedOn
+							,rte.CreatedOn
+							,rte.LastModified
 						FROM tblParkingRates rte
 						WHERE 1=1 ');
 
@@ -7122,6 +7054,39 @@ BEGIN
 	SET @SQL = CONCAT('	SELECT 
 							ConfigValue
 						FROM sysConfig cnfg
+						WHERE ConfigName = ''',IFNULL(ConfigValue,''),''' ');
+	
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;
+
+
+
+/**************************************************************
+
+	procSysCreditConfigSelectByName
+	Lemuel E. Aceron
+	Sep 9, 2013
+	
+	Desc: This will get any value from SysCreditConfig
+
+	CALL procSysCreditConfigSelectByName('BillingDate');
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procSysCreditConfigSelectByName
+GO
+
+create procedure procSysCreditConfigSelectByName(
+			IN ConfigValue varchar(100))
+BEGIN
+	SET @SQL = CONCAT('	SELECT 
+							ConfigValue
+						FROM SysCreditConfig cnfg
 						WHERE ConfigName = ''',IFNULL(ConfigValue,''),''' ');
 	
 	PREPARE cmd FROM @SQL;
@@ -8048,6 +8013,116 @@ BEGIN
 		 end
 		,prd.IncludeInSubtotalDiscount, grp.OrderSlipPrinter
 	ORDER BY det.fk_chk_headers, det.Dtl_Num;
+
+END;
+GO
+delimiter ;
+
+
+/**************************************************************
+
+	procTableSelectAll
+	Lemuel E. Aceron
+	Aug 1, 2014
+	
+	Desc: This will get all the columns from a table
+
+	CALL procTableSelectAll('sysConfig', '2014-08-01', '1900-01-01');
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procTableSelectAll
+GO
+
+create procedure procTableSelectAll(
+			IN strTableName varchar(150),
+			IN dteStartSyncDateTime datetime,
+			IN dteEndSyncDateTime datetime)
+BEGIN
+	SET @SQL = CONCAT('	SELECT * FROM ',strTableName, ' WHERE 1=1 ');
+		
+	IF DATE_FORMAT(dteStartSyncDateTime, '%Y-%m-%d') <> '1900-01-01' THEN
+		SET @SQL = CONCAT(@SQL, 'AND DATE_FORMAT(LastModified, ''%Y-%m-%d %H:%i'') >=''',DATE_FORMAT(dteStartSyncDateTime, '%Y-%m-%d %H:%i'), ''' ');
+	END IF;
+
+	IF DATE_FORMAT(dteEndSyncDateTime, '%Y-%m-%d') <> '1900-01-01' THEN
+		SET @SQL = CONCAT(@SQL, 'AND DATE_FORMAT(LastModified, ''%Y-%m-%d %H:%i'') <=''',DATE_FORMAT(dteEndSyncDateTime, '%Y-%m-%d %H:%i'), ''' ');
+	END IF;
+	
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;
+
+
+/**************************************************************
+
+	procTableSelectAllKeys
+	Lemuel E. Aceron
+	Aug 1, 2014
+	
+	Desc: This will get the all columns from a table
+
+	CALL procTableSelectAllKeys('sysConfig', 'ConfigName');
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procTableSelectAllKeys
+GO
+
+create procedure procTableSelectAllKeys(
+			IN strTableName varchar(150),
+			IN strKeyColName varchar(150),
+			IN boIsNumeric TINYINT(1))
+BEGIN
+	IF (boIsNumeric = 0) THEN
+		SET @SQL = CONCAT('	SELECT GROUP_CONCAT(CONCAT('''''''',',strKeyColName,','''''''')) KeyColname FROM ',strTableName, ' ');
+	ELSE
+		SET @SQL = CONCAT('	SELECT GROUP_CONCAT(',strKeyColName,') KeyColname FROM ',strTableName, ' ');
+	END IF;
+	
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
+
+END;
+GO
+delimiter ;
+
+
+/**************************************************************
+
+	procTableDeleteWithKeys
+	Lemuel E. Aceron
+	Aug 1, 2014
+	
+	Desc: This will get the all columns from a table
+
+	CALL procTableDeleteWithKeys('sysConfig', 'ConfigName','''BACKEND_VARIATION_TYPE''');
+	
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procTableDeleteWithKeys
+GO
+
+create procedure procTableDeleteWithKeys(
+			IN strTableName VARCHAR(150),
+			IN strKeyColName VARCHAR(150),
+			IN strKeysNotToDelete VARCHAR(21000))
+BEGIN
+	
+	SET @SQL = CONCAT('	DELETE FROM ',strTableName, ' ');
+
+	IF LENGTH(TRIM(strKeysNotToDelete)) > 0 THEN
+		SET @SQL = CONCAT(@SQL, ' WHERE ',strKeyColName,' NOT IN (',strKeysNotToDelete,') ');
+	END IF;
+	
+	PREPARE cmd FROM @SQL;
+	EXECUTE cmd;
+	DEALLOCATE PREPARE cmd;
 
 END;
 GO

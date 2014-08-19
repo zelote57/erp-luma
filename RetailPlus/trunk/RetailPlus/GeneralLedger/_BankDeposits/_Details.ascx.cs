@@ -32,7 +32,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._BankDeposit
 		private void LoadRecord()
 		{
 			Int32 iID = Convert.ToInt32(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
-			Bank clsBank = new Bank();
+			Banks clsBank = new Banks();
 			BankDetails clsDetails = clsBank.Details(iID);
 			clsBank.CommitAndDispose();
 

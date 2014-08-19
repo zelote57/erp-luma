@@ -89,10 +89,10 @@ namespace AceSoft.RetailPlus.MasterFiles._ChargeType
 			ChargeType clsChargeType = new ChargeType();
 			ChargeTypeDetails clsDetails = new ChargeTypeDetails();
 
-			clsDetails.ChargeTypeCode	= txtChargeTypeCode.Text;
-			clsDetails.ChargeType		= txtChargeType.Text;
-			clsDetails.ChargeAmount		= Convert.ToDecimal(txtChargeAmount.Text);
-			clsDetails.InPercent		= Convert.ToByte(chkInPercent.Checked);
+            clsDetails.ChargeTypeCode = txtChargeTypeCode.Text;
+            clsDetails.ChargeType = txtChargeType.Text;
+            clsDetails.ChargeAmount = Convert.ToDecimal(txtChargeAmount.Text);
+            clsDetails.InPercent = chkInPercent.Checked;
 		
 			Int32 id = clsChargeType.Insert(clsDetails);
 			

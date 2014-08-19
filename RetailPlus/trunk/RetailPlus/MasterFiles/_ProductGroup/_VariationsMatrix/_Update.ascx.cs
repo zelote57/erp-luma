@@ -105,22 +105,22 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
 			lblGroupID.Text = Common.Decrypt((string)Request.QueryString["groupid"],Session.SessionID);
 			lblMatrixID.Text = Common.Decrypt(Request.QueryString["id"],Session.SessionID);
 
-			ProductGroupVariation clsProductGroupVariation = new ProductGroupVariation();
+			ProductGroupVariations clsProductGroupVariation = new ProductGroupVariations();
 			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsProductGroupVariation.List(Convert.ToInt32(lblGroupID.Text),"VariationType",SortOption.Ascending)).DefaultView;
 			lstItem.DataBind();
 			clsProductGroupVariation.CommitAndDispose();
 
-			UnitMeasurements clsUnit = new UnitMeasurements();
+            Data.Unit clsUnit = new Data.Unit();
 			cboUnit.DataTextField = "UnitName";
 			cboUnit.DataValueField = "UnitID";
-			cboUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List("UnitName",SortOption.Ascending)).DefaultView;
+			cboUnit.DataSource = clsUnit.ListAsDataTable(SortField:"UnitName").DefaultView;
 			cboUnit.DataBind();
 			cboUnit.SelectedIndex = cboUnit.Items.Count - 1;
 			clsUnit.CommitAndDispose();	
 	
 			ProductGroup clsProductGroup = new ProductGroup();
 			ProductGroupDetails clsProductGroupDetails = clsProductGroup.Details(Convert.ToInt32(lblGroupID.Text));
-			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsProductGroupDetails.BaseUnitID.ToString()));
+			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsProductGroupDetails.UnitDetails.UnitID.ToString()));
 			txtProductPrice.Text = clsProductGroupDetails.Price.ToString("#,##0.#0");
 			txtPurchasePrice.Text = clsProductGroupDetails.PurchasePrice.ToString("#,##0.#0");
             chkIncludeInSubtotalDiscount.Checked = clsProductGroupDetails.IncludeInSubtotalDiscount;
@@ -131,7 +131,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
 		private void LoadRecord()
 		{
 			ProductGroupVariationsMatrix clsProductGroupVariationsMatrix = new ProductGroupVariationsMatrix();
-			ProductGroupBaseMatrixDetails clsBaseDetails = clsProductGroupVariationsMatrix.BaseDetails(Convert.ToInt32(lblMatrixID.Text), Convert.ToInt32(lblGroupID.Text));
+			ProductGroupBaseVariationsMatrixDetails clsBaseDetails = clsProductGroupVariationsMatrix.BaseDetails(Convert.ToInt32(lblMatrixID.Text), Convert.ToInt32(lblGroupID.Text));
 			clsProductGroupVariationsMatrix.CommitAndDispose();
 
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsBaseDetails.UnitID.ToString()));
@@ -181,7 +181,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
 			}
 			
 			//update the base variation matrix
-			ProductGroupBaseMatrixDetails clsBaseDetails = new ProductGroupBaseMatrixDetails();
+			ProductGroupBaseVariationsMatrixDetails clsBaseDetails = new ProductGroupBaseVariationsMatrixDetails();
 			clsBaseDetails.MatrixID = Convert.ToInt32(lblMatrixID.Text);
 			clsBaseDetails.GroupID = Convert.ToInt32(lblGroupID.Text);
 			clsBaseDetails.Description = stringVariationDesc;

@@ -663,7 +663,7 @@ namespace AceSoft.RetailPlus.Data
                 base.ExecuteNonQuery(cmd);
 
                 BankDepositDetails clsBankDepositDetails = Details(BankDepositID);
-                ChartOfAccount clsChartOfAccount = new ChartOfAccount(base.Connection, base.Transaction);
+                ChartOfAccounts clsChartOfAccount = new ChartOfAccounts(base.Connection, base.Transaction);
                 
                 clsChartOfAccount.UpdateDebit(clsBankDepositDetails.DepositInAccountID, clsBankDepositDetails.DepositItemAmount);
                 clsChartOfAccount.UpdateCredit(clsBankDepositDetails.DepositInAccountID, clsBankDepositDetails.CashBackAmount);

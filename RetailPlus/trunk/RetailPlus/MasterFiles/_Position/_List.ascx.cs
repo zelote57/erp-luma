@@ -110,7 +110,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Position
             switch (e.CommandName)
             {
                 case "imgItemDelete":
-                    Position clsPosition = new Position();
+                    Positions clsPosition = new Positions();
                     clsPosition.Delete(chkList.Value);
                     clsPosition.CommitAndDispose();
 
@@ -177,7 +177,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Position
 		}
 		private void LoadList()
 		{	
-			Position clsPosition = new Position();
+			Positions clsPosition = new Positions();
 			DataClass clsDataClass = new DataClass();
 
 			string SortField = "PositionID";
@@ -246,7 +246,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Position
 			}
 			if (boRetValue)
 			{
-				Position clsPosition = new Position();
+				Positions clsPosition = new Positions();
 				clsPosition.Delete( stIDs.Substring(0,stIDs.Length-1));
 				clsPosition.CommitAndDispose();
 			}

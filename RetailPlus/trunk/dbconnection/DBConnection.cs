@@ -29,10 +29,28 @@ namespace AceSoft.RetailPlus
             return ServerIP;
         }
 
+        public static string MasterServerIP()
+        {
+            string ServerIP = "localhost";
+            try { ServerIP = System.Configuration.ConfigurationManager.AppSettings["MasterServerIP"].ToString(); }
+            catch { }
+
+            return ServerIP;
+        }
+
         public static string DBName()
         {
             string DBName = "pos";
             try { DBName = System.Configuration.ConfigurationManager.AppSettings["DBName"].ToString(); }
+            catch { }
+
+            return DBName;
+        }
+
+        public static string MasterDBName()
+        {
+            string DBName = "pos_master";
+            try { DBName = System.Configuration.ConfigurationManager.AppSettings["MasterDBName"].ToString(); }
             catch { }
 
             return DBName;
@@ -70,6 +88,15 @@ namespace AceSoft.RetailPlus
             return "Server=" + (ServerIP == null || ServerIP == "" ? DBConnection.ServerIP() : ServerIP) +
                 ";Port=" + (Port == null || Port == "" ? DBConnection.DBPort().ToString() : Port) +
                 ";Database=" + (DBName == null || DBName == "" ? DBConnection.DBName() : DBName) +
+                    ";Uid=POSUser;Pwd=pospwd; Encrypt = true; Connection Timeout=180";
+            //return "Data Source=" + clsDBName + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + clsPort + ";Extended Properties=";
+        }
+
+        public static string MasterConnectionString(string ServerIP = null, string Port = null, string DBName = null)
+        {
+            return "Server=" + (ServerIP == null || ServerIP == "" ? DBConnection.MasterServerIP() : ServerIP) +
+                ";Port=" + (Port == null || Port == "" ? DBConnection.DBPort().ToString() : Port) +
+                ";Database=" + (DBName == null || DBName == "" ? DBConnection.MasterDBName() : DBName) +
                     ";Uid=POSUser;Pwd=pospwd; Encrypt = true; Connection Timeout=180";
             //return "Data Source=" + clsDBName + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + clsPort + ";Extended Properties=";
         }

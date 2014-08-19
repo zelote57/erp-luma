@@ -14,16 +14,24 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct AccountCategoryDetails
 	{
-		public int AccountCategoryID;
+		public Int32 AccountCategoryID;
 		public string AccountCategoryCode;
 		public string AccountCategoryName;
-		public int AccountSummaryID;
-		public string AccountSummaryCode;
-		public string AccountSummaryName;
-        public short AccountClassificationID;
-        public string AccountClassificationCode;
-        public string AccountClassificationName;
-        public AccountClassificationType AccountClassificationType;
+
+        public AccountSummaryDetails AccountSummaryDetails;
+        //public AccountClassificationDetails AccountClassificationDetails;
+
+        //public int AccountSummaryID;
+        //public string AccountSummaryCode;
+        //public string AccountSummaryName;
+        //public short AccountClassificationID;
+        //public string AccountClassificationCode;
+        //public string AccountClassificationName;
+        //public AccountClassificationType AccountClassificationType;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
+
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -34,16 +42,16 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class AccountCategory : POSConnection
+	public class AccountCategories : POSConnection
 	{
 		#region Constructors and Destructors
 
-		public AccountCategory()
+		public AccountCategories()
             : base(null, null)
         {
         }
 
-        public AccountCategory(MySqlConnection Connection, MySqlTransaction Transaction) 
+        public AccountCategories(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
 
@@ -57,31 +65,14 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "INSERT INTO tblAccountCategory (AccountSummaryID, AccountCategoryCode, AccountCategoryName) VALUES (@AccountSummaryID, @AccountCategoryCode, @AccountCategoryName);";
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
 				  
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				
-				MySqlParameter prmAccountSummaryID = new MySqlParameter("@AccountSummaryID",MySqlDbType.Int16);			
-				prmAccountSummaryID.Value = Details.AccountSummaryID;
-				cmd.Parameters.Add(prmAccountSummaryID);
-
-				MySqlParameter prmAccountCategoryCode = new MySqlParameter("@AccountCategoryCode",MySqlDbType.String);			
-				prmAccountCategoryCode.Value = Details.AccountCategoryCode;
-				cmd.Parameters.Add(prmAccountCategoryCode);
-
-				MySqlParameter prmAccountCategoryName = new MySqlParameter("@AccountCategoryName",MySqlDbType.String);			
-				prmAccountCategoryName.Value = Details.AccountCategoryName;
-				cmd.Parameters.Add(prmAccountCategoryName);
-     
-				base.ExecuteNonQuery(cmd);
-
-                SQL = "SELECT LAST_INSERT_ID();";
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = SQL;
-
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
@@ -105,33 +96,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "UPDATE tblAccountCategory SET " + 
-								"AccountSummaryID			= @AccountSummaryID, " +
-								"AccountCategoryCode		= @AccountCategoryCode, " +
-								"AccountCategoryName		= @AccountCategoryName " +
-							"WHERE AccountCategoryID = @AccountCategoryID;";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmAccountSummaryID = new MySqlParameter("@AccountSummaryID",MySqlDbType.Int16);			
-				prmAccountSummaryID.Value = Details.AccountSummaryID;
-				cmd.Parameters.Add(prmAccountSummaryID);
-
-				MySqlParameter prmAccountCategoryCode = new MySqlParameter("@AccountCategoryCode",MySqlDbType.String);			
-				prmAccountCategoryCode.Value = Details.AccountCategoryCode;
-				cmd.Parameters.Add(prmAccountCategoryCode);		
-
-				MySqlParameter prmAccountCategoryName = new MySqlParameter("@AccountCategoryName",MySqlDbType.String);			
-				prmAccountCategoryName.Value = Details.AccountCategoryName;
-				cmd.Parameters.Add(prmAccountCategoryName);
-
-				MySqlParameter prmAccountCategoryID = new MySqlParameter("@AccountCategoryID",MySqlDbType.Int16);			
-				prmAccountCategoryID.Value = Details.AccountCategoryID;
-				cmd.Parameters.Add(prmAccountCategoryID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
@@ -141,6 +106,31 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
+        public Int32 Save(AccountCategoryDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveAccountCategory(@AccountCategoryID, @AccountSummaryID, @AccountCategoryCode, @AccountCategoryName, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("AccountCategoryID", Details.AccountCategoryID);
+                cmd.Parameters.AddWithValue("AccountSummaryID", Details.AccountSummaryDetails.AccountSummaryID);
+                cmd.Parameters.AddWithValue("AccountCategoryCode", Details.AccountCategoryCode);
+                cmd.Parameters.AddWithValue("AccountCategoryName", Details.AccountCategoryName);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -223,18 +213,16 @@ namespace AceSoft.RetailPlus.Data
 				
 				AccountCategoryDetails Details = new AccountCategoryDetails();
 
+                AccountSummaries clsAccountSummary = new AccountSummaries(this.Connection, this.Transaction);
+                AccountClassifications clsAccountClassification = new AccountClassifications(this.Connection, this.Transaction);
+
 				foreach(System.Data.DataRow dr in dt.Rows)
 				{
 					Details.AccountCategoryID = AccountCategoryID;
 					Details.AccountCategoryCode = "" + dr["AccountCategoryCode"].ToString();
 					Details.AccountCategoryName = "" + dr["AccountCategoryName"].ToString();
-					Details.AccountSummaryID = Int32.Parse(dr["AccountSummaryID"].ToString());
-					Details.AccountSummaryCode = "" + dr["AccountSummaryCode"].ToString();
-					Details.AccountSummaryName = "" + dr["AccountSummaryName"].ToString();
-                    Details.AccountClassificationID = Int16.Parse(dr["AccountClassificationID"].ToString());
-                    Details.AccountClassificationCode = "" + dr["AccountClassificationCode"].ToString();
-                    Details.AccountClassificationName = "" + dr["AccountClassificationName"].ToString();
-                    Details.AccountClassificationType = (AccountClassificationType)Enum.Parse(typeof(AccountClassificationType), dr["AccountClassificationType"].ToString());
+                    Details.AccountSummaryDetails = clsAccountSummary.Details(Int32.Parse(dr["AccountSummaryID"].ToString()));
+                    //Details.AccountClassificationDetails = Details.AccountSummaryDetails.AccountClassificationDetails;
 				}
 
 				return Details;

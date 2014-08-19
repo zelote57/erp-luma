@@ -94,7 +94,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ChargeType
             clsDetails.ChargeTypeCode = txtChargeTypeCode.Text;
             clsDetails.ChargeType = txtChargeType.Text;
             clsDetails.ChargeAmount = Convert.ToDecimal(txtChargeAmount.Text);
-            clsDetails.InPercent = Convert.ToByte(chkInPercent.Checked);
+            clsDetails.InPercent = chkInPercent.Checked;
             clsDetails.ChargeTypeID = Convert.ToInt32(lblChargeTypeID.Text);
 
             clsChargeType.Update(clsDetails);

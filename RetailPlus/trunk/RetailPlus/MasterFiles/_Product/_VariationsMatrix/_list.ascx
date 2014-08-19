@@ -103,6 +103,7 @@
 						<colgroup>
 							<col width="4%">
 							<col width="1">
+                            <col width="1">
 							<col width="35%" align="left">
 							<col width="20%" align="left">
 							<col width="20%" align="left">
@@ -113,6 +114,8 @@
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 							</TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
+								&nbsp;&nbsp;</TH>
+                            <TH class="ms-vh2" style="padding-bottom: 4px">
 								&nbsp;&nbsp;</TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByVariation" runat="server">Product Variations Description</asp:hyperlink></TH>
@@ -132,6 +135,7 @@
 						<colgroup>
 							<col width="4%">
 							<col width="1">
+                            <col width="1">
 							<col width="35%" align="left">
 							<col width="20%" align="left">
 							<col width="20%" align="left">
@@ -143,7 +147,9 @@
 								<input type="checkbox" id="chkList" runat="server" name="chkList" />
 							</td>
 							<td class="ms-vb2">
-								<asp:ImageButton id="imgPackage" runat="server" ImageUrl="../../../_layouts/images/tabpub.gif" alt="Show Product Package Matrix" CommandName="imgPackageMatrixClick"></asp:ImageButton></td>
+								<asp:ImageButton id="imgEditNow" runat="server" ImageUrl="../../../_layouts/images/edit.gif" ToolTip="Edit this product" CommandName="imgEditNowClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></td>
+                            <td class="ms-vb2">
+								<asp:ImageButton id="imgPackage" Visible="false" runat="server" ImageUrl="../../../_layouts/images/tabpub.gif" alt="Show Product Package Matrix" CommandName="imgPackageMatrixClick" CausesValidation="false" OnClientClick="NewWindow();"></asp:ImageButton></td>
 							<td class="ms-vb-user">
 								<asp:HyperLink ID="lnkVariation" Runat="server"></asp:HyperLink>
 							</td>
@@ -162,7 +168,7 @@
 						</tr>
 						<tr>
 							<td class="ms-vh2" height="1"><img height="5" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
-							<td colspan="4" height="1">
+							<td colspan="5" height="1">
 								<DIV class="ACECollapsed" id="divExpCollAsst" runat="server" border="0">
 									<asp:panel id="panCard" runat="server" Width="100%" Height="100%" CssClass="ms-authoringcontrols">
 										<table id="tblPanCard" cellspacing="0" cellpadding="0" width="100%" border="0">

@@ -69,7 +69,7 @@ namespace AceSoft.RetailPlus.Reports
             ProductGroup clsProductGroup = new ProductGroup(clsBranch.Connection, clsBranch.Transaction);
             cboProductGroup.DataTextField = "ProductGroupName";
             cboProductGroup.DataValueField = "ProductGroupID";
-            cboProductGroup.DataSource = clsProductGroup.SearchDataTable(txtProductGroupCode.Text).DefaultView;
+            cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroupCode.Text, "ProductGroupName").DefaultView;
             cboProductGroup.DataBind();
             cboProductGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             cboProductGroup.SelectedIndex = 0;
@@ -424,7 +424,7 @@ namespace AceSoft.RetailPlus.Reports
             ProductGroup clsProductGroup = new ProductGroup();
             cboProductGroup.DataTextField = "ProductGroupName";
             cboProductGroup.DataValueField = "ProductGroupID";
-            cboProductGroup.DataSource = clsProductGroup.SearchDataTable(txtProductGroupCode.Text).DefaultView;
+            cboProductGroup.DataSource = clsProductGroup.ListAsDataTable(txtProductGroupCode.Text).DefaultView;
             cboProductGroup.DataBind();
             cboProductGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             if (cboProductGroup.Items.Count > 1 && txtProductGroupCode.Text.Trim() != string.Empty) cboProductGroup.SelectedIndex = 1; else cboProductGroup.SelectedIndex = 0;

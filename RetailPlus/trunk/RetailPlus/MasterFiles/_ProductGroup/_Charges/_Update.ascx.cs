@@ -31,7 +31,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Group._Charges
 			lblProductGroupID.Text = Common.Decrypt((string)Request.QueryString["groupid"],Session.SessionID);
 			lblChargeID.Text = Common.Decrypt(Request.QueryString["id"],Session.SessionID);
 
-			ProductGroupCharge clsProductGroupCharge = new ProductGroupCharge();
+			ProductGroupCharges clsProductGroupCharge = new ProductGroupCharges();
 			
 			cboChargeType.DataTextField = "ChargeType";
 			cboChargeType.DataValueField = "ChargeTypeID";
@@ -45,7 +45,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Group._Charges
 
 		private void LoadRecord()
 		{
-			ProductGroupCharge clsProductGroupCharge = new ProductGroupCharge();
+			ProductGroupCharges clsProductGroupCharge = new ProductGroupCharges();
 			ProductGroupChargeDetails clsDetails = clsProductGroupCharge.Details(Convert.ToInt64(lblChargeID.Text));
 			clsProductGroupCharge.CommitAndDispose();
 
@@ -80,7 +80,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Group._Charges
 
 		private void SaveRecord()
 		{
-			ProductGroupCharge clsProductGroupCharge = new ProductGroupCharge();
+			ProductGroupCharges clsProductGroupCharge = new ProductGroupCharges();
 			ProductGroupChargeDetails clsDetails = new ProductGroupChargeDetails();
 
 			clsDetails.ChargeID = Convert.ToInt64(lblChargeID.Text);
@@ -88,7 +88,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._Group._Charges
 			clsDetails.ChargeTypeID = Convert.ToInt32(cboChargeType.SelectedItem.Value);
 			clsDetails.ChargeType = cboChargeType.SelectedItem.Text;
 			clsDetails.ChargeAmount = Convert.ToDecimal(txtChargeAmount.Text);
-			clsDetails.InPercent = Convert.ToByte(chkInPercent.Checked);
+			clsDetails.InPercent = chkInPercent.Checked;
 
 			clsProductGroupCharge.Update(clsDetails);
 			

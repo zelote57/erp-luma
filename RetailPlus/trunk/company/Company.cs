@@ -253,6 +253,7 @@ namespace AceSoft.RetailPlus
             }
             set { _Currency = value; }
         }
+
 	}
 }
 

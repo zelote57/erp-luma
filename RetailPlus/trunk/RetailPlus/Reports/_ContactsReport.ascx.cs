@@ -58,7 +58,7 @@ namespace AceSoft.RetailPlus.Reports
 			
 			clsContact.CommitAndDispose();
 			
-			ContactGroup clsContactGroup = new ContactGroup();
+			ContactGroups clsContactGroup = new ContactGroups();
 			cboGroup.DataTextField = "ContactGroupName";
 			cboGroup.DataValueField = "ContactGroupID";
 			cboGroup.DataSource = clsDataClass.DataReaderToDataTable(clsContactGroup.List("ContactGroupName",SortOption.Ascending));

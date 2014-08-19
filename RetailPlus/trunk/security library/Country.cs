@@ -28,6 +28,9 @@ namespace AceSoft.RetailPlus.Security
 	{
 		public int CountryID;
 		public string CountryName;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -55,6 +58,79 @@ namespace AceSoft.RetailPlus.Security
 		}
 
 		#endregion
+
+        #region Insert and Update
+
+        public Int32 Insert(CountryDetails Details)
+        {
+            try
+            {
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+
+                Int32 iID = 0;
+
+                while (myReader.Read())
+                {
+                    iID = myReader.GetInt32(0);
+                }
+
+                myReader.Close();
+
+                return iID;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public void Update(CountryDetails Details)
+        {
+            try
+            {
+                Save(Details);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public Int32 Save(CountryDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveCountry(@CountryID, @CountryName, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("CountryID", Details.CountryID);
+                cmd.Parameters.AddWithValue("CountryName", Details.CountryName);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE :  Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        #endregion
 
 		#region Streams
 

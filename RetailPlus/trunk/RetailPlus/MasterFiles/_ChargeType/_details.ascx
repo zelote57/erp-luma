@@ -52,7 +52,8 @@
                             <tr>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:textbox id="txtChargeTypeCode" accessKey="G" CssClass="ms-short-disabled" runat="server" BorderStyle="Groove" MaxLength="3" ReadOnly="True"></asp:textbox>&nbsp;
+                                    <asp:textbox id="txtChargeTypeCode" accessKey="G" CssClass="ms-short-disabled" 
+                                        runat="server" BorderStyle="Groove" MaxLength="10" ReadOnly="True"></asp:textbox>&nbsp;
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">

@@ -316,7 +316,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Payments
         {
             int bankid = Convert.ToInt32(cboBank.SelectedItem.Value);
 
-            Bank clsBank = new Bank();
+            Banks clsBank = new Banks();
             txtChequeNo.Text = clsBank.getChequeNo(bankid);
             clsBank.CommitAndDispose();
         }
@@ -329,10 +329,10 @@ namespace AceSoft.RetailPlus.GeneralLedger._Payments
 		{
 			DataClass clsDataClass = new DataClass();
 
-            Bank clsBank = new Bank();
+            Banks clsBank = new Banks();
             cboBank.DataTextField = "BankCode";
             cboBank.DataValueField = "BankID";
-            cboBank.DataSource = clsDataClass.DataReaderToDataTable(clsBank.List("BankID", SortOption.Ascending)).DefaultView;
+            cboBank.DataSource = clsBank.ListAsDataTable().DefaultView;
             cboBank.DataBind();
             clsBank.CommitAndDispose();
             cboBank.SelectedIndex = 0;
@@ -363,7 +363,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Payments
 		{
 			DataClass clsDataClass = new DataClass();
 
-			ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+			ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
 			cboAccount.DataTextField = "ChartOfAccountName";
 			cboAccount.DataValueField = "ChartOfAccountID";
 			cboAccount.DataSource = clsDataClass.DataReaderToDataTable(clsChartOfAccount.List("ChartOfAccountName", SortOption.Ascending)).DefaultView;
@@ -397,7 +397,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._Payments
 
 			lblPaymentID.Text = clsPayments.Insert(clsDetails).ToString();
 
-            Bank clsBank = new Bank(clsPayments.Connection, clsPayments.Transaction);
+            Banks clsBank = new Banks(clsPayments.Connection, clsPayments.Transaction);
             clsBank.UpdateChequeCounter(clsDetails.BankID, clsDetails.ChequeNo);
 
 			clsPayments.CommitAndDispose();

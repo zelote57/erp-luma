@@ -22,6 +22,9 @@ namespace AceSoft.RetailPlus.Data
 		public string DBPort;
 		public string Address;
 		public string Remarks;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -55,37 +58,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "INSERT INTO tblBranch (BranchCode, BranchName, DBIP, DBPort, Address, Remarks) " +
-					"VALUES (@BranchCode, @BranchName, @DBIP, @DBPort, @Address, @Remarks);";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                Save(Details);
 
-                cmd.Parameters.AddWithValue("@BranchCode", Details.BranchCode);
-                cmd.Parameters.AddWithValue("@BranchName", Details.BranchName);
-                cmd.Parameters.AddWithValue("@DBIP", Details.DBIP);
-                cmd.Parameters.AddWithValue("@DBPort", Details.DBPort);
-                cmd.Parameters.AddWithValue("@Address", Details.Address);
-                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
-
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
-
-                Int32 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int32.Parse(dr[0].ToString());
-                }
-
-				return iID;
+                return Int32.Parse(base.getLAST_INSERT_ID(this));
 			}
 
 			catch (Exception ex)
@@ -98,28 +73,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblBranch SET " + 
-								"BranchCode = @BranchCode, " +  
-								"BranchName = @BranchName, " +  
-								"DBIP = @DBIP, " +  
-								"DBPort = @DBPort, " +  
-								"Address = @Address, " +  
-								"Remarks = @Remarks " +  
-							"WHERE BranchID = @BranchID;";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-                cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
-                cmd.Parameters.AddWithValue("@BranchCode", Details.BranchCode);
-                cmd.Parameters.AddWithValue("@BranchName", Details.BranchName);
-                cmd.Parameters.AddWithValue("@DBIP", Details.DBIP);
-                cmd.Parameters.AddWithValue("@DBPort", Details.DBPort);
-                cmd.Parameters.AddWithValue("@Address", Details.Address);
-                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
@@ -128,6 +82,34 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
+        public Int32 Save(BranchDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveBranch(@BranchID, @BranchCode, @BranchName, @DBIP, @DBPort, @Address, @Remarks, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("BranchCode", Details.BranchCode);
+                cmd.Parameters.AddWithValue("BranchName", Details.BranchName);
+                cmd.Parameters.AddWithValue("DBIP", Details.DBIP);
+                cmd.Parameters.AddWithValue("DBPort", Details.DBPort);
+                cmd.Parameters.AddWithValue("Address", Details.Address);
+                cmd.Parameters.AddWithValue("Remarks", Details.Remarks);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -137,16 +119,12 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"DELETE FROM tblBranch WHERE BranchID IN (" + IDs + ");";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
+				string SQL=	"DELETE FROM tblBranch WHERE BranchID IN (" + IDs + ");";
+	 			
+				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 				return true;
@@ -154,15 +132,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -191,6 +160,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "SELECT " +
 								"BranchID, " +
 								"BranchCode, " +
@@ -202,28 +174,25 @@ namespace AceSoft.RetailPlus.Data
 							"FROM tblBranch " +
 							"WHERE BranchID = @BranchID;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				BranchDetails Details = new BranchDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-                    Details.BranchID = myReader.GetInt32("BranchID");
-                    Details.BranchCode = "" + myReader["BranchCode"].ToString();
-                    Details.BranchName = "" + myReader["BranchName"].ToString();
-                    Details.DBIP = "" + myReader["DBIP"].ToString();
-                    Details.DBPort = "" + myReader["DBPort"].ToString();
-                    Details.Address = "" + myReader["Address"].ToString();
-                    Details.Remarks = "" + myReader["Remarks"].ToString();
-				}
-				myReader.Close();
+                BranchDetails Details = new BranchDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
+                    Details.BranchCode = dr["BranchCode"].ToString();
+                    Details.BranchName = dr["BranchName"].ToString();
+                    Details.DBIP = dr["DBIP"].ToString();
+                    Details.DBPort = dr["DBPort"].ToString();
+                    Details.Address = dr["Address"].ToString();
+                    Details.Remarks = dr["Remarks"].ToString();
+                }
 
-				return Details;
+                return Details;
 			}
 
 			catch (Exception ex)
@@ -235,6 +204,9 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "SELECT " +
                                 "BranchID, " +
                                 "BranchCode, " +
@@ -246,28 +218,23 @@ namespace AceSoft.RetailPlus.Data
                             "FROM tblBranch " +
                             "WHERE BranchCode = @BranchCode;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
                 cmd.Parameters.AddWithValue("@BranchCode", BranchCode);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 BranchDetails Details = new BranchDetails();
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    Details.BranchID = myReader.GetInt32("BranchID");
-                    Details.BranchCode = "" + myReader["BranchCode"].ToString();
-                    Details.BranchName = "" + myReader["BranchName"].ToString();
-                    Details.DBIP = "" + myReader["DBIP"].ToString();
-                    Details.DBPort = "" + myReader["DBPort"].ToString();
-                    Details.Address = "" + myReader["Address"].ToString();
-                    Details.Remarks = "" + myReader["Remarks"].ToString();
+                    Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
+                    Details.BranchCode = dr["BranchCode"].ToString();
+                    Details.BranchName = dr["BranchName"].ToString();
+                    Details.DBIP =  dr["DBIP"].ToString();
+                    Details.DBPort = dr["DBPort"].ToString();
+                    Details.Address = dr["Address"].ToString();
+                    Details.Remarks = dr["Remarks"].ToString();
                 }
-
-                myReader.Close();
 
                 return Details;
             }
@@ -282,40 +249,24 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-        public System.Data.DataTable ListAsDataTable(string SortField = "BranchCode", SortOption SortOrder=SortOption.Ascending)
+        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "BranchCode", SortOption SortOrder=SortOption.Ascending)
         {
-            string SQL = SQLSelect() + "ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
             MySqlCommand cmd = new MySqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
+
+            string SQL = SQLSelect() + " ";
+
+            if (!string.IsNullOrEmpty(SearchKey))
+            {
+                SQL += "WHERE (BranchCode LIKE @SearchKey or BranchName LIKE @SearchKey) ";
+                cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+            }
+
+            SQL += "ORDER BY " + SortField + " ";
+            SQL += SortOrder == SortOption.Ascending ? "ASC" : "DESC";
+
             cmd.CommandText = SQL;
-
-            System.Data.DataTable dt = new System.Data.DataTable("tblBranch");
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
-        }
-        public System.Data.DataTable SearchAsDataTable(string SearchKey, string SortField, SortOption SortOrder)
-        {
-            string SQL = SQLSelect() + "WHERE (BranchCode LIKE @SearchKey or BranchName LIKE @SearchKey) ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
-
-            System.Data.DataTable dt = new System.Data.DataTable("tblBranch");
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
 
             return dt;

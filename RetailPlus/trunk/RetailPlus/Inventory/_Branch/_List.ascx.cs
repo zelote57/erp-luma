@@ -233,16 +233,12 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
+            string SearchKey = "";
+			if (Request.QueryString["Search"]!=null)
 			{
-				PageData.DataSource = clsBranch.ListAsDataTable(SortField, sortoption).DefaultView;
+				SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
 			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsBranch.SearchAsDataTable(SearchKey, SortField, sortoption).DefaultView;
-			}
-
+            PageData.DataSource = clsBranch.ListAsDataTable(SearchKey, SortField, sortoption).DefaultView;
 			clsBranch.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;

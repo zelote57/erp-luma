@@ -19,6 +19,9 @@ namespace AceSoft.RetailPlus.Data
 		public string DenominationCode;
 		public decimal DenominationValue;
 		public string ImagePath;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -52,35 +55,14 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "INSERT INTO tblDenomination (DenominationCode, DenominationValue, ImagePath) VALUES (@DenominationCode, @DenominationValue, @ImagePath);";
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-				MySqlParameter prmDenominationCode = new MySqlParameter("@DenominationCode",MySqlDbType.String);			
-				prmDenominationCode.Value = Details.DenominationCode;
-				cmd.Parameters.Add(prmDenominationCode);
 
-				MySqlParameter prmDenominationValue = new MySqlParameter("@DenominationValue",MySqlDbType.Decimal);			
-				prmDenominationValue.Value = Details.DenominationValue;
-				cmd.Parameters.Add(prmDenominationValue);
-
-				MySqlParameter prmImagePath = new MySqlParameter("@ImagePath",MySqlDbType.String);			
-				prmImagePath.Value = Details.ImagePath;
-				cmd.Parameters.Add(prmImagePath);
-
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-				
 				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
 				Int32 iID = 0;
@@ -97,14 +79,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -113,49 +87,39 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblDenomination SET " + 
-								"DenominationCode = @DenominationCode, " +  
-								"ImagePath = @ImagePath " +  
-							"WHERE DenominationID = @DenominationID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmDenominationCode = new MySqlParameter("@DenominationCode",MySqlDbType.String);			
-				prmDenominationCode.Value = Details.DenominationCode;
-				cmd.Parameters.Add(prmDenominationCode);
-
-				MySqlParameter prmImagePath = new MySqlParameter("@ImagePath",MySqlDbType.String);			
-				prmImagePath.Value = Details.ImagePath;
-				cmd.Parameters.Add(prmImagePath);
-
-				MySqlParameter prmDenominationID = new MySqlParameter("@DenominationID",MySqlDbType.Int16);			
-				prmDenominationID.Value = Details.DenominationID;
-				cmd.Parameters.Add(prmDenominationID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
+        public Int32 Save(DenominationDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveDenomination(@DenominationID, @DenominationCode, @DenominationValue, @ImagePath, @CreatedOn, @LastModified);";
 
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("DenominationID", Details.DenominationID);
+                cmd.Parameters.AddWithValue("DenominationCode", Details.DenominationCode);
+                cmd.Parameters.AddWithValue("DenominationValue", Details.DenominationValue);
+                cmd.Parameters.AddWithValue("ImagePath", Details.ImagePath);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 		#endregion
 
 		#region Delete

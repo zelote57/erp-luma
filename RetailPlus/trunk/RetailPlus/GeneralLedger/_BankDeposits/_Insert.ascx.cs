@@ -111,7 +111,7 @@ namespace AceSoft.RetailPlus.GeneralLedger._BankDeposit
             clsDetails.ChequeCode = txtChequeCode.Text;
             clsDetails.ChequeCounter = txtChequeCounter.Text;
 			
-			Bank clsBank = new Bank();
+			Banks clsBank = new Banks();
 			Int32 id = clsBank.Insert(clsDetails);
 			clsBank.CommitAndDispose();
 

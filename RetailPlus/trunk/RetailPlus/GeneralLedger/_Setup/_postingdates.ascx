@@ -61,7 +61,7 @@
 							<tr>
 								<td></td>
 								<td>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtDateFrom" Display="Dynamic" ErrorMessage="'Allowable Date From' must be a valid date." Type="Date" Operator="DataTypeCheck"></asp:RegularExpressionValidator></td>
+									<asp:CompareValidator id="CompareValidator1" CssClass="ms-error" runat="server" ControlToValidate="txtDateFrom" Display="Dynamic" ErrorMessage="'Allowable Date From' must be a valid date." Type="Date" Operator="DataTypeCheck" ForeColor=" "></asp:CompareValidator></td>
 							</tr>
 							<tr>
 								<td></td>
@@ -70,7 +70,7 @@
 							<tr>
 								<td></td>
 								<td>
-									<asp:RegularExpressionValidator id="RegularExpressionValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtDateTo" Display="Dynamic" ErrorMessage="'Allowable Date To' must be a valid date." Type="Date" Operator="DataTypeCheck"></asp:RegularExpressionValidator></td>
+									<asp:CompareValidator id="CompareValidator2" CssClass="ms-error" runat="server" ControlToValidate="txtDateTo" Display="Dynamic" ErrorMessage="'Allowable Date To' must be a valid date." Type="Date" Operator="DataTypeCheck" ForeColor=" "></asp:CompareValidator></td>
 							</tr>
 						</table>
 					</td>

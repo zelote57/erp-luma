@@ -18,6 +18,9 @@ namespace AceSoft.RetailPlus.Data
 		public int PromoTypeID;
 		public string PromoTypeCode;
 		public string PromoTypeName;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -52,34 +55,12 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL =	"INSERT INTO tblPromoType (" + 
-								"PromoTypeCode, " +
-								"PromoTypeName " +
-								")VALUES (" +
-								"@PromoTypeCode, " +
-								"@PromoTypeName);";
+                Save(Details);
+
+                string SQL = "SELECT LAST_INSERT_ID();";
 				  
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmPromoTypeCode = new MySqlParameter("@PromoTypeCode",MySqlDbType.String);			
-				prmPromoTypeCode.Value = Details.PromoTypeCode;
-				cmd.Parameters.Add(prmPromoTypeCode);
-
-				MySqlParameter prmPromoTypeName = new MySqlParameter("@PromoTypeName",MySqlDbType.String);	
-				prmPromoTypeName.Value = Details.PromoTypeName;
-				cmd.Parameters.Add(prmPromoTypeName);
-				
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
 				cmd.CommandText = SQL;
 
                 System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
@@ -97,15 +78,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -114,50 +86,39 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblPromoType SET " + 
-							"PromoTypeCode = @PromoTypeCode, " +  
-							"PromoTypeName = @PromoTypeName " +  
-							"WHERE PromoTypeID = @PromoTypeID;";
-							
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmPromoTypeCode = new MySqlParameter("@PromoTypeCode",MySqlDbType.String);			
-				prmPromoTypeCode.Value = Details.PromoTypeCode;
-				cmd.Parameters.Add(prmPromoTypeCode);
-
-				MySqlParameter prmPromoTypeName = new MySqlParameter("@PromoTypeName",MySqlDbType.String);	
-				prmPromoTypeName.Value = Details.PromoTypeName;
-				cmd.Parameters.Add(prmPromoTypeName);
-
-				MySqlParameter prmPromoTypeID = new MySqlParameter("@PromoTypeID",MySqlDbType.Int32);	
-				prmPromoTypeID.Value = Details.PromoTypeID;
-				cmd.Parameters.Add(prmPromoTypeID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
+        public Int32 Save(PromoTypeDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSavePromoType(@PromoTypeID, @PromoTypeCode, @PromoTypeName, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("PromoTypeID", Details.PromoTypeID);
+                cmd.Parameters.AddWithValue("PromoTypeCode", Details.PromoTypeCode);
+                cmd.Parameters.AddWithValue("PromoTypeName", Details.PromoTypeName);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 

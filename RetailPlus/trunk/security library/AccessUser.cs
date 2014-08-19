@@ -38,6 +38,7 @@ namespace AceSoft.RetailPlus.Security
 		public string Address2;
 		public string City;
 		public string State;
+        public string Zip;
 		public Int32 CountryID;
 		public string CountryName;
 		public string OfficePhone;
@@ -49,6 +50,9 @@ namespace AceSoft.RetailPlus.Security
 		public Int32 GroupID;
 		public string GroupName;
 		public int PageSize;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	
@@ -343,6 +347,72 @@ namespace AceSoft.RetailPlus.Security
 			}	
 		}
 
+        public Int32 Save(AccessUserDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveSysAccessUsers(@UID, @UserName, @Password, @DateCreated, @Deleted, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("UID", Details.UID);
+                cmd.Parameters.AddWithValue("UserName", Details.UserName);
+                cmd.Parameters.AddWithValue("Password", Details.Password);
+                cmd.Parameters.AddWithValue("DateCreated", Details.DateCreated);
+                cmd.Parameters.AddWithValue("Deleted", Details.Deleted);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public Int32 SaveDetails(AccessUserDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveSysAccessUserDetails(@UID, @Name, @Address1, @Address2, @City, @State, @Zip, @CountryID," + 
+                                                               "@OfficePhone, @DirectPhone, @HomePhone, @FaxPhone, @MobilePhone, " +
+										                       "@EmailAddress, @GroupID, @PageSize, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("UID", Details.UID);
+                cmd.Parameters.AddWithValue("Name", Details.Name);
+                cmd.Parameters.AddWithValue("Address1", Details.Address1);
+                cmd.Parameters.AddWithValue("Address2", Details.Address2);
+                cmd.Parameters.AddWithValue("City", Details.City);
+                cmd.Parameters.AddWithValue("State", Details.State);
+                cmd.Parameters.AddWithValue("Zip", Details.Zip);
+                cmd.Parameters.AddWithValue("CountryID", Details.CountryID);
+                cmd.Parameters.AddWithValue("OfficePhone", Details.OfficePhone);
+                cmd.Parameters.AddWithValue("DirectPhone", Details.DirectPhone);
+                cmd.Parameters.AddWithValue("HomePhone", Details.HomePhone);
+                cmd.Parameters.AddWithValue("FaxPhone", Details.FaxPhone);
+                cmd.Parameters.AddWithValue("MobilePhone", Details.MobilePhone);
+                cmd.Parameters.AddWithValue("EmailAddress", Details.EmailAddress);
+                cmd.Parameters.AddWithValue("GroupID", Details.GroupID);
+                cmd.Parameters.AddWithValue("PageSize", Details.PageSize);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 

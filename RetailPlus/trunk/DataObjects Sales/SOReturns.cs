@@ -528,7 +528,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 SOReturnDetails clsSOReturnDetails = Details(CreditMemoID);
-                ChartOfAccount clsChartOfAccount = new ChartOfAccount(base.Connection, base.Transaction);
+                ChartOfAccounts clsChartOfAccount = new ChartOfAccounts(base.Connection, base.Transaction);
 
                 // update ChartOfAccountIDARTracking as credit
                 clsChartOfAccount.UpdateCredit(clsSOReturnDetails.ChartOfAccountIDARTracking, clsSOReturnDetails.SubTotal);

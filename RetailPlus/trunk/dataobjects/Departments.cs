@@ -18,6 +18,9 @@ namespace AceSoft.RetailPlus.Data
 		public Int16 DepartmentID;
 		public string DepartmentCode;
 		public string DepartmentName;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -49,97 +52,74 @@ namespace AceSoft.RetailPlus.Data
 		
 		#region Insert and Update
 
-		public Int16 Insert(DepartmentDetails Details)
-		{
-			try 
-			{
-                string SQL = "CALL procDepartmentInsert(@DepartmentCode, @DepartmentName);";
+        public Int32 Insert(DepartmentDetails Details)
+        {
+            try
+            {
+                Save(Details);
 
-                
+                string SQL = "SELECT LAST_INSERT_ID();";
 
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
+                cmd.Parameters.Clear();
+                cmd.CommandText = SQL;
+
+                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+
+                Int16 iID = 0;
+
+                while (myReader.Read())
+                {
+                    iID = myReader.GetInt16(0);
+                }
+
+                myReader.Close();
+
+                return iID;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public void Update(DepartmentDetails Details)
+        {
+            try
+            {
+                Save(Details);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public Int32 Save(DepartmentDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveDepartment(@DepartmentID, @DepartmentCode, @DepartmentName, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                MySqlParameter prDepartmentCode = new MySqlParameter("@DepartmentCode",MySqlDbType.String);
-                prDepartmentCode.Value = Details.DepartmentCode;
-                cmd.Parameters.Add(prDepartmentCode);
+                cmd.Parameters.AddWithValue("DepartmentID", Details.DepartmentID);
+                cmd.Parameters.AddWithValue("DepartmentCode", Details.DepartmentCode);
+                cmd.Parameters.AddWithValue("DepartmentName", Details.DepartmentName);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
-                MySqlParameter prmDepartmentName = new MySqlParameter("@DepartmentName",MySqlDbType.String);
-                prmDepartmentName.Value = Details.DepartmentName;
-                cmd.Parameters.Add(prmDepartmentName);
+                return base.ExecuteNonQuery(cmd);
+            }
 
-                base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int16 iID = 0;
-
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt16(0);
-				}
-
-				myReader.Close();
-
-				return iID;
-			}
-
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public void Update(DepartmentDetails Details)
-		{
-			try 
-			{
-                string SQL = "CALL procDepartmentUpdate(@DepartmentID, @DepartmentCode, @DepartmentName);";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@DepartmentID", Details.DepartmentID);
-                cmd.Parameters.AddWithValue("@DepartmentCode", Details.DepartmentCode);
-                cmd.Parameters.AddWithValue("@DepartmentName", Details.DepartmentName);
-
-                base.ExecuteNonQuery(cmd);
-			}
-
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 
 		#endregion

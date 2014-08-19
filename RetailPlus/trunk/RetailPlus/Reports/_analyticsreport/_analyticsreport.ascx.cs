@@ -122,7 +122,7 @@ namespace AceSoft.RetailPlus.Reports
             ProductGroup clsProductGroup = new ProductGroup(clsCustomer.Connection, clsCustomer.Transaction);
             cboProductGroup.DataTextField = "ProductGroupName";
             cboProductGroup.DataValueField = "ProductGroupName";
-            cboProductGroup.DataSource = clsProductGroup.DataTable("ProductGroupName", SortOption.Ascending);
+            cboProductGroup.DataSource = clsProductGroup.ListAsDataTable();
             cboProductGroup.DataBind();
             cboProductGroup.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
             cboProductGroup.SelectedIndex = 0;

@@ -18,6 +18,9 @@ namespace AceSoft.RetailPlus.Data
 		public Int16 CardTypeID;
 		public string CardTypeCode;
 		public string CardTypeName;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -47,108 +50,74 @@ namespace AceSoft.RetailPlus.Data
 		
 		#region Insert and Update
 
-		public Int16 Insert(CardTypeDetails Details)
-		{
-			try 
-			{
-				string SQL = "INSERT INTO tblCardTypes (CardTypeCode, CardTypeName) VALUES (@CardTypeCode, @CardTypeName);";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmCardTypeCode = new MySqlParameter("@CardTypeCode",MySqlDbType.String);			
-				prmCardTypeCode.Value = Details.CardTypeCode;
-				cmd.Parameters.Add(prmCardTypeCode);
+        public Int32 Insert(CardTypeDetails Details)
+        {
+            try
+            {
+                Save(Details);
 
-				MySqlParameter prmCardTypeName = new MySqlParameter("@CardTypeName",MySqlDbType.String);			
-				prmCardTypeName.Value = Details.CardTypeName;
-				cmd.Parameters.Add(prmCardTypeName);
+                string SQL = "SELECT LAST_INSERT_ID();";
 
-				base.ExecuteNonQuery(cmd);
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Parameters.Clear();
+                cmd.CommandText = SQL;
 
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int16 iID = 0;
+                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt16(0);
-				}
+                Int16 iID = 0;
 
-				myReader.Close();
+                while (myReader.Read())
+                {
+                    iID = myReader.GetInt16(0);
+                }
 
-				return iID;
-			}
+                myReader.Close();
 
-			catch (Exception ex)
-			{
-				
-				
-					
+                return iID;
+            }
 
-				
-				
-				
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
-				throw base.ThrowException(ex);
-			}	
-		}
+        public void Update(CardTypeDetails Details)
+        {
+            try
+            {
+                Save(Details);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
-		public void Update(CardTypeDetails Details)
-		{
-			try 
-			{
-				string SQL=	"UPDATE tblCardTypes SET " + 
-							"CardTypeCode = @CardTypeCode, " +  
-							"CardTypeName = @CardTypeName " +  
-							"WHERE CardTypeID = @CardTypeID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmCardTypeCode = new MySqlParameter("@CardTypeCode",MySqlDbType.String);			
-				prmCardTypeCode.Value = Details.CardTypeCode;
-				cmd.Parameters.Add(prmCardTypeCode);
+        public Int32 Save(CardTypeDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveCardType(@CardTypeID, @CardTypeCode, @CardTypeName, @CreatedOn, @LastModified);";
 
-				MySqlParameter prmCardTypeName = new MySqlParameter("@CardTypeName",MySqlDbType.String);			
-				prmCardTypeName.Value = Details.CardTypeName;
-				cmd.Parameters.Add(prmCardTypeName);
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
 
-				MySqlParameter prmCardTypeID = new MySqlParameter("@CardTypeID",MySqlDbType.Int16);			
-				prmCardTypeID.Value = Details.CardTypeID;
-				cmd.Parameters.Add(prmCardTypeID);
+                cmd.Parameters.AddWithValue("CardTypeID", Details.CardTypeID);
+                cmd.Parameters.AddWithValue("CardTypeCode", Details.CardTypeCode);
+                cmd.Parameters.AddWithValue("CardTypeName", Details.CardTypeName);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
-				base.ExecuteNonQuery(cmd);
-			}
+                return base.ExecuteNonQuery(cmd);
+            }
 
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 
 		#endregion

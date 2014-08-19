@@ -68,6 +68,7 @@
 					<td style="padding-bottom: 10px;" valign="top" colspan="3">
 						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 1:&nbsp;Apply 
 							description for each applicable variations
+                            <asp:HyperLink CssClass="ms-vb-user" ID="lnkVariations" runat="server" ToolTip="Setup Product Variations" Font-Underline="true" Target="_blank" CausesValidation="false" OnClientClick="NewWindow();">&nbsp;[Add/Edit/Delete Variations]&nbsp;</asp:HyperLink>
 						</div>
 					</td>
 				</tr>

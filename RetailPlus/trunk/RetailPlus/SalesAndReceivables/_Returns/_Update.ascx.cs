@@ -109,7 +109,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
             Branch clsBranch = new Branch(clsContact.Connection, clsContact.Transaction);
             cboBranch.DataTextField = "BranchCode";
             cboBranch.DataValueField = "BranchID";
-            cboBranch.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
+            cboBranch.DataSource = clsBranch.ListAsDataTable().DefaultView;
             cboBranch.DataBind();
             clsContact.CommitAndDispose();
 

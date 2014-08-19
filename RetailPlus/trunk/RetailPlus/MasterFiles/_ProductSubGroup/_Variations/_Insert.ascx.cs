@@ -90,7 +90,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Variations
 			DataClass clsDataClass = new DataClass();
 			lblProductSubGroupID.Text = Common.Decrypt((string)Request.QueryString["subgroupid"],Session.SessionID);
 
-			ProductSubGroupVariation clsVariation = new ProductSubGroupVariation();
+			ProductSubGroupVariations clsVariation = new ProductSubGroupVariations();
 			
 			cboVariationType.DataTextField = "VariationType";
 			cboVariationType.DataValueField = "VariationID";
@@ -102,7 +102,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup._Variations
 		}
 		private Int32 SaveRecord()
 		{
-			ProductSubGroupVariation clsProdSubVariation = new ProductSubGroupVariation();
+			ProductSubGroupVariations clsProdSubVariation = new ProductSubGroupVariations();
 			ProductSubGroupVariationDetails clsDetails = new ProductSubGroupVariationDetails();
 
 			clsDetails.SubGroupID = Convert.ToInt16(lblProductSubGroupID.Text);

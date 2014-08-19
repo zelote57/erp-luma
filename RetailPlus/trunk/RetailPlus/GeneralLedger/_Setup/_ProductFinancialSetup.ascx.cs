@@ -123,11 +123,11 @@ namespace AceSoft.RetailPlus.GeneralLedger._Setup
 		{
             
             DataClass clsDataClass = new DataClass();
-            ChartOfAccount clsChartOfAccount = new ChartOfAccount();
+            ChartOfAccounts clsChartOfAccount = new ChartOfAccounts();
             System.Data.DataTable dtList = clsDataClass.DataReaderToDataTable(clsChartOfAccount.List("ChartOfAccountName", SortOption.Ascending));
 
             ProductGroup clsProductGroup = new ProductGroup(clsChartOfAccount.Connection, clsChartOfAccount.Transaction);
-            System.Data.DataTable dtProductGroup = clsDataClass.DataReaderToDataTable(clsProductGroup.List("ProductGroupID", SortOption.Ascending));
+            System.Data.DataTable dtProductGroup = clsProductGroup.ListAsDataTable(SortField:"ProductGroupID");
 
             ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
             clsProductSubGroupColumns.ProductSubGroupName = true;

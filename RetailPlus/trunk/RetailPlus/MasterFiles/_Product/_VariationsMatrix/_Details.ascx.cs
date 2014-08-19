@@ -97,8 +97,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			lblProductID.Text = Common.Decrypt((string)Request.QueryString["prodid"],Session.SessionID);
 			lblMatrixID.Text = Common.Decrypt(Request.QueryString["id"],Session.SessionID);
 
-			ProductVariation clsProductVariation = new ProductVariation();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsProductVariation.List(Convert.ToInt32(lblProductID.Text),"VariationType",SortOption.Ascending)).DefaultView;
+			ProductVariations clsProductVariation = new ProductVariations();
+			lstItem.DataSource = clsProductVariation.ListAsDataTable(Convert.ToInt64(lblProductID.Text)).DefaultView;
 			lstItem.DataBind();
 
 			ProductUnitsMatrix clsUnit = new ProductUnitsMatrix(clsProductVariation.Connection, clsProductVariation.Transaction);

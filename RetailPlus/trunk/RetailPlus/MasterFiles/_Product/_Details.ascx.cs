@@ -191,7 +191,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             //UnitMeasurements clsUnit = new UnitMeasurements(clsProductGroup.Connection, clsProductGroup.Transaction);
             //cboProductUnit.DataTextField = "UnitName";
             //cboProductUnit.DataValueField = "UnitID";
-            //cboProductUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List("UnitName",SortOption.Ascending)).DefaultView;
+            //cboProductUnit.DataSource = clsUnit.ListAsDataTable(SortField:"UnitName").DefaultView;
             //cboProductUnit.DataBind();
             //cboProductUnit.SelectedIndex = cboProductUnit.Items.Count - 1;
             //clsUnit.CommitAndDispose();

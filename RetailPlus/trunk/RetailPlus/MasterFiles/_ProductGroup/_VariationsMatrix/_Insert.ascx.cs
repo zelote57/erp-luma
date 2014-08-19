@@ -97,15 +97,15 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
 
 			lblGroupID.Text = Common.Decrypt((string)Request.QueryString["groupid"],Session.SessionID);
 			
-			ProductGroupVariation clsProductGroupVariation = new ProductGroupVariation();
+			ProductGroupVariations clsProductGroupVariation = new ProductGroupVariations();
 			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsProductGroupVariation.List(Convert.ToInt32(lblGroupID.Text),"VariationType",SortOption.Ascending)).DefaultView;
 			lstItem.DataBind();
-			clsProductGroupVariation.CommitAndDispose();	
+			clsProductGroupVariation.CommitAndDispose();
 
-			UnitMeasurements clsUnit = new UnitMeasurements();
+            Data.Unit clsUnit = new Data.Unit();
 			cboUnit.DataTextField = "UnitName";
 			cboUnit.DataValueField = "UnitID";
-			cboUnit.DataSource = clsDataClass.DataReaderToDataTable(clsUnit.List("UnitName",SortOption.Ascending)).DefaultView;
+			cboUnit.DataSource = clsUnit.ListAsDataTable(SortField:"UnitName").DefaultView;
 			cboUnit.DataBind();
 			cboUnit.SelectedIndex = cboUnit.Items.Count - 1;
 			clsUnit.CommitAndDispose();	
@@ -114,7 +114,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
 			ProductGroupDetails clsProductGroupDetails = clsProductGroup.Details(Convert.ToInt32(lblGroupID.Text));
 			clsProductGroup.CommitAndDispose();
 
-			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsProductGroupDetails.BaseUnitID.ToString()));
+			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsProductGroupDetails.UnitDetails.UnitID.ToString()));
 			txtProductPrice.Text = clsProductGroupDetails.Price.ToString("#,##0.#0");
 			txtProductPrice.Text = clsProductGroupDetails.Price.ToString("#,##0.#0");
 			txtPurchasePrice.Text = clsProductGroupDetails.PurchasePrice.ToString("#,##0.#0");
@@ -126,7 +126,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
 		}
 		private bool SaveRecord()
 		{
-			ProductGroupBaseMatrixDetails clsBaseDetails = new ProductGroupBaseMatrixDetails();
+			ProductGroupBaseVariationsMatrixDetails clsBaseDetails = new ProductGroupBaseVariationsMatrixDetails();
 			ProductGroupVariationsMatrixDetails clsDetails;
 			ProductGroupVariationsMatrix clsProductGroupVariationsMatrix = new ProductGroupVariationsMatrix();
 			

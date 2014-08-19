@@ -79,12 +79,12 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
             Branch clsBranch = new Branch();
             cboBranchFrom.DataTextField = "BranchCode";
             cboBranchFrom.DataValueField = "BranchID";
-            cboBranchFrom.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
+            cboBranchFrom.DataSource = clsBranch.ListAsDataTable().DefaultView;
             cboBranchFrom.DataBind();
 
             cboBranchTo.DataTextField = "BranchCode";
             cboBranchTo.DataValueField = "BranchID";
-            cboBranchTo.DataSource = clsBranch.ListAsDataTable("BranchCode", SortOption.Ascending).DefaultView;
+            cboBranchTo.DataSource = clsBranch.ListAsDataTable().DefaultView;
             cboBranchTo.DataBind();
 
             clsBranch.CommitAndDispose();

@@ -552,7 +552,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 //}
                 //else 
                 lblHeader.Text = mstHeader;
-                if (clsDiscountDetails.InPercent == 1)
+                if (clsDiscountDetails.InPercent)
                 {
                     mDiscountType = DiscountTypes.Percentage;
                     lblDiscountType.Visible = true;

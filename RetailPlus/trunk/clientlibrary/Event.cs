@@ -39,6 +39,7 @@ namespace AceSoft.RetailPlus.Client
 
                 string logsdir = System.Configuration.ConfigurationManager.AppSettings["logsdir"].ToString();
 
+                logsdir += logsdir.EndsWith("/") ? "" : "/";
                 if (!Directory.Exists(logsdir + logdate.ToString("MMM")))
                 {
                     Directory.CreateDirectory(logsdir + logdate.ToString("MMM"));

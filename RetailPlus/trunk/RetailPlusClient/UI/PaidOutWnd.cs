@@ -25,23 +25,14 @@ namespace AceSoft.RetailPlus.Client.UI
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.Container components = null;
-
-        private DialogResult dialog;
         private System.Windows.Forms.PictureBox imgIcon;
         private TextBox txtSelectedTexBox;
         private Button cmdCancel;
         private Button cmdEnter;
-        private Int64 mCashierID;
+
+        #region Property Get/Set
+
         private Data.PaidOutDetails mclsPaidOutDetails;
-
-        public DialogResult Result
-        {
-            get
-            {
-                return dialog;
-            }
-        }
-
         public Data.PaidOutDetails PaidOutDetails
         {
             get
@@ -50,6 +41,16 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private DialogResult dialog;
+        public DialogResult Result
+        {
+            get
+            {
+                return dialog;
+            }
+        }
+
+        private Int64 mCashierID;
         public Int64 CashierID
         {
             set
@@ -58,6 +59,16 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set
+            {
+                mclsTerminalDetails = value;
+            }
+        }
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -138,7 +149,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label15.BackColor = System.Drawing.Color.Transparent;
             this.label15.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.ForeColor = System.Drawing.Color.Red;
-            this.label15.Location = new System.Drawing.Point(35, 0);
+            this.label15.Location = new System.Drawing.Point(38, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(33, 13);
             this.label15.TabIndex = 78;
@@ -415,11 +426,10 @@ namespace AceSoft.RetailPlus.Client.UI
                 mclsPaidOutDetails.Remarks = txtRemarks.Text;
                 mclsPaidOutDetails.DateCreated = DateTime.Now;
                 mclsPaidOutDetails.TerminalNo = CompanyDetails.TerminalNo;
-                mclsPaidOutDetails.BranchID = Constants.TerminalBranchID;
+                mclsPaidOutDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
                 mclsPaidOutDetails.CashierID = mCashierID;
-                mclsPaidOutDetails.BranchID = Constants.TerminalBranchID;
 
-                Data.CashierReport clsCashierReport = new Data.CashierReport();
+                Data.CashierReports clsCashierReport = new Data.CashierReports();
                 if (!clsCashierReport.IsPaidOutAmountValid(mclsPaidOutDetails))
                 {
                     MessageBox.Show("Sorry, the amount you entered is greater than the " + cboType.Text + " sales." +

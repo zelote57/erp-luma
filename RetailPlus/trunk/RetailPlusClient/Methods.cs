@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using AceSoft.RetailPlus.Security;
 
 namespace AceSoft.RetailPlus.Client
 {
@@ -51,5 +52,21 @@ namespace AceSoft.RetailPlus.Client
 			}
 			return boRetValue;
 		}
+
+        public static void InsertAuditLog(Data.TerminalDetails TerminalDetails, string Username, AccessTypes AccessType, string Remarks)
+        {
+            Security.AuditTrailDetails clsAuditDetails = new Security.AuditTrailDetails();
+            clsAuditDetails.BranchID = TerminalDetails.BranchDetails.BranchID;
+            clsAuditDetails.TerminalNo = TerminalDetails.TerminalNo;
+            clsAuditDetails.ActivityDate = DateTime.Now;
+            clsAuditDetails.User = Username;
+            clsAuditDetails.IPAddress = System.Net.Dns.GetHostName();
+            clsAuditDetails.Activity = AccessType.ToString("G");
+            clsAuditDetails.Remarks = "FE:" + Remarks;
+
+            Security.AuditTrail clsAuditTrail = new Security.AuditTrail();
+            clsAuditTrail.Insert(clsAuditDetails);
+            clsAuditTrail.CommitAndDispose();
+        }
 	}
 }

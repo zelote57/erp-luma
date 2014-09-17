@@ -23,18 +23,18 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdCancel;
         private Button cmdEnter;
 
-        private decimal mdecAllowedCredit = 0;
-        private DialogResult dialog;
-        private decimal mdecBalanceAmount;
-        public bool mboIsRefund;
-        private Data.ContactDetails mclsCustomerDetails;
-        private Data.CreditPaymentDetails mDetails = new Data.CreditPaymentDetails();
-        private Data.SalesTransactionDetails mclsSalesTransactionDetails;
+        #region public Properties
 
-        public decimal AllowedCredit
+        public bool mboIsRefund;
+        public bool IsRefund 
         {
-            set { mdecAllowedCredit = value; }
+            set 
+            { 
+                mboIsRefund = value; 
+            } 
         }
+
+        private DialogResult dialog;
         public DialogResult Result
         {
             get
@@ -42,30 +42,58 @@ namespace AceSoft.RetailPlus.Client.UI
                 return dialog;
             }
         }
-        public Data.SalesTransactionDetails SalesTransactionDetails
-        {
-            set
-            {
-                mclsSalesTransactionDetails  = value;
-            }
-        }
-        public Data.ContactDetails CustomerDetails
-        {
-            set { mclsCustomerDetails = value; }
-        }
+
+        private decimal mdecBalanceAmount;
         public decimal BalanceAmount
         {
             set
-            {
-                mdecBalanceAmount = value;
+            { mdecBalanceAmount = value; }
+        }
+
+        private Data.SalesTransactionDetails mclsSalesTransactionDetails;
+        public Data.SalesTransactionDetails SalesTransactionDetails
+        {
+            set 
+            { 
+                mclsSalesTransactionDetails = value; 
             }
         }
-        public bool IsRefund { set { mboIsRefund = value; } }
+
+        private Data.CreditPaymentDetails mDetails;
         public Data.CreditPaymentDetails Details
         {
             get
             { return mDetails; }
         }
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set 
+            { 
+                mclsTerminalDetails = value; 
+            }
+        }
+
+        private decimal mdecAllowedCredit = 0;
+        public decimal AllowedCredit
+        {
+            set 
+            { 
+                mdecAllowedCredit = value; 
+            }
+        }
+
+        private Data.ContactDetails mclsCustomerDetails;
+        public Data.ContactDetails CustomerDetails
+        {
+            set 
+            { 
+                mclsCustomerDetails = value; 
+            }        
+        }
+
+        #endregion
 
         public CreditPaymentWnd()
         {
@@ -399,6 +427,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.Hide();
             }
         }
+        private void imgIcon_Click(object sender, EventArgs e)
+        {
+            dialog = DialogResult.Cancel;
+            this.Hide();
+        }
 
         #endregion
 
@@ -436,6 +469,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 MessageBox.Show("Amount must be greater than zero. Please enter a higher amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+
+            mDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
+            mDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
             mDetails.TransactionID = mclsSalesTransactionDetails.TransactionID;
             mDetails.TransactionNo = mclsSalesTransactionDetails.TransactionNo;
             mDetails.CashierName = mclsSalesTransactionDetails.CashierName;
@@ -452,10 +488,5 @@ namespace AceSoft.RetailPlus.Client.UI
 
         #endregion
 
-        private void imgIcon_Click(object sender, EventArgs e)
-        {
-            dialog = DialogResult.Cancel;
-            this.Hide();
-        }
     }
 }

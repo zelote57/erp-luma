@@ -9,37 +9,39 @@ namespace AceSoft.RetailPlus.Client.UI
 {
 	public class BalanceWnd : System.Windows.Forms.Form
 	{
-		
 		private System.ComponentModel.Container components = null;
         private System.Windows.Forms.Label lblHeader;
 		private System.Windows.Forms.PictureBox imgIcon;
-
-		private DialogResult dialog;
-        private Int64 miCashierID;
         private GroupBox groupBox1;
         private Label lblCurrency;
         private TextBox txtAmount;
         private Button cmdCancel;
-		private decimal mdecAmount;
 
+        #region Property Get/Set
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails { set { this.mclsTerminalDetails = value; } }
+        private DialogResult dialog;
 		public DialogResult Result
 		{
 			get {	return dialog;	}
 		}
-
+        private Int64 miCashierID;
 		public Int64 CashierID
 		{
 			get {	return miCashierID;	}
 			set {	miCashierID = value;	}
 		}
-
+        private decimal mdecAmount;
 		public decimal Amount
 		{
 			get {	return mdecAmount;	}
 		}
 
-		#region Constructors And Desctructors
-		public BalanceWnd()
+        #endregion
+
+        #region Constructors And Desctructors
+        public BalanceWnd()
 		{
 			InitializeComponent();
 		}
@@ -277,14 +279,15 @@ namespace AceSoft.RetailPlus.Client.UI
 			CashierLogsDetails clsLogDetails = new CashierLogsDetails();
 			clsLogDetails.CashierID = miCashierID;
 			clsLogDetails.LoginDate = DateTime.Now;
-            clsLogDetails.BranchID = Constants.TerminalBranchID;
-			clsLogDetails.TerminalNo = CompanyDetails.TerminalNo;
+            clsLogDetails.BranchID = mclsTerminalDetails.BranchID;
+            clsLogDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
 			clsLogDetails.IPAddress = System.Net.Dns.GetHostName();
 			clsLogDetails.Status = CashierLogStatus.LoggedIn;
 
 			CashierLogs clsCashierLogs = new CashierLogs();
 			clsCashierLogs.UpdateBeginningBalance(clsLogDetails, Convert.ToDecimal(txtAmount.Text));
 			clsCashierLogs.CommitAndDispose();
+
 			return true;
 		}
 

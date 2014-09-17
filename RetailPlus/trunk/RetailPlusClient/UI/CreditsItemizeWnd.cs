@@ -17,105 +17,116 @@ namespace AceSoft.RetailPlus.Client.UI
 		private Button cmdCancel;
 		private Button cmdEnter;
 		private System.ComponentModel.Container components = null;
-
-		private DialogResult dialog;
-		private Data.ContactDetails mclsCustomerDetails;
-
-		private decimal mdecAmountPaid;
-		private decimal mdecCashPayment;
-		private decimal mdecChequePayment;
-		private decimal mdecCreditCardPayment;
-		private decimal mdecDebitPayment;
-		private decimal mdecBalanceAmount;
-		private decimal mdecChangeAmount;
-		private PaymentTypes mPaymentType = PaymentTypes.NotYetAssigned;
-		private ArrayList marrCashPaymentDetails = new ArrayList();
-		private ArrayList marrChequePaymentDetails = new ArrayList();
-		private ArrayList marrCreditCardPaymentDetails = new ArrayList();
         private DataGridView dgvItems;
         private Label label1;
         private Label lblBalanceSelected;
-		private ArrayList marrDebitPaymentDetails = new ArrayList();
 
-		public decimal AmountPayment
-		{
-			get	{	return mdecAmountPaid;	}
-		}
-		public decimal CashPayment
-		{
-			get	{	return mdecCashPayment;	}
-		}
-		public decimal ChequePayment
-		{
-			get	{	return mdecChequePayment;	}
-		}
-		public decimal CreditCardPayment
-		{
-			get
-			{
-				return mdecCreditCardPayment;
-			}
-		}
-		public decimal DebitPayment
-		{
-			get
-			{
-				return mdecDebitPayment;
-			}
-		}
-		public decimal BalanceAmount
-		{
-			get
-			{
-				return mdecBalanceAmount;
-			}
-		}
-		public decimal ChangeAmount
-		{
-			get
-			{
-				return mdecChangeAmount;
-			}
-		}
-		public PaymentTypes PaymentType
-		{
-			get
-			{	return mPaymentType;	}
-		}
-		public ArrayList CashPaymentDetails
-		{
-			get 
-			{
-				return marrCashPaymentDetails;
-			}
-		}
-		public ArrayList ChequePaymentDetails
-		{
-			get 
-			{
-				return marrChequePaymentDetails;
-			}
-		}
-		public ArrayList CreditCardPaymentDetails
-		{
-			get	{	return marrCreditCardPaymentDetails;	}
-		}
-		public ArrayList DebitPaymentDetails
-		{
-			get	{	return marrDebitPaymentDetails;	}
-		}
-		public DialogResult Result
-		{
-			get 
-			{
-				return dialog;
-			}
-		}
-		public Data.ContactDetails CustomerDetails
-		{
-			set	{	mclsCustomerDetails = value;	}
-		}
-		
+        private decimal mdecAmountPaid;
+        private decimal mdecCashPayment;
+        private decimal mdecChequePayment;
+        private decimal mdecCreditCardPayment;
+        private decimal mdecDebitPayment;
+        private decimal mdecBalanceAmount;
+        private decimal mdecChangeAmount;
+
+        public decimal AmountPayment
+        {
+            get { return mdecAmountPaid; }
+        }
+        public decimal CashPayment
+        {
+            get { return mdecCashPayment; }
+        }
+        public decimal ChequePayment
+        {
+            get { return mdecChequePayment; }
+        }
+        public decimal CreditCardPayment
+        {
+            get
+            {
+                return mdecCreditCardPayment;
+            }
+        }
+        public decimal DebitPayment
+        {
+            get
+            {
+                return mdecDebitPayment;
+            }
+        }
+        public decimal BalanceAmount
+        {
+            get
+            {
+                return mdecBalanceAmount;
+            }
+        }
+        public decimal ChangeAmount
+        {
+            get
+            {
+                return mdecChangeAmount;
+            }
+        }
+
+        private PaymentTypes mPaymentType = PaymentTypes.NotYetAssigned;
+        public PaymentTypes PaymentType
+        {
+            get
+            { return mPaymentType; }
+        }
+
+        private ArrayList marrCashPaymentDetails = new ArrayList();
+        public ArrayList CashPaymentDetails
+        {
+            get
+            {
+                return marrCashPaymentDetails;
+            }
+        }
+
+        private ArrayList marrChequePaymentDetails = new ArrayList();
+        public ArrayList ChequePaymentDetails
+        {
+            get
+            {
+                return marrChequePaymentDetails;
+            }
+        }
+
+        private ArrayList marrCreditCardPaymentDetails = new ArrayList();
+        public ArrayList CreditCardPaymentDetails
+        {
+            get { return marrCreditCardPaymentDetails; }
+        }
+
+        private ArrayList marrDebitPaymentDetails = new ArrayList();
+        public ArrayList DebitPaymentDetails
+        {
+            get { return marrDebitPaymentDetails; }
+        }
+
+        private DialogResult dialog;
+        public DialogResult Result
+        {
+            get
+            {
+                return dialog;
+            }
+        }
+
+        private Data.ContactDetails mclsCustomerDetails;
+        public Data.ContactDetails CustomerDetails
+        {
+            set { mclsCustomerDetails = value; }
+        }
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+        }
 
 		#region Constructors and Destuctors
 
@@ -396,9 +407,6 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void CreditsItemizeWnd_KeyDown(object sender, KeyEventArgs e)
 		{
-			System.Data.DataTable dt;
-			int index;
-
 			switch (e.KeyData)
 			{
 				case Keys.Escape:
@@ -585,7 +593,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			clsPayment.CommitAndDispose();
 		}
-		private void SaveCashPayment(Data.Payment pvtclsPayment, ArrayList pvtarrCashPaymentDetails)
+		private void SaveCashPayment(Data.Payment clsPayment, ArrayList pvtarrCashPaymentDetails)
 		{
 			Data.CashPaymentDetails[] CashPaymentDetails = new Data.CashPaymentDetails[0];
 			if (pvtarrCashPaymentDetails != null)
@@ -602,13 +610,13 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 foreach (DataGridViewRow dr in dgvItems.SelectedRows)
                 {
-                    long lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
+                    Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
                     string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
                     decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
 
                     if (decRemainingAmountPaid >= decBalance)
                     {
-                        InsertCashPayment(pvtclsPayment, lngTransactionID, strTransactionNo, decBalance, strRemarks);
+                        InsertCashPayment(clsPayment, lngTransactionID, strTransactionNo, decBalance, strRemarks);
 
                         dr.Cells["CreditPaid"].Value = decBalance;
                         dr.Cells["Balance"].Value = 0;
@@ -617,7 +625,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                     else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
                     {
-                        InsertCashPayment(pvtclsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, strRemarks);
+                        InsertCashPayment(clsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, strRemarks);
 
                         //dgvItems.Select(itemIndex);
                         dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
@@ -628,18 +636,20 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
 			}
 		}
-		private void InsertCashPayment(Data.Payment pvtclsPayment, long pvtlngTransactionID, string pvtstrTransactionNo, decimal pvtdecAmount, string pvtstrRemarks)
+		private void InsertCashPayment(Data.Payment clsPayment, Int64 intTransactionID, string strTransactionNo, decimal decAmount, string strRemarks)
 		{
 			Data.CashPaymentDetails Details = new Data.CashPaymentDetails();
-			Details.TransactionID = pvtlngTransactionID;
-			Details.TransactionNo = pvtstrTransactionNo;
-			Details.Amount = pvtdecAmount;
-			Details.Remarks = pvtstrRemarks;
+            Details.BranchDetails = mclsTerminalDetails.BranchDetails;
+            Details.TerminalNo = mclsTerminalDetails.TerminalNo;
+			Details.TransactionID = intTransactionID;
+			Details.TransactionNo = strTransactionNo;
+			Details.Amount = decAmount;
+			Details.Remarks = strRemarks;
 
-			pvtclsPayment.InsertCashPayment(Details);
-			pvtclsPayment.UpdateCredit(mclsCustomerDetails.ContactID, pvtlngTransactionID, pvtstrTransactionNo, pvtdecAmount, pvtstrRemarks);
+            new Data.CashPayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
+			clsPayment.UpdateCredit(mclsCustomerDetails.ContactID, intTransactionID, strTransactionNo, decAmount, strRemarks);
 		}
-		private void SaveChequePayment(Data.Payment pvtclsPayment, ArrayList pvtarrChequePaymentDetails)
+		private void SaveChequePayment(Data.Payment clsPayment, ArrayList pvtarrChequePaymentDetails)
 		{
 			Data.ChequePaymentDetails[] ChequePaymentDetails = new Data.ChequePaymentDetails[0];
 			if (pvtarrChequePaymentDetails != null)
@@ -656,13 +666,13 @@ namespace AceSoft.RetailPlus.Client.UI
 				
 				foreach(DataGridViewRow dr in dgvItems.SelectedRows) 
 				{
-					long lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
+					Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
 					string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
 					decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
 
 					if (decRemainingAmountPaid >= decBalance)
 					{
-						InsertChequePayment(pvtclsPayment, lngTransactionID, strTransactionNo, det.ChequeNo, decBalance, det.ValidityDate, strRemarks);
+						InsertChequePayment(clsPayment, lngTransactionID, strTransactionNo, det.ChequeNo, decBalance, det.ValidityDate, strRemarks);
 
 						dr.Cells["CreditPaid"].Value = decBalance;
 						dr.Cells["Balance"].Value = 0;
@@ -671,7 +681,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 					else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
 					{
-						InsertChequePayment(pvtclsPayment, lngTransactionID, strTransactionNo, det.ChequeNo, decRemainingAmountPaid, det.ValidityDate, strRemarks);
+						InsertChequePayment(clsPayment, lngTransactionID, strTransactionNo, det.ChequeNo, decRemainingAmountPaid, det.ValidityDate, strRemarks);
 
                         //dgItems.Select(itemIndex);
 						dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
@@ -682,20 +692,22 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 			}
 		}
-		private void InsertChequePayment(Data.Payment pvtclsPayment, long pvtlngTransactionID, string pvtstrTransactionNo, string pvtstrChequeNo, decimal pvtdecAmount, DateTime pvtdteValidityDate, string pvtstrRemarks)
+		private void InsertChequePayment(Data.Payment clsPayment, Int64 intTransactionID, string strTransactionNo, string strChequeNo, decimal decAmount, DateTime dteValidityDate, string strRemarks)
 		{
 			Data.ChequePaymentDetails Details = new Data.ChequePaymentDetails();
-			Details.TransactionID = pvtlngTransactionID;
-			Details.TransactionNo = pvtstrTransactionNo;
-			Details.ChequeNo = pvtstrChequeNo;
-			Details.Amount = pvtdecAmount;
-			Details.ValidityDate = pvtdteValidityDate;
-			Details.Remarks = pvtstrRemarks;
+            Details.BranchDetails = mclsTerminalDetails.BranchDetails;
+            Details.TerminalNo = mclsTerminalDetails.TerminalNo;
+			Details.TransactionID = intTransactionID;
+			Details.TransactionNo = strTransactionNo;
+			Details.ChequeNo = strChequeNo;
+			Details.Amount = decAmount;
+			Details.ValidityDate = dteValidityDate;
+			Details.Remarks = strRemarks;
 
-			pvtclsPayment.InsertChequePayment(Details);
-			pvtclsPayment.UpdateCredit(mclsCustomerDetails.ContactID, pvtlngTransactionID, pvtstrTransactionNo, pvtdecAmount, pvtstrRemarks);
+            new Data.ChequePayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
+			clsPayment.UpdateCredit(mclsCustomerDetails.ContactID, intTransactionID, strTransactionNo, decAmount, strRemarks);
 		}
-		private void SaveCreditCardPayment(Data.Payment pvtclsPayment, ArrayList pvtarrCreditCardPaymentDetails)
+		private void SaveCreditCardPayment(Data.Payment clsPayment, ArrayList pvtarrCreditCardPaymentDetails)
 		{
 			Data.CreditCardPaymentDetails[] CreditCardPaymentDetails = new Data.CreditCardPaymentDetails[0];
 			if (pvtarrCreditCardPaymentDetails != null)
@@ -712,13 +724,13 @@ namespace AceSoft.RetailPlus.Client.UI
 				
 				foreach(DataGridViewRow dr in dgvItems.SelectedRows) 
 				{
-					long lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
+					Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
 					string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
 					decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
 
 					if (decRemainingAmountPaid >= decBalance)
 					{
-						InsertCreditCardPayment(pvtclsPayment, lngTransactionID, strTransactionNo, decBalance, det.CardTypeID, det.CardNo, det.CardHolder, det.ValidityDates, strRemarks);
+						InsertCreditCardPayment(clsPayment, lngTransactionID, strTransactionNo, decBalance, det.CardTypeID, det.CardNo, det.CardHolder, det.ValidityDates, strRemarks);
 
                         //dgItems.Select(itemIndex);
 						dr.Cells["CreditPaid"].Value = decBalance;
@@ -728,7 +740,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 					else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
 					{
-						InsertCreditCardPayment(pvtclsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, det.CardTypeID, det.CardNo, det.CardHolder, det.ValidityDates, strRemarks);
+						InsertCreditCardPayment(clsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, det.CardTypeID, det.CardNo, det.CardHolder, det.ValidityDates, strRemarks);
 
                         //dgItems.Select(itemIndex);
 						dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
@@ -739,27 +751,29 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 			}
 		}
-		private void InsertCreditCardPayment(Data.Payment pvtclsPayment, long pvtlngTransactionID, string pvtstrTransactionNo,  decimal pvtdecAmount, Int16 pvtintCardTypeID, string pvtstrCardNo, string pvtstrCardHolder, string pvtstrValidityDates, string pvtstrRemarks)
+		private void InsertCreditCardPayment(Data.Payment clsPayment, Int64 intTransactionID, string strTransactionNo,  decimal decAmount, Int16 intCardTypeID, string strCardNo, string strCardHolder, string strValidityDates, string strRemarks)
 		{
-			Data.CardType clsCardType = new Data.CardType(pvtclsPayment.Connection, pvtclsPayment.Transaction);
-			Data.CardTypeDetails clsCardTypeDetails = clsCardType.Details(pvtintCardTypeID);
+			Data.CardType clsCardType = new Data.CardType(clsPayment.Connection, clsPayment.Transaction);
+			Data.CardTypeDetails clsCardTypeDetails = clsCardType.Details(intCardTypeID);
 
 			Data.CreditCardPaymentDetails Details = new Data.CreditCardPaymentDetails();
-			Details.TransactionID = pvtlngTransactionID;
-			Details.TransactionNo = pvtstrTransactionNo;
-			Details.Amount = pvtdecAmount;
-			Details.CardTypeID = pvtintCardTypeID;
-			Details.CardNo = pvtstrCardNo;
+            Details.BranchDetails = mclsTerminalDetails.BranchDetails;
+            Details.TerminalNo = mclsTerminalDetails.TerminalNo;
+			Details.TransactionID = intTransactionID;
+			Details.TransactionNo = strTransactionNo;
+			Details.Amount = decAmount;
+			Details.CardTypeID = intCardTypeID;
+			Details.CardNo = strCardNo;
 			Details.CardTypeCode = clsCardTypeDetails.CardTypeCode;
 			Details.CardTypeName = clsCardTypeDetails.CardTypeName;
-			Details.CardHolder = pvtstrCardHolder;
-			Details.ValidityDates = pvtstrValidityDates;
-			Details.Remarks = pvtstrRemarks;
+			Details.CardHolder = strCardHolder;
+			Details.ValidityDates = strValidityDates;
+			Details.Remarks = strRemarks;
 
-			pvtclsPayment.InsertCreditCardPayment(Details);
-			pvtclsPayment.UpdateCredit(mclsCustomerDetails.ContactID, pvtlngTransactionID, pvtstrTransactionNo, pvtdecAmount, pvtstrRemarks);
+            new Data.CreditCardPayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
+			clsPayment.UpdateCredit(mclsCustomerDetails.ContactID, intTransactionID, strTransactionNo, decAmount, strRemarks);
 		}
-		private void SaveDebitPayment(Data.Payment pvtclsPayment, ArrayList pvtarrDebitPaymentDetails)
+		private void SaveDebitPayment(Data.Payment clsPayment, ArrayList pvtarrDebitPaymentDetails)
 		{
 			int itemIndex = 0;
 
@@ -778,13 +792,13 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 foreach (DataGridViewRow dr in dgvItems.SelectedRows)
                 {
-                    long lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
+                    Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
                     string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
                     decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
 
 					if (decRemainingAmountPaid >= decBalance)
 					{
-						InsertDebitPayment(pvtclsPayment, lngTransactionID, strTransactionNo, decBalance, strRemarks);
+						InsertDebitPayment(clsPayment, lngTransactionID, strTransactionNo, decBalance, strRemarks);
 
                         //dgItems.Select(itemIndex);
 						dr.Cells["CreditPaid"].Value = decBalance;
@@ -794,7 +808,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 					else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
 					{
-						InsertDebitPayment(pvtclsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, strRemarks);
+						InsertDebitPayment(clsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, strRemarks);
 
                         //dgItems.Select(itemIndex);
 						dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
@@ -814,17 +828,17 @@ namespace AceSoft.RetailPlus.Client.UI
                 //}
 			}
 		}
-		private void InsertDebitPayment(Data.Payment pvtclsPayment, long pvtlngTransactionID, string pvtstrTransactionNo, decimal pvtdecAmount, string pvtstrRemarks)
+		private void InsertDebitPayment(Data.Payment clsPayment, Int64 intTransactionID, string strTransactionNo, decimal decAmount, string strRemarks)
 		{
 			Data.DebitPaymentDetails Details = new Data.DebitPaymentDetails();
-			Details.TransactionID = pvtlngTransactionID;
-			Details.TransactionNo = pvtstrTransactionNo;
-			Details.Amount = pvtdecAmount;
+			Details.TransactionID = intTransactionID;
+			Details.TransactionNo = strTransactionNo;
+			Details.Amount = decAmount;
 			Details.CustomerDetails = mclsCustomerDetails;
-			Details.Remarks = pvtstrRemarks;
+			Details.Remarks = strRemarks;
 
-			pvtclsPayment.InsertDebitPayment(Details);
-			pvtclsPayment.UpdateDebit(mclsCustomerDetails.ContactID, pvtlngTransactionID, pvtstrTransactionNo, pvtdecAmount, pvtstrRemarks);
+			clsPayment.InsertDebitPayment(Details);
+			clsPayment.UpdateDebit(mclsCustomerDetails.ContactID, intTransactionID, strTransactionNo, decAmount, strRemarks);
 		}
 		
 		#endregion

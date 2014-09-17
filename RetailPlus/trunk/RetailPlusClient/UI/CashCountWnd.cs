@@ -16,45 +16,23 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.DataGridTextBoxColumn DenominationCount;
         private System.Windows.Forms.DataGridTextBoxColumn DenominationAmount;
         private System.Windows.Forms.DataGridTextBoxColumn DenominationCode;
-
         private System.Windows.Forms.PictureBox imgIcon;
         private System.Windows.Forms.Label lblHeader;
         private System.Windows.Forms.PictureBox imgImagePath;
         private System.Windows.Forms.TextBox txtDenominationCount;
-
-        private DialogResult dialog;
         private System.ComponentModel.Container components = null;
-
-        private CashCountDetails[] marrCashCountDetails;
-        private Int64 mCashierID;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label lblCashCount;
-        private string mCashierName;
         private System.Windows.Forms.Label lblDescription;
         private Button cmdCancel;
         private Button cmdEnter;
-        private AceSoft.KeyBoardHook.KeyboardNoControl keyboardNoControl1;
-        private decimal mdecAmount;
-        private bool mboIsTouchScreen;
-        public CashCountDetails[] Details
-        {
-            get { return marrCashCountDetails; }
-        }
-        public Int64 CashierID
-        {
-            set { mCashierID = value; }
-        }
 
-        public string CashierName
-        {
-            set { mCashierName = value; }
-        }
+        #region public Properties
 
-        public decimal Amount
-        {
-            get { return mdecAmount; }
-        }
+        public bool mboIsRefund;
+        public bool IsRefund { set { mboIsRefund = value; } }
 
+        private DialogResult dialog;
         public DialogResult Result
         {
             get
@@ -63,13 +41,34 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        public bool IsTouchScreen
+        private decimal mdecAmount;
+        public decimal Amount
         {
-            set
-            {
-                mboIsTouchScreen = value;
+            get
+            { 
+                return mdecAmount; 
             }
         }
+
+        private Data.SalesTransactionDetails mclsSalesTransactionDetails;
+        public Data.SalesTransactionDetails SalesTransactionDetails
+        {
+            set { mclsSalesTransactionDetails = value; }
+        }
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+        }
+
+        private CashCountDetails[] marrCashCountDetails;
+        public CashCountDetails[] Details
+        {
+            get { return marrCashCountDetails; }
+        }
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -116,7 +115,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblDescription = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
-            this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgCashCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgImagePath)).BeginInit();
@@ -316,7 +314,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblDescription.TabIndex = 5;
             this.lblDescription.Tag = "";
             this.lblDescription.Text = "Select the denomination you want to enter, then press the number to enter no. of " +
-                "denomination.";
+    "denomination.";
             // 
             // cmdCancel
             // 
@@ -350,25 +348,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
-            // keyboardNoControl1
-            // 
-            this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
-            this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Up;
-            this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
-            this.keyboardNoControl1.Location = new System.Drawing.Point(781, 248);
-            this.keyboardNoControl1.Name = "keyboardNoControl1";
-            this.keyboardNoControl1.Size = new System.Drawing.Size(202, 176);
-            this.keyboardNoControl1.TabIndex = 1;
-            this.keyboardNoControl1.TabStop = false;
-            this.keyboardNoControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardNoControl1_UserKeyPressed);
-            // 
             // CashCountWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
-            this.Controls.Add(this.keyboardNoControl1);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
             this.Controls.Add(this.lblDescription);
@@ -386,8 +371,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.CashCount_Load);
-            this.Resize += new System.EventHandler(this.CashCount_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CashCount_KeyDown);
+            this.Resize += new System.EventHandler(this.CashCount_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgCashCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgImagePath)).EndInit();
@@ -463,166 +448,6 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                     //SendKeys.SendWait("{DOWN}");
                     break;
-                //case Keys.D0:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("0");
-                //    }
-                //    break;
-                //case Keys.D1:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("1");
-                //    }
-                //    break;
-                //case Keys.D2:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("2");
-                //    }
-                //    break;
-                //case Keys.D3:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("3");
-                //    }
-                //    break;
-                //case Keys.D4:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("4");
-                //    }
-                //    break;
-                //case Keys.D5:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("5");
-                //    }
-                //    break;
-                //case Keys.D6:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("6");
-                //    }
-                //    break;
-                //case Keys.D7:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("7");
-                //    }
-                //    break;
-                //case Keys.D8:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("8");
-                //    }
-                //    break;
-                //case Keys.D9:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("9");
-                //    }
-                //    break;
-                //case Keys.NumPad0:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("0");
-                //    }
-                //    break;
-                //case Keys.NumPad1:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("1");
-                //    }
-                //    break;
-                //case Keys.NumPad2:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("2");
-                //    }
-                //    break;
-                //case Keys.NumPad3:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("3");
-                //    }
-                //    break;
-                //case Keys.NumPad4:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("4");
-                //    }
-                //    break;
-                //case Keys.NumPad5:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("5");
-                //    }
-                //    break;
-                //case Keys.NumPad6:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("6");
-                //    }
-                //    break;
-                //case Keys.NumPad7:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("7");
-                //    }
-                //    break;
-                //case Keys.NumPad8:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("8");
-                //    }
-                //    break;
-                //case Keys.NumPad9:
-                //    if (txtDenominationCount.Visible == false)
-                //    {
-                //        txtDenominationCount.Visible = true;
-                //        txtDenominationCount.Focus();
-                //        SendKeys.Send("9");
-                //    }
-                //    break;
             }
         }
 
@@ -739,27 +564,34 @@ namespace AceSoft.RetailPlus.Client.UI
 
         #region Windows Control Methods
 
+
         #endregion
 
         #region Private Methods
 
         private bool SaveRecord()
         {
-            System.Data.DataTable dt = (System.Data.DataTable)dgCashCount.DataSource;
+            System.Data.DataTable dt = (System.Data.DataTable) dgCashCount.DataSource;
 
             ArrayList arrCashCountDetails = new ArrayList();
             CashCountDetails clsDetails;
-            CashCounts clsCashCount = new CashCounts();
+            //CashCounts clsCashCount = new CashCounts();
 
             foreach (System.Data.DataRow dr in dt.Rows)
             {
                 clsDetails = new CashCountDetails();
-                clsDetails.CashierID = mCashierID;
-                clsDetails.CashierName = mCashierName;
-                clsDetails.TerminalNo = CompanyDetails.TerminalNo;
-                clsDetails.BranchID = Constants.TerminalBranchID;
+                clsDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
+                clsDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+                clsDetails.CashierID = mclsSalesTransactionDetails.CashierID;
+                clsDetails.CashierName = mclsSalesTransactionDetails.CashierName;
                 clsDetails.DateCreated = DateTime.Now;
-                clsDetails.DenominationID = Convert.ToInt32(dr["DenominationID"].ToString().Replace(",", ""));
+                clsDetails.DenominationDetails = new Data.DenominationDetails
+                {
+                    DenominationID = Convert.ToInt32(dr["DenominationID"].ToString().Replace(",", "")),
+                    DenominationCode = dr["DenominationCode"].ToString().Replace(",", ""),
+                    DenominationValue = Convert.ToDecimal(dr["DenominationValue"].ToString().Replace(",", "")),
+                    ImagePath = dr["ImagePath"].ToString().Replace(",", "")
+                };
                 clsDetails.DenominationCount = Convert.ToInt32(dr["DenominationCount"].ToString().Replace(",", ""));
                 clsDetails.DenominationValue = Convert.ToDecimal(dr["DenominationValue"].ToString().Replace(",", ""));
                 clsDetails.DenominationAmount = Convert.ToDecimal(dr["DenominationAmount"].ToString().Replace(",", ""));
@@ -770,17 +602,17 @@ namespace AceSoft.RetailPlus.Client.UI
                 CashCountDetails[] arrDetails = new CashCountDetails[arrCashCountDetails.Count];
                 arrCashCountDetails.CopyTo(arrDetails);
 
-                Terminal clsTerminal = new Terminal(clsCashCount.Connection, clsCashCount.Transaction);
-                clsTerminal.UpdateIsCashCountInitialized(Constants.TerminalBranchID, CompanyDetails.TerminalNo, mCashierID, true);
+                //Sep 3, 2014 remove saving here and move to M<ainWnd
+                //Terminal clsTerminal = new Terminal(clsCashCount.Connection, clsCashCount.Transaction);
+                //clsTerminal.UpdateIsCashCountInitialized(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierID, true);
 
-                clsCashCount.Insert(arrDetails);
-                clsCashCount.CommitAndDispose();
+                //clsCashCount.Insert(arrDetails);
+                //clsCashCount.CommitAndDispose();
 
                 marrCashCountDetails = arrDetails;
             }
-            MessageBox.Show("Cash Count has been initialized...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
             return true;
-
         }
 
         private void LoadOptions()
@@ -788,17 +620,7 @@ namespace AceSoft.RetailPlus.Client.UI
             txtDenominationCount.Visible = true;
             txtDenominationCount.Focus();
 
-            if (mboIsTouchScreen)
-            {
-                keyboardNoControl1.Visible = true;
-                dgCashCount.Height = 380;
-            }
-            else
-            {
-                keyboardNoControl1.Visible = false;
-                dgCashCount.Height = 450;
-            }
-
+            dgCashCount.Height = 450;
         }
 
         private void LoadDenominationData()
@@ -806,9 +628,7 @@ namespace AceSoft.RetailPlus.Client.UI
             try
             {
                 Data.Denominations clsDenomination = new Data.Denominations();
-
-                System.Data.DataTable dt = clsDenomination.ListForCashCount("DenominationID", SortOption.Ascending);
-
+                System.Data.DataTable dt = clsDenomination.ListAsDataTable(new Data.DenominationDetails());
                 clsDenomination.CommitAndDispose();
 
                 this.dgStyle.MappingName = dt.TableName;
@@ -879,11 +699,6 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         #endregion
-
-        private void keyboardNoControl1_Load(object sender, EventArgs e)
-        {
-
-        }
 
     }
 }

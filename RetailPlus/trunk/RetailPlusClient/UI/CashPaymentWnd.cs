@@ -23,39 +23,46 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdCancel;
         private Button cmdEnter;
 
-        private DialogResult dialog;
-		private decimal mdecBalanceAmount;
-        public bool mboIsRefund;
-		private Data.CashPaymentDetails mDetails = new Data.CashPaymentDetails();
-        private Data.SalesTransactionDetails mclsSalesTransactionDetails;
+        #region public Properties
 
-		public DialogResult Result
-		{
-			get 
-			{
-				return dialog;
-			}
-		}
-        public Data.SalesTransactionDetails SalesTransactionDetails
-		{
-			set
-			{
-                mclsSalesTransactionDetails  = value;
-			}
-		}
-		public decimal BalanceAmount
-		{
-			set
-			{
-				mdecBalanceAmount = value;
-			}
-		}
+        public bool mboIsRefund;
         public bool IsRefund { set { mboIsRefund = value; } }
-		public Data.CashPaymentDetails Details
-		{
-			get
-			{	return mDetails;	}
+
+        private DialogResult dialog;
+        public DialogResult Result
+        {
+            get
+            {
+                return dialog;
+            }
         }
+
+        private decimal mdecBalanceAmount;
+        public decimal BalanceAmount
+        {
+            set
+            { mdecBalanceAmount = value; }
+        }
+
+        private Data.SalesTransactionDetails mclsSalesTransactionDetails;
+        public Data.SalesTransactionDetails SalesTransactionDetails
+        {
+            set { mclsSalesTransactionDetails = value; }
+        }
+
+        private Data.CashPaymentDetails mDetails;
+        public Data.CashPaymentDetails CashPaymentDetails
+        {
+            get { return mDetails; }
+        }
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+        }
+
+        #endregion
 
         #region Constructors and Destructors
         
@@ -399,10 +406,13 @@ namespace AceSoft.RetailPlus.Client.UI
 				MessageBox.Show("Amount must be greater than zero. Please enter a higher amount for cash payment","RetailPlus",MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return false;
 			}
+
+            mDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
+            mDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
 			mDetails.TransactionID = mclsSalesTransactionDetails.TransactionID;
-            mDetails.TransactionNo = mclsSalesTransactionDetails.TransactionNo;
 			mDetails.Amount = Amount;
 			mDetails.Remarks = txtRemarks.Text;
+            mDetails.TransactionNo = mclsSalesTransactionDetails.TransactionNo;
 
 			return true;
         }

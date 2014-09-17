@@ -29,13 +29,9 @@ namespace AceSoft.RetailPlus.Client.UI
         private TextBox txtSelectedTextBox;
         private Label lblChequeAmount;
 
-        private DialogResult dialog;
-        private decimal mdecBalanceAmount;
-        private Data.ChequePaymentDetails mDetails = new Data.ChequePaymentDetails();
-        private Data.SalesTransactionDetails mclsSalesTransactionDetails;
-
 		#region public Properties
 
+        private DialogResult dialog;
 		public DialogResult Result
 		{
 			get 
@@ -44,21 +40,31 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 		}
 
+        private decimal mdecBalanceAmount;
 		public decimal BalanceAmount
 		{
 			set
 			{	mdecBalanceAmount = value;	}
 		}
+
+        private Data.SalesTransactionDetails mclsSalesTransactionDetails; 
         public Data.SalesTransactionDetails SalesTransactionDetails
 		{
 			set { mclsSalesTransactionDetails = value; }
 		}
-		public Data.ChequePaymentDetails Details
+
+        private Data.ChequePaymentDetails mDetails = new Data.ChequePaymentDetails();
+        public Data.ChequePaymentDetails Details
 		{
 			get
 			{	return mDetails;	}
 		}
 
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+        }
 
 		#endregion
 
@@ -509,6 +515,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 			}
 
+            mDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
+            mDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
             mDetails.TransactionID = mclsSalesTransactionDetails.TransactionID;
             mDetails.TransactionNo = mclsSalesTransactionDetails.TransactionNo;
 			mDetails.ChequeNo = txtChequeNo.Text;

@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Reflection;
 
+using AceSoft.RetailPlus.Reports;
+
 namespace AceSoft.RetailPlus.Client.UI
 {
     /// <summary>
@@ -19,8 +21,6 @@ namespace AceSoft.RetailPlus.Client.UI
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.Container components = null;
-        private DialogResult dialog;
-        private Data.TerminalReportDetails mDetails;
         private System.Windows.Forms.Label lblReportDesc;
         private System.Windows.Forms.Panel panReport;
         private System.Windows.Forms.Label lblCashSales;
@@ -166,7 +166,6 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.Label lblCharge;
         private System.Windows.Forms.Label lblNetSales;
         private System.Windows.Forms.Label lblVAT1;
-        private string mCashierName;
         private Button cmdCancel;
         private Button cmdEnter;
         private Label lblCreditPaymentDebit;
@@ -177,8 +176,10 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label48;
         private Label lblCreditPaymentCash;
         private Label label80;
-        private decimal mTrustFund;
+        
+        #region Public Get/Set Properties
 
+        private DialogResult dialog;
         public DialogResult Result
         {
             get
@@ -186,26 +187,42 @@ namespace AceSoft.RetailPlus.Client.UI
                 return dialog;
             }
         }
-
+        
+        private Data.TerminalReportDetails mDetails;
         public Data.TerminalReportDetails Details
         {
             set
             { mDetails = value; }
         }
 
+        private string mCashierName;
         public string CashierName
         {
             set
             { mCashierName = value; }
         }
 
+        private decimal mTrustFund;
+        private DataGridView dgvItems;
+    
         public decimal TrustFund
         {
             set
             { mTrustFund = value; }
         }
 
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set
+            {
+                mclsTerminalDetails = value;
+            }
+        }
 
+        #endregion
+
+        #region Constructors and Destructors
         public TerminalReportWnd()
         {
             //
@@ -240,9 +257,20 @@ namespace AceSoft.RetailPlus.Client.UI
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panReport = new System.Windows.Forms.Panel();
+            this.lblCreditPaymentDebit = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.lblCreditPaymentCreditCard = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.lblCreditPaymentCheque = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.lblCreditPaymentCash = new System.Windows.Forms.Label();
+            this.label80 = new System.Windows.Forms.Label();
             this.label76 = new System.Windows.Forms.Label();
             this.label74 = new System.Windows.Forms.Label();
             this.lblNoOfDebitPaymentTransactions = new System.Windows.Forms.Label();
@@ -390,17 +418,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblDescription = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
-            this.lblCreditPaymentDebit = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.lblCreditPaymentCreditCard = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
-            this.lblCreditPaymentCheque = new System.Windows.Forms.Label();
-            this.label48 = new System.Windows.Forms.Label();
-            this.lblCreditPaymentCash = new System.Windows.Forms.Label();
-            this.label80 = new System.Windows.Forms.Label();
+            this.dgvItems = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panReport.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             this.SuspendLayout();
             // 
             // imgIcon
@@ -415,6 +437,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
+            this.groupBox1.Controls.Add(this.dgvItems);
             this.groupBox1.Controls.Add(this.panReport);
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Blue;
@@ -584,6 +607,86 @@ namespace AceSoft.RetailPlus.Client.UI
             this.panReport.Name = "panReport";
             this.panReport.Size = new System.Drawing.Size(385, 515);
             this.panReport.TabIndex = 108;
+            // 
+            // lblCreditPaymentDebit
+            // 
+            this.lblCreditPaymentDebit.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentDebit.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentDebit.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentDebit.Location = new System.Drawing.Point(176, 608);
+            this.lblCreditPaymentDebit.Name = "lblCreditPaymentDebit";
+            this.lblCreditPaymentDebit.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentDebit.TabIndex = 427;
+            this.lblCreditPaymentDebit.Text = "0.00";
+            this.lblCreditPaymentDebit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label24
+            // 
+            this.label24.Location = new System.Drawing.Point(16, 608);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(137, 14);
+            this.label24.TabIndex = 426;
+            this.label24.Text = "       Debit";
+            // 
+            // lblCreditPaymentCreditCard
+            // 
+            this.lblCreditPaymentCreditCard.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentCreditCard.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentCreditCard.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentCreditCard.Location = new System.Drawing.Point(176, 592);
+            this.lblCreditPaymentCreditCard.Name = "lblCreditPaymentCreditCard";
+            this.lblCreditPaymentCreditCard.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentCreditCard.TabIndex = 425;
+            this.lblCreditPaymentCreditCard.Text = "0.00";
+            this.lblCreditPaymentCreditCard.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label30
+            // 
+            this.label30.Location = new System.Drawing.Point(16, 592);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(137, 14);
+            this.label30.TabIndex = 424;
+            this.label30.Text = "       Credit Card";
+            // 
+            // lblCreditPaymentCheque
+            // 
+            this.lblCreditPaymentCheque.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentCheque.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentCheque.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentCheque.Location = new System.Drawing.Point(176, 576);
+            this.lblCreditPaymentCheque.Name = "lblCreditPaymentCheque";
+            this.lblCreditPaymentCheque.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentCheque.TabIndex = 423;
+            this.lblCreditPaymentCheque.Text = "0.00";
+            this.lblCreditPaymentCheque.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label48
+            // 
+            this.label48.Location = new System.Drawing.Point(16, 576);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(137, 14);
+            this.label48.TabIndex = 422;
+            this.label48.Text = "       Cheque";
+            // 
+            // lblCreditPaymentCash
+            // 
+            this.lblCreditPaymentCash.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentCash.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentCash.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentCash.Location = new System.Drawing.Point(176, 560);
+            this.lblCreditPaymentCash.Name = "lblCreditPaymentCash";
+            this.lblCreditPaymentCash.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentCash.TabIndex = 421;
+            this.lblCreditPaymentCash.Text = "0.00";
+            this.lblCreditPaymentCash.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label80
+            // 
+            this.label80.Location = new System.Drawing.Point(16, 560);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(137, 14);
+            this.label80.TabIndex = 420;
+            this.label80.Text = "       Cash";
             // 
             // label76
             // 
@@ -1624,7 +1727,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblEndingTransactionNoName.Name = "lblEndingTransactionNoName";
             this.lblEndingTransactionNoName.Size = new System.Drawing.Size(137, 14);
             this.lblEndingTransactionNoName.TabIndex = 307;
-            this.lblEndingTransactionNoName.Text = "Ending Transaction No.";
+            this.lblEndingTransactionNoName.Text = "Ending      OR No.";
             // 
             // lblBeginningTransactionNo
             // 
@@ -1644,7 +1747,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBeginningTransactionNoName.Name = "lblBeginningTransactionNoName";
             this.lblBeginningTransactionNoName.Size = new System.Drawing.Size(137, 14);
             this.lblBeginningTransactionNoName.TabIndex = 305;
-            this.lblBeginningTransactionNoName.Text = "Beginning Transaction No.";
+            this.lblBeginningTransactionNoName.Text = "Beginning OR No.";
             // 
             // lblPaidOut
             // 
@@ -2078,91 +2181,54 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
-            // lblCreditPaymentDebit
+            // dgvItems
             // 
-            this.lblCreditPaymentDebit.BackColor = System.Drawing.Color.Transparent;
-            this.lblCreditPaymentDebit.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCreditPaymentDebit.ForeColor = System.Drawing.Color.Red;
-            this.lblCreditPaymentDebit.Location = new System.Drawing.Point(176, 608);
-            this.lblCreditPaymentDebit.Name = "lblCreditPaymentDebit";
-            this.lblCreditPaymentDebit.Size = new System.Drawing.Size(174, 14);
-            this.lblCreditPaymentDebit.TabIndex = 427;
-            this.lblCreditPaymentDebit.Text = "0.00";
-            this.lblCreditPaymentDebit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label24
-            // 
-            this.label24.Location = new System.Drawing.Point(16, 608);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(137, 14);
-            this.label24.TabIndex = 426;
-            this.label24.Text = "       Debit";
-            // 
-            // lblCreditPaymentCreditCard
-            // 
-            this.lblCreditPaymentCreditCard.BackColor = System.Drawing.Color.Transparent;
-            this.lblCreditPaymentCreditCard.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCreditPaymentCreditCard.ForeColor = System.Drawing.Color.Red;
-            this.lblCreditPaymentCreditCard.Location = new System.Drawing.Point(176, 592);
-            this.lblCreditPaymentCreditCard.Name = "lblCreditPaymentCreditCard";
-            this.lblCreditPaymentCreditCard.Size = new System.Drawing.Size(174, 14);
-            this.lblCreditPaymentCreditCard.TabIndex = 425;
-            this.lblCreditPaymentCreditCard.Text = "0.00";
-            this.lblCreditPaymentCreditCard.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label30
-            // 
-            this.label30.Location = new System.Drawing.Point(16, 592);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(137, 14);
-            this.label30.TabIndex = 424;
-            this.label30.Text = "       Credit Card";
-            // 
-            // lblCreditPaymentCheque
-            // 
-            this.lblCreditPaymentCheque.BackColor = System.Drawing.Color.Transparent;
-            this.lblCreditPaymentCheque.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCreditPaymentCheque.ForeColor = System.Drawing.Color.Red;
-            this.lblCreditPaymentCheque.Location = new System.Drawing.Point(176, 576);
-            this.lblCreditPaymentCheque.Name = "lblCreditPaymentCheque";
-            this.lblCreditPaymentCheque.Size = new System.Drawing.Size(174, 14);
-            this.lblCreditPaymentCheque.TabIndex = 423;
-            this.lblCreditPaymentCheque.Text = "0.00";
-            this.lblCreditPaymentCheque.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label48
-            // 
-            this.label48.Location = new System.Drawing.Point(16, 576);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(137, 14);
-            this.label48.TabIndex = 422;
-            this.label48.Text = "       Cheque";
-            // 
-            // lblCreditPaymentCash
-            // 
-            this.lblCreditPaymentCash.BackColor = System.Drawing.Color.Transparent;
-            this.lblCreditPaymentCash.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCreditPaymentCash.ForeColor = System.Drawing.Color.Red;
-            this.lblCreditPaymentCash.Location = new System.Drawing.Point(176, 560);
-            this.lblCreditPaymentCash.Name = "lblCreditPaymentCash";
-            this.lblCreditPaymentCash.Size = new System.Drawing.Size(174, 14);
-            this.lblCreditPaymentCash.TabIndex = 421;
-            this.lblCreditPaymentCash.Text = "0.00";
-            this.lblCreditPaymentCash.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label80
-            // 
-            this.label80.Location = new System.Drawing.Point(16, 560);
-            this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(137, 14);
-            this.label80.TabIndex = 420;
-            this.label80.Text = "       Cash";
+            this.dgvItems.AllowUserToAddRows = false;
+            this.dgvItems.AllowUserToDeleteRows = false;
+            this.dgvItems.AllowUserToResizeColumns = false;
+            this.dgvItems.AllowUserToResizeRows = false;
+            this.dgvItems.BackgroundColor = System.Drawing.Color.White;
+            this.dgvItems.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvItems.CausesValidation = false;
+            this.dgvItems.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvItems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvItems.ColumnHeadersHeight = 24;
+            this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvItems.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvItems.GridColor = System.Drawing.Color.White;
+            this.dgvItems.Location = new System.Drawing.Point(289, 12);
+            this.dgvItems.Name = "dgvItems";
+            this.dgvItems.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvItems.RowHeadersVisible = false;
+            this.dgvItems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvItems.Size = new System.Drawing.Size(388, 510);
+            this.dgvItems.TabIndex = 110;
             // 
             // TerminalReportWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1022, 766);
+            this.ClientSize = new System.Drawing.Size(1022, 764);
             this.ControlBox = false;
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
@@ -2181,11 +2247,15 @@ namespace AceSoft.RetailPlus.Client.UI
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.panReport.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
         #endregion
+        #endregion
+
+        #region Windows Form Methods
 
         private void TerminalReportWnd_Load(object sender, System.EventArgs e)
         {
@@ -2206,7 +2276,8 @@ namespace AceSoft.RetailPlus.Client.UI
             groupBox1.Text = "Terminal Report Details";
             lblReceiptDesc.Text = "Terminal Report";
 
-            PopulateTerminalReport();
+            PopulateTerminalReport1();
+
         }
 
         private void TerminalReportWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -2233,6 +2304,26 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        #endregion
+
+        #region Windows Control Methods
+
+        private void cmdCancel_Click(object sender, EventArgs e)
+        {
+            dialog = DialogResult.Cancel;
+            this.Hide();
+        }
+
+        private void cmdEnter_Click(object sender, EventArgs e)
+        {
+            dialog = DialogResult.OK;
+            this.Hide();
+        }
+
+        #endregion
+
+        #region Private Methods
+
         private void ScrollIntoView(Keys KeyData)
         {
             if (KeyData == Keys.PageUp)
@@ -2249,17 +2340,15 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             lblCompany.Text = CompanyDetails.CompanyCode;
 
-            Reports.ReceiptFormat clsReceiptFormat = new Reports.ReceiptFormat();
-            Reports.ReceiptFormatDetails clsDetails = clsReceiptFormat.Details();
-            clsReceiptFormat.CommitAndDispose();
+            Receipt clsReceipt = new Receipt();
 
-            lblReportHeader1.Text = GetReceiptFormatParameter(clsDetails.ReportHeader1);
-            lblReportHeader2.Text = GetReceiptFormatParameter(clsDetails.ReportHeader2);
-            lblReportHeader3.Text = GetReceiptFormatParameter(clsDetails.ReportHeader3);
-            lblReportHeader4.Text = GetReceiptFormatParameter(clsDetails.ReportHeader4);
+            lblReportHeader1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader1").Value);
+            lblReportHeader2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader2").Value);
+            lblReportHeader3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader3").Value);
+            lblReportHeader4.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader4").Value);
 
-            lblBeginningTransactionNo.Text = mDetails.BeginningTransactionNo;
-            lblEndingTransactionNo.Text = mDetails.EndingTransactionNo;
+            lblBeginningTransactionNo.Text = mDetails.BeginningORNo;
+            lblEndingTransactionNo.Text = mDetails.EndingORNo;
 
             lblGrossSales.Text = Convert.ToDecimal(mDetails.GrossSales).ToString("#,##0.00");
             lblTotalDiscount.Text = Convert.ToDecimal(mDetails.TotalDiscount).ToString("#,##0.00");
@@ -2267,15 +2356,16 @@ namespace AceSoft.RetailPlus.Client.UI
             lblNetSales.Text = Convert.ToDecimal(mDetails.DailySales).ToString("#,##0.00");
             lblVAT.Text = Convert.ToDecimal(mDetails.VAT).ToString("#,##0.00");
             lblCharge.Text = Convert.ToDecimal(mDetails.TotalCharge).ToString("#,##0.00");
-            decimal TotalAmount = mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
-            lblTotalAmount.Text = Convert.ToDecimal(TotalAmount).ToString("#,##0.00");
+            //decimal TotalAmount = mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
+            //lblTotalAmount.Text = Convert.ToDecimal(TotalAmount).ToString("#,##0.00");
+            lblTotalAmount.Text = mDetails.NetSales.ToString("#,##0.00");
 
             lblOldGrandTotal.Text = Convert.ToDecimal(mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
-            lblDailySales.Text = Convert.ToDecimal(TotalAmount).ToString("#,##0.00");
-            lblNewGrandTotal.Text = Convert.ToDecimal((mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))) + TotalAmount).ToString("#,##0.00");
+            lblDailySales.Text = Convert.ToDecimal(mDetails.NetSales).ToString("#,##0.00");
+            lblNewGrandTotal.Text = Convert.ToDecimal((mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))) + mDetails.NetSales).ToString("#,##0.00");
 
             lblTaxableAmount.Text = Convert.ToDecimal(mDetails.VATableAmount).ToString("#,##0.00");
-            lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVaTableAmount).ToString("#,##0.00");
+            lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVATableAmount).ToString("#,##0.00");
             lblVAT1.Text = Convert.ToDecimal(mDetails.VAT).ToString("#,##0.#0");
             lblLocalTax.Text = Convert.ToDecimal(mDetails.LocalTax).ToString("#,##0.#0");
 
@@ -2373,67 +2463,267 @@ namespace AceSoft.RetailPlus.Client.UI
             lblNoOfVoidTransactions.Text = mDetails.NoOfVoidTransactions.ToString("#,##0");
             lblNoOfTotalTransactions.Text = mDetails.NoOfTotalTransactions.ToString("#,##0");
 
-            lblReportFooter1.Text = GetReceiptFormatParameter(clsDetails.ReportFooter1);
-            lblReportFooter2.Text = GetReceiptFormatParameter(clsDetails.ReportFooter2);
-            lblReportFooter3.Text = GetReceiptFormatParameter(clsDetails.ReportFooter3);
+            lblReportFooter1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter1").Value);
+            lblReportFooter2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter2").Value);
+            lblReportFooter3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter3").Value);
+
+            clsReceipt.CommitAndDispose();
+
+        }
+
+        private void PopulateTerminalReport1()
+        {
+            mclsTerminalDetails.MaxReceiptWidth = 94;
+
+            System.Data.DataTable dt = new System.Data.DataTable("tblTerminalReport");
+            dt.Columns.Add("Module");
+            dt.Columns.Add("Separator");
+            dt.Columns.Add("Value");
+
+            //dt.Rows.Add(CenterString(CompanyDetails.CompanyCode, mclsTerminalDetails.MaxReceiptWidth));
+            //dt.Rows.Add("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-'));
+            //dt.Rows.Add(CenterString("Terminal Report", mclsTerminalDetails.MaxReceiptWidth));
+            //dt.Rows.Add("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-'));
+
+            Receipt clsReceipt = new Receipt();
+
+            //string strReportHeader1 = clsReceipt.Details("ReportHeader1").Value;
+            //string strReportHeader2 = clsReceipt.Details("ReportHeader2").Value;
+            //string strReportHeader3 = clsReceipt.Details("ReportHeader3").Value;
+            //string strReportHeader4 = clsReceipt.Details("ReportHeader4").Value;
+            //if (!string.IsNullOrEmpty(strReportHeader1)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportHeader1), mclsTerminalDetails.MaxReceiptWidth));
+            //if (!string.IsNullOrEmpty(strReportHeader2)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportHeader2), mclsTerminalDetails.MaxReceiptWidth));
+            //if (!string.IsNullOrEmpty(strReportHeader3)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportHeader3), mclsTerminalDetails.MaxReceiptWidth));
+            //if (!string.IsNullOrEmpty(strReportHeader4)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportHeader4), mclsTerminalDetails.MaxReceiptWidth));
+
+            dt.Rows.Add("Beginning OR No.", ":" , mDetails.BeginningORNo);
+            string strEndingORNo = (Int64.Parse(mDetails.EndingORNo) - 1).ToString().PadLeft(mDetails.BeginningORNo.Length, '0');
+            dt.Rows.Add("Ending OR No.", ":", strEndingORNo);
+
+            dt.Rows.Add("Gross Sales",":", (mDetails.GrossSales + mDetails.TotalCharge).ToString("#,##0.#0"));
+            dt.Rows.Add("(-) Service Charge", ":", mDetails.TotalCharge.ToString("#,##0.#0"));
+            dt.Rows.Add("",":","------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
+            dt.Rows.Add("Total Amount", ":", mDetails.GrossSales.ToString("#,##0.#0"));
+
+            dt.Rows.Add("-", "-", "-");
+            dt.Rows.Add("OLD GRAND TOTAL", ":", mDetails.OldGrandTotal.ToString("#,##0.#0"));
+            dt.Rows.Add("This Total Amount", ":", mDetails.GrossSales.ToString("#,##0.#0"));
+            dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
+            dt.Rows.Add("NEW GRAND TOTAL", ":", mDetails.NewGrandTotal.ToString("#,##0.#0"));
+
+            string strReportFooter1 = clsReceipt.Details("ReportFooter1").Value;
+            string strReportFooter2 = clsReceipt.Details("ReportFooter2").Value;
+            string strReportFooter3 = clsReceipt.Details("ReportFooter3").Value;
+            if (!string.IsNullOrEmpty(strReportFooter1)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportFooter1), mclsTerminalDetails.MaxReceiptWidth));
+            if (!string.IsNullOrEmpty(strReportFooter2)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportFooter2), mclsTerminalDetails.MaxReceiptWidth));
+            if (!string.IsNullOrEmpty(strReportFooter3)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportFooter3), mclsTerminalDetails.MaxReceiptWidth));
+
+            clsReceipt.CommitAndDispose();
+
+            dgvItems.MultiSelect = true;
+            dgvItems.AutoGenerateColumns = true;
+            dgvItems.AutoSize = true;
+            dgvItems.DataSource = dt.TableName;
+            dgvItems.DataSource = dt;
+            
+            //dgvItems.Columns["ReportValue"].Visible = true;
+            //dgvItems.Columns["ReportValue"].HeaderText = "";
+            //dgvItems.Columns["ReportValue"].Width = 388;
+
+            dgvItems.Columns["Module"].Visible = true;
+            dgvItems.Columns["Separator"].Visible = true;
+            dgvItems.Columns["Value"].Visible = true;
+
+            dgvItems.Columns["Module"].HeaderText = "";
+            dgvItems.Columns["Separator"].HeaderText = "";
+            dgvItems.Columns["Value"].HeaderText = "";
+
+            dgvItems.Columns["Module"].Width = 230;
+            dgvItems.Columns["Separator"].Width = 20;
+            dgvItems.Columns["Value"].Width = 138;
+
+
+            lblTaxableAmount.Text = Convert.ToDecimal(mDetails.VATableAmount).ToString("#,##0.00");
+            lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVATableAmount).ToString("#,##0.00");
+            lblVAT1.Text = Convert.ToDecimal(mDetails.VAT).ToString("#,##0.#0");
+            lblLocalTax.Text = Convert.ToDecimal(mDetails.LocalTax).ToString("#,##0.#0");
+
+            lblCashSales.Text = Convert.ToDecimal(mDetails.CashSales).ToString("#,##0.#0");
+            lblChequeSales.Text = Convert.ToDecimal(mDetails.ChequeSales).ToString("#,##0.#0");
+            lblCreditCardSales.Text = Convert.ToDecimal(mDetails.CreditCardSales).ToString("#,##0.#0");
+            lblCreditSales.Text = Convert.ToDecimal(mDetails.CreditSales).ToString("#,##0.#0");
+            lblCreditPayment.Text = Convert.ToDecimal(mDetails.CreditPayment).ToString("#,##0.#0");
+
+            // Apr 12, 2014 added the breakdown
+            lblCreditPaymentCash.Text = Convert.ToDecimal(mDetails.CreditPaymentCash).ToString("#,##0.#0");
+            lblCreditPaymentCheque.Text = Convert.ToDecimal(mDetails.CreditPaymentCheque).ToString("#,##0.#0");
+            lblCreditPaymentCreditCard.Text = Convert.ToDecimal(mDetails.CreditPaymentCreditCard).ToString("#,##0.#0");
+            lblCreditPaymentDebit.Text = Convert.ToDecimal(mDetails.CreditPaymentDebit).ToString("#,##0.#0");
+
+            lblDebitPayment.Text = Convert.ToDecimal(mDetails.DebitPayment).ToString("#,##0.#0");
+            lblVoidSales.Text = Convert.ToDecimal(mDetails.VoidSales).ToString("#,##0.#0");
+            lblRefundSales.Text = Convert.ToDecimal(mDetails.RefundSales).ToString("#,##0.#0");
+
+            lblItemsDiscount.Text = Convert.ToDecimal(mDetails.ItemsDiscount).ToString("#,##0.#0");
+            lblSubtotalDiscount.Text = Convert.ToDecimal(mDetails.SubTotalDiscount).ToString("#,##0.#0");
+            lblTotalDiscounts.Text = Convert.ToDecimal(mDetails.TotalDiscount).ToString("#,##0.#0");
+
+            lblBeginningBalance.Text = Convert.ToDecimal(mDetails.BeginningBalance).ToString("#,##0.#0");
+            lblCashInDrawer.Text = Convert.ToDecimal(mDetails.CashInDrawer).ToString("#,##0.#0");
+
+            lblPaidOut.Text = Convert.ToDecimal(mDetails.TotalPaidOut).ToString("#,##0.#0");
+            lblCashDisburse.Text = Convert.ToDecimal(mDetails.CashDisburse).ToString("#,##0.#0");
+            lblChequeDisburse.Text = Convert.ToDecimal(mDetails.ChequeDisburse).ToString("#,##0.#0");
+            lblCreditCardDisburse.Text = Convert.ToDecimal(mDetails.CreditCardDisburse).ToString("#,##0.#0");
+
+            lblCashWithHold.Text = Convert.ToDecimal(mDetails.CashWithHold).ToString("#,##0.#0");
+            lblChequeWithHold.Text = Convert.ToDecimal(mDetails.ChequeWithHold).ToString("#,##0.#0");
+            lblCreditCardWithHold.Text = Convert.ToDecimal(mDetails.CreditCardWithHold).ToString("#,##0.#0");
+
+            lblCashDeposit.Text = Convert.ToDecimal(mDetails.CashDeposit).ToString("#,##0.#0");
+            lblChequeDeposit.Text = Convert.ToDecimal(mDetails.ChequeDeposit).ToString("#,##0.#0");
+            lblCreditCardDeposit.Text = Convert.ToDecimal(mDetails.CreditCardDeposit).ToString("#,##0.#0");
+
+            //lblGrossSales.Text = Convert.ToDecimal(mDetails.GrossSales - (mDetails.GrossSales * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblTotalDiscount.Text = Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.00");
+
+            //lblNetSales.Text = Convert.ToDecimal(mDetails.DailySales - (mDetails.DailySales * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblVAT.Text = Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblCharge.Text = Convert.ToDecimal(mDetails.TotalCharge - (mDetails.TotalCharge * (mTrustFund / 100))).ToString("#,##0.00");
+            //decimal TotalAmount = mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
+            //lblTotalAmount.Text = Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
+
+            //lblOldGrandTotal.Text = Convert.ToDecimal(mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblDailySales.Text = Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblNewGrandTotal.Text = Convert.ToDecimal(mDetails.NewGrandTotal - (mDetails.NewGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
+
+            //lblTaxableAmount.Text = Convert.ToDecimal(mDetails.VATableAmount - (mDetails.VATableAmount * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVaTableAmount - (mDetails.NonVaTableAmount * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblVAT1.Text = Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblLocalTax.Text = Convert.ToDecimal(mDetails.LocalTax - (mDetails.LocalTax * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblCashSales.Text = Convert.ToDecimal(mDetails.CashSales - (mDetails.CashSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeSales.Text = Convert.ToDecimal(mDetails.ChequeSales - (mDetails.ChequeSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardSales.Text = Convert.ToDecimal(mDetails.CreditCardSales - (mDetails.CreditCardSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditSales.Text = Convert.ToDecimal(mDetails.CreditSales - (mDetails.CreditSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditPayment.Text = Convert.ToDecimal(mDetails.CreditPayment - (mDetails.CreditPayment * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblDebitPayment.Text = Convert.ToDecimal(mDetails.DebitPayment - (mDetails.DebitPayment * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblVoidSales.Text = Convert.ToDecimal(mDetails.VoidSales - (mDetails.VoidSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblRefundSales.Text = Convert.ToDecimal(mDetails.RefundSales - (mDetails.RefundSales * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblItemsDiscount.Text = Convert.ToDecimal(mDetails.ItemsDiscount - (mDetails.ItemsDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblSubtotalDiscount.Text = Convert.ToDecimal(mDetails.SubTotalDiscount - (mDetails.SubTotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblTotalDiscounts.Text = Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblBeginningBalance.Text = Convert.ToDecimal(mDetails.BeginningBalance - (mDetails.BeginningBalance * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCashInDrawer.Text = Convert.ToDecimal(mDetails.CashInDrawer - (mDetails.CashInDrawer * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblPaidOut.Text = Convert.ToDecimal(mDetails.TotalPaidOut - (mDetails.TotalPaidOut * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCashDisburse.Text = Convert.ToDecimal(mDetails.CashDisburse - (mDetails.CashDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeDisburse.Text = Convert.ToDecimal(mDetails.ChequeDisburse - (mDetails.ChequeDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardDisburse.Text = Convert.ToDecimal(mDetails.CreditCardDisburse - (mDetails.CreditCardDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblCashWithHold.Text = Convert.ToDecimal(mDetails.CashWithHold - (mDetails.CashWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeWithHold.Text = Convert.ToDecimal(mDetails.ChequeWithHold - (mDetails.ChequeWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardWithHold.Text = Convert.ToDecimal(mDetails.CreditCardWithHold - (mDetails.CreditCardWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblCashDeposit.Text = Convert.ToDecimal(mDetails.CashDeposit - (mDetails.CashDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeDeposit.Text = Convert.ToDecimal(mDetails.ChequeDeposit - (mDetails.ChequeDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardDeposit.Text = Convert.ToDecimal(mDetails.CreditCardDeposit - (mDetails.CreditCardDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            lblNoOfCashTransactions.Text = mDetails.NoOfCashTransactions.ToString("#,##0");
+            lblNoOfChequeTransactions.Text = mDetails.NoOfChequeTransactions.ToString("#,##0");
+            lblNoOfCreditCardTran.Text = mDetails.NoOfCreditCardTransactions.ToString("#,##0");
+            lblNoOfCreditTran.Text = mDetails.NoOfCreditTransactions.ToString("#,##0");
+            lblNoOfCombPayTran.Text = mDetails.NoOfCombinationPaymentTransactions.ToString("#,##0");
+            lblNoOfCreditPaymentTran.Text = mDetails.NoOfCreditPaymentTransactions.ToString("#,##0");
+            lblNoOfDebitPaymentTransactions.Text = mDetails.NoOfDebitPaymentTransactions.ToString("#,##0");
+            lblNoOfRefundTransactions.Text = mDetails.NoOfRefundTransactions.ToString("#,##0");
+            lblNoOfVoidTransactions.Text = mDetails.NoOfVoidTransactions.ToString("#,##0");
+            lblNoOfTotalTransactions.Text = mDetails.NoOfTotalTransactions.ToString("#,##0");
+
+            
 
         }
         private string GetReceiptFormatParameter(string stReceiptFormat)
         {
             string stRetValue = "";
 
-            if (stReceiptFormat == Reports.ReceiptFieldFormats.Blank)
+            if (stReceiptFormat == ReceiptFieldFormats.Blank)
             {
                 stRetValue = "";
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.Spacer)
+            else if (stReceiptFormat == ReceiptFieldFormats.Spacer)
             {
-                stRetValue = Environment.NewLine;
+                stRetValue = " ";
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.DateNow)
+            else if (stReceiptFormat == ReceiptFieldFormats.InvoiceNo)
             {
-                stRetValue = DateTime.Now.ToString("MMM dd yyyy hh:mh tt");
+                stRetValue = "";
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.Cashier)
+            else if (stReceiptFormat == ReceiptFieldFormats.DateNow)
             {
-                stRetValue = "Cashier: " + mCashierName;
+                stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.TerminalNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.Cashier)
             {
-                stRetValue = "Terminal No.: " + CompanyDetails.TerminalNo;
+                stRetValue = mCashierName;
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.MachineSerialNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.TerminalNo)
             {
-                stRetValue = "MIN: " + CONFIG.MachineSerialNo;
+                stRetValue = mclsTerminalDetails.TerminalNo;
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.AccreditationNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.MachineSerialNo)
             {
-                stRetValue = "Acc. No.: " + CONFIG.AccreditationNo;
+                stRetValue = CONFIG.MachineSerialNo;
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.InvoiceNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.AccreditationNo)
             {
-                stRetValue = "OFFICIAL RECEIPT #: " + "N/A";
+                stRetValue = CONFIG.AccreditationNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.RewardsPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseIndividualCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseIndividualCreditPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseGroupCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseGroupCreditPermitNo;
             }
             else
             {
                 stRetValue = stReceiptFormat;
             }
 
+            if (stRetValue == null) stRetValue = "";
+
             return stRetValue;
         }
-
-        private void cmdCancel_Click(object sender, EventArgs e)
+        private string CenterString(string Value, int TotalLengthOfCenter)
         {
-            dialog = DialogResult.Cancel;
-            this.Hide();
-        }
+            string stRetValue = Value;
+            Int32 lenvalue = Value.Length;
 
-        private void cmdEnter_Click(object sender, EventArgs e)
-        {
-            dialog = DialogResult.OK;
-            this.Hide();
-        }
+            if (lenvalue <= TotalLengthOfCenter)
+            {
+                Int32 padding = (int)(TotalLengthOfCenter - lenvalue) / 2;
 
+                for (int i = 0; i < padding; i++)
+                { stRetValue = " " + stRetValue + " "; }
+
+                if (((TotalLengthOfCenter - lenvalue) % 2) != 0)
+                    stRetValue += " ";
+            }
+            else
+            {
+                stRetValue = Value.Substring(0, TotalLengthOfCenter);
+            }
+            return stRetValue;
+        }
+        #endregion
 
     }
 }

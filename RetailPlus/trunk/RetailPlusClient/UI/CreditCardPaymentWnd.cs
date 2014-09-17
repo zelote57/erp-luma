@@ -33,15 +33,9 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label8;
         private Label lblBalanceAmount;
 
-        private decimal mdecBalanceAmount;
-        private DialogResult dialog;
-        private Data.CreditCardPaymentDetails mDetails = new Data.CreditCardPaymentDetails();
-        private Data.SalesTransactionDetails mclsSalesTransactionDetails;
+        #region public Properties
 
-        public Data.SalesTransactionDetails SalesTransactionDetails
-        {
-            set { mclsSalesTransactionDetails = value; }
-        }
+        private DialogResult dialog;
         public DialogResult Result
         {
             get
@@ -49,18 +43,34 @@ namespace AceSoft.RetailPlus.Client.UI
                 return dialog;
             }
         }
+
+        private decimal mdecBalanceAmount;
         public decimal BalanceAmount
         {
             set
-            {
-                mdecBalanceAmount = value;
-            }
+            { mdecBalanceAmount = value; }
         }
+
+        private Data.SalesTransactionDetails mclsSalesTransactionDetails;
+        public Data.SalesTransactionDetails SalesTransactionDetails
+        {
+            set { mclsSalesTransactionDetails = value; }
+        }
+
+        private Data.CreditCardPaymentDetails mDetails = new Data.CreditCardPaymentDetails();
         public Data.CreditCardPaymentDetails Details
         {
             get
             { return mDetails; }
         }
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+        }
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -550,6 +560,8 @@ namespace AceSoft.RetailPlus.Client.UI
             Data.CardTypeDetails cardtypedetails = clsCardType.Details(cboCardType.Text);
             clsCardType.CommitAndDispose();
 
+            mDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
+            mDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
             mDetails.TransactionID = mclsSalesTransactionDetails.TransactionID;
             mDetails.TransactionNo = mclsSalesTransactionDetails.TransactionNo;
             mDetails.Amount = mdecAmount;
@@ -560,6 +572,7 @@ namespace AceSoft.RetailPlus.Client.UI
             mDetails.CardHolder = txtCardHolder.Text;
             mDetails.ValidityDates = ValidityDate.ToString("MMddyy");
             mDetails.Remarks = txtRemarks.Text;
+
             return true;
         }
 

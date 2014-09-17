@@ -139,8 +139,8 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\ClientLibrary\ClientLibrary.csproj">
-      <Name>ClientLibrary</Name>
+    <ProjectReference Include="..\clientlibrary\RetailPlusClientLibrary.csproj">
+      <Name>RetailPlusClientLibrary</Name>
       <Project>{E7C7F8AC-A57A-47A4-84CD-A0DDB2FD9C53}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
@@ -211,67 +211,10 @@
     <None Include="images\psd\yellow_button_dark.psd" />
     <None Include="images\psd\yellow_button_dark_small.psd" />
     <None Include="images\psd\yellow_button_dark_tiny.psd" />
-    <None Include="ReportDataset.xsc">
-      <DependentUpon>ReportDataset.xsd</DependentUpon>
-    </None>
-    <None Include="ReportDataset.xss">
-      <DependentUpon>ReportDataset.xsd</DependentUpon>
-    </None>
-    <None Include="ReportDataset.xsx">
-      <DependentUpon>ReportDataset.xsd</DependentUpon>
-    </None>
     <None Include="RetailPlusClient_TemporaryKey.pfx" />
-    <Compile Include="CRSReports\SI.cs">
-      <DependentUpon>SI.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="CRSReports\DR.cs">
-      <DependentUpon>DR.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="CRSReports\ORLX300PlusAmazon.cs">
-      <DependentUpon>ORLX300PlusAmazon.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="CRSReports\ORLX300Plus.cs">
-      <DependentUpon>ORLX300Plus.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CRSReports\ORLX.cs">
-      <DependentUpon>ORLX.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="CRSReports\DR_old.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DR_old.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CRSReports\EJournalReport.cs">
-      <DependentUpon>EJournalReport.rpt</DependentUpon>
-      <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="CRSReports\OR.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OR.rpt</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
@@ -284,23 +227,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ReportDataset.cs">
-      <DependentUpon>ReportDataset.xsd</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ReportDataset.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ReportDataset.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Resolution.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LocalDB.cs" />
+    <Compile Include="DBSync.cs" />
     <Compile Include="SingleInstance.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Struct.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TaskBarWnd.cs">
@@ -310,9 +241,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\CashCountWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\CashierReportWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\CashPaymentWnd.cs">
@@ -351,7 +279,7 @@
     <Compile Include="UI\CreditsItemizeWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ItemSelectRestoWnd.cs">
+    <Compile Include="UI\ReportsWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\RewardPointPaymentWnd.cs">
@@ -375,16 +303,10 @@
     <Compile Include="UI\OrderTypeWnd.Designer.cs">
       <DependentUpon>OrderTypeWnd.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\TerminalHistoryDateWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\CreditCardPaymentWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\CreditPaymentWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\CreditsWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\DebitPaymentWnd.cs">
@@ -399,22 +321,10 @@
     <Compile Include="UI\DiscountWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\EJournalReportWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\GroupReportWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\HelpWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\HourlyReportWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\ItemSelectWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\LogInWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\MainWnd.cs">
@@ -426,19 +336,10 @@
     <Compile Include="UI\PaymentsWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\PLUReportWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ReportsWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\ResumeTransactionWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\SplashWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\TerminalReportWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\TransactionItemSelectWnd.cs">
@@ -454,9 +355,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\WithholdWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\XZReadReportWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WindowsController.cs">
@@ -724,48 +622,7 @@
     <Content Include="images\WaiterSelect.jpg" />
     <Content Include="images\Withhold.jpg" />
     <Content Include="images\XZReadReport.jpg" />
-    <Content Include="ReportDataset.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ReportDataset.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="version.xml" />
-    <EmbeddedResource Include="CRSReports\SI.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>SI.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CRSReports\DR.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>DR.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CRSReports\ORLX300PlusAmazon.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>ORLX300PlusAmazon.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CRSReports\ORLX300Plus.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>ORLX300Plus.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CRSReports\ORLX.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>ORLX.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CRSReports\DR_old.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>DR_old.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CRSReports\EJournalReport.resx">
-      <DependentUpon>EJournalReport.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CRSReports\EJournalReport.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>EJournalReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CRSReports\OR.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>OR.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -777,10 +634,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CashCountWnd.resx">
       <DependentUpon>CashCountWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\CashierReportWnd.resx">
-      <DependentUpon>CashierReportWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CashPaymentWnd.resx">
@@ -831,8 +684,8 @@
       <DependentUpon>CreditsItemizeWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemSelectRestoWnd.resx">
-      <DependentUpon>ItemSelectRestoWnd.cs</DependentUpon>
+    <EmbeddedResource Include="UI\ReportsWnd.resx">
+      <DependentUpon>ReportsWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\RewardPointPaymentWnd.resx">
@@ -855,20 +708,12 @@
       <SubType>Designer</SubType>
       <DependentUpon>OrderTypeWnd.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\TerminalHistoryDateWnd.resx">
-      <DependentUpon>TerminalHistoryDateWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\CreditCardPaymentWnd.resx">
       <DependentUpon>CreditCardPaymentWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CreditPaymentWnd.resx">
       <DependentUpon>CreditPaymentWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\CreditsWnd.resx">
-      <DependentUpon>CreditsWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DebitPaymentWnd.resx">
@@ -887,28 +732,12 @@
       <DependentUpon>DiscountWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\EJournalReportWnd.resx">
-      <DependentUpon>EJournalReportWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\GroupReportWnd.resx">
-      <DependentUpon>GroupReportWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\HelpWnd.resx">
       <DependentUpon>HelpWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\HourlyReportWnd.resx">
-      <DependentUpon>HourlyReportWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\ItemSelectWnd.resx">
       <DependentUpon>ItemSelectWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\LogInWnd.resx">
-      <DependentUpon>LogInWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainWnd.resx">
@@ -923,24 +752,12 @@
       <DependentUpon>PaymentsWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\PLUReportWnd.resx">
-      <DependentUpon>PLUReportWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ReportsWnd.resx">
-      <DependentUpon>ReportsWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\ResumeTransactionWnd.resx">
       <DependentUpon>ResumeTransactionWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SplashWnd.resx">
       <DependentUpon>SplashWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\TerminalReportWnd.resx">
-      <DependentUpon>TerminalReportWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TransactionItemSelectWnd.resx">
@@ -961,10 +778,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\WithholdWnd.resx">
       <DependentUpon>WithholdWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\XZReadReportWnd.resx">
-      <DependentUpon>XZReadReportWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

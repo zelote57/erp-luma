@@ -211,6 +211,15 @@ namespace AceSoft.RetailPlus.Security._Terminals {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator3;
         
         /// <summary>
+        /// txtMachineSerialNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMachineSerialNo;
+        
+        /// <summary>
         /// cboFormBehaviour control.
         /// </summary>
         /// <remarks>
@@ -238,13 +247,13 @@ namespace AceSoft.RetailPlus.Security._Terminals {
         protected global::System.Web.UI.WebControls.DropDownList cboDiscountCode;
         
         /// <summary>
-        /// txtMachineSerialNo control.
+        /// cboPWDDiscountCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMachineSerialNo;
+        protected global::System.Web.UI.WebControls.DropDownList cboPWDDiscountCode;
         
         /// <summary>
         /// txtAccreditationNo control.

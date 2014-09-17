@@ -137,7 +137,7 @@
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Local Tax<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    </td>
+                                    <label>Machine Serial No<font color="red">*</font></label></td>
                             </tr>
                             <tr>
                                 <td class="ms-formspacer">
@@ -170,6 +170,7 @@
                                 <td class="ms-formspacer">
                                     <img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
+                                    <asp:textbox id="txtMachineSerialNo" accessKey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="20" ReadOnly="True"></asp:textbox>
                                 </td>
                             </tr>
                             <tr>
@@ -182,7 +183,7 @@
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Discount Code for Senior Citizen<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    <label>Machine Serial No<font color="red">*</font></label></td>
+                                    <label>Discount Code for Person With Disability<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Accreditation No<font color="red">*</font></label></td>
                             </tr>
@@ -204,7 +205,7 @@
                                 <td class="ms-formspacer">
                                     <img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:textbox id="txtMachineSerialNo" accessKey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="20" ReadOnly="True"></asp:textbox>
+                                    <asp:dropdownlist id="cboPWDDiscountCode" CssClass="ms-short" runat="server"></asp:dropdownlist>
                                 </td>
                                 <td class="ms-formspacer">
                                     <img src="../../_layouts/images/trans.gif" width="10" /></td>

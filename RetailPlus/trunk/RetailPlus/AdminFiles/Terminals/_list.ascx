@@ -116,7 +116,8 @@
 							    <asp:imagebutton id="imgItemEdit" CommandName="imgItemEdit" accessKey="U" tabIndex="1" height="16" width="16" border="0" tooltip="Update this terminal" ImageUrl="../../_layouts/images/edit.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
 						    </td>
 							<td class="ms-vb-user">
-								<asp:HyperLink id="lnkTerminalNo" Runat="server"></asp:HyperLink>
+								<asp:HyperLink id="lnkTerminalNo" Runat="server"></asp:HyperLink>-Branch:
+                                <asp:Label id="lblBranchID" runat="server"></asp:Label>
 							<td class="ms-vb-user">
 								<asp:HyperLink id="lnkTerminalCode" Runat="server"></asp:HyperLink>
 							<td class="ms-vb-user">

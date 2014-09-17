@@ -37,52 +37,52 @@
 													    Front-End reports.)</FONT></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader1" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader1" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeader1" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportHeader1_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeaderOrientation1" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader2" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader2" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeader2" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportHeader2_SelectedIndexChanged"></asp:dropdownlist></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeaderOrientation2" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader3" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader3" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeader3" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportHeader3_SelectedIndexChanged"></asp:dropdownlist></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeaderOrientation3" runat="server" CssClass="ms-short" onselectedindexchanged="cboReportHeader1_SelectedIndexChanged"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader4" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader4" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeader4" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportHeader4_SelectedIndexChanged"></asp:dropdownlist></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeaderOrientation4" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader5" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader5" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeader5" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportHeader5_SelectedIndexChanged"></asp:dropdownlist></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeaderOrientation5" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader6" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader6" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeader6" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportHeader6_SelectedIndexChanged"></asp:dropdownlist></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeaderOrientation6" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader7" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader7" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeader7" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportHeader7_SelectedIndexChanged"></asp:dropdownlist></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeaderOrientation7" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader8" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader8" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeader8" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportHeader8_SelectedIndexChanged"></asp:dropdownlist></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeaderOrientation8" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader9" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader9" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeader9" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportHeader9_SelectedIndexChanged"></asp:dropdownlist></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeaderOrientation9" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader10" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportHeader10" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeader10" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportHeader10_SelectedIndexChanged"></asp:dropdownlist></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportHeaderOrientation10" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
@@ -92,52 +92,52 @@
 													    receipts)</FONT></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader1" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader1" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeader1" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageHeader1_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeaderOrientation1" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader2" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader2" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeader2" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageHeader2_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeaderOrientation2" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader3" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader3" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeader3" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageHeader3_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeaderOrientation3" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader4" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader4" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeader4" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageHeader4_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeaderOrientation4" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader5" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader5" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeader5" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageHeader5_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeaderOrientation5" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader6" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader6" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeader6" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageHeader6_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeaderOrientation6" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader7" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader7" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeader7" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageHeader7_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeaderOrientation7" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader8" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader8" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeader8" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageHeader8_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeaderOrientation8" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader9" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader9" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeader9" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageHeader9_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeaderOrientation9" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader10" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageHeader10" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeader10" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageHeader10_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageHeaderOrientation10" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
@@ -193,102 +193,102 @@
 											    </td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA1" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA1" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA1" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA1_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation1" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA2" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA2" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA2" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA2_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation2" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA3" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA3" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA3" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA3_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation3" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA4" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA4" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA4" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA4_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation4" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA5" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA5" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA5" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA5_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation5" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA6" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA6" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA6" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA6_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation6" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA7" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA7" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA7" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA7_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation7" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA8" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA8" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA8" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA8_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation8" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA9" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA9" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA9" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA9_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation9" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA10" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA10" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA10" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA10_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation10" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA11" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA11" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA11" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA11_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation11" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA12" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA12" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA12" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA12_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation12" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA13" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA13" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA13" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA13_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation13" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA14" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA14" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA14" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA14_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation14" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA15" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA15" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA15" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA15_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation15" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA16" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA16" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA16" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA16_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation16" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA17" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA17" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA17" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA17_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation17" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA18" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA18" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA18" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA18_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation18" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA19" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA19" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA19" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA19_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation19" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA20" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterA20" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterA20" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterA20_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterAOrientation20" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
@@ -307,32 +307,32 @@
 										    <tr>
 											    <td colspan="3" height="30">
 												    <P align="center"><FONT color="red"><img alt="" src="../../../_layouts/images/blank.gif"><FONT size="2">
-															    (The&nbsp;20 lines below is called PageFooterB. These lines will be printed 
+															    (The&nbsp;5 lines below is called PageFooterB. These lines will be printed 
 															    only in receipts)</FONT></FONT></P>
 											    </td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterB1" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterB1" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterB1" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterB1_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterBOrientation1" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterB2" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterB2" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterB2" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterB2_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterBOrientation2" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterB3" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterB3" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterB3" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterB3_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterBOrientation3" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterB4" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterB4" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterB4" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterB4_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterBOrientation4" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterB5" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtPageFooterB5" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterB5" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboPageFooterB5_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboPageFooterBOrientation5" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
@@ -344,27 +344,27 @@
 											    </td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportFooter1" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportFooter1" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportFooter1" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportFooter1_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportFooterOrientation1" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportFooter2" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportFooter2" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportFooter2" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportFooter2_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportFooterOrientation2" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportFooter3" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportFooter3" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportFooter3" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportFooter3_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportFooterOrientation3" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportFooter4" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportFooter4" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportFooter4" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportFooter4_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportFooterOrientation4" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>
 										    <tr>
-											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportFooter5" runat="server" CssClass="ms-long" MaxLength="15"></asp:textbox></td>
+											    <td style="padding-bottom: 2px" align="left"><asp:textbox id="txtReportFooter5" runat="server" CssClass="ms-long" MaxLength="40"></asp:textbox></td>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportFooter5" runat="server" CssClass="ms-long" AutoPostBack="True" onselectedindexchanged="cboReportFooter5_SelectedIndexChanged"></asp:dropdownlist>
 											    <td style="padding-bottom: 2px" align="right"><asp:dropdownlist id="cboReportFooterOrientation5" runat="server" CssClass="ms-short"></asp:dropdownlist></td>
 										    </tr>

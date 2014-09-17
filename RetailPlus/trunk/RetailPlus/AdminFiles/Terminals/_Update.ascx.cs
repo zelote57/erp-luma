@@ -104,6 +104,13 @@ namespace AceSoft.RetailPlus.Security._Terminals
             cboDiscountCode.DataSource = clsDiscount.DataList("DiscountCode", SortOption.Ascending).DefaultView;
             cboDiscountCode.DataBind();
             cboDiscountCode.SelectedIndex = cboDiscountCode.Items.Count - 1;
+
+            cboPWDDiscountCode.DataTextField = "DiscountType";
+            cboPWDDiscountCode.DataValueField = "DiscountCode";
+            cboPWDDiscountCode.DataSource = clsDiscount.DataList("DiscountCode", SortOption.Ascending).DefaultView;
+            cboPWDDiscountCode.DataBind();
+            cboPWDDiscountCode.SelectedIndex = cboDiscountCode.Items.Count - 1;
+
             clsDiscount.CommitAndDispose();
 		}
 
@@ -112,7 +119,7 @@ namespace AceSoft.RetailPlus.Security._Terminals
 
 			Int32 TerminalID = Convert.ToInt32(Common.Decrypt(Request.QueryString["id"],Session.SessionID));
 			Terminal clsTerminal = new Terminal();
-			TerminalDetails clsDetails = clsTerminal.Details(TerminalID);
+            TerminalDetails clsDetails = clsTerminal.Details(TerminalID);
 			clsTerminal.CommitAndDispose();
 
             lblBranchID.Text = clsDetails.BranchID.ToString();
@@ -168,6 +175,7 @@ namespace AceSoft.RetailPlus.Security._Terminals
             txtEndCutOffTime.Text = clsDetails.EndCutOffTime;
             chkWithRestaurantFeatures.Checked = clsDetails.WithRestaurantFeatures;
             cboDiscountCode.SelectedIndex = cboDiscountCode.Items.IndexOf(cboDiscountCode.Items.FindByValue(clsDetails.SeniorCitizenDiscountCode));
+            cboPWDDiscountCode.SelectedIndex = cboPWDDiscountCode.Items.IndexOf(cboPWDDiscountCode.Items.FindByValue(clsDetails.PWDDiscountCode));
             chkIsTouchScreen.Checked = clsDetails.IsTouchScreen;
             chkWillContinueSelectionVariation.Checked = clsDetails.WillContinueSelectionVariation;
             chkWillContinueSelectionProduct.Checked = clsDetails.WillContinueSelectionProduct;
@@ -223,8 +231,9 @@ namespace AceSoft.RetailPlus.Security._Terminals
             clsDetails.StartCutOffTime = txtStartCutOffTime.Text;
             clsDetails.EndCutOffTime = txtEndCutOffTime.Text;
             clsDetails.WithRestaurantFeatures = chkWithRestaurantFeatures.Checked;
+            
             clsDetails.SeniorCitizenDiscountCode = cboDiscountCode.SelectedItem.Value;
-
+            clsDetails.PWDDiscountCode = cboPWDDiscountCode.SelectedItem.Value;
             // Added May 21, 2009
             clsDetails.IsTouchScreen = chkIsTouchScreen.Checked;
 

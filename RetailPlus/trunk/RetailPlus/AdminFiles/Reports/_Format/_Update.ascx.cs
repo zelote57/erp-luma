@@ -482,6 +482,10 @@ namespace AceSoft.RetailPlus._Reports_Format
 
 		private void LoadDropDownList(DropDownList cboBox)
 		{
+            cboBox.Items.Add(new ListItem("", ""));
+            cboBox.Items.Add(new ListItem("0.00", "0.00"));
+            cboBox.Items.Add(new ListItem("xxxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxx"));
+            cboBox.Items.Add(new ListItem("----------------------------------------", "----------------------------------------"));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.Address1, ReceiptFieldFormats.Address1));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.Address2, ReceiptFieldFormats.Address2));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.OfficePhone, ReceiptFieldFormats.OfficePhone));
@@ -508,6 +512,8 @@ namespace AceSoft.RetailPlus._Reports_Format
 			if (ReceiptFieldFormats.ClosingNote5 != "") cboBox.Items.Add(new ListItem(ReceiptFieldFormats.ClosingNote5, ReceiptFieldFormats.ClosingNote5));
 
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.InvoiceNo, ReceiptFieldFormats.InvoiceNo));
+            cboBox.Items.Add(new ListItem(ReceiptFieldFormats.ORNo, ReceiptFieldFormats.ORNo));
+            cboBox.Items.Add(new ListItem(ReceiptFieldFormats.CheckCounter, ReceiptFieldFormats.CheckCounter));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.DateNow, ReceiptFieldFormats.DateNow));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.TransactionDate, ReceiptFieldFormats.TransactionDate));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.Cashier, ReceiptFieldFormats.Cashier));
@@ -527,8 +533,10 @@ namespace AceSoft.RetailPlus._Reports_Format
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.AmountDue, ReceiptFieldFormats.AmountDue));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.AmountTender, ReceiptFieldFormats.AmountTender));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.Change, ReceiptFieldFormats.Change));
-			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.NonVatableAmount, ReceiptFieldFormats.NonVatableAmount));
-			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.VatableAmount, ReceiptFieldFormats.VatableAmount));
+            cboBox.Items.Add(new ListItem(ReceiptFieldFormats.VATExempt, ReceiptFieldFormats.VATExempt));
+            cboBox.Items.Add(new ListItem(ReceiptFieldFormats.VATZeroRated, ReceiptFieldFormats.VATZeroRated));
+			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.NonVATableAmount, ReceiptFieldFormats.NonVATableAmount));
+			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.VATableAmount, ReceiptFieldFormats.VATableAmount));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.VAT, ReceiptFieldFormats.VAT));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.TotalItemSold, ReceiptFieldFormats.TotalItemSold));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.TotalQtySold, ReceiptFieldFormats.TotalQtySold));
@@ -692,19 +700,23 @@ namespace AceSoft.RetailPlus._Reports_Format
 		private void ApplyFormat(Reports.ReceiptDetails clsReceiptDetails,Label lblLabel)
 		{
 			int CONFIG_MAX_RECEIPT_WIDTH = 40;
-			if ((clsReceiptDetails.Text != "" && clsReceiptDetails.Text != null) || (clsReceiptDetails.Value != "" && clsReceiptDetails.Value != null))
+			if (!string.IsNullOrEmpty(clsReceiptDetails.Text) || !string.IsNullOrEmpty(clsReceiptDetails.Value))
 			{
 				switch (clsReceiptDetails.Orientation)
 				{
 					case ReportFormatOrientation.Justify:
-						if (clsReceiptDetails.Text == "" || clsReceiptDetails.Text == null) 
+						if (string.IsNullOrEmpty(clsReceiptDetails.Text)) 
 							lblLabel.Text = clsReceiptDetails.Value;
+                        else if (string.IsNullOrEmpty(clsReceiptDetails.Value))
+                            lblLabel.Text = clsReceiptDetails.Text;
 						else
 							lblLabel.Text = clsReceiptDetails.Text.PadRight(13) + ":" + clsReceiptDetails.Value.PadLeft(CONFIG_MAX_RECEIPT_WIDTH-14);
 						break;
 					case ReportFormatOrientation.Center:
-						if (clsReceiptDetails.Text == "" || clsReceiptDetails.Text == null) 
+                        if (string.IsNullOrEmpty(clsReceiptDetails.Text)) 
 							lblLabel.Text = CenterString(clsReceiptDetails.Value, CONFIG_MAX_RECEIPT_WIDTH);
+                        else if (string.IsNullOrEmpty(clsReceiptDetails.Value))
+                            lblLabel.Text = CenterString(clsReceiptDetails.Text, CONFIG_MAX_RECEIPT_WIDTH);
 						else
 							lblLabel.Text = CenterString(clsReceiptDetails.Text + " : " + clsReceiptDetails.Value, CONFIG_MAX_RECEIPT_WIDTH);
 						break;

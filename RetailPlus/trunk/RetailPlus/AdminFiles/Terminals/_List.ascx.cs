@@ -77,6 +77,9 @@ namespace AceSoft.RetailPlus.Security._Terminals
 				HyperLink lnkTerminalNo = (HyperLink) e.Item.FindControl("lnkTerminalNo");
 				lnkTerminalNo.Text = dr["TerminalNo"].ToString();
 
+                Label lblBranchID = (Label)e.Item.FindControl("lblBranchID");
+                lblBranchID.Text = dr["BranchID"].ToString();
+
 				HyperLink lnkTerminalCode = (HyperLink) e.Item.FindControl("lnkTerminalCode");
 				lnkTerminalCode.Text = dr["TerminalCode"].ToString();
 

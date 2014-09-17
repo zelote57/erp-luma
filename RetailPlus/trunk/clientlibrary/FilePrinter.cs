@@ -23,7 +23,7 @@ namespace AceSoft.RetailPlus.Client
 
 		public string FileName
 		{
-			get { return mstLogFile; }
+            get { return mstLogFile; }
 			set { mstFileName = value; }
 		}
 		public FilePrinter()
@@ -45,6 +45,7 @@ namespace AceSoft.RetailPlus.Client
 
 				string logsdir = System.Configuration.ConfigurationManager.AppSettings["logsdir"].ToString();
 
+                logsdir += logsdir.EndsWith("/") ? "" : "/";
 				if (!Directory.Exists(logsdir + logdate.ToString("MMM")))
 				{
 					Directory.CreateDirectory(logsdir + logdate.ToString("MMM"));
@@ -95,7 +96,7 @@ namespace AceSoft.RetailPlus.Client
 					fs.Dispose();
 					File.Delete(mstLogFile); }
 			}
-			catch (Exception ex) { }
+			catch{ }
 		}
 	}
 }

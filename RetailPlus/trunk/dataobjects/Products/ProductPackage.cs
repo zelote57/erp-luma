@@ -445,7 +445,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL productProductUpdateVAT(@ProductGroupID, @ProductSubGroupID, @ProductID, @NewVAT, @NewEVAT, @NewLocalTax, @CreatedBy);";
+                string SQL = "CALL procProductUpdateVAT(@ProductGroupID, @ProductSubGroupID, @ProductID, @NewVAT, @NewEVAT, @NewLocalTax, @CreatedBy);";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;

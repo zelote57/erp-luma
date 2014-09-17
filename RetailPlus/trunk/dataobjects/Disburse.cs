@@ -15,18 +15,22 @@ namespace AceSoft.RetailPlus.Data
          "FF52834EAFB5A7A1FDFD5851A3")]
     public struct DisburseDetails
     {
+        public string TerminalNo;
+        public Int64 SyncID;
         public Int64 DisburseID;
         public decimal Amount;
         public PaymentTypes PaymentType;
         public DateTime DateCreated;
-        public string TerminalNo;
-        public int BranchID;
         public Int64 CashierID;
         public string CashierName;
         public string Remarks;
 
         public DateTime StartTransactionDate;
         public DateTime EndTransactionDate;
+
+        public BranchDetails BranchDetails; 
+        public DateTime CreatedOn;
+        public DateTime LastModified;
     }
 
     public struct DisburseColumns
@@ -36,7 +40,7 @@ namespace AceSoft.RetailPlus.Data
         public bool PaymentType;
         public bool DateCreated;
         public bool TerminalNo;
-        public bool BranchID;
+        public bool BranchDetails;
         public bool CashierID;
         public bool CashierName;
         public bool Remarks;
@@ -49,7 +53,7 @@ namespace AceSoft.RetailPlus.Data
         public const string PaymentType = "PaymentType";
         public const string DateCreated = "DateCreated";
         public const string TerminalNo = "TerminalNo";
-        public const string BranchID = "BranchID";
+        public const string BranchDetails = "BranchDetails";
         public const string CashierID = "CashierID";
         public const string CashierName = "CashierName";
         public const string Remarks = "Remarks";
@@ -63,16 +67,16 @@ namespace AceSoft.RetailPlus.Data
          "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
          "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
          "FF52834EAFB5A7A1FDFD5851A3")]
-    public class Disburse : POSConnection
+    public class Disburses : POSConnection
     {
 		#region Constructors and Destructors
 
-		public Disburse()
+		public Disburses()
             : base(null, null)
         {
         }
 
-        public Disburse(MySqlConnection Connection, MySqlTransaction Transaction) 
+        public Disburses(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
 
@@ -86,64 +90,14 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "INSERT INTO tblDisburse (" +
-                                    "Amount, " +
-                                    "PaymentType, " +
-                                    "DateCreated, " +
-                                    "TerminalNo, " +
-                                    "CashierID, " +
-                                    "BranchID, " +
-                                    "BranchCode, " +
-                                    "Remarks " +
-                                ")VALUES (" +
-                                    "@Amount, " +
-                                    "@PaymentType, " +
-                                    "@DateCreated, " +
-                                    "@TerminalNo, " +
-                                    "@CashierID, " +
-                                    "@BranchID, " +
-                                    "(SELECT BranchCode FROM tblBranch WHERE BranchID = @BranchID), " +
-                                    "@Remarks " +
-                                ");";
+                Save(Details);
 
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@Amount", Details.Amount);
-                cmd.Parameters.AddWithValue("@PaymentType", Details.PaymentType.ToString("d"));
-                cmd.Parameters.AddWithValue("@DateCreated", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
-                cmd.Parameters.AddWithValue("@CashierID", Details.CashierID);
-                cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
-                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
-
-                base.ExecuteNonQuery(cmd);
-
-                SQL = "SELECT LAST_INSERT_ID();";
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = SQL;
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                Int64 iID = 0;
-
-                while (myReader.Read())
-                {
-                    iID = myReader.GetInt64(0);
-                }
-
-                myReader.Close();
+                Int64 iID = Int64.Parse(base.getLAST_INSERT_ID(this));
 
                 TerminalReport clsTerminalReport = new TerminalReport(base.Connection, base.Transaction);
                 clsTerminalReport.UpdateDisburse(Details);
 
-                CashierReport clsCashierReport = new CashierReport(base.Connection, base.Transaction);
+                CashierReports clsCashierReport = new CashierReports(base.Connection, base.Transaction);
                 clsCashierReport.UpdateDisburse(Details);
 
                 return iID;
@@ -151,15 +105,6 @@ namespace AceSoft.RetailPlus.Data
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -168,53 +113,46 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "UPDATE tblDisburse SET " +
-                                "Amount			=	@Amount, " +
-                                "PaymentType	=	@PaymentType, " +
-                                "DateCreated	=	@DateCreated, " +
-                                "TerminalNo		=	TerminalNo, " +
-                                "CashierID		=	@CashierID, " +
-                                "BranchID		=	@BranchID, " +
-                                "BranchCode     =   (SELECT BranchCode FROM tblBranch WHERE BranchID = @BranchID), " +
-                                "Remarks		=	@Remarks " +
-                            "WHERE DisburseID	=	@DisburseID;";
-
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@Amount", Details.Amount);
-                cmd.Parameters.AddWithValue("@PaymentType", Details.PaymentType.ToString("d"));
-                cmd.Parameters.AddWithValue("@DateCreated", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
-                cmd.Parameters.AddWithValue("@CashierID", Details.CashierID);
-                cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
-                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
-                cmd.Parameters.AddWithValue("@DisburseID", Details.DisburseID);
-
-                base.ExecuteNonQuery(cmd);
+                Save(Details);
             }
 
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
 
+        public Int32 Save(DisburseDetails Details)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procSaveDisburse(@BranchID, @TerminalNo, @SyncID, @DepositID, @Amount, @PaymentType, @DateCreated, " +
+                                                  "@CashierID, @Remarks, @BranchCode, @CreatedOn, @LastModified);";
+
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
+                cmd.Parameters.AddWithValue("SyncID", Details.SyncID);
+                cmd.Parameters.AddWithValue("DepositID", Details.DisburseID);
+                cmd.Parameters.AddWithValue("Amount", Details.Amount);
+                cmd.Parameters.AddWithValue("PaymentType", Details.PaymentType.ToString("d"));
+                cmd.Parameters.AddWithValue("DateCreated", Details.DateCreated);
+                cmd.Parameters.AddWithValue("CashierID", Details.CashierID);
+                cmd.Parameters.AddWithValue("Remarks", Details.Remarks);
+                cmd.Parameters.AddWithValue("BranchCode", Details.BranchDetails.BranchCode);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                cmd.CommandText = SQL;
+                return base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
         #endregion
 
@@ -224,31 +162,18 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                
-                MySqlCommand cmd;
-
-                string SQL = "DELETE FROM tblDisburse WHERE DisburseID IN (" + IDs + ");";
-                cmd = new MySqlCommand();
-                
-                
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+                
+                string SQL = "DELETE FROM tblDisburse WHERE DisburseID IN (" + IDs + ");";
+                
                 cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
 
                 return true;
             }
-
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -283,7 +208,7 @@ namespace AceSoft.RetailPlus.Data
             if (clsDisburseColumns.TerminalNo) stSQL += "tblDisburse.TerminalNo, ";
             if (clsDisburseColumns.CashierID) stSQL += "tblDisburse.CashierID, ";
             if (clsDisburseColumns.CashierName) stSQL += "sysAccessUserDetails.Name 'CashierName', ";
-            if (clsDisburseColumns.BranchID) stSQL += "tblDisburse.BranchID, ";
+            if (clsDisburseColumns.BranchDetails) stSQL += "tblDisburse.BranchID, ";
             if (clsDisburseColumns.Remarks) stSQL += "tblDisburse.Remarks, ";
 
             stSQL += "tblDisburse.DisburseID FROM tblDisburse ";
@@ -296,54 +221,38 @@ namespace AceSoft.RetailPlus.Data
 
         #region Details
 
-        public DisburseDetails Details(Int32 DisburseID)
+        public DisburseDetails Details(Int64 DisburseID)
         {
             try
             {
-                string SQL = SQLSelect() + "WHERE DisburseID = @DisburseID;";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+                
+                string SQL = SQLSelect() + "WHERE DisburseID = @DisburseID;";
 
                 cmd.Parameters.AddWithValue("@DisburseID", DisburseID);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 DisburseDetails Details = new DisburseDetails();
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    Details.DisburseID = myReader.GetInt64("DisburseID");
-                    Details.Amount = myReader.GetDecimal("Amount");
-                    Details.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), myReader.GetString("PaymentType"));
-                    Details.DateCreated = myReader.GetDateTime("DateCreated");
-                    Details.CashierID = myReader.GetInt64("CashierID");
-                    Details.CashierName = "" + myReader["CashierName"].ToString();
-                    Details.BranchID = myReader.GetInt32("BranchID");
-                    Details.Remarks = "" + myReader["Remarks"].ToString();
+                    Details.DisburseID = Int64.Parse(dr["DisburseID"].ToString());
+                    Details.Amount = decimal.Parse(dr["Amount"].ToString());
+                    Details.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), dr["PaymentType"].ToString());
+                    Details.DateCreated = DateTime.Parse(dr["DateCreated"].ToString());
+                    Details.CashierID = Int64.Parse(dr["CashierID"].ToString());
+                    Details.CashierName = dr["CashierName"].ToString();
+                    Details.BranchDetails = new Branch(base.Connection, base.Transaction).Details(Int32.Parse(dr["BranchID"].ToString()));
+                    Details.Remarks = dr["Remarks"].ToString();
                 }
-
-                myReader.Close();
 
                 return Details;
             }
-
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
@@ -353,205 +262,47 @@ namespace AceSoft.RetailPlus.Data
 
         #region Streams
 
-        //public MySqlDataReader List(string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL =	SQLSelect() + "WHERE 1=1 ORDER BY " + SortField; 
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        
-
-        //        return base.ExecuteReader(cmd);			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
-        //public MySqlDataReader List(DateTime StartTransactionDate, DateTime EndTransactionDate, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        MySqlCommand cmd = new MySqlCommand();
-
-        //        string SQL = SQLSelect();
-
-        //        if (StartTransactionDate != DateTime.MinValue)
-        //        {
-        //            SQL += "AND a.DateCreated >= @StartTransactionDate ";
-        //            cmd.Parameters.AddWithValue("@StartTransactionDate", StartTransactionDate);
-        //        }
-        //        if (EndTransactionDate != DateTime.MinValue)
-        //        {
-        //            SQL += "AND a.DateCreated <= @EndTransactionDate ";
-        //            cmd.Parameters.AddWithValue("@EndTransactionDate", EndTransactionDate);
-        //        }
-
-        //        SQL += " ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-
-        //        
-
-        //        return base.ExecuteReader(cmd);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
-        //public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = SQLSelect() + "WHERE TerminalNo LIKE @SearchKey " +
-        //                    "ORDER BY " + SortField; 
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-        //        prmSearchKey.Value = "%" + SearchKey + "%";
-        //        cmd.Parameters.Add(prmSearchKey);
-
-        //        
-
-        //        return base.ExecuteReader(cmd);			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
-
-        public System.Data.DataTable ListAsDataTable(DisburseColumns clsDisburseColumns, DisburseDetails clsSearchKey, int Limit, string SortField, System.Data.SqlClient.SortOrder SortOrder)
+        public System.Data.DataTable ListAsDataTable(DisburseColumns clsDisburseColumns, DisburseDetails clsSearchKey, string SortField = "DateCreated", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, int limit = 0)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = SQLSelect(clsDisburseColumns) + "WHERE 1=1 ";
-                if (clsSearchKey.BranchID != 0)
+                if (clsSearchKey.BranchDetails.BranchID != 0)
                 {
                     SQL += "AND tblDisburse.BranchID = @BranchID ";
-                    MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                    prmBranchID.Value = clsSearchKey.BranchID;
-                    cmd.Parameters.Add(prmBranchID);
+                    cmd.Parameters.AddWithValue("BranchID", clsSearchKey.BranchDetails.BranchID);
                 }
                 if (clsSearchKey.CashierID != 0)
                 {
                     SQL += "AND tblDisburse.CashierID = @CashierID ";
-                    MySqlParameter prmCashierID = new MySqlParameter("@CashierID",MySqlDbType.Int64);
-                    prmCashierID.Value = clsSearchKey.CashierID;
-                    cmd.Parameters.Add(prmCashierID);
+                    cmd.Parameters.AddWithValue("CashierID", clsSearchKey.CashierID);
                 }
                 if (clsSearchKey.StartTransactionDate != DateTime.MinValue)
                 {
                     SQL += "AND tblDisburse.DateCreated >= @StartTransactionDate ";
-                    MySqlParameter prmStartTransactionDate = new MySqlParameter("@StartTransactionDate",MySqlDbType.DateTime);
-                    prmStartTransactionDate.Value = clsSearchKey.StartTransactionDate;
-                    cmd.Parameters.Add(prmStartTransactionDate);
+                    cmd.Parameters.AddWithValue("StartTransactionDate", clsSearchKey.StartTransactionDate);
                 }
-                if (clsSearchKey.StartTransactionDate != DateTime.MinValue)
+                if (clsSearchKey.EndTransactionDate != DateTime.MinValue)
                 {
                     SQL += "AND tblDisburse.DateCreated <= @EndTransactionDate ";
-                    MySqlParameter prmEndTransactionDate = new MySqlParameter("@EndTransactionDate",MySqlDbType.DateTime);
-                    prmEndTransactionDate.Value = clsSearchKey.EndTransactionDate;
-                    cmd.Parameters.Add(prmEndTransactionDate);
+                    cmd.Parameters.AddWithValue("EndTransactionDate", clsSearchKey.EndTransactionDate);
                 }
-                if (SortField != string.Empty && SortField != null)
-                {
-                    SQL += "ORDER BY " + SortField + " ";
-
-                    if (SortOrder != System.Data.SqlClient.SortOrder.Descending) SQL += "ASC ";
-                    else SQL += "DESC ";
-                }
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
                 
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
                 cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblDisburse");
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }

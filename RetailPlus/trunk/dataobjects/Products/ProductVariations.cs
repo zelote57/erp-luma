@@ -114,50 +114,28 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL = "UPDATE tblProductVariations SET " + 
 								"VariationID = @VariationID " +
 							"WHERE ProductID = @ProductID " +
-							"and VariationID = @ProductVariationIDOld;";
+							"AND VariationID = @ProductVariationIDOld;";
 
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
+                cmd.Parameters.AddWithValue("@VariationID", Details.VariationID);
+                cmd.Parameters.AddWithValue("@ProductVariationIDOld", ProductVariationIDOld);
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = Details.ProductID;
-				cmd.Parameters.Add(prmProductID);
-
-				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",MySqlDbType.Int32);			
-				prmVariationID.Value = Details.VariationID;
-				cmd.Parameters.Add(prmVariationID);
-
-				MySqlParameter prmProductVariationIDOld = new MySqlParameter("@ProductVariationIDOld",MySqlDbType.Int32);			
-				prmProductVariationIDOld.Value = ProductVariationIDOld;
-				cmd.Parameters.Add(prmProductVariationIDOld);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
-        public void AddEasyVariation(long ProductGroupID, long ProductSubGroupID, long ProductID, long VariationID, string CreatedBy)
+        public void AddEasyVariation(Int64 ProductGroupID, Int64 ProductSubGroupID, Int64 ProductID, Int64 VariationID, string CreatedBy)
         {
             try
             {
@@ -213,20 +191,14 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"DELETE FROM tblProductVariations WHERE ProductID = @ProductID AND VariationID IN (" + IDs + ");";
-				  
 				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+				cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = ProductID;
-				cmd.Parameters.Add(prmProductID);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 				return true;
@@ -234,15 +206,6 @@ namespace AceSoft.RetailPlus.Data
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -252,7 +215,7 @@ namespace AceSoft.RetailPlus.Data
 
         #region Details
 
-        public VariationDetails Details(long ProductID, string VariationCode)
+        public VariationDetails Details(Int64 ProductID, string VariationCode)
         {
             try
             {
@@ -430,7 +393,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public System.Data.DataTable AvailableVariationsDataTable(long ProductID, string SortField, SortOption SortOrder)
+        public System.Data.DataTable AvailableVariationsDataTable(Int64 ProductID, string SortField, SortOption SortOrder)
         {
             try
             {

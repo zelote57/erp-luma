@@ -15,19 +15,24 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct CashCountDetails
 	{
+        public BranchDetails BranchDetails;
+        public string TerminalNo;
+        public Int64 SyncID;
 		public Int64 CashCountID;
 		public Int64 CashierID;
 		public string CashierName;
-        public int BranchID;
-        public string BranchCode;
-		public string TerminalNo;
 		public DateTime DateCreated;
-		public Int32 DenominationID;
-		public decimal DenominationValue;
-		public string DenominationCode;
-		public string ImagePath;
+        public DenominationDetails DenominationDetails;
+        
+        /// <summary>
+        /// DenominationValue saved in the cashcount to check if it's the same in the DenominationDetails
+        /// </summary>
+        public decimal DenominationValue;
 		public Int32 DenominationCount;
 		public decimal DenominationAmount;
+        
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -61,92 +66,12 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "INSERT INTO tblCashCount (" +
-								"CashierID, " +
-								"CashierName, " +
-                                "BranchID, " +
-                                "BranchCode, " +
-								"TerminalNo, " +
-								"DateCreated, " +
-								"DenominationID, " +
-								"DenominationCount" +
-							") VALUES (" +
-								"@CashierID, " +
-								"@CashierName, " +
-                                "@BranchID, " +
-                                "(SELECT BranchCode FROM tblBranch WHERE BranchID = @BranchID), " +
-								"@TerminalNo, " +
-								"@DateCreated, " +
-								"@DenominationID, " +
-								"@DenominationCount" +
-							");";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmCashierID = new MySqlParameter("@CashierID",MySqlDbType.Int64);			
-				prmCashierID.Value = Details.CashierID;
-				cmd.Parameters.Add(prmCashierID);
+                Save(Details);
 
-				MySqlParameter prmCashierName = new MySqlParameter("@CashierName",MySqlDbType.String);			
-				prmCashierName.Value = Details.CashierName;
-				cmd.Parameters.Add(prmCashierName);
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlParameter prmDateCreated = new MySqlParameter("@DateCreated",MySqlDbType.DateTime);			
-				prmDateCreated.Value = Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDateCreated);
-
-				MySqlParameter prmDenominationID = new MySqlParameter("@DenominationID",MySqlDbType.Int32);			
-				prmDenominationID.Value = Details.DenominationID;
-				cmd.Parameters.Add(prmDenominationID);
-
-				MySqlParameter prmAmount = new MySqlParameter("@DenominationCount",MySqlDbType.Int32);			
-				prmAmount.Value = Details.DenominationCount;
-				cmd.Parameters.Add(prmAmount);
-
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-                Int64 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int64.Parse(dr[0].ToString());
-                }
-
-				return iID;
+                return Int64.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -157,36 +82,55 @@ namespace AceSoft.RetailPlus.Data
 			{
 				if (Details.Length > 0)
 				{
-					
-					Int64 CashierID = Details[0].CashierID;
-					string TerminalNo =Details[0].TerminalNo;
-                    int BranchID = Details[0].BranchID;
-					decimal Amount = 0;
-
+                    decimal Amount = 0;
 					foreach(CashCountDetails details in Details)
 					{
 						Insert(details);	
 						Amount += details.DenominationAmount;
 					}
-					CashierReport clsCashierReport = new CashierReport(base.Connection, base.Transaction);
-                    clsCashierReport.UpdateCashCount(BranchID, CashierID, TerminalNo, Amount);
+					CashierReports clsCashierReport = new CashierReports(base.Connection, base.Transaction);
+                    clsCashierReport.UpdateCashCount(Details[0].BranchDetails.BranchID, Details[0].CashierID, Details[0].TerminalNo, Amount);
 				}
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
+        public Int32 Save(CashCountDetails Details)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procSaveCashCount(@BranchID, @TerminalNo, @SyncID, @CashCountID, @CashierID, @CashierName, @DateCreated, @DenominationID, @DenominationValue, @DenominationCount, @DenominationAmount, @BranchCode, @CreatedOn, @LastModified);";
+
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
+                cmd.Parameters.AddWithValue("SyncID", Details.SyncID);
+                cmd.Parameters.AddWithValue("CashCountID", Details.CashCountID);
+                cmd.Parameters.AddWithValue("CashierID", Details.CashierID);
+                cmd.Parameters.AddWithValue("CashierName", Details.CashierName);
+                cmd.Parameters.AddWithValue("DateCreated", Details.DateCreated);
+                cmd.Parameters.AddWithValue("DenominationID", Details.DenominationDetails.DenominationID);
+                cmd.Parameters.AddWithValue("DenominationValue", Details.DenominationDetails.DenominationValue);
+                cmd.Parameters.AddWithValue("DenominationCount", Details.DenominationCount);
+                cmd.Parameters.AddWithValue("DenominationAmount", Details.DenominationAmount);
+                cmd.Parameters.AddWithValue("BranchCode", Details.BranchDetails.BranchCode);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                cmd.CommandText = SQL;
+                return base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -196,117 +140,27 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"DELETE FROM tblCashCount WHERE CashCountID IN (" + IDs + ");";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
+				string SQL=	"DELETE FROM tblCashCount WHERE CashCountID IN (" + IDs + ");";
+				
+				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
-
 		#endregion
 
-		#region Delete
-
-		public CashCountDetails Details(Int64 CashCountID)
-		{
-			try
-			{
-				string SQL=	"SELECT CashCountID, " +
-								"CashierID, " +
-								"CashierName, " +
-                                "BranchID," +
-                                "BranchCode," +
-								"TerminalNo," +
-								"DateCreated, " +
-								"a.DenominationID, " +
-								"DenominationCode, " +
-								"DenominationValue, " +
-								"ImagePath, " +
-								"DenominationCount " +
-							"FROM tblCashCount a " +
-							"INNER JOIN tblDenomination b ON a.DenominationID = b.DenominationID " +
-							"WHERE CashCountID = @CashCountID ";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmCashCountID = new MySqlParameter("@CashCountID",MySqlDbType.Int16);
-				prmCashCountID.Value = CashCountID;
-				cmd.Parameters.Add(prmCashCountID);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				CashCountDetails Details = new CashCountDetails();
-
-				while (myReader.Read()) 
-				{
-					Details.CashCountID = myReader.GetInt64("CashCountID");
-					Details.CashierID = myReader.GetInt64("CashierID");
-					Details.CashierName = "" + myReader["CashierName"].ToString();
-                    Details.BranchID = myReader.GetInt32("BranchID");
-                    Details.BranchCode = "" + myReader["BranchCode"].ToString();
-                    Details.TerminalNo = "" + myReader["TerminalNo"].ToString();
-					Details.DateCreated = myReader.GetDateTime("DateCreated");
-					Details.DenominationID = myReader.GetInt32("DenominationID");
-					Details.DenominationCode = "" + myReader["DenominationCode"].ToString();
-					Details.DenominationValue = myReader.GetDecimal("DenominationValue");
-					Details.ImagePath = "" + myReader["ImagePath"].ToString();
-					Details.DenominationCount = myReader.GetInt32("DenominationCount");
-				}
-
-				myReader.Close();
-
-				return Details;
-			}
-
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
-
-
-		#endregion
-
-        public string SQLSelect()
+        private string SQLSelect()
         {
-            string SQL = "SELECT CashCountID, " +
+            string stSQL = "SELECT CashCountID, " +
                                 "CashierID, " +
                                 "CashierName, " +
                                 "BranchID," +
@@ -315,170 +169,100 @@ namespace AceSoft.RetailPlus.Data
                                 "DateCreated, " +
                                 "a.DenominationID, " +
                                 "DenominationCode, " +
-                                "DenominationValue, " +
+                                "a.DenominationValue, " +
                                 "ImagePath, " +
                                 "DenominationCount, " +
-                                "DenominationAmount " +
+                                "a.CreatedOn, " +
+                                "a.LastModified " +
                             "FROM tblCashCount a " +
                             "INNER JOIN tblDenomination b ON a.DenominationID = b.DenominationID ";
 
-            return SQL;
+            return stSQL;
         }
+
+		#region Details
+
+		public CashCountDetails Details(Int64 CashCountID)
+		{
+			try
+			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
+				string SQL=	SQLSelect() + "WHERE CashCountID = @CashCountID ";
+
+                cmd.Parameters.AddWithValue("@CashCountID", CashCountID);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+				
+				CashCountDetails Details = new CashCountDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
+				{
+                    Details.BranchDetails = new Branch(base.Connection, base.Transaction).Details(Int32.Parse(dr["BranchID"].ToString()));
+                    Details.TerminalNo = dr["TerminalNo"].ToString();
+                    Details.SyncID = Int64.Parse(dr["SyncID"].ToString());
+                    Details.CashCountID = Int64.Parse(dr["CashCountID"].ToString());
+					Details.CashierID = Int64.Parse(dr["CashierID"].ToString());
+					Details.CashierName = dr["CashierName"].ToString();
+					Details.DateCreated = DateTime.Parse(dr["DateCreated"].ToString());
+                    Details.DenominationDetails = new Denominations(base.Connection, base.Transaction).Details(Int32.Parse(dr["DenominationID"].ToString()));
+                    Details.DenominationValue = decimal.Parse(dr["DenominationValue"].ToString());
+                    Details.DenominationCount = Int32.Parse(dr["DenominationCount"].ToString());
+                    Details.DenominationAmount = Int32.Parse(dr["DenominationAmount"].ToString());
+				}
+
+				return Details;
+			}
+			catch (Exception ex)
+			{
+				throw base.ThrowException(ex);
+			}	
+		}
+
+
+		#endregion
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                CashCountDetails clsCashCountDetails = new CashCountDetails();
-
-                return List(clsCashCountDetails, string.Empty, SortOption.Ascending);
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public MySqlDataReader List(Int64 CashierID, string TerminalNo, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                CashCountDetails clsCashCountDetails = new CashCountDetails();
-                clsCashCountDetails.CashierID = CashierID;
-                clsCashCountDetails.TerminalNo = TerminalNo;
-
-                return List(clsCashCountDetails, string.Empty, SortOption.Ascending);
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-        public MySqlDataReader List(CashCountDetails clsSearchKey, string SortField, SortOption SortOrder)
-        {
-            try
-            {
-                MySqlCommand cmd = new MySqlCommand();
-
-                string SQL = SQLSelect();
-
-                if (clsSearchKey.CashierID != 0)
-                {
-                    SQL += "AND CashierID = @CashierID ";
-
-                    MySqlParameter prmCashierID = new MySqlParameter("@CashierID",MySqlDbType.Int64);
-                    prmCashierID.Value = clsSearchKey.CashierID;
-                    cmd.Parameters.Add(prmCashierID);
-                }
-                if (clsSearchKey.TerminalNo != string.Empty && clsSearchKey.TerminalNo != null)
-                {
-                    SQL += "AND TerminalNo = @TerminalNo ";
-
-                    MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                    prmTerminalNo.Value = clsSearchKey.TerminalNo;
-                    cmd.Parameters.Add(prmTerminalNo);
-                }
-                if (clsSearchKey.CashierName != string.Empty && clsSearchKey.CashierName != null)
-                {
-                    SQL += "AND CashierName = @CashierName ";
-
-                    MySqlParameter prmCashierName = new MySqlParameter("@CashierName",MySqlDbType.String);
-                    prmCashierName.Value = clsSearchKey.CashierName;
-                    cmd.Parameters.Add(prmCashierName);
-                }
-                if (clsSearchKey.DenominationCode != string.Empty && clsSearchKey.DenominationCode != null)
-                {
-                    SQL += "AND DenominationCode = @DenominationCode ";
-
-                    MySqlParameter prmDenominationCode = new MySqlParameter("@DenominationCode",MySqlDbType.String);
-                    prmDenominationCode.Value = clsSearchKey.DenominationCode;
-                    cmd.Parameters.Add(prmDenominationCode);
-                }
-                if (SortField != string.Empty && SortField != null)
-                {
-                    SQL += "ORDER BY " + SortField;
-
-                    if (SortOrder == SortOption.Ascending)
-                        SQL += " ASC";
-                    else
-                        SQL += " DESC";
-                }
-
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                
-
-                return base.ExecuteReader(cmd);
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-
-        public System.Data.DataTable ListAsDataTable(CashCountDetails clsSearchKey, string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(CashCountDetails clsSearchKey, string SortField = "CashCountID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = SQLSelect();
+                string SQL = SQLSelect() + "WHERE 1=1 ";
 
                 if (clsSearchKey.CashierID != 0)
                 {
                     SQL += "AND CashierID = @CashierID ";
-
-                    MySqlParameter prmCashierID = new MySqlParameter("@CashierID",MySqlDbType.Int64);
-                    prmCashierID.Value = clsSearchKey.CashierID;
-                    cmd.Parameters.Add(prmCashierID);
+                    cmd.Parameters.AddWithValue("CashierID", clsSearchKey.CashierID);
                 }
-                if (clsSearchKey.TerminalNo != string.Empty && clsSearchKey.TerminalNo != null)
+                if (!string.IsNullOrEmpty(clsSearchKey.TerminalNo))
                 {
                     SQL += "AND TerminalNo = @TerminalNo ";
-
-                    MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                    prmTerminalNo.Value = clsSearchKey.TerminalNo;
-                    cmd.Parameters.Add(prmTerminalNo);
+                    cmd.Parameters.AddWithValue("CashierID", clsSearchKey.CashierID);
                 }
-                if (clsSearchKey.CashierName != string.Empty && clsSearchKey.CashierName != null)
+                if (!string.IsNullOrEmpty(clsSearchKey.CashierName))
                 {
                     SQL += "AND CashierName = @CashierName ";
-
-                    MySqlParameter prmCashierName = new MySqlParameter("@CashierName",MySqlDbType.String);
-                    prmCashierName.Value = clsSearchKey.CashierName;
-                    cmd.Parameters.Add(prmCashierName);
+                    cmd.Parameters.AddWithValue("CashierID", clsSearchKey.CashierID);
                 }
-                if (clsSearchKey.DenominationCode != string.Empty && clsSearchKey.DenominationCode != null)
+                if (!string.IsNullOrEmpty(clsSearchKey.DenominationDetails.DenominationCode))
                 {
                     SQL += "AND DenominationCode = @DenominationCode ";
-
-                    MySqlParameter prmDenominationCode = new MySqlParameter("@DenominationCode",MySqlDbType.String);
-                    prmDenominationCode.Value = clsSearchKey.DenominationCode;
-                    cmd.Parameters.Add(prmDenominationCode);
-                }
-                if (SortField != string.Empty && SortField != null)
-                {
-                    SQL += "ORDER BY " + SortField;
-
-                    if (SortOrder == SortOption.Ascending)
-                        SQL += " ASC";
-                    else
-                        SQL += " DESC";
+                    cmd.Parameters.AddWithValue("CashierID", clsSearchKey.CashierID);
                 }
 
-                
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblCashCount");
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 return dt;
             }

@@ -64,7 +64,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ProductBaseVariationsMatrix clsProductBaseVariationsMatrix = new ProductBaseVariationsMatrix(this.Connection, this.Transaction);
+                ProductBaseVariationsMatrix clsProductBaseVariationsMatrix = new ProductBaseVariationsMatrix(base.Connection, base.Transaction);
                 clsProductBaseVariationsMatrix.Insert(Details);
 
                 string SQL = "SELECT LAST_INSERT_ID();";
@@ -187,7 +187,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ProductBaseVariationsMatrix clsProductBaseVariationsMatrix = new ProductBaseVariationsMatrix(this.Connection, this.Transaction);
+                ProductBaseVariationsMatrix clsProductBaseVariationsMatrix = new ProductBaseVariationsMatrix(base.Connection, base.Transaction);
                 clsProductBaseVariationsMatrix.Update(Details);
 
                 ProductPackageDetails clsDetails = new ProductPackageDetails();
@@ -566,7 +566,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public System.Data.DataTable BaseListAsDataTable(Int64 ProductID, int BranchID = 0, string BarCode = "", string MatrixDescription = "", string SortField = "prd.Description", SortOption SortOrder = SortOption.Ascending)
+        public System.Data.DataTable BaseListAsDataTable(Int64 ProductID, Int32 BranchID = 0, string BarCode = "", string MatrixDescription = "", string SortField = "prd.Description", SortOption SortOrder = SortOption.Ascending)
         {
             try
             {
@@ -988,44 +988,23 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "INSERT INTO tblProductVariationsMatrix (MatrixID, VariationID, Description) VALUES (@MatrixID, @VariationID, @Description);";
-				  
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int32);			
-				prmMatrixID.Value = Details.MatrixID;
-				cmd.Parameters.Add(prmMatrixID);
+				string SQL = "INSERT INTO tblProductVariationsMatrix (ProductID, MatrixID, VariationID, Description) VALUES (@ProductID, @MatrixID, @VariationID, @Description);";
 
-				MySqlParameter prmVariationID = new MySqlParameter("@VariationID",MySqlDbType.Int32);			
-				prmVariationID.Value = Details.VariationID;
-				cmd.Parameters.Add(prmVariationID);
+                cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
+                cmd.Parameters.AddWithValue("@MatrixID", Details.MatrixID);
+                cmd.Parameters.AddWithValue("@VariationID", Details.VariationID);
+                cmd.Parameters.AddWithValue("@Description", Details.Description);
 
-				MySqlParameter prmDescription = new MySqlParameter("@Description",MySqlDbType.String);			
-				prmDescription.Value = Details.Description;
-				cmd.Parameters.Add(prmDescription);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 				
 				return true;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -1038,8 +1017,6 @@ namespace AceSoft.RetailPlus.Data
 					"Description = @Description " +  
 					"WHERE MatrixID = @MatrixID " + 
 					"AND VariationID = @VariationID;";
-				  
-				
 	 			
 				MySqlCommand cmd = new MySqlCommand();
 				

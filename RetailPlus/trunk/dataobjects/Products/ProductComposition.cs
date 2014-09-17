@@ -67,79 +67,12 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try  
 			{
-				string SQL =	"INSERT INTO tblProductComposition (" +
-					"MainProductID, " +
-					"ProductID, " + 
-					"VariationMatrixID, " + 
-					"UnitID, " +  
-					"Quantity " +
-					") VALUES (" +
-					"@MainProductID, " +
-					"@ProductID, " + 
-					"@VariationMatrixID, " + 
-					"@UnitID, " +  
-					"@Quantity);"; 
+                Save(Details);
 
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",MySqlDbType.Int64);			
-				prmMainProductID.Value = Details.MainProductID;
-				cmd.Parameters.Add(prmMainProductID);
-
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = Details.ProductID;
-				cmd.Parameters.Add(prmProductID);
-
-				MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",MySqlDbType.Int64);			
-				prmVariationMatrixID.Value = Details.VariationMatrixID;
-				cmd.Parameters.Add(prmVariationMatrixID);
-
-				MySqlParameter prmUnitID = new MySqlParameter("@UnitID",MySqlDbType.String);			
-				prmUnitID.Value = Details.UnitID;
-				cmd.Parameters.Add(prmUnitID);
-
-				MySqlParameter prmQuantity = new MySqlParameter("@Quantity",MySqlDbType.Decimal);			
-				prmQuantity.Value = Details.Quantity;
-				cmd.Parameters.Add(prmQuantity);
-
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-                Int32 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int32.Parse(dr[0].ToString());
-                }
-
-				return iID;
+                return Int32.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -148,61 +81,10 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL =	"UPDATE tblProductComposition SET " +
-					"MainProductID		=	@MainProductID, " +
-					"ProductID			=	@ProductID, " + 
-					"VariationMatrixID	=	@VariationMatrixID, " + 
-					"UnitID				=	@UnitID, " +  
-					"Quantity			=	@Quantity " +
-					"WHERE CompositionID	=	@CompositionID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",MySqlDbType.Int64);			
-				prmMainProductID.Value = Details.MainProductID;
-				cmd.Parameters.Add(prmMainProductID);
-
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = Details.ProductID;
-				cmd.Parameters.Add(prmProductID);
-
-				MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",MySqlDbType.Int64);			
-				prmVariationMatrixID.Value = Details.VariationMatrixID;
-				cmd.Parameters.Add(prmVariationMatrixID);
-
-				MySqlParameter prmUnitID = new MySqlParameter("@UnitID",MySqlDbType.String);			
-				prmUnitID.Value = Details.UnitID;
-				cmd.Parameters.Add(prmUnitID);
-
-				MySqlParameter prmQuantity = new MySqlParameter("@Quantity",MySqlDbType.Decimal);			
-				prmQuantity.Value = Details.Quantity;
-				cmd.Parameters.Add(prmQuantity);
-
-				MySqlParameter prmCompositionID = new MySqlParameter("@CompositionID",MySqlDbType.Int64);			
-				prmCompositionID.Value = Details.CompositionID;
-				cmd.Parameters.Add(prmCompositionID);
-
-				base.ExecuteNonQuery(cmd);
-
+                Save(Details);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -211,12 +93,10 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procSaveProductComposition(@CompositionID, @MainProductID, @ProductID, @VariationMatrixID," +
-                                                        "@UnitID, @Quantity, @CreatedOn, @LastModified);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+                
+                string SQL = "CALL procSaveProductComposition(@CompositionID, @MainProductID, @ProductID, @VariationMatrixID, @UnitID, @Quantity, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("CompositionID", Details.CompositionID);
                 cmd.Parameters.AddWithValue("MainProductID", Details.MainProductID);
@@ -227,9 +107,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
+                cmd.CommandText = SQL;
                 return base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -244,32 +124,18 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				
 				MySqlCommand cmd = new MySqlCommand();
-				string SQL;
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				SQL=	"DELETE FROM tblProductComposition WHERE CompositionID IN (" + IDs + ");";
-				cmd = new MySqlCommand();
+                string SQL = "DELETE FROM tblProductComposition WHERE CompositionID IN (" + IDs + ");";
 				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -283,55 +149,38 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = SQLSelect() + "WHERE a.CompositionID = @CompositionID;";
 				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.Parameters.AddWithValue("@CompositionID", CompositionID);
 
-				MySqlParameter prmCompositionID = new MySqlParameter("@CompositionID",MySqlDbType.Int64);			
-				prmCompositionID.Value = CompositionID;
-				cmd.Parameters.Add(prmCompositionID);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
 				ProductCompositionDetails Details = new ProductCompositionDetails();
-
-				while (myReader.Read()) 
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
-					Details.CompositionID = myReader.GetInt64("CompositionID");
-					Details.MainProductID = myReader.GetInt64("MainProductID");
-					Details.ProductID = myReader.GetInt64("ProductID");
-					Details.ProductCode = "" + myReader["ProductCode"].ToString();
-					Details.ProductDesc = "" + myReader["ProductDesc"].ToString();
-					Details.VariationMatrixID = myReader.GetInt64("VariationMatrixID");
-					Details.MatrixDescription = "" + myReader["MatrixDescription"].ToString();
-					Details.Quantity = myReader.GetDecimal("Quantity");
-					Details.UnitID = myReader.GetInt32("UnitID");
-					Details.UnitCode = "" + myReader["UnitCode"].ToString();
-					Details.UnitName = "" + myReader["UnitName"].ToString();
+					Details.CompositionID = Int64.Parse(dr["CompositionID"].ToString());
+                    Details.MainProductID = Int64.Parse(dr["MainProductID"].ToString());
+                    Details.ProductID = Int64.Parse(dr["ProductID"].ToString());
+					Details.ProductCode = dr["ProductCode"].ToString();
+					Details.ProductDesc = dr["ProductDesc"].ToString();
+                    Details.VariationMatrixID = Int64.Parse(dr["VariationMatrixID"].ToString());
+					Details.MatrixDescription = dr["MatrixDescription"].ToString();
+					Details.Quantity = Decimal.Parse(dr["Quantity"].ToString());
+					Details.UnitID = Int32.Parse(dr["UnitID"].ToString());
+					Details.UnitCode = dr["UnitCode"].ToString();
+					Details.UnitName = dr["UnitName"].ToString();
 				}
-
-				myReader.Close();
 
 				return Details;
 			}
 
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -365,242 +214,46 @@ namespace AceSoft.RetailPlus.Data
 			return SQL;
 		}
 
-		public System.Data.DataTable dtList(Int64 MainProductID, string SortField, SortOption SortOrder)
+		public System.Data.DataTable ListAsDataTable(Int64 MainProductID, string SortField = "CompositionID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
 			try
 			{
-                if (SortField == string.Empty) SortField = "CompositionID";
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				string SQL = SQLSelect() + "WHERE MainProductID = @MainProductID ORDER BY " + SortField; 
-				
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+                string SQL = SQLSelect() + "WHERE MainProductID = @MainProductID ";
 
-				
+                cmd.Parameters.AddWithValue("@MainProductID", MainProductID);
 
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",MySqlDbType.Int64);						
-				prmMainProductID.Value = MainProductID;
-				cmd.Parameters.Add(prmMainProductID);
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-				
-				
-				System.Data.DataTable dt = new System.Data.DataTable("tblCompositionList");
-
-				dt.Columns.Add("CompositionID");
-				dt.Columns.Add("MainProductID");
-				dt.Columns.Add("ProductID");
-				dt.Columns.Add("ProductCode");
-				dt.Columns.Add("ProductDesc");
-				dt.Columns.Add("VariationMatrixID");
-				dt.Columns.Add("MatrixDescription");
-				dt.Columns.Add("Quantity");
-				dt.Columns.Add("UnitID");
-				dt.Columns.Add("UnitCode");
-				dt.Columns.Add("UnitName");
-                dt.Columns.Add("OrderSlipPrinter");
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				while (myReader.Read())
-				{
-					System.Data.DataRow dr = dt.NewRow();
-
-					dr["CompositionID"] = "" + myReader["CompositionID"].ToString();
-					dr["MainProductID"] = "" + myReader["MainProductID"].ToString();
-					dr["ProductID"] = "" + myReader["ProductID"].ToString();
-					dr["ProductCode"] = "" + myReader["ProductCode"].ToString();
-					dr["ProductDesc"] = "" + myReader["ProductDesc"].ToString();
-					dr["VariationMatrixID"] = "" + myReader["VariationMatrixID"].ToString();
-					dr["MatrixDescription"] = "" + myReader["MatrixDescription"].ToString();
-					dr["Quantity"] = myReader.GetDecimal("Quantity").ToString("#,##0.#0");
-					dr["UnitID"] = "" + myReader["UnitID"].ToString();
-					dr["UnitCode"] = "" + myReader["UnitCode"].ToString();
-					dr["UnitName"] = "" + myReader["UnitName"].ToString();
-                    dr["OrderSlipPrinter"] = "" + myReader["OrderSlipPrinter"].ToString();
-					dt.Rows.Add(dr);
-				}
-
-				myReader.Close();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
 				return dt;				
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 		
-		public MySqlDataReader List(Int64 MainProductID, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE MainProductID = @MainProductID ORDER BY " + SortField; 
-				
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",MySqlDbType.Int64);						
-				prmMainProductID.Value = MainProductID;
-				cmd.Parameters.Add(prmMainProductID);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE 1=1 " +
-					"AND (ProductCode LIKE @SearchKey " +
-					"OR ProductDesc LIKE @SearchKey " +
-					"OR c.Description) " +
-					"ORDER BY " + SortField; 
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC ";
-				else
-					SQL += " DESC ";
-
-				SQL += "LIMIT 100;";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);			
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}		
-
-		public MySqlDataReader Search(Int64 MainProductID,string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE MainProductID = @MainProductID " +
-					"AND (ProductCode LIKE @SearchKey " +
-					"OR ProductDesc LIKE @SearchKey " +
-					"OR c.Description) " +
-					"ORDER BY " + SortField; 
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC ";
-				else
-					SQL += " DESC ";
-
-				SQL += "LIMIT 100;";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmMainProductID = new MySqlParameter("@MainProductID",MySqlDbType.Int64);						
-				prmMainProductID.Value = MainProductID;
-				cmd.Parameters.Add(prmMainProductID);
-
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);			
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}		
-
 
 		#endregion
 
         // returns True if a composition exist
         // returns False if a composition does not exist
-        public bool GeneratePLUReport(string TerminalNo, long MainProductID, string MainProductCode, decimal Quantity)
+        public bool GeneratePLUReport(Int32 BranchID, string TerminalNo, long MainProductID, string MainProductCode, decimal Quantity)
 		{
 			try
 			{
                 
                 bool boRetValue = false;
 
-				System.Data.DataTable dtCompositionList = dtList(MainProductID, "CompositionID", SortOption.Ascending);
+				System.Data.DataTable dtCompositionList = ListAsDataTable(MainProductID, "CompositionID", SortOption.Ascending);
 
 				Data.PLUReport clsPLUReport = new Data.PLUReport(base.Connection, base.Transaction);
 				PLUReportDetails clsPLUReportDetails;
@@ -613,6 +266,10 @@ namespace AceSoft.RetailPlus.Data
                     OrderSlipPrinter locOrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
 
                     clsPLUReportDetails = new PLUReportDetails();
+                    clsPLUReportDetails.BranchDetails = new BranchDetails
+                    {
+                        BranchID = BranchID
+                    };
                     clsPLUReportDetails.TerminalNo = TerminalNo;
                     clsPLUReportDetails.ProductID = lProductID;
                     clsPLUReportDetails.ProductCode = MainProductCode + "-" + stProductCode;
@@ -622,7 +279,7 @@ namespace AceSoft.RetailPlus.Data
 
                     clsPLUReport.Insert(clsPLUReportDetails);
 
-                    GeneratePLUReport(TerminalNo, lProductID, stProductCode, decQuantity);
+                    GeneratePLUReport(BranchID, TerminalNo, lProductID, stProductCode, decQuantity);
 
                     boRetValue = true;
 				}
@@ -631,13 +288,6 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-				}
 				throw base.ThrowException(ex);
 			}	
 		}

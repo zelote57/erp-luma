@@ -17,14 +17,18 @@ namespace AceSoft.RetailPlus.Data
 
 	public struct PLUReportDetails
 	{
-		public long PLUReportID;
-		public string TerminalNo;
+        public BranchDetails BranchDetails;
+        public string TerminalNo;
+		public Int64 PLUReportID;
 		public Int64 ProductID;
 		public string ProductCode;
         public string ProductGroup;
         public decimal Quantity;
 		public decimal Amount;
         public OrderSlipPrinter OrderSlipPrinter;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 	
@@ -57,98 +61,79 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Insert and Update
 
+        /// <summary>
+        /// This should only be called by GeneratePLUReport. 
+        /// tblPLUReport is a temp table for session reporting purposes only.
+        /// </summary>
+        /// <param name="Details"></param>
+        /// <returns></returns>
 		public Int64 Insert(PLUReportDetails Details)
 		{
 			try  
 			{
-				string SQL =	"INSERT INTO tblPLUReport (" +
-									"TerminalNo, " +
-									"ProductID, " + 
-									"ProductCode, " +
-                                    "ProductGroup, " + 
-									"Quantity, " +  
-									"Amount, " +
-                                    "OrderSlipPrinter" +
-								") VALUES (" +
-									"@TerminalNo, " +
-									"@ProductID, " + 
-									"@ProductCode, " +
-                                    "@ProductGroup, " + 
-                                    "@Quantity, " +  
-									"@Amount," +
-                                    "@OrderSlipPrinter);"; 
+                Save(Details);
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
-                cmd.Parameters.AddWithValue("@ProductID", Details.ProductID);
-                cmd.Parameters.AddWithValue("@ProductCode", Details.ProductCode);
-                cmd.Parameters.AddWithValue("@ProductGroup", Details.ProductGroup);
-                cmd.Parameters.AddWithValue("@Quantity", Details.Quantity);
-                cmd.Parameters.AddWithValue("@Amount", Details.Amount);
-                cmd.Parameters.AddWithValue("@OrderSlipPrinter", (int) Details.OrderSlipPrinter);
-
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
-
-                Int64 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int64.Parse(dr[0].ToString());
-                }
-
-				return iID;
+                return Int64.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
+
+        public Int32 Save(PLUReportDetails Details)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procSavePLUReport(@BranchID, @TerminalNo, @PLUReportID, @ProductID, @ProductCode, @ProductGroup, @Quantity, @Amount, @OrderSlipPrinter, @CreatedOn, @LastModified);";
+
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
+                cmd.Parameters.AddWithValue("PLUReportID", Details.PLUReportID);
+                cmd.Parameters.AddWithValue("ProductID", Details.ProductID);
+                cmd.Parameters.AddWithValue("ProductCode", Details.ProductCode);
+                cmd.Parameters.AddWithValue("ProductGroup", Details.ProductGroup);
+                cmd.Parameters.AddWithValue("Quantity", Details.Quantity);
+                cmd.Parameters.AddWithValue("Amount", Details.Amount);
+                cmd.Parameters.AddWithValue("OrderSlipPrinter", Details.OrderSlipPrinter);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                cmd.CommandText = SQL;
+                return base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
 		#region Delete
 
-		public bool Delete(string TerminalNo)
+		public bool Delete(Int32 BranchID, string TerminalNo)
 		{
 			try 
 			{
-				
 				MySqlCommand cmd = new MySqlCommand();
-				string SQL;
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				SQL=	"DELETE FROM tblPLUReport WHERE TerminalNo = '" + TerminalNo + "';";
-				cmd = new MySqlCommand();
+                string SQL = "DELETE FROM tblPLUReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo ;";
 				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -156,62 +141,55 @@ namespace AceSoft.RetailPlus.Data
 
 		#endregion
 
+        private string SQLSelectGroupByProduct()
+        {
+            string stSQL = "SELECT TerminalNo, OrderSlipPrinter, ProductGroup, ProductCode, " +
+                                "SUM(Quantity) 'Quantity', SUM(Amount) 'Amount' " +
+                            "FROM tblPLUReport ";
+
+            return stSQL;
+        }
+
 		#region Streams
 
-		private string SQLSelect()
+		private string SQLSelectGroupByProductGroup()
 		{
-			string SQL =	"SELECT " +
-								"TerminalNo, " +
-								"ProductCode, " +
-								"SUM(Quantity) 'Quantity', " +
-								"SUM(Amount) 'Amount' " +
-							"FROM tblPLUReport " + 
-							"GROUP BY TerminalNo, ProductCode ";
+            string SQL = "SELECT TerminalNo, OrderSlipPrinter, ProductGroup, '' ProductCode, " +
+                                "SUM(Quantity) 'Quantity', SUM(Amount) 'Amount' " +
+                            "FROM tblPLUReport ";
 			return SQL;
 		}
 
-		public System.Data.DataTable dtList(string TerminalNo, string SortField, SortOption SortOrder, bool isPerGroup = false)
+        public System.Data.DataTable ListAsDataTable(Int32 BranchID, string TerminalNo, bool isPerGroup = false, string SortField = "ProductCode", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
 			try
 			{
-                string SQL =    "SELECT " +
-                                    "TerminalNo, " +
-                                    "OrderSlipPrinter, " +
-                                    "ProductGroup, " +
-                                    "ProductCode, " +
-                                    "SUM(Quantity) 'Quantity', " +
-                                    "SUM(Amount) 'Amount' " +
-                                "FROM tblPLUReport " +
-                                "WHERE TerminalNo = @TerminalNo " +
-                                "GROUP BY TerminalNo, OrderSlipPrinter, ProductGroup, ProductCode ";
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				SQL = SQL + "ORDER BY " + SortField; 
-				
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+                string SQL = "SELECT BranchID, TerminalNo, OrderSlipPrinter, ProductGroup, ProductCode, SUM(Quantity) 'Quantity', SUM(Amount) 'Amount' " +
+                            "FROM tblPLUReport " +
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
+                            "GROUP BY BranchID, TerminalNo, OrderSlipPrinter, ProductGroup, ProductCode " +
+                            "ORDER BY TerminalNo, OrderSlipPrinter, ProductCode ";
 
                 if (isPerGroup)
                 {
-                    SQL = "SELECT " +
-                                    "TerminalNo, " +
-                                    "OrderSlipPrinter, " +
-                                    "ProductGroup, " +
-                                    "SUM(Quantity) 'Quantity', " +
-                                    "SUM(Amount) 'Amount' " +
-                                "FROM tblPLUReport " +
-                                "WHERE TerminalNo = @TerminalNo " +
-                                "GROUP BY TerminalNo, OrderSlipPrinter, ProductGroup " +
-                                "ORDER BY TerminalNo, OrderSlipPrinter, ProductGroup ";
+                    SQL = "SELECT BranchID, TerminalNo, OrderSlipPrinter, ProductGroup, '' ProductCode, SUM(Quantity) 'Quantity', SUM(Amount) 'Amount' " +
+                            "FROM tblPLUReport " +
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
+                            "GROUP BY BranchID, TerminalNo, OrderSlipPrinter, ProductGroup " +
+                            "ORDER BY TerminalNo, OrderSlipPrinter, ProductGroup ";
                 }
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
 
+                //SQL += "ORDER BY " + SortField + " "; --no need already put above
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 

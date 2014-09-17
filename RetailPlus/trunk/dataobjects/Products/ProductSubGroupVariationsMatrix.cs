@@ -57,7 +57,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ProductSubGroupBaseVariationsMatrix clsProductSubGroupBaseVariationsMatrix = new ProductSubGroupBaseVariationsMatrix(this.Connection, this.Transaction);
+                ProductSubGroupBaseVariationsMatrix clsProductSubGroupBaseVariationsMatrix = new ProductSubGroupBaseVariationsMatrix(base.Connection, base.Transaction);
                 return clsProductSubGroupBaseVariationsMatrix.Insert(Details);
 			}
 
@@ -96,7 +96,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ProductSubGroupBaseVariationsMatrix clsProductSubGroupBaseVariationsMatrix = new ProductSubGroupBaseVariationsMatrix(this.Connection, this.Transaction);
+                ProductSubGroupBaseVariationsMatrix clsProductSubGroupBaseVariationsMatrix = new ProductSubGroupBaseVariationsMatrix(base.Connection, base.Transaction);
                 clsProductSubGroupBaseVariationsMatrix.Update(Details);
 
 				return true;
@@ -112,7 +112,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                ProductSubGroupBaseVariationsMatrix clsProductSubGroupBaseVariationsMatrix = new ProductSubGroupBaseVariationsMatrix(this.Connection, this.Transaction);
+                ProductSubGroupBaseVariationsMatrix clsProductSubGroupBaseVariationsMatrix = new ProductSubGroupBaseVariationsMatrix(base.Connection, base.Transaction);
                 clsProductSubGroupBaseVariationsMatrix.UpdateVariationDesc(Details);
 
                 return true;

@@ -62,7 +62,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ProductGroupBaseVariationsMatrix clsProductGroupBaseVariationsMatrix = new ProductGroupBaseVariationsMatrix(this.Connection, this.Transaction);
+                ProductGroupBaseVariationsMatrix clsProductGroupBaseVariationsMatrix = new ProductGroupBaseVariationsMatrix(base.Connection, base.Transaction);
                 return clsProductGroupBaseVariationsMatrix.Insert(Details);
 			}
 			catch (Exception ex)
@@ -100,7 +100,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ProductGroupBaseVariationsMatrix clsProductGroupBaseVariationsMatrix = new ProductGroupBaseVariationsMatrix(this.Connection, this.Transaction);
+                ProductGroupBaseVariationsMatrix clsProductGroupBaseVariationsMatrix = new ProductGroupBaseVariationsMatrix(base.Connection, base.Transaction);
                 clsProductGroupBaseVariationsMatrix.Update(Details);
 
                 return true;
@@ -116,7 +116,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ProductGroupBaseVariationsMatrix clsProductGroupBaseVariationsMatrix = new ProductGroupBaseVariationsMatrix(this.Connection, this.Transaction);
+                ProductGroupBaseVariationsMatrix clsProductGroupBaseVariationsMatrix = new ProductGroupBaseVariationsMatrix(base.Connection, base.Transaction);
                 clsProductGroupBaseVariationsMatrix.UpdateVariationDesc(Details);
 				
 				return true;
@@ -429,7 +429,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                ProductGroupBaseVariationsMatrix clsProductGroupBaseVariationsMatrix = new ProductGroupBaseVariationsMatrix(this.Connection, this.Transaction);
+                ProductGroupBaseVariationsMatrix clsProductGroupBaseVariationsMatrix = new ProductGroupBaseVariationsMatrix(base.Connection, base.Transaction);
                 return clsProductGroupBaseVariationsMatrix.BaseDetails(MatrixID, GroupID);
 			}
 
@@ -487,7 +487,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                ProductGroupBaseVariationsMatrix clsProductGroupBaseVariationsMatrix = new ProductGroupBaseVariationsMatrix(this.Connection, this.Transaction);
+                ProductGroupBaseVariationsMatrix clsProductGroupBaseVariationsMatrix = new ProductGroupBaseVariationsMatrix(base.Connection, base.Transaction);
 
                 return clsProductGroupBaseVariationsMatrix.BaseList(GroupID, SortField, SortOrder);
 			}

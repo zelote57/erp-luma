@@ -149,95 +149,100 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Insert & Update
 
-		public Int16 Insert(TerminalDetails Details)
-		{
-			try
-			{
-				string SQL="INSERT INTO tblTerminal(" +
-                                "BranchID, " +
-                                "TerminalNo, " +
-								"TerminalCode, " +
-								"TerminalName, " +
-								"Status, " +
-								"DateCreated, " +
-								"MachineSerialNo, " +
-								"AccreditationNo " +
-							")VALUES(" +
-                                "@BranchID, " +
-								"@TerminalNo, " +
-								"@TerminalCode, " +
-								"@TerminalName, " +
-								"@Status, " +
-								"NOW(), " +
-								"@MachineSerialNo, " +
-								"@AccreditationNo" +
-							");";
+        /// <summary>
+        /// Sep 4, 2014 Remove coz this is redundant
+        /// </summary>
+        /// <param name="Details"></param>
+        /// <returns></returns>
+        //public Int16 Insert(TerminalDetails Details)
+        //{
+        //    try
+        //    {
+        //        string SQL="INSERT INTO tblTerminal(" +
+        //                        "BranchID, " +
+        //                        "TerminalNo, " +
+        //                        "TerminalCode, " +
+        //                        "TerminalName, " +
+        //                        "Status, " +
+        //                        "DateCreated, " +
+        //                        "MachineSerialNo, " +
+        //                        "AccreditationNo " +
+        //                    ")VALUES(" +
+        //                        "@BranchID, " +
+        //                        "@TerminalNo, " +
+        //                        "@TerminalCode, " +
+        //                        "@TerminalName, " +
+        //                        "@Status, " +
+        //                        "NOW(), " +
+        //                        "@MachineSerialNo, " +
+        //                        "@AccreditationNo" +
+        //                    ");";
 				
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
+        //        MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
+        //        prmBranchID.Value = Details.BranchID;
+        //        cmd.Parameters.Add(prmBranchID);
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+        //        MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
+        //        prmTerminalNo.Value = Details.TerminalNo;
+        //        cmd.Parameters.Add(prmTerminalNo);
 
-				MySqlParameter prmTerminalCode = new MySqlParameter("@TerminalCode",MySqlDbType.String);			
-				prmTerminalCode.Value = Details.TerminalCode;
-				cmd.Parameters.Add(prmTerminalCode);
+        //        MySqlParameter prmTerminalCode = new MySqlParameter("@TerminalCode",MySqlDbType.String);			
+        //        prmTerminalCode.Value = Details.TerminalCode;
+        //        cmd.Parameters.Add(prmTerminalCode);
 
-				MySqlParameter prmTerminalName = new MySqlParameter("@TerminalName",MySqlDbType.String);			
-				prmTerminalName.Value = Details.TerminalName;
-				cmd.Parameters.Add(prmTerminalName);
+        //        MySqlParameter prmTerminalName = new MySqlParameter("@TerminalName",MySqlDbType.String);			
+        //        prmTerminalName.Value = Details.TerminalName;
+        //        cmd.Parameters.Add(prmTerminalName);
 				
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);
-				prmStatus.Value = Details.Status.ToString("d");
-				cmd.Parameters.Add(prmStatus);
+        //        MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);
+        //        prmStatus.Value = Details.Status.ToString("d");
+        //        cmd.Parameters.Add(prmStatus);
 
-				MySqlParameter prmDateCreated = new MySqlParameter("@DateCreated",MySqlDbType.DateTime);
-				prmDateCreated.Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDateCreated);
+        //        MySqlParameter prmDateCreated = new MySqlParameter("@DateCreated",MySqlDbType.DateTime);
+        //        prmDateCreated.Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        //        cmd.Parameters.Add(prmDateCreated);
 
-				MySqlParameter prmMachineSerialNo = new MySqlParameter("@MachineSerialNo",MySqlDbType.String);			
-				prmMachineSerialNo.Value = Details.MachineSerialNo;
-				cmd.Parameters.Add(prmMachineSerialNo);
+        //        MySqlParameter prmMachineSerialNo = new MySqlParameter("@MachineSerialNo",MySqlDbType.String);			
+        //        prmMachineSerialNo.Value = Details.MachineSerialNo;
+        //        cmd.Parameters.Add(prmMachineSerialNo);
 
-				MySqlParameter prmAccreditationNo = new MySqlParameter("@AccreditationNo",MySqlDbType.String);			
-				prmAccreditationNo.Value = Details.AccreditationNo;
-				cmd.Parameters.Add(prmAccreditationNo);
+        //        MySqlParameter prmAccreditationNo = new MySqlParameter("@AccreditationNo",MySqlDbType.String);			
+        //        prmAccreditationNo.Value = Details.AccreditationNo;
+        //        cmd.Parameters.Add(prmAccreditationNo);
 
-				base.ExecuteNonQuery(cmd);
+        //        base.ExecuteNonQuery(cmd);
 
-				SQL = "SELECT LAST_INSERT_ID();";
+        //        SQL = "SELECT LAST_INSERT_ID();";
 				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
+        //        cmd.Parameters.Clear(); 
+        //        cmd.CommandText = SQL;
 
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
+        //        System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
+        //        base.MySqlDataAdapterFill(cmd, dt);
                 
 
-                Int16 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int16.Parse(dr[0].ToString());
-                }
+        //        Int16 iID = 0;
+        //        foreach (System.Data.DataRow dr in dt.Rows)
+        //        {
+        //            iID = Int16.Parse(dr[0].ToString());
+        //        }
 
-                TerminalReport clsTerminalReport = new TerminalReport(base.Connection, base.Transaction);
-				clsTerminalReport.Insert(Details.BranchID, iID, CompanyDetails.TerminalNo);
+        //        TerminalReport clsTerminalReport = new TerminalReport(base.Connection, base.Transaction);
+        //        clsTerminalReport.Insert(Details.BranchID, iID, CompanyDetails.TerminalNo);
 
-				return iID;
-			}
+        //        return iID;
+        //    }
 
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
 
 		public void Update(TerminalDetails Details)
 		{
@@ -275,6 +280,7 @@ namespace AceSoft.RetailPlus.Data
                                                     "@EndCutOffTime, " +
                                                     "@WithRestaurantFeatures, " +
                                                     "@SeniorCitizenDiscountCode, " +
+                                                    "@PWDDiscountCode, " +
                                                     "@IsTouchScreen," +
                                                     "@WillContinueSelectionVariation," +
                                                     "@WillContinueSelectionProduct," +
@@ -319,6 +325,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@EndCutOffTime", Details.EndCutOffTime);
                 cmd.Parameters.AddWithValue("@WithRestaurantFeatures", Details.WithRestaurantFeatures);
                 cmd.Parameters.AddWithValue("@SeniorCitizenDiscountCode", Details.SeniorCitizenDiscountCode);
+                cmd.Parameters.AddWithValue("@PWDDiscountCode", Details.PWDDiscountCode);
                 cmd.Parameters.AddWithValue("@IsTouchScreen", Details.IsTouchScreen);
                 cmd.Parameters.AddWithValue("@WillContinueSelectionVariation", Details.WillContinueSelectionVariation);
                 cmd.Parameters.AddWithValue("@WillContinueSelectionProduct", Details.WillContinueSelectionProduct);
@@ -372,38 +379,25 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public void UpdateIsCashCountInitialized(int BranchID, string TerminalNo, long CashierID, bool IsCashCountInitialized)
+        public void UpdateIsCashCountInitialized(Int32 BranchID, string TerminalNo, Int64 CashierID, bool IsCashCountInitialized)
         {
             try
             {
-                string SQL = "UPDATE tblCashierReport SET " +
-                                "IsCashCountInitialized	= @IsCashCountInitialized " +
-                            "WHERE BranchID = @BranchID AND TerminalNo			= @TerminalNo " +
-                                "AND CashierID          = @CashierID;";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "UPDATE tblCashierReport SET " +
+                                "IsCashCountInitialized	= @IsCashCountInitialized " +
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo AND CashierID = @CashierID;";
+
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("CashierID", CashierID);
+                cmd.Parameters.AddWithValue("IsCashCountInitialized", IsCashCountInitialized);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmCashierID = new MySqlParameter("@CashierID",MySqlDbType.Int64);
-                prmCashierID.Value = CashierID;
-                cmd.Parameters.Add(prmCashierID);
-
-                MySqlParameter prmIsCashCountInitialized = new MySqlParameter("@IsCashCountInitialized",MySqlDbType.Int16);
-                prmIsCashCountInitialized.Value = Convert.ToInt16(IsCashCountInitialized);
-                cmd.Parameters.Add(prmIsCashCountInitialized);
-
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -641,6 +635,7 @@ namespace AceSoft.RetailPlus.Data
                             "PersonalChargeTypeID, " +
                             "GroupChargeTypeID, " +
                             "SeniorCitizenDiscountCode, " +
+                            "PWDDiscountCode, " +
                             "IsTouchScreen, " +
                             "WillContinueSelectionVariation, " +
                             "WillContinueSelectionProduct, " +
@@ -679,6 +674,9 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "SELECT " +
                                 "EnableRewardPoints, " +
                                 "RoundDownRewardPoints, " +
@@ -692,31 +690,27 @@ namespace AceSoft.RetailPlus.Data
                                 "RewardsPermitNo " +
 						    "FROM tblTerminal LIMIT 1 ";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 RewardPointsDetails clsRewardPointsDetails = new RewardPointsDetails();
-                while (myReader.Read())
+                foreach(System.Data.DataRow dr in dt.Rows)
                 {
-                    clsRewardPointsDetails.EnableRewardPoints = myReader.GetBoolean("EnableRewardPoints");
-                    clsRewardPointsDetails.RoundDownRewardPoints = myReader.GetBoolean("RoundDownRewardPoints");
-                    clsRewardPointsDetails.RewardPointsMinimum = myReader.GetDecimal("RewardPointsMinimum");
-                    clsRewardPointsDetails.RewardPointsEvery = myReader.GetDecimal("RewardPointsEvery");
-                    clsRewardPointsDetails.RewardPoints = myReader.GetDecimal("RewardPoints");
-                    clsRewardPointsDetails.EnableRewardPointsAsPayment = myReader.GetBoolean("EnableRewardPointsAsPayment");
-                    clsRewardPointsDetails.RewardPointsMaxPercentageForPayment = myReader.GetDecimal("RewardPointsMaxPercentageForPayment");
-                    clsRewardPointsDetails.RewardPointsPaymentValue = myReader.GetDecimal("RewardPointsPaymentValue");
-                    clsRewardPointsDetails.RewardPointsPaymentCashEquivalent = myReader.GetDecimal("RewardPointsPaymentCashEquivalent");
-                    clsRewardPointsDetails.RewardsPermitNo = "" + myReader["RewardsPermitNo"].ToString();
+                    clsRewardPointsDetails.EnableRewardPoints = bool.Parse(dr["EnableRewardPoints"].ToString());
+                    clsRewardPointsDetails.RoundDownRewardPoints = bool.Parse(dr["RoundDownRewardPoints"].ToString());
+                    clsRewardPointsDetails.RewardPointsMinimum = decimal.Parse(dr["RewardPointsMinimum"].ToString());
+                    clsRewardPointsDetails.RewardPointsEvery = decimal.Parse(dr["RewardPointsEvery"].ToString());
+                    clsRewardPointsDetails.RewardPoints = decimal.Parse(dr["RewardPoints"].ToString());
+                    clsRewardPointsDetails.EnableRewardPointsAsPayment = bool.Parse(dr["EnableRewardPointsAsPayment"].ToString());
+                    clsRewardPointsDetails.RewardPointsMaxPercentageForPayment = decimal.Parse(dr["RewardPointsMaxPercentageForPayment"].ToString());
+                    clsRewardPointsDetails.RewardPointsPaymentValue = decimal.Parse(dr["RewardPointsPaymentValue"].ToString());
+                    clsRewardPointsDetails.RewardPointsPaymentCashEquivalent = decimal.Parse(dr["RewardPointsPaymentCashEquivalent"].ToString());
+                    clsRewardPointsDetails.RewardsPermitNo = dr["RewardsPermitNo"].ToString();
                 }
-                myReader.Close();
 
                 return clsRewardPointsDetails;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -727,24 +721,22 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=	SQLSelect() + "WHERE TerminalID = @TerminalID;";
-				  
+                // no need to put the BranchID coz it's already the TerminalID
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
-				MySqlParameter prmTerminalID = new MySqlParameter("@TerminalID",MySqlDbType.Int16);
-				prmTerminalID.Value = TerminalID;
-				cmd.Parameters.Add(prmTerminalID);
+                string SQL = SQLSelect() + "WHERE TerminalID = @TerminalID;";
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.Parameters.AddWithValue("@TerminalID", TerminalID);
 
-                TerminalDetails Details = SetDetails(myReader);
-                myReader.Close();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				return Details;
+                TerminalDetails Details = SetDetails(dt);
+
+                return Details;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -754,156 +746,149 @@ namespace AceSoft.RetailPlus.Data
 		public TerminalDetails Details(int BranchID, string TerminalNo)
 		{
 			try
-			{
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
                 string SQL = SQLSelect() + "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                TerminalDetails Details = SetDetails(myReader);
-                myReader.Close();
+                TerminalDetails Details = SetDetails(dt);
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
 
-        private TerminalDetails SetDetails(MySqlDataReader myReader)
+        private TerminalDetails SetDetails(System.Data.DataTable dt)
         {
             int iPersonalChargeTypeID = 0;
             int iGroupChargeTypeID = 0;
 
             TerminalDetails Details = new TerminalDetails();
 
-            while (myReader.Read())
+            foreach(System.Data.DataRow dr in dt.Rows)
             {
-                Details.BranchID = myReader.GetInt32("BranchID");
-
-                Details.TerminalID = myReader.GetInt32("TerminalID");
-                Details.TerminalNo = "" + myReader["TerminalNo"].ToString();
-                Details.TerminalCode = "" + myReader["TerminalCode"].ToString();
-                Details.TerminalName = "" + myReader["TerminalName"].ToString();
-                Details.Status = (TerminalStatus)Enum.Parse(typeof(TerminalStatus), myReader.GetString("Status"));
-                Details.DateCreated = myReader.GetDateTime("DateCreated");
-                Details.IsPrinterAutoCutter = myReader.GetBoolean("IsPrinterAutoCutter");
-                Details.MaxReceiptWidth = myReader.GetInt16("MaxReceiptWidth");
-                Details.TransactionNoLength = myReader.GetInt16("TransactionNoLength");
-                Details.AutoPrint = (PrintingPreference)Enum.Parse(typeof(PrintingPreference), myReader.GetString("AutoPrint"));
-                Details.IsVATInclusive = myReader.GetBoolean("IsVATInclusive");
-                Details.PrinterName = "" + myReader["PrinterName"].ToString();
-                Details.TurretName = "" + myReader["TurretName"].ToString();
-                Details.CashDrawerName = "" + myReader["CashDrawerName"].ToString();
-                Details.MachineSerialNo = "" + myReader["MachineSerialNo"].ToString();
-                Details.AccreditationNo = "" + myReader["AccreditationNo"].ToString();
-                Details.ItemVoidConfirmation = myReader.GetBoolean("ItemVoidConfirmation");
-                Details.EnableEVAT = myReader.GetBoolean("EnableEVAT");
-                Details.FORM_Behavior = "" + myReader["FORM_Behavior"].ToString();
-                Details.MarqueeMessage = "" + myReader["MarqueeMessage"].ToString();
-                Details.TrustFund = myReader.GetDecimal("TrustFund");
-                Details.VAT = myReader.GetDecimal("VAT");
-                Details.EVAT = myReader.GetDecimal("EVAT");
-                Details.LocalTax = myReader.GetDecimal("LocalTax");
-                Details.ShowItemMoreThanZeroQty = myReader.GetBoolean("ShowItemMoreThanZeroQty");
-                Details.ShowOnlyPackedTransactions = myReader.GetBoolean("ShowOnlyPackedTransactions");
-                Details.ShowOneTerminalSuspendedTransactions = myReader.GetBoolean("ShowOneTerminalSuspendedTransactions");
-                Details.ReceiptType = (TerminalReceiptType)Enum.Parse(typeof(TerminalReceiptType), myReader.GetString("TerminalReceiptType"));
-                Details.SalesInvoicePrinterName = "" + myReader["SalesInvoicePrinterName"].ToString();
-                Details.CashCountBeforeReport = myReader.GetBoolean("CashCountBeforeReport");
-                Details.PreviewTerminalReport = myReader.GetBoolean("PreviewTerminalReport");
+                Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
+                Details.TerminalID = Int32.Parse(dr["TerminalID"].ToString());
+                Details.TerminalNo = dr["TerminalNo"].ToString();
+                Details.TerminalCode = dr["TerminalCode"].ToString();
+                Details.TerminalName = dr["TerminalName"].ToString();
+                Details.Status = (TerminalStatus)Enum.Parse(typeof(TerminalStatus), dr["Status"].ToString());
+                Details.DateCreated = DateTime.Parse(dr["DateCreated"].ToString());
+                Details.IsPrinterAutoCutter = bool.Parse(dr["IsPrinterAutoCutter"].ToString());
+                Details.MaxReceiptWidth = Int16.Parse(dr["MaxReceiptWidth"].ToString());
+                Details.TransactionNoLength = Int16.Parse(dr["TransactionNoLength"].ToString());
+                Details.AutoPrint = (PrintingPreference)Enum.Parse(typeof(PrintingPreference), dr["AutoPrint"].ToString());
+                Details.IsVATInclusive = bool.Parse(dr["IsVATInclusive"].ToString());
+                Details.PrinterName = dr["PrinterName"].ToString();
+                Details.TurretName = dr["TurretName"].ToString();
+                Details.CashDrawerName = dr["CashDrawerName"].ToString();
+                Details.MachineSerialNo = dr["MachineSerialNo"].ToString();
+                Details.AccreditationNo = dr["AccreditationNo"].ToString();
+                Details.ItemVoidConfirmation = bool.Parse(dr["ItemVoidConfirmation"].ToString());
+                Details.EnableEVAT = bool.Parse(dr["EnableEVAT"].ToString());
+                Details.FORM_Behavior = dr["FORM_Behavior"].ToString();
+                Details.MarqueeMessage = dr["MarqueeMessage"].ToString();
+                Details.TrustFund = decimal.Parse(dr["TrustFund"].ToString());
+                Details.VAT = decimal.Parse(dr["VAT"].ToString());
+                Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
+                Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
+                Details.ShowItemMoreThanZeroQty = bool.Parse(dr["ShowItemMoreThanZeroQty"].ToString());
+                Details.ShowOnlyPackedTransactions = bool.Parse(dr["ShowOnlyPackedTransactions"].ToString());
+                Details.ShowOneTerminalSuspendedTransactions = bool.Parse(dr["ShowOneTerminalSuspendedTransactions"].ToString());
+                Details.ReceiptType = (TerminalReceiptType)Enum.Parse(typeof(TerminalReceiptType), dr["TerminalReceiptType"].ToString());
+                Details.SalesInvoicePrinterName = dr["SalesInvoicePrinterName"].ToString();
+                Details.CashCountBeforeReport = bool.Parse(dr["CashCountBeforeReport"].ToString());
+                Details.PreviewTerminalReport = bool.Parse(dr["PreviewTerminalReport"].ToString());
                 
                 // Added May 5, 2009
-                Details.IsPrinterDotMatrix = myReader.GetBoolean("IsPrinterDotMatrix");
-                Details.IsChargeEditable = myReader.GetBoolean("IsChargeEditable");
-                Details.IsDiscountEditable = myReader.GetBoolean("IsDiscountEditable");
-                Details.CheckCutOffTime = myReader.GetBoolean("CheckCutOffTime");
-                Details.StartCutOffTime = "" + myReader["StartCutOffTime"].ToString();
-                Details.EndCutOffTime = "" + myReader["EndCutOffTime"].ToString();
-                Details.WithRestaurantFeatures = myReader.GetBoolean("WithRestaurantFeatures");
+                Details.IsPrinterDotMatrix = bool.Parse(dr["IsPrinterDotMatrix"].ToString());
+                Details.IsChargeEditable = bool.Parse(dr["IsChargeEditable"].ToString());
+                Details.IsDiscountEditable = bool.Parse(dr["IsDiscountEditable"].ToString());
+                Details.CheckCutOffTime = bool.Parse(dr["CheckCutOffTime"].ToString());
+                Details.StartCutOffTime = dr["StartCutOffTime"].ToString();
+                Details.EndCutOffTime = dr["EndCutOffTime"].ToString();
+                Details.WithRestaurantFeatures = bool.Parse(dr["WithRestaurantFeatures"].ToString());
 
                 // Added Nov 8, 2011
-                Details.IsFineDining = myReader.GetBoolean("IsFineDIning");
+                Details.IsFineDining = bool.Parse(dr["IsFineDIning"].ToString());
 
                 // -- end
                 
-                Details.SeniorCitizenDiscountCode = "" + myReader["SeniorCitizenDiscountCode"].ToString();
+                Details.SeniorCitizenDiscountCode = dr["SeniorCitizenDiscountCode"].ToString();
+                Details.PWDDiscountCode = dr["PWDDiscountCode"].ToString();
 
                 // Added May 21, 2009
-                Details.IsTouchScreen = myReader.GetBoolean("IsTouchScreen");
+                Details.IsTouchScreen = bool.Parse(dr["IsTouchScreen"].ToString());
 
                 // Added June 1, 2010
-                Details.WillContinueSelectionVariation = myReader.GetBoolean("WillContinueSelectionVariation");
-                Details.WillContinueSelectionProduct = myReader.GetBoolean("WillContinueSelectionProduct");
+                Details.WillContinueSelectionVariation = bool.Parse(dr["WillContinueSelectionVariation"].ToString());
+                Details.WillContinueSelectionProduct = bool.Parse(dr["WillContinueSelectionProduct"].ToString());
 
                 // Added July 9, 2010
-                Details.WSPriceMarkUp = myReader.GetDecimal("WSPriceMarkUp");
-                Details.RETPriceMarkUp = myReader.GetDecimal("RETPriceMarkUp");
+                Details.WSPriceMarkUp = decimal.Parse(dr["WSPriceMarkUp"].ToString());
+                Details.RETPriceMarkUp = decimal.Parse(dr["RETPriceMarkUp"].ToString());
 
                 // Added Sep 21, 2010
-                Details.WillPrintGrandTotal = myReader.GetBoolean("WillPrintGrandTotal");
+                Details.WillPrintGrandTotal = bool.Parse(dr["WillPrintGrandTotal"].ToString());
 
                 // Added Apr 12, 2011
-                Details.ReservedAndCommit = myReader.GetBoolean("ReservedAndCommit");       
+                Details.ReservedAndCommit = bool.Parse(dr["ReservedAndCommit"].ToString());       
          
                 // Added Sep 10, 2011
-                Details.DBVersion = "" + myReader["DBVersion"].ToString();
+                Details.DBVersion = dr["DBVersion"].ToString();
 
                 // Added Oct 17, 2011
-                Details.ShowCustomerSelection = myReader.GetBoolean("ShowCustomerSelection");
-                Details.AutoGenerateRewardCardNo = myReader.GetBoolean("AutoGenerateRewardCardNo");
+                Details.ShowCustomerSelection = bool.Parse(dr["ShowCustomerSelection"].ToString());
+                Details.AutoGenerateRewardCardNo = bool.Parse(dr["AutoGenerateRewardCardNo"].ToString());
 
                 // Added Oct 17, 2011 
                 RewardPointsDetails clsRewardPointsDetails = new RewardPointsDetails();
-                clsRewardPointsDetails.EnableRewardPoints = myReader.GetBoolean("EnableRewardPoints");
-                clsRewardPointsDetails.RoundDownRewardPoints = myReader.GetBoolean("RoundDownRewardPoints");
-                clsRewardPointsDetails.RewardPointsMinimum = myReader.GetDecimal("RewardPointsMinimum");
-                clsRewardPointsDetails.RewardPointsEvery = myReader.GetDecimal("RewardPointsEvery");
-                clsRewardPointsDetails.RewardPoints = myReader.GetDecimal("RewardPoints");
+                clsRewardPointsDetails.EnableRewardPoints = bool.Parse(dr["EnableRewardPoints"].ToString());
+                clsRewardPointsDetails.RoundDownRewardPoints = bool.Parse(dr["RoundDownRewardPoints"].ToString());
+                clsRewardPointsDetails.RewardPointsMinimum = decimal.Parse(dr["RewardPointsMinimum"].ToString());
+                clsRewardPointsDetails.RewardPointsEvery = decimal.Parse(dr["RewardPointsEvery"].ToString());
+                clsRewardPointsDetails.RewardPoints = decimal.Parse(dr["RewardPoints"].ToString());
                 // Added Nov 4, 2011 :  For use as payment
-                clsRewardPointsDetails.EnableRewardPointsAsPayment = myReader.GetBoolean("EnableRewardPointsAsPayment");
-                clsRewardPointsDetails.RewardPointsMaxPercentageForPayment = myReader.GetDecimal("RewardPointsMaxPercentageForPayment");
-                clsRewardPointsDetails.RewardPointsPaymentValue = myReader.GetDecimal("RewardPointsPaymentValue");
-                clsRewardPointsDetails.RewardPointsPaymentCashEquivalent = myReader.GetDecimal("RewardPointsPaymentCashEquivalent");
-                clsRewardPointsDetails.RewardsPermitNo = "" + myReader["RewardsPermitNo"].ToString();
+                clsRewardPointsDetails.EnableRewardPointsAsPayment = bool.Parse(dr["EnableRewardPointsAsPayment"].ToString());
+                clsRewardPointsDetails.RewardPointsMaxPercentageForPayment = decimal.Parse(dr["RewardPointsMaxPercentageForPayment"].ToString());
+                clsRewardPointsDetails.RewardPointsPaymentValue = decimal.Parse(dr["RewardPointsPaymentValue"].ToString());
+                clsRewardPointsDetails.RewardPointsPaymentCashEquivalent = decimal.Parse(dr["RewardPointsPaymentCashEquivalent"].ToString());
+                clsRewardPointsDetails.RewardsPermitNo = dr["RewardsPermitNo"].ToString();
 
                 Details.RewardPointsDetails = clsRewardPointsDetails;
 
-                Details.InHouseIndividualCreditPermitNo = "" + myReader["InHouseIndividualCreditPermitNo"].ToString();
-                Details.InHouseGroupCreditPermitNo = "" + myReader["InHouseGroupCreditPermitNo"].ToString();
+                Details.InHouseIndividualCreditPermitNo = dr["InHouseIndividualCreditPermitNo"].ToString();
+                Details.InHouseGroupCreditPermitNo = dr["InHouseGroupCreditPermitNo"].ToString();
 
-                iPersonalChargeTypeID = myReader.GetInt32("PersonalChargeTypeID");
-                iGroupChargeTypeID = myReader.GetInt32("GroupChargeTypeID");
+                iPersonalChargeTypeID = Int32.Parse(dr["PersonalChargeTypeID"].ToString());
+                iGroupChargeTypeID = Int32.Parse(dr["GroupChargeTypeID"].ToString());
 
                 // Added Mar 18, 2012
-                Details.ProductSearchType = (ProductSearchType)Enum.Parse(typeof(ProductSearchType), myReader.GetString("ProductSearchType"));
+                Details.ProductSearchType = (ProductSearchType)Enum.Parse(typeof(ProductSearchType), dr["ProductSearchType"].ToString());
                 
                 // Added Apr 29, 2013
-                Details.IncludeCreditChargeAgreement = myReader.GetBoolean("IncludeCreditChargeAgreement");
+                Details.IncludeCreditChargeAgreement = bool.Parse(dr["IncludeCreditChargeAgreement"].ToString());
 
                 // Added Jun 30, 2013
-                Details.IsParkingTerminal = myReader.GetBoolean("IsParkingTerminal");
+                Details.IsParkingTerminal = bool.Parse(dr["IsParkingTerminal"].ToString());
 
-                Details.WillPrintChargeSlip = myReader.GetBoolean("WillPrintChargeSlip");
+                Details.WillPrintChargeSlip = bool.Parse(dr["WillPrintChargeSlip"].ToString());
 
                 // Added Oct 20, 2013
-                Details.IncludeTermsAndConditions = myReader.GetBoolean("IncludeTermsAndConditions");
+                Details.IncludeTermsAndConditions = bool.Parse(dr["IncludeTermsAndConditions"].ToString());
 
             }
-            myReader.Close();
 
             Branch clsBranch = new Branch(base.Connection, base.Transaction);
             Details.BranchDetails = clsBranch.Details(Convert.ToInt16(Details.BranchID));
@@ -955,15 +940,16 @@ namespace AceSoft.RetailPlus.Data
 	
 		#region Streams
 
-        public MySqlDataReader List(string SearchKey = "", string SortField = "", SortOption SortOrder = SortOption.Ascending)
+        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "TerminalNo", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
 			try
 			{
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL = SQLSelect();
 
-                if (SearchKey != string.Empty && SearchKey != "")
+                if (!string.IsNullOrEmpty(SearchKey))
                 {
                     SQL += "WHERE (TerminalNo LIKE @SearchKey " +
                             "OR TerminalCode LIKE @SearchKey " +
@@ -971,57 +957,13 @@ namespace AceSoft.RetailPlus.Data
 
                     cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
                 }
-                if (SortField != string.Empty && SortField != "")
-                {
-                    SQL += "ORDER BY " + SortField;
 
-                    if (SortOrder == SortOption.Ascending)
-                        SQL += " ASC";
-                    else
-                        SQL += " DESC";
-                }
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd);
-
-                return base.ExecuteReader(cmd);
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "", SortOption SortOrder = SortOption.Ascending)
-		{
-			try
-			{
-                MySqlCommand cmd = new MySqlCommand();
-
-                string SQL = SQLSelect();
-
-                if (SearchKey != string.Empty && SearchKey != "")
-                {
-                    SQL += "WHERE (TerminalNo LIKE @SearchKey " +
-                            "OR TerminalCode LIKE @SearchKey " +
-                            "OR TerminalName LIKE @SearchKey) ";
-
-                    cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
-                }
-                if (SortField != string.Empty && SortField != "")
-                {
-                    SQL += "ORDER BY " + SortField;
-
-                    if (SortOrder == SortOption.Ascending)
-                        SQL += " ASC";
-                    else
-                        SQL += " DESC";
-                }
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblTerminal");
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 return dt;	
@@ -1036,30 +978,25 @@ namespace AceSoft.RetailPlus.Data
 
         #region Validate: IsExist & IsZReadInitialized, IsCashCountInitialized
 
-        public bool IsExist(int BranchID, string TerminalNo, out TerminalDetails OutDetails)
+        public bool IsExist(Int32 BranchID, string TerminalNo, out TerminalDetails OutDetails)
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				bool boRetValue = false;
 
 				string SQL=	SQLSelect() + "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				OutDetails = SetDetails(myReader);
-                myReader.Close();
+                OutDetails = SetDetails(dt);
 
                 if (OutDetails.TerminalID != 0) boRetValue = true;
 
@@ -1076,39 +1013,29 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 bool boRetValue = false;
 
                 string SQL = "SELECT IsCashCountInitialized FROM tblCashierReport " +
                                "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo AND CashierID = @CashierID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@CashierID", CashierID);
+
                 cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmCashierID = new MySqlParameter("@CashierID",MySqlDbType.Int64);
-                prmCashierID.Value = CashierID;
-                cmd.Parameters.Add(prmCashierID);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                while (myReader.Read())
+                foreach(System.Data.DataRow dr in dt.Rows)
                 {
-                    boRetValue = myReader.GetBoolean("IsCashCountInitialized");
+                    boRetValue = bool.Parse(dr["IsCashCountInitialized"].ToString());
                 }
-
-                myReader.Close();
 
                 return boRetValue;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);

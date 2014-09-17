@@ -256,110 +256,55 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
+		public System.Data.DataTable ListAstDataTable(PromoDetails SearchKey, string SortField = "PromoID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
 			try
 			{
-				string SQL =	"SELECT " +
-									"PromoID, " +
-									"PromoCode, " +
-									"PromoName, " +
-									"StartDate, " +
-									"EndDate, " +
-									"Status, " +
-									"a.PromoTypeID, " +
-									"PromoTypeCode, " +
-									"PromoTypeName " +
-								"FROM tblPromo a INNER JOIN " +
-								"tblPromoType b ON a.PromoTypeID = b.PromoTypeID " +
-								"WHERE 1=1 ORDER BY " + SortField; 
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+                string SQL = "SELECT " +
+                                    "PromoID, " +
+                                    "PromoCode, " +
+                                    "PromoName, " +
+                                    "StartDate, " +
+                                    "EndDate, " +
+                                    "Status, " +
+                                    "a.PromoTypeID, " +
+                                    "PromoTypeCode, " +
+                                    "PromoTypeName " +
+                                "FROM tblPromo a INNER JOIN " +
+                                "tblPromoType b ON a.PromoTypeID = b.PromoTypeID " +
+                                "WHERE 1=1 ";
 
-				
+                if (!string.IsNullOrEmpty(SearchKey.PromoCode))
+                {
+                    SQL += "AND PromoCode LIKE @PromoCode ";
+                    cmd.Parameters.AddWithValue("@PromoCode", SearchKey.PromoCode);
+                }
+                if (!string.IsNullOrEmpty(SearchKey.PromoName))
+                {
+                    SQL += "AND PromoCode LIKE @PromoName ";
+                    cmd.Parameters.AddWithValue("@PromoName", SearchKey.PromoName);
+                }
+                if (!string.IsNullOrEmpty(SearchKey.PromoTypeCode))
+                {
+                    SQL += "AND PromoCode LIKE @PromoTypeCode ";
+                    cmd.Parameters.AddWithValue("@PromoTypeCode", SearchKey.PromoTypeCode);
+                }
 
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-				
-				
-				return base.ExecuteReader(cmd);			
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;		
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL =	"SELECT " +
-									"PromoID, " +
-									"PromoCode, " +
-									"PromoName, " +
-									"StartDate, " +
-									"EndDate, " +
-									"Status, " +
-									"a.PromoTypeID, " +
-									"PromoTypeCode, " +
-									"PromoTypeName " +
-								"FROM tblPromo a INNER JOIN " +
-								"tblPromoType b ON a.PromoTypeID = b.PromoTypeID " +
-								"WHERE PromoCode LIKE @SearchKey " +
-									"OR PromoName LIKE @SearchKey " +
-									"OR PromoTypeCode LIKE @SearchKey " +
-									"OR PromoTypeName LIKE @SearchKey " +
-								"ORDER BY " + SortField; 
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}		

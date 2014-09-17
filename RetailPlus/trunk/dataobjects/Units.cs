@@ -217,7 +217,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
             }
             SQL += "ORDER BY " + SortField + " ";
-            SQL += SortOrder == SortOption.Ascending ? "ASC" : "DESC";
+            SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
             
             cmd.CommandText = SQL;
             string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);

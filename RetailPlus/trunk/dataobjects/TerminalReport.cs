@@ -22,25 +22,33 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct TerminalReportDetails
 	{
-        public int BranchID;
-		public string  TerminalNo;
-		public string  BeginningTransactionNo;
-		public string  EndingTransactionNo;
+        public Int32 BranchID;
+        public string TerminalNo;
+		public string BeginningTransactionNo;
+		public string EndingTransactionNo;
+        public string BeginningORNo;
+        public string EndingORNo;
 		public Int32   ZReadCount;
 		public Int32   XReadCount;
+        public decimal NetSales;
 		public decimal GrossSales;
 		public decimal TotalDiscount;
+        public decimal SNRDiscount;
+        public decimal PWDDiscount;
+        public decimal OtherDiscount;
 		public decimal TotalCharge;
 		public decimal DailySales;
 		public decimal QuantitySold;
 		public decimal GroupSales;
 		public decimal OldGrandTotal;
 		public decimal NewGrandTotal;
-		public decimal VATableAmount;
-		public decimal NonVaTableAmount;
+        public decimal VATExempt;
+        public decimal VATZeroRated;
+        public decimal NonVATableAmount;
+        public decimal VATableAmount;
 		public decimal VAT;
-		public decimal EVATableAmount;
-		public decimal NonEVaTableAmount;
+        public decimal EVATableAmount;
+		public decimal NonEVATableAmount;
 		public decimal EVAT;
 		public decimal LocalTax;
 		public decimal CashSales;
@@ -73,7 +81,7 @@ namespace AceSoft.RetailPlus.Data
 		public decimal RefundSales;
 		public decimal ItemsDiscount;
 		public decimal SubTotalDiscount;
-		public Int32   NoOfCashTransactions;
+        public Int32   NoOfCashTransactions;
 		public Int32   NoOfChequeTransactions;
 		public Int32   NoOfCreditCardTransactions;
 		public Int32   NoOfCreditTransactions;
@@ -149,21 +157,28 @@ namespace AceSoft.RetailPlus.Data
                                 "TerminalNo, " +
 					            "BeginningTransactionNo, " +
 					            "EndingTransactionNo, " +
+                                "BeginningORNo, " +
+                                "EndingORNo, " +
 					            "ZReadCount, " +
 					            "XReadCount, " +
-					            "GrossSales, " +
+                                "NetSales, " + 
+                                "GrossSales, " +
 					            "TotalDiscount, " +
+                                "SNRDiscount, " +
+                                "PWDDiscount, " +
+                                "OtherDiscount, " +
 					            "TotalCharge, " +
 					            "DailySales, " +
 					            "QuantitySold, " +
 					            "GroupSales, " +
 					            "OldGrandTotal, " +
 					            "NewGrandTotal, " +
-					            "VATableAmount, " +
-					            "NonVaTableAmount, " +
+                                "VATExempt, " +
+					            "NonVATableAmount, " +
+                                "VATableAmount, " +
 					            "VAT, " +
 					            "EVATableAmount, " +
-					            "NonEVaTableAmount, " +
+					            "NonEVATableAmount, " +
 					            "EVAT, " +
 					            "LocalTax, " +
 					            "CashSales, " +
@@ -210,7 +225,7 @@ namespace AceSoft.RetailPlus.Data
                                 "NoOfRewardPointsPayment, " +
 					            "NoOfTotalTransactions, " +
 					            "DateLastInitialized, " +
-                                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE TerminalNo = tblTerminalReport.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
+                                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE tblTerminal.BranchID = tblTerminalReport.BranchID AND tblTerminal.TerminalNo = tblTerminalReport.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
                                 "NoOfDiscountedTransactions, " +
                                 "NegativeAdjustments, " +
                                 "NoOfNegativeAdjustmentTransactions, " +
@@ -225,341 +240,398 @@ namespace AceSoft.RetailPlus.Data
         }
 
 		#region Details
-		public TerminalReportDetails Details(string TerminalNo)
+		public TerminalReportDetails Details(Int32 BranchID, string TerminalNo)
 		{
 			try
 			{
-				string SQL=	SQLSelect() +  "WHERE TerminalNo = @TerminalNo;";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+				string SQL=	SQLSelect() +  "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 				
-				TerminalReportDetails Details = new TerminalReportDetails();
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
 
-				while (myReader.Read())
-				{
-					Details.TerminalNo = "" + myReader["TerminalNo"].ToString();
-					Details.BeginningTransactionNo = "" + myReader["BeginningTransactionNo"].ToString();
-					Details.EndingTransactionNo = "" + myReader["EndingTransactionNo"].ToString();
-					Details.ZReadCount = myReader.GetInt32("ZReadCount");
-					Details.XReadCount = myReader.GetInt32("XReadCount");
-					Details.GrossSales = myReader.GetDecimal("GrossSales");
-					Details.TotalDiscount = myReader.GetDecimal("TotalDiscount");
-					Details.TotalCharge = myReader.GetDecimal("TotalCharge");
-					Details.DailySales = myReader.GetDecimal("DailySales");
-					Details.QuantitySold = myReader.GetDecimal("QuantitySold");
-					Details.GroupSales = myReader.GetDecimal("GroupSales");
-					Details.OldGrandTotal = myReader.GetDecimal("OldGrandTotal");
-					Details.NewGrandTotal = myReader.GetDecimal("NewGrandTotal");
-					Details.VATableAmount = myReader.GetDecimal("VATableAmount");
-					Details.NonVaTableAmount = myReader.GetDecimal("NonVaTableAmount");
-					Details.VAT = myReader.GetDecimal("VAT");
-					Details.EVATableAmount = myReader.GetDecimal("EVATableAmount");
-					Details.NonEVaTableAmount = myReader.GetDecimal("NonEVaTableAmount");
-					Details.EVAT = myReader.GetDecimal("EVAT");
-					Details.LocalTax = myReader.GetDecimal("LocalTax");
-					Details.CashSales = myReader.GetDecimal("CashSales");
-					Details.ChequeSales = myReader.GetDecimal("ChequeSales");
-					Details.CreditCardSales = myReader.GetDecimal("CreditCardSales");
-					Details.CreditSales = myReader.GetDecimal("CreditSales");
-					Details.CreditPayment = myReader.GetDecimal("CreditPayment");
-                    Details.CreditPaymentCash = myReader.GetDecimal("CreditPaymentCash");
-                    Details.CreditPaymentCheque = myReader.GetDecimal("CreditPaymentCheque");
-                    Details.CreditPaymentCreditCard = myReader.GetDecimal("CreditPaymentCreditCard");
-                    Details.CreditPaymentDebit = myReader.GetDecimal("CreditPaymentDebit");
-					Details.DebitPayment = myReader.GetDecimal("DebitPayment");
-                    Details.RewardPointsPayment = myReader.GetDecimal("RewardPointsPayment");
-                    Details.RewardConvertedPayment = myReader.GetDecimal("RewardConvertedPayment");
-					Details.CashInDrawer = myReader.GetDecimal("CashInDrawer");
-					Details.TotalDisburse = myReader.GetDecimal("TotalDisburse");
-					Details.CashDisburse = myReader.GetDecimal("CashDisburse");
-					Details.ChequeDisburse = myReader.GetDecimal("ChequeDisburse");
-					Details.CreditCardDisburse = myReader.GetDecimal("CreditCardDisburse");
-					Details.TotalWithHold = myReader.GetDecimal("TotalWithHold");
-					Details.CashWithHold = myReader.GetDecimal("CashWithHold");
-					Details.ChequeWithHold = myReader.GetDecimal("ChequeWithHold");
-					Details.CreditCardWithHold = myReader.GetDecimal("CreditCardWithHold");
-					Details.TotalPaidOut = myReader.GetDecimal("TotalPaidOut");
-					Details.TotalDeposit = myReader.GetDecimal("TotalDeposit");
-					Details.CashDeposit = myReader.GetDecimal("CashDeposit");
-					Details.ChequeDeposit = myReader.GetDecimal("ChequeDeposit");
-					Details.CreditCardDeposit = myReader.GetDecimal("CreditCardDeposit");
-					Details.BeginningBalance = myReader.GetDecimal("BeginningBalance");
-					Details.VoidSales = myReader.GetDecimal("VoidSales");
-					Details.RefundSales = myReader.GetDecimal("RefundSales");
-					Details.ItemsDiscount = myReader.GetDecimal("ItemsDiscount");
-					Details.SubTotalDiscount = myReader.GetDecimal("SubTotalDiscount");
-					Details.NoOfCashTransactions = myReader.GetInt32("NoOfCashTransactions");
-					Details.NoOfChequeTransactions = myReader.GetInt32("NoOfChequeTransactions");
-					Details.NoOfCreditCardTransactions = myReader.GetInt32("NoOfCreditCardTransactions");
-					Details.NoOfCreditTransactions = myReader.GetInt32("NoOfCreditTransactions");
-					Details.NoOfCombinationPaymentTransactions = myReader.GetInt32("NoOfCombinationPaymentTransactions");
-					Details.NoOfCreditPaymentTransactions = myReader.GetInt32("NoOfCreditPaymentTransactions");
-					Details.NoOfDebitPaymentTransactions = myReader.GetInt32("NoOfDebitPaymentTransactions");
-					Details.NoOfClosedTransactions = myReader.GetInt32("NoOfTotalTransactions");
-					Details.NoOfRefundTransactions = myReader.GetInt32("NoOfRefundTransactions");
-					Details.NoOfVoidTransactions = myReader.GetInt32("NoOfVoidTransactions");
-                    Details.NoOfRewardPointsPayment = myReader.GetInt32("NoOfRewardPointsPayment");
-                    Details.NoOfTotalTransactions = myReader.GetInt32("NoOfTotalTransactions");
-					Details.DateLastInitialized = myReader.GetDateTime("DateLastInitialized");
-                    Details.DateLastInitializedToDisplay = myReader.GetDateTime("DateLastInitializedToDisplay");
-                    Details.NoOfDiscountedTransactions = myReader.GetInt32("NoOfDiscountedTransactions");
-                    Details.NegativeAdjustments = myReader.GetDecimal("NegativeAdjustments");
-                    Details.NoOfNegativeAdjustmentTransactions = myReader.GetInt32("NoOfNegativeAdjustmentTransactions");
-                    Details.PromotionalItems = myReader.GetDecimal("PromotionalItems");
-                    Details.CreditSalesTax = myReader.GetDecimal("CreditSalesTax");
-                    Details.BatchCounter = myReader.GetInt32("BatchCounter");
-                    Details.DebitDeposit = myReader.GetDecimal("DebitDeposit");
-                    Details.NoOfReprintedTransaction = myReader.GetInt32("NoOfReprintedTransaction");
-                    Details.TotalReprintedTransaction = myReader.GetDecimal("TotalReprintedTransaction");
-				}
-				myReader.Close();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                TerminalReportDetails Details = SetDetails(dt);
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
+        public static TerminalReportDetails SetDetails(System.Data.DataTable dt)
+        {
+            TerminalReportDetails Details = new TerminalReportDetails();
 
-		public string EndingTransactioNo(string TerminalNo)
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
+                Details.TerminalNo = dr["TerminalNo"].ToString();
+                Details.BeginningTransactionNo = dr["BeginningTransactionNo"].ToString();
+                Details.EndingTransactionNo = dr["EndingTransactionNo"].ToString();
+                Details.BeginningORNo = dr["BeginningORNo"].ToString();
+                Details.EndingORNo = dr["EndingORNo"].ToString();
+                Details.ZReadCount = Int32.Parse(dr["ZReadCount"].ToString());
+                Details.XReadCount = Int32.Parse(dr["XReadCount"].ToString());
+                Details.NetSales = decimal.Parse(dr["NetSales"].ToString());
+                Details.GrossSales = decimal.Parse(dr["GrossSales"].ToString());
+                Details.TotalDiscount = decimal.Parse(dr["TotalDiscount"].ToString());
+                Details.SNRDiscount = decimal.Parse(dr["SNRDiscount"].ToString());
+                Details.PWDDiscount = decimal.Parse(dr["PWDDiscount"].ToString());
+                Details.OtherDiscount = decimal.Parse(dr["OtherDiscount"].ToString());
+                Details.TotalCharge = decimal.Parse(dr["TotalCharge"].ToString());
+                Details.DailySales = decimal.Parse(dr["DailySales"].ToString());
+                Details.QuantitySold = decimal.Parse(dr["QuantitySold"].ToString());
+                Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
+                Details.OldGrandTotal = decimal.Parse(dr["OldGrandTotal"].ToString());
+                Details.NewGrandTotal = decimal.Parse(dr["NewGrandTotal"].ToString());
+                Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
+                Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
+                Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());
+                Details.VAT = decimal.Parse(dr["VAT"].ToString());
+                Details.EVATableAmount = decimal.Parse(dr["EVATableAmount"].ToString());
+                Details.NonEVATableAmount = decimal.Parse(dr["NonEVATableAmount"].ToString());
+                Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
+                Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
+                Details.CashSales = decimal.Parse(dr["CashSales"].ToString());
+                Details.ChequeSales = decimal.Parse(dr["ChequeSales"].ToString());
+                Details.CreditCardSales = decimal.Parse(dr["CreditCardSales"].ToString());
+                Details.CreditSales = decimal.Parse(dr["CreditSales"].ToString());
+                Details.CreditPayment = decimal.Parse(dr["CreditPayment"].ToString());
+                Details.CreditPaymentCash = decimal.Parse(dr["CreditPaymentCash"].ToString());
+                Details.CreditPaymentCheque = decimal.Parse(dr["CreditPaymentCheque"].ToString());
+                Details.CreditPaymentCreditCard = decimal.Parse(dr["CreditPaymentCreditCard"].ToString());
+                Details.CreditPaymentDebit = decimal.Parse(dr["CreditPaymentDebit"].ToString());
+                Details.DebitPayment = decimal.Parse(dr["DebitPayment"].ToString());
+                Details.RewardPointsPayment = decimal.Parse(dr["RewardPointsPayment"].ToString());
+                Details.RewardConvertedPayment = decimal.Parse(dr["RewardConvertedPayment"].ToString());
+                Details.CashInDrawer = decimal.Parse(dr["CashInDrawer"].ToString());
+                Details.TotalDisburse = decimal.Parse(dr["TotalDisburse"].ToString());
+                Details.CashDisburse = decimal.Parse(dr["CashDisburse"].ToString());
+                Details.ChequeDisburse = decimal.Parse(dr["ChequeDisburse"].ToString());
+                Details.CreditCardDisburse = decimal.Parse(dr["CreditCardDisburse"].ToString());
+                Details.TotalWithHold = decimal.Parse(dr["TotalWithHold"].ToString());
+                Details.CashWithHold = decimal.Parse(dr["CashWithHold"].ToString());
+                Details.ChequeWithHold = decimal.Parse(dr["ChequeWithHold"].ToString());
+                Details.CreditCardWithHold = decimal.Parse(dr["CreditCardWithHold"].ToString());
+                Details.TotalPaidOut = decimal.Parse(dr["TotalPaidOut"].ToString());
+                Details.TotalDeposit = decimal.Parse(dr["TotalDeposit"].ToString());
+                Details.CashDeposit = decimal.Parse(dr["CashDeposit"].ToString());
+                Details.ChequeDeposit = decimal.Parse(dr["ChequeDeposit"].ToString());
+                Details.CreditCardDeposit = decimal.Parse(dr["CreditCardDeposit"].ToString());
+                Details.BeginningBalance = decimal.Parse(dr["BeginningBalance"].ToString());
+                Details.VoidSales = decimal.Parse(dr["VoidSales"].ToString());
+                Details.RefundSales = decimal.Parse(dr["RefundSales"].ToString());
+                Details.ItemsDiscount = decimal.Parse(dr["ItemsDiscount"].ToString());
+                Details.SubTotalDiscount = decimal.Parse(dr["SubTotalDiscount"].ToString());
+                Details.NoOfCashTransactions = Int32.Parse(dr["NoOfCashTransactions"].ToString());
+                Details.NoOfChequeTransactions = Int32.Parse(dr["NoOfChequeTransactions"].ToString());
+                Details.NoOfCreditCardTransactions = Int32.Parse(dr["NoOfCreditCardTransactions"].ToString());
+                Details.NoOfCreditTransactions = Int32.Parse(dr["NoOfCreditTransactions"].ToString());
+                Details.NoOfCombinationPaymentTransactions = Int32.Parse(dr["NoOfCombinationPaymentTransactions"].ToString());
+                Details.NoOfCreditPaymentTransactions = Int32.Parse(dr["NoOfCreditPaymentTransactions"].ToString());
+                Details.NoOfDebitPaymentTransactions = Int32.Parse(dr["NoOfDebitPaymentTransactions"].ToString());
+                Details.NoOfClosedTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString());
+                Details.NoOfRefundTransactions = Int32.Parse(dr["NoOfRefundTransactions"].ToString());
+                Details.NoOfVoidTransactions = Int32.Parse(dr["NoOfVoidTransactions"].ToString());
+                Details.NoOfRewardPointsPayment = Int32.Parse(dr["NoOfRewardPointsPayment"].ToString());
+                Details.NoOfTotalTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString());
+                Details.DateLastInitialized = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                Details.DateLastInitializedToDisplay = DateTime.Parse(dr["DateLastInitializedToDisplay"].ToString());
+                Details.NoOfDiscountedTransactions = Int32.Parse(dr["NoOfDiscountedTransactions"].ToString());
+                Details.NegativeAdjustments = decimal.Parse(dr["NegativeAdjustments"].ToString());
+                Details.NoOfNegativeAdjustmentTransactions = Int32.Parse(dr["NoOfNegativeAdjustmentTransactions"].ToString());
+                Details.PromotionalItems = decimal.Parse(dr["PromotionalItems"].ToString());
+                Details.CreditSalesTax = decimal.Parse(dr["CreditSalesTax"].ToString());
+                Details.BatchCounter = Int32.Parse(dr["BatchCounter"].ToString());
+                Details.DebitDeposit = decimal.Parse(dr["DebitDeposit"].ToString());
+                Details.NoOfReprintedTransaction = Int32.Parse(dr["NoOfReprintedTransaction"].ToString());
+                Details.TotalReprintedTransaction = decimal.Parse(dr["TotalReprintedTransaction"].ToString());
+            }
+
+            return Details;
+        }
+        public static TerminalReportDetails[] SetDetailsList(System.Data.DataTable dt)
+        {
+            ArrayList items = new ArrayList();
+            
+            TerminalReportDetails Details = new TerminalReportDetails(); ;
+            TerminalReportDetails[] DetailsList = new TerminalReportDetails[0];
+
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                Details.BranchID = Int32.Parse(dr["BranchID"].ToString());
+                Details.TerminalNo = dr["TerminalNo"].ToString();
+                Details.BeginningTransactionNo = dr["BeginningTransactionNo"].ToString();
+                Details.EndingTransactionNo = dr["EndingTransactionNo"].ToString();
+                Details.BeginningORNo = dr["BeginningORNo"].ToString();
+                Details.EndingORNo = dr["EndingORNo"].ToString();
+                Details.ZReadCount = Int32.Parse(dr["ZReadCount"].ToString());
+                Details.XReadCount = Int32.Parse(dr["XReadCount"].ToString());
+                Details.NetSales = decimal.Parse(dr["NetSales"].ToString());
+                Details.GrossSales = decimal.Parse(dr["GrossSales"].ToString());
+                Details.TotalDiscount = decimal.Parse(dr["TotalDiscount"].ToString());
+                Details.SNRDiscount = decimal.Parse(dr["SNRDiscount"].ToString());
+                Details.PWDDiscount = decimal.Parse(dr["PWDDiscount"].ToString());
+                Details.OtherDiscount = decimal.Parse(dr["OtherDiscount"].ToString());
+                Details.TotalCharge = decimal.Parse(dr["TotalCharge"].ToString());
+                Details.DailySales = decimal.Parse(dr["DailySales"].ToString());
+                Details.QuantitySold = decimal.Parse(dr["QuantitySold"].ToString());
+                Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
+                Details.OldGrandTotal = decimal.Parse(dr["OldGrandTotal"].ToString());
+                Details.NewGrandTotal = decimal.Parse(dr["NewGrandTotal"].ToString());
+                Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
+                Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
+                Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());
+                Details.VAT = decimal.Parse(dr["VAT"].ToString());
+                Details.EVATableAmount = decimal.Parse(dr["EVATableAmount"].ToString());
+                Details.NonEVATableAmount = decimal.Parse(dr["NonEVATableAmount"].ToString());
+                Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
+                Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
+                Details.CashSales = decimal.Parse(dr["CashSales"].ToString());
+                Details.ChequeSales = decimal.Parse(dr["ChequeSales"].ToString());
+                Details.CreditCardSales = decimal.Parse(dr["CreditCardSales"].ToString());
+                Details.CreditSales = decimal.Parse(dr["CreditSales"].ToString());
+                Details.CreditPayment = decimal.Parse(dr["CreditPayment"].ToString());
+                Details.CreditPaymentCash = decimal.Parse(dr["CreditPaymentCash"].ToString());
+                Details.CreditPaymentCheque = decimal.Parse(dr["CreditPaymentCheque"].ToString());
+                Details.CreditPaymentCreditCard = decimal.Parse(dr["CreditPaymentCreditCard"].ToString());
+                Details.CreditPaymentDebit = decimal.Parse(dr["CreditPaymentDebit"].ToString());
+                Details.DebitPayment = decimal.Parse(dr["DebitPayment"].ToString());
+                Details.RewardPointsPayment = decimal.Parse(dr["RewardPointsPayment"].ToString());
+                Details.RewardConvertedPayment = decimal.Parse(dr["RewardConvertedPayment"].ToString());
+                Details.CashInDrawer = decimal.Parse(dr["CashInDrawer"].ToString());
+                Details.TotalDisburse = decimal.Parse(dr["TotalDisburse"].ToString());
+                Details.CashDisburse = decimal.Parse(dr["CashDisburse"].ToString());
+                Details.ChequeDisburse = decimal.Parse(dr["ChequeDisburse"].ToString());
+                Details.CreditCardDisburse = decimal.Parse(dr["CreditCardDisburse"].ToString());
+                Details.TotalWithHold = decimal.Parse(dr["TotalWithHold"].ToString());
+                Details.CashWithHold = decimal.Parse(dr["CashWithHold"].ToString());
+                Details.ChequeWithHold = decimal.Parse(dr["ChequeWithHold"].ToString());
+                Details.CreditCardWithHold = decimal.Parse(dr["CreditCardWithHold"].ToString());
+                Details.TotalPaidOut = decimal.Parse(dr["TotalPaidOut"].ToString());
+                Details.TotalDeposit = decimal.Parse(dr["TotalDeposit"].ToString());
+                Details.CashDeposit = decimal.Parse(dr["CashDeposit"].ToString());
+                Details.ChequeDeposit = decimal.Parse(dr["ChequeDeposit"].ToString());
+                Details.CreditCardDeposit = decimal.Parse(dr["CreditCardDeposit"].ToString());
+                Details.BeginningBalance = decimal.Parse(dr["BeginningBalance"].ToString());
+                Details.VoidSales = decimal.Parse(dr["VoidSales"].ToString());
+                Details.RefundSales = decimal.Parse(dr["RefundSales"].ToString());
+                Details.ItemsDiscount = decimal.Parse(dr["ItemsDiscount"].ToString());
+                Details.SubTotalDiscount = decimal.Parse(dr["SubTotalDiscount"].ToString());
+                Details.NoOfCashTransactions = Int32.Parse(dr["NoOfCashTransactions"].ToString());
+                Details.NoOfChequeTransactions = Int32.Parse(dr["NoOfChequeTransactions"].ToString());
+                Details.NoOfCreditCardTransactions = Int32.Parse(dr["NoOfCreditCardTransactions"].ToString());
+                Details.NoOfCreditTransactions = Int32.Parse(dr["NoOfCreditTransactions"].ToString());
+                Details.NoOfCombinationPaymentTransactions = Int32.Parse(dr["NoOfCombinationPaymentTransactions"].ToString());
+                Details.NoOfCreditPaymentTransactions = Int32.Parse(dr["NoOfCreditPaymentTransactions"].ToString());
+                Details.NoOfDebitPaymentTransactions = Int32.Parse(dr["NoOfDebitPaymentTransactions"].ToString());
+                Details.NoOfClosedTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString());
+                Details.NoOfRefundTransactions = Int32.Parse(dr["NoOfRefundTransactions"].ToString());
+                Details.NoOfVoidTransactions = Int32.Parse(dr["NoOfVoidTransactions"].ToString());
+                Details.NoOfRewardPointsPayment = Int32.Parse(dr["NoOfRewardPointsPayment"].ToString());
+                Details.NoOfTotalTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString());
+                Details.DateLastInitialized = DateTime.Parse(dr["DateLastInitialized"].ToString());
+                Details.DateLastInitializedToDisplay = DateTime.Parse(dr["DateLastInitializedToDisplay"].ToString());
+                Details.NoOfDiscountedTransactions = Int32.Parse(dr["NoOfDiscountedTransactions"].ToString());
+                Details.NegativeAdjustments = decimal.Parse(dr["NegativeAdjustments"].ToString());
+                Details.NoOfNegativeAdjustmentTransactions = Int32.Parse(dr["NoOfNegativeAdjustmentTransactions"].ToString());
+                Details.PromotionalItems = decimal.Parse(dr["PromotionalItems"].ToString());
+                Details.CreditSalesTax = decimal.Parse(dr["CreditSalesTax"].ToString());
+                Details.BatchCounter = Int32.Parse(dr["BatchCounter"].ToString());
+                Details.DebitDeposit = decimal.Parse(dr["DebitDeposit"].ToString());
+                Details.NoOfReprintedTransaction = Int32.Parse(dr["NoOfReprintedTransaction"].ToString());
+                Details.TotalReprintedTransaction = decimal.Parse(dr["TotalReprintedTransaction"].ToString());
+
+                items.Add(Details);
+            }
+
+            if (items != null)
+            {
+                DetailsList = new TerminalReportDetails[items.Count];
+                items.CopyTo(DetailsList);
+            }
+
+            return DetailsList;
+        }
+		public string EndingTransactioNo(Int32 BranchID, string TerminalNo)
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"SELECT " +
 					            "EndingTransactionNo " +
 					        "FROM tblTerminalReport " +
-					        "WHERE TerminalNo = @TerminalNo;";
-        				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 				
-				string stEndingTransactioNo = null;
-
-				while (myReader.Read())
+				string stEndingTransactioNo = string.Empty;
+                foreach(System.Data.DataRow dr in dt.Rows)
 				{
-					
-					stEndingTransactioNo = "" + myReader["EndingTransactionNo"].ToString();
+					stEndingTransactioNo = dr["EndingTransactionNo"].ToString();
 				}
-				myReader.Close();
 
 				return stEndingTransactioNo;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
 
-        public DateTime MAXDateLastInitialized(string TerminalNo)
-        {
-            try
-            {
-                string SQL = "SELECT " +
-                    "MAX(DateLastInitialized) AS DateLastInitialized " +
-                    "FROM tblTerminalReport " +
-                    "WHERE TerminalNo = @TerminalNo " +
-                    "ORDER BY DateLastInitialized DESC LIMIT 1;";
-            
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
-
-                DateTime dteRetValue = DateTime.MinValue;
-
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
-                }
-
-                return dteRetValue;
-
-            }
-
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
-		public DateTime MAXDateLastInitialized(string TerminalNo, DateTime ProcessingDate)
+        /// <summary>
+        /// Get the Last ZReadInitialization Date.
+        /// If ProcessingDate is same as Constants.C_DATE_MIN_VALUE then it will get DateLastInitialized DESC
+        /// </summary>
+        /// <param name="BranchID"></param>
+        /// <param name="TerminalNo"></param>
+        /// <param name="ProcessingDate"></param>
+        /// <returns></returns>
+		public DateTime MAXDateLastInitialized(Int32 BranchID, string TerminalNo, DateTime ProcessingDate)
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-					"MAX(DateLastInitialized) AS DateLastInitialized " +
-					"FROM tblTerminalReport " +
-					"WHERE TerminalNo = @TerminalNo " +
-					"AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
-				//							"ORDER BY DateLastInitialized DESC ";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                string SQL = "SELECT MAX(DateLastInitialized) AS DateLastInitialized FROM tblTerminalReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo ";
 
-				MySqlParameter prmProcessingDate = new MySqlParameter("@ProcessingDate",MySqlDbType.DateTime);
-				prmProcessingDate.Value = ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmProcessingDate);
+                if (ProcessingDate == Constants.C_DATE_MIN_VALUE || ProcessingDate == DateTime.MinValue)
+                {
+                    SQL += "ORDER BY DateLastInitialized DESC LIMIT 1;";
+                }
+                else
+                {
+                    SQL += "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
+                    cmd.Parameters.AddWithValue("ProcessingDate", ProcessingDate);
+                }
 
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MinValue;
-
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
                     dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
                 }
 
                 return dteRetValue;
-
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
+
 		#endregion
 	
 		#region Updates
 
-		public void UpdateBeginningBalance(int BranchID, string TerminalNo, decimal Amount)
+		public void UpdateBeginningBalance(Int32 BranchID, string TerminalNo, decimal Amount)
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"UPDATE tblTerminalReport SET " +
 					            "CashInDrawer		= CashInDrawer + @CashInDrawer, " +
 					            "BeginningBalance	= BeginningBalance + @BeginningBalance " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmCashInDrawer = new MySqlParameter("@CashInDrawer",MySqlDbType.Decimal);			
-				prmCashInDrawer.Value = Amount;
-				cmd.Parameters.Add(prmCashInDrawer);
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("BeginningBalance", Amount);
+                cmd.Parameters.AddWithValue("CashInDrawer", Amount);
 
-				MySqlParameter prmBeginningBalance = new MySqlParameter("@BeginningBalance",MySqlDbType.Decimal);			
-				prmBeginningBalance.Value = Amount;
-				cmd.Parameters.Add(prmBeginningBalance);
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}
 		}
 
-		public void UpdateZReadCount()
+        public void UpdateZReadCount(Int32 BranchID, string TerminalNo)
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblTerminalReport SET " +
-					"ZReadCount = ZReadCount + 1 " +
-					"WHERE TerminalNo = @TerminalNo;";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = CompanyDetails.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
+				string SQL=	"UPDATE tblTerminalReport SET " +
+					            "ZReadCount = ZReadCount + 1 " +
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
+
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}
 		}
 
-		public void UpdateXReadCount()
+        public void UpdateXReadCount(Int32 BranchID, string TerminalNo)
 		{
 			try 
 			{
-				string SQL=	"UPDATE tblTerminalReport SET " +
-					"XReadCount = XReadCount + 1 " +
-					"WHERE TerminalNo = @TerminalNo;";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = CompanyDetails.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
+				string SQL=	"UPDATE tblTerminalReport SET " +
+					            "XReadCount = XReadCount + 1 " +
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
+
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}
 		}
 
-        public void IncrementBatchCounter()
+        public void IncrementBatchCounter(Int32 BranchID, string TerminalNo)
         {
             try
             {
-                string SQL = "CALL procTerminalReportIncrementBatchCounter(@TerminalNo);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procTerminalReportIncrementBatchCounter(@BranchID, @TerminalNo);";
+
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = CompanyDetails.TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -570,20 +642,28 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "CALL procTerminalReportUpdateTransactionSales(@BranchID, @TerminalNo," +
+                                    "@NetSales," +
                                     "@GrossSales, " +
                                     "@TotalDiscount, " +
+                                    "@SNRDiscount, " +
+                                    "@PWDDiscount, " +
+                                    "@OtherDiscount, " +
                                     "@TotalCharge, " +
                                     "@DailySales, " +
                                     "@QuantitySold, " +
                                     "@GroupSales, " +
                                     "@OldGrandTotal, " +
                                     "@NewGrandTotal, " +
+                                    "@VATExempt, " +
+                                    "@NonVATableAmount, " +
                                     "@VATableAmount, " +
-                                    "@NonVaTableAmount, " +
                                     "@VAT, " +
                                     "@EVATableAmount, " +
-                                    "@NonEVaTableAmount, " +
+                                    "@NonEVATableAmount, " +
                                     "@EVAT, " +
                                     "@LocalTax, " +
                                     "@CashSales, " +
@@ -621,89 +701,33 @@ namespace AceSoft.RetailPlus.Data
                                     "@PromotionalItems, " +
                                     "@CreditSalesTax);";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmGrossSales = new MySqlParameter("@GrossSales",MySqlDbType.Decimal);			
-				prmGrossSales.Value = Details.GrossSales;
-				cmd.Parameters.Add(prmGrossSales);
-
-				MySqlParameter prmTotalDiscount = new MySqlParameter("@TotalDiscount",MySqlDbType.Decimal);			
-				prmTotalDiscount.Value = Details.TotalDiscount;
-				cmd.Parameters.Add(prmTotalDiscount);
-
-				MySqlParameter prmTotalCharge = new MySqlParameter("@TotalCharge",MySqlDbType.Decimal);			
-				prmTotalCharge.Value = Details.TotalCharge;
-				cmd.Parameters.Add(prmTotalCharge);
-
-				MySqlParameter prmDailySales = new MySqlParameter("@DailySales",MySqlDbType.Decimal);			
-				prmDailySales.Value = Details.DailySales;
-				cmd.Parameters.Add(prmDailySales);
-
-				MySqlParameter prmQuantitySold = new MySqlParameter("@QuantitySold",MySqlDbType.Decimal);			
-				prmQuantitySold.Value = Details.QuantitySold;
-				cmd.Parameters.Add(prmQuantitySold);
-
-				MySqlParameter prmGroupSales = new MySqlParameter("@GroupSales",MySqlDbType.Decimal);			
-				prmGroupSales.Value = Details.GroupSales;
-				cmd.Parameters.Add(prmGroupSales);
-
-				MySqlParameter prmOldGrandTotal = new MySqlParameter("@OldGrandTotal",MySqlDbType.Decimal);			
-				prmOldGrandTotal.Value = Details.OldGrandTotal;
-				cmd.Parameters.Add(prmOldGrandTotal);
-
-				MySqlParameter prmNewGrandTotal = new MySqlParameter("@NewGrandTotal",MySqlDbType.Decimal);			
-				prmNewGrandTotal.Value = Details.VATableAmount + Details.NonVaTableAmount + Details.VAT + Details.EVAT + Details.LocalTax + Details.TotalCharge; //reference from DailySales to accumulate the new grand total c/o Luisa
-				cmd.Parameters.Add(prmNewGrandTotal);
-
-				MySqlParameter prmVATableAmount = new MySqlParameter("@VATableAmount",MySqlDbType.Decimal);			
-				prmVATableAmount.Value = Details.VATableAmount;
-				cmd.Parameters.Add(prmVATableAmount);
-
-				MySqlParameter prmNonVaTableAmount = new MySqlParameter("@NonVaTableAmount",MySqlDbType.Decimal);			
-				prmNonVaTableAmount.Value = Details.NonVaTableAmount;
-				cmd.Parameters.Add(prmNonVaTableAmount);
-
-				MySqlParameter prmVAT = new MySqlParameter("@VAT",MySqlDbType.Decimal);			
-				prmVAT.Value = Details.VAT;
-				cmd.Parameters.Add(prmVAT);
-
-				MySqlParameter prmEVATableAmount = new MySqlParameter("@EVATableAmount",MySqlDbType.Decimal);			
-				prmEVATableAmount.Value = Details.EVATableAmount;
-				cmd.Parameters.Add(prmEVATableAmount);
-
-				MySqlParameter prmNonEVaTableAmount = new MySqlParameter("@NonEVaTableAmount",MySqlDbType.Decimal);			
-				prmNonEVaTableAmount.Value = Details.NonEVaTableAmount;
-				cmd.Parameters.Add(prmNonEVaTableAmount);
-
-				MySqlParameter prmEVAT = new MySqlParameter("@EVAT",MySqlDbType.Decimal);			
-				prmEVAT.Value = Details.EVAT;
-				cmd.Parameters.Add(prmEVAT);
-
-				MySqlParameter prmLocalTax = new MySqlParameter("@LocalTax",MySqlDbType.Decimal);			
-				prmLocalTax.Value = Details.LocalTax;
-				cmd.Parameters.Add(prmLocalTax);
-
-				MySqlParameter prmCashSales = new MySqlParameter("@CashSales",MySqlDbType.Decimal);			
-				prmCashSales.Value = Details.CashSales;
-				cmd.Parameters.Add(prmCashSales);
-
-				MySqlParameter prmChequeSales = new MySqlParameter("@ChequeSales",MySqlDbType.Decimal);			
-				prmChequeSales.Value = Details.ChequeSales;
-				cmd.Parameters.Add(prmChequeSales);
-
-				MySqlParameter prmCreditCardSales = new MySqlParameter("@CreditCardSales",MySqlDbType.Decimal);			
-				prmCreditCardSales.Value = Details.CreditCardSales;
-				cmd.Parameters.Add(prmCreditCardSales);
-
-				MySqlParameter prmCreditSales = new MySqlParameter("@CreditSales",MySqlDbType.Decimal);			
-				prmCreditSales.Value = Details.CreditSales;
-				cmd.Parameters.Add(prmCreditSales);
+				cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("@NetSales", Details.NetSales);
+                cmd.Parameters.AddWithValue("@GrossSales", Details.GrossSales);
+                cmd.Parameters.AddWithValue("@TotalDiscount", Details.TotalDiscount);
+                cmd.Parameters.AddWithValue("@SNRDiscount", Details.SNRDiscount);
+                cmd.Parameters.AddWithValue("@PWDDiscount", Details.PWDDiscount);
+                cmd.Parameters.AddWithValue("@OtherDiscount", Details.OtherDiscount);
+                cmd.Parameters.AddWithValue("@TotalCharge", Details.TotalCharge);
+                cmd.Parameters.AddWithValue("@DailySales", Details.DailySales);
+                cmd.Parameters.AddWithValue("@QuantitySold", Details.QuantitySold);
+                cmd.Parameters.AddWithValue("@GroupSales", Details.GroupSales);
+                cmd.Parameters.AddWithValue("@OldGrandTotal", 0);
+                cmd.Parameters.AddWithValue("@NewGrandTotal", Details.GrossSales);
+                
+                cmd.Parameters.AddWithValue("@VATExempt", Details.VATExempt);
+                cmd.Parameters.AddWithValue("@NonVATableAmount", Details.NonVATableAmount);
+                cmd.Parameters.AddWithValue("@VATableAmount", Details.VATableAmount);
+                cmd.Parameters.AddWithValue("@VAT", Details.VAT);
+                cmd.Parameters.AddWithValue("@EVATableAmount", Details.EVATableAmount);
+                cmd.Parameters.AddWithValue("@NonEVATableAmount", Details.NonEVATableAmount);
+                cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
+                cmd.Parameters.AddWithValue("@LocalTax", Details.LocalTax);
+                
+                cmd.Parameters.AddWithValue("@CashSales", Details.CashSales);
+                cmd.Parameters.AddWithValue("@ChequeSales", Details.ChequeSales);
+                cmd.Parameters.AddWithValue("@CreditCardSales", Details.CreditCardSales);
+                cmd.Parameters.AddWithValue("@CreditSales", Details.CreditSales);
 
                 cmd.Parameters.AddWithValue("@CreditPayment", Details.CreditPayment);
                 cmd.Parameters.AddWithValue("@CreditPaymentCash", Details.CreditPaymentCash);
@@ -711,352 +735,54 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@CreditPaymentCreditCard", Details.CreditPaymentCreditCard);
                 cmd.Parameters.AddWithValue("@CreditPaymentDebit", Details.CreditPaymentDebit);
                 cmd.Parameters.AddWithValue("@DebitPayment", Details.DebitPayment);
-
-				MySqlParameter prmRewardPointsPayment = new MySqlParameter("@RewardPointsPayment",MySqlDbType.Decimal);
-                prmRewardPointsPayment.Value = Details.RewardPointsPayment;
-                cmd.Parameters.Add(prmRewardPointsPayment);
-
-                MySqlParameter prmRewardConvertedPayment = new MySqlParameter("@RewardConvertedPayment",MySqlDbType.Decimal);
-                prmRewardConvertedPayment.Value = Details.RewardConvertedPayment;
-                cmd.Parameters.Add(prmRewardConvertedPayment);
-
-				MySqlParameter prmCashInDrawer = new MySqlParameter("@CashInDrawer",MySqlDbType.Decimal);	
-				// prmCashInDrawer.Value = Details.CashSales; //refer to cash sales
+                cmd.Parameters.AddWithValue("@RewardPointsPayment", Details.RewardPointsPayment);
+                cmd.Parameters.AddWithValue("@RewardConvertedPayment", Details.RewardConvertedPayment);
+                // prmCashInDrawer.Value = Details.CashSales; //refer to cash sales
                 // Apr 12, 2014 make an override use the cash in drawer due to credit payment
-                prmCashInDrawer.Value = Details.CashInDrawer == 0 ? Details.CashSales : Details.CashInDrawer;
-				cmd.Parameters.Add(prmCashInDrawer);
+                cmd.Parameters.AddWithValue("@CashInDrawer", Details.CashInDrawer == 0 ? Details.CashSales : Details.CashInDrawer);
 
-				MySqlParameter prmVoidSales = new MySqlParameter("@VoidSales",MySqlDbType.Decimal);			
-				prmVoidSales.Value = Details.VoidSales;
-				cmd.Parameters.Add(prmVoidSales);
+                cmd.Parameters.AddWithValue("@VoidSales", Details.VoidSales);
+                cmd.Parameters.AddWithValue("@RefundSales", Details.RefundSales);
+                cmd.Parameters.AddWithValue("@ItemsDiscount", Details.ItemsDiscount);
+                cmd.Parameters.AddWithValue("@SubTotalDiscount", Details.SubTotalDiscount);
+                cmd.Parameters.AddWithValue("@NoOfCashTransactions", Details.NoOfCashTransactions);
+                cmd.Parameters.AddWithValue("@NoOfChequeTransactions", Details.NoOfChequeTransactions);
+                cmd.Parameters.AddWithValue("@NoOfCreditCardTransactions", Details.NoOfCreditCardTransactions);
+                cmd.Parameters.AddWithValue("@NoOfCreditTransactions", Details.NoOfCreditTransactions);
+                cmd.Parameters.AddWithValue("@NoOfCombinationPaymentTransactions", Details.NoOfCombinationPaymentTransactions);
+                cmd.Parameters.AddWithValue("@NoOfCreditPaymentTransactions", Details.NoOfCreditPaymentTransactions);
+                cmd.Parameters.AddWithValue("@NoOfDebitPaymentTransactions", Details.NoOfDebitPaymentTransactions);
+                cmd.Parameters.AddWithValue("@NoOfClosedTransactions", Details.NoOfClosedTransactions);
+                cmd.Parameters.AddWithValue("@NoOfRefundTransactions", Details.NoOfRefundTransactions);
+                cmd.Parameters.AddWithValue("@NoOfVoidTransactions", Details.NoOfVoidTransactions);
+                cmd.Parameters.AddWithValue("@NoOfRewardPointsPayment", Details.NoOfRewardPointsPayment);
+                cmd.Parameters.AddWithValue("@NoOfTotalTransactions", Details.NoOfTotalTransactions);
+                cmd.Parameters.AddWithValue("@NoOfDiscountedTransactions", Details.NoOfDiscountedTransactions);
+                cmd.Parameters.AddWithValue("@NegativeAdjustments", Details.NegativeAdjustments);
+                cmd.Parameters.AddWithValue("@NoOfNegativeAdjustmentTransactions", Details.NoOfNegativeAdjustmentTransactions);
+                cmd.Parameters.AddWithValue("@PromotionalItems", Details.PromotionalItems);
+                cmd.Parameters.AddWithValue("@CreditSalesTax", Details.CreditSalesTax);
+                cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
 
-				MySqlParameter prmRefundSales = new MySqlParameter("@RefundSales",MySqlDbType.Decimal);			
-				prmRefundSales.Value = Details.RefundSales;
-				cmd.Parameters.Add(prmRefundSales);
-
-				MySqlParameter prmItemsDiscount = new MySqlParameter("@ItemsDiscount",MySqlDbType.Decimal);			
-				prmItemsDiscount.Value = Details.ItemsDiscount;
-				cmd.Parameters.Add(prmItemsDiscount);
-
-				MySqlParameter prmSubtotalDiscount = new MySqlParameter("@SubTotalDiscount",MySqlDbType.Decimal);			
-				prmSubtotalDiscount.Value = Details.SubTotalDiscount;
-				cmd.Parameters.Add(prmSubtotalDiscount);
-
-				MySqlParameter prmNoOfCashTransactions = new MySqlParameter("@NoOfCashTransactions",MySqlDbType.Int32);			
-				prmNoOfCashTransactions.Value = Details.NoOfCashTransactions;
-				cmd.Parameters.Add(prmNoOfCashTransactions);
-
-				MySqlParameter prmNoOfChequeTransactions = new MySqlParameter("@NoOfChequeTransactions",MySqlDbType.Int32);			
-				prmNoOfChequeTransactions.Value = Details.NoOfChequeTransactions;
-				cmd.Parameters.Add(prmNoOfChequeTransactions);
-
-				MySqlParameter prmNoOfCreditCardTransactions = new MySqlParameter("@NoOfCreditCardTransactions",MySqlDbType.Int32);			
-				prmNoOfCreditCardTransactions.Value = Details.NoOfCreditCardTransactions;
-				cmd.Parameters.Add(prmNoOfCreditCardTransactions);
-
-				MySqlParameter prmNoOfCreditTransactions = new MySqlParameter("@NoOfCreditTransactions",MySqlDbType.Int32);			
-				prmNoOfCreditTransactions.Value = Details.NoOfCreditTransactions;
-				cmd.Parameters.Add(prmNoOfCreditTransactions);
-
-				MySqlParameter prmNoOfCombinationPaymentTransactions = new MySqlParameter("@NoOfCombinationPaymentTransactions",MySqlDbType.Int32);			
-				prmNoOfCombinationPaymentTransactions.Value = Details.NoOfCombinationPaymentTransactions;
-				cmd.Parameters.Add(prmNoOfCombinationPaymentTransactions);
-
-				MySqlParameter prmNoOfCreditPaymentTransactions = new MySqlParameter("@NoOfCreditPaymentTransactions",MySqlDbType.Int32);			
-				prmNoOfCreditPaymentTransactions.Value = Details.NoOfCreditPaymentTransactions;
-				cmd.Parameters.Add(prmNoOfCreditPaymentTransactions);
-
-				MySqlParameter prmNoOfDebitPaymentTransactions = new MySqlParameter("@NoOfDebitPaymentTransactions",MySqlDbType.Int32);			
-				prmNoOfDebitPaymentTransactions.Value = Details.NoOfDebitPaymentTransactions;
-				cmd.Parameters.Add(prmNoOfDebitPaymentTransactions);
-
-				MySqlParameter prmNoOfClosedTransactions = new MySqlParameter("@NoOfClosedTransactions",MySqlDbType.Int32);			
-				prmNoOfClosedTransactions.Value = Details.NoOfClosedTransactions;
-				cmd.Parameters.Add(prmNoOfClosedTransactions);
-
-				MySqlParameter prmNoOfRefundTransactions = new MySqlParameter("@NoOfRefundTransactions",MySqlDbType.Int32);			
-				prmNoOfRefundTransactions.Value = Details.NoOfRefundTransactions;
-				cmd.Parameters.Add(prmNoOfRefundTransactions);
-
-				MySqlParameter prmNoOfVoidTransactions = new MySqlParameter("@NoOfVoidTransactions",MySqlDbType.Int32);			
-				prmNoOfVoidTransactions.Value = Details.NoOfVoidTransactions;
-				cmd.Parameters.Add(prmNoOfVoidTransactions);
-
-                MySqlParameter prmNoOfRewardPointsPayment = new MySqlParameter("@NoOfRewardPointsPayment",MySqlDbType.Int32);
-                prmNoOfRewardPointsPayment.Value = Details.NoOfRewardPointsPayment;
-                cmd.Parameters.Add(prmNoOfRewardPointsPayment);
-
-				MySqlParameter prmNoOfTotalTransactions = new MySqlParameter("@NoOfTotalTransactions",MySqlDbType.Int32);			
-				prmNoOfTotalTransactions.Value = Details.NoOfTotalTransactions;
-				cmd.Parameters.Add(prmNoOfTotalTransactions);
-
-                MySqlParameter prmNoOfDiscountedTransactions = new MySqlParameter("@NoOfDiscountedTransactions",MySqlDbType.Int32);
-                prmNoOfDiscountedTransactions.Value = Details.NoOfDiscountedTransactions;
-                cmd.Parameters.Add(prmNoOfDiscountedTransactions);
-
-                MySqlParameter prmNegativeAdjustments = new MySqlParameter("@NegativeAdjustments",MySqlDbType.Decimal);
-                prmNegativeAdjustments.Value = Details.NegativeAdjustments;
-                cmd.Parameters.Add(prmNegativeAdjustments);
-
-                MySqlParameter prmNoOfNegativeAdjustmentTransactions = new MySqlParameter("@NoOfNegativeAdjustmentTransactions",MySqlDbType.Int32);
-                prmNoOfNegativeAdjustmentTransactions.Value = Details.NoOfNegativeAdjustmentTransactions;
-                cmd.Parameters.Add(prmNoOfNegativeAdjustmentTransactions);
-
-                MySqlParameter prmPromotionalItems = new MySqlParameter("@PromotionalItems",MySqlDbType.Decimal);
-                prmPromotionalItems.Value = Details.PromotionalItems;
-                cmd.Parameters.Add(prmPromotionalItems);
-
-                MySqlParameter prmCreditSalesTax = new MySqlParameter("@CreditSalesTax",MySqlDbType.Decimal);
-                prmCreditSalesTax.Value = Details.CreditSalesTax;
-                cmd.Parameters.Add(prmCreditSalesTax);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
 
-        //public void UpdateTransactionSales(TerminalReportDetails Details)
-        //{
-        //    try
-        //    {
-        //        string SQL = "UPDATE tblTerminalReport SET " +
-        //            "GrossSales							=  GrossSales							+  @GrossSales, " +
-        //            "TotalDiscount						=  TotalDiscount						+  @TotalDiscount, " +
-        //            "TotalCharge						=  TotalCharge							+  @TotalCharge, " +
-        //            "DailySales							=  DailySales							+  @DailySales, " +
-        //            "QuantitySold						=  QuantitySold							+  @QuantitySold, " +
-        //            "GroupSales							=  GroupSales							+  @GroupSales, " +
-        //            "OldGrandTotal						=  OldGrandTotal						+  @OldGrandTotal, " +
-        //            "NewGrandTotal						=  NewGrandTotal						+  @NewGrandTotal, " +
-        //            "VATableAmount						=  VATableAmount						+  @VATableAmount, " +
-        //            "NonVaTableAmount					=  NonVaTableAmount						+  @NonVaTableAmount, " +
-        //            "VAT								=  VAT									+  @VAT, " +
-        //            "EVATableAmount						=  EVATableAmount						+  @EVATableAmount, " +
-        //            "NonEVaTableAmount					=  NonEVaTableAmount					+  @NonEVaTableAmount, " +
-        //            "EVAT								=  EVAT									+  @EVAT, " +
-        //            "LocalTax							=  LocalTax								+  @LocalTax, " +
-        //            "CashSales							=  CashSales							+  @CashSales, " +
-        //            "ChequeSales						=  ChequeSales							+  @ChequeSales, " +
-        //            "CreditCardSales					=  CreditCardSales						+  @CreditCardSales, " +
-        //            "CreditSales						=  CreditSales							+  @CreditSales, " +
-        //            "CreditPayment						=  CreditPayment						+  @CreditPayment, " +
-        //            "DebitPayment						=  DebitPayment						    +  @DebitPayment, " +
-        //            "CashInDrawer						=  CashInDrawer							+  @CashInDrawer, " +
-        //            "VoidSales							=  VoidSales							+  @VoidSales, " +
-        //            "RefundSales						=  RefundSales							+  @RefundSales, " +
-        //            "ItemsDiscount						=  ItemsDiscount						+  @ItemsDiscount, " +
-        //            "SubTotalDiscount					=  SubTotalDiscount						+  @SubTotalDiscount, " +
-        //            "NoOfCashTransactions				=  NoOfCashTransactions					+  @NoOfCashTransactions, " +
-        //            "NoOfChequeTransactions				=  NoOfChequeTransactions				+  @NoOfChequeTransactions, " +
-        //            "NoOfCreditCardTransactions			=  NoOfCreditCardTransactions			+  @NoOfCreditCardTransactions, " +
-        //            "NoOfCreditTransactions				=  NoOfCreditTransactions				+  @NoOfCreditTransactions, " +
-        //            "NoOfCombinationPaymentTransactions	=  NoOfCombinationPaymentTransactions	+  @NoOfCombinationPaymentTransactions, " +
-        //            "NoOfCreditPaymentTransactions		=  NoOfCreditPaymentTransactions		+  @NoOfCreditPaymentTransactions, " +
-        //            "NoOfDebitPaymentTransactions		=  NoOfDebitPaymentTransactions			+  @NoOfDebitPaymentTransactions, " +
-        //            "NoOfClosedTransactions				=  NoOfClosedTransactions				+  @NoOfClosedTransactions, " +
-        //            "NoOfRefundTransactions				=  NoOfRefundTransactions				+  @NoOfRefundTransactions, " +
-        //            "NoOfVoidTransactions				=  NoOfVoidTransactions					+  @NoOfVoidTransactions, " +
-        //            "NoOfTotalTransactions				=  NoOfTotalTransactions				+  @NoOfTotalTransactions " +
-        //            "WHERE TerminalNo = @TerminalNo;";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        MySqlParameter prmGrossSales = new MySqlParameter("@GrossSales",MySqlDbType.Decimal);
-        //        prmGrossSales.Value = Details.GrossSales;
-        //        cmd.Parameters.Add(prmGrossSales);
-
-        //        MySqlParameter prmTotalDiscount = new MySqlParameter("@TotalDiscount",MySqlDbType.Decimal);
-        //        prmTotalDiscount.Value = Details.TotalDiscount;
-        //        cmd.Parameters.Add(prmTotalDiscount);
-
-        //        MySqlParameter prmTotalCharge = new MySqlParameter("@TotalCharge",MySqlDbType.Decimal);
-        //        prmTotalCharge.Value = Details.TotalCharge;
-        //        cmd.Parameters.Add(prmTotalCharge);
-
-        //        MySqlParameter prmDailySales = new MySqlParameter("@DailySales",MySqlDbType.Decimal);
-        //        prmDailySales.Value = Details.DailySales;
-        //        cmd.Parameters.Add(prmDailySales);
-
-        //        MySqlParameter prmQuantitySold = new MySqlParameter("@QuantitySold",MySqlDbType.Decimal);
-        //        prmQuantitySold.Value = Details.QuantitySold;
-        //        cmd.Parameters.Add(prmQuantitySold);
-
-        //        MySqlParameter prmGroupSales = new MySqlParameter("@GroupSales",MySqlDbType.Decimal);
-        //        prmGroupSales.Value = Details.GroupSales;
-        //        cmd.Parameters.Add(prmGroupSales);
-
-        //        MySqlParameter prmOldGrandTotal = new MySqlParameter("@OldGrandTotal",MySqlDbType.Decimal);
-        //        prmOldGrandTotal.Value = Details.OldGrandTotal;
-        //        cmd.Parameters.Add(prmOldGrandTotal);
-
-        //        MySqlParameter prmNewGrandTotal = new MySqlParameter("@NewGrandTotal",MySqlDbType.Decimal);
-        //        prmNewGrandTotal.Value = Details.VATableAmount + Details.NonVaTableAmount + Details.VAT + Details.EVAT + Details.LocalTax + Details.TotalCharge; //reference from DailySales to accumulate the new grand total c/o Luisa
-        //        cmd.Parameters.Add(prmNewGrandTotal);
-
-        //        MySqlParameter prmVATableAmount = new MySqlParameter("@VATableAmount",MySqlDbType.Decimal);
-        //        prmVATableAmount.Value = Details.VATableAmount;
-        //        cmd.Parameters.Add(prmVATableAmount);
-
-        //        MySqlParameter prmNonVaTableAmount = new MySqlParameter("@NonVaTableAmount",MySqlDbType.Decimal);
-        //        prmNonVaTableAmount.Value = Details.NonVaTableAmount;
-        //        cmd.Parameters.Add(prmNonVaTableAmount);
-
-        //        MySqlParameter prmVAT = new MySqlParameter("@VAT",MySqlDbType.Decimal);
-        //        prmVAT.Value = Details.VAT;
-        //        cmd.Parameters.Add(prmVAT);
-
-        //        MySqlParameter prmEVATableAmount = new MySqlParameter("@EVATableAmount",MySqlDbType.Decimal);
-        //        prmEVATableAmount.Value = Details.EVATableAmount;
-        //        cmd.Parameters.Add(prmEVATableAmount);
-
-        //        MySqlParameter prmNonEVaTableAmount = new MySqlParameter("@NonEVaTableAmount",MySqlDbType.Decimal);
-        //        prmNonEVaTableAmount.Value = Details.NonEVaTableAmount;
-        //        cmd.Parameters.Add(prmNonEVaTableAmount);
-
-        //        MySqlParameter prmEVAT = new MySqlParameter("@EVAT",MySqlDbType.Decimal);
-        //        prmEVAT.Value = Details.EVAT;
-        //        cmd.Parameters.Add(prmEVAT);
-
-        //        MySqlParameter prmLocalTax = new MySqlParameter("@LocalTax",MySqlDbType.Decimal);
-        //        prmLocalTax.Value = Details.LocalTax;
-        //        cmd.Parameters.Add(prmLocalTax);
-
-        //        MySqlParameter prmCashSales = new MySqlParameter("@CashSales",MySqlDbType.Decimal);
-        //        prmCashSales.Value = Details.CashSales;
-        //        cmd.Parameters.Add(prmCashSales);
-
-        //        MySqlParameter prmChequeSales = new MySqlParameter("@ChequeSales",MySqlDbType.Decimal);
-        //        prmChequeSales.Value = Details.ChequeSales;
-        //        cmd.Parameters.Add(prmChequeSales);
-
-        //        MySqlParameter prmCreditCardSales = new MySqlParameter("@CreditCardSales",MySqlDbType.Decimal);
-        //        prmCreditCardSales.Value = Details.CreditCardSales;
-        //        cmd.Parameters.Add(prmCreditCardSales);
-
-        //        MySqlParameter prmCreditSales = new MySqlParameter("@CreditSales",MySqlDbType.Decimal);
-        //        prmCreditSales.Value = Details.CreditSales;
-        //        cmd.Parameters.Add(prmCreditSales);
-
-        //        MySqlParameter prmCreditPayment = new MySqlParameter("@CreditPayment",MySqlDbType.Decimal);
-        //        prmCreditPayment.Value = Details.CreditPayment;
-        //        cmd.Parameters.Add(prmCreditPayment);
-
-        //        MySqlParameter prmDebitPayment = new MySqlParameter("@DebitPayment",MySqlDbType.Decimal);
-        //        prmDebitPayment.Value = Details.DebitPayment;
-        //        cmd.Parameters.Add(prmDebitPayment);
-
-        //        MySqlParameter prmCashInDrawer = new MySqlParameter("@CashInDrawer",MySqlDbType.Decimal);
-        //        prmCashInDrawer.Value = Details.CashSales; //refer to cash sales
-        //        cmd.Parameters.Add(prmCashInDrawer);
-
-        //        MySqlParameter prmVoidSales = new MySqlParameter("@VoidSales",MySqlDbType.Decimal);
-        //        prmVoidSales.Value = Details.VoidSales;
-        //        cmd.Parameters.Add(prmVoidSales);
-
-        //        MySqlParameter prmRefundSales = new MySqlParameter("@RefundSales",MySqlDbType.Decimal);
-        //        prmRefundSales.Value = Details.RefundSales;
-        //        cmd.Parameters.Add(prmRefundSales);
-
-        //        MySqlParameter prmItemsDiscount = new MySqlParameter("@ItemsDiscount",MySqlDbType.Decimal);
-        //        prmItemsDiscount.Value = Details.ItemsDiscount;
-        //        cmd.Parameters.Add(prmItemsDiscount);
-
-        //        MySqlParameter prmSubtotalDiscount = new MySqlParameter("@SubTotalDiscount",MySqlDbType.Decimal);
-        //        prmSubtotalDiscount.Value = Details.SubTotalDiscount;
-        //        cmd.Parameters.Add(prmSubtotalDiscount);
-
-        //        MySqlParameter prmNoOfCashTransactions = new MySqlParameter("@NoOfCashTransactions",MySqlDbType.Int32);
-        //        prmNoOfCashTransactions.Value = Details.NoOfCashTransactions;
-        //        cmd.Parameters.Add(prmNoOfCashTransactions);
-
-        //        MySqlParameter prmNoOfChequeTransactions = new MySqlParameter("@NoOfChequeTransactions",MySqlDbType.Int32);
-        //        prmNoOfChequeTransactions.Value = Details.NoOfChequeTransactions;
-        //        cmd.Parameters.Add(prmNoOfChequeTransactions);
-
-        //        MySqlParameter prmNoOfCreditCardTransactions = new MySqlParameter("@NoOfCreditCardTransactions",MySqlDbType.Int32);
-        //        prmNoOfCreditCardTransactions.Value = Details.NoOfCreditCardTransactions;
-        //        cmd.Parameters.Add(prmNoOfCreditCardTransactions);
-
-        //        MySqlParameter prmNoOfCreditTransactions = new MySqlParameter("@NoOfCreditTransactions",MySqlDbType.Int32);
-        //        prmNoOfCreditTransactions.Value = Details.NoOfCreditTransactions;
-        //        cmd.Parameters.Add(prmNoOfCreditTransactions);
-
-        //        MySqlParameter prmNoOfCombinationPaymentTransactions = new MySqlParameter("@NoOfCombinationPaymentTransactions",MySqlDbType.Int32);
-        //        prmNoOfCombinationPaymentTransactions.Value = Details.NoOfCombinationPaymentTransactions;
-        //        cmd.Parameters.Add(prmNoOfCombinationPaymentTransactions);
-
-        //        MySqlParameter prmNoOfCreditPaymentTransactions = new MySqlParameter("@NoOfCreditPaymentTransactions",MySqlDbType.Int32);
-        //        prmNoOfCreditPaymentTransactions.Value = Details.NoOfCreditPaymentTransactions;
-        //        cmd.Parameters.Add(prmNoOfCreditPaymentTransactions);
-
-        //        MySqlParameter prmNoOfDebitPaymentTransactions = new MySqlParameter("@NoOfDebitPaymentTransactions",MySqlDbType.Int32);
-        //        prmNoOfDebitPaymentTransactions.Value = Details.NoOfDebitPaymentTransactions;
-        //        cmd.Parameters.Add(prmNoOfDebitPaymentTransactions);
-
-        //        MySqlParameter prmNoOfClosedTransactions = new MySqlParameter("@NoOfClosedTransactions",MySqlDbType.Int32);
-        //        prmNoOfClosedTransactions.Value = Details.NoOfClosedTransactions;
-        //        cmd.Parameters.Add(prmNoOfClosedTransactions);
-
-        //        MySqlParameter prmNoOfRefundTransactions = new MySqlParameter("@NoOfRefundTransactions",MySqlDbType.Int32);
-        //        prmNoOfRefundTransactions.Value = Details.NoOfRefundTransactions;
-        //        cmd.Parameters.Add(prmNoOfRefundTransactions);
-
-        //        MySqlParameter prmNoOfVoidTransactions = new MySqlParameter("@NoOfVoidTransactions",MySqlDbType.Int32);
-        //        prmNoOfVoidTransactions.Value = Details.NoOfVoidTransactions;
-        //        cmd.Parameters.Add(prmNoOfVoidTransactions);
-
-        //        MySqlParameter prmNoOfTotalTransactions = new MySqlParameter("@NoOfTotalTransactions",MySqlDbType.Int32);
-        //        prmNoOfTotalTransactions.Value = Details.NoOfTotalTransactions;
-        //        cmd.Parameters.Add(prmNoOfTotalTransactions);
-
-        //        MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-        //        prmTerminalNo.Value = Details.TerminalNo;
-        //        cmd.Parameters.Add(prmTerminalNo);
-
-        //        base.ExecuteNonQuery(cmd);
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
-
-		public void UpdateWithHold(WithHoldDetails Details)
+		public void UpdateWithHold(WithholdDetails Details)
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				
-				MySqlParameter prmTotalWithHold = new MySqlParameter("@TotalWithHold",MySqlDbType.Decimal);
-				prmTotalWithHold.Value = Details.Amount;
-				cmd.Parameters.Add(prmTotalWithHold);
+                cmd.Parameters.AddWithValue("TotalWithHold", Details.Amount);
 
 				if (Details.PaymentType == PaymentTypes.Cash)
 				{
@@ -1066,17 +792,9 @@ namespace AceSoft.RetailPlus.Data
 						        "CashInDrawer						= CashInDrawer + @CashInDrawer " +
 						    "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmCashWithHold = new MySqlParameter("@CashWithHold",MySqlDbType.Decimal);
-					prmCashWithHold.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashWithHold);
-
-					MySqlParameter prmCashInDrawer = new MySqlParameter("@CashInDrawer",MySqlDbType.Decimal);
-					prmCashInDrawer.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashInDrawer);
-
-					MySqlParameter prmCashSales = new MySqlParameter("@CashSales",MySqlDbType.Decimal);
-					prmCashSales.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashSales);
+                    cmd.Parameters.AddWithValue("CashWithHold", Details.Amount);
+                    cmd.Parameters.AddWithValue("CashInDrawer", Details.Amount);
+                    cmd.Parameters.AddWithValue("CashSales", Details.Amount);
 				}
 				else if (Details.PaymentType == PaymentTypes.Cheque)
 				{
@@ -1085,9 +803,7 @@ namespace AceSoft.RetailPlus.Data
 						        "ChequeWithHold						= ChequeWithHold + @ChequeWithHold " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmChequeWithHold = new MySqlParameter("@ChequeWithHold",MySqlDbType.Decimal);	
-					prmChequeWithHold.Value = Details.Amount;
-					cmd.Parameters.Add(prmChequeWithHold);
+                    cmd.Parameters.AddWithValue("ChequeWithHold", Details.Amount);
 				}
 				else if (Details.PaymentType == PaymentTypes.CreditCard)
 				{
@@ -1096,23 +812,15 @@ namespace AceSoft.RetailPlus.Data
 						        "CreditCardWithHold					= CreditCardWithHold + @CreditCardWithHold " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmCreditCardWithHold = new MySqlParameter("@CreditCardWithHold",MySqlDbType.Decimal);	
-					prmCreditCardWithHold.Value = Details.Amount;
-					cmd.Parameters.Add(prmCreditCardWithHold);
+					cmd.Parameters.AddWithValue("CreditCardWithHold", Details.Amount);
 				}
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
 
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -1123,14 +831,12 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "";
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				
-				MySqlParameter prmTotalDisburse = new MySqlParameter("@TotalDisburse",MySqlDbType.Decimal);
-				prmTotalDisburse.Value = Details.Amount;
-				cmd.Parameters.Add(prmTotalDisburse);
+                cmd.Parameters.AddWithValue("TotalDisburse", Details.Amount);
 
 				if (Details.PaymentType == PaymentTypes.Cash)
 				{
@@ -1140,17 +846,9 @@ namespace AceSoft.RetailPlus.Data
 						        "CashInDrawer						= CashInDrawer - @CashInDrawer " +
 						    "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmCashDisburse = new MySqlParameter("@CashDisburse",MySqlDbType.Decimal);
-					prmCashDisburse.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashDisburse);
-
-					MySqlParameter prmCashInDrawer = new MySqlParameter("@CashInDrawer",MySqlDbType.Decimal);
-					prmCashInDrawer.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashInDrawer);
-
-					MySqlParameter prmCashSales = new MySqlParameter("@CashSales",MySqlDbType.Decimal);
-					prmCashSales.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashSales);
+                    cmd.Parameters.AddWithValue("CashDisburse", Details.Amount);
+                    cmd.Parameters.AddWithValue("CashInDrawer", Details.Amount);
+                    cmd.Parameters.AddWithValue("CashSales", Details.Amount);
 				}
 				else if (Details.PaymentType == PaymentTypes.Cheque)
 				{
@@ -1159,9 +857,7 @@ namespace AceSoft.RetailPlus.Data
 						        "ChequeDisburse						= ChequeDisburse + @ChequeDisburse " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmChequeDisburse = new MySqlParameter("@ChequeDisburse",MySqlDbType.Decimal);	
-					prmChequeDisburse.Value = Details.Amount;
-					cmd.Parameters.Add(prmChequeDisburse);
+                    cmd.Parameters.AddWithValue("ChequeDisburse", Details.Amount);
 				}
 				else if (Details.PaymentType == PaymentTypes.CreditCard)
 				{
@@ -1170,23 +866,15 @@ namespace AceSoft.RetailPlus.Data
 						        "CreditCardDisburse					= CreditCardDisburse + @CreditCardDisburse " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmCreditCardDisburse = new MySqlParameter("@CreditCardDisburse",MySqlDbType.Decimal);	
-					prmCreditCardDisburse.Value = Details.Amount;
-					cmd.Parameters.Add(prmCreditCardDisburse);
+					cmd.Parameters.AddWithValue("CreditCardDisburse", Details.Amount);
 				}
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
 
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -1197,14 +885,12 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
 				
-				MySqlParameter prmTotalPaidOut = new MySqlParameter("@TotalPaidOut",MySqlDbType.Decimal);
-				prmTotalPaidOut.Value = Details.Amount;
-				cmd.Parameters.Add(prmTotalPaidOut);
+                cmd.Parameters.AddWithValue("TotalPaidOut", Details.Amount);
 
 				if (Details.PaymentType == PaymentTypes.Cash)
 				{
@@ -1214,28 +900,18 @@ namespace AceSoft.RetailPlus.Data
 						        "CashInDrawer						= CashInDrawer - @CashInDrawer " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmCashPaidOut = new MySqlParameter("@CashPaidOut",MySqlDbType.Decimal);
-					prmCashPaidOut.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashPaidOut);
-
-					MySqlParameter prmCashInDrawer = new MySqlParameter("@CashInDrawer",MySqlDbType.Decimal);
-					prmCashInDrawer.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashInDrawer);
-
-					MySqlParameter prmCashSales = new MySqlParameter("@CashSales",MySqlDbType.Decimal);
-					prmCashSales.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashSales);
+                    cmd.Parameters.AddWithValue("CashPaidOut", Details.Amount);
+                    cmd.Parameters.AddWithValue("CashInDrawer", Details.Amount);
+                    cmd.Parameters.AddWithValue("CashSales", Details.Amount);
 				}
 				else if (Details.PaymentType == PaymentTypes.Cheque)
 				{
 					SQL=	"UPDATE tblTerminalReport SET " +
-						"TotalPaidOut						= TotalPaidOut + @TotalPaidOut, " +
-						"ChequePaidOut						= ChequePaidOut + @ChequePaidOut " +
-                        "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
+						        "TotalPaidOut						= TotalPaidOut + @TotalPaidOut, " +
+						        "ChequePaidOut						= ChequePaidOut + @ChequePaidOut " +
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmChequePaidOut = new MySqlParameter("@ChequePaidOut",MySqlDbType.Decimal);	
-					prmChequePaidOut.Value = Details.Amount;
-					cmd.Parameters.Add(prmChequePaidOut);
+                    cmd.Parameters.AddWithValue("ChequePaidOut", Details.Amount);
 				}
 				else if (Details.PaymentType == PaymentTypes.CreditCard)
 				{
@@ -1244,23 +920,16 @@ namespace AceSoft.RetailPlus.Data
 						        "CreditCardPaidOut					= CreditCardPaidOut + @CreditCardPaidOut " +
 						    "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmCreditCardPaidOut = new MySqlParameter("@CreditCardPaidOut",MySqlDbType.Decimal);	
-					prmCreditCardPaidOut.Value = Details.Amount;
-					cmd.Parameters.Add(prmCreditCardPaidOut);
+					MySqlParameter prmCreditCardPaidOut = new MySqlParameter("@CreditCardPaidOut",MySqlDbType.Decimal);
+                    cmd.Parameters.AddWithValue("CreditCardPaidOut", Details.Amount);
 				}
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
 
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -1271,14 +940,12 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				
-				MySqlParameter prmTotalDeposit = new MySqlParameter("@TotalDeposit",MySqlDbType.Decimal);
-				prmTotalDeposit.Value = Details.Amount;
-				cmd.Parameters.Add(prmTotalDeposit);
+                cmd.Parameters.AddWithValue("TotalDeposit", Details.Amount);
 
 				if (Details.PaymentType == PaymentTypes.Cash)
 				{
@@ -1288,17 +955,9 @@ namespace AceSoft.RetailPlus.Data
 						        "CashInDrawer						= CashInDrawer + @CashInDrawer " +
 						    "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmCashDeposit = new MySqlParameter("@CashDeposit",MySqlDbType.Decimal);
-					prmCashDeposit.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashDeposit);
-
-					MySqlParameter prmCashInDrawer = new MySqlParameter("@CashInDrawer",MySqlDbType.Decimal);
-					prmCashInDrawer.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashInDrawer);
-
-					MySqlParameter prmCashSales = new MySqlParameter("@CashSales",MySqlDbType.Decimal);
-					prmCashSales.Value = Details.Amount;
-					cmd.Parameters.Add(prmCashSales);
+                    cmd.Parameters.AddWithValue("CashDeposit", Details.Amount);
+                    cmd.Parameters.AddWithValue("CashInDrawer", Details.Amount);
+                    cmd.Parameters.AddWithValue("CashSales", Details.Amount);
 				}
 				else if (Details.PaymentType == PaymentTypes.Cheque)
 				{
@@ -1307,9 +966,7 @@ namespace AceSoft.RetailPlus.Data
 						    "ChequeDeposit						= ChequeDeposit + @ChequeDeposit " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmChequeDeposit = new MySqlParameter("@ChequeDeposit",MySqlDbType.Decimal);	
-					prmChequeDeposit.Value = Details.Amount;
-					cmd.Parameters.Add(prmChequeDeposit);
+                    cmd.Parameters.AddWithValue("ChequeDeposit", Details.Amount);
 				}
 				else if (Details.PaymentType == PaymentTypes.CreditCard)
 				{
@@ -1318,9 +975,7 @@ namespace AceSoft.RetailPlus.Data
 						        "CreditCardDeposit					= CreditCardDeposit + @CreditCardDeposit " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-					MySqlParameter prmCreditCardDeposit = new MySqlParameter("@CreditCardDeposit",MySqlDbType.Decimal);	
-					prmCreditCardDeposit.Value = Details.Amount;
-					cmd.Parameters.Add(prmCreditCardDeposit);
+                    cmd.Parameters.AddWithValue("CreditCardDeposit", Details.Amount);
 				}
                 else if (Details.PaymentType == PaymentTypes.Debit)
                 {
@@ -1329,23 +984,15 @@ namespace AceSoft.RetailPlus.Data
                             "DebitDeposit					    = DebitDeposit + @DebitDeposit " +
                         "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
 
-                    MySqlParameter prmDebitDeposit = new MySqlParameter("@DebitDeposit",MySqlDbType.Decimal);
-                    prmDebitDeposit.Value = Details.Amount;
-                    cmd.Parameters.Add(prmDebitDeposit);
+                    cmd.Parameters.AddWithValue("DebitDeposit", Details.Amount);
                 }
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
 
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -1354,20 +1001,20 @@ namespace AceSoft.RetailPlus.Data
 
         // 06Feb2014 RLC Accreditation:
         // Update no of reprinted transaction
-        public void UpdateReprintedTransaction(int intBranchID, string strTerminalNo, string strTransactionNo)
+        public void UpdateReprintedTransaction(int BranchID, string TerminalNo, string TransactionNo)
         {
             try
             {
-                string SQL = "CALL procTerminalReportRePrintedUpdate(@intBranchID, @strTerminalNo, @strTransactionNo);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procTerminalReportRePrintedUpdate(@BranchID, @TerminalNo, @TransactionNo);";
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@TransactionNo", TransactionNo);
+
                 cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@intBranchID", intBranchID);
-                cmd.Parameters.AddWithValue("@strTerminalNo", strTerminalNo);
-                cmd.Parameters.AddWithValue("@strTransactionNo", strTransactionNo);
-
                 base.ExecuteNonQuery(cmd);
             }
             catch (Exception ex)
@@ -1380,67 +1027,65 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Insert and Update
 
-		public void Insert(int BranchID, Int16 TerminalID, string TerminalNo)
-		{
-			try
-			{
-                string SQL = "INSERT INTO tblTerminalReport (BranchID, TerminalID, TerminalNo, DateLastInitialized) " +
-                    "VALUES (@BranchID, @TerminalID, @TerminalNo, @DateLastInitialized);";
+        /// <summary>
+        ///  Sep 4: remove this redundant
+        /// </summary>
+        /// <param name="BranchID"></param>
+        /// <param name="TerminalID"></param>
+        /// <param name="TerminalNo"></param>
+        //public void Insert(int BranchID, Int16 TerminalID, string TerminalNo)
+        //{
+        //    try
+        //    {
+        //        string SQL = "INSERT INTO tblTerminalReport (BranchID, TerminalID, TerminalNo, DateLastInitialized) " +
+        //            "VALUES (@BranchID, @TerminalID, @TerminalNo, @DateLastInitialized);";
 				
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
+        //        MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
+        //        prmBranchID.Value = BranchID;
+        //        cmd.Parameters.Add(prmBranchID);
 
-				MySqlParameter prmTerminalID = new MySqlParameter("@TerminalNo",MySqlDbType.Int16);			
-				prmTerminalID.Value = TerminalID;
-				cmd.Parameters.Add(prmTerminalID);
+        //        MySqlParameter prmTerminalID = new MySqlParameter("@TerminalNo",MySqlDbType.Int16);			
+        //        prmTerminalID.Value = TerminalID;
+        //        cmd.Parameters.Add(prmTerminalID);
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+        //        MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
+        //        prmTerminalNo.Value = TerminalNo;
+        //        cmd.Parameters.Add(prmTerminalNo);
 
-				MySqlParameter prmDateLastInitialized = new MySqlParameter("@DateLastInitialized",MySqlDbType.DateTime);			
-				prmDateLastInitialized.Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDateLastInitialized);
+        //        MySqlParameter prmDateLastInitialized = new MySqlParameter("@DateLastInitialized",MySqlDbType.DateTime);			
+        //        prmDateLastInitialized.Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        //        cmd.Parameters.Add(prmDateLastInitialized);
 
-				base.ExecuteNonQuery(cmd);
+        //        base.ExecuteNonQuery(cmd);
 
-			}
-
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
 
 		public void UpdateTerminalNo(Int32 TerminalID, string TerminalNo)
 		{
 			try
 			{
-				string SQL="UPDATE tblTerminalReport SET "  +
-					    "TerminalNo		=	@TerminalNo " +
-					    "WHERE TerminalID	=	@TerminalID;";
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 				
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+				string SQL="UPDATE tblTerminalReport SET "  +
+					            "TerminalNo		=	@TerminalNo " +
+					       "WHERE TerminalID	=	@TerminalID;";
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@TerminalID", TerminalID);
 
-				MySqlParameter prmTerminalID = new MySqlParameter("@TerminalNo",MySqlDbType.Int32);			
-				prmTerminalID.Value = TerminalID;
-				cmd.Parameters.Add(prmTerminalID);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
-
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -1452,105 +1097,89 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Public Methods
 
-        public void InitializeZRead(int BranchID, string pvtTerminalNo, string pvtInitializedBy, bool pvtWithOutTF)
-		{
-			try 
-			{
-                string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy, @WithOutTF);";
+        //public void InitializeZRead(Int32 BranchID, string pvtTerminalNo, string pvtInitializedBy, bool pvtWithOutTF)
+        //{
+        //    try 
+        //    {
+        //        string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy, @WithOutTF);";
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = SQL;
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
+        //        MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
+        //        prmBranchID.Value = BranchID;
+        //        cmd.Parameters.Add(prmBranchID);
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = pvtTerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
+        //        MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
+        //        prmTerminalNo.Value = pvtTerminalNo;
+        //        cmd.Parameters.Add(prmTerminalNo);
 
-                MySqlParameter prmDateLastInitialized = new MySqlParameter("@DateLastInitialized",MySqlDbType.DateTime);
-                prmDateLastInitialized.Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmDateLastInitialized);
+        //        MySqlParameter prmDateLastInitialized = new MySqlParameter("@DateLastInitialized",MySqlDbType.DateTime);
+        //        prmDateLastInitialized.Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        //        cmd.Parameters.Add(prmDateLastInitialized);
 
-                MySqlParameter prmInitializedBy = new MySqlParameter("@InitializedBy",MySqlDbType.String);
-                prmInitializedBy.Value = pvtInitializedBy;
-                cmd.Parameters.Add(prmInitializedBy);
+        //        MySqlParameter prmInitializedBy = new MySqlParameter("@InitializedBy",MySqlDbType.String);
+        //        prmInitializedBy.Value = pvtInitializedBy;
+        //        cmd.Parameters.Add(prmInitializedBy);
 
-                cmd.Parameters.AddWithValue("@WithOutTF", pvtWithOutTF);
+        //        cmd.Parameters.AddWithValue("@WithOutTF", pvtWithOutTF);
 
-				base.ExecuteNonQuery(cmd);
+        //        base.ExecuteNonQuery(cmd);
 
-				UpdateZReadCount();
-			}
-
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-        public void InitializeZRead(int BranchID, string pvtTerminalNo, DateTime pvtDateLastInitialized, string pvtInitializedBy)
+        //        UpdateZReadCount(BranchID, pvtTerminalNo);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }	
+        //}
+        public void InitializeZRead(Int32 BranchID, string TerminalNo, string InitializedBy, DateTime DateLastInitialized, bool WithOutTF)
         {
             try
             {
-                string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy, @WithOutTF);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy, @WithOutTF);";
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@DateLastInitialized", DateLastInitialized == Constants.C_DATE_MIN_VALUE || DateLastInitialized == DateTime.MinValue ? DateTime.Now : DateLastInitialized);
+                cmd.Parameters.AddWithValue("@InitializedBy", InitializedBy);
+                cmd.Parameters.AddWithValue("@WithOutTF", WithOutTF);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = pvtTerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmDateLastInitialized = new MySqlParameter("@DateLastInitialized",MySqlDbType.DateTime);
-                prmDateLastInitialized.Value = pvtDateLastInitialized;
-                cmd.Parameters.Add(prmDateLastInitialized);
-
-                MySqlParameter prmInitializedBy = new MySqlParameter("@InitializedBy",MySqlDbType.String);
-                prmInitializedBy.Value = pvtInitializedBy;
-                cmd.Parameters.Add(prmInitializedBy);
-
-                cmd.Parameters.AddWithValue("@WithOutTF", true);
-
                 base.ExecuteNonQuery(cmd);
 
-                UpdateZReadCount();
+                UpdateZReadCount(BranchID, TerminalNo);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
             }
         }
 
-		public bool IsAllTerminalInitialize(DateTime CuttOfDateTime)
+		public bool IsAllTerminalInitialize(Int32 BranchID, DateTime CuttOfDateTime)
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL=	"SELECT " + 
-					"COUNT(TerminalNo) AS RecordCount " +
-					"FROM tblTerminalReport " +
-					"WHERE DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') < DATE_FORMAT(@CuttOfDateTime, '%Y-%m-%d %H:%i') ";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+					            "COUNT(TerminalNo) AS RecordCount " +
+					        "FROM tblTerminalReport " +
+                            "WHERE BranchID = @BranchID AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') < DATE_FORMAT(@CuttOfDateTime, '%Y-%m-%d %H:%i') ";
 
-				MySqlParameter prmCuttOfDateTime = new MySqlParameter("@CuttOfDateTime",MySqlDbType.DateTime);
-				prmCuttOfDateTime.Value = CuttOfDateTime.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmCuttOfDateTime);
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("CuttOfDateTime", CuttOfDateTime);
 
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 bool boRetValue = true;
-
 				foreach(System.Data.DataRow dr in dt.Rows)
 				{
 					if (Int64.Parse(dr["RecordCount"].ToString()) > 0)
@@ -1559,12 +1188,10 @@ namespace AceSoft.RetailPlus.Data
 
 				return boRetValue;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
-
 		}
 
 
@@ -1604,7 +1231,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public System.Data.DataTable HourlyReport(int BranchID, string TerminalNo = Constants.ALL)
+		public System.Data.DataTable HourlyReport(Int32 BranchID, string TerminalNo = Constants.ALL)
 		{
             MySqlCommand cmd = HourlyReportPrivate(DateTime.MinValue, DateTime.MinValue, BranchID, TerminalNo);
 			
@@ -1624,9 +1251,9 @@ namespace AceSoft.RetailPlus.Data
             return dt;
         }
 
-		public System.Data.DataTable GroupReport(int BranchID, string TerminalNo)
+		public System.Data.DataTable GroupReport(Int32 BranchID, string TerminalNo)
 		{
-            MySqlCommand cmd = GroupReportPrivate(TerminalNo, BranchID);
+            MySqlCommand cmd = GroupReportPrivate(BranchID, TerminalNo);
             string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
 
@@ -1648,11 +1275,12 @@ namespace AceSoft.RetailPlus.Data
 			return dt;
 		}
 
-        private MySqlCommand HourlyReportPrivate(DateTime? StartDateTimeOfTransaction = null, DateTime? UptoDateTimeOfTransaction = null, int BranchID = 0, string TerminalNo = Constants.ALL)
+        private MySqlCommand HourlyReportPrivate(DateTime? StartDateTimeOfTransaction = null, DateTime? UptoDateTimeOfTransaction = null, Int32 BranchID = 0, string TerminalNo = Constants.ALL)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL = "SELECT " +
                                     "DATE(TransactionDate) 'TransactionDate', " +
@@ -1665,30 +1293,22 @@ namespace AceSoft.RetailPlus.Data
                 if (TerminalNo != Constants.ALL)
                 {
                     SQL += "AND TerminalNo = @TerminalNo ";
-                    MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                    prmTerminalNo.Value = TerminalNo;
-                    cmd.Parameters.Add(prmTerminalNo);
+                    cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
                 }
                 if (BranchID != 0)
                 {
                     SQL += "AND BranchID = @BranchID ";
-                    MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                    prmBranchID.Value = BranchID;
-                    cmd.Parameters.Add(prmBranchID);
+                    cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 }
                 if (StartDateTimeOfTransaction.GetValueOrDefault(DateTime.MinValue) != DateTime.MinValue)
                 {
                     SQL += "AND TransactionDate >= @StartDateTimeOfTransaction ";
-                    MySqlParameter prmStartDateTimeOfTransaction = new MySqlParameter("@StartDateTimeOfTransaction",MySqlDbType.DateTime);
-                    prmStartDateTimeOfTransaction.Value = StartDateTimeOfTransaction.GetValueOrDefault().ToString("yyyy-MM-dd HH:mm:ss");
-                    cmd.Parameters.Add(prmStartDateTimeOfTransaction);
+                    cmd.Parameters.AddWithValue("@StartDateTimeOfTransaction", StartDateTimeOfTransaction.GetValueOrDefault());
                 }
                 if (UptoDateTimeOfTransaction.GetValueOrDefault(DateTime.MinValue) != DateTime.MinValue)
                 {
                     SQL += "AND TransactionDate <= @UptoDateTimeOfTransaction ";
-                    MySqlParameter prmUptoDateTimeOfTransaction = new MySqlParameter("@UptoDateTimeOfTransaction",MySqlDbType.DateTime);
-                    prmUptoDateTimeOfTransaction.Value = UptoDateTimeOfTransaction.GetValueOrDefault().ToString("yyyy-MM-dd HH:mm:ss");
-                    cmd.Parameters.Add(prmUptoDateTimeOfTransaction);
+                    cmd.Parameters.AddWithValue("@UptoDateTimeOfTransaction", UptoDateTimeOfTransaction.GetValueOrDefault());
                 }
                 SQL +=    "AND (TransactionStatus = @TransactionStatusClosed " +
                             "OR TransactionStatus = @TransactionStatusVoid " +
@@ -1698,29 +1318,14 @@ namespace AceSoft.RetailPlus.Data
                         "GROUP BY DATE(TransactionDate), HOUR(TransactionDate) " +
                         "ORDER BY TransactionDate";
 
-                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@TransactionStatusClosed", TransactionStatus.Closed.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusVoid", TransactionStatus.Void.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusReprinted", TransactionStatus.Reprinted.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusRefund", TransactionStatus.Refund.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusCreditPayment", TransactionStatus.CreditPayment.ToString("d"));
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmTransactionStatusClosed = new MySqlParameter("@TransactionStatusClosed",MySqlDbType.Int16);
-                prmTransactionStatusClosed.Value = (Int16)TransactionStatus.Closed;
-                cmd.Parameters.Add(prmTransactionStatusClosed);
-
-                MySqlParameter prmTransactionStatusVoid = new MySqlParameter("@TransactionStatusVoid",MySqlDbType.Int16);
-                prmTransactionStatusVoid.Value = (Int16)TransactionStatus.Void;
-                cmd.Parameters.Add(prmTransactionStatusVoid);
-
-                MySqlParameter prmTransactionStatusReprinted = new MySqlParameter("@TransactionStatusReprinted",MySqlDbType.Int16);
-                prmTransactionStatusReprinted.Value = (Int16)TransactionStatus.Reprinted;
-                cmd.Parameters.Add(prmTransactionStatusReprinted);
-
-                MySqlParameter prmTransactionStatusRefund = new MySqlParameter("@TransactionStatusRefund",MySqlDbType.Int16);
-                prmTransactionStatusRefund.Value = (Int16)TransactionStatus.Refund;
-                cmd.Parameters.Add(prmTransactionStatusRefund);
-
-                MySqlParameter prmTransactionStatusCreditPayment = new MySqlParameter("@TransactionStatusCreditPayment",MySqlDbType.Int16);
-                prmTransactionStatusCreditPayment.Value = (Int16)TransactionStatus.CreditPayment;
-                cmd.Parameters.Add(prmTransactionStatusCreditPayment);
-
                 return cmd;
             }
             catch (Exception ex)
@@ -1728,10 +1333,13 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-        private MySqlCommand GroupReportPrivate(string TerminalNo, int BranchID)
+        private MySqlCommand GroupReportPrivate(Int32 BranchID, string TerminalNo)
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "SELECT " +
                                     "a.ProductGroup, " +
                                     "TransactionItemStatus, " +
@@ -1751,46 +1359,19 @@ namespace AceSoft.RetailPlus.Data
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE TerminalNo = @TerminalNo AND BranchID = @BranchID) " +
                             "GROUP BY ProductGroup";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@VoidStatus", TransactionItemStatus.Void.ToString("d"));
+                cmd.Parameters.AddWithValue("@ReturnStatus", TransactionItemStatus.Return.ToString("d"));
+                
+                cmd.Parameters.AddWithValue("@TransactionStatusClosed", TransactionStatus.Closed.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusVoid", TransactionStatus.Void.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusReprinted", TransactionStatus.Reprinted.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusRefund", TransactionStatus.Refund.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusCreditPayment", TransactionStatus.CreditPayment.ToString("d"));
 				
-				MySqlParameter prmVoidStatus = new MySqlParameter("@VoidStatus",MySqlDbType.Int16);			
-				prmVoidStatus.Value = TransactionItemStatus.Void.ToString("d");
-				cmd.Parameters.Add(prmVoidStatus);
-
-				MySqlParameter prmReturnStatus = new MySqlParameter("@ReturnStatus",MySqlDbType.Int16);			
-				prmReturnStatus.Value = TransactionItemStatus.Return.ToString("d");
-				cmd.Parameters.Add(prmReturnStatus);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTransactionStatusClosed = new MySqlParameter("@TransactionStatusClosed",MySqlDbType.Int16);			
-				prmTransactionStatusClosed.Value = (Int16) TransactionStatus.Closed;
-				cmd.Parameters.Add(prmTransactionStatusClosed);
-
-				MySqlParameter prmTransactionStatusVoid = new MySqlParameter("@TransactionStatusVoid",MySqlDbType.Int16);			
-				prmTransactionStatusVoid.Value = (Int16) TransactionStatus.Void;
-				cmd.Parameters.Add(prmTransactionStatusVoid);
-
-				MySqlParameter prmTransactionStatusReprinted = new MySqlParameter("@TransactionStatusReprinted",MySqlDbType.Int16);			
-				prmTransactionStatusReprinted.Value = (Int16) TransactionStatus.Reprinted;
-				cmd.Parameters.Add(prmTransactionStatusReprinted);
-
-				MySqlParameter prmTransactionStatusRefund = new MySqlParameter("@TransactionStatusRefund",MySqlDbType.Int16);			
-				prmTransactionStatusRefund.Value = (Int16) TransactionStatus.Refund;
-				cmd.Parameters.Add(prmTransactionStatusRefund);
-
-				MySqlParameter prmTransactionStatusCreditPayment = new MySqlParameter("@TransactionStatusCreditPayment",MySqlDbType.Int16);			
-				prmTransactionStatusCreditPayment.Value = (Int16) TransactionStatus.CreditPayment;
-				cmd.Parameters.Add(prmTransactionStatusCreditPayment);
-
+                cmd.CommandText = SQL;
 				return cmd;			
 			}
 			catch (Exception ex)
@@ -1799,165 +1380,56 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public SalesTransactionDetails[] EJournalReport(int BranchID, string CashierName, string TerminalNo)
+		public SalesTransactionDetails[] EJournalReport(Int32 BranchID, string CashierName, string TerminalNo)
 		{
 			try
 			{
-                string SQL = "SELECT " +
-                                    "TransactionID, " +
-                                    "TransactionNo, " +
-                                    "CustomerID, " +
-                                    "CustomerName, " +
-                                    "CashierID, " +
-                                    "CashierName, " +
-                                    "TerminalNo, " +
-                                    "TransactionDate, " +
-                                    "DateSuspended, " +
-                                    "DateResumed, " +
-                                    "TransactionStatus, " +
-                                    "SubTotal, " +
-                                    "ItemsDiscount, " +
-                                    "Discount, " +
-                                    "TransDiscount, " +
-                                    "TransDiscountType, " +
-                                    "VAT, " +
-                                    "VatableAmount, " +
-                                    "EVAT, " +
-                                    "EVatableAmount, " +
-                                    "LocalTax, " +
-                                    "AmountPaid, " +
-                                    "CashPayment, " +
-                                    "ChequePayment, " +
-                                    "CreditCardPayment, " +
-                                    "CreditPayment, " +
-                                    "DebitPayment, " +
-                                    "RewardPointsPayment, " +
-                                    "RewardConvertedPayment, " +
-                                    "BalanceAmount, " +
-                                    "ChangeAmount, " +
-                                    "DateClosed, " +
-                                    "PaymentType, " +
-                                    "DiscountCode, " +
-                                    "DiscountRemarks, " +
-                                    "WaiterID, " +
-                                    "WaiterName, " +
-                                    "Charge, ChargeAmount, ChargeCode, ChargeRemarks " +
-                                "FROM  tblTransactions " +
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT TransactionNo FROM  tblTransactions " +
                                 "WHERE TerminalNo = @TerminalNo " +
                                     "AND BranchID = @BranchID " +
                                     "AND CashierName = @CashierName " +
                                     "AND (TransactionStatus = @TransactionStatusClosed " +
-                                    "OR TransactionStatus = @TransactionStatusVoid " +
-                                    "OR TransactionStatus = @TransactionStatusReprinted " +
-                                    "OR TransactionStatus = @TransactionStatusRefund " +
-                                    "OR TransactionStatus = @TransactionStatusCreditPayment) " +
+                                    "  OR TransactionStatus = @TransactionStatusVoid " +
+                                    "  OR TransactionStatus = @TransactionStatusReprinted " +
+                                    "  OR TransactionStatus = @TransactionStatusRefund " +
+                                    "  OR TransactionStatus = @TransactionStatusCreditPayment) " +
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE TerminalNo = @TerminalNo AND BranchID = @BranchID)";
 				
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@CashierName", CashierName);
+                cmd.Parameters.AddWithValue("@TransactionStatusClosed", TransactionStatus.Closed.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusVoid", TransactionStatus.Void.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusReprinted", TransactionStatus.Reprinted.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusRefund", TransactionStatus.Refund.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusCreditPayment", TransactionStatus.CreditPayment.ToString("d"));
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmCashierName = new MySqlParameter("@CashierName",MySqlDbType.String);			
-				prmCashierName.Value = CashierName;
-				cmd.Parameters.Add(prmCashierName);
-
-				MySqlParameter prmTransactionStatusClosed = new MySqlParameter("@TransactionStatusClosed",MySqlDbType.Int16);			
-				prmTransactionStatusClosed.Value = (Int16) TransactionStatus.Closed;
-				cmd.Parameters.Add(prmTransactionStatusClosed);
-
-				MySqlParameter prmTransactionStatusVoid = new MySqlParameter("@TransactionStatusVoid",MySqlDbType.Int16);			
-				prmTransactionStatusVoid.Value = (Int16) TransactionStatus.Void;
-				cmd.Parameters.Add(prmTransactionStatusVoid);
-
-				MySqlParameter prmTransactionStatusReprinted = new MySqlParameter("@TransactionStatusReprinted",MySqlDbType.Int16);			
-				prmTransactionStatusReprinted.Value = (Int16) TransactionStatus.Reprinted;
-				cmd.Parameters.Add(prmTransactionStatusReprinted);
-
-				MySqlParameter prmTransactionStatusRefund = new MySqlParameter("@TransactionStatusRefund",MySqlDbType.Int16);			
-				prmTransactionStatusRefund.Value = (Int16) TransactionStatus.Refund;
-				cmd.Parameters.Add(prmTransactionStatusRefund);
-
-				MySqlParameter prmTransactionStatusCreditPayment = new MySqlParameter("@TransactionStatusCreditPayment",MySqlDbType.Int16);			
-				prmTransactionStatusCreditPayment.Value = (Int16) TransactionStatus.CreditPayment;
-				cmd.Parameters.Add(prmTransactionStatusCreditPayment);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
 				ArrayList items = new ArrayList();
-                
-				while (myReader.Read())
+
+                SalesTransactionDetails Details = new SalesTransactionDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
-                    Data.SalesTransactionDetails Details = new Data.SalesTransactionDetails();
-
-					Details.TransactionID = myReader.GetInt64("TransactionID");
-					Details.TransactionNo = "" + myReader["TransactionNo"].ToString();
-					Details.CustomerID = myReader.GetInt64("CustomerID");
-					Details.CustomerName = "" + myReader["CustomerName"].ToString();
-					Details.CashierID = myReader.GetInt64("CashierID");
-					Details.CashierName = "" + myReader["CashierName"].ToString();
-					Details.TerminalNo = "" + myReader["TerminalNo"].ToString();
-					Details.TransactionDate = myReader.GetDateTime("TransactionDate");
-					Details.DateSuspended = myReader.GetDateTime("DateSuspended");
-					Details.DateResumed = myReader.GetDateTime("DateResumed");
-					Details.TransactionStatus = (TransactionStatus) Enum.Parse(typeof(TransactionStatus), myReader.GetString("TransactionStatus"));
-					Details.SubTotal = myReader.GetDecimal("SubTotal");
-					Details.ItemsDiscount = myReader.GetDecimal("ItemsDiscount");
-					Details.Discount = myReader.GetDecimal("Discount");
-					Details.TransDiscount = myReader.GetDecimal("TransDiscount");
-					Details.TransDiscountType = (DiscountTypes) Enum.Parse(typeof(DiscountTypes), myReader.GetString("TransDiscountType"));
-					Details.VAT = myReader.GetDecimal("VAT");
-					Details.VatableAmount = myReader.GetDecimal("VatableAmount");
-					Details.EVAT = myReader.GetDecimal("EVAT");
-					Details.EVatableAmount = myReader.GetDecimal("EVatableAmount");
-					Details.LocalTax = myReader.GetDecimal("LocalTax");
-					Details.AmountPaid = myReader.GetDecimal("AmountPaid");
-					Details.CashPayment = myReader.GetDecimal("CashPayment");
-					Details.ChequePayment = myReader.GetDecimal("ChequePayment");
-					Details.CreditCardPayment = myReader.GetDecimal("CreditCardPayment");
-					Details.CreditPayment = myReader.GetDecimal("CreditPayment");
-					Details.DebitPayment = myReader.GetDecimal("DebitPayment");
-                    Details.RewardPointsPayment = myReader.GetDecimal("RewardPointsPayment");
-                    Details.RewardConvertedPayment = myReader.GetDecimal("RewardConvertedPayment");
-					Details.BalanceAmount = myReader.GetDecimal("BalanceAmount");
-					Details.ChangeAmount = myReader.GetDecimal("ChangeAmount");
-					Details.DateClosed = myReader.GetDateTime("DateClosed");
-                    Details.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), myReader.GetString("PaymentType"));
-					Details.WaiterID = myReader.GetInt64("WaiterID");
-					Details.WaiterName = "" + myReader["WaiterName"].ToString();
-					Details.Charge = myReader.GetDecimal("Charge");
-					Details.ChargeAmount = myReader.GetDecimal("ChargeAmount");
-					Details.ChargeCode = "" + myReader["ChargeCode"].ToString();
-					Details.ChargeRemarks = "" + myReader["ChargeRemarks"].ToString();
-					Details.isExist = true;
-
+                    Details = new Data.SalesTransactions(base.Connection, base.Transaction).Details(dr["TransactionNo"].ToString(), TerminalNo, BranchID);
+                    Details.TransactionItems = new SalesTransactionItems(base.Connection, base.Transaction).Details(Details.TransactionID, Details.TransactionDate);
 					items.Add(Details);
 				}
 
-				myReader.Close();
-
-				SalesTransactionDetails[] Transactions = new SalesTransactionDetails[0];
+                SalesTransactionDetails[] arrclsSalesTransactionDetails = new SalesTransactionDetails[0];
 
 				if (items != null)
 				{
-					Transactions = new SalesTransactionDetails[items.Count];
-					items.CopyTo(Transactions);
-
-                    for (int iCtr = 0; iCtr < Transactions.Length;iCtr++)
-                    {
-                        SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems(base.Connection, base.Transaction);
-                        Transactions[iCtr].TransactionItems = clsSalesTransactionItems.Details(Transactions[iCtr].TransactionID, Transactions[iCtr].TransactionDate);
-                    }
+                    arrclsSalesTransactionDetails = new SalesTransactionDetails[items.Count];
+                    items.CopyTo(arrclsSalesTransactionDetails);
 				}
 
-				return Transactions;		
+                return arrclsSalesTransactionDetails;		
 			}
 			catch (Exception ex)
 			{

@@ -170,16 +170,16 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
-                cmd.Parameters.Add("@ProductGroupID", Details.ProductGroupID);
-                cmd.Parameters.Add("@ProductSubGroupCode", Details.ProductSubGroupCode);
-                cmd.Parameters.Add("@ProductSubGroupName", Details.ProductSubGroupName);
-                cmd.Parameters.Add("@BaseUnitID", Details.BaseUnitID);
-                cmd.Parameters.Add("@Price", Details.Price);
-                cmd.Parameters.Add("@PurchasePrice", Details.PurchasePrice);
-                cmd.Parameters.Add("@IncludeInSubtotalDiscount", Details.IncludeInSubtotalDiscount);
-                cmd.Parameters.Add("@VAT", Details.VAT);
-                cmd.Parameters.Add("@EVAT", Details.EVAT);
-                cmd.Parameters.Add("@LocalTax", Details.LocalTax);
+                cmd.Parameters.AddWithValue("ProductGroupID", Details.ProductGroupID);
+                cmd.Parameters.AddWithValue("ProductSubGroupCode", Details.ProductSubGroupCode);
+                cmd.Parameters.AddWithValue("ProductSubGroupName", Details.ProductSubGroupName);
+                cmd.Parameters.AddWithValue("BaseUnitID", Details.BaseUnitID);
+                cmd.Parameters.AddWithValue("Price", Details.Price);
+                cmd.Parameters.AddWithValue("PurchasePrice", Details.PurchasePrice);
+                cmd.Parameters.AddWithValue("IncludeInSubtotalDiscount", Details.IncludeInSubtotalDiscount);
+                cmd.Parameters.AddWithValue("VAT", Details.VAT);
+                cmd.Parameters.AddWithValue("EVAT", Details.EVAT);
+                cmd.Parameters.AddWithValue("LocalTax", Details.LocalTax);
                 
 				base.ExecuteNonQuery(cmd);
 

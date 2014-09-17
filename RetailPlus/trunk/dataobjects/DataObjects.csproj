@@ -147,10 +147,15 @@
     <Compile Include="CashierReport.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CashierReportHistories.cs" />
+    <Compile Include="Payments\CashPayments.cs" />
+    <Compile Include="Payments\ChequePayments.cs" />
     <Compile Include="MasterFiles\CalDate.cs" />
     <Compile Include="Config\SysAccessTypes.cs" />
     <Compile Include="Config\SysTerminalKey.cs" />
     <Compile Include="Config\SysCreditConfig.cs" />
+    <Compile Include="Payments\CreditPayments.cs" />
+    <Compile Include="Payments\CreditCardPayments.cs" />
     <Compile Include="Products\RewardItems.cs" />
     <Compile Include="Products\Characteristics.cs">
       <SubType>Code</SubType>
@@ -229,10 +234,7 @@
     <Compile Include="PaidOut.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Payments.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PesoDenominations.cs">
+    <Compile Include="Payments\Payments.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PLUReport.cs">

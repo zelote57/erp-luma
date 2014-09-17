@@ -57,26 +57,8 @@ namespace AceSoft.RetailPlus.Data
 			{
                 Save(Details);
 
-                string SQL = "SELECT LAST_INSERT_ID();";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int32 iID = 0;
-
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt32(0);
-				}
-
-				myReader.Close();
-
-				return iID;
+                return Int32.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -160,57 +142,44 @@ namespace AceSoft.RetailPlus.Data
 
 		#endregion
 
+        private string SQLSelect()
+        {
+            string stSQL = "SELECT DenominationID, DenominationCode, DenominationValue, ImagePath, 0 AS DenominationCount, 0.00 AS DenominationAmount, CreatedOn, LastModified " +
+                            "FROM tblDenomination ";
+
+            return stSQL;
+        }
+
 		#region Details
 
 		public DenominationDetails Details(Int32 DenominationID)
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"DenominationID, " +
-								"DenominationCode, " +
-								"ImagePath " +
-							"FROM tblDenomination " +
-							"WHERE DenominationID = @DenominationID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				MySqlParameter prmDenominationID = new MySqlParameter("@DenominationID",MySqlDbType.Int16);
-				prmDenominationID.Value = DenominationID;
-				cmd.Parameters.Add(prmDenominationID);
+                string SQL = SQLSelect() + "WHERE DenominationID = @DenominationID ";
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
+                cmd.Parameters.AddWithValue("@DenominationID", DenominationID);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
 				DenominationDetails Details = new DenominationDetails();
-
-				while (myReader.Read()) 
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
-					Details.DenominationID = myReader.GetInt32("DenominationID");
-					Details.DenominationCode = "" + myReader["DenominationCode"].ToString();
-					Details.ImagePath = "" + myReader["ImagePath"].ToString();
+					Details.DenominationID = Int32.Parse(dr["DenominationID"].ToString());
+					Details.DenominationCode = dr["DenominationCode"].ToString();
+                    Details.DenominationValue = decimal.Parse(dr["DenominationCode"].ToString());
+					Details.ImagePath = dr["ImagePath"].ToString();
 				}
-
-				myReader.Close();
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -220,183 +189,34 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = "SELECT DenominationID, " +
-					"DenominationCode," +
-					"DenominationValue, " +
-					"ImagePath " +
-					"FROM tblDenomination ORDER BY " + SortField;
+        public System.Data.DataTable ListAsDataTable(DenominationDetails clsSearchKey, string SortField = "DenominationID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        {
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+            string SQL = SQLSelect() + "WHERE 1= 1 ";
 
-				
+            if (clsSearchKey.DenominationID !=0 )
+            {
+                SQL += "AND DenominationID = @DenominationID ";
+                cmd.Parameters.AddWithValue("@DenominationID", clsSearchKey.DenominationID);
+            }
+            if (!string.IsNullOrEmpty(clsSearchKey.DenominationCode))
+            {
+                SQL += "AND DenominationCode = @DenominationCode ";
+                cmd.Parameters.AddWithValue("@DenominationCode", clsSearchKey.DenominationCode);
+            }
 
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-					
+            SQL += "ORDER BY " + SortField + " ";
+            SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+            SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-				
-				
-				
+            cmd.CommandText = SQL;
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public System.Data.DataTable ListForCashCount(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				MySqlDataReader myReader = List(SortField,SortOption.Ascending);
-
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1];
-                System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-
-				dt.Columns.Add("DenominationID");
-				dt.Columns.Add("DenominationCode");
-				dt.Columns.Add("DenominationValue");
-				dt.Columns.Add("ImagePath");
-				dt.Columns.Add("DenominationCount");
-				dt.Columns.Add("DenominationAmount");
-				
-				while (myReader.Read())
-				{
-					System.Data.DataRow dr = dt.NewRow();
-
-					dr["DenominationID"] = myReader.GetInt32("DenominationID");
-					dr["DenominationCode"] = "" + myReader["DenominationCode"].ToString();
-					dr["DenominationValue"] = myReader.GetDecimal("DenominationValue").ToString("#,##0.#0");
-					dr["ImagePath"] = "" + myReader["ImagePath"].ToString();
-					dr["DenominationCount"] = 0;
-					dr["DenominationAmount"] = 0.00;
-					
-					dt.Rows.Add(dr);
-				}
-			
-				myReader.Close();
-
-				return dt;
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public System.Data.DataTable DataList(string SortField, SortOption SortOrder)
-		{
-			MySqlDataReader myReader = List(SortField,SortOption.Ascending);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblDenomination");
-
-			dt.Columns.Add("DenominationID");
-			dt.Columns.Add("DenominationCode");
-			dt.Columns.Add("DenominationValue");
-			dt.Columns.Add("ImagePath");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-
-				dr["DenominationID"] = myReader.GetInt32("DenominationID");
-				dr["DenominationCode"] = "" + myReader["DenominationCode"].ToString();
-				dr["DenominationValue"] = myReader.GetDecimal("DenominationValue");
-				dr["ImagePath"] = "" + myReader["ImagePath"].ToString();
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
-
-			return dt;
-		}
-
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL ="SELECT DenominationID, " +
-								"DenominationCode, " +
-								"ImagePath " +
-							"FROM tblDenomination " +
-							"WHERE ImagePath LIKE '%" + SearchKey + "%' " +
-							"ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public System.Data.DataTable DataSearch(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			MySqlDataReader myReader = Search(SearchKey,SortField,SortOption.Ascending);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblDenomination");
-
-			dt.Columns.Add("DenominationID");
-			dt.Columns.Add("DenominationCode");
-			dt.Columns.Add("ImagePath");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-
-				dr["DenominationID"] = myReader.GetInt32("DenominationID");
-				dr["DenominationCode"] = "" + myReader["DenominationCode"].ToString();
-				dr["ImagePath"] = "" + myReader["ImagePath"].ToString();
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
-
-			return dt;
-		}
-
+            return dt;
+        }
 		
 		#endregion
 	}

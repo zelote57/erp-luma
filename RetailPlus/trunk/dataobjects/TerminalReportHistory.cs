@@ -113,336 +113,154 @@ namespace AceSoft.RetailPlus.Data
 
         #endregion
 
-        private string SQLSelect()
-        {
-            string SQL = "SELECT BranchID, TerminalNo, " +
-                                "BeginningTransactionNo, " +
-                                "EndingTransactionNo, " +
-                                "ZReadCount, " +
-                                "XReadCount, " +
-                                "GrossSales, " +
-                                "TotalDiscount, " +
-                                "TotalCharge, " +
-                                "DailySales, " +
-                                "QuantitySold, " +
-                                "GroupSales, " +
-                                "OldGrandTotal, " +
-                                "NewGrandTotal, " +
-                                "VATableAmount, " +
-                                "NonVaTableAmount, " +
-                                "VAT, " +
-                                "EVATableAmount, " +
-                                "NonEVaTableAmount, " +
-                                "EVAT, " +
-                                "LocalTax, " +
-                                "CashSales, " +
-                                "ChequeSales, " +
-                                "CreditCardSales, " +
-                                "CreditSales, " +
-                                "CreditPayment, " +
-                                "DebitPayment, " +
-                                "RewardPointsPayment, " +
-                                "RewardConvertedPayment, " +
-                                "CashInDrawer, " +
-                                "TotalDisburse, " +
-                                "CashDisburse, " +
-                                "ChequeDisburse, " +
-                                "CreditCardDisburse, " +
-                                "TotalWithhold, " +
-                                "CashWithhold, " +
-                                "ChequeWithhold, " +
-                                "CreditCardWithhold, " +
-                                "TotalPaidOut, " +
-                                "TotalDeposit, " +
-                                "CashDeposit, " +
-                                "ChequeDeposit, " +
-                                "CreditCardDeposit, " +
-                                "BeginningBalance, " +
-                                "VoidSales, " +
-                                "RefundSales, " +
-                                "ItemsDiscount, " +
-                                "SubTotalDiscount, " +
-                                "NoOfCashTransactions, " +
-                                "NoOfChequeTransactions, " +
-                                "NoOfCreditCardTransactions, " +
-                                "NoOfCreditTransactions, " +
-                                "NoOfCombinationPaymentTransactions, " +
-                                "NoOfCreditPaymentTransactions, " +
-                                "NoOfDebitPaymentTransactions, " +
-                                "NoOfClosedTransactions, " +
-                                "NoOfRefundTransactions, " +
-                                "NoOfVoidTransactions, " +
-                                "NoOfRewardPointsPayment, " +
-                                "NoOfTotalTransactions, " +
-                                "DateLastInitialized, " +
-                                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
-                                "TrustFund, " +
-                                "NoOfDiscountedTransactions, " +
-                                "NegativeAdjustments, " +
-                                "NoOfNegativeAdjustmentTransactions, " +
-                                "PromotionalItems, " +
-                                "CreditSalesTax, " +
-                                "BatchCounter, " +
-                                "DebitDeposit, " +
-                                "NoOfReprintedTransaction, " +
-                                "TotalReprintedTransaction, " +
-                                "InitializedBy " +
-                            "FROM tblTerminalReportHistory ";
-            return SQL;
-        }
+        // Sep 14, 2014 for deletion
+        //private string SQLSelect()
+        //{
+        //    string SQL = "SELECT BranchID, TerminalNo, " +
+        //                        "BeginningTransactionNo, " +
+        //                        "EndingTransactionNo, " +
+        //                        "BeginningORNo, " +
+        //                        "EndingORNo, " +
+        //                        "ZReadCount, " +
+        //                        "XReadCount, " +
+        //                        "NetSales, " +
+        //                        "GrossSales, " +
+        //                        "TotalDiscount, " +
+        //                        "SNRDiscount, " +
+        //                        "PWDDiscount, " +
+        //                        "OtherDiscount, " +
+        //                        "TotalCharge, " +
+        //                        "DailySales, " +
+        //                        "QuantitySold, " +
+        //                        "GroupSales, " +
+        //                        "OldGrandTotal, " +
+        //                        "NewGrandTotal, " +
+        //                        "VATExempt, " +
+        //                        "NonVATableAmount, " +
+        //                        "VATableAmount, " +
+        //                        "VAT, " +
+        //                        "EVATableAmount, " +
+        //                        "NonEVATableAmount, " +
+        //                        "EVAT, " +
+        //                        "LocalTax, " +
+        //                        "CashSales, " +
+        //                        "ChequeSales, " +
+        //                        "CreditCardSales, " +
+        //                        "CreditSales, " +
+        //                        "CreditPayment, " +
+        //                        "CreditPaymentCash, " +
+        //                        "CreditPaymentCheque, " +
+        //                        "CreditPaymentCreditCard, " +
+        //                        "CreditPaymentDebit, " +
+        //                        "DebitPayment, " +
+        //                        "RewardPointsPayment, " +
+        //                        "RewardConvertedPayment, " +
+        //                        "CashInDrawer, " +
+        //                        "TotalDisburse, " +
+        //                        "CashDisburse, " +
+        //                        "ChequeDisburse, " +
+        //                        "CreditCardDisburse, " +
+        //                        "TotalWithhold, " +
+        //                        "CashWithhold, " +
+        //                        "ChequeWithhold, " +
+        //                        "CreditCardWithhold, " +
+        //                        "TotalPaidOut, " +
+        //                        "TotalDeposit, " +
+        //                        "CashDeposit, " +
+        //                        "ChequeDeposit, " +
+        //                        "CreditCardDeposit, " +
+        //                        "BeginningBalance, " +
+        //                        "VoidSales, " +
+        //                        "RefundSales, " +
+        //                        "ItemsDiscount, " +
+        //                        "SubTotalDiscount, " +
+        //                        "NoOfCashTransactions, " +
+        //                        "NoOfChequeTransactions, " +
+        //                        "NoOfCreditCardTransactions, " +
+        //                        "NoOfCreditTransactions, " +
+        //                        "NoOfCombinationPaymentTransactions, " +
+        //                        "NoOfCreditPaymentTransactions, " +
+        //                        "NoOfDebitPaymentTransactions, " +
+        //                        "NoOfClosedTransactions, " +
+        //                        "NoOfRefundTransactions, " +
+        //                        "NoOfVoidTransactions, " +
+        //                        "NoOfRewardPointsPayment, " +
+        //                        "NoOfTotalTransactions, " +
+        //                        "DateLastInitialized, " +
+        //                        "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE tblTerminal.BranchID = tblTerminalReportHistory.BranchID AND tblTerminal.TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
+        //                        "TrustFund, " +
+        //                        "NoOfDiscountedTransactions, " +
+        //                        "NegativeAdjustments, " +
+        //                        "NoOfNegativeAdjustmentTransactions, " +
+        //                        "PromotionalItems, " +
+        //                        "CreditSalesTax, " +
+        //                        "BatchCounter, " +
+        //                        "DebitDeposit, " +
+        //                        "NoOfReprintedTransaction, " +
+        //                        "TotalReprintedTransaction, " +
+        //                        "InitializedBy " +
+        //                    "FROM tblTerminalReportHistory ";
+        //    return SQL;
+        //}
 
 		#region Details
 
-        private TerminalReportDetails SetDetails(MySqlDataReader myReader)
-        {
-            TerminalReportDetails Details = new TerminalReportDetails();
-
-            while (myReader.Read())
-            {
-                Details.TerminalNo = "" + myReader["TerminalNo"].ToString();
-                Details.BeginningTransactionNo = "" + myReader["BeginningTransactionNo"].ToString();
-                Details.EndingTransactionNo = "" + myReader["EndingTransactionNo"].ToString();
-                Details.ZReadCount = myReader.GetInt32("ZReadCount");
-                Details.XReadCount = myReader.GetInt32("XReadCount");
-                Details.GrossSales = myReader.GetDecimal("GrossSales");
-                Details.TotalDiscount = myReader.GetDecimal("TotalDiscount");
-                Details.TotalCharge = myReader.GetDecimal("TotalCharge");
-                Details.DailySales = myReader.GetDecimal("DailySales");
-                Details.QuantitySold = myReader.GetDecimal("QuantitySold");
-                Details.GroupSales = myReader.GetDecimal("GroupSales");
-                Details.OldGrandTotal = myReader.GetDecimal("OldGrandTotal");
-                Details.NewGrandTotal = myReader.GetDecimal("NewGrandTotal");
-                Details.VATableAmount = myReader.GetDecimal("VATableAmount");
-                Details.NonVaTableAmount = myReader.GetDecimal("NonVaTableAmount");
-                Details.VAT = myReader.GetDecimal("VAT");
-                Details.EVATableAmount = myReader.GetDecimal("EVATableAmount");
-                Details.NonEVaTableAmount = myReader.GetDecimal("NonEVaTableAmount");
-                Details.EVAT = myReader.GetDecimal("EVAT");
-                Details.LocalTax = myReader.GetDecimal("LocalTax");
-                Details.CashSales = myReader.GetDecimal("CashSales");
-                Details.ChequeSales = myReader.GetDecimal("ChequeSales");
-                Details.CreditCardSales = myReader.GetDecimal("CreditCardSales");
-                Details.CreditSales = myReader.GetDecimal("CreditSales");
-                Details.CreditPayment = myReader.GetDecimal("CreditPayment");
-                Details.DebitPayment = myReader.GetDecimal("DebitPayment");
-                Details.RewardPointsPayment = myReader.GetDecimal("RewardPointsPayment");
-                Details.RewardConvertedPayment = myReader.GetDecimal("RewardConvertedPayment");
-                Details.CashInDrawer = myReader.GetDecimal("CashInDrawer");
-                Details.TotalDisburse = myReader.GetDecimal("TotalDisburse");
-                Details.CashDisburse = myReader.GetDecimal("CashDisburse");
-                Details.ChequeDisburse = myReader.GetDecimal("ChequeDisburse");
-                Details.CreditCardDisburse = myReader.GetDecimal("CreditCardDisburse");
-                Details.TotalWithHold = myReader.GetDecimal("TotalWithhold");
-                Details.CashWithHold = myReader.GetDecimal("CashWithhold");
-                Details.ChequeWithHold = myReader.GetDecimal("ChequeWithhold");
-                Details.CreditCardWithHold = myReader.GetDecimal("CreditCardWithhold");
-                Details.TotalPaidOut = myReader.GetDecimal("TotalPaidOut");
-                Details.TotalDeposit = myReader.GetDecimal("TotalDeposit");
-                Details.CashDeposit = myReader.GetDecimal("CashDeposit");
-                Details.ChequeDeposit = myReader.GetDecimal("ChequeDeposit");
-                Details.CreditCardDeposit = myReader.GetDecimal("CreditCardDeposit");
-                Details.BeginningBalance = myReader.GetDecimal("BeginningBalance");
-                Details.VoidSales = myReader.GetDecimal("VoidSales");
-                Details.RefundSales = myReader.GetDecimal("RefundSales");
-                Details.ItemsDiscount = myReader.GetDecimal("ItemsDiscount");
-                Details.SubTotalDiscount = myReader.GetDecimal("SubTotalDiscount");
-                Details.NoOfCashTransactions = myReader.GetInt32("NoOfCashTransactions");
-                Details.NoOfChequeTransactions = myReader.GetInt32("NoOfChequeTransactions");
-                Details.NoOfCreditCardTransactions = myReader.GetInt32("NoOfCreditCardTransactions");
-                Details.NoOfCreditTransactions = myReader.GetInt32("NoOfCreditTransactions");
-                Details.NoOfCombinationPaymentTransactions = myReader.GetInt32("NoOfCombinationPaymentTransactions");
-                Details.NoOfCreditPaymentTransactions = myReader.GetInt32("NoOfCreditPaymentTransactions");
-                Details.NoOfDebitPaymentTransactions = myReader.GetInt32("NoOfDebitPaymentTransactions");
-                Details.NoOfClosedTransactions = myReader.GetInt32("NoOfTotalTransactions");
-                Details.NoOfRefundTransactions = myReader.GetInt32("NoOfRefundTransactions");
-                Details.NoOfVoidTransactions = myReader.GetInt32("NoOfVoidTransactions");
-                Details.NoOfRewardPointsPayment = myReader.GetInt32("NoOfRewardPointsPayment");
-                Details.NoOfTotalTransactions = myReader.GetInt32("NoOfTotalTransactions");
-                Details.DateLastInitialized = myReader.GetDateTime("DateLastInitialized");
-                Details.DateLastInitializedToDisplay = myReader.GetDateTime("DateLastInitializedToDisplay");
-                Details.TrustFund = myReader.GetDecimal("TrustFund");
-                Details.NoOfDiscountedTransactions = myReader.GetInt32("NoOfDiscountedTransactions");
-                Details.NegativeAdjustments = myReader.GetDecimal("NegativeAdjustments");
-                Details.NoOfNegativeAdjustmentTransactions = myReader.GetInt32("NoOfNegativeAdjustmentTransactions");
-                Details.PromotionalItems = myReader.GetDecimal("PromotionalItems");
-                Details.CreditSalesTax = myReader.GetDecimal("CreditSalesTax");
-                Details.BatchCounter = myReader.GetInt32("BatchCounter");
-                Details.DebitDeposit = myReader.GetDecimal("DebitDeposit");
-                Details.NoOfReprintedTransaction = myReader.GetInt32("NoOfReprintedTransaction");
-                Details.TotalReprintedTransaction = myReader.GetDecimal("TotalReprintedTransaction");
-                Details.InitializedBy = "" + myReader["InitializedBy"].ToString();
-            }
-
-            return Details;
-        }
-		public TerminalReportDetails LastInitializationDetails(string TerminalNo)
-		{
-			try
-			{
-				string SQL=	SQLSelect() + "WHERE TerminalNo = @TerminalNo " +
-					        "ORDER BY DateLastInitialized DESC " +
-					        "LIMIT 1 ";
-							
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                TerminalReportDetails Details = SetDetails(myReader);
-
-                myReader.Close();
-
-                return Details;
-			}
-
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public TerminalReportDetails LastInitializationDetails(string TerminalNo, DateTime DateFrom)
-		{
-			try
-			{
-				string SQL=	SQLSelect() + "WHERE TerminalNo = @TerminalNo " +
-					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
-					        "ORDER BY DateLastInitialized DESC " +
-					        "LIMIT 1 ";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlParameter prmDateFrom = new MySqlParameter("@DateFrom",MySqlDbType.DateTime);
-				prmDateFrom.Value = DateFrom.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDateFrom);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                TerminalReportDetails Details = SetDetails(myReader);
-
-                myReader.Close();
-
-                return Details;
-			}
-
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-        public TerminalReportDetails Details(string TerminalNo, DateTime DateLastInitialized)
+        private TerminalReportDetails getDetails(Int32 BranchID, string TerminalNo, DateTime? DateFrom, DateTime? DateTo, DateTime? DateLastInitialized, bool WithTF = false, bool LastInitializationDetails = false, bool NextDetails = false)
         {
             try
             {
-                string SQL = SQLSelect() + "WHERE TerminalNo = @TerminalNo " +
-                            "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(@DateLastInitialized, '%Y-%m-%d %H:%i') ";
+                System.Data.DataTable dt = ListAsDataTable(BranchID, TerminalNo, DateFrom, DateTo, DateLastInitialized, WithTF, LastInitializationDetails, NextDetails);
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmDateLastInitialized = new MySqlParameter("@DateLastInitialized",MySqlDbType.DateTime);
-                prmDateLastInitialized.Value = DateLastInitialized.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmDateLastInitialized);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                TerminalReportDetails Details = SetDetails(myReader);
-
-                myReader.Close();
-
-                return Details;
+                return TerminalReport.SetDetails(dt);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
             }
         }
 
-		public TerminalReportDetails Details(string TerminalNo, DateTime DateFrom, DateTime DateTo)
+        public TerminalReportDetails LastInitializationDetails(Int32 BranchID, string TerminalNo, DateTime? DateFrom, DateTime? DateTo, DateTime? DateLastInitialized)
 		{
 			try
 			{
-				string SQL=	SQLSelect() + "WHERE TerminalNo = @TerminalNo " +
-					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
-					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i');";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlParameter prmDateFrom = new MySqlParameter("@DateFrom",MySqlDbType.DateTime);
-				prmDateFrom.Value = DateFrom.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDateFrom);
-
-				MySqlParameter prmDateTo = new MySqlParameter("@DateTo",MySqlDbType.DateTime);
-				prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDateTo);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                TerminalReportDetails Details = SetDetails(myReader);
-
-                myReader.Close();
-
-                return Details;
+                return getDetails(BranchID, TerminalNo, Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, DateLastInitialized, false, true, false);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
 
-        public TerminalReportDetails NextDetails(string TerminalNo, DateTime DateLastInitialized)
+        public TerminalReportDetails Details(Int32 BranchID, string TerminalNo, DateTime DateLastInitialized)
         {
             try
             {
-                string SQL = SQLSelect() + "WHERE TerminalNo = @TerminalNo " +
-                            "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') > DATE_FORMAT(@DateLastInitialized, '%Y-%m-%d %H:%i') LIMIT 1";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmDateLastInitialized = new MySqlParameter("@DateLastInitialized",MySqlDbType.DateTime);
-                prmDateLastInitialized.Value = DateLastInitialized.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmDateLastInitialized);
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                TerminalReportDetails Details = SetDetails(myReader);
-
-                myReader.Close();
-
-                return Details;
+                return getDetails(BranchID, TerminalNo, Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, DateLastInitialized, false, true, false);
             }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
+		public TerminalReportDetails Details(Int32 BranchID, string TerminalNo, DateTime DateFrom, DateTime DateTo)
+		{
+			try
+			{
+                return getDetails(BranchID, TerminalNo, DateFrom, DateTo, Constants.C_DATE_MIN_VALUE, false, true, false);
+			}
+			catch (Exception ex)
+			{
+				throw base.ThrowException(ex);
+			}	
+		}
+
+        public TerminalReportDetails NextDetails(Int32 BranchID, string TerminalNo, DateTime DateLastInitialized)
+        {
+            try
+            {
+                return getDetails(BranchID, TerminalNo, Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, DateLastInitialized, false, false, true);
+            }
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -457,46 +275,10 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=	SQLSelect() + "WHERE DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
-					"AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i');";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                System.Data.DataTable dt = ListAsDataTable(0, string.Empty, DateFrom, DateTo, Constants.C_DATE_MIN_VALUE, false, false, false);
 
-				MySqlParameter prmDateFrom = new MySqlParameter("@DateFrom",MySqlDbType.DateTime);
-				prmDateFrom.Value = DateFrom.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDateFrom);
-
-				MySqlParameter prmDateTo = new MySqlParameter("@DateTo",MySqlDbType.DateTime);
-				prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDateTo);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				ArrayList items = new ArrayList();
-
-				while (myReader.Read())
-				{
-                    TerminalReportDetails Details = SetDetails(myReader);
-
-					items.Add(Details);
-				}
-				
-				myReader.Close();
-
-				TerminalReportDetails[] ReportDetails = new TerminalReportDetails[0];
-
-				if (items != null)
-				{
-					ReportDetails = new TerminalReportDetails[items.Count];
-					items.CopyTo(ReportDetails);
-				}
-
-				return ReportDetails;
-
+                return TerminalReport.SetDetailsList(dt);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -508,80 +290,25 @@ namespace AceSoft.RetailPlus.Data
 	
 		#region Streams : Report
 
-        public System.Data.DataTable SummarizedDailySalesReport(int BranchID = 0, bool WithTF = false, string TerminalNo = "", DateTime? DateFrom = null, DateTime? DateTo = null)
+        public System.Data.DataTable ListAsDataTable(Int32 BranchID, string TerminalNo = "", DateTime? DateFrom = null, DateTime? DateTo = null, DateTime? DateLastInitialized = null, bool WithTF = false, bool LastInitializationDetails = false, bool NextDetails = false)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
-
-                string SQL = string.Empty;
-                if (WithTF)
-                    #region SQL With TF
-                    SQL = "SELECT " +
-                                "QuantitySold, " +
-                                "GrossSales - (GrossSales * TrustFund/100) 'GrossSales', " +
-                                "TotalDiscount - (TotalDiscount * TrustFund/100) 'TotalDiscount', " +
-                                "TotalCharge - (TotalCharge * TrustFund/100) 'TotalCharge', " +
-                                "DailySales - (DailySales * TrustFund/100) 'DailySales', " +
-                                "VAT - (VAT * TrustFund/100) 'VAT', " +
-                                "LocalTax - (LocalTax * TrustFund/100) 'LocalTax', " +
-                                "TotalCharge - (TotalCharge * TrustFund/100) AS 'ServiceCharge', " +
-                                "DateLastInitialized, " +
-                                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE " + (BranchID != 0? "BranchID = @BranchID AND ":"") + "TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
-                                "TerminalNo " +
-                            "FROM  tblTerminalReportHistory " +
-                            "WHERE 1=1 ";
-                    #endregion
-                else
-                    #region SQL Without TF
-                    SQL = "SELECT " +
-					            "QuantitySold, " +
-					            "GrossSales, " +
-					            "TotalDiscount, " +
-					            "TotalCharge, " +
-					            "DailySales, " +
-					            "VAT, " +
-					            "LocalTax, " +
-					            "TotalCharge AS 'ServiceCharge', " +
-					            "(DateLastInitialized) 'DateLastInitialized', " +
-                                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE " + (BranchID != 0 ? "BranchID = @BranchID AND " : "") + "TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
-					            "TerminalNo " +
-					        "FROM  tblTerminalReportHistory " + 
-					        "WHERE 1=1 ";
-                    #endregion
-
-                if (BranchID != 0)
-                {
-                    SQL += "AND BranchID = @BranchID";
-                    cmd.Parameters.AddWithValue("@BranchID", BranchID);
-                }
-
-                if (TerminalNo != null && TerminalNo != "" && TerminalNo != Constants.ALL)
-                {
-                    SQL += "AND TerminalNo = @TerminalNo ";
-                    cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
-                }
-
-                if (DateFrom.GetValueOrDefault() != DateTime.MinValue)
-                {
-                    SQL += "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') ";
-                    MySqlParameter prmDateFrom = new MySqlParameter("@DateFrom",MySqlDbType.DateTime);
-                    prmDateFrom.Value = DateFrom.GetValueOrDefault().ToString("yyyy-MM-dd HH:mm:ss");
-                    cmd.Parameters.Add(prmDateFrom);
-                }
-                if (DateTo.GetValueOrDefault() != DateTime.MinValue)
-                {
-                    SQL += "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') ";
-                    MySqlParameter prmDateTo = new MySqlParameter("@DateTo",MySqlDbType.DateTime);
-                    prmDateTo.Value = DateTo.GetValueOrDefault().ToString("yyyy-MM-dd HH:mm:ss");
-                    cmd.Parameters.Add(prmDateTo);
-                }
-
-                SQL += "ORDER BY TerminalNo, DateLastInitialized ";
-
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
 
+                string SQL = "CALL procTerminalReportHistorySelect(@BranchID, @TerminalNo, @DateFrom, @DateTo, @DateLastInitialized, @WithTF, @LastInitializationDetails, @NextDetails);";
+
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("DateFrom", DateFrom.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : DateFrom);
+                cmd.Parameters.AddWithValue("DateTo", DateTo.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : DateTo);
+                cmd.Parameters.AddWithValue("DateLastInitialized", DateLastInitialized.GetValueOrDefault() == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : DateLastInitialized);
+                cmd.Parameters.AddWithValue("WithTF", WithTF);
+                cmd.Parameters.AddWithValue("LastInitializationDetails", LastInitializationDetails);
+                cmd.Parameters.AddWithValue("NextDetails", NextDetails);
+
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
@@ -592,142 +319,140 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-		private MySqlDataReader HourlyReportPrivate(string TerminalNo, DateTime DateFrom, DateTime DateTo, int BranchID)
+
+        public System.Data.DataTable SummarizedDailySalesReport(Int32 BranchID = 0, string TerminalNo = "", DateTime? DateFrom = null, DateTime? DateTo = null, bool WithTF = false)
+        {
+            try
+            {
+                return ListAsDataTable(BranchID, TerminalNo, DateFrom, DateTo, Constants.C_DATE_MIN_VALUE, WithTF, false, false);
+
+                //MySqlCommand cmd = new MySqlCommand();
+                //cmd.CommandType = System.Data.CommandType.Text;
+
+                //string SQL = string.Empty;
+                //if (WithTF)
+                //    #region SQL With TF
+                //    SQL = "SELECT " +
+                //                "QuantitySold, " +
+                //                "NetSales - (NetSales * TrustFund/100) 'NetSales', " +
+                //                "GrossSales - (GrossSales * TrustFund/100) 'GrossSales', " +
+                //                "TotalDiscount - (TotalDiscount * TrustFund/100) 'TotalDiscount', " +
+                //                "SNRDiscount - (SNRDiscount * TrustFund/100) 'SNRDiscount', " +
+                //                "PWDDiscount - (PWDDiscount * TrustFund/100) 'PWDDiscount', " +
+                //                "OtherDiscount - (OtherDiscount * TrustFund/100) 'OtherDiscount', " +
+                //                "TotalCharge - (TotalCharge * TrustFund/100) 'TotalCharge', " +
+                //                "DailySales - (DailySales * TrustFund/100) 'DailySales', " +
+                //                "VAT - (VAT * TrustFund/100) 'VAT', " +
+                //                "VATExempt - (VATExempt * TrustFund/100) 'VATExempt', " +
+                //                "NonVATableAmount - (NonVATableAmount * TrustFund/100) 'NonVATableAmount', " +
+                //                "VATableAmount - (VATableAmount * TrustFund/100) 'VATableAmount', " +
+                //                "LocalTax - (LocalTax * TrustFund/100) 'LocalTax', " +
+                //                "TotalCharge - (TotalCharge * TrustFund/100) AS 'ServiceCharge', " +
+                //                "DateLastInitialized, " +
+                //                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE tblTerminal.BranchID = tblTerminalReportHistory.BranchID AND TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
+                //                "TerminalNo " +
+                //            "FROM  tblTerminalReportHistory " +
+                //            "WHERE 1=1 ";
+                //    #endregion
+                //else
+                //    #region SQL Without TF
+                //    SQL = "SELECT " +
+                //                "QuantitySold, " +
+                //                "NetSales, " +
+                //                "GrossSales, " +
+                //                "TotalDiscount, " +
+                //                "SNRDiscount, " +
+                //                "PWDDiscount, " +
+                //                "OtherDiscount, " +
+                //                "TotalCharge, " +
+                //                "DailySales, " +
+                //                "VAT, " +
+                //                "VATExempt - (VATExempt * TrustFund/100) 'VATExempt', " +
+                //                "NonVATableAmount - (NonVATableAmount * TrustFund/100) 'NonVATableAmount', " +
+                //                "VATableAmount - (VATableAmount * TrustFund/100) 'VATableAmount', " +
+                //                "LocalTax, " +
+                //                "TotalCharge AS 'ServiceCharge', " +
+                //                "(DateLastInitialized) 'DateLastInitialized', " +
+                //                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE tblTerminal.BranchID = tblTerminalReportHistory.BranchID AND TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
+                //                "TerminalNo " +
+                //            "FROM  tblTerminalReportHistory " + 
+                //            "WHERE 1=1 ";
+                //    #endregion
+
+                //if (BranchID != 0)
+                //{
+                //    SQL += "AND BranchID = @BranchID";
+                //    cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                //}
+
+                //if (TerminalNo != null && TerminalNo != "" && TerminalNo != Constants.ALL)
+                //{
+                //    SQL += "AND TerminalNo = @TerminalNo ";
+                //    cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                //}
+
+                //if (DateFrom.GetValueOrDefault() != DateTime.MinValue)
+                //{
+                //    SQL += "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') ";
+                //    cmd.Parameters.AddWithValue("@DateFrom", DateFrom.GetValueOrDefault());
+                //}
+                //if (DateTo.GetValueOrDefault() != DateTime.MinValue)
+                //{
+                //    SQL += "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') ";
+                //    cmd.Parameters.AddWithValue("@DateTo", DateTo.GetValueOrDefault());
+                //}
+
+                //SQL += "ORDER BY TerminalNo, DateLastInitialized ";
+
+                //cmd.CommandText = SQL;
+                //string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                //base.MySqlDataAdapterFill(cmd, dt);
+
+                //return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+		public System.Data.DataTable HourlyReport(Int32 BranchID, string TerminalNo, DateTime DateFrom, DateTime DateTo)
 		{
-			try
-			{
-                string SQL = "SELECT BranchID" +
-                                        "TerminalNo, " +
-                                        "DATE(TransactionDate) 'TransactionDate', " +
-                                        "HOUR(TransactionDate) 'Time', " +
-                                        "COUNT(SubTotal) 'TranCount', " +
-                                        "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, SubTotal - Discount)) 'Amount', " +
-                                        "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, VAT)) 'VAT', " +
-                                        "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, Discount)) 'Discount' " +
-                                "FROM  tblTransactions " +
-                                "WHERE BranchID = @BranchID " +
-                                        "AND TerminalNo = @TerminalNo " +
-                                        "AND (TransactionStatus = @TransactionStatusClosed " +
-                                        "OR TransactionStatus = @TransactionStatusVoid " +
-                                        "OR TransactionStatus = @TransactionStatusReprinted " +
-                                        "OR TransactionStatus = @TransactionStatusRefund " +
-                                        "OR TransactionStatus = @TransactionStatusCreditPayment) " +
-                                        "AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
-                                        "AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') " +
-                                "GROUP BY DATE(TransactionDate), HOUR(TransactionDate) " +
-                                "ORDER BY TerminalNo, TransactionDate";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                MySqlParameter prmBranchID = new MySqlParameter("@TerminalNo",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);			
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlParameter prmTransactionStatusClosed = new MySqlParameter("@TransactionStatusClosed",MySqlDbType.Int16);			
-				prmTransactionStatusClosed.Value = (Int16) TransactionStatus.Closed;
-				cmd.Parameters.Add(prmTransactionStatusClosed);
-
-				MySqlParameter prmTransactionStatusVoid = new MySqlParameter("@TransactionStatusVoid",MySqlDbType.Int16);			
-				prmTransactionStatusVoid.Value = (Int16) TransactionStatus.Void;
-				cmd.Parameters.Add(prmTransactionStatusVoid);
-
-				MySqlParameter prmTransactionStatusReprinted = new MySqlParameter("@TransactionStatusReprinted",MySqlDbType.Int16);			
-				prmTransactionStatusReprinted.Value = (Int16) TransactionStatus.Reprinted;
-				cmd.Parameters.Add(prmTransactionStatusReprinted);
-
-				MySqlParameter prmTransactionStatusRefund = new MySqlParameter("@TransactionStatusRefund",MySqlDbType.Int16);			
-				prmTransactionStatusRefund.Value = (Int16) TransactionStatus.Refund;
-				cmd.Parameters.Add(prmTransactionStatusRefund);
-
-				MySqlParameter prmTransactionStatusCreditPayment = new MySqlParameter("@TransactionStatusCreditPayment",MySqlDbType.Int16);			
-				prmTransactionStatusCreditPayment.Value = (Int16) TransactionStatus.CreditPayment;
-				cmd.Parameters.Add(prmTransactionStatusCreditPayment);
-
-				MySqlParameter prmDateFrom = new MySqlParameter("@DateFrom",MySqlDbType.DateTime);
-				prmDateFrom.Value = DateFrom.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDateFrom);
-
-				MySqlParameter prmDateTo = new MySqlParameter("@DateTo",MySqlDbType.DateTime);
-				prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDateTo);
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public System.Data.DataTable HourlyReport(int BranchID, string TerminalNo, DateTime DateFrom, DateTime DateTo)
-		{
-            string SQL = "SELECT BranchID" +
-                                        "TerminalNo, " +
-                                        "DATE(TransactionDate) 'TransactionDate', " +
-                                        "HOUR(TransactionDate) 'Time', " +
-                                        "COUNT(SubTotal) 'TranCount', " +
-                                        "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, SubTotal - Discount)) 'Amount', " +
-                                        "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, VAT)) 'VAT', " +
-                                        "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, Discount)) 'Discount' " +
-                                "FROM  tblTransactions " +
-                                "WHERE BranchID = @BranchID " +
-                                        "AND TerminalNo = @TerminalNo " +
-                                        "AND (TransactionStatus = @TransactionStatusClosed " +
-                                        "OR TransactionStatus = @TransactionStatusVoid " +
-                                        "OR TransactionStatus = @TransactionStatusReprinted " +
-                                        "OR TransactionStatus = @TransactionStatusRefund " +
-                                        "OR TransactionStatus = @TransactionStatusCreditPayment) " +
-                                        "AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
-                                        "AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') " +
-                                "GROUP BY DATE(TransactionDate), HOUR(TransactionDate) " +
-                                "ORDER BY TerminalNo, TransactionDate";
-
             MySqlCommand cmd = new MySqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
+
+            string SQL = "SELECT BranchID" +
+                                    "TerminalNo, " +
+                                    "DATE(TransactionDate) 'TransactionDate', " +
+                                    "HOUR(TransactionDate) 'Time', " +
+                                    "COUNT(SubTotal) 'TranCount', " +
+                                    "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, SubTotal - Discount)) 'Amount', " +
+                                    "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, VAT)) 'VAT', " +
+                                    "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, Discount)) 'Discount' " +
+                            "FROM  tblTransactions " +
+                            "WHERE BranchID = @BranchID " +
+                                    "AND TerminalNo = @TerminalNo " +
+                                    "AND (TransactionStatus = @TransactionStatusClosed " +
+                                    "OR TransactionStatus = @TransactionStatusVoid " +
+                                    "OR TransactionStatus = @TransactionStatusReprinted " +
+                                    "OR TransactionStatus = @TransactionStatusRefund " +
+                                    "OR TransactionStatus = @TransactionStatusCreditPayment) " +
+                                    "AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
+                                    "AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') " +
+                            "GROUP BY DATE(TransactionDate), HOUR(TransactionDate) " +
+                            "ORDER BY TerminalNo, TransactionDate";
+
+            cmd.Parameters.AddWithValue("@BranchID", BranchID);
+            cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+            cmd.Parameters.AddWithValue("@TransactionStatusClosed", (Int16)TransactionStatus.Closed);
+            cmd.Parameters.AddWithValue("@TransactionStatusVoid", (Int16)TransactionStatus.Void);
+            cmd.Parameters.AddWithValue("@TransactionStatusReprinted", (Int16)TransactionStatus.Reprinted);
+            cmd.Parameters.AddWithValue("@TransactionStatusRefund", (Int16)TransactionStatus.Refund);
+            cmd.Parameters.AddWithValue("@TransactionStatusCreditPayment", (Int16)TransactionStatus.Closed);
+            cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
+            cmd.Parameters.AddWithValue("@DateTo", DateTo);
+
             cmd.CommandText = SQL;
-
-            MySqlParameter prmBranchID = new MySqlParameter("@TerminalNo", MySqlDbType.Int32);
-            prmBranchID.Value = BranchID;
-            cmd.Parameters.Add(prmBranchID);
-
-            MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo", MySqlDbType.String);
-            prmTerminalNo.Value = TerminalNo;
-            cmd.Parameters.Add(prmTerminalNo);
-
-            MySqlParameter prmTransactionStatusClosed = new MySqlParameter("@TransactionStatusClosed", MySqlDbType.Int16);
-            prmTransactionStatusClosed.Value = (Int16)TransactionStatus.Closed;
-            cmd.Parameters.Add(prmTransactionStatusClosed);
-
-            MySqlParameter prmTransactionStatusVoid = new MySqlParameter("@TransactionStatusVoid", MySqlDbType.Int16);
-            prmTransactionStatusVoid.Value = (Int16)TransactionStatus.Void;
-            cmd.Parameters.Add(prmTransactionStatusVoid);
-
-            MySqlParameter prmTransactionStatusReprinted = new MySqlParameter("@TransactionStatusReprinted", MySqlDbType.Int16);
-            prmTransactionStatusReprinted.Value = (Int16)TransactionStatus.Reprinted;
-            cmd.Parameters.Add(prmTransactionStatusReprinted);
-
-            MySqlParameter prmTransactionStatusRefund = new MySqlParameter("@TransactionStatusRefund", MySqlDbType.Int16);
-            prmTransactionStatusRefund.Value = (Int16)TransactionStatus.Refund;
-            cmd.Parameters.Add(prmTransactionStatusRefund);
-
-            MySqlParameter prmTransactionStatusCreditPayment = new MySqlParameter("@TransactionStatusCreditPayment", MySqlDbType.Int16);
-            prmTransactionStatusCreditPayment.Value = (Int16)TransactionStatus.CreditPayment;
-            cmd.Parameters.Add(prmTransactionStatusCreditPayment);
-
-            MySqlParameter prmDateFrom = new MySqlParameter("@DateFrom", MySqlDbType.DateTime);
-            prmDateFrom.Value = DateFrom.ToString("yyyy-MM-dd HH:mm:ss");
-            cmd.Parameters.Add(prmDateFrom);
-
-            MySqlParameter prmDateTo = new MySqlParameter("@DateTo", MySqlDbType.DateTime);
-            prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
-            cmd.Parameters.Add(prmDateTo);
-
             string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
 
@@ -738,83 +463,65 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Public Modifiers
 
-        public DateTime MINDateLastInitialized(int BranchID, string TerminalNo, DateTime ProcessingDate)
+        public DateTime MINDateLastInitialized(Int32 BranchID, string TerminalNo, DateTime ProcessingDate)
 		{
 			try
 			{
+                // Uses MAX coz the DateLastInitialized is >= ProcessingDate 
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"SELECT " +
 					            "MAX(DateLastInitialized) AS DateLastInitialized " +
 					        "FROM tblTerminalReportHistory " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
 					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@ProcessingDate", ProcessingDate);
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlParameter prmProcessingDate = new MySqlParameter("@ProcessingDate",MySqlDbType.DateTime);
-				prmProcessingDate.Value = ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmProcessingDate);
-
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MinValue;
-
                 foreach(System.Data.DataRow dr in dt.Rows)
                 {
                     dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
                 }
 				
 				return dteRetValue;
-
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
 
-		public DateTime MAXDateLastInitialized(int BranchID, string TerminalNo, DateTime ProcessingDate)
+		public DateTime MAXDateLastInitialized(Int32 BranchID, string TerminalNo, DateTime ProcessingDate)
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-					            "MIN(DateLastInitialized) AS DateLastInitialized " +
-					        "FROM tblTerminalReportHistory " +
+                // Uses MAX coz the DateLastInitialized is <= ProcessingDate 
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT " +
+                                "MIN(DateLastInitialized) AS DateLastInitialized " +
+                            "FROM tblTerminalReportHistory " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
-					        "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                            "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@ProcessingDate", ProcessingDate);
 
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlParameter prmProcessingDate = new MySqlParameter("@ProcessingDate",MySqlDbType.DateTime);
-				prmProcessingDate.Value = ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmProcessingDate);
-
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MinValue;
-
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
                     dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
@@ -822,171 +529,134 @@ namespace AceSoft.RetailPlus.Data
 
                 return dteRetValue;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
 
-        public DateTime NEXTDateLastInitialized(int BranchID, string TerminalNo, DateTime ProcessingDate)
+        public DateTime NEXTDateLastInitialized(Int32 BranchID, string TerminalNo, DateTime ProcessingDate)
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "SELECT " +
                                 "MIN(DateLastInitialized) AS DateLastInitialized " +
                             "FROM tblTerminalReportHistory " +
                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
                             "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') > DATE_FORMAT(@ProcessingDate, '%Y-%m-%d %H:%i') ";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@ProcessingDate", ProcessingDate);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmProcessingDate = new MySqlParameter("@ProcessingDate",MySqlDbType.DateTime);
-                prmProcessingDate.Value = ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmProcessingDate);
-
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MinValue;
-
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
                     dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
                 }
 
                 return dteRetValue;
-                
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
             }
         }
 
-        public DateTime getRLCDateLastInitialized(string TerminalNo)
+        public DateTime getRLCDateLastInitialized(Int32 BranchID, string TerminalNo)
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "SELECT " +
                                 "MIN(DateLastInitialized) AS DateLastInitialized " +
                             "FROM tblTerminalReportHistory " +
-                            "WHERE TerminalNo = @TerminalNo " +
-                            "AND IsMallFileUploadComplete = 0 ";
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo AND IsMallFileUploadComplete = 0 ";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
 
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MinValue;
-
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
                     dteRetValue = DateTime.Parse(dr["DateLastInitialized"].ToString());
                 }
 
                 return dteRetValue;
-                
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
             }
         }
 
-        public System.Data.DataTable DatesLastInitialized(int BranchID, string TerminalNo, DateTime DateFrom, DateTime DateTo)
+        public System.Data.DataTable DatesLastInitialized(Int32 BranchID, string TerminalNo, DateTime DateFrom, DateTime DateTo)
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "SELECT DateLastInitialized, " +
-                             "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay " +
+                             "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE " + (BranchID != 0 ? "BranchID = @BranchID AND " : "") + "TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay " +
                              "FROM tblTerminalReportHistory " +
                              "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
                              "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
                              "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') " +
                              "ORDER BY DateLastInitialized DESC ";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
+                cmd.Parameters.AddWithValue("@DateTo", DateTo);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmDateFrom = new MySqlParameter("@DateFrom",MySqlDbType.DateTime);
-                prmDateFrom.Value = DateFrom.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmDateFrom);
-
-                MySqlParameter prmDateTo = new MySqlParameter("@DateTo",MySqlDbType.DateTime);
-                prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmDateTo);
-
-                System.Data.DataTable dt = new System.Data.DataTable("DatesLastInitialized");
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
                 
                 return dt;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
             }
         }
 
-        public System.Data.DataTable DatesLastInitializedForRLC(int BranchID, string TerminalNo, DateTime DateFrom, DateTime DateTo)
+        public System.Data.DataTable DatesLastInitializedForRLC(Int32 BranchID, string TerminalNo, DateTime DateFrom, DateTime DateTo)
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "SELECT DateLastInitialized, DATE_FORMAT(IF(HOUR(DateLastInitialized)>5, DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedDisplay FROM tblTerminalReportHistory " +
                              "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
-                             "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
-                             "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') " +
+                                 "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') " +
+                                 "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') " +
                              "ORDER BY DateLastInitialized DESC ";
 
-                MySqlCommand cmd = new MySqlCommand();
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
+                cmd.Parameters.AddWithValue("@DateTo", DateTo);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-                MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-                prmTerminalNo.Value = TerminalNo;
-                cmd.Parameters.Add(prmTerminalNo);
-
-                MySqlParameter prmDateFrom = new MySqlParameter("@DateFrom",MySqlDbType.DateTime);
-                prmDateFrom.Value = DateFrom.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmDateFrom);
-
-                MySqlParameter prmDateTo = new MySqlParameter("@DateTo",MySqlDbType.DateTime);
-                prmDateTo.Value = DateTo.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmDateTo);
-
-                System.Data.DataTable dt = new System.Data.DataTable("DatesLastInitialized");
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-                
+
                 return dt;
             }
 

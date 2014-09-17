@@ -135,13 +135,13 @@ namespace AceSoft.RetailPlus.Data
 		public Contacts()
             : base(null, null)
         {
-            _ContactAddOns = new ContactAddOns(this.Connection, this.Transaction);
+            _ContactAddOns = new ContactAddOns(base.Connection, base.Transaction);
         }
 
         public Contacts(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
-            _ContactAddOns = new ContactAddOns(this.Connection, this.Transaction);
+            _ContactAddOns = new ContactAddOns(base.Connection, base.Transaction);
 		}
 
 		#endregion

@@ -86,11 +86,10 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procSaveBranch(@BranchID, @BranchCode, @BranchName, @DBIP, @DBPort, @Address, @Remarks, @CreatedOn, @LastModified);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+
+                string SQL = "CALL procSaveBranch(@BranchID, @BranchCode, @BranchName, @DBIP, @DBPort, @Address, @Remarks, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
                 cmd.Parameters.AddWithValue("BranchCode", Details.BranchCode);
@@ -102,9 +101,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
+                cmd.CommandText = SQL;
                 return base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -163,16 +162,7 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-				string SQL = "SELECT " +
-								"BranchID, " +
-								"BranchCode, " +
-								"BranchName, " + 
-								"DBIP, " +
-								"DBPort, " +
-								"Address, " +
-								"Remarks " +
-							"FROM tblBranch " +
-							"WHERE BranchID = @BranchID;";
+				string SQL = SQLSelect() + "WHERE BranchID = @BranchID;";
 				  
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
 
@@ -194,7 +184,6 @@ namespace AceSoft.RetailPlus.Data
 
                 return Details;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -207,16 +196,7 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "SELECT " +
-                                "BranchID, " +
-                                "BranchCode, " +
-                                "BranchName, " +
-                                "DBIP, " +
-                                "DBPort, " +
-                                "Address, " +
-                                "Remarks " +
-                            "FROM tblBranch " +
-                            "WHERE BranchCode = @BranchCode;";
+                string SQL = SQLSelect() + "WHERE BranchCode = @BranchCode;";
 
                 cmd.Parameters.AddWithValue("@BranchCode", BranchCode);
 
@@ -238,7 +218,6 @@ namespace AceSoft.RetailPlus.Data
 
                 return Details;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -249,27 +228,35 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "BranchCode", SortOption SortOrder=SortOption.Ascending)
+        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "BranchCode", SortOption SortOrder=SortOption.Ascending, Int32 limit = 0)
         {
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-
-            string SQL = SQLSelect() + " ";
-
-            if (!string.IsNullOrEmpty(SearchKey))
+            try
             {
-                SQL += "WHERE (BranchCode LIKE @SearchKey or BranchName LIKE @SearchKey) ";
-                cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + " ";
+
+                if (!string.IsNullOrEmpty(SearchKey))
+                {
+                    SQL += "WHERE (BranchCode LIKE @SearchKey or BranchName LIKE @SearchKey) ";
+                    cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+                }
+
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
             }
-
-            SQL += "ORDER BY " + SortField + " ";
-            SQL += SortOrder == SortOption.Ascending ? "ASC" : "DESC";
-
-            cmd.CommandText = SQL;
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
         }
 
 		#endregion

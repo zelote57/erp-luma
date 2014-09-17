@@ -588,7 +588,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
 
                     Details.isLock = bool.Parse(dr["isLock"].ToString());
-                    Details.UnitDetails = new Unit(this.Connection, this.Transaction).Details(Int32.Parse(dr["BaseUnitID"].ToString()));
+                    Details.UnitDetails = new Unit(base.Connection, base.Transaction).Details(Int32.Parse(dr["BaseUnitID"].ToString()));
                 }
 
 				return Details;
@@ -637,7 +637,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
 
                     Details.isLock = bool.Parse(dr["isLock"].ToString());
-                    Details.UnitDetails = new Unit(this.Connection, this.Transaction).Details(Int32.Parse(dr["BaseUnitID"].ToString()));
+                    Details.UnitDetails = new Unit(base.Connection, base.Transaction).Details(Int32.Parse(dr["BaseUnitID"].ToString()));
                 }
 
                 return Details;
@@ -672,7 +672,7 @@ namespace AceSoft.RetailPlus.Data
                 }
 
                 SQL += "ORDER BY " + SortField + " ";
-                SQL += SortOrder == SortOption.Ascending ? "ASC" : "DESC";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
 
                 cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);

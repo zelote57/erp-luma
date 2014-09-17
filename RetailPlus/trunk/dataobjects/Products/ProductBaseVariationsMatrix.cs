@@ -159,13 +159,12 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "CALL procSaveProductBaseVariationsMatrix(@MatrixID, @ProductID, @Description, @UnitID, " +
                                 "@IncludeInSubtotalDiscount, @MinThreshold, @MaxThreshold, @SupplierID, " +
                                 "@RIDMinThreshold, @RIDMaxThreshold, @Deleted, @CreatedOn, @LastModified);";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("MatrixID", Details.MatrixID);
                 cmd.Parameters.AddWithValue("ProductID", Details.ProductID);
@@ -181,6 +180,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
+                cmd.CommandText = SQL;
                 return base.ExecuteNonQuery(cmd);
             }
             catch (Exception ex)
@@ -205,15 +205,15 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"DELETE FROM tblProductBaseVariationsMatrix WHERE MatrixID IN (" + IDs + ") ";
 			    
                 if (!string.IsNullOrEmpty(ProductIDs)) SQL += "AND ProductID IN (" + ProductIDs + ") ";
 
                 SQL += ";";
-
-				MySqlCommand cmd = new MySqlCommand();
-
-                cmd.CommandType = System.Data.CommandType.Text;
+				
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
@@ -235,58 +235,41 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"SELECT " +
 								"MatrixID, " +
 								"ProductID, " +
 								"description, " +
 								"a.UnitID, " +
 								"b.UnitName, " +
-								"a.Price, " +
-								"a.PurchasePrice, " +
-								"a.IncludeInSubtotalDiscount, " +
-								"a.VAT, " +
-								"a.EVAT, " +
-								"a.LocalTax " +
+								"a.IncludeInSubtotalDiscount " +
 							"FROM tblProductBaseVariationsMatrix a INNER JOIN " +
 							"tblUnit b ON a.UnitID = b.UnitID " +
 							"WHERE MatrixID = @MatrixID AND ProductID = @ProductID;"; 
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmMatrixID = new MySqlParameter("@MatrixID",MySqlDbType.Int64);			
-				prmMatrixID.Value = MatrixID;
-				cmd.Parameters.Add(prmMatrixID);
-
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = ProductID;
-				cmd.Parameters.Add(prmProductID);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 				
-				ProductBaseVariationsMatrixDetails Details = new ProductBaseVariationsMatrixDetails();
+                cmd.Parameters.AddWithValue("@MatrixID", MatrixID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+				
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
+                ProductBaseVariationsMatrixDetails Details = new ProductBaseVariationsMatrixDetails();
+                foreach (System.Data.DataRow dr in dt.Rows)
 				{
-					Details.MatrixID =myReader.GetInt64("MatrixID");
-					Details.ProductID = myReader.GetInt64("ProductID");
-					Details.Description = "" + myReader["Description"].ToString();
-					Details.UnitID = myReader.GetInt32("UnitID");
-					Details.UnitName = "" + myReader["UnitName"].ToString();
-					Details.Price = myReader.GetDecimal("Price");
-					Details.PurchasePrice = myReader.GetDecimal("PurchasePrice");
-					Details.IncludeInSubtotalDiscount = myReader.GetBoolean("IncludeInSubtotalDiscount");
-					Details.VAT = myReader.GetDecimal("VAT");
-					Details.EVAT = myReader.GetDecimal("EVAT");
-					Details.LocalTax = myReader.GetDecimal("LocalTax");
+					Details.MatrixID = Int64.Parse(dr["MatrixID"].ToString());
+                    Details.ProductID = Int64.Parse(dr["ProductID"].ToString());
+					Details.Description = dr["Description"].ToString();
+					Details.UnitID = Int32.Parse(dr["UnitID"].ToString());
+					Details.UnitName = dr["UnitName"].ToString();
+					Details.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
 				}
-
-				myReader.Close();
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -298,21 +281,19 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public MySqlDataReader BaseList(Int64 ProductID, string SortField, SortOption SortOrder)
+		public System.Data.DataTable BaseList(Int64 ProductID, string SortField, SortOption SortOrder, Int32 limit = 0)
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL =	"SELECT MatrixID, " +
 									"ProductID, " + 
 									"Description, " + 
 									"a.UnitID, " + 
 									"UnitName, " + 
-									"a.Price, " +
-									"a.PurchasePrice, " +
-									"a.IncludeInSubtotalDiscount, " +
-									"a.VAT, " +
-									"a.EVAT, " +
-									"a.LocalTax " +
+									"a.IncludeInSubtotalDiscount " +
 								"FROM tblProductBaseVariationsMatrix a INNER JOIN " +
 								"tblUnit b ON a.UnitID = b.UnitID " +	
 								"WHERE ProductID = @ProductID ORDER BY MatrixID, " + SortField;
@@ -322,19 +303,17 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC";
 
-				
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = ProductID;
-				cmd.Parameters.Add(prmProductID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-				return base.ExecuteReader(cmd);			
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
 			}
 			catch (Exception ex)
 			{

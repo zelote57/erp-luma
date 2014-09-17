@@ -597,15 +597,15 @@ FOREIGN KEY (`SupplierID`) REFERENCES tblContacts(`ContactID`) ON DELETE RESTRIC
 *****************************/
 DROP TABLE IF EXISTS tblProductVariationsMatrix;
 CREATE TABLE tblProductVariationsMatrix (
-`MatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductBaseVariationsMatrix(`MatrixID`),
-`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductVariations(`VariationID`),
-`Description` VARCHAR(150) NOT NULL,
-INDEX `IX_tblProductVariationsMatrix`(`MatrixID`,`VariationID`),
-UNIQUE `PK_tblProductVariationsMatrix`(`MatrixID`, `VariationID`, `Description`),
-INDEX `IX1_tblProductVariationsMatrix`(`MatrixID`),
-FOREIGN KEY (`MatrixID`) REFERENCES tblProductBaseVariationsMatrix(`MatrixID`) ON DELETE RESTRICT,
-INDEX `IX2_tblProductVariationsMatrix`(`VariationID`),
-FOREIGN KEY (`VariationID`) REFERENCES tblProductVariations(`VariationID`) ON DELETE RESTRICT
+	`MatrixID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductBaseVariationsMatrix(`MatrixID`),
+	`VariationID` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`Description` VARCHAR(150) NOT NULL,
+	INDEX `IX_tblProductVariationsMatrix`(`MatrixID`,`VariationID`),
+	UNIQUE `PK_tblProductVariationsMatrix`(`MatrixID`, `VariationID`, `Description`),
+	INDEX `IX1_tblProductVariationsMatrix`(`MatrixID`),
+	FOREIGN KEY (`MatrixID`) REFERENCES tblProductBaseVariationsMatrix(`MatrixID`) ON DELETE RESTRICT,
+	INDEX `IX2_tblProductVariationsMatrix`(`VariationID`),
+	FOREIGN KEY (`VariationID`) REFERENCES tblProductVariations(`VariationID`) ON DELETE RESTRICT
 );
 
 /*****************************
@@ -888,8 +888,8 @@ INDEX `IX2_tblTerminal`(`TerminalCode`, `TerminalName`),
 INDEX `IX3_tblTerminal`(`TerminalID`, `TerminalCode`, `TerminalName`)
 );
 
-INSERT INTO tblTerminal (`TerminalNo`, `TerminalCode`, `TerminalName`, DateCreated, MachineSerialNo, AccreditationNo )
-		VALUES		('01', 'Terminal No. 01', 'Terminal No. 01', NOW(), 'AR-00000001', 'AC-00000001');
+INSERT INTO tblTerminal (BranchID, `TerminalNo`, `TerminalCode`, `TerminalName`, DateCreated, MachineSerialNo, AccreditationNo )
+		VALUES		(99999, '01', 'Terminal No. 01', 'Terminal No. 01', NOW(), '000000', '0000-000-00000-000');
 
 /*****************************
 **	tblWithHold
@@ -1040,14 +1040,14 @@ INDEX `IX2_tblCreditPayment`(`Remarks`)
 *****************************/
 DROP TABLE IF EXISTS tblDenomination;
 CREATE TABLE tblDenomination (
-`DenominationID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-`DenominationCode` VARCHAR(100) NOT NULL,
-`DenominationValue` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ImagePath` VARCHAR(100) NOT NULL,
-PRIMARY KEY (`DenominationID`),
-INDEX `IX_tblDenomination`(`DenominationID`),
-UNIQUE `PX_tblDenomination`(`DenominationCode`),
-INDEX `IX1_tblDenomination`(`DenominationCode`)
+	`DenominationID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`DenominationCode` VARCHAR(100) NOT NULL,
+	`DenominationValue` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ImagePath` VARCHAR(100) NOT NULL,
+	PRIMARY KEY (`DenominationID`),
+	INDEX `IX_tblDenomination`(`DenominationID`),
+	UNIQUE `PX_tblDenomination`(`DenominationCode`),
+	INDEX `IX1_tblDenomination`(`DenominationCode`)
 );
 
 /*****************************
@@ -2239,69 +2239,69 @@ INDEX `IX4_tblTransactionItems12`(`ProductUnitID`)
 *****************************/
 DROP TABLE IF EXISTS tblTerminalReport;
 CREATE TABLE tblTerminalReport (
-`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTerminal(`TerminalID`),
-`TerminalNo` VARCHAR(10) NOT NULL,
-`BeginningTransactionNo` VARCHAR(30) NOT NULL,
-`EndingTransactionNo` VARCHAR(30) NOT NULL,
-`ZReadCount` INT(10) NOT NULL DEFAULT 0,
-`XReadCount` INT(10) NOT NULL DEFAULT 0,
-`GrossSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DailySales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`QuantitySold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`GroupSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`OldGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`NewGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequeSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashInDrawer` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequeDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequeWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequePaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`BeginningBalance` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VoidSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`RefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ItemsDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`SubtotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`NoOfCashTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfChequeTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCreditCardTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCreditTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCombinationPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCreditPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfClosedTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfRefundTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfVoidTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfTotalTransactions` INT(10) NOT NULL DEFAULT 0,
-`DateLastInitialized` DATETIME NOT NULL,
-PRIMARY KEY (TerminalNo),
-INDEX `IX_tblTerminalReport`(`TerminalNo`),
-UNIQUE `PK_tblTerminalReport`(`TerminalNo`),
-INDEX `IX1_tblTerminalReport`(`ZReadCount`),
-INDEX `IX2_tblTerminalReport`(`XReadCount`)
+	`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTerminal(`TerminalID`),
+	`TerminalNo` VARCHAR(10) NOT NULL,
+	`BeginningTransactionNo` VARCHAR(30) NOT NULL,
+	`EndingTransactionNo` VARCHAR(30) NOT NULL,
+	`ZReadCount` INT(10) NOT NULL DEFAULT 0,
+	`XReadCount` INT(10) NOT NULL DEFAULT 0,
+	`GrossSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`DailySales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantitySold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`GroupSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`OldGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`NewGrandTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequeSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashInDrawer` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequeDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequeWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequePaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`BeginningBalance` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VoidSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`RefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ItemsDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`SubtotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`NoOfCashTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfChequeTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCreditCardTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCreditTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCombinationPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCreditPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfClosedTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfRefundTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfVoidTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfTotalTransactions` INT(10) NOT NULL DEFAULT 0,
+	`DateLastInitialized` DATETIME NOT NULL,
+	PRIMARY KEY (TerminalNo),
+	INDEX `IX_tblTerminalReport`(`TerminalNo`),
+	UNIQUE `PK_tblTerminalReport`(`TerminalNo`),
+	INDEX `IX1_tblTerminalReport`(`ZReadCount`),
+	INDEX `IX2_tblTerminalReport`(`XReadCount`)
 );
 
-INSERT INTO tblTerminalReport (`BeginningTransactionNo`, `EndingTransactionNo`, `ZReadCount`, `XReadCount`, `TerminalID`, `TerminalNo`, `DateLastInitialized`)
-		VALUES		('00000000000001', '00000000000001', 1, 1, 1, '01', DATE_SUB(DATE(NOW()), INTERVAL 1 DAY));
+INSERT INTO tblTerminalReport (BeginningTransactionNo, EndingTransactionNo, ZReadCount, XReadCount, BranchID, TerminalID, TerminalNo, DateLastInitialized)
+		VALUES		('00000000000001', '00000000000001', 1, 1, 1, 1, '01', DATE_SUB(DATE(NOW()), INTERVAL 1 DAY));
 
 /*****************************
 **	tblTerminalReportHistory
@@ -2375,58 +2375,58 @@ INSERT INTO tblTerminalReportHistory (`BeginningTransactionNo`, `EndingTransacti
 *****************************/
 DROP TABLE IF EXISTS tblCashierReport;
 CREATE TABLE tblCashierReport (
-`CashierID` BIGINT(20) NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
-`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTerminal(`TerminalID`),
-`TerminalNo` VARCHAR(10) NOT NULL,
-`GrossSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DailySales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`QuantitySold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`GroupSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequeSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashInDrawer` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequeDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequeWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`TotalPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CashPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ChequePaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`CreditCardPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`BeginningBalance` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`VoidSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`RefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ItemsDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`SubtotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`NoOfCashTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfChequeTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCreditCardTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCreditTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCombinationPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfCreditPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfClosedTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfRefundTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfVoidTransactions` INT(10) NOT NULL DEFAULT 0,
-`NoOfTotalTransactions` INT(10) NOT NULL DEFAULT 0,
-`CashCount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`LastLoginDate` DATETIME NOT NULL,
-PRIMARY KEY (`CashierID`, `TerminalNo`),
-INDEX `IX_tblCashierReport`(`CashierID`, `TerminalNo`),
-UNIQUE `PK_tblCashierReport`(`CashierID`, `TerminalNo`),
-INDEX `IX1_tblCashierReport`(`CashierID`),
-INDEX `IX2_tblCashierReport`(`TerminalNo`),
-INDEX `IX3_tblCashierReport`(`TerminalID`)
+	`CashierID` BIGINT(20) NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
+	`TerminalID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblTerminal(`TerminalID`),
+	`TerminalNo` VARCHAR(10) NOT NULL,
+	`GrossSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`DailySales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`QuantitySold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`GroupSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`EVAT` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LocalTax` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequeSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashInDrawer` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequeDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardDisburse` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequeWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardWithhold` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`TotalPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CashPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ChequePaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`CreditCardPaidOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`BeginningBalance` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`VoidSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`RefundSales` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`ItemsDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`SubtotalDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`NoOfCashTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfChequeTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCreditCardTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCreditTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCombinationPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfCreditPaymentTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfClosedTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfRefundTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfVoidTransactions` INT(10) NOT NULL DEFAULT 0,
+	`NoOfTotalTransactions` INT(10) NOT NULL DEFAULT 0,
+	`CashCount` DECIMAL(18,3) NOT NULL DEFAULT 0,
+	`LastLoginDate` DATETIME NOT NULL,
+	PRIMARY KEY (`CashierID`, `TerminalNo`),
+	INDEX `IX_tblCashierReport`(`CashierID`, `TerminalNo`),
+	UNIQUE `PK_tblCashierReport`(`CashierID`, `TerminalNo`),
+	INDEX `IX1_tblCashierReport`(`CashierID`),
+	INDEX `IX2_tblCashierReport`(`TerminalNo`),
+	INDEX `IX3_tblCashierReport`(`TerminalID`)
 );
 
 /*****************************
@@ -3705,7 +3705,6 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (2, 
 *****************************/
 
 ALTER TABLE tblCashierReport ADD `IsCashCountInitialized` TINYINT(1) NOT NULL DEFAULT 0; 
-
 
 /******************************************************************
 **	Added on Dec 09, 2008 for OrderSlipPrinter
@@ -6661,6 +6660,8 @@ CREATE TABLE `tblContactsAudit` (
 
 /*********************************  v_4.0.1.0.sql END  *******************************************************/ 
 
+UPDATE tblTerminal SET DBVersion = '4.0.1.1';
+
 ALTER TABLE tblTransactions ADD `isConsignment` tinyint(1) unsigned NOT NULL DEFAULT 0;
 
 ALTER TABLE tblProductInventory ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
@@ -7934,4 +7935,189 @@ RENAME TABLE deleted_tblBranchInventory TO deleted_tblBranchInventory_old;
 RENAME TABLE deleted_tblBranchInventoryMatrix TO deleted_tblBranchInventoryMatrix_old;
 RENAME TABLE tblBranchInventory TO deleted_tblBranchInventory;
 RENAME TABLE tblBranchInventoryMatrix TO deleted_tblBranchInventoryMatrix;
+
+ALTER TABLE sysAuditTrail ADD `BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE sysAuditTrail ADD `TerminalNo` VARCHAR(5);
+
+ALTER TABLE tblCashierLogs ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblCashierLogs SET SyncID = CashierLogsID WHERE SyncID = 0;
+
+
+ALTER TABLE tblCashierReport DROP INDEX PK_tblCashierReport;
+ALTER TABLE tblCashierReport DROP PRIMARY KEY;
+ALTER TABLE tblCashierReport ADD `CashierReportID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
+ALTER TABLE tblCashierReport ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblCashierReport SET SyncID = CashierReportID WHERE SyncID = 0;
+
+ALTER TABLE tblCashierReportHistory ADD `CashierReportHistoryID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
+ALTER TABLE tblCashierReportHistory ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblCashierReportHistory SET SyncID = CashierReportHistoryID WHERE SyncID = 0;
+ALTER TABLE tblCashierReportHistory ADD `IsCashCountInitialized` TINYINT(1) NOT NULL DEFAULT 0; 
+
+
+ALTER TABLE tblDeposit ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblDeposit SET SyncID = DepositID WHERE SyncID = 0;
+
+ALTER TABLE tblDisburse ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblDisburse SET SyncID = DisburseID WHERE SyncID = 0;
+
+ALTER TABLE tblPaidOut ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblPaidOut SET SyncID = PaidOutID WHERE SyncID = 0;
+
+ALTER TABLE tblWithhold ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblWithhold SET SyncID = WithholdID WHERE SyncID = 0;
+
+ALTER TABLE tblCashPayment ADD `CashPaymentID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
+ALTER TABLE tblCashPayment ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblCashPayment SET SyncID = CashPaymentID WHERE SyncID = 0;
+ALTER TABLE tblCashPayment ADD `TerminalNo` VARCHAR(5);
+ALTER TABLE tblCashPayment ADD `BranchID` INT(4) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblChequePayment ADD `ChequePaymentID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
+ALTER TABLE tblChequePayment ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblChequePayment SET SyncID = ChequePaymentID WHERE SyncID = 0;
+ALTER TABLE tblChequePayment ADD `TerminalNo` VARCHAR(5);
+ALTER TABLE tblChequePayment ADD `BranchID` INT(4) NOT NULL DEFAULT 0;
+
+
+ALTER TABLE tblCreditCardPayment ADD `CreditCardPaymentID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
+ALTER TABLE tblCreditCardPayment ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblCreditCardPayment SET SyncID = CreditCardPaymentID WHERE SyncID = 0;
+ALTER TABLE tblCreditCardPayment ADD `TerminalNo` VARCHAR(5);
+ALTER TABLE tblCreditCardPayment ADD `BranchID` INT(4) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCreditPayment ADD `CreditPaymentID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
+ALTER TABLE tblCreditPayment ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblCreditPayment SET SyncID = CreditPaymentID WHERE SyncID = 0;
+ALTER TABLE tblCreditPayment ADD `BranchID` INT(4) NOT NULL DEFAULT 0;
+
+-- create a productid reference so that references will be matrixid and productid
+ALTER TABLE tblProductVariationsMatrix ADD `ProductID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0;
+UPDATE tblProducts, tblProductBaseVariationsMatrix, tblProductVariationsMatrix SET 
+	tblProductVariationsMatrix.ProductID = tblProductBaseVariationsMatrix.ProductID
+WHERE tblProducts.ProductID = tblProductBaseVariationsMatrix.ProductID 
+	AND tblProductVariationsMatrix.MatrixID = tblProductBaseVariationsMatrix.MatrixID;
+
+-- remove the foreign key so that updating of VARIATIONS for basematrix can be done.
+ALTER TABLE tblProductVariationsMatrix DROP FOREIGN KEY `tblproductvariationsmatrix_ibfk_2`;
+
+ALTER TABLE tblCashCount ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblCashCount SET SyncID = CashCountID WHERE SyncID = 0;
+ALTER TABLE tblCashCount ADD `DenominationValue` DECIMAL(18,2) NOT NULL DEFAULT 0 COMMENT 'Need for audit purposes only';
+
+ALTER TABLE tblPLUReport ADD `BranchID` INT(4) NOT NULL DEFAULT 0;
+
+-- extend the no of char from 20 to 40
+ALTER TABLE tblReceipt Modify `Text` VARCHAR(40);
+
+-- This is the OR no that will be printed if the transactions are:
+-- Closed and Refund; 
+-- No OR no for CreditPayment, Void
+ALTER TABLE tblTerminalReport ADD `BeginningORNo` VARCHAR(30) NOT NULL;
+ALTER TABLE tblTerminalReport ADD `EndingORNo` VARCHAR(30) NOT NULL;
+UPDATE tblTerminalReport SET BeginningORNo = BeginningTransactionNo WHERE BeginningORNo = '' OR BeginningORNo IS NULL;
+UPDATE tblTerminalReport SET EndingORNo = EndingTransactionNo WHERE EndingORNo = '' OR EndingORNo IS NULL;
+
+ALTER TABLE tblTerminalReportHistory ADD `BeginningORNo` VARCHAR(30) NOT NULL;
+ALTER TABLE tblTerminalReportHistory ADD `EndingORNo` VARCHAR(30) NOT NULL;
+UPDATE tblTerminalReportHistory SET BeginningORNo = BeginningTransactionNo WHERE BeginningORNo = '' OR BeginningORNo IS NULL;
+UPDATE tblTerminalReportHistory SET EndingORNo = EndingTransactionNo WHERE EndingORNo = '' OR EndingORNo IS NULL;
+
+ALTER TABLE tblTransactions ADD `ORNo` VARCHAR(30);
+-- update ORNo of those that are closed and refunded
+UPDATE tblTransactions SET ORNo = NULL WHERE TransactionStatus NOT IN (1,5,11) AND IFNULL(ORNo,'') <> '';
+UPDATE tblTransactions SET ORNo = TransactionNo WHERE TransactionStatus IN (1,5,11) AND IFNULL(ORNo,'') = '';
+
+ALTER TABLE tblTransactions ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblTransactions SET SyncID = TransactionID WHERE SyncID = 0;
+ALTER TABLE tblTransactions ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
+ALTER TABLE tblTransactions ADD `NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for NonVAT';
+ALTER TABLE tblTransactions ADD `VATExempt` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for SNR';
+ALTER TABLE tblTransactions ADD `NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblTransactions ADD `SNRDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactions ADD `PWDDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactions ADD `OtherDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactions ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Net Sales = Amount Due = VAT Exempt - SNRDisc = Subtotal - Not SNRDisc';
+
+UPDATE tblTransactions SET NetSales = SubTotal - (VATExempt * 0.12) - Discount;
+
+ALTER TABLE tblTransactionItems ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+UPDATE tblTransactionItems SET SyncID = TransactionItemsID WHERE SyncID = 0;
+ALTER TABLE tblTransactionItems ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
+ALTER TABLE tblTransactionItems ADD `NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for NonVAT';
+ALTER TABLE tblTransactionItems ADD `VATExempt` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for SNR';
+ALTER TABLE tblTransactionItems ADD `NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblTerminalReport ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
+ALTER TABLE tblTerminalReport ADD `NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for NonVAT';
+ALTER TABLE tblTerminalReport ADD `VATExempt` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for SNR';
+ALTER TABLE tblTerminalReport MODIFY `NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `SNRDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `PWDDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `OtherDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Net Sales = Amount Due = VAT Exempt - SNRDisc = Subtotal - Not SNRDisc';
+
+ALTER TABLE tblTerminalReportHistory ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
+ALTER TABLE tblTerminalReportHistory MODIFY `NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for NonvAT';
+ALTER TABLE tblTerminalReportHistory ADD `VATExempt` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for SNR';
+ALTER TABLE tblTerminalReportHistory MODIFY `NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `SNRDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `PWDDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `OtherDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Net Sales = Amount Due = VAT Exempt - SNRDisc = Subtotal - Not SNRDisc';
+
+/**************GENERATE DISCOUNT**************/
+-- break the TotalDiscount = ItemsDiscount + SNRDiscount (VATExempt * 0.20) + PWDDiscount + OtherDiscount
+UPDATE tblTerminalReport SET SNRDiscount = VATExempt * 0.20;
+UPDATE tblTerminalReportHistory SET SNRDiscount = VATExempt * 0.20;
+
+UPDATE tblTerminalReport SET OtherDiscount = TotalDiscount - ItemsDiscount - SNRDiscount;
+UPDATE tblTerminalReportHistory SET OtherDiscount = TotalDiscount - ItemsDiscount - SNRDiscount;
+
+UPDATE tblTerminalReport SET NetSales = GrossSales - (VATExempt * 0.12) - TotalDiscount;
+UPDATE tblTerminalReportHistory SET NetSales = GrossSales - (VATExempt * 0.12) - TotalDiscount;
+
+ALTER TABLE tblCashierReport ADD `VATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for VAT';
+ALTER TABLE tblCashierReport ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
+ALTER TABLE tblCashierReport ADD `NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for NonVAT';
+ALTER TABLE tblCashierReport ADD `VATExempt` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for SNR';
+ALTER TABLE tblCashierReport ADD `EVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReport ADD `SNRDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `PWDDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `OtherDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Net Sales = Amount Due = VAT Exempt - SNRDisc = Subtotal - Not SNRDisc';
+
+ALTER TABLE tblCashierReportHistory ADD `VATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for VAT';
+ALTER TABLE tblCashierReportHistory ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
+ALTER TABLE tblCashierReportHistory ADD `NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for NonVAT';
+ALTER TABLE tblCashierReportHistory ADD `VATExempt` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for SNR';
+ALTER TABLE tblCashierReportHistory ADD `EVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `NonEVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReportHistory ADD `SNRDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `PWDDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `OtherDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Net Sales = Amount Due = VAT Exempt - SNRDisc = Subtotal - Not SNRDisc';
+
+/**************GENERATE DISCOUNT**************/
+-- break the TotalDiscount = ItemsDiscount + SNRDiscount (VATExempt * 0.20) + PWDDiscount + OtherDiscount
+UPDATE tblCashierReport SET VATableAmount = VAT / 0.12;
+UPDATE tblCashierReportHistory SET VATableAmount = VAT / 0.12;
+
+UPDATE tblCashierReport SET SNRDiscount = VATExempt * 0.20;
+UPDATE tblCashierReportHistory SET SNRDiscount = VATExempt * 0.20;
+
+UPDATE tblCashierReport SET OtherDiscount = TotalDiscount - ItemsDiscount - SNRDiscount;
+UPDATE tblCashierReportHistory SET OtherDiscount = TotalDiscount - ItemsDiscount - SNRDiscount;
+
+
+ALTER TABLE tblPLUReport MODIFY `ProductCode` VARCHAR(500);
+
+ALTER TABLE tblTransactions ADD `ChargeType` INT(1) NOT NULL DEFAULT 0;
+UPDATE tblTransactions SET ChargeType = IFNULL((SELECT InPercent FROM tblChargeType WHERE tblChargeType.ChargeTypeCode = tblTransactions.ChargeCode),0);
+
+/*********************************  v_4.0.1.1.sql END  *******************************************************/ 
 

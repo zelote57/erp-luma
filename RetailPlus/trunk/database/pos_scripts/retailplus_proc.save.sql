@@ -25,11 +25,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ConfigName FROM sysConfig WHERE ConfigName = strConfigName) THEN 
 		UPDATE sysConfig SET
 			ConfigValue			= strConfigValue,
 			Category			= strCategory,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE ConfigName		= strConfigName;
 	ELSE
@@ -63,11 +65,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ConfigName FROM SysCreditConfig WHERE ConfigName = strConfigName) THEN 
 		UPDATE SysCreditConfig SET
 			ConfigValue			= strConfigValue,
 			Remarks				= strRemarks,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE ConfigName		= strConfigName;
 	ELSE
@@ -100,11 +104,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT HDSerialNo FROM SysTerminalKey WHERE HDSerialNo = strHDSerialNo) THEN 
 		UPDATE SysTerminalKey SET
 			HDSerialNo			= strHDSerialNo,
 			RegistrationKey		= strRegistrationKey,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE HDSerialNo		= strHDSerialNo;
 	ELSE
@@ -141,6 +147,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT TypeID FROM SysAccessTypes WHERE TypeID = intTypeID) THEN 
 		UPDATE SysAccessTypes SET
 			TypeName			= strTypeName,
@@ -148,7 +157,6 @@ BEGIN
 			Enabled			= boEnabled,
 			SequenceNo			= intSequenceNo,
 			Category			= strCategory,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE TypeID			= intTypeID;
 	ELSE
@@ -182,11 +190,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT GroupID FROM SysAccessGroups WHERE GroupID = intGroupID) THEN 
 		UPDATE SysAccessGroups SET
 			GroupName			= strGroupName,
 			Remarks				= strRemarks,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE GroupID			= intGroupID;
 	ELSE
@@ -222,13 +232,15 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT UID FROM SysAccessUsers WHERE UID = intUID) THEN 
 		UPDATE SysAccessUsers SET
 			UserName			= strUserName,
 			Password			= strPassword,
 			DateCreated			= dteDateCreated,
 			Deleted				= boDeleted,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE UID				= intUID;
 	ELSE
@@ -275,6 +287,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT UID FROM SysAccessUserDetails WHERE UID = intUID) THEN 
 		UPDATE SysAccessUserDetails SET
 			Name				= strName,
@@ -292,7 +307,6 @@ BEGIN
 			EmailAddress		= strEmailAddress,
 			GroupID				= intGroupID,
 			PageSize			= intPageSize,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE UID				= intUID;
 	ELSE
@@ -333,11 +347,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT GroupID FROM SysAccessGroupRights WHERE GroupID = intGroupID AND TranTypeID = intTranTypeID) THEN 
 		UPDATE SysAccessGroupRights SET
 			AllowRead			= boAllowRead,
 			AllowWrite			= boAllowWrite,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE intGroupID		= intGroupID
 			AND TranTypeID		= intTranTypeID;
@@ -373,11 +389,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT UID FROM SysAccessRights WHERE UID = intUID AND TranTypeID = intTranTypeID) THEN 
 		UPDATE SysAccessRights SET
 			AllowRead			= boAllowRead,
 			AllowWrite			= boAllowWrite,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE UID				= intUID
 			AND TranTypeID		= intTranTypeID;
@@ -416,6 +434,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT BranchID FROM tblBranch WHERE BranchID = intBranchID) THEN 
 		UPDATE tblBranch SET
 			BranchCode			= strBranchCode,
@@ -424,7 +445,6 @@ BEGIN
 			DBPort				= strDBPort,
 			Address				= strAddress,
 			Remarks				= strRemarks,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE BranchID			= intBranchID;
 	ELSE
@@ -457,10 +477,12 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT CalDateID FROM tblCalDate WHERE CalDateID = intCalDateID) THEN 
 		UPDATE tblCalDate SET
 			CalDate				= dteCaldate,
-			CreatedOn			= dteCreatedOn,
 			LastModified		= dteLastModified
 		WHERE CalDateID			= intCalDateID;
 	ELSE
@@ -524,6 +546,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ERPConfigID FROM tblERPConfig WHERE ERPConfigID = intERPConfigID) THEN 
 		UPDATE tblERPConfig SET
 			LastPONo				= strLastPONo,
@@ -556,7 +581,6 @@ BEGIN
 			DBVersionSales			= strDBVersionSales,
 			LastBranchTransferNo	= strLastBranchTransferNo,
 			LastCustomerCode		= strLastCustomerCode,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ERPConfigID			= intERPConfigID;
 	ELSE
@@ -677,6 +701,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT TerminalID FROM tblTerminal WHERE TerminalID = intTerminalID) THEN 
 		UPDATE tblTerminal SET
 			TerminalNo				= strTerminalNo,
@@ -752,7 +779,6 @@ BEGIN
 			WillPrintChargeSlip		= boWillPrintChargeSlip,
 			IncludeTermsAndConditions			= boIncludeTermsAndConditions,
 			PWDDiscountCode			= strPWDDiscountCode,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE TerminalID			= intTerminalID;
 	ELSE
@@ -824,13 +850,15 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ChargeTypeID FROM tblChargeType WHERE ChargeTypeID = intChargeTypeID) THEN 
 		UPDATE tblChargeType SET
 			ChargeTypeCode			= strChargeTypeCode,
 			ChargeType				= strChargeType,
 			ChargeAmount			= decChargeAmount,
 			InPercent				= boInPercent,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ChargeTypeID			= intChargeTypeID;
 	ELSE
@@ -866,13 +894,15 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT DiscountID FROM tblDiscount WHERE DiscountID = intDiscountID) THEN 
 		UPDATE tblDiscount SET
 			DiscountCode			= strDiscountCode,
 			DiscountType			= strDiscountType,
 			DiscountPrice			= decDiscountPrice,
 			InPercent				= boInPercent,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE DiscountID			= intDiscountID;
 	ELSE
@@ -905,10 +935,12 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT CountryID FROM tblCountry WHERE CountryID = intCountryID) THEN 
 		UPDATE tblCountry SET
 			CountryName				= strCountryName,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE CountryID			= intCountryID;
 	ELSE
@@ -943,12 +975,14 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT DenominationID FROM tblDenomination WHERE DenominationID = intDenominationID) THEN 
 		UPDATE tblDenomination SET
 			DenominationCode		= strDenominationCode,
 			DenominationValue		= decDenominationValue,
 			ImagePath				= strImagePath,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE DenominationID		= intDenominationID;
 	ELSE
@@ -982,11 +1016,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT SalutationID FROM tblSalutations WHERE SalutationID = intSalutationID) THEN 
 		UPDATE tblSalutations SET
 			SalutationCode			= strSalutationCode,
 			SalutationName			= strSalutationName,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE SalutationID			= intSalutationID;
 	ELSE
@@ -1020,11 +1056,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT DepartmentID FROM tblDepartments WHERE DepartmentID = intDepartmentID) THEN 
 		UPDATE tblDepartments SET
 			DepartmentCode			= strDepartmentCode,
 			DepartmentName			= strDepartmentName,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE DepartmentID			= intDepartmentID;
 	ELSE
@@ -1058,11 +1096,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT CardTypeID FROM tblCardTypes WHERE CardTypeID = intCardTypeID) THEN 
 		UPDATE tblCardTypes SET
 			CardTypeCode			= strCardTypeCode,
 			CardTypeName			= strCardTypeName,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE CardTypeID			= intCardTypeID;
 	ELSE
@@ -1087,7 +1127,7 @@ GO
 create procedure procSaveReceipt(	
 	IN intReceiptID INT(10),
 	IN strModule VARCHAR(20),
-	IN strText VARCHAR(20),
+	IN strText VARCHAR(40),
 	IN strValue VARCHAR(40),
 	IN intOrientation TINYINT(1),
 	IN dteCreatedOn DATETIME,
@@ -1098,17 +1138,27 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ReceiptID FROM tblReceipt WHERE ReceiptID = intReceiptID) THEN 
 		UPDATE tblReceipt SET
 			Module					= strModule,
 			Text					= strText,
 			Value					= strValue,
-			CreatedOn				= dteCreatedOn,
+			Orientation				= intOrientation,
 			LastModified			= dteLastModified
 		WHERE ReceiptID			= intReceiptID;
+	ELSEIF EXISTS(SELECT ReceiptID FROM tblReceipt WHERE Module = strModule) THEN 
+		UPDATE tblReceipt SET
+			Text					= strText,
+			Value					= strValue,
+			Orientation				= intOrientation,
+			LastModified			= dteLastModified
+		WHERE Module				= strModule;
 	ELSE
-		INSERT INTO tblReceipt(ReceiptID, Module, Text, Value, CreatedOn, LastModified)
-			VALUES(intReceiptID, strModule, strText, strValue, dteCreatedOn, dteLastModified);
+		INSERT INTO tblReceipt(ReceiptID, Module, Text, Value, Orientation, CreatedOn, LastModified)
+			VALUES(intReceiptID, strModule, strText, strValue, intOrientation, dteCreatedOn, dteLastModified);
 	END IF;
 				
 END;
@@ -1137,11 +1187,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT UnitID FROM tblUnit WHERE UnitID = intUnitID) THEN 
 		UPDATE tblUnit SET
 			UnitCode				= strUnitCode,
 			UnitName				= strUnitName,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE UnitID				= intUnitID;
 	ELSE
@@ -1175,11 +1227,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT VariationID FROM tblVariations WHERE VariationID = intVariationID) THEN 
 		UPDATE tblVariations SET
 			VariationCode			= strVariationCode,
 			VariationType			= strVariationType,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE VariationID			= intVariationID;
 	ELSE
@@ -1213,11 +1267,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT PromoTypeID FROM tblPromoType WHERE PromoTypeID = intPromoTypeID) THEN 
 		UPDATE tblPromoType SET
 			PromoTypeCode			= strPromoTypeCode,
 			PromoTypeName			= strPromoTypeName,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE PromoTypeID			= intPromoTypeID;
 	ELSE
@@ -1255,6 +1311,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT PromoID FROM tblPromo WHERE PromoID = intPromoID) THEN 
 		UPDATE tblPromo SET
 			PromoCode				= strPromoCode,
@@ -1263,7 +1322,6 @@ BEGIN
 			EndDate					= dteEndDate,
 			PromoTypeID				= intPromoTypeID,
 			Status					= intStatus,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE PromoID				= intPromoID;
 	ELSE
@@ -1320,6 +1378,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ProductGroupID FROM tblProductGroup WHERE ProductGroupID = intProductGroupID) THEN 
 		UPDATE tblProductGroup SET
 			ProductGroupCode		= strProductGroupCode,
@@ -1345,7 +1406,6 @@ BEGIN
 			ChartOfAccountIDTaxTransferOut  = intChartOfAccountIDTaxTransferOut,
 			ChartOfAccountIDInvAdjustment	= intChartOfAccountIDInvAdjustment,
 			ChartOfAccountIDTaxInvAdjustment= intChartOfAccountIDTaxInvAdjustment,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ProductGroupID		= intProductGroupID;
 	ELSE
@@ -1402,6 +1462,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT MatrixID FROM tblProductGroupBaseVariationsMatrix WHERE MatrixID = intMatrixID AND GroupID = intGroupID) THEN 
 		UPDATE tblProductGroupBaseVariationsMatrix SET
 			Description				= strDescription,
@@ -1412,7 +1475,6 @@ BEGIN
 			VAT						= decVAT,
 			EVAT					= decEVAT,
 			LocalTax				= decLocalTax,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE MatrixID = intMatrixID AND GroupID = intGroupID;
 	ELSE
@@ -1450,11 +1512,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ProductGroupVariationID FROM tblProductGroupVariations WHERE ProductGroupVariationID = intProductGroupVariationID) THEN 
 		UPDATE tblProductGroupVariations SET
 			GroupID					= intGroupID,
 			VariationID				= intVariationID,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ProductGroupVariationID = intProductGroupVariationID;
 	ELSE
@@ -1490,12 +1554,14 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ProductGroupVariationsMatrixID FROM tblProductGroupVariationsMatrix WHERE ProductGroupVariationsMatrixID = intProductGroupVariationsMatrixID) THEN 
 		UPDATE tblProductGroupVariationsMatrix SET
 			MatrixID				= intMatrixID,
 			VariationID				= intVariationID,
 			Description				= strDescription,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ProductGroupVariationsMatrixID = intProductGroupVariationsMatrixID;
 	ELSE
@@ -1533,6 +1599,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT MatrixID FROM tblProductGroupUnitMatrix WHERE MatrixID = intMatrixID) THEN 
 		UPDATE tblProductGroupUnitMatrix SET
 			GroupID					= intGroupID,
@@ -1540,7 +1609,6 @@ BEGIN
 			BaseUnitValue			= decBaseUnitValue,
 			BottomUnitID			= intBottomUnitID,
 			BottomUnitValue			= decBottomUnitValue,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE MatrixID				= intMatrixID;
 	ELSE
@@ -1580,13 +1648,15 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ChargeID FROM tblProductGroupCharges WHERE ChargeID = intChargeID) THEN 
 		UPDATE tblProductGroupCharges SET
 			GroupID					= intGroupID,
 			ChargeTypeID			= intChargeTypeID,
 			ChargeAmount			= decChargeAmount,
 			InPercent				= boInPercent,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ChargeID				= intChargeID;
 	ELSE
@@ -1643,6 +1713,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ProductSubGroupID FROM tblProductSubGroup WHERE ProductSubGroupID = intProductSubGroupID) THEN 
 		UPDATE tblProductSubGroup SET
 			ProductGroupID			= intProductGroupID,
@@ -1667,7 +1740,6 @@ BEGIN
 			ChartOfAccountIDTaxTransferOut  = intChartOfAccountIDTaxTransferOut,
 			ChartOfAccountIDInvAdjustment	= intChartOfAccountIDInvAdjustment,
 			ChartOfAccountIDTaxInvAdjustment= intChartOfAccountIDTaxInvAdjustment,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ProductSubGroupID		= intProductSubGroupID;
 	ELSE
@@ -1723,6 +1795,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT MatrixID FROM tblProductSubGroupBaseVariationsMatrix WHERE MatrixID = intMatrixID AND SubGroupID = intSubGroupID) THEN 
 		UPDATE tblProductSubGroupBaseVariationsMatrix SET
 			Description				= strDescription,
@@ -1733,7 +1808,6 @@ BEGIN
 			VAT						= decVAT,
 			EVAT					= decEVAT,
 			LocalTax				= decLocalTax,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE MatrixID = intMatrixID AND SubGroupID = intSubGroupID;
 	ELSE
@@ -1773,11 +1847,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ProductSubGroupVariationID FROM tblProductSubGroupVariations WHERE ProductSubGroupVariationID = intProductSubGroupVariationID) THEN 
 		UPDATE tblProductSubGroupVariations SET
 			SubGroupID					= intSubGroupID,
 			VariationID				= intVariationID,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ProductSubGroupVariationID = intProductSubGroupVariationID;
 	ELSE
@@ -1814,12 +1890,14 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ProductSubGroupVariationsMatrixID FROM tblProductSubGroupVariationsMatrix WHERE ProductSubGroupVariationsMatrixID = intProductSubGroupVariationsMatrixID) THEN 
 		UPDATE tblProductSubGroupVariationsMatrix SET
 			MatrixID				= intMatrixID,
 			VariationID				= intVariationID,
 			Description				= strDescription,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ProductSubGroupVariationsMatrixID = intProductSubGroupVariationsMatrixID;
 	ELSE
@@ -1857,6 +1935,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT MatrixID FROM tblProductSubGroupUnitMatrix WHERE MatrixID = intMatrixID) THEN 
 		UPDATE tblProductSubGroupUnitMatrix SET
 			SubGroupID				= intSubGroupID,
@@ -1864,7 +1945,6 @@ BEGIN
 			BaseUnitValue			= decBaseUnitValue,
 			BottomUnitID			= intBottomUnitID,
 			BottomUnitValue			= decBottomUnitValue,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE MatrixID				= intMatrixID;
 	ELSE
@@ -1902,13 +1982,15 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ChargeID FROM tblProductSubGroupCharges WHERE ChargeID = intChargeID) THEN 
 		UPDATE tblProductSubGroupCharges SET
 			SubGroupID				= intSubGroupID,
 			ChargeTypeID			= intChargeTypeID,
 			ChargeAmount			= decChargeAmount,
 			InPercent				= boInPercent,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ChargeID				= intChargeID;
 	ELSE
@@ -1973,6 +2055,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
 	IF EXISTS(SELECT ProductID FROM tblProducts WHERE ProductID = intProductID) THEN 
 		UPDATE tblProducts SET
 			ProductCode				= strProductCode,
@@ -2006,7 +2091,6 @@ BEGIN
 			ChartOfAccountIDTaxTransferOut	= intChartOfAccountIDTaxTransferOut,
 			ChartOfAccountIDInvAdjustment	= intChartOfAccountIDInvAdjustment,
 			ChartOfAccountIDTaxInvAdjustment= intChartOfAccountIDTaxInvAdjustment,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ProductID				= intProductID;
 	ELSE
@@ -2069,6 +2153,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT MatrixID FROM tblProductBaseVariationsMatrix WHERE MatrixID = intMatrixID AND ProductID = intProductID) THEN 
 		UPDATE tblProductBaseVariationsMatrix SET
 			Description				= strDescription,
@@ -2080,7 +2167,6 @@ BEGIN
 			RIDMinThreshold			= decRIDMinThreshold,
 			RIDMaxThreshold			= decRIDMaxThreshold,
 			Deleted					= boDeleted,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE MatrixID = intMatrixID AND ProductID = intProductID;
 	ELSE
@@ -2120,11 +2206,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ProductVariationID FROM tblProductVariations WHERE ProductVariationID = intProductVariationID) THEN 
 		UPDATE tblProductVariations SET
 			ProductID				= intProductID,
 			VariationID				= intVariationID,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ProductVariationID = intProductVariationID;
 	ELSE
@@ -2154,12 +2242,14 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ProductVariationsMatrixID FROM tblProductVariationsMatrix WHERE ProductVariationsMatrixID = intProductVariationsMatrixID) THEN 
 		UPDATE tblProductVariationsMatrix SET
 			MatrixID				= intMatrixID,
 			VariationID				= intVariationID,
 			Description				= strDescription,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ProductVariationsMatrixID = intProductVariationsMatrixID;
 	ELSE
@@ -2198,6 +2288,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT MatrixID FROM tblProductUnitMatrix WHERE MatrixID = intMatrixID) THEN 
 		UPDATE tblProductUnitMatrix SET
 			ProductID				= intProductID,
@@ -2205,7 +2298,6 @@ BEGIN
 			BaseUnitValue			= decBaseUnitValue,
 			BottomUnitID			= intBottomUnitID,
 			BottomUnitValue			= decBottomUnitValue,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE MatrixID				= intMatrixID;
 	ELSE
@@ -2255,6 +2347,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT PackageID FROM tblProductPackage WHERE PackageID = intPackageID) THEN 
 		UPDATE tblProductPackage SET
 			ProductID				= intProductID,
@@ -2271,7 +2366,6 @@ BEGIN
 			Barcode2				= strBarcode2,
 			Barcode3				= strBarcode3,
 			BarCode4				= strBarCode4,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE PackageID = intPackageID;
 	ELSE
@@ -2314,6 +2408,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
 	IF EXISTS(SELECT CompositionID FROM tblProductComposition WHERE CompositionID = intCompositionID) THEN 
 		UPDATE tblProductComposition SET
 			MainProductID			= intMainProductID,
@@ -2321,7 +2418,6 @@ BEGIN
 			VariationMatrixID		= intVariationMatrixID,
 			UnitID					= intUnitID,
 			Quantity				= decQuantity,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE CompositionID			= intCompositionID;
 	ELSE
@@ -2366,6 +2462,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT PromoItemsID FROM tblPromoItems WHERE PromoItemsID = intPromoItemsID) THEN 
 		UPDATE tblPromoItems SET
 			PromoID					= intPromoID,
@@ -2377,7 +2476,6 @@ BEGIN
 			Quantity				= decQuantity,
 			PromoValue				= decPromoValue,
 			InPercent				= boInPercent,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE PromoItemsID			= intPromoItemsID;
 	ELSE
@@ -2418,12 +2516,14 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT StockTypeID FROM tblStockType WHERE StockTypeID = intStockTypeID) THEN 
 		UPDATE tblStockType SET
 			StockTypeCode			= strStockTypeCode,
 			Description				= strDescription,
 			StockDirection			= intStockDirection,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE StockTypeID			= intStockTypeID;
 	ELSE
@@ -2459,11 +2559,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
 	IF EXISTS(SELECT RewardItemsID FROM tblRewardItems WHERE ProductID = intProductID) THEN 
 		UPDATE tblRewardItems SET
 			ProductID				= intProductID,
 			RewardPoints			= decRewardPoints,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ProductID = intProductID;
 	ELSE
@@ -2516,6 +2618,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ParkingRateID FROM tblParkingRates WHERE ParkingRateID = intParkingRateID) THEN 
 		UPDATE tblParkingRates SET
 			ProductID				= intProductID,
@@ -2528,7 +2633,6 @@ BEGIN
 			MinimumStayPrice		= decMinimumStayPrice,
 			CreatedByName			= strCreatedByName,
 			LastUpdatedByName		= strLastUpdatedByName,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ParkingRateID			= intParkingRateID;
 	ELSE
@@ -2566,11 +2670,13 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT PositionID FROM tblPositions WHERE PositionID = intPositionID) THEN 
 		UPDATE tblPositions SET
 			PositionCode			= strPositionCode,
 			PositionName			= strPositionName,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE PositionID			= intPositionID;
 	ELSE
@@ -2610,12 +2716,14 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ContactGroupID FROM tblContactGroup WHERE ContactGroupID = intContactGroupID) THEN 
 		UPDATE tblContactGroup SET
 			ContactGroupCode		= strContactGroupCode,
 			ContactGroupName		= strContactGroupName,
 			ContactGroupCategory	= intContactGroupCategory,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ContactGroupID		= intContactGroupID;
 	ELSE
@@ -2667,6 +2775,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ContactID FROM tblContacts WHERE ContactID = intContactID) THEN 
 		UPDATE tblContacts SET
 			ContactCode				= strContactCode,
@@ -2687,7 +2798,6 @@ BEGIN
 			DepartmentID			= intDepartmentID,
 			PositionID				= intPositionID,
 			isLock					= boisLock,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ContactID				= intContactID;
 	ELSE
@@ -2747,6 +2857,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT ContactID FROM tblContactAddOn WHERE ContactID = intContactID) THEN 
 		UPDATE tblContactAddOn SET
 			ContactID				= intContactID,
@@ -2768,7 +2881,6 @@ BEGIN
 			HomephoneNo				= strHomephoneNo,
 			MobileNo				= strMobileNo,
 			FaxNo					= strFaxNo,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE ContactID				= intContactID;
 	ELSE
@@ -2818,6 +2930,9 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
 	IF EXISTS(SELECT CustomerID FROM tblContactCreditCardInfo WHERE CustomerID = intCustomerID) THEN 
 		UPDATE tblContactCreditCardInfo SET
 			CustomerID				= intCustomerID,
@@ -2831,7 +2946,6 @@ BEGIN
 			ExpiryDate				= dteExpiryDate,
 			EmbossedCardNo			= strEmbossedCardNo,
 			LastBillingDate			= dteLastBillingDate,
-			CreatedOn				= dteCreatedOn,
 			LastModified			= dteLastModified
 		WHERE CustomerID			= intCustomerID;
 	ELSE
@@ -2842,6 +2956,1112 @@ BEGIN
 								decTotalPurchases, decCreditPaid, intCreditCardStatus, dteExpiryDate, strEmbossedCardNo, 
 								dteLastBillingDate, dteCreatedOn, dteLastModified);
 	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+
+/******************************************** transactions *****************************************/
+
+
+
+/********************************************
+	procSaveCashierLogs
+	Aug 2, 2014
+
+	CALL procSaveCashierLogs(2,'01',0,0,5,NOW(),7,now(),1,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveCashierLogs
+GO
+
+create procedure procSaveCashierLogs(	
+	IN intBranchID      int(4),
+	IN strTerminalNo    varchar(5),
+	IN intSyncID        bigint(20),
+	IN intCashierLogsID bigint(20),
+	IN intUID           bigint(20),
+	IN dteLoginDate     datetime,
+	IN strIPAddress     varchar(15),
+	IN dteLogoutDate    datetime,
+	IN intStatus        tinyint(3),
+	IN strBranchCode    varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intCashierLogsID; END IF;
+	IF (strBranchCode = '') THEN  SET strBranchCode = (SELECT BranchCode FROM tblBranch WHERE BranchID = intBranchID LIMIT 1); END IF;
+	
+	IF EXISTS(SELECT CashierLogsID FROM tblCashierLogs WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblCashierLogs SET
+			UID						= intUID,
+			LoginDate				= dteLoginDate,
+			IPAddress				= strIPAddress,
+			LogoutDate				= dteLogoutDate,
+			Status					= intStatus,
+			BranchCode				= strBranchCode,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblCashierLogs(BranchID, TerminalNo, UID, LoginDate, IPAddress, LogoutDate, Status, BranchCode, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intUID, dteLoginDate, strIPAddress, dteLogoutDate, intStatus, strBranchCode, dteCreatedOn, dteLastModified);
+
+		UPDATE tblCashierLogs SET SyncID = CashierLogsID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveCashierReport
+	Aug 2, 2014
+
+	CALL procSaveCashierReport(2,'01',0,0,5,NOW(),7,now(),1,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveCashierReport
+GO
+
+create procedure procSaveCashierReport(	
+	IN intBranchID      int(4),
+	IN strTerminalNo    varchar(5),
+	IN intSyncID							 bigint(20),
+	IN intCashierReportID                    bigint(20),
+	IN intCashierID							 bigint(20),
+	IN intTerminalID						 bigint(20),
+	IN decNetSales							 decimal(18,2),
+	IN decGrossSales                         decimal(18,2),
+	IN decTotalDiscount                      decimal(18,2),
+	IN decSNRDiscount						 decimal(18,2),
+	IN decPWDDiscount						 decimal(18,2),
+	IN decOtherDiscount                      decimal(18,2),
+	IN decDailySales                         decimal(18,2),
+	IN decQuantitySold                       decimal(18,2),
+	IN decGroupSales                         decimal(18,2),
+	IN decVAT                                decimal(18,2),
+	IN decEVAT                               decimal(18,2),
+	IN decLocalTax                           decimal(18,2),
+	IN decCashSales                          decimal(18,2),
+	IN decChequeSales                        decimal(18,2),
+	IN decCreditCardSales                    decimal(18,2),
+	IN decCreditSales                        decimal(18,2),
+	IN decCreditPayment                      decimal(18,2),
+	IN decCashInDrawer                       decimal(18,2),
+	IN decTotalDisburse                      decimal(18,2),
+	IN decCashDisburse                       decimal(18,2),
+	IN decChequeDisburse                     decimal(18,2),
+	IN decCreditCardDisburse                 decimal(18,2),
+	IN decTotalWithhold                      decimal(18,2),
+	IN decCashWithhold                       decimal(18,2),
+	IN decChequeWithhold                     decimal(18,2),
+	IN decCreditCardWithhold                 decimal(18,2),
+	IN decTotalPaidOut                       decimal(18,2),
+	IN decCashPaidOut                        decimal(18,2),
+	IN decChequePaidOut                      decimal(18,2),
+	IN decCreditCardPaidOut                  decimal(18,2),
+	IN decBeginningBalance                   decimal(18,2),
+	IN decVoidSales                          decimal(18,2),
+	IN decRefundSales                        decimal(18,2),
+	IN decItemsDiscount                      decimal(18,2),
+	IN decSubtotalDiscount                   decimal(18,2),
+	IN intNoOfCashTransactions               int(10),
+	IN intNoOfChequeTransactions             int(10),
+	IN intNoOfCreditCardTransactions         int(10),
+	IN intNoOfCreditTransactions             int(10),
+	IN intNoOfCombinationPaymentTransactions int(10),
+	IN intNoOfCreditPaymentTransactions      int(10),
+	IN intNoOfClosedTransactions             int(10),
+	IN intNoOfRefundTransactions             int(10),
+	IN intNoOfVoidTransactions               int(10),
+	IN intNoOfTotalTransactions              int(10),
+	IN decCashCount                          decimal(18,2),
+	IN dteLastLoginDate                      datetime,
+	IN decTotalDeposit                       decimal(18,2),
+	IN decCashDeposit                        decimal(18,2),
+	IN decChequeDeposit                      decimal(18,2),
+	IN decCreditCardDeposit                  decimal(18,2),
+	IN decDebitPayment                       decimal(18,2),
+	IN intNoOfDebitPaymentTransactions       int(10),
+	IN decTotalCharge                        decimal(18,2),
+	IN intIsCashCountInitialized             tinyint(1),
+	IN intNoOfDiscountedTransactions         int(4),
+	IN decNegativeAdjustments                decimal(18,2),
+	IN intNoOfNegativeAdjustmentTransactions int(4),
+	IN decPromotionalItems                   decimal(18,2),
+	IN decCreditSalesTax                     decimal(18,2),
+	IN decDebitDeposit                       decimal(18,3),
+	IN decRewardPointsPayment                decimal(18,3),
+	IN decRewardConvertedPayment             decimal(18,3),
+	IN intNoOfRewardPointsPayment            int(10),
+	IN decCreditPaymentCash                  decimal(18,2),
+	IN decCreditPaymentCheque                decimal(18,2),
+	IN decCreditPaymentCreditCard            decimal(18,2),
+	IN decCreditPaymentDebit                 decimal(18,2),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intCashierReportID; END IF;
+	
+	IF EXISTS(SELECT CashierReportID FROM tblCashierReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblCashierReport SET
+			CashierID							= intCashierID,
+			TerminalID							= decNetSales,
+			NetSales							= decSubTotal,
+			GrossSales							= decGrossSales,
+			TotalDiscount						= decTotalDiscount,
+			SNRDiscount							= decSNRDiscount,
+			PWDDiscount							= decPWDDiscount,
+			OtherDiscount						= decOtherDiscount,
+			DailySales							= decDailySales,
+			QuantitySold						= decQuantitySold,
+			GroupSales							= decGroupSales,
+			VAT									= decVAT,
+			EVAT								= decEVAT,
+			LocalTax							= decLocalTax,
+			CashSales							= decCashSales,
+			ChequeSales							= decChequeSales,
+			CreditCardSales						= decCreditCardSales,
+			CreditSales							= decCreditSales,
+			CreditPayment						= decCreditPayment,
+			CashInDrawer						= decCashInDrawer,
+			TotalDisburse						= decTotalDisburse,
+			CashDisburse						= decCashDisburse,
+			ChequeDisburse						= decChequeDisburse,
+			CreditCardDisburse					= decCreditCardDisburse,
+			TotalWithhold						= decTotalWithhold,
+			CashWithhold						= decCashWithhold,
+			ChequeWithhold						= decChequeWithhold,
+			CreditCardWithhold					= decCreditCardWithhold,
+			TotalPaidOut						= decTotalPaidOut,
+			CashPaidOut							= decCashPaidOut,
+			ChequePaidOut						= decChequePaidOut,
+			CreditCardPaidOut					= decCreditCardPaidOut,
+			BeginningBalance					= decBeginningBalance,
+			VoidSales							= decVoidSales,
+			RefundSales							= decRefundSales,
+			ItemsDiscount						= decItemsDiscount,
+			SubtotalDiscount					= decSubtotalDiscount,
+			NoOfCashTransactions				= intNoOfCashTransactions,
+			NoOfChequeTransactions				= intNoOfChequeTransactions,
+			NoOfCreditCardTransactions			= intNoOfCreditCardTransactions,
+			NoOfCreditTransactions				= intNoOfCreditTransactions,
+			NoOfCombinationPaymentTransactions  = intNoOfCombinationPaymentTransactions,
+			NoOfCreditPaymentTransactions		= intNoOfCreditPaymentTransactions,
+			NoOfClosedTransactions  = intNoOfClosedTransactions,
+			NoOfRefundTransactions  = intNoOfRefundTransactions,
+			NoOfVoidTransactions	= intNoOfVoidTransactions,
+			NoOfTotalTransactions	= intNoOfTotalTransactions,
+			CashCount				= decCashCount,
+			LastLoginDate			= dteLastLoginDate,
+			TotalDeposit			= decTotalDeposit,
+			CashDeposit				= decCashDeposit,
+			ChequeDeposit			= decChequeDeposit,
+			CreditCardDeposit		= decCreditCardDeposit,
+			DebitPayment			= decDebitPayment,
+			NoOfDebitPaymentTransactions		= intNoOfDebitPaymentTransactions,
+			TotalCharge				= decTotalCharge,
+			IsCashCountInitialized  = intIsCashCountInitialized,
+			NoOfDiscountedTransactions			= intNoOfDiscountedTransactions,
+			NegativeAdjustments		= decNegativeAdjustments,
+			NoOfNegativeAdjustmentTransactions  = intNoOfNegativeAdjustmentTransactions,
+			PromotionalItems		= decPromotionalItems,
+			CreditSalesTax			= decCreditSalesTax,
+			DebitDeposit			= decDebitDeposit,
+			RewardPointsPayment		= decRewardPointsPayment,
+			RewardConvertedPayment  = decRewardConvertedPayment,
+			NoOfRewardPointsPayment = intNoOfRewardPointsPayment,
+			CreditPaymentCash		= decCreditPaymentCash,
+			CreditPaymentCheque		= decCreditPaymentCheque,
+			CreditPaymentCreditCard = decCreditPaymentCreditCard,
+			CreditPaymentDebit		= decCreditPaymentDebit,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblCashierReport(BranchID, TerminalNo, SyncID, CashierID, TerminalID, NetSales, GrossSales, 
+							TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, DailySales,
+							QuantitySold, GroupSales, VAT, EVAT, LocalTax, CashSales, ChequeSales, CreditCardSales,
+							CreditSales, CreditPayment, CashInDrawer, TotalDisburse, CashDisburse, ChequeDisburse,
+							CreditCardDisburse, TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold,
+							TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, BeginningBalance,
+							VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount, NoOfCashTransactions,
+							NoOfChequeTransactions, NoOfCreditCardTransactions, NoOfCreditTransactions, 
+							NoOfCombinationPaymentTransactions, NoOfCreditPaymentTransactions, NoOfClosedTransactions,
+							NoOfRefundTransactions, NoOfVoidTransactions, NoOfTotalTransactions, CashCount, 
+							LastLoginDate, TotalDeposit, CashDeposit, ChequeDeposit, CreditCardDeposit, 
+							DebitPayment, NoOfDebitPaymentTransactions, TotalCharge, IsCashCountInitialized,
+							NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
+							PromotionalItems, CreditSalesTax, DebitDeposit, RewardPointsPayment, RewardConvertedPayment,
+							NoOfRewardPointsPayment, CreditPaymentCash, CreditPaymentCheque,
+							CreditPaymentCreditCard, CreditPaymentDebit, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, intCashierID, intTerminalID, decNetSales, decGrossSales, 
+							decTotalDiscount, decSNRDiscount, decPWDDiscount, decOtherDiscount, decDailySales,
+							decQuantitySold, decGroupSales, decVAT, decEVAT, decLocalTax, decCashSales, decChequeSales, decCreditCardSales,
+							decCreditSales, decCreditPayment, decCashInDrawer, decTotalDisburse, decCashDisburse, decChequeDisburse,
+							decCreditCardDisburse, decTotalWithhold, decCashWithhold, decChequeWithhold, decCreditCardWithhold,
+							decTotalPaidOut, decCashPaidOut, decChequePaidOut, decCreditCardPaidOut, decBeginningBalance,
+							decVoidSales, decRefundSales, decItemsDiscount, decSubtotalDiscount, intNoOfCashTransactions,
+							intNoOfChequeTransactions, intNoOfCreditCardTransactions, intNoOfCreditTransactions, 
+							intNoOfCombinationPaymentTransactions, intNoOfCreditPaymentTransactions, intNoOfClosedTransactions,
+							intNoOfRefundTransactions, intNoOfVoidTransactions, intNoOfTotalTransactions, decCashCount, 
+							dteLastLoginDate, decTotalDeposit, decCashDeposit, decChequeDeposit, decCreditCardDeposit, 
+							decDebitPayment, intNoOfDebitPaymentTransactions, decTotalCharge, intIsCashCountInitialized,
+							intNoOfDiscountedTransactions, decNegativeAdjustments, intNoOfNegativeAdjustmentTransactions,
+							decPromotionalItems, decCreditSalesTax, decDebitDeposit, decRewardPointsPayment, decRewardConvertedPayment,
+							intNoOfRewardPointsPayment, decCreditPaymentCash, decCreditPaymentCheque,
+							decCreditPaymentCreditCard, decCreditPaymentDebit, dteCreatedOn, dteLastModified);
+
+		UPDATE tblCashierReport SET SyncID = CashierReportID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveCashierReportHistory
+	Aug 2, 2014
+
+	CALL procSaveCashierReportHistory(2,'01',0,0,5,NOW(),7,now(),1,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveCashierReportHistory
+GO
+
+create procedure procSaveCashierReportHistory(	
+	IN intBranchID      int(4),
+	IN strTerminalNo    varchar(5),
+	IN intSyncID							 bigint(20),
+	IN intCashierReportHistoryID             bigint(20),
+	IN intCashierID							 bigint(20),
+	IN intTerminalID						 bigint(20),
+	IN decNetSales							 decimal(18,2),
+	IN decGrossSales                         decimal(18,2),
+	IN decTotalDiscount                      decimal(18,2),
+	IN decDailySales                         decimal(18,2),
+	IN decQuantitySold                       decimal(18,2),
+	IN decGroupSales                         decimal(18,2),
+	IN decVAT                                decimal(18,2),
+	IN decEVAT                               decimal(18,2),
+	IN decLocalTax                           decimal(18,2),
+	IN decCashSales                          decimal(18,2),
+	IN decChequeSales                        decimal(18,2),
+	IN decCreditCardSales                    decimal(18,2),
+	IN decCreditSales                        decimal(18,2),
+	IN decCreditPayment                      decimal(18,2),
+	IN decCashInDrawer                       decimal(18,2),
+	IN decTotalDisburse                      decimal(18,2),
+	IN decCashDisburse                       decimal(18,2),
+	IN decChequeDisburse                     decimal(18,2),
+	IN decCreditCardDisburse                 decimal(18,2),
+	IN decTotalWithhold                      decimal(18,2),
+	IN decCashWithhold                       decimal(18,2),
+	IN decChequeWithhold                     decimal(18,2),
+	IN decCreditCardWithhold                 decimal(18,2),
+	IN decTotalPaidOut                       decimal(18,2),
+	IN decCashPaidOut                        decimal(18,2),
+	IN decChequePaidOut                      decimal(18,2),
+	IN decCreditCardPaidOut                  decimal(18,2),
+	IN decBeginningBalance                   decimal(18,2),
+	IN decVoidSales                          decimal(18,2),
+	IN decRefundSales                        decimal(18,2),
+	IN decItemsDiscount                      decimal(18,2),
+	IN decSubtotalDiscount                   decimal(18,2),
+	IN intNoOfCashTransactions               int(10),
+	IN intNoOfChequeTransactions             int(10),
+	IN intNoOfCreditCardTransactions         int(10),
+	IN intNoOfCreditTransactions             int(10),
+	IN intNoOfCombinationPaymentTransactions int(10),
+	IN intNoOfCreditPaymentTransactions      int(10),
+	IN intNoOfClosedTransactions             int(10),
+	IN intNoOfRefundTransactions             int(10),
+	IN intNoOfVoidTransactions               int(10),
+	IN intNoOfTotalTransactions              int(10),
+	IN decCashCount                          decimal(18,2),
+	IN dteLastLoginDate                      datetime,
+	IN decTotalDeposit                       decimal(18,2),
+	IN decCashDeposit                        decimal(18,2),
+	IN decChequeDeposit                      decimal(18,2),
+	IN decCreditCardDeposit                  decimal(18,2),
+	IN decDebitPayment                       decimal(18,2),
+	IN intNoOfDebitPaymentTransactions       int(10),
+	IN decTotalCharge                        decimal(18,2),
+	IN intIsCashCountInitialized             tinyint(1),
+	IN intNoOfDiscountedTransactions         int(4),
+	IN decNegativeAdjustments                decimal(18,2),
+	IN intNoOfNegativeAdjustmentTransactions int(4),
+	IN decPromotionalItems                   decimal(18,2),
+	IN decCreditSalesTax                     decimal(18,2),
+	IN decDebitDeposit                       decimal(18,3),
+	IN decRewardPointsPayment                decimal(18,3),
+	IN decRewardConvertedPayment             decimal(18,3),
+	IN intNoOfRewardPointsPayment            int(10),
+	IN decCreditPaymentCash                  decimal(18,2),
+	IN decCreditPaymentCheque                decimal(18,2),
+	IN decCreditPaymentCreditCard            decimal(18,2),
+	IN decCreditPaymentDebit                 decimal(18,2),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intCashierReportHistoryID; END IF;
+	
+	IF EXISTS(SELECT CashierReportHistoryID FROM tblCashierReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblCashierReportHistory SET
+			CashierID							= intCashierID,
+			TerminalID							= intTerminalID,
+			NetSales							= decNetSales,
+			GrossSales							= decGrossSales,
+			TotalDiscount						= decTotalDiscount,
+			DailySales							= decDailySales,
+			QuantitySold						= decQuantitySold,
+			GroupSales							= decGroupSales,
+			VAT									= decVAT,
+			EVAT								= decEVAT,
+			LocalTax							= decLocalTax,
+			CashSales							= decCashSales,
+			ChequeSales							= decChequeSales,
+			CreditCardSales						= decCreditCardSales,
+			CreditSales							= decCreditSales,
+			CreditPayment						= decCreditPayment,
+			CashInDrawer						= decCashInDrawer,
+			TotalDisburse						= decTotalDisburse,
+			CashDisburse						= decCashDisburse,
+			ChequeDisburse						= decChequeDisburse,
+			CreditCardDisburse					= decCreditCardDisburse,
+			TotalWithhold						= decTotalWithhold,
+			CashWithhold						= decCashWithhold,
+			ChequeWithhold						= decChequeWithhold,
+			CreditCardWithhold					= decCreditCardWithhold,
+			TotalPaidOut						= decTotalPaidOut,
+			CashPaidOut							= decCashPaidOut,
+			ChequePaidOut						= decChequePaidOut,
+			CreditCardPaidOut					= decCreditCardPaidOut,
+			BeginningBalance					= decBeginningBalance,
+			VoidSales							= decVoidSales,
+			RefundSales							= decRefundSales,
+			ItemsDiscount						= decItemsDiscount,
+			SubtotalDiscount					= decSubtotalDiscount,
+			NoOfCashTransactions				= intNoOfCashTransactions,
+			NoOfChequeTransactions				= intNoOfChequeTransactions,
+			NoOfCreditCardTransactions			= intNoOfCreditCardTransactions,
+			NoOfCreditTransactions				= intNoOfCreditTransactions,
+			NoOfCombinationPaymentTransactions  = intNoOfCombinationPaymentTransactions,
+			NoOfCreditPaymentTransactions		= intNoOfCreditPaymentTransactions,
+			NoOfClosedTransactions  = intNoOfClosedTransactions,
+			NoOfRefundTransactions  = intNoOfRefundTransactions,
+			NoOfVoidTransactions	= intNoOfVoidTransactions,
+			NoOfTotalTransactions	= intNoOfTotalTransactions,
+			CashCount				= decCashCount,
+			LastLoginDate			= dteLastLoginDate,
+			TotalDeposit			= decTotalDeposit,
+			CashDeposit				= decCashDeposit,
+			ChequeDeposit			= decChequeDeposit,
+			CreditCardDeposit		= decCreditCardDeposit,
+			DebitPayment			= decDebitPayment,
+			NoOfDebitPaymentTransactions		= intNoOfDebitPaymentTransactions,
+			TotalCharge				= decTotalCharge,
+			IsCashCountInitialized  = intIsCashCountInitialized,
+			NoOfDiscountedTransactions			= intNoOfDiscountedTransactions,
+			NegativeAdjustments		= decNegativeAdjustments,
+			NoOfNegativeAdjustmentTransactions  = intNoOfNegativeAdjustmentTransactions,
+			PromotionalItems		= decPromotionalItems,
+			CreditSalesTax			= decCreditSalesTax,
+			DebitDeposit			= decDebitDeposit,
+			RewardPointsPayment		= decRewardPointsPayment,
+			RewardConvertedPayment  = decRewardConvertedPayment,
+			NoOfRewardPointsPayment = intNoOfRewardPointsPayment,
+			CreditPaymentCash		= decCreditPaymentCash,
+			CreditPaymentCheque		= decCreditPaymentCheque,
+			CreditPaymentCreditCard = decCreditPaymentCreditCard,
+			CreditPaymentDebit		= decCreditPaymentDebit,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblCashierReportHistory(BranchID, TerminalNo, SyncID, CashierID, TerminalID, NetSales, GrossSales, TotalDiscount, DailySales,
+							QuantitySold, GroupSales, VAT, EVAT, LocalTax, CashSales, ChequeSales, CreditCardSales,
+							CreditSales, CreditPayment, CashInDrawer, TotalDisburse, CashDisburse, ChequeDisburse,
+							CreditCardDisburse, TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold,
+							TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, BeginningBalance,
+							VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount, NoOfCashTransactions,
+							NoOfChequeTransactions, NoOfCreditCardTransactions, NoOfCreditTransactions, 
+							NoOfCombinationPaymentTransactions, NoOfCreditPaymentTransactions, NoOfClosedTransactions,
+							NoOfRefundTransactions, NoOfVoidTransactions, NoOfTotalTransactions, CashCount, 
+							LastLoginDate, TotalDeposit, CashDeposit, ChequeDeposit, CreditCardDeposit, 
+							DebitPayment, NoOfDebitPaymentTransactions, TotalCharge, IsCashCountInitialized,
+							NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
+							PromotionalItems, CreditSalesTax, DebitDeposit, RewardPointsPayment, RewardConvertedPayment,
+							NoOfRewardPointsPayment, CreditPaymentCash, CreditPaymentCheque,
+							CreditPaymentCreditCard, CreditPaymentDebit, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, intCashierID, intTerminalID, decNetSales, decGrossSales, decTotalDiscount, decDailySales,
+							decQuantitySold, decGroupSales, decVAT, decEVAT, decLocalTax, decCashSales, decChequeSales, decCreditCardSales,
+							decCreditSales, decCreditPayment, decCashInDrawer, decTotalDisburse, decCashDisburse, decChequeDisburse,
+							decCreditCardDisburse, decTotalWithhold, decCashWithhold, decChequeWithhold, decCreditCardWithhold,
+							decTotalPaidOut, decCashPaidOut, decChequePaidOut, decCreditCardPaidOut, decBeginningBalance,
+							decVoidSales, decRefundSales, decItemsDiscount, decSubtotalDiscount, intNoOfCashTransactions,
+							intNoOfChequeTransactions, intNoOfCreditCardTransactions, intNoOfCreditTransactions, 
+							intNoOfCombinationPaymentTransactions, intNoOfCreditPaymentTransactions, intNoOfClosedTransactions,
+							intNoOfRefundTransactions, intNoOfVoidTransactions, intNoOfTotalTransactions, decCashCount, 
+							dteLastLoginDate, decTotalDeposit, decCashDeposit, decChequeDeposit, decCreditCardDeposit, 
+							decDebitPayment, intNoOfDebitPaymentTransactions, decTotalCharge, intIsCashCountInitialized,
+							intNoOfDiscountedTransactions, decNegativeAdjustments, intNoOfNegativeAdjustmentTransactions,
+							decPromotionalItems, decCreditSalesTax, decDebitDeposit, decRewardPointsPayment, decRewardConvertedPayment,
+							intNoOfRewardPointsPayment, decCreditPaymentCash, decCreditPaymentCheque,
+							decCreditPaymentCreditCard, decCreditPaymentDebit, dteCreatedOn, dteLastModified);
+
+		UPDATE tblCashierReportHistory SET SyncID = CashierReportHistoryID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveDeposit
+	Aug 2, 2014
+
+	CALL procSaveDeposit(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveDeposit
+GO
+
+create procedure procSaveDeposit(	
+	IN intBranchID     int(4),
+	IN strTerminalNo   varchar(5),
+	IN intSyncID	   bigint(20),
+	IN intDepositID    bigint(20),
+	In decAmount       decimal(18,2),
+	IN intPaymentType  int(10),
+	IN dteDateCreated  datetime,
+	IN intCashierID    bigint(20),
+	IN intContactID    bigint(20),
+	IN strRemarks      varchar(255),
+	IN strBranchCode   varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intDepositID; END IF;
+	IF (strBranchCode = '') THEN  SET strBranchCode = (SELECT BranchCode FROM tblBranch WHERE BranchID = intBranchID LIMIT 1); END IF;
+
+	IF EXISTS(SELECT DepositID FROM tblDeposit WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblDeposit SET
+			Amount					= decAmount,
+			PaymentType				= intPaymentType,
+			DateCreated				= dteDateCreated,
+			CashierID				= intCashierID,
+			ContactID				= intContactID,
+			Remarks					= strRemarks,
+			BranchCode				= strBranchCode,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblDeposit(BranchID, TerminalNo, SyncID, Amount, PaymentType, DateCreated, 
+							CashierID, ContactID, Remarks, BranchCode, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, decAmount, intPaymentType, dteDateCreated, 
+							intCashierID, intContactID, strRemarks, strBranchCode, dteCreatedOn, dteLastModified);
+
+		UPDATE tblDeposit SET SyncID = DepositID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveDisburse
+	Aug 2, 2014
+
+	CALL procSaveDisburse(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveDisburse
+GO
+
+create procedure procSaveDisburse(	
+	IN intBranchID     int(4),
+	IN strTerminalNo   varchar(5),
+	IN intSyncID	   bigint(20),
+	IN intDisburseID    bigint(20),
+	In decAmount       decimal(18,2),
+	IN intPaymentType  int(10),
+	IN dteDateCreated  datetime,
+	IN intCashierID    bigint(20),
+	IN strRemarks      varchar(255),
+	IN strBranchCode   varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intDisburseID; END IF;
+	IF (strBranchCode = '') THEN  SET strBranchCode = (SELECT BranchCode FROM tblBranch WHERE BranchID = intBranchID LIMIT 1); END IF;
+
+	IF EXISTS(SELECT DisburseID FROM tblDisburse WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblDisburse SET
+			Amount					= decAmount,
+			PaymentType				= intPaymentType,
+			DateCreated				= dteDateCreated,
+			CashierID				= intCashierID,
+			Remarks					= strRemarks,
+			BranchCode				= strBranchCode,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblDisburse(BranchID, TerminalNo, SyncID, Amount, PaymentType, DateCreated, 
+							CashierID, Remarks, BranchCode, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, decAmount, intPaymentType, dteDateCreated, 
+							intCashierID, strRemarks, strBranchCode, dteCreatedOn, dteLastModified);
+
+		UPDATE tblDisburse SET SyncID = DisburseID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveCashPayment
+	Aug 2, 2014
+
+	CALL procSaveCashPayment(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveCashPayment
+GO
+
+create procedure procSaveCashPayment(	
+	IN intBranchID     int(4),
+	IN strTerminalNo   varchar(5),
+	IN intSyncID	   bigint(20),
+	IN intCashPaymentID    bigint(20),
+	In decAmount       decimal(18,2),
+	IN intPaymentType  int(10),
+	IN dteDateCreated  datetime,
+	IN intCashierID    bigint(20),
+	IN strRemarks      varchar(255),
+	IN strBranchCode   varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intCashPaymentID; END IF;
+	IF (strBranchCode = '') THEN  SET strBranchCode = (SELECT BranchCode FROM tblBranch WHERE BranchID = intBranchID LIMIT 1); END IF;
+
+	IF EXISTS(SELECT CashPaymentID FROM tblCashPayment WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblCashPayment SET
+			Amount					= decAmount,
+			PaymentType				= intPaymentType,
+			DateCreated				= dteDateCreated,
+			CashierID				= intCashierID,
+			Remarks					= strRemarks,
+			BranchCode				= strBranchCode,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblCashPayment(BranchID, TerminalNo, SyncID, Amount, PaymentType, DateCreated, 
+							CashierID, Remarks, BranchCode, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, decAmount, intPaymentType, dteDateCreated, 
+							intCashierID, strRemarks, strBranchCode, dteCreatedOn, dteLastModified);
+
+		UPDATE tblCashPayment SET SyncID = CashPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+/********************************************
+	procSavePaidOut
+	Aug 2, 2014
+
+	CALL procSavePaidOut(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSavePaidOut
+GO
+
+create procedure procSavePaidOut(	
+	IN intBranchID     int(4),
+	IN strTerminalNo   varchar(5),
+	IN intSyncID	   bigint(20),
+	IN intPaidOutID    bigint(20),
+	In decAmount       decimal(18,2),
+	IN intPaymentType  int(10),
+	IN dteDateCreated  datetime,
+	IN intCashierID    bigint(20),
+	IN strRemarks      varchar(255),
+	IN strBranchCode   varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intPaidOutID; END IF;
+	IF (strBranchCode = '') THEN  SET strBranchCode = (SELECT BranchCode FROM tblBranch WHERE BranchID = intBranchID LIMIT 1); END IF;
+
+	IF EXISTS(SELECT PaidOutID FROM tblPaidOut WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblPaidOut SET
+			Amount					= decAmount,
+			PaymentType				= intPaymentType,
+			DateCreated				= dteDateCreated,
+			CashierID				= intCashierID,
+			Remarks					= strRemarks,
+			BranchCode				= strBranchCode,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblPaidOut(BranchID, TerminalNo, SyncID, Amount, PaymentType, DateCreated, 
+							CashierID, Remarks, BranchCode, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, decAmount, intPaymentType, dteDateCreated, 
+							intCashierID, strRemarks, strBranchCode, dteCreatedOn, dteLastModified);
+
+		UPDATE tblPaidOut SET SyncID = PaidOutID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+/********************************************
+	procSaveWithhold
+	Aug 2, 2014
+
+	CALL procSaveWithhold(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveWithhold
+GO
+
+create procedure procSaveWithhold(	
+	IN intBranchID     int(4),
+	IN strTerminalNo   varchar(5),
+	IN intSyncID	   bigint(20),
+	IN intWithholdID    bigint(20),
+	In decAmount       decimal(18,2),
+	IN intPaymentType  int(10),
+	IN dteDateCreated  datetime,
+	IN intCashierID    bigint(20),
+	IN strRemarks      varchar(255),
+	IN strBranchCode   varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intWithholdID; END IF;
+	IF (strBranchCode = '') THEN  SET strBranchCode = (SELECT BranchCode FROM tblBranch WHERE BranchID = intBranchID LIMIT 1); END IF;
+
+	IF EXISTS(SELECT WithholdID FROM tblWithhold WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblWithhold SET
+			Amount					= decAmount,
+			PaymentType				= intPaymentType,
+			DateCreated				= dteDateCreated,
+			CashierID				= intCashierID,
+			Remarks					= strRemarks,
+			BranchCode				= strBranchCode,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblWithhold(BranchID, TerminalNo, SyncID, Amount, PaymentType, DateCreated, 
+							CashierID, Remarks, BranchCode, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, decAmount, intPaymentType, dteDateCreated, 
+							intCashierID, strRemarks, strBranchCode, dteCreatedOn, dteLastModified);
+
+		UPDATE tblWithhold SET SyncID = WithholdID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveCashPayment
+	Aug 2, 2014
+
+	CALL procSaveCashPayment(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveCashPayment
+GO
+
+create procedure procSaveCashPayment(	
+	IN intBranchID      int(4),
+	IN strTerminalNo    varchar(5),
+	IN intSyncID	    bigint(20),
+	IN intCashPaymentID bigint(20),
+	IN intTransactionID bigint(20),
+	IN decAmount        decimal(18,2),
+	IN strRemarks       varchar(255),
+	IN strTransactionNo varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intCashPaymentID; END IF;
+	
+	IF EXISTS(SELECT CashPaymentID FROM tblCashPayment WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblCashPayment SET
+			Amount					= decAmount,
+			Remarks					= strRemarks,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblCashPayment(BranchID, TerminalNo, SyncID, TransactionID, Amount, Remarks, TransactionNo, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, intTransactionID, decAmount, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
+
+		UPDATE tblCashPayment SET SyncID = CashPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveChequePayment
+	Aug 2, 2014
+
+	CALL procSaveChequePayment(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveChequePayment
+GO
+
+create procedure procSaveChequePayment(	
+	IN intBranchID      int(4),
+	IN strTerminalNo    varchar(5),
+	IN intSyncID	    bigint(20),
+	IN intChequePaymentID bigint(20),
+	IN intTransactionID bigint(20),
+	IN strChequeNo		varchar(30),
+	IN decAmount        decimal(18,2),
+	IN dteValidityDate  datetime,
+	IN strRemarks       varchar(255),
+	IN strTransactionNo varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intChequePaymentID; END IF;
+	
+	IF EXISTS(SELECT ChequePaymentID FROM tblChequePayment WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblChequePayment SET
+			ChequeNo				= ChequeNo,
+			Amount					= decAmount,
+			ValidityDate			= dteValidityDate,
+			Remarks					= strRemarks,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblChequePayment(BranchID, TerminalNo, SyncID, TransactionID, ChequeNo, Amount, ValidityDate, Remarks, TransactionNo, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, intTransactionID, strChequeNo, decAmount, dteValidityDate, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
+
+		UPDATE tblChequePayment SET SyncID = ChequePaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveCreditCardPayment
+	Aug 2, 2014
+
+	CALL procSaveCreditCardPayment(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveCreditCardPayment
+GO
+
+create procedure procSaveCreditCardPayment(	
+	IN intBranchID			  int(4),
+	IN strTerminalNo		  varchar(5),
+	IN intSyncID			  bigint(20),
+	IN intCreditCardPaymentID bigint(20),
+	IN intTransactionID		  bigint(20),
+	IN decAmount			  decimal(18,2),
+	IN intCardTypeID          int(10),
+	IN strCardTypeCode        varchar(30),
+	IN strCardTypeName        varchar(30),
+	IN strCardNo              varchar(30),
+	IN strCardHolder          varchar(150),
+	IN strValidityDates       varchar(14),
+	IN strRemarks			  varchar(255),
+	IN strTransactionNo		  varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intCreditCardPaymentID; END IF;
+	
+	IF EXISTS(SELECT CreditCardPaymentID FROM tblCreditCardPayment WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblCreditCardPayment SET
+			Amount					= decAmount,
+			CardTypeID				= intCardTypeID,
+			CardTypeCode			= strCardTypeCode,
+			CardTypeName			= strCardTypeName,
+			CardNo					= strCardNo,
+			CardHolder				= strCardHolder,
+			ValidityDates			= strValidityDates,
+			Remarks					= strRemarks,
+			TransactionNo			= strTransactionNo,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblCreditCardPayment(BranchID, TerminalNo, SyncID, TransactionID, Amount, CardTypeID, CardTypeCode, CardTypeName, CardNo, CardHolder, ValidityDates, Remarks, TransactionNo, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, intTransactionID, decAmount, intCardTypeID, strCardTypeCode, strCardTypeName, strCardNo, strCardHolder, strValidityDates, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
+
+		UPDATE tblCreditCardPayment SET SyncID = CreditCardPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveCashCount
+	Aug 2, 2014
+
+	CALL procSaveCashCount(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveCashCount
+GO
+
+create procedure procSaveCashCount(	
+	IN intBranchID			 int(4),
+	IN strTerminalNo		 varchar(5),
+	IN intSyncID			 bigint(20),
+	IN intCashCountID		 bigint(20),
+	IN intCashierID          bigint(20),
+	IN strCashierName        varchar(100),
+	IN dteDateCreated        datetime,
+	IN intDenominationID     bigint(20),
+	IN decDenominationValue	 decimal(18,2),
+	IN intDenominationCount  int(10),
+	IN decDenominationAmount decimal(18,2),
+	IN strBranchCode         varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intCashCountID; END IF;
+	IF (strBranchCode = '') THEN  SET strBranchCode = (SELECT BranchCode FROM tblBranch WHERE BranchID = intBranchID LIMIT 1); END IF;
+
+	IF EXISTS(SELECT CashCountID FROM tblCashCount WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblCashCount SET
+			CashierID				= intCashierID,
+			CashierName				= strCashierName,
+			DenominationID			= intDenominationID,
+			DenominationValue		= decDenominationValue,
+			DenominationCount		= intDenominationCount,
+			DenominationAmount		= decDenominationAmount,
+			BranchCode				= strBranchCode,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblCashCount(BranchID, TerminalNo, SyncID, CashierID, CashierName, DateCreated, DenominationID, DenominationValue, DenominationCount, DenominationAmount, BranchCode, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, intCashierID, strCashierName, dteDateCreated, intDenominationID, decDenominationValue, intDenominationCount, decDenominationAmount, strBranchCode, dteCreatedOn, dteLastModified);
+
+		UPDATE tblCashCount SET SyncID = CashCountID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSavePLUReport
+	Sep 2, 2014
+
+	CALL procSavePLUReport(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: This is a temp table use for generation of PLU Report
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSavePLUReport
+GO
+
+create procedure procSavePLUReport(	
+	IN intBranchID		   int(4),
+	IN strTerminalNo	   varchar(5),
+	IN intPLUReportID	   bigint(20),
+	IN intProductID        bigint(20),
+	IN strProductCode	   varchar(500),
+	IN strProductGroup	   varchar(50),
+	IN decQuantity         decimal(18,3),
+	IN decAmount           decimal(18,3),
+	IN intOrderSlipPrinter tinyint(1),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	INSERT INTO tblPLUReport(BranchID, TerminalNo, ProductID, ProductCode, ProductGroup, Quantity, Amount, OrderSlipPrinter, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intProductID, strProductCode, strProductGroup, decQuantity, decAmount, intOrderSlipPrinter, dteCreatedOn, dteLastModified);
 				
 END;
 GO

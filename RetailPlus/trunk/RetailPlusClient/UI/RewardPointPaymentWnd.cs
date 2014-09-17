@@ -24,7 +24,9 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.ComponentModel.Container components = null;
 		
 		private decimal mdecAllowedRewardsPointsCashEquivalent = 0;
-        
+
+        #region Public Properties
+
         private bool mboIsRefund = false;
         public bool IsRefund
         {
@@ -79,7 +81,11 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mdecRewardConvertedPayment = value; }
         }
 
-		public RewardPointPaymentWnd()
+        #endregion
+
+        #region Constructors and Destructors
+
+        public RewardPointPaymentWnd()
 		{
 			//
 			// Required for Windows Form Designer support
@@ -91,7 +97,9 @@ namespace AceSoft.RetailPlus.Client.UI
 			//
 		}
 
-		#region Windows Form Designer generated code
+        #endregion
+
+        #region Windows Form Designer generated code
 
         protected override void Dispose(bool disposing)
         {
@@ -351,6 +359,10 @@ namespace AceSoft.RetailPlus.Client.UI
             catch { }
 
             lblConversion.Text = mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue.ToString("#,##0.#0") + " points = " + mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentCashEquivalent.ToString("#,##0.#0") + CompanyDetails.Currency;
+
+            // put the mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue to zero if its 1 to avoid error
+            mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue = mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue == 0 ? 1 : mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue;
+            mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentCashEquivalent = mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentCashEquivalent == 0 ? 1 : mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentCashEquivalent;
 
             mdecAllowedRewardsPointsCashEquivalent = (mclsContactDetails.RewardDetails.RewardPoints / mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue * mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentCashEquivalent) - mdecRewardConvertedPayment;
             lblRewardPoints.Text = mdecAllowedRewardsPointsCashEquivalent.ToString("#,##0.#0");

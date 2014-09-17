@@ -21,42 +21,39 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.PictureBox imgIcon;
         private System.Windows.Forms.Label lblDescription;
         private System.ComponentModel.Container components = null;
-
-        private DialogResult dialog;
-        private Data.SalesTransactionDetails[] salesDetails;
-        private string mCashierName;
-        private int mCONFIG_MAX_RECEIPT_WIDTH;
         private CrystalDecisions.Windows.Forms.CrystalReportViewer CRViewer;
         private Button cmdCancel;
         private Button cmdEnter;
-        private bool mCONFIG_ENABLEEVAT;
+        
 
         #region Public Get/Set Properties
 
-        public bool CONFIG_ENABLEEVAT
-        {
-            set { mCONFIG_ENABLEEVAT = value; }
-        }
+        private string mCashierName;
         public string CashierName
         {
             set { mCashierName = value; }
         }
 
+        private DialogResult dialog;
         public DialogResult Result
         {
             get { return dialog; }
         }
 
-        public int CONFIG_MAX_RECEIPT_WIDTH
-        {
-            set { mCONFIG_MAX_RECEIPT_WIDTH = value; }
-        }
-
+        private Data.SalesTransactionDetails[] salesDetails;
         public Data.SalesTransactionDetails[] SalesDetails
         {
             set { salesDetails = value; }
         }
 
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set
+            {
+                mclsTerminalDetails = value;
+            }
+        }
 
         #endregion
 
@@ -280,13 +277,13 @@ namespace AceSoft.RetailPlus.Client.UI
                         if (clsReceiptDetails.Text == "" || clsReceiptDetails.Text == null)
                             stRetValue = GetReceiptFormatParameter(clsReceiptDetails.Value);
                         else
-                            stRetValue = clsReceiptDetails.Text.PadRight(13) + ":" + GetReceiptFormatParameter(clsReceiptDetails.Value).PadLeft(mCONFIG_MAX_RECEIPT_WIDTH - 14);
+                            stRetValue = clsReceiptDetails.Text.PadRight(13) + ":" + GetReceiptFormatParameter(clsReceiptDetails.Value).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 14);
                         break;
                     case ReportFormatOrientation.Center:
                         if (clsReceiptDetails.Text == "" || clsReceiptDetails.Text == null)
-                            stRetValue = CenterString(GetReceiptFormatParameter(clsReceiptDetails.Value), mCONFIG_MAX_RECEIPT_WIDTH);
+                            stRetValue = CenterString(GetReceiptFormatParameter(clsReceiptDetails.Value), mclsTerminalDetails.MaxReceiptWidth);
                         else
-                            stRetValue = CenterString(clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value), mCONFIG_MAX_RECEIPT_WIDTH);
+                            stRetValue = CenterString(clsReceiptDetails.Text + " : " + GetReceiptFormatParameter(clsReceiptDetails.Value), mclsTerminalDetails.MaxReceiptWidth);
                         break;
                 }
             }
@@ -307,15 +304,19 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             else if (stReceiptFormat == ReceiptFieldFormats.InvoiceNo)
             {
-                stRetValue = "NA";
+                stRetValue = "";
             }
             else if (stReceiptFormat == ReceiptFieldFormats.DateNow)
             {
                 stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
             }
+            else if (stReceiptFormat == ReceiptFieldFormats.Cashier)
+            {
+                stRetValue = mCashierName;
+            }
             else if (stReceiptFormat == ReceiptFieldFormats.TerminalNo)
             {
-                stRetValue = CompanyDetails.TerminalNo;
+                stRetValue = mclsTerminalDetails.TerminalNo;
             }
             else if (stReceiptFormat == ReceiptFieldFormats.MachineSerialNo)
             {
@@ -325,10 +326,24 @@ namespace AceSoft.RetailPlus.Client.UI
             {
                 stRetValue = CONFIG.AccreditationNo;
             }
+            else if (stReceiptFormat == ReceiptFieldFormats.RewardsPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseIndividualCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseIndividualCreditPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseGroupCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseGroupCreditPermitNo;
+            }
             else
             {
                 stRetValue = stReceiptFormat;
             }
+
+            if (stRetValue == null) stRetValue = "";
 
             return stRetValue;
         }
@@ -394,9 +409,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 drNew["TransDiscount"] = details.TransDiscount;
                 drNew["TransDiscountType"] = details.TransDiscountType;
                 drNew["VAT"] = details.VAT;
-                drNew["VatableAmount"] = details.VatableAmount;
+                drNew["VatableAmount"] = details.VATableAmount;
                 drNew["EVAT"] = details.EVAT;
-                drNew["EVatableAmount"] = details.EVatableAmount;
+                drNew["EVatableAmount"] = details.EVATableAmount;
                 drNew["LocalTax"] = details.LocalTax;
                 drNew["AmountPaid"] = details.AmountPaid;
                 drNew["CashPayment"] = details.CashPayment;
@@ -536,7 +551,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
             paramField = Report.DataDefinition.ParameterFields["CONFIG_ENABLEEVAT"];
             discreteParam = new ParameterDiscreteValue();
-            discreteParam.Value = mCONFIG_ENABLEEVAT;
+            discreteParam.Value = mclsTerminalDetails.EnableEVAT;
             currentValues = new ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);

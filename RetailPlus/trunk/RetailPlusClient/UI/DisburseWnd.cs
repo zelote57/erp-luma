@@ -26,10 +26,16 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdEnter;
 		private System.ComponentModel.Container components = null;
 
-		private DialogResult dialog;
-		private Int64 mCashierID;
-        private Data.DisburseDetails mclsDisburseDetails;
+        #region Property Get/Set
 
+        Data.TerminalDetails mclsTerminalDetails = new Data.TerminalDetails();
+        public Data.TerminalDetails TerminalDetails
+        {
+            set {   mclsTerminalDetails = value;    }
+
+        }
+        
+        private DialogResult dialog;
 		public DialogResult Result
 		{
 			get 
@@ -38,6 +44,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 		}
 
+        private Data.DisburseDetails mclsDisburseDetails;
         public Data.DisburseDetails DisburseDetails
 		{
 			get
@@ -46,17 +53,20 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 		}
 
+        private Int64 mintCashierID;
 		public Int64 CashierID
 		{
 			set
 			{
-				mCashierID = value;
+				mintCashierID = value;
 			}
 		}
 
-		#region Constructors and Destructors
+        #endregion
 
-		public DisburseWnd()
+        #region Constructors and Destructors
+
+        public DisburseWnd()
 		{
 			//
 			// Required for Windows Form Designer support
@@ -133,7 +143,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label15.BackColor = System.Drawing.Color.Transparent;
             this.label15.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.ForeColor = System.Drawing.Color.Red;
-            this.label15.Location = new System.Drawing.Point(35, 0);
+            this.label15.Location = new System.Drawing.Point(38, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(33, 13);
             this.label15.TabIndex = 6;
@@ -405,11 +415,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 mclsDisburseDetails.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), cboType.Text, true);
                 mclsDisburseDetails.DateCreated = DateTime.Now;
                 mclsDisburseDetails.TerminalNo = CompanyDetails.TerminalNo;
-                mclsDisburseDetails.CashierID = mCashierID;
-                mclsDisburseDetails.BranchID = Constants.TerminalBranchID;
+                mclsDisburseDetails.CashierID = mintCashierID;
+                mclsDisburseDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
                 mclsDisburseDetails.Remarks = txtRemarks.Text;
 
-                Data.CashierReport clsCashierReport = new Data.CashierReport();
+                Data.CashierReports clsCashierReport = new Data.CashierReports();
                 if (!clsCashierReport.IsDisburseAmountValid(mclsDisburseDetails))
                 {
                     MessageBox.Show("Sorry, the amount you entered is greater than the " + cboType.Text + " sales." +

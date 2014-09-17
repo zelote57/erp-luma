@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Reflection;
 
+using AceSoft.RetailPlus.Reports;
+
 namespace AceSoft.RetailPlus.Client.UI
 {
     /// <summary>
@@ -162,15 +164,12 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label2;
-
-        private Reports.TerminalReportType mTerminalReportType;
-        private DialogResult dialog;
-        private Data.TerminalReportDetails mDetails;
-        private string mCashierName;
         private Button cmdCancel;
         private Button cmdEnter;
-        private decimal mTrustFund;
+        
+        #region Public Properties
 
+        private DialogResult dialog;
         public DialogResult Result
         {
             get
@@ -179,28 +178,48 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private Data.TerminalReportDetails mDetails;
         public Data.TerminalReportDetails Details
         {
             set
             { mDetails = value; }
         }
 
+        private string mCashierName;
         public string CashierName
         {
             set
             { mCashierName = value; }
         }
 
+        private decimal mTrustFund;
         public decimal TrustFund
         {
             set { mTrustFund = value; }
         }
 
+        private Reports.TerminalReportType mTerminalReportType;
+    
         public Reports.TerminalReportType TerminalReportType
         {
             set
-            { mTerminalReportType = value; }
+            { 
+                mTerminalReportType = value; 
+            }
         }
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails 
+        {
+            set
+            {
+                mclsTerminalDetails = value;
+            }
+        }
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public XZReadReportWnd()
         {
@@ -228,6 +247,8 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             base.Dispose(disposing);
         }
+
+        #endregion
 
         #region Windows Form Designer generated code
         /// <summary>
@@ -575,7 +596,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label76.Size = new System.Drawing.Size(353, 5);
             this.label76.TabIndex = 419;
             this.label76.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label76.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label74
@@ -785,7 +806,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label71.Size = new System.Drawing.Size(353, 5);
             this.label71.TabIndex = 398;
             this.label71.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label71.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label72
@@ -796,7 +817,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label72.Size = new System.Drawing.Size(353, 5);
             this.label72.TabIndex = 397;
             this.label72.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label72.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label57
@@ -816,7 +837,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label65.Size = new System.Drawing.Size(353, 5);
             this.label65.TabIndex = 395;
             this.label65.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label65.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label70
@@ -827,7 +848,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label70.Size = new System.Drawing.Size(353, 5);
             this.label70.TabIndex = 394;
             this.label70.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label64
@@ -847,7 +868,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label66.Size = new System.Drawing.Size(353, 5);
             this.label66.TabIndex = 392;
             this.label66.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label68
@@ -858,7 +879,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label68.Size = new System.Drawing.Size(353, 5);
             this.label68.TabIndex = 391;
             this.label68.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label60
@@ -878,7 +899,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label62.Size = new System.Drawing.Size(353, 5);
             this.label62.TabIndex = 389;
             this.label62.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label63
@@ -889,7 +910,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label63.Size = new System.Drawing.Size(353, 5);
             this.label63.TabIndex = 388;
             this.label63.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label54
@@ -909,7 +930,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label56.Size = new System.Drawing.Size(353, 5);
             this.label56.TabIndex = 386;
             this.label56.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label58
@@ -920,7 +941,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label58.Size = new System.Drawing.Size(353, 5);
             this.label58.TabIndex = 385;
             this.label58.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label58.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblBeginningBalance
@@ -960,7 +981,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label52.Size = new System.Drawing.Size(353, 5);
             this.label52.TabIndex = 381;
             this.label52.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label53
@@ -971,7 +992,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label53.Size = new System.Drawing.Size(353, 5);
             this.label53.TabIndex = 380;
             this.label53.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label53.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTotalDiscounts
@@ -1061,7 +1082,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label44.Size = new System.Drawing.Size(353, 5);
             this.label44.TabIndex = 371;
             this.label44.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label44.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label45
@@ -1072,7 +1093,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label45.Size = new System.Drawing.Size(353, 5);
             this.label45.TabIndex = 370;
             this.label45.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label45.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblRefundSales
@@ -1252,7 +1273,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label43.Size = new System.Drawing.Size(353, 5);
             this.label43.TabIndex = 352;
             this.label43.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label43.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label41
@@ -1263,7 +1284,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label41.Size = new System.Drawing.Size(353, 5);
             this.label41.TabIndex = 351;
             this.label41.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLocalTax
@@ -1363,7 +1384,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label36.Size = new System.Drawing.Size(353, 5);
             this.label36.TabIndex = 341;
             this.label36.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label35
@@ -1374,7 +1395,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label35.Size = new System.Drawing.Size(353, 5);
             this.label35.TabIndex = 340;
             this.label35.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblNewGrandTotal
@@ -1415,7 +1436,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label32.Size = new System.Drawing.Size(353, 5);
             this.label32.TabIndex = 336;
             this.label32.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblOldGrandTotal
@@ -1616,7 +1637,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblEndingTransactionNoName.Name = "lblEndingTransactionNoName";
             this.lblEndingTransactionNoName.Size = new System.Drawing.Size(137, 14);
             this.lblEndingTransactionNoName.TabIndex = 307;
-            this.lblEndingTransactionNoName.Text = "Ending Transaction No.";
+            this.lblEndingTransactionNoName.Text = "Ending     OR No.";
             // 
             // lblBeginningTransactionNo
             // 
@@ -1636,7 +1657,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBeginningTransactionNoName.Name = "lblBeginningTransactionNoName";
             this.lblBeginningTransactionNoName.Size = new System.Drawing.Size(137, 14);
             this.lblBeginningTransactionNoName.TabIndex = 305;
-            this.lblBeginningTransactionNoName.Text = "Beginning Transaction No.";
+            this.lblBeginningTransactionNoName.Text = "Beginning OR No.";
             // 
             // lblPaidOut
             // 
@@ -1987,7 +2008,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label1.Size = new System.Drawing.Size(353, 5);
             this.label1.TabIndex = 321;
             this.label1.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label20
@@ -2000,7 +2021,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label20.Size = new System.Drawing.Size(353, 5);
             this.label20.TabIndex = 322;
             this.label20.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -2013,7 +2034,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2.Size = new System.Drawing.Size(353, 5);
             this.label2.TabIndex = 323;
             this.label2.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblReportDesc
@@ -2099,6 +2120,8 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         #endregion
 
+        #region Windows Form Methods
+
         private void XZReadReportWnd_Load(object sender, System.EventArgs e)
         {
             try
@@ -2160,6 +2183,26 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        #endregion
+
+        #region Windows Control Methods
+
+        private void cmdCancel_Click(object sender, EventArgs e)
+        {
+            dialog = DialogResult.Cancel;
+            this.Hide();
+        }
+
+        private void cmdEnter_Click(object sender, EventArgs e)
+        {
+            dialog = DialogResult.OK;
+            this.Hide();
+        }
+
+        #endregion
+
+        #region Private Methods
+
         private void ScrollIntoView(Keys KeyData)
         {
             if (KeyData == Keys.PageUp)
@@ -2174,19 +2217,15 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void PopulateXReadReport()
         {
-            lblCompany.Text = CompanyDetails.CompanyCode;
+            Receipt clsReceipt = new Receipt();
+            
+            lblReportHeader1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader1").Value);
+            lblReportHeader2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader2").Value);
+            lblReportHeader3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader3").Value);
+            lblReportHeader4.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader4").Value);
 
-            Reports.ReceiptFormat clsReceiptFormat = new Reports.ReceiptFormat();
-            Reports.ReceiptFormatDetails clsDetails = clsReceiptFormat.Details();
-            clsReceiptFormat.CommitAndDispose();
-
-            lblReportHeader1.Text = GetReceiptFormatParameter(clsDetails.ReportHeader1);
-            lblReportHeader2.Text = GetReceiptFormatParameter(clsDetails.ReportHeader2);
-            lblReportHeader3.Text = GetReceiptFormatParameter(clsDetails.ReportHeader3);
-            lblReportHeader4.Text = GetReceiptFormatParameter(clsDetails.ReportHeader4);
-
-            lblBeginningTransactionNo.Text = mDetails.BeginningTransactionNo;
-            lblEndingTransactionNo.Text = mDetails.EndingTransactionNo;
+            lblBeginningTransactionNo.Text = mDetails.BeginningORNo;
+            lblEndingTransactionNo.Text = mDetails.EndingORNo;
 
             lblGrossSales.Text = Convert.ToDecimal(mDetails.GrossSales).ToString("#,##0.00");
             lblTotalDiscount.Text = Convert.ToDecimal(mDetails.TotalDiscount).ToString("#,##0.00");
@@ -2194,15 +2233,15 @@ namespace AceSoft.RetailPlus.Client.UI
             lblNetSales.Text = Convert.ToDecimal(mDetails.DailySales).ToString("#,##0.00");
             lblVAT.Text = Convert.ToDecimal(mDetails.VAT).ToString("#,##0.00");
             lblCharge.Text = Convert.ToDecimal(mDetails.TotalCharge).ToString("#,##0.00");
-            decimal TotalAmount = mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
-            lblTotalAmount.Text = Convert.ToDecimal(TotalAmount).ToString("#,##0.00");
+            //decimal TotalAmount = mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
+            //lblTotalAmount.Text = Convert.ToDecimal(TotalAmount).ToString("#,##0.00");
 
             lblOldGrandTotal.Text = Convert.ToDecimal(mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
-            lblDailySales.Text = Convert.ToDecimal(TotalAmount).ToString("#,##0.00");
-            lblNewGrandTotal.Text = Convert.ToDecimal((mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))) + TotalAmount).ToString("#,##0.00");
+            lblDailySales.Text = Convert.ToDecimal(mDetails.NetSales).ToString("#,##0.00");
+            lblNewGrandTotal.Text = Convert.ToDecimal((mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))) + mDetails.NetSales).ToString("#,##0.00");
 
             lblTaxableAmount.Text = Convert.ToDecimal(mDetails.VATableAmount).ToString("#,##0.00");
-            lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVaTableAmount).ToString("#,##0.00");
+            lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVATableAmount).ToString("#,##0.00");
             lblVAT1.Text = Convert.ToDecimal(mDetails.VAT).ToString("#,##0.#0");
             lblLocalTax.Text = Convert.ToDecimal(mDetails.LocalTax).ToString("#,##0.#0");
 
@@ -2235,54 +2274,6 @@ namespace AceSoft.RetailPlus.Client.UI
             lblChequeDeposit.Text = Convert.ToDecimal(mDetails.ChequeDeposit).ToString("#,##0.#0");
             lblCreditCardDeposit.Text = Convert.ToDecimal(mDetails.CreditCardDeposit).ToString("#,##0.#0");
 
-            //lblGrossSales.Text = Convert.ToDecimal(mDetails.GrossSales - (mDetails.GrossSales * (mTrustFund / 100))).ToString("#,##0.00");
-            //lblTotalDiscount.Text = Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.00");
-
-            //lblNetSales.Text = Convert.ToDecimal(mDetails.DailySales - (mDetails.DailySales * (mTrustFund / 100))).ToString("#,##0.00");
-            //lblVAT.Text = Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.00");
-            //lblCharge.Text = Convert.ToDecimal(mDetails.TotalCharge - (mDetails.TotalCharge * (mTrustFund / 100))).ToString("#,##0.00");
-            //decimal TotalAmount = mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
-            //lblTotalAmount.Text = Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
-
-            //lblOldGrandTotal.Text = Convert.ToDecimal(mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
-            //lblDailySales.Text = Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
-            //lblNewGrandTotal.Text = Convert.ToDecimal(mDetails.NewGrandTotal - (mDetails.NewGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
-
-            //lblTaxableAmount.Text = Convert.ToDecimal(mDetails.VATableAmount - (mDetails.VATableAmount * (mTrustFund / 100))).ToString("#,##0.00");
-            //lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVaTableAmount - (mDetails.NonVaTableAmount * (mTrustFund / 100))).ToString("#,##0.00");
-            //lblVAT1.Text = Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblLocalTax.Text = Convert.ToDecimal(mDetails.LocalTax - (mDetails.LocalTax * (mTrustFund / 100))).ToString("#,##0.#0");
-
-            //lblCashSales.Text = Convert.ToDecimal(mDetails.CashSales - (mDetails.CashSales * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblChequeSales.Text = Convert.ToDecimal(mDetails.ChequeSales - (mDetails.ChequeSales * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblCreditCardSales.Text = Convert.ToDecimal(mDetails.CreditCardSales - (mDetails.CreditCardSales * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblCreditSales.Text = Convert.ToDecimal(mDetails.CreditSales - (mDetails.CreditSales * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblCreditPayment.Text = Convert.ToDecimal(mDetails.CreditPayment - (mDetails.CreditPayment * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblDebitPayment.Text = Convert.ToDecimal(mDetails.DebitPayment - (mDetails.DebitPayment * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblVoidSales.Text = Convert.ToDecimal(mDetails.VoidSales - (mDetails.VoidSales * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblRefundSales.Text = Convert.ToDecimal(mDetails.RefundSales - (mDetails.RefundSales * (mTrustFund / 100))).ToString("#,##0.#0");
-
-            //lblItemsDiscount.Text = Convert.ToDecimal(mDetails.ItemsDiscount - (mDetails.ItemsDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblSubtotalDiscount.Text = Convert.ToDecimal(mDetails.SubTotalDiscount - (mDetails.SubTotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblTotalDiscounts.Text = Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
-
-            //lblBeginningBalance.Text = Convert.ToDecimal(mDetails.BeginningBalance - (mDetails.BeginningBalance * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblCashInDrawer.Text = Convert.ToDecimal(mDetails.CashInDrawer - (mDetails.CashInDrawer * (mTrustFund / 100))).ToString("#,##0.#0");
-
-            //lblPaidOut.Text = Convert.ToDecimal(mDetails.TotalPaidOut - (mDetails.TotalPaidOut * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblCashDisburse.Text = Convert.ToDecimal(mDetails.CashDisburse - (mDetails.CashDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblChequeDisburse.Text = Convert.ToDecimal(mDetails.ChequeDisburse - (mDetails.ChequeDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblCreditCardDisburse.Text = Convert.ToDecimal(mDetails.CreditCardDisburse - (mDetails.CreditCardDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
-
-            //lblCashWithHold.Text = Convert.ToDecimal(mDetails.CashWithHold - (mDetails.CashWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblChequeWithHold.Text = Convert.ToDecimal(mDetails.ChequeWithHold - (mDetails.ChequeWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblCreditCardWithHold.Text = Convert.ToDecimal(mDetails.CreditCardWithHold - (mDetails.CreditCardWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
-
-            //lblCashDeposit.Text = Convert.ToDecimal(mDetails.CashDeposit - (mDetails.CashDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblChequeDeposit.Text = Convert.ToDecimal(mDetails.ChequeDeposit - (mDetails.ChequeDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
-            //lblCreditCardDeposit.Text = Convert.ToDecimal(mDetails.CreditCardDeposit - (mDetails.CreditCardDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
-
-
             lblNoOfCashTransactions.Text = mDetails.NoOfCashTransactions.ToString("#,##0");
             lblNoOfChequeTransactions.Text = mDetails.NoOfChequeTransactions.ToString("#,##0");
             lblNoOfCreditCardTran.Text = mDetails.NoOfCreditCardTransactions.ToString("#,##0");
@@ -2294,66 +2285,72 @@ namespace AceSoft.RetailPlus.Client.UI
             lblNoOfVoidTransactions.Text = mDetails.NoOfVoidTransactions.ToString("#,##0");
             lblNoOfTotalTransactions.Text = mDetails.NoOfTotalTransactions.ToString("#,##0");
 
-            lblReportFooter1.Text = GetReceiptFormatParameter(clsDetails.ReportFooter1);
-            lblReportFooter2.Text = GetReceiptFormatParameter(clsDetails.ReportFooter2);
-            lblReportFooter3.Text = GetReceiptFormatParameter(clsDetails.ReportFooter3);
+            lblReportFooter1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter1").Value);
+            lblReportFooter2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter2").Value);
+            lblReportFooter3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter3").Value);
+
+            clsReceipt.CommitAndDispose();
 
         }
         private string GetReceiptFormatParameter(string stReceiptFormat)
         {
             string stRetValue = "";
 
-            if (stReceiptFormat == Reports.ReceiptFieldFormats.Blank)
+            if (stReceiptFormat == ReceiptFieldFormats.Blank)
             {
                 stRetValue = "";
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.Spacer)
+            else if (stReceiptFormat == ReceiptFieldFormats.Spacer)
             {
-                stRetValue = Environment.NewLine;
+                stRetValue = " ";
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.DateNow)
+            else if (stReceiptFormat == ReceiptFieldFormats.InvoiceNo)
             {
-                stRetValue = DateTime.Now.ToLocalTime().ToString("MMM, dd yyyy hh:mh:ss tt");
+                stRetValue = "";
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.Cashier)
+            else if (stReceiptFormat == ReceiptFieldFormats.DateNow)
             {
-                stRetValue = "Cashier: " + mCashierName;
+                stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.TerminalNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.Cashier)
             {
-                stRetValue = "Terminal No.: " + CompanyDetails.TerminalNo;
+                stRetValue = mCashierName;
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.MachineSerialNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.TerminalNo)
             {
-                stRetValue = "MIN: " + CONFIG.MachineSerialNo;
+                stRetValue = mclsTerminalDetails.TerminalNo;
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.AccreditationNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.MachineSerialNo)
             {
-                stRetValue = "Acc. No.: " + CONFIG.AccreditationNo;
+                stRetValue = CONFIG.MachineSerialNo;
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.InvoiceNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.AccreditationNo)
             {
-                stRetValue = "OFFICIAL RECEIPT #: " + "N/A";
+                stRetValue = CONFIG.AccreditationNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.RewardsPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseIndividualCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseIndividualCreditPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseGroupCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseGroupCreditPermitNo;
             }
             else
             {
                 stRetValue = stReceiptFormat;
             }
 
+            if (stRetValue == null) stRetValue = "";
+
             return stRetValue;
         }
 
-        private void cmdCancel_Click(object sender, EventArgs e)
-        {
-            dialog = DialogResult.Cancel;
-            this.Hide();
-        }
-
-        private void cmdEnter_Click(object sender, EventArgs e)
-        {
-            dialog = DialogResult.OK;
-            this.Hide();
-        }
+        #endregion
 
     }
 }

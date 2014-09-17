@@ -398,7 +398,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtTerms.Name = "txtTerms";
             this.txtTerms.Size = new System.Drawing.Size(257, 30);
             this.txtTerms.TabIndex = 11;
-            this.txtTerms.Text = "0.00";
+            this.txtTerms.Text = "0";
             this.txtTerms.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtTerms.GotFocus += new System.EventHandler(this.txtTerms_GotFocus);
             this.txtTerms.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTerms_KeyPress);
@@ -524,11 +524,23 @@ namespace AceSoft.RetailPlus.Client.UI
 					break;
 
 				case Keys.Enter:
-					if (txtCustomerName.Text == "" || txtCustomerName.Text == null)
-					{
-						MessageBox.Show("Please enter a valid customer name.","RetailPlus",MessageBoxButtons.OK, MessageBoxIcon.Warning);
-						return;
-					}
+					if (string.IsNullOrEmpty(txtCustomerName.Text))
+                    {
+                        MessageBox.Show("Please enter a valid customer name.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    Int32 intTerms = 0;
+                    if (!int.TryParse(txtTerms.Text, out intTerms))
+                    {
+                        MessageBox.Show("Please enter a valid whole number in TERMS.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    decimal decCreditLimit = 0;
+                    if (!decimal.TryParse(txtCreditLimit.Text, out decCreditLimit))
+                    {
+                        MessageBox.Show("Please enter a valid credit limit.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
 					try
 					{
 						if (SaveRecord() == true)
@@ -540,7 +552,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					catch (Exception ex)
 					{
 						Event clsEvent = new Event();
-						clsEvent.AddEventLn("ERROR!!! Saving customer details. Err Description: " + ex.Message);
+                        clsEvent.AddErrorEventLn(ex);
 						MessageBox.Show("Sorry the customer name is already in the database. Please type another customer name." ,"RetailPlus",MessageBoxButtons.OK, MessageBoxIcon.Warning);
 						return;
 					}
@@ -570,82 +582,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		
 		#endregion
 
-		#region Private Methods
-
-        private void LoadOption()
-        {
-            cboTerms.Items.Clear();
-            foreach (string str in Enum.GetNames(typeof(ModeOfTerms)))
-            {
-                cboTerms.Items.Add(str);
-            }
-
-            if (mContactDetails.ContactID != 0)
-            {
-                txtCustomerName.Text = mContactDetails.ContactName;
-                txtBusinessName.Text = mContactDetails.BusinessName;
-                txtTelNo.Text = mContactDetails.TelephoneNo;
-                txtAddress.Text = mContactDetails.Address;
-
-                txtCreditLimit.Text = mContactDetails.CreditLimit.ToString("#,##0.#0"); 
-                txtCredit.Text = mContactDetails.Credit.ToString("#,##0.#0");
-                txtAvailableCredit.Text = (mContactDetails.CreditLimit - mContactDetails.Credit).ToString("#,##0.#0");
-                txtTerms.Text = mContactDetails.Terms.ToString("#,##0");
-                cboTerms.SelectedIndex = int.Parse(mContactDetails.ModeOfTerms.ToString("d"));
-                chkIsCreditAllowed.Checked = mContactDetails.IsCreditAllowed;
-
-            }
-        }
-
-		private bool SaveRecord()
-		{
-			Data.ContactDetails clsDetails = new Data.ContactDetails();
-            clsDetails = mContactDetails;
-
-            clsDetails.ContactCode = txtCustomerName.Text;
-			clsDetails.ContactName = txtCustomerName.Text;
-			clsDetails.Address = txtAddress.Text;
-			clsDetails.BusinessName = txtBusinessName.Text;
-			clsDetails.TelephoneNo = txtTelNo.Text;
-
-            // Jul 22, 2014
-            clsDetails.Debit = mContactDetails.Debit;
-            clsDetails.Credit = mContactDetails.Credit;
-            clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
-            clsDetails.CreditLimit = decimal.Parse(txtCreditLimit.Text);
-            clsDetails.Terms = int.Parse(txtTerms.Text);
-            clsDetails.ModeOfTerms = (ModeOfTerms) Enum.Parse(typeof(ModeOfTerms), cboTerms.SelectedItem.ToString());
-            
-			Data.Contacts clsContact = new Data.Contacts();
-            if (mContactDetails.ContactID == 0)
-            {
-                if (mstCaption == "Please enter customer name for deposit.")
-                { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
-                else if (mstCaption == "Quickly add new customer")
-                { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
-                else if (mContactDetails.ContactID == 0) // means not edit
-                { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
-
-                clsDetails.ContactGroupID = Constants.CONTACT_GROUP_CUSTOMER;
-                clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
-                clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
-                clsDetails.ContactID = clsContact.Insert(clsDetails);
-            }
-            else
-            {
-                clsDetails.ContactCode = mContactDetails.ContactCode;
-                clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
-                clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
-                clsContact.Update(clsDetails);
-            }
-			clsContact.CommitAndDispose();
-
-			mContactDetails = clsDetails;
-
-			return true;
-		}
-
-		#endregion
+		#region Windows Control Methods
 
         private void keyboardSearchControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
         {
@@ -673,34 +610,21 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void cmdEnter_Click(object sender, EventArgs e)
         {
-            if (txtCustomerName.Text == "" || txtCustomerName.Text == null)
+            if (string.IsNullOrEmpty(txtCustomerName.Text))
             {
                 MessageBox.Show("Please enter a valid customer name.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            Int32 intTerms = 0;
+            if (!int.TryParse(txtTerms.Text, out intTerms))
+            {
+                MessageBox.Show("Please enter a valid whole number in TERMS.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             decimal decCreditLimit = 0;
-
-            try
-            { decCreditLimit = decimal.Parse(txtCreditLimit.Text); }
-            catch
+            if (!decimal.TryParse(txtCreditLimit.Text, out decCreditLimit))
             {
                 MessageBox.Show("Please enter a valid credit limit.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTerms.Focus();
-                return;
-            }
-            if (decCreditLimit < mContactDetails.Credit)
-            {
-                MessageBox.Show("Sorry credit limit must not be less than the current credit. /l/nPlease enter a higher credit limit.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtCreditLimit.Focus();
-                return;
-            }
-
-            try
-            { int intterms = int.Parse(txtTerms.Text); }
-            catch  
-            {
-                MessageBox.Show("Please enter a valid terms.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTerms.Focus();
                 return;
             }
             try
@@ -771,5 +695,85 @@ namespace AceSoft.RetailPlus.Client.UI
             e.Handled = clsMethods.AllNum(Convert.ToInt32(e.KeyChar));
         }
 
-	}
+        #endregion
+
+        #region Private Methods
+
+        private void LoadOption()
+        {
+            cboTerms.Items.Clear();
+            foreach (string str in Enum.GetNames(typeof(ModeOfTerms)))
+            {
+                cboTerms.Items.Add(str);
+            }
+            cboTerms.SelectedIndex = 0;
+
+            if (mContactDetails.ContactID != 0)
+            {
+                txtCustomerName.Text = mContactDetails.ContactName;
+                txtBusinessName.Text = mContactDetails.BusinessName;
+                txtTelNo.Text = mContactDetails.TelephoneNo;
+                txtAddress.Text = mContactDetails.Address;
+
+                txtCreditLimit.Text = mContactDetails.CreditLimit.ToString("#,##0.#0");
+                txtCredit.Text = mContactDetails.Credit.ToString("#,##0.#0");
+                txtAvailableCredit.Text = (mContactDetails.CreditLimit - mContactDetails.Credit).ToString("#,##0.#0");
+                txtTerms.Text = mContactDetails.Terms.ToString("#,##0");
+                cboTerms.SelectedIndex = int.Parse(mContactDetails.ModeOfTerms.ToString("d"));
+                chkIsCreditAllowed.Checked = mContactDetails.IsCreditAllowed;
+
+            }
+        }
+
+        private bool SaveRecord()
+        {
+            Data.ContactDetails clsDetails = new Data.ContactDetails();
+            clsDetails = mContactDetails;
+
+            clsDetails.ContactCode = txtCustomerName.Text;
+            clsDetails.ContactName = txtCustomerName.Text;
+            clsDetails.Address = txtAddress.Text;
+            clsDetails.BusinessName = txtBusinessName.Text;
+            clsDetails.TelephoneNo = txtTelNo.Text;
+
+            // Jul 22, 2014
+            clsDetails.Debit = mContactDetails.Debit;
+            clsDetails.Credit = mContactDetails.Credit;
+            clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
+            clsDetails.CreditLimit = decimal.Parse(txtCreditLimit.Text);
+            clsDetails.Terms = int.Parse(txtTerms.Text);
+            clsDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), cboTerms.SelectedItem.ToString());
+
+            Data.Contacts clsContact = new Data.Contacts();
+            if (mContactDetails.ContactID == 0)
+            {
+                if (mstCaption == "Please enter customer name for deposit.")
+                { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
+                else if (mstCaption == "Quickly add new customer")
+                { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
+                else if (mContactDetails.ContactID == 0) // means not edit
+                { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
+
+                clsDetails.ContactGroupID = Constants.CONTACT_GROUP_CUSTOMER;
+                clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
+                clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
+                clsDetails.ContactID = clsContact.Insert(clsDetails);
+            }
+            else
+            {
+                clsDetails.ContactCode = mContactDetails.ContactCode;
+                clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
+                clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
+                clsContact.Update(clsDetails);
+            }
+            clsContact.CommitAndDispose();
+
+            mContactDetails = clsDetails;
+
+            return true;
+        }
+
+        #endregion
+
+    }
 }

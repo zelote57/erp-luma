@@ -220,11 +220,13 @@ namespace AceSoft.RetailPlus.Client
 			appsplash.Close();
 			
 			Security.AuditTrailDetails clsAuditDetails = new Security.AuditTrailDetails();
+            clsAuditDetails.BranchID = Constants.TerminalBranchID;
+            clsAuditDetails.TerminalNo = CompanyDetails.TerminalNo;
 			clsAuditDetails.ActivityDate = DateTime.Now;
 			clsAuditDetails.User = "N/A";
 			clsAuditDetails.IPAddress = System.Net.Dns.GetHostName();
 			clsAuditDetails.Activity = "Open Terminal";
-			clsAuditDetails.Remarks = "FE:" + "Open terminal no.:'" + CompanyDetails.TerminalNo + "'.";
+			clsAuditDetails.Remarks = "FE:" + "Open terminal no.:'" + CompanyDetails.TerminalNo + "' @ Branch:" + Constants.TerminalBranchID.ToString();
 
 			Security.AuditTrail clsAuditTrail = new Security.AuditTrail();
 			clsAuditTrail.Insert(clsAuditDetails);
@@ -282,11 +284,13 @@ namespace AceSoft.RetailPlus.Client
 				clsEvent.AddEventLn("System has been exited!", true);
 
 				clsAuditDetails = new Security.AuditTrailDetails();
+                clsAuditDetails.BranchID = Constants.TerminalBranchID;
+                clsAuditDetails.TerminalNo = CompanyDetails.TerminalNo;
 				clsAuditDetails.ActivityDate = DateTime.Now;
 				clsAuditDetails.User = "N/A";
 				clsAuditDetails.IPAddress = System.Net.Dns.GetHostName();
 				clsAuditDetails.Activity = "Close Terminal";
-				clsAuditDetails.Remarks = "FE:" + "Close terminal no.:'" + CompanyDetails.TerminalNo + "'.";
+                clsAuditDetails.Remarks = "FE:" + "Close terminal no.:'" + CompanyDetails.TerminalNo + "' @ Branch:" + Constants.TerminalBranchID.ToString() + ".";
 
 				clsAuditTrail = new Security.AuditTrail();
 				clsAuditTrail.Insert(clsAuditDetails);
@@ -386,8 +390,8 @@ namespace AceSoft.RetailPlus.Client
 
 				if (!boIsTerminalExist)
 				{
-					ErrorMessage = "FATAL ERROR Level 1.!!! Terminal No. [" + CompanyDetails.TerminalNo + "] does not exist in the database." +  Environment.NewLine + "Please consult your system administrator immediately...";
-					clsEvent.AddEventLn("FATAL ERROR!!! Terminal No. [" + CompanyDetails.TerminalNo + "] does not exist in the database. TRACE: Procedure IsTerminalExist returns false.");
+                    ErrorMessage = "FATAL ERROR Level 1.!!! " + Environment.NewLine + "Terminal No:[" + CompanyDetails.TerminalNo + "] @ BranchID:[" + Constants.TerminalBranchID .ToString() + "] does not exist in the database." + Environment.NewLine + "Please consult your system administrator immediately...";
+                    clsEvent.AddEventLn("FATAL ERROR!!! " + Environment.NewLine + "Terminal No:[" + CompanyDetails.TerminalNo + "] @ BranchID:[" + Constants.TerminalBranchID.ToString() + "] does not exist in the database. TRACE: Procedure IsTerminalExist returns false.");
 				}
 				else 
 				{
@@ -542,7 +546,7 @@ namespace AceSoft.RetailPlus.Client
 
 				FTP clsFTP = new FTP();
 
-				string strConstantRemarks = "Please contact your system administrator immediately.";
+                //string strConstantRemarks = "Please contact your system administrator immediately.";
 
 				try { clsFTP.Connect(strServer, strUserName, strPassword); }
 				catch {

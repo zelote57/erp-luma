@@ -4,6 +4,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 
+using AceSoft.RetailPlus.Reports;
+
 namespace AceSoft.RetailPlus.Client.UI
 {
     /// <summary>
@@ -41,59 +43,64 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.DataGrid dgPLUReport;
         private System.Windows.Forms.Label lblEndDate;
         private System.Windows.Forms.Label lblStartDate;
-
-        private System.Data.DataTable mdtPLUReport;
-        private string mCashierName;
-        private DialogResult dialog;
-        private Reports.ReceiptFormatDetails mclsReceiptFormatDetails;
-        private DateTime mEndDate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblDiscount;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblGrandTotal;
-        private DateTime mStartDate;
         private System.Windows.Forms.Label lblVATName;
         private System.Windows.Forms.Label lblVAT;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblCharge;
-        private Data.CashierReportDetails mCashierReportDetails;
         private Button cmdCancel;
         private Button cmdEnter;
-        private bool mboIsVATInclusive;
+        private Label label3;
+        private Label lblVATExempt;
 
         #region Public Get/Set Properties
 
+        private System.Data.DataTable mdtPLUReport;
         public System.Data.DataTable dtPLUReport
         {
             set { mdtPLUReport = value; }
         }
-        public Reports.ReceiptFormatDetails ReceiptFormatDetails
-        {
-            set { mclsReceiptFormatDetails = value; }
-        }
+
+        private DateTime mStartDate;
         public DateTime StartDate
         {
             set { mStartDate = value; }
         }
+
+        private DateTime mEndDate;
         public DateTime EndDate
         {
             set { mEndDate = value; }
         }
+
+        private DialogResult dialog;
         public DialogResult Result
         {
             get { return dialog; }
         }
+
+        private string mCashierName;
         public string CashierName
         {
             set { mCashierName = value; }
         }
+
+        private Data.CashierReportDetails mCashierReportDetails;
         public Data.CashierReportDetails CashierReportDetail
         {
             set { mCashierReportDetails = value; }
         }
-        public bool IsVATInclusive
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
         {
-            set { mboIsVATInclusive = value; }
+            set
+            {
+                mclsTerminalDetails = value;
+            }
         }
 
         #endregion
@@ -173,6 +180,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblReportDesc = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblVATExempt = new System.Windows.Forms.Label();
             TERMINALNO = new System.Windows.Forms.DataGridTextBoxColumn();
             ORDERSLIPPRINTER = new System.Windows.Forms.DataGridTextBoxColumn();
             this.groupBox1.SuspendLayout();
@@ -215,6 +224,8 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.panReport.AutoScroll = true;
             this.panReport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panReport.Controls.Add(this.label3);
+            this.panReport.Controls.Add(this.lblVATExempt);
             this.panReport.Controls.Add(this.lblVATName);
             this.panReport.Controls.Add(this.lblVAT);
             this.panReport.Controls.Add(this.label7);
@@ -250,7 +261,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // lblVATName
             // 
             this.lblVATName.BackColor = System.Drawing.Color.DarkGray;
-            this.lblVATName.Location = new System.Drawing.Point(25, 413);
+            this.lblVATName.Location = new System.Drawing.Point(25, 432);
             this.lblVATName.Name = "lblVATName";
             this.lblVATName.Size = new System.Drawing.Size(104, 15);
             this.lblVATName.TabIndex = 264;
@@ -260,7 +271,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // lblVAT
             // 
             this.lblVAT.BackColor = System.Drawing.Color.DarkGray;
-            this.lblVAT.Location = new System.Drawing.Point(130, 413);
+            this.lblVAT.Location = new System.Drawing.Point(130, 432);
             this.lblVAT.Name = "lblVAT";
             this.lblVAT.Size = new System.Drawing.Size(227, 15);
             this.lblVAT.TabIndex = 263;
@@ -270,7 +281,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label7
             // 
             this.label7.BackColor = System.Drawing.Color.DarkGray;
-            this.label7.Location = new System.Drawing.Point(25, 397);
+            this.label7.Location = new System.Drawing.Point(25, 416);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(104, 15);
             this.label7.TabIndex = 262;
@@ -280,7 +291,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // lblCharge
             // 
             this.lblCharge.BackColor = System.Drawing.Color.DarkGray;
-            this.lblCharge.Location = new System.Drawing.Point(130, 397);
+            this.lblCharge.Location = new System.Drawing.Point(130, 416);
             this.lblCharge.Name = "lblCharge";
             this.lblCharge.Size = new System.Drawing.Size(227, 15);
             this.lblCharge.TabIndex = 261;
@@ -290,7 +301,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label4
             // 
             this.label4.BackColor = System.Drawing.Color.DarkGray;
-            this.label4.Location = new System.Drawing.Point(25, 429);
+            this.label4.Location = new System.Drawing.Point(25, 448);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(104, 15);
             this.label4.TabIndex = 248;
@@ -300,7 +311,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // lblGrandTotal
             // 
             this.lblGrandTotal.BackColor = System.Drawing.Color.DarkGray;
-            this.lblGrandTotal.Location = new System.Drawing.Point(130, 429);
+            this.lblGrandTotal.Location = new System.Drawing.Point(130, 448);
             this.lblGrandTotal.Name = "lblGrandTotal";
             this.lblGrandTotal.Size = new System.Drawing.Size(227, 15);
             this.lblGrandTotal.TabIndex = 247;
@@ -466,7 +477,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblReportFooter3
             // 
-            this.lblReportFooter3.Location = new System.Drawing.Point(26, 485);
+            this.lblReportFooter3.Location = new System.Drawing.Point(26, 504);
             this.lblReportFooter3.Name = "lblReportFooter3";
             this.lblReportFooter3.Size = new System.Drawing.Size(331, 15);
             this.lblReportFooter3.TabIndex = 227;
@@ -475,7 +486,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblReportFooter2
             // 
-            this.lblReportFooter2.Location = new System.Drawing.Point(26, 469);
+            this.lblReportFooter2.Location = new System.Drawing.Point(26, 488);
             this.lblReportFooter2.Name = "lblReportFooter2";
             this.lblReportFooter2.Size = new System.Drawing.Size(331, 15);
             this.lblReportFooter2.TabIndex = 226;
@@ -484,7 +495,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblReportFooter1
             // 
-            this.lblReportFooter1.Location = new System.Drawing.Point(26, 453);
+            this.lblReportFooter1.Location = new System.Drawing.Point(26, 472);
             this.lblReportFooter1.Name = "lblReportFooter1";
             this.lblReportFooter1.Size = new System.Drawing.Size(331, 15);
             this.lblReportFooter1.TabIndex = 225;
@@ -493,7 +504,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblPanelBot
             // 
-            this.lblPanelBot.Location = new System.Drawing.Point(26, 509);
+            this.lblPanelBot.Location = new System.Drawing.Point(26, 528);
             this.lblPanelBot.Name = "lblPanelBot";
             this.lblPanelBot.Size = new System.Drawing.Size(331, 15);
             this.lblPanelBot.TabIndex = 168;
@@ -641,6 +652,26 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.Color.DarkGray;
+            this.label3.Location = new System.Drawing.Point(25, 398);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(104, 15);
+            this.label3.TabIndex = 266;
+            this.label3.Text = "Less VAT Exempt";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblVATExempt
+            // 
+            this.lblVATExempt.BackColor = System.Drawing.Color.DarkGray;
+            this.lblVATExempt.Location = new System.Drawing.Point(130, 398);
+            this.lblVATExempt.Name = "lblVATExempt";
+            this.lblVATExempt.Size = new System.Drawing.Size(227, 15);
+            this.lblVATExempt.TabIndex = 265;
+            this.lblVATExempt.Text = "0.00";
+            this.lblVATExempt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // PLUReportWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
@@ -662,8 +693,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.PLUReportWnd_Load);
-            this.Resize += new System.EventHandler(this.PLUReportWnd_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PLUReportWnd_KeyDown);
+            this.Resize += new System.EventHandler(this.PLUReportWnd_Resize);
             this.groupBox1.ResumeLayout(false);
             this.panReport.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgPLUReport)).EndInit();
@@ -744,6 +775,22 @@ namespace AceSoft.RetailPlus.Client.UI
 
         #endregion
 
+        #region Windows Control Methods
+
+        private void cmdCancel_Click(object sender, EventArgs e)
+        {
+            dialog = DialogResult.Cancel;
+            this.Hide();
+        }
+
+        private void cmdEnter_Click(object sender, EventArgs e)
+        {
+            dialog = DialogResult.OK;
+            this.Hide();
+        }
+
+        #endregion
+
         #region Private Methods
 
         private void SetGridItemsWidth()
@@ -761,10 +808,12 @@ namespace AceSoft.RetailPlus.Client.UI
             lblStartDate.Text = "Start Date: " + mStartDate.ToString("MM/dd/yyyy hh:mm:ss tt") + Environment.NewLine;
             lblEndDate.Text = "End Date  : " + mEndDate.ToString("MM/dd/yyyy hh:mm:ss tt") + Environment.NewLine + Environment.NewLine;
 
-            lblReportHeader1.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportHeader1);
-            lblReportHeader2.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportHeader2);
-            lblReportHeader3.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportHeader3);
-            lblReportHeader4.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportHeader4);
+            Receipt clsReceipt = new Receipt();
+
+            lblReportHeader1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader1").Value);
+            lblReportHeader2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader2").Value);
+            lblReportHeader3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader3").Value);
+            lblReportHeader4.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader4").Value);
 
             this.dgStyle.MappingName = mdtPLUReport.TableName;
             dgPLUReport.DataSource = mdtPLUReport;
@@ -783,78 +832,87 @@ namespace AceSoft.RetailPlus.Client.UI
             lblTotalQuantity.Text = TotalQuantity.ToString("#,##0.#0");
             lblTotalAmount.Text = TotalAmount.ToString("#,##0.#0");
 
+            
             lblDiscount.Text = mCashierReportDetails.SubTotalDiscount.ToString("#,##0.#0");
+            decimal GrandTotal = mCashierReportDetails.DailySales + mCashierReportDetails.VAT + mCashierReportDetails.TotalCharge;
+            lblVATExempt.Text = (TotalAmount - GrandTotal - mCashierReportDetails.SubTotalDiscount).ToString("#,##0.#0");
+
             lblCharge.Text = mCashierReportDetails.TotalCharge.ToString("#,##0.#0");
             lblVAT.Text = mCashierReportDetails.VAT.ToString("#,##0.#0");
 
-            lblVAT.Visible = !mboIsVATInclusive;
-            lblVATName.Visible = !mboIsVATInclusive;
+            //put back in case inde gumana
+            lblVAT.Visible = !mclsTerminalDetails.IsVATInclusive;
+            lblVATName.Visible = !mclsTerminalDetails.IsVATInclusive;
 
-            decimal GrandTotal = mCashierReportDetails.DailySales + mCashierReportDetails.VAT + mCashierReportDetails.TotalCharge;
             lblGrandTotal.Text = GrandTotal.ToString("#,##0.#0");
 
-            lblReportFooter1.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportFooter1);
-            lblReportFooter2.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportFooter2);
-            lblReportFooter3.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportFooter3);
+            lblReportFooter1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter1").Value);
+            lblReportFooter2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter2").Value);
+            lblReportFooter3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter3").Value);
+
+            clsReceipt.CommitAndDispose();
 
         }
         private string GetReceiptFormatParameter(string stReceiptFormat)
         {
             string stRetValue = "";
 
-            if (stReceiptFormat == Reports.ReceiptFieldFormats.Blank)
+            if (stReceiptFormat == ReceiptFieldFormats.Blank)
             {
                 stRetValue = "";
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.Spacer)
+            else if (stReceiptFormat == ReceiptFieldFormats.Spacer)
             {
-                stRetValue = Environment.NewLine;
+                stRetValue = " ";
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.DateNow)
+            else if (stReceiptFormat == ReceiptFieldFormats.InvoiceNo)
             {
-                stRetValue = DateTime.Now.ToString("MMM dd yyyy hh:mh tt");
+                stRetValue = "";
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.Cashier)
+            else if (stReceiptFormat == ReceiptFieldFormats.DateNow)
             {
-                stRetValue = "Cashier: " + mCashierName;
+                stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.TerminalNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.Cashier)
             {
-                stRetValue = "Terminal No.: " + CompanyDetails.TerminalNo;
+                stRetValue = mCashierName;
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.MachineSerialNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.TerminalNo)
             {
-                stRetValue = "MIN: " + CONFIG.MachineSerialNo;
+                stRetValue = mclsTerminalDetails.TerminalNo;
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.AccreditationNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.MachineSerialNo)
             {
-                stRetValue = "Acc. No.: " + CONFIG.AccreditationNo;
+                stRetValue = CONFIG.MachineSerialNo;
             }
-            else if (stReceiptFormat == Reports.ReceiptFieldFormats.InvoiceNo)
+            else if (stReceiptFormat == ReceiptFieldFormats.AccreditationNo)
             {
-                stRetValue = "OFFICIAL RECEIPT #: " + "N/A";
+                stRetValue = CONFIG.AccreditationNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.RewardsPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseIndividualCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseIndividualCreditPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseGroupCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseGroupCreditPermitNo;
             }
             else
             {
                 stRetValue = stReceiptFormat;
             }
 
+            if (stRetValue == null) stRetValue = "";
+
             return stRetValue;
         }
 
         #endregion
 
-        private void cmdCancel_Click(object sender, EventArgs e)
-        {
-            dialog = DialogResult.Cancel;
-            this.Hide();
-        }
-
-        private void cmdEnter_Click(object sender, EventArgs e)
-        {
-            dialog = DialogResult.OK;
-            this.Hide();
-        }
-
+        
     }
 }

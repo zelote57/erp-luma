@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Reflection;
 
+using AceSoft.RetailPlus.Reports;
+
 namespace AceSoft.RetailPlus.Client.UI
 {
 	/// <summary>
@@ -16,9 +18,6 @@ namespace AceSoft.RetailPlus.Client.UI
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
-		private DialogResult dialog;
-        private Data.CashierReportDetails mDetails;
-
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.PictureBox imgIcon;
 		private System.Windows.Forms.Label lblDescription;
@@ -168,8 +167,10 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label48;
         private Label lblCreditPaymentCash;
         private Label label80;
-		private string mCashierName;
 
+        #region Public Properties
+
+        private DialogResult dialog;
 		public DialogResult Result
 		{
 			get 
@@ -178,17 +179,30 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 		}
 
+        private Data.CashierReportDetails mDetails;
 		public Data.CashierReportDetails Details
 		{
 			set 
 			{	mDetails	=	value;	}
 		}
 
+        private string mCashierName;
 		public string CashierName
 		{
 			set
 			{	mCashierName	=	value;	}
         }
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set
+            {
+                mclsTerminalDetails = value;
+            }
+        }
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -2157,14 +2171,12 @@ namespace AceSoft.RetailPlus.Client.UI
 		{	
 			lblCompany.Text = CompanyDetails.CompanyCode;
 
-			Reports.ReceiptFormat clsReceiptFormat = new Reports.ReceiptFormat();
-			Reports.ReceiptFormatDetails clsDetails = clsReceiptFormat.Details();
-			clsReceiptFormat.CommitAndDispose();
+			Receipt clsReceipt = new Receipt();
 
-			lblReportHeader1.Text = GetReceiptFormatParameter(clsDetails.ReportHeader1);
-			lblReportHeader2.Text = GetReceiptFormatParameter(clsDetails.ReportHeader2);
-			lblReportHeader3.Text = GetReceiptFormatParameter(clsDetails.ReportHeader3);
-			lblReportHeader4.Text = GetReceiptFormatParameter(clsDetails.ReportHeader4);
+            lblReportHeader1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader1").Value);
+            lblReportHeader2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader2").Value);
+            lblReportHeader3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader3").Value);
+            lblReportHeader4.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader4").Value);
 
 			lblGrossSales.Text				= mDetails.GrossSales.ToString("#,##0.00");
 			lblTotalDiscount.Text			= mDetails.TotalDiscount.ToString("#,##0.00");
@@ -2243,55 +2255,70 @@ namespace AceSoft.RetailPlus.Client.UI
 				lblShortOver.Text = "";
 			}
 
-			lblReportFooter1.Text = GetReceiptFormatParameter(clsDetails.ReportFooter1);
-			lblReportFooter2.Text = GetReceiptFormatParameter(clsDetails.ReportFooter2);
-			lblReportFooter3.Text = GetReceiptFormatParameter(clsDetails.ReportFooter3);
+            lblReportFooter1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter1").Value);
+            lblReportFooter2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter2").Value);
+            lblReportFooter3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter3").Value);
 
+            clsReceipt.CommitAndDispose();
 		}
 
-		private string GetReceiptFormatParameter(string stReceiptFormat)
-		{
-			string stRetValue = "";
+        private string GetReceiptFormatParameter(string stReceiptFormat)
+        {
+            string stRetValue = "";
 
-			if (stReceiptFormat == Reports.ReceiptFieldFormats.Blank)
-			{
-				stRetValue = "";
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.Spacer)
-			{
-				stRetValue = Environment.NewLine;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.DateNow)
-			{
-				stRetValue = DateTime.Now.ToString("MMM dd yyyy hh:mh tt");
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.Cashier)
-			{
-				stRetValue = "Cashier: " + mCashierName;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.TerminalNo)
-			{
-				stRetValue = "Terminal No.: " + CompanyDetails.TerminalNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.MachineSerialNo)
-			{
-				stRetValue = "MIN: " + CONFIG.MachineSerialNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.AccreditationNo)
-			{
-				stRetValue = "Acc. No.: " + CONFIG.AccreditationNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.InvoiceNo)
-			{
-				stRetValue = "Invoice #: " + "N/A";
-			}
-			else
-			{
-				stRetValue = stReceiptFormat;
-			}
+            if (stReceiptFormat == ReceiptFieldFormats.Blank)
+            {
+                stRetValue = "";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.Spacer)
+            {
+                stRetValue = " ";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InvoiceNo)
+            {
+                stRetValue = "";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.DateNow)
+            {
+                stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.Cashier)
+            {
+                stRetValue = mCashierName;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.TerminalNo)
+            {
+                stRetValue = mclsTerminalDetails.TerminalNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.MachineSerialNo)
+            {
+                stRetValue = CONFIG.MachineSerialNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.AccreditationNo)
+            {
+                stRetValue = CONFIG.AccreditationNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.RewardsPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseIndividualCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseIndividualCreditPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseGroupCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseGroupCreditPermitNo;
+            }
+            else
+            {
+                stRetValue = stReceiptFormat;
+            }
 
-			return stRetValue;
-		}
+            if (stRetValue == null) stRetValue = "";
+
+            return stRetValue;
+        }
 
         #endregion
 

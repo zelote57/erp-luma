@@ -709,7 +709,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
             ProductDetails clsProductDetails = clsProducts.Details1(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
 
             Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
-            TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
+            TerminalDetails clsTerminalDetails = clsTerminal.Details(Int32.Parse(Session["BranchID"].ToString()), Session["TerminalNo"].ToString());
             clsProducts.CommitAndDispose();
 
             clsDetails.TransferOutID = Convert.ToInt64(lblTransferOutID.Text);
@@ -1110,7 +1110,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
         private void GenerateItems()
         {
             TransferOut clsTransferOut = new TransferOut();
-            clsTransferOut.GenerateItemsForReorder(Convert.ToInt64(lblTransferOutID.Text));
+            clsTransferOut.GenerateItemsForReorder(Int32.Parse(Session["TerminalID"].ToString()), Convert.ToInt64(lblTransferOutID.Text));
             clsTransferOut.CommitAndDispose();
         }
         private void UpdateTransferOutDiscount()

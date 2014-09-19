@@ -232,7 +232,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 				lblPromoValue.Text = Convert.ToDecimal(dr["PromoValue"].ToString()).ToString("#,##0.#");
 
 				CheckBox chkInPercent = (CheckBox) e.Item.FindControl("chkInPercent");
-				chkInPercent.Checked = Convert.ToBoolean(Convert.ToByte(dr["InPercent"].ToString()));
+				chkInPercent.Checked = Boolean.Parse(dr["InPercent"].ToString());
 
 				//For anchor
 				//				HtmlGenericControl divExpCollAsst = (HtmlGenericControl) e.Item.FindControl("divExpCollAsst");
@@ -342,15 +342,14 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
+            PromoDetails clsSearchKey = new PromoDetails();
+
+			if (Request.QueryString["Search"]!=null)
 			{
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsPromo.List(SortField, sortoption)).DefaultView;
+                clsSearchKey.PromoCode = Common.Decrypt((string)Request.QueryString["search"], Session.SessionID);
 			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsPromo.Search(SearchKey, SortField, sortoption)).DefaultView;
-			}
+
+            PageData.DataSource = clsPromo.ListAstDataTable(clsSearchKey, SortField, sortoption).DefaultView;
 
 			clsPromo.CommitAndDispose();
 

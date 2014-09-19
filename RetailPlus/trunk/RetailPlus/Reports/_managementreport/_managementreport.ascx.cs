@@ -267,7 +267,7 @@ namespace AceSoft.RetailPlus.Reports
             clsSalesTransactionsColumns.SubTotal = true;
             clsSalesTransactionsColumns.Discount = true;
             clsSalesTransactionsColumns.VAT = true;
-            clsSalesTransactionsColumns.VatableAmount = true;
+            clsSalesTransactionsColumns.VATableAmount = true;
             clsSalesTransactionsColumns.LocalTax = true;
             clsSalesTransactionsColumns.AmountPaid = true;
             clsSalesTransactionsColumns.CashPayment = true;
@@ -318,7 +318,8 @@ namespace AceSoft.RetailPlus.Reports
                     #region Daily, Weekely, Monthly Sales Transaction
 
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "TransactionDate", System.Data.SqlClient.SortOrder.Ascending);
+                    //dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "TransactionDate", System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsSalesTransactions.ListAsDataTable(clsSearchKey, boWithTrustFund, "TransactionDate", SortOption.Ascending);
                     clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)

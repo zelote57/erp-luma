@@ -839,7 +839,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
             ProductDetails clsProductDetails = clsProducts.Details1(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
-			TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
+            TerminalDetails clsTerminalDetails = clsTerminal.Details(Int32.Parse(Session["BranchID"].ToString()), Session["TerminalNo"].ToString());
 			clsProducts.CommitAndDispose();
 
 			clsDetails.POID = Convert.ToInt64(lblPOID.Text);
@@ -1240,13 +1240,13 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
         private void GenerateItemsByRID()
         {
             PO clsPO = new PO();
-            clsPO.GenerateItemsForReorderByRID(Convert.ToInt64(lblPOID.Text), Convert.ToInt64(lblRID.Text), Convert.ToDateTime(txtIDCStartDate.Text + " 00:00:00"), Convert.ToDateTime(txtIDCEndDate.Text + " 23:59:59"));
+            clsPO.GenerateItemsForReorderByRID(Int32.Parse(Session["TerminalID"].ToString()), Convert.ToInt64(lblPOID.Text), Convert.ToInt64(lblRID.Text), Convert.ToDateTime(txtIDCStartDate.Text + " 00:00:00"), Convert.ToDateTime(txtIDCEndDate.Text + " 23:59:59"));
             clsPO.CommitAndDispose();
         }
         private void GenerateItemsByThreshold()
         {
             PO clsPO = new PO();
-            clsPO.GenerateItemsForReorder(Convert.ToInt64(lblPOID.Text));
+            clsPO.GenerateItemsForReorder(Int32.Parse(Session["TerminalID"].ToString()), Convert.ToInt64(lblPOID.Text));
             clsPO.CommitAndDispose();
         }
         private void UpdatePODiscount()

@@ -187,7 +187,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
             // Added July 9, 2010
             Terminal clsTerminal = new Terminal(clsProductGroup.Connection, clsProductGroup.Transaction);
-            TerminalDetails clsTerminalDetails = clsTerminal.Details(1);
+            TerminalDetails clsTerminalDetails = clsTerminal.Details(Int32.Parse(Session["BranchID"].ToString()), Session["TerminalNo"].ToString());
             txtWSPriceMarkUp.Text = clsTerminalDetails.WSPriceMarkUp.ToString();
             txtMargin.Text = clsTerminalDetails.RETPriceMarkUp.ToString();
 

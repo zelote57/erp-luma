@@ -307,7 +307,8 @@ namespace AceSoft.RetailPlus.Inventory._Stock
 								if (clsProductVariationsMatrix.isExist(ProductBaseMatrixID, VariationID) == false)
 								{
 									ProductVariationsMatrixDetails clsProductVariationsMatrixDetails = new ProductVariationsMatrixDetails();
-									clsProductVariationsMatrixDetails.MatrixID = ProductBaseMatrixID;
+                                    clsProductVariationsMatrixDetails.ProductID = ProductID;
+                                    clsProductVariationsMatrixDetails.MatrixID = ProductBaseMatrixID;
 									clsProductVariationsMatrixDetails.VariationID = VariationID;
 									clsProductVariationsMatrixDetails.Description = reader.GetAttribute("Description");
 									clsProductVariationsMatrix.SaveVariation(clsProductVariationsMatrixDetails);

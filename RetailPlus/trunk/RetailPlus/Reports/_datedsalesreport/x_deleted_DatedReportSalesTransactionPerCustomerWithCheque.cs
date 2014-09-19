@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RetailPlus.Reports._managementreport {
+namespace RetailPlus.Reports._datedsalesreport {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace RetailPlus.Reports._managementreport {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class _PerCustomerGroupPerMonth : ReportClass {
+    public class x_deleted_DatedReportSalesTransactionPerCustomerWithCheque : ReportClass {
         
-        public _PerCustomerGroupPerMonth() {
+        public x_deleted_DatedReportSalesTransactionPerCustomerWithCheque() {
         }
         
         public override string ResourceName {
             get {
-                return "_PerCustomerGroupPerMonth.rpt";
+                return "x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,8 @@ namespace RetailPlus.Reports._managementreport {
         
         public override string FullResourceName {
             get {
-                return "RetailPlus.Reports._managementreport._PerCustomerGroupPerMonth.rpt";
+                return "RetailPlus.Reports._datedsalesreport.x_deleted_DatedReportSalesTransactionPerCust" +
+                    "omerWithCheque.rpt";
             }
             set {
                 // Do nothing
@@ -74,7 +75,7 @@ namespace RetailPlus.Reports._managementreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section6 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,7 +83,7 @@ namespace RetailPlus.Reports._managementreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -90,7 +91,7 @@ namespace RetailPlus.Reports._managementreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section7 {
             get {
                 return this.ReportDefinition.Sections[5];
             }
@@ -98,7 +99,7 @@ namespace RetailPlus.Reports._managementreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[6];
             }
@@ -106,25 +107,9 @@ namespace RetailPlus.Reports._managementreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection3 {
-            get {
-                return this.ReportDefinition.Sections[7];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
-            get {
-                return this.ReportDefinition.Sections[8];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
-                return this.ReportDefinition.Sections[9];
+                return this.ReportDefinition.Sections[7];
             }
         }
         
@@ -162,9 +147,9 @@ namespace RetailPlus.Reports._managementreport {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class Cached_PerCustomerGroupPerMonth : Component, ICachedReport {
+    public class Cachedx_deleted_DatedReportSalesTransactionPerCustomerWithCheque : Component, ICachedReport {
         
-        public Cached_PerCustomerGroupPerMonth() {
+        public Cachedx_deleted_DatedReportSalesTransactionPerCustomerWithCheque() {
         }
         
         [Browsable(false)]
@@ -201,7 +186,7 @@ namespace RetailPlus.Reports._managementreport {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            _PerCustomerGroupPerMonth rpt = new _PerCustomerGroupPerMonth();
+            x_deleted_DatedReportSalesTransactionPerCustomerWithCheque rpt = new x_deleted_DatedReportSalesTransactionPerCustomerWithCheque();
             rpt.Site = this.Site;
             return rpt;
         }

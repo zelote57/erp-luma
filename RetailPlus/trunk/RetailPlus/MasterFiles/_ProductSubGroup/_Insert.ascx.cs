@@ -118,7 +118,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 			cboProductSubGroupUnit.SelectedIndex = cboProductSubGroupUnit.Items.Count - 1;
 
             Terminal clsTerminal = new Terminal(clsUnit.Connection, clsUnit.Transaction);
-            TerminalDetails clsTerminalDetails = clsTerminal.Details(1);
+            TerminalDetails clsTerminalDetails = clsTerminal.Details(Int32.Parse(Session["BranchID"].ToString()), Session["TerminalNo"].ToString());
             txtVAT.Text = clsTerminalDetails.VAT.ToString("###.#0");
             txtEVAT.Text = clsTerminalDetails.EVAT.ToString("###.#0");
             txtLocalTax.Text = clsTerminalDetails.LocalTax.ToString("###.#0");

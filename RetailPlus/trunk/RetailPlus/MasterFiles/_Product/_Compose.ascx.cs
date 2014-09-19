@@ -408,7 +408,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			DataClass clsDataClass = new DataClass();
 
 			ProductComposition clsProductComposition = new ProductComposition();
-			lstItem.DataSource = clsDataClass.DataReaderToDataTable(clsProductComposition.List(Convert.ToInt64(lblProductID.Text), "CompositionID",SortOption.Ascending)).DefaultView;
+			lstItem.DataSource = clsProductComposition.ListAsDataTable(Convert.ToInt64(lblProductID.Text), "CompositionID",SortOption.Ascending).DefaultView;
 			lstItem.DataBind();
 			clsProductComposition.CommitAndDispose();
 		}

@@ -729,7 +729,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
             ProductDetails clsProductDetails = clsProducts.Details1(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
-			TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
+            TerminalDetails clsTerminalDetails = clsTerminal.Details(Int32.Parse(Session["BranchID"].ToString()), Session["TerminalNo"].ToString());
 			clsProducts.CommitAndDispose();
 
             clsDetails.TransferInID = Convert.ToInt64(lblTransferInID.Text);
@@ -1130,7 +1130,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
         private void GenerateItems()
         {
             TransferIn clsTransferIn = new TransferIn();
-            clsTransferIn.GenerateItemsForReorder(Convert.ToInt64(lblTransferInID.Text));
+            clsTransferIn.GenerateItemsForReorder(Int32.Parse(Session["BranchID"].ToString()), Session["TerminalNo"].ToString(), Convert.ToInt64(lblTransferInID.Text));
             clsTransferIn.CommitAndDispose();
         }
         private void UpdateTransferInDiscount()

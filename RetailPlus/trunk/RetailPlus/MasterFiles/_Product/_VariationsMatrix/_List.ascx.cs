@@ -47,6 +47,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
 			//
 			InitializeComponent();
 			base.OnInit(e);
+
+            try { Session.Remove("Search"); }
+            catch { }
 		}
 		
 		///		Required method for Designer support - do not modify
@@ -258,7 +261,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._VariationsMatrix
             clsSearchKeys.Description = stSearchKey;
 
             ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
-            System.Data.DataTable dt = clsProductVariationsMatrix.BaseListAsDataTable(Int64.Parse(lblProductID.Text), Constants.BRANCH_ID_MAIN, MatrixDescription: stSearchKey, SortField: SortField, SortOrder: sortoption);
+            System.Data.DataTable dt = clsProductVariationsMatrix.BaseListAsDataTable(Int64.Parse(lblProductID.Text), Int32.Parse(Session["BranchID"].ToString()), MatrixDescription: stSearchKey, SortField: SortField, SortOrder: sortoption);
 			clsProductVariationsMatrix.CommitAndDispose();
 
             PageData.DataSource = dt.DefaultView;

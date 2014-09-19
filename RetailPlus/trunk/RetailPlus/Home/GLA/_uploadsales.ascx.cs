@@ -638,10 +638,10 @@ namespace AceSoft.RetailPlus.Home.GLA
             mclsSalesTransactionDetails.DiscountableAmount = mclsSalesTransactionDetails.Discount <= 0 ? 0 : glaDetails.Dsc_Ttl;
             mclsSalesTransactionDetails.ItemsDiscount = 0;
             mclsSalesTransactionDetails.VAT = glaDetails.Tax_Ttl;
-            mclsSalesTransactionDetails.VatableAmount = glaDetails.Sub_Ttl + glaDetails.Tax_Ttl;
+            mclsSalesTransactionDetails.VATableAmount = glaDetails.Sub_Ttl + glaDetails.Tax_Ttl;
             mclsSalesTransactionDetails.NonVATableAmount = 0;
             mclsSalesTransactionDetails.EVAT = 0;
-            mclsSalesTransactionDetails.EVatableAmount = 0;
+            mclsSalesTransactionDetails.EVATableAmount = 0;
             mclsSalesTransactionDetails.NonEVATableAmount = glaDetails.Sub_Ttl + glaDetails.Tax_Ttl;
             mclsSalesTransactionDetails.LocalTax = 0;
             mclsSalesTransactionDetails.TotalItemSold = glaDetails.Cov_Cnt;

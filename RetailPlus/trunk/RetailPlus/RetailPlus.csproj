@@ -476,8 +476,32 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActual.cs">
+      <DependentUpon>_DatedReportSummarizedPerDayWithActual.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithEffective.cs">
+      <DependentUpon>_DatedReportSummarizedPerDayWithEffective.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActualEffective.cs">
+      <DependentUpon>_DatedReportSummarizedPerDayWithActualEffective.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerWithCheque.cs">
       <DependentUpon>_DatedReportSalesTransactionPerCustomerWithCheque.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesPerDay.cs">
+      <DependentUpon>_DatedReportSalesPerDay.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -524,8 +548,8 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Reports\_datedsalesreport\_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.cs">
-      <DependentUpon>_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.rpt</DependentUpon>
+    <Compile Include="Reports\_datedsalesreport\x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.cs">
+      <DependentUpon>x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -3030,34 +3054,16 @@
       <DependentUpon>_SalesAndReceivablesSalesAnalysis.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\_datedsalesreport\_DatedReportSalesPerDay.cs">
+    <Compile Include="Reports\_datedsalesreport\x_DatedReportSalesPerDay.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>_DatedReportSalesPerDay.rpt</DependentUpon>
+      <DependentUpon>x_DatedReportSalesPerDay.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\_datedsalesreport\_DatedReportSalesPerHour.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>_DatedReportSalesPerHour.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActual.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_DatedReportSummarizedPerDayWithActual.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActualEffective.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_DatedReportSummarizedPerDayWithActualEffective.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithEffective.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_DatedReportSummarizedPerDayWithEffective.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\_StockTransactionReport.ascx.cs">
@@ -3977,9 +3983,25 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_CustomerCreditListWCredit1.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActual.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSummarizedPerDayWithActual.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithEffective.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSummarizedPerDayWithEffective.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActualEffective.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSummarizedPerDayWithActualEffective.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesTransactionPerCustomerWithCheque.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_DatedReportSalesTransactionPerCustomerWithCheque.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesPerDay.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSalesPerDay.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_managementreport\_PerBranchPerMonthCovers.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -4009,9 +4031,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_DatedReportSalesTransactionPerCustomerPerItem.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\_datedsalesreport\_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.rpt">
+    <EmbeddedResource Include="Reports\_datedsalesreport\x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.cs</LastGenOutput>
+      <LastGenOutput>x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_inventory\_ProductInventoryReportMonthly.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -4325,25 +4347,13 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_SalesAndReceivablesSalesAnalysis.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesPerDay.rpt">
+    <EmbeddedResource Include="Reports\_datedsalesreport\x_DatedReportSalesPerDay.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>_DatedReportSalesPerDay.cs</LastGenOutput>
+      <LastGenOutput>x_DatedReportSalesPerDay.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSalesPerHour.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_DatedReportSalesPerHour.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActual.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>_DatedReportSummarizedPerDayWithActual.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActualEffective.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>_DatedReportSummarizedPerDayWithActualEffective.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithEffective.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>_DatedReportSummarizedPerDayWithEffective.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_StockTransactionReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

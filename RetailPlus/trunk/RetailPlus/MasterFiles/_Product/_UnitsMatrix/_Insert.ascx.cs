@@ -155,7 +155,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
                 ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
 
                 Terminal clsTerminal = new Terminal(clsUnitMatrix.Connection, clsUnitMatrix.Transaction);
-                TerminalDetails clsTerminalDetails = clsTerminal.Details(Constants.C_DEFAULT_TERMINAL_ID_01);
+                TerminalDetails clsTerminalDetails = clsTerminal.Details(Int32.Parse(Session["BranchID"].ToString()), Session["TerminalNo"].ToString());
 
                 clsProductPackageDetails.ProductID = Convert.ToInt64(lblProductID.Text);
                 clsProductPackageDetails.UnitID = Convert.ToInt32(cboBottomUnit.SelectedItem.Value);

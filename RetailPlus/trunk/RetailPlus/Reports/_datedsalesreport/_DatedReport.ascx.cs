@@ -49,17 +49,19 @@ namespace AceSoft.RetailPlus.Reports
             {
                 cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySales, ReportTypes.SummarizeDailySales));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDay, ReportTypes.SalesPerDay));
             }
             if (clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySalesWithTF).Read)
             {
                 cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySalesWithTF, ReportTypes.SummarizeDailySalesWithTF));
+                cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDayWithTF, ReportTypes.SalesPerDayWithTF));
             }
             if (clsAccessRights.Details(UID, (int)AccessTypes.SalesTransactionReport).Read)
             {
                 cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerHour, ReportTypes.SalesPerHour));
-                cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDay, ReportTypes.SalesPerDay));
+                
                 cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactions, ReportTypes.SalesTransactions));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesTransactionPerCustomer, ReportTypes.SalesTransactionPerCustomer));
@@ -369,7 +371,7 @@ namespace AceSoft.RetailPlus.Reports
             clsSalesTransactionsColumns.SubTotal = true;
             clsSalesTransactionsColumns.Discount = true;
             clsSalesTransactionsColumns.VAT = true;
-            clsSalesTransactionsColumns.VatableAmount = true;
+            clsSalesTransactionsColumns.VATableAmount = true;
             clsSalesTransactionsColumns.LocalTax = true;
             clsSalesTransactionsColumns.AmountPaid = true;
             clsSalesTransactionsColumns.CashPayment = true;
@@ -435,17 +437,18 @@ namespace AceSoft.RetailPlus.Reports
                     #region Sales Per Day
                     if (strReportType == ReportTypes.SalesPerDay) boWithTrustFund = false;
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.SalesPerDay(StartTransactionDate, EndTransactionDate, boWithTrustFund);
+                    dt = clsSalesTransactions.ListAsDataTable(clsSearchKey.BranchID, clsSearchKey.TerminalNo, TransactionStatus: clsSearchKey.TransactionStatus, TransactionDateFrom: StartTransactionDate, TransactionDateTo: EndTransactionDate, WithTF: boWithTrustFund);
+                    //dt = clsSalesTransactions.SalesPerDay(StartTransactionDate, EndTransactionDate, boWithTrustFund);
                     clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
                     {
-                        DataRow drNew = rptds.SalesPerDay.NewRow();
+                        DataRow drNew = rptds.Transactions.NewRow();
 
-                        foreach (DataColumn dc in rptds.SalesPerDay.Columns)
+                        foreach (DataColumn dc in rptds.Transactions.Columns)
                             drNew[dc] = dr[dc.ColumnName];
 
-                        rptds.SalesPerDay.Rows.Add(drNew);
+                        rptds.Transactions.Rows.Add(drNew);
                     }
                     break;
                     #endregion
@@ -456,7 +459,7 @@ namespace AceSoft.RetailPlus.Reports
 
                     if (strReportType == ReportTypes.SummarizeDailySales) boWithTrustFund = false;
                     Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory();
-                    dt = clsTerminalReportHistory.SummarizedDailySalesReport(0, boWithTrustFund, TerminalNo, StartTransactionDate, EndTransactionDate);
+                    dt = clsTerminalReportHistory.SummarizedDailySalesReport(Int32.Parse(cboBranch.SelectedItem.Value), TerminalNo, StartTransactionDate, EndTransactionDate, boWithTrustFund);
                     clsTerminalReportHistory.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -474,7 +477,8 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SalesTransactions:
                     #region Sales Transactions
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "TransactionNo", System.Data.SqlClient.SortOrder.Ascending);
+                    //dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "TransactionNo", System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsSalesTransactions.ListAsDataTable(clsSearchKey, false, "TransactionNo", SortOption.Ascending, 0);
                     clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -494,7 +498,8 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SalesTransactionPerCashierPerCustomer:
                     #region Sales Transaction Per Customer
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "CustomerName", System.Data.SqlClient.SortOrder.Ascending);
+                    //dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "CustomerName", System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsSalesTransactions.ListAsDataTable(clsSearchKey, false, "CustomerName", SortOption.Ascending, 0);
                     clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -511,7 +516,8 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SalesTransactionPerCustomerPerItem:
                     #region Sales Transaction Per Customer
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "CustomerName", System.Data.SqlClient.SortOrder.Ascending);
+                    //dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "CustomerName", System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsSalesTransactions.ListAsDataTable(clsSearchKey, false, "CustomerName", SortOption.Ascending, 0);
                     clsSalesTransactions.CommitAndDispose();
 
                     string stIDs = "";
@@ -548,7 +554,8 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SalesTransactionPerCashier:
                     #region Sales Transaction Per Cashier/Customer & Per Cashier
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "CashierName", System.Data.SqlClient.SortOrder.Ascending);
+                    //dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "CashierName", System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsSalesTransactions.ListAsDataTable(clsSearchKey, false, "CashierName", SortOption.Ascending, 0);
                     clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -568,7 +575,8 @@ namespace AceSoft.RetailPlus.Reports
                     #region Daily, Weekely, Monthly Sales Transaction
 
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "TransactionDate", System.Data.SqlClient.SortOrder.Ascending);
+                    //dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "TransactionDate", System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsSalesTransactions.ListAsDataTable(clsSearchKey, false, "TransactionDate", SortOption.Ascending, 0);
                     clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -586,7 +594,8 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SalesTransactionPerTerminal:
                     #region Sales Transaction Per Terminal
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "TerminalNo", System.Data.SqlClient.SortOrder.Ascending);
+                    //dt = clsSalesTransactions.List(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "tblTransactions.TerminalNo", System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsSalesTransactions.ListAsDataTable(clsSearchKey, false, "TerminalNo", SortOption.Ascending, 0);
                     clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -644,7 +653,7 @@ namespace AceSoft.RetailPlus.Reports
                     #endregion
 
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.Cash_Cheque_CreditCard_Credit_Sales(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "TerminalNo", System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsSalesTransactions.Cash_Cheque_CreditCard_Credit_Sales(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "tblTransactions.TerminalNo", System.Data.SqlClient.SortOrder.Ascending);
                     clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -673,7 +682,7 @@ namespace AceSoft.RetailPlus.Reports
                     #endregion
 
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.Cash_Cheque_CreditCard_Credit_Sales(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "TerminalNo", System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsSalesTransactions.Cash_Cheque_CreditCard_Credit_Sales(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "tblTransactions.TerminalNo", System.Data.SqlClient.SortOrder.Ascending);
                     clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -703,7 +712,7 @@ namespace AceSoft.RetailPlus.Reports
                     #endregion
 
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.Cash_Cheque_CreditCard_Credit_Sales(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "TerminalNo", System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsSalesTransactions.Cash_Cheque_CreditCard_Credit_Sales(clsSalesTransactionsColumns, clsSearchKey, System.Data.SqlClient.SortOrder.Ascending, 0, "tblTransactions.TerminalNo", System.Data.SqlClient.SortOrder.Ascending);
                     clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -721,7 +730,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.PaidOut:
                     #region PaidOut Report
                     PaidOutColumns clsPaidOutColumns = new PaidOutColumns();
-                    clsPaidOutColumns.BranchID = true;
+                    clsPaidOutColumns.BranchDetails = true;
                     clsPaidOutColumns.TerminalNo = true;
                     clsPaidOutColumns.Amount = true;
                     clsPaidOutColumns.PaymentType = true;
@@ -736,7 +745,7 @@ namespace AceSoft.RetailPlus.Reports
                     clsPaidOutSeachKey.EndTransactionDate = EndTransactionDate;
 
                     PaidOut clsPaidOut = new PaidOut();
-                    dt = clsPaidOut.ListAsDataTable(clsPaidOutColumns, clsPaidOutSeachKey, 0, string.Empty, System.Data.SqlClient.SortOrder.Ascending);
+                    dt = clsPaidOut.ListAsDataTable(clsPaidOutColumns, clsPaidOutSeachKey);
                     clsPaidOut.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -754,7 +763,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.Disburse:
                     #region Disburse Report
                     DisburseColumns clsDisburseColumns = new DisburseColumns();
-                    clsDisburseColumns.BranchID = true;
+                    clsDisburseColumns.BranchDetails = true;
                     clsDisburseColumns.TerminalNo = true;
                     clsDisburseColumns.Amount = true;
                     clsDisburseColumns.PaymentType = true;
@@ -768,8 +777,8 @@ namespace AceSoft.RetailPlus.Reports
                     clsDisburseSeachKey.StartTransactionDate = StartTransactionDate;
                     clsDisburseSeachKey.EndTransactionDate = EndTransactionDate;
 
-                    Disburse clsDisburse = new Disburse();
-                    dt = clsDisburse.ListAsDataTable(clsDisburseColumns, clsDisburseSeachKey, 0, string.Empty, System.Data.SqlClient.SortOrder.Ascending);
+                    Disburses clsDisburse = new Disburses();
+                    dt = clsDisburse.ListAsDataTable(clsDisburseColumns, clsDisburseSeachKey);
                     clsDisburse.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -786,8 +795,8 @@ namespace AceSoft.RetailPlus.Reports
 
                 case ReportTypes.RecieveOnAccount:
                     #region WithHold Report
-                    WithHoldColumns clsWithHoldColumns = new WithHoldColumns();
-                    clsWithHoldColumns.BranchID = true;
+                    WithholdColumns clsWithHoldColumns = new WithholdColumns();
+                    clsWithHoldColumns.BranchDetails = true;
                     clsWithHoldColumns.TerminalNo = true;
                     clsWithHoldColumns.Amount = true;
                     clsWithHoldColumns.PaymentType = true;
@@ -797,12 +806,12 @@ namespace AceSoft.RetailPlus.Reports
                     clsWithHoldColumns.CashierName = true;
                     clsWithHoldColumns.Remarks = true;
 
-                    WithHoldDetails clsWithHoldSeachKey = new WithHoldDetails();
+                    WithholdDetails clsWithHoldSeachKey = new WithholdDetails();
                     clsWithHoldSeachKey.StartTransactionDate = StartTransactionDate;
                     clsWithHoldSeachKey.EndTransactionDate = EndTransactionDate;
 
-                    WithHold clsWithHold = new WithHold();
-                    dt = clsWithHold.ListAsDataTable(clsWithHoldColumns, clsWithHoldSeachKey, 0, string.Empty, System.Data.SqlClient.SortOrder.Ascending);
+                    Withhold clsWithHold = new Withhold();
+                    dt = clsWithHold.ListAsDataTable(clsWithHoldColumns, clsWithHoldSeachKey);
                     clsWithHold.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -850,49 +859,41 @@ namespace AceSoft.RetailPlus.Reports
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
+            DateTime StartTransactionDate = DateTime.MinValue;
+            try
+            { StartTransactionDate = Convert.ToDateTime(txtStartTransactionDate.Text + " " + txtStartTime.Text); }
+            catch { }
+            paramField = Report.DataDefinition.ParameterFields["StartTransactionDate"];
+            discreteParam = new ParameterDiscreteValue();
+            discreteParam.Value = StartTransactionDate;
+            currentValues = new ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            DateTime EndTransactionDate = DateTime.MinValue;
+            try
+            { EndTransactionDate = Convert.ToDateTime(txtEndTransactionDate.Text + " " + txtEndTime.Text); }
+            catch { }
+            paramField = Report.DataDefinition.ParameterFields["EndTransactionDate"];
+            discreteParam = new ParameterDiscreteValue();
+            discreteParam.Value = EndTransactionDate;
+            currentValues = new ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
             switch (cboReportType.SelectedItem.Text)
             {
                 case ReportTypes.SalesPerDay:
                 case ReportTypes.SalesPerDayWithTF:
-                    paramField = Report.DataDefinition.ParameterFields["Month"];
+                    paramField = Report.DataDefinition.ParameterFields["AdditionalHeader"];
                     discreteParam = new ParameterDiscreteValue();
-                    discreteParam.Value = cboMonth.SelectedItem.Text;
+                    discreteParam.Value = "";
                     currentValues = new ParameterValues();
                     currentValues.Add(discreteParam);
                     paramField.ApplyCurrentValues(currentValues);
                     
-                    paramField = Report.DataDefinition.ParameterFields["Year"];
-                    discreteParam = new ParameterDiscreteValue();
-                    discreteParam.Value = cboYear.SelectedItem.Text;
-                    currentValues = new ParameterValues();
-                    currentValues.Add(discreteParam);
-                    paramField.ApplyCurrentValues(currentValues);
-
                     break;
-                default:
-                    DateTime StartTransactionDate = DateTime.MinValue;
-                    try
-                    { StartTransactionDate = Convert.ToDateTime(txtStartTransactionDate.Text + " " + txtStartTime.Text); }
-                    catch { }
-                    paramField = Report.DataDefinition.ParameterFields["StartTransactionDate"];
-                    discreteParam = new ParameterDiscreteValue();
-                    discreteParam.Value = StartTransactionDate;
-                    currentValues = new ParameterValues();
-                    currentValues.Add(discreteParam);
-                    paramField.ApplyCurrentValues(currentValues);
-
-                    DateTime EndTransactionDate = DateTime.MinValue;
-                    try
-                    { EndTransactionDate = Convert.ToDateTime(txtEndTransactionDate.Text + " " + txtEndTime.Text); }
-                    catch { }
-                    paramField = Report.DataDefinition.ParameterFields["EndTransactionDate"];
-                    discreteParam = new ParameterDiscreteValue();
-                    discreteParam.Value = EndTransactionDate;
-                    currentValues = new ParameterValues();
-                    currentValues.Add(discreteParam);
-                    paramField.ApplyCurrentValues(currentValues);
-                    break;
-        }
+            }
 		}
 
 		#endregion
@@ -961,9 +962,9 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                 case ReportTypes.SalesPerDay:
                 case ReportTypes.SalesPerDayWithTF:
-                    holderSalesPerDay.Visible = true; 
-                    holderTranDate.Visible = false;
-                    break;
+                    //holderSalesPerDay.Visible = true; 
+                    //holderTranDate.Visible = false;
+                    //break;
                 case ReportTypes.SummarizeDailySales:
                 case ReportTypes.SummarizeDailySalesWithTF:
                     holderTerminaNo.Visible = true;

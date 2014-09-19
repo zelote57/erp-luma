@@ -45,7 +45,8 @@
 			</table>
 			<asp:Label id="lblReferrer" runat="server" Visible="False"></asp:Label>
 			<asp:Label id="lblPackageID" runat="server" Visible="False"></asp:Label>
-			<asp:Label id="lblProductID" runat="server" Visible="False"></asp:Label>
+			<asp:Label id="lblMatrixID" runat="server" Visible="False"></asp:Label>
+            <asp:Label id="lblProductID" runat="server" Visible="False"></asp:Label>
 		</td>
 		<td><img height="1" alt="" src="../../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
@@ -55,7 +56,7 @@
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="ms-descriptiontext" style="padding-bottom: 4px; PADDING-TOP: 8px" colspan="3"><font color="red">*</font>
-						Indicates a required field
+						Indicates a required field&nbsp;&nbsp;&nbsp;<asp:Label id="lblMatrixDescription" runat="server"></asp:Label>
 					</td>
 				</tr>
 				<tr>

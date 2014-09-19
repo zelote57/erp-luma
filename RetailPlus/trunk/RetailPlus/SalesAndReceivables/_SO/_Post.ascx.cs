@@ -533,7 +533,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
             ProductDetails clsProductDetails = clsProducts.Details1(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
 
             Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
-            TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
+            TerminalDetails clsTerminalDetails = clsTerminal.Details(Int32.Parse(Session["BranchID"].ToString()), Session["TerminalNo"].ToString());
             clsProducts.CommitAndDispose();
 
             clsDetails.SOID = Convert.ToInt64(lblSOID.Text);
@@ -863,7 +863,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
         private void GenerateItems()
         {
             SO clsSO = new SO();
-            clsSO.GenerateItemsForReorder(Convert.ToInt64(lblSOID.Text));
+            clsSO.GenerateItemsForReorder(Int32.Parse(Session["TerminalID"].ToString()), Convert.ToInt64(lblSOID.Text));
             clsSO.CommitAndDispose();
         }
         private void UpdateSODiscount()

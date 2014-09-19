@@ -170,7 +170,7 @@ delimiter ;
 /**************************************************************
 	procGenerateSalesPerItem
 	Lemuel E. Aceron
-	CALL procGenerateSalesPerItem (1, '', '', '', '', '2013-12-12 00:00', '2013-12-14 23:59');
+	CALL procGenerateSalesPerItem (1, '', '', '', '', '2014-1-1 00:00', '2014-1-31 23:59');
 	
 	May 15, 2008 - 
 **************************************************************/
@@ -210,7 +210,7 @@ BEGIN
 		SUM(IF(TransactionItemStatus=3,-PurchaseAmount,IF(TransactionItemStatus=4,-PurchaseAmount,PurchaseAmount))) PurchaseAmount,
 		SUM(IF(TransactionItemStatus=3,-a.Discount + -a.TransactionDiscount,IF(TransactionItemStatus=4,-a.Discount + -a.TransactionDiscount,a.Discount + a.TransactionDiscount))) Discount,
 		IFNULL(MIN(pkg.PurchasePrice), a.PurchasePrice) PurchasePrice,
-		MAX(inv.InvQuantity) InvQuantity
+		IFNULL(MAX(inv.InvQuantity),0) InvQuantity
 	FROM tblTransactionItems a 
 	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
 	LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1
@@ -1560,7 +1560,7 @@ BEGIN
 		SUM(IF(TransactionItemStatus=3,-PurchaseAmount,IF(TransactionItemStatus=4,-PurchaseAmount,PurchaseAmount))) PurchaseAmount,
 		SUM(IF(TransactionItemStatus=3,-a.Discount + -a.TransactionDiscount,IF(TransactionItemStatus=4,-a.Discount + -a.TransactionDiscount,a.Discount + a.TransactionDiscount))) Discount,
 		IFNULL(MIN(pkg.PurchasePrice), a.PurchasePrice) PurchasePrice,
-		MAX(inv.InvQuantity) InvQuantity
+		IFNULL(MAX(inv.InvQuantity),0) InvQuantity
 	FROM tblTransactionItems a 
 	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
 	LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1
@@ -6079,7 +6079,7 @@ BEGIN
 						');
 	END IF;
 	SET @SQL = CONCAT(@SQL, '
-							  WHERE 1=1 ',SQLWhere,' LIMIT 1) prd
+							  WHERE deleted=0 ',SQLWhere,' LIMIT 1) prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
@@ -8084,37 +8084,6 @@ END;
 GO
 delimiter ;
 
--- update the new added column
-UPDATE sysAuditTrail SET CreatedON = ActivityDate WHERE DATE_FORMAT(CreatedON, '%Y-%m-%d') = '1900-01-01' OR DATE_FORMAT(CreatedON, '%Y-%m-%d') = '0000-00-00';
-UPDATE sysAuditTrail SET LastModified = ActivityDate WHERE DATE_FORMAT(LastModified, '%Y-%m-%d') = '1900-01-01' OR DATE_FORMAT(LastModified, '%Y-%m-%d') = '0000-00-00';
-UPDATE sysAuditTrail SET CreatedON = ActivityDate WHERE DATE_FORMAT(CreatedON, '%Y-%m-%d') = '0001-01-01' OR DATE_FORMAT(CreatedON, '%Y-%m-%d') = '0000-00-00';
-UPDATE sysAuditTrail SET LastModified = ActivityDate WHERE DATE_FORMAT(LastModified, '%Y-%m-%d') = '0001-01-01' OR DATE_FORMAT(LastModified, '%Y-%m-%d') = '0000-00-00';
-
--- update the new added column
-UPDATE tblCashPayment, tblTransactions SET tblCashPayment.TerminalNo = tblTransactions.TerminalNo, tblCashPayment.BranchID = tblTransactions.BranchID WHERE tblCashPayment.TransactionID = tblTransactions.TransactionID AND tblCashPayment.BranchID = 0 AND IFNULL(tblCashPayment.TerminalNo,'') = '';
-
--- update the new added column
-UPDATE tblChequePayment, tblTransactions SET tblChequePayment.TerminalNo = tblTransactions.TerminalNo, tblChequePayment.BranchID = tblTransactions.BranchID WHERE tblChequePayment.TransactionID = tblTransactions.TransactionID AND (tblChequePayment.BranchID = 0 OR IFNULL(tblChequePayment.TerminalNo,'') = '');
-
--- update the new added column
-UPDATE tblCreditCardPayment, tblTransactions SET tblCreditCardPayment.TerminalNo = tblTransactions.TerminalNo, tblCreditCardPayment.BranchID = tblTransactions.BranchID WHERE tblCreditCardPayment.TransactionID = tblTransactions.TransactionID AND (tblCreditCardPayment.BranchID = 0 OR IFNULL(tblCreditCardPayment.TerminalNo,'') = '');
-
--- update the new added column
-UPDATE tblCreditPayment, tblTransactions SET tblCreditPayment.TerminalNo = tblTransactions.TerminalNo, tblCreditPayment.BranchID = tblTransactions.BranchID WHERE tblCreditPayment.TransactionID = tblTransactions.TransactionID AND (tblCreditPayment.BranchID = 0 OR IFNULL(tblCreditPayment.TerminalNo,'') = '');
-
--- update the new added column
-UPDATE tblCashCount, tblDenomination SET tblCashCount.DenominationValue = tblDenomination.DenominationValue WHERE tblCashCount.DenominationID = tblDenomination.DenominationID AND tblCashCount.DenominationValue = 0;
-
--- update the new added column
-UPDATE tblPLUReport SET BranchID = (SELECT DISTINCT BranchID FROM tblTransactions LIMIT 1) WHERE BranchID = 0;
-
-UPDATE tblTransactions SET 
-	NetSales = CASE VATExempt
-					WHEN 0 THEN SubTotal - Discount
-					ELSE VATExempt - Discount
-			   END
-WHERE NetSales = 0;
-
 
 
 /**************************************************************
@@ -8391,8 +8360,10 @@ delimiter ;
 		2. get transactions list for reports
 		3. get list of suspended transactions
 
-	CALL procTransactionsSelect(1, '', 0, '', '1900-01-01', '1900-01-01', 6, 4, -1, '', '', '', '', 0, '', '', 0);
+	CALL procTransactionsSelect(1, '01', 0, '', '1900-01-01', '1900-01-01', 6, 4, 0, 0, 0, '', 0, '', '', 0, 0, '', '', 10);
 	
+	CALL procTransactionsSelect(1, '01', 0, '00000000930395', '1900-01-01', '1900-01-01', 6, 4, 0, 0, 0, '', 0, '', '', 0, 0, '', '', 10);
+
 **************************************************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procTransactionsSelect
@@ -8663,7 +8634,7 @@ BEGIN
 		SET @SQL = CONCAT(@SQL,'AND trx.PaymentType = ', intPaymentType,' ');
 	END IF;
 
-	IF (intisConsignment <> -1) THEN
+	IF (intisConsignment <> 0) THEN
 		SET @SQL = CONCAT(@SQL,'AND trx.isConsignment = ', intisConsignment,' ');
 	END IF;
 

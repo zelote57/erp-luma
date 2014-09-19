@@ -8148,5 +8148,11 @@ UPDATE tblTransactions SET
 			   END
 WHERE NetSales = 0;
 
+ALTER TABLE tblCashierReportHistory ADD `BeginningTransactionNo` VARCHAR(30) NOT NULL;
+ALTER TABLE tblCashierReportHistory ADD `BeginningORNo` VARCHAR(30) NOT NULL;
+ALTER TABLE tblCashierReportHistory ADD `EndingTransactionNo` VARCHAR(30) NOT NULL;
+ALTER TABLE tblCashierReportHistory ADD `EndingORNo` VARCHAR(30) NOT NULL;
+
+
 /*********************************  v_4.0.1.1.sql END  *******************************************************/ 
 

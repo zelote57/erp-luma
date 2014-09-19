@@ -1086,12 +1086,19 @@ delimiter ;
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
 					PromotionalItems, CreditSalesTax
 
+	CALL procTerminalReportInitializeZRead(1, '01', now(),'Lem', 0);
 *********************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procTerminalReportInitializeZRead
 GO
 
-create procedure procTerminalReportInitializeZRead(IN intBranchID int(4), IN strTerminalNo varchar(10), IN dteDateLastInitialized DateTime, IN strInitializedBy varchar(150),IN intWithOutTF tinyint(1))
+create procedure procTerminalReportInitializeZRead(
+	IN intBranchID int(4), 
+	IN strTerminalNo varchar(10), 
+	IN dteDateLastInitialized DateTime, 
+	IN strInitializedBy varchar(150),
+	IN intWithOutTF tinyint(1)
+)
 BEGIN
 	DECLARE decTrustFund DECIMAL(18,3) DEFAULT 0;
 
@@ -1101,6 +1108,11 @@ BEGIN
 
 	DECLARE decOldGrandTotal DECIMAL(18,3) DEFAULT 0;
 	DECLARE decNewGrandTotal DECIMAL(18,3) DEFAULT 0;
+
+	DECLARE strBeginningTransactionNo VARCHAR(30);
+	DECLARE strBeginningORNo VARCHAR(30);
+	DECLARE strEndingTransactionNo VARCHAR(30);
+	DECLARE strEndingORNo VARCHAR(30);
 
 	IF (intWithOutTF = 1 OR intWithOutTF = -1) THEN
 		SET decTrustFund = 0;
@@ -1116,6 +1128,12 @@ BEGIN
 		SET decNewGrandTotal = (SELECT NewGrandTotal FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 		
 	END IF;
+
+	SET strBeginningTransactionNo = (SELECT BeginningTransactionNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+	SET strBeginningORNo = (SELECT BeginningORNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+	
+	SET strEndingTransactionNo = (SELECT EndingTransactionNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+	SET strEndingORNo = (SELECT EndingORNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 
 	INSERT INTO tblTerminalReportHistory (
 					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
@@ -1247,7 +1265,8 @@ BEGIN
 			
 	
 	INSERT INTO tblCashierReportHistory (
-					CashierID, BranchID, TerminalID, TerminalNo, NetSales, GrossSales, 
+					CashierID, BranchID, TerminalID, TerminalNo, BeginningTransactionNo, BeginningORNo, 
+					EndingTransactionNo, EndingORNo, NetSales, GrossSales, 
 					TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
 					QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
 					CashSales, ChequeSales, CreditCardSales, CreditSales, 
@@ -1268,7 +1287,8 @@ BEGIN
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
 					PromotionalItems, CreditSalesTax )
 				(SELECT 
-					CashierID, BranchID, TerminalID, TerminalNo, NetSales, GrossSales, 
+					CashierID, BranchID, TerminalID, TerminalNo, strBeginningTransactionNo, strBeginningORNo, 
+					strEndingTransactionNo, strEndingORNo, NetSales, GrossSales, 
 					TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
 					QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
 					CashSales, ChequeSales, CreditCardSales, CreditSales, 

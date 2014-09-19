@@ -113,6 +113,9 @@ namespace AceSoft.RetailPlus
 			clsAccessUser.CommitAndDispose();
 
 			Session.RemoveAll();
+            Session.Add("BranchID", Constants.BRANCH_ID_MAIN);
+            Session.Add("TerminalNo", Constants.C_DEFAULT_TERMINAL_01);
+
             Session.Add("AccessUserDetails", clsDetails);
 
 			Session.Add("PageSize",clsDetails.PageSize);

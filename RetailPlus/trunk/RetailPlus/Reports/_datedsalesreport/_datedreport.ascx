@@ -1,16 +1,15 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Reports.__DatedReport" Codebehind="_DatedReport.ascx.cs" %>
 <%@ Register Assembly="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304"
     Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
-<link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css"
-    rel="stylesheet" type="text/css" />
+<link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css" rel="stylesheet" type="text/css" />
 <asp:UpdatePanel id="UpdatePanel1" runat="server">
 <ContentTemplate>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
+		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
-		<td><img src="../../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
+		<td><img src="../_layouts/images/blank.gif" width="10" height="1" alt=""></td>
 		<td>
 			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -69,7 +68,7 @@
 						</table>
 					</td>
 					<td class="ms-toolbar" align="right" nowrap="nowrap" id="align032" width="99%" >
-						<img src="../../_layouts/images/blank.gif" width="1" height="1" alt="">
+						<img src="../_layouts/images/blank.gif" width="1" height="1" alt="">
 					</td>
 				</tr>
 			</table>
@@ -91,7 +90,7 @@
 		<td></td>
 	</tr>
 	<tr>
-		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
+		<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10" /></td>
 		<td>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -145,7 +144,7 @@
 					                <td>
 						                <asp:DropDownList id="cboConsignment" runat="server" CssClass="ms-short"></asp:DropDownList>
 					                </td>
-					                <td width="99%" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					                <td width="99%" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					                </td>
 				                </tr>
                                 <tr>
@@ -164,7 +163,7 @@
 					                <td nowrap="nowrap">
 						                <asp:DropDownList id="cboPaymentType" CssClass="ms-short" runat="server"></asp:DropDownList>
 					                </td>
-					                <td width="99%" id="align04" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					                <td width="99%" id="align04" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					                </td>
 				                </tr>
                                 <tr>
@@ -182,7 +181,7 @@
                                             ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
                                             CausesValidation="False" onclick="imgContactNameSearch_Click"></asp:imagebutton>
 					                </td>
-					                <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					                <td width="99%" id="Td3" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					                </td>
 				                </tr>
 				                <tr>
@@ -200,7 +199,7 @@
                                             ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
                                             CausesValidation="False" onclick="imgCashierNameSearch_Click"></asp:imagebutton>
 					                </td>
-					                <td width="99%" id="align03" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					                <td width="99%" id="align03" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					                </td>
 				                </tr>
                                 <tr>
@@ -218,7 +217,7 @@
                                             ImageUrl="~/_layouts/images/SPSSearch2.gif" runat="server" 
                                             CausesValidation="False" onclick="imgAgentSearch_Click"></asp:imagebutton>
 					                </td>
-					                <td width="99%" id="Td7" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					                <td width="99%" id="Td7" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					                </td>
 				                </tr> 
 				            </asp:PlaceHolder>
@@ -239,7 +238,7 @@
 					                <td nowrap="nowrap">
 						                <asp:DropDownList id="cboBranch" CssClass="ms-short" runat="server"></asp:DropDownList>
 					                </td>
-					                <td width="99%" id="Td8" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					                <td width="99%" id="Td8" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					                </td>
 				                </tr>
                             </asp:PlaceHolder>
@@ -253,7 +252,7 @@
 						                <asp:DropDownList id="cboProductGroup" CssClass="ms-long" runat="server" Width="315px"></asp:DropDownList>
 					                </td>
 					                <td width="99%" id="Td1" nowrap="nowrap" align="right">
-                                        <img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+                                        <img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					                </td>
 				                </tr>
 				                <tr>
@@ -263,7 +262,7 @@
                                         <asp:RadioButton id="rdoShowNegativeOnly" GroupName="FilterSalesPerItem" runat="server" Text="Show items with negative margins only "/>
 					                </td>
 					                <td width="99%" id="Td2" nowrap="nowrap" align="right">
-                                        <img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+                                        <img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					                </td>
 				                </tr>
 					        </asp:PlaceHolder>
@@ -275,7 +274,7 @@
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:RadioButton id="optEffective" runat="server" GroupName="SummarizedDailySalesReportType" Text="Use effective date" />
 					                </td>
 					                <td width="99%" id="Td6" nowrap="nowrap" align="right">
-                                        <img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+                                        <img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 					                </td>
 				                </tr>
 					        </asp:PlaceHolder>
@@ -313,10 +312,10 @@
 				</tr>
 			</table>
 		</td>
-		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
+		<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../../_layouts/images/blank.gif" width="1"/></td>
+		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 </table>
 </ContentTemplate>

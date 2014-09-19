@@ -85,6 +85,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage {
         protected global::System.Web.UI.WebControls.Label lblPackageID;
         
         /// <summary>
+        /// lblMatrixID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMatrixID;
+        
+        /// <summary>
         /// lblProductID control.
         /// </summary>
         /// <remarks>
@@ -92,6 +101,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblProductID;
+        
+        /// <summary>
+        /// lblMatrixDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMatrixDescription;
         
         /// <summary>
         /// ValidationSummary1 control.

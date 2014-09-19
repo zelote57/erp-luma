@@ -126,34 +126,32 @@ namespace AceSoft.RetailPlus.Reports
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
-			ReceiptFormat clsReceiptFormat = new ReceiptFormat();
-			ReceiptFormatDetails clsDetails = clsReceiptFormat.Details();
-			clsReceiptFormat.CommitAndDispose();
+            Receipt clsReceipt = new Receipt();
 
 			paramField = Report.DataDefinition.ParameterFields["ReportHeader1"];
 			discreteParam = new ParameterDiscreteValue();
-			discreteParam.Value = GetReceiptFormatParameter(clsDetails.ReportHeader1);
+            discreteParam.Value = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader1").Value);
 			currentValues = new ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
 			paramField = Report.DataDefinition.ParameterFields["ReportHeader2"];
 			discreteParam = new ParameterDiscreteValue();
-			discreteParam.Value = GetReceiptFormatParameter(clsDetails.ReportHeader2);
+            discreteParam.Value = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader2").Value);
 			currentValues = new ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
 			paramField = Report.DataDefinition.ParameterFields["ReportHeader3"];
 			discreteParam = new ParameterDiscreteValue();
-			discreteParam.Value = GetReceiptFormatParameter(clsDetails.ReportHeader3);
+            discreteParam.Value = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader3").Value);
 			currentValues = new ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
 			paramField = Report.DataDefinition.ParameterFields["ReportHeader4"];
 			discreteParam = new ParameterDiscreteValue();
-			discreteParam.Value = GetReceiptFormatParameter(clsDetails.ReportHeader4);
+            discreteParam.Value = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader4").Value);
 			currentValues = new ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
@@ -161,24 +159,26 @@ namespace AceSoft.RetailPlus.Reports
 			/**** Set the report footer ****/
 			paramField = Report.DataDefinition.ParameterFields["ReportFooter1"];
 			discreteParam = new ParameterDiscreteValue();
-			discreteParam.Value = GetReceiptFormatParameter(clsDetails.ReportFooter1);
+            discreteParam.Value = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter1").Value);
 			currentValues = new ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
 			paramField = Report.DataDefinition.ParameterFields["ReportFooter2"];
 			discreteParam = new ParameterDiscreteValue();
-			discreteParam.Value = GetReceiptFormatParameter(clsDetails.ReportFooter2);
+            discreteParam.Value = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter2").Value);
 			currentValues = new ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
 			paramField = Report.DataDefinition.ParameterFields["ReportFooter3"];
 			discreteParam = new ParameterDiscreteValue();
-			discreteParam.Value = GetReceiptFormatParameter(clsDetails.ReportFooter3);
+			discreteParam.Value = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter3").Value);
 			currentValues = new ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
+
+            clsReceipt.CommitAndDispose();
 
 		}
 

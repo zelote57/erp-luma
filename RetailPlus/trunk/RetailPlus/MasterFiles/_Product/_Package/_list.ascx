@@ -103,10 +103,11 @@
 					<table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
 						<colgroup>
 							<col width="4%">
-							<col width="20%" align="left">
-							<col width="15%" align="left">
-							<col width="15%" align="left">
-							<col width="15%" align="left">
+							<col width="25%" align="left">
+                            <col width="10%" align="left">
+							<col width="10%" align="left">
+							<col width="10%" align="left">
+							<col width="10%" align="left">
 							<col width="10%" align="left">
 							<col width="10%" align="left">
 							<col width="10%" align="left">
@@ -115,7 +116,9 @@
 						<tr>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TH>
-							<TH class="ms-vh2" style="padding-bottom: 4px">
+                            <TH class="ms-vh2" style="padding-bottom: 4px">
+								<asp:hyperlink id="SortByDescription" runat="server"></asp:hyperlink></TH>
+                            <TH class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByUnit" runat="server">Unit</asp:hyperlink></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByQuantity" runat="server">Quantity</asp:hyperlink></TH>
@@ -138,10 +141,11 @@
 					<table id="tblItemTemplate" cellspacing="0" cellpadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
 						<colgroup>
 							<col width="4%">
-							<col width="20%" align="left">
-							<col width="15%" align="left">
-							<col width="15%" align="left">
-							<col width="15%" align="left">
+							<col width="25%" align="left">
+                            <col width="10%" align="left">
+							<col width="10%" align="left">
+							<col width="10%" align="left">
+							<col width="10%" align="left">
 							<col width="10%" align="left">
 							<col width="10%" align="left">
 							<col width="10%" align="left">
@@ -150,6 +154,9 @@
 						<tr>
 							<td class="ms-vb-user">
 								<input type="checkbox" id="chkList" runat="server" name="chkList" />
+							</td>
+                            <td class="ms-vb-user">
+								<asp:Label ID="lblDescription" Runat="server"></asp:Label>
 							</td>
 							<td class="ms-vb-user">
 								<asp:Label ID="lblUnitName" Runat="server"></asp:Label>

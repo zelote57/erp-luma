@@ -2676,6 +2676,8 @@ namespace RetailPlus.Datasets {
             
             private global::System.Data.DataColumn columnTransactionNo;
             
+            private global::System.Data.DataColumn columnORNo;
+            
             private global::System.Data.DataColumn columnCustomerName;
             
             private global::System.Data.DataColumn columnCashierName;
@@ -2690,13 +2692,27 @@ namespace RetailPlus.Datasets {
             
             private global::System.Data.DataColumn columnTransactionStatus;
             
+            private global::System.Data.DataColumn columnTransactionStatusName;
+            
             private global::System.Data.DataColumn columnSubTotal;
             
             private global::System.Data.DataColumn columnDiscount;
             
-            private global::System.Data.DataColumn columnVAT;
+            private global::System.Data.DataColumn columnSNRDiscount;
+            
+            private global::System.Data.DataColumn columnPWDDiscount;
+            
+            private global::System.Data.DataColumn columnOtherDiscount;
+            
+            private global::System.Data.DataColumn columnVATExempt;
+            
+            private global::System.Data.DataColumn columnZeroRatedVAT;
+            
+            private global::System.Data.DataColumn columnNonVATableAmount;
             
             private global::System.Data.DataColumn columnVatableAmount;
+            
+            private global::System.Data.DataColumn columnVAT;
             
             private global::System.Data.DataColumn columnLocalTax;
             
@@ -2737,6 +2753,8 @@ namespace RetailPlus.Datasets {
             private global::System.Data.DataColumn columnBranchCode;
             
             private global::System.Data.DataColumn columnCustomerGroupName;
+            
+            private global::System.Data.DataColumn columnNetSales;
             
             private global::System.Data.DataColumn columnPaxNo;
             
@@ -2786,6 +2804,14 @@ namespace RetailPlus.Datasets {
             public global::System.Data.DataColumn TransactionNoColumn {
                 get {
                     return this.columnTransactionNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ORNoColumn {
+                get {
+                    return this.columnORNo;
                 }
             }
             
@@ -2847,6 +2873,14 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TransactionStatusNameColumn {
+                get {
+                    return this.columnTransactionStatusName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn SubTotalColumn {
                 get {
                     return this.columnSubTotal;
@@ -2863,9 +2897,49 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn VATColumn {
+            public global::System.Data.DataColumn SNRDiscountColumn {
                 get {
-                    return this.columnVAT;
+                    return this.columnSNRDiscount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PWDDiscountColumn {
+                get {
+                    return this.columnPWDDiscount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn OtherDiscountColumn {
+                get {
+                    return this.columnOtherDiscount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn VATExemptColumn {
+                get {
+                    return this.columnVATExempt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ZeroRatedVATColumn {
+                get {
+                    return this.columnZeroRatedVAT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn NonVATableAmountColumn {
+                get {
+                    return this.columnNonVATableAmount;
                 }
             }
             
@@ -2874,6 +2948,14 @@ namespace RetailPlus.Datasets {
             public global::System.Data.DataColumn VatableAmountColumn {
                 get {
                     return this.columnVatableAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn VATColumn {
+                get {
+                    return this.columnVAT;
                 }
             }
             
@@ -3039,6 +3121,14 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn NetSalesColumn {
+                get {
+                    return this.columnNetSales;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn PaxNoColumn {
                 get {
                     return this.columnPaxNo;
@@ -3085,6 +3175,7 @@ namespace RetailPlus.Datasets {
             public TransactionsRow AddTransactionsRow(
                         long TransactionID, 
                         string TransactionNo, 
+                        string ORNo, 
                         string CustomerName, 
                         string CashierName, 
                         string TerminalNo, 
@@ -3092,10 +3183,17 @@ namespace RetailPlus.Datasets {
                         System.DateTime DateSuspended, 
                         System.DateTime DateResumed, 
                         short TransactionStatus, 
+                        string TransactionStatusName, 
                         decimal SubTotal, 
                         decimal Discount, 
-                        decimal VAT, 
+                        decimal SNRDiscount, 
+                        decimal PWDDiscount, 
+                        decimal OtherDiscount, 
+                        decimal VATExempt, 
+                        decimal ZeroRatedVAT, 
+                        decimal NonVATableAmount, 
                         decimal VatableAmount, 
+                        decimal VAT, 
                         decimal LocalTax, 
                         decimal AmountPaid, 
                         decimal CashPayment, 
@@ -3116,11 +3214,13 @@ namespace RetailPlus.Datasets {
                         string AgentName, 
                         string BranchCode, 
                         string CustomerGroupName, 
+                        decimal NetSales, 
                         int PaxNo) {
                 TransactionsRow rowTransactionsRow = ((TransactionsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         TransactionID,
                         TransactionNo,
+                        ORNo,
                         CustomerName,
                         CashierName,
                         TerminalNo,
@@ -3128,10 +3228,17 @@ namespace RetailPlus.Datasets {
                         DateSuspended,
                         DateResumed,
                         TransactionStatus,
+                        TransactionStatusName,
                         SubTotal,
                         Discount,
-                        VAT,
+                        SNRDiscount,
+                        PWDDiscount,
+                        OtherDiscount,
+                        VATExempt,
+                        ZeroRatedVAT,
+                        NonVATableAmount,
                         VatableAmount,
+                        VAT,
                         LocalTax,
                         AmountPaid,
                         CashPayment,
@@ -3152,6 +3259,7 @@ namespace RetailPlus.Datasets {
                         AgentName,
                         BranchCode,
                         CustomerGroupName,
+                        NetSales,
                         PaxNo};
                 rowTransactionsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTransactionsRow);
@@ -3177,6 +3285,7 @@ namespace RetailPlus.Datasets {
             internal void InitVars() {
                 this.columnTransactionID = base.Columns["TransactionID"];
                 this.columnTransactionNo = base.Columns["TransactionNo"];
+                this.columnORNo = base.Columns["ORNo"];
                 this.columnCustomerName = base.Columns["CustomerName"];
                 this.columnCashierName = base.Columns["CashierName"];
                 this.columnTerminalNo = base.Columns["TerminalNo"];
@@ -3184,10 +3293,17 @@ namespace RetailPlus.Datasets {
                 this.columnDateSuspended = base.Columns["DateSuspended"];
                 this.columnDateResumed = base.Columns["DateResumed"];
                 this.columnTransactionStatus = base.Columns["TransactionStatus"];
+                this.columnTransactionStatusName = base.Columns["TransactionStatusName"];
                 this.columnSubTotal = base.Columns["SubTotal"];
                 this.columnDiscount = base.Columns["Discount"];
-                this.columnVAT = base.Columns["VAT"];
+                this.columnSNRDiscount = base.Columns["SNRDiscount"];
+                this.columnPWDDiscount = base.Columns["PWDDiscount"];
+                this.columnOtherDiscount = base.Columns["OtherDiscount"];
+                this.columnVATExempt = base.Columns["VATExempt"];
+                this.columnZeroRatedVAT = base.Columns["ZeroRatedVAT"];
+                this.columnNonVATableAmount = base.Columns["NonVATableAmount"];
                 this.columnVatableAmount = base.Columns["VatableAmount"];
+                this.columnVAT = base.Columns["VAT"];
                 this.columnLocalTax = base.Columns["LocalTax"];
                 this.columnAmountPaid = base.Columns["AmountPaid"];
                 this.columnCashPayment = base.Columns["CashPayment"];
@@ -3208,6 +3324,7 @@ namespace RetailPlus.Datasets {
                 this.columnAgentName = base.Columns["AgentName"];
                 this.columnBranchCode = base.Columns["BranchCode"];
                 this.columnCustomerGroupName = base.Columns["CustomerGroupName"];
+                this.columnNetSales = base.Columns["NetSales"];
                 this.columnPaxNo = base.Columns["PaxNo"];
             }
             
@@ -3218,6 +3335,8 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnTransactionID);
                 this.columnTransactionNo = new global::System.Data.DataColumn("TransactionNo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTransactionNo);
+                this.columnORNo = new global::System.Data.DataColumn("ORNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnORNo);
                 this.columnCustomerName = new global::System.Data.DataColumn("CustomerName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCustomerName);
                 this.columnCashierName = new global::System.Data.DataColumn("CashierName", typeof(string), null, global::System.Data.MappingType.Element);
@@ -3232,14 +3351,28 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnDateResumed);
                 this.columnTransactionStatus = new global::System.Data.DataColumn("TransactionStatus", typeof(short), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTransactionStatus);
+                this.columnTransactionStatusName = new global::System.Data.DataColumn("TransactionStatusName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransactionStatusName);
                 this.columnSubTotal = new global::System.Data.DataColumn("SubTotal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSubTotal);
                 this.columnDiscount = new global::System.Data.DataColumn("Discount", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDiscount);
-                this.columnVAT = new global::System.Data.DataColumn("VAT", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnVAT);
+                this.columnSNRDiscount = new global::System.Data.DataColumn("SNRDiscount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSNRDiscount);
+                this.columnPWDDiscount = new global::System.Data.DataColumn("PWDDiscount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPWDDiscount);
+                this.columnOtherDiscount = new global::System.Data.DataColumn("OtherDiscount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOtherDiscount);
+                this.columnVATExempt = new global::System.Data.DataColumn("VATExempt", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVATExempt);
+                this.columnZeroRatedVAT = new global::System.Data.DataColumn("ZeroRatedVAT", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnZeroRatedVAT);
+                this.columnNonVATableAmount = new global::System.Data.DataColumn("NonVATableAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNonVATableAmount);
                 this.columnVatableAmount = new global::System.Data.DataColumn("VatableAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVatableAmount);
+                this.columnVAT = new global::System.Data.DataColumn("VAT", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVAT);
                 this.columnLocalTax = new global::System.Data.DataColumn("LocalTax", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLocalTax);
                 this.columnAmountPaid = new global::System.Data.DataColumn("AmountPaid", typeof(decimal), null, global::System.Data.MappingType.Element);
@@ -3280,6 +3413,8 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnBranchCode);
                 this.columnCustomerGroupName = new global::System.Data.DataColumn("CustomerGroupName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCustomerGroupName);
+                this.columnNetSales = new global::System.Data.DataColumn("NetSales", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNetSales);
                 this.columnPaxNo = new global::System.Data.DataColumn("PaxNo", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPaxNo);
                 this.columnTransactionID.AllowDBNull = false;
@@ -3293,8 +3428,8 @@ namespace RetailPlus.Datasets {
                 this.columnTransactionStatus.AllowDBNull = false;
                 this.columnSubTotal.AllowDBNull = false;
                 this.columnDiscount.AllowDBNull = false;
-                this.columnVAT.AllowDBNull = false;
                 this.columnVatableAmount.AllowDBNull = false;
+                this.columnVAT.AllowDBNull = false;
                 this.columnLocalTax.AllowDBNull = false;
                 this.columnAmountPaid.AllowDBNull = false;
                 this.columnCashPayment.AllowDBNull = false;
@@ -10040,25 +10175,45 @@ namespace RetailPlus.Datasets {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class SalesReportDataTable : global::System.Data.TypedTableBase<SalesReportRow> {
             
+            private global::System.Data.DataColumn columnTerminalNo;
+            
+            private global::System.Data.DataColumn columnDateLastInitialized;
+            
+            private global::System.Data.DataColumn columnDateLastInitializedToDisplay;
+            
+            private global::System.Data.DataColumn columnBeginningORNo;
+            
+            private global::System.Data.DataColumn columnEndingORNo;
+            
+            private global::System.Data.DataColumn columnNoOfORNo;
+            
             private global::System.Data.DataColumn columnQuantitySold;
             
             private global::System.Data.DataColumn columnGrossSales;
             
-            private global::System.Data.DataColumn columnTotalDiscount;
+            private global::System.Data.DataColumn columnOldGrandTotal;
             
-            private global::System.Data.DataColumn columnDailySales;
+            private global::System.Data.DataColumn columnNewGrandTotal;
+            
+            private global::System.Data.DataColumn columnZReadCount;
+            
+            private global::System.Data.DataColumn columnVATExempt;
+            
+            private global::System.Data.DataColumn columnVATZeroRated;
+            
+            private global::System.Data.DataColumn columnNonVATableAmount;
+            
+            private global::System.Data.DataColumn columnVATableAmount;
             
             private global::System.Data.DataColumn columnVAT;
             
-            private global::System.Data.DataColumn columnLocalTax;
+            private global::System.Data.DataColumn columnSNRDiscount;
             
-            private global::System.Data.DataColumn columnServiceCharge;
+            private global::System.Data.DataColumn columnPWDDiscount;
             
-            private global::System.Data.DataColumn columnDateLastInitialized;
+            private global::System.Data.DataColumn columnOtherDiscount;
             
-            private global::System.Data.DataColumn columnTerminalNo;
-            
-            private global::System.Data.DataColumn columnDateLastInitializedToDisplay;
+            private global::System.Data.DataColumn columnNetSales;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -10095,6 +10250,54 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TerminalNoColumn {
+                get {
+                    return this.columnTerminalNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DateLastInitializedColumn {
+                get {
+                    return this.columnDateLastInitialized;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DateLastInitializedToDisplayColumn {
+                get {
+                    return this.columnDateLastInitializedToDisplay;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BeginningORNoColumn {
+                get {
+                    return this.columnBeginningORNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EndingORNoColumn {
+                get {
+                    return this.columnEndingORNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn NoOfORNoColumn {
+                get {
+                    return this.columnNoOfORNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn QuantitySoldColumn {
                 get {
                     return this.columnQuantitySold;
@@ -10111,17 +10314,57 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TotalDiscountColumn {
+            public global::System.Data.DataColumn OldGrandTotalColumn {
                 get {
-                    return this.columnTotalDiscount;
+                    return this.columnOldGrandTotal;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn DailySalesColumn {
+            public global::System.Data.DataColumn NewGrandTotalColumn {
                 get {
-                    return this.columnDailySales;
+                    return this.columnNewGrandTotal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ZReadCountColumn {
+                get {
+                    return this.columnZReadCount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn VATExemptColumn {
+                get {
+                    return this.columnVATExempt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn VATZeroRatedColumn {
+                get {
+                    return this.columnVATZeroRated;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn NonVATableAmountColumn {
+                get {
+                    return this.columnNonVATableAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn VATableAmountColumn {
+                get {
+                    return this.columnVATableAmount;
                 }
             }
             
@@ -10135,41 +10378,33 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn LocalTaxColumn {
+            public global::System.Data.DataColumn SNRDiscountColumn {
                 get {
-                    return this.columnLocalTax;
+                    return this.columnSNRDiscount;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ServiceChargeColumn {
+            public global::System.Data.DataColumn PWDDiscountColumn {
                 get {
-                    return this.columnServiceCharge;
+                    return this.columnPWDDiscount;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn DateLastInitializedColumn {
+            public global::System.Data.DataColumn OtherDiscountColumn {
                 get {
-                    return this.columnDateLastInitialized;
+                    return this.columnOtherDiscount;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TerminalNoColumn {
+            public global::System.Data.DataColumn NetSalesColumn {
                 get {
-                    return this.columnTerminalNo;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn DateLastInitializedToDisplayColumn {
-                get {
-                    return this.columnDateLastInitializedToDisplay;
+                    return this.columnNetSales;
                 }
             }
             
@@ -10210,19 +10445,49 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public SalesReportRow AddSalesReportRow(decimal QuantitySold, decimal GrossSales, decimal TotalDiscount, decimal DailySales, decimal VAT, decimal LocalTax, decimal ServiceCharge, System.DateTime DateLastInitialized, string TerminalNo, System.DateTime DateLastInitializedToDisplay) {
+            public SalesReportRow AddSalesReportRow(
+                        string TerminalNo, 
+                        System.DateTime DateLastInitialized, 
+                        System.DateTime DateLastInitializedToDisplay, 
+                        string BeginningORNo, 
+                        string EndingORNo, 
+                        int NoOfORNo, 
+                        decimal QuantitySold, 
+                        decimal GrossSales, 
+                        decimal OldGrandTotal, 
+                        decimal NewGrandTotal, 
+                        int ZReadCount, 
+                        decimal VATExempt, 
+                        decimal VATZeroRated, 
+                        decimal NonVATableAmount, 
+                        decimal VATableAmount, 
+                        decimal VAT, 
+                        decimal SNRDiscount, 
+                        decimal PWDDiscount, 
+                        decimal OtherDiscount, 
+                        decimal NetSales) {
                 SalesReportRow rowSalesReportRow = ((SalesReportRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
+                        TerminalNo,
+                        DateLastInitialized,
+                        DateLastInitializedToDisplay,
+                        BeginningORNo,
+                        EndingORNo,
+                        NoOfORNo,
                         QuantitySold,
                         GrossSales,
-                        TotalDiscount,
-                        DailySales,
+                        OldGrandTotal,
+                        NewGrandTotal,
+                        ZReadCount,
+                        VATExempt,
+                        VATZeroRated,
+                        NonVATableAmount,
+                        VATableAmount,
                         VAT,
-                        LocalTax,
-                        ServiceCharge,
-                        DateLastInitialized,
-                        TerminalNo,
-                        DateLastInitializedToDisplay};
+                        SNRDiscount,
+                        PWDDiscount,
+                        OtherDiscount,
+                        NetSales};
                 rowSalesReportRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowSalesReportRow);
                 return rowSalesReportRow;
@@ -10245,51 +10510,79 @@ namespace RetailPlus.Datasets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
+                this.columnTerminalNo = base.Columns["TerminalNo"];
+                this.columnDateLastInitialized = base.Columns["DateLastInitialized"];
+                this.columnDateLastInitializedToDisplay = base.Columns["DateLastInitializedToDisplay"];
+                this.columnBeginningORNo = base.Columns["BeginningORNo"];
+                this.columnEndingORNo = base.Columns["EndingORNo"];
+                this.columnNoOfORNo = base.Columns["NoOfORNo"];
                 this.columnQuantitySold = base.Columns["QuantitySold"];
                 this.columnGrossSales = base.Columns["GrossSales"];
-                this.columnTotalDiscount = base.Columns["TotalDiscount"];
-                this.columnDailySales = base.Columns["DailySales"];
+                this.columnOldGrandTotal = base.Columns["OldGrandTotal"];
+                this.columnNewGrandTotal = base.Columns["NewGrandTotal"];
+                this.columnZReadCount = base.Columns["ZReadCount"];
+                this.columnVATExempt = base.Columns["VATExempt"];
+                this.columnVATZeroRated = base.Columns["VATZeroRated"];
+                this.columnNonVATableAmount = base.Columns["NonVATableAmount"];
+                this.columnVATableAmount = base.Columns["VATableAmount"];
                 this.columnVAT = base.Columns["VAT"];
-                this.columnLocalTax = base.Columns["LocalTax"];
-                this.columnServiceCharge = base.Columns["ServiceCharge"];
-                this.columnDateLastInitialized = base.Columns["DateLastInitialized"];
-                this.columnTerminalNo = base.Columns["TerminalNo"];
-                this.columnDateLastInitializedToDisplay = base.Columns["DateLastInitializedToDisplay"];
+                this.columnSNRDiscount = base.Columns["SNRDiscount"];
+                this.columnPWDDiscount = base.Columns["PWDDiscount"];
+                this.columnOtherDiscount = base.Columns["OtherDiscount"];
+                this.columnNetSales = base.Columns["NetSales"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
+                this.columnTerminalNo = new global::System.Data.DataColumn("TerminalNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTerminalNo);
+                this.columnDateLastInitialized = new global::System.Data.DataColumn("DateLastInitialized", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDateLastInitialized);
+                this.columnDateLastInitializedToDisplay = new global::System.Data.DataColumn("DateLastInitializedToDisplay", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDateLastInitializedToDisplay);
+                this.columnBeginningORNo = new global::System.Data.DataColumn("BeginningORNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBeginningORNo);
+                this.columnEndingORNo = new global::System.Data.DataColumn("EndingORNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEndingORNo);
+                this.columnNoOfORNo = new global::System.Data.DataColumn("NoOfORNo", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNoOfORNo);
                 this.columnQuantitySold = new global::System.Data.DataColumn("QuantitySold", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQuantitySold);
                 this.columnGrossSales = new global::System.Data.DataColumn("GrossSales", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGrossSales);
-                this.columnTotalDiscount = new global::System.Data.DataColumn("TotalDiscount", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTotalDiscount);
-                this.columnDailySales = new global::System.Data.DataColumn("DailySales", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDailySales);
+                this.columnOldGrandTotal = new global::System.Data.DataColumn("OldGrandTotal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOldGrandTotal);
+                this.columnNewGrandTotal = new global::System.Data.DataColumn("NewGrandTotal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNewGrandTotal);
+                this.columnZReadCount = new global::System.Data.DataColumn("ZReadCount", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnZReadCount);
+                this.columnVATExempt = new global::System.Data.DataColumn("VATExempt", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVATExempt);
+                this.columnVATZeroRated = new global::System.Data.DataColumn("VATZeroRated", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVATZeroRated);
+                this.columnNonVATableAmount = new global::System.Data.DataColumn("NonVATableAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNonVATableAmount);
+                this.columnVATableAmount = new global::System.Data.DataColumn("VATableAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVATableAmount);
                 this.columnVAT = new global::System.Data.DataColumn("VAT", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVAT);
-                this.columnLocalTax = new global::System.Data.DataColumn("LocalTax", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLocalTax);
-                this.columnServiceCharge = new global::System.Data.DataColumn("ServiceCharge", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnServiceCharge);
-                this.columnDateLastInitialized = new global::System.Data.DataColumn("DateLastInitialized", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDateLastInitialized);
-                this.columnTerminalNo = new global::System.Data.DataColumn("TerminalNo", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTerminalNo);
-                this.columnDateLastInitializedToDisplay = new global::System.Data.DataColumn("DateLastInitializedToDisplay", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDateLastInitializedToDisplay);
+                this.columnSNRDiscount = new global::System.Data.DataColumn("SNRDiscount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSNRDiscount);
+                this.columnPWDDiscount = new global::System.Data.DataColumn("PWDDiscount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPWDDiscount);
+                this.columnOtherDiscount = new global::System.Data.DataColumn("OtherDiscount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOtherDiscount);
+                this.columnNetSales = new global::System.Data.DataColumn("NetSales", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNetSales);
+                this.columnTerminalNo.AllowDBNull = false;
+                this.columnDateLastInitialized.AllowDBNull = false;
+                this.columnDateLastInitializedToDisplay.AllowDBNull = false;
                 this.columnQuantitySold.AllowDBNull = false;
                 this.columnGrossSales.AllowDBNull = false;
-                this.columnTotalDiscount.AllowDBNull = false;
-                this.columnDailySales.AllowDBNull = false;
                 this.columnVAT.AllowDBNull = false;
-                this.columnLocalTax.AllowDBNull = false;
-                this.columnServiceCharge.AllowDBNull = false;
-                this.columnDateLastInitialized.AllowDBNull = false;
-                this.columnTerminalNo.AllowDBNull = false;
-                this.columnDateLastInitializedToDisplay.AllowDBNull = false;
+                this.columnOtherDiscount.AllowDBNull = false;
+                this.columnNetSales.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -29741,6 +30034,22 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ORNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransactions.ORNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ORNo\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.ORNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string CustomerName {
                 get {
                     return ((string)(this[this.tableTransactions.CustomerNameColumn]));
@@ -29818,6 +30127,22 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TransactionStatusName {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransactions.TransactionStatusNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransactionStatusName\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.TransactionStatusNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal SubTotal {
                 get {
                     return ((decimal)(this[this.tableTransactions.SubTotalColumn]));
@@ -29840,12 +30165,97 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal VAT {
+            public decimal SNRDiscount {
                 get {
-                    return ((decimal)(this[this.tableTransactions.VATColumn]));
+                    try {
+                        return ((decimal)(this[this.tableTransactions.SNRDiscountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SNRDiscount\' in table \'Transactions\' is DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableTransactions.VATColumn] = value;
+                    this[this.tableTransactions.SNRDiscountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal PWDDiscount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTransactions.PWDDiscountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PWDDiscount\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.PWDDiscountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal OtherDiscount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTransactions.OtherDiscountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OtherDiscount\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.OtherDiscountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal VATExempt {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTransactions.VATExemptColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'VATExempt\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.VATExemptColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal ZeroRatedVAT {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTransactions.ZeroRatedVATColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ZeroRatedVAT\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.ZeroRatedVATColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal NonVATableAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTransactions.NonVATableAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NonVATableAmount\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.NonVATableAmountColumn] = value;
                 }
             }
             
@@ -29857,6 +30267,17 @@ namespace RetailPlus.Datasets {
                 }
                 set {
                     this[this.tableTransactions.VatableAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal VAT {
+                get {
+                    return ((decimal)(this[this.tableTransactions.VATColumn]));
+                }
+                set {
+                    this[this.tableTransactions.VATColumn] = value;
                 }
             }
             
@@ -30117,6 +30538,22 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal NetSales {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTransactions.NetSalesColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NetSales\' in table \'Transactions\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactions.NetSalesColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int PaxNo {
                 get {
                     try {
@@ -30129,6 +30566,102 @@ namespace RetailPlus.Datasets {
                 set {
                     this[this.tableTransactions.PaxNoColumn] = value;
                 }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsORNoNull() {
+                return this.IsNull(this.tableTransactions.ORNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetORNoNull() {
+                this[this.tableTransactions.ORNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTransactionStatusNameNull() {
+                return this.IsNull(this.tableTransactions.TransactionStatusNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTransactionStatusNameNull() {
+                this[this.tableTransactions.TransactionStatusNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsSNRDiscountNull() {
+                return this.IsNull(this.tableTransactions.SNRDiscountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetSNRDiscountNull() {
+                this[this.tableTransactions.SNRDiscountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPWDDiscountNull() {
+                return this.IsNull(this.tableTransactions.PWDDiscountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPWDDiscountNull() {
+                this[this.tableTransactions.PWDDiscountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsOtherDiscountNull() {
+                return this.IsNull(this.tableTransactions.OtherDiscountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetOtherDiscountNull() {
+                this[this.tableTransactions.OtherDiscountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsVATExemptNull() {
+                return this.IsNull(this.tableTransactions.VATExemptColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetVATExemptNull() {
+                this[this.tableTransactions.VATExemptColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsZeroRatedVATNull() {
+                return this.IsNull(this.tableTransactions.ZeroRatedVATColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetZeroRatedVATNull() {
+                this[this.tableTransactions.ZeroRatedVATColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsNonVATableAmountNull() {
+                return this.IsNull(this.tableTransactions.NonVATableAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetNonVATableAmountNull() {
+                this[this.tableTransactions.NonVATableAmountColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -30213,6 +30746,18 @@ namespace RetailPlus.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCustomerGroupNameNull() {
                 this[this.tableTransactions.CustomerGroupNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsNetSalesNull() {
+                return this.IsNull(this.tableTransactions.NetSalesColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetNetSalesNull() {
+                this[this.tableTransactions.NetSalesColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -32798,6 +33343,87 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TerminalNo {
+                get {
+                    return ((string)(this[this.tableSalesReport.TerminalNoColumn]));
+                }
+                set {
+                    this[this.tableSalesReport.TerminalNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime DateLastInitialized {
+                get {
+                    return ((global::System.DateTime)(this[this.tableSalesReport.DateLastInitializedColumn]));
+                }
+                set {
+                    this[this.tableSalesReport.DateLastInitializedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime DateLastInitializedToDisplay {
+                get {
+                    return ((global::System.DateTime)(this[this.tableSalesReport.DateLastInitializedToDisplayColumn]));
+                }
+                set {
+                    this[this.tableSalesReport.DateLastInitializedToDisplayColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string BeginningORNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableSalesReport.BeginningORNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BeginningORNo\' in table \'SalesReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesReport.BeginningORNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EndingORNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableSalesReport.EndingORNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EndingORNo\' in table \'SalesReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesReport.EndingORNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int NoOfORNo {
+                get {
+                    try {
+                        return ((int)(this[this.tableSalesReport.NoOfORNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NoOfORNo\' in table \'SalesReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesReport.NoOfORNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal QuantitySold {
                 get {
                     return ((decimal)(this[this.tableSalesReport.QuantitySoldColumn]));
@@ -32820,23 +33446,113 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal TotalDiscount {
+            public decimal OldGrandTotal {
                 get {
-                    return ((decimal)(this[this.tableSalesReport.TotalDiscountColumn]));
+                    try {
+                        return ((decimal)(this[this.tableSalesReport.OldGrandTotalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OldGrandTotal\' in table \'SalesReport\' is DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableSalesReport.TotalDiscountColumn] = value;
+                    this[this.tableSalesReport.OldGrandTotalColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal DailySales {
+            public decimal NewGrandTotal {
                 get {
-                    return ((decimal)(this[this.tableSalesReport.DailySalesColumn]));
+                    try {
+                        return ((decimal)(this[this.tableSalesReport.NewGrandTotalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NewGrandTotal\' in table \'SalesReport\' is DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableSalesReport.DailySalesColumn] = value;
+                    this[this.tableSalesReport.NewGrandTotalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int ZReadCount {
+                get {
+                    try {
+                        return ((int)(this[this.tableSalesReport.ZReadCountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ZReadCount\' in table \'SalesReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesReport.ZReadCountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal VATExempt {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableSalesReport.VATExemptColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'VATExempt\' in table \'SalesReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesReport.VATExemptColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal VATZeroRated {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableSalesReport.VATZeroRatedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'VATZeroRated\' in table \'SalesReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesReport.VATZeroRatedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal NonVATableAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableSalesReport.NonVATableAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NonVATableAmount\' in table \'SalesReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesReport.NonVATableAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal VATableAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableSalesReport.VATableAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'VATableAmount\' in table \'SalesReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesReport.VATableAmountColumn] = value;
                 }
             }
             
@@ -32853,57 +33569,200 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal LocalTax {
+            public decimal SNRDiscount {
                 get {
-                    return ((decimal)(this[this.tableSalesReport.LocalTaxColumn]));
+                    try {
+                        return ((decimal)(this[this.tableSalesReport.SNRDiscountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SNRDiscount\' in table \'SalesReport\' is DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableSalesReport.LocalTaxColumn] = value;
+                    this[this.tableSalesReport.SNRDiscountColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal ServiceCharge {
+            public decimal PWDDiscount {
                 get {
-                    return ((decimal)(this[this.tableSalesReport.ServiceChargeColumn]));
+                    try {
+                        return ((decimal)(this[this.tableSalesReport.PWDDiscountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PWDDiscount\' in table \'SalesReport\' is DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableSalesReport.ServiceChargeColumn] = value;
+                    this[this.tableSalesReport.PWDDiscountColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DateLastInitialized {
+            public decimal OtherDiscount {
                 get {
-                    return ((global::System.DateTime)(this[this.tableSalesReport.DateLastInitializedColumn]));
+                    return ((decimal)(this[this.tableSalesReport.OtherDiscountColumn]));
                 }
                 set {
-                    this[this.tableSalesReport.DateLastInitializedColumn] = value;
+                    this[this.tableSalesReport.OtherDiscountColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string TerminalNo {
+            public decimal NetSales {
                 get {
-                    return ((string)(this[this.tableSalesReport.TerminalNoColumn]));
+                    return ((decimal)(this[this.tableSalesReport.NetSalesColumn]));
                 }
                 set {
-                    this[this.tableSalesReport.TerminalNoColumn] = value;
+                    this[this.tableSalesReport.NetSalesColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DateLastInitializedToDisplay {
-                get {
-                    return ((global::System.DateTime)(this[this.tableSalesReport.DateLastInitializedToDisplayColumn]));
-                }
-                set {
-                    this[this.tableSalesReport.DateLastInitializedToDisplayColumn] = value;
-                }
+            public bool IsBeginningORNoNull() {
+                return this.IsNull(this.tableSalesReport.BeginningORNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBeginningORNoNull() {
+                this[this.tableSalesReport.BeginningORNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEndingORNoNull() {
+                return this.IsNull(this.tableSalesReport.EndingORNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEndingORNoNull() {
+                this[this.tableSalesReport.EndingORNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsNoOfORNoNull() {
+                return this.IsNull(this.tableSalesReport.NoOfORNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetNoOfORNoNull() {
+                this[this.tableSalesReport.NoOfORNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsOldGrandTotalNull() {
+                return this.IsNull(this.tableSalesReport.OldGrandTotalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetOldGrandTotalNull() {
+                this[this.tableSalesReport.OldGrandTotalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsNewGrandTotalNull() {
+                return this.IsNull(this.tableSalesReport.NewGrandTotalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetNewGrandTotalNull() {
+                this[this.tableSalesReport.NewGrandTotalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsZReadCountNull() {
+                return this.IsNull(this.tableSalesReport.ZReadCountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetZReadCountNull() {
+                this[this.tableSalesReport.ZReadCountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsVATExemptNull() {
+                return this.IsNull(this.tableSalesReport.VATExemptColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetVATExemptNull() {
+                this[this.tableSalesReport.VATExemptColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsVATZeroRatedNull() {
+                return this.IsNull(this.tableSalesReport.VATZeroRatedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetVATZeroRatedNull() {
+                this[this.tableSalesReport.VATZeroRatedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsNonVATableAmountNull() {
+                return this.IsNull(this.tableSalesReport.NonVATableAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetNonVATableAmountNull() {
+                this[this.tableSalesReport.NonVATableAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsVATableAmountNull() {
+                return this.IsNull(this.tableSalesReport.VATableAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetVATableAmountNull() {
+                this[this.tableSalesReport.VATableAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsSNRDiscountNull() {
+                return this.IsNull(this.tableSalesReport.SNRDiscountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetSNRDiscountNull() {
+                this[this.tableSalesReport.SNRDiscountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPWDDiscountNull() {
+                return this.IsNull(this.tableSalesReport.PWDDiscountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPWDDiscountNull() {
+                this[this.tableSalesReport.PWDDiscountColumn] = global::System.Convert.DBNull;
             }
         }
         

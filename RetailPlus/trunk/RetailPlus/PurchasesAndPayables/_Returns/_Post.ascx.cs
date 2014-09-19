@@ -694,7 +694,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
             ProductDetails clsProductDetails = clsProducts.Details1(Constants.BRANCH_ID_MAIN, Convert.ToInt64(cboProductCode.SelectedItem.Value));
 			
 			Terminal clsTerminal = new Terminal(clsProducts.Connection, clsProducts.Transaction);
-			TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
+            TerminalDetails clsTerminalDetails = clsTerminal.Details(Int32.Parse(Session["BranchID"].ToString()), Session["TerminalNo"].ToString());
 			clsProducts.CommitAndDispose();
 
 			clsDetails.DebitMemoID = Convert.ToInt64(lblDebitMemoID.Text);

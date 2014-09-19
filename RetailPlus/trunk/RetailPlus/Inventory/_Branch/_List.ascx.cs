@@ -238,7 +238,7 @@ namespace AceSoft.RetailPlus.Inventory._Branch
 			{
 				SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
 			}
-            PageData.DataSource = clsBranch.ListAsDataTable(SearchKey, SortField, sortoption).DefaultView;
+            PageData.DataSource = clsBranch.ListAsDataTable(SearchKey, SortField, sortoption, 0).DefaultView;
 			clsBranch.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;

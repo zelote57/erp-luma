@@ -94,6 +94,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 				HtmlInputCheckBox chkList = (HtmlInputCheckBox) e.Item.FindControl("chkList");
 				chkList.Value = dr["PackageID"].ToString();
 
+                Label lblDescription = (Label)e.Item.FindControl("lblDescription");
+                lblDescription.Text = dr["Description"].ToString();
+
 				Label lblUnitName = (Label) e.Item.FindControl("lblUnitName");
 				lblUnitName.Text = dr["UnitName"].ToString();
 

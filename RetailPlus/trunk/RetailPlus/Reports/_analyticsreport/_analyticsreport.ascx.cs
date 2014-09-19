@@ -255,7 +255,7 @@ namespace AceSoft.RetailPlus.Reports
             clsSalesTransactionsColumns.SubTotal = true;
             clsSalesTransactionsColumns.Discount = true;
             clsSalesTransactionsColumns.VAT = true;
-            clsSalesTransactionsColumns.VatableAmount = true;
+            clsSalesTransactionsColumns.VATableAmount = true;
             clsSalesTransactionsColumns.LocalTax = true;
             clsSalesTransactionsColumns.AmountPaid = true;
             clsSalesTransactionsColumns.CashPayment = true;

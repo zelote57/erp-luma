@@ -148,7 +148,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductGroup._VariationsMatrix
 				TextBox txtDescription = (TextBox) item.FindControl("txtDescription");
 
 				clsDetails = new ProductGroupVariationsMatrixDetails();
-				clsDetails.MatrixID = clsBaseDetails.MatrixID;
+                clsDetails.MatrixID = clsBaseDetails.MatrixID;
 				clsDetails.GroupID = Convert.ToInt64(lblGroupID.Text);
 				clsDetails.VariationID = Convert.ToInt32(chkList.Value);
 				clsDetails.Description = txtDescription.Text;

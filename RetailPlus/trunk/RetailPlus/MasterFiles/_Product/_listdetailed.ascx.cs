@@ -35,10 +35,13 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		{
 			InitializeComponent();
 			base.OnInit(e);
+
+            try { Session.Remove("Search"); }
+            catch { }
 		}
 		private void InitializeComponent()
 		{
-
+            
 		}
 
 		#endregion

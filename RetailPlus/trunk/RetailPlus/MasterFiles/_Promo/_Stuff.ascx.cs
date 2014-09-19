@@ -235,7 +235,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Promo
 				lblPromoValue.Text = Convert.ToDecimal(dr["PromoValue"].ToString()).ToString("#,##0.#");
 
 				CheckBox chkInPercent = (CheckBox) e.Item.FindControl("chkInPercent");
-				chkInPercent.Checked = Convert.ToBoolean(Convert.ToByte(dr["InPercent"].ToString()));
+				chkInPercent.Checked = bool.Parse(dr["InPercent"].ToString());
 
 				//For anchor
 //				HtmlGenericControl divExpCollAsst = (HtmlGenericControl) e.Item.FindControl("divExpCollAsst");

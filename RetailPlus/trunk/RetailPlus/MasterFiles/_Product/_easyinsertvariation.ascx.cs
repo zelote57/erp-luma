@@ -118,9 +118,9 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			clsDetails.VariationID = Convert.ToInt32(cboVariationType.SelectedItem.Value);
 			clsDetails.VariationType = cboVariationType.SelectedItem.Text;
 
-			ProductVariations clsProdVariation = new ProductVariations();
-			int id = clsProdVariation.Insert(clsDetails);
-			clsProdVariation.CommitAndDispose();
+            ProductVariations clsProductVariations = new ProductVariations();
+            int id = clsProductVariations.Insert(clsDetails);
+            clsProductVariations.CommitAndDispose();
 		}
 
 

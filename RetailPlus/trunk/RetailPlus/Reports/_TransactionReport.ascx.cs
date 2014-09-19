@@ -132,7 +132,7 @@ namespace AceSoft.RetailPlus.Reports
 				drNew["ItemsDiscount"]		= clsDetails.ItemsDiscount;
 				drNew["Discount"]			= clsDetails.Discount;
 				drNew["VAT"]				= clsDetails.VAT;
-				drNew["VatableAmount"]		= clsDetails.VatableAmount;
+				drNew["VatableAmount"]		= clsDetails.VATableAmount;
 				drNew["LocalTax"]			= clsDetails.LocalTax;
 				drNew["AmountPaid"]			= clsDetails.AmountPaid;
 				drNew["CashPayment"]		= clsDetails.CashPayment;

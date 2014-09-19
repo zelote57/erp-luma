@@ -16,14 +16,14 @@ namespace RetailPlus.Reports._datedsalesreport {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class _x_deleted_DatedReportSalesTransactionPerCustomerWithCheque : ReportClass {
+    public class x_DatedReportSalesPerDay : ReportClass {
         
-        public _x_deleted_DatedReportSalesTransactionPerCustomerWithCheque() {
+        public x_DatedReportSalesPerDay() {
         }
         
         public override string ResourceName {
             get {
-                return "_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque.rpt";
+                return "x_DatedReportSalesPerDay.rpt";
             }
             set {
                 // Do nothing
@@ -41,8 +41,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         public override string FullResourceName {
             get {
-                return "RetailPlus.Reports._datedsalesreport._x_deleted_DatedReportSalesTransactionPerCus" +
-                    "tomerWithCheque.rpt";
+                return "RetailPlus.Reports._datedsalesreport.x_DatedReportSalesPerDay.rpt";
             }
             set {
                 // Do nothing
@@ -67,7 +66,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section9 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section6 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -75,7 +74,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section6 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -83,7 +82,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -99,17 +98,9 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
-            get {
-                return this.ReportDefinition.Sections[6];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
-                return this.ReportDefinition.Sections[7];
+                return this.ReportDefinition.Sections[6];
             }
         }
         
@@ -131,7 +122,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_StartTransactionDate {
+        public CrystalDecisions.Shared.IParameterField Parameter_Month {
             get {
                 return this.DataDefinition.ParameterFields[2];
             }
@@ -139,7 +130,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_EndTransactionDate {
+        public CrystalDecisions.Shared.IParameterField Parameter_Year {
             get {
                 return this.DataDefinition.ParameterFields[3];
             }
@@ -147,9 +138,9 @@ namespace RetailPlus.Reports._datedsalesreport {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class Cached_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque : Component, ICachedReport {
+    public class Cachedx_DatedReportSalesPerDay : Component, ICachedReport {
         
-        public Cached_x_deleted_DatedReportSalesTransactionPerCustomerWithCheque() {
+        public Cachedx_DatedReportSalesPerDay() {
         }
         
         [Browsable(false)]
@@ -186,7 +177,7 @@ namespace RetailPlus.Reports._datedsalesreport {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            _x_deleted_DatedReportSalesTransactionPerCustomerWithCheque rpt = new _x_deleted_DatedReportSalesTransactionPerCustomerWithCheque();
+            x_DatedReportSalesPerDay rpt = new x_DatedReportSalesPerDay();
             rpt.Site = this.Site;
             return rpt;
         }

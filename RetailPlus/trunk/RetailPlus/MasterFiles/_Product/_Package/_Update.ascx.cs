@@ -125,7 +125,12 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 
             Products clsProduct = new Products(clsProductPackage.Connection, clsProductPackage.Transaction);
             ProductDetails clsProductDetails = clsProduct.Details(Convert.ToInt64(lblProductID.Text));
+
+            ProductBaseVariationsMatrixDetails clsProductBaseVariationsMatrixDetails = new ProductBaseVariationsMatrix(clsProductPackage.Connection, clsProductPackage.Transaction).BaseDetails(clsDetails.MatrixID, clsDetails.ProductID);
             clsProductPackage.CommitAndDispose();
+
+            lblMatrixID.Text = clsDetails.MatrixID.ToString();
+            lblMatrixDescription.Text = clsDetails.MatrixID == 0 ? "" : "Base Matrix: " + clsProductBaseVariationsMatrixDetails.Description;
 
 			cboUnit.SelectedIndex = cboUnit.Items.IndexOf(cboUnit.Items.FindByValue(clsDetails.UnitID.ToString()));
 			txtProductPrice.Text = clsDetails.Price.ToString("#,##0.#0");
@@ -157,7 +162,8 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._ProductPackage
 			ProductPackageDetails clsDetails = new ProductPackageDetails();
 			
 			clsDetails.PackageID = Convert.ToInt64(lblPackageID.Text);
-			clsDetails.ProductID = Convert.ToInt64(lblProductID.Text);
+            clsDetails.MatrixID = Convert.ToInt64(lblMatrixID.Text);
+            clsDetails.ProductID = Convert.ToInt64(lblProductID.Text);
 			clsDetails.UnitID = Convert.ToInt32(cboUnit.SelectedItem.Value);
 			clsDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
 			clsDetails.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);

@@ -41,16 +41,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.ComponentModel.Container components = null;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblGrandTotal;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblDiscount;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label lblCharge;
-        private System.Windows.Forms.Label lblVATSpacer;
-        private System.Windows.Forms.Label lblVATName;
-        private System.Windows.Forms.Label lblVAT;
         
         private Button cmdCancel;
         private Button cmdEnter;
@@ -126,18 +117,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblReportDesc = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panReport = new System.Windows.Forms.Panel();
-            this.lblVATSpacer = new System.Windows.Forms.Label();
-            this.lblVATName = new System.Windows.Forms.Label();
-            this.lblVAT = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.lblCharge = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lblGrandTotal = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblDiscount = new System.Windows.Forms.Label();
             this.lblTotalTran = new System.Windows.Forms.Label();
             this.lblTotalAmount = new System.Windows.Forms.Label();
             this.lblTotalPercentage = new System.Windows.Forms.Label();
@@ -219,18 +201,9 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.panReport.AutoScroll = true;
             this.panReport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panReport.Controls.Add(this.lblVATSpacer);
-            this.panReport.Controls.Add(this.lblVATName);
-            this.panReport.Controls.Add(this.lblVAT);
-            this.panReport.Controls.Add(this.label3);
-            this.panReport.Controls.Add(this.label7);
-            this.panReport.Controls.Add(this.lblCharge);
             this.panReport.Controls.Add(this.label6);
-            this.panReport.Controls.Add(this.label5);
             this.panReport.Controls.Add(this.label4);
             this.panReport.Controls.Add(this.lblGrandTotal);
-            this.panReport.Controls.Add(this.label1);
-            this.panReport.Controls.Add(this.lblDiscount);
             this.panReport.Controls.Add(this.lblTotalTran);
             this.panReport.Controls.Add(this.lblTotalAmount);
             this.panReport.Controls.Add(this.lblTotalPercentage);
@@ -253,86 +226,19 @@ namespace AceSoft.RetailPlus.Client.UI
             this.panReport.Size = new System.Drawing.Size(385, 515);
             this.panReport.TabIndex = 107;
             // 
-            // lblVATSpacer
-            // 
-            this.lblVATSpacer.BackColor = System.Drawing.Color.DarkGray;
-            this.lblVATSpacer.Location = new System.Drawing.Point(288, 403);
-            this.lblVATSpacer.Name = "lblVATSpacer";
-            this.lblVATSpacer.Size = new System.Drawing.Size(64, 15);
-            this.lblVATSpacer.TabIndex = 261;
-            this.lblVATSpacer.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblVATName
-            // 
-            this.lblVATName.BackColor = System.Drawing.Color.DarkGray;
-            this.lblVATName.Location = new System.Drawing.Point(24, 403);
-            this.lblVATName.Name = "lblVATName";
-            this.lblVATName.Size = new System.Drawing.Size(104, 15);
-            this.lblVATName.TabIndex = 260;
-            this.lblVATName.Text = "Plus 12% VAT";
-            this.lblVATName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblVAT
-            // 
-            this.lblVAT.BackColor = System.Drawing.Color.DarkGray;
-            this.lblVAT.Location = new System.Drawing.Point(125, 403);
-            this.lblVAT.Name = "lblVAT";
-            this.lblVAT.Size = new System.Drawing.Size(162, 15);
-            this.lblVAT.TabIndex = 259;
-            this.lblVAT.Text = "0.00";
-            this.lblVAT.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label3
-            // 
-            this.label3.BackColor = System.Drawing.Color.DarkGray;
-            this.label3.Location = new System.Drawing.Point(288, 387);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 15);
-            this.label3.TabIndex = 258;
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label7
-            // 
-            this.label7.BackColor = System.Drawing.Color.DarkGray;
-            this.label7.Location = new System.Drawing.Point(24, 387);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(104, 15);
-            this.label7.TabIndex = 257;
-            this.label7.Text = "Plus Charges";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblCharge
-            // 
-            this.lblCharge.BackColor = System.Drawing.Color.DarkGray;
-            this.lblCharge.Location = new System.Drawing.Point(125, 387);
-            this.lblCharge.Name = "lblCharge";
-            this.lblCharge.Size = new System.Drawing.Size(162, 15);
-            this.lblCharge.TabIndex = 256;
-            this.lblCharge.Text = "0.00";
-            this.lblCharge.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // label6
             // 
             this.label6.BackColor = System.Drawing.Color.DarkGray;
-            this.label6.Location = new System.Drawing.Point(288, 419);
+            this.label6.Location = new System.Drawing.Point(288, 373);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(64, 15);
             this.label6.TabIndex = 255;
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label5
-            // 
-            this.label5.BackColor = System.Drawing.Color.DarkGray;
-            this.label5.Location = new System.Drawing.Point(288, 371);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(64, 15);
-            this.label5.TabIndex = 254;
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // label4
             // 
             this.label4.BackColor = System.Drawing.Color.DarkGray;
-            this.label4.Location = new System.Drawing.Point(24, 419);
+            this.label4.Location = new System.Drawing.Point(24, 373);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(104, 15);
             this.label4.TabIndex = 252;
@@ -342,32 +248,12 @@ namespace AceSoft.RetailPlus.Client.UI
             // lblGrandTotal
             // 
             this.lblGrandTotal.BackColor = System.Drawing.Color.DarkGray;
-            this.lblGrandTotal.Location = new System.Drawing.Point(125, 419);
+            this.lblGrandTotal.Location = new System.Drawing.Point(125, 373);
             this.lblGrandTotal.Name = "lblGrandTotal";
             this.lblGrandTotal.Size = new System.Drawing.Size(162, 15);
             this.lblGrandTotal.TabIndex = 251;
             this.lblGrandTotal.Text = "0.00";
             this.lblGrandTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.DarkGray;
-            this.label1.Location = new System.Drawing.Point(24, 371);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 15);
-            this.label1.TabIndex = 250;
-            this.label1.Text = "Less Discount";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblDiscount
-            // 
-            this.lblDiscount.BackColor = System.Drawing.Color.DarkGray;
-            this.lblDiscount.Location = new System.Drawing.Point(125, 371);
-            this.lblDiscount.Name = "lblDiscount";
-            this.lblDiscount.Size = new System.Drawing.Size(162, 15);
-            this.lblDiscount.TabIndex = 249;
-            this.lblDiscount.Text = "0.00";
-            this.lblDiscount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblTotalTran
             // 
@@ -402,9 +288,9 @@ namespace AceSoft.RetailPlus.Client.UI
             // dgGroupReport
             // 
             this.dgGroupReport.AlternatingBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgGroupReport.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgGroupReport.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgGroupReport.BackColor = System.Drawing.Color.White;
             this.dgGroupReport.BackgroundColor = System.Drawing.Color.White;
             this.dgGroupReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -425,7 +311,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgGroupReport.RowHeaderWidth = 5;
             this.dgGroupReport.SelectionBackColor = System.Drawing.Color.RoyalBlue;
             this.dgGroupReport.SelectionForeColor = System.Drawing.Color.White;
-            this.dgGroupReport.Size = new System.Drawing.Size(420, 827);
+            this.dgGroupReport.Size = new System.Drawing.Size(659, 834);
             this.dgGroupReport.TabIndex = 239;
             this.dgGroupReport.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
             this.dgStyle});
@@ -660,8 +546,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.GroupReportWnd_Load);
-            this.Resize += new System.EventHandler(this.GroupReportWnd_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GroupReportWnd_KeyDown);
+            this.Resize += new System.EventHandler(this.GroupReportWnd_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.panReport.ResumeLayout(false);
@@ -800,16 +686,17 @@ namespace AceSoft.RetailPlus.Client.UI
             else
                 lblTotalPercentage.Text = "0%";
 
-            lblDiscount.Text = mTerminalReportDetails.SubTotalDiscount.ToString("#,##0.#0");
-            lblCharge.Text = mTerminalReportDetails.TotalCharge.ToString("#,##0.#0");
-            lblVAT.Text = mTerminalReportDetails.VAT.ToString("#,##0.#0");
+            //lblDiscount.Text = mTerminalReportDetails.SubTotalDiscount.ToString("#,##0.#0");
+            //lblCharge.Text = mTerminalReportDetails.TotalCharge.ToString("#,##0.#0");
+            //lblVAT.Text = mTerminalReportDetails.VAT.ToString("#,##0.#0");
 
-            lblVATName.Visible = !mclsTerminalDetails.IsVATInclusive;
-            lblVAT.Visible = !mclsTerminalDetails.IsVATInclusive;
-            lblVATSpacer.Visible = !mclsTerminalDetails.IsVATInclusive;
+            //lblVATName.Visible = !mclsTerminalDetails.IsVATInclusive;
+            //lblVAT.Visible = !mclsTerminalDetails.IsVATInclusive;
+            //lblVATSpacer.Visible = !mclsTerminalDetails.IsVATInclusive;
 
-            decimal GrandTotal = mTerminalReportDetails.DailySales + mTerminalReportDetails.VAT + mTerminalReportDetails.TotalCharge;
-            lblGrandTotal.Text = GrandTotal.ToString("#,##0.#0");
+            //decimal GrandTotal = mTerminalReportDetails.NetSales + mTerminalReportDetails.TotalDiscount + mTerminalReportDetails.TotalCharge + (mTerminalReportDetails.VATExempt * mclsTerminalDetails.VAT/100);
+            lblGrandTotal.Text = mTerminalReportDetails.GrossSales.ToString("#,##0.#0");
+            //lblGrandTotal.Tag = GrandTotal.ToString("#,##0.#0");
 
             lblReportFooter1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter1").Value);
             lblReportFooter2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter2").Value);

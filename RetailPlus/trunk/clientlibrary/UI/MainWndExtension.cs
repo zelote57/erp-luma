@@ -288,7 +288,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     if (DiscountType != DiscountTypes.NotApplicable)
                     {
-                        if (ItemDiscountType == DiscountTypes.NotApplicable && dr["Quantity"].ToString().IndexOf("RETURN") == -1 && dr["IncludeInSubtotalDiscount"].ToString() != "0")
+                        if (ItemDiscountType == DiscountTypes.NotApplicable && dr["Quantity"].ToString().IndexOf("RETURN") == -1 && bool.Parse(dr["IncludeInSubtotalDiscount"].ToString()))
                         {
                             decSubTotalDiscountableAmount += itemTrueAmt;
                         }
@@ -2313,7 +2313,10 @@ namespace AceSoft.RetailPlus.Client.UI
                 msbToPrint.Append(CenterString("ZRead Report : " + Details.ZReadCount.ToString(), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                 msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
 
+                //save the old trustfund to remove during printing
+                decimal decTrustfund = mclsTerminalDetails.TrustFund; mclsTerminalDetails.TrustFund = 0;
                 PrintTerminalReportDetails(Details, mclsTerminalDetails.TrustFund);
+                mclsTerminalDetails.TrustFund = decTrustfund;
 
                 PrintPageAndReportFooterSection(false, DateTime.MinValue);
 
@@ -2504,7 +2507,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 msbToPrint.Append(CenterString("XRead Report : " + Details.XReadCount.ToString(), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                 msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
 
+                decimal decTrustfund = mclsTerminalDetails.TrustFund; mclsTerminalDetails.TrustFund = 0;
                 PrintTerminalReportDetails(Details, mclsTerminalDetails.TrustFund);
+                mclsTerminalDetails.TrustFund = decTrustfund;
 
                 PrintPageAndReportFooterSection(false, DateTime.MinValue);
 
@@ -2572,8 +2577,12 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 if (result == DialogResult.OK)
                 {
+                    //save the old trustfund to remove during printing
+                    decimal decTrustfund = mclsTerminalDetails.TrustFund; mclsTerminalDetails.TrustFund = 0;
                     //PrintTerminalReportDelegate terminalreportDel = new PrintTerminalReportDelegate(PrintTerminalReport);
+                    //terminalreportDel.BeginInvoke(Details, null, null);
                     PrintTerminalReport(Details);
+                    mclsTerminalDetails.TrustFund = decTrustfund;
                 }
             }
         }
@@ -2612,10 +2621,8 @@ namespace AceSoft.RetailPlus.Client.UI
             Cursor.Current = Cursors.WaitCursor;
             try
             {
-                string strBeginningORNo = Int64.Parse(Details.BeginningORNo) == 0 ? (Int64.Parse(Details.BeginningORNo) + 1).ToString().PadLeft(Details.BeginningORNo.Length, '0') : Details.BeginningORNo;
-                msbToPrint.Append("Beginning OR No.".PadRight(21) + ":" + strBeginningORNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
-                string strEndingORNo = (Int64.Parse(Details.EndingORNo) - 1).ToString().PadLeft(Details.BeginningORNo.Length, '0');
-                msbToPrint.Append("Ending    OR No.".PadRight(21) + ":" + strEndingORNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine + Environment.NewLine);
+                msbToPrint.Append("Beginning OR No.".PadRight(21) + ":" + Details.BeginningORNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
+                msbToPrint.Append("Ending    OR No.".PadRight(21) + ":" + Details.EndingORNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine + Environment.NewLine);
                 msbToPrint.Append("Gross Sales".PadRight(21) + ":" + (Details.GrossSales + Details.TotalCharge - ((Details.GrossSales + Details.TotalCharge) * (TrustFund / 100))).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("(-) Service Charge".PadRight(21) + ":" + (Details.TotalCharge - (Details.TotalCharge * (TrustFund / 100))).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("".PadRight(21) + ":" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22, ' ') + Environment.NewLine);
@@ -2925,22 +2932,22 @@ namespace AceSoft.RetailPlus.Client.UI
                 msbToPrint.Append(TotalAmount.ToString("#,##0.#0").PadLeft(17));
                 msbToPrint.Append("100%".PadLeft(8));
                 msbToPrint.Append(Environment.NewLine);
-                msbToPrint.Append("Less Discount :".PadRight(15));
-                msbToPrint.Append(clsTerminalReportDetails.SubTotalDiscount.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 15));
-                msbToPrint.Append(Environment.NewLine);
-                msbToPrint.Append("Plus Charges  :".PadRight(15));
-                msbToPrint.Append(clsTerminalReportDetails.TotalCharge.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 15));
-                msbToPrint.Append(Environment.NewLine);
-                if (!mclsTerminalDetails.IsVATInclusive)
-                {
-                    msbToPrint.Append("Plus 12% VAT  :".PadRight(15));
-                    msbToPrint.Append(clsTerminalReportDetails.VAT.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 15));
-                    msbToPrint.Append(Environment.NewLine);
-                }
+                //msbToPrint.Append("Plus Discount :".PadRight(15));
+                //msbToPrint.Append(clsTerminalReportDetails.SubTotalDiscount.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 15));
+                //msbToPrint.Append(Environment.NewLine);
+                //msbToPrint.Append("Plus Charges  :".PadRight(15));
+                //msbToPrint.Append(clsTerminalReportDetails.TotalCharge.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 15));
+                //msbToPrint.Append(Environment.NewLine);
+                //if (!mclsTerminalDetails.IsVATInclusive)
+                //{
+                //    msbToPrint.Append("Plus 12% VAT  :".PadRight(15));
+                //    msbToPrint.Append(clsTerminalReportDetails.VAT.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 15));
+                //    msbToPrint.Append(Environment.NewLine);
+                //}
 
-                decimal GrandTotal = clsTerminalReportDetails.DailySales + clsTerminalReportDetails.VAT + clsTerminalReportDetails.TotalCharge;
+                //decimal GrandTotal = clsTerminalReportDetails.NetSales + clsTerminalReportDetails.TotalDiscount + clsTerminalReportDetails.TotalCharge + (clsTerminalReportDetails.VATExempt * mclsTerminalDetails.VAT / 100);
                 msbToPrint.Append("Grand Total   :".PadRight(15));
-                msbToPrint.Append(GrandTotal.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 15));
+                msbToPrint.Append(clsTerminalReportDetails.GrossSales.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 15));
                 msbToPrint.Append(Environment.NewLine);
 
                 msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);

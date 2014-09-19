@@ -438,7 +438,7 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("VAT Zero Rated", ":", mclsDetails.VATZeroRated.ToString("#,##0.00"));
             dt.Rows.Add("NonVATable Amount", ":", mclsDetails.NonVATableAmount.ToString("#,##0.00"));
             dt.Rows.Add("VATable Amount", ":", mclsDetails.VATableAmount.ToString("#,##0.00"));
-            dt.Rows.Add(mclsTerminalDetails.VAT.ToString("##") + "% VAT", ":", mclsDetails.VATableAmount.ToString("#,##0.00"));
+            dt.Rows.Add(mclsTerminalDetails.VAT.ToString("##") + "% VAT", ":", mclsDetails.VAT.ToString("#,##0.00"));
             dt.Rows.Add("Local Tax", ":", mclsDetails.LocalTax.ToString("#,##0.00"));
 
             dt.Rows.Add("Total Amount Breakdown", "", "");
@@ -550,9 +550,13 @@ namespace AceSoft.RetailPlus.Client.UI
             dgvItems.Columns["Separator"].HeaderText = "";
             dgvItems.Columns["Value"].HeaderText = "";
 
+            dgvItems.Columns["Module"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvItems.Columns["Separator"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvItems.Columns["Value"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
             dgvItems.Columns["Module"].Width = 230;
             dgvItems.Columns["Separator"].Width = 20;
-            dgvItems.Columns["Value"].Width = 138;
+            dgvItems.Columns["Value"].Width = dgvItems.Width-250-20;
 
         }
         private string GetReceiptFormatParameter(string stReceiptFormat)

@@ -108,9 +108,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\clientlibrary\ClientLibrary.csproj">
+    <ProjectReference Include="..\clientlibrary\RetailPlusClientLibrary.csproj">
       <Project>{E7C7F8AC-A57A-47A4-84CD-A0DDB2FD9C53}</Project>
-      <Name>ClientLibrary</Name>
+      <Name>RetailPlusClientLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\company\Company Library.csproj">
       <Project>{810E3EE7-4E46-4DEC-85ED-2AAA53D5C531}</Project>

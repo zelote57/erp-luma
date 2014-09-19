@@ -77,9 +77,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\clientlibrary\ClientLibrary.csproj">
+    <ProjectReference Include="..\clientlibrary\RetailPlusClientLibrary.csproj">
       <Project>{E7C7F8AC-A57A-47A4-84CD-A0DDB2FD9C53}</Project>
-      <Name>ClientLibrary</Name>
+      <Name>RetailPlusClientLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\dataobjects\DataObjects.csproj">
       <Project>{75D37B92-76F5-4C25-AF1A-394619DE4835}</Project>

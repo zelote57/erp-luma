@@ -857,14 +857,14 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-        public void GenerateItemsForReorder(long TransferOutID)
+        public void GenerateItemsForReorder(Int32 TerminalID, long TransferOutID)
         {
             try
             {
                 GetConnection();
 
                 Terminal clsTerminal = new Terminal(base.Connection, base.Transaction);
-                TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
+                TerminalDetails clsTerminalDetails = clsTerminal.Details(TerminalID);
 
                 TransferOutDetails clsTransferOutDetails = Details(TransferOutID);
 

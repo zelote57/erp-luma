@@ -137,6 +137,10 @@ namespace AceSoft.RetailPlus.Data
             return boRetValue;
         }
 
+        /// <summary>
+        /// obsolete: this is always true
+        /// </summary>
+        /// <returns></returns>
         public bool get_WillDeductTFInTerminalReport()
         {
             bool boRetValue = false;

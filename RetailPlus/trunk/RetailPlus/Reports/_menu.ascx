@@ -156,7 +156,6 @@
 													per Transaction</asp:HyperLink></td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>
-									
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton" >
@@ -178,6 +177,14 @@
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkAnalyticsReport" runat="server" title="Display Analytical Reports" Visible="False">
 													Analytics Reports</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton" >
+											<asp:HyperLink id="lnkeSalesReport" runat="server" title="Display eSales Reports for Gov" Visible="False">
+													eSales Reports</asp:HyperLink>
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>

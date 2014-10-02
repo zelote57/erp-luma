@@ -1,6 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.Management;
 using System.Windows.Forms;
+using System.Threading;
 using System.Xml;
 using AceSoft.RetailPlus.Client.UI;
 
@@ -10,9 +12,90 @@ namespace AceSoft.RetailPlus.Client
     {
         #region Application Main
 
+        // Handle the UI exceptions by showing a dialog box, and asking the user whether 
+        // or not they wish to abort execution. 
+        private static void MainWnd_UIThreadException(object sender, ThreadExceptionEventArgs t)
+        {
+            DialogResult result = DialogResult.Cancel;
+            try
+            {
+                Event clsEvent = new Event();
+                clsEvent.AddErrorEventLn(t.Exception);
+
+                result = ShowThreadExceptionDialog("Windows Forms Error", t.Exception);
+            }
+            catch
+            {
+                try
+                {
+                    MessageBox.Show("Fatal Windows Forms Error", "Fatal Windows Forms Error", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Stop);
+                }
+                finally
+                {
+                    Application.Exit();
+                }
+            }
+
+            // Exits the program when the user clicks Abort. 
+            if (result == DialogResult.Abort)
+                Application.Exit();
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                Exception ex = (Exception)e.ExceptionObject;
+
+                Event clsEvent = new Event();
+                clsEvent.AddErrorEventLn(ex);
+
+                string errorMsg = "RetailPlus FE Error. Please contact the adminstrator " +
+                    "with the following information:\n\n";
+
+                // Since we can't prevent the app from terminating, log this to the event log. 
+                if (!EventLog.SourceExists("ThreadException"))
+                {
+                    EventLog.CreateEventSource("ThreadException", "RetailPlus");
+                }
+
+                // Create an EventLog instance and assign its source.
+                EventLog myLog = new EventLog();
+                myLog.Source = "ThreadException";
+                myLog.WriteEntry(errorMsg + ex.Message + "\n\nStack Trace:\n" + ex.StackTrace);
+
+            }
+            catch (Exception exc)
+            {
+                try
+                {
+                    MessageBox.Show("Fatal Non-UI Error",
+                        "Fatal Non-UI Error. Could not write the error to the event log. Reason: "
+                        + exc.Message, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
+                finally
+                {
+                    Application.Exit();
+                }
+            }
+        }
+
+        // Creates the error message and displays it. 
+        private static DialogResult ShowThreadExceptionDialog(string title, Exception e)
+        {
+            string errorMsg = "An application error occurred. Please contact the adminstrator " +
+                "with the following information:\n\n";
+            errorMsg = errorMsg + e.Message + "\n\nStack Trace:\n" + e.StackTrace;
+            return MessageBox.Show(errorMsg, title, MessageBoxButtons.AbortRetryIgnore,
+                MessageBoxIcon.Stop);
+        }
+
         [STAThread]
         static void Main()
         {
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            System.Windows.Forms.Application.ThreadException += new ThreadExceptionEventHandler(MainWnd_UIThreadException);
+
             Event clsEvent = new Event();
             clsEvent.AddEvent("starting.... loading splash screen...");
             SplashWnd appsplash = new SplashWnd();
@@ -73,7 +156,7 @@ namespace AceSoft.RetailPlus.Client
                 Application.Exit();
                 return;
             }
-            clsEvent.AddEventLn("This application version is updated.");
+            clsEvent.AddEventLn("This application version is updated.", true);
 
             appsplash.lblStatus.Text = "Checking connections to database... ";
             appsplash.prgBar.Value = 30;
@@ -115,20 +198,21 @@ namespace AceSoft.RetailPlus.Client
             appsplash.prgBar.Value = 100;
             appsplash.lblStatus.Text = "Checking terminal if demo is expired... ";
             appsplash.Refresh();
-            //if (IsDemoExpired())
-            //{
-            //    string stHDSeriano = Key.GetHDSerialNo();
-            //    MessageBox.Show(
-            //        "This copy has been expired. Please contact your nearest software distributor" + Environment.NewLine + 
-            //        "Or call RBS Sales @: "+  Environment.NewLine +
-            //        "          Philippines: +63918.939.0926" + Environment.NewLine +
-            //        "          Philippines: +632.998.7722" + Environment.NewLine + 
-            //        "          Singapore: +658.6519601" + Environment.NewLine + 
-            //        "Or email sales@myretailplus.com" + Environment.NewLine + 
-            //        "Your HD Serial No. is: " + stHDSeriano, "RetailPlus™ Demo Version", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-            //    Application.Exit();
-            //    return;
-            //}
+            if (IsDemoExpired())
+            {
+                string stHDSeriano = Key.GetHDSerialNo();
+                MessageBox.Show(
+                    "This copy has been expired. Please contact your nearest software distributor" + Environment.NewLine +
+                    "Or call RBS Sales @: " + Environment.NewLine +
+                    "          Philippines: +63.947.3215979" + Environment.NewLine +
+                    "          Philippines: +63.918.9390926" + Environment.NewLine +
+                    "          Philippines: +632.998.7722" + Environment.NewLine +
+                    "          Singapore: +658.6519601" + Environment.NewLine +
+                    "Or email sales@myretailplus.com" + Environment.NewLine +
+                    "Your HD Serial No. is: " + stHDSeriano, "RetailPlus™ Demo Version", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Application.Exit();
+                return;
+            }
 
             appsplash.lblStatus.Text += "DONE!";
             appsplash.Refresh();
@@ -136,11 +220,13 @@ namespace AceSoft.RetailPlus.Client
             appsplash.Close();
 
             Security.AuditTrailDetails clsAuditDetails = new Security.AuditTrailDetails();
+            clsAuditDetails.BranchID = Constants.TerminalBranchID;
+            clsAuditDetails.TerminalNo = CompanyDetails.TerminalNo;
             clsAuditDetails.ActivityDate = DateTime.Now;
             clsAuditDetails.User = "N/A";
             clsAuditDetails.IPAddress = System.Net.Dns.GetHostName();
             clsAuditDetails.Activity = "Open Terminal";
-            clsAuditDetails.Remarks = "FE:" + "Open terminal no.:'" + CompanyDetails.TerminalNo + "'.";
+            clsAuditDetails.Remarks = "FE:" + "Open terminal no.:'" + CompanyDetails.TerminalNo + "' @ Branch:" + Constants.TerminalBranchID.ToString();
 
             Security.AuditTrail clsAuditTrail = new Security.AuditTrail();
             clsAuditTrail.Insert(clsAuditDetails);
@@ -148,14 +234,35 @@ namespace AceSoft.RetailPlus.Client
             Data.Terminal clsTerminal = new Data.Terminal(clsAuditTrail.Connection, clsAuditTrail.Transaction);
             Data.TerminalDetails clsTerminalDetails = clsTerminal.Details(Constants.TerminalBranchID, CompanyDetails.TerminalNo);
 
+            //overwrite the companydetails from the database
+            Data.SysConfig clsSysConfig = new Data.SysConfig(clsAuditTrail.Connection, clsAuditTrail.Transaction);
+            Data.SysConfigDetails clsSysConfigDetails = clsSysConfig.get_SysConfigDetails();
             clsAuditTrail.CommitAndDispose();
+
+            CompanyDetails.CompanyCode = string.IsNullOrEmpty(clsSysConfigDetails.CompanyCode) ? CompanyDetails.CompanyCode : clsSysConfigDetails.CompanyCode;
+            CompanyDetails.CompanyName = string.IsNullOrEmpty(clsSysConfigDetails.CompanyName) ? CompanyDetails.CompanyName : clsSysConfigDetails.CompanyName;
+            CompanyDetails.Currency = string.IsNullOrEmpty(clsSysConfigDetails.Currency) ? CompanyDetails.Currency : clsSysConfigDetails.Currency;
+            CompanyDetails.TIN = string.IsNullOrEmpty(clsSysConfigDetails.TIN) ? CompanyDetails.TIN : clsSysConfigDetails.TIN;
+
+            CompanyDetails.Address1 = string.IsNullOrEmpty(clsSysConfigDetails.Address1) ? CompanyDetails.Address1 : clsSysConfigDetails.Address1;
+            CompanyDetails.Address2 = string.IsNullOrEmpty(clsSysConfigDetails.Address2) ? CompanyDetails.Address2 : clsSysConfigDetails.Address2;
+            CompanyDetails.City = string.IsNullOrEmpty(clsSysConfigDetails.City) ? CompanyDetails.City : clsSysConfigDetails.City;
+            CompanyDetails.State = string.IsNullOrEmpty(clsSysConfigDetails.State) ? CompanyDetails.State : clsSysConfigDetails.State;
+            CompanyDetails.Zip = string.IsNullOrEmpty(clsSysConfigDetails.Zip) ? CompanyDetails.Zip : clsSysConfigDetails.Zip;
+            CompanyDetails.Country = string.IsNullOrEmpty(clsSysConfigDetails.Country) ? CompanyDetails.Country : clsSysConfigDetails.Country;
+            CompanyDetails.OfficePhone = string.IsNullOrEmpty(clsSysConfigDetails.OfficePhone) ? CompanyDetails.OfficePhone : clsSysConfigDetails.OfficePhone;
+            CompanyDetails.DirectPhone = string.IsNullOrEmpty(clsSysConfigDetails.DirectPhone) ? CompanyDetails.DirectPhone : clsSysConfigDetails.DirectPhone;
+            CompanyDetails.FaxPhone = string.IsNullOrEmpty(clsSysConfigDetails.FaxPhone) ? CompanyDetails.FaxPhone : clsSysConfigDetails.FaxPhone;
+            CompanyDetails.MobilePhone = string.IsNullOrEmpty(clsSysConfigDetails.MobilePhone) ? CompanyDetails.MobilePhone : clsSysConfigDetails.MobilePhone;
+            CompanyDetails.EmailAddress = string.IsNullOrEmpty(clsSysConfigDetails.EmailAddress) ? CompanyDetails.EmailAddress : clsSysConfigDetails.EmailAddress;
+            CompanyDetails.WebSite = string.IsNullOrEmpty(clsSysConfigDetails.WebSite) ? CompanyDetails.WebSite : clsSysConfigDetails.WebSite;
 
             try
             {
                 clsEvent.AddEventLn("Running Main Window.", true);
 
-                MainRestoWnd appmain = new MainRestoWnd();
-                appmain.Text = " RestoPlus ™";
+                MainWnd appmain = new MainWnd();
+                appmain.Text = " RetailPlus ™";
                 /********************************
                  * Added December 21, 2008
                  * Enable 2 windows in one computer
@@ -177,11 +284,13 @@ namespace AceSoft.RetailPlus.Client
                 clsEvent.AddEventLn("System has been exited!", true);
 
                 clsAuditDetails = new Security.AuditTrailDetails();
+                clsAuditDetails.BranchID = Constants.TerminalBranchID;
+                clsAuditDetails.TerminalNo = CompanyDetails.TerminalNo;
                 clsAuditDetails.ActivityDate = DateTime.Now;
                 clsAuditDetails.User = "N/A";
                 clsAuditDetails.IPAddress = System.Net.Dns.GetHostName();
                 clsAuditDetails.Activity = "Close Terminal";
-                clsAuditDetails.Remarks = "FE:" + "Close terminal no.:'" + CompanyDetails.TerminalNo + "'.";
+                clsAuditDetails.Remarks = "FE:" + "Close terminal no.:'" + CompanyDetails.TerminalNo + "' @ Branch:" + Constants.TerminalBranchID.ToString() + ".";
 
                 clsAuditTrail = new Security.AuditTrail();
                 clsAuditTrail.Insert(clsAuditDetails);
@@ -271,7 +380,7 @@ namespace AceSoft.RetailPlus.Client
             Event clsEvent = new Event();
             try
             {
-                clsEvent.AddEvent("Checking teminal if exist in the database. [" + CompanyDetails.TerminalNo + "]");
+                clsEvent.AddEvent("Checking terminal if exist in the database. [" + CompanyDetails.TerminalNo + "]");
 
                 Data.Terminal clsTerminal = new Data.Terminal();
                 Data.TerminalDetails clsDetails = new Data.TerminalDetails();
@@ -281,8 +390,8 @@ namespace AceSoft.RetailPlus.Client
 
                 if (!boIsTerminalExist)
                 {
-                    ErrorMessage = "FATAL ERROR Level 1.!!! Terminal No. [" + CompanyDetails.TerminalNo + "] does not exist in the database." + Environment.NewLine + "Please consult your system administrator immediately...";
-                    clsEvent.AddEventLn("FATAL ERROR!!! Terminal No. [" + CompanyDetails.TerminalNo + "] does not exist in the database. TRACE: Procedure IsTerminalExist returns false.");
+                    ErrorMessage = "FATAL ERROR Level 1.!!! " + Environment.NewLine + "Terminal No:[" + CompanyDetails.TerminalNo + "] @ BranchID:[" + Constants.TerminalBranchID.ToString() + "] does not exist in the database." + Environment.NewLine + "Please consult your system administrator immediately...";
+                    clsEvent.AddEventLn("FATAL ERROR!!! " + Environment.NewLine + "Terminal No:[" + CompanyDetails.TerminalNo + "] @ BranchID:[" + Constants.TerminalBranchID.ToString() + "] does not exist in the database. TRACE: Procedure IsTerminalExist returns false.");
                 }
                 else
                 {
@@ -314,15 +423,14 @@ namespace AceSoft.RetailPlus.Client
                         return false;
                     }
                     clsEvent.AddEventLn("Done!");
-
-
                 }
 
                 return boIsTerminalExist;
             }
             catch (Exception ex)
             {
-                clsEvent.AddEventLn("FATAL ERROR!!! The Terminal No. does not exist in the database. TRACE:" + ex.Message);
+                ErrorMessage = "FATAL ERROR!!! TRACE: " + ex.Message;
+                clsEvent.AddEventLn("FATAL ERROR!!! TRACE:" + ex.Message);
                 return false;
             }
         }
@@ -438,7 +546,7 @@ namespace AceSoft.RetailPlus.Client
 
                 FTP clsFTP = new FTP();
 
-                string strConstantRemarks = "Please contact your system administrator immediately.";
+                //string strConstantRemarks = "Please contact your system administrator immediately.";
 
                 try { clsFTP.Connect(strServer, strUserName, strPassword); }
                 catch

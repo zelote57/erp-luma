@@ -193,5 +193,8 @@ namespace AceSoft.RetailPlus
         
         public const string SYS_BILLING_DATE = "SYS_BILLING_DATE";
         public const string SYS_CREDIT_CUTOFF_DATE = "SYS_CREDIT_CUTOFF_DATE";
+
+        public const string TRUSTFUND_UPDATE_REASON_XREAD = "XREAD";
+        public const string TRUSTFUND_UPDATE_REASON_ALT_DEL = "ALT+DEL";
     }
 }

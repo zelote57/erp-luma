@@ -38,6 +38,7 @@ namespace AceSoft.RetailPlus.Data
         public decimal OtherDiscount;
 		public decimal TotalCharge;
 		public decimal DailySales;
+        public decimal ItemSold;
 		public decimal QuantitySold;
 		public decimal GroupSales;
 		public decimal OldGrandTotal;
@@ -169,6 +170,7 @@ namespace AceSoft.RetailPlus.Data
                                 "OtherDiscount, " +
 					            "TotalCharge, " +
 					            "DailySales, " +
+                                "ItemSold, " +
 					            "QuantitySold, " +
 					            "GroupSales, " +
 					            "OldGrandTotal, " +
@@ -234,16 +236,20 @@ namespace AceSoft.RetailPlus.Data
                                 "BatchCounter, " +
                                 "DebitDeposit, " +
                                 "NoOfReprintedTransaction, " +
-                                "TotalReprintedTransaction " +
+                                "TotalReprintedTransaction, " +
+                                "TrustFund " +
 					        "FROM tblTerminalReport ";
             return stSQL;
         }
 
 		#region Details
-		public TerminalReportDetails Details(Int32 BranchID, string TerminalNo)
+        public TerminalReportDetails Details(Int32 BranchID, string TerminalNo)
 		{
 			try
 			{
+                // Sep 22, 2014 update the figure using synchorize
+                SyncTransactionSales(BranchID, TerminalNo);
+
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
@@ -287,6 +293,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.OtherDiscount = decimal.Parse(dr["OtherDiscount"].ToString());
                 Details.TotalCharge = decimal.Parse(dr["TotalCharge"].ToString());
                 Details.DailySales = decimal.Parse(dr["DailySales"].ToString());
+                Details.ItemSold = decimal.Parse(dr["ItemSold"].ToString());
                 Details.QuantitySold = decimal.Parse(dr["QuantitySold"].ToString());
                 Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
                 Details.OldGrandTotal = decimal.Parse(dr["OldGrandTotal"].ToString());
@@ -353,6 +360,8 @@ namespace AceSoft.RetailPlus.Data
                 Details.DebitDeposit = decimal.Parse(dr["DebitDeposit"].ToString());
                 Details.NoOfReprintedTransaction = Int32.Parse(dr["NoOfReprintedTransaction"].ToString());
                 Details.TotalReprintedTransaction = decimal.Parse(dr["TotalReprintedTransaction"].ToString());
+
+                Details.TrustFund = decimal.Parse(dr["TrustFund"].ToString());
             }
 
             return Details;
@@ -382,6 +391,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.OtherDiscount = decimal.Parse(dr["OtherDiscount"].ToString());
                 Details.TotalCharge = decimal.Parse(dr["TotalCharge"].ToString());
                 Details.DailySales = decimal.Parse(dr["DailySales"].ToString());
+                Details.ItemSold = decimal.Parse(dr["ItemSold "].ToString());
                 Details.QuantitySold = decimal.Parse(dr["QuantitySold"].ToString());
                 Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
                 Details.OldGrandTotal = decimal.Parse(dr["OldGrandTotal"].ToString());
@@ -638,6 +648,30 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public void UpdateTrustFund(Int32 BranchID, string TerminalNo, decimal TrustFund, string UpdatedBy, string Reason)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procTerminalReportUpdateTrustFund(@BranchID, @TerminalNo, @TrustFund, @UpdatedBy, @Reason);";
+
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("TrustFund", TrustFund);
+                cmd.Parameters.AddWithValue("UpdatedBy", UpdatedBy);
+                cmd.Parameters.AddWithValue("Reason", Reason);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		public void UpdateTransactionSales(TerminalReportDetails Details)
 		{
 			try 
@@ -654,6 +688,7 @@ namespace AceSoft.RetailPlus.Data
                                     "@OtherDiscount, " +
                                     "@TotalCharge, " +
                                     "@DailySales, " +
+                                    "@ItemSold, " +
                                     "@QuantitySold, " +
                                     "@GroupSales, " +
                                     "@OldGrandTotal, " +
@@ -710,6 +745,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@OtherDiscount", Details.OtherDiscount);
                 cmd.Parameters.AddWithValue("@TotalCharge", Details.TotalCharge);
                 cmd.Parameters.AddWithValue("@DailySales", Details.DailySales);
+                cmd.Parameters.AddWithValue("@ItemSold", Details.ItemSold);
                 cmd.Parameters.AddWithValue("@QuantitySold", Details.QuantitySold);
                 cmd.Parameters.AddWithValue("@GroupSales", Details.GroupSales);
                 cmd.Parameters.AddWithValue("@OldGrandTotal", 0);
@@ -772,6 +808,27 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
+
+        public void SyncTransactionSales(Int32 BranchID, string TerminalNo)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procTerminalReportSyncTransactionSales(@BranchID, @TerminalNo);";
+
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		public void UpdateWithHold(WithholdDetails Details)
 		{
@@ -1097,43 +1154,6 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Public Methods
 
-        //public void InitializeZRead(Int32 BranchID, string pvtTerminalNo, string pvtInitializedBy, bool pvtWithOutTF)
-        //{
-        //    try 
-        //    {
-        //        string SQL = "CALL procTerminalReportInitializeZRead(@BranchID, @TerminalNo, @DateLastInitialized, @InitializedBy, @WithOutTF);";
-	 			
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-        //        prmBranchID.Value = BranchID;
-        //        cmd.Parameters.Add(prmBranchID);
-
-        //        MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-        //        prmTerminalNo.Value = pvtTerminalNo;
-        //        cmd.Parameters.Add(prmTerminalNo);
-
-        //        MySqlParameter prmDateLastInitialized = new MySqlParameter("@DateLastInitialized",MySqlDbType.DateTime);
-        //        prmDateLastInitialized.Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        //        cmd.Parameters.Add(prmDateLastInitialized);
-
-        //        MySqlParameter prmInitializedBy = new MySqlParameter("@InitializedBy",MySqlDbType.String);
-        //        prmInitializedBy.Value = pvtInitializedBy;
-        //        cmd.Parameters.Add(prmInitializedBy);
-
-        //        cmd.Parameters.AddWithValue("@WithOutTF", pvtWithOutTF);
-
-        //        base.ExecuteNonQuery(cmd);
-
-        //        UpdateZReadCount(BranchID, pvtTerminalNo);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
         public void InitializeZRead(Int32 BranchID, string TerminalNo, string InitializedBy, DateTime DateLastInitialized, bool WithOutTF)
         {
             try
@@ -1231,9 +1251,9 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public System.Data.DataTable HourlyReport(Int32 BranchID, string TerminalNo = Constants.ALL)
+        public System.Data.DataTable HourlyReport(string BeginningTransactionNo, string EndingTransactionNo, Int32 BranchID, string TerminalNo = Constants.ALL)
 		{
-            MySqlCommand cmd = HourlyReportPrivate(DateTime.MinValue, DateTime.MinValue, BranchID, TerminalNo);
+            MySqlCommand cmd = HourlyReportPrivate(BeginningTransactionNo, EndingTransactionNo, DateTime.MinValue, DateTime.MinValue, BranchID, TerminalNo);
 			
 			string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
@@ -1241,9 +1261,9 @@ namespace AceSoft.RetailPlus.Data
 			return dt;
 		}
 
-        public System.Data.DataTable HourlyReport(DateTime? StartDateTimeOfTransaction = null, DateTime? UptoDateTimeOfTransaction = null, int BranchID = 0, string TerminalNo = Constants.ALL)
+        public System.Data.DataTable HourlyReport(string BeginningTransactionNo, string EndingTransactionNo, DateTime? StartDateTimeOfTransaction = null, DateTime? UptoDateTimeOfTransaction = null, int BranchID = 0, string TerminalNo = Constants.ALL)
         {
-            MySqlCommand cmd = HourlyReportPrivate(StartDateTimeOfTransaction, UptoDateTimeOfTransaction, BranchID, TerminalNo);
+            MySqlCommand cmd = HourlyReportPrivate(BeginningTransactionNo, EndingTransactionNo, StartDateTimeOfTransaction, UptoDateTimeOfTransaction, BranchID, TerminalNo);
 
             string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
@@ -1275,7 +1295,7 @@ namespace AceSoft.RetailPlus.Data
 			return dt;
 		}
 
-        private MySqlCommand HourlyReportPrivate(DateTime? StartDateTimeOfTransaction = null, DateTime? UptoDateTimeOfTransaction = null, Int32 BranchID = 0, string TerminalNo = Constants.ALL)
+        private MySqlCommand HourlyReportPrivate(string BeginningTransactionNo, string EndingTransactionNo, DateTime? StartDateTimeOfTransaction = null, DateTime? UptoDateTimeOfTransaction = null, Int32 BranchID = 0, string TerminalNo = Constants.ALL)
         {
             try
             {
@@ -1286,7 +1306,7 @@ namespace AceSoft.RetailPlus.Data
                                     "DATE(TransactionDate) 'TransactionDate', " +
                                     "HOUR(TransactionDate) 'Time', " +
                                     "COUNT(SubTotal) 'TranCount', " +
-                                    "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, SubTotal - Discount)) 'Amount', " +
+                                    "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, SubTotal)) 'Amount', " +
                                     "SUM(IF(TransactionStatus = @TransactionStatusVoid, 0, Discount)) 'Discount' " +
                                 "FROM  tblTransactions " +
                                 "WHERE 1=1 ";
@@ -1299,6 +1319,16 @@ namespace AceSoft.RetailPlus.Data
                 {
                     SQL += "AND BranchID = @BranchID ";
                     cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                }
+                if (!string.IsNullOrEmpty(BeginningTransactionNo))
+                {
+                    SQL += "AND TransactionNo >= @BeginningTransactionNo ";
+                    cmd.Parameters.AddWithValue("@BeginningTransactionNo", BeginningTransactionNo);
+                }
+                if (!string.IsNullOrEmpty(EndingTransactionNo))
+                {
+                    SQL += "AND TransactionNo <= @EndingTransactionNo ";
+                    cmd.Parameters.AddWithValue("@EndingTransactionNo", EndingTransactionNo);
                 }
                 if (StartDateTimeOfTransaction.GetValueOrDefault(DateTime.MinValue) != DateTime.MinValue)
                 {
@@ -1352,10 +1382,10 @@ namespace AceSoft.RetailPlus.Data
                                     "AND TerminalNo = @TerminalNo " +
                                     "AND BranchID = @BranchID " +
                                     "AND (TransactionStatus = @TransactionStatusClosed " +
-                                    "OR TransactionStatus = @TransactionStatusVoid " +
-                                    "OR TransactionStatus = @TransactionStatusReprinted " +
-                                    "OR TransactionStatus = @TransactionStatusRefund " +
-                                    "OR TransactionStatus = @TransactionStatusCreditPayment) " +
+                                        "OR TransactionStatus = @TransactionStatusVoid " +
+                                        "OR TransactionStatus = @TransactionStatusReprinted " +
+                                        "OR TransactionStatus = @TransactionStatusRefund " +
+                                        "OR TransactionStatus = @TransactionStatusCreditPayment) " +
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE TerminalNo = @TerminalNo AND BranchID = @BranchID) " +
                             "GROUP BY ProductGroup";
 

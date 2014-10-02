@@ -204,7 +204,7 @@ namespace AceSoft.RetailPlus.Client
                 MessageBox.Show(
                     "This copy has been expired. Please contact your nearest software distributor" + Environment.NewLine +
                     "Or call RBS Sales @: " + Environment.NewLine +
-                    "          Philippines: +63.933.2261008" + Environment.NewLine +
+                    "          Philippines: +63.947.3215979" + Environment.NewLine +
                     "          Philippines: +63.918.9390926" + Environment.NewLine +
                     "          Philippines: +632.998.7722" + Environment.NewLine +
                     "          Singapore: +658.6519601" + Environment.NewLine +

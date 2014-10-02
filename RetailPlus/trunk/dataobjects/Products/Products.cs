@@ -1116,6 +1116,32 @@ namespace AceSoft.RetailPlus.Data
             return boRetValue;
         }
 
+        public bool CopyPOSToActualByProductSubGroup(Int32 BranchID, Int64 ProductSubGroupID)
+        {
+            bool boRetValue = false;
+            try
+            {
+                string SQL = "CALL procProductCopyPOSToActualByProductSubGroup(@BranchID, @ProductSubGroupID);";
+
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+
+            return boRetValue;
+        }
+
         public bool ZeroOutActualQuantityBySupplier(int BranchID, long lngSupplierID)
         {
             bool boRetValue = false;
@@ -1156,6 +1182,32 @@ namespace AceSoft.RetailPlus.Data
 
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 cmd.Parameters.AddWithValue("@lngProductGroupID", lngProductGroupID);
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+
+            return boRetValue;
+        }
+
+        public bool ZeroOutActualQuantityByProductSubGroup(Int32 BranchID, Int64 ProductSubGroupID)
+        {
+            bool boRetValue = false;
+            try
+            {
+                string SQL = "CALL procProductZeroOutActualQuantityByProductSubGroup(@BranchID, @ProductSubGroupID);";
+
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
 
                 if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
             }
@@ -1210,6 +1262,33 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 cmd.Parameters.AddWithValue("@lngProductGroupID", lngProductGroupID);
                 cmd.Parameters.AddWithValue("@bolisLock", isLock);
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+
+            return boRetValue;
+        }
+
+        public bool LockUnlockForSellingByProductSubGroup(int BranchID, long ProductSubGroupID, bool isLock)
+        {
+            bool boRetValue = false;
+            try
+            {
+                string SQL = "CALL LockUnlockProductForSellingByProductSubGroup(@BranchID, @ProductSubGroupID, @isLock);";
+
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("isLock", isLock);
 
                 if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
             }

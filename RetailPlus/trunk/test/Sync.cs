@@ -9,22 +9,22 @@ using AceSoft.RetailPlus.Security;
 
 namespace Test
 {
-	/******************************************************************************
-	**		Auth: Lemuel E. Aceron
-	**		Date: May 21, 2006
-	*******************************************************************************
-	**		Change History
-	*******************************************************************************
-	**		Date:		Author:				Description:
-	**		--------		--------				-------------------------------------------
-	**    
-	*******************************************************************************/
+    /******************************************************************************
+    **		Auth: Lemuel E. Aceron
+    **		Date: May 21, 2006
+    *******************************************************************************
+    **		Change History
+    *******************************************************************************
+    **		Date:		Author:				Description:
+    **		--------		--------				-------------------------------------------
+    **    
+    *******************************************************************************/
 
-	/// <summary>
-	/// Summary description for KeyGen.
-	/// </summary>
-	public class KeyGen
-	{
+    /// <summary>
+    /// Summary description for KeyGen.
+    /// </summary>
+    public class KeyGen
+    {
         public static void Main(string[] args)
         {
             try
@@ -44,11 +44,11 @@ namespace Test
 
                 AceSoft.RetailPlus.Client.DBSync clsMasterDB = new AceSoft.RetailPlus.Client.DBSync(clsMasterConnection.Connection, clsMasterConnection.Transaction);
                 AceSoft.RetailPlus.Client.DBSync clsLocalDB = new AceSoft.RetailPlus.Client.DBSync(clsLocalConnection.Connection, clsLocalConnection.Transaction);
-                
+
                 clsLocalDB.SetForeignKey(false);
 
                 /**** Sync Configs *****/
-                
+
                 // sysconfig
                 System.Data.DataTable dtMaster = new System.Data.DataTable();
                 System.Data.DataTable dtLocal = new System.Data.DataTable();
@@ -235,12 +235,13 @@ namespace Test
                     });
                 }
 
-                // delete the records in localDB that are supposed to be deleted
-                if (clsLocalDB.CountOfRecords(strTableName) > clsMasterDB.CountOfRecords(strTableName))
-                {
-                    stRetvalue = clsMasterDB.getAllIDs(strTableName, "GroupID", true);
-                    clsLocalDB.Delete(strTableName, "GroupID", stRetvalue);
-                }
+                //do not delete
+                //// delete the records in localDB that are supposed to be deleted
+                //if (clsLocalDB.CountOfRecords(strTableName) > clsMasterDB.CountOfRecords(strTableName))
+                //{
+                //    stRetvalue = clsMasterDB.getAllIDs(strTableName, "GroupID", true);
+                //    clsLocalDB.Delete(strTableName, "GroupID", stRetvalue);
+                //}
                 #endregion
 
                 #region SysAccessUsers
@@ -413,7 +414,8 @@ namespace Test
                         LastClosingNo = dr["LastClosingNo"].ToString(),
                         PostingDateFrom = DateTime.Parse(dr["PostingDateFrom"].ToString()),
                         PostingDateTo = DateTime.Parse(dr["PostingDateTo"].ToString()),
-                        APLinkConfigDetails = new APLinkConfigDetails{
+                        APLinkConfigDetails = new APLinkConfigDetails
+                        {
                             ChartOfAccountIDAPTracking = Int32.Parse(dr["ChartOfAccountIDAPTracking"].ToString()),
                             ChartOfAccountIDAPBills = Int32.Parse(dr["ChartOfAccountIDAPBills"].ToString()),
                             ChartOfAccountIDAPFreight = Int32.Parse(dr["ChartOfAccountIDAPFreight"].ToString()),
@@ -421,7 +423,8 @@ namespace Test
                             ChartOfAccountIDAPContra = Int32.Parse(dr["ChartOfAccountIDAPContra"].ToString()),
                             ChartOfAccountIDAPLatePayment = Int32.Parse(dr["ChartOfAccountIDAPLatePayment"].ToString())
                         },
-                        ARLinkConfigDetails = new ARLinkConfigDetails {
+                        ARLinkConfigDetails = new ARLinkConfigDetails
+                        {
                             ChartOfAccountIDARTracking = Int32.Parse(dr["ChartOfAccountIDARTracking"].ToString()),
                             ChartOfAccountIDARBills = Int32.Parse(dr["ChartOfAccountIDARBills"].ToString()),
                             ChartOfAccountIDARFreight = Int32.Parse(dr["ChartOfAccountIDARFreight"].ToString()),
@@ -756,12 +759,12 @@ namespace Test
                         TerminalNo = dr["TerminalNo"].ToString(),
                         TerminalCode = dr["TerminalCode"].ToString(),
                         TerminalName = dr["TerminalName"].ToString(),
-                        Status = (TerminalStatus) Enum.Parse(typeof(TerminalStatus), dr["Status"].ToString()),
+                        Status = (TerminalStatus)Enum.Parse(typeof(TerminalStatus), dr["Status"].ToString()),
                         DateCreated = DateTime.Parse(dr["DateCreated"].ToString()),
                         IsPrinterAutoCutter = bool.Parse(dr["IsPrinterAutoCutter"].ToString()),
                         MaxReceiptWidth = Int16.Parse(dr["MaxReceiptWidth"].ToString()),
                         TransactionNoLength = Int16.Parse(dr["TransactionNoLength"].ToString()),
-                        AutoPrint = (PrintingPreference) Enum.Parse(typeof(PrintingPreference), dr["AutoPrint"].ToString()), 
+                        AutoPrint = (PrintingPreference)Enum.Parse(typeof(PrintingPreference), dr["AutoPrint"].ToString()),
                         PrinterName = dr["PrinterName"].ToString(),
                         TurretName = dr["TurretName"].ToString(),
                         CashDrawerName = dr["CashDrawerName"].ToString(),
@@ -779,11 +782,11 @@ namespace Test
                         ShowItemMoreThanZeroQty = bool.Parse(dr["ShowItemMoreThanZeroQty"].ToString()),
                         ShowOneTerminalSuspendedTransactions = bool.Parse(dr["ShowOneTerminalSuspendedTransactions"].ToString()),
                         ShowOnlyPackedTransactions = bool.Parse(dr["ShowOnlyPackedTransactions"].ToString()),
-                        ReceiptType = (TerminalReceiptType) Enum.Parse(typeof(TerminalReceiptType), dr["TerminalReceiptType"].ToString()),
+                        ReceiptType = (TerminalReceiptType)Enum.Parse(typeof(TerminalReceiptType), dr["TerminalReceiptType"].ToString()),
                         SalesInvoicePrinterName = dr["SalesInvoicePrinterName"].ToString(),
                         CashCountBeforeReport = bool.Parse(dr["CashCountBeforeReport"].ToString()),
                         PreviewTerminalReport = bool.Parse(dr["PreviewTerminalReport"].ToString()),
-                        OrderSlipPrinter = (OrderSlipPrinter) Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString()),
+                        OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString()),
                         DBVersion = dr["DBVersion"].ToString(),
                         FEVersion = dr["FEVersion"].ToString(),
                         BEVersion = dr["BEVersion"].ToString(),
@@ -800,11 +803,12 @@ namespace Test
                         WillContinueSelectionProduct = bool.Parse(dr["WillContinueSelectionProduct"].ToString()),
                         RETPriceMarkUp = decimal.Parse(dr["RETPriceMarkUp"].ToString()),
                         WSPriceMarkUp = decimal.Parse(dr["WSPriceMarkUp"].ToString()),
-                        WillPrintGrandTotal= bool.Parse(dr["WillPrintGrandTotal"].ToString()),
+                        WillPrintGrandTotal = bool.Parse(dr["WillPrintGrandTotal"].ToString()),
                         ReservedAndCommit = bool.Parse(dr["ReservedAndCommit"].ToString()),
-                        ShowCustomerSelection= bool.Parse(dr["ShowCustomerSelection"].ToString()),
+                        ShowCustomerSelection = bool.Parse(dr["ShowCustomerSelection"].ToString()),
                         AutoGenerateRewardCardNo = bool.Parse(dr["AutoGenerateRewardCardNo"].ToString()),
-                        RewardPointsDetails = new RewardPointsDetails() {
+                        RewardPointsDetails = new RewardPointsDetails()
+                        {
                             EnableRewardPoints = bool.Parse(dr["EnableRewardPoints"].ToString()),
                             RewardPointsMinimum = decimal.Parse(dr["RewardPointsMinimum"].ToString()),
                             RewardPointsEvery = decimal.Parse(dr["RewardPointsEvery"].ToString()),
@@ -823,7 +827,7 @@ namespace Test
                         PersonalChargeType = int.Parse(dr["PersonalChargeTypeID"].ToString()) != 0 ? clsChargeType.Details(int.Parse(dr["PersonalChargeTypeID"].ToString())) : new ChargeTypeDetails(),
                         GroupChargeType = int.Parse(dr["GroupChargeTypeID"].ToString()) != 0 ? clsChargeType.Details(int.Parse(dr["GroupChargeTypeID"].ToString())) : new ChargeTypeDetails(),
                         BranchID = Int32.Parse(dr["BranchID"].ToString()),
-                        ProductSearchType = (ProductSearchType) Enum.Parse(typeof(ProductSearchType), dr["ProductSearchType"].ToString()),
+                        ProductSearchType = (ProductSearchType)Enum.Parse(typeof(ProductSearchType), dr["ProductSearchType"].ToString()),
                         IncludeCreditChargeAgreement = bool.Parse(dr["IncludeCreditChargeAgreement"].ToString()),
                         IsParkingTerminal = bool.Parse(dr["IsParkingTerminal"].ToString()),
                         WillPrintChargeSlip = bool.Parse(dr["WillPrintChargeSlip"].ToString()),
@@ -925,7 +929,7 @@ namespace Test
                         ContactGroupID = Int16.Parse(dr["ContactGroupID"].ToString()),
                         ContactGroupCode = dr["ContactGroupCode"].ToString(),
                         ContactGroupName = dr["ContactGroupName"].ToString(),
-                        ContactGroupCategory = (ContactGroupCategory) Enum.Parse(typeof(ContactGroupCategory), dr["ContactGroupCategory"].ToString()),
+                        ContactGroupCategory = (ContactGroupCategory)Enum.Parse(typeof(ContactGroupCategory), dr["ContactGroupCategory"].ToString()),
                         CreatedOn = dteCreatedOn,
                         LastModified = dteLastModified
                     });
@@ -958,7 +962,7 @@ namespace Test
                         ContactCode = dr["ContactCode"].ToString(),
                         ContactName = dr["ContactName"].ToString(),
                         ContactGroupID = Int32.Parse(dr["ContactGroupID"].ToString()),
-                        ModeOfTerms = (ModeOfTerms) Enum.Parse(typeof(ModeOfTerms), dr["ModeOfTerms"].ToString()),
+                        ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), dr["ModeOfTerms"].ToString()),
                         Terms = Int32.Parse(dr["Terms"].ToString()),
                         Address = dr["Address"].ToString(),
                         BusinessName = dr["BusinessName"].ToString(),
@@ -1052,12 +1056,12 @@ namespace Test
                     {
                         CustomerID = Int64.Parse(dr["CustomerID"].ToString()),
                         GuarantorID = Int64.Parse(dr["GuarantorID"].ToString()),
-                        CreditType = (CreditType) Enum.Parse(typeof(CreditType), dr["CreditType"].ToString()),
+                        CreditType = (CreditType)Enum.Parse(typeof(CreditType), dr["CreditType"].ToString()),
                         CreditCardNo = dr["CreditCardNo"].ToString(),
                         CreditAwardDate = DateTime.Parse(dr["CreditAwardDate"].ToString()),
                         TotalPurchases = decimal.Parse(dr["TotalPurchases"].ToString()),
                         CreditPaid = decimal.Parse(dr["CreditPaid"].ToString()),
-                        CreditCardStatus = (CreditCardStatus) Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString()),
+                        CreditCardStatus = (CreditCardStatus)Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString()),
                         ExpiryDate = DateTime.Parse(dr["ExpiryDate"].ToString()),
                         EmbossedCardNo = dr["EmbossedCardNo"].ToString(),
                         LastBillingDate = DateTime.Parse(dr["LastBillingDate"].ToString()),
@@ -1187,9 +1191,9 @@ namespace Test
                         PromoCode = dr["PromoCode"].ToString(),
                         PromoName = dr["PromoName"].ToString(),
                         StartDate = DateTime.Parse(dr["StartDate"].ToString()),
-                        EndDate = DateTime.Parse(dr["EndDate"].ToString()), 
+                        EndDate = DateTime.Parse(dr["EndDate"].ToString()),
                         PromoTypeID = Int32.Parse(dr["PromoTypeID"].ToString()),
-                        Status = (PromoStatus) Enum.Parse(typeof(PromoStatus), dr["Status"].ToString()),
+                        Status = (PromoStatus)Enum.Parse(typeof(PromoStatus), dr["Status"].ToString()),
                         CreatedOn = dteCreatedOn,
                         LastModified = dteLastModified
                     });
@@ -1223,7 +1227,10 @@ namespace Test
                         ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString()),
                         ProductGroupCode = dr["ProductGroupCode"].ToString(),
                         ProductGroupName = dr["ProductGroupName"].ToString(),
-                        BaseUnitID = Int32.Parse(dr["BaseUnitID"].ToString()),
+                        UnitDetails = new UnitDetails
+                        {
+                            UnitID = Int32.Parse(dr["BaseUnitID"].ToString())
+                        },
                         Price = decimal.Parse(dr["Price"].ToString()),
                         PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString()),
                         IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString()),
@@ -1238,7 +1245,8 @@ namespace Test
                         ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString()),
                         SequenceNo = Int32.Parse(dr["SequenceNo"].ToString()),
                         isLock = bool.Parse(dr["isLock"].ToString()),
-                        ProductGroupChartOfAccountDetails = new ProductGroupChartOfAccountDetails {
+                        ProductGroupChartOfAccountDetails = new ProductGroupChartOfAccountDetails
+                        {
                             ChartOfAccountIDTransferIn = Int32.Parse(dr["ChartOfAccountIDTransferIn"].ToString()),
                             ChartOfAccountIDTaxTransferIn = Int32.Parse(dr["ChartOfAccountIDTaxTransferIn"].ToString()),
                             ChartOfAccountIDTransferOut = Int32.Parse(dr["ChartOfAccountIDTransferOut"].ToString()),
@@ -1694,7 +1702,8 @@ namespace Test
                         RIDMaxThreshold = decimal.Parse(dr["RIDMaxThreshold"].ToString()),
                         RewardPoints = decimal.Parse(dr["RewardPoints"].ToString()),
                         SequenceNo = Int32.Parse(dr["SequenceNo"].ToString()),
-                        ProductChartOfAccountDetails = new ProductChartOfAccountDetails {
+                        ProductChartOfAccountDetails = new ProductChartOfAccountDetails
+                        {
                             ChartOfAccountIDTransferIn = Int32.Parse(dr["ChartOfAccountIDTransferIn"].ToString()),
                             ChartOfAccountIDTaxTransferIn = Int32.Parse(dr["ChartOfAccountIDTaxTransferIn"].ToString()),
                             ChartOfAccountIDTransferOut = Int32.Parse(dr["ChartOfAccountIDTransferOut"].ToString()),
@@ -1809,12 +1818,13 @@ namespace Test
                     });
                 }
 
-                // delete the records in localDB that are supposed to be deleted
-                if (clsLocalDB.CountOfRecords(strTableName) > clsMasterDB.CountOfRecords(strTableName))
-                {
-                    stRetvalue = clsMasterDB.getAllIDs(strTableName, "ProductVariationsMatrixID", true);
-                    clsLocalDB.Delete(strTableName, "ProductVariationsMatrixID", stRetvalue);
-                }
+                //do not delete
+                //// delete the records in localDB that are supposed to be deleted
+                //if (clsLocalDB.CountOfRecords(strTableName) > clsMasterDB.CountOfRecords(strTableName))
+                //{
+                //    stRetvalue = clsMasterDB.getAllIDs(strTableName, "ProductVariationsMatrixID", true);
+                //    clsLocalDB.Delete(strTableName, "ProductVariationsMatrixID", stRetvalue);
+                //}
                 #endregion
 
                 #region tblProductUnitMatrix
@@ -2057,7 +2067,7 @@ namespace Test
                         AccountClassificationID = Int32.Parse(dr["AccountClassificationID"].ToString()),
                         AccountClassificationCode = dr["AccountClassificationCode"].ToString(),
                         AccountClassificationName = dr["AccountClassificationName"].ToString(),
-                        AccountClassificationType = (AccountClassificationType) Enum.Parse(typeof(AccountClassificationType), dr["AccountClassificationType"].ToString()),
+                        AccountClassificationType = (AccountClassificationType)Enum.Parse(typeof(AccountClassificationType), dr["AccountClassificationType"].ToString()),
                         CreatedOn = dteCreatedOn,
                         LastModified = dteLastModified
                     });
@@ -2122,7 +2132,8 @@ namespace Test
                     clsAccountCategories.Save(new AccountCategoryDetails
                     {
                         AccountCategoryID = Int32.Parse(dr["AccountCategoryID"].ToString()),
-                        AccountSummaryDetails = new AccountSummaryDetails {
+                        AccountSummaryDetails = new AccountSummaryDetails
+                        {
                             AccountSummaryID = Int32.Parse(dr["AccountSummaryID"].ToString())
                         },
                         AccountCategoryCode = dr["AccountCategoryCode"].ToString(),
@@ -2156,7 +2167,8 @@ namespace Test
                     clsChartOfAccounts.Save(new ChartOfAccountDetails
                     {
                         ChartOfAccountID = Int32.Parse(dr["ChartOfAccountID"].ToString()),
-                        AccountCategoryDetails = new AccountCategoryDetails {
+                        AccountCategoryDetails = new AccountCategoryDetails
+                        {
                             AccountCategoryID = Int32.Parse(dr["AccountCategoryID"].ToString())
                         },
                         ChartOfAccountCode = dr["ChartOfAccountCode"].ToString(),
@@ -2206,6 +2218,509 @@ namespace Test
                 {
                     stRetvalue = clsMasterDB.getAllIDs(strTableName, "BankID", true);
                     clsLocalDB.Delete(strTableName, "BankID", stRetvalue);
+                }
+                #endregion
+
+                /*****************************Transactions**************************/
+                // do not delete the records in MasterDB, always INSERT or update using SyncID
+
+                #region tblCashierLogs
+                strTableName = "tblCashierLogs";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                CashierLogs clsCashierLogs = new CashierLogs(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsCashierLogs.Save(new CashierLogsDetails
+                    {
+                        BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        CashierID = Int64.Parse(dr["UID"].ToString()),
+                        LoginDate = DateTime.Parse(dr["LoginDate"].ToString()),
+                        BranchCode = dr["BranchCode"].ToString(),
+                        IPAddress = dr["IPAddress"].ToString(),
+                        LogoutDate = DateTime.Parse(dr["LogoutDate"].ToString()),
+                        Status = (CashierLogStatus)Enum.Parse(typeof(CashierLogStatus), dr["Status"].ToString()),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
+                }
+                #endregion
+
+                #region tblCashierReport
+                strTableName = "tblCashierReport";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                CashierReports clsCashierReport = new CashierReports(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsCashierReport.Save(new CashierReportDetails
+                    {
+                        BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        CashierReportID = Int64.Parse(dr["CashierReportID"].ToString()),
+                        CashierID = Int64.Parse(dr["CashierID"].ToString()),
+                        TerminalID = Int32.Parse(dr["TerminalID"].ToString()),
+                        NetSales = decimal.Parse(dr["NetSales"].ToString()),
+                        GrossSales = decimal.Parse(dr["GrossSales"].ToString()),
+                        TotalDiscount = decimal.Parse(dr["TotalDiscount"].ToString()),
+                        SNRDiscount = decimal.Parse(dr["SNRDiscount"].ToString()),
+                        PWDDiscount = decimal.Parse(dr["PWDDiscount"].ToString()),
+                        OtherDiscount = decimal.Parse(dr["OtherDiscount"].ToString()),
+                        DailySales = decimal.Parse(dr["DailySales"].ToString()),
+                        QuantitySold = decimal.Parse(dr["QuantitySold"].ToString()),
+                        GroupSales = decimal.Parse(dr["GroupSales"].ToString()),
+                        VAT = decimal.Parse(dr["VAT"].ToString()),
+                        EVAT = decimal.Parse(dr["EVAT"].ToString()),
+                        LocalTax = decimal.Parse(dr["LocalTax"].ToString()),
+                        CashSales = decimal.Parse(dr["CashSales"].ToString()),
+                        ChequeSales = decimal.Parse(dr["ChequeSales"].ToString()),
+                        CreditCardSales = decimal.Parse(dr["CreditCardSales"].ToString()),
+                        CreditSales = decimal.Parse(dr["CreditSales"].ToString()),
+                        CreditPayment = decimal.Parse(dr["CreditPayment"].ToString()),
+                        CashInDrawer = decimal.Parse(dr["CashInDrawer"].ToString()),
+                        TotalDisburse = decimal.Parse(dr["TotalDisburse"].ToString()),
+                        CashDisburse = decimal.Parse(dr["CashDisburse"].ToString()),
+                        ChequeDisburse = decimal.Parse(dr["ChequeDisburse"].ToString()),
+                        CreditCardDisburse = decimal.Parse(dr["CreditCardDisburse"].ToString()),
+                        TotalWithHold = decimal.Parse(dr["TotalWithhold"].ToString()),
+                        CashWithHold = decimal.Parse(dr["CashWithhold"].ToString()),
+                        ChequeWithHold = decimal.Parse(dr["ChequeWithhold"].ToString()),
+                        CreditCardWithHold = decimal.Parse(dr["CreditCardWithhold"].ToString()),
+                        TotalPaidOut = decimal.Parse(dr["TotalPaidOut"].ToString()),
+                        CashPaidOut = decimal.Parse(dr["CashPaidOut"].ToString()),
+                        ChequePaidOut = decimal.Parse(dr["ChequePaidOut"].ToString()),
+                        CreditCardPaidOut = decimal.Parse(dr["CreditCardPaidOut"].ToString()),
+                        BeginningBalance = decimal.Parse(dr["BeginningBalance"].ToString()),
+                        VoidSales = decimal.Parse(dr["VoidSales"].ToString()),
+                        RefundSales = decimal.Parse(dr["RefundSales"].ToString()),
+                        ItemsDiscount = decimal.Parse(dr["ItemsDiscount"].ToString()),
+                        SubTotalDiscount = decimal.Parse(dr["SubtotalDiscount"].ToString()),
+                        NoOfCashTransactions = Int32.Parse(dr["NoOfCashTransactions"].ToString()),
+                        NoOfChequeTransactions = Int32.Parse(dr["NoOfChequeTransactions"].ToString()),
+                        NoOfCreditCardTransactions = Int32.Parse(dr["NoOfCreditCardTransactions"].ToString()),
+                        NoOfCreditTransactions = Int32.Parse(dr["NoOfCreditTransactions"].ToString()),
+                        NoOfCombinationPaymentTransactions = Int32.Parse(dr["NoOfCombinationPaymentTransactions"].ToString()),
+                        NoOfCreditPaymentTransactions = Int32.Parse(dr["NoOfCreditPaymentTransactions"].ToString()),
+                        NoOfClosedTransactions = Int32.Parse(dr["NoOfClosedTransactions"].ToString()),
+                        NoOfRefundTransactions = Int32.Parse(dr["NoOfRefundTransactions"].ToString()),
+                        NoOfVoidTransactions = Int32.Parse(dr["NoOfVoidTransactions"].ToString()),
+                        NoOfTotalTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString()),
+                        CashCount = decimal.Parse(dr["CashCount"].ToString()),
+                        LastLoginDate = DateTime.Parse(dr["LastLoginDate"].ToString()),
+                        TotalDeposit = decimal.Parse(dr["TotalDeposit"].ToString()),
+                        CashDeposit = decimal.Parse(dr["CashDeposit"].ToString()),
+                        ChequeDeposit = decimal.Parse(dr["ChequeDeposit"].ToString()),
+                        CreditCardDeposit = decimal.Parse(dr["CreditCardDeposit"].ToString()),
+                        DebitPayment = decimal.Parse(dr["DebitPayment"].ToString()),
+                        NoOfDebitPaymentTransactions = Int32.Parse(dr["NoOfDebitPaymentTransactions"].ToString()),
+                        TotalCharge = decimal.Parse(dr["TotalCharge"].ToString()),
+                        IsCashCountInitialized = bool.Parse(dr["IsCashCountInitialized"].ToString()),
+                        NoOfDiscountedTransactions = Int32.Parse(dr["NoOfDiscountedTransactions"].ToString()),
+                        NegativeAdjustments = decimal.Parse(dr["NegativeAdjustments"].ToString()),
+                        NoOfNegativeAdjustmentTransactions = Int32.Parse(dr["NoOfNegativeAdjustmentTransactions"].ToString()),
+                        PromotionalItems = decimal.Parse(dr["PromotionalItems"].ToString()),
+                        CreditSalesTax = decimal.Parse(dr["CreditSalesTax"].ToString()),
+                        DebitDeposit = decimal.Parse(dr["DebitDeposit"].ToString()),
+                        RewardPointsPayment = decimal.Parse(dr["RewardPointsPayment"].ToString()),
+                        RewardConvertedPayment = decimal.Parse(dr["RewardConvertedPayment"].ToString()),
+                        NoOfRewardPointsPayment = Int32.Parse(dr["NoOfRewardPointsPayment"].ToString()),
+                        CreditPaymentCash = decimal.Parse(dr["CreditPaymentCash"].ToString()),
+                        CreditPaymentCheque = decimal.Parse(dr["CreditPaymentCheque"].ToString()),
+                        CreditPaymentCreditCard = decimal.Parse(dr["CreditPaymentCreditCard"].ToString()),
+                        CreditPaymentDebit = decimal.Parse(dr["CreditPaymentDebit"].ToString()),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
+                }
+                #endregion
+
+                #region tblCashierReportHistory
+                strTableName = "tblCashierReportHistory";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                CashierReportHistories clsCashierReportHistories = new CashierReportHistories(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsCashierReportHistories.Save(new CashierReportDetails
+                    {
+                        BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        CashierReportHistoryID = Int64.Parse(dr["CashierReportHistoryID"].ToString()),
+                        CashierID = Int64.Parse(dr["CashierID"].ToString()),
+                        TerminalID = Int32.Parse(dr["TerminalID"].ToString()),
+                        NetSales = decimal.Parse(dr["NetSales"].ToString()),
+                        GrossSales = decimal.Parse(dr["GrossSales"].ToString()),
+                        TotalDiscount = decimal.Parse(dr["TotalDiscount"].ToString()),
+                        SNRDiscount = decimal.Parse(dr["SNRDiscount"].ToString()),
+                        PWDDiscount = decimal.Parse(dr["PWDDiscount"].ToString()),
+                        OtherDiscount = decimal.Parse(dr["OtherDiscount"].ToString()),
+                        DailySales = decimal.Parse(dr["DailySales"].ToString()),
+                        QuantitySold = decimal.Parse(dr["QuantitySold"].ToString()),
+                        GroupSales = decimal.Parse(dr["GroupSales"].ToString()),
+                        VAT = decimal.Parse(dr["VAT"].ToString()),
+                        EVAT = decimal.Parse(dr["EVAT"].ToString()),
+                        LocalTax = decimal.Parse(dr["LocalTax"].ToString()),
+                        CashSales = decimal.Parse(dr["CashSales"].ToString()),
+                        ChequeSales = decimal.Parse(dr["ChequeSales"].ToString()),
+                        CreditCardSales = decimal.Parse(dr["CreditCardSales"].ToString()),
+                        CreditSales = decimal.Parse(dr["CreditSales"].ToString()),
+                        CreditPayment = decimal.Parse(dr["CreditPayment"].ToString()),
+                        CashInDrawer = decimal.Parse(dr["CashInDrawer"].ToString()),
+                        TotalDisburse = decimal.Parse(dr["TotalDisburse"].ToString()),
+                        CashDisburse = decimal.Parse(dr["CashDisburse"].ToString()),
+                        ChequeDisburse = decimal.Parse(dr["ChequeDisburse"].ToString()),
+                        CreditCardDisburse = decimal.Parse(dr["CreditCardDisburse"].ToString()),
+                        TotalWithHold = decimal.Parse(dr["TotalWithhold"].ToString()),
+                        CashWithHold = decimal.Parse(dr["CashWithhold"].ToString()),
+                        ChequeWithHold = decimal.Parse(dr["ChequeWithhold"].ToString()),
+                        CreditCardWithHold = decimal.Parse(dr["CreditCardWithhold"].ToString()),
+                        TotalPaidOut = decimal.Parse(dr["TotalPaidOut"].ToString()),
+                        CashPaidOut = decimal.Parse(dr["CashPaidOut"].ToString()),
+                        ChequePaidOut = decimal.Parse(dr["ChequePaidOut"].ToString()),
+                        CreditCardPaidOut = decimal.Parse(dr["CreditCardPaidOut"].ToString()),
+                        BeginningBalance = decimal.Parse(dr["BeginningBalance"].ToString()),
+                        VoidSales = decimal.Parse(dr["VoidSales"].ToString()),
+                        RefundSales = decimal.Parse(dr["RefundSales"].ToString()),
+                        ItemsDiscount = decimal.Parse(dr["ItemsDiscount"].ToString()),
+                        SubTotalDiscount = decimal.Parse(dr["SubtotalDiscount"].ToString()),
+                        NoOfCashTransactions = Int32.Parse(dr["NoOfCashTransactions"].ToString()),
+                        NoOfChequeTransactions = Int32.Parse(dr["NoOfChequeTransactions"].ToString()),
+                        NoOfCreditCardTransactions = Int32.Parse(dr["NoOfCreditCardTransactions"].ToString()),
+                        NoOfCreditTransactions = Int32.Parse(dr["NoOfCreditTransactions"].ToString()),
+                        NoOfCombinationPaymentTransactions = Int32.Parse(dr["NoOfCombinationPaymentTransactions"].ToString()),
+                        NoOfCreditPaymentTransactions = Int32.Parse(dr["NoOfCreditPaymentTransactions"].ToString()),
+                        NoOfClosedTransactions = Int32.Parse(dr["NoOfClosedTransactions"].ToString()),
+                        NoOfRefundTransactions = Int32.Parse(dr["NoOfRefundTransactions"].ToString()),
+                        NoOfVoidTransactions = Int32.Parse(dr["NoOfVoidTransactions"].ToString()),
+                        NoOfTotalTransactions = Int32.Parse(dr["NoOfTotalTransactions"].ToString()),
+                        CashCount = decimal.Parse(dr["CashCount"].ToString()),
+                        LastLoginDate = DateTime.Parse(dr["LastLoginDate"].ToString()),
+                        TotalDeposit = decimal.Parse(dr["TotalDeposit"].ToString()),
+                        CashDeposit = decimal.Parse(dr["CashDeposit"].ToString()),
+                        ChequeDeposit = decimal.Parse(dr["ChequeDeposit"].ToString()),
+                        CreditCardDeposit = decimal.Parse(dr["CreditCardDeposit"].ToString()),
+                        DebitPayment = decimal.Parse(dr["DebitPayment"].ToString()),
+                        NoOfDebitPaymentTransactions = Int32.Parse(dr["NoOfDebitPaymentTransactions"].ToString()),
+                        TotalCharge = decimal.Parse(dr["TotalCharge"].ToString()),
+                        IsCashCountInitialized = bool.Parse(dr["IsCashCountInitialized"].ToString()),
+                        NoOfDiscountedTransactions = Int32.Parse(dr["NoOfDiscountedTransactions"].ToString()),
+                        NegativeAdjustments = decimal.Parse(dr["NegativeAdjustments"].ToString()),
+                        NoOfNegativeAdjustmentTransactions = Int32.Parse(dr["NoOfNegativeAdjustmentTransactions"].ToString()),
+                        PromotionalItems = decimal.Parse(dr["PromotionalItems"].ToString()),
+                        CreditSalesTax = decimal.Parse(dr["CreditSalesTax"].ToString()),
+                        DebitDeposit = decimal.Parse(dr["DebitDeposit"].ToString()),
+                        RewardPointsPayment = decimal.Parse(dr["RewardPointsPayment"].ToString()),
+                        RewardConvertedPayment = decimal.Parse(dr["RewardConvertedPayment"].ToString()),
+                        NoOfRewardPointsPayment = Int32.Parse(dr["NoOfRewardPointsPayment"].ToString()),
+                        CreditPaymentCash = decimal.Parse(dr["CreditPaymentCash"].ToString()),
+                        CreditPaymentCheque = decimal.Parse(dr["CreditPaymentCheque"].ToString()),
+                        CreditPaymentCreditCard = decimal.Parse(dr["CreditPaymentCreditCard"].ToString()),
+                        CreditPaymentDebit = decimal.Parse(dr["CreditPaymentDebit"].ToString()),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
+                }
+                #endregion
+
+                #region tblDeposit
+                strTableName = "tblDeposit";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                Deposits clsDeposit = new Deposits(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsDeposit.Save(new DepositDetails
+                    {
+                        BranchDetails = new BranchDetails
+                        {
+                            BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                            BranchCode = dr["BranchCode"].ToString()
+                        },
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        DepositID = Int64.Parse(dr["DepositID"].ToString()),
+                        Amount = decimal.Parse(dr["Amount"].ToString()),
+                        PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), dr["PaymentType"].ToString()),
+                        DateCreated = DateTime.Parse(dr["DateCreated"].ToString()),
+                        CashierID = Int64.Parse(dr["CashierID"].ToString()),
+                        ContactID = Int64.Parse(dr["ContactID"].ToString()),
+                        Remarks = dr["Remarks"].ToString(),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
+                }
+                #endregion
+
+                #region tblDisburse
+                strTableName = "tblDisburse";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                Disburses clsDisburse = new Disburses(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsDisburse.Save(new DisburseDetails
+                    {
+                        BranchDetails = new BranchDetails
+                        {
+                            BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                            BranchCode = dr["BranchCode"].ToString()
+                        },
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        DisburseID = Int64.Parse(dr["DisburseID"].ToString()),
+                        Amount = decimal.Parse(dr["Amount"].ToString()),
+                        PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), dr["PaymentType"].ToString()),
+                        DateCreated = DateTime.Parse(dr["DateCreated"].ToString()),
+                        CashierID = Int64.Parse(dr["CashierID"].ToString()),
+                        Remarks = dr["Remarks"].ToString(),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
+                }
+                #endregion
+
+                #region tblPaidOut
+                strTableName = "tblPaidOut";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                PaidOut clsPaidOut = new PaidOut(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsPaidOut.Save(new PaidOutDetails
+                    {
+                        BranchDetails = new BranchDetails
+                        {
+                            BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                            BranchCode = dr["BranchCode"].ToString()
+                        },
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        PaidOutID = Int64.Parse(dr["PaidOutID"].ToString()),
+                        Amount = decimal.Parse(dr["Amount"].ToString()),
+                        PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), dr["PaymentType"].ToString()),
+                        DateCreated = DateTime.Parse(dr["DateCreated"].ToString()),
+                        CashierID = Int64.Parse(dr["CashierID"].ToString()),
+                        Remarks = dr["Remarks"].ToString(),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
+                }
+                #endregion
+
+                #region tblWithhold
+                strTableName = "tblWithhold";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                Withhold clsWithHold = new Withhold(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsWithHold.Save(new WithholdDetails
+                    {
+                        BranchDetails = new BranchDetails
+                        {
+                            BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                            BranchCode = dr["BranchCode"].ToString()
+                        },
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        WithHoldID = Int64.Parse(dr["WithHoldID"].ToString()),
+                        Amount = decimal.Parse(dr["Amount"].ToString()),
+                        PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), dr["PaymentType"].ToString()),
+                        DateCreated = DateTime.Parse(dr["DateCreated"].ToString()),
+                        CashierID = Int64.Parse(dr["CashierID"].ToString()),
+                        Remarks = dr["Remarks"].ToString(),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
+                }
+                #endregion
+
+                #region tblCashPayment
+                strTableName = "tblCashPayment";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                CashPayments clsCashPayments = new CashPayments(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsCashPayments.Save(new CashPaymentDetails
+                    {
+                        BranchDetails = new BranchDetails
+                        {
+                            BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                        },
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        CashPaymentID = Int64.Parse(dr["CashPaymentID"].ToString()),
+                        TransactionID = Int64.Parse(dr["TransactionID"].ToString()),
+                        Amount = decimal.Parse(dr["Amount"].ToString()),
+                        Remarks = dr["Remarks"].ToString(),
+                        TransactionNo = dr["TransactionNo"].ToString(),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
+                }
+                #endregion
+
+                #region tblChequePayment
+                strTableName = "tblChequePayment";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                ChequePayments clsChequePayments = new ChequePayments(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsChequePayments.Save(new ChequePaymentDetails
+                    {
+                        BranchDetails = new BranchDetails
+                        {
+                            BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                        },
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        ChequePaymentID = Int64.Parse(dr["ChequePaymentID"].ToString()),
+                        TransactionID = Int64.Parse(dr["TransactionID"].ToString()),
+                        ChequeNo = dr["ChequeNo"].ToString(),
+                        Amount = decimal.Parse(dr["Amount"].ToString()),
+                        ValidityDate = DateTime.Parse(dr["ValidityDate"].ToString()),
+                        Remarks = dr["Remarks"].ToString(),
+                        TransactionNo = dr["TransactionNo"].ToString(),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
+                }
+                #endregion
+
+                #region tblCreditCardPayment
+                strTableName = "tblCreditCardPayment";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                CreditCardPayments clsCreditCardPayments = new CreditCardPayments(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsCreditCardPayments.Save(new CreditCardPaymentDetails
+                    {
+                        BranchDetails = new BranchDetails
+                        {
+                            BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                        },
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        CreditCardPaymentID = Int64.Parse(dr["CreditCardPaymentID"].ToString()),
+                        TransactionID = Int64.Parse(dr["TransactionID"].ToString()),
+                        Amount = decimal.Parse(dr["Amount"].ToString()),
+                        CardTypeID = Int16.Parse(dr["CardTypeID"].ToString()),
+                        CardTypeCode = dr["CardTypeCode"].ToString(),
+                        CardTypeName = dr["CardTypeName"].ToString(),
+                        CardNo = dr["CardNo"].ToString(),
+                        CardHolder = dr["CardHolder"].ToString(),
+                        ValidityDates = dr["ValidityDates"].ToString(),
+                        Remarks = dr["Remarks"].ToString(),
+                        TransactionNo = dr["TransactionNo"].ToString(),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
+                }
+                #endregion
+
+                #region tblCashCount
+                strTableName = "tblCashCount";
+                dtMaster = clsMasterDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                dtLocal = clsLocalDB.ListAsDataTable(strTableName, dteStartSyncDateTime, dteEndSyncDateTime);
+                CashCounts clsCashCounts = new CashCounts(clsMasterConnection.Connection, clsMasterConnection.Transaction);
+
+                // update all records that are changed [inserted/updated]
+                foreach (DataRow dr in dtLocal.Rows)
+                {
+                    //DataRow[] drx = dtLocal.Select("Configname = '" + dr["ConfigName"].ToString() + "' ");
+                    if (!DateTime.TryParse(dr["CreatedOn"].ToString(), out dteCreatedOn)) dteCreatedOn = Constants.C_DATE_MIN_VALUE;
+                    if (!DateTime.TryParse(dr["LastModified"].ToString(), out dteLastModified)) dteLastModified = Constants.C_DATE_MIN_VALUE;
+
+                    clsCashCounts.Save(new CashCountDetails
+                    {
+                        BranchDetails = new BranchDetails
+                        {
+                            BranchID = Int32.Parse(dr["BranchID"].ToString()),
+                            BranchCode = dr["BranchCode"].ToString(),
+                        },
+                        TerminalNo = dr["TerminalNo"].ToString(),
+                        SyncID = Int64.Parse(dr["SyncID"].ToString()),
+                        CashCountID = Int64.Parse(dr["CashCountID"].ToString()),
+                        CashierID = Int64.Parse(dr["CashierID"].ToString()),
+                        CashierName = dr["CashierName"].ToString(),
+                        DateCreated = DateTime.Parse(dr["DateCreated"].ToString()),
+                        DenominationDetails = new DenominationDetails {
+                            DenominationID = Int32.Parse(dr["DenominationID"].ToString()),
+                            DenominationValue = decimal.Parse(dr["DenominationValue"].ToString())
+                        },
+                        DenominationValue = decimal.Parse(dr["DenominationValue"].ToString()),
+                        DenominationCount = Int32.Parse(dr["DenominationCount"].ToString()),
+                        DenominationAmount = decimal.Parse(dr["DenominationAmount"].ToString()),
+                        CreatedOn = dteCreatedOn,
+                        LastModified = dteLastModified
+                    });
                 }
                 #endregion
 

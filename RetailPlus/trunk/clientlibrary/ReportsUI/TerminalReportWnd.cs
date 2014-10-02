@@ -52,13 +52,6 @@ namespace AceSoft.RetailPlus.Client.UI
             { mCashierName = value; }
         }
 
-        private decimal mTrustFund;    
-        public decimal TrustFund
-        {
-            set
-            { mTrustFund = value; }
-        }
-
         private Data.SysConfigDetails mclsSysConfigDetails;
         public Data.SysConfigDetails SysConfigDetails
         {
@@ -438,52 +431,52 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("Beginning OR No.", ":", mclsDetails.BeginningORNo);
             dt.Rows.Add("Ending OR No.", ":", mclsDetails.EndingORNo);
             dt.Rows.Add("", "", "");
-            dt.Rows.Add("Gross Sales",":", (mclsDetails.GrossSales + mclsDetails.TotalCharge).ToString("#,##0.#0"));
+            dt.Rows.Add("Gross Sales", ":", ((mclsDetails.GrossSales + mclsDetails.TotalCharge) * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
             dt.Rows.Add("(-) Service Charge", ":", mclsDetails.TotalCharge.ToString("#,##0.#0"));
             dt.Rows.Add("",":","------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
-            dt.Rows.Add("Total Amount", ":", mclsDetails.GrossSales.ToString("#,##0.#0"));
-            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", (mclsDetails.VATExempt * (mclsTerminalDetails.VAT / 100)).ToString("#,##0.#0"));
+            dt.Rows.Add("Total Amount", ":", (mclsDetails.GrossSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
+            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", (mclsDetails.VATExempt * (mclsTerminalDetails.VAT / 100) * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
             dt.Rows.Add("(-) Subtotal Discount", ":", mclsDetails.SubTotalDiscount.ToString("#,##0.#0"));
             dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
-            dt.Rows.Add("Net Sales", ":", mclsDetails.NetSales.ToString("#,##0.#0"));
+            dt.Rows.Add("Net Sales", ":", (mclsDetails.NetSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
             
             dt.Rows.Add("-", "-", "-");
-            dt.Rows.Add("OLD GRAND TOTAL", ":", (mclsDetails.OldGrandTotal - (mclsDetails.OldGrandTotal * (mTrustFund / 100))).ToString("#,##0.#0"));
-            dt.Rows.Add("This Total Amount", ":", mclsDetails.GrossSales.ToString("#,##0.#0"));
+            dt.Rows.Add("OLD GRAND TOTAL", ":", (mclsDetails.OldGrandTotal).ToString("#,##0.#0"));
+            dt.Rows.Add("This Total Amount", ":", (mclsDetails.GrossSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
             dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
-            dt.Rows.Add("NEW GRAND TOTAL", ":", (mclsDetails.OldGrandTotal - (mclsDetails.OldGrandTotal * (mTrustFund / 100)) + mclsDetails.GrossSales).ToString("#,##0.#0"));
+            dt.Rows.Add("NEW GRAND TOTAL", ":", (mclsDetails.OldGrandTotal + (mclsDetails.GrossSales * ((100 - mclsDetails.TrustFund) / 100))).ToString("#,##0.#0"));
 
             dt.Rows.Add("Taxables Breakdown", "", "");
-            dt.Rows.Add("VAT Exempt", ":", mclsDetails.VATExempt.ToString("#,##0.00"));
-            dt.Rows.Add("VAT Zero Rated", ":", mclsDetails.VATZeroRated.ToString("#,##0.00"));
-            dt.Rows.Add("NonVATable Amount", ":", mclsDetails.NonVATableAmount.ToString("#,##0.00"));
-            dt.Rows.Add("VATable Amount", ":", mclsDetails.VATableAmount.ToString("#,##0.00"));
-            dt.Rows.Add(mclsTerminalDetails.VAT.ToString("##") + "% VAT", ":", mclsDetails.VATableAmount.ToString("#,##0.00"));
-            dt.Rows.Add("Local Tax", ":", mclsDetails.LocalTax.ToString("#,##0.00"));
+            dt.Rows.Add("VAT Exempt", ":", (mclsDetails.VATExempt * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("VAT Zero Rated", ":", (mclsDetails.VATZeroRated * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("NonVATable Amount", ":", (mclsDetails.NonVATableAmount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("VATable Amount", ":", (mclsDetails.VATableAmount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add(mclsTerminalDetails.VAT.ToString("##") + "% VAT", ":", (mclsDetails.VATableAmount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Local Tax", ":", (mclsDetails.LocalTax * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
 
             dt.Rows.Add("Total Amount Breakdown", "", "");
-            dt.Rows.Add("Cash Sales", ":", mclsDetails.CashSales.ToString("#,##0.00"));
-            dt.Rows.Add("Cheque Sales", ":", mclsDetails.ChequeSales.ToString("#,##0.00"));
-            dt.Rows.Add("Credit Card Sales", ":", mclsDetails.CreditCardSales.ToString("#,##0.00"));
-            dt.Rows.Add("Credit (Charge)", ":", mclsDetails.CreditSales.ToString("#,##0.00"));
-            dt.Rows.Add("Credit Payment", ":", mclsDetails.CreditPayment.ToString("#,##0.00"));
-            dt.Rows.Add("      Cash", ":", mclsDetails.CreditPaymentCash.ToString("#,##0.00"));
-            dt.Rows.Add("      Cheque", ":", mclsDetails.CreditPaymentCheque.ToString("#,##0.00"));
-            dt.Rows.Add("      Credit Card", ":", mclsDetails.CreditPaymentCreditCard.ToString("#,##0.00"));
-            dt.Rows.Add("      Debit", ":", mclsDetails.CreditPaymentDebit.ToString("#,##0.00"));
-            dt.Rows.Add("Debit Sales", ":", mclsDetails.DebitPayment.ToString("#,##0.00"));
-            dt.Rows.Add("     Rewards Points Redeemed", ":", mclsDetails.RewardPointsPayment.ToString("#,##0.00"));
+            dt.Rows.Add("Cash Sales", ":", (mclsDetails.CashSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Cheque Sales", ":", (mclsDetails.ChequeSales* ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Credit Card Sales", ":", (mclsDetails.CreditCardSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Credit (Charge)", ":", (mclsDetails.CreditSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Credit Payment", ":", (mclsDetails.CreditPayment * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("      Cash", ":", (mclsDetails.CreditPaymentCash * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("      Cheque", ":", (mclsDetails.CreditPaymentCheque * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("      Credit Card", ":", (mclsDetails.CreditPaymentCreditCard * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("      Debit", ":", (mclsDetails.CreditPaymentDebit * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Debit Sales", ":", (mclsDetails.DebitPayment * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("     Rewards Points Redeemed", ":", (mclsDetails.RewardPointsPayment * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("Employee Acct.", ":", "0.00");
-            dt.Rows.Add("Void Sales", ":", mclsDetails.VoidSales.ToString("#,##0.00"));
-            dt.Rows.Add("Refund Sales", ":", mclsDetails.RefundSales.ToString("#,##0.00"));
+            dt.Rows.Add("Void Sales", ":", (mclsDetails.VoidSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Refund Sales", ":", (mclsDetails.RefundSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
 
             dt.Rows.Add("Discounts", "", "");
-            dt.Rows.Add("Items Discount", ":", mclsDetails.ItemsDiscount.ToString("#,##0.00"));
-            dt.Rows.Add("Subtotal Discount", ":", mclsDetails.SubTotalDiscount.ToString("#,##0.00"));
-            dt.Rows.Add("     Senior Citizen", ":", mclsDetails.SNRDiscount.ToString("#,##0.00"));
-            dt.Rows.Add("     PWD", ":", mclsDetails.PWDDiscount.ToString("#,##0.00"));
-            dt.Rows.Add("     Others", ":", mclsDetails.OtherDiscount.ToString("#,##0.00"));
-            dt.Rows.Add("Total Discounts", ":", mclsDetails.TotalDiscount.ToString("#,##0.00"));
+            dt.Rows.Add("Items Discount", ":", (mclsDetails.ItemsDiscount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Subtotal Discount", ":", (mclsDetails.SubTotalDiscount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("     Senior Citizen", ":", (mclsDetails.SNRDiscount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("     PWD", ":", (mclsDetails.PWDDiscount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("     Others", ":", (mclsDetails.OtherDiscount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Total Discounts", ":", (mclsDetails.TotalDiscount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
 
             Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(clsReceipt.Connection, clsReceipt.Transaction);
 
@@ -495,37 +488,37 @@ namespace AceSoft.RetailPlus.Client.UI
                 dt.Rows.Add("-", "-", "-");
                 foreach (System.Data.DataRow dr in dtDiscounts.Rows)
                 {
-                    dt.Rows.Add(dr["DiscountCode"].ToString(), ":", decimal.Parse(dr["Discount"].ToString()).ToString("#,##0.00"));
+                    dt.Rows.Add(dr["DiscountCode"].ToString(), ":", (decimal.Parse(dr["Discount"].ToString()) * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
                 }
             }
 
             dt.Rows.Add("-", "-", "-");
             dt.Rows.Add("Drawer Information", "", "");
             dt.Rows.Add("-", "-", "-");
-            dt.Rows.Add("Beginning Balance", ":", mclsDetails.BeginningBalance.ToString("#,##0.00"));
-            dt.Rows.Add("Cash In Drawer", ":", mclsDetails.CashInDrawer.ToString("#,##0.00"));
+            dt.Rows.Add("Beginning Balance", ":", (mclsDetails.BeginningBalance * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Cash In Drawer", ":", (mclsDetails.CashInDrawer * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("-", "-", "-");
             dt.Rows.Add("Paid Out", "", "");
             dt.Rows.Add("-", "-", "-");
-            dt.Rows.Add("Paid Out", ":", mclsDetails.TotalPaidOut.ToString("#,##0.00"));
+            dt.Rows.Add("Paid Out", ":", (mclsDetails.TotalPaidOut * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("-", "-", "-");
             dt.Rows.Add("PICK UP / Disburstment", "", "");
             dt.Rows.Add("-", "-", "-");
-            dt.Rows.Add("Cash", ":", mclsDetails.CashDisburse.ToString("#,##0.00"));
-            dt.Rows.Add("Cheque", ":", mclsDetails.ChequeDisburse.ToString("#,##0.00"));
-            dt.Rows.Add("Credit Card", ":", mclsDetails.CreditCardDisburse.ToString("#,##0.00"));
+            dt.Rows.Add("Cash", ":", (mclsDetails.CashDisburse * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Cheque", ":", (mclsDetails.ChequeDisburse * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Credit Card", ":", (mclsDetails.CreditCardDisburse * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("-", "-", "-");
             dt.Rows.Add("Receive on Account", "", "");
             dt.Rows.Add("-", "-", "-");
-            dt.Rows.Add("Cash", ":", mclsDetails.CashWithHold.ToString("#,##0.00"));
-            dt.Rows.Add("Cheque", ":", mclsDetails.ChequeWithHold.ToString("#,##0.00"));
-            dt.Rows.Add("Credit Card", ":", mclsDetails.CreditCardWithHold.ToString("#,##0.00"));
+            dt.Rows.Add("Cash", ":", (mclsDetails.CashWithHold * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Cheque", ":", (mclsDetails.ChequeWithHold * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Credit Card", ":", (mclsDetails.CreditCardWithHold * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("-", "-", "-");
             dt.Rows.Add("Customer Deposits", "", "");
             dt.Rows.Add("-", "-", "-");
-            dt.Rows.Add("Cash", ":", mclsDetails.CashDeposit.ToString("#,##0.00"));
-            dt.Rows.Add("Cheque", ":", mclsDetails.ChequeDeposit.ToString("#,##0.00"));
-            dt.Rows.Add("Credit Card", ":", mclsDetails.CreditCardDeposit.ToString("#,##0.00"));
+            dt.Rows.Add("Cash", ":", (mclsDetails.CashDeposit * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Cheque", ":", (mclsDetails.ChequeDeposit * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("Credit Card", ":", (mclsDetails.CreditCardDeposit * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("-", "-", "-");
             dt.Rows.Add("Transaction Count Breakdown", "", "");
             dt.Rows.Add("-", "-", "-");

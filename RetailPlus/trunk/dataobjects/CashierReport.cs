@@ -30,6 +30,7 @@ namespace AceSoft.RetailPlus.Data
         public decimal OtherDiscount;
 		public decimal TotalCharge;
 		public decimal DailySales;
+        public decimal ItemSold;
 		public decimal QuantitySold;
 		public decimal GroupSales;
         public decimal VATExempt;
@@ -139,10 +140,13 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Details
 
-		public CashierReportDetails Details(Int64 CashierID, int BranchID, string TerminalNo)
+		public CashierReportDetails Details(Int64 CashierID, Int32 BranchID, string TerminalNo)
 		{
 			try
 			{
+                // Sep 22, 2014 update the figure using synchorize
+                new TerminalReport(base.Connection, base.Transaction).SyncTransactionSales(BranchID, TerminalNo);
+
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
@@ -158,9 +162,14 @@ namespace AceSoft.RetailPlus.Data
                                 "OtherDiscount, " +
 								"TotalCharge, " +
 								"DailySales, " +
+                                "ItemSold, " +
 								"QuantitySold, " +
 								"GroupSales, " +
-								"VAT, " +
+								"VATExempt, " +
+                                "ZeroRatedVAT, " +
+                                "NonVATableAmount, " +
+                                "VAT, " +
+                                "VATableAmount, " +
 								"EVAT, " +
 								"LocalTax, " +
 								"CashSales, " +
@@ -227,7 +236,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public CashierReportDetails SetDetails(System.Data.DataTable dt)
+        public static CashierReportDetails SetDetails(System.Data.DataTable dt)
         {
             CashierReportDetails Details = new CashierReportDetails();
 
@@ -244,9 +253,14 @@ namespace AceSoft.RetailPlus.Data
                 Details.OtherDiscount = decimal.Parse(dr["OtherDiscount"].ToString());
                 Details.TotalCharge = decimal.Parse(dr["TotalCharge"].ToString());
                 Details.DailySales = decimal.Parse(dr["DailySales"].ToString());
+                Details.ItemSold = decimal.Parse(dr["ItemSold"].ToString());
                 Details.QuantitySold = decimal.Parse(dr["QuantitySold"].ToString());
                 Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
+                Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
+                Details.VATZeroRated = decimal.Parse(dr["ZeroRatedVAT"].ToString());
+                Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
                 Details.VAT = decimal.Parse(dr["VAT"].ToString());
+                Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());
                 Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
                 Details.CashSales = decimal.Parse(dr["CashSales"].ToString());
                 Details.ChequeSales = decimal.Parse(dr["ChequeSales"].ToString());
@@ -318,7 +332,11 @@ namespace AceSoft.RetailPlus.Data
                                 "TerminalID, " +
                                 "TerminalNo, " +
 						        "CashierID, " +
-						        "LastLoginDate " +
+						        "LastLoginDate, " +
+                                "BeginningTransactionNo, " +
+                                "EndingTransactionNo, " +
+                                "BeginningORNo, " +
+                                "EndingORNo " +
 						    " ) VALUES ( " + 
 						        "@CashInDrawer, " +
 						        "@BeginningBalance, " +
@@ -326,7 +344,11 @@ namespace AceSoft.RetailPlus.Data
                                 "(SELECT TerminalID FROM tblTerminal WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo), " +
 						        "@TerminalNo, " +
 						        "@CashierID, " +
-						        "@LastLoginDate " +
+						        "@LastLoginDate, " +
+                                "(SELECT BeginningTransactionNo FROM tblTerminalReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo), " +
+                                "'', " +
+                                "(SELECT BeginningORNo FROM tblTerminalReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo), " +
+                                "'' " +
 						    ");";
 				}
 				else
@@ -382,6 +404,7 @@ namespace AceSoft.RetailPlus.Data
                                     "@OtherDiscount, " +
                                     "@TotalCharge, " +
                                     "@DailySales, " +
+                                    "@ItemSold, " +
                                     "@QuantitySold, " +
                                     "@GroupSales, " +
                                     "@VATExempt, " +
@@ -435,6 +458,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("OtherDiscount", Details.OtherDiscount);
                 cmd.Parameters.AddWithValue("TotalCharge", Details.TotalCharge);
                 cmd.Parameters.AddWithValue("DailySales", Details.DailySales);
+                cmd.Parameters.AddWithValue("ItemSold", Details.ItemSold);
                 cmd.Parameters.AddWithValue("QuantitySold", Details.QuantitySold);
                 cmd.Parameters.AddWithValue("GroupSales", Details.GroupSales);
                 
@@ -760,7 +784,7 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = "CALL procSaveCashierReport(@BranchID, @TerminalNo, @SyncID, @CashierReportID, @CashierID, @TerminalID, @NetSales, @GrossSales, " +
                                         "@TotalDiscount, @SNRDiscount, @PWDDiscount, @OtherDiscount, @DailySales," +
-                                        "@QuantitySold, @GroupSales, @VAT, @EVAT, @LocalTax, @CashSales, @ChequeSales, @CreditCardSales," +
+                                        "@ItemSold, @QuantitySold, @GroupSales, @VAT, @EVAT, @LocalTax, @CashSales, @ChequeSales, @CreditCardSales," +
                                         "@CreditSales, @CreditPayment, @CashInDrawer, @TotalDisburse, @CashDisburse, @ChequeDisburse," +
                                         "@CreditCardDisburse, @TotalWithhold, @CashWithhold, @ChequeWithhold, @CreditCardWithhold," +
                                         "@TotalPaidOut, @CashPaidOut, @ChequePaidOut, @CreditCardPaidOut, @BeginningBalance," +
@@ -788,6 +812,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("PWDDiscount", Details.PWDDiscount);
                 cmd.Parameters.AddWithValue("OtherDiscount", Details.OtherDiscount);
                 cmd.Parameters.AddWithValue("DailySales", Details.DailySales);
+                cmd.Parameters.AddWithValue("ItemSold", Details.ItemSold);
                 cmd.Parameters.AddWithValue("QuantitySold", Details.QuantitySold);
                 cmd.Parameters.AddWithValue("GroupSales", Details.GroupSales);
                 cmd.Parameters.AddWithValue("VAT", Details.VAT);
@@ -1060,8 +1085,8 @@ namespace AceSoft.RetailPlus.Data
                                     "a.ProductID, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) AS ProductCode, OrderSlipPrinter, ProductGroup, " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Quantity, a.Quantity))) 'Quantity', " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Amount, a.Amount))) 'Amount' " +
-                                    "FROM tblTransactionItems a " +
-                                    "INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID " +
+                                "FROM tblTransactionItems a " +
+                                "INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID " +
                                 "WHERE BranchID = @BranchID " +
                                     "AND TerminalNo = @TerminalNo " +
                                     "AND CashierName = @CashierName " +
@@ -1078,8 +1103,8 @@ namespace AceSoft.RetailPlus.Data
                                     "0 AS ProductID, '' AS ProductCode, ProductGroup, OrderSlipPrinter, " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Quantity, a.Quantity))) 'Quantity', " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Amount, a.Amount))) 'Amount' " +
-                                    "FROM tblTransactionItems a " +
-                                    "INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID " +
+                                "FROM tblTransactionItems a " +
+                                "INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID " +
                                 "WHERE BranchID = @BranchID " +
                                     "AND TerminalNo = @TerminalNo " +
                                     "AND CashierName = @CashierName " +

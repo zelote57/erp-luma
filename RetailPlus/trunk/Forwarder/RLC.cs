@@ -78,7 +78,7 @@ namespace AceSoft.RetailPlus.Forwarder
                 decimal decDiscountNetOfSeniorCitizen = pvtTerminalReportDetails.TotalDiscount - decSeniorCitizenDiscount - decPWDDiscount;
                 decimal deCreditCardSalesTax = pvtTerminalReportDetails.CreditCardSales / Convert.ToDecimal(1.12) * Convert.ToDecimal(0.12);
 
-                decimal decVAT = (decGrossSales - decSeniorCitizenDiscount - pvtTerminalReportDetails.NonVaTableAmount - decPWDDiscount) / Convert.ToDecimal(1.12) * Convert.ToDecimal(0.12); //decGrossSales
+                decimal decVAT = (decGrossSales - decSeniorCitizenDiscount - pvtTerminalReportDetails.NonVATableAmount - decPWDDiscount) / Convert.ToDecimal(1.12) * Convert.ToDecimal(0.12); //decGrossSales
 
                 writer = File.AppendText(stDailyTableName);
                 writer.WriteLine("01{0}", mclsRLCDetails.TenantCode.PadLeft(16, '0'));
@@ -107,7 +107,7 @@ namespace AceSoft.RetailPlus.Forwarder
                 writer.WriteLine("21{0}", pvtTerminalReportDetails.LocalTax.ToString("####.#0").PadLeft(16, '0'));
                 writer.WriteLine("22{0}", pvtTerminalReportDetails.CreditCardSales.ToString("####.#0").PadLeft(16, '0'));
                 writer.WriteLine("23{0}", deCreditCardSalesTax.ToString("####.#0").PadLeft(16, '0'));
-                writer.WriteLine("24{0}", pvtTerminalReportDetails.NonVaTableAmount.ToString("####.#0").PadLeft(16, '0'));
+                writer.WriteLine("24{0}", pvtTerminalReportDetails.NonVATableAmount.ToString("####.#0").PadLeft(16, '0'));
                 //08Jan2014 added as per new requirement
                 writer.WriteLine("25{0}", "0.00".PadLeft(16, '0'));         // Pharma Sales
                 writer.WriteLine("26{0}", "0.00".PadLeft(16, '0'));                                                 // Non Pharma Sales
@@ -130,7 +130,7 @@ namespace AceSoft.RetailPlus.Forwarder
 
         #endregion
 
-        public bool CreateAndTransferFile(DateTime pvtDateInitialized)
+        public bool CreateAndTransferFile(Int32 BranchID, string TerminalNo, DateTime pvtDateInitialized)
         {
             bool bolRetValue = false;
 
@@ -167,15 +167,15 @@ namespace AceSoft.RetailPlus.Forwarder
                  * GET The report of Current Terminal using Specified InitializationDate
                  * ********************************************************************/
                 Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory();
-                Data.TerminalReportDetails clsTerminalReportDetail = clsTerminalReportHistory.Details(CompanyDetails.TerminalNo, dteDateToprocess);
+                Data.TerminalReportDetails clsTerminalReportDetail = clsTerminalReportHistory.Details(BranchID, TerminalNo, dteDateToprocess);
 
                 Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(clsTerminalReportHistory.Connection, clsTerminalReportHistory.Transaction);
 
                 long lngSeniorCitizenDiscountCount = 0;
-                decimal decSeniorCitizenDiscount = clsSalesTransactions.SeniorCitizenDiscounts(clsTerminalReportDetail.TerminalNo, clsTerminalReportDetail.BeginningTransactionNo, clsTerminalReportDetail.EndingTransactionNo, out lngSeniorCitizenDiscountCount);
+                decimal decSeniorCitizenDiscount = clsSalesTransactions.SeniorCitizenDiscounts(clsTerminalReportDetail.BranchID, clsTerminalReportDetail.TerminalNo, clsTerminalReportDetail.BeginningTransactionNo, clsTerminalReportDetail.EndingTransactionNo, out lngSeniorCitizenDiscountCount);
 
                 long lngPWDDiscountCount = 0;
-                decimal decPWDDiscount = clsSalesTransactions.PersonWithDisabilityDiscounts(clsTerminalReportDetail.TerminalNo, clsTerminalReportDetail.BeginningTransactionNo, clsTerminalReportDetail.EndingTransactionNo, out lngPWDDiscountCount);
+                decimal decPWDDiscount = clsSalesTransactions.PersonWithDisabilityDiscounts(clsTerminalReportDetail.BranchID, clsTerminalReportDetail.TerminalNo, clsTerminalReportDetail.BeginningTransactionNo, clsTerminalReportDetail.EndingTransactionNo, out lngPWDDiscountCount);
 
                 string stDailyTableName = CreateDailySales(dteDateToprocess, clsTerminalReportDetail, decSeniorCitizenDiscount, lngSeniorCitizenDiscountCount, decPWDDiscount, lngPWDDiscountCount);
 

@@ -30,7 +30,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataObjects Accounts", "Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataObjects", "dataobjects\DataObjects.csproj", "{75D37B92-76F5-4C25-AF1A-394619DE4835}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientLibrary", "clientlibrary\ClientLibrary.csproj", "{E7C7F8AC-A57A-47A4-84CD-A0DDB2FD9C53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailPlusClientLibrary", "clientlibrary\RetailPlusClientLibrary.csproj", "{E7C7F8AC-A57A-47A4-84CD-A0DDB2FD9C53}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceSoft", "logistics\AceSoft.csproj", "{A800354C-F064-4836-9178-1DC7B752822E}"
 EndProject

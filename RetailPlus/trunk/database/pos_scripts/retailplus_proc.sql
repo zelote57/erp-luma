@@ -235,6 +235,371 @@ END;
 GO
 delimiter ;
 
+
+/********************************************
+	procCashierReportSyncTransactionSales
+
+	CALL procCashierReportSyncTransactionSales( 1, '01', '00000000931189', '00000000931193');
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procCashierReportSyncTransactionSales
+GO
+
+create procedure procCashierReportSyncTransactionSales(
+	IN intBranchID int(4), 
+	IN strTerminalNo varchar(10),
+	IN strBeginningTransactionNo varchar(30),
+	IN strEndingTransactionNo varchar(30)
+)
+BEGIN
+	
+	UPDATE tblCashierReport, 
+		(
+			select BranchID, TerminalNo, CashierID,
+					SUM(CASE TransactionStatus 
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+						END) NetSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Subtotal
+						END) SubTotal, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Discount
+						END) Discount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
+						END) ItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
+						END) SNRDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDDiscount
+						END) PWDDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherDiscount
+						END) OtherDiscount,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Charge
+						END) TotalCharge, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+						END) DailySales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemSold
+						END) ItemSold,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE QuantitySold
+						END) QuantitySold,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATExempt
+						END) VATExempt, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonVATableAmount
+						END) NonVATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
+						END) VATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
+						END) VAT, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVATableAmount
+						END) EVATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonEVATableAmount
+						END) NonEVATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVAT
+						END) EVAT, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
+						END) LocalTax,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CashPayment
+						END) CashSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ChequePayment
+						END) ChequeSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditCardPayment
+						END) CreditCardSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditPayment
+						END) CreditSales, -- creditpayment for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE DebitPayment
+						END) DebitPayment, -- debit for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN CashPayment + ChequePayment + CreditCardPayment + DebitPayment ELSE 0
+						END) CreditPayment,
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN CashPayment ELSE 0
+						END) CreditPaymentCash, 
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN ChequePayment ELSE 0
+						END) CreditPaymentCheque, 
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN CreditCardPayment ELSE 0
+						END) CreditPaymentCreditCard, 
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN DebitPayment ELSE 0
+						END) CreditPaymentDebit, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardPointsPayment
+						END) RewardPointsPayment,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardConvertedPayment
+						END) RewardConvertedPayment,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN Subtotal ELSE 0
+						END) VoidSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN Subtotal ELSE 0
+						END) RefundSales
+			FROM  tblTransactions
+					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+					AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+			GROUP BY BranchID, TerminalNo, CashierID
+		) Trx
+	SET					
+						tblCashierReport.NetSales							=  Trx.NetSales, 
+						tblCashierReport.GrossSales							=  Trx.SubTotal, 
+						tblCashierReport.TotalDiscount						=  Trx.Discount + Trx.ItemsDiscount, 
+						tblCashierReport.SNRDiscount					  	=  Trx.SNRDiscount, 
+						tblCashierReport.PWDDiscount					  	=  Trx.PWDDiscount, 
+						tblCashierReport.OtherDiscount					  	=  Trx.OtherDiscount,
+						tblCashierReport.TotalCharge						=  Trx.TotalCharge, 
+						tblCashierReport.DailySales							=  Trx.DailySales, 
+						tblCashierReport.ItemSold							=  Trx.ItemSold, 
+						tblCashierReport.QuantitySold						=  Trx.QuantitySold, 
+						tblCashierReport.GroupSales							=  Trx.SubTotal, 
+						tblCashierReport.VATExempt   						=  Trx.VATExempt, 
+						tblCashierReport.NonVATableAmount					=  Trx.NonVATableAmount, 
+						tblCashierReport.VATableAmount						=  Trx.VATableAmount, 
+						tblCashierReport.VAT								=  Trx.VAT, 
+						tblCashierReport.EVATableAmount						=  Trx.EVATableAmount, 
+						tblCashierReport.NonEVATableAmount					=  Trx.NonEVATableAmount, 
+						tblCashierReport.EVAT								=  Trx.EVAT, 
+						tblCashierReport.LocalTax							=  Trx.LocalTax, 
+						tblCashierReport.CashSales							=  Trx.CashSales, 
+						tblCashierReport.ChequeSales						=  Trx.ChequeSales, 
+						tblCashierReport.CreditCardSales					=  Trx.CreditCardSales, 
+						tblCashierReport.CreditSales						=  Trx.CreditSales, 
+						tblCashierReport.DebitPayment						=  Trx.DebitPayment, 
+						tblCashierReport.CreditPayment						=  Trx.CreditPayment, 
+						tblCashierReport.CreditPaymentCash					=  Trx.CreditPaymentCash, 
+						tblCashierReport.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
+						tblCashierReport.CreditPaymentCreditCard			=  Trx.CreditPaymentCreditCard, 
+						tblCashierReport.CreditPaymentDebit					=  Trx.CreditPaymentDebit, 
+					
+						tblCashierReport.RewardPointsPayment				=  Trx.RewardPointsPayment,
+						tblCashierReport.RewardConvertedPayment				=  Trx.RewardConvertedPayment,
+						tblCashierReport.CashInDrawer						=  Trx.CashSales + tblCashierReport.BeginningBalance + tblCashierReport.TotalWithHold + tblCashierReport.TotalDeposit - tblCashierReport.TotalPaidOut - tblCashierReport.TotalDisburse, 
+						tblCashierReport.VoidSales							=  Trx.VoidSales, 
+						tblCashierReport.RefundSales						=  Trx.RefundSales, 
+						tblCashierReport.ItemsDiscount						=  Trx.ItemsDiscount, 
+						tblCashierReport.SubTotalDiscount					=  Trx.Discount,
+						tblCashierReport.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
+	WHERE tblCashierReport.BranchID = Trx.BranchID AND tblCashierReport.TerminalNo = Trx.TerminalNo AND tblCashierReport.CashierID = Trx.CashierID
+		AND tblCashierReport.BranchID = intBranchID AND tblCashierReport.TerminalNo = strTerminalNo
+		AND tblCashierReport.BeginningTransactionNo = strBeginningTransactionNo;
+	
+END;
+GO
+delimiter ;
+
+/********************************************
+	procTerminalReportSyncTransactionSales
+
+	CALL procTerminalReportSyncTransactionSales( 1, '01');
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procTerminalReportSyncTransactionSales
+GO
+
+create procedure procTerminalReportSyncTransactionSales(
+	IN intBranchID int(4), 
+	IN strTerminalNo varchar(10)
+)
+BEGIN
+	DECLARE strBeginningTransactionNo, strEndingTransactionNo VARCHAR(30);
+	DECLARE boIsProcessed TINYINT(1) DEFAULT 0;
+	
+	SET boIsProcessed = (SELECT IsProcessed FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+
+	IF (boIsProcessed = 0) THEN
+		
+		SET strBeginningTransactionNo = (SELECT BeginningTransactionNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		SET strEndingTransactionNo = (SELECT CASE 
+												WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
+												ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), '0') 
+											 END EndingTransactionNo  
+									  FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+
+		CALL procCashierReportSyncTransactionSales(intBranchID, strTerminalNo, strBeginningTransactionNo, strEndingTransactionNo);
+
+		UPDATE tblTerminalReport, 
+			(
+				select BranchID, TerminalNo, 
+						SUM(CASE TransactionStatus 
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+							END) NetSales, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Subtotal
+							END) SubTotal, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Discount
+							END) Discount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
+							END) ItemsDiscount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
+							END) SNRDiscount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDDiscount
+							END) PWDDiscount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherDiscount
+							END) OtherDiscount,
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Charge
+							END) TotalCharge, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+							END) DailySales, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemSold
+							END) ItemSold,
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE QuantitySold
+							END) QuantitySold,
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATExempt
+							END) VATExempt, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonVATableAmount
+							END) NonVATableAmount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
+							END) VATableAmount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
+							END) VAT, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVATableAmount
+							END) EVATableAmount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonEVATableAmount
+							END) NonEVATableAmount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVAT
+							END) EVAT, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
+							END) LocalTax,
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CashPayment
+							END) CashSales, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ChequePayment
+							END) ChequeSales, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditCardPayment
+							END) CreditCardSales, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditPayment
+							END) CreditSales, -- creditpayment for normal transactions
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE DebitPayment
+							END) DebitPayment, -- debit for normal transactions
+						SUM(CASE TransactionStatus
+								WHEN 7 THEN CashPayment + ChequePayment + CreditCardPayment + DebitPayment ELSE 0
+							END) CreditPayment,
+						SUM(CASE TransactionStatus
+								WHEN 7 THEN CashPayment ELSE 0
+							END) CreditPaymentCash, 
+						SUM(CASE TransactionStatus
+								WHEN 7 THEN ChequePayment ELSE 0
+							END) CreditPaymentCheque, 
+						SUM(CASE TransactionStatus
+								WHEN 7 THEN CreditCardPayment ELSE 0
+							END) CreditPaymentCreditCard, 
+						SUM(CASE TransactionStatus
+								WHEN 7 THEN DebitPayment ELSE 0
+							END) CreditPaymentDebit, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardPointsPayment
+							END) RewardPointsPayment,
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardConvertedPayment
+							END) RewardConvertedPayment,
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN Subtotal ELSE 0
+							END) VoidSales, 
+						SUM(CASE TransactionStatus
+								WHEN 5 THEN Subtotal ELSE 0
+							END) RefundSales
+				FROM  tblTransactions
+						WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+						AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+				GROUP BY BranchID, TerminalNo
+			) Trx
+		SET					
+							tblTerminalReport.ActualNewGrandTotal				=  tblTerminalReport.ActualOldGrandTotal + Trx.SubTotal,
+							tblTerminalReport.NewGrandTotal						=  tblTerminalReport.OldGrandTotal + Trx.SubTotal,
+							tblTerminalReport.NetSales							=  Trx.NetSales, 
+							tblTerminalReport.GrossSales						=  Trx.SubTotal,
+							tblTerminalReport.TotalDiscount						=  Trx.Discount + Trx.ItemsDiscount, 
+							tblTerminalReport.SNRDiscount					  	=  Trx.SNRDiscount, 
+							tblTerminalReport.PWDDiscount					  	=  Trx.PWDDiscount, 
+							tblTerminalReport.OtherDiscount					  	=  Trx.OtherDiscount,
+							tblTerminalReport.TotalCharge						=  Trx.TotalCharge, 
+							tblTerminalReport.DailySales						=  Trx.DailySales, 
+							tblTerminalReport.ItemSold							=  Trx.ItemSold, 
+							tblTerminalReport.QuantitySold						=  Trx.QuantitySold, 
+							tblTerminalReport.GroupSales						=  Trx.SubTotal, 
+							tblTerminalReport.VATExempt   						=  Trx.VATExempt, 
+							tblTerminalReport.NonVATableAmount					=  Trx.NonVATableAmount, 
+							tblTerminalReport.VATableAmount						=  Trx.VATableAmount, 
+							tblTerminalReport.VAT								=  Trx.VAT, 
+							tblTerminalReport.EVATableAmount					=  Trx.EVATableAmount, 
+							tblTerminalReport.NonEVATableAmount					=  Trx.NonEVATableAmount, 
+							tblTerminalReport.EVAT								=  Trx.EVAT, 
+							tblTerminalReport.LocalTax							=  Trx.LocalTax, 
+							tblTerminalReport.CashSales							=  Trx.CashSales, 
+							tblTerminalReport.ChequeSales						=  Trx.ChequeSales, 
+							tblTerminalReport.CreditCardSales					=  Trx.CreditCardSales, 
+							tblTerminalReport.CreditSales						=  Trx.CreditSales, 
+							tblTerminalReport.DebitPayment						=  Trx.DebitPayment, 
+							tblTerminalReport.CreditPayment						=  Trx.CreditPayment, 
+							tblTerminalReport.CreditPaymentCash					=  Trx.CreditPaymentCash, 
+							tblTerminalReport.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
+							tblTerminalReport.CreditPaymentCreditCard			=  Trx.CreditPaymentCreditCard, 
+							tblTerminalReport.CreditPaymentDebit				=  Trx.CreditPaymentDebit, 
+					
+							tblTerminalReport.RewardPointsPayment				=  Trx.RewardPointsPayment,
+							tblTerminalReport.RewardConvertedPayment			=  Trx.RewardConvertedPayment,
+							tblTerminalReport.CashInDrawer						=  Trx.CashSales + tblTerminalReport.BeginningBalance + tblTerminalReport.TotalWithHold + tblTerminalReport.TotalDeposit - tblTerminalReport.TotalPaidOut - tblTerminalReport.TotalDisburse, 
+							tblTerminalReport.VoidSales							=  Trx.VoidSales, 
+							tblTerminalReport.RefundSales						=  Trx.RefundSales, 
+							tblTerminalReport.ItemsDiscount						=  Trx.ItemsDiscount, 
+							tblTerminalReport.SubTotalDiscount					=  Trx.Discount,
+
+							tblTerminalReport.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
+		WHERE tblTerminalReport.BranchID = Trx.BranchID AND tblTerminalReport.TerminalNo = Trx.TerminalNo
+			AND tblTerminalReport.BranchID = intBranchID AND tblTerminalReport.TerminalNo = strTerminalNo
+			AND tblTerminalReport.BeginningTransactionNo = strBeginningTransactionNo;
+
+		CALL procsysAuditInsert(NOW(), 'RetailPlus Admin', 'RESYNC TERMINAL REPORT', 'localhost', CONCAT('TR has been re-run @ BranchID:', intBranchID, ' TerminalNo:', strTerminalNo,'.'));
+
+	END IF;
+	
+END;
+GO
+delimiter ;
+
 /********************************************
 	procTerminalReportUpdateTransactionSales
 ********************************************/
@@ -252,6 +617,7 @@ create procedure procTerminalReportUpdateTransactionSales(IN intBranchID int(4),
 														IN decOtherDiscount decimal(18,2),
 														IN decTotalCharge decimal(18,2),
 														IN decDailySales decimal(18,2),
+														IN decItemSold decimal(18,2),
 														IN decQuantitySold decimal(18,2),
 														IN decGroupSales decimal(18,2),
 														IN decOldGrandTotal decimal(18,2),
@@ -309,6 +675,7 @@ BEGIN
 					OtherDiscount						=  OtherDiscount						+  decOtherDiscount, 
 					TotalCharge							=  TotalCharge							+  decTotalCharge, 
 					DailySales							=  DailySales							+  decDailySales, 
+					ItemSold							=  ItemSold								+  decItemSold, 
 					QuantitySold						=  QuantitySold							+  decQuantitySold, 
 					GroupSales							=  GroupSales							+  decGroupSales, 
 					OldGrandTotal						=  OldGrandTotal						+  decOldGrandTotal, 
@@ -341,6 +708,7 @@ BEGIN
 					RefundSales							=  RefundSales							+  decRefundSales, 
 					ItemsDiscount						=  ItemsDiscount						+  decItemsDiscount, 
 					SubTotalDiscount					=  SubTotalDiscount						+  decSubTotalDiscount, 
+
 					NoOfCashTransactions				=  NoOfCashTransactions					+  intNoOfCashTransactions, 
 					NoOfChequeTransactions				=  NoOfChequeTransactions				+  intNoOfChequeTransactions, 
 					NoOfCreditCardTransactions			=  NoOfCreditCardTransactions			+  intNoOfCreditCardTransactions, 
@@ -357,9 +725,9 @@ BEGIN
 					NegativeAdjustments					=  NegativeAdjustments					+  decNegativeAdjustments,
 					NoOfNegativeAdjustmentTransactions	=  NoOfNegativeAdjustmentTransactions	+  intNoOfNegativeAdjustmentTransactions,
 					PromotionalItems					=  PromotionalItems						+  decPromotionalItems,
-					CreditSalesTax						=  CreditSalesTax						+  decCreditSalesTax
+					CreditSalesTax						=  CreditSalesTax						+  decCreditSalesTax,
+					IsProcessed							=  0	-- this must be set to 0 during transaction update
 	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
-	
 	
 END;
 GO
@@ -383,7 +751,35 @@ BEGIN
 				BatchCounter	=  BatchCounter	+  1
 	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
 	
-	
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procTerminalReportUpdateTrustFund
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procTerminalReportUpdateTrustFund
+GO
+
+create procedure procTerminalReportUpdateTrustFund(
+	IN intBranchID int(4),
+	IN strTerminalNo varchar(10),
+	IN decTrustFund decimal(18,3),
+	IN strUpdatedBy varchar(150),
+	IN strReason varchar(4000)
+)
+BEGIN
+	DECLARE decOldTrustFund DECIMAL(18,3) DEFAULT 0;
+
+	SET decOldTrustFund = (SELECT TrustFund FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+
+	UPDATE tblTerminalReport SET TrustFund = decTrustFund;
+
+	CALL procsysAuditInsert(NOW(), strUpdatedBy, 'TRUSTFUND OVERRIDE', 'localhost', CONCAT('TrustFund was overwritten from ',decOldTrustFund,' to ',decTrustFund,' due to ',strReason,' @ BranchID:', intBranchID, ' TerminalNo:', strTerminalNo));
+
 END;
 GO
 delimiter ;
@@ -405,6 +801,7 @@ create procedure procCashierReportUpdateTransactionSales(IN intBranchID INT(4), 
 														IN decOtherDiscount decimal(18,2),
 														IN decTotalCharge decimal(18,2),
 														IN decDailySales decimal(18,2),
+														IN decItemSold decimal(18,2),
 														IN decQuantitySold decimal(18,2),
 														IN decGroupSales decimal(18,2),
 														IN decVATExempt decimal(18,2),
@@ -459,6 +856,7 @@ BEGIN
 		OtherDiscount							=  OtherDiscount						+  decOtherDiscount, 
 		TotalCharge								=  TotalCharge							+  decTotalCharge, 
 		DailySales								=  DailySales							+  decDailySales, 
+		ItemSold								=  ItemSold								+  decItemSold, 
 		QuantitySold							=  QuantitySold							+  decQuantitySold, 
 		GroupSales								=  GroupSales							+  decGroupSales, 
 		
@@ -506,7 +904,8 @@ BEGIN
 		NegativeAdjustments						=  NegativeAdjustments					+  decNegativeAdjustments,
 		NoOfNegativeAdjustmentTransactions		=  NoOfNegativeAdjustmentTransactions	+  intNoOfNegativeAdjustmentTransactions,
 		PromotionalItems						=  PromotionalItems						+  decPromotionalItems,
-		CreditSalesTax							=  CreditSalesTax						+  decCreditSalesTax
+		CreditSalesTax							=  CreditSalesTax						+  decCreditSalesTax,
+		IsProcessed								=  0	-- this must be set to 0 during transaction update
 	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND CashierID = lngCashierID;
 	
 	
@@ -1086,6 +1485,8 @@ delimiter ;
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
 					PromotionalItems, CreditSalesTax
 
+	Sep 29, 2014 - fix the newgrandtotal to always include trustfund
+
 	CALL procTerminalReportInitializeZRead(1, '01', now(),'Lem', 0);
 *********************************/
 delimiter GO
@@ -1100,45 +1501,35 @@ create procedure procTerminalReportInitializeZRead(
 	IN intWithOutTF tinyint(1)
 )
 BEGIN
-	DECLARE decTrustFund DECIMAL(18,3) DEFAULT 0;
+	DECLARE decOldTrustFund DECIMAL(18,3) DEFAULT 0;
+	DECLARE strEndingTransactionNo, strEndingORNo VARCHAR(30);
 
-	-- use to remove the TF in the newgrandtotal
-	-- use to add the TF in the new oldgrandtotal
-	DECLARE decVirtualTrustFund DECIMAL(18,3) DEFAULT 0;
-
-	DECLARE decOldGrandTotal DECIMAL(18,3) DEFAULT 0;
-	DECLARE decNewGrandTotal DECIMAL(18,3) DEFAULT 0;
-
-	DECLARE strBeginningTransactionNo VARCHAR(30);
-	DECLARE strBeginningORNo VARCHAR(30);
-	DECLARE strEndingTransactionNo VARCHAR(30);
-	DECLARE strEndingORNo VARCHAR(30);
-
+	-- overwrite the TrustFund for whatever reason
+	-- should be zero out if
+	--		X-Read
+	--		Manual overwride
 	IF (intWithOutTF = 1 OR intWithOutTF = -1) THEN
-		SET decTrustFund = 0;
-		SET decVirtualTrustFund = (SELECT TRUSTFUND FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		SET decOldTrustFund = (SELECT TrustFund FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 
-		SET decOldGrandTotal = (SELECT OldGrandTotal - (OldGrandTotal * decVirtualTrustFund / 100) FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-		SET decNewGrandTotal = (SELECT OldGrandTotal - (OldGrandTotal * decVirtualTrustFund / 100) + VATExempt + NonVATableAmount + VATableAmount + VAT + EVAT + LocalTax + TotalCharge FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-	ELSE
-		SET decTrustFund = (SELECT TRUSTFUND FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-		SET decVirtualTrustFund = 0;
+		UPDATE tblTerminalReport SET TrustFund = 0;
 
-		SET decOldGrandTotal = (SELECT OldGrandTotal FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-		SET decNewGrandTotal = (SELECT NewGrandTotal FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-		
+		CALL procsysAuditInsert(NOW(), strInitializedBy, 'TRUSTFUND OVERRIDE', 'localhost', CONCAT('TrustFund was overwritten from ',decOldTrustFund,' to 0 due to ALT+DEL @ BranchID:', intBranchID, ' TerminalNo:', strTerminalNo));
 	END IF;
 
-	SET strBeginningTransactionNo = (SELECT BeginningTransactionNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-	SET strBeginningORNo = (SELECT BeginningORNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-	
+	-- get this to update the EndingTransactionNo, EndingORNo in tblCashierReport
 	SET strEndingTransactionNo = (SELECT EndingTransactionNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 	SET strEndingORNo = (SELECT EndingORNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+
+	-- update the tblTerminalReport GrandTotal depending on the TrustFund
+	-- must be overwritten coz procTerminalReportSyncTransactionSales is the straight computation
+	UPDATE tblTerminalReport SET 
+		NewGrandTotal =  OldGrandTotal + (GrossSales * (100-TrustFund)/100)
+	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
 
 	INSERT INTO tblTerminalReportHistory (
 					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
 					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
-					QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
+					ItemSold, QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
 					VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
 					ChequeSales, CreditCardSales, CreditSales, CreditPayment, CreditPaymentCash, CreditPaymentCheque,
 					CreditPaymentCreditCard, CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
@@ -1155,11 +1546,11 @@ BEGIN
 					DateLastInitialized, TrustFund, 
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
 					PromotionalItems, CreditSalesTax, BatchCounter, 
-					NoOfReprintedTransaction, TotalReprintedTransaction, InitializedBy) 
+					NoOfReprintedTransaction, TotalReprintedTransaction, IsProcessed, InitializedBy) 
 				(SELECT 
 					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
 					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
-					QuantitySold, GroupSales, decOldGrandTotal, decNewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
+					ItemSold, QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
 					VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
 					ChequeSales, CreditCardSales, CreditSales, CreditPayment, CreditPaymentCash, CreditPaymentCheque,
 					CreditPaymentCreditCard, CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
@@ -1173,16 +1564,11 @@ BEGIN
 					NoOfCreditPaymentTransactions, NoOfDebitPaymentTransactions, 
 					NoOfClosedTransactions, NoOfRefundTransactions, 
 					NoOfVoidTransactions, NoOfRewardPointsPayment, NoOfTotalTransactions, 
-					DateLastInitialized, decTrustFund,
+					DateLastInitialized, TrustFund,
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
 					PromotionalItems, CreditSalesTax, BatchCounter, 
-					NoOfReprintedTransaction, TotalReprintedTransaction, strInitializedBy FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-					
-	UPDATE tblTerminalReport SET 
-		OldGrandTotal =  decNewGrandTotal / ((100 - decVirtualTrustFund) / 100),
-		NewGrandTotal =  decNewGrandTotal / ((100 - decVirtualTrustFund) / 100),
-		ActualOldGrandTotal = ActualNewGrandTotal
-	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
+					NoOfReprintedTransaction, TotalReprintedTransaction, IsProcessed, strInitializedBy 
+				FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 	
 	UPDATE tblTerminalReport SET 
 					BeginningTransactionNo				=  EndingTransactionNo, 
@@ -1194,9 +1580,12 @@ BEGIN
 					OtherDiscount						=  0,
 					TotalCharge							=  0, 
 					DailySales							=  0, 
+					ItemSold							=  0, 
 					QuantitySold						=  0, 
 					NetSales							=  0, 
 					GroupSales							=  0, 
+					OldGrandTotal						=  NewGrandTotal,
+					ActualOldGrandTotal					=  ActualNewGrandTotal,
 					VATExempt   						=  0, 
 					NonVATableAmount					=  0, 
 					VATableAmount						=  0, 
@@ -1260,6 +1649,8 @@ BEGIN
 					BatchCounter						=  1,
 					NoOfReprintedTransaction			=  0,
 					TotalReprintedTransaction			=  0, 
+					IsProcessed							=  0,
+					Trustfund							=  (SELECT TrustFund FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo),
 					DateLastInitialized					=  dteDateLastInitialized
 			WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
 			
@@ -1268,7 +1659,7 @@ BEGIN
 					CashierID, BranchID, TerminalID, TerminalNo, BeginningTransactionNo, BeginningORNo, 
 					EndingTransactionNo, EndingORNo, NetSales, GrossSales, 
 					TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
-					QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
+					ItemSold, QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
 					CashSales, ChequeSales, CreditCardSales, CreditSales, 
 					CreditPayment, CreditPaymentCash, CreditPaymentCheque, CreditPaymentCreditCard, 
 					CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
@@ -1287,10 +1678,10 @@ BEGIN
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
 					PromotionalItems, CreditSalesTax )
 				(SELECT 
-					CashierID, BranchID, TerminalID, TerminalNo, strBeginningTransactionNo, strBeginningORNo, 
+					CashierID, BranchID, TerminalID, TerminalNo, BeginningTransactionNo, BeginningORNo, 
 					strEndingTransactionNo, strEndingORNo, NetSales, GrossSales, 
 					TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
-					QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
+					ItemSold, QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
 					CashSales, ChequeSales, CreditCardSales, CreditSales, 
 					CreditPayment, CreditPaymentCash, CreditPaymentCheque, CreditPaymentCreditCard, 
 					CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
@@ -1308,81 +1699,10 @@ BEGIN
 					CashCount, LastLoginDate,
 					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
 					PromotionalItems, CreditSalesTax FROM tblCashierReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-					
-	UPDATE tblCashierReport SET 
-			NetSales							=  0, 
-			GrossSales							=  0, 
-			TotalDiscount						=  0, 
-			SNRDiscount							=  0, 
-			PWDDiscount							=  0, 
-			OtherDiscount						=  0, 
-			TotalCharge							=  0, 
-			DailySales							=  0, 
-			QuantitySold						=  0, 
-			GroupSales							=  0, 
-			VATExempt   						=  0, 
-			NonVATableAmount					=  0, 
-			VATableAmount						=  0, 
-			VAT									=  0, 
-			EVATableAmount						=  0, 
-			NonEVATableAmount					=  0, 
-			EVAT								=  0, 
-			LocalTax							=  0, 
-			CashSales							=  0, 
-			ChequeSales							=  0, 
-			CreditCardSales						=  0, 
-			CreditSales							=  0, 
-			CreditPayment						=  0, 
-			CreditPaymentCash					=  0, 
-			CreditPaymentCheque					=  0, 
-			CreditPaymentCreditCard				=  0, 
-			CreditPaymentDebit					=  0, 
-			DebitPayment						=  0, 
-			RewardPointsPayment					=  0,
-			RewardConvertedPayment				=  0,
-			CashInDrawer						=  0, 
-			TotalDisburse						=  0, 
-			CashDisburse						=  0, 
-			ChequeDisburse						=  0, 
-			CreditCardDisburse					=  0, 
-			TotalWithhold						=  0, 
-			CashWithhold						=  0, 
-			ChequeWithhold						=  0, 
-			CreditCardWithhold					=  0, 
-			TotalPaidOut						=  0, 
-			CashPaidOut							=  0,
-			ChequePaidOut						=  0,
-			CreditCardPaidOut					=  0,
-			TotalDeposit						=  0, 
-			CashDeposit							=  0, 
-			ChequeDeposit						=  0, 
-			CreditCardDeposit					=  0, 
-			DebitDeposit						=  0, 
-			BeginningBalance					=  0, 
-			VoidSales							=  0, 
-			RefundSales							=  0, 
-			ItemsDiscount						=  0, 
-			SubTotalDiscount					=  0, 
-			NoOfCashTransactions				=  0, 
-			NoOfChequeTransactions				=  0, 
-			NoOfCreditCardTransactions			=  0, 
-			NoOfCreditTransactions				=  0, 
-			NoOfCombinationPaymentTransactions	=  0, 
-			NoOfCreditPaymentTransactions		=  0, 
-			NoOfDebitPaymentTransactions		=  0, 
-			NoOfClosedTransactions				=  0, 
-			NoOfRefundTransactions				=  0, 
-			NoOfVoidTransactions				=  0, 
-			NoOfRewardPointsPayment				=  0,
-			NoOfTotalTransactions				=  0, 
-			NoOfDiscountedTransactions			=  0,
-			NegativeAdjustments					=  0,
-			NoOfNegativeAdjustmentTransactions	=  0,
-			PromotionalItems					=  0,
-			CreditSalesTax						=  0,
-			CashCount							=  0 
-	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
 	
+	-- Just delete the cashier's this will be recreated anyway.
+	-- also the syncid does update and the cashiers logs will be cleaned up
+	DELETE FROM tblCashierReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
 	
 END;
 GO
@@ -4827,9 +5147,6 @@ delimiter ;
 CALL procSetupCalendarDate('2012');
 CALL procSetupCalendarDate('2013');
 
-
-
-
 /**************************************************************
 	procGenerateProductHistoryToProductMovement
 	Lemuel E. Aceron
@@ -4976,6 +5293,34 @@ END;
 GO
 delimiter ;
 
+
+/**************************************************************
+
+	procProductCopyPOSToActualByProductSubGroup
+	Lemuel E. Aceron
+	Sep 24, 2014 - Update Actual Quantity by POS Quantity by Group
+
+	CALL procProductCopyPOSToActualByProductSubGroup(1, 2);
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductCopyPOSToActualByProductSubGroup
+GO
+
+create procedure procProductCopyPOSToActualByProductSubGroup(
+						IN intBranchID INT(4),
+						IN intProductSubGroupID bigint)
+BEGIN
+	
+	UPDATE tblProductInventory SET 
+		ActualQuantity = Quantity 
+	WHERE BranchID = intBranchID 
+		AND (ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID = intProductSubGroupID));
+	
+END;
+GO
+delimiter ;
+
 /**************************************************************
 
 	procProductCopyPOSToActualBySupplier
@@ -5029,6 +5374,35 @@ BEGIN
 END;
 GO
 delimiter ;
+
+
+/**************************************************************
+
+	procProductZeroOutActualQuantityByProductSubGroup
+	Lemuel E. Aceron
+	Sep 24, 2014 - Add updating of products by subgroup
+
+	CALL procProductZeroOutActualQuantityByProductSubGroup(1, 2);
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procProductZeroOutActualQuantityByProductSubGroup
+GO
+
+create procedure procProductZeroOutActualQuantityByProductSubGroup(
+						IN intBranchID INT(4),
+						IN intProductSubGroupID bigint)
+BEGIN
+	
+	UPDATE tblProductInventory SET 
+		ActualQuantity = 0 
+	WHERE BranchID = intBranchID 
+		AND (ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID = intProductSubGroupID));
+	
+END;
+GO
+delimiter ;
+
 
 /**************************************************************
 
@@ -5094,6 +5468,39 @@ END;
 GO
 delimiter ;
 
+
+/**************************************************************
+
+	procLockUnlockProduct
+	Lemuel E. Aceron
+
+	CALL LockUnlockProductForSellingByProductSubGroup(1, 12, 0);
+
+	Sep 24, 2014 - Add updating of products by product group
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS LockUnlockProductForSellingByProductSubGroup
+GO
+
+create procedure LockUnlockProductForSellingByProductSubGroup(
+						IN intBranchID INT(4),
+						IN intProductSubGroupID bigint,
+						IN boisLock TINYINT(1))
+BEGIN
+
+	UPDATE tblProductInventory SET 
+		isLock = boisLock
+	WHERE BranchID = intBranchID 
+		AND (ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID = intProductSubGroupID));
+	
+	UPDATE tblProductSubGroup SET
+		isLock = boisLock
+	WHERE ProductSubGroupID = intProductSubGroupID;
+END;
+GO
+delimiter ;
+
+
 /**************************************************************
 
 	procLockUnlockProduct
@@ -5126,7 +5533,6 @@ BEGIN
 END;
 GO
 delimiter ;
-
 
 
 /**************************************************************
@@ -6092,14 +6498,14 @@ BEGIN
 									,pkg.LocalTax
 							  FROM tblProducts prd 
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID
-														AND pkg.Quantity = 1 ');
+														-- AND pkg.Quantity = 1 ');
 	IF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') = '' THEN
 		SET @SQL = CONCAT(@SQL, '
 														AND prd.BaseUnitID = pkg.UnitID
 						');
 	END IF;
 	SET @SQL = CONCAT(@SQL, '
-							  WHERE deleted=0 ',SQLWhere,' LIMIT 1) prd
+							  WHERE deleted=0 ',SQLWhere,' ORDER BY Quantity ASC LIMIT 1) prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
@@ -6890,6 +7296,130 @@ END;
 GO
 delimiter ;
 
+
+
+/**************************************************************
+
+	procCloseInventoryByProductSubGroup
+	Lemuel E. Aceron
+	March 14, 2009
+
+	CALL procCloseInventoryByProductSubGroup(1, 1, '2013-07-26', '00010', 7, 'GALENICALS');
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procCloseInventoryByProductSubGroup
+GO
+
+create procedure procCloseInventoryByProductSubGroup(IN intBranchID INT(4),
+									IN lngUID bigint, 
+									IN dteClosingDate datetime,
+									IN strReferenceNo varchar(30),
+									IN lngProductSubGroupID bigint,
+									IN strProductSubGroupName varchar(150))
+BEGIN
+	
+	DECLARE lngProductID, lngMatrixID, lngSupplierID BIGINT DEFAULT 0;
+	DECLARE decProductQuantity, decProductActualQuantity, decMatrixTotalQuantity DECIMAL(18,3) DEFAULT 0;
+	DECLARE decMinThreshold, decMaxThreshold, decPurchasePrice DECIMAL(18,3) DEFAULT 0;
+	DECLARE strProductCode VARCHAR(30) DEFAULT '';
+	DECLARE strDescription VARCHAR(50) DEFAULT '';
+	DECLARE strMatrixDescription VARCHAR(255) DEFAULT '';
+	DECLARE strSupplierCode VARCHAR(150) DEFAULT '';
+	DECLARE dtePostingDateFrom, dtePostingDateTo DATETIME;
+	DECLARE strRemarks VARCHAR(250) DEFAULT '';
+	DECLARE intUnitID INT DEFAULT 0;
+	DECLARE strUnitCode VARCHAR(5) DEFAULT '';
+	DECLARE done INT DEFAULT 0;
+	DECLARE lngCtr, lngCount bigint DEFAULT 0;
+	DECLARE curItems CURSOR FOR SELECT prd.ProductID, prd.SupplierID, cntct.ContactCode, IFNULL(inv.Quantity,0) Quantity, IFNULL(inv.ActualQuantity,0) ActualQuantity, prd.ProductCode, prd.ProductDesc, IFNULL(mtrx.MatrixID,0) MatrixID, IFNULL(mtrx.Description,'') AS MatrixDescription, prd.BaseUnitID, unt.UnitCode, prd.MinThreshold, prd.MaxThreshold, pkg.PurchasePrice 
+								FROM tblProducts prd
+								INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+								INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubgroupID = prd.ProductSubgroupID
+								INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID
+								INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+																AND prd.BaseUnitID = pkg.UnitID
+																AND pkg.Quantity = 1 
+								LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
+								LEFT OUTER JOIN (
+									SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE BranchID=intBranchID GROUP BY ProductID, MatrixID
+								) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
+								WHERE prdsg.ProductSubGroupID = lngProductSubGroupID AND prd.Deleted = 0 AND prd.Active = 1
+								ORDER BY prd.ProductCode, MatrixDescription;
+								
+								-- AND IFNULL(inv.Quantity,0) <> IFNULL(inv.ActualQuantity,0)
+									
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+	
+	SELECT COUNT(*) INTO lngCount FROM tblProducts prd
+								INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+								INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubgroupID = prd.ProductSubgroupID
+								INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID
+								INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+																AND prd.BaseUnitID = pkg.UnitID
+																AND pkg.Quantity = 1 
+								LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
+								LEFT OUTER JOIN (
+									SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, SUM(ActualQuantity) ActualQuantity FROM tblProductInventory WHERE BranchID=intBranchID GROUP BY ProductID, MatrixID
+								) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
+								WHERE prdsg.ProductSubGroupID = lngProductSubGroupID AND prd.Deleted = 0 AND prd.Active = 1;
+
+								-- AND IFNULL(inv.Quantity,0) <> IFNULL(inv.ActualQuantity,0)
+	
+	--	get the posting dates
+	SELECT PostingDateFrom, PostingDateTo INTO dtePostingDateFrom, dtePostingDateTo FROM tblERPConfig;
+	
+	-- STEP 7: set the value of stRemarks, see the administrator for the list of constant remarks
+	SET strRemarks = CONCAT('SYSTEM AUTO ADJUSTMENT-CLOSING INVENTORY BY SUBGROUP:', strProductSubGroupName);
+
+	OPEN curItems;
+	curItems: LOOP
+		SET lngCtr = lngCtr + 1; 
+		IF (lngCtr > lngCount) THEN LEAVE curItems; END IF;
+		
+		FETCH curItems INTO lngProductID, lngSupplierID, strSupplierCode, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
+		-- For testing: SELECT lngProductID, decProductQuantity, decProductActualQuantity, strProductCode, strDescription, lngMatrixID, strMatrixDescription, intUnitID, strUnitCode, decMinThreshold, decMaxThreshold, decPurchasePrice;
+		
+		-- STEP 1: Insert to tblInventory
+		INSERT INTO tblInventory (BranchID, PostingDateFrom, PostingDateTo, PostingDate, 
+									ReferenceNo, ContactID, ContactCode, 
+									ProductID, ProductCode, VariationMatrixID, MatrixDescription, 
+									ClosingQuantity, ClosingActualQuantity, ClosingVAT, ClosingCost, PurchasePrice) VALUES (
+									intBranchID, dtePostingDateFrom, dtePostingDateTo, dteClosingDate,
+									strReferenceNo, lngSupplierID, strSupplierCode, 
+									lngProductID, strProductCode, lngMatrixID, strMatrixDescription,
+									decProductQuantity, decProductActualQuantity, 
+									decPurchasePrice * decProductActualQuantity * 0.12, 
+									decPurchasePrice * decProductActualQuantity, decPurchasePrice);
+					
+		-- STEP 2: Insert to product movement history
+		CALL procProductMovementInsert(lngProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
+										decProductQuantity, decProductActualQuantity -decProductQuantity, decProductActualQuantity, decProductActualQuantity, 
+										strUnitCode, strRemarks, now(), strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0);
+		
+		-- STEP 3: Insert to inventory adjustment
+		CALL procInvAdjustmentInsert(lngUID, dteClosingDate, lngProductID, strProductCode, strDescription, lngMatrixID,
+												strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductActualQuantity, 
+												decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strReferenceNo));
+		
+		-- STEP 4: auto adjust the quantity based on actual quantity
+		UPDATE tblProductInventory SET Quantity = decProductActualQuantity WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+		
+		
+		UPDATE tblProductInventory SET QuantityIN = 0 WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+		UPDATE tblProductInventory SET QuantityOUT = 0 WHERE BranchID = intBranchID AND ProductID = lngProductID AND MatrixID = lngMatrixID;
+
+		SET lngProductID = 0; SET strProductCode = ''; 
+		SET lngMatrixID = 0; SET strMatrixDescription = '';
+		SET decPurchasePrice = 0; SET decProductQuantity = 0; SET decProductActualQuantity = 0;
+			
+	END LOOP curItems;
+	CLOSE curItems;
+	
+
+END;
+GO
+delimiter ;
 
 /********************************************
 	procSaveParkingRate
@@ -7720,7 +8250,6 @@ END;
 GO
 delimiter ;
 
-
 /**************************************************************
 
 	procProcessGLA
@@ -8133,12 +8662,16 @@ BEGIN
 	SET @SQL := '';
 	
 	IF boWithTF = 0 THEN
+		-- this is use for backend reporting only
 		SET @SQL := 'SELECT BranchID, TerminalNo,
 							CASE 
 								WHEN BeginningTransactionNo = EndingTransactionNo THEN LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'')
 								ELSE BeginningTransactionNo
 							END BeginningTransactionNo,
-							LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'') EndingTransactionNo,
+							CASE 
+								WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
+								ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'') 
+							END EndingTransactionNo,
 							CASE 
 								WHEN BeginningORNo = EndingORNo THEN LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'')
 								ELSE BeginningORNo
@@ -8160,10 +8693,11 @@ BEGIN
 							TotalCharge, 
 							TotalCharge AS ServiceCharge, 
 							DailySales, 
+							ItemSold, 
 							QuantitySold, 
 							GroupSales, 
-							OldGrandTotal, 
-							NewGrandTotal, 
+							ActualOldGrandTotal OldGrandTotal, 
+							ActualNewGrandTotal NewGrandTotal, 
 							VATExempt,
 							0 VATZeroRated, 
 							NonVATableAmount, 
@@ -8232,12 +8766,16 @@ BEGIN
 						FROM tblTerminalReportHistory
 						WHERE 1 = 1 ';
 	ELSE
+		-- this is use for backend reporting only
 		SET @SQL := 'SELECT BranchID, TerminalNo, 
 						CASE 
 							WHEN BeginningTransactionNo = EndingTransactionNo THEN LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'')
 							ELSE BeginningTransactionNo
 						END BeginningTransactionNo,
-						LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'') EndingTransactionNo,
+						CASE 
+							WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
+							ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'') 
+						END EndingTransactionNo,
 						CASE 
 							WHEN BeginningORNo = EndingORNo THEN LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'')
 							ELSE BeginningORNo
@@ -8259,10 +8797,11 @@ BEGIN
 						TotalCharge - (TotalCharge * TrustFund/100) TotalCharge, 
 						TotalCharge - (TotalCharge * TrustFund/100) ServiceCharge, 
 						DailySales - (DailySales * TrustFund/100) DailySales, 
+						ItemSold, 
 						QuantitySold, 
 						GroupSales - (GroupSales * TrustFund/100) GroupSales, 
-						OldGrandTotal - (OldGrandTotal * TrustFund/100) OldGrandTotal, 
-						NewGrandTotal - (NewGrandTotal * TrustFund/100) NewGrandTotal, 
+						OldGrandTotal,
+						NewGrandTotal,
 						VATExempt - (VATExempt * TrustFund/100) VATExempt, 
 						0 VATZeroRated,
 						NonVATableAmount - (NonVATableAmount * TrustFund/100) NonVATableAmount, 
@@ -8380,7 +8919,7 @@ delimiter ;
 		2. get transactions list for reports
 		3. get list of suspended transactions
 
-	CALL procTransactionsSelect(1, '01', 0, '', '1900-01-01', '1900-01-01', 6, 4, 0, 0, 0, '', 0, '', '', 0, 0, '', '', 10);
+	CALL procTransactionsSelect(1, '01', 0, '', '2014-09-20', '2014-10-2', 6, 4, 0, 0, 0, '', 0, '', '', 1, 0, '', '', 10);
 	
 	CALL procTransactionsSelect(1, '01', 0, '00000000930395', '1900-01-01', '1900-01-01', 6, 4, 0, 0, 0, '', 0, '', '', 0, 0, '', '', 10);
 
@@ -8463,7 +9002,7 @@ BEGIN
 							trx.ChequePayment,
 							trx.CreditCardPayment,
 							trx.CreditPayment,
-							IF(trx.isConsignment<>0,CreditPayment,0) ConsignmentPayment,
+							IF(trx.isConsignment<>0,trx.CreditPayment,0) ConsignmentPayment,
 							trx.BalanceAmount,
 							trx.ChangeAmount,
 							trx.DateClosed,
@@ -8511,10 +9050,13 @@ BEGIN
 							trx.PWDDiscount,
 							trx.OtherDiscount,
 							trx.NetSales,
-							0 TrustFund,
+							trx.ItemSold,
+							trx.QuantitySold,
+							IFNULL(tr.TrustFund, 0) TrustFund,
 							IFNULL(chque.ChequeNo,'''') AS ChequeNo, 
 							IFNULL(chque.ValidityDate,''1900-01-01'') AS ValidityDate
 						FROM tblTransactions trx
+						LEFT OUTER JOIN tblTerminalReport tr ON trx.BranchID = tr.BranchID AND trx.TerminalNo = tr.TerminalNo
 						LEFT OUTER JOIN tblChequePayment chque ON trx.BranchID = trx.BranchID AND trx.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
 						WHERE 1 = 1 ';
 	ELSE
@@ -8605,21 +9147,22 @@ BEGIN
 							trx.PWDDiscount - (trx.PWDDiscount * IFNULL(trh.TrustFund, 0)/100) PWDDiscount,
 							trx.OtherDiscount - (trx.OtherDiscount * IFNULL(trh.TrustFund, 0)/100) OtherDiscount,
 							trx.NetSales - (trx.NetSales * IFNULL(trh.TrustFund, 0)/100) NetSales,
+							trx.ItemSold,
+							trx.QuantitySold,
 							IFNULL(trh.TrustFund, 0) TrustFund,
 							IFNULL(chque.ChequeNo,'''') AS ChequeNo, 
 							IFNULL(chque.ValidityDate,''1900-01-01'') AS ValidityDate
 					FROM tblTransactions trx 
 					LEFT OUTER JOIN tblChequePayment chque ON trx.BranchID = trx.BranchID AND trx.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
-					LEFT OUTER JOIN (SELECT DISTINCT BranchID, TerminalNo,
+					LEFT OUTER JOIN (SELECT DISTINCT BranchID, TerminalNo, BeginningTransactionNo,
 										CASE 
-											WHEN BeginningTransactionNo = EndingTransactionNo THEN CONCAT(REPEAT(''0'', LENGTH(BeginningTransactionNo) - LENGTH(EndingTransactionNo-1)),EndingTransactionNo-1)
-											ELSE BeginningTransactionNo
-										END BeginningTransactionNo,
-										CONCAT(REPEAT(''0'', LENGTH(BeginningTransactionNo) - LENGTH(EndingTransactionNo-1)),EndingTransactionNo-1) EndingTransactionNo,
+											WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
+											ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'') 
+										END EndingTransactionNo,
 										TrustFund
 									 FROM tblTerminalReportHistory)
 															 trh ON trx.BranchID = trh.BranchID AND trx.TerminalNo = trh.TerminalNo AND
-																	trx.TransactionNo BETWEEN BeginningTransactionNo AND EndingTransactionNo
+																	BeginningTransactionNo <= trx.TransactionNo AND EndingTransactionNo >= trx.TransactionNo
 					WHERE 1 = 1 ';
 	END IF;
 	IF (intBranchID <> 0) THEN
@@ -8698,3 +9241,444 @@ BEGIN
 END;
 GO
 delimiter ;
+
+
+/********************************************
+	procCashierReportHistorySyncTransactionSales
+
+	CALL procCashierReportHistorySyncTransactionSales( 1, '01', '00000000931189', '00000000931193');
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procCashierReportHistorySyncTransactionSales
+GO
+
+create procedure procCashierReportHistorySyncTransactionSales(
+	IN intBranchID int(4), 
+	IN strTerminalNo varchar(10),
+	IN strBeginningTransactionNo varchar(30),
+	IN strEndingTransactionNo varchar(30)
+)
+BEGIN
+	
+	UPDATE tblCashierReportHistory, 
+		(
+			select BranchID, TerminalNo, CashierID,
+					SUM(CASE TransactionStatus 
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+						END) NetSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Subtotal
+						END) SubTotal, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Discount
+						END) Discount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
+						END) ItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
+						END) SNRDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDDiscount
+						END) PWDDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherDiscount
+						END) OtherDiscount,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Charge
+						END) TotalCharge, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+						END) DailySales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemSold
+						END) ItemSold,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE QuantitySold
+						END) QuantitySold,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATExempt
+						END) VATExempt, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonVATableAmount
+						END) NonVATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
+						END) VATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
+						END) VAT, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVATableAmount
+						END) EVATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonEVATableAmount
+						END) NonEVATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVAT
+						END) EVAT, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
+						END) LocalTax,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CashPayment
+						END) CashSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ChequePayment
+						END) ChequeSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditCardPayment
+						END) CreditCardSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditPayment
+						END) CreditSales, -- creditpayment for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE DebitPayment
+						END) DebitPayment, -- debit for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN CashPayment + ChequePayment + CreditCardPayment + DebitPayment ELSE 0
+						END) CreditPayment,
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN CashPayment ELSE 0
+						END) CreditPaymentCash, 
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN ChequePayment ELSE 0
+						END) CreditPaymentCheque, 
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN CreditCardPayment ELSE 0
+						END) CreditPaymentCreditCard, 
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN DebitPayment ELSE 0
+						END) CreditPaymentDebit, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardPointsPayment
+						END) RewardPointsPayment,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardConvertedPayment
+						END) RewardConvertedPayment,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN Subtotal ELSE 0
+						END) VoidSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN Subtotal ELSE 0
+						END) RefundSales
+			FROM  tblTransactions
+					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+					AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+			GROUP BY BranchID, TerminalNo, CashierID
+		) Trx
+	SET					
+						tblCashierReportHistory.NetSales						=  Trx.NetSales, 
+						tblCashierReportHistory.GrossSales						=  Trx.SubTotal, 
+						tblCashierReportHistory.TotalDiscount					=  Trx.Discount + Trx.ItemsDiscount, 
+						tblCashierReportHistory.SNRDiscount					  	=  Trx.SNRDiscount, 
+						tblCashierReportHistory.PWDDiscount					  	=  Trx.PWDDiscount, 
+						tblCashierReportHistory.OtherDiscount					=  Trx.OtherDiscount,
+						tblCashierReportHistory.TotalCharge						=  Trx.TotalCharge, 
+						tblCashierReportHistory.DailySales						=  Trx.DailySales, 
+						tblCashierReportHistory.ItemSold						=  Trx.ItemSold, 
+						tblCashierReportHistory.QuantitySold					=  Trx.QuantitySold, 
+						tblCashierReportHistory.GroupSales						=  Trx.SubTotal, 
+						tblCashierReportHistory.VATExempt   					=  Trx.VATExempt, 
+						tblCashierReportHistory.NonVATableAmount				=  Trx.NonVATableAmount, 
+						tblCashierReportHistory.VATableAmount					=  Trx.VATableAmount, 
+						tblCashierReportHistory.VAT								=  Trx.VAT, 
+						tblCashierReportHistory.EVATableAmount					=  Trx.EVATableAmount, 
+						tblCashierReportHistory.NonEVATableAmount				=  Trx.NonEVATableAmount, 
+						tblCashierReportHistory.EVAT							=  Trx.EVAT, 
+						tblCashierReportHistory.LocalTax						=  Trx.LocalTax, 
+						tblCashierReportHistory.CashSales						=  Trx.CashSales, 
+						tblCashierReportHistory.ChequeSales						=  Trx.ChequeSales, 
+						tblCashierReportHistory.CreditCardSales					=  Trx.CreditCardSales, 
+						tblCashierReportHistory.CreditSales						=  Trx.CreditSales, 
+						tblCashierReportHistory.DebitPayment					=  Trx.DebitPayment, 
+						tblCashierReportHistory.CreditPayment					=  Trx.CreditPayment, 
+						tblCashierReportHistory.CreditPaymentCash				=  Trx.CreditPaymentCash, 
+						tblCashierReportHistory.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
+						tblCashierReportHistory.CreditPaymentCreditCard			=  Trx.CreditPaymentCreditCard, 
+						tblCashierReportHistory.CreditPaymentDebit				=  Trx.CreditPaymentDebit, 
+					
+						tblCashierReportHistory.RewardPointsPayment				=  Trx.RewardPointsPayment,
+						tblCashierReportHistory.RewardConvertedPayment			=  Trx.RewardConvertedPayment,
+						tblCashierReportHistory.CashInDrawer					=  Trx.CashSales + tblCashierReportHistory.BeginningBalance + tblCashierReportHistory.TotalWithHold + tblCashierReportHistory.TotalDeposit - tblCashierReportHistory.TotalPaidOut - tblCashierReportHistory.TotalDisburse, 
+						tblCashierReportHistory.VoidSales						=  Trx.VoidSales, 
+						tblCashierReportHistory.RefundSales						=  Trx.RefundSales, 
+						tblCashierReportHistory.ItemsDiscount					=  Trx.ItemsDiscount, 
+						tblCashierReportHistory.SubTotalDiscount				=  Trx.Discount,
+						tblCashierReportHistory.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
+	WHERE tblCashierReportHistory.BranchID = Trx.BranchID AND tblCashierReportHistory.TerminalNo = Trx.BranchID AND tblCashierReportHistory.CashierID = Trx.CashierID
+		AND tblCashierReportHistory.BranchID = intBranchID AND tblCashierReportHistory.TerminalNo = strTerminalNo
+		AND tblCashierReportHistory.BeginningTransactionNo = strBeginningTransactionNo;
+	
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procTerminalReportHistorySyncTransactionSales
+
+	CALL procTerminalReportHistorySyncTransactionSales( 1, '01', '2014-09-20 00:00');
+
+	-- this must be run when version 4.0.1.1 is updated
+	-- this should be run up to the last zread to correct the grandtotals.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procTerminalReportHistorySyncTransactionSales
+GO
+
+create procedure procTerminalReportHistorySyncTransactionSales(
+	IN intBranchID int(4), 
+	IN strTerminalNo varchar(10),
+	IN dteZReadDateFrom datetime
+)
+BEGIN
+	DECLARE strBeginningTransactionNo, strEndingTransactionNo VARCHAR(30);
+
+	DECLARE intCtr, intCount bigint DEFAULT 0;
+	DECLARE dteActualZReadDate DATETIME DEFAULT NULL;
+	
+	DECLARE curActualZReadDate CURSOR FOR SELECT DateLastInitialized FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i'); 
+
+	SELECT COUNT(DateLastInitialized) INTO intCount FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i'); 
+
+	OPEN curActualZReadDate;
+	curActualZReadDate: LOOP
+		SET intCtr = intCtr + 1; 
+		IF (intCtr > intCount) THEN LEAVE curActualZReadDate; END IF;
+		
+		FETCH curActualZReadDate INTO dteActualZReadDate;
+
+
+
+		SET strBeginningTransactionNo = (SELECT BeginningTransactionNo FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DateLastInitialized = dteActualZReadDate);
+		SET strEndingTransactionNo = (SELECT CASE 
+												WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
+												ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), '0') 
+												END EndingTransactionNo 
+										FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DateLastInitialized = dteActualZReadDate);
+
+		-- update the vat to make sure everything is correct
+		UPDATE tblTransactions SET
+			VatableAmount = (SubTotal - VATExempt - NonVATableAmount) / 1.12,
+			VAT = (SubTotal - VATExempt - NonVATableAmount) / 1.12 * 0.12,
+			NetSales = SubTotal - (VATExempt * 0.12) - Discount,
+			VATExempt = CASE DiscountCode WHEN 'SNR' THEN Discount / 0.20 ELSE 0 END,
+			SNRDiscount = CASE DiscountCode WHEN 'SNR' THEN Discount ELSE 0 END,
+			PWDDiscount = CASE DiscountCode WHEN 'PWD' THEN Discount ELSE 0 END,
+			OtherDiscount = CASE DiscountCode WHEN 'SNR' THEN 0 WHEN 'PWD' THEN 0 ELSE Discount END
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+			AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo;
+
+		CALL procCashierReportHistorySyncTransactionSales(intBranchID, strTerminalNo, strBeginningTransactionNo, strEndingTransactionNo);
+			
+		UPDATE tblTerminalReportHistory, 
+		(
+			select BranchID, TerminalNo, 
+					SUM(CASE TransactionStatus 
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+						END) NetSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Subtotal
+						END) SubTotal, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Discount
+						END) Discount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
+						END) ItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
+						END) SNRDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDDiscount
+						END) PWDDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherDiscount
+						END) OtherDiscount,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Charge
+						END) TotalCharge, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
+						END) DailySales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemSold
+						END) ItemSold,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE QuantitySold
+						END) QuantitySold,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATExempt
+						END) VATExempt, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonVATableAmount
+						END) NonVATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
+						END) VATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
+						END) VAT, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVATableAmount
+						END) EVATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NonEVATableAmount
+						END) NonEVATableAmount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE EVAT
+						END) EVAT, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
+						END) LocalTax,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CashPayment
+						END) CashSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ChequePayment
+						END) ChequeSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditCardPayment
+						END) CreditCardSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditPayment
+						END) CreditSales, -- creditpayment for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE DebitPayment
+						END) DebitPayment, -- debit for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN CashPayment + ChequePayment + CreditCardPayment + DebitPayment ELSE 0
+						END) CreditPayment,
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN CashPayment ELSE 0
+						END) CreditPaymentCash, 
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN ChequePayment ELSE 0
+						END) CreditPaymentCheque, 
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN CreditCardPayment ELSE 0
+						END) CreditPaymentCreditCard, 
+					SUM(CASE TransactionStatus
+							WHEN 7 THEN DebitPayment ELSE 0
+						END) CreditPaymentDebit, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardPointsPayment
+						END) RewardPointsPayment,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE RewardConvertedPayment
+						END) RewardConvertedPayment,
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN Subtotal ELSE 0
+						END) VoidSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN Subtotal ELSE 0
+						END) RefundSales
+			FROM  tblTransactions
+					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+					AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+			GROUP BY BranchID, TerminalNo
+		) Trx
+		SET					
+				-- tblTerminalReportHistory.ActualNewGrandTotal				=  Trx.SubTotal + tblTerminalReportHistory.OldGrandTotal,
+				-- tblTerminalReportHistory.NewGrandTotal						=  Trx.SubTotal + tblTerminalReportHistory.OldGrandTotal,
+				tblTerminalReportHistory.NetSales							=  Trx.NetSales, 
+				tblTerminalReportHistory.GrossSales							=  Trx.SubTotal, 
+				tblTerminalReportHistory.TotalDiscount						=  Trx.Discount + Trx.ItemsDiscount, 
+				tblTerminalReportHistory.SNRDiscount					  	=  Trx.SNRDiscount, 
+				tblTerminalReportHistory.PWDDiscount					  	=  Trx.PWDDiscount, 
+				tblTerminalReportHistory.OtherDiscount					  	=  Trx.OtherDiscount,
+				tblTerminalReportHistory.TotalCharge						=  Trx.TotalCharge, 
+				tblTerminalReportHistory.DailySales							=  Trx.DailySales, 
+				tblTerminalReportHistory.ItemSold							=  Trx.ItemSold, 
+				tblTerminalReportHistory.QuantitySold						=  Trx.QuantitySold, 
+				tblTerminalReportHistory.GroupSales							=  Trx.SubTotal, 
+				tblTerminalReportHistory.VATExempt   						=  Trx.VATExempt, 
+				tblTerminalReportHistory.NonVATableAmount					=  Trx.NonVATableAmount, 
+				tblTerminalReportHistory.VATableAmount						=  Trx.VATableAmount, 
+				tblTerminalReportHistory.VAT								=  Trx.VAT, 
+				tblTerminalReportHistory.EVATableAmount						=  Trx.EVATableAmount, 
+				tblTerminalReportHistory.NonEVATableAmount					=  Trx.NonEVATableAmount, 
+				tblTerminalReportHistory.EVAT								=  Trx.EVAT, 
+				tblTerminalReportHistory.LocalTax							=  Trx.LocalTax, 
+				tblTerminalReportHistory.CashSales							=  Trx.CashSales, 
+				tblTerminalReportHistory.ChequeSales						=  Trx.ChequeSales, 
+				tblTerminalReportHistory.CreditCardSales					=  Trx.CreditCardSales, 
+				tblTerminalReportHistory.CreditSales						=  Trx.CreditSales, 
+				tblTerminalReportHistory.DebitPayment						=  Trx.DebitPayment, 
+				tblTerminalReportHistory.CreditPayment						=  Trx.CreditPayment, 
+				tblTerminalReportHistory.CreditPaymentCash					=  Trx.CreditPaymentCash, 
+				tblTerminalReportHistory.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
+				tblTerminalReportHistory.CreditPaymentCreditCard			=  Trx.CreditPaymentCreditCard, 
+				tblTerminalReportHistory.CreditPaymentDebit					=  Trx.CreditPaymentDebit, 
+					
+				tblTerminalReportHistory.RewardPointsPayment				=  Trx.RewardPointsPayment,
+				tblTerminalReportHistory.RewardConvertedPayment				=  Trx.RewardConvertedPayment,
+				tblTerminalReportHistory.CashInDrawer						=  Trx.CashSales + tblTerminalReportHistory.BeginningBalance + tblTerminalReportHistory.TotalWithHold + tblTerminalReportHistory.TotalDeposit - tblTerminalReportHistory.TotalPaidOut - tblTerminalReportHistory.TotalDisburse, 
+				tblTerminalReportHistory.VoidSales							=  Trx.VoidSales, 
+				tblTerminalReportHistory.RefundSales						=  Trx.RefundSales, 
+				tblTerminalReportHistory.ItemsDiscount						=  Trx.ItemsDiscount, 
+				tblTerminalReportHistory.SubTotalDiscount					=  Trx.Discount,
+
+				tblTerminalReportHistory.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
+		WHERE tblTerminalReportHistory.BranchID = Trx.BranchID AND tblTerminalReportHistory.TerminalNo = Trx.TerminalNo
+			AND tblTerminalReportHistory.BranchID = intBranchID AND tblTerminalReportHistory.TerminalNo = strTerminalNo
+			AND tblTerminalReportHistory.BeginningTransactionNo = strBeginningTransactionNo;
+		
+		UPDATE tblTerminalReportHistory,
+			(SELECT BranchID, TerminalNo, a.DateLastInitialized, a.NewGrandTotal, a.OldGrandTotal, a.GrossSales, a.OldGrandTotal + a.GrossSales,
+				IFNULL((SELECT NewGrandTotal FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized < a.DateLastInitialized ORDER BY b.DateLastInitialized DESC LIMIT 1),0) NewGrandTotalNew,
+				IFNULL((SELECT ActualNewGrandTotal FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized < a.DateLastInitialized ORDER BY b.DateLastInitialized DESC LIMIT 1),0) ActualNewGrandTotalNew,
+				BeginningTransactionNo
+				FROM tblTerminalReportHistory a WHERE a.BeginningTransactionNo = strBeginningTransactionNo
+				) Trx
+		SET
+			tblTerminalReportHistory.OldGrandTotal						= Trx.NewGrandTotalNew,
+			tblTerminalReportHistory.NewGrandTotal						= Trx.NewGrandTotalNew + (tblTerminalReportHistory.GrossSales * ((100-TrustFund)/100)),
+			
+			tblTerminalReportHistory.ActualOldGrandTotal				= Trx.ActualNewGrandTotalNew,
+			tblTerminalReportHistory.ActualNewGrandTotal				= Trx.ActualNewGrandTotalNew + tblTerminalReportHistory.GrossSales
+		WHERE tblTerminalReportHistory.BranchID = Trx.BranchID AND tblTerminalReportHistory.TerminalNo = Trx.TerminalNo AND tblTerminalReportHistory.BeginningTransactionNo = Trx.BeginningTransactionNo
+			AND tblTerminalReportHistory.BranchID = intBranchID AND tblTerminalReportHistory.TerminalNo = strTerminalNo
+			AND tblTerminalReportHistory.BeginningTransactionNo = strBeginningTransactionNo; 
+
+		SET strBeginningTransactionNo = NULL;
+		SET strEndingTransactionNo = NULL;
+		SET dteActualZReadDate = NULL;
+
+	END LOOP curActualZReadDate;
+	CLOSE curActualZReadDate;
+
+	UPDATE tblTerminalReport SET 
+		OldGrandTotal = (SELECT NewGrandTotal FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo ORDER BY DateLastInitialized DESC LIMIT 1),
+		ActualOldGrandTotal = (SELECT ActualNewGrandTotal FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo ORDER BY DateLastInitialized DESC LIMIT 1)
+	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo; 
+
+	UPDATE tblTerminalReport SET 
+		NewGrandTotal =  OldGrandTotal + (GrossSales * (100-TrustFund)/100),
+		ActualNewGrandTotal =  ActualOldGrandTotal + GrossSales
+	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo; 
+
+	CALL procsysAuditInsert(NOW(), 'RetailPlus Admin', 'RESYNC TERMINAL REPORT HISTORY', 'localhost', CONCAT('TRH has been re-run from ',DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i'),' up to ',DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i'),' @ BranchID:', intBranchID, ' TerminalNo:', strTerminalNo,'.'));
+
+	-- checking
+	SELECT 'Please double check the following if correct.';
+
+	SELECT DateLastInitialized, OldGrandTotal, NewGrandTotal, 
+								OldGrandTotal + (GrossSales * ((100-TrustFund)/100)) AS CorrectedNewGrandTotal,
+								ActualOldGrandTotal, ActualNewGrandTotal, 
+								ActualOldGrandTotal + GrossSales AS CorrectedActualNewGrandTotal
+	FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i'); 
+
+	SELECT DateLastInitialized, OldGrandTotal, NewGrandTotal, 
+								OldGrandTotal + (GrossSales * ((100-TrustFund)/100)) AS CorrectedNewGrandTotal,
+								ActualOldGrandTotal, ActualNewGrandTotal, 
+								ActualOldGrandTotal + GrossSales AS CorrectedActualNewGrandTotal
+	FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo; 
+	
+END;
+GO
+delimiter ;
+

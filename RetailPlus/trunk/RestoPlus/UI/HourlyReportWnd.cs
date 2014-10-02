@@ -5,83 +5,108 @@ using System.Windows.Forms;
 using AceSoft.RetailPlus.Data;
 using MySql.Data.MySqlClient;
 
+using AceSoft.RetailPlus.Reports;
+
 namespace AceSoft.RetailPlus.Client.UI
 {
-	public class HourlyReportWnd : System.Windows.Forms.Form
-	{
-		private System.Windows.Forms.PictureBox imgIcon;
-		private DialogResult dialog;
-		private System.Windows.Forms.Label lblDescription;
-		private System.Windows.Forms.Label lblReportDesc;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Panel panReport;
-		private System.Windows.Forms.Label lblPanelTop;
-		private System.Windows.Forms.Label lblReportFooter3;
-		private System.Windows.Forms.Label lblReportFooter2;
-		private System.Windows.Forms.Label lblReportFooter1;
-		private System.Windows.Forms.Label lblPanelBot;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label lblReceiptDesc;
-		private System.Windows.Forms.Label label23;
-		private System.Windows.Forms.Label lblReportHeader4;
-		private System.Windows.Forms.Label lblReportHeader3;
-		private System.Windows.Forms.Label lblReportHeader2;
-		private System.Windows.Forms.Label lblReportHeader1;
-		private System.Windows.Forms.Label lblCompany;
-
-		private System.Data.DataTable mdtHourlyReport;
-		private System.Windows.Forms.DataGrid dgHourlyReport;
-		private System.Windows.Forms.DataGridTableStyle dgStyle;
-		private System.Windows.Forms.DataGridTextBoxColumn TIME;
-		private System.Windows.Forms.DataGridTextBoxColumn TRAN;
-		private System.Windows.Forms.DataGridTextBoxColumn AMOUNT;
-		private System.Windows.Forms.DataGridTextBoxColumn DISC;
-		private System.Windows.Forms.Label lblTotalTran;
-		private System.Windows.Forms.Label lblTotalAmount;
-		private System.Windows.Forms.Label lblTotalDiscount;
-
-		private System.ComponentModel.Container components = null;
+    public class HourlyReportWnd : System.Windows.Forms.Form
+    {
+        private System.Windows.Forms.PictureBox imgIcon;
+        private System.Windows.Forms.Label lblDescription;
+        private System.Windows.Forms.Label lblReportDesc;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Panel panReport;
+        private System.Windows.Forms.Label lblPanelTop;
+        private System.Windows.Forms.Label lblReportFooter3;
+        private System.Windows.Forms.Label lblReportFooter2;
+        private System.Windows.Forms.Label lblReportFooter1;
+        private System.Windows.Forms.Label lblPanelBot;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblReceiptDesc;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label lblReportHeader4;
+        private System.Windows.Forms.Label lblReportHeader3;
+        private System.Windows.Forms.Label lblReportHeader2;
+        private System.Windows.Forms.Label lblReportHeader1;
+        private System.Windows.Forms.Label lblCompany;
+        private System.Windows.Forms.DataGrid dgHourlyReport;
+        private System.Windows.Forms.DataGridTableStyle dgStyle;
+        private System.Windows.Forms.DataGridTextBoxColumn TIME;
+        private System.Windows.Forms.DataGridTextBoxColumn TRAN;
+        private System.Windows.Forms.DataGridTextBoxColumn AMOUNT;
+        private System.Windows.Forms.DataGridTextBoxColumn DISC;
+        private System.Windows.Forms.Label lblTotalTran;
+        private System.Windows.Forms.Label lblTotalAmount;
+        private System.Windows.Forms.Label lblTotalDiscount;
+        private System.ComponentModel.Container components = null;
         private Button cmdCancel;
         private Button cmdEnter;
 
-		private string mCashierName;
+        #region Public Properties
 
-		public string CashierName
-		{
-			set {	mCashierName = value;	}
-		}
-		public System.Data.DataTable dtHourlyReport
-		{
-			set 
-			{
-				mdtHourlyReport = value;
-			}
-		}
+        private string mCashierName;
+        public string CashierName
+        {
+            set { mCashierName = value; }
+        }
 
-		public HourlyReportWnd()
-		{
-			InitializeComponent();
-		}
+        private DialogResult dialog;
+        public DialogResult Result
+        {
+            get
+            {
+                return dialog;
+            }
+        }
 
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        private System.Data.DataTable mdtHourlyReport;
+        public System.Data.DataTable dtHourlyReport
+        {
+            set
+            {
+                mdtHourlyReport = value;
+            }
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set
+            {
+                mclsTerminalDetails = value;
+            }
+        }
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public HourlyReportWnd()
+        {
+            InitializeComponent();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
+        #region Windows Form Designer generated code
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.lblDescription = new System.Windows.Forms.Label();
             this.lblReportDesc = new System.Windows.Forms.Label();
@@ -490,67 +515,61 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
+        }
+        #endregion
 
-		public DialogResult Result
-		{
-			get 
-			{
-				return dialog;
-			}
-		}
+        #region Windows Form Methods
 
-		private void HourlyReport_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			System.Data.DataTable dt;
-			int index;
+        private void HourlyReport_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            System.Data.DataTable dt;
+            int index;
 
-			switch (e.KeyData)
-			{
-				case Keys.Escape:
-					dialog = DialogResult.Cancel;
-					this.Hide(); 
-					break;
+            switch (e.KeyData)
+            {
+                case Keys.Escape:
+                    dialog = DialogResult.Cancel;
+                    this.Hide();
+                    break;
 
-				case Keys.Enter:
-					dialog = DialogResult.OK;
-					this.Hide(); 
-					break;
-				
-				case Keys.Up:
-					dt = (System.Data.DataTable) dgHourlyReport.DataSource;
-					if (dgHourlyReport.CurrentRowIndex > 0) 
-					{
-						index = dgHourlyReport.CurrentRowIndex;				
-						dgHourlyReport.CurrentRowIndex -= 1;
-						dgHourlyReport.Select(dgHourlyReport.CurrentRowIndex);
-						dgHourlyReport.UnSelect(index);
-					}
-					break;
+                case Keys.Enter:
+                    dialog = DialogResult.OK;
+                    this.Hide();
+                    break;
 
-				case Keys.Down:
-					dt = (System.Data.DataTable) dgHourlyReport.DataSource;
-					if (dgHourlyReport.CurrentRowIndex < dt.Rows.Count-1) 
-					{
-						index = dgHourlyReport.CurrentRowIndex;				
+                case Keys.Up:
+                    dt = (System.Data.DataTable)dgHourlyReport.DataSource;
+                    if (dgHourlyReport.CurrentRowIndex > 0)
+                    {
+                        index = dgHourlyReport.CurrentRowIndex;
+                        dgHourlyReport.CurrentRowIndex -= 1;
+                        dgHourlyReport.Select(dgHourlyReport.CurrentRowIndex);
+                        dgHourlyReport.UnSelect(index);
+                    }
+                    break;
 
-						dgHourlyReport.CurrentRowIndex += 1;
-						dgHourlyReport.Select(dgHourlyReport.CurrentRowIndex);
-						dgHourlyReport.UnSelect(index);
-					}
-					break;
-			}
-		}
+                case Keys.Down:
+                    dt = (System.Data.DataTable)dgHourlyReport.DataSource;
+                    if (dgHourlyReport.CurrentRowIndex < dt.Rows.Count - 1)
+                    {
+                        index = dgHourlyReport.CurrentRowIndex;
 
-		private void HourlyReport_Load(object sender, System.EventArgs e)
-		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/HourlyReport.jpg");	}
-			catch{}
+                        dgHourlyReport.CurrentRowIndex += 1;
+                        dgHourlyReport.Select(dgHourlyReport.CurrentRowIndex);
+                        dgHourlyReport.UnSelect(index);
+                    }
+                    break;
+            }
+        }
+
+        private void HourlyReport_Load(object sender, System.EventArgs e)
+        {
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/HourlyReport.jpg"); }
+            catch { }
             try
             { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
             catch { }
@@ -558,102 +577,17 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-			PopulateHourlyReport();
-		}
+            PopulateHourlyReport();
+        }
 
-		private void HourlyReport_Resize(object sender, System.EventArgs e)
-		{
-			SetGridItemsWidth();
-		}
+        private void HourlyReport_Resize(object sender, System.EventArgs e)
+        {
+            SetGridItemsWidth();
+        }
 
-		private void SetGridItemsWidth()
-		{
-			dgStyle.GridColumnStyles["Time"].Width = 50;
-			dgStyle.GridColumnStyles["TranCount"].Width = 50;
-			dgStyle.GridColumnStyles["Amount"].Width = dgHourlyReport.Width - 180;
-			dgStyle.GridColumnStyles["Discount"].Width = 80;
-		}
+        #endregion
 
-		private void PopulateHourlyReport()
-		{	
-			lblCompany.Text = CompanyDetails.CompanyCode;
-
-			Reports.ReceiptFormat clsReceiptFormat = new Reports.ReceiptFormat();
-			Reports.ReceiptFormatDetails clsDetails = clsReceiptFormat.Details();
-			clsReceiptFormat.CommitAndDispose();
-
-			lblReportHeader1.Text = GetReceiptFormatParameter(clsDetails.ReportHeader1);
-			lblReportHeader2.Text = GetReceiptFormatParameter(clsDetails.ReportHeader2);
-			lblReportHeader3.Text = GetReceiptFormatParameter(clsDetails.ReportHeader3);
-			lblReportHeader4.Text = GetReceiptFormatParameter(clsDetails.ReportHeader4);
-
-			dgHourlyReport.DataSource = mdtHourlyReport;
-			decimal TotalTranCount = 0;
-			decimal TotalAmount = 0;
-			decimal TotalDiscount = 0;
-			try 
-			{	
-				dgHourlyReport.Select(0); 
-				foreach (System.Data.DataRow dr in mdtHourlyReport.Rows)
-				{
-					TotalTranCount += Convert.ToDecimal(dr["TranCount"]);
-					TotalAmount += Convert.ToDecimal(dr["Amount"]);
-					TotalDiscount += Convert.ToDecimal(dr["Discount"]);
-				}
-			}	
-			catch {}
-			lblTotalTran.Text = TotalTranCount.ToString("#,##0");
-			lblTotalAmount.Text = TotalAmount.ToString("#,##0.#0");
-			lblTotalDiscount.Text = TotalDiscount.ToString("#,##0.#0");
-			
-			lblReportFooter1.Text = GetReceiptFormatParameter(clsDetails.ReportFooter1);
-			lblReportFooter2.Text = GetReceiptFormatParameter(clsDetails.ReportFooter2);
-			lblReportFooter3.Text = GetReceiptFormatParameter(clsDetails.ReportFooter3);
-
-		}
-		private string GetReceiptFormatParameter(string stReceiptFormat)
-		{
-			string stRetValue = "";
-
-			if (stReceiptFormat == Reports.ReceiptFieldFormats.Blank)
-			{
-				stRetValue = "";
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.Spacer)
-			{
-				stRetValue = Environment.NewLine;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.DateNow)
-			{
-				stRetValue = DateTime.Now.ToString("MMM dd yyyy hh:mh tt");
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.Cashier)
-			{
-				stRetValue = "Cashier: " + mCashierName;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.TerminalNo)
-			{
-				stRetValue = "Terminal No.: " + CompanyDetails.TerminalNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.MachineSerialNo)
-			{
-				stRetValue = "MIN: " + CONFIG.MachineSerialNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.AccreditationNo)
-			{
-				stRetValue = "Acc. No.: " + CONFIG.AccreditationNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.InvoiceNo)
-			{
-				stRetValue = "OFFICIAL RECEIPT #: " + "N/A";
-			}
-			else
-			{
-				stRetValue = stReceiptFormat;
-			}
-
-			return stRetValue;
-		}
+        #region Windows Control Methods
 
         private void cmdCancel_Click(object sender, EventArgs e)
         {
@@ -666,5 +600,116 @@ namespace AceSoft.RetailPlus.Client.UI
             dialog = DialogResult.OK;
             this.Hide();
         }
-	}
+
+        #endregion
+
+        #region Private Methods
+        private void SetGridItemsWidth()
+        {
+            dgStyle.GridColumnStyles["Time"].Width = 50;
+            dgStyle.GridColumnStyles["TranCount"].Width = 50;
+            dgStyle.GridColumnStyles["Amount"].Width = dgHourlyReport.Width - 180;
+            dgStyle.GridColumnStyles["Discount"].Width = 80;
+        }
+
+        private void PopulateHourlyReport()
+        {
+            lblCompany.Text = CompanyDetails.CompanyCode;
+
+            Receipt clsReceipt = new Receipt();
+
+            lblReportHeader1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader1").Value);
+            lblReportHeader2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader2").Value);
+            lblReportHeader3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader3").Value);
+            lblReportHeader4.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader4").Value);
+
+            this.dgStyle.MappingName = mdtHourlyReport.TableName;
+            dgHourlyReport.DataSource = mdtHourlyReport;
+            decimal TotalTranCount = 0;
+            decimal TotalAmount = 0;
+            decimal TotalDiscount = 0;
+            try
+            {
+                dgHourlyReport.Select(0);
+                foreach (System.Data.DataRow dr in mdtHourlyReport.Rows)
+                {
+                    TotalTranCount += Convert.ToDecimal(dr["TranCount"]);
+                    TotalAmount += Convert.ToDecimal(dr["Amount"]);
+                    TotalDiscount += Convert.ToDecimal(dr["Discount"]);
+                }
+            }
+            catch { }
+            lblTotalTran.Text = TotalTranCount.ToString("#,##0");
+            lblTotalAmount.Text = TotalAmount.ToString("#,##0.#0");
+            lblTotalDiscount.Text = TotalDiscount.ToString("#,##0.#0");
+
+            lblReportFooter1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter1").Value);
+            lblReportFooter2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter2").Value);
+            lblReportFooter3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter3").Value);
+
+            clsReceipt.CommitAndDispose();
+
+        }
+        private string GetReceiptFormatParameter(string stReceiptFormat)
+        {
+            string stRetValue = "";
+
+            if (stReceiptFormat == ReceiptFieldFormats.Blank)
+            {
+                stRetValue = "";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.Spacer)
+            {
+                stRetValue = " ";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InvoiceNo)
+            {
+                stRetValue = "";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.DateNow)
+            {
+                stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.Cashier)
+            {
+                stRetValue = mCashierName;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.TerminalNo)
+            {
+                stRetValue = mclsTerminalDetails.TerminalNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.MachineSerialNo)
+            {
+                stRetValue = CONFIG.MachineSerialNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.AccreditationNo)
+            {
+                stRetValue = CONFIG.AccreditationNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.RewardsPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseIndividualCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseIndividualCreditPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseGroupCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseGroupCreditPermitNo;
+            }
+            else
+            {
+                stRetValue = stReceiptFormat;
+            }
+
+            if (stRetValue == null) stRetValue = "";
+
+            return stRetValue;
+        }
+
+        #endregion
+
+
+    }
 }

@@ -145,9 +145,24 @@
 							<tr>
 								<td style="padding-bottom:2px;" nowrap="nowrap">
 									<label>Include products without short/over </label>&nbsp;&nbsp;&nbsp;</td>
-								<td colspan="5">
+								<td>
 									<asp:CheckBox id="chkIncludeShortOverProducts" runat="server" CssClass="ms-short" Checked=true></asp:CheckBox>
 								</td>
+                                <td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td style="padding-bottom:2px;" nowrap="nowrap">
+									<label>Filter by SubGroup</label>
+								</td>
+                                <td>
+									<asp:UpdatePanel id="UpdatePanel5" runat="server">
+                                        <ContentTemplate>
+									        <asp:DropDownList id="cboSubGroup" runat="server" CssClass="ms-short"></asp:DropDownList>
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="cboInventoryNo" EventName="SelectedIndexChanged" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+								</td>
+                                <td></td>
 								<td width="99%" id="Td2" nowrap="nowrap" align="right"><img height="1" alt="" src="../_layouts/images/blank.gif" width="1">
 								</td>
 							</tr>
@@ -171,4 +186,6 @@
 	</tr>
 </table>
 </ContentTemplate>
+<Triggers>
+</Triggers>
 </asp:UpdatePanel>

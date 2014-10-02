@@ -175,6 +175,15 @@ namespace AceSoft.RetailPlus.Reports {
         protected global::AceSoft.RetailPlus.Reports.@__DatedReport ctrlDatedReport;
         
         /// <summary>
+        /// ctrleSalesReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Reports.@__eSalesReport ctrleSalesReport;
+        
+        /// <summary>
         /// ctrlManagementReport control.
         /// </summary>
         /// <remarks>

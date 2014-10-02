@@ -229,6 +229,24 @@ namespace AceSoft.RetailPlus.Reports {
         protected global::System.Web.UI.WebControls.CheckBox chkIncludeShortOverProducts;
         
         /// <summary>
+        /// UpdatePanel5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel5;
+        
+        /// <summary>
+        /// cboSubGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboSubGroup;
+        
+        /// <summary>
         /// CRViewer control.
         /// </summary>
         /// <remarks>

@@ -368,6 +368,10 @@ namespace AceSoft.RetailPlus.Client.UI
 
             lblConversion.Text = mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue.ToString("#,##0.#0") + " points = " + mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentCashEquivalent.ToString("#,##0.#0") + CompanyDetails.Currency;
 
+            // put the mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue to zero if its 1 to avoid error
+            mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue = mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue == 0 ? 1 : mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue;
+            mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentCashEquivalent = mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentCashEquivalent == 0 ? 1 : mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentCashEquivalent;
+
             mdecAllowedRewardsPointsCashEquivalent = (mclsContactDetails.RewardDetails.RewardPoints / mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentValue * mclsTerminalDetails.RewardPointsDetails.RewardPointsPaymentCashEquivalent) - mdecRewardConvertedPayment;
             lblRewardPoints.Text = mdecAllowedRewardsPointsCashEquivalent.ToString("#,##0.#0");
             lblRewardPointsLabel.Text = Convert.ToDecimal(mclsContactDetails.RewardDetails.RewardPoints - mdecRewardPointsPayment).ToString("#,##0.#0") + " available points = ";

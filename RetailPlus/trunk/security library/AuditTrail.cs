@@ -32,6 +32,13 @@ namespace AceSoft.RetailPlus.Security
 		public string Activity;
 		public string IPAddress;
 		public string Remarks;
+
+        public Int32 BranchID;
+        public string TerminalNo;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
+
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -67,17 +74,15 @@ namespace AceSoft.RetailPlus.Security
 			try 
 			{
 
-				string SQL="INSERT INTO sysAuditTrail ( ActivityDate, User, Activity, IPAddress, Remarks ) " +
-							"VALUES ( @ActivityDate, @User, @Activity, @IPAddress, @Remarks );";
+				string SQL="INSERT INTO sysAuditTrail (BranchID, TerminalNo, ActivityDate, User, Activity, IPAddress, Remarks ) " +
+                            "VALUES (@BranchID, @TerminalNo, @ActivityDate, @User, @Activity, @IPAddress, @Remarks );";
 
-				
-	 			
 				MySqlCommand cmd = new MySqlCommand();
-				
-				
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
+                cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
                 cmd.Parameters.AddWithValue("@ActivityDate", Details.ActivityDate);
                 cmd.Parameters.AddWithValue("@User", Details.User);
                 cmd.Parameters.AddWithValue("@Activity", Details.Activity);
@@ -85,7 +90,6 @@ namespace AceSoft.RetailPlus.Security
                 cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
 
                 //cmd.Parameters.AddWithValue("@ActivityDate", Details.ActivityDate.ToString("yyyy-MM-dd HH:mm:ss"));
-
                 base.ExecuteNonQuery(cmd);
 			}
 
@@ -101,171 +105,167 @@ namespace AceSoft.RetailPlus.Security
         private string SQLSelect()
         {
             string stSQL = "SELECT " +
+                                "BranchID, " +
+                                "TerminalNo, " +
                                 "ActivityDate, " +
                                 "User, " +
                                 "Activity, " +
                                 "IPAddress, " +
-                                "Remarks " +
+                                "Remarks, " +
+                                "CreatedOn, " +
+                                "LastModified " +
                                 "FROM sysAuditTrail ";
 
             return stSQL;
         }
 
 		#region Streams
-		
-		public AuditTrailDetails[] DetailedList(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				MySqlDataReader myReader = List(SortField, SortOrder);
- 				ArrayList arrDetails = new ArrayList();
 
-				while (myReader.Read())
-				{
-					AuditTrailDetails Details = new AuditTrailDetails();
-					
-					// Map parameter fields
-					// example: 
-					//Details.IDENTITY			=	myReader.GetInt64("IDENTITY");
-					
-
-					arrDetails.Add(Details);
-				}
-				myReader.Close();
-			
-				AuditTrailDetails[] arrList = new AuditTrailDetails[0];
-				if (arrDetails != null)
-				{
-					arrList = new AuditTrailDetails[arrDetails.Count];
-					arrDetails.CopyTo(arrList);
-				}
-
-				return arrList;		
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = "SELECT ActivityDate, User, Activity, IPAddress, Remarks FROM sysAuditTrail ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				return base.ExecuteReader(cmd);
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL =SQLSelect() + "WHERE User LIKE @SearchKey " +
-							"OR Activity LIKE @SearchKey " +
-							"OR IPAddress LIKE @SearchKey " +
-							"OR Remarks LIKE @SearchKey " +
-							"ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-        public MySqlDataReader AdvanceSearch(DateTime ActivityDateFrom, DateTime ActivityDateTo, string User, AccessTypes Activity, string Remarks, int limit, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE 1=1 ";
-
-				if (ActivityDateFrom != DateTime.MinValue)
-					SQL += "AND ActivityDate >= @ActivityDateFrom ";
-				if (ActivityDateTo != DateTime.MinValue)
-                    SQL += "AND ActivityDate >= @ActivityDateTo ";
-				if (User != null || User != string.Empty)
-                    SQL += "AND User = @User ";
-                if (Activity != AccessTypes.None)
-                    SQL += "AND Activity = @Activity ";
-                if (Remarks != string.Empty)
-                    SQL += "AND Remarks LIKE @Remarks ";
-
-				SQL += "ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC ";
-				else
-					SQL += " DESC ";
-
-                if (limit != 0) SQL += " LIMIT " + limit.ToString() + " ";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@ActivityDateFrom", ActivityDateFrom.ToString("yyyy-MM-dd HH:mm"));
-                cmd.Parameters.AddWithValue("@ActivityDateTo", ActivityDateTo.ToString("yyyy-MM-dd HH:mm"));
-                cmd.Parameters.AddWithValue("@User", User);
-                cmd.Parameters.AddWithValue("@Activity", Activity);
-                cmd.Parameters.AddWithValue("@Remarks", Remarks);
-
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-        public AuditTrailDetails[] DetailedList(DateTime ActivityDateFrom, DateTime ActivityDateTo, string User, AccessTypes Activity,  string Remarks, int limit, string SortField, SortOption SortOrder)
+        public AuditTrailDetails[] DetailedList(string SortField, SortOption SortOrder)
         {
             try
             {
-                MySqlDataReader myReader = AdvanceSearch(ActivityDateFrom, ActivityDateTo, User, Activity, Remarks, limit, SortField, SortOrder);
+                System.Data.DataTable dt = ListAsDataTable(SortField: SortField, SortOrder: SortOrder);
                 ArrayList arrDetails = new ArrayList();
+                AuditTrailDetails clsDetails = new AuditTrailDetails();
 
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    AuditTrailDetails Details = new AuditTrailDetails();
-
-                    Details.ActivityDate = myReader.GetDateTime("ActivityDate");
-                    Details.User = "" + myReader["User"].ToString();
-                    Details.Activity = "" + myReader["Activity"].ToString();
-                    Details.IPAddress = "" + myReader["IPAddress"].ToString();
-                    Details.Remarks = "" + myReader["Remarks"].ToString();
-
-                    arrDetails.Add(Details);
+                    clsDetails = new AuditTrailDetails();
+                    clsDetails.BranchID = Int32.Parse(dr["BranchID"].ToString());
+                    clsDetails.TerminalNo = dr["TerminalNo"].ToString();
+                    clsDetails.ActivityDate = DateTime.Parse(dr["ActivityDate"].ToString());
+                    clsDetails.User = dr["User"].ToString();
+                    clsDetails.Activity = dr["Activity"].ToString();
+                    clsDetails.IPAddress = dr["IPAddress"].ToString();
+                    clsDetails.Remarks = dr["Remarks"].ToString();
+                    clsDetails.CreatedOn = DateTime.Parse(dr["CreatedOn"].ToString());
+                    clsDetails.LastModified = DateTime.Parse(dr["LastModified"].ToString());
+                    arrDetails.Add(clsDetails);
                 }
-                myReader.Close();
+
+                AuditTrailDetails[] arrList = new AuditTrailDetails[0];
+                if (arrDetails != null)
+                {
+                    arrList = new AuditTrailDetails[arrDetails.Count];
+                    arrDetails.CopyTo(arrList);
+                }
+
+                return arrList;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public System.Data.DataTable ListAsDataTable(Int32 BranchID = 0, string TerminalNo = "", string SearchKey = "", int limit = 0, string SortField = "ActivityDate", SortOption SortOrder = SortOption.Ascending)
+        {
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+
+            string SQL = SQLSelect() + "WHERE 1=1 ";
+
+            if (BranchID != 0)
+            {
+                SQL += "AND BranchID = @BranchID ";
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+            }
+            if (!string.IsNullOrEmpty(TerminalNo))
+            {
+                SQL += "AND TerminalNo = @TerminalNo ";
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+            }
+            if (!string.IsNullOrEmpty(SearchKey))
+            {
+                SQL += "AND TerminalNo = @SearchKey ";
+                cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+            }
+
+            SQL += "ORDER BY " + SortField + " ";
+            SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+            SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+            cmd.CommandText = SQL;
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            return dt;
+        }
+
+        public System.Data.DataTable AdvanceSearch(DateTime ActivityDateFrom, DateTime ActivityDateTo, string User, AccessTypes Activity, string Remarks, int limit = 0, string SortField = "ActivityDate", SortOption SortOrder = SortOption.Ascending)
+		{
+			try
+			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+				string SQL = SQLSelect() + "WHERE 1=1 ";
+
+                if (ActivityDateFrom != DateTime.MinValue)
+                {
+                    SQL += "AND ActivityDate >= @ActivityDateFrom ";
+                    cmd.Parameters.AddWithValue("@ActivityDateFrom", ActivityDateFrom.ToString("yyyy-MM-dd HH:mm"));
+                }
+                if (ActivityDateTo != DateTime.MinValue)
+                {
+                    SQL += "AND ActivityDate >= @ActivityDateTo ";
+                    cmd.Parameters.AddWithValue("@ActivityDateTo", ActivityDateTo.ToString("yyyy-MM-dd HH:mm"));
+                }
+                if (!string.IsNullOrEmpty(User))
+                {
+                    SQL += "AND User = @User ";
+                    cmd.Parameters.AddWithValue("@User", User);
+                    
+                }
+                if (Activity != AccessTypes.None)
+                {
+                    SQL += "AND Activity = @Activity ";
+                    cmd.Parameters.AddWithValue("@Activity", Activity);
+                    
+                }
+                if (!string.IsNullOrEmpty(Remarks))
+                {
+                    SQL += "AND Remarks LIKE @Remarks ";
+                    cmd.Parameters.AddWithValue("@Remarks", Remarks);
+                }
+
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : " LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;	
+			}
+			catch (Exception ex)
+			{
+				throw base.ThrowException(ex);
+			}	
+		}
+
+        public AuditTrailDetails[] DetailedList(DateTime ActivityDateFrom, DateTime ActivityDateTo, string User, AccessTypes Activity, string Remarks, int limit = 0, string SortField = "ActivityDate", SortOption SortOrder = SortOption.Ascending)
+        {
+            try
+            {
+                System.Data.DataTable dt = AdvanceSearch(ActivityDateFrom, ActivityDateTo, User, Activity, Remarks, limit, SortField, SortOrder);
+                ArrayList arrDetails = new ArrayList();
+                AuditTrailDetails clsDetails = new AuditTrailDetails();
+
+                foreach(System.Data.DataRow dr in dt.Rows)
+                {
+                    clsDetails = new AuditTrailDetails();
+                    clsDetails.ActivityDate = DateTime.Parse(dr["ActivityDate"].ToString());
+                    clsDetails.User = dr["User"].ToString();
+                    clsDetails.Activity = dr["Activity"].ToString();
+                    clsDetails.IPAddress = dr["IPAddress"].ToString();
+                    clsDetails.Remarks = dr["Remarks"].ToString();
+                    clsDetails.CreatedOn = DateTime.Parse(dr["CreatedOn"].ToString());
+                    clsDetails.LastModified = DateTime.Parse(dr["LastModified"].ToString());
+                    arrDetails.Add(clsDetails);
+                }
 
                 AuditTrailDetails[] arrList = new AuditTrailDetails[0];
                 if (arrDetails != null)

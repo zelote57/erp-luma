@@ -59,6 +59,11 @@ namespace AceSoft.RetailPlus.Inventory
                         SearchIndex = SearchCategoryID.CloseInventory;
                         ctrlCloseInventoryDetailed.Visible = true;
                         break;
+                    //case "closeinventorysubgroup":
+                    //    stHeading = "Close Month End Inventory";
+                    //    SearchIndex = SearchCategoryID.CloseInventory;
+                    //    ctrlCloseInventorySubGroup.Visible = true;
+                    //    break;
                     case "invadjustment":
                         stHeading = "Inventory adjustments";
                         SearchIndex = SearchCategoryID.Products;

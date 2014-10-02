@@ -293,7 +293,7 @@ namespace AceSoft.RetailPlus.Forwarder
                 cmd.Parameters.Add(prmSERVCHARGE);
 
                 OleDbParameter prmNOTAXSALE = new OleDbParameter("@NOTAXSALE", System.Data.OleDb.OleDbType.Numeric, 13);
-                prmNOTAXSALE.Value = pvtTerminalReportDetails.NonVaTableAmount;
+                prmNOTAXSALE.Value = pvtTerminalReportDetails.NonVATableAmount;
                 cmd.Parameters.Add(prmNOTAXSALE);
 
                 OleDbParameter prmRAWGROSS = new OleDbParameter("@RAWGROSS", System.Data.OleDb.OleDbType.Numeric, 13);
@@ -347,7 +347,7 @@ namespace AceSoft.RetailPlus.Forwarder
                 Event clsEvent = new Event();
                 clsEvent.AddEventLn("HourlySales: Did not found MAXDateLastInitialized from Terminal Report History. Using the MAXDateLastInitialized from terminal report", true);
                 Data.TerminalReport clsTerminalReport = new Data.TerminalReport(clsTerminalReportHistory.Connection, clsTerminalReportHistory.Transaction);
-                dteDateTo = clsTerminalReport.MAXDateLastInitialized(TerminalNo, pvtProcessDate);
+                dteDateTo = clsTerminalReport.MAXDateLastInitialized(Constants.TerminalBranchID, TerminalNo, pvtProcessDate);
             }
 
             System.Data.DataTable dthreport = clsTerminalReportHistory.HourlyReport(BranchID, TerminalNo, dteDateFrom, dteDateTo);
@@ -527,7 +527,7 @@ namespace AceSoft.RetailPlus.Forwarder
                  * GET The report of Current Terminal using Specified InitializationDate
                  * ********************************************************************/
                 Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory();
-                Data.TerminalReportDetails clsTerminalReportDetail = clsTerminalReportHistory.Details(TerminalNo, dteDateToprocess);
+                Data.TerminalReportDetails clsTerminalReportDetail = clsTerminalReportHistory.Details(BranchID, TerminalNo, dteDateToprocess);
                 string stDailyTableName = CreateDailySales(dteDateToprocess, clsTerminalReportDetail);
                 string stHourlyTableName = CreateHourlySales(BranchID, TerminalNo, dteDateToprocess);
                 clsTerminalReportHistory.UpdateTerminalReportBatchCounter(TerminalNo, dteDateToprocess);

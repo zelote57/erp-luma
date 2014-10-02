@@ -3057,6 +3057,7 @@ create procedure procSaveCashierReport(
 	IN decPWDDiscount						 decimal(18,2),
 	IN decOtherDiscount                      decimal(18,2),
 	IN decDailySales                         decimal(18,2),
+	IN decItemSold							 decimal(18,2),
 	IN decQuantitySold                       decimal(18,2),
 	IN decGroupSales                         decimal(18,2),
 	IN decVAT                                decimal(18,2),
@@ -3142,6 +3143,7 @@ BEGIN
 			PWDDiscount							= decPWDDiscount,
 			OtherDiscount						= decOtherDiscount,
 			DailySales							= decDailySales,
+			ItemSold							= decItemSold,
 			QuantitySold						= decQuantitySold,
 			GroupSales							= decGroupSales,
 			VAT									= decVAT,
@@ -3209,7 +3211,7 @@ BEGIN
 	ELSE
 		INSERT INTO tblCashierReport(BranchID, TerminalNo, SyncID, CashierID, TerminalID, NetSales, GrossSales, 
 							TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, DailySales,
-							QuantitySold, GroupSales, VAT, EVAT, LocalTax, CashSales, ChequeSales, CreditCardSales,
+							ItemSold, QuantitySold, GroupSales, VAT, EVAT, LocalTax, CashSales, ChequeSales, CreditCardSales,
 							CreditSales, CreditPayment, CashInDrawer, TotalDisburse, CashDisburse, ChequeDisburse,
 							CreditCardDisburse, TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold,
 							TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, BeginningBalance,
@@ -3225,7 +3227,7 @@ BEGIN
 							CreditPaymentCreditCard, CreditPaymentDebit, CreatedOn, LastModified)
 			VALUES(intBranchID, strTerminalNo, intSyncID, intCashierID, intTerminalID, decNetSales, decGrossSales, 
 							decTotalDiscount, decSNRDiscount, decPWDDiscount, decOtherDiscount, decDailySales,
-							decQuantitySold, decGroupSales, decVAT, decEVAT, decLocalTax, decCashSales, decChequeSales, decCreditCardSales,
+							decItemSold, decQuantitySold, decGroupSales, decVAT, decEVAT, decLocalTax, decCashSales, decChequeSales, decCreditCardSales,
 							decCreditSales, decCreditPayment, decCashInDrawer, decTotalDisburse, decCashDisburse, decChequeDisburse,
 							decCreditCardDisburse, decTotalWithhold, decCashWithhold, decChequeWithhold, decCreditCardWithhold,
 							decTotalPaidOut, decCashPaidOut, decChequePaidOut, decCreditCardPaidOut, decBeginningBalance,

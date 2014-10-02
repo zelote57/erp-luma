@@ -349,6 +349,13 @@
     <Compile Include="Home\GLA\_uploadsales.ascx.designer.cs">
       <DependentUpon>_uploadsales.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Inventory\_closeinventorysubgroup.ascx.cs">
+      <DependentUpon>_closeinventorysubgroup.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\_closeinventorysubgroup.ascx.designer.cs">
+      <DependentUpon>_closeinventorysubgroup.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Inventory\_closeinventoryproduct.ascx.cs">
       <DependentUpon>_closeinventoryproduct.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -476,6 +483,24 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Reports\_esalesreport\_DatedReportSummarizedPerDayBIRWithEffective.cs">
+      <DependentUpon>_DatedReportSummarizedPerDayBIRWithEffective.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_esalesreport\_DatedReportSummarizedPerDayBIRWithActual.cs">
+      <DependentUpon>_DatedReportSummarizedPerDayBIRWithActual.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_esalesreport\_DatedReportSummarizedPerDayBIRWithActualEffective.cs">
+      <DependentUpon>_DatedReportSummarizedPerDayBIRWithActualEffective.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActual.cs">
       <DependentUpon>_DatedReportSummarizedPerDayWithActual.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -505,6 +530,13 @@
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_esalesreport\_esalesreport.ascx.cs">
+      <DependentUpon>_esalesreport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\_esalesreport\_esalesreport.ascx.designer.cs">
+      <DependentUpon>_esalesreport.ascx</DependentUpon>
     </Compile>
     <Compile Include="Reports\_managementreport\_PerBranchPerMonthOld.cs">
       <AutoGen>True</AutoGen>
@@ -3447,6 +3479,7 @@
     <Content Include="Home\GLA\default.aspx" />
     <Content Include="Home\_menu.ascx" />
     <Content Include="Home\GLA\_uploadsales.ascx" />
+    <Content Include="Inventory\_closeinventorysubgroup.ascx" />
     <Content Include="Inventory\_closeinventoryproduct.ascx" />
     <Content Include="Inventory\_closeinventory.ascx" />
     <Content Include="MasterFiles\_Product\_AddProductVariation.ascx" />
@@ -3460,6 +3493,7 @@
     <Content Include="MasterFiles\_ContactDetailed\_list.ascx" />
     <Content Include="MasterFiles\_ContactDetailed\_update.ascx" />
     <Content Include="Reports\_analyticsreport\_analyticsreport.ascx" />
+    <Content Include="Reports\_esalesreport\_esalesreport.ascx" />
     <Content Include="Reports\_managementreport\_managementreport.ascx" />
     <Content Include="Rewards\_reports.ascx" />
     <Content Include="Rewards\_default.ascx" />
@@ -3982,6 +4016,18 @@
     <EmbeddedResource Include="Reports\_customercredit\_CustomerCreditListWCredit.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_CustomerCreditListWCredit1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_esalesreport\_DatedReportSummarizedPerDayBIRWithEffective.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSummarizedPerDayBIRWithEffective.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_esalesreport\_DatedReportSummarizedPerDayBIRWithActual.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSummarizedPerDayBIRWithActual.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_esalesreport\_DatedReportSummarizedPerDayBIRWithActualEffective.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>_DatedReportSummarizedPerDayBIRWithActualEffective.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_datedsalesreport\_DatedReportSummarizedPerDayWithActual.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

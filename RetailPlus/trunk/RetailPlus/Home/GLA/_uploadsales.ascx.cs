@@ -644,8 +644,8 @@ namespace AceSoft.RetailPlus.Home.GLA
             mclsSalesTransactionDetails.EVATableAmount = 0;
             mclsSalesTransactionDetails.NonEVATableAmount = glaDetails.Sub_Ttl + glaDetails.Tax_Ttl;
             mclsSalesTransactionDetails.LocalTax = 0;
-            mclsSalesTransactionDetails.TotalItemSold = glaDetails.Cov_Cnt;
-            mclsSalesTransactionDetails.TotalQuantitySold = glaDetails.Num_Dtl;
+            mclsSalesTransactionDetails.ItemSold = glaDetails.Cov_Cnt;
+            mclsSalesTransactionDetails.QuantitySold = glaDetails.Num_Dtl;
 
             mclsSalesTransactionDetails.AmountPaid = glaDetails.Pymnt_Ttl;
             mclsSalesTransactionDetails.CashPayment = mclsSalesTransactionDetails.SubTotal;

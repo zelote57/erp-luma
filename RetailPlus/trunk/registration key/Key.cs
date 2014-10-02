@@ -74,7 +74,7 @@ namespace AceSoft.RetailPlus
                 catch { }
 
 				Data.TerminalReport clsTerminalReport = new Data.TerminalReport();
-				string EndingTransactionNo = clsTerminalReport.EndingTransactioNo(CompanyDetails.TerminalNo);
+                string EndingTransactionNo = clsTerminalReport.EndingTransactioNo(Constants.TerminalBranchID, CompanyDetails.TerminalNo);
 				clsTerminalReport.CommitAndDispose();
 
 				if (Convert.ToInt64(EndingTransactionNo) > 1000)

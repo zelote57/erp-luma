@@ -219,9 +219,6 @@
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Methods.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -35,15 +35,19 @@ namespace AceSoft.RetailPlus.Security
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct CashierLogsDetails
 	{
+        public Int32 BranchID;
+        public string TerminalNo;
+        public Int64 SyncID;
 		public Int64 CashierLogsID;
 		public Int64 CashierID;
 		public DateTime LoginDate;
-        public int BranchID;
         public string BranchCode;
-		public string TerminalNo;
 		public string IPAddress;
 		public DateTime LogoutDate;
 		public CashierLogStatus Status;
+
+        public DateTime CreatedOn;
+        public DateTime LastModified;
 	}
 
 
@@ -78,8 +82,8 @@ namespace AceSoft.RetailPlus.Security
 		{
 			Int64 iRetValue = Insert(Details);
 
-			Data.CashierReport clsCashierReport = new Data.CashierReport(base.Connection, base.Transaction);
-            clsCashierReport.UpdateBeginningBalance(Details.BranchID, BeginningBalanceAmount, Details.CashierID);
+			Data.CashierReports clsCashierReport = new Data.CashierReports(base.Connection, base.Transaction);
+            clsCashierReport.UpdateBeginningBalance(Details.BranchID, Details.TerminalNo, Details.CashierID, BeginningBalanceAmount);
 
 			Data.TerminalReport clsTerminalReport = new Data.TerminalReport(base.Connection, base.Transaction);
             clsTerminalReport.UpdateBeginningBalance(Details.BranchID, Details.TerminalNo, BeginningBalanceAmount);
@@ -90,65 +94,9 @@ namespace AceSoft.RetailPlus.Security
 		{
 			try 
 			{
-				string SQL		=	"INSERT INTO tblCashierLogs (" +
-					"UID, LoginDate, BranchID, BranchCode, TerminalNo, IPAddress, " +
-					"LogoutDate, Status " +
-					") VALUES (" +
-                    "@UID, @LoginDate, @BranchID, (SELECT BranchCode FROM tblBranch WHERE BranchID = @BranchID), @TerminalNo, @IPAddress, " +
-					"@LogoutDate, @Status);";
-					
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				
-				MySqlParameter prmUID = new MySqlParameter("@UID",MySqlDbType.Int64);
-				prmUID.Value = Details.CashierID;
-				cmd.Parameters.Add(prmUID);
+                Save(Details);
 
-				MySqlParameter prmLoginDate = new MySqlParameter("@LoginDate",MySqlDbType.DateTime);
-				prmLoginDate.Value = Details.LoginDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmLoginDate);
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlParameter prmIPAddress = new MySqlParameter("@IPAddress",MySqlDbType.String);
-				prmIPAddress.Value = Details.IPAddress;
-				cmd.Parameters.Add(prmIPAddress);
-
-				MySqlParameter prmLogoutDate = new MySqlParameter("@LogoutDate",MySqlDbType.DateTime);
-				prmLogoutDate.Value = Details.LogoutDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmLogoutDate);
-
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Byte);
-				prmStatus.Value = Details.Status.ToString("d");
-				cmd.Parameters.Add(prmStatus);
-
-				cmd.CommandText = SQL;
-				base.ExecuteNonQuery(cmd);
-
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-				
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				Int64 iID = 0;
-
-				while (myReader.Read()) 
-				{
-					iID = myReader.GetInt64(0);
-				}
-
-				myReader.Close();
-				
-				return iID;
-
+                return Int64.Parse(base.getLAST_INSERT_ID(this));
 			}
 
 			catch (Exception ex)
@@ -161,53 +109,7 @@ namespace AceSoft.RetailPlus.Security
 		{
 			try 
 			{
-				string SQL			=	"UPDATE tblCashierLogs SET " + 
-				        "UID				=	@UID, " +
-				        "LoginDate			=	@LoginDate, " +
-                        "BranchID			=	@BranchID, " +
-				        "TerminalNo			=	@TerminalNo, " +
-				        "IPAddress			=	@IPAddress, " +
-				        "LogoutDate			=	@LogoutDate, " +
-				        "Status				=	@Status " +  
-				        "WHERE CashierLogsID	=	@CashierLogsID;";
-					
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
-
-				MySqlParameter prmUID = new MySqlParameter("@UID",MySqlDbType.Int64);
-				prmUID.Value = Details.CashierID;
-				cmd.Parameters.Add(prmUID);
-
-				MySqlParameter prmLoginDate = new MySqlParameter("@LoginDate",MySqlDbType.DateTime);
-				prmLoginDate.Value = Details.LoginDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmLoginDate);
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlParameter prmIPAddress = new MySqlParameter("@IPAddress",MySqlDbType.String);
-				prmIPAddress.Value = Details.IPAddress;
-				cmd.Parameters.Add(prmIPAddress);
-
-				MySqlParameter prmLogoutDate = new MySqlParameter("@LogoutDate",MySqlDbType.DateTime);
-				prmLogoutDate.Value = Details.LogoutDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmLogoutDate);
-
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Byte);
-				prmStatus.Value = Details.Status.ToString("d");
-				cmd.Parameters.Add(prmStatus);
-
-				MySqlParameter prmCashierLogsID = new MySqlParameter("@CashierLogsID",MySqlDbType.Int64);
-				prmCashierLogsID.Value = Details.CashierLogsID;
-				cmd.Parameters.Add(prmCashierLogsID);
-
-				base.ExecuteNonQuery(cmd);
+                Save(Details);
 			}
 
 			catch (Exception ex)
@@ -216,6 +118,37 @@ namespace AceSoft.RetailPlus.Security
 			}	
 		}
 
+        public Int32 Save(CashierLogsDetails Details)
+        {
+            try
+            {
+                string SQL = "CALL procSaveCashierLogs(@BranchID, @TerminalNo, @SyncID, @CashierLogsID, @UID, @LoginDate, @IPAddress, @LogoutDate, @Status, @BranchCode, @CreatedOn, @LastModified);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
+                cmd.Parameters.AddWithValue("SyncID", Details.SyncID);
+                cmd.Parameters.AddWithValue("CashierLogsID", Details.CashierLogsID);
+                cmd.Parameters.AddWithValue("UID", Details.CashierID);
+                cmd.Parameters.AddWithValue("LoginDate", Details.LoginDate);
+                cmd.Parameters.AddWithValue("IPAddress", Details.IPAddress);
+                cmd.Parameters.AddWithValue("LogoutDate", Details.LogoutDate);
+                cmd.Parameters.AddWithValue("Status", Details.Status);
+                cmd.Parameters.AddWithValue("BranchCode", Details.BranchCode);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
+
+                return base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
@@ -250,14 +183,17 @@ namespace AceSoft.RetailPlus.Security
         private string SQLSelect()
         {
             string stSQL = "SELECT " +
-					            "UID, " +
-					            "LoginDate, " +
                                 "BranchID, " +
+                                "TerminalNo, " +
+                                "SyncID, " +
+                                "UID, " +
+					            "LoginDate, " +
                                 "BranchCode, " +
-					            "TerminalNo, " +
 					            "IPAddress, " +
 					            "LogoutDate, " +
-					            "Status " +
+					            "Status, " +
+                                "CreatedOn, " +
+                                "LastModified " +
 					        "FROM tblCashierLogs ";
             return stSQL;
         }
@@ -311,123 +247,70 @@ namespace AceSoft.RetailPlus.Security
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(Int64 CashierID = 0, string SearchKey = "", string SortField = "BranchCode", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        {
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+
+            string SQL = SQLSelect() + "WHERE 1=1 ";
+
+            if (CashierID !=0 )
+            {
+                SQL += "AND CashierID = @CasheirID ";
+                cmd.Parameters.AddWithValue("@CasheirID", CashierID);
+            }
+            if (!string.IsNullOrEmpty(SearchKey))
+            {
+                SQL += "AND (TerminalNo LIKE @SearchKey or BranchCode LIKE @SearchKey) ";
+                cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+            }
+
+            SQL += "ORDER BY " + SortField + " ";
+            SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+            SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+            cmd.CommandText = SQL;
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            return dt;
+        }
+
+        public System.Data.DataTable LoginLogoutReport(DateTime LoginDateFrom, DateTime LoginDateTo, string User = "")
 		{
 			try
 			{
-                string SQL = SQLSelect();
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				if (SortField != string.Empty && SortField != null)
-                {
-                    SQL += "ORDER BY " + SortField + " ";
-
-                    if (SortOrder == SortOption.Ascending)
-                        SQL += "ASC ";
-                    else
-                        SQL += "DESC ";
-                }
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				return base.ExecuteReader(cmd);
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public MySqlDataReader List(Int64 CashierID, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                string SQL = SQLSelect();
-
-                SQL += "WHERE 1=1 AND UID = @UID ";
-
-				if (SortField != string.Empty && SortField != null)
-                {
-                    SQL += "ORDER BY " + SortField + " ";
-
-                    if (SortOrder == SortOption.Ascending)
-                        SQL += "ASC ";
-                    else
-                        SQL += "DESC ";
-                }
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmUID = new MySqlParameter("@UID",MySqlDbType.Int64);
-				prmUID.Value = CashierID;
-				cmd.Parameters.Add(prmUID);
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-                string SQL = SQLSelect() + "WHERE TerminalNo LIKE @SearchKey " +
-                                                "OR IPAddress LIKE @SearchKey ";
-
-                if (SortField != string.Empty && SortField != null)
-                {
-                    SQL += "ORDER BY " + SortField + " ";
-
-                    if (SortOrder == SortOption.Ascending)
-                        SQL += "ASC ";
-                    else
-                        SQL += "DESC ";
-                }
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-				
-		public System.Data.DataTable LoginLogoutReport(DateTime LoginDateFrom, DateTime LoginDateTo, string User)
-		{
-			try
-			{
 				string SQL ="SELECT Name 'User', LoginDate, " +
 					"IF(LogoutDate <> '0001-01-01 00:00:00', LogoutDate, LoginDate) 'LogoutDate' " +
 					"FROM tblCashierLogs a INNER JOIN sysAccessUserDetails b ON a.UID = b.UID " +
 					"WHERE 1=1 ";
 
-				if (LoginDateFrom != DateTime.MinValue)
-					SQL += " AND LoginDate >= '" + LoginDateFrom.ToString("yyyy-MM-dd HH:mm:ss") + "' ";
-				if (LoginDateTo != DateTime.MinValue)
-					SQL += " AND LoginDate <= '" + LoginDateTo.ToString("yyyy-MM-dd HH:mm:ss") + "' ";
-				if (User != null && User != string.Empty)
-					SQL += " AND Name = '" + User + "' ";
-
+                if (LoginDateFrom != DateTime.MinValue)
+                {
+                    SQL += " AND LoginDate >= @LoginDateFrom ";
+                    cmd.Parameters.AddWithValue("LoginDateFrom", LoginDateFrom);
+                }
+                if (LoginDateTo != DateTime.MinValue)
+                {
+                    SQL += " AND LoginDate <= @LoginDateTo ";
+                    cmd.Parameters.AddWithValue("LoginDateTo", LoginDateTo);
+                }
+                if (!string.IsNullOrEmpty(User))
+                {
+                    SQL += " AND Name = @User ";
+                    cmd.Parameters.AddWithValue("User", User);
+                }
 				SQL += "GROUP BY Name, LoginDate ";		
 				SQL += "ORDER BY Name, LoginDate ASC ";
 
-                System.Data.DataTable dt = new System.Data.DataTable(this.GetType().FullName);
-                base.MySqlDataAdapterFill(SQL, dt);
-				return dt;
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
 			}
 			catch (Exception ex)
 			{
@@ -443,7 +326,10 @@ namespace AceSoft.RetailPlus.Security
 		{
 			try 
 			{
-				string SQL = "UPDATE tblCashierLogs SET " + 
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "UPDATE tblCashierLogs SET " + 
 					            "LogoutDate		=	@LogoutDate, " +
 					            "Status			=	@Status " + 
 					        "WHERE UID		=	@UID " +
@@ -452,38 +338,15 @@ namespace AceSoft.RetailPlus.Security
 					            "AND TerminalNo		=	@TerminalNo " +
 					            "AND IPAddress		=	@IPAddress; ";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
+                cmd.Parameters.AddWithValue("UID", Details.CashierID);
+                cmd.Parameters.AddWithValue("LoginDate", Details.LoginDate);
+                cmd.Parameters.AddWithValue("IPAddress", Details.IPAddress);
+                cmd.Parameters.AddWithValue("LogoutDate", Details.LogoutDate);
+                cmd.Parameters.AddWithValue("Status", CashierLogStatus.LoggedOut.ToString("d"));
+
                 cmd.CommandText = SQL;
-
-				MySqlParameter prmUID = new MySqlParameter("@UID",MySqlDbType.Int64);
-				prmUID.Value = Details.CashierID;
-				cmd.Parameters.Add(prmUID);
-
-				MySqlParameter prmLoginDate = new MySqlParameter("@LoginDate",MySqlDbType.DateTime);
-				prmLoginDate.Value = Details.LoginDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmLoginDate);
-
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = Details.BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = Details.TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlParameter prmIPAddress = new MySqlParameter("@IPAddress",MySqlDbType.String);
-				prmIPAddress.Value = Details.IPAddress;
-				cmd.Parameters.Add(prmIPAddress);
-
-				MySqlParameter prmLogoutDate = new MySqlParameter("@LogoutDate",MySqlDbType.DateTime);
-				prmLogoutDate.Value = Details.LogoutDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmLogoutDate);
-
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Byte);
-				prmStatus.Value = Details.Status.ToString("d");
-				cmd.Parameters.Add(prmStatus);
-
 				base.ExecuteNonQuery(cmd);
 			}
 
@@ -497,27 +360,19 @@ namespace AceSoft.RetailPlus.Security
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL	= "UPDATE tblCashierLogs SET " + 
 					            "LogoutDate			=	@LogoutDate, " +
 					            "Status				=	@Status " + 
 					        "WHERE CashierLogsID	=	@CashierLogsID ";
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("CashierLogsID", CashierLogsID);
+                cmd.Parameters.AddWithValue("LogoutDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("Status", CashierLogStatus.LoggedOut.ToString("d"));
+
                 cmd.CommandText = SQL;
-
-				MySqlParameter prmCashierLogsID = new MySqlParameter("@CashierLogsID",MySqlDbType.Int64);
-				prmCashierLogsID.Value = CashierLogsID;
-				cmd.Parameters.Add(prmCashierLogsID);
-
-				MySqlParameter prmLogoutDate = new MySqlParameter("@LogoutDate",MySqlDbType.DateTime);
-				prmLogoutDate.Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmLogoutDate);
-
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Byte);
-				prmStatus.Value = CashierLogStatus.LoggedOut.ToString("d");
-				cmd.Parameters.Add(prmStatus);
-				
 				base.ExecuteNonQuery(cmd);
 			}
 
@@ -531,6 +386,9 @@ namespace AceSoft.RetailPlus.Security
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"SELECT " +
 					            "Status " +
 					        "FROM tblCashierLogs " +
@@ -540,36 +398,21 @@ namespace AceSoft.RetailPlus.Security
                             "AND TerminalNo = @TerminalNo " +
 					        "ORDER BY LoginDate DESC; ";
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.Parameters.AddWithValue("UID", CashierID);
+                cmd.Parameters.AddWithValue("LoginDate", LoginDate);
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
 
-				MySqlParameter prmUID = new MySqlParameter("@UID",MySqlDbType.Int64);
-				prmUID.Value = CashierID;
-				cmd.Parameters.Add(prmUID);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				MySqlParameter prmLoginDate = new MySqlParameter("@LoginDate",MySqlDbType.DateTime);
-				prmLoginDate.Value = LoginDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmLoginDate);
+                CashierLogStatus status = CashierLogStatus.LoggedOut;
 
-                MySqlParameter prmBranchID = new MySqlParameter("@BranchID",MySqlDbType.Int32);
-                prmBranchID.Value = BranchID;
-                cmd.Parameters.Add(prmBranchID);
-
-				MySqlParameter prmTerminalNo = new MySqlParameter("@TerminalNo",MySqlDbType.String);
-				prmTerminalNo.Value = TerminalNo;
-				cmd.Parameters.Add(prmTerminalNo);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				CashierLogStatus status = CashierLogStatus.LoggedOut;
-
-				while (myReader.Read()) 
-				{
-					status = (CashierLogStatus) Enum.Parse(typeof (CashierLogStatus), myReader.GetByte(0).ToString());
-				}
-
-				myReader.Close();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    status = (CashierLogStatus) Enum.Parse(typeof(CashierLogStatus), dr["Status"].ToString());
+                }
 
 				return status;
 			}
@@ -584,35 +427,25 @@ namespace AceSoft.RetailPlus.Security
 		{
 			try
 			{
-				CashierLogsID = 0;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text; 
 
-				string SQL=	"SELECT " +
-					"Status, " +
-					"CashierLogsID " +
-					"FROM tblCashierLogs " +
-					"WHERE UID = @UID " + 
-					"ORDER BY LoginDate DESC " +
-					"LIMIT 1; ";
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
+				string SQL=	"SELECT Status, CashierLogsID FROM tblCashierLogs WHERE UID = @UID ORDER BY LoginDate DESC LIMIT 1; ";
+
+                cmd.Parameters.AddWithValue("UID", CashierID);
+
 				cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+                
+                CashierLogStatus status = CashierLogStatus.LoggedOut;
+                CashierLogsID = 0;
 
-				MySqlParameter prmUID = new MySqlParameter("@UID",MySqlDbType.Int64);
-				prmUID.Value = CashierID;
-				cmd.Parameters.Add(prmUID);
-
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				CashierLogStatus status = CashierLogStatus.LoggedOut;
-
-				while (myReader.Read()) 
-				{
-					status = (CashierLogStatus) Enum.Parse(typeof (CashierLogStatus), myReader.GetByte(0).ToString());
-					CashierLogsID = myReader.GetInt64("CashierLogsID");
-				}
-
-				myReader.Close();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    status = (CashierLogStatus)Enum.Parse(typeof(CashierLogStatus), dr["Status"].ToString());
+                    CashierLogsID = Int64.Parse(dr["CashierLogsID"].ToString());
+                }
 
 				return status;
 			}

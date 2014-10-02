@@ -1625,6 +1625,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                 string strFileName = Application.ExecutablePath.ToUpper().Replace("RETAILPLUS.EXE","") + "print.prn";
                                 RawPrinterHelper.SendFileToPrinter(mclsTerminalDetails.PrinterName, strFileName, "RetailPlus " + "print.prn");
                                 CutPrinterPaper();
+                                MessageBox.Show("Done printing 'print.prn'", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 break;
                             case Keys.Enter:
                                 EnterCreditItemizePayment();
@@ -2496,7 +2497,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
             mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
-            clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, Details);
+            clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, Details);
 			clsSalesTransactions.CommitAndDispose();
 
             clsEvent.AddEventLn("Updating item #".PadRight(15) + ":" + Details.ItemNo + " : done", true);
@@ -2585,7 +2586,7 @@ namespace AceSoft.RetailPlus.Client.UI
 						SetItemDetails();
 						ComputeSubTotal(); setTotalDetails();
 
-                        clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType);
+                        clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType);
                         clsSalesTransactions.CommitAndDispose();
 
                         InsertAuditLog(AccessTypes.RefundTransaction, "Return Item " + details.ProductCode + "." + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
@@ -2730,7 +2731,7 @@ namespace AceSoft.RetailPlus.Client.UI
 								clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
 								dr["PurchaseAmount"] = clsItemDetails.PurchaseAmount;
 
-                                clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, clsItemDetails);
+                                clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, clsItemDetails);
                                 clsSalesTransactions.CommitAndDispose();
 
                                 InsertAuditLog(AccessTypes.Discounts, "Apply item discount for " + clsItemDetails.ProductCode + ". discount=" + clsItemDetails.Discount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
@@ -2870,7 +2871,7 @@ namespace AceSoft.RetailPlus.Client.UI
 									clsItemDetails.PurchaseAmount = clsItemDetails.Quantity * clsItemDetails.PurchasePrice;
 									dr["PurchaseAmount"] = clsItemDetails.PurchaseAmount;
 
-                                    clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, clsItemDetails);
+                                    clsSalesTransactions.UpdateItem(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType, clsItemDetails);
                                     clsSalesTransactions.CommitAndDispose();
 
 									InsertAuditLog(AccessTypes.Discounts, "Apply item discount for " + clsItemDetails.ProductCode + ". discount=" + clsItemDetails.Discount.ToString("#,###.#0") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
@@ -3177,7 +3178,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							InsertAuditLog(AccessTypes.SuspendTransaction, "Suspend transaction #: " + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
 
 							if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
-								PrintReportFooterSection(true, TransactionStatus.Suspended, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
+								PrintReportFooterSection(true, TransactionStatus.Suspended, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
 
                             clsSalesTransactions.CommitAndDispose();
 							clsEvent.AddEventLn("Done!");
@@ -3216,7 +3217,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         InsertAuditLog(AccessTypes.SuspendTransaction, "Suspend transaction #: " + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);						
 
 						if (mclsTerminalDetails.AutoPrint == PrintingPreference.Auto)
-							PrintReportFooterSection(true, TransactionStatus.Suspended, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
+							PrintReportFooterSection(true, TransactionStatus.Suspended, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
 
                         clsSalesTransactions.CommitAndDispose();
 						clsEvent.AddEventLn("Done!");
@@ -3502,12 +3503,12 @@ namespace AceSoft.RetailPlus.Client.UI
 					#endregion
 
 					//UpdateTerminalReportDelegate updateterminalDel = new UpdateTerminalReportDelegate(UpdateTerminalReport);
-                    UpdateTerminalReport(TransactionStatus.Void, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, 0, 0, 0, 0, 0, 0, 0, PaymentTypes.NotYetAssigned);
+                        UpdateTerminalReport(TransactionStatus.Void, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, 0, 0, 0, 0, 0, 0, 0, PaymentTypes.NotYetAssigned);
 
 					//UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
-                    UpdateCashierReport(TransactionStatus.Void, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, 0, 0, 0, 0, 0, 0, 0, PaymentTypes.NotYetAssigned);
+                    UpdateCashierReport(TransactionStatus.Void, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, 0, 0, 0, 0, 0, 0, 0, PaymentTypes.NotYetAssigned);
 
-                    clsSalesTransactions.Void(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.CashierID, mclsSalesTransactionDetails.CashierName);
+                    clsSalesTransactions.Void(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.CashierID, mclsSalesTransactionDetails.CashierName);
 					
                     clsSalesTransactions.UpdateTerminalNo(mclsSalesTransactionDetails.TransactionID, lblTerminalNo.Text);
 
@@ -3526,7 +3527,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
 					{
-						PrintReportFooterSection(true, TransactionStatus.Void, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
+						PrintReportFooterSection(true, TransactionStatus.Void, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null);
 					}
 					else if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice)
 					{
@@ -4781,15 +4782,15 @@ namespace AceSoft.RetailPlus.Client.UI
                             mclsSalesTransactionDetails.ORNo = clsSalesTransactions.CreateORNo(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
                             clsEvent.AddEventLn("      applying ORNo".PadRight(15) + ":" + mclsSalesTransactionDetails.ORNo, true, mclsSysConfigDetails.WillWriteSystemLog);
 
-                            clsSalesTransactions.Refund(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ORNo, -mclsSalesTransactionDetails.SubTotal, -mclsSalesTransactionDetails.NetSales, -mclsSalesTransactionDetails.ItemsDiscount, -mclsSalesTransactionDetails.Discount, -mclsSalesTransactionDetails.SNRDiscount, -mclsSalesTransactionDetails.PWDDiscount, -mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, -mclsSalesTransactionDetails.VAT, -mclsSalesTransactionDetails.VATableAmount, -mclsSalesTransactionDetails.NonVATableAmount, -mclsSalesTransactionDetails.VATExempt, -mclsSalesTransactionDetails.EVAT, -mclsSalesTransactionDetails.EVATableAmount, -mclsSalesTransactionDetails.NonEVATableAmount, -mclsSalesTransactionDetails.LocalTax, -mclsSalesTransactionDetails.AmountPaid, -CashPayment, -ChequePayment, -CreditCardPayment, -CreditPayment, -DebitPayment, -RewardPointsPayment, -RewardConvertedPayment, -BalanceAmount, -ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, -mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, lblCashier.Text);
+                            clsSalesTransactions.Refund(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ORNo, -mclsSalesTransactionDetails.ItemSold, -mclsSalesTransactionDetails.QuantitySold, - mclsSalesTransactionDetails.SubTotal, -mclsSalesTransactionDetails.NetSales, -mclsSalesTransactionDetails.ItemsDiscount, -mclsSalesTransactionDetails.Discount, -mclsSalesTransactionDetails.SNRDiscount, -mclsSalesTransactionDetails.PWDDiscount, -mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, -mclsSalesTransactionDetails.VAT, -mclsSalesTransactionDetails.VATableAmount, -mclsSalesTransactionDetails.NonVATableAmount, -mclsSalesTransactionDetails.VATExempt, -mclsSalesTransactionDetails.EVAT, -mclsSalesTransactionDetails.EVATableAmount, -mclsSalesTransactionDetails.NonEVATableAmount, -mclsSalesTransactionDetails.LocalTax, -mclsSalesTransactionDetails.AmountPaid, -CashPayment, -ChequePayment, -CreditCardPayment, -CreditPayment, -DebitPayment, -RewardPointsPayment, -RewardConvertedPayment, -BalanceAmount, -ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, -mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, lblCashier.Text);
 
 							//UpdateTerminalReportDelegate updateterminalDel = new UpdateTerminalReportDelegate(UpdateTerminalReport);
                             clsEvent.AddEventLn("[" + lblCashier.Text + "]      updating refund terminal report...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                            UpdateTerminalReport(TransactionStatus.Refund, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                            UpdateTerminalReport(TransactionStatus.Refund, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
 							//UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
                             clsEvent.AddEventLn("[" + lblCashier.Text + "]      updating redunf cashier report...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                            UpdateCashierReport(TransactionStatus.Refund, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                            UpdateCashierReport(TransactionStatus.Refund, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
                             // Sep 14, 2014 Control printing in mclsFilePrinter.Write
                             //if (mclsTerminalDetails.AutoPrint == PrintingPreference.Normal)	//print items if not yet printed
@@ -4817,7 +4818,7 @@ namespace AceSoft.RetailPlus.Client.UI
 								}
 
 								if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
-									PrintReportFooterSection(true, TransactionStatus.Refund, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails );
+									PrintReportFooterSection(true, TransactionStatus.Refund, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails );
                             //}
                             // Sep 14, 2014 Control printing in mclsFilePrinter.Write
 
@@ -4866,15 +4867,15 @@ namespace AceSoft.RetailPlus.Client.UI
                             mclsSalesTransactionDetails.ORNo = clsSalesTransactions.CreateORNo(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
                             clsEvent.AddEventLn("      applying ORNo".PadRight(15) + ":" + mclsSalesTransactionDetails.ORNo, true, mclsSysConfigDetails.WillWriteSystemLog);
 
-                            clsSalesTransactions.Close(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ORNo, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, BalanceAmount, ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, mclsSalesTransactionDetails.CashierName);
+                            clsSalesTransactions.Close(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ORNo, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, BalanceAmount, ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, mclsSalesTransactionDetails.CashierName);
 
 							//UpdateTerminalReportDelegate updateterminalDel = new UpdateTerminalReportDelegate(UpdateTerminalReport);
                             clsEvent.AddEventLn("      updating terminal report...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                            UpdateTerminalReport(TransactionStatus.Closed, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                            UpdateTerminalReport(TransactionStatus.Closed, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
 							//UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
                             clsEvent.AddEventLn("      updating cashier's report...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                            UpdateCashierReport(TransactionStatus.Closed, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                            UpdateCashierReport(TransactionStatus.Closed, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
                             // Sep 24, 2011      Lemuel E. Aceron
 							// Added order slip wherein all punch items will not change sales and inventory
@@ -5117,7 +5118,7 @@ namespace AceSoft.RetailPlus.Client.UI
 								}
 								if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
 								{
-									PrintReportFooterSection(true, TransactionStatus.Closed, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
+									PrintReportFooterSection(true, TransactionStatus.Closed, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
 
                                     // print the charge slip if not refund and will print
                                     if (mclsTerminalDetails.WillPrintChargeSlip && !mboIsRefund)
@@ -5477,7 +5478,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
                             mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
-                            clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType);
+                            clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType);
                             clsSalesTransactions.CommitAndDispose();
 
                             InsertAuditLog(AccessTypes.Discounts, "Apply transaction discount for " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + ". Tran. #".PadRight(15) + ":" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
@@ -5575,7 +5576,7 @@ namespace AceSoft.RetailPlus.Client.UI
 							Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
                             mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
-                            clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType);
+                            clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType);
                             clsSalesTransactions.CommitAndDispose();
 
                             InsertAuditLog(AccessTypes.ChargeType, "Apply transaction Charge for " + mclsSalesTransactionDetails.Charge.ToString("#,###.#0") + ". Tran. #".PadRight(15) + ":" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
@@ -5803,13 +5804,13 @@ namespace AceSoft.RetailPlus.Client.UI
                             //update the transaction table 
                             Int64 iTransactionID = Convert.ToInt64(lblTransNo.Tag);
                             string strORNo = ""; // no need to put an OR no for credit payment coz it's already declared before
-                            clsSalesTransactions.Close(mclsSalesTransactionDetails.TransactionID, strORNo, AmountPaid, AmountPaid, 0, 0, 0, 0, 0, 0, DiscountTypes.NotApplicable, 0, 0, 0, 0, 0, 0, 0, 0, AmountPaid, CashPayment, ChequePayment, CreditCardPayment, 0, DebitPayment, 0, 0, 0, 0, PaymentType, null, null, 0, 0, null, null, mclsSalesTransactionDetails.CashierID, lblCashier.Text);
+                            clsSalesTransactions.Close(mclsSalesTransactionDetails.TransactionID, strORNo, 0, 0, AmountPaid, AmountPaid, 0, 0, 0, 0, 0, 0, DiscountTypes.NotApplicable, 0, 0, 0, 0, 0, 0, 0, 0, AmountPaid, CashPayment, ChequePayment, CreditCardPayment, 0, DebitPayment, 0, 0, 0, 0, PaymentType, null, null, 0, 0, null, null, mclsSalesTransactionDetails.CashierID, lblCashier.Text);
 
                             //UpdateTerminalReportDelegate updateterminalDel = new UpdateTerminalReportDelegate(UpdateTerminalReport);
-                            UpdateTerminalReport(TransactionStatus.CreditPayment, AmountPaid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, CashPayment, ChequePayment, CreditCardPayment, 0, DebitPayment, 0, 0, PaymentType);
+                            UpdateTerminalReport(TransactionStatus.CreditPayment, 0, 0, AmountPaid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, CashPayment, ChequePayment, CreditCardPayment, 0, DebitPayment, 0, 0, PaymentType);
 
                             //UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
-                            UpdateCashierReport(TransactionStatus.CreditPayment, AmountPaid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, CashPayment, ChequePayment, CreditCardPayment, 0, DebitPayment, 0, 0, PaymentType);
+                            UpdateCashierReport(TransactionStatus.CreditPayment, 0, 0, AmountPaid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, CashPayment, ChequePayment, CreditCardPayment, 0, DebitPayment, 0, 0, PaymentType);
                             clsSalesTransactions.CommitAndDispose();
 
                             InsertAuditLog(AccessTypes.CreditPayment, "Pay credit for " + details.ContactName + "." + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
@@ -6894,7 +6895,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
 				string stTransactionNo = null;
-				bool HasPendingTransaction = clsSalesTransactions.HasPendingTransaction(UID, mclsTerminalDetails.TerminalNo, out stTransactionNo);
+                bool HasPendingTransaction = clsSalesTransactions.HasPendingTransaction(UID, mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, out stTransactionNo);
 
 				if (HasPendingTransaction)
 				{ clsEvent.AddEventLn(stTransactionNo + " found pending."); LoadTransaction(stTransactionNo, mclsTerminalDetails.TerminalNo); }
@@ -7255,7 +7256,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
                 mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
-                clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType);
+                clsSalesTransactions.UpdateSubTotal(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.ChargeType);
                 clsSalesTransactions.CommitAndDispose();
 
 				try
@@ -7785,7 +7786,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     //print transactionfooter
                     //items are already printed during the loading of items.
                     if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
-                        PrintReportFooterSection(true, TransactionStatus.Reprinted, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, mclsSalesTransactionDetails.CashPayment, mclsSalesTransactionDetails.ChequePayment, mclsSalesTransactionDetails.CreditCardPayment, mclsSalesTransactionDetails.CreditPayment, mclsSalesTransactionDetails.DebitPayment, mclsSalesTransactionDetails.RewardPointsPayment, mclsSalesTransactionDetails.RewardConvertedPayment, mclsSalesTransactionDetails.ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
+                        PrintReportFooterSection(true, TransactionStatus.Reprinted, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, mclsSalesTransactionDetails.CashPayment, mclsSalesTransactionDetails.ChequePayment, mclsSalesTransactionDetails.CreditCardPayment, mclsSalesTransactionDetails.CreditPayment, mclsSalesTransactionDetails.DebitPayment, mclsSalesTransactionDetails.RewardPointsPayment, mclsSalesTransactionDetails.RewardConvertedPayment, mclsSalesTransactionDetails.ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
 
                     if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.SalesInvoice)
                     {
@@ -7888,7 +7889,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					//print transactionfooter
 					if (mclsTerminalDetails.ReceiptType == TerminalReceiptType.Default)
-						PrintReportFooterSection(true, TransactionStatus.Reprinted, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, mclsSalesTransactionDetails.CashPayment, mclsSalesTransactionDetails.ChequePayment, mclsSalesTransactionDetails.CreditCardPayment, mclsSalesTransactionDetails.CreditPayment, mclsSalesTransactionDetails.DebitPayment, mclsSalesTransactionDetails.RewardPointsPayment, mclsSalesTransactionDetails.RewardConvertedPayment, mclsSalesTransactionDetails.ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
+						PrintReportFooterSection(true, TransactionStatus.Reprinted, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.AmountPaid, mclsSalesTransactionDetails.CashPayment, mclsSalesTransactionDetails.ChequePayment, mclsSalesTransactionDetails.CreditCardPayment, mclsSalesTransactionDetails.CreditPayment, mclsSalesTransactionDetails.DebitPayment, mclsSalesTransactionDetails.RewardPointsPayment, mclsSalesTransactionDetails.RewardConvertedPayment, mclsSalesTransactionDetails.ChangeAmount, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
 
 					PrintDeliveryReceipt();
 					
@@ -7974,7 +7975,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 				}
 
-				PrintReportFooterSection(true, TransactionStatus.Closed, mclsSalesTransactionDetails.TotalItemSold, mclsSalesTransactionDetails.TotalQuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, true);
+				PrintReportFooterSection(true, TransactionStatus.Closed, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.Charge, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, true);
 
                 mboIsItemHeaderPrinted = false;
 				mclsTerminalDetails.AutoPrint = oldCONFIG_AutoPrint;
@@ -8430,7 +8431,8 @@ namespace AceSoft.RetailPlus.Client.UI
                     discreteParam.Value = CompanyDetails.Address1 +
                                             Environment.NewLine + CompanyDetails.Address2 + ", " + CompanyDetails.City + " " + CompanyDetails.Country +
                                             Environment.NewLine + "Tel #: " + CompanyDetails.OfficePhone + " Fax #".PadRight(15) + ":" + CompanyDetails.FaxPhone +
-                                            Environment.NewLine + "TIN : " + CompanyDetails.TIN + "      VAT Reg.";
+                                            Environment.NewLine + "TIN : " + CompanyDetails.TIN + "      VAT Reg." +
+                                            Environment.NewLine + "BIR Acc #: " + CONFIG.AccreditationNo + " SN#: " + CONFIG.MachineSerialNo;
                     currentValues = new CrystalDecisions.Shared.ParameterValues();
                     currentValues.Add(discreteParam);
                     paramField.ApplyCurrentValues(currentValues);
@@ -8638,7 +8640,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					discreteParam.Value = CompanyDetails.Address1 +
 											Environment.NewLine + CompanyDetails.Address2 + ", " + CompanyDetails.City + " " + CompanyDetails.Country +
 											Environment.NewLine + "Tel #: " + CompanyDetails.OfficePhone + " Fax #".PadRight(15) + ":" + CompanyDetails.FaxPhone +
-											Environment.NewLine + "TIN : " + CompanyDetails.TIN + "      VAT Reg.";
+											Environment.NewLine + "TIN : " + CompanyDetails.TIN + "      VAT Reg." +
+                                            Environment.NewLine + "BIR Acc #: " + CONFIG.AccreditationNo + " SN#: " + CONFIG.MachineSerialNo;
 					currentValues = new CrystalDecisions.Shared.ParameterValues();
 					currentValues.Add(discreteParam);
 					paramField.ApplyCurrentValues(currentValues);
@@ -8831,7 +8834,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					discreteParam.Value = CompanyDetails.Address1 +
 											Environment.NewLine + CompanyDetails.Address2 + ", " + CompanyDetails.City + " " + CompanyDetails.Country +
 											Environment.NewLine + "Tel #: " + CompanyDetails.OfficePhone + " Fax #".PadRight(15) + ":" + CompanyDetails.FaxPhone +
-											Environment.NewLine + "TIN : " + CompanyDetails.TIN + "      VAT Reg.";
+											Environment.NewLine + "TIN : " + CompanyDetails.TIN + "      VAT Reg." +
+                                            Environment.NewLine + "BIR Acc #: " + CONFIG.AccreditationNo + " SN#: " + CONFIG.MachineSerialNo;
 					currentValues = new CrystalDecisions.Shared.ParameterValues();
 					currentValues.Add(discreteParam);
 					paramField.ApplyCurrentValues(currentValues);
@@ -9461,108 +9465,129 @@ namespace AceSoft.RetailPlus.Client.UI
 				DateTime dteTransactionDate = Convert.ToDateTime(lblTransDate.Text);
 
 				// Added checking of Cutofftime
-				if (mclsTerminalDetails.CheckCutOffTime)
-				{
+                if (mclsTerminalDetails.CheckCutOffTime)
+                {
                     DateTime dteStartCutOffTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.StartCutOffTime);
                     DateTime dteEndCutOffTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.EndCutOffTime);
 
-					// if StartCutOffTime is greater than EndCutOffTime
-					// this means that EndCutOffTime is in the morning.
-					// Add 1 more day.
-					if (dteStartCutOffTime >= dteEndCutOffTime)
-						dteEndCutOffTime = dteEndCutOffTime.AddDays(1);
+                    // if StartCutOffTime is greater than EndCutOffTime
+                    // this means that EndCutOffTime is in the morning.
+                    // Add 1 more day.
+                    if (dteStartCutOffTime >= dteEndCutOffTime)
+                        dteEndCutOffTime = dteEndCutOffTime.AddDays(1);
 
-					DateTime dteAllowedStartDateTime; DateTime dteAllowedEndDateTime;
-					if (dteTransactionDate < dteEndCutOffTime)
-					{
+                    DateTime dteAllowedStartDateTime; DateTime dteAllowedEndDateTime;
+                    if (dteTransactionDate < dteEndCutOffTime)
+                    {
                         dteAllowedStartDateTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.EndCutOffTime).AddDays(-1).AddMilliseconds(1);
                         dteAllowedEndDateTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.StartCutOffTime);
-					}
-					else
-					{
-						dteAllowedStartDateTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.EndCutOffTime).AddMilliseconds(1);
-						dteAllowedEndDateTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.StartCutOffTime).AddDays(1);
-					}
-					if (dteTransactionDate < dteAllowedEndDateTime)
-					{
-						dteStartCutOffTime = dteStartCutOffTime.AddDays(1);
-						dteEndCutOffTime = dteEndCutOffTime.AddDays(1);
-					}
+                    }
+                    else
+                    {
+                        dteAllowedStartDateTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.EndCutOffTime).AddMilliseconds(1);
+                        dteAllowedEndDateTime = Convert.ToDateTime(Convert.ToDateTime(lblTransDate.Text).ToString("yyyy-MM-dd") + " " + mclsTerminalDetails.StartCutOffTime).AddDays(1);
+                    }
+                    if (dteTransactionDate < dteAllowedEndDateTime)
+                    {
+                        dteStartCutOffTime = dteStartCutOffTime.AddDays(1);
+                        dteEndCutOffTime = dteEndCutOffTime.AddDays(1);
+                    }
 
-					DateTime dtePreviousStartCutOffTime = dteStartCutOffTime.AddDays(-1);
-					DateTime dtePreviousEndCutOffTime = dteEndCutOffTime.AddDays(-1);
-					DateTime dtePreviousAllowedStartDateTime = dteAllowedStartDateTime.AddDays(-1);
-					DateTime dtePreviousAllowedEndDateTime = dteAllowedEndDateTime.AddDays(-1);
+                    DateTime dtePreviousStartCutOffTime = dteStartCutOffTime.AddDays(-1);
+                    DateTime dtePreviousEndCutOffTime = dteEndCutOffTime.AddDays(-1);
+                    DateTime dtePreviousAllowedStartDateTime = dteAllowedStartDateTime.AddDays(-1);
+                    DateTime dtePreviousAllowedEndDateTime = dteAllowedEndDateTime.AddDays(-1);
 
-					clsEvent.AddEventLn("Checking Transactiondate: '" + dteTransactionDate.ToString("yyyy-MM-dd HH:mm") + "' before creating new transaction if not between cutoff: " + dteStartCutOffTime.ToString("MM/dd/yyyy HH:mm") + " & " + dteEndCutOffTime.ToString("MM/dd/yyyy HH:mm"), true);
-					if (dteTransactionDate >= dteStartCutOffTime && dteTransactionDate <= dteEndCutOffTime)
-					{
-						clsEvent.AddEventLn("Transaction is not allowed, transaction date is within the cutofftime.", true);
-						MessageBox.Show("Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-						txtBarCode.Text = "";
-						return false;
-					}
-					clsEvent.AddEventLn("Transaction is ok, transaction date is within allowable transaction date.", true);
+                    clsEvent.AddEventLn("Checking Transactiondate: '" + dteTransactionDate.ToString("yyyy-MM-dd HH:mm") + "' before creating new transaction if not between cutoff: " + dteStartCutOffTime.ToString("MM/dd/yyyy HH:mm") + " & " + dteEndCutOffTime.ToString("MM/dd/yyyy HH:mm"), true);
+                    if (dteTransactionDate >= dteStartCutOffTime && dteTransactionDate <= dteEndCutOffTime)
+                    {
+                        clsEvent.AddEventLn("Transaction is not allowed, transaction date is within the cutofftime.", true);
+                        MessageBox.Show("Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        txtBarCode.Text = "";
+                        return false;
+                    }
+                    clsEvent.AddEventLn("Transaction is ok, transaction date is within allowable transaction date.", true);
 
-					clsEvent.AddEventLn("Checking Transactiondate: '" + dteTransactionDate.ToString("yyyy-MM-dd HH:mm") + "' before creating new transaction if between selling time: " + dteAllowedStartDateTime.ToString("MM/dd/yyyy HH:mm") + " & " + dteAllowedEndDateTime.ToString("MM/dd/yyyy HH:mm"), true);
-					if (dteTransactionDate < dteAllowedStartDateTime && dteTransactionDate > dteAllowedEndDateTime)
-					{
-						clsEvent.AddEventLn("Transaction is not allowed, transaction date is not within the allowable transaction date.", true);
-						MessageBox.Show("Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-						txtBarCode.Text = "";
-						return false;
-					}
-					clsEvent.AddEventLn("Transaction is ok, transaction date is within allowable transaction date.", true);
+                    clsEvent.AddEventLn("Checking Transactiondate: '" + dteTransactionDate.ToString("yyyy-MM-dd HH:mm") + "' before creating new transaction if between selling time: " + dteAllowedStartDateTime.ToString("MM/dd/yyyy HH:mm") + " & " + dteAllowedEndDateTime.ToString("MM/dd/yyyy HH:mm"), true);
+                    if (dteTransactionDate < dteAllowedStartDateTime && dteTransactionDate > dteAllowedEndDateTime)
+                    {
+                        clsEvent.AddEventLn("Transaction is not allowed, transaction date is not within the allowable transaction date.", true);
+                        MessageBox.Show("Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        txtBarCode.Text = "";
+                        return false;
+                    }
+                    clsEvent.AddEventLn("Transaction is ok, transaction date is within allowable transaction date.", true);
 
                     DateTime dteMAXDateLastInitialized = clsTerminalReport.MAXDateLastInitialized(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo, Constants.C_DATE_MIN_VALUE);
 
-					clsEvent.AddEventLn("PreviousStartCutOff       :    " + dtePreviousStartCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-					clsEvent.AddEventLn("PreviousEndCutOff         :    " + dtePreviousEndCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-					clsEvent.AddEventLn("PrevAllowedStartDateTime  :    " + dtePreviousAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-					clsEvent.AddEventLn("PrevAllowedEndDateTime    :    " + dtePreviousAllowedEndDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
+                    clsEvent.AddEventLn("PreviousStartCutOff       :    " + dtePreviousStartCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
+                    clsEvent.AddEventLn("PreviousEndCutOff         :    " + dtePreviousEndCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
+                    clsEvent.AddEventLn("PrevAllowedStartDateTime  :    " + dtePreviousAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
+                    clsEvent.AddEventLn("PrevAllowedEndDateTime    :    " + dtePreviousAllowedEndDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
 
-					clsEvent.AddEventLn("StartCutOff               :    " + dteStartCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-					clsEvent.AddEventLn("EndCutOff                 :    " + dteEndCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-					clsEvent.AddEventLn("AllowedStartDateTime      :    " + dteAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-					clsEvent.AddEventLn("AllowedEndDateTime        :    " + dteAllowedEndDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
-					clsEvent.AddEventLn("MAXDateLastInitialized    :    " + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm:ss"), true);
+                    clsEvent.AddEventLn("StartCutOff               :    " + dteStartCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
+                    clsEvent.AddEventLn("EndCutOff                 :    " + dteEndCutOffTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
+                    clsEvent.AddEventLn("AllowedStartDateTime      :    " + dteAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
+                    clsEvent.AddEventLn("AllowedEndDateTime        :    " + dteAllowedEndDateTime.ToString("yyyy-MM-dd HH:mm:ss"), true);
+                    clsEvent.AddEventLn("MAXDateLastInitialized    :    " + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm:ss"), true);
 
-					clsEvent.AddEventLn("Checking if MAXDateLastInitialized: " + dteMAXDateLastInitialized.ToString("MM/dd/yyyy HH:mm") + " is already initialized.", true);
-					if (dteMAXDateLastInitialized >= dteAllowedStartDateTime && dteMAXDateLastInitialized <= dteAllowedEndDateTime)
-					{
-						clsTerminalReport.CommitAndDispose();
-						clsEvent.AddEventLn("Transaction is not allowed, ZRead is already initialized for this date.", true);
-						MessageBox.Show("Sorry selling is not permitted this time, ZRead is already initialized for this date.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-						txtBarCode.Text = "";
-						return false;
-					}
-					clsEvent.AddEventLn("OK. MAXDateLastInitialized: " + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm") + " is for previous zreading.", true);
-					clsEvent.AddEventLn("Checking Transactiondate: '" + dteMAXDateLastInitialized.AddDays(1).ToString("yyyy-MM-dd HH:mm") + "' < " + dteAllowedStartDateTime.ToString("MM/dd/yyyy HH:mm"), true);
-					if (dteMAXDateLastInitialized < dteAllowedStartDateTime)
-					{
-						if (dteMAXDateLastInitialized >= dtePreviousAllowedStartDateTime && dteMAXDateLastInitialized <= dtePreviousEndCutOffTime)
-						{
-							clsEvent.AddEventLn("OK: AllowedStartDateTime [" + dteAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "] is now less than MAXDateLastInitialized [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm:ss") + "].", true);
-						}
-						else
-						{
-							clsEvent.AddEventLn("Transaction is not allowed, transaction date is 2Days delayed. Please restart FE.", true);
-							MessageBox.Show("Transaction is not allowed, trasnsaction date is 2Days delayed. Please restart FE." +
-								Environment.NewLine + "Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-							txtBarCode.Text = "";
-							return false;
-						}
-					}
-					if (dteMAXDateLastInitialized > dteTransactionDate)
-					{
-						clsEvent.AddEventLn("Transaction is not allowed, transaction date is delayed. Please restart FE.", true);
-						MessageBox.Show("Transaction is not allowed, transaction date is delayed. Please restart FE." +
-							Environment.NewLine + "Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-						txtBarCode.Text = "";
-						return false;
-					}
-					clsEvent.AddEventLn("OK to sell...", true);
-				}
+                    clsEvent.AddEventLn("Checking if MAXDateLastInitialized: " + dteMAXDateLastInitialized.ToString("MM/dd/yyyy HH:mm") + " is already initialized.", true);
+                    if (dteMAXDateLastInitialized >= dteAllowedStartDateTime && dteMAXDateLastInitialized <= dteAllowedEndDateTime)
+                    {
+                        clsTerminalReport.CommitAndDispose();
+                        clsEvent.AddEventLn("Transaction is not allowed, ZRead is already initialized for this date.", true);
+                        MessageBox.Show("Sorry selling is not permitted this time, ZRead is already initialized for this date.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        txtBarCode.Text = "";
+                        return false;
+                    }
+                    clsEvent.AddEventLn("OK. MAXDateLastInitialized: " + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm") + " is for previous zreading.", true);
+                    clsEvent.AddEventLn("Checking Transactiondate: '" + dteMAXDateLastInitialized.AddDays(1).ToString("yyyy-MM-dd HH:mm") + "' < " + dteAllowedStartDateTime.ToString("MM/dd/yyyy HH:mm"), true);
+                    if (dteMAXDateLastInitialized < dteAllowedStartDateTime)
+                    {
+                        if (dteMAXDateLastInitialized >= dtePreviousAllowedStartDateTime && dteMAXDateLastInitialized <= dtePreviousEndCutOffTime)
+                        {
+                            clsEvent.AddEventLn("OK: AllowedStartDateTime [" + dteAllowedStartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "] is now less than MAXDateLastInitialized [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm:ss") + "].", true);
+                        }
+                        else
+                        {
+                            clsTerminalReport.CommitAndDispose();
+                            clsEvent.AddEventLn("Transaction is not allowed, transaction date is 2Days delayed. Please restart FE.", true);
+                            MessageBox.Show("Transaction is not allowed, trasnsaction date is 2Days delayed. Please restart FE." +
+                                Environment.NewLine + "Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            txtBarCode.Text = "";
+                            return false;
+                        }
+                    }
+                    if (dteMAXDateLastInitialized > dteTransactionDate)
+                    {
+                        clsTerminalReport.CommitAndDispose();
+                        clsEvent.AddEventLn("Transaction is not allowed, transaction date is delayed. Please restart FE.", true);
+                        MessageBox.Show("Transaction is not allowed, transaction date is delayed. Please restart FE." +
+                            Environment.NewLine + "Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        txtBarCode.Text = "";
+                        return false;
+                    }
+                    clsEvent.AddEventLn("OK to sell...", true);
+                }
+                else
+                {
+                    // this is to check if the last maxdate is too far from current date. that means they did not zread for at least 2 days which is not allowed.
+                    // or the system date has been altered.
+                    DateTime dteMAXDateLastInitialized = clsTerminalReport.MAXDateLastInitialized(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo, Constants.C_DATE_MIN_VALUE);
+
+                    if (dteTransactionDate > dteMAXDateLastInitialized.AddDays(2))
+                    {
+                        clsTerminalReport.CommitAndDispose();
+                        if (MessageBox.Show("Transaction date is too far from the last ZReadDate [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm") + "]. Do you want to continue?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
+                        {
+                            clsEvent.AddEventLn("Transaction is not allowed, transaction date is too far from the last ZReadDate [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm") + "]. Please change the date.", true);
+                            MessageBox.Show("Transaction is not allowed, transaction date is too far from the last ZReadDate [" + dteMAXDateLastInitialized.ToString("yyyy-MM-dd HH:mm") + "]. Please change the date." +
+                                Environment.NewLine + "Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            txtBarCode.Text = "";
+                            return false;
+                        }
+                    }
+                }
 
 				clsEvent.AddEventLn("[" + lblCashier.Text + "] Creating new transaction.", true);
 
@@ -9813,553 +9838,6 @@ namespace AceSoft.RetailPlus.Client.UI
 				lblProperties.Text = " " + lblProperties.Text.Replace(";", "\n");
 			}
 		}
-        //private void AddToReprintedTransaction(string strTransactionNo, string pstrTerminalNo)
-        //{
-        //    Cursor.Current = Cursors.WaitCursor;
-        //    try
-        //    {
-        //        clsEvent.AddEvent("Adding To no of reprinted transaction : " + strTransactionNo);
-
-        //        Data.TerminalReport clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
-        //        mConnection = clsTerminalReport.Connection; mTransaction = clsTerminalReport.Transaction;
-
-        //        clsTerminalReport.UpdateReprintedTransaction(mclsTerminalDetails.BranchID, pstrTerminalNo, strTransactionNo);
-
-        //        clsTerminalReport.CommitAndDispose();
-
-        //        clsEvent.AddEventLn("Done");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        InsertErrorLogToFile(ex, "ERROR!!! adding to reprinted transaction. TRACE: ");
-        //    }
-        //    Cursor.Current = Cursors.Default;
-        //}
-
-        //#region UpdateTerminalReport
-		
-        ////private delegate void UpdateTerminalReportDelegate(TransactionStatus TransStatus, decimal SubTotal, decimal Discount, decimal Charge, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, PaymentTypes PaymentType);
-        //private void UpdateTerminalReport(TransactionStatus TransStatus, decimal SubTotal, decimal Discount, decimal Charge, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, PaymentTypes PaymentType)
-        //{
-        //    decimal TotalNoOfItems = 0;
-        //    Int32 intNoOfCashTransactions = 0;
-        //    Int32 intNoOfChequeTransactions = 0;
-        //    Int32 intNoOfCreditCardTransactions = 0;
-        //    Int32 intNoOfCreditTransactions = 0;
-        //    Int32 intNoOfDebitTransactions = 0;
-        //    Int32 intNoOfCombinationPaymentTransactions = 0;
-        //    Int32 intNoOfDiscountedTransactions = 0;
-        //    Int32 intNoOfRewardPointsPayment = 0;
-        //    decimal ItemsDiscount = 0;
-        //    decimal decPromotionalItems = 0;
-        //    decimal decSeniorCitizenDiscount = 0;
-
-        //    foreach (System.Data.DataRow dr in ItemDataTable.Rows)
-        //    {
-
-        //        decimal ItemQuantity = 0;
-        //        try { ItemQuantity = Convert.ToDecimal(dr["Quantity"]); }
-        //        catch
-        //        {
-        //            try { ItemQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace("RETURN", "").Trim()); }
-        //            catch { }
-        //        }
-
-        //        decPromotionalItems += Convert.ToDecimal(dr["PromoApplied"]);
-
-        //        DiscountTypes ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["ItemDiscountType"].ToString().ToString());
-
-        //        if (ItemDiscountType != DiscountTypes.NotApplicable)
-        //        { ItemsDiscount += Convert.ToDecimal(dr["Discount"]); }
-
-        //        if (dr["DiscountCode"].ToString() == mclsTerminalDetails.SeniorCitizenDiscountCode)
-        //            decSeniorCitizenDiscount += ItemsDiscount;
-				
-        //        TotalNoOfItems += ItemQuantity;
-        //    }
-
-        //    switch (PaymentType)
-        //    {
-        //        case PaymentTypes.Cash: { intNoOfCashTransactions = 1; break; }
-        //        case PaymentTypes.Cheque: { intNoOfChequeTransactions = 1; break; }
-        //        case PaymentTypes.CreditCard: { intNoOfCreditCardTransactions = 1; break; }
-        //        case PaymentTypes.Credit: { intNoOfCreditTransactions = 1; break; }
-        //        case PaymentTypes.Debit: { intNoOfDebitTransactions=1; break; }
-        //        case PaymentTypes.RewardPoints: { intNoOfRewardPointsPayment = 1; break; }
-        //        case PaymentTypes.Combination: { intNoOfCombinationPaymentTransactions =1; break; }
-        //    }
-        //    if (Discount != 0)
-        //    {   
-        //        intNoOfDiscountedTransactions = 1;
-        //        if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode)
-        //            decSeniorCitizenDiscount += Discount;
-        //    }
-			
-        //    Data.TerminalReportDetails clsTerminalReportDetails = new Data.TerminalReportDetails();
-
-        //    if (TransStatus == TransactionStatus.Closed)
-        //    {
-        //        clsTerminalReportDetails.QuantitySold = TotalNoOfItems;
-        //        clsTerminalReportDetails.NoOfCashTransactions = intNoOfCashTransactions;
-        //        clsTerminalReportDetails.NoOfChequeTransactions = intNoOfChequeTransactions;
-        //        clsTerminalReportDetails.NoOfCreditCardTransactions = intNoOfCreditCardTransactions;
-        //        clsTerminalReportDetails.NoOfCreditTransactions = intNoOfCreditTransactions;
-        //        clsTerminalReportDetails.NoOfDebitPaymentTransactions = intNoOfDebitTransactions;
-        //        clsTerminalReportDetails.NoOfCombinationPaymentTransactions = intNoOfCombinationPaymentTransactions;
-        //        clsTerminalReportDetails.NoOfRewardPointsPayment = intNoOfRewardPointsPayment;
-        //        clsTerminalReportDetails.NoOfClosedTransactions = 1;
-        //        clsTerminalReportDetails.CashInDrawer = CashPayment;
-        //        clsTerminalReportDetails.CashSales = CashPayment;
-        //        clsTerminalReportDetails.ChequeSales = ChequePayment;
-        //        clsTerminalReportDetails.CreditCardSales = CreditCardPayment;
-        //        clsTerminalReportDetails.CreditSales = CreditPayment;
-        //        clsTerminalReportDetails.DebitPayment = DebitPayment;
-        //        clsTerminalReportDetails.RewardPointsPayment = RewardPointsPayment;
-        //        clsTerminalReportDetails.RewardConvertedPayment = RewardConvertedPayment;
-
-        //        if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode)
-        //        {
-        //            clsTerminalReportDetails.SNRDiscount = Discount;
-        //        }
-        //        else if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.PWDDiscountCode)
-        //        {
-        //            clsTerminalReportDetails.PWDDiscount = Discount;
-        //        }
-        //        else
-        //        {
-        //            clsTerminalReportDetails.OtherDiscount = Discount;
-        //        }
-        //        clsTerminalReportDetails.TotalDiscount = ItemsDiscount + Discount;
-        //        clsTerminalReportDetails.ItemsDiscount = ItemsDiscount;
-        //        clsTerminalReportDetails.SubTotalDiscount = Discount;
-
-        //        clsTerminalReportDetails.GrossSales = SubTotal;
-        //        clsTerminalReportDetails.NetSales = SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount;
-        //        clsTerminalReportDetails.GroupSales = SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount;
-        //        clsTerminalReportDetails.DailySales = SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount;
-
-        //        clsTerminalReportDetails.TotalCharge = Charge;
-        //        clsTerminalReportDetails.VAT = VAT;
-        //        clsTerminalReportDetails.VATableAmount = VATableAmount;
-        //        clsTerminalReportDetails.NonVATableAmount = NonVATableAmount;
-        //        clsTerminalReportDetails.VATExempt = VATExempt;
-        //        clsTerminalReportDetails.EVAT = EVAT;
-        //        clsTerminalReportDetails.EVATableAmount = EVATableAmount;
-        //        clsTerminalReportDetails.NonEVATableAmount = NonEVATableAmount;
-        //        clsTerminalReportDetails.LocalTax = LocalTax;
-
-        //        // march 19, 2009
-        //        clsTerminalReportDetails.NoOfDiscountedTransactions = intNoOfDiscountedTransactions;
-        //        clsTerminalReportDetails.CreditSalesTax = clsTerminalReportDetails.CreditPayment * (mclsTerminalDetails.VAT / 100);
-        //        clsTerminalReportDetails.PromotionalItems = decPromotionalItems;
-        //    }
-        //    else if (TransStatus == TransactionStatus.Void)
-        //    {
-        //        clsTerminalReportDetails.QuantitySold = 0;
-        //        clsTerminalReportDetails.NoOfVoidTransactions = 1;
-        //        clsTerminalReportDetails.VoidSales = SubTotal;
-        //        clsTerminalReportDetails.DailySales = 0; // change refund
-        //        clsTerminalReportDetails.GrossSales = 0;
-        //        clsTerminalReportDetails.NetSales = 0;
-        //    }
-        //    else if (TransStatus == TransactionStatus.Refund)
-        //    {
-        //        clsTerminalReportDetails.QuantitySold = -TotalNoOfItems;
-        //        clsTerminalReportDetails.NoOfRefundTransactions = 1;
-        //        clsTerminalReportDetails.RefundSales = SubTotal;
-        //        clsTerminalReportDetails.CashInDrawer = -CashPayment;
-
-        //        if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode)
-        //        {
-        //            clsTerminalReportDetails.SNRDiscount = -Discount;
-        //        }
-        //        else if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.PWDDiscountCode)
-        //        {
-        //            clsTerminalReportDetails.PWDDiscount = -Discount;
-        //        }
-        //        else
-        //        {
-        //            clsTerminalReportDetails.OtherDiscount = -Discount;
-        //        }
-        //        clsTerminalReportDetails.TotalDiscount = -(ItemsDiscount + Discount);
-        //        clsTerminalReportDetails.ItemsDiscount = -ItemsDiscount;
-        //        clsTerminalReportDetails.SubTotalDiscount = -Discount;
-
-        //        clsTerminalReportDetails.GrossSales= -SubTotal;
-        //        clsTerminalReportDetails.NetSales = -(SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount);
-        //        clsTerminalReportDetails.GroupSales = -(SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount);
-        //        clsTerminalReportDetails.DailySales = -(SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount);
-
-        //        clsTerminalReportDetails.TotalCharge = -Charge;
-        //        clsTerminalReportDetails.VAT = -VAT;
-        //        clsTerminalReportDetails.VATableAmount = -VATableAmount;
-        //        clsTerminalReportDetails.NonVATableAmount = -NonVATableAmount;
-        //        clsTerminalReportDetails.VATExempt = -VATExempt;
-        //        clsTerminalReportDetails.EVAT = -EVAT;
-        //        clsTerminalReportDetails.EVATableAmount = -EVATableAmount;
-        //        clsTerminalReportDetails.NonEVATableAmount = -NonEVATableAmount;
-        //        clsTerminalReportDetails.LocalTax = -LocalTax;
-
-        //        // march 19, 2009
-        //        clsTerminalReportDetails.CreditSalesTax = -(clsTerminalReportDetails.CreditPayment * (mclsTerminalDetails.VAT / 100));
-        //    }
-        //    else if (TransStatus == TransactionStatus.CreditPayment)
-        //    {
-        //        // apr 12, 2014 put all to 0
-        //        //clsTerminalReportDetails.NoOfCashTransactions = intNoOfCashTransactions;
-        //        //clsTerminalReportDetails.NoOfChequeTransactions = intNoOfChequeTransactions;
-        //        //clsTerminalReportDetails.NoOfCreditCardTransactions = intNoOfCreditCardTransactions;
-        //        //clsTerminalReportDetails.NoOfCombinationPaymentTransactions = intNoOfCombinationPaymentTransactions;
-        //        clsTerminalReportDetails.NoOfCreditPaymentTransactions = 1;
-
-        //        //clsTerminalReportDetails.CashInDrawer = CashPayment;
-        //        //clsTerminalReportDetails.CashSales = CashPayment;
-        //        //clsTerminalReportDetails.ChequeSales = ChequePayment;
-        //        //clsTerminalReportDetails.CreditCardSales = CreditCardPayment;
-        //        //clsTerminalReportDetails.DebitPayment = DebitPayment;
-        //        clsTerminalReportDetails.CashInDrawer = CashPayment;
-        //        clsTerminalReportDetails.CreditPaymentCash = CashPayment;
-        //        clsTerminalReportDetails.CreditPaymentCheque = ChequePayment;
-        //        clsTerminalReportDetails.CreditPaymentCreditCard = CreditCardPayment;
-        //        clsTerminalReportDetails.CreditPaymentDebit = DebitPayment;
-        //        clsTerminalReportDetails.CreditPayment = CashPayment + ChequePayment + CreditCardPayment + DebitPayment; // SubTotal + Charge; Apr 12, 2014 change to new line
- 
-        //        // march 19, 2009
-        //        // Apr 12, 2014 change to 0 coz its already taxed when goods are sold
-        //        clsTerminalReportDetails.CreditSalesTax = 0; // clsTerminalReportDetails.CreditPayment * (mclsTerminalDetails.VAT / 100); 
-        //        clsTerminalReportDetails.PromotionalItems = decPromotionalItems;
-
-        //        /// may 28, 2006 remove from daily sales and gross sales 
-        //        /// since it was already declared during the credit payment of transaction
-        //        //				clsTerminalReportDetails.DailySales = SubTotal;
-        //        //				clsTerminalReportDetails.GrossSales = SubTotal + ItemsDiscount;
-        //    }
-        //    clsTerminalReportDetails.NoOfTotalTransactions = 1;
-
-        //    clsTerminalReportDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
-        //    clsTerminalReportDetails.BranchID = mclsTerminalDetails.BranchID;
-
-        //    Data.TerminalReport clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
-        //    mConnection = clsTerminalReport.Connection; mTransaction = clsTerminalReport.Transaction;
-
-        //    clsTerminalReport.UpdateTransactionSales(clsTerminalReportDetails);
-        //    //clsTerminalReport.CommitAndDispose(); --Remove this. Should be commited by the calling object
-        //}
-
-        //#endregion
-
-        //#region UpdateCashierReport
-		
-        ////private delegate void UpdateCashierReportDelegate(TransactionStatus TransStatus, decimal SubTotal, decimal Discount, decimal Charge, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal EVAT, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, PaymentTypes PaymentType);
-        //private void UpdateCashierReport(TransactionStatus TransStatus, decimal SubTotal, decimal Discount, decimal Charge, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, PaymentTypes PaymentType)
-        //{
-        //    //			decimal   NoOfItemsDiscounted = 0;
-        //    //			decimal   NoOfItemsSold = 0;
-        //    //			decimal   NoOfItemsVoid = 0;
-        //    //			decimal   NoOfItemsReturned = 0;
-        //    //			decimal   NoOfItemsSuspended = 0;
-        //    //			decimal   NoOfItemsRefunded = 0;
-        //    decimal TotalNoOfItems = 0;
-        //    Int32 intNoOfCashTransactions = 0;
-        //    Int32 intNoOfChequeTransactions = 0;
-        //    Int32 intNoOfCreditCardTransactions = 0;
-        //    Int32 intNoOfCreditTransactions = 0;
-        //    Int32 intNoOfDebitTransactions = 0;
-        //    Int32 intNoOfCombinationPaymentTransactions = 0;
-        //    Int32 intNoOfDiscountedTransactions = 0;
-        //    Int32 intNoOfRewardPointsPayment = 0;
-        //    decimal ItemsDiscount = 0;
-        //    decimal decPromotionalItems = 0;
-
-        //    foreach (System.Data.DataRow dr in ItemDataTable.Rows)
-        //    {
-
-        //        decimal ItemQuantity = 0;
-        //        try { ItemQuantity = Convert.ToDecimal(dr["Quantity"]); }
-        //        catch
-        //        {
-        //            try { ItemQuantity = Convert.ToDecimal(dr["Quantity"].ToString().Replace("RETURN", "").Trim()); }
-        //            catch { }
-        //        }
-
-        //        decPromotionalItems += Convert.ToDecimal(dr["PromoApplied"]);
-
-        //        DiscountTypes ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["ItemDiscountType"].ToString().ToString());
-
-        //        if (ItemDiscountType != DiscountTypes.NotApplicable)
-        //        {
-        //            ItemsDiscount += Convert.ToDecimal(dr["Discount"]);
-        //        }
-
-        //        TotalNoOfItems += ItemQuantity;
-        //    }
-        //    switch (PaymentType)
-        //    {
-        //        case PaymentTypes.Cash: { intNoOfCashTransactions = 1; break; }
-        //        case PaymentTypes.Cheque: { intNoOfChequeTransactions = 1; break; }
-        //        case PaymentTypes.CreditCard: { intNoOfCreditCardTransactions = 1; break; }
-        //        case PaymentTypes.Credit: { intNoOfCreditTransactions = 1; break; }
-        //        case PaymentTypes.Debit: { intNoOfDebitTransactions = 1; break; }
-        //        case PaymentTypes.RewardPoints: { intNoOfRewardPointsPayment = 1; break; }
-        //        case PaymentTypes.Combination: { intNoOfCombinationPaymentTransactions = 1; break; }
-        //    }
-
-        //    Data.CashierReportDetails clsCashierReportDetails = new Data.CashierReportDetails();
-
-        //    if (TransStatus == TransactionStatus.Closed)
-        //    {
-        //        clsCashierReportDetails.QuantitySold = TotalNoOfItems;
-        //        clsCashierReportDetails.NoOfCashTransactions = intNoOfCashTransactions;
-        //        clsCashierReportDetails.NoOfChequeTransactions = intNoOfChequeTransactions;
-        //        clsCashierReportDetails.NoOfCreditCardTransactions = intNoOfCreditCardTransactions;
-        //        clsCashierReportDetails.NoOfCreditTransactions = intNoOfCreditTransactions;
-        //        clsCashierReportDetails.NoOfDebitPaymentTransactions = intNoOfDebitTransactions;
-        //        clsCashierReportDetails.NoOfCombinationPaymentTransactions = intNoOfCombinationPaymentTransactions;
-        //        clsCashierReportDetails.NoOfRewardPointsPayment = intNoOfRewardPointsPayment;
-        //        clsCashierReportDetails.NoOfClosedTransactions = 1;
-        //        clsCashierReportDetails.CashSales = CashPayment;
-        //        clsCashierReportDetails.ChequeSales = ChequePayment;
-        //        clsCashierReportDetails.CreditCardSales = CreditCardPayment;
-        //        clsCashierReportDetails.CreditSales = CreditPayment;
-        //        clsCashierReportDetails.DebitPayment = DebitPayment;
-        //        clsCashierReportDetails.RewardPointsPayment = RewardPointsPayment;
-        //        clsCashierReportDetails.RewardConvertedPayment = RewardConvertedPayment;
-
-        //        if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode)
-        //        {
-        //            clsCashierReportDetails.SNRDiscount = Discount;
-        //        }
-        //        else if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.PWDDiscountCode)
-        //        {
-        //            clsCashierReportDetails.PWDDiscount = Discount;
-        //        }
-        //        else
-        //        {
-        //            clsCashierReportDetails.OtherDiscount = Discount;
-        //        }
-        //        clsCashierReportDetails.TotalDiscount = ItemsDiscount + Discount;
-        //        clsCashierReportDetails.ItemsDiscount = ItemsDiscount;
-        //        clsCashierReportDetails.SubTotalDiscount = Discount;
-
-        //        clsCashierReportDetails.GrossSales = SubTotal;
-        //        clsCashierReportDetails.NetSales = SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount;
-        //        clsCashierReportDetails.GroupSales = SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount;
-        //        clsCashierReportDetails.DailySales = SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount;
-
-        //        clsCashierReportDetails.TotalCharge = Charge;
-        //        clsCashierReportDetails.VAT = VAT;
-        //        clsCashierReportDetails.VATableAmount = VATableAmount;
-        //        clsCashierReportDetails.NonVATableAmount = NonVATableAmount;
-        //        clsCashierReportDetails.VATExempt = VATExempt;
-        //        clsCashierReportDetails.EVAT = EVAT;
-        //        clsCashierReportDetails.EVATableAmount = EVATableAmount;
-        //        clsCashierReportDetails.NonEVATableAmount = NonEVATableAmount;
-        //        clsCashierReportDetails.LocalTax = LocalTax;
-
-        //        // march 19, 2009
-        //        clsCashierReportDetails.NoOfDiscountedTransactions = intNoOfDiscountedTransactions;
-        //        clsCashierReportDetails.CreditSalesTax = clsCashierReportDetails.CreditPayment * (mclsTerminalDetails.VAT / 100);
-        //        clsCashierReportDetails.PromotionalItems = decPromotionalItems;
-        //    }
-        //    else if (TransStatus == TransactionStatus.Void)
-        //    {
-        //        clsCashierReportDetails.QuantitySold = 0;
-        //        clsCashierReportDetails.NoOfVoidTransactions = 1;
-        //        clsCashierReportDetails.VoidSales = SubTotal;
-        //    }
-        //    else if (TransStatus == TransactionStatus.Refund)
-        //    {
-        //        clsCashierReportDetails.QuantitySold = -TotalNoOfItems;
-        //        clsCashierReportDetails.NoOfRefundTransactions = 1;
-        //        clsCashierReportDetails.RefundSales = SubTotal;
-        //        clsCashierReportDetails.CashInDrawer = -CashPayment;
-        //        // Sep 4, 2014 remove no effect on sales
-        //        //clsCashierReportDetails.CashSales = -CashPayment;
-        //        //clsCashierReportDetails.ChequeSales = -ChequePayment;
-        //        //clsCashierReportDetails.CreditCardSales = -CreditCardPayment;
-        //        //clsCashierReportDetails.CreditSales = -CreditPayment;
-        //        //clsCashierReportDetails.DebitPayment = -DebitPayment;
-
-        //        if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode)
-        //        {
-        //            clsCashierReportDetails.SNRDiscount = -Discount;
-        //        }
-        //        else if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.PWDDiscountCode)
-        //        {
-        //            clsCashierReportDetails.PWDDiscount = -Discount;
-        //        }
-        //        else
-        //        {
-        //            clsCashierReportDetails.OtherDiscount = -Discount;
-        //        }
-        //        clsCashierReportDetails.TotalDiscount = -(ItemsDiscount + Discount);
-        //        clsCashierReportDetails.ItemsDiscount = -ItemsDiscount;
-        //        clsCashierReportDetails.SubTotalDiscount = -Discount;
-
-        //        clsCashierReportDetails.GrossSales = -SubTotal;
-        //        clsCashierReportDetails.NetSales = -(SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount);
-        //        clsCashierReportDetails.GroupSales = -(SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount);
-        //        clsCashierReportDetails.DailySales = -(SubTotal - (VATExempt * mclsTerminalDetails.VAT / 100) - Discount);
-
-        //        clsCashierReportDetails.TotalCharge = -Charge;
-        //        clsCashierReportDetails.VAT = -VAT;
-        //        clsCashierReportDetails.VATableAmount = -VATableAmount;
-        //        clsCashierReportDetails.NonVATableAmount = -NonVATableAmount;
-        //        clsCashierReportDetails.VATExempt = -VATExempt;
-        //        clsCashierReportDetails.EVAT = -EVAT;
-        //        clsCashierReportDetails.EVATableAmount = -EVATableAmount;
-        //        clsCashierReportDetails.NonEVATableAmount = -NonEVATableAmount;
-        //        clsCashierReportDetails.LocalTax = -LocalTax;
-        //    }
-        //    else if (TransStatus == TransactionStatus.CreditPayment)
-        //    {
-        //        // Apr 12, 2014 put this all to zero
-        //        //clsCashierReportDetails.NoOfCashTransactions = intNoOfCashTransactions;
-        //        //clsCashierReportDetails.NoOfChequeTransactions = intNoOfChequeTransactions;
-        //        //clsCashierReportDetails.NoOfCreditCardTransactions = intNoOfCreditCardTransactions;
-        //        //clsCashierReportDetails.NoOfCombinationPaymentTransactions = intNoOfCombinationPaymentTransactions;
-        //        clsCashierReportDetails.NoOfCreditPaymentTransactions = 1;
-
-        //        // Apr 12, 2014 put this all to zero
-        //        //clsCashierReportDetails.CashSales = CashPayment;
-        //        //clsCashierReportDetails.ChequeSales = ChequePayment;
-        //        //clsCashierReportDetails.CreditCardSales = CreditCardPayment;
-        //        //clsCashierReportDetails.DebitPayment = DebitPayment;
-        //        clsCashierReportDetails.CashInDrawer = CashPayment;
-        //        clsCashierReportDetails.CreditPaymentCash = CashPayment;
-        //        clsCashierReportDetails.CreditPaymentCheque = ChequePayment;
-        //        clsCashierReportDetails.CreditPaymentCreditCard = CreditCardPayment;
-        //        clsCashierReportDetails.CreditPaymentDebit = DebitPayment;
-        //        clsCashierReportDetails.CreditPayment = CashPayment + ChequePayment + CreditCardPayment + DebitPayment;
-				
-        //        /// may 28, 2006 remove from daily and gross sales 
-        //        /// since it was already declared during the credit payment of transaction
-        //        //	clsCashierReportDetails.DailySales = SubTotal;
-        //        //	clsCashierReportDetails.GrossSales = SubTotal + ItemsDiscount;
-
-        //        // march 19, 2009
-        //        // apr 12, 2014 remove this coz this is alredy declared before
-        //        //clsCashierReportDetails.CreditSalesTax = clsCashierReportDetails.CreditPayment * (mclsTerminalDetails.VAT / 100);
-        //        clsCashierReportDetails.PromotionalItems = decPromotionalItems;
-        //    }
-        //    clsCashierReportDetails.NoOfTotalTransactions = 1;
-
-        //    clsCashierReportDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
-        //    clsCashierReportDetails.BranchID = mclsTerminalDetails.BranchID;
-        //    clsCashierReportDetails.CashierID = mclsSalesTransactionDetails.CashierID;
-
-        //    Data.CashierReports clsCashierReport = new Data.CashierReports(mConnection, mTransaction);
-        //    mConnection = clsCashierReport.Connection; mTransaction = clsCashierReport.Transaction;
-
-        //    clsCashierReport.UpdateTransactionSales(clsCashierReportDetails);
-        //}
-
-        //#endregion
-
-        //private DialogResult GetWriteAccess(long UID, AccessTypes accesstype)
-        //{
-        //    DialogResult resRetValue = DialogResult.None;
-
-        //    AccessRights clsAccessRights = new AccessRights(mConnection, mTransaction);
-        //    AccessRightsDetails clsDetails = new AccessRightsDetails();
-
-        //    clsDetails = clsAccessRights.Details(UID, (Int16)accesstype);
-
-        //    if (clsDetails.Write)
-        //    {
-        //        resRetValue = DialogResult.OK;
-        //    }
-
-        //    clsAccessRights.CommitAndDispose();
-
-        //    return resRetValue;
-        //}
-        //private void SavePayments(ArrayList arrCashPaymentDetails, ArrayList arrChequePaymentDetails, ArrayList arrCreditCardPaymentDetails, ArrayList arrCreditPaymentDetails, ArrayList arrDebitPaymentDetails)
-        //{
-        //    Data.CashPaymentDetails[] CashPaymentDetails = new Data.CashPaymentDetails[0];
-        //    if (arrCashPaymentDetails.Count > 0)
-        //    {
-        //        CashPaymentDetails = new Data.CashPaymentDetails[arrCashPaymentDetails.Count];
-        //        arrCashPaymentDetails.CopyTo(CashPaymentDetails);
-        //    }
-
-        //    Data.ChequePaymentDetails[] ChequePaymentDetails = new Data.ChequePaymentDetails[0];
-        //    if (arrChequePaymentDetails.Count > 0)
-        //    {
-        //        ChequePaymentDetails = new Data.ChequePaymentDetails[arrChequePaymentDetails.Count];
-        //        arrChequePaymentDetails.CopyTo(ChequePaymentDetails);
-        //    }
-
-        //    Data.CreditCardPaymentDetails[] CreditCardPaymentDetails = new Data.CreditCardPaymentDetails[0];
-        //    if (arrCreditCardPaymentDetails.Count > 0)
-        //    {
-        //        CreditCardPaymentDetails = new Data.CreditCardPaymentDetails[arrCreditCardPaymentDetails.Count];
-        //        arrCreditCardPaymentDetails.CopyTo(CreditCardPaymentDetails);
-        //    }
-
-        //    Data.CreditPaymentDetails[] CreditPaymentDetails = new Data.CreditPaymentDetails[0];
-        //    if (arrCreditPaymentDetails != null && arrCreditPaymentDetails.Count > 0)
-        //    {
-        //        CreditPaymentDetails = new Data.CreditPaymentDetails[arrCreditPaymentDetails.Count];
-        //        arrCreditPaymentDetails.CopyTo(CreditPaymentDetails);
-        //    }
-
-        //    Data.DebitPaymentDetails[] DebitPaymentDetails = new Data.DebitPaymentDetails[0];
-        //    if (arrDebitPaymentDetails != null && arrDebitPaymentDetails.Count > 0)
-        //    {
-        //        DebitPaymentDetails = new Data.DebitPaymentDetails[arrDebitPaymentDetails.Count];
-        //        arrDebitPaymentDetails.CopyTo(DebitPaymentDetails);
-        //    }
-        //    if (mboIsRefund)
-        //    {
-        //        // Lemu 2011-06-09 : Added saving of debit payments as deposit if refund. Requested by Frank.
-        //        Data.Deposits clsDeposit = new Data.Deposits(mConnection, mTransaction);
-        //        mConnection = clsDeposit.Connection; mTransaction = clsDeposit.Transaction;
-
-        //        Data.DepositDetails clsDepositDetails = new Data.DepositDetails();
-        //        foreach(Data.DebitPaymentDetails clsDebitPaymentDetails in DebitPaymentDetails)
-        //        {
-        //            clsDepositDetails = new Data.DepositDetails();
-        //            clsDepositDetails.Amount = clsDebitPaymentDetails.Amount;
-        //            clsDepositDetails.PaymentType = PaymentTypes.Debit;
-        //            clsDepositDetails.DateCreated = mclsSalesTransactionDetails.TransactionDate;
-        //            clsDepositDetails.BranchDetails = new Data.BranchDetails
-        //            {
-        //                BranchID = mclsTerminalDetails.BranchID
-        //            };
-        //            clsDepositDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
-        //            clsDepositDetails.CashierID = mclsSalesTransactionDetails.CashierID;
-        //            clsDepositDetails.ContactID = mclsSalesTransactionDetails.CustomerID;
-        //            clsDepositDetails.ContactName = mclsSalesTransactionDetails.CustomerName;
-        //            clsDepositDetails.Remarks = "Added during refund of transaction #: " + mclsSalesTransactionDetails.TransactionNo;
-					
-        //            clsDeposit.Insert(clsDepositDetails);
-        //            Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
-        //            mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
-
-        //            clsContact.AddDebit(clsDepositDetails.ContactID, clsDepositDetails.Amount);
-        //        }
-        //        clsDeposit.CommitAndDispose();
-
-        //        InsertAuditLog(AccessTypes.Deposit, "Deposit: type='" + clsDepositDetails.PaymentType.ToString("G") + "' amount='" + clsDepositDetails.Amount.ToString(",##0.#0") + "'" + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-        //        // Remove Debit Payments so that it wont be saved in the debit payment table
-        //        DebitPaymentDetails = new Data.DebitPaymentDetails[0];
-        //    }
-
-        //    Data.PaymentDetails Details = new Data.PaymentDetails();
-        //    Details.TransactionID = Convert.ToInt64(lblTransNo.Tag);
-        //    Details.arrCashPaymentDetails = CashPaymentDetails;
-        //    Details.arrChequePaymentDetails = ChequePaymentDetails;
-        //    Details.arrCardPaymentDetails = CreditCardPaymentDetails;
-        //    Details.arrCreditPaymentDetails = CreditPaymentDetails;
-        //    Details.arrDebitPaymentDetails = DebitPaymentDetails;
-
-        //    Data.Payment clsPayment = new Data.Payment(mConnection, mTransaction);
-        //    mConnection = clsPayment.Connection; mTransaction = clsPayment.Transaction;
-
-        //    clsPayment.Insert(Details);
-        //}
 		private bool IsStartCutOffTimeOK()
 		{
 			bool bolRetValue = false;
@@ -10432,6 +9910,8 @@ namespace AceSoft.RetailPlus.Client.UI
 								clsEvent.AddEventLn("System is Auto-Initializing ZREAD", true);
 
                                 clsTerminalReportDetails = clsTerminalReport.Details(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
+                                mstrBeginningTransactionNo = clsTerminalReportDetails.BeginningTransactionNo;
+
 								PrintZRead(false, clsTerminalReportDetails);
 
 								dteMAXDateLastInitialized = Convert.ToDateTime(dteMAXDateLastInitialized.AddDays(1));
@@ -10453,6 +9933,8 @@ namespace AceSoft.RetailPlus.Client.UI
 							clsEvent.AddEventLn("System is Auto-Initializing ZREAD", true);
 
                             clsTerminalReportDetails = clsTerminalReport.Details(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
+                            mstrBeginningTransactionNo = clsTerminalReportDetails.BeginningTransactionNo;
+
 							PrintZRead(false, clsTerminalReportDetails);
 
 							dteMAXDateLastInitialized = Convert.ToDateTime(dteMAXDateLastInitialized.AddDays(1));

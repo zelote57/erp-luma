@@ -19,18 +19,17 @@ namespace AceSoft.RetailPlus.Client.UI
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.Container components = null;
-
-        private DialogResult dialog;
-        private Int64 mintUserID;
-        private AccessTypes mAccessType;
         private System.Windows.Forms.PictureBox imgIcon;
         private AceSoft.KeyBoardHook.Keyboardcontrol keyboardcontrol1;
         private GroupBox groupBox1;
         private Button cmdCancel;
         private Button cmdEnter;
-        private string mstrHeader;
+        
         private TextBox txtSelectedtextBox = new TextBox();
 
+        #region Property Get/Set
+
+        private DialogResult dialog;
         public DialogResult Result
         {
             get
@@ -39,6 +38,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private Int64 mintUserID;
         public Int64 UserID
         {
             get
@@ -51,6 +51,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private string mstrHeader;
         public string Header
         {
             get
@@ -63,7 +64,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-
+        private AccessTypes mAccessType;
         public AccessTypes AccessType
         {
             set
@@ -72,6 +73,10 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails { set { this.mclsTerminalDetails = value; } }
+
+        #endregion
 
         public LogInWnd()
         {
@@ -334,11 +339,13 @@ namespace AceSoft.RetailPlus.Client.UI
                     switch (iUID)
                     {
                         case 0:
+                            Methods.InsertAuditLog(mclsTerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
                             iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty;
                             MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
                             break;
 
                         default:
+                            Methods.InsertAuditLog(mclsTerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
                             iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty;
                             MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
                             break;
@@ -349,6 +356,7 @@ namespace AceSoft.RetailPlus.Client.UI
             {
                 if (iUID == 0)
                 {
+                    Methods.InsertAuditLog(mclsTerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
                     iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty; txtUserName.Focus();
                     MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
                 }
@@ -362,6 +370,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         if (clsAuditTrailDetails[0].ActivityDate >= DateTime.Now.AddMinutes(-10))
                         {
+                            Methods.InsertAuditLog(mclsTerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text + " already logged-in.");
                             iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty; txtUserName.Focus();
                             MessageBox.Show("You are still doing transaction at " + clsAuditTrailDetails[0].IPAddress + "." + Environment.NewLine +
                                             "Please logout from that terminal first or wait for 1 hour(s) for automatic logout.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -389,6 +398,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (mstrHeader != string.Empty)
                 lblHeader.Text = mstrHeader;
+
+            keyboardcontrol1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
         }
         private void txtUserName_GotFocus(object sender, System.EventArgs e)
         {

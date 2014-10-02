@@ -505,14 +505,14 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public void GenerateItemsForReorder(long ClosingID)
+		public void GenerateItemsForReorder(Int32 TerminalID, Int64 ClosingID)
 		{
 			try 
 			{
 				GetConnection();
 
                 Terminal clsTerminal = new Terminal(base.Connection, base.Transaction);
-				TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
+				TerminalDetails clsTerminalDetails = clsTerminal.Details(TerminalID);
 
 				ClosingDetails clsClosingDetails = Details(ClosingID);
 

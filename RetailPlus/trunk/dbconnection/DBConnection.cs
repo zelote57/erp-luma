@@ -23,8 +23,12 @@ namespace AceSoft.RetailPlus
         public static string ServerIP()
         {
             string ServerIP = "localhost";
-            try { ServerIP = System.Configuration.ConfigurationManager.AppSettings["ServerIP"].ToString(); }
-            catch { }
+            
+            if (System.Configuration.ConfigurationManager.AppSettings["ServerIP"] != null)
+            {
+                try { ServerIP = System.Configuration.ConfigurationManager.AppSettings["ServerIP"].ToString(); }
+                catch { }
+            }
 
             return ServerIP;
         }
@@ -32,8 +36,12 @@ namespace AceSoft.RetailPlus
         public static string MasterServerIP()
         {
             string ServerIP = "localhost";
-            try { ServerIP = System.Configuration.ConfigurationManager.AppSettings["MasterServerIP"].ToString(); }
-            catch { }
+
+            if (System.Configuration.ConfigurationManager.AppSettings["MasterServerIP"] != null)
+            {
+                try { ServerIP = System.Configuration.ConfigurationManager.AppSettings["MasterServerIP"].ToString(); }
+                catch { }
+            }
 
             return ServerIP;
         }
@@ -41,8 +49,12 @@ namespace AceSoft.RetailPlus
         public static string DBName()
         {
             string DBName = "pos";
-            try { DBName = System.Configuration.ConfigurationManager.AppSettings["DBName"].ToString(); }
-            catch { }
+
+            if (System.Configuration.ConfigurationManager.AppSettings["DBName"] != null)
+            {
+                try { DBName = System.Configuration.ConfigurationManager.AppSettings["DBName"].ToString(); }
+                catch { }
+            }
 
             return DBName;
         }
@@ -50,17 +62,27 @@ namespace AceSoft.RetailPlus
         public static string MasterDBName()
         {
             string DBName = "pos_master";
-            try { DBName = System.Configuration.ConfigurationManager.AppSettings["MasterDBName"].ToString(); }
-            catch { }
+
+            if (System.Configuration.ConfigurationManager.AppSettings["MasterDBName"] != null)
+            {
+                try { DBName = System.Configuration.ConfigurationManager.AppSettings["MasterDBName"].ToString(); }
+                catch { }
+            }
 
             return DBName;
         }
 
-        public static int DBPort()
+        public static Int32 DBPort()
         {
-            int DBPort = 3306;
-            try { DBPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DBPort"]); }
-            catch { }
+            Int32 DBPort = 3306;
+
+            if (System.Configuration.ConfigurationManager.AppSettings["DBPort"] != null)
+            {
+                try { Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings["DBPort"], out DBPort); }
+                catch { }
+
+                if (DBPort == 0) DBPort = 3306;
+            }
 
             return DBPort;
         } 

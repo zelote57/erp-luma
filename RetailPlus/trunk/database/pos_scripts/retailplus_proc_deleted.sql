@@ -371,3 +371,245 @@ BEGIN
 END;
 GO
 delimiter ;
+
+
+
+/*********************************
+	procTerminalReportInitializeZRead
+	Lemuel E. Aceron
+	
+	May 5, 2009 - insert the ff items in tblTerminalReportHistory
+					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
+					PromotionalItems, CreditSalesTax, BatchCounter
+					
+	May 5, 2009 - insert the ff items in tblTerminalReportHistory
+					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
+					PromotionalItems, CreditSalesTax
+
+	CALL procTerminalReportInitializeZRead(1, '01', now(),'Lem', 0);
+*********************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procTerminalReportInitializeZRead
+GO
+
+create procedure procTerminalReportInitializeZRead(
+	IN intBranchID int(4), 
+	IN strTerminalNo varchar(10), 
+	IN dteDateLastInitialized DateTime, 
+	IN strInitializedBy varchar(150),
+	IN intWithOutTF tinyint(1)
+)
+BEGIN
+	DECLARE decTrustFund DECIMAL(18,3) DEFAULT 0;
+
+	-- use to remove the TF in the newgrandtotal
+	-- use to add the TF in the new oldgrandtotal
+	DECLARE decVirtualTrustFund DECIMAL(18,3) DEFAULT 0;
+
+	DECLARE decOldGrandTotal DECIMAL(18,3) DEFAULT 0;
+	DECLARE decNewGrandTotal DECIMAL(18,3) DEFAULT 0;
+
+	DECLARE strEndingTransactionNo VARCHAR(30);
+	DECLARE strEndingORNo VARCHAR(30);
+
+	SET decOldGrandTotal = (SELECT OldGrandTotal FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+
+	IF (intWithOutTF = 1 OR intWithOutTF = -1) THEN
+		SET decTrustFund = 0;
+		SET decVirtualTrustFund = (SELECT TRUSTFUND FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		SET decNewGrandTotal = (SELECT OldGrandTotal + (GrossSales * (100-decVirtualTrustFund)/100) FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+	ELSE
+		SET decTrustFund = (SELECT TRUSTFUND FROM tblTerminal WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		SET decVirtualTrustFund = 0;
+
+		SET decOldGrandTotal = (SELECT OldGrandTotal FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		SET decNewGrandTotal = (SELECT NewGrandTotal FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		
+	END IF;
+
+	SET strEndingTransactionNo = (SELECT EndingTransactionNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+	SET strEndingORNo = (SELECT EndingORNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+
+	INSERT INTO tblTerminalReportHistory (
+					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
+					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
+					ItemSold, QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
+					VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
+					ChequeSales, CreditCardSales, CreditSales, CreditPayment, CreditPaymentCash, CreditPaymentCheque,
+					CreditPaymentCreditCard, CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
+					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
+					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
+					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
+					TotalDeposit, CashDeposit, ChequeDeposit, CreditCardDeposit, DebitDeposit,
+					BeginningBalance, VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount,
+					NoOfCashTransactions, NoOfChequeTransactions, NoOfCreditCardTransactions, 
+					NoOfCreditTransactions, NoOfCombinationPaymentTransactions, 
+					NoOfCreditPaymentTransactions, NoOfDebitPaymentTransactions, 
+					NoOfClosedTransactions, NoOfRefundTransactions, 
+					NoOfVoidTransactions, NoOfRewardPointsPayment, NoOfTotalTransactions, 
+					DateLastInitialized, TrustFund, 
+					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
+					PromotionalItems, CreditSalesTax, BatchCounter, 
+					NoOfReprintedTransaction, TotalReprintedTransaction, InitializedBy, IsProcessed) 
+				(SELECT 
+					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
+					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
+					ItemSold, QuantitySold, GroupSales, decOldGrandTotal, decNewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
+					VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
+					ChequeSales, CreditCardSales, CreditSales, CreditPayment, CreditPaymentCash, CreditPaymentCheque,
+					CreditPaymentCreditCard, CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
+					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
+					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
+					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
+					TotalDeposit, CashDeposit, ChequeDeposit, CreditCardDeposit, DebitDeposit,
+					BeginningBalance, VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount, 
+					NoOfCashTransactions, NoOfChequeTransactions, NoOfCreditCardTransactions, 
+					NoOfCreditTransactions, NoOfCombinationPaymentTransactions, 
+					NoOfCreditPaymentTransactions, NoOfDebitPaymentTransactions, 
+					NoOfClosedTransactions, NoOfRefundTransactions, 
+					NoOfVoidTransactions, NoOfRewardPointsPayment, NoOfTotalTransactions, 
+					DateLastInitialized, decTrustFund,
+					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
+					PromotionalItems, CreditSalesTax, BatchCounter, 
+					NoOfReprintedTransaction, TotalReprintedTransaction, strInitializedBy, IsProcessed FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+					
+	UPDATE tblTerminalReport SET 
+		OldGrandTotal =  decNewGrandTotal / ((100 - decVirtualTrustFund) / 100),
+		NewGrandTotal =  decNewGrandTotal / ((100 - decVirtualTrustFund) / 100),
+		ActualOldGrandTotal = ActualNewGrandTotal
+	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
+	
+	UPDATE tblTerminalReport SET 
+					BeginningTransactionNo				=  EndingTransactionNo, 
+					BeginningORNo						=  EndingORNo, 
+					GrossSales							=  0, 
+					TotalDiscount						=  0, 
+					SNRDiscount							=  0, 
+					PWDDiscount							=  0, 
+					OtherDiscount						=  0,
+					TotalCharge							=  0, 
+					DailySales							=  0, 
+					ItemSold							=  0, 
+					QuantitySold						=  0, 
+					NetSales							=  0, 
+					GroupSales							=  0, 
+					VATExempt   						=  0, 
+					NonVATableAmount					=  0, 
+					VATableAmount						=  0, 
+					VAT									=  0, 
+					EVATableAmount						=  0, 
+					NonEVATableAmount					=  0, 
+					EVAT								=  0, 
+					LocalTax							=  0, 
+					CashSales							=  0, 
+					ChequeSales							=  0, 
+					CreditCardSales						=  0, 
+					CreditSales							=  0, 
+					CreditPayment						=  0, 
+					CreditPaymentCash					=  0, 
+					CreditPaymentCheque					=  0, 
+					CreditPaymentCreditCard				=  0, 
+					CreditPaymentDebit					=  0, 
+					DebitPayment						=  0, 
+					RewardPointsPayment					=  0,
+					RewardConvertedPayment				=  0,
+					CashInDrawer						=  0, 
+					TotalDisburse						=  0, 
+					CashDisburse						=  0, 
+					ChequeDisburse						=  0, 
+					CreditCardDisburse					=  0, 
+					TotalWithhold						=  0, 
+					CashWithhold						=  0, 
+					ChequeWithhold						=  0, 
+					CreditCardWithhold					=  0, 
+					TotalPaidOut						=  0, 
+					CashPaidOut							=  0,
+					ChequePaidOut						=  0,
+					CreditCardPaidOut					=  0,
+					TotalDeposit						=  0, 
+					CashDeposit							=  0, 
+					ChequeDeposit						=  0, 
+					CreditCardDeposit					=  0, 
+					DebitDeposit						=  0, 
+					BeginningBalance					=  0, 
+					VoidSales							=  0, 
+					RefundSales							=  0, 
+					ItemsDiscount						=  0, 
+					SubTotalDiscount					=  0, 
+					NoOfCashTransactions				=  0, 
+					NoOfChequeTransactions				=  0, 
+					NoOfCreditCardTransactions			=  0, 
+					NoOfCreditTransactions				=  0, 
+					NoOfCombinationPaymentTransactions	=  0, 
+					NoOfCreditPaymentTransactions		=  0, 
+					NoOfDebitPaymentTransactions		=  0, 
+					NoOfClosedTransactions				=  0, 
+					NoOfRefundTransactions				=  0, 
+					NoOfVoidTransactions				=  0, 
+					NoOfRewardPointsPayment				=  0,
+					NoOfTotalTransactions				=  0, 
+					NoOfDiscountedTransactions			=  0,
+					NegativeAdjustments					=  0,
+					NoOfNegativeAdjustmentTransactions	=  0,
+					PromotionalItems					=  0,
+					CreditSalesTax						=  0,
+					BatchCounter						=  1,
+					NoOfReprintedTransaction			=  0,
+					TotalReprintedTransaction			=  0, 
+					IsProcessed							=  0,
+					DateLastInitialized					=  dteDateLastInitialized
+			WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
+			
+	
+	INSERT INTO tblCashierReportHistory (
+					CashierID, BranchID, TerminalID, TerminalNo, BeginningTransactionNo, BeginningORNo, 
+					EndingTransactionNo, EndingORNo, NetSales, GrossSales, 
+					TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
+					ItemSold, QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
+					CashSales, ChequeSales, CreditCardSales, CreditSales, 
+					CreditPayment, CreditPaymentCash, CreditPaymentCheque, CreditPaymentCreditCard, 
+					CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
+					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
+					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
+					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
+					TotalDeposit, CashDeposit, ChequeDeposit, CreditCardDeposit, DebitDeposit, 
+					BeginningBalance, VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount, 
+					NoOfCashTransactions, NoOfChequeTransactions, 
+					NoOfCreditCardTransactions, NoOfCreditTransactions, 
+					NoOfCombinationPaymentTransactions, 
+					NoOfCreditPaymentTransactions, NoOfDebitPaymentTransactions, 
+					NoOfClosedTransactions, NoOfRefundTransactions, 
+					NoOfVoidTransactions, NoOfRewardPointsPayment, NoOfTotalTransactions, 
+					CashCount, LastLoginDate,
+					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
+					PromotionalItems, CreditSalesTax )
+				(SELECT 
+					CashierID, BranchID, TerminalID, TerminalNo, BeginningTransactionNo, BeginningORNo, 
+					strEndingTransactionNo, strEndingORNo, NetSales, GrossSales, 
+					TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
+					ItemSold, QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
+					CashSales, ChequeSales, CreditCardSales, CreditSales, 
+					CreditPayment, CreditPaymentCash, CreditPaymentCheque, CreditPaymentCreditCard, 
+					CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
+					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
+					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
+					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
+					TotalDeposit, CashDeposit, ChequeDeposit, CreditCardDeposit, DebitDeposit,
+					BeginningBalance, VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount, 
+					NoOfCashTransactions, NoOfChequeTransactions, 
+					NoOfCreditCardTransactions, NoOfCreditTransactions, 
+					NoOfCombinationPaymentTransactions, 
+					NoOfCreditPaymentTransactions, NoOfDebitPaymentTransactions, 
+					NoOfClosedTransactions, NoOfRefundTransactions, 
+					NoOfVoidTransactions, NoOfRewardPointsPayment, NoOfTotalTransactions, 
+					CashCount, LastLoginDate,
+					NoOfDiscountedTransactions, NegativeAdjustments, NoOfNegativeAdjustmentTransactions,
+					PromotionalItems, CreditSalesTax FROM tblCashierReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+	
+	-- Just delete the cashier's this will be recreated anyway.
+	-- also the syncid does update and the cashiers logs will be cleaned up
+	DELETE FROM tblCashierReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo;
+	
+END;
+GO
+delimiter ;

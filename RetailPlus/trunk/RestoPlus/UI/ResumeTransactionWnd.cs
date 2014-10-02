@@ -24,17 +24,14 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.DataGridTextBoxColumn WaiterName;
         private System.Windows.Forms.DataGridTextBoxColumn ChargeAmount;
         private System.Windows.Forms.DataGridTextBoxColumn ChargeCode;
-        private DialogResult dialog;
-        private Data.SalesTransactionDetails mDetails = new Data.SalesTransactionDetails();
         private System.ComponentModel.Container components = null;
-        private Int64 mCashierID;
         private System.Windows.Forms.PictureBox imgIcon;
-
-        private bool mShowOnlyPackedTransactions;
         private TextBox txtSearch;
-        private bool mShowOneTerminalSuspendedTransactions;
         private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
 
+        #region public Properties
+
+        private Int64 mCashierID;
         public Int64 CashierID
         {
             set
@@ -43,21 +40,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        public bool ShowOnlyPackedTransactions
-        {
-            set
-            {
-                mShowOnlyPackedTransactions = value;
-            }
-        }
-        public bool ShowOneTerminalSuspendedTransactions
-        {
-            set
-            {
-                mShowOneTerminalSuspendedTransactions = value;
-            }
-        }
-
+        private DialogResult dialog;
         public DialogResult Result
         {
             get
@@ -66,6 +49,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private Data.SalesTransactionDetails mDetails = new Data.SalesTransactionDetails();
         public Data.SalesTransactionDetails Details
         {
             get
@@ -74,11 +58,18 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        private string mstTerminalNo;
-        public string TerminalNo
+        public Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
         {
-            set { mstTerminalNo = value; }
+            set
+            {
+                mclsTerminalDetails = value;
+            }
         }
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public ResumeTransactionWnd()
         {
@@ -377,6 +368,10 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         #endregion
 
+        #endregion
+
+        #region Windows Form Methods
+
         private void ResumeTransactionWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             System.Data.DataTable dt;
@@ -449,72 +444,9 @@ namespace AceSoft.RetailPlus.Client.UI
             txtSearch.Focus();
         }
 
-        private void LoadOptions()
-        {
-            dgStyle.GridColumnStyles["TransactionNo"].Width = 200;
-            dgStyle.GridColumnStyles["CustomerName"].Width = this.Width - 510;
-            dgStyle.GridColumnStyles["DateSuspended"].Width = 300;
-        }
+        #endregion
 
-        private void LoadData()
-        {
-            try
-            {
-                Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
-
-                System.Data.DataTable dt;
-                if (mShowOneTerminalSuspendedTransactions == false)
-                {
-                    dt = clsTransactions.ListSuspendedDataTable(Constants.TerminalBranchID, mstTerminalNo, 0, string.Empty, SortOption.Ascending, mShowOnlyPackedTransactions);
-                }
-                else
-                {
-                    dt = clsTransactions.ListSuspendedDataTable(Constants.TerminalBranchID, mstTerminalNo, mCashierID, string.Empty, SortOption.Ascending, mShowOnlyPackedTransactions);
-                }
-                clsTransactions.CommitAndDispose();
-
-                this.dgStyle.MappingName = dt.TableName;
-                dgItems.DataSource = dt;
-                dgItems.Select(0);
-                dgItems.CurrentRowIndex = 0;
-            }
-            catch (IndexOutOfRangeException) { }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private bool CreateDetails(int iRow)
-        {
-            try
-            {
-                bool boRetValue = false;
-
-                mDetails = new Data.SalesTransactionDetails();
-
-                mDetails.TransactionID = Convert.ToInt64(dgItems[iRow, 0]);
-                mDetails.TransactionNo = dgItems[iRow, 1].ToString();
-
-                Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
-                mDetails = clsTransactions.Details(mDetails.TransactionNo, mstTerminalNo, Constants.TerminalBranchID);
-                clsTransactions.Resume(mDetails.TransactionID);
-
-                Data.SalesTransactionItems clsItems = new Data.SalesTransactionItems(clsTransactions.Connection, clsTransactions.Transaction);
-                mDetails.TransactionItems = clsItems.Details(mDetails.TransactionID, mDetails.TransactionDate);
-
-                clsTransactions.CommitAndDispose();
-
-                boRetValue = true;
-
-                return boRetValue;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-        }
+        #region Windows Control Methods
 
         private void txtSearch_TextChanged(object sender, System.EventArgs e)
         {
@@ -573,6 +505,79 @@ namespace AceSoft.RetailPlus.Client.UI
             txtSearch.Focus();
             SendKeys.Send(e.KeyboardKeyPressed);
         }
+
+        #endregion
+
+        #region Private Modifiers
+
+        private void LoadOptions()
+        {
+            dgStyle.GridColumnStyles["TransactionNo"].Width = 200;
+            dgStyle.GridColumnStyles["CustomerName"].Width = this.Width - 510;
+            dgStyle.GridColumnStyles["DateSuspended"].Width = 300;
+        }
+
+        private void LoadData()
+        {
+            try
+            {
+                Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
+
+                System.Data.DataTable dt;
+                if (mclsTerminalDetails.ShowOneTerminalSuspendedTransactions == false)
+                {
+                    dt = clsTransactions.ListSuspendedDataTable(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, 0, mclsTerminalDetails.ShowOnlyPackedTransactions);
+                }
+                else
+                {
+                    dt = clsTransactions.ListSuspendedDataTable(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, mCashierID, mclsTerminalDetails.ShowOnlyPackedTransactions);
+                }
+                clsTransactions.CommitAndDispose();
+
+                this.dgStyle.MappingName = dt.TableName;
+                dgItems.DataSource = dt;
+                dgItems.Select(0);
+                dgItems.CurrentRowIndex = 0;
+            }
+            catch (IndexOutOfRangeException) { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool CreateDetails(int iRow)
+        {
+            try
+            {
+                bool boRetValue = false;
+
+                mDetails = new Data.SalesTransactionDetails();
+
+                mDetails.TransactionID = Convert.ToInt64(dgItems[iRow, 0]);
+                mDetails.TransactionNo = dgItems[iRow, 1].ToString();
+
+                Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
+                mDetails = clsTransactions.Details(mDetails.TransactionNo, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
+                clsTransactions.Resume(mDetails.TransactionID);
+
+                Data.SalesTransactionItems clsItems = new Data.SalesTransactionItems(clsTransactions.Connection, clsTransactions.Transaction);
+                mDetails.TransactionItems = clsItems.Details(mDetails.TransactionID, mDetails.TransactionDate);
+
+                clsTransactions.CommitAndDispose();
+
+                boRetValue = true;
+
+                return boRetValue;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        #endregion
 
     }
 }

@@ -189,7 +189,7 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-        public System.Data.DataTable ListAsDataTable(DenominationDetails clsSearchKey, string SortField = "DenominationID", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        public System.Data.DataTable ListAsDataTable(DenominationDetails clsSearchKey, string SortField = "DenominationValue", SortOption SortOrder = SortOption.Desscending, Int32 limit = 0)
         {
             MySqlCommand cmd = new MySqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;

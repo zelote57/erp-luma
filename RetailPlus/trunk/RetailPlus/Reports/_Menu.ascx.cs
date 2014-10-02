@@ -38,6 +38,7 @@ namespace AceSoft.RetailPlus.Reports
 					lnkDatedReport.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("datedreport",Session.SessionID);
                     lnkManagementReport.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("managementreport", Session.SessionID);
                     lnkAnalyticsReport.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("analyticsreport", Session.SessionID);
+                    lnkeSalesReport.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("esalesreport", Session.SessionID);
 
                     //lnkSalesReport.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("salesreport",Session.SessionID);
 
@@ -83,19 +84,19 @@ namespace AceSoft.RetailPlus.Reports
             {
                 lnkDatedReport.Visible = true;
             }
-            else if (clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySalesWithTF).Read)
-            {
-                lnkDatedReport.Visible = true;
-            }
             else if (clsAccessRights.Details(UID, (int)AccessTypes.PaidOutDisburseROC).Read)
             {
                 lnkDatedReport.Visible = true;
             }
+
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.ManagementReports);
             lnkManagementReport.Visible = clsDetails.Read;
 
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.AnalyticsReports);
             lnkAnalyticsReport.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySalesWithTF);
+            lnkeSalesReport.Visible = clsDetails.Read;
 
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.SalesTransactionReport); 
 			lnkStockTransaction.Visible = clsDetails.Read; 

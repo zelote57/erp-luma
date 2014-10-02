@@ -30,9 +30,6 @@ namespace AceSoft.RetailPlus.Client.UI
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.Container components = null;
-
-        private long mlngCashierID;
-        private DialogResult dialog;
         private TextBox txtSelectedTexBox;
         private Button cmdCancel;
         private Button cmdEnter;
@@ -41,8 +38,15 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdF6;
         private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
 
-        Data.DepositDetails mclsDepositDetails = new Data.DepositDetails();
+        #region Public Properties
 
+        Data.TerminalDetails mclsTerminalDetails = new Data.TerminalDetails();
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+        }
+
+        Data.DepositDetails mclsDepositDetails = new Data.DepositDetails();
         public Data.DepositDetails DepositDetails
         {
             get
@@ -51,6 +55,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private DialogResult dialog;
         public DialogResult Result
         {
             get
@@ -59,13 +64,16 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        public long CashierID
+        private Int64 mlngCashierID;
+        public Int64 CashierID
         {
             set
             {
                 mlngCashierID = value;
             }
         }
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -512,14 +520,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (Convert.ToDecimal(txtAmount.Text) > 0)
             {
+                mclsDepositDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
+                mclsDepositDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+                mclsDepositDetails.CashierID = mlngCashierID;
                 mclsDepositDetails.Amount = Convert.ToDecimal(txtAmount.Text);
                 mclsDepositDetails.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), cboType.Text, true);
                 mclsDepositDetails.DateCreated = DateTime.Now;
-                mclsDepositDetails.TerminalNo = CompanyDetails.TerminalNo;
-                mclsDepositDetails.CashierID = mlngCashierID;
                 mclsDepositDetails.ContactID = Convert.ToInt64(txtContact.Tag);
                 mclsDepositDetails.ContactName = txtContact.Text;
-                mclsDepositDetails.BranchID = Constants.TerminalBranchID;
                 mclsDepositDetails.Remarks = txtRemarks.Text;
                 boRetValue = true;
             }

@@ -757,14 +757,14 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public void GenerateItemsForReorder(long SOID)
+		public void GenerateItemsForReorder(Int32 TerminalID, long SOID)
 		{
 			try
 			{
 				GetConnection();
 
 				Terminal clsTerminal = new Terminal(base.Connection, base.Transaction);
-				TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
+                TerminalDetails clsTerminalDetails = clsTerminal.Details(TerminalID);
 
 				SODetails clsSODetails = Details(SOID);
 

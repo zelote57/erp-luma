@@ -879,14 +879,14 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-		public void GenerateItemsForReorder(long POID)
+		public void GenerateItemsForReorder(Int32 TerminalID, long POID)
 		{
 			try 
 			{
 				GetConnection();
 
                 Terminal clsTerminal = new Terminal(base.Connection, base.Transaction);
-				TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
+                TerminalDetails clsTerminalDetails = clsTerminal.Details(TerminalID);
 
 				PODetails clsPODetails = Details(POID);
 
@@ -961,14 +961,14 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public void GenerateItemsForReorderByRID(long POID, long RID, DateTime IDC_StartDate, DateTime IDC_EndDate)
+        public void GenerateItemsForReorderByRID(Int32 TerminalID, long POID, long RID, DateTime IDC_StartDate, DateTime IDC_EndDate)
         {
             try
             {
                 GetConnection();
 
                 Terminal clsTerminal = new Terminal(base.Connection, base.Transaction);
-                TerminalDetails clsTerminalDetails = clsTerminal.Details(Terminal.DEFAULT_TERMINAL_NO_ID);
+                TerminalDetails clsTerminalDetails = clsTerminal.Details(TerminalID);
 
                 PODetails clsPODetails = Details(POID);
 

@@ -51,12 +51,12 @@ namespace AceSoft.RetailPlus.Reports
                 cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySales, ReportTypes.SummarizeDailySales));
                 cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDay, ReportTypes.SalesPerDay));
             }
-            if (clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySalesWithTF).Read)
-            {
-                cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
-                cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySalesWithTF, ReportTypes.SummarizeDailySalesWithTF));
-                cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDayWithTF, ReportTypes.SalesPerDayWithTF));
-            }
+            //if (clsAccessRights.Details(UID, (int)AccessTypes.SummarizedDailySalesWithTF).Read)
+            //{
+            //    cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
+            //    cboReportType.Items.Add(new ListItem(ReportTypes.SummarizeDailySalesWithTF, ReportTypes.SummarizeDailySalesWithTF));
+            //    cboReportType.Items.Add(new ListItem(ReportTypes.SalesPerDayWithTF, ReportTypes.SalesPerDayWithTF));
+            //}
             if (clsAccessRights.Details(UID, (int)AccessTypes.SalesTransactionReport).Read)
             {
                 cboReportType.Items.Add(new ListItem(ReportTypes.REPORT_SELECTION_SEPARATOR, ReportTypes.REPORT_SELECTION_SEPARATOR));
@@ -216,7 +216,7 @@ namespace AceSoft.RetailPlus.Reports
                     rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSalesPerDay.rpt"));
                     break;
                 case ReportTypes.SummarizeDailySales:
-                case ReportTypes.SummarizeDailySalesWithTF:
+                //case ReportTypes.SummarizeDailySalesWithTF:
                     {
                         if (optActualAndEffective.Checked)
                             rpt.Load(Server.MapPath(Constants.ROOT_DIRECTORY + "/Reports/_datedsalesreport/_DatedReportSummarizedPerDayWithActualEffective.rpt"));
@@ -417,7 +417,7 @@ namespace AceSoft.RetailPlus.Reports
                 case ReportTypes.SalesPerHour:
                     #region Sales Per Hour
                     clsSalesTransactions = new SalesTransactions();
-                    dt = clsSalesTransactions.SalesPerHour(StartTransactionDate, EndTransactionDate,0, cboTerminalNo.SelectedItem.Text);
+                    dt = clsSalesTransactions.SalesPerHour(string.Empty, string.Empty, StartTransactionDate, EndTransactionDate,0, cboTerminalNo.SelectedItem.Text);
 			        clsSalesTransactions.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
@@ -433,7 +433,7 @@ namespace AceSoft.RetailPlus.Reports
                     #endregion
 
                 case ReportTypes.SalesPerDay:
-                case ReportTypes.SalesPerDayWithTF:
+                //case ReportTypes.SalesPerDayWithTF:
                     #region Sales Per Day
                     if (strReportType == ReportTypes.SalesPerDay) boWithTrustFund = false;
                     clsSalesTransactions = new SalesTransactions();
@@ -454,7 +454,7 @@ namespace AceSoft.RetailPlus.Reports
                     #endregion
 
                 case ReportTypes.SummarizeDailySales:
-                case ReportTypes.SummarizeDailySalesWithTF:
+                //case ReportTypes.SummarizeDailySalesWithTF:
                     #region SummarizeDailySales
 
                     if (strReportType == ReportTypes.SummarizeDailySales) boWithTrustFund = false;
@@ -966,7 +966,7 @@ namespace AceSoft.RetailPlus.Reports
                     //holderTranDate.Visible = false;
                     //break;
                 case ReportTypes.SummarizeDailySales:
-                case ReportTypes.SummarizeDailySalesWithTF:
+                //case ReportTypes.SummarizeDailySalesWithTF:
                     holderTerminaNo.Visible = true;
                     holderSummarizedDailySales.Visible = true;
                     break;

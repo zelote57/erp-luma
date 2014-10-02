@@ -5,237 +5,267 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Reflection;
 
+using AceSoft.RetailPlus.Reports;
+
 namespace AceSoft.RetailPlus.Client.UI
 {
-	/// <summary>
-	/// Summary description for TerminalReportWnd.
-	/// </summary>
-	public class TerminalReportWnd : System.Windows.Forms.Form
-	{
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.PictureBox imgIcon;
-		private System.Windows.Forms.Label lblDescription;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
-		private DialogResult dialog;
-		private Data.TerminalReportDetails mDetails;
-		private System.Windows.Forms.Label lblReportDesc;
-		private System.Windows.Forms.Panel panReport;
-		private System.Windows.Forms.Label lblCashSales;
-		private System.Windows.Forms.Label lblCashSales1;
-		private System.Windows.Forms.Label label42;
-		private System.Windows.Forms.Label label43;
-		private System.Windows.Forms.Label label41;
-		private System.Windows.Forms.Label lblLocalTax;
-		private System.Windows.Forms.Label label73;
-		private System.Windows.Forms.Label label40;
-		private System.Windows.Forms.Label lblNonTaxableAmount;
-		private System.Windows.Forms.Label label11;
-		private System.Windows.Forms.Label lblTaxableAmount;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label label38;
-		private System.Windows.Forms.Label label36;
-		private System.Windows.Forms.Label label35;
-		private System.Windows.Forms.Label lblNewGrandTotal;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label34;
-		private System.Windows.Forms.Label label32;
-		private System.Windows.Forms.Label lblOldGrandTotal;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Label label31;
-		private System.Windows.Forms.Label label29;
-		private System.Windows.Forms.Label label27;
-		private System.Windows.Forms.Label lblVAT;
-		private System.Windows.Forms.Label label75;
-		private System.Windows.Forms.Label label25;
-		private System.Windows.Forms.Label label23;
-		private System.Windows.Forms.Label lblCreditCardDeposit;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Label lblChequeDeposit;
-		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.Label lblCashDeposit;
-		private System.Windows.Forms.Label label17;
-		private System.Windows.Forms.Label lblEndingTransactionNo;
-		private System.Windows.Forms.Label lblEndingTransactionNoName;
-		private System.Windows.Forms.Label lblBeginningTransactionNo;
-		private System.Windows.Forms.Label lblBeginningTransactionNoName;
-		private System.Windows.Forms.Label lblPaidOut;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Label lblCreditCardWithHold;
-		private System.Windows.Forms.Label label47;
-		private System.Windows.Forms.Label lblChequeWithHold;
-		private System.Windows.Forms.Label label51;
-		private System.Windows.Forms.Label lblCashWithHold;
-		private System.Windows.Forms.Label label55;
-		private System.Windows.Forms.Label lblCreditCardDisburse;
-		private System.Windows.Forms.Label label59;
-		private System.Windows.Forms.Label lblChequeDisburse;
-		private System.Windows.Forms.Label label61;
-		private System.Windows.Forms.Label lblCashDisburse;
-		private System.Windows.Forms.Label lblCashDisburse1;
-		private System.Windows.Forms.Label lblCashInDrawer;
-		private System.Windows.Forms.Label lblCashInDrawer1;
-		private System.Windows.Forms.Label lblDailySales;
-		private System.Windows.Forms.Label label67;
-		private System.Windows.Forms.Label lblTotalDiscount;
-		private System.Windows.Forms.Label label77;
-		private System.Windows.Forms.Label lblGrossSales;
-		private System.Windows.Forms.Label label79;
-		private System.Windows.Forms.Label lblPanelTop;
-		private System.Windows.Forms.Label lblReportFooter3;
-		private System.Windows.Forms.Label lblReportFooter2;
-		private System.Windows.Forms.Label lblReportFooter1;
-		private System.Windows.Forms.Label lblPanelBot;
-		private System.Windows.Forms.Label lblNoOfTotalTransactions;
-		private System.Windows.Forms.Label label28;
-		private System.Windows.Forms.Label lblReceiptDesc;
-		private System.Windows.Forms.Label lblReportHeader4;
-		private System.Windows.Forms.Label lblReportHeader3;
-		private System.Windows.Forms.Label lblReportHeader2;
-		private System.Windows.Forms.Label lblReportHeader1;
-		private System.Windows.Forms.Label lblCompany;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label20;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label lblDebitPayment;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.Label lblCreditPayment;
-		private System.Windows.Forms.Label lblCreditPayment1;
-		private System.Windows.Forms.Label lblCreditSales;
-		private System.Windows.Forms.Label lblCreditSales1;
-		private System.Windows.Forms.Label lblCreditCardSales;
-		private System.Windows.Forms.Label lblCreditCardSales1;
-		private System.Windows.Forms.Label lblChequeSales;
-		private System.Windows.Forms.Label lblChequeSales1;
-		private System.Windows.Forms.Label lblRefundSales;
-		private System.Windows.Forms.Label label19;
-		private System.Windows.Forms.Label lblVoidSales;
-		private System.Windows.Forms.Label label15;
-		private System.Windows.Forms.Label label13;
-		private System.Windows.Forms.Label label44;
-		private System.Windows.Forms.Label label45;
-		private System.Windows.Forms.Label lblSubtotalDiscount;
-		private System.Windows.Forms.Label label21;
-		private System.Windows.Forms.Label lblItemsDiscount;
-		private System.Windows.Forms.Label label69;
-		private System.Windows.Forms.Label label46;
-		private System.Windows.Forms.Label label49;
-		private System.Windows.Forms.Label label50;
-		private System.Windows.Forms.Label label52;
-		private System.Windows.Forms.Label label53;
-		private System.Windows.Forms.Label lblBeginningBalance;
-		private System.Windows.Forms.Label lblBeginningBalance1;
-		private System.Windows.Forms.Label label54;
-		private System.Windows.Forms.Label label56;
-		private System.Windows.Forms.Label label58;
-		private System.Windows.Forms.Label label60;
-		private System.Windows.Forms.Label label62;
-		private System.Windows.Forms.Label label63;
-		private System.Windows.Forms.Label label64;
-		private System.Windows.Forms.Label label66;
-		private System.Windows.Forms.Label label68;
-		private System.Windows.Forms.Label label57;
-		private System.Windows.Forms.Label label65;
-		private System.Windows.Forms.Label label70;
-		private System.Windows.Forms.Label label22;
-		private System.Windows.Forms.Label label71;
-		private System.Windows.Forms.Label label72;
-		private System.Windows.Forms.Label lblNoOfDebitPaymentTransactions;
-		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.Label lblNoOfCreditPaymentTran;
-		private System.Windows.Forms.Label lblNoOfCreditPaymentTran1;
-		private System.Windows.Forms.Label lblNoOfCreditTran;
-		private System.Windows.Forms.Label lblNoOfCreditTran1;
-		private System.Windows.Forms.Label lblNoOfVoidTransactions;
-		private System.Windows.Forms.Label label33;
-		private System.Windows.Forms.Label lblNoOfRefundTransactions;
-		private System.Windows.Forms.Label label37;
-		private System.Windows.Forms.Label lblNoOfCombPayTran;
-		private System.Windows.Forms.Label label18;
-		private System.Windows.Forms.Label lblNoOfCreditCardTran;
-		private System.Windows.Forms.Label lblNoOfCreditCardTran1;
-		private System.Windows.Forms.Label lblNoOfChequeTransactions;
-		private System.Windows.Forms.Label label14;
-		private System.Windows.Forms.Label lblNoOfCashTransactions;
-		private System.Windows.Forms.Label label16;
-		private System.Windows.Forms.Label label74;
-		private System.Windows.Forms.Label label76;
-		private System.Windows.Forms.Label lblTotalDiscounts;
-		private System.Windows.Forms.Label lblTotalAmount;
-		private System.Windows.Forms.Label lblCharge;
-		private System.Windows.Forms.Label lblNetSales;
-		private System.Windows.Forms.Label lblVAT1;
-		private string mCashierName;
+    /// <summary>
+    /// Summary description for TerminalReportWnd.
+    /// </summary>
+    public class TerminalReportWnd : System.Windows.Forms.Form
+    {
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.PictureBox imgIcon;
+        private System.Windows.Forms.Label lblDescription;
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
+        private System.Windows.Forms.Label lblReportDesc;
+        private System.Windows.Forms.Panel panReport;
+        private System.Windows.Forms.Label lblCashSales;
+        private System.Windows.Forms.Label lblCashSales1;
+        private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.Label lblLocalTax;
+        private System.Windows.Forms.Label label73;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.Label lblNonTaxableAmount;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lblTaxableAmount;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label lblNewGrandTotal;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label lblOldGrandTotal;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label lblVAT;
+        private System.Windows.Forms.Label label75;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label lblCreditCardDeposit;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblChequeDeposit;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblCashDeposit;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label lblEndingTransactionNo;
+        private System.Windows.Forms.Label lblEndingTransactionNoName;
+        private System.Windows.Forms.Label lblBeginningTransactionNo;
+        private System.Windows.Forms.Label lblBeginningTransactionNoName;
+        private System.Windows.Forms.Label lblPaidOut;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblCreditCardWithHold;
+        private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.Label lblChequeWithHold;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.Label lblCashWithHold;
+        private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.Label lblCreditCardDisburse;
+        private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.Label lblChequeDisburse;
+        private System.Windows.Forms.Label label61;
+        private System.Windows.Forms.Label lblCashDisburse;
+        private System.Windows.Forms.Label lblCashDisburse1;
+        private System.Windows.Forms.Label lblCashInDrawer;
+        private System.Windows.Forms.Label lblCashInDrawer1;
+        private System.Windows.Forms.Label lblDailySales;
+        private System.Windows.Forms.Label label67;
+        private System.Windows.Forms.Label lblTotalDiscount;
+        private System.Windows.Forms.Label label77;
+        private System.Windows.Forms.Label lblGrossSales;
+        private System.Windows.Forms.Label label79;
+        private System.Windows.Forms.Label lblPanelTop;
+        private System.Windows.Forms.Label lblReportFooter3;
+        private System.Windows.Forms.Label lblReportFooter2;
+        private System.Windows.Forms.Label lblReportFooter1;
+        private System.Windows.Forms.Label lblPanelBot;
+        private System.Windows.Forms.Label lblNoOfTotalTransactions;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label lblReceiptDesc;
+        private System.Windows.Forms.Label lblReportHeader4;
+        private System.Windows.Forms.Label lblReportHeader3;
+        private System.Windows.Forms.Label lblReportHeader2;
+        private System.Windows.Forms.Label lblReportHeader1;
+        private System.Windows.Forms.Label lblCompany;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblDebitPayment;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblCreditPayment;
+        private System.Windows.Forms.Label lblCreditPayment1;
+        private System.Windows.Forms.Label lblCreditSales;
+        private System.Windows.Forms.Label lblCreditSales1;
+        private System.Windows.Forms.Label lblCreditCardSales;
+        private System.Windows.Forms.Label lblCreditCardSales1;
+        private System.Windows.Forms.Label lblChequeSales;
+        private System.Windows.Forms.Label lblChequeSales1;
+        private System.Windows.Forms.Label lblRefundSales;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label lblVoidSales;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label44;
+        private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.Label lblSubtotalDiscount;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label lblItemsDiscount;
+        private System.Windows.Forms.Label label69;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.Label lblBeginningBalance;
+        private System.Windows.Forms.Label lblBeginningBalance1;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.Label label56;
+        private System.Windows.Forms.Label label58;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.Label label64;
+        private System.Windows.Forms.Label label66;
+        private System.Windows.Forms.Label label68;
+        private System.Windows.Forms.Label label57;
+        private System.Windows.Forms.Label label65;
+        private System.Windows.Forms.Label label70;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label71;
+        private System.Windows.Forms.Label label72;
+        private System.Windows.Forms.Label lblNoOfDebitPaymentTransactions;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lblNoOfCreditPaymentTran;
+        private System.Windows.Forms.Label lblNoOfCreditPaymentTran1;
+        private System.Windows.Forms.Label lblNoOfCreditTran;
+        private System.Windows.Forms.Label lblNoOfCreditTran1;
+        private System.Windows.Forms.Label lblNoOfVoidTransactions;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label lblNoOfRefundTransactions;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label lblNoOfCombPayTran;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label lblNoOfCreditCardTran;
+        private System.Windows.Forms.Label lblNoOfCreditCardTran1;
+        private System.Windows.Forms.Label lblNoOfChequeTransactions;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label lblNoOfCashTransactions;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label74;
+        private System.Windows.Forms.Label label76;
+        private System.Windows.Forms.Label lblTotalDiscounts;
+        private System.Windows.Forms.Label lblTotalAmount;
+        private System.Windows.Forms.Label lblCharge;
+        private System.Windows.Forms.Label lblNetSales;
+        private System.Windows.Forms.Label lblVAT1;
         private Button cmdCancel;
         private Button cmdEnter;
-		private decimal mTrustFund;
+        private Label lblCreditPaymentDebit;
+        private Label label24;
+        private Label lblCreditPaymentCreditCard;
+        private Label label30;
+        private Label lblCreditPaymentCheque;
+        private Label label48;
+        private Label lblCreditPaymentCash;
+        private Label label80;
 
-		public DialogResult Result
-		{
-			get 
-			{
-				return dialog;
-			}
-		}
+        #region Public Get/Set Properties
 
-		public Data.TerminalReportDetails Details
-		{
-			set 
-			{	mDetails	=	value;	}
-		}
+        private DialogResult dialog;
+        public DialogResult Result
+        {
+            get
+            {
+                return dialog;
+            }
+        }
 
-		public string CashierName
-		{
-			set
-			{	mCashierName	=	value;	}
-		}
+        private Data.TerminalReportDetails mDetails;
+        public Data.TerminalReportDetails Details
+        {
+            set
+            { mDetails = value; }
+        }
 
-		public decimal TrustFund
-		{
-			set
-			{	mTrustFund	=	value;	}
-		}
+        private string mCashierName;
+        public string CashierName
+        {
+            set
+            { mCashierName = value; }
+        }
 
+        private decimal mTrustFund;
+        public decimal TrustFund
+        {
+            set
+            { mTrustFund = value; }
+        }
 
-		public TerminalReportWnd()
-		{
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set
+            {
+                mclsTerminalDetails = value;
+            }
+        }
 
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
-		}
+        #endregion
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        #region Constructors and Destructors
+        public TerminalReportWnd()
+        {
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+            //
+            // TODO: Add any constructor code after InitializeComponent call
+            //
+        }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panReport = new System.Windows.Forms.Panel();
+            this.lblCreditPaymentDebit = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.lblCreditPaymentCreditCard = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.lblCreditPaymentCheque = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.lblCreditPaymentCash = new System.Windows.Forms.Label();
+            this.label80 = new System.Windows.Forms.Label();
             this.label76 = new System.Windows.Forms.Label();
             this.label74 = new System.Windows.Forms.Label();
             this.lblNoOfDebitPaymentTransactions = new System.Windows.Forms.Label();
@@ -278,7 +308,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label53 = new System.Windows.Forms.Label();
             this.lblTotalDiscounts = new System.Windows.Forms.Label();
             this.label49 = new System.Windows.Forms.Label();
-            this.label46 = new System.Windows.Forms.Label();
             this.lblSubtotalDiscount = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.lblItemsDiscount = new System.Windows.Forms.Label();
@@ -415,6 +444,14 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.panReport.AutoScroll = true;
             this.panReport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panReport.Controls.Add(this.lblCreditPaymentDebit);
+            this.panReport.Controls.Add(this.label24);
+            this.panReport.Controls.Add(this.lblCreditPaymentCreditCard);
+            this.panReport.Controls.Add(this.label30);
+            this.panReport.Controls.Add(this.lblCreditPaymentCheque);
+            this.panReport.Controls.Add(this.label48);
+            this.panReport.Controls.Add(this.lblCreditPaymentCash);
+            this.panReport.Controls.Add(this.label80);
             this.panReport.Controls.Add(this.label76);
             this.panReport.Controls.Add(this.label74);
             this.panReport.Controls.Add(this.lblNoOfDebitPaymentTransactions);
@@ -457,7 +494,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.panReport.Controls.Add(this.label53);
             this.panReport.Controls.Add(this.lblTotalDiscounts);
             this.panReport.Controls.Add(this.label49);
-            this.panReport.Controls.Add(this.label46);
             this.panReport.Controls.Add(this.lblSubtotalDiscount);
             this.panReport.Controls.Add(this.label21);
             this.panReport.Controls.Add(this.lblItemsDiscount);
@@ -564,6 +600,86 @@ namespace AceSoft.RetailPlus.Client.UI
             this.panReport.Size = new System.Drawing.Size(385, 515);
             this.panReport.TabIndex = 108;
             // 
+            // lblCreditPaymentDebit
+            // 
+            this.lblCreditPaymentDebit.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentDebit.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentDebit.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentDebit.Location = new System.Drawing.Point(176, 608);
+            this.lblCreditPaymentDebit.Name = "lblCreditPaymentDebit";
+            this.lblCreditPaymentDebit.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentDebit.TabIndex = 427;
+            this.lblCreditPaymentDebit.Text = "0.00";
+            this.lblCreditPaymentDebit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label24
+            // 
+            this.label24.Location = new System.Drawing.Point(16, 608);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(137, 14);
+            this.label24.TabIndex = 426;
+            this.label24.Text = "       Debit";
+            // 
+            // lblCreditPaymentCreditCard
+            // 
+            this.lblCreditPaymentCreditCard.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentCreditCard.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentCreditCard.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentCreditCard.Location = new System.Drawing.Point(176, 592);
+            this.lblCreditPaymentCreditCard.Name = "lblCreditPaymentCreditCard";
+            this.lblCreditPaymentCreditCard.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentCreditCard.TabIndex = 425;
+            this.lblCreditPaymentCreditCard.Text = "0.00";
+            this.lblCreditPaymentCreditCard.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label30
+            // 
+            this.label30.Location = new System.Drawing.Point(16, 592);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(137, 14);
+            this.label30.TabIndex = 424;
+            this.label30.Text = "       Credit Card";
+            // 
+            // lblCreditPaymentCheque
+            // 
+            this.lblCreditPaymentCheque.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentCheque.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentCheque.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentCheque.Location = new System.Drawing.Point(176, 576);
+            this.lblCreditPaymentCheque.Name = "lblCreditPaymentCheque";
+            this.lblCreditPaymentCheque.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentCheque.TabIndex = 423;
+            this.lblCreditPaymentCheque.Text = "0.00";
+            this.lblCreditPaymentCheque.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label48
+            // 
+            this.label48.Location = new System.Drawing.Point(16, 576);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(137, 14);
+            this.label48.TabIndex = 422;
+            this.label48.Text = "       Cheque";
+            // 
+            // lblCreditPaymentCash
+            // 
+            this.lblCreditPaymentCash.BackColor = System.Drawing.Color.Transparent;
+            this.lblCreditPaymentCash.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreditPaymentCash.ForeColor = System.Drawing.Color.Red;
+            this.lblCreditPaymentCash.Location = new System.Drawing.Point(176, 560);
+            this.lblCreditPaymentCash.Name = "lblCreditPaymentCash";
+            this.lblCreditPaymentCash.Size = new System.Drawing.Size(174, 14);
+            this.lblCreditPaymentCash.TabIndex = 421;
+            this.lblCreditPaymentCash.Text = "0.00";
+            this.lblCreditPaymentCash.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label80
+            // 
+            this.label80.Location = new System.Drawing.Point(16, 560);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(137, 14);
+            this.label80.TabIndex = 420;
+            this.label80.Text = "       Cash";
+            // 
             // label76
             // 
             this.label76.ForeColor = System.Drawing.Color.LightSlateGray;
@@ -572,7 +688,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label76.Size = new System.Drawing.Size(353, 5);
             this.label76.TabIndex = 419;
             this.label76.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label76.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label74
@@ -590,7 +706,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfDebitPaymentTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfDebitPaymentTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfDebitPaymentTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfDebitPaymentTransactions.Location = new System.Drawing.Point(176, 1169);
+            this.lblNoOfDebitPaymentTransactions.Location = new System.Drawing.Point(176, 1254);
             this.lblNoOfDebitPaymentTransactions.Name = "lblNoOfDebitPaymentTransactions";
             this.lblNoOfDebitPaymentTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfDebitPaymentTransactions.TabIndex = 417;
@@ -599,7 +715,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label10
             // 
-            this.label10.Location = new System.Drawing.Point(16, 1169);
+            this.label10.Location = new System.Drawing.Point(16, 1254);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(137, 14);
             this.label10.TabIndex = 416;
@@ -610,7 +726,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfCreditPaymentTran.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfCreditPaymentTran.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfCreditPaymentTran.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfCreditPaymentTran.Location = new System.Drawing.Point(176, 1153);
+            this.lblNoOfCreditPaymentTran.Location = new System.Drawing.Point(176, 1238);
             this.lblNoOfCreditPaymentTran.Name = "lblNoOfCreditPaymentTran";
             this.lblNoOfCreditPaymentTran.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfCreditPaymentTran.TabIndex = 415;
@@ -619,7 +735,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblNoOfCreditPaymentTran1
             // 
-            this.lblNoOfCreditPaymentTran1.Location = new System.Drawing.Point(16, 1153);
+            this.lblNoOfCreditPaymentTran1.Location = new System.Drawing.Point(16, 1238);
             this.lblNoOfCreditPaymentTran1.Name = "lblNoOfCreditPaymentTran1";
             this.lblNoOfCreditPaymentTran1.Size = new System.Drawing.Size(137, 14);
             this.lblNoOfCreditPaymentTran1.TabIndex = 414;
@@ -630,7 +746,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfCreditTran.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfCreditTran.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfCreditTran.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfCreditTran.Location = new System.Drawing.Point(176, 1121);
+            this.lblNoOfCreditTran.Location = new System.Drawing.Point(176, 1206);
             this.lblNoOfCreditTran.Name = "lblNoOfCreditTran";
             this.lblNoOfCreditTran.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfCreditTran.TabIndex = 413;
@@ -639,7 +755,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblNoOfCreditTran1
             // 
-            this.lblNoOfCreditTran1.Location = new System.Drawing.Point(16, 1121);
+            this.lblNoOfCreditTran1.Location = new System.Drawing.Point(16, 1206);
             this.lblNoOfCreditTran1.Name = "lblNoOfCreditTran1";
             this.lblNoOfCreditTran1.Size = new System.Drawing.Size(137, 14);
             this.lblNoOfCreditTran1.TabIndex = 412;
@@ -650,7 +766,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfVoidTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfVoidTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfVoidTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfVoidTransactions.Location = new System.Drawing.Point(176, 1201);
+            this.lblNoOfVoidTransactions.Location = new System.Drawing.Point(176, 1286);
             this.lblNoOfVoidTransactions.Name = "lblNoOfVoidTransactions";
             this.lblNoOfVoidTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfVoidTransactions.TabIndex = 411;
@@ -659,7 +775,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label33
             // 
-            this.label33.Location = new System.Drawing.Point(16, 1201);
+            this.label33.Location = new System.Drawing.Point(16, 1286);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(137, 14);
             this.label33.TabIndex = 410;
@@ -670,7 +786,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfRefundTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfRefundTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfRefundTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfRefundTransactions.Location = new System.Drawing.Point(176, 1185);
+            this.lblNoOfRefundTransactions.Location = new System.Drawing.Point(176, 1270);
             this.lblNoOfRefundTransactions.Name = "lblNoOfRefundTransactions";
             this.lblNoOfRefundTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfRefundTransactions.TabIndex = 409;
@@ -679,7 +795,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label37
             // 
-            this.label37.Location = new System.Drawing.Point(16, 1185);
+            this.label37.Location = new System.Drawing.Point(16, 1270);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(137, 14);
             this.label37.TabIndex = 408;
@@ -690,7 +806,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfCombPayTran.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfCombPayTran.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfCombPayTran.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfCombPayTran.Location = new System.Drawing.Point(176, 1137);
+            this.lblNoOfCombPayTran.Location = new System.Drawing.Point(176, 1222);
             this.lblNoOfCombPayTran.Name = "lblNoOfCombPayTran";
             this.lblNoOfCombPayTran.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfCombPayTran.TabIndex = 407;
@@ -699,7 +815,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label18
             // 
-            this.label18.Location = new System.Drawing.Point(16, 1137);
+            this.label18.Location = new System.Drawing.Point(16, 1222);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(137, 14);
             this.label18.TabIndex = 406;
@@ -710,7 +826,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfCreditCardTran.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfCreditCardTran.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfCreditCardTran.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfCreditCardTran.Location = new System.Drawing.Point(176, 1105);
+            this.lblNoOfCreditCardTran.Location = new System.Drawing.Point(176, 1190);
             this.lblNoOfCreditCardTran.Name = "lblNoOfCreditCardTran";
             this.lblNoOfCreditCardTran.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfCreditCardTran.TabIndex = 405;
@@ -719,7 +835,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblNoOfCreditCardTran1
             // 
-            this.lblNoOfCreditCardTran1.Location = new System.Drawing.Point(16, 1105);
+            this.lblNoOfCreditCardTran1.Location = new System.Drawing.Point(16, 1190);
             this.lblNoOfCreditCardTran1.Name = "lblNoOfCreditCardTran1";
             this.lblNoOfCreditCardTran1.Size = new System.Drawing.Size(137, 14);
             this.lblNoOfCreditCardTran1.TabIndex = 404;
@@ -730,7 +846,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfChequeTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfChequeTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfChequeTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfChequeTransactions.Location = new System.Drawing.Point(176, 1089);
+            this.lblNoOfChequeTransactions.Location = new System.Drawing.Point(176, 1174);
             this.lblNoOfChequeTransactions.Name = "lblNoOfChequeTransactions";
             this.lblNoOfChequeTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfChequeTransactions.TabIndex = 403;
@@ -739,7 +855,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label14
             // 
-            this.label14.Location = new System.Drawing.Point(16, 1089);
+            this.label14.Location = new System.Drawing.Point(16, 1174);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(137, 14);
             this.label14.TabIndex = 402;
@@ -750,7 +866,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfCashTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfCashTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfCashTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfCashTransactions.Location = new System.Drawing.Point(176, 1073);
+            this.lblNoOfCashTransactions.Location = new System.Drawing.Point(176, 1158);
             this.lblNoOfCashTransactions.Name = "lblNoOfCashTransactions";
             this.lblNoOfCashTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfCashTransactions.TabIndex = 401;
@@ -759,7 +875,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label16
             // 
-            this.label16.Location = new System.Drawing.Point(16, 1073);
+            this.label16.Location = new System.Drawing.Point(16, 1158);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(137, 14);
             this.label16.TabIndex = 400;
@@ -767,7 +883,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label22
             // 
-            this.label22.Location = new System.Drawing.Point(9, 1048);
+            this.label22.Location = new System.Drawing.Point(9, 1133);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(353, 14);
             this.label22.TabIndex = 399;
@@ -777,28 +893,28 @@ namespace AceSoft.RetailPlus.Client.UI
             // label71
             // 
             this.label71.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label71.Location = new System.Drawing.Point(9, 1064);
+            this.label71.Location = new System.Drawing.Point(9, 1149);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(353, 5);
             this.label71.TabIndex = 398;
             this.label71.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label71.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label72
             // 
             this.label72.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label72.Location = new System.Drawing.Point(9, 1040);
+            this.label72.Location = new System.Drawing.Point(9, 1125);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(353, 5);
             this.label72.TabIndex = 397;
             this.label72.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label72.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label57
             // 
-            this.label57.Location = new System.Drawing.Point(9, 969);
+            this.label57.Location = new System.Drawing.Point(9, 1054);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(353, 14);
             this.label57.TabIndex = 396;
@@ -808,28 +924,28 @@ namespace AceSoft.RetailPlus.Client.UI
             // label65
             // 
             this.label65.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label65.Location = new System.Drawing.Point(9, 985);
+            this.label65.Location = new System.Drawing.Point(9, 1070);
             this.label65.Name = "label65";
             this.label65.Size = new System.Drawing.Size(353, 5);
             this.label65.TabIndex = 395;
             this.label65.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label65.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label70
             // 
             this.label70.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label70.Location = new System.Drawing.Point(9, 961);
+            this.label70.Location = new System.Drawing.Point(9, 1046);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(353, 5);
             this.label70.TabIndex = 394;
             this.label70.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label64
             // 
-            this.label64.Location = new System.Drawing.Point(9, 888);
+            this.label64.Location = new System.Drawing.Point(9, 973);
             this.label64.Name = "label64";
             this.label64.Size = new System.Drawing.Size(353, 14);
             this.label64.TabIndex = 393;
@@ -839,12 +955,12 @@ namespace AceSoft.RetailPlus.Client.UI
             // label66
             // 
             this.label66.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label66.Location = new System.Drawing.Point(9, 904);
+            this.label66.Location = new System.Drawing.Point(9, 989);
             this.label66.Name = "label66";
             this.label66.Size = new System.Drawing.Size(353, 5);
             this.label66.TabIndex = 392;
             this.label66.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label68
@@ -855,12 +971,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label68.Size = new System.Drawing.Size(353, 5);
             this.label68.TabIndex = 391;
             this.label68.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label60
             // 
-            this.label60.Location = new System.Drawing.Point(9, 808);
+            this.label60.Location = new System.Drawing.Point(9, 893);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(353, 14);
             this.label60.TabIndex = 390;
@@ -870,28 +986,28 @@ namespace AceSoft.RetailPlus.Client.UI
             // label62
             // 
             this.label62.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label62.Location = new System.Drawing.Point(9, 824);
+            this.label62.Location = new System.Drawing.Point(9, 909);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(353, 5);
             this.label62.TabIndex = 389;
             this.label62.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label63
             // 
             this.label63.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label63.Location = new System.Drawing.Point(9, 800);
+            this.label63.Location = new System.Drawing.Point(9, 885);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(353, 5);
             this.label63.TabIndex = 388;
             this.label63.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label54
             // 
-            this.label54.Location = new System.Drawing.Point(9, 762);
+            this.label54.Location = new System.Drawing.Point(9, 847);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(353, 14);
             this.label54.TabIndex = 387;
@@ -901,23 +1017,23 @@ namespace AceSoft.RetailPlus.Client.UI
             // label56
             // 
             this.label56.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label56.Location = new System.Drawing.Point(9, 778);
+            this.label56.Location = new System.Drawing.Point(9, 863);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(353, 5);
             this.label56.TabIndex = 386;
             this.label56.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label58
             // 
             this.label58.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label58.Location = new System.Drawing.Point(9, 754);
+            this.label58.Location = new System.Drawing.Point(9, 839);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(353, 5);
             this.label58.TabIndex = 385;
             this.label58.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label58.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblBeginningBalance
@@ -925,7 +1041,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBeginningBalance.BackColor = System.Drawing.Color.Transparent;
             this.lblBeginningBalance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBeginningBalance.ForeColor = System.Drawing.Color.Red;
-            this.lblBeginningBalance.Location = new System.Drawing.Point(176, 724);
+            this.lblBeginningBalance.Location = new System.Drawing.Point(176, 809);
             this.lblBeginningBalance.Name = "lblBeginningBalance";
             this.lblBeginningBalance.Size = new System.Drawing.Size(174, 14);
             this.lblBeginningBalance.TabIndex = 384;
@@ -934,7 +1050,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblBeginningBalance1
             // 
-            this.lblBeginningBalance1.Location = new System.Drawing.Point(16, 724);
+            this.lblBeginningBalance1.Location = new System.Drawing.Point(16, 809);
             this.lblBeginningBalance1.Name = "lblBeginningBalance1";
             this.lblBeginningBalance1.Size = new System.Drawing.Size(137, 14);
             this.lblBeginningBalance1.TabIndex = 383;
@@ -942,7 +1058,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label50
             // 
-            this.label50.Location = new System.Drawing.Point(9, 701);
+            this.label50.Location = new System.Drawing.Point(9, 786);
             this.label50.Name = "label50";
             this.label50.Size = new System.Drawing.Size(353, 14);
             this.label50.TabIndex = 382;
@@ -952,23 +1068,23 @@ namespace AceSoft.RetailPlus.Client.UI
             // label52
             // 
             this.label52.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label52.Location = new System.Drawing.Point(9, 717);
+            this.label52.Location = new System.Drawing.Point(9, 802);
             this.label52.Name = "label52";
             this.label52.Size = new System.Drawing.Size(353, 5);
             this.label52.TabIndex = 381;
             this.label52.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label53
             // 
             this.label53.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label53.Location = new System.Drawing.Point(9, 694);
+            this.label53.Location = new System.Drawing.Point(9, 779);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(353, 5);
             this.label53.TabIndex = 380;
             this.label53.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label53.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTotalDiscounts
@@ -976,7 +1092,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblTotalDiscounts.BackColor = System.Drawing.Color.Transparent;
             this.lblTotalDiscounts.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalDiscounts.ForeColor = System.Drawing.Color.Red;
-            this.lblTotalDiscounts.Location = new System.Drawing.Point(176, 676);
+            this.lblTotalDiscounts.Location = new System.Drawing.Point(176, 761);
             this.lblTotalDiscounts.Name = "lblTotalDiscounts";
             this.lblTotalDiscounts.Size = new System.Drawing.Size(174, 14);
             this.lblTotalDiscounts.TabIndex = 379;
@@ -985,28 +1101,18 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label49
             // 
-            this.label49.Location = new System.Drawing.Point(16, 676);
+            this.label49.Location = new System.Drawing.Point(16, 761);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(137, 14);
             this.label49.TabIndex = 378;
             this.label49.Text = "Total Discounts";
-            // 
-            // label46
-            // 
-            this.label46.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label46.Location = new System.Drawing.Point(176, 669);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(174, 5);
-            this.label46.TabIndex = 377;
-            this.label46.Text = "----------------------------------------------";
-            this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblSubtotalDiscount
             // 
             this.lblSubtotalDiscount.BackColor = System.Drawing.Color.Transparent;
             this.lblSubtotalDiscount.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSubtotalDiscount.ForeColor = System.Drawing.Color.Red;
-            this.lblSubtotalDiscount.Location = new System.Drawing.Point(176, 655);
+            this.lblSubtotalDiscount.Location = new System.Drawing.Point(176, 740);
             this.lblSubtotalDiscount.Name = "lblSubtotalDiscount";
             this.lblSubtotalDiscount.Size = new System.Drawing.Size(174, 14);
             this.lblSubtotalDiscount.TabIndex = 376;
@@ -1015,7 +1121,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label21
             // 
-            this.label21.Location = new System.Drawing.Point(16, 655);
+            this.label21.Location = new System.Drawing.Point(16, 740);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(137, 14);
             this.label21.TabIndex = 375;
@@ -1026,7 +1132,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblItemsDiscount.BackColor = System.Drawing.Color.Transparent;
             this.lblItemsDiscount.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblItemsDiscount.ForeColor = System.Drawing.Color.Red;
-            this.lblItemsDiscount.Location = new System.Drawing.Point(176, 639);
+            this.lblItemsDiscount.Location = new System.Drawing.Point(176, 724);
             this.lblItemsDiscount.Name = "lblItemsDiscount";
             this.lblItemsDiscount.Size = new System.Drawing.Size(174, 14);
             this.lblItemsDiscount.TabIndex = 374;
@@ -1035,7 +1141,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label69
             // 
-            this.label69.Location = new System.Drawing.Point(16, 639);
+            this.label69.Location = new System.Drawing.Point(16, 724);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(137, 14);
             this.label69.TabIndex = 373;
@@ -1043,7 +1149,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label13
             // 
-            this.label13.Location = new System.Drawing.Point(9, 616);
+            this.label13.Location = new System.Drawing.Point(9, 701);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(353, 14);
             this.label13.TabIndex = 372;
@@ -1053,23 +1159,23 @@ namespace AceSoft.RetailPlus.Client.UI
             // label44
             // 
             this.label44.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label44.Location = new System.Drawing.Point(9, 632);
+            this.label44.Location = new System.Drawing.Point(9, 717);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(353, 5);
             this.label44.TabIndex = 371;
             this.label44.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label44.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label45
             // 
             this.label45.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label45.Location = new System.Drawing.Point(9, 608);
+            this.label45.Location = new System.Drawing.Point(9, 693);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(353, 5);
             this.label45.TabIndex = 370;
             this.label45.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label45.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblRefundSales
@@ -1077,7 +1183,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblRefundSales.BackColor = System.Drawing.Color.Transparent;
             this.lblRefundSales.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRefundSales.ForeColor = System.Drawing.Color.Red;
-            this.lblRefundSales.Location = new System.Drawing.Point(176, 592);
+            this.lblRefundSales.Location = new System.Drawing.Point(176, 656);
             this.lblRefundSales.Name = "lblRefundSales";
             this.lblRefundSales.Size = new System.Drawing.Size(174, 14);
             this.lblRefundSales.TabIndex = 369;
@@ -1086,7 +1192,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label19
             // 
-            this.label19.Location = new System.Drawing.Point(16, 592);
+            this.label19.Location = new System.Drawing.Point(16, 656);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(137, 14);
             this.label19.TabIndex = 368;
@@ -1097,7 +1203,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblVoidSales.BackColor = System.Drawing.Color.Transparent;
             this.lblVoidSales.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVoidSales.ForeColor = System.Drawing.Color.Red;
-            this.lblVoidSales.Location = new System.Drawing.Point(176, 576);
+            this.lblVoidSales.Location = new System.Drawing.Point(176, 640);
             this.lblVoidSales.Name = "lblVoidSales";
             this.lblVoidSales.Size = new System.Drawing.Size(174, 14);
             this.lblVoidSales.TabIndex = 367;
@@ -1106,7 +1212,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label15
             // 
-            this.label15.Location = new System.Drawing.Point(16, 576);
+            this.label15.Location = new System.Drawing.Point(16, 640);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(137, 14);
             this.label15.TabIndex = 366;
@@ -1117,7 +1223,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblDebitPayment.BackColor = System.Drawing.Color.Transparent;
             this.lblDebitPayment.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDebitPayment.ForeColor = System.Drawing.Color.Red;
-            this.lblDebitPayment.Location = new System.Drawing.Point(176, 560);
+            this.lblDebitPayment.Location = new System.Drawing.Point(176, 624);
             this.lblDebitPayment.Name = "lblDebitPayment";
             this.lblDebitPayment.Size = new System.Drawing.Size(174, 14);
             this.lblDebitPayment.TabIndex = 365;
@@ -1126,7 +1232,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(16, 560);
+            this.label8.Location = new System.Drawing.Point(16, 624);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(137, 14);
             this.label8.TabIndex = 364;
@@ -1249,7 +1355,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label43.Size = new System.Drawing.Size(353, 5);
             this.label43.TabIndex = 352;
             this.label43.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label43.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label41
@@ -1260,7 +1366,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label41.Size = new System.Drawing.Size(353, 5);
             this.label41.TabIndex = 351;
             this.label41.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLocalTax
@@ -1360,7 +1466,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label36.Size = new System.Drawing.Size(353, 5);
             this.label36.TabIndex = 341;
             this.label36.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label35
@@ -1371,7 +1477,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label35.Size = new System.Drawing.Size(353, 5);
             this.label35.TabIndex = 340;
             this.label35.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblNewGrandTotal
@@ -1412,7 +1518,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label32.Size = new System.Drawing.Size(353, 5);
             this.label32.TabIndex = 336;
             this.label32.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblOldGrandTotal
@@ -1540,7 +1646,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCreditCardDeposit.BackColor = System.Drawing.Color.Transparent;
             this.lblCreditCardDeposit.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCreditCardDeposit.ForeColor = System.Drawing.Color.Red;
-            this.lblCreditCardDeposit.Location = new System.Drawing.Point(176, 1024);
+            this.lblCreditCardDeposit.Location = new System.Drawing.Point(176, 1109);
             this.lblCreditCardDeposit.Name = "lblCreditCardDeposit";
             this.lblCreditCardDeposit.Size = new System.Drawing.Size(174, 14);
             this.lblCreditCardDeposit.TabIndex = 316;
@@ -1549,7 +1655,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(16, 1024);
+            this.label5.Location = new System.Drawing.Point(16, 1109);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(137, 14);
             this.label5.TabIndex = 315;
@@ -1560,7 +1666,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblChequeDeposit.BackColor = System.Drawing.Color.Transparent;
             this.lblChequeDeposit.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChequeDeposit.ForeColor = System.Drawing.Color.Red;
-            this.lblChequeDeposit.Location = new System.Drawing.Point(176, 1008);
+            this.lblChequeDeposit.Location = new System.Drawing.Point(176, 1093);
             this.lblChequeDeposit.Name = "lblChequeDeposit";
             this.lblChequeDeposit.Size = new System.Drawing.Size(174, 14);
             this.lblChequeDeposit.TabIndex = 314;
@@ -1569,7 +1675,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(16, 1008);
+            this.label9.Location = new System.Drawing.Point(16, 1093);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(137, 14);
             this.label9.TabIndex = 313;
@@ -1580,7 +1686,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCashDeposit.BackColor = System.Drawing.Color.Transparent;
             this.lblCashDeposit.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCashDeposit.ForeColor = System.Drawing.Color.Red;
-            this.lblCashDeposit.Location = new System.Drawing.Point(176, 992);
+            this.lblCashDeposit.Location = new System.Drawing.Point(176, 1077);
             this.lblCashDeposit.Name = "lblCashDeposit";
             this.lblCashDeposit.Size = new System.Drawing.Size(174, 14);
             this.lblCashDeposit.TabIndex = 312;
@@ -1589,7 +1695,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label17
             // 
-            this.label17.Location = new System.Drawing.Point(16, 992);
+            this.label17.Location = new System.Drawing.Point(16, 1077);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(137, 14);
             this.label17.TabIndex = 311;
@@ -1613,7 +1719,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblEndingTransactionNoName.Name = "lblEndingTransactionNoName";
             this.lblEndingTransactionNoName.Size = new System.Drawing.Size(137, 14);
             this.lblEndingTransactionNoName.TabIndex = 307;
-            this.lblEndingTransactionNoName.Text = "Ending Transaction No.";
+            this.lblEndingTransactionNoName.Text = "Ending      OR No.";
             // 
             // lblBeginningTransactionNo
             // 
@@ -1633,14 +1739,14 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBeginningTransactionNoName.Name = "lblBeginningTransactionNoName";
             this.lblBeginningTransactionNoName.Size = new System.Drawing.Size(137, 14);
             this.lblBeginningTransactionNoName.TabIndex = 305;
-            this.lblBeginningTransactionNoName.Text = "Beginning Transaction No.";
+            this.lblBeginningTransactionNoName.Text = "Beginning OR No.";
             // 
             // lblPaidOut
             // 
             this.lblPaidOut.BackColor = System.Drawing.Color.Transparent;
             this.lblPaidOut.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPaidOut.ForeColor = System.Drawing.Color.Red;
-            this.lblPaidOut.Location = new System.Drawing.Point(176, 784);
+            this.lblPaidOut.Location = new System.Drawing.Point(176, 869);
             this.lblPaidOut.Name = "lblPaidOut";
             this.lblPaidOut.Size = new System.Drawing.Size(174, 14);
             this.lblPaidOut.TabIndex = 286;
@@ -1649,7 +1755,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(16, 784);
+            this.label6.Location = new System.Drawing.Point(16, 869);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(137, 14);
             this.label6.TabIndex = 285;
@@ -1660,7 +1766,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCreditCardWithHold.BackColor = System.Drawing.Color.Transparent;
             this.lblCreditCardWithHold.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCreditCardWithHold.ForeColor = System.Drawing.Color.Red;
-            this.lblCreditCardWithHold.Location = new System.Drawing.Point(176, 944);
+            this.lblCreditCardWithHold.Location = new System.Drawing.Point(176, 1029);
             this.lblCreditCardWithHold.Name = "lblCreditCardWithHold";
             this.lblCreditCardWithHold.Size = new System.Drawing.Size(174, 14);
             this.lblCreditCardWithHold.TabIndex = 284;
@@ -1669,7 +1775,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label47
             // 
-            this.label47.Location = new System.Drawing.Point(16, 944);
+            this.label47.Location = new System.Drawing.Point(16, 1029);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(137, 14);
             this.label47.TabIndex = 283;
@@ -1680,7 +1786,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblChequeWithHold.BackColor = System.Drawing.Color.Transparent;
             this.lblChequeWithHold.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChequeWithHold.ForeColor = System.Drawing.Color.Red;
-            this.lblChequeWithHold.Location = new System.Drawing.Point(176, 928);
+            this.lblChequeWithHold.Location = new System.Drawing.Point(176, 1013);
             this.lblChequeWithHold.Name = "lblChequeWithHold";
             this.lblChequeWithHold.Size = new System.Drawing.Size(174, 14);
             this.lblChequeWithHold.TabIndex = 282;
@@ -1689,7 +1795,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label51
             // 
-            this.label51.Location = new System.Drawing.Point(16, 928);
+            this.label51.Location = new System.Drawing.Point(16, 1013);
             this.label51.Name = "label51";
             this.label51.Size = new System.Drawing.Size(137, 14);
             this.label51.TabIndex = 281;
@@ -1700,7 +1806,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCashWithHold.BackColor = System.Drawing.Color.Transparent;
             this.lblCashWithHold.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCashWithHold.ForeColor = System.Drawing.Color.Red;
-            this.lblCashWithHold.Location = new System.Drawing.Point(176, 912);
+            this.lblCashWithHold.Location = new System.Drawing.Point(176, 997);
             this.lblCashWithHold.Name = "lblCashWithHold";
             this.lblCashWithHold.Size = new System.Drawing.Size(174, 14);
             this.lblCashWithHold.TabIndex = 280;
@@ -1709,7 +1815,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label55
             // 
-            this.label55.Location = new System.Drawing.Point(16, 912);
+            this.label55.Location = new System.Drawing.Point(16, 997);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(137, 14);
             this.label55.TabIndex = 279;
@@ -1720,7 +1826,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCreditCardDisburse.BackColor = System.Drawing.Color.Transparent;
             this.lblCreditCardDisburse.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCreditCardDisburse.ForeColor = System.Drawing.Color.Red;
-            this.lblCreditCardDisburse.Location = new System.Drawing.Point(176, 864);
+            this.lblCreditCardDisburse.Location = new System.Drawing.Point(176, 949);
             this.lblCreditCardDisburse.Name = "lblCreditCardDisburse";
             this.lblCreditCardDisburse.Size = new System.Drawing.Size(174, 14);
             this.lblCreditCardDisburse.TabIndex = 276;
@@ -1729,7 +1835,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label59
             // 
-            this.label59.Location = new System.Drawing.Point(16, 864);
+            this.label59.Location = new System.Drawing.Point(16, 949);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(137, 14);
             this.label59.TabIndex = 275;
@@ -1740,7 +1846,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblChequeDisburse.BackColor = System.Drawing.Color.Transparent;
             this.lblChequeDisburse.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChequeDisburse.ForeColor = System.Drawing.Color.Red;
-            this.lblChequeDisburse.Location = new System.Drawing.Point(176, 848);
+            this.lblChequeDisburse.Location = new System.Drawing.Point(176, 933);
             this.lblChequeDisburse.Name = "lblChequeDisburse";
             this.lblChequeDisburse.Size = new System.Drawing.Size(174, 14);
             this.lblChequeDisburse.TabIndex = 274;
@@ -1749,7 +1855,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label61
             // 
-            this.label61.Location = new System.Drawing.Point(16, 848);
+            this.label61.Location = new System.Drawing.Point(16, 933);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(137, 14);
             this.label61.TabIndex = 273;
@@ -1760,7 +1866,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCashDisburse.BackColor = System.Drawing.Color.Transparent;
             this.lblCashDisburse.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCashDisburse.ForeColor = System.Drawing.Color.Red;
-            this.lblCashDisburse.Location = new System.Drawing.Point(176, 832);
+            this.lblCashDisburse.Location = new System.Drawing.Point(176, 917);
             this.lblCashDisburse.Name = "lblCashDisburse";
             this.lblCashDisburse.Size = new System.Drawing.Size(174, 14);
             this.lblCashDisburse.TabIndex = 272;
@@ -1769,7 +1875,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblCashDisburse1
             // 
-            this.lblCashDisburse1.Location = new System.Drawing.Point(16, 832);
+            this.lblCashDisburse1.Location = new System.Drawing.Point(16, 917);
             this.lblCashDisburse1.Name = "lblCashDisburse1";
             this.lblCashDisburse1.Size = new System.Drawing.Size(137, 14);
             this.lblCashDisburse1.TabIndex = 271;
@@ -1780,7 +1886,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCashInDrawer.BackColor = System.Drawing.Color.Transparent;
             this.lblCashInDrawer.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCashInDrawer.ForeColor = System.Drawing.Color.Red;
-            this.lblCashInDrawer.Location = new System.Drawing.Point(176, 740);
+            this.lblCashInDrawer.Location = new System.Drawing.Point(176, 825);
             this.lblCashInDrawer.Name = "lblCashInDrawer";
             this.lblCashInDrawer.Size = new System.Drawing.Size(174, 14);
             this.lblCashInDrawer.TabIndex = 268;
@@ -1789,7 +1895,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblCashInDrawer1
             // 
-            this.lblCashInDrawer1.Location = new System.Drawing.Point(16, 740);
+            this.lblCashInDrawer1.Location = new System.Drawing.Point(16, 825);
             this.lblCashInDrawer1.Name = "lblCashInDrawer1";
             this.lblCashInDrawer1.Size = new System.Drawing.Size(137, 14);
             this.lblCashInDrawer1.TabIndex = 267;
@@ -1865,7 +1971,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblReportFooter3
             // 
-            this.lblReportFooter3.Location = new System.Drawing.Point(20, 1312);
+            this.lblReportFooter3.Location = new System.Drawing.Point(20, 1397);
             this.lblReportFooter3.Name = "lblReportFooter3";
             this.lblReportFooter3.Size = new System.Drawing.Size(331, 15);
             this.lblReportFooter3.TabIndex = 227;
@@ -1874,7 +1980,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblReportFooter2
             // 
-            this.lblReportFooter2.Location = new System.Drawing.Point(20, 1296);
+            this.lblReportFooter2.Location = new System.Drawing.Point(20, 1381);
             this.lblReportFooter2.Name = "lblReportFooter2";
             this.lblReportFooter2.Size = new System.Drawing.Size(331, 15);
             this.lblReportFooter2.TabIndex = 226;
@@ -1883,7 +1989,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblReportFooter1
             // 
-            this.lblReportFooter1.Location = new System.Drawing.Point(20, 1280);
+            this.lblReportFooter1.Location = new System.Drawing.Point(20, 1365);
             this.lblReportFooter1.Name = "lblReportFooter1";
             this.lblReportFooter1.Size = new System.Drawing.Size(331, 15);
             this.lblReportFooter1.TabIndex = 225;
@@ -1892,7 +1998,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblPanelBot
             // 
-            this.lblPanelBot.Location = new System.Drawing.Point(20, 1328);
+            this.lblPanelBot.Location = new System.Drawing.Point(20, 1413);
             this.lblPanelBot.Name = "lblPanelBot";
             this.lblPanelBot.Size = new System.Drawing.Size(331, 15);
             this.lblPanelBot.TabIndex = 168;
@@ -1904,7 +2010,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblNoOfTotalTransactions.BackColor = System.Drawing.Color.Transparent;
             this.lblNoOfTotalTransactions.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoOfTotalTransactions.ForeColor = System.Drawing.Color.Red;
-            this.lblNoOfTotalTransactions.Location = new System.Drawing.Point(176, 1224);
+            this.lblNoOfTotalTransactions.Location = new System.Drawing.Point(176, 1309);
             this.lblNoOfTotalTransactions.Name = "lblNoOfTotalTransactions";
             this.lblNoOfTotalTransactions.Size = new System.Drawing.Size(174, 14);
             this.lblNoOfTotalTransactions.TabIndex = 161;
@@ -1913,7 +2019,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // label28
             // 
-            this.label28.Location = new System.Drawing.Point(16, 1224);
+            this.label28.Location = new System.Drawing.Point(16, 1309);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(137, 14);
             this.label28.TabIndex = 160;
@@ -1984,7 +2090,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label1.Size = new System.Drawing.Size(353, 5);
             this.label1.TabIndex = 321;
             this.label1.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label20
@@ -1997,7 +2103,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label20.Size = new System.Drawing.Size(353, 5);
             this.label20.TabIndex = 322;
             this.label20.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -2010,7 +2116,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2.Size = new System.Drawing.Size(353, 5);
             this.label2.TabIndex = 323;
             this.label2.Text = "---------------------------------------------------------------------------------" +
-                "---------";
+    "---------";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblReportDesc
@@ -2093,17 +2199,20 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
+        }
+        #endregion
+        #endregion
 
-		private void TerminalReportWnd_Load(object sender, System.EventArgs e)
-		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Help.jpg");	}
-			catch{}
+        #region Windows Form Methods
+
+        private void TerminalReportWnd_Load(object sender, System.EventArgs e)
+        {
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Help.jpg"); }
+            catch { }
             try
             { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
             catch { }
@@ -2111,171 +2220,40 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-			lblReportDesc.Text = "Terminal " + CompanyDetails.TerminalNo + " Report Window.";
-			groupBox1.Text = "Terminal Report Details";
-			lblReceiptDesc.Text = "Terminal Report";
+            lblReportDesc.Text = "Terminal " + CompanyDetails.TerminalNo + " Report Window.";
+            groupBox1.Text = "Terminal Report Details";
+            lblReceiptDesc.Text = "Terminal Report";
 
-			PopulateTerminalReport();
-		}
+            PopulateTerminalReport();
+        }
 
-		private void TerminalReportWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			switch (e.KeyData)
-			{
-				case Keys.Escape:
-					dialog = DialogResult.Cancel;
-					this.Hide(); 
-					break;
+        private void TerminalReportWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            switch (e.KeyData)
+            {
+                case Keys.Escape:
+                    dialog = DialogResult.Cancel;
+                    this.Hide();
+                    break;
 
-				case Keys.Enter:
-					dialog = DialogResult.OK; 
-					this.Hide();
-					break;
+                case Keys.Enter:
+                    dialog = DialogResult.OK;
+                    this.Hide();
+                    break;
 
-				case Keys.PageDown:
-					ScrollIntoView(e.KeyData);
-					break;
+                case Keys.PageDown:
+                    ScrollIntoView(e.KeyData);
+                    break;
 
-				case Keys.PageUp:
-					ScrollIntoView(e.KeyData);
-					break;
-			}
-		}
+                case Keys.PageUp:
+                    ScrollIntoView(e.KeyData);
+                    break;
+            }
+        }
 
-		private void ScrollIntoView(Keys KeyData)
-		{
-			if (KeyData == Keys.PageUp)
-			{
-				panReport.ScrollControlIntoView(this.lblPanelTop);
-			}
-			else if (KeyData == Keys.PageDown)
-			{
-				panReport.ScrollControlIntoView(this.lblPanelBot);
-			}
-		}
+        #endregion
 
-		private void PopulateTerminalReport()
-		{	
-			lblCompany.Text = CompanyDetails.CompanyCode;
-
-			Reports.ReceiptFormat clsReceiptFormat = new Reports.ReceiptFormat();
-			Reports.ReceiptFormatDetails clsDetails = clsReceiptFormat.Details();
-			clsReceiptFormat.CommitAndDispose();
-
-			lblReportHeader1.Text = GetReceiptFormatParameter(clsDetails.ReportHeader1);
-			lblReportHeader2.Text = GetReceiptFormatParameter(clsDetails.ReportHeader2);
-			lblReportHeader3.Text = GetReceiptFormatParameter(clsDetails.ReportHeader3);
-			lblReportHeader4.Text = GetReceiptFormatParameter(clsDetails.ReportHeader4);
-
-			lblBeginningTransactionNo.Text	= mDetails.BeginningTransactionNo;
-			lblEndingTransactionNo.Text		= mDetails.EndingTransactionNo;
-
-			lblGrossSales.Text				= Convert.ToDecimal(mDetails.GrossSales - (mDetails.GrossSales * (mTrustFund / 100))).ToString("#,##0.00");
-			lblTotalDiscount.Text			= Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.00");
-			
-			lblNetSales.Text				= Convert.ToDecimal(mDetails.DailySales - (mDetails.DailySales * (mTrustFund / 100))).ToString("#,##0.00");
-			lblVAT.Text						= Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.00");
-			lblCharge.Text					= Convert.ToDecimal(mDetails.TotalCharge - (mDetails.TotalCharge * (mTrustFund / 100))).ToString("#,##0.00");
-			decimal TotalAmount				= mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
-			lblTotalAmount.Text				= Convert.ToDecimal(TotalAmount - (TotalAmount* (mTrustFund / 100))).ToString("#,##0.00");
-
-			lblOldGrandTotal.Text			= Convert.ToDecimal(mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
-			lblDailySales.Text				= Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
-			lblNewGrandTotal.Text			= Convert.ToDecimal(mDetails.NewGrandTotal - (mDetails.NewGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
-
-			lblTaxableAmount.Text			= Convert.ToDecimal(mDetails.VATableAmount - (mDetails.VATableAmount * (mTrustFund / 100))).ToString("#,##0.00");
-			lblNonTaxableAmount.Text		= Convert.ToDecimal(mDetails.NonVaTableAmount - (mDetails.NonVaTableAmount * (mTrustFund / 100))).ToString("#,##0.00");
-			lblVAT1.Text					= Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblLocalTax.Text				= Convert.ToDecimal(mDetails.LocalTax - (mDetails.LocalTax * (mTrustFund / 100))).ToString("#,##0.#0");
-
-			lblCashSales.Text				= Convert.ToDecimal(mDetails.CashSales - (mDetails.CashSales * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblChequeSales.Text				= Convert.ToDecimal(mDetails.ChequeSales - (mDetails.ChequeSales * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblCreditCardSales.Text			= Convert.ToDecimal(mDetails.CreditCardSales - (mDetails.CreditCardSales * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblCreditSales.Text				= Convert.ToDecimal(mDetails.CreditSales - (mDetails.CreditSales * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblCreditPayment.Text			= Convert.ToDecimal(mDetails.CreditPayment - (mDetails.CreditPayment * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblDebitPayment.Text			= Convert.ToDecimal(mDetails.DebitPayment - (mDetails.DebitPayment * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblVoidSales.Text				= Convert.ToDecimal(mDetails.VoidSales - (mDetails.VoidSales * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblRefundSales.Text				= Convert.ToDecimal(mDetails.RefundSales - (mDetails.RefundSales * (mTrustFund / 100))).ToString("#,##0.#0");
-
-			lblItemsDiscount.Text			= Convert.ToDecimal(mDetails.ItemsDiscount - (mDetails.ItemsDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblSubtotalDiscount.Text		= Convert.ToDecimal(mDetails.SubTotalDiscount - (mDetails.SubTotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblTotalDiscounts.Text			= Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
-
-			lblBeginningBalance.Text		= Convert.ToDecimal(mDetails.BeginningBalance - (mDetails.BeginningBalance * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblCashInDrawer.Text			= Convert.ToDecimal(mDetails.CashInDrawer - (mDetails.CashInDrawer * (mTrustFund / 100))).ToString("#,##0.#0");
-
-			lblPaidOut.Text					= Convert.ToDecimal(mDetails.TotalPaidOut - (mDetails.TotalPaidOut * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblCashDisburse.Text			= Convert.ToDecimal(mDetails.CashDisburse - (mDetails.CashDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblChequeDisburse.Text			= Convert.ToDecimal(mDetails.ChequeDisburse - (mDetails.ChequeDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblCreditCardDisburse.Text		= Convert.ToDecimal(mDetails.CreditCardDisburse - (mDetails.CreditCardDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
-
-			lblCashWithHold.Text			= Convert.ToDecimal(mDetails.CashWithHold - (mDetails.CashWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblChequeWithHold.Text			= Convert.ToDecimal(mDetails.ChequeWithHold - (mDetails.ChequeWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblCreditCardWithHold.Text		= Convert.ToDecimal(mDetails.CreditCardWithHold - (mDetails.CreditCardWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
-
-			lblCashDeposit.Text				= Convert.ToDecimal(mDetails.CashDeposit - (mDetails.CashDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblChequeDeposit.Text			= Convert.ToDecimal(mDetails.ChequeDeposit - (mDetails.ChequeDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
-			lblCreditCardDeposit.Text		= Convert.ToDecimal(mDetails.CreditCardDeposit - (mDetails.CreditCardDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
-
-			lblNoOfCashTransactions.Text	= mDetails.NoOfCashTransactions.ToString("#,##0");
-			lblNoOfChequeTransactions.Text	= mDetails.NoOfChequeTransactions.ToString("#,##0");
-			lblNoOfCreditCardTran.Text		= mDetails.NoOfCreditCardTransactions.ToString("#,##0");
-			lblNoOfCreditTran.Text			= mDetails.NoOfCreditTransactions.ToString("#,##0");
-			lblNoOfCombPayTran.Text			= mDetails.NoOfCombinationPaymentTransactions.ToString("#,##0");
-			lblNoOfCreditPaymentTran.Text	= mDetails.NoOfCreditPaymentTransactions.ToString("#,##0");
-			lblNoOfDebitPaymentTransactions.Text	= mDetails.NoOfDebitPaymentTransactions.ToString("#,##0");
-			lblNoOfRefundTransactions.Text	= mDetails.NoOfRefundTransactions.ToString("#,##0");
-			lblNoOfVoidTransactions.Text	= mDetails.NoOfVoidTransactions.ToString("#,##0");
-			lblNoOfTotalTransactions.Text	= mDetails.NoOfTotalTransactions.ToString("#,##0");
-			
-			lblReportFooter1.Text = GetReceiptFormatParameter(clsDetails.ReportFooter1);
-			lblReportFooter2.Text = GetReceiptFormatParameter(clsDetails.ReportFooter2);
-			lblReportFooter3.Text = GetReceiptFormatParameter(clsDetails.ReportFooter3);
-
-		}
-		private string GetReceiptFormatParameter(string stReceiptFormat)
-		{
-			string stRetValue = "";
-
-			if (stReceiptFormat == Reports.ReceiptFieldFormats.Blank)
-			{
-				stRetValue = "";
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.Spacer)
-			{
-				stRetValue = Environment.NewLine;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.DateNow)
-			{
-				stRetValue = DateTime.Now.ToString("MMM dd yyyy hh:mh tt");
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.Cashier)
-			{
-				stRetValue = "Cashier: " + mCashierName;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.TerminalNo)
-			{
-				stRetValue = "Terminal No.: " + CompanyDetails.TerminalNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.MachineSerialNo)
-			{
-				stRetValue = "MIN: " + CONFIG.MachineSerialNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.AccreditationNo)
-			{
-				stRetValue = "Acc. No.: " + CONFIG.AccreditationNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.InvoiceNo)
-			{
-				stRetValue = "OFFICIAL RECEIPT #: " + "N/A";
-			}
-			else
-			{
-				stRetValue = stReceiptFormat;
-			}
-
-			return stRetValue;
-		}
+        #region Windows Control Methods
 
         private void cmdCancel_Click(object sender, EventArgs e)
         {
@@ -2289,6 +2267,214 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Hide();
         }
 
+        #endregion
 
-	}
+        #region Private Methods
+
+        private void ScrollIntoView(Keys KeyData)
+        {
+            if (KeyData == Keys.PageUp)
+            {
+                panReport.ScrollControlIntoView(this.lblPanelTop);
+            }
+            else if (KeyData == Keys.PageDown)
+            {
+                panReport.ScrollControlIntoView(this.lblPanelBot);
+            }
+        }
+
+        private void PopulateTerminalReport()
+        {
+            lblCompany.Text = CompanyDetails.CompanyCode;
+
+            Receipt clsReceipt = new Receipt();
+
+            lblReportHeader1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader1").Value);
+            lblReportHeader2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader2").Value);
+            lblReportHeader3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader3").Value);
+            lblReportHeader4.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader4").Value);
+
+            lblBeginningTransactionNo.Text = mDetails.BeginningORNo;
+            lblEndingTransactionNo.Text = mDetails.EndingORNo;
+
+            lblGrossSales.Text = Convert.ToDecimal(mDetails.GrossSales).ToString("#,##0.00");
+            lblTotalDiscount.Text = Convert.ToDecimal(mDetails.TotalDiscount).ToString("#,##0.00");
+
+            lblNetSales.Text = Convert.ToDecimal(mDetails.DailySales).ToString("#,##0.00");
+            lblVAT.Text = Convert.ToDecimal(mDetails.VAT).ToString("#,##0.00");
+            lblCharge.Text = Convert.ToDecimal(mDetails.TotalCharge).ToString("#,##0.00");
+            decimal TotalAmount = mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
+            lblTotalAmount.Text = Convert.ToDecimal(TotalAmount).ToString("#,##0.00");
+
+            lblOldGrandTotal.Text = Convert.ToDecimal(mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
+            lblDailySales.Text = Convert.ToDecimal(TotalAmount).ToString("#,##0.00");
+            lblNewGrandTotal.Text = Convert.ToDecimal((mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))) + TotalAmount).ToString("#,##0.00");
+
+            lblTaxableAmount.Text = Convert.ToDecimal(mDetails.VATableAmount).ToString("#,##0.00");
+            lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVATableAmount).ToString("#,##0.00");
+            lblVAT1.Text = Convert.ToDecimal(mDetails.VAT).ToString("#,##0.#0");
+            lblLocalTax.Text = Convert.ToDecimal(mDetails.LocalTax).ToString("#,##0.#0");
+
+            lblCashSales.Text = Convert.ToDecimal(mDetails.CashSales).ToString("#,##0.#0");
+            lblChequeSales.Text = Convert.ToDecimal(mDetails.ChequeSales).ToString("#,##0.#0");
+            lblCreditCardSales.Text = Convert.ToDecimal(mDetails.CreditCardSales).ToString("#,##0.#0");
+            lblCreditSales.Text = Convert.ToDecimal(mDetails.CreditSales).ToString("#,##0.#0");
+            lblCreditPayment.Text = Convert.ToDecimal(mDetails.CreditPayment).ToString("#,##0.#0");
+
+            // Apr 12, 2014 added the breakdown
+            lblCreditPaymentCash.Text = Convert.ToDecimal(mDetails.CreditPaymentCash).ToString("#,##0.#0");
+            lblCreditPaymentCheque.Text = Convert.ToDecimal(mDetails.CreditPaymentCheque).ToString("#,##0.#0");
+            lblCreditPaymentCreditCard.Text = Convert.ToDecimal(mDetails.CreditPaymentCreditCard).ToString("#,##0.#0");
+            lblCreditPaymentDebit.Text = Convert.ToDecimal(mDetails.CreditPaymentDebit).ToString("#,##0.#0");
+
+            lblDebitPayment.Text = Convert.ToDecimal(mDetails.DebitPayment).ToString("#,##0.#0");
+            lblVoidSales.Text = Convert.ToDecimal(mDetails.VoidSales).ToString("#,##0.#0");
+            lblRefundSales.Text = Convert.ToDecimal(mDetails.RefundSales).ToString("#,##0.#0");
+
+            lblItemsDiscount.Text = Convert.ToDecimal(mDetails.ItemsDiscount).ToString("#,##0.#0");
+            lblSubtotalDiscount.Text = Convert.ToDecimal(mDetails.SubTotalDiscount).ToString("#,##0.#0");
+            lblTotalDiscounts.Text = Convert.ToDecimal(mDetails.TotalDiscount).ToString("#,##0.#0");
+
+            lblBeginningBalance.Text = Convert.ToDecimal(mDetails.BeginningBalance).ToString("#,##0.#0");
+            lblCashInDrawer.Text = Convert.ToDecimal(mDetails.CashInDrawer).ToString("#,##0.#0");
+
+            lblPaidOut.Text = Convert.ToDecimal(mDetails.TotalPaidOut).ToString("#,##0.#0");
+            lblCashDisburse.Text = Convert.ToDecimal(mDetails.CashDisburse).ToString("#,##0.#0");
+            lblChequeDisburse.Text = Convert.ToDecimal(mDetails.ChequeDisburse).ToString("#,##0.#0");
+            lblCreditCardDisburse.Text = Convert.ToDecimal(mDetails.CreditCardDisburse).ToString("#,##0.#0");
+
+            lblCashWithHold.Text = Convert.ToDecimal(mDetails.CashWithHold).ToString("#,##0.#0");
+            lblChequeWithHold.Text = Convert.ToDecimal(mDetails.ChequeWithHold).ToString("#,##0.#0");
+            lblCreditCardWithHold.Text = Convert.ToDecimal(mDetails.CreditCardWithHold).ToString("#,##0.#0");
+
+            lblCashDeposit.Text = Convert.ToDecimal(mDetails.CashDeposit).ToString("#,##0.#0");
+            lblChequeDeposit.Text = Convert.ToDecimal(mDetails.ChequeDeposit).ToString("#,##0.#0");
+            lblCreditCardDeposit.Text = Convert.ToDecimal(mDetails.CreditCardDeposit).ToString("#,##0.#0");
+
+            //lblGrossSales.Text = Convert.ToDecimal(mDetails.GrossSales - (mDetails.GrossSales * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblTotalDiscount.Text = Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.00");
+
+            //lblNetSales.Text = Convert.ToDecimal(mDetails.DailySales - (mDetails.DailySales * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblVAT.Text = Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblCharge.Text = Convert.ToDecimal(mDetails.TotalCharge - (mDetails.TotalCharge * (mTrustFund / 100))).ToString("#,##0.00");
+            //decimal TotalAmount = mDetails.DailySales + mDetails.VAT + mDetails.EVAT + mDetails.LocalTax + mDetails.TotalCharge;
+            //lblTotalAmount.Text = Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
+
+            //lblOldGrandTotal.Text = Convert.ToDecimal(mDetails.OldGrandTotal - (mDetails.OldGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblDailySales.Text = Convert.ToDecimal(TotalAmount - (TotalAmount * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblNewGrandTotal.Text = Convert.ToDecimal(mDetails.NewGrandTotal - (mDetails.NewGrandTotal * (mTrustFund / 100))).ToString("#,##0.00");
+
+            //lblTaxableAmount.Text = Convert.ToDecimal(mDetails.VATableAmount - (mDetails.VATableAmount * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblNonTaxableAmount.Text = Convert.ToDecimal(mDetails.NonVaTableAmount - (mDetails.NonVaTableAmount * (mTrustFund / 100))).ToString("#,##0.00");
+            //lblVAT1.Text = Convert.ToDecimal(mDetails.VAT - (mDetails.VAT * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblLocalTax.Text = Convert.ToDecimal(mDetails.LocalTax - (mDetails.LocalTax * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblCashSales.Text = Convert.ToDecimal(mDetails.CashSales - (mDetails.CashSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeSales.Text = Convert.ToDecimal(mDetails.ChequeSales - (mDetails.ChequeSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardSales.Text = Convert.ToDecimal(mDetails.CreditCardSales - (mDetails.CreditCardSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditSales.Text = Convert.ToDecimal(mDetails.CreditSales - (mDetails.CreditSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditPayment.Text = Convert.ToDecimal(mDetails.CreditPayment - (mDetails.CreditPayment * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblDebitPayment.Text = Convert.ToDecimal(mDetails.DebitPayment - (mDetails.DebitPayment * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblVoidSales.Text = Convert.ToDecimal(mDetails.VoidSales - (mDetails.VoidSales * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblRefundSales.Text = Convert.ToDecimal(mDetails.RefundSales - (mDetails.RefundSales * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblItemsDiscount.Text = Convert.ToDecimal(mDetails.ItemsDiscount - (mDetails.ItemsDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblSubtotalDiscount.Text = Convert.ToDecimal(mDetails.SubTotalDiscount - (mDetails.SubTotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblTotalDiscounts.Text = Convert.ToDecimal(mDetails.TotalDiscount - (mDetails.TotalDiscount * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblBeginningBalance.Text = Convert.ToDecimal(mDetails.BeginningBalance - (mDetails.BeginningBalance * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCashInDrawer.Text = Convert.ToDecimal(mDetails.CashInDrawer - (mDetails.CashInDrawer * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblPaidOut.Text = Convert.ToDecimal(mDetails.TotalPaidOut - (mDetails.TotalPaidOut * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCashDisburse.Text = Convert.ToDecimal(mDetails.CashDisburse - (mDetails.CashDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeDisburse.Text = Convert.ToDecimal(mDetails.ChequeDisburse - (mDetails.ChequeDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardDisburse.Text = Convert.ToDecimal(mDetails.CreditCardDisburse - (mDetails.CreditCardDisburse * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblCashWithHold.Text = Convert.ToDecimal(mDetails.CashWithHold - (mDetails.CashWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeWithHold.Text = Convert.ToDecimal(mDetails.ChequeWithHold - (mDetails.ChequeWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardWithHold.Text = Convert.ToDecimal(mDetails.CreditCardWithHold - (mDetails.CreditCardWithHold * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            //lblCashDeposit.Text = Convert.ToDecimal(mDetails.CashDeposit - (mDetails.CashDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblChequeDeposit.Text = Convert.ToDecimal(mDetails.ChequeDeposit - (mDetails.ChequeDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
+            //lblCreditCardDeposit.Text = Convert.ToDecimal(mDetails.CreditCardDeposit - (mDetails.CreditCardDeposit * (mTrustFund / 100))).ToString("#,##0.#0");
+
+            lblNoOfCashTransactions.Text = mDetails.NoOfCashTransactions.ToString("#,##0");
+            lblNoOfChequeTransactions.Text = mDetails.NoOfChequeTransactions.ToString("#,##0");
+            lblNoOfCreditCardTran.Text = mDetails.NoOfCreditCardTransactions.ToString("#,##0");
+            lblNoOfCreditTran.Text = mDetails.NoOfCreditTransactions.ToString("#,##0");
+            lblNoOfCombPayTran.Text = mDetails.NoOfCombinationPaymentTransactions.ToString("#,##0");
+            lblNoOfCreditPaymentTran.Text = mDetails.NoOfCreditPaymentTransactions.ToString("#,##0");
+            lblNoOfDebitPaymentTransactions.Text = mDetails.NoOfDebitPaymentTransactions.ToString("#,##0");
+            lblNoOfRefundTransactions.Text = mDetails.NoOfRefundTransactions.ToString("#,##0");
+            lblNoOfVoidTransactions.Text = mDetails.NoOfVoidTransactions.ToString("#,##0");
+            lblNoOfTotalTransactions.Text = mDetails.NoOfTotalTransactions.ToString("#,##0");
+
+            lblReportFooter1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter1").Value);
+            lblReportFooter2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter2").Value);
+            lblReportFooter3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter3").Value);
+
+            clsReceipt.CommitAndDispose();
+
+        }
+        private string GetReceiptFormatParameter(string stReceiptFormat)
+        {
+            string stRetValue = "";
+
+            if (stReceiptFormat == ReceiptFieldFormats.Blank)
+            {
+                stRetValue = "";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.Spacer)
+            {
+                stRetValue = " ";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InvoiceNo)
+            {
+                stRetValue = "";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.DateNow)
+            {
+                stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.Cashier)
+            {
+                stRetValue = mCashierName;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.TerminalNo)
+            {
+                stRetValue = mclsTerminalDetails.TerminalNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.MachineSerialNo)
+            {
+                stRetValue = CONFIG.MachineSerialNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.AccreditationNo)
+            {
+                stRetValue = CONFIG.AccreditationNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.RewardsPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseIndividualCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseIndividualCreditPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseGroupCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseGroupCreditPermitNo;
+            }
+            else
+            {
+                stRetValue = stReceiptFormat;
+            }
+
+            if (stRetValue == null) stRetValue = "";
+
+            return stRetValue;
+        }
+
+        #endregion
+
+    }
 }

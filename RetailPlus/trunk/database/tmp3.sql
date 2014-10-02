@@ -1,0 +1,2 @@
+﻿SELECT a.UID, Name FROM sysAccessUsers a INNER JOIN sysAccessRights b ON a.UID = b.UID INNER JOIN sysAccessTypes c ON b.TranTypeID = c.TypeID INNER JOIN sysAccessUserDetails d ON a.UID = d.UID 
+WHERE UserName = 'cess' AND Password = '080916' AND Deleted = 0        AND TranTypeID = 49 AND AllowWrite = 1 AND Enabled =1 

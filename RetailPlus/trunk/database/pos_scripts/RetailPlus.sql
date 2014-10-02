@@ -7023,7 +7023,6 @@ ALTER TABLE tblProductGroupUnitMatrix DROP CreatedOn;
 ALTER TABLE tblProductGroupVariations DROP CreatedOn;
 ALTER TABLE tblProductGroupVariationsMatrix DROP CreatedOn;
 ALTER TABLE tblProductHistory DROP CreatedOn;
-ALTER TABLE tblProductHistoryAll DROP CreatedOn;
 ALTER TABLE tblProductInventory DROP CreatedOn;
 ALTER TABLE tblProductInventoryAudit DROP CreatedOn;
 ALTER TABLE tblProductInventoryDaily DROP CreatedOn;
@@ -7157,7 +7156,6 @@ ALTER TABLE tblProductGroupUnitMatrix ADD `CreatedOn` DATETIME NOT NULL DEFAULT 
 ALTER TABLE tblProductGroupVariations ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblProductGroupVariationsMatrix ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblProductHistory ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
-ALTER TABLE tblProductHistoryAll ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblProductInventory ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblProductInventoryAudit ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblProductInventoryDaily ADD `CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
@@ -7291,7 +7289,6 @@ ALTER TABLE tblProductGroupUnitMatrix DROP LastModified;
 ALTER TABLE tblProductGroupVariations DROP LastModified;
 ALTER TABLE tblProductGroupVariationsMatrix DROP LastModified;
 ALTER TABLE tblProductHistory DROP LastModified;
-ALTER TABLE tblProductHistoryAll DROP LastModified;
 ALTER TABLE tblProductInventory DROP LastModified;
 ALTER TABLE tblProductInventoryAudit DROP LastModified;
 ALTER TABLE tblProductInventoryDaily DROP LastModified;
@@ -7425,7 +7422,6 @@ ALTER TABLE tblProductGroupUnitMatrix ADD `LastModified` TIMESTAMP DEFAULT CURRE
 ALTER TABLE tblProductGroupVariations ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblProductGroupVariationsMatrix ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblProductHistory ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-ALTER TABLE tblProductHistoryAll ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblProductInventory ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblProductInventoryAudit ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE tblProductInventoryDaily ADD `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
@@ -7560,7 +7556,6 @@ DROP TRIGGER trgtblProductGroupUnitMatrixCreatedOn;
 DROP TRIGGER trgtblProductGroupVariationsCreatedOn;
 DROP TRIGGER trgtblProductGroupVariationsMatrixCreatedOn;
 DROP TRIGGER trgtblProductHistoryCreatedOn;
-DROP TRIGGER trgtblProductHistoryAllCreatedOn;
 DROP TRIGGER trgtblProductInventoryCreatedOn;
 DROP TRIGGER trgtblProductInventoryAuditCreatedOn;
 DROP TRIGGER trgtblProductInventoryDailyCreatedOn;
@@ -7694,7 +7689,6 @@ CREATE TRIGGER trgtblProductGroupUnitMatrixCreatedOn BEFORE INSERT ON tblProduct
 CREATE TRIGGER trgtblProductGroupVariationsCreatedOn BEFORE INSERT ON tblProductGroupVariations FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblProductGroupVariationsMatrixCreatedOn BEFORE INSERT ON tblProductGroupVariationsMatrix FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblProductHistoryCreatedOn BEFORE INSERT ON tblProductHistory FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
-CREATE TRIGGER trgtblProductHistoryAllCreatedOn BEFORE INSERT ON tblProductHistoryAll FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblProductInventoryCreatedOn BEFORE INSERT ON tblProductInventory FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblProductInventoryAuditCreatedOn BEFORE INSERT ON tblProductInventoryAudit FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
 CREATE TRIGGER trgtblProductInventoryDailyCreatedOn BEFORE INSERT ON tblProductInventoryDaily FOR EACH ROW SET NEW.CreatedOn = CURRENT_TIMESTAMP;
@@ -7828,7 +7822,6 @@ UPDATE tblProductGroupUnitMatrix SET LastModified = NOW();
 UPDATE tblProductGroupVariations SET LastModified = NOW();
 UPDATE tblProductGroupVariationsMatrix SET LastModified = NOW();
 UPDATE tblProductHistory SET LastModified = NOW();
-UPDATE tblProductHistoryAll SET LastModified = NOW();
 UPDATE tblProductInventory SET LastModified = NOW();
 UPDATE tblProductInventoryAudit SET LastModified = NOW();
 UPDATE tblProductInventoryDaily SET LastModified = NOW();
@@ -8040,8 +8033,6 @@ ALTER TABLE tblTransactions ADD `PWDDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblTransactions ADD `OtherDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblTransactions ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Net Sales = Amount Due = VAT Exempt - SNRDisc = Subtotal - Not SNRDisc';
 
-UPDATE tblTransactions SET NetSales = SubTotal - (VATExempt * 0.12) - Discount;
-
 ALTER TABLE tblTransactionItems ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
 UPDATE tblTransactionItems SET SyncID = TransactionItemsID WHERE SyncID = 0;
 ALTER TABLE tblTransactionItems ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
@@ -8069,6 +8060,7 @@ ALTER TABLE tblTerminalReportHistory ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAU
 
 /**************GENERATE DISCOUNT**************/
 -- break the TotalDiscount = ItemsDiscount + SNRDiscount (VATExempt * 0.20) + PWDDiscount + OtherDiscount
+/***
 UPDATE tblTerminalReport SET SNRDiscount = VATExempt * 0.20;
 UPDATE tblTerminalReportHistory SET SNRDiscount = VATExempt * 0.20;
 
@@ -8077,6 +8069,7 @@ UPDATE tblTerminalReportHistory SET OtherDiscount = TotalDiscount - ItemsDiscoun
 
 UPDATE tblTerminalReport SET NetSales = GrossSales - (VATExempt * 0.12) - TotalDiscount;
 UPDATE tblTerminalReportHistory SET NetSales = GrossSales - (VATExempt * 0.12) - TotalDiscount;
+***/
 
 ALTER TABLE tblCashierReport ADD `VATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for VAT';
 ALTER TABLE tblCashierReport ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
@@ -8138,20 +8131,120 @@ UPDATE tblCreditPayment, tblTransactions SET tblCreditPayment.TerminalNo = tblTr
 -- update the new added column
 UPDATE tblCashCount, tblDenomination SET tblCashCount.DenominationValue = tblDenomination.DenominationValue WHERE tblCashCount.DenominationID = tblDenomination.DenominationID AND tblCashCount.DenominationValue = 0;
 
--- update the new added column
-UPDATE tblPLUReport SET BranchID = (SELECT DISTINCT BranchID FROM tblTransactions LIMIT 1) WHERE BranchID = 0;
-
-UPDATE tblTransactions SET 
-	NetSales = CASE VATExempt
-					WHEN 0 THEN SubTotal - Discount
-					ELSE VATExempt - Discount
-			   END
-WHERE NetSales = 0;
-
 ALTER TABLE tblCashierReportHistory ADD `BeginningTransactionNo` VARCHAR(30) NOT NULL;
 ALTER TABLE tblCashierReportHistory ADD `BeginningORNo` VARCHAR(30) NOT NULL;
 ALTER TABLE tblCashierReportHistory ADD `EndingTransactionNo` VARCHAR(30) NOT NULL;
 ALTER TABLE tblCashierReportHistory ADD `EndingORNo` VARCHAR(30) NOT NULL;
+
+ALTER TABLE tblTransactions ADD `ItemSold` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactions ADD `QuantitySold` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+UPDATE tblTransactions,  
+	(
+		SELECT TransactionID,
+			SUM(CASE TransactionItemStatus
+					WHEN 0 THEN 1	-- Valid
+					WHEN 1 THEN 0	-- Void
+					WHEN 2 THEN 0	-- trash
+					WHEN 3 THEN 1	-- return
+					WHEN 4 THEN 1	-- refund
+					WHEN 5 THEN 1	-- orderslip
+				END) ItemsSold,
+			SUM(CASE TransactionItemStatus
+					WHEN 0 THEN Quantity	-- Valid
+					WHEN 1 THEN 0			-- Void
+					WHEN 2 THEN 0			-- trash
+					WHEN 3 THEN Quantity	-- return
+					WHEN 4 THEN Quantity	-- refund
+					WHEN 5 THEN Quantity	-- orderslip
+				END) QuantitySold
+		FROM tblTransactionItems
+		GROUP BY TransactionID
+	) TrxItems
+SET 
+	tblTransactions.ItemSold		= TrxItems.ItemsSold,
+	tblTransactions.QuantitySold	= TrxItems.QuantitySold
+WHERE tblTransactions.TransactionID = TrxItems.TransactionID;
+
+-- change the SNRDiscount based on
+-- 0.05 Groceries
+-- 0.20 Pharmaceuticals
+
+UPDATE tblTransactions SET 
+	VATExempt = CASE DiscountCode WHEN 'SNR' THEN Discount / 0.20 ELSE 0 END,
+	SNRDiscount = CASE DiscountCode WHEN 'SNR' THEN Discount ELSE 0 END,
+	PWDDiscount = CASE DiscountCode WHEN 'PWD' THEN Discount ELSE 0 END,
+	OtherDiscount = CASE DiscountCode WHEN 'SNR' THEN 0 WHEN 'PWD' THEN 0 ELSE Discount END;
+	
+UPDATE tblTransactions SET NetSales = SubTotal - (VATExempt * 0.12) - Discount;
+
+ALTER TABLE tblTerminalReport ADD `IsProcessed` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `IsProcessed` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `ItemSold` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `ItemSold` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblTerminalReport ADD `TrustFund` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReport ADD `IsProcessed` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `IsProcessed` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `ItemSold` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `ItemSold` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblProductSubGroup ADD `isLock` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReport ADD `BeginningTransactionNo` VARCHAR(30) NOT NULL;
+ALTER TABLE tblCashierReport ADD `BeginningORNo` VARCHAR(30) NOT NULL;
+ALTER TABLE tblCashierReport ADD `EndingTransactionNo` VARCHAR(30) NOT NULL;
+ALTER TABLE tblCashierReport ADD `EndingORNo` VARCHAR(30) NOT NULL;
+
+UPDATE tblCashierReport, tblTerminalReport SET 
+	tblCashierReport.BeginningTransactionNo = tblTerminalReport.BeginningTransactionNo,
+	tblCashierReport.BeginningORNo = tblTerminalReport.BeginningORNo
+WHERE tblCashierReport.BranchID = tblTerminalReport.BranchID
+	AND tblCashierReport.TerminalNo = tblTerminalReport.TerminalNo;
+
+-- delete the redundant records
+DELETE FROM tblCashierReport WHERE GrossSales = 0 AND NoOfTotalTransactions = 0;
+DELETE FROM tblCashierReportHistory WHERE GrossSales = 0 AND NoOfTotalTransactions = 0;
+
+-- update the correct terminalid of those that are zero
+UPDATE tblCashierReportHistory, tblTerminal SET 
+	tblCashierReportHistory.TerminalID = tblTerminal.TerminalID
+WHERE tblCashierReportHistory.TerminalNo = tblTerminal.TerminalNo
+	AND tblCashierReportHistory.TerminalID = 0;
+
+-- update the transactionno and orno of those that are blank
+UPDATE tblCashierReportHistory, 
+	(SELECT BranchID, TerminalNo, a.DateLastInitialized,
+		(SELECT DateLastInitialized FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized > a.DateLastInitialized ORDER BY b.DateLastInitialized ASC LIMIT 1) DateLastInitializedTo,
+		BeginningTransactionNo, BeginningORNo, 
+		CASE 
+			WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
+			ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), '0') 
+		END EndingTransactionNo, 
+		CASE 
+			WHEN EndingORNo = 0 THEN EndingORNo
+			ELSE LPAD(EndingORNo-1, LENGTH(BeginningTransactionNo), '0') 
+		END EndingORNo
+	 FROM tblTerminalReportHistory a
+	) tblTerminalReportHistory
+SET 
+	tblCashierReportHistory.BeginningTransactionNo = tblTerminalReportHistory.BeginningTransactionNo,
+	tblCashierReportHistory.EndingTransactionNo = tblTerminalReportHistory.EndingTransactionNo,
+	tblCashierReportHistory.BeginningORNo = tblTerminalReportHistory.BeginningORNo,
+	tblCashierReportHistory.EndingORNo = tblTerminalReportHistory.EndingORNo
+WHERE tblCashierReportHistory.BranchID = tblTerminalReportHistory.BranchID
+	AND tblCashierReportHistory.TerminalNo = tblTerminalReportHistory.TerminalNo
+	AND tblCashierReportHistory.LastLoginDate BETWEEN DateLastInitialized AND DateLastInitializedTo;
+
+-- delete this no need for this. this is always true anyway
+DELETE FROM sysConfig WHERE ConfigName = 'WillDeductTFInTerminalReport';
+
+-- run the retailplus_proc.sql
+-- run this to fixed the previous reports.
+-- need to change the date
+-- CALL procTerminalReportHistorySyncTransactionSales( 1, '01', '2014-09-01 00:00');
+
 
 
 /*********************************  v_4.0.1.1.sql END  *******************************************************/ 

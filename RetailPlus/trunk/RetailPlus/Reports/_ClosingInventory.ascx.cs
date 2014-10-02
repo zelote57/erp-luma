@@ -54,7 +54,7 @@ namespace AceSoft.RetailPlus.Reports
             cboContact.DataSource = clsContact.SuppliersAsDataTable(Limit: 100).DefaultView;
             cboContact.DataBind();
             cboContact.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT, Constants.ZERO_STRING));
-            cboGroup.SelectedIndex = 0;
+            cboContact.SelectedIndex = 0;
 
             ProductGroup clsProductGroup = new ProductGroup(clsContact.Connection, clsContact.Transaction);
             cboGroup.DataTextField = "ProductGroupName";
@@ -63,6 +63,14 @@ namespace AceSoft.RetailPlus.Reports
             cboGroup.DataBind();
             cboGroup.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT,Constants.ZERO_STRING));
             cboGroup.SelectedIndex = 0;
+
+            ProductSubGroup clsProductSubGroup = new ProductSubGroup(clsContact.Connection, clsContact.Transaction);
+            cboSubGroup.DataTextField = "ProductSubGroupName";
+            cboSubGroup.DataValueField = "ProductSubGroupID";
+            cboSubGroup.DataSource = clsProductSubGroup.ListAsDataTable();
+            cboSubGroup.DataBind();
+            cboSubGroup.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT, Constants.ZERO_STRING));
+            cboSubGroup.SelectedIndex = 0;
 
             Data.Inventory clsInventory = new Data.Inventory(clsContact.Connection, clsContact.Transaction);
             cboInventoryNo.DataTextField = "ReferenceNo";
@@ -174,6 +182,9 @@ namespace AceSoft.RetailPlus.Reports
             string ProductGroupName = string.Empty;
             if (cboGroup.SelectedItem.Value != Constants.ZERO_STRING) ProductGroupName = cboGroup.SelectedItem.Text;
 
+            string ProductSubGroupName = string.Empty;
+            if (cboSubGroup.SelectedItem.Value != Constants.ZERO_STRING) ProductSubGroupName = cboSubGroup.SelectedItem.Text;
+
             System.Data.DataTable dt = null;
             if (lblType.Text == "invcount")
             {
@@ -181,9 +192,11 @@ namespace AceSoft.RetailPlus.Reports
 
                 Int64 lngProductgroupID = Convert.ToInt64(cboGroup.SelectedItem.Value);
 
+                Int64 lngProductSubGroupID = Convert.ToInt64(cboSubGroup.SelectedItem.Value);
+
                 ProductInventories clsProductInventories = new ProductInventories();
 
-                dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(lblBranchID.Text), SupplierID: lngSupplierID, ProductGroupID: lngProductgroupID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode ASC, MatrixDescription ASC, BarCode1", SortOrder: SortOption.Desscending);
+                dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(lblBranchID.Text), SupplierID: lngSupplierID, ProductGroupID: lngProductgroupID, ProductSubGroupID: lngProductSubGroupID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductCode ASC, MatrixDescription ASC, BarCode1", SortOrder: SortOption.Desscending);
 
                 //Contacts clsContacts = new Contacts(clsProductInventories.Connection, clsProductInventories.Transaction);
                 //ContactDetails clsContactDetails = clsContacts.Details(lngSupplierID);

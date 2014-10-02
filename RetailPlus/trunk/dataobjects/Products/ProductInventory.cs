@@ -181,6 +181,31 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public void CloseInventoryByProductSubGroup(int BranchID, long CloseByUserID, DateTime ClosingDate, string ReferenceNo, long ProductSubGroupID, string ProductSubGroupName)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procCloseInventoryByProductSubGroup(@BranchID, @UID, @ClosingDate, @ReferenceNo, @ProductSubGroupID, @ProductSubGroupName);";
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@UID", CloseByUserID);
+                cmd.Parameters.AddWithValue("@ClosingDate", ClosingDate);
+                cmd.Parameters.AddWithValue("@ReferenceNo", ReferenceNo);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupName", ProductSubGroupName);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         public void CloseInventoryBySupplier(int intBranchID, long lngCloseByUserID, DateTime dteClosingDate, string strReferenceNo, long lngSupplierID, string strContactCode)
         {
             try

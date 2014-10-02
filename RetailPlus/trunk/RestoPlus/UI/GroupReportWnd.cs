@@ -5,118 +5,122 @@ using System.Windows.Forms;
 using AceSoft.RetailPlus.Data;
 using MySql.Data.MySqlClient;
 
+using AceSoft.RetailPlus.Reports;
+
 namespace AceSoft.RetailPlus.Client.UI
 {
-	public class GroupReportWnd : System.Windows.Forms.Form
-	{
-		private System.Windows.Forms.PictureBox imgIcon;
-		private System.Windows.Forms.Label lblDescription;
-		private System.Windows.Forms.Label lblReportDesc;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Panel panReport;
-		private System.Windows.Forms.Label lblPanelTop;
-		private System.Windows.Forms.Label lblReportFooter3;
-		private System.Windows.Forms.Label lblReportFooter2;
-		private System.Windows.Forms.Label lblReportFooter1;
-		private System.Windows.Forms.Label lblPanelBot;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label lblReceiptDesc;
-		private System.Windows.Forms.Label label23;
-		private System.Windows.Forms.Label lblReportHeader4;
-		private System.Windows.Forms.Label lblReportHeader3;
-		private System.Windows.Forms.Label lblReportHeader2;
-		private System.Windows.Forms.Label lblReportHeader1;
-		private System.Windows.Forms.Label lblCompany;
-		private System.Windows.Forms.DataGrid dgGroupReport;
-		private System.Windows.Forms.DataGridTableStyle dgStyle;
-		private System.Windows.Forms.DataGridTextBoxColumn GROUPNAME;
-		private System.Windows.Forms.DataGridTextBoxColumn TRAN;
-		private System.Windows.Forms.DataGridTextBoxColumn AMOUNT;
-		private System.Windows.Forms.DataGridTextBoxColumn PERCENTAGE;
-		private System.Windows.Forms.Label lblTotalTran;
-		private System.Windows.Forms.Label lblTotalAmount;
-		private System.Windows.Forms.Label lblTotalPercentage;
-		private System.ComponentModel.Container components = null;
+    public class GroupReportWnd : System.Windows.Forms.Form
+    {
+        private System.Windows.Forms.PictureBox imgIcon;
+        private System.Windows.Forms.Label lblDescription;
+        private System.Windows.Forms.Label lblReportDesc;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Panel panReport;
+        private System.Windows.Forms.Label lblPanelTop;
+        private System.Windows.Forms.Label lblReportFooter3;
+        private System.Windows.Forms.Label lblReportFooter2;
+        private System.Windows.Forms.Label lblReportFooter1;
+        private System.Windows.Forms.Label lblPanelBot;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblReceiptDesc;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label lblReportHeader4;
+        private System.Windows.Forms.Label lblReportHeader3;
+        private System.Windows.Forms.Label lblReportHeader2;
+        private System.Windows.Forms.Label lblReportHeader1;
+        private System.Windows.Forms.Label lblCompany;
+        private System.Windows.Forms.DataGrid dgGroupReport;
+        private System.Windows.Forms.DataGridTableStyle dgStyle;
+        private System.Windows.Forms.DataGridTextBoxColumn GROUPNAME;
+        private System.Windows.Forms.DataGridTextBoxColumn TRAN;
+        private System.Windows.Forms.DataGridTextBoxColumn AMOUNT;
+        private System.Windows.Forms.DataGridTextBoxColumn PERCENTAGE;
+        private System.Windows.Forms.Label lblTotalTran;
+        private System.Windows.Forms.Label lblTotalAmount;
+        private System.Windows.Forms.Label lblTotalPercentage;
+        private System.ComponentModel.Container components = null;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblGrandTotal;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblDiscount;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblCharge;
+        private System.Windows.Forms.Label lblVATSpacer;
+        private System.Windows.Forms.Label lblVATName;
+        private System.Windows.Forms.Label lblVAT;
 
-		private DialogResult dialog;
-		private System.Data.DataTable mdtGroupReport;
-		private string mCashierName;
-		private Reports.ReceiptFormatDetails mclsReceiptFormatDetails;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label lblGrandTotal;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label lblDiscount;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Label lblCharge;
-		private System.Windows.Forms.Label lblVATSpacer;
-		private System.Windows.Forms.Label lblVATName;
-		private System.Windows.Forms.Label lblVAT;
-		private Data.TerminalReportDetails mTerminalReportDetails;
         private Button cmdCancel;
         private Button cmdEnter;
-        private bool mboIsVATInclusive;
 
-		#region Public Get/Set Properties
-		public string CashierName
-		{
-			set {	mCashierName = value;	}
-		}
-		public System.Data.DataTable dtGroupReport
-		{
-			set 
-			{
-				mdtGroupReport = value;
-			}
-		}
 
-		public DialogResult Result
-		{
-			get {	return dialog;	}
-		}
+        #region Public Properties
 
-		public Reports.ReceiptFormatDetails ReceiptFormatDetails
-		{
-			set {	mclsReceiptFormatDetails = value;	}
-		}
-		public Data.TerminalReportDetails TerminalReportDetail
-		{
-			set {	mTerminalReportDetails = value;	}
-		}
-        public bool IsVATInclusive
+        private string mCashierName;
+        public string CashierName
         {
-            set { mboIsVATInclusive = value; }
+            set { mCashierName = value; }
         }
 
-		#endregion
+        private System.Data.DataTable mdtGroupReport;
+        public System.Data.DataTable dtGroupReport
+        {
+            set
+            {
+                mdtGroupReport = value;
+            }
+        }
 
-		#region Constructors and Destructors
-		public GroupReportWnd()
-		{
-			InitializeComponent();
-		}
+        private DialogResult dialog;
+        public DialogResult Result
+        {
+            get { return dialog; }
+        }
 
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        private Data.TerminalReportDetails mTerminalReportDetails;
+        public Data.TerminalReportDetails TerminalReportDetail
+        {
+            set { mTerminalReportDetails = value; }
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set
+            {
+                mclsTerminalDetails = value;
+            }
+        }
+
+        #endregion
+
+        #region Constructors and Destructors
+        public GroupReportWnd()
+        {
+            InitializeComponent();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.lblDescription = new System.Windows.Forms.Label();
             this.lblReportDesc = new System.Windows.Forms.Label();
@@ -665,61 +669,61 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
-		#endregion
+        }
+        #endregion
+        #endregion
 
-		#region Windows Form Methods
-		private void GroupReportWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			System.Data.DataTable dt;
-			int index;
+        #region Windows Form Methods
+        private void GroupReportWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            System.Data.DataTable dt;
+            int index;
 
-			switch (e.KeyData)
-			{
-				case Keys.Escape:
-					dialog = DialogResult.Cancel;
-					this.Hide(); 
-					break;
+            switch (e.KeyData)
+            {
+                case Keys.Escape:
+                    dialog = DialogResult.Cancel;
+                    this.Hide();
+                    break;
 
-				case Keys.Enter:
-					dialog = DialogResult.OK;
-					this.Hide(); 
-					break;
-				
-				case Keys.Up:
-					dt = (System.Data.DataTable) dgGroupReport.DataSource;
-					if (dgGroupReport.CurrentRowIndex > 0) 
-					{
-						index = dgGroupReport.CurrentRowIndex;				
-						dgGroupReport.CurrentRowIndex -= 1;
-						dgGroupReport.Select(dgGroupReport.CurrentRowIndex);
-						dgGroupReport.UnSelect(index);
-					}
-					break;
+                case Keys.Enter:
+                    dialog = DialogResult.OK;
+                    this.Hide();
+                    break;
 
-				case Keys.Down:
-					dt = (System.Data.DataTable) dgGroupReport.DataSource;
-					if (dgGroupReport.CurrentRowIndex < dt.Rows.Count-1) 
-					{
-						index = dgGroupReport.CurrentRowIndex;				
+                case Keys.Up:
+                    dt = (System.Data.DataTable)dgGroupReport.DataSource;
+                    if (dgGroupReport.CurrentRowIndex > 0)
+                    {
+                        index = dgGroupReport.CurrentRowIndex;
+                        dgGroupReport.CurrentRowIndex -= 1;
+                        dgGroupReport.Select(dgGroupReport.CurrentRowIndex);
+                        dgGroupReport.UnSelect(index);
+                    }
+                    break;
 
-						dgGroupReport.CurrentRowIndex += 1;
-						dgGroupReport.Select(dgGroupReport.CurrentRowIndex);
-						dgGroupReport.UnSelect(index);
-					}
-					break;
-			}
-		}
+                case Keys.Down:
+                    dt = (System.Data.DataTable)dgGroupReport.DataSource;
+                    if (dgGroupReport.CurrentRowIndex < dt.Rows.Count - 1)
+                    {
+                        index = dgGroupReport.CurrentRowIndex;
 
-		private void GroupReportWnd_Load(object sender, System.EventArgs e)
-		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/GroupReport.jpg");	}
-			catch{}
+                        dgGroupReport.CurrentRowIndex += 1;
+                        dgGroupReport.Select(dgGroupReport.CurrentRowIndex);
+                        dgGroupReport.UnSelect(index);
+                    }
+                    break;
+            }
+        }
+
+        private void GroupReportWnd_Load(object sender, System.EventArgs e)
+        {
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/GroupReport.jpg"); }
+            catch { }
             try
             { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
             catch { }
@@ -727,117 +731,17 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-			PopulateGroupReport();
-		}
+            PopulateGroupReport();
+        }
 
-		private void GroupReportWnd_Resize(object sender, System.EventArgs e)
-		{
-			SetGridItemsWidth();
-		}
+        private void GroupReportWnd_Resize(object sender, System.EventArgs e)
+        {
+            SetGridItemsWidth();
+        }
 
-		#endregion
+        #endregion
 
-		#region Private Methods
-		private void SetGridItemsWidth()
-		{
-			dgStyle.GridColumnStyles["ProductGroup"].Width = 90;
-			dgStyle.GridColumnStyles["TranCount"].Width = 50;
-			dgStyle.GridColumnStyles["Amount"].Width = dgGroupReport.Width - 220;
-			dgStyle.GridColumnStyles["Percentage"].Width = 85;
-            dgGroupReport.Height = 213;
-            dgGroupReport.Width = 326;
-		}
-
-		private void PopulateGroupReport()
-		{	
-			lblCompany.Text = CompanyDetails.CompanyCode;
-
-			lblReportHeader1.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportHeader1);
-			lblReportHeader2.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportHeader2);
-			lblReportHeader3.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportHeader3);
-			lblReportHeader4.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportHeader4);
-
-			dgGroupReport.DataSource = mdtGroupReport;
-			decimal TotalTranCount = 0;
-			decimal TotalAmount = 0;
-			try 
-			{	
-				foreach (System.Data.DataRow dr in mdtGroupReport.Rows)
-				{
-					TotalTranCount += Convert.ToDecimal(dr["TranCount"]);
-					TotalAmount += Convert.ToDecimal(dr["Amount"]);
-				}
-				dgGroupReport.Select(0); 
-			}	
-			catch {}
-			lblTotalTran.Text = TotalTranCount.ToString("#,##0");
-			lblTotalAmount.Text = TotalAmount.ToString("#,##0.#0");
-			if (TotalTranCount > 0)
-				lblTotalPercentage.Text = "100%";
-			else
-				lblTotalPercentage.Text = "0%";
-			
-			lblDiscount.Text = mTerminalReportDetails.SubTotalDiscount.ToString("#,##0.#0");
-			lblCharge.Text = mTerminalReportDetails.TotalCharge.ToString("#,##0.#0");
-            lblVAT.Text = mTerminalReportDetails.VAT.ToString("#,##0.#0");
-
-            lblVATName.Visible = !mboIsVATInclusive;
-            lblVAT.Visible = !mboIsVATInclusive;
-            lblVATSpacer.Visible = !mboIsVATInclusive;
-
-			decimal GrandTotal	= mTerminalReportDetails.DailySales + mTerminalReportDetails.VAT + mTerminalReportDetails.TotalCharge;
-			lblGrandTotal.Text = GrandTotal.ToString("#,##0.#0");
-			
-			lblReportFooter1.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportFooter1);
-			lblReportFooter2.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportFooter2);
-			lblReportFooter3.Text = GetReceiptFormatParameter(mclsReceiptFormatDetails.ReportFooter3);
-
-		}
-		private string GetReceiptFormatParameter(string stReceiptFormat)
-		{
-			string stRetValue = "";
-
-			if (stReceiptFormat == Reports.ReceiptFieldFormats.Blank)
-			{
-				stRetValue = "";
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.Spacer)
-			{
-				stRetValue = Environment.NewLine;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.DateNow)
-			{
-				stRetValue = DateTime.Now.ToString("MMM dd yyyy hh:mh tt");
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.Cashier)
-			{
-				stRetValue = "Cashier: " + mCashierName;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.TerminalNo)
-			{
-				stRetValue = "Terminal No.: " + CompanyDetails.TerminalNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.MachineSerialNo)
-			{
-				stRetValue = "MIN: " + CONFIG.MachineSerialNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.AccreditationNo)
-			{
-				stRetValue = "Acc. No.: " + CONFIG.AccreditationNo;
-			}
-			else if (stReceiptFormat == Reports.ReceiptFieldFormats.InvoiceNo)
-			{
-				stRetValue = "OFFICIAL RECEIPT #: " + "N/A";
-			}
-			else
-			{
-				stRetValue = stReceiptFormat;
-			}
-
-			return stRetValue;
-		}
-
-		#endregion
+        #region Windows Control Methods
 
         private void cmdCancel_Click(object sender, EventArgs e)
         {
@@ -850,5 +754,129 @@ namespace AceSoft.RetailPlus.Client.UI
             dialog = DialogResult.OK;
             this.Hide();
         }
-	}
+
+        #endregion
+
+        #region Private Methods
+        private void SetGridItemsWidth()
+        {
+            dgStyle.GridColumnStyles["ProductGroup"].Width = 90;
+            dgStyle.GridColumnStyles["TranCount"].Width = 50;
+            dgStyle.GridColumnStyles["Amount"].Width = dgGroupReport.Width - 220;
+            dgStyle.GridColumnStyles["Percentage"].Width = 85;
+            dgGroupReport.Height = 213;
+            dgGroupReport.Width = 326;
+        }
+
+        private void PopulateGroupReport()
+        {
+            lblCompany.Text = CompanyDetails.CompanyCode;
+
+            Receipt clsReceipt = new Receipt();
+
+            lblReportHeader1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader1").Value);
+            lblReportHeader2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader2").Value);
+            lblReportHeader3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader3").Value);
+            lblReportHeader4.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader4").Value);
+
+            this.dgStyle.MappingName = mdtGroupReport.TableName;
+            dgGroupReport.DataSource = mdtGroupReport;
+            decimal TotalTranCount = 0;
+            decimal TotalAmount = 0;
+            try
+            {
+                foreach (System.Data.DataRow dr in mdtGroupReport.Rows)
+                {
+                    TotalTranCount += Convert.ToDecimal(dr["TranCount"]);
+                    TotalAmount += Convert.ToDecimal(dr["Amount"]);
+                }
+                dgGroupReport.Select(0);
+            }
+            catch { }
+            lblTotalTran.Text = TotalTranCount.ToString("#,##0");
+            lblTotalAmount.Text = TotalAmount.ToString("#,##0.#0");
+            if (TotalTranCount > 0)
+                lblTotalPercentage.Text = "100%";
+            else
+                lblTotalPercentage.Text = "0%";
+
+            lblDiscount.Text = mTerminalReportDetails.SubTotalDiscount.ToString("#,##0.#0");
+            lblCharge.Text = mTerminalReportDetails.TotalCharge.ToString("#,##0.#0");
+            lblVAT.Text = mTerminalReportDetails.VAT.ToString("#,##0.#0");
+
+            lblVATName.Visible = !mclsTerminalDetails.IsVATInclusive;
+            lblVAT.Visible = !mclsTerminalDetails.IsVATInclusive;
+            lblVATSpacer.Visible = !mclsTerminalDetails.IsVATInclusive;
+
+            decimal GrandTotal = mTerminalReportDetails.DailySales + mTerminalReportDetails.VAT + mTerminalReportDetails.TotalCharge;
+            lblGrandTotal.Text = GrandTotal.ToString("#,##0.#0");
+
+            lblReportFooter1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter1").Value);
+            lblReportFooter2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter2").Value);
+            lblReportFooter3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter3").Value);
+
+            clsReceipt.CommitAndDispose();
+
+        }
+        private string GetReceiptFormatParameter(string stReceiptFormat)
+        {
+            string stRetValue = "";
+
+            if (stReceiptFormat == ReceiptFieldFormats.Blank)
+            {
+                stRetValue = "";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.Spacer)
+            {
+                stRetValue = " ";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InvoiceNo)
+            {
+                stRetValue = "";
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.DateNow)
+            {
+                stRetValue = DateTime.Now.ToString("MMM. dd, yyyy hh:mm:ss tt");
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.Cashier)
+            {
+                stRetValue = mCashierName;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.TerminalNo)
+            {
+                stRetValue = mclsTerminalDetails.TerminalNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.MachineSerialNo)
+            {
+                stRetValue = CONFIG.MachineSerialNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.AccreditationNo)
+            {
+                stRetValue = CONFIG.AccreditationNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.RewardsPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseIndividualCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseIndividualCreditPermitNo;
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.InHouseGroupCreditPermitNo)
+            {
+                stRetValue = mclsTerminalDetails.InHouseGroupCreditPermitNo;
+            }
+            else
+            {
+                stRetValue = stReceiptFormat;
+            }
+
+            if (stRetValue == null) stRetValue = "";
+
+            return stRetValue;
+        }
+
+        #endregion
+
+    }
 }

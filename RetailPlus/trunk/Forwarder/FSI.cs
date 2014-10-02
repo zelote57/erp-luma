@@ -81,7 +81,7 @@ namespace AceSoft.RetailPlus.Forwarder
                 writer.WriteLine("04{0}", pvtTerminalReportDetails.OldGrandTotal.ToString("####.#0").Replace(".", ""));
                 writer.WriteLine("05{0}", pvtTerminalReportDetails.NewGrandTotal.ToString("####.#0").Replace(".", ""));
                 writer.WriteLine("06{0}", Convert.ToDecimal(pvtTerminalReportDetails.DailySales + pvtTerminalReportDetails.VAT).ToString("####.#0").Replace(".", ""));
-                writer.WriteLine("07{0}", pvtTerminalReportDetails.NonVaTableAmount.ToString("####.#0").Replace(".", ""));
+                writer.WriteLine("07{0}", pvtTerminalReportDetails.NonVATableAmount.ToString("####.#0").Replace(".", ""));
                 writer.WriteLine("08{0}", decSeniorCitizenDiscount.ToString("####.#0").Replace(".", ""));
                 writer.WriteLine("09{0}", "0");
                 writer.WriteLine("10{0}", decDiscountNetOfSeniorCitizen.ToString("####.#0").Replace(".", ""));
@@ -108,17 +108,17 @@ namespace AceSoft.RetailPlus.Forwarder
             }
             return strRetValue;
         }
-        private string CreateHourlySales(int BranchID, string TerminalNo, DateTime pvtProcessDate, Data.TerminalReportDetails pvtTerminalReportDetails)
+        private string CreateHourlySales(Int32 BranchID, string TerminalNo, DateTime ProcessDate, Data.TerminalReportDetails TerminalReportDetails)
         {
             string strRetValue = "";
 
-            DateTime dteDateFrom = pvtProcessDate;
+            DateTime dteDateFrom = ProcessDate;
 
             Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory();
             DateTime dteDateTo = DateTime.MinValue;
             try
             {
-                dteDateTo = clsTerminalReportHistory.NEXTDateLastInitialized(BranchID, TerminalNo, pvtProcessDate);
+                dteDateTo = clsTerminalReportHistory.NEXTDateLastInitialized(BranchID, TerminalNo, ProcessDate);
             }
             catch { }
 
@@ -127,13 +127,13 @@ namespace AceSoft.RetailPlus.Forwarder
                 Event clsEvent = new Event();
                 clsEvent.AddEventLn("HourlySales: Did not found MAXDateLastInitialized from Terminal Report History. Using the MAXDateLastInitialized from terminal report", true);
                 Data.TerminalReport clsTerminalReport = new Data.TerminalReport(clsTerminalReportHistory.Connection, clsTerminalReportHistory.Transaction);
-                dteDateTo = clsTerminalReport.MAXDateLastInitialized(TerminalNo, pvtProcessDate);
+                dteDateTo = clsTerminalReport.MAXDateLastInitialized(BranchID, TerminalNo, ProcessDate);
             }
 
             System.Data.DataTable dtHourlyReport = clsTerminalReportHistory.HourlyReport(BranchID, TerminalNo, dteDateFrom, dteDateTo);
             clsTerminalReportHistory.CommitAndDispose();
 
-            string stHourlyTableName = mclsFSIDetails.OutputDirectory + "\\H" + mclsFSIDetails.TenantName.Substring(0, 4) + pvtTerminalReportDetails.TerminalNo + pvtTerminalReportDetails.BatchCounter.ToString() + "." + pvtTerminalReportDetails.DateLastInitializedToDisplay.ToString("MM").Replace("10", "A").Replace("11", "B").Replace("12", "C").Replace("0", "") + pvtTerminalReportDetails.DateLastInitializedToDisplay.ToString("dd");
+            string stHourlyTableName = mclsFSIDetails.OutputDirectory + "\\H" + mclsFSIDetails.TenantName.Substring(0, 4) + TerminalReportDetails.TerminalNo + TerminalReportDetails.BatchCounter.ToString() + "." + TerminalReportDetails.DateLastInitializedToDisplay.ToString("MM").Replace("10", "A").Replace("11", "B").Replace("12", "C").Replace("0", "") + TerminalReportDetails.DateLastInitializedToDisplay.ToString("dd");
             if (File.Exists(stHourlyTableName)) File.Delete(stHourlyTableName);
 
             writer = File.AppendText(stHourlyTableName);
@@ -152,8 +152,8 @@ namespace AceSoft.RetailPlus.Forwarder
                 writer.WriteLine("05{0}", Convert.ToDecimal(Convert.ToDecimal(dr["Amount"]) - Convert.ToDecimal(dr["VAT"])).ToString("####.#0").Replace(".", ""));
                 writer.WriteLine("06{0}", Convert.ToInt64(dr["TranCount"]).ToString("####"));
             }
-            writer.WriteLine("07{0}", pvtTerminalReportDetails.DailySales.ToString("####.#0").Replace(".", ""));
-            writer.WriteLine("08{0}", pvtTerminalReportDetails.NoOfClosedTransactions.ToString("####"));
+            writer.WriteLine("07{0}", TerminalReportDetails.DailySales.ToString("####.#0").Replace(".", ""));
+            writer.WriteLine("08{0}", TerminalReportDetails.NoOfClosedTransactions.ToString("####"));
 
             writer.Flush();
             writer.Close();
@@ -200,12 +200,12 @@ namespace AceSoft.RetailPlus.Forwarder
                  * GET The report of Current Terminal using Specified InitializationDate
                  * ********************************************************************/
                 Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory();
-                Data.TerminalReportDetails clsTerminalReportDetail = clsTerminalReportHistory.Details(TerminalNo, dteDateToprocess);
+                Data.TerminalReportDetails clsTerminalReportDetail = clsTerminalReportHistory.Details(BranchID, TerminalNo, dteDateToprocess);
 
                 Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(clsTerminalReportHistory.Connection, clsTerminalReportHistory.Transaction);
 
                 long lngSeniorSitizenDiscountCount = 0;
-                decimal decSeniorSitizenDiscount = clsSalesTransactions.SeniorCitizenDiscounts(clsTerminalReportDetail.TerminalNo, clsTerminalReportDetail.BeginningTransactionNo, clsTerminalReportDetail.EndingTransactionNo, out lngSeniorSitizenDiscountCount);
+                decimal decSeniorSitizenDiscount = clsSalesTransactions.SeniorCitizenDiscounts(clsTerminalReportDetail.BranchID, clsTerminalReportDetail.TerminalNo, clsTerminalReportDetail.BeginningTransactionNo, clsTerminalReportDetail.EndingTransactionNo, out lngSeniorSitizenDiscountCount);
 
                 string stDailyTableName = CreateDailySales(dteDateToprocess, clsTerminalReportDetail, decSeniorSitizenDiscount, lngSeniorSitizenDiscountCount);
                 string stHourlyTableName = CreateHourlySales(BranchID, TerminalNo, dteDateToprocess, clsTerminalReportDetail);

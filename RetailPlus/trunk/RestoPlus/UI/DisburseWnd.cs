@@ -25,12 +25,18 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdCancel;
         private Button cmdEnter;
         private System.ComponentModel.Container components = null;
+        private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
+
+        #region Property Get/Set
+
+        Data.TerminalDetails mclsTerminalDetails = new Data.TerminalDetails();
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+
+        }
 
         private DialogResult dialog;
-        private Int64 mCashierID;
-        private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
-        private Data.DisburseDetails mclsDisburseDetails;
-
         public DialogResult Result
         {
             get
@@ -39,6 +45,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private Data.DisburseDetails mclsDisburseDetails;
         public Data.DisburseDetails DisburseDetails
         {
             get
@@ -47,13 +54,16 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private Int64 mintCashierID;
         public Int64 CashierID
         {
             set
             {
-                mCashierID = value;
+                mintCashierID = value;
             }
         }
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -413,11 +423,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 mclsDisburseDetails.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), cboType.Text, true);
                 mclsDisburseDetails.DateCreated = DateTime.Now;
                 mclsDisburseDetails.TerminalNo = CompanyDetails.TerminalNo;
-                mclsDisburseDetails.CashierID = mCashierID;
-                mclsDisburseDetails.BranchID = Constants.TerminalBranchID;
+                mclsDisburseDetails.CashierID = mintCashierID;
+                mclsDisburseDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
                 mclsDisburseDetails.Remarks = txtRemarks.Text;
 
-                Data.CashierReport clsCashierReport = new Data.CashierReport();
+                Data.CashierReports clsCashierReport = new Data.CashierReports();
                 if (!clsCashierReport.IsDisburseAmountValid(mclsDisburseDetails))
                 {
                     MessageBox.Show("Sorry, the amount you entered is greater than the " + cboType.Text + " sales." +

@@ -25,16 +25,15 @@ namespace AceSoft.RetailPlus.Client.UI
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.Container components = null;
-
-        private DialogResult dialog;
         private System.Windows.Forms.PictureBox imgIcon;
         private TextBox txtSelectedTexBox;
         private Button cmdCancel;
         private Button cmdEnter;
-        Data.WithHoldDetails mclsWithHoldDetails = new Data.WithHoldDetails();
         private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
-        private long mlngCashierID;
 
+        #region Property Get/Set
+
+        private DialogResult dialog;
         public DialogResult Result
         {
             get
@@ -43,7 +42,8 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        public Data.WithHoldDetails WithHoldDetails
+        Data.WithholdDetails mclsWithHoldDetails = new Data.WithholdDetails();
+        public Data.WithholdDetails WithHoldDetails
         {
             get
             {
@@ -51,14 +51,27 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        public long CashierID
+        private Int64 mintCashierID;
+        public Int64 CashierID
         {
             set
             {
-                mlngCashierID = value;
+                mintCashierID = value;
             }
         }
 
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set
+            {
+                mclsTerminalDetails = value;
+            }
+        }
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public WithholdWnd()
         {
@@ -305,6 +318,10 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         #endregion
 
+        #endregion
+
+        #region Window Form Methods
+
         private void WithholdWnd_Load(object sender, System.EventArgs e)
         {
             try
@@ -346,36 +363,19 @@ namespace AceSoft.RetailPlus.Client.UI
                     break;
 
                 case Keys.Enter:
-                    try { Convert.ToDecimal(txtAmount.Text); }
-                    catch
-                    {
-                        MessageBox.Show("Sorry, the amount you entered is not valid." +
-                            "Please check the amount you entered.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    if (Convert.ToDecimal(txtAmount.Text) > 0)
-                    {
-                        mclsWithHoldDetails.Amount = Convert.ToDecimal(txtAmount.Text);
-                        mclsWithHoldDetails.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), cboType.Text, true); ;
-                        mclsWithHoldDetails.DateCreated = DateTime.Now;
-                        mclsWithHoldDetails.TerminalNo = CompanyDetails.TerminalNo;
-                        mclsWithHoldDetails.CashierID = mlngCashierID;
-                        mclsWithHoldDetails.BranchID = Constants.TerminalBranchID;
-                        mclsWithHoldDetails.Remarks = txtRemarks.Text;
-
-                        dialog = DialogResult.OK;
-                        this.Hide();
-                        break;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Sorry, amount must be greater than zero." +
-                            "Please enter amount that is greater than zero.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
+                    if (isValuesAssigned())
+					{
+						dialog = DialogResult.OK;
+						this.Hide();
+					}
+					break;
             }
         }
+
+        #endregion
+
+        #region Window Control Methods
+
         private void txtAmount_GotFocus(object sender, System.EventArgs e)
         {
             txtSelectedTexBox = (TextBox)sender;
@@ -408,6 +408,12 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         private void cmdEnter_Click(object sender, EventArgs e)
         {
+            if (isValuesAssigned())
+            {
+                dialog = DialogResult.OK;
+                this.Hide();
+            }
+
             try { Convert.ToDecimal(txtAmount.Text); }
             catch
             {
@@ -415,25 +421,44 @@ namespace AceSoft.RetailPlus.Client.UI
                     "Please check the amount you entered.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private bool isValuesAssigned()
+        {
+            bool boRetValue = false;
+            try { Convert.ToDecimal(txtAmount.Text); }
+            catch
+            {
+                MessageBox.Show("Sorry, the amount you entered is not valid." +
+                    "Please check the amount you entered.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
 
             if (Convert.ToDecimal(txtAmount.Text) > 0)
             {
+                mclsWithHoldDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
+                mclsWithHoldDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+                mclsWithHoldDetails.CashierID = mintCashierID;
                 mclsWithHoldDetails.Amount = Convert.ToDecimal(txtAmount.Text);
                 mclsWithHoldDetails.PaymentType = (PaymentTypes)Enum.Parse(typeof(PaymentTypes), cboType.Text, true); ;
                 mclsWithHoldDetails.DateCreated = DateTime.Now;
-                mclsWithHoldDetails.TerminalNo = CompanyDetails.TerminalNo;
-                mclsWithHoldDetails.CashierID = mlngCashierID;
                 mclsWithHoldDetails.Remarks = txtRemarks.Text;
 
-                dialog = DialogResult.OK;
-                this.Hide();
+                boRetValue = true;
             }
             else
             {
                 MessageBox.Show("Sorry, amount must be greater than zero." +
                     "Please enter amount that is greater than zero.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                boRetValue = false;
             }
+            return boRetValue;
         }
+
+        #endregion
     }
 }

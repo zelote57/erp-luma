@@ -34,6 +34,8 @@ namespace AceSoft.RetailPlus.Data
         public int ChartOfAccountIDTaxSold;
         public int SequenceNo;
 
+        public bool isLock;
+
         public ProductSubGroupChartOfAccountDetails ProductSubGroupChartOfAccountDetails;
 
         public DateTime CreatedOn;
@@ -1352,6 +1354,37 @@ namespace AceSoft.RetailPlus.Data
         //        throw base.ThrowException(ex);
         //    }	
         //}				
+
+        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "ProductSubGroupCode", SortOption SortOrder = SortOption.Ascending, Int32 Limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + " ";
+
+                if (!string.IsNullOrEmpty(SearchKey))
+                {
+                    SQL += "WHERE (ProductSubGroupCode LIKE @SearchKey or ProductSubGroupName LIKE @SearchKey) ";
+                    cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
+                }
+
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+                SQL += Limit == 0 ? "" : " LIMIT " + Limit.ToString();
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 

@@ -322,7 +322,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     break;
 
                 case Keys.Enter:
-                    if (txtCustomerName.Text == "" || txtCustomerName.Text == null)
+                    if (string.IsNullOrEmpty(txtCustomerName.Text))
                     {
                         MessageBox.Show("Please enter a valid customer name.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
@@ -426,7 +426,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void cmdEnter_Click(object sender, EventArgs e)
         {
-            if (txtCustomerName.Text == "" || txtCustomerName.Text == null)
+            if (string.IsNullOrEmpty(txtCustomerName.Text))
             {
                 MessageBox.Show("Please enter a valid customer name.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -442,7 +442,7 @@ namespace AceSoft.RetailPlus.Client.UI
             catch (Exception ex)
             {
                 Event clsEvent = new Event();
-                clsEvent.AddEventLn("ERROR!!! Saving customer details. Err Description: " + ex.Message);
+                clsEvent.AddErrorEventLn(ex);
                 MessageBox.Show("Sorry the customer name is already in the database. Please type another customer name.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }

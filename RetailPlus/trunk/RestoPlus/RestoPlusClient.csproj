@@ -135,8 +135,8 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\ClientLibrary\ClientLibrary.csproj">
-      <Name>ClientLibrary</Name>
+    <ProjectReference Include="..\clientlibrary\RetailPlusClientLibrary.csproj">
+      <Name>RetailPlusClientLibrary</Name>
       <Project>{E7C7F8AC-A57A-47A4-84CD-A0DDB2FD9C53}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
@@ -392,9 +392,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\CreditPaymentWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\CreditsWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\DebitPaymentWnd.cs">
@@ -892,10 +889,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CreditPaymentWnd.resx">
       <DependentUpon>CreditPaymentWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\CreditsWnd.resx">
-      <DependentUpon>CreditsWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DebitPaymentWnd.resx">

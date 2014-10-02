@@ -42,6 +42,11 @@ namespace AceSoft.RetailPlus.Reports
                     stHeading = "View Transactions Report";
                     ctrlDatedReport.Visible = true;
                 }
+                else if (strUnparsedTask.ToLower() == "esalesreport")
+                {
+                    stHeading = "View eSales Report";
+                    ctrleSalesReport.Visible = true;
+                }
                 else if (strUnparsedTask.ToLower() == "producthistory")
                 {
                     stHeading = "Product History Report";
@@ -119,6 +124,10 @@ namespace AceSoft.RetailPlus.Reports
                         case "analyticsreport":
                             stHeading = "Analytics Report";
                             ctrlAnalyticsReport.Visible = true;
+                            break;
+                        case "esalesreport":
+                            stHeading = "Dated eSales Report";
+                            ctrleSalesReport.Visible = true;
                             break;
                         case "terminalreport":
                             stHeading = "Terminal Report";

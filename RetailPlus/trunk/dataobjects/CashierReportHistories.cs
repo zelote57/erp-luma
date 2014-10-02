@@ -54,7 +54,11 @@ namespace AceSoft.RetailPlus.Data
 								"DailySales, " +
 								"QuantitySold, " +
 								"GroupSales, " +
-								"VAT, " +
+                                "VATExempt, " +
+                                "ZeroRatedVAT, " +
+                                "NonVATableAmount, " +
+                                "VAT, " +
+                                "VATableAmount, " +
 								"EVAT, " +
 								"LocalTax, " +
 								"CashSales, " +
@@ -113,7 +117,7 @@ namespace AceSoft.RetailPlus.Data
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
-                CashierReportDetails Details = new CashierReports(this.Connection, this.Transaction).SetDetails(dt);
+                CashierReportDetails Details = CashierReports.SetDetails(dt);
 
 				return Details;
 			}

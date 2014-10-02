@@ -87,8 +87,8 @@ namespace AceSoft.RetailPlus.Data
                                 "ChequeCounter  = @ChequeCounter " +
                             "WHERE BankID = @BankID;";
 
-                cmd.Parameters.Add("@ChequeCounter", ChequeCounter);
-                cmd.Parameters.Add("@BankID", BankID);
+                cmd.Parameters.AddWithValue("ChequeCounter", ChequeCounter);
+                cmd.Parameters.AddWithValue("BankID", BankID);
 
                 cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
@@ -110,8 +110,8 @@ namespace AceSoft.RetailPlus.Data
                                 "ChequeCounter  = @ChequeCounter " +
                             "WHERE BankCode	    = @BankCode ";
 
-                cmd.Parameters.Add("@BankCode", BankCode);
-                cmd.Parameters.Add("@ChequeCounter", ChequeCounter);
+                cmd.Parameters.AddWithValue("BankCode", BankCode);
+                cmd.Parameters.AddWithValue("ChequeCounter", ChequeCounter);
 
                 cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);

@@ -525,24 +525,39 @@ namespace AceSoft.RetailPlus.Client
 			try
 			{
 				string strServer = "127.0.0.1";
-				try { strServer = System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"].ToString(); }
-				catch { }
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"] != null)
+                {
+                    try { strServer = System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"].ToString(); }
+                    catch { }
+                }
 
 				int intPort= 21;
-				try { intPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"]); }
-				catch { }
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"] != null)
+                {
+                    try { intPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"]); }
+                    catch { }
+                }
 
 				string strUserName = "ftprbsuser";
-				try { strUserName = System.Configuration.ConfigurationManager.AppSettings["VersionFTPUserName"].ToString(); }
-				catch { }
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPUserName"] != null)
+                {
+                    try { strUserName = System.Configuration.ConfigurationManager.AppSettings["VersionFTPUserName"].ToString(); }
+                    catch { }
+                }
 
 				string strPassword = "ftprbspwd";
-				try { strPassword = System.Configuration.ConfigurationManager.AppSettings["VersionFTPUserName"].ToString(); }
-				catch { }
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPPassword"] != null)
+                {
+                    try { strPassword = System.Configuration.ConfigurationManager.AppSettings["VersionFTPPassword"].ToString(); }
+                    catch { }
+                }
 
 				string strFTPDirectory = "RetailPlusClient";
-				try { strFTPDirectory = System.Configuration.ConfigurationManager.AppSettings["VersionFTPDirectory"].ToString(); }
-				catch { }
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPDirectory"] != null)
+                {
+                    try { strFTPDirectory = System.Configuration.ConfigurationManager.AppSettings["VersionFTPDirectory"].ToString(); }
+                    catch { }
+                }
 
 				FTP clsFTP = new FTP();
 

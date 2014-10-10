@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Management;
 using System.Windows.Forms;
 using System.Threading;
@@ -146,7 +147,84 @@ namespace AceSoft.RetailPlus.Client
             Version curVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             clsEvent.AddEventLn(":" + curVersion.ToString());
 
-            Version verNewVersion = GetLatestVersion();
+            #region CopySubGroupsImages
+            // this should be available only for resto
+            try
+            {
+                string strServer = "127.0.0.1";
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"] != null)
+                {
+                    try { strServer = System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"].ToString(); }
+                    catch { }
+                }
+
+                int intPort = 21;
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"] != null)
+                {
+                    try { intPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"]); }
+                    catch { }
+                }
+
+                string strUserName = "ftprbsuser";
+                string strPassword = "ftprbspwd";
+                string strFTPDirectory = "subgroupimages";
+
+                FTP clsFTP = new FTP();
+                try { 
+                    clsFTP.Connect(strServer, strUserName, strPassword);
+
+                    try { 
+                        clsFTP.ChangeDirectory(strFTPDirectory);
+                        try
+                        {
+                            string strPath = Application.StartupPath + @"\images\subgroups";
+
+                            foreach (FTP.File clsFile in clsFTP.Files)
+                            {
+                                try
+                                {
+                                    string strLocalFileName = strPath + @"\" + clsFile.FileName;
+                                    FileInfo clsFileInfoLocalFile = new System.IO.FileInfo(strLocalFileName);
+
+                                    if (!clsFileInfoLocalFile.Exists || clsFile.FileSize != clsFileInfoLocalFile.Length) //clsFileInfoLocalFile.CreationTime != clsFile.FileDate || 
+                                    {
+                                        if (File.Exists(strLocalFileName))
+                                            System.IO.File.Delete(strLocalFileName);
+
+                                        clsFTP.Files.Download(clsFile.FileName, strLocalFileName);
+
+                                        appsplash.lblStatus.Text = "Downloading " + clsFile.FileName + "...";
+                                        while (!clsFTP.Files.DownloadComplete)
+                                        {
+                                            appsplash.prgBar.Value = clsFTP.Files.PercentComplete;
+                                            appsplash.Show();
+                                            appsplash.Refresh();
+                                        }
+                                        
+                                        appsplash.lblStatus.Text = clsFile.FileName + " download complete: TotalBytes: " + clsFTP.Files.TotalBytes.ToString() + ", : PercentComplete: " + clsFTP.Files.PercentComplete.ToString();
+                                    }
+                                }
+                                catch{}
+                            }
+                        }
+                        catch
+                        {
+                            // MessageBox.Show("Sorry cannot find the VERSION.XML file which contain the latest version of RetailPlus FE System." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); clsFTP.Disconnect(); return clsVersion; 
+                        }
+                    }
+                    catch { }
+                    clsFTP.Disconnect();
+                } catch (Exception ex)
+                {
+                    clsEvent.AddEventLn("Cannot copy sub group image files.", true);
+                    clsEvent.AddErrorEventLn(ex);
+                }
+            }
+            catch
+            { }
+            #endregion
+
+            Version verNewVersion = GetLatestVersionFromServer();
             clsEvent.AddEventLn("latest version is " + verNewVersion.ToString(), true);
             // compare the versions
             if (curVersion.CompareTo(verNewVersion) < 0)
@@ -261,7 +339,7 @@ namespace AceSoft.RetailPlus.Client
             {
                 clsEvent.AddEventLn("Running Main Window.", true);
 
-                MainWnd appmain = new MainWnd();
+                MainRestoWnd appmain = new MainRestoWnd();
                 appmain.Text = " RetailPlus ™";
                 /********************************
                  * Added December 21, 2008
@@ -471,78 +549,29 @@ namespace AceSoft.RetailPlus.Client
             }
 
         }
-        //private static string GetHDSerialNo()
-        //{
-        //    string stRetValue = Constants.ERROR;
-        //    try
-        //    {
-        //        OSVersion osVersion = OSInformation.getOSVersion();
-        //        switch (osVersion)
-        //        {
-        //            case OSVersion.Windows95:
-        //            case OSVersion.WindowsMe:
-        //            case OSVersion.Windows98:
-        //            case OSVersion.Windows98SecondEdition:
-        //            case OSVersion.WindowsNT351:
-        //            case OSVersion.WindowsNT4:
-        //            case OSVersion.Windows2000:
-        //            case OSVersion.WindowsXP:
-        //                const string RegCode = "NW5KF-49VU2-CW1VD-EH32P-UFEL2";
-        //                DiskInfo diskInfo = new DiskInfo();
-
-        //                HDiskInfo.GetIdeDiskInfo(0, ref diskInfo, RegCode);
-        //                stRetValue = diskInfo.pSerialNumber;
-        //                break;
-        //            case OSVersion.WindowsVista:
-        //            case OSVersion.Windows7:
-        //                ManagementClass mc = new ManagementClass("Win32_PhysicalMedia");
-        //                ManagementObjectCollection moc = mc.GetInstances();
-        //                foreach (ManagementObject mo in moc)
-        //                {
-        //                    if (mo.ToString().ToUpper().IndexOf("PHYSICALDRIVE0") != -1)
-        //                    {
-        //                        stRetValue = mo["SerialNumber"].ToString().Trim();
-        //                        mo.Dispose();
-        //                        break;
-        //                    }
-        //                    mo.Dispose();
-        //                }
-        //                break;
-        //            case OSVersion.Unknown:
-        //                break;
-        //        }
-
-        //        return stRetValue;
-        //    }
-        //    catch (Exception ex) 
-        //    {
-        //        return stRetValue + ":" + ex.Message;
-        //    }
-        //}
-        private static Version GetLatestVersion()
+        
+        private static Version GetLatestVersionFromServer()
         {
             Version clsVersion = new Version("0.0.0.0");
             try
             {
                 string strServer = "127.0.0.1";
-                try { strServer = System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"].ToString(); }
-                catch { }
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"] != null)
+                {
+                    try { strServer = System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"].ToString(); }
+                    catch { }
+                }
 
                 int intPort = 21;
-                try { intPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"]); }
-                catch { }
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"] != null)
+                {
+                    try { intPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"]); }
+                    catch { }
+                }
 
                 string strUserName = "ftprbsuser";
-                try { strUserName = System.Configuration.ConfigurationManager.AppSettings["VersionFTPUserName"].ToString(); }
-                catch { }
-
                 string strPassword = "ftprbspwd";
-                try { strPassword = System.Configuration.ConfigurationManager.AppSettings["VersionFTPUserName"].ToString(); }
-                catch { }
-
-                string strFTPDirectory = "RetailPlusClient";
-                try { strFTPDirectory = System.Configuration.ConfigurationManager.AppSettings["VersionFTPDirectory"].ToString(); }
-                catch { }
+                string strFTPDirectory = "retailplusclient";
 
                 FTP clsFTP = new FTP();
 
@@ -617,6 +646,12 @@ namespace AceSoft.RetailPlus.Client
             { }
 
             return clsVersion;
+        }
+        private static bool getSubGroupImages()
+        {
+            
+
+            return true;
         }
 
         #endregion

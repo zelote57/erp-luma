@@ -249,13 +249,29 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		#endregion
 
-		#region Windows Control Methods
+        #region Windows Control Methods
 
 		private void imgIcon_Click(object sender, EventArgs e)
 		{
 			dialog = DialogResult.Cancel;
 			this.Hide();
 		}
+
+        private void cmdTableLeft_Click(object sender, EventArgs e)
+        {
+            LoadContactData(System.Data.SqlClient.SortOrder.Descending);
+        }
+
+        private void cmdTableRight_Click(object sender, EventArgs e)
+        {
+            LoadContactData(System.Data.SqlClient.SortOrder.Ascending);
+        }
+
+        private void cmdCancel_Click(object sender, EventArgs e)
+        {
+            dialog = DialogResult.Cancel;
+            this.Hide();
+        }
 
 		#endregion
 
@@ -281,6 +297,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				ContactColumns clsContactColumns = new ContactColumns();
 				clsContactColumns.ContactCode = true;
+                clsContactColumns.LastCheckInDate = true;
 
 				ContactColumns clsSearchColumns = new ContactColumns();
 
@@ -351,21 +368,37 @@ namespace AceSoft.RetailPlus.Client.UI
 					cmdTable.UseVisualStyleBackColor = false;
 
 					cmdTable.Name = "cmdTable" + iCtr.ToString();
-					cmdTable.Text = dr[Data.ContactColumnNames.ContactCode].ToString();
-					cmdTable.Tag = dr[Data.ContactColumnNames.ContactID].ToString();
-					cmdTable.Click += new System.EventHandler(cmdTable_Click);
+                    cmdTable.Text = dr[Data.ContactColumnNames.ContactCode].ToString();
+                    cmdTable.Tag = dr[Data.ContactColumnNames.ContactID].ToString();
+                    cmdTable.Click += new System.EventHandler(cmdTable_Click);
 
+                    if (DateTime.Parse(dr[Data.ContactColumnNames.LastCheckInDate].ToString()) != Constants.C_DATE_MIN_VALUE)
+                    {
+                        TimeSpan iLapse = DateTime.Now - DateTime.Parse(dr[Data.ContactColumnNames.LastCheckInDate].ToString());
 
-					string stTransactionNo = clsSalesTransactions.getSuspendedTransactionNo(long.Parse(dr[Data.ContactColumnNames.ContactID].ToString()), mclsTerminalDetails.TerminalNo, Constants.TerminalBranchID);
+                        Label lblLastCheckInDate = new System.Windows.Forms.Label();
+                        lblLastCheckInDate.AutoSize = true;
+                        lblLastCheckInDate.BackColor = System.Drawing.Color.Transparent;
+                        lblLastCheckInDate.Font = new System.Drawing.Font("Tahoma", 7.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                        lblLastCheckInDate.ForeColor = System.Drawing.Color.Blue;
+                        lblLastCheckInDate.Location = new System.Drawing.Point(5, 5);
+                        lblLastCheckInDate.Name = "lblLastCheckInDate" + iCtr.ToString();
+                        lblLastCheckInDate.TabIndex = 1;
+                        lblLastCheckInDate.Text = "";
+                        lblLastCheckInDate.Text = "CheckIn: " + DateTime.Parse(dr[Data.ContactColumnNames.LastCheckInDate].ToString()).ToString("dd-MMM hh:mm tt") + "   [" + iLapse.Hours.ToString("0#") + "hrs " + iLapse.Minutes.ToString("0#") + "mins]";
+                        cmdTable.Controls.Add(lblLastCheckInDate);
+                    }
+
+                    string stTransactionNo = clsSalesTransactions.getSuspendedTransactionNo(long.Parse(dr[Data.ContactColumnNames.ContactID].ToString()), mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
 					if (stTransactionNo != string.Empty)
 					{
-						clsSalesTransactionDetails = clsSalesTransactions.Details(stTransactionNo, mclsTerminalDetails.TerminalNo, Constants.TerminalBranchID);
+						clsSalesTransactionDetails = clsSalesTransactions.Details(stTransactionNo, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
 						cmdTable.Text = dr[Data.ContactColumnNames.ContactCode].ToString();
 						
 						decimal decAmountDue = Convert.ToDecimal(clsSalesTransactionDetails.SubTotal + clsSalesTransactionDetails.Charge - clsSalesTransactionDetails.Discount);
 						cmdTable.Text += Environment.NewLine + Environment.NewLine + "Amount Due:" + decAmountDue.ToString("#,###.#0");
 
-						if (mboShowAvailableTableOnly)
+                        if (mboShowAvailableTableOnly)
 						{
 							cmdTable.BackColor = System.Drawing.Color.DarkGray;
 							cmdTable.GradientBottom = System.Drawing.Color.DarkGray;
@@ -379,12 +412,11 @@ namespace AceSoft.RetailPlus.Client.UI
 							cmdTable.GradientTop = System.Drawing.Color.LightBlue;
 						}
 					}
-
+                    
 					tblLayout.Controls.Add(cmdTable, iCol, iRow);
 
 					iCol++; iCtr++;
 				}
-                clsSalesTransactions.CommitAndDispose();
 				clsContact.CommitAndDispose();
 			}
 			catch (IndexOutOfRangeException){}
@@ -411,22 +443,6 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 
 		#endregion
-
-		private void cmdTableLeft_Click(object sender, EventArgs e)
-		{
-			LoadContactData(System.Data.SqlClient.SortOrder.Descending);
-		}
-
-		private void cmdTableRight_Click(object sender, EventArgs e)
-		{
-			LoadContactData(System.Data.SqlClient.SortOrder.Ascending);
-		}
-
-		private void cmdCancel_Click(object sender, EventArgs e)
-		{
-			dialog = DialogResult.Cancel;
-			this.Hide();
-		}
 
 	}
 }

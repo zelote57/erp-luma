@@ -134,7 +134,6 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 		}
 		private Int64 SaveRecord()
 		{
-			
 			ProductSubGroupDetails clsDetails = new ProductSubGroupDetails();
 
 			clsDetails.ProductGroupID = Convert.ToInt32(cboGroup.SelectedItem.Value);
@@ -147,6 +146,28 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 			clsDetails.VAT = Convert.ToDecimal(txtVAT.Text);
 			clsDetails.EVAT = Convert.ToDecimal(txtEVAT.Text);
 			clsDetails.LocalTax = Convert.ToDecimal(txtLocalTax.Text);
+            clsDetails.SequenceNo = Int32.Parse(txtSequenceNo.Text);
+            clsDetails.ImagePath = lblImagePath.Text;
+
+            string strfile = "";
+            string strfolder = "/RetailPlus/temp/uploaded/subgroupimages/";
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFile pfile = Request.Files[i];
+                if (pfile.ContentLength > 0)
+                {
+                    strfile = Server.MapPath(strfolder + System.IO.Path.GetFileName(pfile.FileName));
+
+                    if (!System.IO.Directory.Exists(Server.MapPath(strfolder)))
+                        System.IO.Directory.CreateDirectory(Server.MapPath(strfolder));
+
+                    if (System.IO.File.Exists(strfile))
+                        System.IO.File.Delete(strfile);
+
+                    pfile.SaveAs(strfile);
+                    clsDetails.ImagePath = pfile.FileName;
+                }
+            }
 
 			ProductSubGroup clsProductSubGroup = new ProductSubGroup();
 			Int64 id = clsProductSubGroup.Insert(clsDetails);

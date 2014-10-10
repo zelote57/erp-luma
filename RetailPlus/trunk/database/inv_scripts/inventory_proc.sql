@@ -522,6 +522,11 @@ BEGIN
 		WHERE ProductID = pvtproductID AND MatrixID = pvtMatrixID;
 	END IF;
 
+	-- Oct 4, 2014 update this to 1 to activate the product
+	IF pvtQuantityNow > 0 THEN
+		UPDATE tblProducts SET Active = 1 WHERE ProductID = pvtproductID;
+	END IF;
+
 END;
 GO
 delimiter ;
@@ -700,3 +705,8 @@ BEGIN
 END;
 GO
 delimiter ;
+
+/********************
+
+Oct 4, 2014
+1. Put Active = 1 in procProductUpdateInvDetails when quantity is save with > 0 quantity

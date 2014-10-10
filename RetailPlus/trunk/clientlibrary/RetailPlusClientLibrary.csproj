@@ -160,6 +160,39 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PaymentUI\CashPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PaymentUI\ChequesPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PaymentUI\CreditCardPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PaymentUI\CreditPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PaymentUI\DebitPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PaymentUI\RewardPointPaymentWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CashCountWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ChangeAmountWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ChangePriceWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ChangeQuantityWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CreditsItemizeWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="EJournalPrinter.cs" />
     <Compile Include="CRSReports\DR.cs">
       <DependentUpon>DR.rpt</DependentUpon>
@@ -213,6 +246,10 @@
     <Compile Include="Event.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Resolution.cs" />
+    <Compile Include="UI\BalanceWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\MainWndExtension.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -258,6 +295,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\LogInWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OrderTypeWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OrderTypeWnd.Designer.cs">
+      <DependentUpon>OrderTypeWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentUI\PaymentsWnd.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -306,6 +352,50 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="PaymentUI\CashPaymentWnd.resx">
+      <DependentUpon>CashPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaymentUI\ChequesPaymentWnd.resx">
+      <DependentUpon>ChequesPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaymentUI\CreditCardPaymentWnd.resx">
+      <DependentUpon>CreditCardPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaymentUI\CreditPaymentWnd.resx">
+      <DependentUpon>CreditPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaymentUI\DebitPaymentWnd.resx">
+      <DependentUpon>DebitPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaymentUI\RewardPointPaymentWnd.resx">
+      <DependentUpon>RewardPointPaymentWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CashCountWnd.resx">
+      <DependentUpon>CashCountWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ChangeAmountWnd.resx">
+      <DependentUpon>ChangeAmountWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ChangePriceWnd.resx">
+      <DependentUpon>ChangePriceWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ChangeQuantityWnd.resx">
+      <DependentUpon>ChangeQuantityWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CreditsItemizeWnd.resx">
+      <DependentUpon>CreditsItemizeWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="CRSReports\DR.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DR.cs</LastGenOutput>
@@ -370,8 +460,20 @@
       <DependentUpon>TerminalReportWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\BalanceWnd.resx">
+      <DependentUpon>BalanceWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\LogInWnd.resx">
       <DependentUpon>LogInWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OrderTypeWnd.resx">
+      <DependentUpon>OrderTypeWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaymentUI\PaymentsWnd.resx">
+      <DependentUpon>PaymentsWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

@@ -122,5 +122,14 @@ namespace AceSoft.RetailPlus
                     ";Uid=POSUser;Pwd=pospwd; Encrypt = true; Connection Timeout=180";
             //return "Data Source=" + clsDBName + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + clsPort + ";Extended Properties=";
         }
+
+        public static string AuditConnectionString(string ServerIP = null, string Port = null, string DBName = null)
+        {
+            return "Server=" + (ServerIP == null || ServerIP == "" ? DBConnection.ServerIP() : ServerIP) +
+                ";Port=" + (Port == null || Port == "" ? DBConnection.DBPort().ToString() : Port) +
+                ";Database=" + (DBName == null || DBName == "" ? DBConnection.DBName() : DBName) +
+                    ";Uid=POSAuditUser;Pwd=posauditpwd; Encrypt = true; Connection Timeout=180";
+            //return "Data Source=" + clsDBName + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + clsPort + ";Extended Properties=";
+        }
 	}
 }

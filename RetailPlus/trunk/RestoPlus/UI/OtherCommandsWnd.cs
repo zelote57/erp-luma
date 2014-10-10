@@ -24,7 +24,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.PictureBox imgIcon;
         private System.Windows.Forms.Label lblReturnItem;
         private System.Windows.Forms.Label lblOpenDrawer;
-        private Label lblReprintZReadName;
+        private Label lblReprintOrderSlip;
         private Label lblPrintPLUReportPerOrderSlipPrinterName;
 
         private long mlCashierID;
@@ -109,7 +109,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdF7 = new System.Windows.Forms.Button();
             this.cmdF6 = new System.Windows.Forms.Button();
             this.lblPrintPLUReportPerOrderSlipPrinterName = new System.Windows.Forms.Label();
-            this.lblReprintZReadName = new System.Windows.Forms.Label();
+            this.lblReprintOrderSlip = new System.Windows.Forms.Label();
             this.lblOpenDrawer = new System.Windows.Forms.Label();
             this.lblReturnItem = new System.Windows.Forms.Label();
             this.lblROC = new System.Windows.Forms.Label();
@@ -150,7 +150,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.Controls.Add(this.cmdF7);
             this.groupBox1.Controls.Add(this.cmdF6);
             this.groupBox1.Controls.Add(this.lblPrintPLUReportPerOrderSlipPrinterName);
-            this.groupBox1.Controls.Add(this.lblReprintZReadName);
+            this.groupBox1.Controls.Add(this.lblReprintOrderSlip);
             this.groupBox1.Controls.Add(this.lblOpenDrawer);
             this.groupBox1.Controls.Add(this.lblReturnItem);
             this.groupBox1.Controls.Add(this.lblROC);
@@ -229,7 +229,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdF9.TabIndex = 9;
             this.cmdF9.Text = "F9";
             this.cmdF9.UseVisualStyleBackColor = true;
-            this.cmdF9.Visible = false;
             this.cmdF9.Click += new System.EventHandler(this.cmdF9_Click);
             // 
             // cmdF8
@@ -288,16 +287,15 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblPrintPLUReportPerOrderSlipPrinterName.Text = "Print PLU Report per OrderSlip Printer";
             this.lblPrintPLUReportPerOrderSlipPrinterName.Visible = false;
             // 
-            // lblReprintZReadName
+            // lblReprintOrderSlip
             // 
-            this.lblReprintZReadName.AutoSize = true;
-            this.lblReprintZReadName.ForeColor = System.Drawing.Color.Blue;
-            this.lblReprintZReadName.Location = new System.Drawing.Point(697, 234);
-            this.lblReprintZReadName.Name = "lblReprintZReadName";
-            this.lblReprintZReadName.Size = new System.Drawing.Size(71, 13);
-            this.lblReprintZReadName.TabIndex = 85;
-            this.lblReprintZReadName.Text = "Open Drawer";
-            this.lblReprintZReadName.Visible = false;
+            this.lblReprintOrderSlip.AutoSize = true;
+            this.lblReprintOrderSlip.ForeColor = System.Drawing.Color.Blue;
+            this.lblReprintOrderSlip.Location = new System.Drawing.Point(697, 234);
+            this.lblReprintOrderSlip.Name = "lblReprintOrderSlip";
+            this.lblReprintOrderSlip.Size = new System.Drawing.Size(180, 13);
+            this.lblReprintOrderSlip.TabIndex = 85;
+            this.lblReprintOrderSlip.Text = "Resend Orders to Kitchens and Bars";
             // 
             // lblOpenDrawer
             // 
@@ -494,7 +492,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1026, 788);
+            this.ClientSize = new System.Drawing.Size(1026, 764);
             this.ControlBox = false;
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.label8);

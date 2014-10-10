@@ -20,6 +20,9 @@ DROP DATABASE IF EXISTS pos;
 
 CREATE DATABASE pos;
 
+GRANT ALL PRIVILEGES ON pos.* TO POSAuditUser IDENTIFIED BY 'posauditpwd' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
 GRANT ALL PRIVILEGES ON pos.* TO POSUser IDENTIFIED BY 'pospwd' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 DELETE FROM user WHERE user = '' OR user = null;
@@ -525,7 +528,7 @@ CREATE TABLE tblProducts (
 `ProductDesc` VARCHAR(50) NOT NULL,
 `ProductSubGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblProductSubGroup(`ProductSubGroupID`),
 `BaseUnitID` INT(10) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblUnit(`UnitID`),
-`DateCreated` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateCreated` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `Deleted` TINYINT(1) NOT NULL DEFAULT 0,
 `Price` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `PurchasePrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -988,7 +991,7 @@ CREATE TABLE tblChequePayment (
 `TransactionID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 `ChequeNo` VARCHAR(30) NOT NULL,
 `Amount`  DECIMAL(18,3) NOT NULL DEFAULT 0,
-`ValidityDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`ValidityDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `Remarks` VARCHAR(255) NOT NULL,
 INDEX `IX_tblChequePayment`(`TransactionID`),
 INDEX `IX1_tblChequePayment`(`ChequeNo`),
@@ -1093,9 +1096,9 @@ CREATE TABLE tblTransactions01 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1113,7 +1116,7 @@ CREATE TABLE tblTransactions01 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1137,9 +1140,9 @@ CREATE TABLE tblTransactions02 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1157,7 +1160,7 @@ CREATE TABLE tblTransactions02 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1181,9 +1184,9 @@ CREATE TABLE tblTransactions03 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1201,7 +1204,7 @@ CREATE TABLE tblTransactions03 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1225,9 +1228,9 @@ CREATE TABLE tblTransactions04 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1245,7 +1248,7 @@ CREATE TABLE tblTransactions04 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1269,9 +1272,9 @@ CREATE TABLE tblTransactions05 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1289,7 +1292,7 @@ CREATE TABLE tblTransactions05 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1314,9 +1317,9 @@ CREATE TABLE tblTransactions06 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1334,7 +1337,7 @@ CREATE TABLE tblTransactions06 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1358,9 +1361,9 @@ CREATE TABLE tblTransactions07 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1378,7 +1381,7 @@ CREATE TABLE tblTransactions07 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1402,9 +1405,9 @@ CREATE TABLE tblTransactions08 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1422,7 +1425,7 @@ CREATE TABLE tblTransactions08 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1446,9 +1449,9 @@ CREATE TABLE tblTransactions09 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1466,7 +1469,7 @@ CREATE TABLE tblTransactions09 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1490,9 +1493,9 @@ CREATE TABLE tblTransactions10 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1510,7 +1513,7 @@ CREATE TABLE tblTransactions10 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1534,9 +1537,9 @@ CREATE TABLE tblTransactions11 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1554,7 +1557,7 @@ CREATE TABLE tblTransactions11 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -1578,9 +1581,9 @@ CREATE TABLE tblTransactions12 (
 `CashierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
-`TransactionDate`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00' ,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`TransactionDate`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00' ,
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -1598,7 +1601,7 @@ CREATE TABLE tblTransactions12 (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -2487,7 +2490,7 @@ INDEX `IX3_tblCashierReport`(`TerminalID`)
 );
 
 INSERT INTO tblCashierReport (`CashierID`, `TerminalID`, `TerminalNo`, `LastLoginDate`)
-		VALUES		(1, 1, '01', "0001-01-01 00:00");
+		VALUES		(1, 1, '01', "1900-01-01 00:00");
 
 truncate table tblDenomination;
 INSERT INTO tblDenomination (DenominationCode, `DenominationValue`, ImagePath) VALUES ('One Thousand Pesos', 1000.00, '');
@@ -3449,7 +3452,7 @@ DROP TABLE IF EXISTS tblInvAdjustment;
 CREATE TABLE tblInvAdjustment (
 `InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 `InvAdjustmentNo` VARCHAR(30) NOT NULL,
-`InvAdjustmentDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`InvAdjustmentDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
 `SupplierCode` VARCHAR(25) NOT NULL,
 `SupplierContact` VARCHAR(75) NOT NULL,
@@ -3457,7 +3460,7 @@ CREATE TABLE tblInvAdjustment (
 `SupplierTelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
 `SupplierModeOfTerms` INT(10) NOT NULL DEFAULT 0,
 `SupplierTerms` INT(10) NOT NULL DEFAULT 0,
-`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblBranch(`BranchID`),
 `TransferredByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `InvAdjustmentSubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -3467,9 +3470,9 @@ CREATE TABLE tblInvAdjustment (
 `InvAdjustmentStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `InvAdjustmentRemarks` VARCHAR(150),
 `SupplierDRNo` VARCHAR(30) NOT NULL,
-`DeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblPayment(`PaymentID`),
-`CancelledDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `CancelledRemarks` VARCHAR(150),
 `CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 PRIMARY KEY (InvAdjustmentID),
@@ -3532,7 +3535,7 @@ DROP TABLE IF EXISTS tblInvAdjustment;
 CREATE TABLE tblInvAdjustment (
 `InvAdjustmentID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 `InvAdjustmentNo` VARCHAR(30) NOT NULL,
-`InvAdjustmentDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`InvAdjustmentDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `SupplierID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblContacts(`ContactID`),
 `SupplierCode` VARCHAR(25) NOT NULL,
 `SupplierContact` VARCHAR(75) NOT NULL,
@@ -3540,7 +3543,7 @@ CREATE TABLE tblInvAdjustment (
 `SupplierTelephoneNo` VARCHAR(75) NOT NULL DEFAULT '',
 `SupplierModeOfTerms` INT(10) NOT NULL DEFAULT 0,
 `SupplierTerms` INT(10) NOT NULL DEFAULT 0,
-`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`RequiredDeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 2 REFERENCES tblBranch(`BranchID`),
 `TransferredByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES sysAccessUsers(`UID`),
 `InvAdjustmentSubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -3550,9 +3553,9 @@ CREATE TABLE tblInvAdjustment (
 `InvAdjustmentStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `InvAdjustmentRemarks` VARCHAR(150),
 `SupplierDRNo` VARCHAR(30) NOT NULL,
-`DeliveryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DeliveryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblPayment(`PaymentID`),
-`CancelledDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`CancelledDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `CancelledRemarks` VARCHAR(150),
 `CancelledByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 PRIMARY KEY (InvAdjustmentID),
@@ -4752,31 +4755,31 @@ ALTER TABLE tblTransactions10 ADD `ReleaserName` VARCHAR(100);
 ALTER TABLE tblTransactions11 ADD `ReleaserName` VARCHAR(100);
 ALTER TABLE tblTransactions12 ADD `ReleaserName` VARCHAR(100);
 
-ALTER TABLE tblTransactions01 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions02 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions03 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions04 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions05 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions06 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions07 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions08 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions09 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions10 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions11 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblTransactions12 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
+ALTER TABLE tblTransactions01 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions02 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions03 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions04 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions05 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions06 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions07 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions08 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions09 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions10 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions11 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblTransactions12 ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 
-UPDATE tblTransactions01 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions02 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions03 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions04 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions05 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions06 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions07 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions08 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions09 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions10 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions11 SET `ReleasedDate` = '0001-01-01 12:00:00';
-UPDATE tblTransactions12 SET `ReleasedDate` = '0001-01-01 12:00:00';
+UPDATE tblTransactions01 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions02 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions03 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions04 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions05 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions06 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions07 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions08 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions09 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions10 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions11 SET `ReleasedDate` = '1900-01-01 12:00:00';
+UPDATE tblTransactions12 SET `ReleasedDate` = '1900-01-01 12:00:00';
 
 ALTER TABLE tblTerminal ADD `ReservedAndCommit` TINYINT(1) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminalReport ADD `DebitDeposit` DECIMAL NOT NULL DEFAULT 0;
@@ -4910,7 +4913,7 @@ CREATE TABLE tblContactRewards (
 	`RewardCardNo` VARCHAR(15) DEFAULT '',
 	`RewardActive` TINYINT(1) NOT NULL DEFAULT 0,
 	`RewardPoints` DECIMAL (10,2) NOT NULL DEFAULT 0,
-	`RewardAwardDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`RewardAwardDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 INDEX `IX_tblContactRewards`(`CustomerID`),
 INDEX `IX_tblContactRewards1`(`RewardCardNo`),
 INDEX `IX_tblContactRewards2`(`CustomerID`, `RewardCardNo`),
@@ -4934,11 +4937,11 @@ ALTER TABLE tblProducts ADD RewardPoints DECIMAL(18,3) DEFAULT 0;
 DROP TABLE IF EXISTS tblContactRewardsMovement;
 CREATE TABLE tblContactRewardsMovement (
 	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 1 REFERENCES tblContacts(`ContactID`),
-	`RewardDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`RewardDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`RewardPointsBefore` BIGINT NOT NULL DEFAULT 0,
 	`RewardPointsAdjustment` BIGINT NOT NULL DEFAULT 0,
 	`RewardPointsAfter` BIGINT NOT NULL DEFAULT 0,
-	`RewardExpiryDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`RewardExpiryDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`RewardReason` VARCHAR(150) NOT NULL,
 	`TerminalNo` VARCHAR(10) NOT NULL,
 	`CashierName` VARCHAR(150) NOT NULL,
@@ -5042,18 +5045,18 @@ ALTER TABLE tblTerminal ADD RoundDownRewardPoints TINYINT (1) NOT NULL DEFAULT 0
 ALTER TABLE tblContactRewards ADD TotalPurchases DECIMAL (10,2) NOT NULL DEFAULT 0;
 ALTER TABLE tblContactRewards ADD RedeemedPoints DECIMAL (10,2) NOT NULL DEFAULT 0;
 ALTER TABLE tblContactRewards ADD `RewardCardStatus` TINYINT(1) NOT NULL DEFAULT 0;
-ALTER TABLE tblContactRewards ADD `ExpiryDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00';
-ALTER TABLE tblContactRewards ADD `BirthDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00';
+ALTER TABLE tblContactRewards ADD `ExpiryDate` DATE NOT NULL DEFAULT '1900-01-01 12:00:00';
+ALTER TABLE tblContactRewards ADD `BirthDate` DATE NOT NULL DEFAULT '1900-01-01 12:00:00';
 
 
 DROP TABLE IF EXISTS tblContactRewardsMovement;
 CREATE TABLE tblContactRewardsMovement (
 	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 1 REFERENCES tblContacts(`ContactID`),
-	`RewardDate` DATE NOT NULL DEFAULT '0001-01-01',
+	`RewardDate` DATE NOT NULL DEFAULT '1900-01-01',
 	`RewardPointsBefore` BIGINT NOT NULL DEFAULT 0,
 	`RewardPointsAdjustment` BIGINT NOT NULL DEFAULT 0,
 	`RewardPointsAfter` BIGINT NOT NULL DEFAULT 0,
-	`RewardExpiryDate` DATE NOT NULL DEFAULT '0001-01-01',
+	`RewardExpiryDate` DATE NOT NULL DEFAULT '1900-01-01',
 	`RewardReason` VARCHAR(150) NOT NULL,
 	`TerminalNo` VARCHAR(10) NOT NULL,
 	`CashierName` VARCHAR(150) NOT NULL,
@@ -5070,11 +5073,11 @@ CREATE TABLE tblContactCreditCardInfo (
 	`GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
 	`CreditType` TINYINT(1) NOT NULL DEFAULT 0,
 	`CreditCardNo` VARCHAR(15) DEFAULT '',
-	`CreditAwardDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`CreditAwardDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`TotalPurchases` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`CreditPaid` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`CreditCardStatus` TINYINT(1) NOT NULL DEFAULT 0,
-	`ExpiryDate` DATE NOT NULL DEFAULT '0001-01-01',
+	`ExpiryDate` DATE NOT NULL DEFAULT '1900-01-01',
 INDEX `IX_tblContactCreditCardInfo`(`CustomerID`),
 INDEX `IX_tblContactCreditCardInfo1`(`CreditCardNo`),
 INDEX `IX_tblContactCreditCardInfo2`(`CustomerID`, `CreditCardNo`),
@@ -5087,11 +5090,11 @@ DROP TABLE IF EXISTS tblContactCreditCardMovement;
 --	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
 --	`GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
 --	`CreditType` TINYINT(1) NOT NULL DEFAULT 0,
---	`CreditDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
+--	`CreditDate` DATE NOT NULL DEFAULT '1900-01-01 12:00:00',
 --	`CreditBefore` DECIMAL(18,3) NOT NULL DEFAULT 0,
 --	`Credit` DECIMAL(18,3) NOT NULL DEFAULT 0,
 --	`CreditAfter` DECIMAL(18,3) NOT NULL DEFAULT 0,
---	`CreditExpiryDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00',
+--	`CreditExpiryDate` DATE NOT NULL DEFAULT '1900-01-01 12:00:00',
 --	`CreditReason` VARCHAR(150) NOT NULL,
 --	`TerminalNo` VARCHAR(10) NOT NULL,
 --	`CashierName` VARCHAR(150) NOT NULL,
@@ -5389,8 +5392,8 @@ CREATE TABLE tblTransactions (
 `CashierName` VARCHAR(100) NOT NULL,
 `TerminalNo` VARCHAR(30) NOT NULL,
 `TransactionDate`	DATETIME NOT NULL,
-`DateSuspended`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
-`DateResumed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateSuspended`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
+`DateResumed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `TransactionStatus` SMALLINT(1) UNSIGNED NOT NULL DEFAULT 0,
 `SubTotal` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `Discount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -5408,7 +5411,7 @@ CREATE TABLE tblTransactions (
 `CreditPayment` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `BalanceAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
 `ChangeAmount` DECIMAL(18,3) NOT NULL DEFAULT 0,
-`DateClosed`	DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+`DateClosed`	DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 `PaymentType` INT(10) UNSIGNED NOT NULL DEFAULT 4,
 `DiscountCode` VARCHAR(30),
 `DiscountRemarks` VARCHAR(255),
@@ -5436,7 +5439,7 @@ ALTER TABLE tblTransactions ADD `AgentDepartmentName` VARCHAR(30) NOT NULL DEFAU
 ALTER TABLE tblTransactions ADD `AgentPositionName` VARCHAR(30) NOT NULL DEFAULT 'System Default Position';
 ALTER TABLE tblTransactions ADD `ReleaserID` BIGINT(20) NOT NULL DEFAULT 0;
 ALTER TABLE tblTransactions ADD `ReleaserName` VARCHAR(100);
-ALTER TABLE tblTransactions ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
+ALTER TABLE tblTransactions ADD `ReleasedDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblTransactions ADD RewardPointsPayment DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblTransactions ADD RewardConvertedPayment DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblTransactions ADD PaxNo INT(4) NOT NULL DEFAULT 1;
@@ -6076,10 +6079,10 @@ DROP TABLE IF EXISTS tblContactCreditCardMovement;
 
 ALTER TABLE tblCreditPayment ADD `GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`);
 ALTER TABLE tblCreditPayment ADD `CreditType` TINYINT(1) NOT NULL DEFAULT 0;
-ALTER TABLE tblCreditPayment ADD `CreditDate` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00';
+ALTER TABLE tblCreditPayment ADD `CreditDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblCreditPayment ADD `CreditBefore` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCreditPayment ADD `CreditAfter` DECIMAL(18,3) NOT NULL DEFAULT 0;
-ALTER TABLE tblCreditPayment ADD `CreditExpiryDate` DATE NOT NULL DEFAULT '0001-01-01 12:00:00';
+ALTER TABLE tblCreditPayment ADD `CreditExpiryDate` DATE NOT NULL DEFAULT '1900-01-01 12:00:00';
 ALTER TABLE tblCreditPayment ADD `CreditReason` VARCHAR(150) NOT NULL;
 ALTER TABLE tblCreditPayment ADD `TerminalNo` VARCHAR(10) NOT NULL;
 ALTER TABLE tblCreditPayment ADD `CashierName` VARCHAR(150) NOT NULL;
@@ -6408,9 +6411,9 @@ CREATE TABLE tblParkingRates (
 	`MinimumStayInMin` INT NOT NULL DEFAULT 60,
 	`MinimumStayPrice` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`CreatedByName` VARCHAR(100),
-	`CreatedOn` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`CreatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`LastUpdatedByName` VARCHAR(100),
-	`LastUpdatedOn` DATETIME NOT NULL DEFAULT '0001-01-01 12:00:00',
+	`LastUpdatedOn` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	INDEX `IX_tblParkingRates`(`ProductID`, `DayOfWeek`, `StartTime`),
 	PRIMARY KEY (ParkingRateID),
 	UNIQUE `PK_tblParkingRates`(`ProductID`, `DayOfWeek`, `StartTime`, `Endtime`)
@@ -6434,8 +6437,8 @@ CREATE TABLE `tblTransactionsBackup` (
   `CashierName` varchar(100) NOT NULL,
   `TerminalNo` varchar(30) NOT NULL,
   `TransactionDate` datetime NOT NULL,
-  `DateSuspended` datetime NOT NULL DEFAULT '0001-01-01 12:00:00',
-  `DateResumed` datetime NOT NULL DEFAULT '0001-01-01 12:00:00',
+  `DateSuspended` datetime NOT NULL DEFAULT '1900-01-01 12:00:00',
+  `DateResumed` datetime NOT NULL DEFAULT '1900-01-01 12:00:00',
   `TransactionStatus` smallint(1) unsigned NOT NULL DEFAULT '0',
   `SubTotal` decimal(18,3) NOT NULL DEFAULT '0.00',
   `Discount` decimal(18,3) NOT NULL DEFAULT '0.00',
@@ -6453,7 +6456,7 @@ CREATE TABLE `tblTransactionsBackup` (
   `CreditPayment` decimal(18,3) NOT NULL DEFAULT '0.00',
   `BalanceAmount` decimal(18,3) NOT NULL DEFAULT '0.00',
   `ChangeAmount` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `DateClosed` datetime NOT NULL DEFAULT '0001-01-01 12:00:00',
+  `DateClosed` datetime NOT NULL DEFAULT '1900-01-01 12:00:00',
   `PaymentType` int(10) unsigned NOT NULL DEFAULT '4',
   `DiscountCode` varchar(5) DEFAULT NULL,
   `DiscountRemarks` varchar(255) DEFAULT NULL,
@@ -6475,7 +6478,7 @@ CREATE TABLE `tblTransactionsBackup` (
   `AgentPositionName` varchar(30) NOT NULL DEFAULT 'System Default Position',
   `ReleaserID` bigint(20) NOT NULL DEFAULT '0',
   `ReleaserName` varchar(100) DEFAULT NULL,
-  `ReleasedDate` datetime NOT NULL DEFAULT '0001-01-01 12:00:00',
+  `ReleasedDate` datetime NOT NULL DEFAULT '1900-01-01 12:00:00',
   `RewardPointsPayment` decimal(18,3) NOT NULL DEFAULT '0.000',
   `RewardConvertedPayment` decimal(18,3) NOT NULL DEFAULT '0.000',
   `PaxNo` int(4) NOT NULL DEFAULT '1',
@@ -6587,7 +6590,7 @@ CREATE TABLE tblProductInventoryAudit (
 	`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`IsLock` TINYINT(1) NOT NULL DEFAULT 0,
-	`DateCreated` DATETIME NOT NULL DEFAULT NOW(),
+	`DateCreated` DATETIME NOT NULL DEFAULT '1900-01-01',
 	INDEX `IX_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`)
 );
 
@@ -6605,7 +6608,7 @@ CREATE TABLE tblProductInventoryDaily (
 	`QuantityOut` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`IsLock` TINYINT(1) NOT NULL DEFAULT 0,
-	`DateCreated` DATETIME NOT NULL DEFAULT NOW(),
+	`DateCreated` DATETIME NOT NULL DEFAULT '1900-01-01',
 	INDEX `IX_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`)
 );
 
@@ -6625,7 +6628,7 @@ CREATE TABLE tblProductInventoryMonthly (
 	`ActualQuantity` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`IsLock` TINYINT(1) NOT NULL DEFAULT 0,
 	`DateMonth` VARCHAR(7),
-	`DateCreated` DATETIME NOT NULL DEFAULT NOW(),
+	`DateCreated` DATETIME NOT NULL DEFAULT '1900-01-01',
 	INDEX `IX_tblProductInventory`(`BranchID`, `ProductID`, `MatrixID`)
 );
 
@@ -6653,7 +6656,7 @@ CREATE TABLE `tblContactsAudit` (
   `DepartmentID` int(10) unsigned NOT NULL DEFAULT '1',
   `PositionID` int(10) unsigned NOT NULL DEFAULT '1',
   `isLock` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `AuditDateCreated` DATETIME NOT NULL DEFAULT NOW(),
+  `AuditDateCreated` DATETIME NOT NULL DEFAULT '1900-01-01',
   KEY `IX_tblcontactsAudit` (`ContactID`,`ContactCode`,`ContactName`),
   KEY `IX1_tblcontactsAudit` (`ContactGroupID`)
 );
@@ -8240,12 +8243,66 @@ WHERE tblCashierReportHistory.BranchID = tblTerminalReportHistory.BranchID
 -- delete this no need for this. this is always true anyway
 DELETE FROM sysConfig WHERE ConfigName = 'WillDeductTFInTerminalReport';
 
+ALTER TABLE tblTerminal ADD DefaultTransactionChargeCode VARCHAR(60);
+ALTER TABLE tblTerminal ADD DineInChargeCode VARCHAR(60);
+ALTER TABLE tblTerminal ADD TakeOutChargeCode VARCHAR(60);
+ALTER TABLE tblTerminal ADD DeliveryChargeCode VARCHAR(60);
+
+-- Add to put the iamge of subgroups in restoplus
+ALTER TABLE tblProductSubGroup ADD ImagePath VARCHAR(500);
+
+ALTER TABLE tblContacts ADD `LastCheckInDate` DATETIME NOT NULL DEFAULT '1900-01-01';
+ALTER TABLE tblTransactions ADD `ContactCheckInDate` DATETIME NOT NULL DEFAULT '1900-01-01';
+
+ALTER TABLE tblDiscountHistory MODIFY DiscountCode VARCHAR(60);
+
+-- update the transactionstatus of Credit Payments
+-- rerun the procTerminalReportHistorySyncTransactionSales after updating this
+-- CALL procTerminalReportHistorySyncTransactionSales( 1, '01', '2014-09-01 00:00');
+UPDATE tblTransactions SET TransactionStatus = 7 WHERE TransactionID IN (SELECT DISTINCT TransactionID FROM tblTransactionItems WHERE ProductCode = 'CREDIT PAYMENT');
+
+GRANT ALL PRIVILEGES ON pos.* TO POSAuditUser IDENTIFIED BY 'posauditpwd' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+-- for monitoring the refunds
+-- to separated from the cashsales
+ALTER TABLE tblTerminalReport ADD `RefundCash` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `RefundCheque` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `RefundCreditCard` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `RefundCredit` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReport ADD `RefundDebit` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblTerminalReportHistory ADD `RefundCash` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `RefundCheque` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `RefundCreditCard` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `RefundCredit` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminalReportHistory ADD `RefundDebit` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReport ADD `RefundCash` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `RefundCheque` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `RefundCreditCard` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `RefundCredit` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReport ADD `RefundDebit` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCashierReportHistory ADD `RefundCash` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `RefundCheque` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `RefundCreditCard` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `RefundCredit` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCashierReportHistory ADD `RefundDebit` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+
+/*********************************  v_4.0.1.1.sql END  *******************************************************/ 
+
+-- Notes: Please red
 -- run the retailplus_proc.sql
 -- run this to fixed the previous reports.
 -- need to change the date
 -- CALL procTerminalReportHistorySyncTransactionSales( 1, '01', '2014-09-01 00:00');
 
+-- make sure to create a cerberus ftp with the following credintials
+-- ftp username: ftprbsuser
+-- ftp password: ftprbspwd
+-- directory: subgroupimages	for subgroupsimahes
+-- directory: retailplusclient	for updated executable file
 
-
-/*********************************  v_4.0.1.1.sql END  *******************************************************/ 
-
+-- Add POSAuditUser see above

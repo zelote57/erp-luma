@@ -292,8 +292,6 @@ namespace AceSoft.RetailPlus.Reports
                 clsSearchKey.isConsignment = bool.Parse(cboConsignment.SelectedItem.Value);
             }
 
-            bool boWithTrustFund = true;
-
 			string strReportType = cboReportType.SelectedValue;
 
             switch (strReportType)

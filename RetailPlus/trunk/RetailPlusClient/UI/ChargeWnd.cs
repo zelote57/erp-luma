@@ -482,7 +482,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			cboChargeType.Items.Clear();
 			Data.ChargeType clsCharge = new Data.ChargeType();
-			foreach (System.Data.DataRow dr in clsCharge.DataList("ChargeTypeCode", SortOption.Ascending).Rows)
+			foreach (System.Data.DataRow dr in clsCharge.ListAsDataTable().Rows)
 			{
 				cboChargeType.Items.Add(dr["ChargeTypeCode"]);
 			}

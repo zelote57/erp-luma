@@ -47,13 +47,42 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private System.Windows.Forms.DataGridTableStyle dgStyle;
 		private System.Windows.Forms.TextBox txtSearch;
+        private System.ComponentModel.Container components = null;
 
 		private DialogResult dialog;
 		private SalesTransactionItemDetails mDetails;
 		private string mstTransactionNo;
         private System.Windows.Forms.PictureBox imgIcon;
 
-		private System.ComponentModel.Container components = null;
+        public DialogResult Result
+        {
+            get
+            {
+                return dialog;
+            }
+        }
+
+        public SalesTransactionItemDetails Details
+        {
+            get
+            {
+                return mDetails;
+            }
+        }
+
+        public string TransactionNo
+        {
+            set
+            {
+                mstTransactionNo = value;
+            }
+        }
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+        }
 
 		public TransactionReturnItemSelectWnd()
 		{
@@ -562,35 +591,9 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		#endregion
 
-		public DialogResult Result
-		{
-			get 
-			{
-				return dialog;
-			}
-		}
+		
 
-		public SalesTransactionItemDetails Details
-		{
-			get 
-			{
-				return mDetails;
-			}
-		}
-
-		public string TransactionNo
-		{
-			set 
-			{
-				mstTransactionNo = value;
-			}
-		}
-
-        private string mstTerminalNo;
-        public string TerminalNo
-        {
-            set { mstTerminalNo = value; }
-        }
+        
 
 		private void TransactionReturnItemSelectWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
@@ -746,7 +749,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				dt.Columns.Add("PurchaseAmount");
 				
 				Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
-                Data.SalesTransactionDetails det = clsSalesTransactions.Details(mstTransactionNo, mstTerminalNo, Constants.TerminalBranchID);
+                Data.SalesTransactionDetails det = clsSalesTransactions.Details(mstTransactionNo, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
 				clsSalesTransactions.CommitAndDispose();
 
 				Data.SalesTransactionItems clsItems = new Data.SalesTransactionItems();

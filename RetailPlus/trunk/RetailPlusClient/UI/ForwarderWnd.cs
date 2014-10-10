@@ -22,7 +22,6 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.ComponentModel.Container components = null;
 
 		private DialogResult dialog;
-		private string mstTerminalNo;
 		private System.Windows.Forms.PictureBox imgIcon;
         private Label label3;
         private TextBox txtDateTo;
@@ -44,13 +43,6 @@ namespace AceSoft.RetailPlus.Client.UI
 				return dialog;
 			}
 		}
-		public string TerminalNo
-		{
-			set
-			{
-				mstTerminalNo = value;
-			}
-		}
         public DateTime DateLastInitialized
 		{
 			get
@@ -58,6 +50,12 @@ namespace AceSoft.RetailPlus.Client.UI
 				return mdtDateLastInitialized;
 			}
         }
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+        }
+
 
         #region Constructors and Destructors
 
@@ -546,7 +544,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private void LoadOptions()
         {
             Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory();
-            System.Data.DataTable dt = clsTerminalReportHistory.DatesLastInitializedForRLC(Constants.TerminalBranchID, mstTerminalNo, Convert.ToDateTime(txtDateFrom.Text), Convert.ToDateTime(txtDateTo.Text));
+            System.Data.DataTable dt = clsTerminalReportHistory.DatesLastInitializedForRLC(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, Convert.ToDateTime(txtDateFrom.Text), Convert.ToDateTime(txtDateTo.Text));
             clsTerminalReportHistory.CommitAndDispose();
 
             cboDate.DataSource = null;

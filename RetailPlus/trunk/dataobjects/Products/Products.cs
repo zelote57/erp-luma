@@ -321,6 +321,131 @@ namespace AceSoft.RetailPlus.Data
 		#endregion
 
 		#region Insert and Update
+
+        public void CREATE_CREDITPAYMENT_PRODUCT()
+        {
+            try
+            {
+                CreateDefaultProduct(DEFAULT_CREDIT_PAYMENT_BARCODE);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void CREATE_ADVANTAGE_CARD_MEMBERSHIP_FEE_BARCODE_PRODUCT()
+        {
+            try
+            {
+                CreateDefaultProduct(DEFAULT_ADVANTAGE_CARD_MEMBERSHIP_FEE_BARCODE);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void CREATE_ADVANTAGE_CARD_RENEWAL_FEE_BARCODE_PRODUCT()
+        {
+            try
+            {
+                CreateDefaultProduct(DEFAULT_ADVANTAGE_CARD_RENEWAL_FEE_BARCODE);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void CREATE_ADVANTAGE_CARD_REPLACEMENT_FEE_BARCODE_PRODUCT()
+        {
+            try
+            {
+                CreateDefaultProduct(DEFAULT_ADVANTAGE_CARD_REPLACEMENT_FEE_BARCODE);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void CREATE_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE_PRODUCT()
+        {
+            try
+            {
+                CreateDefaultProduct(DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void CREATE_CREDIT_CARD_RENEWAL_FEE_BARCODE_PRODUCT()
+        {
+            try
+            {
+                CreateDefaultProduct(DEFAULT_CREDIT_CARD_RENEWAL_FEE_BARCODE);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void CREATE_CREDIT_CARD_REPLACEMENT_FEE_BARCODE_PRODUCT()
+        {
+            try
+            {
+                CreateDefaultProduct(DEFAULT_CREDIT_CARD_REPLACEMENT_FEE_BARCODE);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void CreateDefaultProduct(string DefaultProduct)
+        {
+            try
+            {
+                ProductDetails clsDetails = new ProductDetails();
+
+                clsDetails.ProductCode = DefaultProduct;
+                clsDetails.ProductDesc = DefaultProduct;
+                clsDetails.BarCode = DefaultProduct;
+                clsDetails.BarCode2 = "";
+                clsDetails.BarCode3 = "";
+                clsDetails.ProductGroupID = ProductGroup.DEFAULT_GROUP_ID;
+                clsDetails.ProductSubGroupID = ProductSubGroup.DEFAULT_SUB_GROUP_ID;
+
+                clsDetails.BaseUnitID = Unit.DEFAULT_UNIT_ID;
+                clsDetails.Price = 1;
+                clsDetails.WSPrice = 1;
+                clsDetails.PurchasePrice = 1;
+                clsDetails.PercentageCommision = 0;
+                clsDetails.IncludeInSubtotalDiscount = true;
+                clsDetails.Quantity = 9999999999;
+                clsDetails.VAT = 0;
+                clsDetails.EVAT = 0;
+                clsDetails.LocalTax = 0;
+                clsDetails.MinThreshold = 0;
+                clsDetails.MaxThreshold = 0;
+                clsDetails.SupplierID = Contacts.DEFAULT_SUPPLIER_ID;
+                clsDetails.IsItemSold = false;
+                clsDetails.WillPrintProductComposition = false;
+                clsDetails.UpdatedBy = 1;
+                clsDetails.UpdatedOn = DateTime.Now;
+                clsDetails.RID = 0;
+
+                Insert(clsDetails);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 		public Int64 Insert(ProductDetails Details)
 		{
 			try  
@@ -468,6 +593,9 @@ namespace AceSoft.RetailPlus.Data
                     throw new Exception("This product already exist, please check the barcode.");
                 }
 
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL =	"UPDATE tblProducts SET " +
 									"ProductCode		= @ProductCode, " + 
 									"ProductDesc		= @ProductDesc, " +  
@@ -482,58 +610,32 @@ namespace AceSoft.RetailPlus.Data
 									"WillPrintProductComposition    =   @WillPrintProductComposition " +
 								"WHERE ProductID	= @ProductID;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmProductCode = new MySqlParameter("@ProductCode",MySqlDbType.String);			
-				prmProductCode.Value = Details.ProductCode;
-				cmd.Parameters.Add(prmProductCode);
+                cmd.Parameters.AddWithValue("ProductCode", Details.ProductCode);
+                cmd.Parameters.AddWithValue("ProductDesc", Details.ProductDesc);
+                cmd.Parameters.AddWithValue("ProductSubGroupID", Details.ProductSubGroupID);
+                cmd.Parameters.AddWithValue("BaseUnitID", Details.BaseUnitID);
+                cmd.Parameters.AddWithValue("PercentageCommision", Details.PercentageCommision);
+                cmd.Parameters.AddWithValue("IncludeInSubtotalDiscount", Details.IncludeInSubtotalDiscount);
+                cmd.Parameters.AddWithValue("MinThreshold", Details.MinThreshold);
+                cmd.Parameters.AddWithValue("MaxThreshold", Details.MaxThreshold);
+                cmd.Parameters.AddWithValue("SupplierID", Details.SupplierID);
+                cmd.Parameters.AddWithValue("IsItemSold", Details.IsItemSold);
+                cmd.Parameters.AddWithValue("WillPrintProductComposition", Details.WillPrintProductComposition);
+                cmd.Parameters.AddWithValue("ProductID", Details.ProductID);
 
-				MySqlParameter prmProductDesc = new MySqlParameter("@ProductDesc",MySqlDbType.String);			
-				prmProductDesc.Value = Details.ProductDesc;
-				cmd.Parameters.Add(prmProductDesc);
-
-				MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);						
-				prmProductSubGroupID.Value = Details.ProductSubGroupID;
-				cmd.Parameters.Add(prmProductSubGroupID);
-
-				MySqlParameter prmBaseUnitID = new MySqlParameter("@BaseUnitID",MySqlDbType.Int32);			
-				prmBaseUnitID.Value = Details.BaseUnitID;
-				cmd.Parameters.Add(prmBaseUnitID);
-
-				cmd.Parameters.AddWithValue("@PercentageCommision", Details.PercentageCommision);
-
-				MySqlParameter prmIncludeInSubtotalDiscount = new MySqlParameter("@IncludeInSubtotalDiscount",MySqlDbType.Int16);			
-				prmIncludeInSubtotalDiscount.Value = Details.IncludeInSubtotalDiscount;
-				cmd.Parameters.Add(prmIncludeInSubtotalDiscount);
-
-				MySqlParameter prmMinThreshold = new MySqlParameter("@MinThreshold",MySqlDbType.Decimal);			
-				prmMinThreshold.Value = Details.MinThreshold;
-				cmd.Parameters.Add(prmMinThreshold);
-
-				MySqlParameter prmMaxThreshold = new MySqlParameter("@MaxThreshold",MySqlDbType.Decimal);			
-				prmMaxThreshold.Value = Details.MaxThreshold;
-				cmd.Parameters.Add(prmMaxThreshold);
-
-				MySqlParameter prmSupplierID = new MySqlParameter("@SupplierID",MySqlDbType.Int64);			
-				prmSupplierID.Value = Details.SupplierID;
-				cmd.Parameters.Add(prmSupplierID);
-
-				MySqlParameter prmIsItemSold = new MySqlParameter("@IsItemSold",MySqlDbType.Int16);
-				prmIsItemSold.Value = Convert.ToInt16(Details.IsItemSold);
-				cmd.Parameters.Add(prmIsItemSold);
-
-				MySqlParameter prmWillPrintProductComposition = new MySqlParameter("@WillPrintProductComposition",MySqlDbType.Int16);
-				prmWillPrintProductComposition.Value = Convert.ToInt16(Details.WillPrintProductComposition);
-				cmd.Parameters.Add(prmWillPrintProductComposition);
-
-				MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-				prmProductID.Value = Details.ProductID;
-				cmd.Parameters.Add(prmProductID);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
+                if (Details.Quantity > 0)
+                {
+                    SQL = "UPDATE tblProducts SET Active = 1 WHERE ProductID = @ProductID AND Active = 0;";
+
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("ProductID", Details.ProductID);
+
+                    cmd.CommandText = SQL;
+                    base.ExecuteNonQuery(cmd);
+                }
 				ProductPackageDetails clsDetails = new ProductPackageDetails();
 				clsDetails.ProductID = Details.ProductID;
 				clsDetails.Quantity = 1;
@@ -4092,15 +4194,20 @@ namespace AceSoft.RetailPlus.Data
                        "                ,prd.SupplierID, prd.RewardPoints, prd.MinThreshold, prd.MaxThreshold " +
                        "                ,pkg.PackageID, pkg.MatrixID ,pkg.BarCode1, pkg.BarCode2, pkg.BarCode3, pkg.BarCode4, pkg.Price, pkg.WSPrice, pkg.PurchasePrice, pkg.VAT, pkg.EVAT, pkg.LocalTax " +
                        "              FROM tblProducts prd INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID AND prd.BaseUnitID = pkg.UnitID AND pkg.Quantity = 1 " +
-                       "                    WHERE prd.Active = 1 AND prd.deleted = 0 ";
+                       "                    LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID " +
+                       "                    LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) AND inv.BranchID=" + BranchID.ToString() + " " +
+                       "                    WHERE prd.Active = 1 AND prd.deleted = 0 AND IFNULL(mtrx.deleted, prd.deleted) = 0 ";
                 if (!string.IsNullOrEmpty(BarCode))
                 {
                     SQL += "                      AND (Barcode1 LIKE @BarCode OR Barcode2 LIKE @BarCode OR BarCode3 LIKE @BarCode OR BarCode4 LIKE @BarCode OR prd.ProductCode LIKE @BarCode OR prd.ProductDesc LIKE @BarCode) ";
-
-                    MySqlParameter prmBarcode = new MySqlParameter("@BarCode", MySqlDbType.String);
-                    prmBarcode.Value = BarCode + "%";
-                    cmd.Parameters.Add(prmBarcode);
+                    
+                    cmd.Parameters.AddWithValue("@BarCode", BarCode == "%" ? BarCode : BarCode + "%");
                 }
+                if (isQuantityGreaterThanZERO)
+                {
+                    SQL += "AND inv.Quantity > 0 ";
+                }
+
                 SQL += "              LIMIT " + Limit + ") prd ";
                 
                 SQL += "     LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND prd.MatrixID = mtrx.MatrixID ";
@@ -4115,13 +4222,6 @@ namespace AceSoft.RetailPlus.Data
                              "         LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0) AND INV.BranchID=" + BranchID.ToString() + " ";
                 }
                 SQL += "WHERE IFNULL(mtrx.deleted, 0) = 0 ";
-
-                
-                if (isQuantityGreaterThanZERO)
-                {
-                    SQL += "AND inv.Quantity > 0 ";
-                }
-
                 SQL += "GROUP BY prd.PackageID, " +
                                 "prd.ProductID, " +
                                 "prd.MatrixID, " +

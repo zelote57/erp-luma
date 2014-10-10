@@ -116,7 +116,7 @@
 
         #region Resize Label
 
-        private bool mGrowing;
+        //private bool mGrowing;
         public void GrowLabel()
         {
             this.AutoSize = false;

@@ -46,6 +46,11 @@ namespace AceSoft.RetailPlus.Data
 		public decimal ChequeSales;
 		public decimal CreditCardSales;
 		public decimal CreditSales;
+        public decimal RefundCash;
+        public decimal RefundCheque;
+        public decimal RefundCreditCard;
+        public decimal RefundCredit;
+        public decimal RefundDebit;
 		public decimal CreditPayment;
         public decimal CreditPaymentCash;
         public decimal CreditPaymentCheque;
@@ -176,6 +181,11 @@ namespace AceSoft.RetailPlus.Data
 								"ChequeSales, " +
 								"CreditCardSales, " +
 								"CreditSales, " +
+                                "RefundCash, " +
+                                "RefundCheque, " +
+                                "RefundCreditCard, " +
+                                "RefundCredit, " +
+                                "RefundDebit, " +
 								"CreditPayment, " +
                                 "CreditPaymentCash, " +
                                 "CreditPaymentCheque, " +
@@ -266,6 +276,11 @@ namespace AceSoft.RetailPlus.Data
                 Details.ChequeSales = decimal.Parse(dr["ChequeSales"].ToString());
                 Details.CreditCardSales = decimal.Parse(dr["CreditCardSales"].ToString());
                 Details.CreditSales = decimal.Parse(dr["CreditSales"].ToString());
+                Details.RefundCash = decimal.Parse(dr["RefundCash"].ToString());
+                Details.RefundCheque = decimal.Parse(dr["RefundCheque"].ToString());
+                Details.RefundCreditCard = decimal.Parse(dr["RefundCreditCard"].ToString());
+                Details.RefundCredit = decimal.Parse(dr["RefundCredit"].ToString());
+                Details.RefundDebit = decimal.Parse(dr["RefundDebit"].ToString());
                 Details.CreditPayment = decimal.Parse(dr["CreditPayment"].ToString());
                 Details.CreditPaymentCash = decimal.Parse(dr["CreditPaymentCash"].ToString());
                 Details.CreditPaymentCheque = decimal.Parse(dr["CreditPaymentCheque"].ToString());
@@ -797,7 +812,9 @@ namespace AceSoft.RetailPlus.Data
                                         "@NoOfDiscountedTransactions, @NegativeAdjustments, @NoOfNegativeAdjustmentTransactions," +
                                         "@PromotionalItems, @CreditSalesTax, @DebitDeposit, @RewardPointsPayment, @RewardConvertedPayment," +
                                         "@NoOfRewardPointsPayment, @CreditPaymentCash, @CreditPaymentCheque," +
-                                        "@CreditPaymentCreditCard, @CreditPaymentDebit, @CreatedOn, @LastModified);";
+                                        "@CreditPaymentCreditCard, @CreditPaymentDebit, " +
+                                        "@RefundCash, @RefundCheque, @RefundCreditCard, @RefundCredit, @RefundDebit, " +
+                                        "@CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
                 cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
@@ -874,6 +891,11 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreditPaymentCheque", Details.CreditPaymentCheque);
                 cmd.Parameters.AddWithValue("CreditPaymentCreditCard", Details.CreditPaymentCreditCard);
                 cmd.Parameters.AddWithValue("CreditPaymentDebit", Details.CreditPaymentDebit);
+                cmd.Parameters.AddWithValue("RefundCash", Details.RefundCash);
+                cmd.Parameters.AddWithValue("RefundCheque", Details.RefundCheque);
+                cmd.Parameters.AddWithValue("RefundCreditCard", Details.RefundCreditCard);
+                cmd.Parameters.AddWithValue("RefundCredit", Details.RefundCredit);
+                cmd.Parameters.AddWithValue("RefundDebit", Details.RefundDebit);
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
@@ -1092,8 +1114,7 @@ namespace AceSoft.RetailPlus.Data
                                     "AND CashierName = @CashierName " +
                                     "AND (TransactionStatus = @TransactionStatusClosed " +
                                         "OR TransactionStatus = @TransactionStatusReprinted " +
-                                        "OR TransactionStatus = @TransactionStatusRefund " +
-                                        "OR TransactionStatus = @TransactionStatusCreditPayment) " +
+                                        "OR TransactionStatus = @TransactionStatusRefund) " +
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo) " +
                                     "GROUP BY OrderSlipPrinter, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) ORDER BY OrderSlipPrinter, ProductCode ASC, ProductGroup";
 
@@ -1110,8 +1131,7 @@ namespace AceSoft.RetailPlus.Data
                                     "AND CashierName = @CashierName " +
                                     "AND (TransactionStatus = @TransactionStatusClosed " +
                                         "OR TransactionStatus = @TransactionStatusReprinted " +
-                                        "OR TransactionStatus = @TransactionStatusRefund " +
-                                        "OR TransactionStatus = @TransactionStatusCreditPayment) " +
+                                        "OR TransactionStatus = @TransactionStatusRefund) " +
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo) " +
                                     "GROUP BY OrderSlipPrinter, ProductGroup ORDER BY OrderSlipPrinter, ProductGroup ASC ";
                 }
@@ -1125,7 +1145,6 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@TransactionStatusVoid", (Int16)TransactionStatus.Void);
                 cmd.Parameters.AddWithValue("@TransactionStatusReprinted", (Int16)TransactionStatus.Reprinted);
                 cmd.Parameters.AddWithValue("@TransactionStatusRefund", (Int16)TransactionStatus.Refund);
-                cmd.Parameters.AddWithValue("@TransactionStatusCreditPayment", (Int16)TransactionStatus.CreditPayment);
 
 				cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);

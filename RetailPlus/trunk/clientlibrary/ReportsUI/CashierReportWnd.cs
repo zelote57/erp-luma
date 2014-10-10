@@ -398,10 +398,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void PopulateCashiersReport()
         {
-            Data.TerminalReport clsTerminalReport = new Data.TerminalReport();
-            
-
             Receipt clsReceipt = new Receipt();
+            clsReceipt.GetConnection();
+
             Data.TerminalReportDetails clsTerminalReportDetails = new Data.TerminalReport(clsReceipt.Connection, clsReceipt.Transaction).Details(mclsDetails.BranchID, mclsDetails.TerminalNo);
 
             mclsTerminalDetails.MaxReceiptWidth = 94;
@@ -456,6 +455,11 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("Employee Acct.", ":", "0.00");
             dt.Rows.Add("Void Sales", ":", mclsDetails.VoidSales.ToString("#,##0.00"));
             dt.Rows.Add("Refund Sales", ":", mclsDetails.RefundSales.ToString("#,##0.00"));
+            dt.Rows.Add("      Cash", ":", mclsDetails.RefundCash.ToString("#,##0.00"));
+            dt.Rows.Add("      Cheque", ":", mclsDetails.RefundCheque.ToString("#,##0.00"));
+            dt.Rows.Add("      Credit Card", ":", mclsDetails.RefundCreditCard.ToString("#,##0.00"));
+            dt.Rows.Add("      Credit", ":", mclsDetails.RefundCredit.ToString("#,##0.00"));
+            dt.Rows.Add("      Debit", ":", mclsDetails.RefundDebit.ToString("#,##0.00"));
 
             dt.Rows.Add("Discounts", "", "");
             dt.Rows.Add("Items Discount", ":", mclsDetails.ItemsDiscount.ToString("#,##0.00"));

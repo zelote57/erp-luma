@@ -11,6 +11,8 @@ namespace AceSoft.RetailPlus.Client.UI
     /// </summary>
     public class ForwarderWnd : System.Windows.Forms.Form
     {
+        #region Declarations
+
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label15;
@@ -20,9 +22,6 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cboDate;
         private System.ComponentModel.Container components = null;
-
-        private DialogResult dialog;
-        private string mstTerminalNo;
         private System.Windows.Forms.PictureBox imgIcon;
         private Label label3;
         private TextBox txtDateTo;
@@ -36,8 +35,12 @@ namespace AceSoft.RetailPlus.Client.UI
         private ColumnHeader FileSize;
         private ColumnHeader DateModified;
         private KeyBoardHook.KeyboardNoControl keyboardNoControl1;
-        private DateTime mdtDateLastInitialized;
 
+        #endregion
+
+        #region Public Get/Set Properties
+
+        private DialogResult dialog;
         public DialogResult Result
         {
             get
@@ -45,13 +48,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 return dialog;
             }
         }
-        public string TerminalNo
-        {
-            set
-            {
-                mstTerminalNo = value;
-            }
-        }
+        private DateTime mdtDateLastInitialized;
         public DateTime DateLastInitialized
         {
             get
@@ -59,6 +56,13 @@ namespace AceSoft.RetailPlus.Client.UI
                 return mdtDateLastInitialized;
             }
         }
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+        }
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -560,7 +564,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private void LoadOptions()
         {
             Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory();
-            System.Data.DataTable dt = clsTerminalReportHistory.DatesLastInitializedForRLC(Constants.TerminalBranchID, mstTerminalNo, Convert.ToDateTime(txtDateFrom.Text), Convert.ToDateTime(txtDateTo.Text));
+            System.Data.DataTable dt = clsTerminalReportHistory.DatesLastInitializedForRLC(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, Convert.ToDateTime(txtDateFrom.Text), Convert.ToDateTime(txtDateTo.Text));
             clsTerminalReportHistory.CommitAndDispose();
 
             cboDate.DataSource = null;

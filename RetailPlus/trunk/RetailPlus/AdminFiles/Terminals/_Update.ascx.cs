@@ -111,6 +111,35 @@ namespace AceSoft.RetailPlus.Security._Terminals
             cboPWDDiscountCode.DataBind();
             cboPWDDiscountCode.SelectedIndex = cboDiscountCode.Items.Count - 1;
 
+            Data.ChargeType clsChargeType = new Data.ChargeType(clsDiscount.Connection, clsDiscount.Transaction);
+            cboDefaultTransactionChargeCode.DataTextField = "ChargeTypeCode";
+            cboDefaultTransactionChargeCode.DataValueField = "ChargeTypeCode";
+            cboDefaultTransactionChargeCode.DataSource = clsChargeType.ListAsDataTable().DefaultView;
+            cboDefaultTransactionChargeCode.DataBind();
+            cboDefaultTransactionChargeCode.Items.Insert(0, new ListItem("", ""));
+            cboDefaultTransactionChargeCode.SelectedIndex = 0;
+
+            cboDineInChargeCode.DataTextField = "ChargeTypeCode";
+            cboDineInChargeCode.DataValueField = "ChargeTypeCode";
+            cboDineInChargeCode.DataSource = clsChargeType.ListAsDataTable().DefaultView;
+            cboDineInChargeCode.DataBind();
+            cboDineInChargeCode.Items.Insert(0, new ListItem("", ""));
+            cboDineInChargeCode.SelectedIndex = 0;
+
+            cboTakeOutChargeCode.DataTextField = "ChargeTypeCode";
+            cboTakeOutChargeCode.DataValueField = "ChargeTypeCode";
+            cboTakeOutChargeCode.DataSource = clsChargeType.ListAsDataTable().DefaultView;
+            cboTakeOutChargeCode.DataBind();
+            cboTakeOutChargeCode.Items.Insert(0, new ListItem("", ""));
+            cboTakeOutChargeCode.SelectedIndex = 0;
+
+            cboDeliveryChargeCode.DataTextField = "ChargeTypeCode";
+            cboDeliveryChargeCode.DataValueField = "ChargeTypeCode";
+            cboDeliveryChargeCode.DataSource = clsChargeType.ListAsDataTable().DefaultView;
+            cboDeliveryChargeCode.DataBind();
+            cboDeliveryChargeCode.Items.Insert(0, new ListItem("", ""));
+            cboDeliveryChargeCode.SelectedIndex = 0;
+
             clsDiscount.CommitAndDispose();
 		}
 
@@ -184,6 +213,12 @@ namespace AceSoft.RetailPlus.Security._Terminals
 
             // Added Oct 17, 2011
             chkShowCustomerSelection.Checked = clsDetails.ShowCustomerSelection;
+
+            // Added Sep 24, 2014
+            cboDefaultTransactionChargeCode.SelectedIndex = cboDefaultTransactionChargeCode.Items.IndexOf(cboDefaultTransactionChargeCode.Items.FindByValue(clsDetails.DefaultTransactionChargeCode));
+            cboDineInChargeCode.SelectedIndex = cboDineInChargeCode.Items.IndexOf(cboDineInChargeCode.Items.FindByValue(clsDetails.DineInChargeCode));
+            cboTakeOutChargeCode.SelectedIndex = cboTakeOutChargeCode.Items.IndexOf(cboTakeOutChargeCode.Items.FindByValue(clsDetails.TakeOutChargeCode));
+            cboDeliveryChargeCode.SelectedIndex = cboDeliveryChargeCode.Items.IndexOf(cboDeliveryChargeCode.Items.FindByValue(clsDetails.DeliveryChargeCode));
 		}
 
 		private void SaveRecord()
@@ -251,6 +286,12 @@ namespace AceSoft.RetailPlus.Security._Terminals
 
             // Added Oct 17, 2011
             clsDetails.ShowCustomerSelection = chkShowCustomerSelection.Checked;
+
+            // Added Sep 24, 2014
+            clsDetails.DefaultTransactionChargeCode = cboDefaultTransactionChargeCode.SelectedItem.Value;
+            clsDetails.DineInChargeCode = cboDineInChargeCode.SelectedItem.Value;
+            clsDetails.TakeOutChargeCode = cboTakeOutChargeCode.SelectedItem.Value;
+            clsDetails.DeliveryChargeCode = cboDeliveryChargeCode.SelectedItem.Value;
 
 			Terminal clsTerminal = new Terminal();
 			clsTerminal.Update(clsDetails);

@@ -52,6 +52,11 @@ namespace AceSoft.RetailPlus.Data
         // Sep 15, 2013 : for additional contact info
         public ContactAddOnDetails AdditionalDetails;
 
+        /// <summary>
+        /// sep 24, 2014 : For RestoPlus to monitor how long a customer is already sitting in a table.
+        /// </summary>
+        public DateTime LastCheckInDate;
+
         public DateTime CreatedOn;
         public DateTime LastModified;
 
@@ -80,6 +85,7 @@ namespace AceSoft.RetailPlus.Data
         public bool DepartmentName;
         public bool PositionID;
         public bool PositionName;
+        public bool LastCheckInDate;
         public bool RewardDetails;
         public bool CreditDetails;
     }
@@ -107,6 +113,7 @@ namespace AceSoft.RetailPlus.Data
         public const string DepartmentName = "DepartmentName";
         public const string PositionID = "DepartmentName";
         public const string PositionName = "PositionName";
+        public const string LastCheckInDate = "LastCheckInDate";
     }
 
 	#endregion
@@ -349,6 +356,27 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
+        public void UpdateLastCheckInDate(Int64 ContactID, DateTime CheckInDate)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procContactLastCheckInDateUpdate(@ContactID, @LastCheckInDate);";
+
+                cmd.Parameters.AddWithValue("ContactID", ContactID);
+                cmd.Parameters.AddWithValue("LastCheckInDate", CheckInDate.ToString("yyyy-MM-dd HH;mm:ss"));
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         public Int32 Save(ContactDetails Details)
         {
             try
@@ -448,6 +476,7 @@ namespace AceSoft.RetailPlus.Data
                                 "DepartmentName, " +
                                 "a.PositionID, " +
                                 "PositionName, " +
+                                "LastCheckInDate, " +
                                 "isLock " +
                             "FROM tblContacts a " +
                             "INNER JOIN tblContactGroup b ON a.ContactGroupID = b.ContactGroupID " +
@@ -507,8 +536,9 @@ namespace AceSoft.RetailPlus.Data
                         "tblContactCreditCardInfo.CreditCardStatus, " +
                         "tblContactCreditCardInfo.ExpiryDate, " +
                         "tblContactCreditCardInfo.EmbossedCardNo, " +
-                        "tblContactCreditCardInfo.LastBillingDate,";
+                        "tblContactCreditCardInfo.LastBillingDate, ";
             }
+            stSQL += "tblContacts.LastCheckInDate, ";
             stSQL += "tblContacts.ContactID ";
             stSQL += "FROM tblContacts ";
 
@@ -536,17 +566,6 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                //string SQL=	SQLSelect() + "WHERE a.ContactID = @ContactID;";
-				  
-                //MySqlCommand cmd = new MySqlCommand();
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = SQL;
-
-                //cmd.Parameters.AddWithValue("@ContactID", ContactID);
-				
-                //string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                //base.MySqlDataAdapterFill(cmd, dt);
-
                 System.Data.DataTable dt = ListAsDataTable(ContactGroupCategory.BOTH, ContactID);
                 ContactDetails clsContactDetails = setDetails(dt);
 
@@ -562,18 +581,6 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                //string SQL=	SQLSelect() + "WHERE ContactCode = @ContactCode;";
-				  
-                //MySqlCommand cmd = new MySqlCommand();
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = SQL;
-
-                //cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
-
-                //MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                //ContactDetails clsContactDetails = Details(myReader);
-
                 System.Data.DataTable dt = ListAsDataTable(ContactGroupCategory.BOTH, ContactCode: ContactCode);
                 ContactDetails clsContactDetails = setDetails(dt);
 
@@ -590,17 +597,18 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = SQLSelect() + "WHERE ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactRewards WHERE RewardActive = 1 AND RewardCardNo = @RewardCardNo LIMIT 1);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+
+                string SQL = SQLSelect() + "WHERE ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactRewards WHERE RewardActive = 1 AND RewardCardNo = @RewardCardNo LIMIT 1);";
 
                 cmd.Parameters.AddWithValue("@RewardCardNo", RewardCardNo);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                ContactDetails clsContactDetails = Details(myReader);
+                ContactDetails clsContactDetails = setDetails(dt);
 
                 return clsContactDetails;
             }
@@ -615,17 +623,18 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = SQLSelect() + "WHERE IsCreditAllowed = 1 AND ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactCreditCardInfo WHERE CreditCardNo = @CreditCardNo LIMIT 1);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+
+                string SQL = SQLSelect() + "WHERE IsCreditAllowed = 1 AND ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactCreditCardInfo WHERE CreditCardNo = @CreditCardNo LIMIT 1);";
 
                 cmd.Parameters.AddWithValue("@CreditCardNo", CreditCardNo);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                ContactDetails clsContactDetails = Details(myReader);
+                ContactDetails clsContactDetails = setDetails(dt);
 
                 return clsContactDetails;
             }
@@ -636,53 +645,54 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        private ContactDetails Details(MySqlDataReader myReader)
-        {
-            ContactDetails Details = new ContactDetails();
+        //private ContactDetails Details(MySqlDataReader myReader)
+        //{
+        //    ContactDetails Details = new ContactDetails();
 
-            try 
-            {
-                while (myReader.Read())
-                {
-                    Details.ContactID = myReader.GetInt64("ContactID");
-                    Details.ContactCode = "" + myReader["ContactCode"].ToString();
-                    Details.ContactName = "" + myReader["ContactName"].ToString();
-                    Details.ContactGroupID = myReader.GetInt32("ContactGroupID");
-                    Details.ContactGroupName = "" + myReader["ContactGroupName"].ToString();
-                    Details.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), myReader.GetString("ModeOfTerms"));
-                    Details.Terms = myReader.GetInt32("Terms");
-                    Details.Address = "" + myReader["Address"].ToString();
-                    Details.BusinessName = "" + myReader["BusinessName"].ToString();
-                    Details.TelephoneNo = "" + myReader["TelephoneNo"].ToString();
-                    Details.Remarks = "" + myReader["Remarks"].ToString();
-                    Details.Debit = myReader.GetDecimal("Debit");
-                    Details.Credit = myReader.GetDecimal("Credit");
-                    Details.CreditLimit = myReader.GetDecimal("CreditLimit");
-                    Details.IsCreditAllowed = myReader.GetBoolean("IsCreditAllowed");
-                    Details.DateCreated = myReader.GetDateTime("DateCreated");
-                    Details.Deleted = myReader.GetBoolean("Deleted");
-                    Details.DepartmentID = myReader.GetInt16("DepartmentID");
-                    Details.DepartmentName = "" + myReader["DepartmentName"].ToString();
-                    Details.PositionID = myReader.GetInt16("PositionID");
-                    Details.PositionName = "" + myReader["PositionName"].ToString();
+        //    try 
+        //    {
+        //        while (myReader.Read())
+        //        {
+        //            Details.ContactID = myReader.GetInt64("ContactID");
+        //            Details.ContactCode = "" + myReader["ContactCode"].ToString();
+        //            Details.ContactName = "" + myReader["ContactName"].ToString();
+        //            Details.ContactGroupID = myReader.GetInt32("ContactGroupID");
+        //            Details.ContactGroupName = "" + myReader["ContactGroupName"].ToString();
+        //            Details.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), myReader.GetString("ModeOfTerms"));
+        //            Details.Terms = myReader.GetInt32("Terms");
+        //            Details.Address = "" + myReader["Address"].ToString();
+        //            Details.BusinessName = "" + myReader["BusinessName"].ToString();
+        //            Details.TelephoneNo = "" + myReader["TelephoneNo"].ToString();
+        //            Details.Remarks = "" + myReader["Remarks"].ToString();
+        //            Details.Debit = myReader.GetDecimal("Debit");
+        //            Details.Credit = myReader.GetDecimal("Credit");
+        //            Details.CreditLimit = myReader.GetDecimal("CreditLimit");
+        //            Details.IsCreditAllowed = myReader.GetBoolean("IsCreditAllowed");
+        //            Details.DateCreated = myReader.GetDateTime("DateCreated");
+        //            Details.Deleted = myReader.GetBoolean("Deleted");
+        //            Details.DepartmentID = myReader.GetInt16("DepartmentID");
+        //            Details.DepartmentName = "" + myReader["DepartmentName"].ToString();
+        //            Details.PositionID = myReader.GetInt16("PositionID");
+        //            Details.PositionName = "" + myReader["PositionName"].ToString();
+        //            Details.LastCheckInDate = DateTime.Parse(myReader["LastCheckInDate"].ToString());
 
-                    Details.isLock = Convert.ToBoolean(myReader.GetInt16("isLock"));
-                }
-                myReader.Close();
+        //            Details.isLock = Convert.ToBoolean(myReader.GetInt16("isLock"));
+        //        }
+        //        myReader.Close();
 
-                // Sep 14, 2011 : Lemu - for reward points
-                ContactReward clsContactReward = new ContactReward(base.Connection, base.Transaction);
-                Details.RewardDetails = clsContactReward.Details(Details.ContactID);
+        //        // Sep 14, 2011 : Lemu - for reward points
+        //        ContactReward clsContactReward = new ContactReward(base.Connection, base.Transaction);
+        //        Details.RewardDetails = clsContactReward.Details(Details.ContactID);
 
-                // Nov 2, 2011 : Lemu - for credit
-                ContactCreditCardInfos clsContactCredit = new ContactCreditCardInfos(base.Connection, base.Transaction);
-                Details.CreditDetails = clsContactCredit.Details(Details.ContactID);
-                Details.CreditDetails.CreditLimit = Details.CreditLimit;
-                Details.CreditDetails.CreditActive = Convert.ToBoolean(Details.IsCreditAllowed);
-            }
-            catch (Exception ex) { throw base.ThrowException(ex); }
-            return Details;
-        }
+        //        // Nov 2, 2011 : Lemu - for credit
+        //        ContactCreditCardInfos clsContactCredit = new ContactCreditCardInfos(base.Connection, base.Transaction);
+        //        Details.CreditDetails = clsContactCredit.Details(Details.ContactID);
+        //        Details.CreditDetails.CreditLimit = Details.CreditLimit;
+        //        Details.CreditDetails.CreditActive = Convert.ToBoolean(Details.IsCreditAllowed);
+        //    }
+        //    catch (Exception ex) { throw base.ThrowException(ex); }
+        //    return Details;
+        //}
 
         private ContactDetails setDetails(System.Data.DataTable dt)
         {
@@ -713,6 +723,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.DepartmentName = "" + dr["DepartmentName"].ToString();
                     Details.PositionID = Int16.Parse(dr["PositionID"].ToString());
                     Details.PositionName = "" + dr["PositionName"].ToString();
+                    Details.LastCheckInDate = DateTime.Parse(dr["LastCheckInDate"].ToString());
 
                     Details.isLock = bool.Parse(dr["isLock"].ToString());
                 }

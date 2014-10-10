@@ -451,7 +451,7 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("VAT Zero Rated", ":", (mclsDetails.VATZeroRated * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("NonVATable Amount", ":", (mclsDetails.NonVATableAmount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("VATable Amount", ":", (mclsDetails.VATableAmount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
-            dt.Rows.Add(mclsTerminalDetails.VAT.ToString("##") + "% VAT", ":", (mclsDetails.VATableAmount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add(mclsTerminalDetails.VAT.ToString("##") + "% VAT", ":", (mclsDetails.VAT * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("Local Tax", ":", (mclsDetails.LocalTax * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
 
             dt.Rows.Add("Total Amount Breakdown", "", "");
@@ -469,6 +469,11 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("Employee Acct.", ":", "0.00");
             dt.Rows.Add("Void Sales", ":", (mclsDetails.VoidSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("Refund Sales", ":", (mclsDetails.RefundSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("      Cash", ":", (mclsDetails.RefundCash * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("      Cheque", ":", (mclsDetails.RefundCheque * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("      Credit Card", ":", (mclsDetails.RefundCreditCard * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("      Credit", ":", (mclsDetails.RefundCredit * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("      Debit", ":", (mclsDetails.RefundDebit * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
 
             dt.Rows.Add("Discounts", "", "");
             dt.Rows.Add("Items Discount", ":", (mclsDetails.ItemsDiscount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));

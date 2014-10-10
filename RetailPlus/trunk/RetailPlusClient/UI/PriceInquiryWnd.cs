@@ -39,6 +39,12 @@ namespace AceSoft.RetailPlus.Client.UI
 			set {	mCreditType = value;	}
 		}
 
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
+        {
+            set { mclsTerminalDetails = value; }
+        }
+
 		#region Constructors And Desctructors
 		public PriceInquiryWnd()
 		{
@@ -281,7 +287,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         ClearProduct();
                         Data.Products clsProduct = new Data.Products();
-                        Data.ProductDetails clsProductDetails = clsProduct.Details(Constants.TerminalBranchID, txtBarCode.Text.Trim());
+                        Data.ProductDetails clsProductDetails = clsProduct.Details(mclsTerminalDetails.BranchID, txtBarCode.Text.Trim());
                         if (clsProductDetails.ProductID == 0)
                         {
                             string strContactCardNo = txtBarCode.Text.Trim();

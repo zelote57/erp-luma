@@ -33,10 +33,11 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mstrReleaserName = value; }
             get { return mstrReleaserName; }
         }
-        private string mstTerminalNo;
-        public string TerminalNo
+
+        private Data.TerminalDetails mclsTerminalDetails;
+        public Data.TerminalDetails TerminalDetails
         {
-            set { mstTerminalNo = value; }
+            set { mclsTerminalDetails = value; }
         }
 
         public ItemReleaseWnd()
@@ -219,9 +220,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 LoadOptions();
                 string strTransactionNo = txtScan.Text.Trim().PadLeft(14, '0');
                 Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
-                mclsSalesTransactionDetails = clsTransactions.Details(strTransactionNo, mstTerminalNo, Constants.TerminalBranchID);
+                mclsSalesTransactionDetails = clsTransactions.Details(strTransactionNo, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
 
-                if (mclsSalesTransactionDetails.TransactionNo != string.Empty && mclsSalesTransactionDetails.TransactionNo != null)
+                if (!string.IsNullOrEmpty(mclsSalesTransactionDetails.TransactionNo))
                 {
                     if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Closed)
                     {

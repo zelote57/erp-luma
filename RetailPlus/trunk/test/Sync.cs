@@ -833,6 +833,10 @@ namespace Test
                         WillPrintChargeSlip = bool.Parse(dr["WillPrintChargeSlip"].ToString()),
                         IncludeTermsAndConditions = bool.Parse(dr["IncludeTermsAndConditions"].ToString()),
                         PWDDiscountCode = dr["PWDDiscountCode"].ToString(),
+                        DefaultTransactionChargeCode = dr["DefaultTransactionChargeCode"].ToString(),
+                        DineInChargeCode = dr["DineInChargeCode"].ToString(),
+                        TakeOutChargeCode = dr["TakeOutChargeCode"].ToString(),
+                        DeliveryChargeCode = dr["DeliveryChargeCode"].ToString(),
                         CreatedOn = dteCreatedOn,
                         LastModified = dteLastModified
                     });
@@ -1469,6 +1473,7 @@ namespace Test
                         ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString()),
                         ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString()),
                         SequenceNo = Int32.Parse(dr["SequenceNo"].ToString()),
+                        ImagePath = dr["ImagePath"].ToString(),
                         ProductSubGroupChartOfAccountDetails = new ProductSubGroupChartOfAccountDetails
                         {
                             ChartOfAccountIDTransferIn = Int32.Parse(dr["ChartOfAccountIDTransferIn"].ToString()),
@@ -2343,6 +2348,11 @@ namespace Test
                         CreditPaymentCheque = decimal.Parse(dr["CreditPaymentCheque"].ToString()),
                         CreditPaymentCreditCard = decimal.Parse(dr["CreditPaymentCreditCard"].ToString()),
                         CreditPaymentDebit = decimal.Parse(dr["CreditPaymentDebit"].ToString()),
+                        RefundCash = decimal.Parse(dr["RefundCash"].ToString()),
+                        RefundCheque = decimal.Parse(dr["RefundCheque"].ToString()),
+                        RefundCreditCard = decimal.Parse(dr["RefundCreditCard"].ToString()),
+                        RefundCredit = decimal.Parse(dr["RefundCredit"].ToString()),
+                        RefundDebit = decimal.Parse(dr["RefundDebit"].ToString()),
                         CreatedOn = dteCreatedOn,
                         LastModified = dteLastModified
                     });
@@ -2438,6 +2448,11 @@ namespace Test
                         CreditPaymentCheque = decimal.Parse(dr["CreditPaymentCheque"].ToString()),
                         CreditPaymentCreditCard = decimal.Parse(dr["CreditPaymentCreditCard"].ToString()),
                         CreditPaymentDebit = decimal.Parse(dr["CreditPaymentDebit"].ToString()),
+                        RefundCash = decimal.Parse(dr["RefundCash"].ToString()),
+                        RefundCheque = decimal.Parse(dr["RefundCheque"].ToString()),
+                        RefundCreditCard = decimal.Parse(dr["RefundCreditCard"].ToString()),
+                        RefundCredit = decimal.Parse(dr["RefundCredit"].ToString()),
+                        RefundDebit = decimal.Parse(dr["RefundDebit"].ToString()),
                         CreatedOn = dteCreatedOn,
                         LastModified = dteLastModified
                     });

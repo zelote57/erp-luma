@@ -64,9 +64,13 @@ namespace AceSoft.RetailPlus.Client
             clsAuditDetails.Activity = AccessType.ToString("G");
             clsAuditDetails.Remarks = "FE:" + Remarks;
 
-            Security.AuditTrail clsAuditTrail = new Security.AuditTrail();
+            AceSoft.RetailPlus.Client.AuditDB clsAuditConnection = new AceSoft.RetailPlus.Client.AuditDB();
+            clsAuditConnection.GetConnection();
+
+            Security.AuditTrail clsAuditTrail = new Security.AuditTrail(clsAuditConnection.Connection, clsAuditConnection.Transaction);
             clsAuditTrail.Insert(clsAuditDetails);
-            clsAuditTrail.CommitAndDispose();
+
+            clsAuditConnection.CommitAndDispose();
         }
 	}
 }

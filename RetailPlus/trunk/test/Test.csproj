@@ -165,12 +165,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DB.cs" />
-    <Compile Include="MasterDB.cs" />
     <Compile Include="Sync.cs" />
     <Compile Include="KeyGen.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LocalDB.cs" />
     <Compile Include="SetTime.cs" />
   </ItemGroup>
   <ItemGroup>

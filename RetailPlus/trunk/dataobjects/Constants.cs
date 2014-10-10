@@ -50,8 +50,15 @@ namespace AceSoft.RetailPlus
             get
             {
                 int intRetValue = BRANCH_ID_MAIN;
-                try { intRetValue = int.Parse(System.Configuration.ConfigurationManager.AppSettings["BranchID"]); }
-                catch { }
+
+                if (System.Configuration.ConfigurationManager.AppSettings["BranchID"] != null)
+                {
+                    try { Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings["BranchID"], out intRetValue); }
+                    catch { }
+
+                    if (intRetValue == 0) intRetValue = BRANCH_ID_MAIN;
+                }
+
                 return intRetValue;
             }
         }
@@ -61,8 +68,12 @@ namespace AceSoft.RetailPlus
             get
             {
                 string strRetValue = "";
-                try { strRetValue = System.Configuration.ConfigurationManager.AppSettings["MaskProductSearch"].Replace("*", "%"); }
-                catch { }
+
+                if (System.Configuration.ConfigurationManager.AppSettings["MaskProductSearch"] != null)
+                {
+                    try { strRetValue = System.Configuration.ConfigurationManager.AppSettings["MaskProductSearch"].Replace("*", "%"); }
+                    catch { }
+                }
                 return strRetValue;
             }
         }
@@ -126,7 +137,7 @@ namespace AceSoft.RetailPlus
         public const int C_RESTOPLUS_MAX_PRODUCTS = 20;
         public const int C_RESTOPLUS_MAX_TABLES = 20;
         public const string C_RESTOPLUS = "RestoPlus ™";
-        public const string C_RESTOPLUS_CUSTOMER_ORDERS = "CUSTOMER ORDERS";
+        public const string C_RESTOPLUS_CUSTOMER_ORDERS = "CUSTOMER's ORDER";
 
         public const string C_FE_DEFAULT_DECIMAL_FORMAT = "#,##0.##0";
 

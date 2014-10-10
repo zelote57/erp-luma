@@ -286,78 +286,29 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-		public System.Data.DataTable DataList(string SortField, SortOption SortOrder)
+        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "ChargeTypeCode", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
-            string SQL = SQLSelect() + "WHERE 1=1 ORDER BY " + SortField;
-
-            if (SortOrder == SortOption.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
             MySqlCommand cmd = new MySqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
 
+            string SQL = SQLSelect();
+
+            if (!string.IsNullOrEmpty(SearchKey))
+            {
+                SQL += "WHERE ChargeTypeCode LIKE @ChargeTypeCode ";
+                cmd.Parameters.AddWithValue("@ChargeTypeCode", SearchKey + "%");
+            }
+
+            SQL += "ORDER BY " + SortField + " ";
+            SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+            SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+            cmd.CommandText = SQL;
             string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
 
 			return dt;
 		}
-		
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE 1=1 ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL = SQLSelect() + "WHERE 1=1 " +
-					            "AND (ChargeTypeCode LIKE @SearchKey " + 
-					            "OR ChargeType LIKE @SearchKey) " +
-					            "ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}	
-		}
-		
 
 		#endregion
 	}

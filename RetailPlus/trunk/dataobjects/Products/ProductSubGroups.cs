@@ -35,6 +35,7 @@ namespace AceSoft.RetailPlus.Data
         public int SequenceNo;
 
         public bool isLock;
+        public string ImagePath;
 
         public ProductSubGroupChartOfAccountDetails ProductSubGroupChartOfAccountDetails;
 
@@ -86,6 +87,7 @@ namespace AceSoft.RetailPlus.Data
         public bool ChartOfAccountIDTaxPurchase;
         public bool ChartOfAccountIDTaxSold;
         public bool SequenceNo;
+        public bool ImagePath;
     }
 
     public struct ProductSubGroupColumnNames
@@ -110,6 +112,7 @@ namespace AceSoft.RetailPlus.Data
         public const string ChartOfAccountIDTaxPurchase = "ChartOfAccountIDTaxPurchase";
         public const string ChartOfAccountIDTaxSold = "ChartOfAccountIDTaxSold";
         public const string SequenceNo = "SequenceNo";
+        public const string ImagePath = "ImagePath";
     }
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -145,6 +148,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "INSERT INTO tblProductSubGroup (" +
 								"ProductSubGroupCode, " +
 								"ProductGroupID, " +
@@ -155,7 +161,9 @@ namespace AceSoft.RetailPlus.Data
 								"IncludeInSubtotalDiscount, " +
 								"VAT, " +
 								"EVAT, " +
-								"LocalTax" +
+								"LocalTax, " +
+                                "SequenceNo, " +
+                                "ImagePath " +
 							") VALUES (" +
 								"@ProductSubGroupCode, " +
 								"@ProductGroupID, " +
@@ -166,12 +174,10 @@ namespace AceSoft.RetailPlus.Data
 								"@IncludeInSubtotalDiscount, " +
 								"@VAT, " +
 								"@EVAT, " +
-								"@LocalTax);";
+								"@LocalTax, " +
+                                "@SequenceNo, " +
+                                "@ImagePath);";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
                 cmd.Parameters.AddWithValue("ProductGroupID", Details.ProductGroupID);
                 cmd.Parameters.AddWithValue("ProductSubGroupCode", Details.ProductSubGroupCode);
                 cmd.Parameters.AddWithValue("ProductSubGroupName", Details.ProductSubGroupName);
@@ -182,25 +188,13 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("VAT", Details.VAT);
                 cmd.Parameters.AddWithValue("EVAT", Details.EVAT);
                 cmd.Parameters.AddWithValue("LocalTax", Details.LocalTax);
-                
+                cmd.Parameters.AddWithValue("SequenceNo", Details.SequenceNo);
+                cmd.Parameters.AddWithValue("ImagePath", Details.ImagePath);
+
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
-				SQL = "SELECT LAST_INSERT_ID();";
-				
-				cmd.Parameters.Clear(); 
-				cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
-                
-
-                Int64 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int64.Parse(dr[0].ToString());
-                }
-
-				return iID;
+				return Int64.Parse(base.getLAST_INSERT_ID(this));
 			}
 
 			catch (Exception ex)
@@ -213,72 +207,40 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL = "UPDATE tblProductSubGroup SET " + 
-								"ProductGroupID			= @ProductGroupID, " +
-								"ProductSubGroupCode	= @ProductSubGroupCode, " +  
-								"ProductSubGroupName	= @ProductSubGroupName, " +  
-								"BaseUnitID				= @BaseUnitID, " +  
-								"Price					= @Price, " +
-								"PurchasePrice			= @PurchasePrice, " +
-								"IncludeInSubtotalDiscount	=	@IncludeInSubtotalDiscount, " +
-								"VAT					= @VAT, " +
-								"EVAT					= @EVAT, " +
-								"LocalTax				= @LocalTax " +
-							"WHERE ProductSubGroupID = @ProductSubGroupID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int16);			
-				prmProductGroupID.Value = Details.ProductGroupID;
-				cmd.Parameters.Add(prmProductGroupID);
-				
-				MySqlParameter prmProductSubGroupCode = new MySqlParameter("@ProductSubGroupCode",MySqlDbType.String);			
-				prmProductSubGroupCode.Value = Details.ProductSubGroupCode;
-				cmd.Parameters.Add(prmProductSubGroupCode);
+                string SQL = "UPDATE tblProductSubGroup SET " +
+                                "ProductGroupID			= @ProductGroupID, " +
+                                "ProductSubGroupCode	= @ProductSubGroupCode, " +
+                                "ProductSubGroupName	= @ProductSubGroupName, " +
+                                "BaseUnitID				= @BaseUnitID, " +
+                                "Price					= @Price, " +
+                                "PurchasePrice			= @PurchasePrice, " +
+                                "IncludeInSubtotalDiscount	=	@IncludeInSubtotalDiscount, " +
+                                "VAT					= @VAT, " +
+                                "EVAT					= @EVAT, " +
+                                "LocalTax				= @LocalTax, " +
+                                "SequenceNo				= @SequenceNo, " +
+                                "ImagePath				= @ImagePath " +
+                            "WHERE ProductSubGroupID    = @ProductSubGroupID;";
 
-				MySqlParameter prmProductSubGroupName = new MySqlParameter("@ProductSubGroupName",MySqlDbType.String);			
-				prmProductSubGroupName.Value = Details.ProductSubGroupName;
-				cmd.Parameters.Add(prmProductSubGroupName);
+                cmd.Parameters.AddWithValue("ProductGroupID", Details.ProductGroupID);
+                cmd.Parameters.AddWithValue("ProductSubGroupCode", Details.ProductSubGroupCode);
+                cmd.Parameters.AddWithValue("ProductSubGroupName", Details.ProductSubGroupName);
+                cmd.Parameters.AddWithValue("BaseUnitID", Details.BaseUnitID);
+                cmd.Parameters.AddWithValue("Price", Details.Price);
+                cmd.Parameters.AddWithValue("PurchasePrice", Details.PurchasePrice);
+                cmd.Parameters.AddWithValue("IncludeInSubtotalDiscount", Details.IncludeInSubtotalDiscount);
+                cmd.Parameters.AddWithValue("VAT", Details.VAT);
+                cmd.Parameters.AddWithValue("EVAT", Details.EVAT);
+                cmd.Parameters.AddWithValue("LocalTax", Details.LocalTax);
+                cmd.Parameters.AddWithValue("SequenceNo", Details.SequenceNo); 
+                cmd.Parameters.AddWithValue("ImagePath", Details.ImagePath);
+                cmd.Parameters.AddWithValue("ProductSubGroupID", Details.ProductSubGroupID);
 
-				MySqlParameter prmBaseUnitID = new MySqlParameter("@BaseUnitID",MySqlDbType.Int16);			
-				prmBaseUnitID.Value = Details.BaseUnitID;
-				cmd.Parameters.Add(prmBaseUnitID);
-
-				MySqlParameter prmPrice = new MySqlParameter("@Price",MySqlDbType.Decimal);			
-				prmPrice.Value = Details.Price;
-				cmd.Parameters.Add(prmPrice);
-
-				MySqlParameter prmPurchasePrice = new MySqlParameter("@PurchasePrice",MySqlDbType.Decimal);			
-				prmPurchasePrice.Value = Details.PurchasePrice;
-				cmd.Parameters.Add(prmPurchasePrice);
-
-				MySqlParameter prmIncludeInSubtotalDiscount = new MySqlParameter("@IncludeInSubtotalDiscount",MySqlDbType.Int16);			
-				prmIncludeInSubtotalDiscount.Value = Details.IncludeInSubtotalDiscount;
-				cmd.Parameters.Add(prmIncludeInSubtotalDiscount);
-
-				MySqlParameter prmVAT = new MySqlParameter("@VAT",MySqlDbType.Decimal);			
-				prmVAT.Value = Details.VAT;
-				cmd.Parameters.Add(prmVAT);
-
-				MySqlParameter prmEVAT = new MySqlParameter("@EVAT",MySqlDbType.Decimal);			
-				prmEVAT.Value = Details.EVAT;
-				cmd.Parameters.Add(prmEVAT);
-
-				MySqlParameter prmLocalTax = new MySqlParameter("@LocalTax",MySqlDbType.Decimal);			
-				prmLocalTax.Value = Details.LocalTax;
-				cmd.Parameters.Add(prmLocalTax);
-
-				MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int16);			
-				prmProductSubGroupID.Value = Details.ProductSubGroupID;
-				cmd.Parameters.Add(prmProductSubGroupID);
-
-				base.ExecuteNonQuery(cmd);
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
 			}
 
 			catch (Exception ex)
@@ -470,7 +432,7 @@ namespace AceSoft.RetailPlus.Data
                                         "@Price, @PurchasePrice, @IncludeInSubtotalDiscount, @VAT, @EVAT," +
                                         "@LocalTax, @ChartOfAccountIDPurchase, @ChartOfAccountIDTaxPurchase," +
                                         "@ChartOfAccountIDSold, @ChartOfAccountIDTaxSold, @ChartOfAccountIDInventory," +
-                                        "@SequenceNo, @ChartOfAccountIDTransferIn, @ChartOfAccountIDTaxTransferIn," +
+                                        "@SequenceNo, @ImagePath, @ChartOfAccountIDTransferIn, @ChartOfAccountIDTaxTransferIn," +
                                         "@ChartOfAccountIDTransferOut, @ChartOfAccountIDTaxTransferOut," +
                                         "@ChartOfAccountIDInvAdjustment, @ChartOfAccountIDTaxInvAdjustment," +
                                         "@CreatedOn, @LastModified);";
@@ -496,6 +458,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("ChartOfAccountIDTaxSold", Details.ChartOfAccountIDTaxSold);
                 cmd.Parameters.AddWithValue("ChartOfAccountIDInventory", Details.ChartOfAccountIDInventory);
                 cmd.Parameters.AddWithValue("SequenceNo", Details.SequenceNo);
+                cmd.Parameters.AddWithValue("ImagePath", Details.ImagePath);
                 cmd.Parameters.AddWithValue("ChartOfAccountIDTransferIn", Details.ProductSubGroupChartOfAccountDetails.ChartOfAccountIDTransferIn);
                 cmd.Parameters.AddWithValue("ChartOfAccountIDTaxTransferIn", Details.ProductSubGroupChartOfAccountDetails.ChartOfAccountIDTaxTransferIn);
                 cmd.Parameters.AddWithValue("ChartOfAccountIDTransferOut", Details.ProductSubGroupChartOfAccountDetails.ChartOfAccountIDTransferOut);
@@ -609,7 +572,9 @@ namespace AceSoft.RetailPlus.Data
                                 "a.ChartOfAccountIDSold, " +
                                 "a.ChartOfAccountIDInventory, " +
                                 "a.ChartOfAccountIDTaxPurchase, " +
-                                "a.ChartOfAccountIDTaxSold " +
+                                "a.ChartOfAccountIDTaxSold, " +
+                                "a.SequenceNo, " +
+                                "a.ImagePath " +
 							"FROM tblProductSubGroup a " +
 							"INNER JOIN tblProductGroup b ON a.ProductGroupID = b.ProductGroupID " +
 							"INNER JOIN tblUnit c ON a.BaseUnitID = c.UnitID ";
@@ -640,6 +605,7 @@ namespace AceSoft.RetailPlus.Data
             if (clsProductSubGroupColumns.ChartOfAccountIDTaxPurchase) stSQL += "tblProductSubGroup.ChartOfAccountIDTaxPurchase, ";
             if (clsProductSubGroupColumns.ChartOfAccountIDTaxSold) stSQL += "tblProductSubGroup.ChartOfAccountIDTaxSold, ";
             if (clsProductSubGroupColumns.SequenceNo) stSQL += "tblProductSubGroup.SequenceNo, ";
+            if (clsProductSubGroupColumns.SequenceNo) stSQL += "tblProductSubGroup.ImagePath, ";
 
             stSQL += "tblProductSubGroup.ProductSubGroupID ";
             stSQL += "FROM tblProductSubGroup ";
@@ -659,63 +625,23 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = SQLSelect() + "WHERE ProductSubGroupID = @ProductSubGroupID;";
 
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
 
-				MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int16);
-				prmProductSubGroupID.Value = ProductSubGroupID;
-				cmd.Parameters.Add(prmProductSubGroupID);
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblProductSubGroup");
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-                
-				
-				ProductSubGroupDetails Details = new ProductSubGroupDetails();
 
-				foreach(System.Data.DataRow dr in dt.Rows)
-				{
-					Details.ProductSubGroupID = Int64.Parse(dr["ProductSubGroupID"].ToString());
-					Details.ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString());
-					Details.ProductSubGroupCode = "" + dr["ProductSubGroupCode"].ToString();
-					Details.ProductSubGroupName = "" + dr["ProductSubGroupName"].ToString();
-					Details.BaseUnitID = Int32.Parse(dr["BaseUnitID"].ToString());
-					Details.BaseUnitName = "" + dr["BaseUnitName"].ToString();
-					Details.Price = decimal.Parse(dr["Price"].ToString());
-					Details.PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
-					Details.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
-					Details.VAT = decimal.Parse(dr["VAT"].ToString());
-					Details.EVAT = decimal.Parse(dr["EVAT"].ToString());
-					Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
-                    /*** Added for Financial Information  ***/
-                    /*** March 07, 2009 ***/
-                    Details.ChartOfAccountIDPurchase = Int32.Parse(dr["ChartOfAccountIDPurchase"].ToString());
-                    Details.ChartOfAccountIDSold = Int32.Parse(dr["ChartOfAccountIDSold"].ToString());
-                    Details.ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString());
-                    Details.ChartOfAccountIDTaxPurchase = Int32.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
-                    Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
-				}
+                ProductSubGroupDetails Details = setDetails(dt);
 
 				return Details;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -724,25 +650,32 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL = SQLSelect() + "WHERE ProductSubGroupCode = @ProductSubGroupCode;";
 
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.Parameters.AddWithValue("@ProductSubGroupCode", ProductSubGroupCode);
 
-				MySqlParameter prmProductSubGroupCode = new MySqlParameter("@ProductSubGroupCode",MySqlDbType.String);
-				prmProductSubGroupCode.Value = ProductSubGroupCode;
-				cmd.Parameters.Add(prmProductSubGroupCode);
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblProductSubGroup");
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
                 
-				
-				ProductSubGroupDetails Details = new ProductSubGroupDetails();
+				ProductSubGroupDetails Details = setDetails(dt);
+
+				return Details;
+			}
+			catch (Exception ex)
+			{
+				throw base.ThrowException(ex);
+			}	
+		}
+
+        private ProductSubGroupDetails setDetails(System.Data.DataTable dt)
+        {
+            try
+            {
+                ProductSubGroupDetails Details = new ProductSubGroupDetails();
 
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
@@ -765,37 +698,31 @@ namespace AceSoft.RetailPlus.Data
                     Details.ChartOfAccountIDInventory = Int32.Parse(dr["ChartOfAccountIDInventory"].ToString());
                     Details.ChartOfAccountIDTaxPurchase = Int32.Parse(dr["ChartOfAccountIDTaxPurchase"].ToString());
                     Details.ChartOfAccountIDTaxSold = Int32.Parse(dr["ChartOfAccountIDTaxSold"].ToString());
+
+                    // Added Sep 24, 2013 for retoplus
+                    Details.SequenceNo = Int32.Parse(dr["SequenceNo"].ToString());
+                    Details.ImagePath = "" + dr["ImagePath"].ToString();
                 }
 
-				return Details;
-			}
-
-			catch (Exception ex)
-			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
-				throw base.ThrowException(ex);
-			}	
-		}
-
+                return Details;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
 		#endregion
 
 		#region Streams
 
 
-        public System.Data.DataTable ListAsDataTable(ProductSubGroupColumns clsProductSubGroupColumns, ProductSubGroupDetails clsSearchKeys, long SequenceNoStart=0, System.Data.SqlClient.SortOrder SequenceSortOrder = System.Data.SqlClient.SortOrder.Ascending, int Limit = 100, string SortField = ProductSubGroupColumnNames.ProductSubGroupName, System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        public System.Data.DataTable ListAsDataTable(ProductSubGroupColumns clsProductSubGroupColumns, ProductSubGroupDetails clsSearchKeys, long SequenceNoStart=0, System.Data.SqlClient.SortOrder SequenceSortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 100, string SortField = "SequenceNo, ProductSubGroupName", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL = SQLSelect(clsProductSubGroupColumns) + "WHERE 1=1 ";
 
@@ -810,73 +737,46 @@ namespace AceSoft.RetailPlus.Data
                 if (clsSearchKeys.ProductGroupID != 0)
                 {
                     SQL += "AND tblProductSubGroup.ProductGroupID = @ProductGroupID ";
-                    MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);
-                    prmProductGroupID.Value = clsSearchKeys.ProductGroupID;
-                    cmd.Parameters.Add(prmProductGroupID);
+                    cmd.Parameters.AddWithValue("@ProductGroupID", clsSearchKeys.ProductGroupID);
                 }
                 if (clsSearchKeys.ProductSubGroupID != 0)
                 {
                     SQL += "AND tblProductSubGroup.ProductSubGroupID = @ProductSubGroupID ";
-                    MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);
-                    prmProductSubGroupID.Value = clsSearchKeys.ProductSubGroupID;
-                    cmd.Parameters.Add(prmProductSubGroupID);
+                    cmd.Parameters.AddWithValue("@ProductSubGroupID", clsSearchKeys.ProductSubGroupID);
                 }
                 if (clsSearchKeys.ProductSubGroupCode != string.Empty && clsSearchKeys.ProductSubGroupCode != null)
                 {
                     SQL += "AND tblProductSubGroup.ProductSubGroupCode LIKE @ProductSubGroupCode ";
-                    MySqlParameter prmProductSubGroupCode = new MySqlParameter("@ProductSubGroupCode",MySqlDbType.String);
-                    prmProductSubGroupCode.Value = clsSearchKeys.ProductSubGroupCode + "%";
-                    cmd.Parameters.Add(prmProductSubGroupCode);
+                    cmd.Parameters.AddWithValue("@ProductSubGroupCode", clsSearchKeys.ProductSubGroupCode + "%");
                 }
                 if (clsSearchKeys.ProductSubGroupName != string.Empty && clsSearchKeys.ProductSubGroupName != null)
                 {
                     SQL += "AND tblProductSubGroup.ProductSubGroupName LIKE @ProductSubGroupName ";
-                    MySqlParameter prmProductSubGroupName = new MySqlParameter("@ProductSubGroupName",MySqlDbType.String);
-                    prmProductSubGroupName.Value = clsSearchKeys.ProductSubGroupName + "%";
-                    cmd.Parameters.Add(prmProductSubGroupName);
+                    cmd.Parameters.AddWithValue("@ProductSubGroupName", clsSearchKeys.ProductSubGroupName + "%");
                 }
 
-                if (SortField != string.Empty && SortField != null)
-                {
-                    SQL += "ORDER BY " + SortField + " ";
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : " LIMIT " + limit.ToString();
 
-                    if (SortOrder != System.Data.SqlClient.SortOrder.Descending) SQL += "ASC ";
-                    else SQL += "DESC ";
-                }
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
-                
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblProductSubGroups");
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
-        public System.Data.DataTable ListAsDataTable(ProductSubGroupColumns clsProductSubGroupColumns, ProductSubGroupColumns SearchColumns, string SearchKey, long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, int Limit, string SortField, System.Data.SqlClient.SortOrder SortOrder)
+        public System.Data.DataTable ListAsDataTable(ProductSubGroupColumns clsProductSubGroupColumns, ProductSubGroupColumns SearchColumns, string SearchKey, long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, Int32 limit, string SortField = "SequenceNo", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                
                 string SQL = SQLSelect(clsProductSubGroupColumns) + "WHERE 1=1 ";
                 
                 if (SequenceNoStart != 0)
@@ -893,469 +793,22 @@ namespace AceSoft.RetailPlus.Data
                 if (SearchColumns.ProductSubGroupID)
                     SQL += "AND tblProductSubGroup.ProductSubGroupID = " + SearchKey + " ";
 
-                if (SortField != string.Empty && SortField != null)
-                {
-                    SQL += "ORDER BY " + SortField + " ";
+                SQL += "ORDER BY " + SortField + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : " LIMIT " + limit.ToString();
 
-                    if (SortOrder != System.Data.SqlClient.SortOrder.Descending) SQL += "ASC ";
-                    else SQL += "DESC ";
-                }
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
-                
-
-                MySqlCommand cmd = new MySqlCommand();
-                
-                
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-
-                System.Data.DataTable dt = new System.Data.DataTable("tblProductSubGroups");
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
-                
 
                 return dt;
             }
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }
-        //public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = SQLSelect() + "WHERE 1=1 ORDER BY " + SortField;
-
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        System.Data.DataTable dt = new System.Data.DataTable("tblProductSubGroups");
-        //        base.MySqlDataAdapterFill(cmd, dt);
-        //        
-
-        //        return dt;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
-        //public System.Data.DataTable ListAsDataTable(long ProductGroupID, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = SQLSelect() + "WHERE 1=1 AND a.ProductGroupID = @ProductGroupID ORDER BY " + SortField;
-
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
-
-        //        System.Data.DataTable dt = new System.Data.DataTable("tblProductSubGroups");
-        //        base.MySqlDataAdapterFill(cmd, dt);
-        //        
-
-        //        return dt;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
-        //public System.Data.DataTable ListByNameAsDataTable(string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = "SELECT DISTINCT " +
-        //                        "ProductSubGroupName " +
-        //                    "FROM tblProductSubGroup " +
-        //                    "ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        System.Data.DataTable dt = new System.Data.DataTable("tblProductSubGroups");
-        //        base.MySqlDataAdapterFill(cmd, dt);
-        //        
-
-        //        return dt;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
-        //public System.Data.DataTable ListByNameAsDataTable(string GroupName, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = "SELECT DISTINCT " +
-        //                        "ProductSubGroupName " +
-        //                    "FROM tblProductSubGroup a INNER JOIN tblProductGroup b ON a.ProductGroupID = b.ProductGroupID " +
-        //                    "WHERE ProductGroupName LIKE @GroupName ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        cmd.Parameters.AddWithValue("@GroupName", "%" + GroupName + "%");
-
-        //        System.Data.DataTable dt = new System.Data.DataTable("tblProductSubGroups");
-        //        base.MySqlDataAdapterFill(cmd, dt);
-        //        
-
-        //        return dt;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
-        //public System.Data.DataTable SearchDataTable(long ProductGroupID, string SearchKey, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = SQLSelect() + "WHERE 1=1 " +
-        //                                        "AND (ProductSubGroupName LIKE @SearchKey" +
-        //                                        "OR ProductSubGroupCode LIKE @SearchKey) ";
-
-        //        if (ProductGroupID != Constants.ZERO)
-        //            SQL += "AND a.ProductGroupID = " + ProductGroupID + " ";
-
-        //        SQL += "ORDER BY " + SortField;
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC ";
-        //        else
-        //            SQL += " DESC ";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-        //        cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
-
-        //        System.Data.DataTable dt = new System.Data.DataTable("tblProductSubGroups");
-        //        base.MySqlDataAdapterFill(cmd, dt);
-        //        
-
-        //        return dt;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
-
-        //public MySqlDataReader List(string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = "SELECT " +
-        //                        "ProductSubGroupID, " +
-        //                        "a.ProductGroupID, " +
-        //                        "b.ProductGroupCode, " +
-        //                        "ProductSubGroupCode, " +
-        //                        "ProductSubGroupName, " +
-        //                        "a.BaseUnitID, " +
-        //                        "UnitName 'BaseUnitName', " +
-        //                        "a.Price, " +
-        //                        "a.PurchasePrice, " +
-        //                        "a.IncludeInSubtotalDiscount, " +
-        //                        "a.VAT, " +
-        //                        "a.EVAT, " +
-        //                        "a.LocalTax " +
-        //                    "FROM tblProductSubGroup a INNER JOIN " +
-        //                    "tblProductGroup b ON a.ProductGroupID = b.ProductGroupID INNER JOIN " +
-        //                    "tblUnit c ON a.BaseUnitID = c.UnitID " +
-        //                    "WHERE 1=1 ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        
-
-        //        return base.ExecuteReader(cmd);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
-        //public MySqlDataReader List(Int64 GroupID, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = "SELECT " +
-        //                        "ProductSubGroupID, " +
-        //                        "a.ProductGroupID, " +
-        //                        "b.ProductGroupCode, " +
-        //                        "ProductSubGroupCode, " +
-        //                        "ProductSubGroupName, " +
-        //                        "a.BaseUnitID, " +
-        //                        "UnitName 'BaseUnitName', " +
-        //                        "a.Price, " +
-        //                        "a.PurchasePrice, " +
-        //                        "a.IncludeInSubtotalDiscount, " +
-        //                        "a.VAT, " +
-        //                        "a.EVAT, " +
-        //                        "a.LocalTax " +
-        //                    "FROM tblProductSubGroup a INNER JOIN " +
-        //                    "tblProductGroup b ON a.ProductGroupID = b.ProductGroupID INNER JOIN " +
-        //                    "tblUnit c ON a.BaseUnitID = c.UnitID " +
-        //                    "WHERE 1=1 AND a.ProductGroupID = " + GroupID + " ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-
-        //        
-
-        //        return base.ExecuteReader(cmd);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
-        //public MySqlDataReader ListByName(string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = "SELECT DISTINCT " +
-        //                        "ProductSubGroupName " +
-        //                    "FROM tblProductSubGroup " +
-        //                    "WHERE 1=1 ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        
-				
-        //        return base.ExecuteReader(cmd);			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}
-        //public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-        //{
-        //    try
-        //    {
-        //        string SQL = "SELECT " +
-        //                        "ProductSubGroupID, " +
-        //                        "a.ProductGroupID, " +
-        //                        "b.ProductGroupCode, " +
-        //                        "a.ProductSubGroupCode, " +
-        //                        "a.ProductSubGroupName, " +
-        //                        "a.BaseUnitID, " +
-        //                        "c.UnitName 'BaseUnitName', " +
-        //                        "a.Price, " +
-        //                        "a.PurchasePrice, " +
-        //                        "a.IncludeInSubtotalDiscount, " +
-        //                        "a.VAT, " +
-        //                        "a.EVAT, " +
-        //                        "a.LocalTax " +
-        //                    "FROM tblProductSubGroup a INNER JOIN " +
-        //                    "tblProductGroup b ON a.ProductGroupID = b.ProductGroupID INNER JOIN " +
-        //                    "tblUnit c ON a.BaseUnitID = c.UnitID " +
-        //                    "WHERE ProductSubGroupName LIKE @SearchKey" +
-        //                    "OR ProductSubGroupCode LIKE @SearchKey " +
-        //                    "ORDER BY " + SortField;
-
-        //        if (SortOrder == SortOption.Ascending)
-        //            SQL += " ASC";
-        //        else
-        //            SQL += " DESC";
-
-        //        
-
-        //        MySqlCommand cmd = new MySqlCommand();
-        //        
-        //        
-        //        cmd.CommandType = System.Data.CommandType.Text;
-        //        cmd.CommandText = SQL;
-				
-        //        MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-        //        prmSearchKey.Value = "%" + SearchKey + "%";
-        //        cmd.Parameters.Add(prmSearchKey);
-
-        //        
-				
-        //        return base.ExecuteReader(cmd);			
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        
-        //        
-        //        {
-        //            
-        //            
-        //            
-        //            
-        //        }
-
-        //        throw base.ThrowException(ex);
-        //    }	
-        //}				
-
-        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "ProductSubGroupCode", SortOption SortOrder = SortOption.Ascending, Int32 Limit = 0)
+        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "ProductSubGroupCode", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
         {
             try
             {
@@ -1372,7 +825,7 @@ namespace AceSoft.RetailPlus.Data
 
                 SQL += "ORDER BY " + SortField + " ";
                 SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
-                SQL += Limit == 0 ? "" : " LIMIT " + Limit.ToString();
+                SQL += limit == 0 ? "" : " LIMIT " + limit.ToString();
 
                 cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);

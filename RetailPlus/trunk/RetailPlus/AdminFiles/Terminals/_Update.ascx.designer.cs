@@ -418,6 +418,42 @@ namespace AceSoft.RetailPlus.Security._Terminals {
         protected global::System.Web.UI.WebControls.CheckBox chkShowCustomerSelection;
         
         /// <summary>
+        /// cboDefaultTransactionChargeCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboDefaultTransactionChargeCode;
+        
+        /// <summary>
+        /// cboDineInChargeCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboDineInChargeCode;
+        
+        /// <summary>
+        /// cboTakeOutChargeCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboTakeOutChargeCode;
+        
+        /// <summary>
+        /// cboDeliveryChargeCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboDeliveryChargeCode;
+        
+        /// <summary>
         /// chkCheckCutOffTime control.
         /// </summary>
         /// <remarks>

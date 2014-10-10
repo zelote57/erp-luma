@@ -58,28 +58,40 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 		private void imgSave_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
-			SaveRecord();
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);
-			Response.Redirect("Default.aspx" + stParam);	
+            if (VerifyRecord())
+            {
+                SaveRecord();
+                string stParam = "?task=" + Common.Encrypt("add", Session.SessionID);
+                Response.Redirect("Default.aspx" + stParam);
+            }
 		}
 
 		protected void cmdSave_Click(object sender, System.EventArgs e)
 		{
-			SaveRecord();
-			string stParam = "?task=" + Common.Encrypt("add",Session.SessionID);
-			Response.Redirect("Default.aspx" + stParam);			
+            if (VerifyRecord())
+            {
+                SaveRecord();
+                string stParam = "?task=" + Common.Encrypt("add", Session.SessionID);
+                Response.Redirect("Default.aspx" + stParam);
+            }
 		}
 
 		private void imgSaveBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
 		{
-			SaveRecord();
-			Response.Redirect(lblReferrer.Text);
+            if (VerifyRecord())
+            {
+                SaveRecord();
+                Response.Redirect(lblReferrer.Text);
+            }
 		}
 
 		protected void cmdSaveBack_Click(object sender, System.EventArgs e)
 		{
-			SaveRecord();
-			Response.Redirect(lblReferrer.Text);
+            if (VerifyRecord())
+            {
+                SaveRecord();
+                Response.Redirect(lblReferrer.Text);
+            }
 		}
 
 		private void imgCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -108,23 +120,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             cboProductSubGroup.DataBind();
             cboProductSubGroup.SelectedIndex = cboProductSubGroup.Items.Count - 1;
             clsProductSubGroup.CommitAndDispose();
-
-            // do not load the default to override
-            //cboProductSubGroup_SelectedIndexChanged(sender, e);
 		}
-
-        //protected void cboProductSubGroup_SelectedIndexChanged(object sender, System.EventArgs e)
-        //{
-        //    //if (cboProductSubGroup.Items.Count != 0)
-        //    //{
-        //    //    ProductSubGroup clsProductSubGroup = new ProductSubGroup();
-        //    //    ProductSubGroupDetails clsProductSubGroupDetails = clsProductSubGroup.Details(Convert.ToInt32(cboProductSubGroup.SelectedItem.Value));
-        //    //    cboProductUnit.SelectedIndex = cboProductUnit.Items.IndexOf( cboProductUnit.Items.FindByValue(clsProductSubGroupDetails.BaseUnitID.ToString()));
-        //    //    txtProductPrice.Text = clsProductSubGroupDetails.Price.ToString("#,##0.#0");
-        //    //    clsProductSubGroup.CommitAndDispose();	
-        //    //}
-        //}
-
 		
 		#endregion
 
@@ -151,7 +147,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             ProductSubGroup clsProductSubGroup = new ProductSubGroup(clsProductGroup.Connection, clsProductGroup.Transaction);
             cboProductSubGroup.DataTextField = "ProductSubGroupName";
             cboProductSubGroup.DataValueField = "ProductSubGroupID";
-            cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchColumns, cboProductGroup.SelectedItem.Value, 0, System.Data.SqlClient.SortOrder.Ascending, 0, string.Empty, System.Data.SqlClient.SortOrder.Ascending).DefaultView;
+            cboProductSubGroup.DataSource = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchColumns, cboProductGroup.SelectedItem.Value, 0, System.Data.SqlClient.SortOrder.Ascending, 0, "ProductSubGroupName", System.Data.SqlClient.SortOrder.Ascending).DefaultView;
             cboProductSubGroup.DataBind();
             cboProductSubGroup.SelectedIndex = cboProductSubGroup.Items.Count - 1;
             clsProductSubGroup.CommitAndDispose();
@@ -242,7 +238,21 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
             cboProductUnit.Enabled = clsDetails.Quantity != 0 ? false : true;
 		}
+        private bool VerifyRecord()
+        {
+            bool boRetValue = true;
 
+            if (Convert.ToInt64(lblProductID.Text) == 1)
+            {
+                boRetValue = false;
+                string stScript = "<Script>";
+                stScript += "window.alert('Sorry you cannot edit this product. This is recerved for " + Data.Products.DEFAULT_CREDIT_PAYMENT_BARCODE + "')";
+                stScript += "</Script>";
+                Response.Write(stScript);
+            }
+
+            return boRetValue;
+        }
 		private void SaveRecord()
 		{
 			ProductDetails clsDetails = new ProductDetails();
@@ -255,7 +265,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			clsDetails.ProductDesc = txtProductDesc.Text;
 			clsDetails.ProductGroupID = Convert.ToInt64(cboProductGroup.SelectedItem.Value); 
 			clsDetails.ProductSubGroupID  = Convert.ToInt64(cboProductSubGroup.SelectedItem.Value);
-			clsDetails.ProductDesc  = txtProductDesc.Text;
 			clsDetails.BaseUnitID  = Convert.ToInt32(cboProductUnit.SelectedItem.Value); 
 			clsDetails.Price = Convert.ToDecimal(txtProductPrice.Text);
             clsDetails.WSPrice = Convert.ToDecimal(txtWSPrice.Text);

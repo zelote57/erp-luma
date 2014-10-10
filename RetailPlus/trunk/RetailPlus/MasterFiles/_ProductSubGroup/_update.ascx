@@ -75,12 +75,12 @@
                                         <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px"></td>
                                     </tr>
                                     <tr>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols" colspan=5>
                                             <asp:dropdownlist id="cboGroup" CssClass="ms-long" runat="server" AutoPostBack="True" onselectedindexchanged="cboGroup_SelectedIndexChanged"></asp:dropdownlist>
 									        <asp:RequiredFieldValidator id="RequiredFieldValidator5" runat="server" CssClass="ms-error" ErrorMessage="'Group' must not be left blank." Display="Dynamic" ControlToValidate="cboGroup" ForeColor=" "></asp:RequiredFieldValidator>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                         </td>
                                     </tr>
@@ -95,17 +95,17 @@
                                             </td>
                                     </tr>
                                     <tr>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:textbox id="txtProductSubGroupCode" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="20"></asp:textbox>
                                             <asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Product sub group code' must not be left blank." Display="Dynamic" ControlToValidate="txtProductSubGroupCode" ForeColor=" "></asp:requiredfieldvalidator>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols" >
                                             <asp:TextBox id="txtProductSubGroupName" runat="server" accesskey="N" CssClass="ms-short" MaxLength="50" BorderStyle="Groove"></asp:TextBox>
 									        <asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Product sub group name' must not be left blank." Display="Dynamic" ControlToValidate="txtProductSubGroupName" ForeColor=" "></asp:requiredfieldvalidator>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:dropdownlist id="cboProductSubGroupUnit" runat="server" CssClass="ms-short" Width="80px"></asp:dropdownlist>
                                             <asp:imagebutton id="imgAdd" ToolTip="Add New Unit" accessKey="N" tabIndex="1" height="16" width="16" border="0" alt="Add New Unit" ImageUrl="../../_layouts/images/newuser.gif" runat="server" CssClass="ms-toolbar" CausesValidation="False" OnClick="imgAdd_Click"></asp:imagebutton>
@@ -127,7 +127,7 @@
                                             </td>
                                     </tr>
                                     <tr>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:textbox id="txtPurchasePrice" accessKey="P" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>
 									        <asp:RequiredFieldValidator id="Requiredfieldvalidator3" CssClass="ms-error" runat="server" ControlToValidate="txtPurchasePrice" Display="Dynamic" ErrorMessage="'Product Purchase Price' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
@@ -135,7 +135,7 @@
                                                         CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Purchase Price' must be in number, max of 3 decimal places."
                                                         ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:textbox id="txtProductPrice" accessKey="P" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>
 									        <asp:RequiredFieldValidator id="Requiredfieldvalidator7" CssClass="ms-error" runat="server" ControlToValidate="txtProductPrice" Display="Dynamic" ErrorMessage="'Product Selling Price' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
@@ -143,11 +143,11 @@
                                                         CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Selling Price' must be in number, max of 3 decimal places."
                                                         ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:CheckBox id="chkIncludeInSubtotalDiscount" runat="server" Text=" Check if included in subtotal discount." Checked="True"></asp:CheckBox>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                     
                                         </td>
@@ -167,7 +167,7 @@
                                             <label>Printer for printing orders of this group<font color="red">*</font></label></td>
                                     </tr>
                                     <tr>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:textbox id="txtVAT" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>&nbsp;%
 									        <asp:RequiredFieldValidator id="Requiredfieldvalidator12" runat="server" CssClass="ms-error" ErrorMessage="'Value Added Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtVAT" ForeColor=" "></asp:RequiredFieldValidator>
@@ -175,15 +175,15 @@
                                                         CssClass="ms-error" Display="Dynamic" ErrorMessage="'VAT' must be in number, max of 3 decimal places."
                                                         ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
-                                            <asp:textbox id="txtEVAT" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>&nbsp;%
+                                            <asp:textbox id="txtEVAT" accessKey="D" runat="server" CssClass="ms-short-numeric" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>&nbsp;%
 									        <asp:RequiredFieldValidator id="Requiredfieldvalidator6" runat="server" CssClass="ms-error" ErrorMessage="'Expanded Value Added Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtEVAT" ForeColor=" "></asp:RequiredFieldValidator>
 									        <asp:RegularExpressionValidator ID="RegularExpressionValidator8" runat="server" ControlToValidate="txtEVAT"
                                                         CssClass="ms-error" Display="Dynamic" ErrorMessage="'EVAT' must be in number, max of 3 decimal places."
                                                         ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:textbox id="txtLocalTax" accessKey="D" runat="server" CssClass="ms-short" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>&nbsp;%
 									        <asp:RequiredFieldValidator id="Requiredfieldvalidator13" runat="server" CssClass="ms-error" ErrorMessage="'Local Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtLocalTax" ForeColor=" "></asp:RequiredFieldValidator>
@@ -191,7 +191,7 @@
                                                         CssClass="ms-error" Display="Dynamic" ErrorMessage="'Local Tax' must be in number, max of 3 decimal places."
                                                         ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:dropdownlist id="cboOrderSlipPrinter" runat="server" CssClass="ms-long" Width="157px"></asp:dropdownlist>
                                         </td>
@@ -200,17 +200,46 @@
                                         <td class="ms-formspacer" height="20"></td>
                                     </tr>
                                     <tr>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:CheckBox id="chkVariations" runat="server" Text="Check this box if you like to inherit the variations from selected group."></asp:CheckBox>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:CheckBox id="chkVariationsMatrix" runat="server" Text="Check this box if you like to inherit the variations and price matrix from selected group."></asp:CheckBox>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols" colspan="3">
                                             <asp:CheckBox id="chkUnitMatrix" runat="server" Text="Check this box if you like to inherit the unit matrix from selected group."></asp:CheckBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ms-formspacer" height="20"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                            <label>Select Image for RestoPlus<font color="red">*</font></label></td>
+                                        <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                            <label>Enter Sequence No<font color="red">*</font></label></td>
+                                        <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px"></td>
+                                        <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-authoringcontrols">
+                                            <asp:Label id="Label1" runat="server">Current file: </asp:Label><asp:Label id="lblImagePath" runat="server"></asp:Label>
+                                            <input type="file" id="txtImagePath" name="txtImagePath" accept=".jpg,.gif" runat="server" borderstyle="Groove" multiple="false" />
+                                        </td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-authoringcontrols">
+                                            <asp:textbox id="txtSequenceNo" accessKey="D" runat="server" CssClass="ms-short-numeric" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>
+									        <asp:RequiredFieldValidator id="Requiredfieldvalidator8" runat="server" CssClass="ms-error" ErrorMessage="'Expanded Value Added Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtSequenceNo" ForeColor=" "></asp:RequiredFieldValidator>
+									        <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="txtSequenceNo"
+                                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'EVAT' must be in number, max of 3 decimal places."
+                                                        ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                        </td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-authoringcontrols" colspan="3">
                                         </td>
                                     </tr>
                                     <tr>

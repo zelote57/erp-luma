@@ -65,6 +65,11 @@ namespace AceSoft.RetailPlus.Data
 								"ChequeSales, " +
 								"CreditCardSales, " +
 								"CreditSales, " +
+                                "RefundCash, " +
+                                "RefundCheque, " +
+                                "RefundCreditCard, " +
+                                "RefundCredit, " +
+                                "RefundDebit, " +
 								"CreditPayment, " +
                                 "CreditPaymentCash, " +
                                 "CreditPaymentCheque, " +
@@ -154,7 +159,9 @@ namespace AceSoft.RetailPlus.Data
                                         "@NoOfDiscountedTransactions, @NegativeAdjustments, @NoOfNegativeAdjustmentTransactions," +
                                         "@PromotionalItems, @CreditSalesTax, @DebitDeposit, @RewardPointsPayment, @RewardConvertedPayment," +
                                         "@NoOfRewardPointsPayment, @CreditPaymentCash, @CreditPaymentCheque," +
-                                        "@CreditPaymentCreditCard, @CreditPaymentDebit, @CreatedOn, @LastModified);";
+                                        "@CreditPaymentCreditCard, @CreditPaymentDebit, " +
+                                        "@RefundCash, @RefundCheque, @RefundCreditCard, @RefundCredit, @RefundDebit, " +
+                                        "@CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
                 cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
@@ -227,6 +234,11 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreditPaymentCheque", Details.CreditPaymentCheque);
                 cmd.Parameters.AddWithValue("CreditPaymentCreditCard", Details.CreditPaymentCreditCard);
                 cmd.Parameters.AddWithValue("CreditPaymentDebit", Details.CreditPaymentDebit);
+                cmd.Parameters.AddWithValue("RefundCash", Details.RefundCash);
+                cmd.Parameters.AddWithValue("RefundCheque", Details.RefundCheque);
+                cmd.Parameters.AddWithValue("RefundCreditCard", Details.RefundCreditCard);
+                cmd.Parameters.AddWithValue("RefundCredit", Details.RefundCredit);
+                cmd.Parameters.AddWithValue("RefundDebit", Details.RefundDebit);
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 

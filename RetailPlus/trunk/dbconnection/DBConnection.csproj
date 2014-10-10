@@ -116,6 +116,10 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AuditMySqlDataConnection.cs" />
+    <Compile Include="AuditDB.cs" />
+    <Compile Include="LocalDB.cs" />
+    <Compile Include="MasterDB.cs" />
     <Compile Include="MasterMySqlDataConnection.cs" />
     <Compile Include="DBConnection.cs">
       <SubType>Code</SubType>

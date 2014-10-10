@@ -170,7 +170,7 @@ delimiter ;
 /**************************************************************
 	procGenerateSalesPerItem
 	Lemuel E. Aceron
-	CALL procGenerateSalesPerItem (1, '', '', '', '', '2014-1-1 00:00', '2014-1-31 23:59');
+	CALL procGenerateSalesPerItem (1, '', '', '', '01', '2014-10-5 00:00', '2014-10-06 23:59');
 	
 	May 15, 2008 - 
 **************************************************************/
@@ -213,7 +213,7 @@ BEGIN
 		IFNULL(MAX(inv.InvQuantity),0) InvQuantity
 	FROM tblTransactionItems a 
 	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
-	LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1
+	LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1 AND a.ProductPackageID = pkg.PackageID
 	LEFT OUTER JOIN (
 		SELECT ProductID, SUM(Quantity) InvQuantity FROM tblProductInventory
 		GROUP BY ProductID
@@ -315,20 +315,35 @@ BEGIN
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
 						END) LocalTax,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CashPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CashPayment
 						END) CashSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ChequePayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE ChequePayment
 						END) ChequeSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditCardPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditCardPayment
 						END) CreditCardSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditPayment
 						END) CreditSales, -- creditpayment for normal transactions
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE DebitPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE DebitPayment
 						END) DebitPayment, -- debit for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN CashPayment ELSE 0
+						END) RefundCashSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN ChequePayment ELSE 0
+						END) RefundChequeSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN CreditCardPayment ELSE 0
+						END) RefundCreditCardSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN CreditPayment ELSE 0
+						END) RefundCreditSales, -- creditpayment for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN DebitPayment ELSE 0
+						END) RefundDebitPayment, -- debit for normal transactions
 					SUM(CASE TransactionStatus
 							WHEN 7 THEN CashPayment + ChequePayment + CreditCardPayment + DebitPayment ELSE 0
 						END) CreditPayment,
@@ -386,6 +401,11 @@ BEGIN
 						tblCashierReport.CreditCardSales					=  Trx.CreditCardSales, 
 						tblCashierReport.CreditSales						=  Trx.CreditSales, 
 						tblCashierReport.DebitPayment						=  Trx.DebitPayment, 
+						tblCashierReport.RefundCash							=  Trx.RefundCashSales, 
+						tblCashierReport.RefundCheque						=  Trx.RefundChequeSales, 
+						tblCashierReport.RefundCreditCard					=  Trx.RefundCreditCardSales, 
+						tblCashierReport.RefundCredit						=  Trx.RefundCreditSales, 
+						tblCashierReport.RefundDebit						=  Trx.RefundDebitPayment, 
 						tblCashierReport.CreditPayment						=  Trx.CreditPayment, 
 						tblCashierReport.CreditPaymentCash					=  Trx.CreditPaymentCash, 
 						tblCashierReport.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
@@ -394,7 +414,7 @@ BEGIN
 					
 						tblCashierReport.RewardPointsPayment				=  Trx.RewardPointsPayment,
 						tblCashierReport.RewardConvertedPayment				=  Trx.RewardConvertedPayment,
-						tblCashierReport.CashInDrawer						=  Trx.CashSales + tblCashierReport.BeginningBalance + tblCashierReport.TotalWithHold + tblCashierReport.TotalDeposit - tblCashierReport.TotalPaidOut - tblCashierReport.TotalDisburse, 
+						tblCashierReport.CashInDrawer						=  Trx.CashSales - (-Trx.RefundCashSales) + Trx.CreditPaymentCash + tblCashierReport.BeginningBalance + tblCashierReport.TotalWithHold + tblCashierReport.TotalDeposit - tblCashierReport.TotalPaidOut - tblCashierReport.TotalDisburse, 
 						tblCashierReport.VoidSales							=  Trx.VoidSales, 
 						tblCashierReport.RefundSales						=  Trx.RefundSales, 
 						tblCashierReport.ItemsDiscount						=  Trx.ItemsDiscount, 
@@ -500,20 +520,35 @@ BEGIN
 								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
 							END) LocalTax,
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CashPayment
+								WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CashPayment
 							END) CashSales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ChequePayment
+								WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE ChequePayment
 							END) ChequeSales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditCardPayment
+								WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditCardPayment
 							END) CreditCardSales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditPayment
+								WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditPayment
 							END) CreditSales, -- creditpayment for normal transactions
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE DebitPayment
+								WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE DebitPayment
 							END) DebitPayment, -- debit for normal transactions
+						SUM(CASE TransactionStatus
+								WHEN 5 THEN CashPayment ELSE 0
+							END) RefundCashSales, 
+						SUM(CASE TransactionStatus
+								WHEN 5 THEN ChequePayment ELSE 0
+							END) RefundChequeSales, 
+						SUM(CASE TransactionStatus
+								WHEN 5 THEN CreditCardPayment ELSE 0
+							END) RefundCreditCardSales, 
+						SUM(CASE TransactionStatus
+								WHEN 5 THEN CreditPayment ELSE 0
+							END) RefundCreditSales, -- creditpayment for normal transactions
+						SUM(CASE TransactionStatus
+								WHEN 5 THEN DebitPayment ELSE 0
+							END) RefundDebitPayment, -- debit for normal transactions
 						SUM(CASE TransactionStatus
 								WHEN 7 THEN CashPayment + ChequePayment + CreditCardPayment + DebitPayment ELSE 0
 							END) CreditPayment,
@@ -572,7 +607,12 @@ BEGIN
 							tblTerminalReport.ChequeSales						=  Trx.ChequeSales, 
 							tblTerminalReport.CreditCardSales					=  Trx.CreditCardSales, 
 							tblTerminalReport.CreditSales						=  Trx.CreditSales, 
-							tblTerminalReport.DebitPayment						=  Trx.DebitPayment, 
+							tblTerminalReport.DebitPayment						=  Trx.DebitPayment,
+							tblTerminalReport.RefundCash						=  Trx.RefundCashSales, 
+							tblTerminalReport.RefundCheque						=  Trx.RefundChequeSales, 
+							tblTerminalReport.RefundCreditCard					=  Trx.RefundCreditCardSales, 
+							tblTerminalReport.RefundCredit						=  Trx.RefundCreditSales, 
+							tblTerminalReport.RefundDebit						=  Trx.RefundDebitPayment,
 							tblTerminalReport.CreditPayment						=  Trx.CreditPayment, 
 							tblTerminalReport.CreditPaymentCash					=  Trx.CreditPaymentCash, 
 							tblTerminalReport.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
@@ -581,7 +621,7 @@ BEGIN
 					
 							tblTerminalReport.RewardPointsPayment				=  Trx.RewardPointsPayment,
 							tblTerminalReport.RewardConvertedPayment			=  Trx.RewardConvertedPayment,
-							tblTerminalReport.CashInDrawer						=  Trx.CashSales + tblTerminalReport.BeginningBalance + tblTerminalReport.TotalWithHold + tblTerminalReport.TotalDeposit - tblTerminalReport.TotalPaidOut - tblTerminalReport.TotalDisburse, 
+							tblTerminalReport.CashInDrawer						=  Trx.CashSales - (-Trx.RefundCashSales) + Trx.CreditPaymentCash + tblTerminalReport.BeginningBalance + tblTerminalReport.TotalWithHold + tblTerminalReport.TotalDeposit - tblTerminalReport.TotalPaidOut - tblTerminalReport.TotalDisburse, 
 							tblTerminalReport.VoidSales							=  Trx.VoidSales, 
 							tblTerminalReport.RefundSales						=  Trx.RefundSales, 
 							tblTerminalReport.ItemsDiscount						=  Trx.ItemsDiscount, 
@@ -694,6 +734,8 @@ BEGIN
 					CreditCardSales						=  CreditCardSales						+  decCreditCardSales, 
 					CreditSales							=  CreditSales							+  decCreditSales, 
 					CreditPayment						=  CreditPayment						+  decCreditPayment, 
+					
+					-- need to insert refund breakdown
 
 					CreditPaymentCash					=  CreditPaymentCash					+  decCreditPaymentCash, 
 					CreditPaymentCheque					=  CreditPaymentCheque					+  decCreditPaymentCheque, 
@@ -1279,7 +1321,7 @@ BEGIN
 END;
 GO
 delimiter ;
- 
+
 /*********************************
 	procTransactionOrderTypeUpdate
 	Lemuel E. Aceron
@@ -1531,7 +1573,9 @@ BEGIN
 					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
 					ItemSold, QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
 					VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
-					ChequeSales, CreditCardSales, CreditSales, CreditPayment, CreditPaymentCash, CreditPaymentCheque,
+					ChequeSales, CreditCardSales, CreditSales, CreditPayment, 
+					RefundCash, RefundCheque, RefundCreditCard, RefundCredit, RefundDebit,
+					CreditPaymentCash, CreditPaymentCheque,
 					CreditPaymentCreditCard, CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
 					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
 					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
@@ -1552,7 +1596,9 @@ BEGIN
 					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
 					ItemSold, QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
 					VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
-					ChequeSales, CreditCardSales, CreditSales, CreditPayment, CreditPaymentCash, CreditPaymentCheque,
+					ChequeSales, CreditCardSales, CreditSales, CreditPayment, 
+					RefundCash, RefundCheque, RefundCreditCard, RefundCredit, RefundDebit,
+					CreditPaymentCash, CreditPaymentCheque,
 					CreditPaymentCreditCard, CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
 					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
 					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
@@ -1599,6 +1645,11 @@ BEGIN
 					CreditCardSales						=  0, 
 					CreditSales							=  0, 
 					CreditPayment						=  0, 
+					RefundCash							=  0, 
+					RefundCheque						=  0, 
+					RefundCreditCard					=  0, 
+					RefundCredit						=  0, 
+					RefundDebit							=  0, 
 					CreditPaymentCash					=  0, 
 					CreditPaymentCheque					=  0, 
 					CreditPaymentCreditCard				=  0, 
@@ -1661,6 +1712,7 @@ BEGIN
 					TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
 					ItemSold, QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
 					CashSales, ChequeSales, CreditCardSales, CreditSales, 
+					RefundCash, RefundCheque, RefundCreditCard, RefundCredit, RefundDebit,
 					CreditPayment, CreditPaymentCash, CreditPaymentCheque, CreditPaymentCreditCard, 
 					CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
 					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
@@ -1683,6 +1735,7 @@ BEGIN
 					TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
 					ItemSold, QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
 					CashSales, ChequeSales, CreditCardSales, CreditSales, 
+					RefundCash, RefundCheque, RefundCreditCard, RefundCredit, RefundDebit,
 					CreditPayment, CreditPaymentCash, CreditPaymentCheque, CreditPaymentCreditCard, 
 					CreditPaymentDebit, DebitPayment, RewardPointsPayment, RewardConvertedPayment, CashInDrawer, 
 					TotalDisburse, CashDisburse, ChequeDisburse, CreditCardDisburse, 
@@ -1757,6 +1810,10 @@ create procedure procTerminalUpdate(
 	IN bolWithRestaurantFeatures TINYINT(1),
 	IN strSeniorCitizenDiscountCode varchar(5),
 	IN strPWDDiscountCode varchar(5),
+	IN strDefaultTransactionChargeCode varchar(60),
+	IN strDineInChargeCode varchar(60),
+	IN strTakeOutChargeCode varchar(60),
+	IN strDeliveryChargeCode varchar(60),
 	IN bolIsTouchScreen TINYINT(1),
 	IN bolWillContinueSelectionVariation TINYINT(1),
 	IN bolWillContinueSelectionProduct TINYINT(1),
@@ -1799,13 +1856,17 @@ BEGIN
 				EndCutOffTime			= strEndCutOffTime,
 				WithRestaurantFeatures	= bolWithRestaurantFeatures,
 				SeniorCitizenDiscountCode = strSeniorCitizenDiscountCode,
-				PWDDiscountCode			= strPWDDiscountCode,
-				IsTouchScreen			= bolIsTouchScreen,
-				WillContinueSelectionVariation	= bolWillContinueSelectionVariation,
-				WillContinueSelectionProduct	= bolWillContinueSelectionProduct,
-				WillPrintGrandTotal		= bolWillPrintGrandTotal,
-				ReservedAndCommit		= bolReservedAndCommit,
-				ShowCustomerSelection	= bolShowCustomerSelection
+				PWDDiscountCode						= strPWDDiscountCode,
+				DefaultTransactionChargeCode		= strDefaultTransactionChargeCode,
+				DineInChargeCode					= strDineInChargeCode,
+				TakeOutChargeCode					= strTakeOutChargeCode,
+				DeliveryChargeCode					= strDeliveryChargeCode,
+				IsTouchScreen						= bolIsTouchScreen,
+				WillContinueSelectionVariation		= bolWillContinueSelectionVariation,
+				WillContinueSelectionProduct		= bolWillContinueSelectionProduct,
+				WillPrintGrandTotal					= bolWillPrintGrandTotal,
+				ReservedAndCommit					= bolReservedAndCommit,
+				ShowCustomerSelection				= bolShowCustomerSelection
 	WHERE TerminalID = lngTerminalID;
 	
 	
@@ -1903,7 +1964,7 @@ BEGIN
 		IFNULL(MAX(inv.InvQuantity),0) InvQuantity
 	FROM tblTransactionItems a 
 	INNER JOIN tblTransactions b ON a.TransactionID = b.TransactionID
-	LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1
+	LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1 AND a.ProductPackageID = pkg.PackageID
 	LEFT OUTER JOIN (
 		SELECT ProductID, SUM(Quantity) InvQuantity FROM tblProductInventory
 		GROUP BY ProductID
@@ -2891,7 +2952,7 @@ BEGIN
 		INNER JOIN tblProductSubGroup b ON b.ProductSubGroupID = a.ProductSubGroupID
 		INNER JOIN tblProductGroup c ON c.ProductGroupID = b.ProductGroupID
 		INNER JOIN tblUnit d ON d.UnitID = a.BaseUnitID
-		LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1 AND a.BaseUnitID = pkg.UnitID
+		LEFT OUTER JOIN tblProductPackage pkg ON a.ProductID = pkg.ProductID AND pkg.Quantity = 1 AND a.BaseUnitID = pkg.UnitID 
 		LEFT OUTER JOIN (
 			SELECT ProductID, SUM(Quantity) InvQuantity FROM tblProductInventory
 			GROUP BY ProductID
@@ -7838,6 +7899,7 @@ BEGIN
 							,BusinessPhoneNo ,HomePhoneNo ,MobileNo ,FaxNo ,EmailAddress 
 							,RewardCardNo ,RewardActive, RewardPoints, RewardAwardDate, TotalPurchases, RedeemedPoints, RewardCardStatus, ExpiryDate
 							,IFNULL(addon.BirthDate,rwrd.BirthDate) BirthDate 
+							,LastCheckInDate
 						FROM tblContacts cntct
 							INNER JOIN tblContactGroup grp ON cntct.ContactGroupID = grp.ContactGroupID
 							INNER JOIN tblDepartments dept ON cntct.DepartmentID = dept.DepartmentID
@@ -7967,6 +8029,24 @@ END;
 GO
 delimiter ;
 
+
+
+/*********************************
+	procContactLastCheckInDateUpdate
+	Lemuel E. Aceron
+	Sep 24, 2014 as required by Bellevue to monitor how long the table is occupied without order
+*********************************/
+DROP PROCEDURE IF EXISTS procContactLastCheckInDateUpdate;
+delimiter GO
+
+create procedure procContactLastCheckInDateUpdate(IN intContactID bigint(20), IN dteLastCheckInDate DateTime)
+BEGIN
+	
+	UPDATE tblContacts SET LastCheckInDate = DATE_FORMAT(dteLastCheckInDate, '%Y-%m-%d %H:%i') WHERE ContactID = intContactID;
+
+END;
+GO
+delimiter ;
 
 
 
@@ -8711,6 +8791,11 @@ BEGIN
 							ChequeSales, 
 							CreditCardSales, 
 							CreditSales, 
+							RefundCash,
+							RefundCheque,
+							RefundCreditCard,
+							RefundCredit,
+							RefundDebit,
 							CreditPayment, 
 							CreditPaymentCash, 
 							CreditPaymentCheque, 
@@ -8815,6 +8900,11 @@ BEGIN
 						ChequeSales - (ChequeSales * TrustFund/100) ChequeSales, 
 						CreditCardSales - (CreditCardSales * TrustFund/100) CreditCardSales, 
 						CreditSales - (CreditSales * TrustFund/100) CreditSales, 
+						RefundCash - (RefundCash * TrustFund/100) RefundCash, 
+						RefundCheque - (RefundCheque * TrustFund/100) RefundCheque, 
+						RefundCreditCard - (RefundCreditCard * TrustFund/100) RefundCreditCard, 
+						RefundCredit - (RefundCredit * TrustFund/100) RefundCredit, 
+						RefundDebit - (RefundDebit * TrustFund/100) RefundDebit, 
 						CreditPayment - (CreditPayment * TrustFund/100) CreditPayment, 
 						CreditPaymentCash - (CreditPaymentCash * TrustFund/100) CreditPaymentCash, 
 						CreditPaymentCheque - (CreditPaymentCheque * TrustFund/100) CreditPaymentCheque, 
@@ -9322,20 +9412,35 @@ BEGIN
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
 						END) LocalTax,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CashPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CashPayment
 						END) CashSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ChequePayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE ChequePayment
 						END) ChequeSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditCardPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditCardPayment
 						END) CreditCardSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditPayment
 						END) CreditSales, -- creditpayment for normal transactions
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE DebitPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE DebitPayment
 						END) DebitPayment, -- debit for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN CashPayment ELSE 0
+						END) RefundCashSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN ChequePayment ELSE 0
+						END) RefundChequeSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN CreditCardPayment ELSE 0
+						END) RefundCreditCardSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN CreditPayment ELSE 0
+						END) RefundCreditSales, -- creditpayment for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN DebitPayment ELSE 0
+						END) RefundDebitPayment, -- debit for normal transactions
 					SUM(CASE TransactionStatus
 							WHEN 7 THEN CashPayment + ChequePayment + CreditCardPayment + DebitPayment ELSE 0
 						END) CreditPayment,
@@ -9393,6 +9498,11 @@ BEGIN
 						tblCashierReportHistory.CreditCardSales					=  Trx.CreditCardSales, 
 						tblCashierReportHistory.CreditSales						=  Trx.CreditSales, 
 						tblCashierReportHistory.DebitPayment					=  Trx.DebitPayment, 
+						tblCashierReportHistory.RefundCash						=  Trx.RefundCashSales, 
+						tblCashierReportHistory.RefundCheque					=  Trx.RefundChequeSales, 
+						tblCashierReportHistory.RefundCreditCard				=  Trx.RefundCreditCardSales, 
+						tblCashierReportHistory.RefundCredit					=  Trx.RefundCreditSales, 
+						tblCashierReportHistory.RefundDebit						=  Trx.RefundDebitPayment, 
 						tblCashierReportHistory.CreditPayment					=  Trx.CreditPayment, 
 						tblCashierReportHistory.CreditPaymentCash				=  Trx.CreditPaymentCash, 
 						tblCashierReportHistory.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
@@ -9401,7 +9511,7 @@ BEGIN
 					
 						tblCashierReportHistory.RewardPointsPayment				=  Trx.RewardPointsPayment,
 						tblCashierReportHistory.RewardConvertedPayment			=  Trx.RewardConvertedPayment,
-						tblCashierReportHistory.CashInDrawer					=  Trx.CashSales + tblCashierReportHistory.BeginningBalance + tblCashierReportHistory.TotalWithHold + tblCashierReportHistory.TotalDeposit - tblCashierReportHistory.TotalPaidOut - tblCashierReportHistory.TotalDisburse, 
+						tblCashierReportHistory.CashInDrawer					=  Trx.CashSales - (-Trx.RefundCashSales) + Trx.CreditPaymentCash + tblCashierReportHistory.BeginningBalance + tblCashierReportHistory.TotalWithHold + tblCashierReportHistory.TotalDeposit - tblCashierReportHistory.TotalPaidOut - tblCashierReportHistory.TotalDisburse, 
 						tblCashierReportHistory.VoidSales						=  Trx.VoidSales, 
 						tblCashierReportHistory.RefundSales						=  Trx.RefundSales, 
 						tblCashierReportHistory.ItemsDiscount					=  Trx.ItemsDiscount, 
@@ -9535,20 +9645,35 @@ BEGIN
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE LocalTax
 						END) LocalTax,
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CashPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CashPayment
 						END) CashSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ChequePayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE ChequePayment
 						END) ChequeSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditCardPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditCardPayment
 						END) CreditCardSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE CreditPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE CreditPayment
 						END) CreditSales, -- creditpayment for normal transactions
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE DebitPayment
+							WHEN 3 THEN 0 WHEN 7 THEN 0 WHEN 5 THEN 0 ELSE DebitPayment
 						END) DebitPayment, -- debit for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN CashPayment ELSE 0
+						END) RefundCashSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN ChequePayment ELSE 0
+						END) RefundChequeSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN CreditCardPayment ELSE 0
+						END) RefundCreditCardSales, 
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN CreditPayment ELSE 0
+						END) RefundCreditSales, -- creditpayment for normal transactions
+					SUM(CASE TransactionStatus
+							WHEN 5 THEN DebitPayment ELSE 0
+						END) RefundDebitPayment, -- debit for normal transactions
 					SUM(CASE TransactionStatus
 							WHEN 7 THEN CashPayment + ChequePayment + CreditCardPayment + DebitPayment ELSE 0
 						END) CreditPayment,
@@ -9608,6 +9733,11 @@ BEGIN
 				tblTerminalReportHistory.CreditCardSales					=  Trx.CreditCardSales, 
 				tblTerminalReportHistory.CreditSales						=  Trx.CreditSales, 
 				tblTerminalReportHistory.DebitPayment						=  Trx.DebitPayment, 
+				tblTerminalReportHistory.RefundCash							=  Trx.RefundCashSales, 
+				tblTerminalReportHistory.RefundCheque						=  Trx.RefundChequeSales, 
+				tblTerminalReportHistory.RefundCreditCard					=  Trx.RefundCreditCardSales, 
+				tblTerminalReportHistory.RefundCredit						=  Trx.RefundCreditSales, 
+				tblTerminalReportHistory.RefundDebit						=  Trx.RefundDebitPayment,
 				tblTerminalReportHistory.CreditPayment						=  Trx.CreditPayment, 
 				tblTerminalReportHistory.CreditPaymentCash					=  Trx.CreditPaymentCash, 
 				tblTerminalReportHistory.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
@@ -9616,7 +9746,7 @@ BEGIN
 					
 				tblTerminalReportHistory.RewardPointsPayment				=  Trx.RewardPointsPayment,
 				tblTerminalReportHistory.RewardConvertedPayment				=  Trx.RewardConvertedPayment,
-				tblTerminalReportHistory.CashInDrawer						=  Trx.CashSales + tblTerminalReportHistory.BeginningBalance + tblTerminalReportHistory.TotalWithHold + tblTerminalReportHistory.TotalDeposit - tblTerminalReportHistory.TotalPaidOut - tblTerminalReportHistory.TotalDisburse, 
+				tblTerminalReportHistory.CashInDrawer						=  Trx.CashSales - (-Trx.RefundCashSales) + Trx.CreditPaymentCash + tblTerminalReportHistory.BeginningBalance + tblTerminalReportHistory.TotalWithHold + tblTerminalReportHistory.TotalDeposit - tblTerminalReportHistory.TotalPaidOut - tblTerminalReportHistory.TotalDisburse, 
 				tblTerminalReportHistory.VoidSales							=  Trx.VoidSales, 
 				tblTerminalReportHistory.RefundSales						=  Trx.RefundSales, 
 				tblTerminalReportHistory.ItemsDiscount						=  Trx.ItemsDiscount, 

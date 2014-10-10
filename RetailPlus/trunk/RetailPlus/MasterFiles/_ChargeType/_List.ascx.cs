@@ -213,16 +213,11 @@ namespace AceSoft.RetailPlus.MasterFiles._ChargeType
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
-			{
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsChargeType.List(SortField, sortoption)).DefaultView;
-			}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsChargeType.Search(SearchKey, SortField, sortoption)).DefaultView;
-			}
+            string SearchKey = "";
+			if (Request.QueryString["Search"]!=null)
+			{ SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID); }
 
+            PageData.DataSource = clsChargeType.ListAsDataTable(SearchKey, SortField, sortoption).DefaultView;
 			clsChargeType.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;

@@ -24,6 +24,7 @@ namespace AceSoft.RetailPlus.Data
         public string ORNo;
 		public int BranchID;
 		public string BranchCode;
+        public ContactDetails CustomerDetails;
 		public Int64 CustomerID;
 		public string CustomerName;
         public string CustomerGroupName;
@@ -845,14 +846,15 @@ namespace AceSoft.RetailPlus.Data
 								"CashierName, " +
 								"TerminalNo, " +
 								"TransactionDate, " +
-								"DateSuspended, " +
+                                "DateSuspended, " +
 								"TransactionStatus," +
 								"DiscountCode, " +
 								"DiscountRemarks, " +
 								"WaiterID, " +
 								"WaiterName," +
 								"ChargeCode, ChargeRemarks,OrderType, " +
-								"AgentPositionName, AgentDepartmentName,DataSource" +
+								"AgentPositionName, AgentDepartmentName,DataSource, " +
+                                "ContactCheckInDate " +
 							")VALUES(" +
                                 "@TransactionType, " +
 								"@TransactionNo, " +
@@ -876,36 +878,37 @@ namespace AceSoft.RetailPlus.Data
 								"@WaiterID, " +
 								"@WaiterName," +
 								"@ChargeCode, @ChargeRemarks,@OrderType," +
-                                "@AgentPositionName, @AgentDepartmentName,@DataSource" +
-								");";
+                                "@AgentPositionName, @AgentDepartmentName, @DataSource," +
+                                "@ContactCheckInDate);";
 
-				cmd.Parameters.AddWithValue("@TransactionType", Details.TransactionType.ToString("d"));
-				cmd.Parameters.AddWithValue("@TransactionNo", Details.TransactionNo);
-				cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
-				cmd.Parameters.AddWithValue("@BranchCode", Details.BranchCode);
-				cmd.Parameters.AddWithValue("@CustomerID", Details.CustomerID);
-				cmd.Parameters.AddWithValue("@CustomerName", Details.CustomerName);
-                cmd.Parameters.AddWithValue("@CustomerGroupName", Details.CustomerGroupName);
-				cmd.Parameters.AddWithValue("@AgentID", Details.AgentID);
-				cmd.Parameters.AddWithValue("@AgentName", Details.AgentName);
-				cmd.Parameters.AddWithValue("@CreatedByID", Details.CreatedByID);
-				cmd.Parameters.AddWithValue("@CreatedByName", Details.CreatedByName);
-				cmd.Parameters.AddWithValue("@CashierID", Details.CashierID);
-				cmd.Parameters.AddWithValue("@CashierName", Details.CashierName);
-				cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
-				cmd.Parameters.AddWithValue("@TransactionDate", Details.TransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
-				cmd.Parameters.AddWithValue("@DateSuspended", Details.DateSuspended.ToString("yyyy-MM-dd HH:mm:ss"));
-				cmd.Parameters.AddWithValue("@TransactionStatus", Details.TransactionStatus.ToString("d"));
-				cmd.Parameters.AddWithValue("@DiscCode", Details.DiscountCode);
-				if (Details.DiscountRemarks == null) Details.DiscountRemarks = ""; cmd.Parameters.AddWithValue("@DiscRemarks", Details.DiscountRemarks);
-				cmd.Parameters.AddWithValue("@WaiterID", Details.WaiterID);
-				cmd.Parameters.AddWithValue("@WaiterName", Details.WaiterName);
-				cmd.Parameters.AddWithValue("@ChargeCode", Details.ChargeCode);
-				if (Details.ChargeRemarks == null) Details.ChargeRemarks = ""; cmd.Parameters.AddWithValue("@ChargeRemarks", Details.ChargeRemarks);
-				cmd.Parameters.AddWithValue("@OrderType", Details.OrderType.ToString("d"));
-				cmd.Parameters.AddWithValue("@AgentPositionName", Details.AgentPositionName);
-				cmd.Parameters.AddWithValue("@AgentDepartmentName", Details.AgentDepartmentName);
-                cmd.Parameters.AddWithValue("@DataSource", Details.DataSource);
+				cmd.Parameters.AddWithValue("TransactionType", Details.TransactionType.ToString("d"));
+				cmd.Parameters.AddWithValue("TransactionNo", Details.TransactionNo);
+				cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
+				cmd.Parameters.AddWithValue("BranchCode", Details.BranchCode);
+				cmd.Parameters.AddWithValue("CustomerID", Details.CustomerID);
+				cmd.Parameters.AddWithValue("CustomerName", Details.CustomerName);
+                cmd.Parameters.AddWithValue("CustomerGroupName", Details.CustomerGroupName);
+				cmd.Parameters.AddWithValue("AgentID", Details.AgentID);
+				cmd.Parameters.AddWithValue("AgentName", Details.AgentName);
+				cmd.Parameters.AddWithValue("CreatedByID", Details.CreatedByID);
+				cmd.Parameters.AddWithValue("CreatedByName", Details.CreatedByName);
+				cmd.Parameters.AddWithValue("CashierID", Details.CashierID);
+				cmd.Parameters.AddWithValue("CashierName", Details.CashierName);
+				cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
+				cmd.Parameters.AddWithValue("TransactionDate", Details.TransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
+				cmd.Parameters.AddWithValue("DateSuspended", Details.DateSuspended.ToString("yyyy-MM-dd HH:mm:ss"));
+				cmd.Parameters.AddWithValue("TransactionStatus", Details.TransactionStatus.ToString("d"));
+				cmd.Parameters.AddWithValue("DiscCode", Details.DiscountCode);
+				if (Details.DiscountRemarks == null) Details.DiscountRemarks = ""; cmd.Parameters.AddWithValue("DiscRemarks", Details.DiscountRemarks);
+				cmd.Parameters.AddWithValue("WaiterID", Details.WaiterID);
+				cmd.Parameters.AddWithValue("WaiterName", Details.WaiterName);
+				cmd.Parameters.AddWithValue("ChargeCode", Details.ChargeCode);
+				if (Details.ChargeRemarks == null) Details.ChargeRemarks = ""; cmd.Parameters.AddWithValue("ChargeRemarks", Details.ChargeRemarks);
+				cmd.Parameters.AddWithValue("OrderType", Details.OrderType.ToString("d"));
+				cmd.Parameters.AddWithValue("AgentPositionName", Details.AgentPositionName);
+				cmd.Parameters.AddWithValue("AgentDepartmentName", Details.AgentDepartmentName);
+                cmd.Parameters.AddWithValue("DataSource", Details.DataSource);
+                cmd.Parameters.AddWithValue("ContactCheckInDate", Details.CustomerDetails.LastCheckInDate);
 
                 cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
@@ -1729,7 +1732,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-        public void Close(Int64 TransactionID, string ORNo, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, decimal BalanceAmount, decimal ChangeAmount, PaymentTypes PaymentType, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, Int64 CashierID, string CashierName)
+        public void Close(Int64 TransactionID, string ORNo, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, decimal BalanceAmount, decimal ChangeAmount, PaymentTypes PaymentType, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, Int64 CashierID, string CashierName, TransactionStatus TransactionStatus = TransactionStatus.Closed)
 		{
             // Sep4, 2014 : Added VATableAmount, NonVATableAmount, VATExempt as per requirement of BIR
 			try
@@ -1784,7 +1787,7 @@ namespace AceSoft.RetailPlus.Data
 					"WHERE TransactionID	=	@TransactionID;";
 
                 cmd.Parameters.AddWithValue("ORNo", ORNo);
-                cmd.Parameters.AddWithValue("TransactionStatus", TransactionStatus.Closed.ToString("d"));
+                cmd.Parameters.AddWithValue("TransactionStatus", TransactionStatus.ToString("d"));
                 cmd.Parameters.AddWithValue("ItemSold", ItemSold);
                 cmd.Parameters.AddWithValue("QuantitySold", QuantitySold);
                 cmd.Parameters.AddWithValue("SubTotal", SubTotal);
@@ -2152,15 +2155,15 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procTransactionDateClosedUpdate(@TransactionID, @DateClosed);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procTransactionDateClosedUpdate(@TransactionID, @DateClosed);";
+
+                cmd.Parameters.AddWithValue("TransactionID", TransactionID);
+                cmd.Parameters.AddWithValue("DateClosed", DateClosed.ToString("yyyy-MM-dd HH;mm:ss"));
+
                 cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
-                cmd.Parameters.AddWithValue("@DateClosed", DateClosed.ToString("yyyy-MM-dd HH;mm:ss"));
-
                 base.ExecuteNonQuery(cmd);
             }
 
@@ -2169,7 +2172,7 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-
+        
 		public void UpdatePaxNo(Int64 TransactionID, int PaxNo)
 		{
 			try

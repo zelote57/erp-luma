@@ -101,6 +101,13 @@ namespace AceSoft.RetailPlus.Data
         // [04/29/2013] Include to know whether to print agreement or not
         public bool IncludeTermsAndConditions;
 
+        // [09/24/2014] Default Transaction Charge Code when a transaction is created.
+        // primarily use for FineDining / Restaurant
+        public string DefaultTransactionChargeCode;
+        public string DineInChargeCode;
+        public string TakeOutChargeCode;
+        public string DeliveryChargeCode;
+
         public DateTime CreatedOn;
         public DateTime LastModified;
 	}
@@ -248,6 +255,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "CALL procTerminalUpdate(@BranchID, @TerminalID, " +
                                                     "@IsPrinterAutoCutter, " +
                                                     "@AutoPrint, " +
@@ -281,6 +291,10 @@ namespace AceSoft.RetailPlus.Data
                                                     "@WithRestaurantFeatures, " +
                                                     "@SeniorCitizenDiscountCode, " +
                                                     "@PWDDiscountCode, " +
+                                                    "@DefaultTransactionChargeCode, " +
+                                                    "@DineInChargeCode, " +
+                                                    "@TakeOutChargeCode, " +
+                                                    "@DeliveryChargeCode, " +
                                                     "@IsTouchScreen," +
                                                     "@WillContinueSelectionVariation," +
                                                     "@WillContinueSelectionProduct," +
@@ -288,51 +302,52 @@ namespace AceSoft.RetailPlus.Data
                                                     "@ReservedAndCommit," +
                                                     "@ShowCustomerSelection);";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+				cmd.Parameters.AddWithValue("BranchID", Details.BranchID);
+                cmd.Parameters.AddWithValue("TerminalID", Details.TerminalID);
+                cmd.Parameters.AddWithValue("IsPrinterAutoCutter", Details.IsPrinterAutoCutter);
+                cmd.Parameters.AddWithValue("AutoPrint", Details.AutoPrint.ToString("d"));
+                cmd.Parameters.AddWithValue("IsVATInclusive", Details.IsVATInclusive);
+                cmd.Parameters.AddWithValue("PrinterName", Details.PrinterName);
+                cmd.Parameters.AddWithValue("TurretName", Details.TurretName);
+                cmd.Parameters.AddWithValue("CashDrawerName", Details.CashDrawerName);
+                cmd.Parameters.AddWithValue("MaxReceiptWidth", Details.MaxReceiptWidth);
+                cmd.Parameters.AddWithValue("ItemVoidConfirmation", Details.ItemVoidConfirmation);
+				cmd.Parameters.AddWithValue("EnableEVAT", Details.EnableEVAT);
+                cmd.Parameters.AddWithValue("FORM_Behavior", Details.FORM_Behavior);
+                cmd.Parameters.AddWithValue("MarqueeMessage", Details.MarqueeMessage);
+                cmd.Parameters.AddWithValue("MachineSerialNo", Details.MachineSerialNo);
+                cmd.Parameters.AddWithValue("AccreditationNo", Details.AccreditationNo);
+                cmd.Parameters.AddWithValue("VAT", Details.VAT);
+                cmd.Parameters.AddWithValue("EVAT", Details.EVAT);
+                cmd.Parameters.AddWithValue("LocalTax", Details.LocalTax);
+                cmd.Parameters.AddWithValue("ShowItemMoreThanZeroQty", Details.ShowItemMoreThanZeroQty);
+                cmd.Parameters.AddWithValue("ShowOnlyPackedTransactions", Details.ShowOnlyPackedTransactions);
+                cmd.Parameters.AddWithValue("ShowOneTerminalSuspendedTransactions", Details.ShowOneTerminalSuspendedTransactions);
+                cmd.Parameters.AddWithValue("ReceiptType", Details.ReceiptType.ToString("d"));
+                cmd.Parameters.AddWithValue("SalesInvoicePrinterName", Details.SalesInvoicePrinterName);
+                cmd.Parameters.AddWithValue("CashCountBeforeReport", Details.CashCountBeforeReport);
+                cmd.Parameters.AddWithValue("PreviewTerminalReport", Details.PreviewTerminalReport);
+                cmd.Parameters.AddWithValue("IsPrinterDotMatrix", Details.IsPrinterDotMatrix);
+                cmd.Parameters.AddWithValue("IsChargeEditable", Details.IsChargeEditable);
+                cmd.Parameters.AddWithValue("IsDiscountEditable", Details.IsDiscountEditable);
+                cmd.Parameters.AddWithValue("CheckCutOffTime", Details.CheckCutOffTime);
+                cmd.Parameters.AddWithValue("StartCutOffTime", Details.StartCutOffTime);
+                cmd.Parameters.AddWithValue("EndCutOffTime", Details.EndCutOffTime);
+                cmd.Parameters.AddWithValue("WithRestaurantFeatures", Details.WithRestaurantFeatures);
+                cmd.Parameters.AddWithValue("SeniorCitizenDiscountCode", Details.SeniorCitizenDiscountCode);
+                cmd.Parameters.AddWithValue("PWDDiscountCode", Details.PWDDiscountCode);
+                cmd.Parameters.AddWithValue("DefaultTransactionChargeCode", Details.DefaultTransactionChargeCode);
+                cmd.Parameters.AddWithValue("DineInChargeCode", Details.DineInChargeCode);
+                cmd.Parameters.AddWithValue("TakeOutChargeCode", Details.TakeOutChargeCode);
+                cmd.Parameters.AddWithValue("DeliveryChargeCode", Details.DeliveryChargeCode);
+                cmd.Parameters.AddWithValue("IsTouchScreen", Details.IsTouchScreen);
+                cmd.Parameters.AddWithValue("WillContinueSelectionVariation", Details.WillContinueSelectionVariation);
+                cmd.Parameters.AddWithValue("WillContinueSelectionProduct", Details.WillContinueSelectionProduct);
+                cmd.Parameters.AddWithValue("WillPrintGrandTotal", Details.WillPrintGrandTotal);
+                cmd.Parameters.AddWithValue("ReservedAndCommit", Details.ReservedAndCommit);
+                cmd.Parameters.AddWithValue("ShowCustomerSelection", Details.ShowCustomerSelection);
 
-                cmd.Parameters.AddWithValue("@BranchID", Details.BranchID);
-                cmd.Parameters.AddWithValue("@TerminalID", Details.TerminalID);
-                cmd.Parameters.AddWithValue("@IsPrinterAutoCutter", Details.IsPrinterAutoCutter);
-                cmd.Parameters.AddWithValue("@AutoPrint", Details.AutoPrint.ToString("d"));
-                cmd.Parameters.AddWithValue("@IsVATInclusive", Details.IsVATInclusive);
-                cmd.Parameters.AddWithValue("@PrinterName", Details.PrinterName);
-                cmd.Parameters.AddWithValue("@TurretName", Details.TurretName);
-                cmd.Parameters.AddWithValue("@CashDrawerName", Details.CashDrawerName);
-                cmd.Parameters.AddWithValue("@MaxReceiptWidth", Details.MaxReceiptWidth);
-                cmd.Parameters.AddWithValue("@ItemVoidConfirmation", Details.ItemVoidConfirmation);
-				cmd.Parameters.AddWithValue("@EnableEVAT", Details.EnableEVAT);
-                cmd.Parameters.AddWithValue("@FORM_Behavior", Details.FORM_Behavior);
-                cmd.Parameters.AddWithValue("@MarqueeMessage", Details.MarqueeMessage);
-                cmd.Parameters.AddWithValue("@MachineSerialNo", Details.MachineSerialNo);
-                cmd.Parameters.AddWithValue("@AccreditationNo", Details.AccreditationNo);
-                cmd.Parameters.AddWithValue("@VAT", Details.VAT);
-                cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
-                cmd.Parameters.AddWithValue("@LocalTax", Details.LocalTax);
-                cmd.Parameters.AddWithValue("@ShowItemMoreThanZeroQty", Details.ShowItemMoreThanZeroQty);
-                cmd.Parameters.AddWithValue("@ShowOnlyPackedTransactions", Details.ShowOnlyPackedTransactions);
-                cmd.Parameters.AddWithValue("@ShowOneTerminalSuspendedTransactions", Details.ShowOneTerminalSuspendedTransactions);
-                cmd.Parameters.AddWithValue("@ReceiptType", Details.ReceiptType.ToString("d"));
-                cmd.Parameters.AddWithValue("@SalesInvoicePrinterName", Details.SalesInvoicePrinterName);
-                cmd.Parameters.AddWithValue("@CashCountBeforeReport", Details.CashCountBeforeReport);
-                cmd.Parameters.AddWithValue("@PreviewTerminalReport", Details.PreviewTerminalReport);
-                cmd.Parameters.AddWithValue("@IsPrinterDotMatrix", Details.IsPrinterDotMatrix);
-                cmd.Parameters.AddWithValue("@IsChargeEditable", Details.IsChargeEditable);
-                cmd.Parameters.AddWithValue("@IsDiscountEditable", Details.IsDiscountEditable);
-                cmd.Parameters.AddWithValue("@CheckCutOffTime", Details.CheckCutOffTime);
-                cmd.Parameters.AddWithValue("@StartCutOffTime", Details.StartCutOffTime);
-                cmd.Parameters.AddWithValue("@EndCutOffTime", Details.EndCutOffTime);
-                cmd.Parameters.AddWithValue("@WithRestaurantFeatures", Details.WithRestaurantFeatures);
-                cmd.Parameters.AddWithValue("@SeniorCitizenDiscountCode", Details.SeniorCitizenDiscountCode);
-                cmd.Parameters.AddWithValue("@PWDDiscountCode", Details.PWDDiscountCode);
-                cmd.Parameters.AddWithValue("@IsTouchScreen", Details.IsTouchScreen);
-                cmd.Parameters.AddWithValue("@WillContinueSelectionVariation", Details.WillContinueSelectionVariation);
-                cmd.Parameters.AddWithValue("@WillContinueSelectionProduct", Details.WillContinueSelectionProduct);
-                cmd.Parameters.AddWithValue("@WillPrintGrandTotal", Details.WillPrintGrandTotal);
-                cmd.Parameters.AddWithValue("@ReservedAndCommit", Details.ReservedAndCommit);
-                cmd.Parameters.AddWithValue("@ShowCustomerSelection", Details.ShowCustomerSelection);
-
+                cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
 			}
 
@@ -451,6 +466,9 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "CALL procSaveTerminal(@TerminalID, @TerminalNo, @TerminalCode, @TerminalName, @Status, @DateCreated, " +
                                 "@IsPrinterAutoCutter, @MaxReceiptWidth, @TransactionNoLength, @AutoPrint, @PrinterName, " +
                                 "@TurretName, @CashDrawerName, @MachineSerialNo, @AccreditationNo, @ItemVoidConfirmation, " +
@@ -469,11 +487,8 @@ namespace AceSoft.RetailPlus.Data
                                 "@InHouseIndividualCreditPermitNo, @InHouseGroupCreditPermitNo, @IsFineDining, " +
                                 "@PersonalChargeTypeID, @GroupChargeTypeID, @BranchID, @ProductSearchType, " +
                                 "@IncludeCreditChargeAgreement, @IsParkingTerminal, @WillPrintChargeSlip, " +
-                                "@IncludeTermsAndConditions, @PWDDiscountCode, @CreatedOn, @LastModified);";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+                                "@IncludeTermsAndConditions, @PWDDiscountCode, @DefaultTransactionChargeCode, @DineInChargeCode, " +
+                                "@TakeOutChargeCode, @DeliveryChargeCode, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("TerminalID", Details.TerminalID);
                 cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
@@ -549,9 +564,14 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("WillPrintChargeSlip", Details.WillPrintChargeSlip);
                 cmd.Parameters.AddWithValue("IncludeTermsAndConditions", Details.IncludeTermsAndConditions);
                 cmd.Parameters.AddWithValue("PWDDiscountCode", Details.PWDDiscountCode);
+                cmd.Parameters.AddWithValue("DefaultTransactionChargeCode", Details.DefaultTransactionChargeCode);
+                cmd.Parameters.AddWithValue("DineInChargeCode", Details.DineInChargeCode);
+                cmd.Parameters.AddWithValue("TakeOutChargeCode", Details.TakeOutChargeCode);
+                cmd.Parameters.AddWithValue("DeliveryChargeCode", Details.DeliveryChargeCode);
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
+                cmd.CommandText = SQL;
                 return base.ExecuteNonQuery(cmd);
             }
 
@@ -662,7 +682,11 @@ namespace AceSoft.RetailPlus.Data
                             "IncludeCreditChargeAgreement, " +
                             "IncludeTermsAndConditions, " +
                             "IsParkingTerminal, " +
-                            "WillPrintChargeSlip " +
+                            "WillPrintChargeSlip, " +
+                            "DefaultTransactionChargeCode, " +
+                            "DineInChargeCode, " +
+                            "TakeOutChargeCode, " +
+                            "DeliveryChargeCode " +
 						"FROM tblTerminal ";
 
 			return SQL;
@@ -888,6 +912,11 @@ namespace AceSoft.RetailPlus.Data
                 // Added Oct 20, 2013
                 Details.IncludeTermsAndConditions = bool.Parse(dr["IncludeTermsAndConditions"].ToString());
 
+                Details.DefaultTransactionChargeCode = dr["DefaultTransactionChargeCode"].ToString();
+                Details.DineInChargeCode = dr["DineInChargeCode"].ToString();
+                Details.TakeOutChargeCode = dr["TakeOutChargeCode"].ToString();
+                Details.DeliveryChargeCode = dr["DeliveryChargeCode"].ToString();
+                
             }
 
             Branch clsBranch = new Branch(base.Connection, base.Transaction);

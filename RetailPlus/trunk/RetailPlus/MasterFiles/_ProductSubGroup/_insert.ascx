@@ -213,6 +213,35 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td class="ms-formspacer" height="20"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                            <label>Select Image for RestoPlus<font color="red">*</font></label></td>
+                                        <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                            <label>Enter Sequence No<font color="red">*</font></label></td>
+                                        <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px"></td>
+                                        <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-authoringcontrols">
+                                            <asp:Label id="Label1" runat="server">Current file: </asp:Label><asp:Label id="lblImagePath" runat="server"></asp:Label>
+                                            <input type="file" id="txtImagePath" name="txtImagePath" accept=".jpg,.gif" runat="server" borderstyle="Groove" multiple="false" />
+                                        </td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-authoringcontrols">
+                                            <asp:textbox id="txtSequenceNo" accessKey="D" runat="server" CssClass="ms-short-numeric" MaxLength="20" BorderStyle="Groove" onKeyPress="AllNum()">0.00</asp:textbox>
+									        <asp:RequiredFieldValidator id="Requiredfieldvalidator8" runat="server" CssClass="ms-error" ErrorMessage="'Expanded Value Added Tax' must not be left blank." Display="Dynamic" ControlToValidate="txtSequenceNo" ForeColor=" "></asp:RequiredFieldValidator>
+									        <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="txtSequenceNo"
+                                                        CssClass="ms-error" Display="Dynamic" ErrorMessage="'EVAT' must be in number, max of 3 decimal places."
+                                                        ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
+                                        </td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-authoringcontrols" colspan="3">
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td class="ms-formspacer">
                                         </td>
                                     </tr>

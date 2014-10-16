@@ -18,27 +18,29 @@ namespace AceSoft.RetailPlus.Client.UI
         private GroupBox groupBox1;
         private Label lblCurrency;
         private Button cmdCancel;
+        private ComboBox cboCardType;
+        private GroupBox grpCardInfo;
+        private Label lblMinimumPercentageDue;
+        private Label lblPenaltyCharge;
+        private Label lblFinanceCharge;
+        private Label lblCardTypeCode;
         private Label label1;
-        private Button cmdCreditCardTypeGroup;
-        private Button cmdCreditCardTypeIndividual;
-        private Label label4;
-        private Label label5;
+        private Label WithGuarantor;
         private Label label2;
-        private Label label3;
-        private Label label7;
-        private Label label6;
-		private CreditType mCreditType;
+        private Label LatePenaltyCharge;
+        private Label FinanceCharge;
+        private Label CardTypeCode;
+        private Label lblMinimumAmountDue;
+        private CheckBox chkWithGuarantor;
+        private Label label4;
 
 		public DialogResult Result
 		{
 			get {	return dialog;	}
 		}
 
-		public CreditType CreditType
-		{
-            get {	return mCreditType;	}
-			set {	mCreditType = value;	}
-		}
+        public Data.CardTypeDetails CardTypeDetails { get; set; }
+        private Data.ContactDetails mclsGuarantor;
 
 		#region Constructors And Desctructors
 		public ContactCreditTypeSelectWnd()
@@ -69,19 +71,26 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblHeader = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.grpCardInfo = new System.Windows.Forms.GroupBox();
+            this.lblMinimumPercentageDue = new System.Windows.Forms.Label();
+            this.lblPenaltyCharge = new System.Windows.Forms.Label();
+            this.lblFinanceCharge = new System.Windows.Forms.Label();
+            this.lblCardTypeCode = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.cmdCreditCardTypeGroup = new System.Windows.Forms.Button();
-            this.cmdCreditCardTypeIndividual = new System.Windows.Forms.Button();
+            this.WithGuarantor = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.LatePenaltyCharge = new System.Windows.Forms.Label();
+            this.FinanceCharge = new System.Windows.Forms.Label();
+            this.CardTypeCode = new System.Windows.Forms.Label();
+            this.cboCardType = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.lblCurrency = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
+            this.lblMinimumAmountDue = new System.Windows.Forms.Label();
+            this.chkWithGuarantor = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.grpCardInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblHeader
@@ -110,16 +119,10 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.grpCardInfo);
+            this.groupBox1.Controls.Add(this.cboCardType);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.cmdCreditCardTypeGroup);
-            this.groupBox1.Controls.Add(this.cmdCreditCardTypeIndividual);
             this.groupBox1.Controls.Add(this.lblCurrency);
-            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Blue;
             this.groupBox1.Location = new System.Drawing.Point(9, 67);
@@ -128,125 +131,169 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
-            // label7
+            // grpCardInfo
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(511, 62);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(37, 13);
-            this.label7.TabIndex = 10;
-            this.label7.Text = "Enter";
+            this.grpCardInfo.Controls.Add(this.chkWithGuarantor);
+            this.grpCardInfo.Controls.Add(this.lblMinimumAmountDue);
+            this.grpCardInfo.Controls.Add(this.lblMinimumPercentageDue);
+            this.grpCardInfo.Controls.Add(this.lblPenaltyCharge);
+            this.grpCardInfo.Controls.Add(this.lblFinanceCharge);
+            this.grpCardInfo.Controls.Add(this.lblCardTypeCode);
+            this.grpCardInfo.Controls.Add(this.label1);
+            this.grpCardInfo.Controls.Add(this.WithGuarantor);
+            this.grpCardInfo.Controls.Add(this.label2);
+            this.grpCardInfo.Controls.Add(this.LatePenaltyCharge);
+            this.grpCardInfo.Controls.Add(this.FinanceCharge);
+            this.grpCardInfo.Controls.Add(this.CardTypeCode);
+            this.grpCardInfo.Location = new System.Drawing.Point(59, 101);
+            this.grpCardInfo.Name = "grpCardInfo";
+            this.grpCardInfo.Size = new System.Drawing.Size(828, 130);
+            this.grpCardInfo.TabIndex = 10;
+            this.grpCardInfo.TabStop = false;
+            this.grpCardInfo.Text = "HP Super Card information";
+            this.grpCardInfo.Visible = false;
             // 
-            // label6
+            // lblMinimumPercentageDue
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label6.Location = new System.Drawing.Point(488, 61);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(68, 13);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "or [ Enter ]";
+            this.lblMinimumPercentageDue.AutoSize = true;
+            this.lblMinimumPercentageDue.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMinimumPercentageDue.ForeColor = System.Drawing.Color.MediumBlue;
+            this.lblMinimumPercentageDue.Location = new System.Drawing.Point(566, 90);
+            this.lblMinimumPercentageDue.Name = "lblMinimumPercentageDue";
+            this.lblMinimumPercentageDue.Size = new System.Drawing.Size(29, 13);
+            this.lblMinimumPercentageDue.TabIndex = 11;
+            this.lblMinimumPercentageDue.Text = "0.00";
             // 
-            // label4
+            // lblPenaltyCharge
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(459, 128);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(20, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "F2";
+            this.lblPenaltyCharge.AutoSize = true;
+            this.lblPenaltyCharge.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPenaltyCharge.ForeColor = System.Drawing.Color.MediumBlue;
+            this.lblPenaltyCharge.Location = new System.Drawing.Point(359, 90);
+            this.lblPenaltyCharge.Name = "lblPenaltyCharge";
+            this.lblPenaltyCharge.Size = new System.Drawing.Size(29, 13);
+            this.lblPenaltyCharge.TabIndex = 10;
+            this.lblPenaltyCharge.Text = "0.00";
             // 
-            // label5
+            // lblFinanceCharge
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label5.Location = new System.Drawing.Point(451, 128);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(36, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "[ F1 ]";
+            this.lblFinanceCharge.AutoSize = true;
+            this.lblFinanceCharge.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFinanceCharge.ForeColor = System.Drawing.Color.MediumBlue;
+            this.lblFinanceCharge.Location = new System.Drawing.Point(147, 90);
+            this.lblFinanceCharge.Name = "lblFinanceCharge";
+            this.lblFinanceCharge.Size = new System.Drawing.Size(29, 13);
+            this.lblFinanceCharge.TabIndex = 9;
+            this.lblFinanceCharge.Text = "0.00";
             // 
-            // label2
+            // lblCardTypeCode
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(459, 61);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(20, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "F1";
+            this.lblCardTypeCode.AutoSize = true;
+            this.lblCardTypeCode.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCardTypeCode.ForeColor = System.Drawing.Color.MediumBlue;
+            this.lblCardTypeCode.Location = new System.Drawing.Point(147, 39);
+            this.lblCardTypeCode.Name = "lblCardTypeCode";
+            this.lblCardTypeCode.Size = new System.Drawing.Size(92, 13);
+            this.lblCardTypeCode.TabIndex = 8;
+            this.lblCardTypeCode.Text = "Card Type Code: ";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label1.Location = new System.Drawing.Point(292, 128);
+            this.label1.Location = new System.Drawing.Point(642, 77);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(138, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Group Credit Card Type";
+            this.label1.Size = new System.Drawing.Size(80, 26);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Minimum\r\nAmount Due:";
             // 
-            // cmdCreditCardTypeGroup
+            // WithGuarantor
             // 
-            this.cmdCreditCardTypeGroup.AutoSize = true;
-            this.cmdCreditCardTypeGroup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdCreditCardTypeGroup.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmdCreditCardTypeGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdCreditCardTypeGroup.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdCreditCardTypeGroup.ForeColor = System.Drawing.Color.White;
-            this.cmdCreditCardTypeGroup.Location = new System.Drawing.Point(200, 107);
-            this.cmdCreditCardTypeGroup.Name = "cmdCreditCardTypeGroup";
-            this.cmdCreditCardTypeGroup.Size = new System.Drawing.Size(52, 52);
-            this.cmdCreditCardTypeGroup.TabIndex = 3;
-            this.cmdCreditCardTypeGroup.TabStop = false;
-            this.cmdCreditCardTypeGroup.UseVisualStyleBackColor = true;
-            this.cmdCreditCardTypeGroup.Click += new System.EventHandler(this.cmdCreditCardTypeGroup_Click);
+            this.WithGuarantor.AutoSize = true;
+            this.WithGuarantor.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WithGuarantor.ForeColor = System.Drawing.Color.MediumBlue;
+            this.WithGuarantor.Location = new System.Drawing.Point(642, 39);
+            this.WithGuarantor.Name = "WithGuarantor";
+            this.WithGuarantor.Size = new System.Drawing.Size(100, 13);
+            this.WithGuarantor.TabIndex = 6;
+            this.WithGuarantor.Text = "With Guarantor :";
             // 
-            // cmdCreditCardTypeIndividual
+            // label2
             // 
-            this.cmdCreditCardTypeIndividual.AutoSize = true;
-            this.cmdCreditCardTypeIndividual.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdCreditCardTypeIndividual.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmdCreditCardTypeIndividual.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdCreditCardTypeIndividual.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdCreditCardTypeIndividual.ForeColor = System.Drawing.Color.White;
-            this.cmdCreditCardTypeIndividual.Location = new System.Drawing.Point(200, 40);
-            this.cmdCreditCardTypeIndividual.Name = "cmdCreditCardTypeIndividual";
-            this.cmdCreditCardTypeIndividual.Size = new System.Drawing.Size(52, 52);
-            this.cmdCreditCardTypeIndividual.TabIndex = 2;
-            this.cmdCreditCardTypeIndividual.TabStop = false;
-            this.cmdCreditCardTypeIndividual.UseVisualStyleBackColor = true;
-            this.cmdCreditCardTypeIndividual.Click += new System.EventHandler(this.cmdCreditCardTypeIndividual_Click);
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label2.Location = new System.Drawing.Point(434, 77);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(126, 26);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Minimum \r\nPercentage Due (%):";
+            // 
+            // LatePenaltyCharge
+            // 
+            this.LatePenaltyCharge.AutoSize = true;
+            this.LatePenaltyCharge.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LatePenaltyCharge.ForeColor = System.Drawing.Color.MediumBlue;
+            this.LatePenaltyCharge.Location = new System.Drawing.Point(228, 77);
+            this.LatePenaltyCharge.Name = "LatePenaltyCharge";
+            this.LatePenaltyCharge.Size = new System.Drawing.Size(125, 26);
+            this.LatePenaltyCharge.TabIndex = 4;
+            this.LatePenaltyCharge.Text = "Late\r\nPenalty Charge  (%):";
+            // 
+            // FinanceCharge
+            // 
+            this.FinanceCharge.AutoSize = true;
+            this.FinanceCharge.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FinanceCharge.ForeColor = System.Drawing.Color.MediumBlue;
+            this.FinanceCharge.Location = new System.Drawing.Point(48, 77);
+            this.FinanceCharge.Name = "FinanceCharge";
+            this.FinanceCharge.Size = new System.Drawing.Size(91, 26);
+            this.FinanceCharge.TabIndex = 3;
+            this.FinanceCharge.Text = "Finance\r\nCharge (%)     :";
+            // 
+            // CardTypeCode
+            // 
+            this.CardTypeCode.AutoSize = true;
+            this.CardTypeCode.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CardTypeCode.ForeColor = System.Drawing.Color.MediumBlue;
+            this.CardTypeCode.Location = new System.Drawing.Point(48, 39);
+            this.CardTypeCode.Name = "CardTypeCode";
+            this.CardTypeCode.Size = new System.Drawing.Size(101, 13);
+            this.CardTypeCode.TabIndex = 2;
+            this.CardTypeCode.Text = "Card Type Code: ";
+            // 
+            // cboCardType
+            // 
+            this.cboCardType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboCardType.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboCardType.Location = new System.Drawing.Point(276, 47);
+            this.cboCardType.Name = "cboCardType";
+            this.cboCardType.Size = new System.Drawing.Size(311, 31);
+            this.cboCardType.TabIndex = 9;
+            this.cboCardType.SelectedIndexChanged += new System.EventHandler(this.cboCardType_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(362, 27);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(70, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Credit Card";
             // 
             // lblCurrency
             // 
             this.lblCurrency.AutoSize = true;
             this.lblCurrency.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCurrency.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblCurrency.Location = new System.Drawing.Point(292, 61);
+            this.lblCurrency.Location = new System.Drawing.Point(277, 27);
             this.lblCurrency.Name = "lblCurrency";
-            this.lblCurrency.Size = new System.Drawing.Size(160, 13);
+            this.lblCurrency.Size = new System.Drawing.Size(207, 13);
             this.lblCurrency.TabIndex = 1;
-            this.lblCurrency.Text = "Individual Credit Card Type";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label3.Location = new System.Drawing.Point(451, 61);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(36, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "[ F1 ]";
+            this.lblCurrency.Text = "Select type of  Credit Card  to issue.";
             // 
             // cmdCancel
             // 
@@ -263,6 +310,26 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdCancel.Text = "CANCEL";
             this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
+            // 
+            // lblMinimumAmountDue
+            // 
+            this.lblMinimumAmountDue.AutoSize = true;
+            this.lblMinimumAmountDue.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMinimumAmountDue.ForeColor = System.Drawing.Color.MediumBlue;
+            this.lblMinimumAmountDue.Location = new System.Drawing.Point(728, 90);
+            this.lblMinimumAmountDue.Name = "lblMinimumAmountDue";
+            this.lblMinimumAmountDue.Size = new System.Drawing.Size(29, 13);
+            this.lblMinimumAmountDue.TabIndex = 12;
+            this.lblMinimumAmountDue.Text = "0.00";
+            // 
+            // chkWithGuarantor
+            // 
+            this.chkWithGuarantor.AutoSize = true;
+            this.chkWithGuarantor.Location = new System.Drawing.Point(742, 40);
+            this.chkWithGuarantor.Name = "chkWithGuarantor";
+            this.chkWithGuarantor.Size = new System.Drawing.Size(15, 14);
+            this.chkWithGuarantor.TabIndex = 13;
+            this.chkWithGuarantor.UseVisualStyleBackColor = true;
             // 
             // ContactCreditTypeSelectWnd
             // 
@@ -288,6 +355,8 @@ namespace AceSoft.RetailPlus.Client.UI
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.grpCardInfo.ResumeLayout(false);
+            this.grpCardInfo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -308,13 +377,13 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				case Keys.F1:
                 case Keys.Enter:
-					mCreditType = CreditType.Individual;
+                    //mCreditType = CreditType.Individual;
                     dialog = DialogResult.OK;
                     this.Hide();
 					break;
 
                 case Keys.F2:
-					mCreditType = CreditType.Group;
+                    //mCreditType = CreditType.Group;
                     dialog = DialogResult.OK;
                     this.Hide();
 					break;
@@ -332,12 +401,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
             catch { }
 
-            try
-            { this.cmdCreditCardTypeIndividual.Image = new Bitmap(Application.StartupPath + "/images/CreditCardTypeIndividual.jpg"); }
-            catch { }
-            try
-            { this.cmdCreditCardTypeGroup.Image = new Bitmap(Application.StartupPath + "/images/CreditCardTypeGroup.jpg"); }
-            catch { }
+            LoadOptions();
 		}
 
 		#endregion
@@ -360,17 +424,74 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void cmdCreditCardTypeIndividual_Click(object sender, EventArgs e)
         {
-            mCreditType= CreditType.Individual;
+            //mCreditType= CreditType.Individual;
         }
 
         private void cmdCreditCardTypeGroup_Click(object sender, EventArgs e)
         {
-            mCreditType= CreditType.Group;
+            //mCreditType= CreditType.Group;
         }
 
 		#region Private Methods
 
+        private void LoadOptions()
+        {
+            cboCardType.Items.Clear();
+            Data.CardType clsCardType = new Data.CardType();
+            foreach (System.Data.DataRow dr in clsCardType.ListAsDataTable(new Data.CardTypeDetails(CreditCardTypes.Internal), "CardTypeName", SortOption.Ascending).Rows)
+            {
+                cboCardType.Items.Add(dr["CardTypeName"]);
+            }
+            clsCardType.CommitAndDispose();
+
+            if (cboCardType.Items.Count > 0)
+                cboCardType.SelectedIndex = 0;
+            else
+                cboCardType.Items.Add("No available cards to issue");
+
+            cboCardType_SelectedIndexChanged(null, null);
+        }
+
 		#endregion
 
-	}
+        private void cboCardType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboCardType.Text == "No available cards to issue")
+                grpCardInfo.Visible = false;
+            else
+            {
+                Data.CardType clsCardType = new Data.CardType();
+                Data.CardTypeDetails clsCardTypeDetails = clsCardType.Details(cboCardType.Text);
+                clsCardType.CommitAndDispose();
+
+                if (clsCardTypeDetails.CardTypeID == 0)
+                {
+                    grpCardInfo.Visible = false;
+                    CardTypeDetails = new Data.CardTypeDetails();
+                }
+                else
+                {
+                    grpCardInfo.Visible = true;
+                    grpCardInfo.Text = cboCardType.Text + " Information";
+                    lblCardTypeCode.Text = clsCardTypeDetails.CardTypeCode;
+                    lblFinanceCharge.Text = clsCardTypeDetails.CreditFinanceCharge.ToString("##0.#0");
+                    lblPenaltyCharge.Text = clsCardTypeDetails.CreditLatePenaltyCharge.ToString("##0.#0");
+                    lblMinimumPercentageDue.Text = clsCardTypeDetails.CreditMinimumPercentageDue.ToString("##0.#0");
+                    lblMinimumAmountDue.Text = clsCardTypeDetails.CreditMinimumAmountDue.ToString("##0.#0");
+                    chkWithGuarantor.Checked = clsCardTypeDetails.WithGuarantor;
+
+                    CardTypeDetails = clsCardTypeDetails;
+
+                    if (!clsCardTypeDetails.WithGuarantor)
+                    {
+                        mclsGuarantor = new Data.ContactDetails();
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+        }
+    }
 }

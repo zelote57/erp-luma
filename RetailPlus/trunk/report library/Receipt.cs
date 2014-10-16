@@ -114,8 +114,8 @@ namespace AceSoft.RetailPlus.Reports
         public static string RewardCurrentPoints = "{RewardCurrentPoints}";
         // 05Nov11 added for Permit Nos.
         public static string RewardsPermitNo = "{RewardsPermitNo}";
-        public static string InHouseIndividualCreditPermitNo = "{InHouseIndividualCreditPermitNo}";
-        public static string InHouseGroupCreditPermitNo = "{InHouseGroupCreditPermitNo}";
+        //public static string InHouseIndividualCreditPermitNo = "{InHouseIndividualCreditPermitNo}";
+        //public static string InHouseGroupCreditPermitNo = "{InHouseGroupCreditPermitNo}";
 
     }
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,

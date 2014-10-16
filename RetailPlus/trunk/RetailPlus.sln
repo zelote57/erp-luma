@@ -48,8 +48,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "test\Test.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD Serial Generator", "HD Serial Generator\HD Serial Generator.csproj", "{F38B9A37-4DB3-4E9C-9684-AECFDE02696B}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ClientSetup", "Installer\ClientSetup\ClientSetup.vdproj", "{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}"
-EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -368,22 +366,6 @@ Global
 		{F38B9A37-4DB3-4E9C-9684-AECFDE02696B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F38B9A37-4DB3-4E9C-9684-AECFDE02696B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F38B9A37-4DB3-4E9C-9684-AECFDE02696B}.Release|x86.ActiveCfg = Release|Any CPU
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Debug|.NET.ActiveCfg = Debug
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Debug|.NET.Build.0 = Debug
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Debug|Any CPU.ActiveCfg = Debug
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Debug|Any CPU.Build.0 = Debug
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Debug|Mixed Platforms.ActiveCfg = Debug
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Debug|Mixed Platforms.Build.0 = Debug
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Debug|x86.ActiveCfg = Debug
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Debug|x86.Build.0 = Debug
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Release|.NET.ActiveCfg = Release
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Release|.NET.Build.0 = Release
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Release|Any CPU.ActiveCfg = Release
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Release|Any CPU.Build.0 = Release
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Release|Mixed Platforms.ActiveCfg = Release
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Release|Mixed Platforms.Build.0 = Release
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Release|x86.ActiveCfg = Release
-		{FD4BF99C-18E3-4BED-8808-A62BE8764DBF}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

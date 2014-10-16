@@ -18,9 +18,66 @@ namespace AceSoft.RetailPlus.Data
 		public Int16 CardTypeID;
 		public string CardTypeCode;
 		public string CardTypeName;
+        public decimal CreditFinanceCharge;
+        public decimal CreditLatePenaltyCharge;
+        public decimal CreditMinimumAmountDue;
+        public decimal CreditMinimumPercentageDue;
+        public decimal CreditFinanceCharge15th;
+        public decimal CreditLatePenaltyCharge15th;
+        public decimal CreditMinimumAmountDue15th;
+        public decimal CreditMinimumPercentageDue15th;
+        public CreditCardTypes CreditCardType;
+        public bool WithGuarantor;
+        public string BIRPermitNo;
 
         public DateTime CreatedOn;
         public DateTime LastModified;
+
+        public bool CheckGuarantor;
+
+        public CardTypeDetails(CreditCardTypes CreditCardType)
+        {
+            this.CardTypeID = 0;
+            this.CardTypeCode = string.Empty;
+            this.CardTypeName = string.Empty;
+            this.CreditFinanceCharge = 0;
+            this.CreditLatePenaltyCharge = 0;
+            this.CreditMinimumAmountDue = 0;
+            this.CreditMinimumPercentageDue = 0;
+            this.CreditFinanceCharge15th = 0;
+            this.CreditLatePenaltyCharge15th = 0;
+            this.CreditMinimumAmountDue15th = 0;
+            this.CreditMinimumPercentageDue15th = 0;
+            this.CreditCardType = CreditCardType;
+            this.WithGuarantor = false;
+            this.BIRPermitNo = string.Empty;
+            this.CreatedOn = DateTime.Now;
+            this.LastModified = DateTime.Now;
+
+            this.CheckGuarantor = false;
+        }
+
+        public CardTypeDetails(CreditCardTypes CreditCardType, bool WithGuarantor)
+        {
+            this.CardTypeID = 0;
+            this.CardTypeCode = string.Empty;
+            this.CardTypeName = string.Empty;
+            this.CreditFinanceCharge = 0;
+            this.CreditLatePenaltyCharge = 0;
+            this.CreditMinimumAmountDue = 0;
+            this.CreditMinimumPercentageDue = 0;
+            this.CreditFinanceCharge15th = 0;
+            this.CreditLatePenaltyCharge15th = 0;
+            this.CreditMinimumAmountDue15th = 0;
+            this.CreditMinimumPercentageDue15th = 0;
+            this.CreditCardType = CreditCardType;
+            this.WithGuarantor = WithGuarantor;
+            this.BIRPermitNo = string.Empty;
+            this.CreatedOn = DateTime.Now;
+            this.LastModified = DateTime.Now;
+
+            this.CheckGuarantor = true;
+        }
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
@@ -56,26 +113,8 @@ namespace AceSoft.RetailPlus.Data
             {
                 Save(Details);
 
-                string SQL = "SELECT LAST_INSERT_ID();";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Parameters.Clear();
-                cmd.CommandText = SQL;
-
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-
-                Int16 iID = 0;
-
-                while (myReader.Read())
-                {
-                    iID = myReader.GetInt16(0);
-                }
-
-                myReader.Close();
-
-                return iID;
+                return Int16.Parse(base.getLAST_INSERT_ID(this));
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -98,21 +137,33 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procSaveCardType(@CardTypeID, @CardTypeCode, @CardTypeName, @CreatedOn, @LastModified);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+
+                string SQL = "CALL procSaveCardType(@CardTypeID, @CardTypeCode, @CardTypeName, @CreditFinanceCharge, @CreditLatePenaltyCharge, @CreditMinimumAmountDue, @CreditMinimumPercentageDue, " +
+                                                   "@CreditFinanceCharge15th, @CreditLatePenaltyCharge15th, @CreditMinimumAmountDue15th, @CreditMinimumPercentageDue15th, " +
+                                                   "@CreditCardType, @WithGuarantor, @BIRPermitNo, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("CardTypeID", Details.CardTypeID);
                 cmd.Parameters.AddWithValue("CardTypeCode", Details.CardTypeCode);
                 cmd.Parameters.AddWithValue("CardTypeName", Details.CardTypeName);
+                cmd.Parameters.AddWithValue("CreditFinanceCharge", Details.CreditFinanceCharge);
+                cmd.Parameters.AddWithValue("CreditLatePenaltyCharge", Details.CreditLatePenaltyCharge);
+                cmd.Parameters.AddWithValue("CreditMinimumAmountDue", Details.CreditMinimumAmountDue);
+                cmd.Parameters.AddWithValue("CreditMinimumPercentageDue", Details.CreditMinimumPercentageDue);
+                cmd.Parameters.AddWithValue("CreditFinanceCharge15th", Details.CreditFinanceCharge15th);
+                cmd.Parameters.AddWithValue("CreditLatePenaltyCharge15th", Details.CreditLatePenaltyCharge15th);
+                cmd.Parameters.AddWithValue("CreditMinimumAmountDue15th", Details.CreditMinimumAmountDue15th);
+                cmd.Parameters.AddWithValue("CreditMinimumPercentageDue15th", Details.CreditMinimumPercentageDue15th);
+                cmd.Parameters.AddWithValue("CreditCardType", Details.CreditCardType);
+                cmd.Parameters.AddWithValue("WithGuarantor", Details.WithGuarantor);
+                cmd.Parameters.AddWithValue("BIRPermitNo", Details.BIRPermitNo);
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
+                cmd.CommandText = SQL;
                 return base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -128,37 +179,48 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL=	"DELETE FROM tblCardTypes WHERE CardTypeID IN (" + IDs + ");";
-				  
-				
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-
 				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
 
 		#endregion
+
+        private string SQLSelect()
+        {
+            string stSQL = "SELECT " +
+                                "CardTypeID, " +
+                                "CardTypeCode, " +
+                                "CardTypeName, " +
+                                "CreditFinanceCharge, " +
+                                "CreditLatePenaltyCharge, " +
+                                "CreditMinimumAmountDue, " +
+                                "CreditMinimumPercentageDue, " +
+                                "CreditFinanceCharge15th, " +
+                                "CreditLatePenaltyCharge15th, " +
+                                "CreditMinimumAmountDue15th, " +
+                                "CreditMinimumPercentageDue15th, " +
+                                "CreditCardType, " +
+                                "WithGuarantor, " +
+                                "BIRPermitNo, " +
+                                "CreatedOn, " +
+                                "LastModified " +
+                            "FROM tblCardTypes ";
+
+            return stSQL;
+        }
 
 		#region Details
 
@@ -166,49 +228,21 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"CardTypeID, " +
-								"CardTypeCode, " +
-								"CardTypeName " +
-							"FROM tblCardTypes " +
-							"WHERE CardTypeID = @CardTypeID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+				string SQL=	SQLSelect() + "WHERE CardTypeID = @CardTypeID;";
 
                 cmd.Parameters.AddWithValue("@CardTypeID", CardTypeID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				CardTypeDetails Details = new CardTypeDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.CardTypeID = myReader.GetInt16("CardTypeID");
-					Details.CardTypeCode = "" + myReader["CardTypeCode"].ToString();
-					Details.CardTypeName = "" + myReader["CardTypeName"].ToString();
-				}
-
-				myReader.Close();
-
-				return Details;
+                return setDetails(dt);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -216,198 +250,92 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-				string SQL=	"SELECT " +
-								"CardTypeID, " +
-								"CardTypeCode, " +
-								"CardTypeName " +
-							"FROM tblCardTypes " +
-							"WHERE CardTypeName = @CardTypeName;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.Parameters.AddWithValue("@CardTypeName", CardTypeName);
+				string SQL=	SQLSelect() + "WHERE CardTypeName = @CardTypeName;";
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				CardTypeDetails Details = new CardTypeDetails();
+                cmd.Parameters.AddWithValue("CardTypeName", CardTypeName);
 
-				while (myReader.Read()) 
-				{
-					Details.CardTypeID = myReader.GetInt16("CardTypeID");
-					Details.CardTypeCode = "" + myReader["CardTypeCode"].ToString();
-					Details.CardTypeName = "" + myReader["CardTypeName"].ToString();
-				}
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				myReader.Close();
-
-				return Details;
+                return setDetails(dt);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}
+
+        private CardTypeDetails setDetails(System.Data.DataTable dt)
+        {
+            CardTypeDetails Details = new CardTypeDetails();
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                Details.CardTypeID = Int16.Parse(dr["CardTypeID"].ToString());
+                Details.CardTypeCode = dr["CardTypeCode"].ToString();
+                Details.CardTypeName = dr["CardTypeName"].ToString();
+
+                Details.CreditFinanceCharge = decimal.Parse(dr["CreditFinanceCharge"].ToString());
+                Details.CreditLatePenaltyCharge = decimal.Parse(dr["CreditLatePenaltyCharge"].ToString());
+                Details.CreditMinimumAmountDue = decimal.Parse(dr["CreditMinimumAmountDue"].ToString());
+                Details.CreditMinimumPercentageDue = decimal.Parse(dr["CreditMinimumPercentageDue"].ToString());
+                Details.CreditFinanceCharge15th = decimal.Parse(dr["CreditFinanceCharge15th"].ToString());
+                Details.CreditLatePenaltyCharge15th = decimal.Parse(dr["CreditLatePenaltyCharge15th"].ToString());
+                Details.CreditMinimumAmountDue15th = decimal.Parse(dr["CreditMinimumAmountDue15th"].ToString());
+                Details.CreditMinimumPercentageDue15th = decimal.Parse(dr["CreditMinimumPercentageDue15th"].ToString());
+                Details.CreditCardType = (CreditCardTypes)Enum.Parse(typeof(CreditCardTypes), dr["CreditCardType"].ToString());
+                Details.WithGuarantor = bool.Parse(dr["WithGuarantor"].ToString());
+                Details.BIRPermitNo = dr["BIRPermitNo"].ToString();
+            }
+
+            return Details;
+        }
 
 		#endregion
 
 		#region Streams
 
-		public MySqlDataReader List(string SortField, SortOption SortOrder)
+		public System.Data.DataTable ListAsDataTable(CardTypeDetails SearchKeys, string SortField = "CardTypeCode", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
 		{
-			try
-			{
-				string SQL = "SELECT " +
-								"CardTypeID, " +
-								"CardTypeCode, " +
-								"CardTypeName " +
-							"FROM tblCardTypes " +
-							"ORDER BY " + SortField;
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
 
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
+            string SQL = SQLSelect() + "WHERE 1=1 ";
 
-				
+            if (SearchKeys.CreditCardType != CreditCardTypes.Both)
+            {
+                SQL += "AND CreditCardType = @CreditCardType ";
+                cmd.Parameters.AddWithValue("CreditCardType", SearchKeys.CreditCardType.ToString("d"));
+            }
+            if (!string.IsNullOrEmpty(SearchKeys.CardTypeCode))
+            {
+                SQL += "AND CardTypeCode = @CardTypeCode ";
+                cmd.Parameters.AddWithValue("CardTypeCode", SearchKeys.CardTypeCode);
+            }
+            if (!string.IsNullOrEmpty(SearchKeys.CardTypeCode))
+            {
+                SQL += "AND CardTypeName = @CardTypeName ";
+                cmd.Parameters.AddWithValue("CardTypeName", SearchKeys.CardTypeName);
+            }
+            if (SearchKeys.CheckGuarantor)
+            {
+                SQL += "AND WithGuarantor = @WithGuarantor ";
+                cmd.Parameters.AddWithValue("WithGuarantor", SearchKeys.WithGuarantor);
+            }
 
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-					
+            SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "CardTypeCode") + " ";
+            SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
+            SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-				
-				
-				
+            cmd.CommandText = SQL;
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
 
-				throw base.ThrowException(ex);
-			}	
+            return dt;
 		}
-
-		public System.Data.DataTable DataList(string SortField, SortOption SortOrder)
-		{
-			MySqlDataReader myReader = List(SortField,SortOption.Ascending);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblCardTypes");
-
-			dt.Columns.Add("CardTypeID");
-			dt.Columns.Add("CardTypeCode");
-			dt.Columns.Add("CardTypeName");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-
-				dr["CardTypeID"] = myReader.GetInt16("CardTypeID");
-				dr["CardTypeCode"] = "" + myReader["CardTypeCode"].ToString();
-				dr["CardTypeName"] = "" + myReader["CardTypeName"].ToString();
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
-
-			return dt;
-		}
-
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			try
-			{
-				string SQL ="SELECT " +
-								"CardTypeID, " +
-								"CardTypeCode, " +
-								"CardTypeName " +
-							"FROM tblCardTypes " +
-							"WHERE CardTypeName LIKE @SearchKey " +
-							"ORDER BY " + SortField;
-
-				if (SortOrder == SortOption.Ascending)
-					SQL += " ASC";
-				else
-					SQL += " DESC";
-
-				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmSearchKey = new MySqlParameter("@SearchKey",MySqlDbType.String);
-				prmSearchKey.Value = "%" + SearchKey + "%";
-				cmd.Parameters.Add(prmSearchKey);
-
-				
-				
-				return base.ExecuteReader(cmd);			
-			}
-			catch (Exception ex)
-			{
-				
-				
-					
-
-				
-				
-				
-
-				throw base.ThrowException(ex);
-			}	
-		}
-		
-		public System.Data.DataTable DataSearch(string SearchKey, string SortField, SortOption SortOrder)
-		{
-			MySqlDataReader myReader = Search(SearchKey,SortField,SortOption.Ascending);
-			
-			System.Data.DataTable dt = new System.Data.DataTable("tblCardTypes");
-
-			dt.Columns.Add("CardTypeID");
-			dt.Columns.Add("CardTypeCode");
-			dt.Columns.Add("CardTypeName");
-				
-			while (myReader.Read())
-			{
-				System.Data.DataRow dr = dt.NewRow();
-
-				dr["CardTypeID"] = myReader.GetInt16("CardTypeID");
-				dr["CardTypeCode"] = "" + myReader["CardTypeCode"].ToString();
-				dr["CardTypeName"] = "" + myReader["CardTypeName"].ToString();
-					
-				dt.Rows.Add(dr);
-			}
-			
-			myReader.Close();
-
-			return dt;
-		}
-
 		
 		#endregion
 	}

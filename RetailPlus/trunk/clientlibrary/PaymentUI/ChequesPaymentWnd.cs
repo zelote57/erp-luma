@@ -112,8 +112,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
-            this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
-            this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.SuspendLayout();
@@ -320,38 +318,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
-            // keyboardSearchControl1
-            // 
-            this.keyboardSearchControl1.BackColor = System.Drawing.Color.White;
-            this.keyboardSearchControl1.Location = new System.Drawing.Point(91, 310);
-            this.keyboardSearchControl1.Name = "keyboardSearchControl1";
-            this.keyboardSearchControl1.Size = new System.Drawing.Size(799, 134);
-            this.keyboardSearchControl1.TabIndex = 91;
-            this.keyboardSearchControl1.TabStop = false;
-            this.keyboardSearchControl1.Tag = "";
-            this.keyboardSearchControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardSearchControl1_UserKeyPressed);
-            // 
-            // keyboardNoControl1
-            // 
-            this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
-            this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Up;
-            this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
-            this.keyboardNoControl1.Location = new System.Drawing.Point(412, 310);
-            this.keyboardNoControl1.Name = "keyboardNoControl1";
-            this.keyboardNoControl1.Size = new System.Drawing.Size(202, 176);
-            this.keyboardNoControl1.TabIndex = 92;
-            this.keyboardNoControl1.TabStop = false;
-            this.keyboardNoControl1.Visible = false;
-            this.keyboardNoControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardNoControl1_UserKeyPressed);
-            // 
             // ChequesPaymentWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
-            this.Controls.Add(this.keyboardSearchControl1);
-            this.Controls.Add(this.keyboardNoControl1);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
             this.Controls.Add(this.lblHeader);
@@ -421,8 +393,42 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-            keyboardNoControl1.Visible = false;
-            keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
+                this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
+
+                // 
+                // keyboardSearchControl1
+                // 
+                this.keyboardSearchControl1.BackColor = System.Drawing.Color.White;
+                this.keyboardSearchControl1.Location = new System.Drawing.Point(91, 310);
+                this.keyboardSearchControl1.Name = "keyboardSearchControl1";
+                this.keyboardSearchControl1.Size = new System.Drawing.Size(799, 134);
+                this.keyboardSearchControl1.TabIndex = 91;
+                this.keyboardSearchControl1.TabStop = false;
+                this.keyboardSearchControl1.Tag = "";
+                this.keyboardSearchControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardSearchControl1_UserKeyPressed);
+                // 
+                // keyboardNoControl1
+                // 
+                this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
+                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Up;
+                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
+                this.keyboardNoControl1.Location = new System.Drawing.Point(412, 310);
+                this.keyboardNoControl1.Name = "keyboardNoControl1";
+                this.keyboardNoControl1.Size = new System.Drawing.Size(202, 176);
+                this.keyboardNoControl1.TabIndex = 92;
+                this.keyboardNoControl1.TabStop = false;
+                this.keyboardNoControl1.Visible = false;
+                this.keyboardNoControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardNoControl1_UserKeyPressed);
+
+                this.Controls.Add(this.keyboardSearchControl1);
+                this.Controls.Add(this.keyboardNoControl1);
+
+                keyboardNoControl1.Visible = false;
+                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            }
 
             lblChequeAmount.Text = "Cheque Amount (" + CompanyDetails.Currency + "):";
             lblBalanceAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
@@ -439,15 +445,21 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             txtSelectedTextBox = (TextBox)sender;
 
-            keyboardNoControl1.Visible = false;
-            keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                keyboardNoControl1.Visible = false;
+                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            }
 		}
 		private void txtAmount_GotFocus(object sender, System.EventArgs e)
 		{
             txtSelectedTextBox = (TextBox)sender;
 
-            keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
-            keyboardSearchControl1.Visible = false;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = false;
+            }
 		}
 		private void txtAmount_KeyPress(object sender, KeyPressEventArgs e)
 		{
@@ -458,8 +470,11 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             txtSelectedTextBox = (TextBox)sender;
 
-            keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
-            keyboardSearchControl1.Visible = false;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = false;
+            }
 		}
 		private void txtValidityDate_KeyPress(object sender, KeyPressEventArgs e)
 		{
@@ -470,8 +485,11 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             txtSelectedTextBox = (TextBox)sender;
 
-            keyboardNoControl1.Visible = false;
-            keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                keyboardNoControl1.Visible = false;
+                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            }
 		}
         private void keyboardSearchControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
         {

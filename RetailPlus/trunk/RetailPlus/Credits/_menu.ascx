@@ -21,11 +21,27 @@
 										<td class="Ms-pvnavtopc1"></td>
 										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkCardTypes" runat="server" ToolTip="Display List of Credit Card Types">
+													Internal Credit Cards</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">
 											<asp:HyperLink id="lnkCustomers" runat="server" ToolTip="Display List of Customers">
-													Customers</asp:HyperLink>
+													Customer's w/out Guarantor</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkGuarantors" runat="server" ToolTip="Display List of Guarantors">
+													Customer's w/ Guarantor</asp:HyperLink>
 										</td>
 										<td class="Ms-pvnavmidr1"></td>
 									</tr>

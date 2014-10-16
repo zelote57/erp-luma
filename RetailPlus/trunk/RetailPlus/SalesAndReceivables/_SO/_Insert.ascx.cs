@@ -167,7 +167,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._SO
         {
             SO clsSO = new SO();
             clsSO.GetConnection();
-            lblSONo.Text = Constants.SALES_ORDER_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsSO.LastTransactionNo();
+            lblSONo.Text = Constants.SALES_ORDER_CODE + CompanyDetails.BECompanyCode + DateTime.Now.Year.ToString() + clsSO.LastTransactionNo();
 
             SODetails clsDetails = new SODetails();
 

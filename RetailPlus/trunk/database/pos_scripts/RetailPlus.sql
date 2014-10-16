@@ -5072,7 +5072,7 @@ CREATE TABLE tblContactCreditCardInfo (
 	`CustomerID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
 	`GuarantorID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 REFERENCES tblContacts(`ContactID`),
 	`CreditType` TINYINT(1) NOT NULL DEFAULT 0,
-	`CreditCardNo` VARCHAR(15) DEFAULT '',
+	`CreditCardNo` VARCHAR(16) DEFAULT '',
 	`CreditAwardDate` DATETIME NOT NULL DEFAULT '1900-01-01 12:00:00',
 	`TotalPurchases` DECIMAL(18,3) NOT NULL DEFAULT 0,
 	`CreditPaid` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -7936,6 +7936,7 @@ ALTER TABLE sysAuditTrail ADD `BranchID` INT(4) UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE sysAuditTrail ADD `TerminalNo` VARCHAR(5);
 
 ALTER TABLE tblCashierLogs ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblCashierLogs_IXSync ON tblCashierLogs (SyncID);
 UPDATE tblCashierLogs SET SyncID = CashierLogsID WHERE SyncID = 0;
 
 
@@ -7943,34 +7944,42 @@ ALTER TABLE tblCashierReport DROP INDEX PK_tblCashierReport;
 ALTER TABLE tblCashierReport DROP PRIMARY KEY;
 ALTER TABLE tblCashierReport ADD `CashierReportID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
 ALTER TABLE tblCashierReport ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblCashierReport_IXSync ON tblCashierReport (SyncID);
 UPDATE tblCashierReport SET SyncID = CashierReportID WHERE SyncID = 0;
 
 ALTER TABLE tblCashierReportHistory ADD `CashierReportHistoryID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
 ALTER TABLE tblCashierReportHistory ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblCashierReport_IXSync ON tblCashierReportHistory (SyncID);
 UPDATE tblCashierReportHistory SET SyncID = CashierReportHistoryID WHERE SyncID = 0;
 ALTER TABLE tblCashierReportHistory ADD `IsCashCountInitialized` TINYINT(1) NOT NULL DEFAULT 0; 
 
 
 ALTER TABLE tblDeposit ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblDeposit_IXSync ON tblDeposit (SyncID);
 UPDATE tblDeposit SET SyncID = DepositID WHERE SyncID = 0;
 
 ALTER TABLE tblDisburse ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblDisburse_IXSync ON tblDisburse (SyncID);
 UPDATE tblDisburse SET SyncID = DisburseID WHERE SyncID = 0;
 
 ALTER TABLE tblPaidOut ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblPaidOut_IXSync ON tblPaidOut (SyncID);
 UPDATE tblPaidOut SET SyncID = PaidOutID WHERE SyncID = 0;
 
 ALTER TABLE tblWithhold ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblWithhold_IXSync ON tblWithhold (SyncID);
 UPDATE tblWithhold SET SyncID = WithholdID WHERE SyncID = 0;
 
 ALTER TABLE tblCashPayment ADD `CashPaymentID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
 ALTER TABLE tblCashPayment ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblCashPayment_IXSync ON tblCashPayment (SyncID);
 UPDATE tblCashPayment SET SyncID = CashPaymentID WHERE SyncID = 0;
 ALTER TABLE tblCashPayment ADD `TerminalNo` VARCHAR(5);
 ALTER TABLE tblCashPayment ADD `BranchID` INT(4) NOT NULL DEFAULT 0;
 
 ALTER TABLE tblChequePayment ADD `ChequePaymentID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
 ALTER TABLE tblChequePayment ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblChequePayment_IXSync ON tblChequePayment (SyncID);
 UPDATE tblChequePayment SET SyncID = ChequePaymentID WHERE SyncID = 0;
 ALTER TABLE tblChequePayment ADD `TerminalNo` VARCHAR(5);
 ALTER TABLE tblChequePayment ADD `BranchID` INT(4) NOT NULL DEFAULT 0;
@@ -7978,12 +7987,14 @@ ALTER TABLE tblChequePayment ADD `BranchID` INT(4) NOT NULL DEFAULT 0;
 
 ALTER TABLE tblCreditCardPayment ADD `CreditCardPaymentID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
 ALTER TABLE tblCreditCardPayment ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblCreditCardPayment_IXSync ON tblCreditCardPayment (SyncID);
 UPDATE tblCreditCardPayment SET SyncID = CreditCardPaymentID WHERE SyncID = 0;
 ALTER TABLE tblCreditCardPayment ADD `TerminalNo` VARCHAR(5);
 ALTER TABLE tblCreditCardPayment ADD `BranchID` INT(4) NOT NULL DEFAULT 0;
 
 ALTER TABLE tblCreditPayment ADD `CreditPaymentID` BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT;
 ALTER TABLE tblCreditPayment ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblCreditPayment_IXSync ON tblCreditPayment (SyncID);
 UPDATE tblCreditPayment SET SyncID = CreditPaymentID WHERE SyncID = 0;
 ALTER TABLE tblCreditPayment ADD `BranchID` INT(4) NOT NULL DEFAULT 0;
 
@@ -7998,6 +8009,7 @@ WHERE tblProducts.ProductID = tblProductBaseVariationsMatrix.ProductID
 ALTER TABLE tblProductVariationsMatrix DROP FOREIGN KEY `tblproductvariationsmatrix_ibfk_2`;
 
 ALTER TABLE tblCashCount ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblCashCount_IXSync ON tblCashCount (SyncID);
 UPDATE tblCashCount SET SyncID = CashCountID WHERE SyncID = 0;
 ALTER TABLE tblCashCount ADD `DenominationValue` DECIMAL(18,2) NOT NULL DEFAULT 0 COMMENT 'Need for audit purposes only';
 
@@ -8025,6 +8037,7 @@ UPDATE tblTransactions SET ORNo = NULL WHERE TransactionStatus NOT IN (1,5,11) A
 UPDATE tblTransactions SET ORNo = TransactionNo WHERE TransactionStatus IN (1,5,11) AND IFNULL(ORNo,'') = '';
 
 ALTER TABLE tblTransactions ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblTransactions_IXSync ON tblTransactions (SyncID);
 UPDATE tblTransactions SET SyncID = TransactionID WHERE SyncID = 0;
 ALTER TABLE tblTransactions ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
 ALTER TABLE tblTransactions ADD `NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for NonVAT';
@@ -8037,6 +8050,7 @@ ALTER TABLE tblTransactions ADD `OtherDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0
 ALTER TABLE tblTransactions ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Net Sales = Amount Due = VAT Exempt - SNRDisc = Subtotal - Not SNRDisc';
 
 ALTER TABLE tblTransactionItems ADD `SyncID` BIGINT(20) NOT NULL DEFAULT 0;
+CREATE INDEX IX_tblTransactionItems_IXSync ON tblTransactionItems (SyncID);
 UPDATE tblTransactionItems SET SyncID = TransactionItemsID WHERE SyncID = 0;
 ALTER TABLE tblTransactionItems ADD `ZeroRatedVAT` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
 ALTER TABLE tblTransactionItems ADD `NonVATableAmount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for NonVAT';
@@ -8174,7 +8188,7 @@ WHERE tblTransactions.TransactionID = TrxItems.TransactionID;
 -- 0.20 Pharmaceuticals
 
 UPDATE tblTransactions SET 
-	VATExempt = CASE DiscountCode WHEN 'SNR' THEN Discount / 0.20 ELSE 0 END,
+	VATExempt = CASE DiscountCode WHEN 'SNR' THEN Discount / 0.05 ELSE 0 END,
 	SNRDiscount = CASE DiscountCode WHEN 'SNR' THEN Discount ELSE 0 END,
 	PWDDiscount = CASE DiscountCode WHEN 'PWD' THEN Discount ELSE 0 END,
 	OtherDiscount = CASE DiscountCode WHEN 'SNR' THEN 0 WHEN 'PWD' THEN 0 ELSE Discount END;
@@ -8259,12 +8273,9 @@ ALTER TABLE tblDiscountHistory MODIFY DiscountCode VARCHAR(60);
 -- update the transactionstatus of Credit Payments
 -- rerun the procTerminalReportHistorySyncTransactionSales after updating this
 -- CALL procTerminalReportHistorySyncTransactionSales( 1, '01', '2014-09-01 00:00');
-UPDATE tblTransactions SET TransactionStatus = 7 WHERE TransactionID IN (SELECT DISTINCT TransactionID FROM tblTransactionItems WHERE ProductCode = 'CREDIT PAYMENT');
+UPDATE tblTransactions SET TransactionStatus = 7 WHERE TransactionStatus <> 7 AND TransactionID IN (SELECT DISTINCT TransactionID FROM tblTransactionItems WHERE ProductCode = 'CREDIT PAYMENT');
 
-GRANT ALL PRIVILEGES ON pos.* TO POSAuditUser IDENTIFIED BY 'posauditpwd' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-
--- for monitoring the refunds
+-- for monitoring the breakdown of refunds
 -- to separated from the cashsales
 ALTER TABLE tblTerminalReport ADD `RefundCash` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminalReport ADD `RefundCheque` DECIMAL(18,3) NOT NULL DEFAULT 0;
@@ -8272,26 +8283,87 @@ ALTER TABLE tblTerminalReport ADD `RefundCreditCard` DECIMAL(18,3) NOT NULL DEFA
 ALTER TABLE tblTerminalReport ADD `RefundCredit` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminalReport ADD `RefundDebit` DECIMAL(18,3) NOT NULL DEFAULT 0;
 
+-- for monitoring the breakdown of refunds
+-- to separated from the cashsales
 ALTER TABLE tblTerminalReportHistory ADD `RefundCash` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminalReportHistory ADD `RefundCheque` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminalReportHistory ADD `RefundCreditCard` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminalReportHistory ADD `RefundCredit` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblTerminalReportHistory ADD `RefundDebit` DECIMAL(18,3) NOT NULL DEFAULT 0;
 
+-- for monitoring the breakdown of refunds
+-- to separated from the cashsales
 ALTER TABLE tblCashierReport ADD `RefundCash` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReport ADD `RefundCheque` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReport ADD `RefundCreditCard` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReport ADD `RefundCredit` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReport ADD `RefundDebit` DECIMAL(18,3) NOT NULL DEFAULT 0;
 
+-- for monitoring the breakdown of refunds
+-- to separated from the cashsales
 ALTER TABLE tblCashierReportHistory ADD `RefundCash` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReportHistory ADD `RefundCheque` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReportHistory ADD `RefundCreditCard` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReportHistory ADD `RefundCredit` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReportHistory ADD `RefundDebit` DECIMAL(18,3) NOT NULL DEFAULT 0;
 
-
 /*********************************  v_4.0.1.1.sql END  *******************************************************/ 
+
+CREATE INDEX IX_tblCashierLogs_IXSync ON tblCashierLogs (SyncID);
+CREATE INDEX IX_tblCashierReport_IXSync ON tblCashierReport (SyncID);
+CREATE INDEX IX_tblCashierReport_IXSync ON tblCashierReportHistory (SyncID);
+CREATE INDEX IX_tblDeposit_IXSync ON tblDeposit (SyncID);
+CREATE INDEX IX_tblDisburse_IXSync ON tblDisburse (SyncID);
+CREATE INDEX IX_tblPaidOut_IXSync ON tblPaidOut (SyncID);
+CREATE INDEX IX_tblWithhold_IXSync ON tblWithhold (SyncID);
+CREATE INDEX IX_tblCashPayment_IXSync ON tblCashPayment (SyncID);
+CREATE INDEX IX_tblChequePayment_IXSync ON tblChequePayment (SyncID);
+CREATE INDEX IX_tblCreditCardPayment_IXSync ON tblCreditCardPayment (SyncID);
+CREATE INDEX IX_tblCreditPayment_IXSync ON tblCreditPayment (SyncID);
+CREATE INDEX IX_tblCashCount_IXSync ON tblCashCount (SyncID);
+CREATE INDEX IX_tblTransactions_IXSync ON tblTransactions (SyncID);
+CREATE INDEX IX_tblTransactionItems_IXSync ON tblTransactionItems (SyncID);
+
+-- this is use for creating transactionnos in BranchTransfer, PO, ClosingInventory, etc.
+-- replacement of 3digits Company Code in BE
+-- this must be a 3 to 5digits Company Code
+DELETE FROM sysConfig WHERE ConfigName = 'BECompanyCode';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('BECompanyCode',			'CompanyDetails',					'AMD');
+
+-- remove the header's. use the credit card name as the header
+DELETE FROM tblReceipt WHERE Module = 'GroupCreditChargeHeader';
+DELETE FROM tblReceipt WHERE Module = 'IndividualCreditChargeHeader';
+-- For HP values should be
+--		GroupCreditChargeHeader:		HP CREDIT CHARGE SLIP
+--		IndividualCreditChargeHeader:	SUPER CREDIT CHARGE SLIP
+
+-- remove this coz it's already moved in the CardType
+ALTER TABLE tblTerminal DROP InHouseIndividualCreditPermitNo;
+ALTER TABLE tblTerminal DROP InHouseGroupCreditPermitNo;
+
+ALTER TABLE tblCreditCardPayment ADD AdditionalCharge DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCreditCardPayment ADD ContactID BIGINT(20) NOT NULL DEFAULT 0;
+ALTER TABLE tblCreditCardPayment ADD GuarantorID BIGINT(20) NOT NULL DEFAULT 0;
+ALTER TABLE tblCreditCardPayment ADD TransactionDate DATETIME NOT NULL DEFAULT '1900-01-01';
+UPDATE tblCreditCardPayment, tblTransactions
+SET
+	tblCreditCardPayment.TransactionDate = tblTransactions.TransactionDate
+WHERE tblCreditCardPayment.BranchID = tblTransactions.BranchID
+	AND tblCreditCardPayment.TerminalNo = tblTransactions.TerminalNo
+	AND tblCreditCardPayment.TransactionNo = tblTransactions.TransactionNo;
+
+ALTER TABLE tblCreditCardPayment ADD CashierName VARCHAR(150);
+UPDATE tblCreditCardPayment, tblTransactions
+SET
+	tblCreditCardPayment.CashierName = tblTransactions.CashierName
+WHERE tblCreditCardPayment.BranchID = tblTransactions.BranchID
+	AND tblCreditCardPayment.TerminalNo = tblTransactions.TerminalNo
+	AND tblCreditCardPayment.TransactionNo = tblTransactions.TransactionNo;
+
+ALTER TABLE tblCreditPayment ADD CreditCardPaymentID BIGINT(20) NOT NULL DEFAULT 0;
+ALTER TABLE tblCreditPayment ADD CreditCardTypeID INT(10) NOT NULL DEFAULT 0;
+
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CreditVerificationSlipHeaderLabel',  'FE',								'{CardTypeName}');
 
 -- Notes: Please red
 -- run the retailplus_proc.sql
@@ -8306,3 +8378,6 @@ ALTER TABLE tblCashierReportHistory ADD `RefundDebit` DECIMAL(18,3) NOT NULL DEF
 -- directory: retailplusclient	for updated executable file
 
 -- Add POSAuditUser see above
+
+-- GRANT ALL PRIVILEGES ON pos.* TO POSAuditUser IDENTIFIED BY 'posauditpwd' WITH GRANT OPTION;
+-- FLUSH PRIVILEGES;

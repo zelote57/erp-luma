@@ -1615,8 +1615,9 @@ namespace AceSoft.RetailPlus.Client.UI
                                 CutPrinterPaper();
                                 MessageBox.Show("Done printing 'print.prn'", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 break;
+
                             case Keys.Enter:
-                                EnterCreditItemizePayment();
+                                VerifyCredit();
                                 break;
 
 							case Keys.S:
@@ -4399,7 +4400,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					ArrayList arrDebitPaymentDetails = payment.DebitPaymentDetails;
 					decimal RewardPointsPayment = payment.RewardPointsPayment;
 					decimal RewardConvertedPayment = payment.RewardConvertedPayment;
-
+                    Data.ContactDetails clsCreditorDetails = payment.CreditorDetails;
 					payment.Close();
 					payment.Dispose();
 
@@ -4412,6 +4413,12 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                     else
 					{
+                        // override the customerinformation if it's paid with in-house creditcard
+                        if (clsCreditorDetails.ContactID != mclsSalesTransactionDetails.CustomerID)
+                        {
+                            LoadContact(Data.ContactGroupCategory.CUSTOMER, clsCreditorDetails);
+                        }
+
                         mclsSalesTransactionDetails.AmountPaid = AmountPaid;
                         mclsSalesTransactionDetails.CashPayment = CashPayment;
                         mclsSalesTransactionDetails.ChequePayment = ChequePayment;
@@ -4465,8 +4472,17 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         Cursor.Current = Cursors.WaitCursor;
                         clsEvent.AddEventLn("[" + lblCashier.Text + "]      saving payments...", true);
+
+                        // for assignment of payments
+                        mclsSalesTransactionDetails.PaymentDetails = AssignArrayListPayments(arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
+
                         SavePayments(arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
 
+                        if (mclsSalesTransactionDetails.CreditChargeAmount != 0)
+                        {
+                            //Aug 30, 2014 delete need to move this from here to mainwnd
+                            clsSalesTransactions.UpdateCreditChargeAmount(mclsSalesTransactionDetails.BranchID, mclsSalesTransactionDetails.TerminalNo, mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.CreditChargeAmount);
+                        }
 
                         Data.Products clsProduct = new Data.Products(mConnection, mTransaction);
                         mConnection = clsProduct.Connection; mTransaction = clsProduct.Transaction;
@@ -4764,7 +4780,6 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsEvent.AddEventLn("      commiting transaction to database...", true, mclsSysConfigDetails.WillWriteSystemLog);
                         clsSalesTransactions.CommitAndDispose();
 
-
                         /**
                             * print the transaction
                             * */
@@ -4862,7 +4877,7 @@ namespace AceSoft.RetailPlus.Client.UI
                                         clsEvent.AddEventLn("      printing charge slip...", true, mclsSysConfigDetails.WillWriteSystemLog);
 
                                         // Nov 05, 2011 : Print Charge Slip
-                                        if (!mclsTerminalDetails.IncludeCreditChargeAgreement) //do not print the guarantor if there is not agreement printed
+                                        if (!mclsTerminalDetails.IncludeCreditChargeAgreement) //do not print the guarantor if there is no agreement printed
                                         {
                                             PrintChargeSlip(ChargeSlipType.Guarantor);
                                         }
@@ -4886,6 +4901,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         clsEvent.AddEventLn(" Loading Options...", true, mclsSysConfigDetails.WillWriteSystemLog);
                         this.LoadOptions();
+
 					}
 				}
 				catch (Exception ex)
@@ -5477,7 +5493,42 @@ namespace AceSoft.RetailPlus.Client.UI
 				Invoke(opendrawerDel);
 			}
 		}
-        
+
+        private void VerifyCredit()
+        { 
+            if (!SuspendTransactionAndContinue()) return;
+
+            DialogResult loginresult = GetWriteAccessAndLogin(mclsSalesTransactionDetails.CashierID, AccessTypes.EnterCreditPayment);
+
+            if (loginresult == DialogResult.OK)
+            {
+                CreditVerificationWnd clsCreditVerificationWnd = new CreditVerificationWnd();
+                clsCreditVerificationWnd.ShowDialog(this);
+                DialogResult result = clsCreditVerificationWnd.Result;
+                Data.ContactDetails details = clsCreditVerificationWnd.CreditorDetails;
+                clsCreditVerificationWnd.Close();
+                clsCreditVerificationWnd.Dispose();
+
+                if (result == DialogResult.OK)
+                {
+                    Cursor.Current = Cursors.WaitCursor;
+
+                    LocalDB clsLocalDB = new LocalDB(mConnection, mTransaction);
+                    mConnection = clsLocalDB.Connection; mTransaction = clsLocalDB.Transaction;
+
+                    try
+                    {
+                        //print the verification slip
+                        PrintCreditVerificationSlip(details);
+                    }
+                    catch (Exception ex)
+                    {
+                        InsertErrorLogToFile(ex, "ERROR!!! Credit verification procedure. Err Description: ");
+                    }
+                    clsLocalDB.CommitAndDispose();
+                }
+            }
+        }
         private void EnterCreditItemizePayment()
         {
             if (!SuspendTransactionAndContinue()) return;
@@ -5557,6 +5608,9 @@ namespace AceSoft.RetailPlus.Client.UI
                             mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
 
                             ApplyChangeQuantityPriceAmountDetails(iRow, Details, "Change Quantity, Price, Amount for Credit Payment");
+
+                            // for assignment of payments
+                            mclsSalesTransactionDetails.PaymentDetails = AssignArrayListPayments(arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, null, arrDebitPaymentDetails);
 
                             SavePayments(arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, null, arrDebitPaymentDetails);
 
@@ -5663,7 +5717,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mboIsInTransaction)
 			{
-				MessageBox.Show("Sorry you cannot issue a Reward Card while there is an ongoing transaction." + Environment.NewLine + "Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Sorry you cannot issue a Reward Card while there is an ongoing transaction. Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -5676,6 +5730,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					DialogResult result; Data.ContactDetails clsContactDetails;
 					ContactSelectWnd clsContactWnd = new ContactSelectWnd();
 					clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                    clsContactWnd.Header = "Please select customer for reward card issuance.";
 					clsContactWnd.ShowDialog(this);
 					clsContactDetails = clsContactWnd.Details;
 					result = clsContactWnd.Result;
@@ -5763,7 +5818,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mboIsInTransaction)
 			{
-				MessageBox.Show("Sorry you cannot renew a Reward Card while there is an ongoing transaction." + Environment.NewLine + "Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Sorry you cannot renew a Reward Card while there is an ongoing transaction. Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -5776,6 +5831,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					DialogResult result; Data.ContactDetails clsContactDetails;
 					ContactSelectWnd clsContactWnd = new ContactSelectWnd();
 					clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                    clsContactWnd.Header = "Please select customer for reward card renewal.";
 					clsContactWnd.ShowDialog(this);
 					clsContactDetails = clsContactWnd.Details;
 					result = clsContactWnd.Result;
@@ -5861,7 +5917,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mboIsInTransaction)
 			{
-				MessageBox.Show("Sorry you cannot replace a Reward Card while there is an ongoing transaction." + Environment.NewLine + "Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Sorry you cannot replace a Reward Card while there is an ongoing transaction. Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -5874,6 +5930,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					DialogResult result; Data.ContactDetails clsContactDetails;
 					ContactSelectWnd clsContactWnd = new ContactSelectWnd();
 					clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                    clsContactWnd.Header = "Please select customer for reward card replacement.";
 					clsContactWnd.ShowDialog(this);
 					clsContactDetails = clsContactWnd.Details;
 					result = clsContactWnd.Result;
@@ -5963,7 +6020,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mboIsInTransaction)
 			{
-				MessageBox.Show("Sorry you cannot reactivate a Reward Card while there is an ongoing transaction." + Environment.NewLine + "Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Sorry you cannot reactivate a Reward Card while there is an ongoing transaction. Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -5976,6 +6033,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					DialogResult result; Data.ContactDetails clsContactDetails;
 					ContactSelectWnd clsContactWnd = new ContactSelectWnd();
 					clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                    clsContactWnd.Header = "Please select customer for reward card re-activation.";
 					clsContactWnd.ShowDialog(this);
 					clsContactDetails = clsContactWnd.Details;
 					result = clsContactWnd.Result;
@@ -6037,7 +6095,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mboIsInTransaction)
 			{
-				MessageBox.Show("Sorry you cannot declare a Reward Card as LOST while there is an ongoing transaction." + Environment.NewLine + "Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Sorry you cannot declare a Reward Card as LOST while there is an ongoing transaction. Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -6050,6 +6108,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					DialogResult result; Data.ContactDetails clsContactDetails;
 					ContactSelectWnd clsContactWnd = new ContactSelectWnd();
 					clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                    clsContactWnd.Header = "Please select customer for reward card declaration as lost.";
 					clsContactWnd.ShowDialog(this);
 					clsContactDetails = clsContactWnd.Details;
 					result = clsContactWnd.Result;
@@ -6110,7 +6169,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mboIsInTransaction)
 			{
-				MessageBox.Show("Sorry you cannot issue a Credit Card while there is an ongoing transaction." + Environment.NewLine + "Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Sorry you cannot issue a Credit Card while there is an ongoing transaction. Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -6120,26 +6179,28 @@ namespace AceSoft.RetailPlus.Client.UI
 			{
 				try
 				{
-					DialogResult result; CreditType clsCreditType = CreditType.Individual; 
-					Data.ContactDetails clsGuarantorDetails = new AceSoft.RetailPlus.Data.ContactDetails();
-					ContactCreditTypeSelectWnd clsContactCreditTypeSelectWnd = new ContactCreditTypeSelectWnd();
-					clsContactCreditTypeSelectWnd.ShowDialog(this);
-					clsCreditType = clsContactCreditTypeSelectWnd.CreditType;
-					result = clsContactCreditTypeSelectWnd.Result;
-					clsContactCreditTypeSelectWnd.Close();
-					clsContactCreditTypeSelectWnd.Dispose();
+					DialogResult result;
+                    Data.CardTypeDetails clsCardTypeDetails = new Data.CardTypeDetails();
+                    Data.ContactDetails clsGuarantorDetails = new AceSoft.RetailPlus.Data.ContactDetails();
+                    ContactCreditTypeSelectWnd clsContactCreditTypeSelectWnd = new ContactCreditTypeSelectWnd();
+                    clsContactCreditTypeSelectWnd.ShowDialog(this);
+                    clsCardTypeDetails = clsContactCreditTypeSelectWnd.CardTypeDetails;
+                    result = clsContactCreditTypeSelectWnd.Result;
+                    clsContactCreditTypeSelectWnd.Close();
+                    clsContactCreditTypeSelectWnd.Dispose();
 
-					if (result != DialogResult.OK)
-					{ return; }
+                    if (result != DialogResult.OK)
+                    { return; }
 
 					Data.ContactDetails clsContactDetails;
 					ContactSelectWnd clsContactWnd = new ContactSelectWnd();
 
-					if (clsCreditType == CreditType.Group)
+                    if (clsCardTypeDetails.WithGuarantor)
 					{
-						MessageBox.Show("Please select a GUARANTOR to issue Credit Card.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Please select a GUARANTOR to issue Credit Card.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 						clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                        clsContactWnd.Header = "Select GUARANTOR to issue Credit Card.";
 						clsContactWnd.ShowDialog(this);
 						clsGuarantorDetails = clsContactWnd.Details;
 						result = clsContactWnd.Result;
@@ -6149,10 +6210,11 @@ namespace AceSoft.RetailPlus.Client.UI
 						if (result != DialogResult.OK)
 						{ return; }
 
-						MessageBox.Show(clsGuarantorDetails.ContactName + " has been selected as guarantor." + Environment.NewLine + "Please select the CUSTOMER to issue Credit Card.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						MessageBox.Show(clsGuarantorDetails.ContactName + " has been selected as guarantor." + Environment.NewLine + "Please select the CUSTOMER to issue Credit Card.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
 					clsContactWnd = new ContactSelectWnd();
 					clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                    clsContactWnd.Header = "Select CUSTOMER to issue Credit Card.";
 					clsContactWnd.ShowDialog(this);
 					clsContactDetails = clsContactWnd.Details;
 					result = clsContactWnd.Result;
@@ -6165,7 +6227,8 @@ namespace AceSoft.RetailPlus.Client.UI
 					if (clsContactDetails.ContactID == Constants.ZERO || clsContactDetails.ContactID == Constants.C_RETAILPLUS_CUSTOMERID)
 					{ return; }
 
-					if (clsCreditType == CreditType.Individual) clsGuarantorDetails = clsContactDetails;
+                    // if no guarantor
+                    if (!clsCardTypeDetails.WithGuarantor) clsGuarantorDetails = new Data.ContactDetails();
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Issuing credit card no to " + clsContactDetails.ContactName);
 
@@ -6180,16 +6243,16 @@ namespace AceSoft.RetailPlus.Client.UI
 						clsEvent.AddEventLn("Cancelled!");
 						clsEvent.AddEventLn("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " was already issued to " + clsContactDetails.ContactName + " on " + clsContactDetails.CreditDetails.CreditAwardDate.ToString("MMM dd, yyyy hh:mm tt"));
 						MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " was already issued to " + clsContactDetails.ContactName + " on " + clsContactDetails.CreditDetails.CreditAwardDate.ToString("MMM dd, yyyy hh:mm tt") + "." +
-										Environment.NewLine + " Please select another customer to issue Credit Card.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        Environment.NewLine + " Please select another customer to issue Credit Card.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
 						return;
 					}
 
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Issuing credit card no to " + clsContactDetails.ContactName);
 
 					ContactCreditWnd clsContactCreditWnd = new ContactCreditWnd();
-					clsContactCreditWnd.Caption = "Credit Card Issuance";
-					clsContactCreditWnd.CreditType = clsCreditType;
-					clsContactCreditWnd.GuarantorID = clsGuarantorDetails.ContactID;
+					clsContactCreditWnd.Header = "Credit Card Issuance";
+                    clsContactCreditWnd.CardTypeDetails = clsCardTypeDetails;
+					clsContactCreditWnd.Guarantor = clsGuarantorDetails;
 					clsContactCreditWnd.ContactDetails = clsContactDetails;
 					clsContactCreditWnd.CreditCardStatus = CreditCardStatus.New;
 					clsContactCreditWnd.ShowDialog(this);
@@ -6200,6 +6263,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					if (result == DialogResult.OK)
 					{
+                        
+
                         Data.Products clsProducts = new Data.Products(mConnection, mTransaction);
                         mConnection = clsProducts.Connection; mTransaction = clsProducts.Transaction;
 
@@ -6211,7 +6276,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         clsProducts.CommitAndDispose();
 
 						MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " was issued to " + clsContactDetails.ContactName + "." +
-										Environment.NewLine + "Please collect the payment then close the transaction.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+										Environment.NewLine + "Please collect the payment then close the transaction.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 						clsEvent.AddEventLn("Done!");
 						clsEvent.AddEventLn("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " was issued to " + clsContactDetails.ContactName + ".", true);
@@ -6219,7 +6284,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         LocalDB clsLocalDB = new LocalDB(mConnection, mTransaction);
                         mConnection = clsLocalDB.Connection; mTransaction = clsLocalDB.Transaction;
 
-						clsEvent.AddEvent("[" + lblCashier.Text + "] Creating " + Data.Products.DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE + "transaction for customer: ");
+                        clsEvent.AddEvent("[" + lblCashier.Text + "] Creating " + Data.Products.DEFAULT_CREDIT_CARD_MEMBERSHIP_FEE_BARCODE + "transaction for customer: ");
 						LoadContact(AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER, clsContactDetails);
 						if (!this.CreateTransaction()) return;
 
@@ -6246,7 +6311,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mboIsInTransaction)
 			{
-				MessageBox.Show("Sorry you cannot renew a Credit Card while there is an ongoing transaction." + Environment.NewLine + "Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Sorry you cannot renew a Credit Card while there is an ongoing transaction. Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -6259,6 +6324,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					DialogResult result; Data.ContactDetails clsContactDetails;
 					ContactSelectWnd clsContactWnd = new ContactSelectWnd();
 					clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                    clsContactWnd.Header = "Please select customer for credit card renewal.";
 					clsContactWnd.ShowDialog(this);
 					clsContactDetails = clsContactWnd.Details;
 					result = clsContactWnd.Result;
@@ -6277,21 +6343,23 @@ namespace AceSoft.RetailPlus.Client.UI
                     mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
 
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
+                    Data.ContactDetails clsGuarantor = clsContact.Details(clsContactDetails.CreditDetails.GuarantorID);
+
 					clsContact.CommitAndDispose();
 
-					if (clsContactDetails.CreditDetails.CreditCardNo == string.Empty || clsContactDetails.CreditDetails.CreditCardNo == null)
+					if (string.IsNullOrEmpty(clsContactDetails.CreditDetails.CreditCardNo))
 					{
 						clsEvent.AddEventLn("Cancelled!");
 						clsEvent.AddEventLn(clsContactDetails.ContactName + " has no valid Credit Card yet. ");
-						MessageBox.Show(clsContactDetails.ContactName + " has no valid Credit Card yet. Please select another customer.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						MessageBox.Show(clsContactDetails.ContactName + " has no valid Credit Card yet. Please select another customer.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
 						return;
 					}
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Renewing credit card #: " + clsContactDetails.CreditDetails.CreditCardNo + " of " + clsContactDetails.ContactName + ".");
 
 					ContactCreditWnd clsContactCreditWnd = new ContactCreditWnd();
-					clsContactCreditWnd.Caption = "Credit Card Renewal";
-					clsContactCreditWnd.CreditType = clsContactDetails.CreditDetails.CreditType;
-					clsContactCreditWnd.GuarantorID = clsContactDetails.CreditDetails.GuarantorID;
+					clsContactCreditWnd.Header = "Credit Card Renewal";
+                    clsContactCreditWnd.CardTypeDetails = clsContactDetails.CreditDetails.CardTypeDetails;
+                    clsContactCreditWnd.Guarantor = clsGuarantor;
 					clsContactCreditWnd.ContactDetails = clsContactDetails;
 					clsContactCreditWnd.CreditCardStatus = CreditCardStatus.ReNew;
 					clsContactCreditWnd.ShowDialog(this);
@@ -6312,7 +6380,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         }
                         clsProducts.CommitAndDispose();
 
-						MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been renewed with new expiry date " + clsContactDetails.CreditDetails.ExpiryDate.ToString("yyyy-MM-dd") + ".", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been renewed with new expiry date " + clsContactDetails.CreditDetails.ExpiryDate.ToString("yyyy-MM-dd") + ".", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 						clsEvent.AddEventLn("Done!");
 						clsEvent.AddEventLn("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been renewed with new expiry date " + clsContactDetails.CreditDetails.ExpiryDate.ToString("yyyy-MM-dd") + ".", true);
@@ -6346,7 +6414,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mboIsInTransaction)
 			{
-				MessageBox.Show("Sorry you cannot replace a Credit Card while there is an ongoing transaction." + Environment.NewLine + "Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Sorry you cannot replace a Credit Card while there is an ongoing transaction. Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -6359,6 +6427,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					DialogResult result; Data.ContactDetails clsContactDetails;
 					ContactSelectWnd clsContactWnd = new ContactSelectWnd();
 					clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                    clsContactWnd.Header = "Please select customer for credit card replacement.";
 					clsContactWnd.ShowDialog(this);
 					clsContactDetails = clsContactWnd.Details;
 					result = clsContactWnd.Result;
@@ -6377,13 +6446,14 @@ namespace AceSoft.RetailPlus.Client.UI
                     mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
 
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
+                    Data.ContactDetails clsGuarantor = clsContact.Details(clsContactDetails.CreditDetails.GuarantorID);
 					clsContact.CommitAndDispose();
 
 					if (clsContactDetails.CreditDetails.CreditCardNo == string.Empty || clsContactDetails.CreditDetails.CreditCardNo == null)
 					{
 						clsEvent.AddEventLn("Cancelled!");
 						clsEvent.AddEventLn(clsContactDetails.ContactName + " has no valid Credit Card yet. ");
-						MessageBox.Show(clsContactDetails.ContactName + " has no valid Credit Card yet. Please select another customer.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						MessageBox.Show(clsContactDetails.ContactName + " has no valid Credit Card yet. Please select another customer.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
 						return;
 					}
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Replacing credit card #: " + clsContactDetails.CreditDetails.CreditCardNo + " of " + clsContactDetails.ContactName + " as " + pvtCreditCardStatus.ToString("G"));
@@ -6391,11 +6461,11 @@ namespace AceSoft.RetailPlus.Client.UI
 					string strOldCreditCardNo = clsContactDetails.CreditDetails.CreditCardNo;
 					ContactCreditWnd clsContactCreditWnd = new ContactCreditWnd();
 					if (pvtCreditCardStatus == CreditCardStatus.Replaced_Lost)
-						clsContactCreditWnd.Caption = "Credit Card Replacement of LOST CARD ";
+						clsContactCreditWnd.Header = "Credit Card Replacement of LOST CARD ";
 					else if (pvtCreditCardStatus == CreditCardStatus.Replaced_Expired)
-						clsContactCreditWnd.Caption = "Credit Card Replacement of EXPIRED CARD ";
-					clsContactCreditWnd.CreditType = clsContactDetails.CreditDetails.CreditType;
-					clsContactCreditWnd.GuarantorID = clsContactDetails.CreditDetails.GuarantorID;
+						clsContactCreditWnd.Header = "Credit Card Replacement of EXPIRED CARD ";
+                    clsContactCreditWnd.CardTypeDetails = clsContactDetails.CreditDetails.CardTypeDetails;
+					clsContactCreditWnd.Guarantor = clsGuarantor;
 					clsContactCreditWnd.ContactDetails = clsContactDetails;
 					clsContactCreditWnd.CreditCardStatus = pvtCreditCardStatus;
 					clsContactCreditWnd.ShowDialog(this);
@@ -6416,7 +6486,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         }
                         clsProducts.CommitAndDispose();
 
-						MessageBox.Show("Credit Card No: " + strOldCreditCardNo + " has been replaced with new card #: " + clsContactDetails.CreditDetails.CreditCardNo + ".", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Credit Card No: " + strOldCreditCardNo + " has been replaced with new card #: " + clsContactDetails.CreditDetails.CreditCardNo + ".", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 						clsEvent.AddEventLn("Done!");
 						clsEvent.AddEventLn("Credit Card No: " + strOldCreditCardNo + " has been replaced with new card #: " + clsContactDetails.CreditDetails.CreditCardNo + ".", true);
@@ -6450,7 +6520,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mboIsInTransaction)
 			{
-				MessageBox.Show("Sorry you cannot reactivate a Credit Card while there is an ongoing transaction." + Environment.NewLine + "Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Sorry you cannot reactivate a Credit Card while there is an ongoing transaction. Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -6463,6 +6533,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					DialogResult result; Data.ContactDetails clsContactDetails;
 					ContactSelectWnd clsContactWnd = new ContactSelectWnd();
 					clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                    clsContactWnd.Header = "Please select customer for credit card re-activation.";
 					clsContactWnd.ShowDialog(this);
 					clsContactDetails = clsContactWnd.Details;
 					result = clsContactWnd.Result;
@@ -6481,22 +6552,24 @@ namespace AceSoft.RetailPlus.Client.UI
                     mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
 
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
+                    Data.ContactDetails clsGuarantor = clsContact.Details(clsContactDetails.CreditDetails.GuarantorID);
+
 					clsContact.CommitAndDispose();
 
 					if (clsContactDetails.CreditDetails.CreditCardNo == string.Empty || clsContactDetails.CreditDetails.CreditCardNo == null)
 					{
 						clsEvent.AddEventLn("Cancelled!");
 						clsEvent.AddEventLn(clsContactDetails.ContactName + " has no valid Credit Card yet. ");
-						MessageBox.Show(clsContactDetails.ContactName + " has no valid Credit Card yet. Please select another customer.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						MessageBox.Show(clsContactDetails.ContactName + " has no valid Credit Card yet. Please select another customer.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
 						return;
 					}
 					clsEvent.AddEvent("[" + lblCashier.Text + "] Replacing credit card #: " + clsContactDetails.CreditDetails.CreditCardNo + " of " + clsContactDetails.ContactName + ".");
 
 					string strOldCreditCardNo = clsContactDetails.CreditDetails.CreditCardNo;
 					ContactCreditWnd clsContactCreditWnd = new ContactCreditWnd();
-					clsContactCreditWnd.Caption = "OVERRIDE: Credit Card Reactivation / Change Credit Limit / Change Credit Card #";
-					clsContactCreditWnd.CreditType = clsContactDetails.CreditDetails.CreditType;
-					clsContactCreditWnd.GuarantorID = clsContactDetails.CreditDetails.GuarantorID;
+					clsContactCreditWnd.Header = "OVERRIDE: Credit Card Reactivation / Change Credit Limit / Change Credit Card #";
+                    clsContactCreditWnd.CardTypeDetails = clsContactDetails.CreditDetails.CardTypeDetails;
+					clsContactCreditWnd.Guarantor = clsGuarantor;
 					clsContactCreditWnd.ContactDetails = clsContactDetails;
 					clsContactCreditWnd.CreditCardStatus = CreditCardStatus.Reactivated_Lost;
 					clsContactCreditWnd.ShowDialog(this);
@@ -6507,7 +6580,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					if (result == DialogResult.OK)
 					{
-						MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been reactivated / changed credit limit / changed card no...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been reactivated / changed credit limit / changed card no...", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 						clsEvent.AddEventLn("Done!");
 						clsEvent.AddEventLn("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been reactivated / changed credit limit / changed card no...", true);
@@ -6526,7 +6599,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			if (mboIsInTransaction)
 			{
-				MessageBox.Show("Sorry you cannot deaclare a Credit Card as lost while there is an ongoing transaction." + Environment.NewLine + "Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Sorry you cannot deaclare a Credit Card as lost while there is an ongoing transaction. Please finish the transaction first.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
@@ -6539,6 +6612,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					DialogResult result; Data.ContactDetails clsContactDetails;
 					ContactSelectWnd clsContactWnd = new ContactSelectWnd();
 					clsContactWnd.ContactGroupCategory = AceSoft.RetailPlus.Data.ContactGroupCategory.CUSTOMER;
+                    clsContactWnd.Header = "Please select customer for credit card lost declaration.";
 					clsContactWnd.ShowDialog(this);
 					clsContactDetails = clsContactWnd.Details;
 					result = clsContactWnd.Result;
@@ -6557,20 +6631,22 @@ namespace AceSoft.RetailPlus.Client.UI
                     mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
 
 					clsContactDetails = clsContact.Details(clsContactDetails.ContactID);
+                    Data.ContactDetails clsGuarantor = clsContact.Details(clsContactDetails.CreditDetails.GuarantorID);
+
 					clsContact.CommitAndDispose();
 
 					if (clsContactDetails.CreditDetails.CreditCardNo == string.Empty || clsContactDetails.CreditDetails.CreditCardNo == null)
 					{
 						clsEvent.AddEventLn("Cancelled!");
 						clsEvent.AddEventLn(clsContactDetails.ContactName + " has no valid Credit Card yet. ");
-						MessageBox.Show(clsContactDetails.ContactName + " has no valid Credit Card yet. Please select another customer.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						MessageBox.Show(clsContactDetails.ContactName + " has no valid Credit Card yet. Please select another customer.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
 						return;
 					}
 
 					ContactCreditWnd clsContactCreditWnd = new ContactCreditWnd();
-					clsContactCreditWnd.Caption = "Credit Card Declaration as Lost";
-					clsContactCreditWnd.CreditType = clsContactDetails.CreditDetails.CreditType;
-					clsContactCreditWnd.GuarantorID = clsContactDetails.CreditDetails.GuarantorID;
+					clsContactCreditWnd.Header = "Credit Card Declaration as Lost";
+                    clsContactCreditWnd.CardTypeDetails = clsContactDetails.CreditDetails.CardTypeDetails;
+					clsContactCreditWnd.Guarantor = clsGuarantor;
 					clsContactCreditWnd.ContactDetails = clsContactDetails;
 					clsContactCreditWnd.CreditCardStatus = CreditCardStatus.Lost;
 					clsContactCreditWnd.ShowDialog(this);
@@ -6581,7 +6657,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 					if (result == DialogResult.OK)
 					{
-						MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been declared as LOST.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been declared as LOST.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 						clsEvent.AddEventLn("Done!");
 						clsEvent.AddEventLn("Credit Card No: " + clsContactDetails.CreditDetails.CreditCardNo + " has been declared as LOST.", true);
@@ -7435,7 +7511,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 					else if(mclsTerminalDetails.CheckCutOffTime == true)
 					{
-						clsEvent.AddEventLn("Transaction is not allowed, transaction date is 2Days delayed. Please restart FE.", true);
+						clsEvent.AddEventLn("Transaction is not allowed, transaction date is 2-Days delayed. Please restart FE.", true);
 						MessageBox.Show("Transaction is not allowed, trasnsaction date is 2Days delayed. Please restart FE." +
 							Environment.NewLine + "Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
 						txtBarCode.Text = "";
@@ -7560,7 +7636,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         else
                         {
                             clsTerminalReport.CommitAndDispose();
-                            clsEvent.AddEventLn("Transaction is not allowed, transaction date is 2Days delayed. Please restart FE.", true);
+                            clsEvent.AddEventLn("Transaction is not allowed, transaction date is 2-Days delayed. Please restart FE.", true);
                             MessageBox.Show("Transaction is not allowed, trasnsaction date is 2Days delayed. Please restart FE." +
                                 Environment.NewLine + "Sorry selling is not permitted this time, Please consult for the Selling time.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             txtBarCode.Text = "";
@@ -7578,7 +7654,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                     clsEvent.AddEventLn("OK to sell...", true);
                 }
-                else
+                else 
                 {
                     // this is to check if the last maxdate is too far from current date. that means they did not zread for at least 2 days which is not allowed.
                     // or the system date has been altered.
@@ -7595,6 +7671,8 @@ namespace AceSoft.RetailPlus.Client.UI
                             txtBarCode.Text = "";
                             return false;
                         }
+                        clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
+                        mConnection = clsTerminalReport.Connection; mTransaction = clsTerminalReport.Transaction;
                     }
                 }
 

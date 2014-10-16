@@ -681,8 +681,6 @@ create procedure procSaveTerminal(
 	IN decRewardPointsPaymentValue decimal(18,3),
 	IN decRewardPointsPaymentCashEquivalent decimal(18,3),
 	IN strRewardsPermitNo varchar(30),
-	IN strInHouseIndividualCreditPermitNo varchar(30),
-	IN strInHouseGroupCreditPermitNo varchar(30),
 	IN boIsFineDining tinyint(1),
 	IN intPersonalChargeTypeID int(10),
 	IN intGroupChargeTypeID int(10),
@@ -771,8 +769,6 @@ BEGIN
 			RewardPointsPaymentValue			= decRewardPointsPaymentValue,
 			RewardPointsPaymentCashEquivalent	= decRewardPointsPaymentCashEquivalent,
 			RewardsPermitNo						= strRewardsPermitNo,
-			InHouseIndividualCreditPermitNo		= strInHouseIndividualCreditPermitNo,
-			InHouseGroupCreditPermitNo			= strInHouseGroupCreditPermitNo,
 			IsFineDining						= boIsFineDining,
 			PersonalChargeTypeID				= intPersonalChargeTypeID,
 			GroupChargeTypeID					= intGroupChargeTypeID,
@@ -805,7 +801,7 @@ BEGIN
 								RewardPoints, RoundDownRewardPoints, AutoGenerateRewardCardNo, 
 								EnableRewardPointsAsPayment, RewardPointsMaxPercentageForPayment, 
 								RewardPointsPaymentValue, RewardPointsPaymentCashEquivalent, RewardsPermitNo,
-								InHouseIndividualCreditPermitNo, InHouseGroupCreditPermitNo, IsFineDining,
+								IsFineDining,
 								PersonalChargeTypeID, GroupChargeTypeID, BranchID, ProductSearchType,
 								IncludeCreditChargeAgreement, IsParkingTerminal, WillPrintChargeSlip,
 								IncludeTermsAndConditions,PWDDiscountCode, DefaultTransactionChargeCode, 
@@ -825,7 +821,7 @@ BEGIN
 								decRewardPoints, boRoundDownRewardPoints, boAutoGenerateRewardCardNo, 
 								boEnableRewardPointsAsPayment, decRewardPointsMaxPercentageForPayment, 
 								decRewardPointsPaymentValue, decRewardPointsPaymentCashEquivalent, strRewardsPermitNo,
-								strInHouseIndividualCreditPermitNo, strInHouseGroupCreditPermitNo, boIsFineDining,
+								boIsFineDining,
 								intPersonalChargeTypeID, intGroupChargeTypeID, intBranchID, intProductSearchType,
 								boIncludeCreditChargeAgreement, boIsParkingTerminal, boWillPrintChargeSlip,
 								boIncludeTermsAndConditions, strPWDDiscountCode, strDefaultTransactionChargeCode, 
@@ -1098,6 +1094,17 @@ create procedure procSaveCardType(
 	IN intCardTypeID INT(10),
 	IN strCardTypeCode VARCHAR(30),
 	IN strCardTypeName VARCHAR(30),
+	IN decCreditFinanceCharge DECIMAL(18,3),
+	IN decCreditLatePenaltyCharge DECIMAL(18,3),
+	IN decCreditMinimumAmountDue DECIMAL(18,3),
+	IN decCreditMinimumPercentageDue DECIMAL(18,3),
+	IN decCreditFinanceCharge15th DECIMAL(18,3),
+	IN decCreditLatePenaltyCharge15th DECIMAL(18,3),
+	IN decCreditMinimumAmountDue15th DECIMAL(18,3),
+	IN decCreditMinimumPercentageDue15th DECIMAL(18,3),
+	IN intCreditCardType TINYINT(2),
+	IN intWithGuarantor TINYINT(1),
+	IN strBIRPermitNo VARCHAR(60),
 	IN dteCreatedOn DATETIME,
 	IN dteLastModified DATETIME
 	)
@@ -1113,11 +1120,28 @@ BEGIN
 		UPDATE tblCardTypes SET
 			CardTypeCode			= strCardTypeCode,
 			CardTypeName			= strCardTypeName,
+			CreditFinanceCharge		= decCreditFinanceCharge,
+			CreditLatePenaltyCharge	= decCreditLatePenaltyCharge,
+			CreditMinimumAmountDue	= decCreditMinimumAmountDue,
+			CreditMinimumPercentageDue	= decCreditMinimumPercentageDue,
+			CreditFinanceCharge15th		= decCreditFinanceCharge15th,
+			CreditLatePenaltyCharge15th	= decCreditLatePenaltyCharge15th,
+			CreditMinimumAmountDue15th	= decCreditMinimumAmountDue15th,
+			CreditMinimumPercentageDue15th	= decCreditMinimumPercentageDue15th,
+
+			WithGuarantor			= intWithGuarantor,
+			BIRPermitNo				= strBIRPermitNo,
 			LastModified			= dteLastModified
 		WHERE CardTypeID			= intCardTypeID;
 	ELSE
-		INSERT INTO tblCardTypes(CardTypeID, CardTypeCode, CardTypeName, CreatedOn, LastModified)
-			VALUES(intCardTypeID, strCardTypeCode, strCardTypeName, dteCreatedOn, dteLastModified);
+		INSERT INTO tblCardTypes(CardTypeID, CardTypeCode, CardTypeName, 
+								 CreditFinanceCharge, CreditLatePenaltyCharge, CreditMinimumAmountDue, CreditMinimumPercentageDue,
+								 CreditFinanceCharge15th, CreditLatePenaltyCharge15th, CreditMinimumAmountDue15th, CreditMinimumPercentageDue15th,
+								 CreditCardType, WithGuarantor, BIRPermitNo, CreatedOn, LastModified)
+			VALUES(intCardTypeID, strCardTypeCode, strCardTypeName, 
+								 decCreditFinanceCharge, decCreditLatePenaltyCharge, decCreditMinimumAmountDue, decCreditMinimumPercentageDue,
+								 decCreditFinanceCharge15th, decCreditLatePenaltyCharge15th, decCreditMinimumAmountDue15th, decCreditMinimumPercentageDue15th,
+								 intCreditCardType, intWithGuarantor, strBIRPermitNo, dteCreatedOn, dteLastModified);
 	END IF;
 				
 END;
@@ -2925,7 +2949,7 @@ GO
 create procedure procSaveContactCreditCardInfo(	
 	IN intCustomerID       bigint(20),
 	IN intGuarantorID      bigint(20),
-	IN intCreditType       tinyint(1),
+	IN intCreditCardTypeID int(10),
 	IN strCreditCardNo     varchar(15),
 	IN dteCreditAwardDate  datetime,
 	IN decTotalPurchases   decimal(18,3),
@@ -2949,7 +2973,7 @@ BEGIN
 		UPDATE tblContactCreditCardInfo SET
 			CustomerID				= intCustomerID,
 			GuarantorID				= intGuarantorID,
-			CreditType				= intCreditType,
+			CreditCardTypeID		= intCreditCardTypeID,
 			CreditCardNo			= strCreditCardNo,
 			CreditAwardDate			= dteCreditAwardDate,
 			TotalPurchases			= decTotalPurchases,
@@ -2961,10 +2985,10 @@ BEGIN
 			LastModified			= dteLastModified
 		WHERE CustomerID			= intCustomerID;
 	ELSE
-		INSERT INTO tblContactCreditCardInfo(CustomerID, GuarantorID, CreditType, CreditCardNo, CreditAwardDate, 
+		INSERT INTO tblContactCreditCardInfo(CustomerID, GuarantorID, CreditCardTypeID, CreditCardNo, CreditAwardDate, 
 								TotalPurchases, CreditPaid, CreditCardStatus, ExpiryDate, EmbossedCardNo, 
 								LastBillingDate, CreatedOn, LastModified)
-			VALUES(intCustomerID, intGuarantorID, intCreditType, strCreditCardNo, dteCreditAwardDate, 
+			VALUES(intCustomerID, intGuarantorID, strCardTypeCode, intCreditCardTypeID, dteCreditAwardDate, 
 								decTotalPurchases, decCreditPaid, intCreditCardStatus, dteExpiryDate, strEmbossedCardNo, 
 								dteLastBillingDate, dteCreatedOn, dteLastModified);
 	END IF;
@@ -3684,7 +3708,7 @@ BEGIN
 	ELSE
 		INSERT INTO tblCashPayment(BranchID, TerminalNo, SyncID, Amount, PaymentType, DateCreated, 
 							CashierID, Remarks, BranchCode, CreatedOn, LastModified)
-			VALUES(intBranchID, strTerminalNo, intSyncID, decAmount, intPaymentType, dteDateCreated, 
+			VALUES(intBranchID, strTerminalNo, CashPaymentID, decAmount, intPaymentType, dteDateCreated, 
 							intCashierID, strRemarks, strBranchCode, dteCreatedOn, dteLastModified);
 
 		UPDATE tblCashPayment SET SyncID = CashPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
@@ -3866,7 +3890,7 @@ BEGIN
 
 	ELSE
 		INSERT INTO tblCashPayment(BranchID, TerminalNo, SyncID, TransactionID, Amount, Remarks, TransactionNo, CreatedOn, LastModified)
-			VALUES(intBranchID, strTerminalNo, intSyncID, intTransactionID, decAmount, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
+			VALUES(intBranchID, strTerminalNo, CashPaymentID, intTransactionID, decAmount, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
 
 		UPDATE tblCashPayment SET SyncID = CashPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
 	END IF;
@@ -3955,7 +3979,12 @@ create procedure procSaveCreditCardPayment(
 	IN intSyncID			  bigint(20),
 	IN intCreditCardPaymentID bigint(20),
 	IN intTransactionID		  bigint(20),
-	IN decAmount			  decimal(18,2),
+	IN dteTransactionDate	  datetime,
+	IN strCashierName         varchar(150),
+	IN decAmount			  decimal(18,3),
+	IN decAdditionalCharge	  decimal(18,3),
+	IN intContactID			  bigint(20),
+	IN intGuarantorID		  bigint(20),
 	IN intCardTypeID          int(10),
 	IN strCardTypeCode        varchar(30),
 	IN strCardTypeName        varchar(30),
@@ -3980,6 +4009,9 @@ BEGIN
 	IF EXISTS(SELECT CreditCardPaymentID FROM tblCreditCardPayment WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
 		UPDATE tblCreditCardPayment SET
 			Amount					= decAmount,
+			AdditionalCharge		= decAdditionalCharge,
+			ContactID				= intContactID,
+			GuarantorID				= intGuarantorID,
 			CardTypeID				= intCardTypeID,
 			CardTypeCode			= strCardTypeCode,
 			CardTypeName			= strCardTypeName,
@@ -3988,12 +4020,14 @@ BEGIN
 			ValidityDates			= strValidityDates,
 			Remarks					= strRemarks,
 			TransactionNo			= strTransactionNo,
+			TransactionDate			= dteTransactionDate,
+			CashierName				= strCashierName,
 			LastModified			= dteLastModified
 		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
 
 	ELSE
-		INSERT INTO tblCreditCardPayment(BranchID, TerminalNo, SyncID, TransactionID, Amount, CardTypeID, CardTypeCode, CardTypeName, CardNo, CardHolder, ValidityDates, Remarks, TransactionNo, CreatedOn, LastModified)
-			VALUES(intBranchID, strTerminalNo, intSyncID, intTransactionID, decAmount, intCardTypeID, strCardTypeCode, strCardTypeName, strCardNo, strCardHolder, strValidityDates, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
+		INSERT INTO tblCreditCardPayment(BranchID, TerminalNo, SyncID, TransactionID, TransactionDate, CashierName, Amount, AdditionalCharge, ContactID, GuarantorID, CardTypeID, CardTypeCode, CardTypeName, CardNo, CardHolder, ValidityDates, Remarks, TransactionNo, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, intTransactionID, dteTransactionDate, strCashierName, decAmount, decAdditionalCharge, intContactID, intGuarantorID, intCardTypeID, strCardTypeCode, strCardTypeName, strCardNo, strCardHolder, strValidityDates, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
 
 		UPDATE tblCreditCardPayment SET SyncID = CreditCardPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
 	END IF;

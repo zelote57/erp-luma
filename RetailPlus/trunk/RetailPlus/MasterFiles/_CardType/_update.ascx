@@ -42,6 +42,14 @@
 			</table>
 			<asp:Label id="lblReferrer" runat="server" Visible="False"></asp:Label>
 			<asp:Label id="lblCardTypeID" runat="server" Visible="False"></asp:Label>
+			<asp:Label id="lblCreditFinanceCharge" runat="server" Visible="False"></asp:Label>
+			<asp:Label id="lblCreditLatePenaltyCharge" runat="server" Visible="False"></asp:Label>
+			<asp:Label id="lblCreditMinimumAmountDue" runat="server" Visible="False"></asp:Label>
+			<asp:Label id="lblCreditMinimumPercentageDue" runat="server" Visible="False"></asp:Label>
+			<asp:Label id="lblBIRPermitNo" runat="server" Visible="False"></asp:Label>
+            <asp:CheckBox id="chkWithGuarantor" runat="server" Text=" Check if requires Guarantor." Checked="False" Visible="false"></asp:CheckBox>
+            <asp:Label id="lblCreatedOn" runat="server" Visible="False"></asp:Label>
+            
 		</td>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>

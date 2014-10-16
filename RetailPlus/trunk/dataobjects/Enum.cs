@@ -418,7 +418,10 @@ namespace AceSoft.RetailPlus
         Replaced_Expired = 4,
         ReNew = 5,
         Reactivated_Lost = 6,
-        Manual = 7
+        ManualDeactivated = 7,
+        SystemDeactivated = 8,
+        ManualActivated = 9,
+        All
     }
 
     public enum CreditCardStatus
@@ -430,13 +433,10 @@ namespace AceSoft.RetailPlus
         Replaced_Expired = 4,
         ReNew = 5,
         Reactivated_Lost = 6,
-        Manual = 7
-    }
-
-    public enum CreditType
-    {
-        Individual = 0,
-        Group = 1
+        ManualDeactivated = 7,
+        SystemDeactivated = 8,
+        ManualActivated = 9,
+        All
     }
 
     public enum ChargeSlipType
@@ -455,4 +455,16 @@ namespace AceSoft.RetailPlus
         ProductCodeProductDesc
     }
 
+    public enum CreditCardTypes
+    {
+        External = 0,
+        Internal = 1,
+        Both
+    }
+
+    public enum CreditReason
+    {
+        InHouseCredit,
+        InHouseCreditCard
+    }
 }

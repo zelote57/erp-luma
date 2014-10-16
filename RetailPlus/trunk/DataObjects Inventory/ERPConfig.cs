@@ -644,7 +644,19 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                return DateTime.Now.ToString("yyyy") + getNewTransactionNo(LastCreditCardNo);
+                return getNewTransactionNo(LastCreditCardNo);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+        public string get_LastGroupCreditCardNo()
+        {
+            try
+            {
+                return getNewTransactionNo(LastGroupCreditCardNo);
             }
 
             catch (Exception ex)
@@ -656,7 +668,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                return DateTime.Now.ToString("yyyy") + getNewTransactionNo(LastRewardCardNo);
+                return getNewTransactionNo(LastRewardCardNo);
             }
 
             catch (Exception ex)
@@ -692,6 +704,7 @@ namespace AceSoft.RetailPlus.Data
         private static string LastInvAdjustmentNo = "LastInvAdjustmentNo";
         private static string LastClosingNo = "LastClosingNo";
         private static string LastCreditCardNo = "LastCreditCardNo";
+        private static string LastGroupCreditCardNo = "LastGroupCreditCardNo";
         private static string LastRewardCardNo = "LastRewardCardNo";
 
         private static string LastCustomerCode = "LastCustomerCode";

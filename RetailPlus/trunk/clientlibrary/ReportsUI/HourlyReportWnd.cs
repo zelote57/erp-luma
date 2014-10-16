@@ -690,14 +690,6 @@ namespace AceSoft.RetailPlus.Client.UI
             {
                 stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
             }
-            else if (stReceiptFormat == ReceiptFieldFormats.InHouseIndividualCreditPermitNo)
-            {
-                stRetValue = mclsTerminalDetails.InHouseIndividualCreditPermitNo;
-            }
-            else if (stReceiptFormat == ReceiptFieldFormats.InHouseGroupCreditPermitNo)
-            {
-                stRetValue = mclsTerminalDetails.InHouseGroupCreditPermitNo;
-            }
             else
             {
                 stRetValue = stReceiptFormat;

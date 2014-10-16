@@ -151,7 +151,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._DebitMemo
 		{
 			DebitMemos clsDebitMemos = new DebitMemos();
 			clsDebitMemos.GetConnection();
-			lblMemoNo.Text = Constants.PURCHASE_DEBITMEMO_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsDebitMemos.LastTransactionNo();
+			lblMemoNo.Text = Constants.PURCHASE_DEBITMEMO_CODE + CompanyDetails.BECompanyCode + DateTime.Now.Year.ToString() + clsDebitMemos.LastTransactionNo();
 
 			DebitMemoDetails clsDetails = new DebitMemoDetails();
 

@@ -17,8 +17,10 @@ namespace AceSoft.RetailPlus.Credits
 			{
 				ManageSecurity();
 
+                lnkCardTypes.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_CardType/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
                 lnkCustomers.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Customers/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
-
+                lnkGuarantors.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Guarantors/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
+                
                 lnkBillingReport.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Customers/Default.aspx?task=" + Common.Encrypt("listwithcredits", Session.SessionID);
                 lnkBillingHistory.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/Default.aspx?task=" + Common.Encrypt("print", Session.SessionID);
 
@@ -31,10 +33,14 @@ namespace AceSoft.RetailPlus.Credits
 			AccessRights clsAccessRights = new AccessRights(); 
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.CreditCardIssuance);
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InternalCreditCardSetup);
+            lnkCardTypes.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CreditCardIssuance);
             lnkCustomers.Visible = clsDetails.Read;
-            lnkBillingReport.Visible = false; // clsDetails.Read;
-            lnkBillingHistory.Visible = false; //clsDetails.Read;
+            lnkGuarantors.Visible = clsDetails.Read;
+            lnkBillingReport.Visible = clsDetails.Read;
+            lnkBillingHistory.Visible = clsDetails.Read;
 
 			clsAccessRights.CommitAndDispose();
 		}

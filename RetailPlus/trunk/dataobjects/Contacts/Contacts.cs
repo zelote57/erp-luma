@@ -528,7 +528,7 @@ namespace AceSoft.RetailPlus.Data
                 if (!clsContactColumns.IsCreditAllowed) stSQL += "tblContacts.IsCreditAllowed, ";
 
                 stSQL += "tblContactCreditCardInfo.GuarantorID, " +
-                        "tblContactCreditCardInfo.CreditType, " +
+                        "tblContactCreditCardInfo.CreditCardTypeID, " +
                         "tblContactCreditCardInfo.CreditCardNo, " +
                         "tblContactCreditCardInfo.CreditAwardDate, " +
                         "tblContactCreditCardInfo.TotalPurchases, " +
@@ -536,7 +536,9 @@ namespace AceSoft.RetailPlus.Data
                         "tblContactCreditCardInfo.CreditCardStatus, " +
                         "tblContactCreditCardInfo.ExpiryDate, " +
                         "tblContactCreditCardInfo.EmbossedCardNo, " +
-                        "tblContactCreditCardInfo.LastBillingDate, ";
+                        "tblContactCreditCardInfo.LastBillingDate, " +
+                        "tblCardTypes.CardTypeCode, " +
+                        "tblCardTypes.CardTypeName, ";
             }
             stSQL += "tblContacts.LastCheckInDate, ";
             stSQL += "tblContacts.ContactID ";
@@ -555,7 +557,10 @@ namespace AceSoft.RetailPlus.Data
                 stSQL += "INNER JOIN tblContactRewards ON tblContacts.ContactID = tblContactRewards.CustomerID ";
 
             if (clsContactColumns.CreditDetails)
+            {
                 stSQL += "INNER JOIN tblContactCreditCardInfo ON tblContacts.ContactID = tblContactCreditCardInfo.CustomerID ";
+                stSQL += "INNER JOIN tblCardTypes ON tblCardTypes.CardTypeID = tblContactCreditCardInfo.CreditCardTypeID ";
+            }
 
             return stSQL;
         }
@@ -626,7 +631,11 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = SQLSelect() + "WHERE IsCreditAllowed = 1 AND ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactCreditCardInfo WHERE CreditCardNo = @CreditCardNo LIMIT 1);";
+                string SQL = SQLSelect() + "WHERE ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactCreditCardInfo WHERE CreditCardNo = @CreditCardNo LIMIT 1);";
+
+                // remove the IsCreditAllowed = 1
+                // need to inform the card status in FE
+                //string SQL = SQLSelect() + "WHERE IsCreditAllowed = 1 AND ContactID = (SELECT IFNULL(CustomerID,0) FROM tblContactCreditCardInfo WHERE CreditCardNo = @CreditCardNo LIMIT 1);";
 
                 cmd.Parameters.AddWithValue("@CreditCardNo", CreditCardNo);
 
@@ -644,55 +653,6 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
-
-        //private ContactDetails Details(MySqlDataReader myReader)
-        //{
-        //    ContactDetails Details = new ContactDetails();
-
-        //    try 
-        //    {
-        //        while (myReader.Read())
-        //        {
-        //            Details.ContactID = myReader.GetInt64("ContactID");
-        //            Details.ContactCode = "" + myReader["ContactCode"].ToString();
-        //            Details.ContactName = "" + myReader["ContactName"].ToString();
-        //            Details.ContactGroupID = myReader.GetInt32("ContactGroupID");
-        //            Details.ContactGroupName = "" + myReader["ContactGroupName"].ToString();
-        //            Details.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), myReader.GetString("ModeOfTerms"));
-        //            Details.Terms = myReader.GetInt32("Terms");
-        //            Details.Address = "" + myReader["Address"].ToString();
-        //            Details.BusinessName = "" + myReader["BusinessName"].ToString();
-        //            Details.TelephoneNo = "" + myReader["TelephoneNo"].ToString();
-        //            Details.Remarks = "" + myReader["Remarks"].ToString();
-        //            Details.Debit = myReader.GetDecimal("Debit");
-        //            Details.Credit = myReader.GetDecimal("Credit");
-        //            Details.CreditLimit = myReader.GetDecimal("CreditLimit");
-        //            Details.IsCreditAllowed = myReader.GetBoolean("IsCreditAllowed");
-        //            Details.DateCreated = myReader.GetDateTime("DateCreated");
-        //            Details.Deleted = myReader.GetBoolean("Deleted");
-        //            Details.DepartmentID = myReader.GetInt16("DepartmentID");
-        //            Details.DepartmentName = "" + myReader["DepartmentName"].ToString();
-        //            Details.PositionID = myReader.GetInt16("PositionID");
-        //            Details.PositionName = "" + myReader["PositionName"].ToString();
-        //            Details.LastCheckInDate = DateTime.Parse(myReader["LastCheckInDate"].ToString());
-
-        //            Details.isLock = Convert.ToBoolean(myReader.GetInt16("isLock"));
-        //        }
-        //        myReader.Close();
-
-        //        // Sep 14, 2011 : Lemu - for reward points
-        //        ContactReward clsContactReward = new ContactReward(base.Connection, base.Transaction);
-        //        Details.RewardDetails = clsContactReward.Details(Details.ContactID);
-
-        //        // Nov 2, 2011 : Lemu - for credit
-        //        ContactCreditCardInfos clsContactCredit = new ContactCreditCardInfos(base.Connection, base.Transaction);
-        //        Details.CreditDetails = clsContactCredit.Details(Details.ContactID);
-        //        Details.CreditDetails.CreditLimit = Details.CreditLimit;
-        //        Details.CreditDetails.CreditActive = Convert.ToBoolean(Details.IsCreditAllowed);
-        //    }
-        //    catch (Exception ex) { throw base.ThrowException(ex); }
-        //    return Details;
-        //}
 
         private ContactDetails setDetails(System.Data.DataTable dt)
         {
@@ -736,7 +696,30 @@ namespace AceSoft.RetailPlus.Data
                 ContactCreditCardInfos clsContactCredit = new ContactCreditCardInfos(base.Connection, base.Transaction);
                 Details.CreditDetails = clsContactCredit.Details(Details.ContactID);
                 Details.CreditDetails.CreditLimit = Details.CreditLimit;
-                Details.CreditDetails.CreditActive = Convert.ToBoolean(Details.IsCreditAllowed);
+
+                if (!Details.IsCreditAllowed)
+                    Details.CreditDetails.CreditActive = Details.IsCreditAllowed;
+                else
+                {
+                    switch (Details.CreditDetails.CreditCardStatus)
+                    {
+                        case CreditCardStatus.New:
+                        case CreditCardStatus.Replaced_Lost:
+                        case CreditCardStatus.Replaced_Expired:
+                        case CreditCardStatus.ReNew:
+                        case CreditCardStatus.Reactivated_Lost:
+                        case CreditCardStatus.ManualActivated:
+                            Details.CreditDetails.CreditActive = true;
+                            break;
+                        case CreditCardStatus.Lost:
+                        case CreditCardStatus.Expired:
+                        case CreditCardStatus.ManualDeactivated:
+                        case CreditCardStatus.SystemDeactivated:
+                        case CreditCardStatus.All:
+                            Details.CreditDetails.CreditActive = false;
+                            break;
+                    }
+                }
 
                 // Oct 12, 2013 : - get additional details
                 Details.AdditionalDetails = new ContactAddOns(base.Connection, base.Transaction).Details(Details.ContactID);
@@ -1278,14 +1261,16 @@ namespace AceSoft.RetailPlus.Data
             return ListAsDataTable(ContactGroupCategory.AGENT, ContactCode: SearchKey, ContactName: SearchKey, intDeleted: 0, Limit: Limit, SortField: SortField, SortOrder: SortOrder);
         }
 
-        public DataTable CustomersWithRewards(ContactColumns clsContactColumns, long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, Int32 Limit, string CustomerCode_RewardCardNo, DateTime RewardExpiryDateFrom, DateTime RewardExpiryDateTo, Constants.DateSelectionString BirthDate = Constants.DateSelectionString.ALL, Int16 RewardCardStatus = -1, string SortField = "ContactCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        public DataTable CustomersWithRewards(ContactColumns clsContactColumns, long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, Int32 limit, string CustomerCode_RewardCardNo, DateTime RewardExpiryDateFrom, DateTime RewardExpiryDateTo, Constants.DateSelectionString BirthDate = Constants.DateSelectionString.ALL, Int16 RewardCardStatus = -1, string SortField = "ContactCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
                 // enable this to include joining to table tblContactGroup
                 clsContactColumns.ContactGroupName = true;
+                clsContactColumns.RewardDetails = true;
 
                 string SQL = SQLSelect(clsContactColumns);
 
@@ -1343,20 +1328,13 @@ namespace AceSoft.RetailPlus.Data
                             cmd.Parameters.AddWithValue("@BirthDate", DateTime.Now.AddMonths(1).Month);
                             break;
                     }
-                    
                 }
 
-                SQL += "ORDER BY " + SortField + " ";
-
-                if (SortOrder != System.Data.SqlClient.SortOrder.Descending) SQL += "ASC ";
-                else SQL += "DESC ";
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
-                cmd.CommandType = System.Data.CommandType.Text;
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "ContactCode") + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+                
                 cmd.CommandText = SQL;
-
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
@@ -1368,14 +1346,16 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public DataTable CustomersWithCredits(ContactColumns clsContactColumns, long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder, Int32 Limit, string CustomerCode_CreditCardNo, DateTime CreditCardExpiryDateFrom, DateTime CreditCardExpiryDateTo, Int16 CreditCardStatus = -1, Int16 CreditType = -1, string SortField = "ContactCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        public DataTable CustomersWithCredits(ContactColumns clsContactColumns, Int64 GuarantorID = 0, string CustomerCode_CreditCardNo = "", DateTime? CreditCardExpiryDateFrom = null, DateTime? CreditCardExpiryDateTo = null,CreditCardStatus CreditCardStatus = CreditCardStatus.All, Int32 CreditCardTypeID = 0, string SortField = "ContactCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
                 // enable this to include joining to table tblContactGroup
                 clsContactColumns.ContactGroupName = true;
+                clsContactColumns.CreditDetails = true;
 
                 string SQL = SQLSelect(clsContactColumns);
 
@@ -1383,51 +1363,75 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@CustomerCategory", ContactGroupCategory.CUSTOMER.ToString("d"));
                 cmd.Parameters.AddWithValue("@BothCategory", ContactGroupCategory.BOTH.ToString("d"));
 
-                if (SequenceNoStart != Constants.ZERO)
+                if (GuarantorID != Constants.ZERO)
                 {
-                    if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
-                        SQL += "AND tblContacts.ContactID < " + SequenceNoStart.ToString() + " ";
-                    else
-                        SQL += "AND tblContacts.ContactID > " + SequenceNoStart.ToString() + " ";
+                    SQL += "AND GuarantorID = @GuarantorID ";
+                    cmd.Parameters.AddWithValue("GuarantorID", GuarantorID);
                 }
                 
-                if (CustomerCode_CreditCardNo != string.Empty)
+                if (!string.IsNullOrEmpty(CustomerCode_CreditCardNo))
                 {
                     SQL += "AND (CreditCardNo LIKE @CustomerCode_CreditCardNo OR ContactCode LIKE @CustomerCode_CreditCardNo OR ContactName LIKE @CustomerCode_CreditCardNo) ";
-                    cmd.Parameters.AddWithValue("@CustomerCode_CreditCardNo", CustomerCode_CreditCardNo);
+                    cmd.Parameters.AddWithValue("@CustomerCode_CreditCardNo", CustomerCode_CreditCardNo + '%');
                 }
-                if (CreditCardStatus != -1)
-                {
-                    SQL += "AND CreditCardStatus = @CreditCardStatus ";
-                    cmd.Parameters.AddWithValue("@CreditCardStatus", CreditCardStatus);
-                }
-                if (CreditCardExpiryDateFrom != DateTime.MinValue)
+                
+                if (CreditCardExpiryDateFrom.GetValueOrDefault(DateTime.MinValue) != DateTime.MinValue)
                 {
                     SQL += "AND ExpiryDate >= @CreditCardExpiryDateFrom ";
-                    cmd.Parameters.AddWithValue("@CreditCardExpiryDateFrom", CreditCardExpiryDateFrom.ToString("yyyy-MM-dd"));
+                    cmd.Parameters.AddWithValue("@CreditCardExpiryDateFrom", CreditCardExpiryDateFrom.GetValueOrDefault(DateTime.MinValue).ToString("yyyy-MM-dd"));
                 }
-                if (CreditCardExpiryDateFrom != DateTime.MinValue)
+                if (CreditCardExpiryDateFrom.GetValueOrDefault(DateTime.MinValue) != DateTime.MinValue)
                 {
                     SQL += "AND ExpiryDate <= @CreditCardExpiryDateTo ";
-                    cmd.Parameters.AddWithValue("@CreditCardExpiryDateTo", CreditCardExpiryDateTo.ToString("yyyy-MM-dd"));
+                    cmd.Parameters.AddWithValue("@CreditCardExpiryDateTo", CreditCardExpiryDateTo.GetValueOrDefault(DateTime.MinValue).ToString("yyyy-MM-dd"));
                 }
-                if (CreditType != -1)
+                if (CreditCardStatus != RetailPlus.CreditCardStatus.All)
                 {
-                    SQL += "AND CreditType = @CreditType ";
-                    cmd.Parameters.AddWithValue("@CreditType", CreditType);
+                    SQL += "AND CreditCardStatus = @CreditCardStatus ";
+                    cmd.Parameters.AddWithValue("@CreditCardStatus", CreditCardStatus.ToString("d"));
+                }
+                if (CreditCardTypeID != 0)
+                {
+                    SQL += "AND CreditCardTypeID = @CreditCardTypeID ";
+                    cmd.Parameters.AddWithValue("CreditCardTypeID", CreditCardTypeID);
                 }
 
-                SQL += "ORDER BY " + SortField + " ";
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "ContactCode") + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 
-                if (SortOrder != System.Data.SqlClient.SortOrder.Descending) SQL += "ASC ";
-                else SQL += "DESC ";
-
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
-
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public DataTable Guarantors(ContactColumns clsContactColumns, string SortField = "ContactCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                // enable this to include joining to table tblContactGroup
+                clsContactColumns.ContactGroupName = true;
+                clsContactColumns.CreditDetails = true;
+
+                string SQL = SQLSelect(clsContactColumns);
+
+                SQL += "WHERE ContactID IN (SELECT DISTINCT GuarantorID FROM tblContactCreditCardInfo) ";
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "ContactCode") + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
@@ -1441,35 +1445,42 @@ namespace AceSoft.RetailPlus.Data
 
         public DataTable ListAsDataTable(ContactGroupCategory groupCategory = ContactGroupCategory.BOTH, long ContactID = 0, string ContactCode = "", string ContactName = "", string ContactGroupCode = "", string RewardCardNo = "", string Name = "", bool hasCreditOnly = false, int intDeleted = -1, int Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending, string BirthDateFrom = Constants.C_DATE_MIN_VALUE_STRING, string BirthDateTo = Constants.C_DATE_MIN_VALUE_STRING, string AnniversaryDateFrom = Constants.C_DATE_MIN_VALUE_STRING, string AnniversaryDateTo = Constants.C_DATE_MIN_VALUE_STRING, int BirthMonth = 0, int AnniversaryMonth = 0)
         {
-            string SQL = "CALL procContactSelect(@ContactGroupCategory, @ContactID, @ContactCode, @ContactName, @ContactGroupCode, @RewardCardNo, @Name, @BirthMonth, @AnniversaryMonth, @BirthDateFrom, @BirthDateTo, @AnniversaryDateFrom, @AnniversaryDateTo, @hasCreditOnly, @intDeleted, @lngLimit, @SortField, @SortOrder)";
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
+                string SQL = "CALL procContactSelect(@ContactGroupCategory, @ContactID, @ContactCode, @ContactName, @ContactGroupCode, @RewardCardNo, @Name, @BirthMonth, @AnniversaryMonth, @BirthDateFrom, @BirthDateTo, @AnniversaryDateFrom, @AnniversaryDateTo, @hasCreditOnly, @intDeleted, @lngLimit, @SortField, @SortOrder)";
 
-            cmd.Parameters.AddWithValue("@ContactGroupCategory", groupCategory.ToString("d"));
-            cmd.Parameters.AddWithValue("@ContactID", ContactID);
-            cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
-            cmd.Parameters.AddWithValue("@ContactName", ContactName);
-            cmd.Parameters.AddWithValue("@ContactGroupCode", ContactGroupCode);
-            cmd.Parameters.AddWithValue("@RewardCardNo", RewardCardNo);
-            cmd.Parameters.AddWithValue("@Name", Name);
-            cmd.Parameters.AddWithValue("@BirthMonth", BirthMonth);
-            cmd.Parameters.AddWithValue("@AnniversaryMonth", AnniversaryMonth); 
-            cmd.Parameters.AddWithValue("@BirthDateFrom", BirthDateFrom);
-            cmd.Parameters.AddWithValue("@BirthDateTo", BirthDateTo);
-            cmd.Parameters.AddWithValue("@AnniversaryDateFrom", AnniversaryDateFrom);
-            cmd.Parameters.AddWithValue("@AnniversaryDateTo", AnniversaryDateTo);
-            cmd.Parameters.AddWithValue("@hasCreditOnly", hasCreditOnly);
-            cmd.Parameters.AddWithValue("@intDeleted", intDeleted);
-            cmd.Parameters.AddWithValue("@lngLimit", Limit);
-            cmd.Parameters.AddWithValue("@SortField", SortField);
-            cmd.Parameters.AddWithValue("@SortOrder", SortOrder == SortOption.Ascending ? "ASC" : "DESC");
+                cmd.Parameters.AddWithValue("@ContactGroupCategory", groupCategory.ToString("d"));
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
+                cmd.Parameters.AddWithValue("@ContactName", ContactName);
+                cmd.Parameters.AddWithValue("@ContactGroupCode", ContactGroupCode);
+                cmd.Parameters.AddWithValue("@RewardCardNo", RewardCardNo);
+                cmd.Parameters.AddWithValue("@Name", Name);
+                cmd.Parameters.AddWithValue("@BirthMonth", BirthMonth);
+                cmd.Parameters.AddWithValue("@AnniversaryMonth", AnniversaryMonth);
+                cmd.Parameters.AddWithValue("@BirthDateFrom", BirthDateFrom);
+                cmd.Parameters.AddWithValue("@BirthDateTo", BirthDateTo);
+                cmd.Parameters.AddWithValue("@AnniversaryDateFrom", AnniversaryDateFrom);
+                cmd.Parameters.AddWithValue("@AnniversaryDateTo", AnniversaryDateTo);
+                cmd.Parameters.AddWithValue("@hasCreditOnly", hasCreditOnly);
+                cmd.Parameters.AddWithValue("@intDeleted", intDeleted);
+                cmd.Parameters.AddWithValue("@lngLimit", Limit);
+                cmd.Parameters.AddWithValue("@SortField", SortField);
+                cmd.Parameters.AddWithValue("@SortOrder", SortOrder == SortOption.Ascending ? "ASC" : "DESC");
 
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-            return dt;
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
         }
 
 		#endregion

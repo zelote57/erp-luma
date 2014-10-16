@@ -14,14 +14,30 @@ namespace AceSoft.RetailPlus
 		 "FF52834EAFB5A7A1FDFD5851A3")]
     public struct CompanyDetails
 	{
+        private static string _BECompanyCode;
+        public static string BECompanyCode
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_BECompanyCode))
+                    if (System.Configuration.ConfigurationManager.AppSettings["BECompanyCode"] != null)
+                        try { BECompanyCode = System.Configuration.ConfigurationManager.AppSettings["BECompanyCode"].ToString(); }
+                        catch { }
+
+                return _BECompanyCode;
+            }
+            set { _BECompanyCode = value; }
+        }
+
         private static string _CompanyCode;
         public static string CompanyCode
         {
             get
             {
                 if (string.IsNullOrEmpty(_CompanyCode))
-                    try { CompanyCode = System.Configuration.ConfigurationManager.AppSettings["CompanyCode"].ToString(); }
-                    catch { }
+                    if (System.Configuration.ConfigurationManager.AppSettings["CompanyCode"] != null)
+                        try { CompanyCode = System.Configuration.ConfigurationManager.AppSettings["CompanyCode"].ToString(); }
+                        catch { }
 
                 return _CompanyCode;
             }
@@ -34,8 +50,9 @@ namespace AceSoft.RetailPlus
             get
             {
                 if (string.IsNullOrEmpty(_CompanyName))
-                    try { _CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"].ToString(); }
-                    catch { }
+                    if (System.Configuration.ConfigurationManager.AppSettings["CompanyCode"] != null)
+                        try { _CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"].ToString(); }
+                        catch { }
 
                 return _CompanyName;
             }

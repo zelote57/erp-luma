@@ -88,10 +88,13 @@ namespace AceSoft.RetailPlus.MasterFiles._CardType
         private Int32 SaveRecord()
         {
             CardType clsCardType = new CardType();
-            CardTypeDetails clsDetails = new CardTypeDetails();
+            CardTypeDetails clsDetails = new CardTypeDetails(CreditCardTypes.External);
 
             clsDetails.CardTypeCode = txtCardTypeCode.Text;
             clsDetails.CardTypeName = txtCardTypeName.Text;
+
+            clsDetails.CreatedOn = DateTime.Now;
+            clsDetails.LastModified = DateTime.Now;
 
             Int32 id = clsCardType.Insert(clsDetails);
 

@@ -373,7 +373,8 @@ BEGIN
 						END) RefundSales
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-					AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
+						AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
 			GROUP BY BranchID, TerminalNo, CashierID
 		) Trx
 	SET					
@@ -578,7 +579,8 @@ BEGIN
 							END) RefundSales
 				FROM  tblTransactions
 						WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-						AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+							AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
+							AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
 				GROUP BY BranchID, TerminalNo
 			) Trx
 		SET					
@@ -2680,16 +2682,15 @@ create procedure procCreditPaymentInsert(
 	IN strTerminalNo		  varchar(5),
 	IN intTransactionID BIGINT(20),
 	IN intCustomerID BIGINT(20),
-	IN intGuarantorID BIGINT(20),
-	IN intCreditType TINYINT(1),
-	IN dteCreditExpiryDate DATETIME,
+	IN intCreditCardPaymentID BIGINT(20),
+	IN intCreditCardTypeID INT(10),
 	IN decCurrentCredit DECIMAL(18,3),
 	IN decAmount DECIMAL(18,3),
-	
 	IN dteTransactionDate DATETIME,
 	IN strTransactionNo VARCHAR(30),
 	IN strCashierName VARCHAR(150),
 	IN strRemarks VARCHAR(255),
+	IN strCreditReason VARCHAR(150),
 	IN dteCreatedOn DATETIME,
 	IN dteLastModified DATETIME
 )
@@ -2701,12 +2702,12 @@ BEGIN
 	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
 	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
 
-	INSERT INTO tblCreditPayment(BranchID, TerminalNo, TransactionID, ContactID, GuarantorID, CreditType, 
-								CreditBefore, Amount, CreditAfter, CreditExpiryDate, 
-								CreditReason, CreditDate, CashierName, TransactionNo, CreatedOn, LastModified)
-					VALUES (intBranchID, strTerminalNo, intTransactionID, intCustomerID, intGuarantorID, intCreditType,  
-								decCurrentCredit, decAmount, decCurrentCredit + decAmount, dteCreditExpiryDate, 
-								strRemarks, dteTransactionDate, strCashierName, strTransactionNo, dteCreatedOn, dteLastModified);
+	INSERT INTO tblCreditPayment(BranchID, TerminalNo, TransactionID, ContactID, CreditCardPaymentID, CreditCardTypeID,
+								CreditBefore, Amount, CreditAfter, 
+								CreditDate, CashierName, TransactionNo, Remarks, CreditReason, CreatedOn, LastModified)
+					VALUES (intBranchID, strTerminalNo, intTransactionID, intCustomerID, intCreditCardPaymentID, intCreditCardTypeID,
+								decCurrentCredit, decAmount, decCurrentCredit + decAmount, 
+								dteTransactionDate, strCashierName, strTransactionNo, strRemarks, strCreditReason, dteCreatedOn, dteLastModified);
 
 	UPDATE tblCreditPayment SET SyncID = CreditPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
 END;
@@ -2752,13 +2753,13 @@ DROP PROCEDURE IF EXISTS procContactAddCredit
 GO
 
 create procedure procContactAddCredit(
-	IN pvtContactID BIGINT(20),
-	IN pvtCredit DECIMAL(18,3))
+	IN intContactID BIGINT(20),
+	IN decCredit DECIMAL(18,3))
 BEGIN
 
-	UPDATE tblContacts SET Credit =	Credit + pvtCredit WHERE ContactID = pvtContactID;
+	UPDATE tblContacts SET Credit =	Credit + decCredit WHERE ContactID = intContactID;
 	
-	UPDATE tblContactCreditCardInfo SET TotalPurchases = TotalPurchases + pvtCredit WHERE CustomerID = pvtContactID;
+	UPDATE tblContactCreditCardInfo SET TotalPurchases = TotalPurchases + decCredit WHERE CustomerID = intContactID;
 		
 END;
 GO
@@ -3032,14 +3033,15 @@ GO
 create procedure procSyncContactCredit()
 BEGIN
 	
+	UPDATE tblContacts SET Credit = 0;
+
 	UPDATE tblContacts, (SELECT ContactID, SUM(Amount) - SUM(AmountPaid) Credit 
 						 FROM tblCreditPayment GROUP BY ContactID 
 						) tblCreditPayment
 	SET 
-		tblContacts.Credit = tblCreditPayment.Credit
+		tblContacts.Credit = IFNULL(tblCreditPayment.Credit,0)
 	WHERE tblContacts.ContactID = tblCreditPayment.ContactID
-		AND tblContacts.Credit <> tblCreditPayment.Credit;
-
+		AND tblContacts.Credit <> IFNULL(tblCreditPayment.Credit,0);
 
 END;
 GO
@@ -4898,8 +4900,8 @@ GO
 
 create procedure procContactCreditModify(IN lngCustomerID BIGINT, 
 										IN lngGuarantorID BIGINT, 
-										IN intCreditType TINYINT(1),
-										IN strCreditCardNo VARCHAR(15), 
+										IN intCreditCardTypeID VARCHAR(30),
+										IN strCreditCardNo VARCHAR(20), 
 										IN dteCreditAwardDate DATETIME,
 										IN intCreditCardStatus TINYINT(1),
 										IN dteExpiryDate DATE,
@@ -4914,8 +4916,8 @@ BEGIN
 	
 	IF (NOT EXISTS(SELECT CreditCardNo FROM tblContactCreditCardInfo WHERE CreditCardNo = strCreditCardNo)) THEN
 		IF (NOT EXISTS(SELECT CreditCardNo FROM tblContactCreditCardInfo WHERE CustomerID = lngCustomerID)) THEN
-			INSERT INTO tblContactCreditCardInfo(CustomerID, GuarantorID, CreditType, CreditCardNo, CreditAwardDate, CreditCardStatus, ExpiryDate) 
-								  VALUES(lngCustomerID, lngGuarantorID, intCreditType, strCreditCardNo, dteCreditAwardDate, intCreditCardStatus, dteExpiryDate);
+			INSERT INTO tblContactCreditCardInfo(CustomerID, GuarantorID, CreditCardTypeID, CreditCardNo, CreditAwardDate, CreditCardStatus, ExpiryDate) 
+								  VALUES(lngCustomerID, lngGuarantorID, intCreditCardTypeID, strCreditCardNo, dteCreditAwardDate, intCreditCardStatus, dteExpiryDate);
 		ELSE
 			UPDATE tblContactCreditCardInfo SET
 				CreditCardNo = strCreditCardNo,
@@ -9470,7 +9472,8 @@ BEGIN
 						END) RefundSales
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-					AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
+						AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
 			GROUP BY BranchID, TerminalNo, CashierID
 		) Trx
 	SET					
@@ -9703,7 +9706,8 @@ BEGIN
 						END) RefundSales
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-					AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
+						AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
 			GROUP BY BranchID, TerminalNo
 		) Trx
 		SET					

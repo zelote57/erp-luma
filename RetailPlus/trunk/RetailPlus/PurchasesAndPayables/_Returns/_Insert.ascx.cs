@@ -150,7 +150,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._Returns
 		{
 			POReturns clsPOReturns = new POReturns();
 			clsPOReturns.GetConnection();
-			lblReturnNo.Text = Constants.PURCHASE_RETURN_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsPOReturns.LastTransactionNo();
+			lblReturnNo.Text = Constants.PURCHASE_RETURN_CODE + CompanyDetails.BECompanyCode + DateTime.Now.Year.ToString() + clsPOReturns.LastTransactionNo();
 			
 			POReturnDetails clsDetails = new POReturnDetails();
 

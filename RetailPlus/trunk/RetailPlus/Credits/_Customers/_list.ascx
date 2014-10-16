@@ -271,7 +271,8 @@
 						</tr>
 					</table>
 				</ItemTemplate>
-			</asp:datalist></td>
+			</asp:datalist>
+        </td>
 		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
 	</tr>
 	<tr>

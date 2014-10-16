@@ -80,8 +80,8 @@ namespace AceSoft.RetailPlus.Data
         public bool AutoGenerateRewardCardNo;
         public RewardPointsDetails RewardPointsDetails;
 
-        public string InHouseIndividualCreditPermitNo;
-        public string InHouseGroupCreditPermitNo;
+        //public string InHouseIndividualCreditPermitNo;
+        //public string InHouseGroupCreditPermitNo;
 
         public bool IsFineDining;
         public ChargeTypeDetails PersonalChargeType;
@@ -484,7 +484,8 @@ namespace AceSoft.RetailPlus.Data
                                 "@RewardPoints, @RoundDownRewardPoints, @AutoGenerateRewardCardNo,  " +
                                 "@EnableRewardPointsAsPayment, @RewardPointsMaxPercentageForPayment, " +
                                 "@RewardPointsPaymentValue, @RewardPointsPaymentCashEquivalent, @RewardsPermitNo, " +
-                                "@InHouseIndividualCreditPermitNo, @InHouseGroupCreditPermitNo, @IsFineDining, " +
+                                "@IsFineDining, " +
+                                //"@InHouseIndividualCreditPermitNo, @InHouseGroupCreditPermitNo, @IsFineDining, " +
                                 "@PersonalChargeTypeID, @GroupChargeTypeID, @BranchID, @ProductSearchType, " +
                                 "@IncludeCreditChargeAgreement, @IsParkingTerminal, @WillPrintChargeSlip, " +
                                 "@IncludeTermsAndConditions, @PWDDiscountCode, @DefaultTransactionChargeCode, @DineInChargeCode, " +
@@ -552,8 +553,8 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("RewardPointsPaymentValue", Details.RewardPointsDetails.RewardPointsPaymentValue);
                 cmd.Parameters.AddWithValue("RewardPointsPaymentCashEquivalent", Details.RewardPointsDetails.RewardPointsPaymentCashEquivalent);
                 cmd.Parameters.AddWithValue("RewardsPermitNo", Details.RewardPointsDetails.RewardsPermitNo);
-                cmd.Parameters.AddWithValue("InHouseIndividualCreditPermitNo", Details.InHouseIndividualCreditPermitNo);
-                cmd.Parameters.AddWithValue("InHouseGroupCreditPermitNo", Details.InHouseGroupCreditPermitNo);
+                //cmd.Parameters.AddWithValue("InHouseIndividualCreditPermitNo", Details.InHouseIndividualCreditPermitNo);
+                //cmd.Parameters.AddWithValue("InHouseGroupCreditPermitNo", Details.InHouseGroupCreditPermitNo);
                 cmd.Parameters.AddWithValue("IsFineDining", Details.IsFineDining);
                 cmd.Parameters.AddWithValue("PersonalChargeTypeID", Details.PersonalChargeType.ChargeTypeID);
                 cmd.Parameters.AddWithValue("GroupChargeTypeID", Details.GroupChargeType.ChargeTypeID);
@@ -675,8 +676,8 @@ namespace AceSoft.RetailPlus.Data
                             "RewardPointsPaymentValue, " +
                             "RewardPointsPaymentCashEquivalent, " +
                             "RewardsPermitNo, " +
-                            "InHouseIndividualCreditPermitNo, " +
-                            "InHouseGroupCreditPermitNo, " +
+                            //"InHouseIndividualCreditPermitNo, " +
+                            //"InHouseGroupCreditPermitNo, " +
                             "DBVersion, " +
                             "ProductSearchType, " +
                             "IncludeCreditChargeAgreement, " +
@@ -892,8 +893,8 @@ namespace AceSoft.RetailPlus.Data
 
                 Details.RewardPointsDetails = clsRewardPointsDetails;
 
-                Details.InHouseIndividualCreditPermitNo = dr["InHouseIndividualCreditPermitNo"].ToString();
-                Details.InHouseGroupCreditPermitNo = dr["InHouseGroupCreditPermitNo"].ToString();
+                //Details.InHouseIndividualCreditPermitNo = dr["InHouseIndividualCreditPermitNo"].ToString();
+                //Details.InHouseGroupCreditPermitNo = dr["InHouseGroupCreditPermitNo"].ToString();
 
                 iPersonalChargeTypeID = Int32.Parse(dr["PersonalChargeTypeID"].ToString());
                 iGroupChargeTypeID = Int32.Parse(dr["GroupChargeTypeID"].ToString());

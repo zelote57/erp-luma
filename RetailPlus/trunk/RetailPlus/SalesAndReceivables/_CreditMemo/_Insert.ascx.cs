@@ -149,7 +149,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
         {
             CreditMemos clsCreditMemos = new CreditMemos();
             clsCreditMemos.GetConnection();
-            lblReturnNo.Text = Constants.SALES_CREDITMEMO_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsCreditMemos.LastTransactionNo();
+            lblReturnNo.Text = Constants.SALES_CREDITMEMO_CODE + CompanyDetails.BECompanyCode + DateTime.Now.Year.ToString() + clsCreditMemos.LastTransactionNo();
 
             CreditMemoDetails clsDetails = new CreditMemoDetails();
 

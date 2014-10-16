@@ -464,7 +464,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
             try{
                 lblError.Text += "Creating xml file...<br /><br />";
-                string xmlFileName = Server.MapPath(@"\RetailPlus\temp\ExportedProductList_" + CompanyDetails.CompanyCode + "_" + dteProcessingDate.ToString("yyyyMMddHHmm") + ".xml");
+                string xmlFileName = Server.MapPath(@"\RetailPlus\temp\ExportedProductList_" + CompanyDetails.BECompanyCode + "_" + dteProcessingDate.ToString("yyyyMMddHHmm") + ".xml");
                 XmlTextWriter writer = new XmlTextWriter(xmlFileName, System.Text.Encoding.UTF8);
                 
                 writer.Formatting = Formatting.Indented;
@@ -559,11 +559,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 writer.Flush();
                 writer.Close();
                 lblError.Text += "Done creating XML file. <br /><br />";
-                //lblError.Text = "/RetailPlus/temp/ExportedProductList_" + CompanyDetails.CompanyCode + "_" + dteProcessingDate.ToString("yyyyMMddHHmm") + ".xml<br /><br />" + lblError.Text;
+                //lblError.Text = "/RetailPlus/temp/ExportedProductList_" + CompanyDetails.BECompanyCode + "_" + dteProcessingDate.ToString("yyyyMMddHHmm") + ".xml<br /><br />" + lblError.Text;
                 clsProduct.CommitAndDispose();
 
                 string stScript = "<Script>";
-                stScript += "window.open('../../temp/ExportedProductList_" + CompanyDetails.CompanyCode + "_" + dteProcessingDate.ToString("yyyyMMddHHmm") + ".xml');";
+                stScript += "window.open('../../temp/ExportedProductList_" + CompanyDetails.BECompanyCode + "_" + dteProcessingDate.ToString("yyyyMMddHHmm") + ".xml');";
                 stScript += "</Script>";
                 Response.Write(stScript);
             }

@@ -755,7 +755,7 @@ namespace AceSoft.RetailPlus.Data
                     cmd.Parameters.AddWithValue("@ProductSubGroupName", clsSearchKeys.ProductSubGroupName + "%");
                 }
 
-                SQL += "ORDER BY " + SortField + " ";
+                SQL += string.IsNullOrEmpty(SortField) ? "ORDER BY SequenceNo, ProductSubGroupName " : "ORDER BY " + SortField + " ";
                 SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
                 SQL += limit == 0 ? "" : " LIMIT " + limit.ToString();
 
@@ -793,7 +793,7 @@ namespace AceSoft.RetailPlus.Data
                 if (SearchColumns.ProductSubGroupID)
                     SQL += "AND tblProductSubGroup.ProductSubGroupID = " + SearchKey + " ";
 
-                SQL += "ORDER BY " + SortField + " ";
+                SQL += string.IsNullOrEmpty(SortField) ? "ORDER BY SequenceNo, ProductSubGroupName " : "ORDER BY " + SortField + " ";
                 SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
                 SQL += limit == 0 ? "" : " LIMIT " + limit.ToString();
 
@@ -823,7 +823,7 @@ namespace AceSoft.RetailPlus.Data
                     cmd.Parameters.AddWithValue("@SearchKey", "%" + SearchKey + "%");
                 }
 
-                SQL += "ORDER BY " + SortField + " ";
+                SQL += string.IsNullOrEmpty(SortField) ? "ORDER BY SequenceNo, ProductSubGroupCode " : "ORDER BY " + SortField + " ";
                 SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
                 SQL += limit == 0 ? "" : " LIMIT " + limit.ToString();
 

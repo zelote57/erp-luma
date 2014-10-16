@@ -142,7 +142,7 @@ namespace AceSoft.RetailPlus.Inventory._BranchTransfer
 		{
 			BranchTransfer clsBranchTransfer = new BranchTransfer();
 			clsBranchTransfer.GetConnection();
-			lblBranchTransferNo.Text = Constants.BRANCH_TRANSFER_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsBranchTransfer.LastTransactionNo();
+			lblBranchTransferNo.Text = Constants.BRANCH_TRANSFER_CODE + CompanyDetails.BECompanyCode + DateTime.Now.Year.ToString() + clsBranchTransfer.LastTransactionNo();
 
 			BranchTransferDetails clsDetails = new BranchTransferDetails();
 

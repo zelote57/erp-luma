@@ -229,16 +229,16 @@
     <Compile Include="UI\ContactAddWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ContactSelectWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ContactRewardWnd.cs">
+    <Compile Include="UI\ContactCreditTypeSelectWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\ContactCreditWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ContactCreditTypeSelectWnd.cs">
+    <Compile Include="UI\ContactRewardWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ContactSelectWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\OtherCommandsWnd.cs">
@@ -248,9 +248,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\MainRestoWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\PriceInquiryWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\ItemReleaseWnd.cs">
@@ -263,9 +260,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\ForwarderWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\CreditCardPaymentWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\DepositWnd.cs">
@@ -573,20 +567,20 @@
       <DependentUpon>ContactAddWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContactSelectWnd.resx">
-      <DependentUpon>ContactSelectWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContactRewardWnd.resx">
-      <DependentUpon>ContactRewardWnd.cs</DependentUpon>
+    <EmbeddedResource Include="UI\ContactCreditTypeSelectWnd.resx">
+      <DependentUpon>ContactCreditTypeSelectWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ContactCreditWnd.resx">
       <DependentUpon>ContactCreditWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContactCreditTypeSelectWnd.resx">
-      <DependentUpon>ContactCreditTypeSelectWnd.cs</DependentUpon>
+    <EmbeddedResource Include="UI\ContactRewardWnd.resx">
+      <DependentUpon>ContactRewardWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ContactSelectWnd.resx">
+      <DependentUpon>ContactSelectWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OtherCommandsWnd.resx">
@@ -601,10 +595,6 @@
       <DependentUpon>MainRestoWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\PriceInquiryWnd.resx">
-      <DependentUpon>PriceInquiryWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\ItemReleaseWnd.resx">
       <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -615,10 +605,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ForwarderWnd.resx">
       <DependentUpon>ForwarderWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\CreditCardPaymentWnd.resx">
-      <DependentUpon>CreditCardPaymentWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DepositWnd.resx">

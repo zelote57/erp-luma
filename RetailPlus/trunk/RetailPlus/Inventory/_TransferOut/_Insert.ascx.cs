@@ -149,7 +149,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
 		{
 			TransferOut clsTransferOut = new TransferOut();
 			clsTransferOut.GetConnection();
-			lblTransferOutNo.Text = Constants.TRANSFER_OUT_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsTransferOut.LastTransactionNo();
+			lblTransferOutNo.Text = Constants.TRANSFER_OUT_CODE + CompanyDetails.BECompanyCode + DateTime.Now.Year.ToString() + clsTransferOut.LastTransactionNo();
 
 			TransferOutDetails clsDetails = new TransferOutDetails();
 

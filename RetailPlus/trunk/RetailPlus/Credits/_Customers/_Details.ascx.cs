@@ -132,7 +132,7 @@ namespace AceSoft.RetailPlus.Credits._Customers
             cboDepartment.SelectedIndex = cboDepartment.Items.IndexOf(cboDepartment.Items.FindByValue(clsDetails.DepartmentID.ToString()));
             cboPosition.SelectedIndex = cboPosition.Items.IndexOf(cboPosition.Items.FindByValue(clsDetails.PositionID.ToString()));
 
-            txtCreditType.Text = clsDetails.CreditDetails.CreditType.ToString("G");
+            txtCreditType.Text = clsDetails.CreditDetails.CardTypeDetails.CardTypeCode;
             txtCreditCardNo.Text = clsDetails.CreditDetails.CreditCardNo;
             txtCreditCardStatus.Text = clsDetails.CreditDetails.CreditCardStatus.ToString("G");
             txtTotalPurchases.Text = clsDetails.CreditDetails.TotalPurchases.ToString("#,##0.#0");

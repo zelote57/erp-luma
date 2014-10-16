@@ -628,6 +628,17 @@ namespace Test
                         CardTypeID = Int16.Parse(dr["CardTypeID"].ToString()),
                         CardTypeCode = dr["CardTypeCode"].ToString(),
                         CardTypeName = dr["CardTypeName"].ToString(),
+                        CreditFinanceCharge = decimal.Parse(dr["CreditFinanceCharge"].ToString()),
+                        CreditLatePenaltyCharge = decimal.Parse(dr["CreditLatePenaltyCharge"].ToString()),
+                        CreditMinimumAmountDue = decimal.Parse(dr["CreditMinimumAmountDue"].ToString()),
+                        CreditMinimumPercentageDue = decimal.Parse(dr["CreditMinimumPercentageDue"].ToString()),
+                        CreditFinanceCharge15th = decimal.Parse(dr["CreditFinanceCharge15th"].ToString()),
+                        CreditLatePenaltyCharge15th = decimal.Parse(dr["CreditLatePenaltyCharge15th"].ToString()),
+                        CreditMinimumAmountDue15th = decimal.Parse(dr["CreditMinimumAmountDue15th"].ToString()),
+                        CreditMinimumPercentageDue15th = decimal.Parse(dr["CreditMinimumPercentageDue15th"].ToString()),
+                        CreditCardType = (CreditCardTypes)Enum.Parse(typeof(CreditCardTypes), dr["CreditCardType"].ToString()),
+                        WithGuarantor = bool.Parse(dr["WithGuarantor"].ToString()),
+                        BIRPermitNo = dr["BIRPermitNo"].ToString(),
                         CreatedOn = dteCreatedOn,
                         LastModified = dteLastModified
                     });
@@ -821,8 +832,6 @@ namespace Test
                             RewardsPermitNo = dr["RewardsPermitNo"].ToString(),
                         },
 
-                        InHouseIndividualCreditPermitNo = dr["InHouseIndividualCreditPermitNo"].ToString(),
-                        InHouseGroupCreditPermitNo = dr["InHouseGroupCreditPermitNo"].ToString(),
                         IsFineDining = bool.Parse(dr["IsFineDining"].ToString()),
                         PersonalChargeType = int.Parse(dr["PersonalChargeTypeID"].ToString()) != 0 ? clsChargeType.Details(int.Parse(dr["PersonalChargeTypeID"].ToString())) : new ChargeTypeDetails(),
                         GroupChargeType = int.Parse(dr["GroupChargeTypeID"].ToString()) != 0 ? clsChargeType.Details(int.Parse(dr["GroupChargeTypeID"].ToString())) : new ChargeTypeDetails(),
@@ -1060,7 +1069,7 @@ namespace Test
                     {
                         CustomerID = Int64.Parse(dr["CustomerID"].ToString()),
                         GuarantorID = Int64.Parse(dr["GuarantorID"].ToString()),
-                        CreditType = (CreditType)Enum.Parse(typeof(CreditType), dr["CreditType"].ToString()),
+                        CardTypeDetails = new CardType(clsLocalDB.Connection, clsLocalDB.Transaction).Details(Int16.Parse(dr["CreditCardTypeID"].ToString())),
                         CreditCardNo = dr["CreditCardNo"].ToString(),
                         CreditAwardDate = DateTime.Parse(dr["CreditAwardDate"].ToString()),
                         TotalPurchases = decimal.Parse(dr["TotalPurchases"].ToString()),
@@ -1069,6 +1078,7 @@ namespace Test
                         ExpiryDate = DateTime.Parse(dr["ExpiryDate"].ToString()),
                         EmbossedCardNo = dr["EmbossedCardNo"].ToString(),
                         LastBillingDate = DateTime.Parse(dr["LastBillingDate"].ToString()),
+                        CreditActive = bool.Parse(dr["CreditActive"].ToString()),
                         CreatedOn = dteCreatedOn,
                         LastModified = dteLastModified
                     });

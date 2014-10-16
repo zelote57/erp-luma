@@ -30,10 +30,9 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdEnter;
         private Label label5;
         private TextBox txtCreditCardExpiryDate;
-		private string mstCaption;
+		private string mstHeader;
         private CreditCardStatus mCreditCardStatus;
-        private long mlngGuarantorID;
-        private CreditType mCreditType;
+
 		public DialogResult Result
 		{
 			get 
@@ -42,26 +41,19 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 		}
 
-		public string Caption
+		public string Header
 		{
-			get {	return mstCaption;	}
-			set {	mstCaption = value;	}
+			get {	return mstHeader;	}
+			set {	mstHeader = value;	}
 		}
         public CreditCardStatus CreditCardStatus
         {
             get { return mCreditCardStatus; }
             set { mCreditCardStatus = value; }
         }
-        public long GuarantorID
-        {
-            get { return mlngGuarantorID; }
-            set { mlngGuarantorID = value; }
-        }
-        public CreditType CreditType
-        {
-            get { return mCreditType; }
-            set { mCreditType = value; }
-        }
+
+        public Data.ContactDetails Guarantor  { get; set; }
+        public Data.CardTypeDetails CardTypeDetails  { get; set; }
 		public Data.ContactDetails ContactDetails
 		{
 			get {	return mContactDetails;	}
@@ -335,7 +327,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-			this.lblHeader.Text = mstCaption;
+			this.lblHeader.Text = mstHeader;
             this.LoadRecord();
             
 		}
@@ -393,7 +385,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             bool boRetValue = false;
 
-            if (txtCreditCardNo.Text.Trim() == string.Empty)
+            if (string.IsNullOrEmpty(txtCreditCardNo.Text.Trim()))
             {
                 MessageBox.Show("Sorry please enter a valid credit card no.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return boRetValue;
@@ -415,7 +407,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (mCreditCardStatus == CreditCardStatus.New)
             {
-                if (MessageBox.Show("Are you sure you want to issue card no: " + txtCreditCardNo.Text + " to " + mContactDetails.ContactName + "?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                if (MessageBox.Show("Are you sure you want to issue a new credit card to " + mContactDetails.ContactName + "?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 { return boRetValue; }
             }
             else if (mCreditCardStatus == CreditCardStatus.Lost || mCreditCardStatus == CreditCardStatus.Expired)
@@ -425,7 +417,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             else if (mCreditCardStatus == CreditCardStatus.Replaced_Lost || mCreditCardStatus == CreditCardStatus.Replaced_Expired)
             {
-                if (MessageBox.Show("Are you sure you want to replace existing credit card w/ new card no: " + txtCreditCardNo.Text + "?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                if (MessageBox.Show("Are you sure you want to replace existing credit card w/ new card no?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 { return boRetValue; }
             }
             else if (mCreditCardStatus == CreditCardStatus.Reactivated_Lost)
@@ -445,17 +437,37 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
             }
 
+            Data.ContactCreditCardInfos clsContactCreditCardInfos = new Data.ContactCreditCardInfos();
+            Data.ContactCreditCardInfoDetails clsContactCreditCardInfoDetails = clsContactCreditCardInfos.Details(mContactDetails.ContactID);
+            if (clsContactCreditCardInfoDetails.CustomerID != Constants.ZERO)
+            {
+                txtCreditCardNo.Text = clsContactCreditCardInfoDetails.CreditCardNo;
+                txtCreditCardExpiryDate.Text = clsContactCreditCardInfoDetails.ExpiryDate.ToString("yyyy-MM-dd");
+            }
+            if (((mCreditCardStatus == CreditCardStatus.New && clsContactCreditCardInfoDetails.CustomerID == Constants.ZERO) ||
+                    mCreditCardStatus == CreditCardStatus.Replaced_Lost) && (CardTypeDetails.WithGuarantor))
+            {
+                Data.ERPConfig clsERPConfig = new Data.ERPConfig(clsContactCreditCardInfos.Connection, clsContactCreditCardInfos.Transaction);
+                txtCreditCardNo.Text = clsERPConfig.get_LastGroupCreditCardNo();
+            }
+            else if ((mCreditCardStatus == CreditCardStatus.New && clsContactCreditCardInfoDetails.CustomerID == Constants.ZERO) ||
+                    mCreditCardStatus == CreditCardStatus.Replaced_Lost)
+            {
+                Data.ERPConfig clsERPConfig = new Data.ERPConfig(clsContactCreditCardInfos.Connection, clsContactCreditCardInfos.Transaction);
+                txtCreditCardNo.Text = clsERPConfig.get_LastCreditCardNo();
+            }
+            clsContactCreditCardInfos.CommitAndDispose();
+            
             Data.ContactCreditCardInfoDetails clsDetails = new Data.ContactCreditCardInfoDetails();
             clsDetails.CustomerID = mContactDetails.ContactID;
-            clsDetails.GuarantorID = mContactDetails.ContactID;
-            clsDetails.CreditType = CreditType.Individual;
+            clsDetails.CardTypeDetails = CardTypeDetails;
             clsDetails.CreditCardNo = txtCreditCardNo.Text;
             clsDetails.CreditAwardDate = DateTime.Now;
             clsDetails.ExpiryDate = dteExpiryDate;
             clsDetails.CreditLimit = decCreditLimit;
 
-            Data.ContactCreditCardInfos clsContactCreditCardInfos = new Data.ContactCreditCardInfos();
-            Data.ContactCreditCardInfoDetails clsContactCreditCardInfoDetails = clsContactCreditCardInfos.Details(txtCreditCardNo.Text);
+            clsContactCreditCardInfos = new Data.ContactCreditCardInfos();
+            clsContactCreditCardInfoDetails = clsContactCreditCardInfos.Details(txtCreditCardNo.Text);
 
             if (clsContactCreditCardInfoDetails.CustomerID != Constants.ZERO)
             {
@@ -464,7 +476,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsContactCreditCardInfos.CommitAndDispose();
 
                     MessageBox.Show("Credit Card No: " + clsContactCreditCardInfoDetails.CreditCardNo + " was already issued on " + clsContactCreditCardInfoDetails.CreditAwardDate.ToString("MMM dd, yyyy") + " to another customer." +
-                                    Environment.NewLine + "Please enter another Credit Card No.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    Environment.NewLine + "Please enter another Credit Card No.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     txtCreditCardNo.Focus();
                     txtCreditCardNo.SelectAll();
@@ -473,13 +485,13 @@ namespace AceSoft.RetailPlus.Client.UI
             }
 
             clsDetails.GuarantorID = clsContactCreditCardInfoDetails.GuarantorID;
-            clsDetails.CreditType = clsContactCreditCardInfoDetails.CreditType;
+            clsDetails.CardTypeDetails = clsContactCreditCardInfoDetails.CardTypeDetails;
             if (mCreditCardStatus == CreditCardStatus.New)
             {
                 clsDetails.CreditActive = true;
                 // override if new
-                clsDetails.GuarantorID = mlngGuarantorID;
-                clsDetails.CreditType = mCreditType;
+                clsDetails.GuarantorID = Guarantor.ContactID;
+                clsDetails.CardTypeDetails = CardTypeDetails;
             }
             else if (mCreditCardStatus == CreditCardStatus.Lost || mCreditCardStatus == CreditCardStatus.Expired)
             {
@@ -505,25 +517,35 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
         private void LoadRecord()
         {
-            lblHeader.Text = mstCaption + " for customer : " + mContactDetails.ContactName;
+            lblHeader.Text = mstHeader + " for customer : " + mContactDetails.ContactName;
+            if (Guarantor.ContactID != 0 && Guarantor.ContactID != mContactDetails.ContactID) lblHeader.Text += " --- Guarantor: " + Guarantor.ContactName;
 
             txtCreditCardNo.Text = mContactDetails.ContactCode;
             txtCreditCardExpiryDate.Text = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd");
             txtCreditLimit.Text = mContactDetails.CreditLimit.ToString("#,##0.#0");
 
+            switch (mCreditCardStatus)
+            {
+                case CreditCardStatus.New:
+                    txtCreditCardNo.Text = "WILL BE ASSIGNED AFTER SAVING";
+                    break;
+                case CreditCardStatus.Lost:
+                case CreditCardStatus.Expired:
+                case CreditCardStatus.Replaced_Lost:
+                case CreditCardStatus.Replaced_Expired:
+                case CreditCardStatus.ReNew:
+                case CreditCardStatus.Reactivated_Lost:
+                case CreditCardStatus.ManualDeactivated:
+                    txtCreditCardNo.Text = mContactDetails.CreditDetails.CreditCardNo;
+                    break;
+                default:
+                    txtCreditCardNo.Text = "WILL BE ASSIGNED AFTER SAVING";
+                    break;
+            }
+
             Data.ContactCreditCardInfos clsContactCreditCardInfos = new Data.ContactCreditCardInfos();
             Data.ContactCreditCardInfoDetails clsContactCreditDetails = clsContactCreditCardInfos.Details(mContactDetails.ContactID);
-            if (clsContactCreditDetails.CustomerID != Constants.ZERO)
-            {
-                txtCreditCardNo.Text = clsContactCreditDetails.CreditCardNo;
-                txtCreditCardExpiryDate.Text = clsContactCreditDetails.ExpiryDate.ToString("yyyy-MM-dd");
-            }
-            if ((mCreditCardStatus == CreditCardStatus.New && clsContactCreditDetails.CustomerID == Constants.ZERO) ||
-                    mCreditCardStatus == CreditCardStatus.Replaced_Lost)
-            {
-                Data.ERPConfig clsERPConfig = new Data.ERPConfig(clsContactCreditCardInfos.Connection, clsContactCreditCardInfos.Transaction);
-                txtCreditCardNo.Text = clsERPConfig.get_LastCreditCardNo();
-            }
+            
             clsContactCreditCardInfos.CommitAndDispose();
 
             if (mCreditCardStatus == CreditCardStatus.New && clsContactCreditDetails.CustomerID != Constants.ZERO)

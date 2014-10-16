@@ -130,6 +130,9 @@ namespace AceSoft.RetailPlus.Data
 
         public string DataSource;
         public decimal TrustFund;
+
+        //this will only be use during the on-time computation
+        public Data.PaymentDetails PaymentDetails;
 	}
 
 	public struct SalesTransactionsColumns
@@ -1170,7 +1173,10 @@ namespace AceSoft.RetailPlus.Data
 		public System.Data.DataTable ListForPaymentDataTable(Int64 ContactID)
 		{
 			try
-			{
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = "SELECT " +
 									   "a.TransactionID, " +
 									   "a.TransactionNo, " +
@@ -1178,7 +1184,7 @@ namespace AceSoft.RetailPlus.Data
 									   "a.CustomerID, " +
 									   "a.CustomerName, " +
 									   "a.TransactionDate, " +
-									   "a.SubTotal, " +
+                                       "a.SubTotal + a.CreditChargeAmount AS SubTotal, " +
                                        "a.NetSales, " +
 									   "a.ItemsDiscount, " +
 									   "a.Discount, " +
@@ -1188,13 +1194,13 @@ namespace AceSoft.RetailPlus.Data
 									   "a.AmountPaid - b.Amount 'AmountPaid', " +
 									   "b.Amount 'Credit', " +
 									   "b.AmountPaid 'CreditPaid', " +
-									   "b.Amount - b.AmountPaid 'Balance' " +
+									   "b.Amount - b.AmountPaid 'Balance', " +
+                                       "b.CreditReason " +
 								   "FROM  tblTransactions a " +
-								   "INNER JOIN tblCreditPayment b ON a.TransactionNo = b.TransactionNo " +
-								   "WHERE 1=1 " +
-								   "AND CustomerID = @ContactID " +
-								   "AND ContactID = @ContactID " +
-								   "AND b.Amount > b.AmountPaid";
+								   "INNER JOIN tblCreditPayment b ON a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND a.TransactionNo = b.TransactionNo " +
+								   "WHERE a.CustomerID = @ContactID " +
+								   "AND b.ContactID = @ContactID " +
+								   "AND b.Amount >= b.AmountPaid";
 
 				// Added Jan 18, 2009
 				// ORDER BY TransactionNo ASC
@@ -1206,6 +1212,7 @@ namespace AceSoft.RetailPlus.Data
 							"CustomerID, " +
 							"CustomerName, " +
 							"TransactionDate, " +
+                            "CreditReason, " +
 							"SubTotal, " +
                             "NetSales, " +
 							"ItemsDiscount, " +
@@ -1218,17 +1225,14 @@ namespace AceSoft.RetailPlus.Data
 							"CreditPaid, " +
 							"Balance " +
 						"FROM (" + SQL + ") AS tblCreditPayment ORDER BY TransactionNo ASC ";
-
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
+				
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
 
-				System.Data.DataTable dt = new System.Data.DataTable("tblForPayment");
-				base.MySqlDataAdapterFill(cmd, dt);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
 				return dt;
-			
             }
 			catch (Exception ex)
 			{
@@ -1543,22 +1547,25 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-		public void UpdateCreditChargeAmount(Int64 TransactionID, decimal CreditChargeAmount)
+		public void UpdateCreditChargeAmount(Int32 BranchID, string TerminalNo, Int64 TransactionID, decimal CreditChargeAmount)
 		{
 			try
 			{
-				string SQL = "UPDATE tblTransactions SET " +
-								"SubTotal			=	SubTotal + @CreditChargeAmount, " +
-								"CreditChargeAmount =	@CreditChargeAmount " +
-							"WHERE TransactionID	=	@TransactionID;";
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                string SQL = "UPDATE tblTransactions SET " +
+                                "SubTotal			=	SubTotal + @CreditChargeAmount, " +
+                                "CreditChargeAmount =	@CreditChargeAmount " +
+                            "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo " +
+                                "AND TransactionID	=	@TransactionID ";
 
-                cmd.Parameters.AddWithValue("@CreditChargeAmount", CreditChargeAmount);
-                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
+                cmd.Parameters.AddWithValue("CreditChargeAmount", CreditChargeAmount);
+                cmd.Parameters.AddWithValue("BranchID", BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("TransactionID", TransactionID);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
 			catch (Exception ex)

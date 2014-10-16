@@ -96,15 +96,33 @@ namespace AceSoft.RetailPlus.MasterFiles._CardType
             lblCardTypeID.Text = clsDetails.CardTypeID.ToString();
             txtCardTypeCode.Text = clsDetails.CardTypeCode;
             txtCardTypeName.Text = clsDetails.CardTypeName;
+
+            lblCreditFinanceCharge.Text = clsDetails.CreditFinanceCharge.ToString("#,##0.#0");
+            lblCreditLatePenaltyCharge.Text = clsDetails.CreditLatePenaltyCharge.ToString("#,##0.#0");
+            lblCreditMinimumAmountDue.Text = clsDetails.CreditMinimumAmountDue.ToString("#,##0.#0");
+            lblCreditMinimumPercentageDue.Text = clsDetails.CreditMinimumPercentageDue.ToString("#,##0.#0");
+            chkWithGuarantor.Checked = clsDetails.WithGuarantor;
+            lblBIRPermitNo.Text = clsDetails.BIRPermitNo;
+            lblCreatedOn.Text = clsDetails.CreatedOn.ToString("yyyy-MM-dd hh:mm");
         }
         private void SaveRecord()
         {
             CardType clsCardType = new CardType();
-            CardTypeDetails clsDetails = new CardTypeDetails();
+            CardTypeDetails clsDetails = new CardTypeDetails(CreditCardTypes.External);
 
             clsDetails.CardTypeID = Convert.ToInt16(lblCardTypeID.Text);
             clsDetails.CardTypeCode = txtCardTypeCode.Text;
             clsDetails.CardTypeName = txtCardTypeName.Text;
+
+            clsDetails.CreditFinanceCharge = decimal.Parse(lblCreditFinanceCharge.Text);
+            clsDetails.CreditLatePenaltyCharge = decimal.Parse(lblCreditLatePenaltyCharge.Text);
+            clsDetails.CreditMinimumAmountDue = decimal.Parse(lblCreditMinimumAmountDue.Text);
+            clsDetails.CreditMinimumPercentageDue = decimal.Parse(lblCreditMinimumPercentageDue.Text);
+            clsDetails.WithGuarantor = chkWithGuarantor.Checked;
+            clsDetails.BIRPermitNo = lblBIRPermitNo.Text;
+
+            clsDetails.CreatedOn = DateTime.Parse(lblCreatedOn.Text);
+            clsDetails.LastModified = DateTime.Now;
 
             clsCardType.Update(clsDetails);
             clsCardType.CommitAndDispose();

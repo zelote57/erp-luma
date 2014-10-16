@@ -65,9 +65,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private ArrayList marrDebitPaymentDetails = new ArrayList();
 
 		private decimal mdecAllowedCredit = 0;
-		private bool mboIsCreditAllowed = false;
 		private decimal mdecAllowedDebit = 0;
-		private bool mboIsDebitAllowed = false;
 		private Label lblCredit;
         private bool mboIsRefund = false;
         private GroupBox grpRewardCard;
@@ -101,14 +99,6 @@ namespace AceSoft.RetailPlus.Client.UI
 		public bool IsRefund
 		{
 			set {	mboIsRefund = value;	}
-		}
-		public bool IsCreditAllowed
-		{
-			set {	mboIsCreditAllowed = value;	}
-		}
-		public bool IsDebitAllowed
-		{
-			set {	mboIsDebitAllowed = value;	}
 		}
         public Data.ContactDetails CustomerDetails
 		{
@@ -223,6 +213,11 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mdecRewardConvertedPayment = value; }
         }
 
+        private Data.ContactDetails mclsCreditorDetails;
+        public Data.ContactDetails CreditorDetails
+        {
+            get { return mclsCreditorDetails; }
+        }
 
 		#region Constructors and Destructors
 
@@ -960,19 +955,21 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             catch { }
 
+            
             if (mclsSalesTransactionDetails.TransactionID != 0)
             {
                 mdecAllowedCredit = mclsCustomerDetails.CreditLimit - mclsCustomerDetails.Credit;
-                mboIsCreditAllowed = Convert.ToBoolean(mclsCustomerDetails.IsCreditAllowed);
                 mdecAllowedDebit = mclsCustomerDetails.Debit;
-                if (mboIsRefund) mboIsDebitAllowed = mboIsCreditAllowed;
-                else { if (mdecAllowedDebit > 0) mboIsDebitAllowed = true; else { mboIsDebitAllowed = false; } }
-                
-                grpDebit.Visible = mboIsDebitAllowed;
+
+                cmdF4.Visible = mclsCustomerDetails.IsCreditAllowed ? mdecAllowedCredit > 0 : false;
+                lblCredit.Visible = mclsCustomerDetails.IsCreditAllowed ? mdecAllowedCredit > 0 : false;
+                grpDebit.Visible = mboIsRefund ? false : (mclsCustomerDetails.IsCreditAllowed ? mdecAllowedDebit > 0 : false);
+
+                lblCredit.Text = mclsSalesTransactionDetails.isConsignment ? "CONSIGNMENT" : "IN-HOUSE CREDIT";
 
                 if (mclsTerminalDetails.RewardPointsDetails.EnableRewardPointsAsPayment == true)
                 {
-                    if (mboIsRefund == false && mclsCustomerDetails.RewardDetails.RewardPoints != 0 && mclsCustomerDetails.ContactID != Constants.C_RETAILPLUS_CUSTOMERID)
+                    if (!mboIsRefund && mclsCustomerDetails.RewardDetails.RewardPoints != 0 && mclsCustomerDetails.ContactID != Constants.C_RETAILPLUS_CUSTOMERID)
                     {
                         grpRewardCard.Visible = mclsCustomerDetails.RewardDetails.RewardActive;
                         grpRewardCard.Text = "Use customer reward points: " + mclsCustomerDetails.RewardDetails.RewardPoints.ToString("#,##0.#0");
@@ -980,46 +977,15 @@ namespace AceSoft.RetailPlus.Client.UI
                     if (!grpDebit.Visible && grpRewardCard.Visible) grpRewardCard.Location = new Point(9, 335);
                 }
             }
-            
-			if (mboIsRefund)
-			{
-				lblHeader.Text = "Enter payment types to refund.";
-				lblSubTotalName.Text = "REFUND";
-				lblAmountPaidName.Text = "REFUNDED AMT";
-				lblChangeName.Text = "OVER";
-				cmdF4.Visible = false;
-				lblCredit.Visible = false;
 
-                if (mboIsCreditAllowed)
-                {
-                    cmdF4.Visible = mboIsCreditAllowed;
-                    lblCredit.Visible = mboIsCreditAllowed;
-                    grpDebit.Visible = false;
+            if (mboIsRefund)
+            {
+                lblHeader.Text = "Enter payment types to refund.";
+                lblSubTotalName.Text = "REFUND";
+                lblAmountPaidName.Text = "REFUNDED AMT";
+                lblChangeName.Text = "OVER";
+            }
 
-                    lblCredit.Text = mclsSalesTransactionDetails.isConsignment ? "CONSIGNMENT" : "IN-HOUSE CREDIT";
-                }
-			}
-			else
-			{
-                if (mclsTerminalDetails.ShowCustomerSelection) mboCreditCardSwiped = true;
-                if (mboCreditCardSwiped == false) mboIsCreditAllowed = false;
-
-				if (mdecAllowedCredit <= 0 && mboIsCreditAllowed)
-				{
-					cmdF4.Enabled = false;
-					lblCredit.Enabled = false;
-					mboIsCreditAllowed = false;
-					grpDebit.Visible = mboIsDebitAllowed;
-				}
-				else
-				{
-					cmdF4.Visible = mboIsCreditAllowed;
-					lblCredit.Visible = mboIsCreditAllowed;
-                    grpDebit.Visible = mboIsDebitAllowed;
-
-                    lblCredit.Text = mclsSalesTransactionDetails.isConsignment ? "CONSIGNMENT" : "IN-HOUSE CREDIT";
-				}
-			}
 			lblCash.Tag = "0.00";
 			lblCheque.Tag = "0.00";
 			lblCreditCard.Tag = "0.00";
@@ -1077,11 +1043,11 @@ namespace AceSoft.RetailPlus.Client.UI
 					break;
 
 				case Keys.F4:
-                    if (mboIsCreditAllowed && cmdF4.Visible) ShowCreditPaymentWindow();
+                    if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible) ShowCreditPaymentWindow();
 					break;
 
 				case Keys.F5:
-                    if (mboIsCreditAllowed && cmdF5.Visible) ShowDebitPaymentWindow();
+                    if (mclsCustomerDetails.IsCreditAllowed && cmdF5.Visible) ShowDebitPaymentWindow();
 					break;
 
                 case Keys.F6:
@@ -1250,15 +1216,25 @@ namespace AceSoft.RetailPlus.Client.UI
             CreditCardPaymentWnd clsCreditCardPaymentWnd = new CreditCardPaymentWnd();
             clsCreditCardPaymentWnd.TerminalDetails = mclsTerminalDetails;
             clsCreditCardPaymentWnd.SalesTransactionDetails = mclsSalesTransactionDetails;
+            clsCreditCardPaymentWnd.arrCreditCardPaymentDetails = marrCreditCardPaymentDetails;
+            clsCreditCardPaymentWnd.IsRefund = mboIsRefund;
             clsCreditCardPaymentWnd.BalanceAmount = Convert.ToDecimal(lblBalance.Text);
             clsCreditCardPaymentWnd.ShowDialog(this);
             DialogResult result = clsCreditCardPaymentWnd.Result;
             Data.CreditCardPaymentDetails creditcardDetails = clsCreditCardPaymentWnd.Details;
+            mclsCreditorDetails = clsCreditCardPaymentWnd.CreditorDetails;
             clsCreditCardPaymentWnd.Close();
             clsCreditCardPaymentWnd.Dispose();
 
 			if (result == DialogResult.OK)
 			{
+                // set the credit card charges for inhouse credit cards
+                if (creditcardDetails.AdditionalCharge != 0)
+                {
+                    lblCharge.Text = (decimal.Parse(lblCharge.Text) + creditcardDetails.AdditionalCharge).ToString("#,##0.#0");
+                    mclsSalesTransactionDetails.CreditChargeAmount = creditcardDetails.AdditionalCharge;
+                }
+
 				lblAmountPaid.Text = Convert.ToDecimal(Convert.ToDecimal(lblAmountPaid.Text) + creditcardDetails.Amount).ToString("#,##0.#0");
 				marrCreditCardPaymentDetails.Add(creditcardDetails);
 				ComputePayments();
@@ -1268,13 +1244,11 @@ namespace AceSoft.RetailPlus.Client.UI
 					mPaymentType = PaymentTypes.CreditCard;
 				else
 					mPaymentType = PaymentTypes.Combination;
-
 			}
-			
 		}
 		private void ShowCreditPaymentWindow()
 		{
-			if (mboIsCreditAllowed)
+			if (mclsCustomerDetails.IsCreditAllowed)
 			{
 				CreditPaymentWnd credit = new CreditPaymentWnd();
                 credit.TerminalDetails = mclsTerminalDetails;
@@ -1283,39 +1257,40 @@ namespace AceSoft.RetailPlus.Client.UI
                 credit.AllowedCredit = mdecAllowedCredit;
 
                 decimal decBalance = Convert.ToDecimal(lblBalance.Text);
-                decimal decAdditionalCreditCharge = 0;
-                if (mclsCustomerDetails.CreditDetails.CreditType == CreditType.Group && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
-                {
-                    if (mclsTerminalDetails.GroupChargeType.InPercent)
-                        decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
-                    else
-                        decAdditionalCreditCharge = decBalance + mclsTerminalDetails.GroupChargeType.ChargeAmount;
+                //decimal decAdditionalCreditCharge = 0;
+                //if (mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
+                //{
+                //    if (mclsTerminalDetails.GroupChargeType.InPercent)
+                //        decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
+                //    else
+                //        decAdditionalCreditCharge = decBalance + mclsTerminalDetails.GroupChargeType.ChargeAmount;
 
-                    if ((decBalance + decAdditionalCreditCharge) > mdecAllowedCredit)
-                    {
-                        if (mclsTerminalDetails.GroupChargeType.InPercent)
-                            decAdditionalCreditCharge = mdecAllowedCredit * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
-                        else
-                            decAdditionalCreditCharge = mdecAllowedCredit + mclsTerminalDetails.GroupChargeType.ChargeAmount;
-                    }
-                }
-                else if (mclsCustomerDetails.CreditDetails.CreditType == CreditType.Individual && mclsTerminalDetails.PersonalChargeType.ChargeTypeID != 0)
-                {
-                    if (mclsTerminalDetails.PersonalChargeType.InPercent)
-                        decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
-                    else
-                        decAdditionalCreditCharge = decBalance + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
+                //    if ((decBalance + decAdditionalCreditCharge) > mdecAllowedCredit)
+                //    {
+                //        if (mclsTerminalDetails.GroupChargeType.InPercent)
+                //            decAdditionalCreditCharge = mdecAllowedCredit * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
+                //        else
+                //            decAdditionalCreditCharge = mdecAllowedCredit + mclsTerminalDetails.GroupChargeType.ChargeAmount;
+                //    }
+                //}
+                //else if (mclsTerminalDetails.PersonalChargeType.ChargeTypeID != 0)
+                //{
+                //    if (mclsTerminalDetails.PersonalChargeType.InPercent)
+                //        decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
+                //    else
+                //        decAdditionalCreditCharge = decBalance + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
 
-                    if ((decBalance + decAdditionalCreditCharge) > mdecAllowedCredit)
-                    {
-                        if (mclsTerminalDetails.PersonalChargeType.InPercent)
-                            decAdditionalCreditCharge = mdecAllowedCredit * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
-                        else
-                            decAdditionalCreditCharge = mdecAllowedCredit + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
-                    }
-                }
+                //    if ((decBalance + decAdditionalCreditCharge) > mdecAllowedCredit)
+                //    {
+                //        if (mclsTerminalDetails.PersonalChargeType.InPercent)
+                //            decAdditionalCreditCharge = mdecAllowedCredit * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
+                //        else
+                //            decAdditionalCreditCharge = mdecAllowedCredit + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
+                //    }
+                //}
 
-                credit.BalanceAmount = decBalance + Convert.ToDecimal(decAdditionalCreditCharge.ToString("#,##0.#0"));
+                //credit.BalanceAmount = decBalance + Convert.ToDecimal(decAdditionalCreditCharge.ToString("#,##0.#0"));
+                credit.BalanceAmount = decBalance;
                 credit.IsRefund = mboIsRefund;
 				credit.ShowDialog(this);
 				DialogResult result = credit.Result;
@@ -1325,22 +1300,22 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				if (result == DialogResult.OK)
 				{
-                    if (mclsCustomerDetails.CreditDetails.CreditType == CreditType.Group && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
-                    {
-                        // update transaction with additional charge
-                        if (mclsTerminalDetails.GroupChargeType.InPercent)
-                            decAdditionalCreditCharge = creditDetails.Amount * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
-                        else
-                            decAdditionalCreditCharge = creditDetails.Amount + mclsTerminalDetails.GroupChargeType.ChargeAmount;
+                    //if (mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
+                    //{
+                    //    // update transaction with additional charge
+                    //    if (mclsTerminalDetails.GroupChargeType.InPercent)
+                    //        decAdditionalCreditCharge = creditDetails.Amount * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
+                    //    else
+                    //        decAdditionalCreditCharge = creditDetails.Amount + mclsTerminalDetails.GroupChargeType.ChargeAmount;
 
-                        lblCharge.Text = Convert.ToDecimal(Convert.ToDecimal(lblCharge.Text) + decAdditionalCreditCharge).ToString("#,##0.#0");
-                        mclsSalesTransactionDetails.CreditChargeAmount = decAdditionalCreditCharge;
+                    //    lblCharge.Text = Convert.ToDecimal(Convert.ToDecimal(lblCharge.Text) + decAdditionalCreditCharge).ToString("#,##0.#0");
+                    //    mclsSalesTransactionDetails.CreditChargeAmount = decAdditionalCreditCharge;
                         
-                        //Aug 30, 2014 delete need to move this from here to mainwnd
-                        Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
-                        clsSalesTransactions.UpdateCreditChargeAmount(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.CreditChargeAmount);
-                        clsSalesTransactions.CommitAndDispose();
-                    }
+                    //    //Aug 30, 2014 delete need to move this from here to mainwnd
+                    //    Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
+                    //    clsSalesTransactions.UpdateCreditChargeAmount(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.CreditChargeAmount);
+                    //    clsSalesTransactions.CommitAndDispose();
+                    //}
 
                     mdecAllowedCredit -= creditDetails.Amount;
 					lblAmountPaid.Text = Convert.ToDecimal(Convert.ToDecimal(lblAmountPaid.Text) + creditDetails.Amount).ToString("#,##0.#0");
@@ -1359,7 +1334,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void ShowDebitPaymentWindow()
 		{
-			if (mboIsDebitAllowed)
+			if (mclsCustomerDetails.IsCreditAllowed)
 			{
 				DebitPaymentWnd debit = new DebitPaymentWnd();
 				debit.SalesTransactionDetails = mclsSalesTransactionDetails;

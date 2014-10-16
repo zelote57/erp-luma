@@ -24,6 +24,7 @@ namespace AceSoft.RetailPlus.Data
 
         public string BACKEND_VARIATION_TYPE;
         public string BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO;
+        public string BECompanyCode;
         public string CompanyCode;
         public string CompanyName;
         
@@ -46,6 +47,7 @@ namespace AceSoft.RetailPlus.Data
 
         public string CheckOutBillHeaderLabel;
         public string ChargeSlipHeaderLabel;
+        public string CreditVerificationSlipHeaderLabel;
 
         public bool WillPrintCreditPaymentHeader;
         public bool WillWriteSystemLog;
@@ -60,7 +62,6 @@ namespace AceSoft.RetailPlus.Data
         public bool WillNotPrintReprintMessage;
 
         public string ORHeader;
-
     }
     public class SysConfig : POSConnection
     {
@@ -195,7 +196,12 @@ namespace AceSoft.RetailPlus.Data
             catch { }
             return strRetValue;
         }
-        
+
+        public string get_BECompanyCode()
+        {
+            return get_Sysconfig(Constants.SYS_CONFIG_BE_COMPANY_CODE);
+        }
+
         public string get_CompanyCode()
         {
             return get_Sysconfig(Constants.SYS_CONFIG_COMPANY_CODE);
@@ -230,6 +236,11 @@ namespace AceSoft.RetailPlus.Data
         {
             return get_Sysconfig(Constants.SYS_CONFIG_CHARGE_SLIP_HEADER_LABEL);
         }
+        public string get_CreditVerificationSlipHeaderLabel()
+        {
+            return get_Sysconfig(Constants.SYS_CONFIG_CHARGE_SLIP_HEADER_LABEL);
+        }
+        
 
         public SysConfigDetails get_SysConfigDetails()
         {
@@ -237,6 +248,7 @@ namespace AceSoft.RetailPlus.Data
             
             clsSysConfigDetails.BACKEND_VARIATION_TYPE = get_BackendVariationType();
             clsSysConfigDetails.BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO = get_BackendVariationTypeExpirationLotNo();
+            clsSysConfigDetails.BECompanyCode = get_BECompanyCode();
             clsSysConfigDetails.CompanyCode = get_CompanyCode();
             clsSysConfigDetails.CompanyName = get_CompanyName();
             
@@ -246,6 +258,7 @@ namespace AceSoft.RetailPlus.Data
 
             clsSysConfigDetails.CheckOutBillHeaderLabel = get_CheckOutBillHeaderLabel();
             clsSysConfigDetails.ChargeSlipHeaderLabel = get_ChargeSlipHeaderLabel();
+            clsSysConfigDetails.CreditVerificationSlipHeaderLabel = get_CreditVerificationSlipHeaderLabel();
             clsSysConfigDetails.WillPrintCreditPaymentHeader = get_WillPrintCreditPaymentHeader();
             clsSysConfigDetails.WillWriteSystemLog = get_WillWriteSystemLog();
 
@@ -266,14 +279,14 @@ namespace AceSoft.RetailPlus.Data
 
             try
             {
-                string SQL = "CALL procSysConfigSelectByName(@Configname)";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+
+                string SQL = "CALL procSysConfigSelectByName(@Configname)";
 
                 cmd.Parameters.AddWithValue("@Configname", Configname);
 
+                cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
@@ -285,7 +298,6 @@ namespace AceSoft.RetailPlus.Data
                     }
                     break;
                 }
-
             }
             catch (Exception ex)
             {

@@ -27,15 +27,17 @@ namespace AceSoft.RetailPlus.Data
         public string CashierName;
         public decimal Amount;
         public ContactDetails CustomerDetails;
-        public ContactDetails GuarantorDetails;
         public string Remarks;
-
-        public CreditType CreditType;
         public decimal CreditBefore;
         public decimal CreditAfter;
-        public DateTime CreditExpiryDate;
         public string CreditReason;
         public decimal AmountPaidCuttOffMonth;
+
+        /// <summary>
+        /// reference id if payment is from in-house credit card
+        /// </summary>
+        public Int64 CreditCardPaymentID;
+        public Int16 CreditCardTypeID;
 
         public DateTime CreatedOn;
         public DateTime LastModified;
@@ -91,21 +93,21 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procCreditPaymentInsert(@BranchID, @TerminalNo, @TransactionID, @CustomerID, @GuarantorID, @CreditType, @CreditExpiryDate, @CurrentCredit, @Amount, @TransactionDate, @TransactionNo, @CashierName, @Remarks, @CreatedOn, @LastModified);";
+                string SQL = "CALL procCreditPaymentInsert(@BranchID, @TerminalNo, @TransactionID, @CustomerID, @CreditCardPaymentID, @CreditCardTypeID, @CurrentCredit, @Amount, @TransactionDate, @TransactionNo, @CashierName, @Remarks, @CreditReason, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("@BranchID", Details.BranchDetails.BranchID);
                 cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
                 cmd.Parameters.AddWithValue("@TransactionID", Details.TransactionID);
                 cmd.Parameters.AddWithValue("@CustomerID", Details.CustomerDetails.ContactID);
-                cmd.Parameters.AddWithValue("@GuarantorID", Details.CustomerDetails.CreditDetails.GuarantorID);
-                cmd.Parameters.AddWithValue("@CreditType", Details.CustomerDetails.CreditDetails.CreditType.ToString("D"));
-                cmd.Parameters.AddWithValue("@CreditExpiryDate", Details.CustomerDetails.CreditDetails.ExpiryDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@CreditCardPaymentID", Details.CreditCardPaymentID);
+                cmd.Parameters.AddWithValue("@CreditCardTypeID", Details.CreditCardTypeID);
                 cmd.Parameters.AddWithValue("@CurrentCredit", Details.CustomerDetails.Credit);
                 cmd.Parameters.AddWithValue("@Amount", Details.Amount);
                 cmd.Parameters.AddWithValue("@TransactionDate", Details.TransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@TransactionNo", Details.TransactionNo);
                 cmd.Parameters.AddWithValue("@CashierName", Details.CashierName);
                 cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
+                cmd.Parameters.AddWithValue("@CreditReason", Details.CreditReason);
                 cmd.Parameters.AddWithValue("@CreatedOn", Details.CreatedOn);
                 cmd.Parameters.AddWithValue("@LastModified", Details.LastModified);
 
@@ -156,8 +158,8 @@ namespace AceSoft.RetailPlus.Data
 
         private string SQLSelect()
         {
-            string stSQL = "SELECT BranchID, TerminalNo, SyncID, CreditPaymentID, TransactionID, Amount, ContactID, Remarks, AmountPaid, TransactionNo, " +
-                                  "GuarantorID, CreditType, CreditDate, CreditBefore, CreditAfter, CreditExpiryDate, CreditReason, TerminalNo, CashierName, " +
+            string stSQL = "SELECT BranchID, TerminalNo, SyncID, CreditPaymentID, TransactionID, ContactID, CreditCardPaymentID, CreditCardTypeID, Amount, Remarks, AmountPaid, TransactionNo, " +
+                                  "CreditDate, CreditBefore, CreditAfter, CreditReason, TerminalNo, CashierName, " +
                                   "AmountPaidCuttOffMonth, CreatedOn, LastModified " +
                             "FROM tblCreditPayment ";
 
@@ -221,17 +223,13 @@ namespace AceSoft.RetailPlus.Data
             Details.SyncID = Int64.Parse(dr["SyncID"].ToString());
             Details.CreditPaymentID = Int64.Parse(dr["CreditPaymentID"].ToString());
             Details.TransactionID = Int64.Parse(dr["TransactionID"].ToString());
-
+            Details.CreditPaymentID = Int64.Parse(dr["CreditPaymentID"].ToString());
             Details.CustomerDetails = new Contacts(base.Connection, base.Transaction).Details(Int64.Parse(dr["ContactID"].ToString()));
             Details.Amount = decimal.Parse(dr["AmountPaid"].ToString());
             Details.TransactionNo = dr["TransactionNo"].ToString();
-            Details.GuarantorDetails = new Contacts(base.Connection, base.Transaction).Details(Int64.Parse(dr["GuarantorID"].ToString()));
-            
-            Details.CreditType = (CreditType) Enum.Parse(typeof(CreditType), dr["CreditType"].ToString());
             Details.TransactionDate = DateTime.Parse(dr["CreditDate"].ToString());
             Details.CreditBefore = decimal.Parse(dr["CreditBefore"].ToString());
             Details.CreditAfter = decimal.Parse(dr["CreditAfter"].ToString());
-            Details.CreditExpiryDate = DateTime.Parse(dr["CreditExpiryDate"].ToString());
             Details.CreditReason = dr["CreditReason"].ToString();
             Details.CashierName = dr["CashierName"].ToString();
             Details.AmountPaidCuttOffMonth = decimal.Parse(dr["AmountPaidCuttOffMonth"].ToString());

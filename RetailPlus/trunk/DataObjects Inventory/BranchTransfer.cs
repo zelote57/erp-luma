@@ -91,8 +91,8 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
-                APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
 				string SQL = "INSERT INTO tblBranchTransfer (" +
 								            "BranchTransferNo, " +
@@ -118,71 +118,22 @@ namespace AceSoft.RetailPlus.Data
                                             "@Remarks" +
 							            ");";
 				  
-				
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmBranchTransferNo = new MySqlParameter("@BranchTransferNo",MySqlDbType.String);
-				prmBranchTransferNo.Value = Details.BranchTransferNo;
-				cmd.Parameters.Add(prmBranchTransferNo);
+                cmd.Parameters.AddWithValue("@BranchTransferNo", Details.BranchTransferNo);
+                cmd.Parameters.AddWithValue("@BranchTransferDate", Details.BranchTransferDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@RequiredDeliveryDate", Details.RequiredDeliveryDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@BranchIDFrom", Details.BranchIDFrom);
+                cmd.Parameters.AddWithValue("@BranchIDTo", Details.BranchIDTo);
+                cmd.Parameters.AddWithValue("@TransferrerID", Details.TransferrerID);
+                cmd.Parameters.AddWithValue("@TransferrerName", Details.TransferrerName);
+                cmd.Parameters.AddWithValue("@RequestedBy", Details.RequestedBy);
+                cmd.Parameters.AddWithValue("@Status", Details.Status.ToString("d"));
+                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
 
-				MySqlParameter prmBranchTransferDate = new MySqlParameter("@BranchTransferDate",MySqlDbType.DateTime);
-				prmBranchTransferDate.Value = Details.BranchTransferDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmBranchTransferDate);
-
-				MySqlParameter prmRequiredDeliveryDate = new MySqlParameter("@RequiredDeliveryDate",MySqlDbType.DateTime);
-				prmRequiredDeliveryDate.Value = Details.RequiredDeliveryDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmRequiredDeliveryDate);
-
-                MySqlParameter prmBranchIDFrom = new MySqlParameter("@BranchIDFrom",MySqlDbType.Int16);
-                prmBranchIDFrom.Value = Details.BranchIDFrom;
-                cmd.Parameters.Add(prmBranchIDFrom);
-
-                MySqlParameter prmBranchIDTo = new MySqlParameter("@BranchIDTo",MySqlDbType.Int16);
-                prmBranchIDTo.Value = Details.BranchIDTo;
-                cmd.Parameters.Add(prmBranchIDTo);
-
-				MySqlParameter prmTransferrerID = new MySqlParameter("@TransferrerID",MySqlDbType.Int64);						
-				prmTransferrerID.Value = Details.TransferrerID;
-				cmd.Parameters.Add(prmTransferrerID);
-
-                MySqlParameter prmTransferrerName = new MySqlParameter("@TransferrerName",MySqlDbType.String);
-                prmTransferrerName.Value = Details.TransferrerName;
-                cmd.Parameters.Add(prmTransferrerName);
-
-                MySqlParameter prmRequestedBy = new MySqlParameter("@RequestedBy",MySqlDbType.String);
-                prmRequestedBy.Value = Details.RequestedBy;
-                cmd.Parameters.Add(prmRequestedBy);
-
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);			
-				prmStatus.Value = Details.Status.ToString("d");
-				cmd.Parameters.Add(prmStatus);
-
-				MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);			
-				prmRemarks.Value = Details.Remarks;
-                cmd.Parameters.Add(prmRemarks);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
-                SQL = "SELECT LAST_INSERT_ID();";
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = SQL;
-
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
-
-                Int64 iID = 0;
-
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int64.Parse(dr[0].ToString());
-                }
-
-                return iID;
+                return Int64.Parse(base.getLAST_INSERT_ID(this));
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -192,8 +143,8 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-                ERPConfig clsERPConfig = new ERPConfig(base.Connection, base.Transaction);
-                APLinkConfigDetails clsAPLinkConfigDetails = clsERPConfig.APLinkDetails();
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL=	"UPDATE tblBranchTransfer SET " +
                                 "BranchTransferNo			=	@BranchTransferNo, " +
@@ -205,54 +156,21 @@ namespace AceSoft.RetailPlus.Data
                                 "RequestedBy                =   @RequestedBy, " +
                                 "Remarks                    =   @Remarks " +
 							"WHERE BranchTransferID = @BranchTransferID;";
-				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@BranchTransferNo", Details.BranchTransferNo);
+                cmd.Parameters.AddWithValue("@BranchTransferDate", Details.BranchTransferDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@RequiredDeliveryDate", Details.RequiredDeliveryDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@BranchIDFrom", Details.BranchIDFrom);
+                cmd.Parameters.AddWithValue("@BranchIDTo", Details.BranchIDTo);
+                cmd.Parameters.AddWithValue("@TransferrerID", Details.TransferrerID);
+                cmd.Parameters.AddWithValue("@TransferrerName", Details.TransferrerName);
+                cmd.Parameters.AddWithValue("@RequestedBy", Details.RequestedBy);
+                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
+                cmd.Parameters.AddWithValue("@BranchTransferID", Details.BranchTransferID);
+
 				cmd.CommandText = SQL;
-
-                MySqlParameter prmBranchTransferNo = new MySqlParameter("@BranchTransferNo",MySqlDbType.String);
-                prmBranchTransferNo.Value = Details.BranchTransferNo;
-                cmd.Parameters.Add(prmBranchTransferNo);
-
-                MySqlParameter prmBranchTransferDate = new MySqlParameter("@BranchTransferDate",MySqlDbType.DateTime);
-                prmBranchTransferDate.Value = Details.BranchTransferDate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmBranchTransferDate);
-
-                MySqlParameter prmRequiredDeliveryDate = new MySqlParameter("@RequiredDeliveryDate",MySqlDbType.DateTime);
-                prmRequiredDeliveryDate.Value = Details.RequiredDeliveryDate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmRequiredDeliveryDate);
-
-                MySqlParameter prmBranchIDFrom = new MySqlParameter("@BranchIDFrom",MySqlDbType.Int16);
-                prmBranchIDFrom.Value = Details.BranchIDFrom;
-                cmd.Parameters.Add(prmBranchIDFrom);
-
-                MySqlParameter prmBranchIDTo = new MySqlParameter("@BranchIDTo",MySqlDbType.Int16);
-                prmBranchIDTo.Value = Details.BranchIDTo;
-                cmd.Parameters.Add(prmBranchIDTo);
-
-                MySqlParameter prmTransferrerID = new MySqlParameter("@TransferrerID",MySqlDbType.Int64);
-                prmTransferrerID.Value = Details.TransferrerID;
-                cmd.Parameters.Add(prmTransferrerID);
-
-                MySqlParameter prmTransferrerName = new MySqlParameter("@TransferrerName",MySqlDbType.String);
-                prmTransferrerName.Value = Details.TransferrerName;
-                cmd.Parameters.Add(prmTransferrerName);
-
-                MySqlParameter prmRequestedBy = new MySqlParameter("@RequestedBy",MySqlDbType.String);
-                prmRequestedBy.Value = Details.RequestedBy;
-                cmd.Parameters.Add(prmRequestedBy);
-                
-                MySqlParameter prmRemarks = new MySqlParameter("@Remarks",MySqlDbType.String);
-                prmRemarks.Value = Details.Remarks;
-                cmd.Parameters.Add(prmRemarks);
-
-				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);						
-				prmBranchTransferID.Value = Details.BranchTransferID;
-				cmd.Parameters.Add(prmBranchTransferID);
-
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -263,30 +181,21 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblBranchTransfer SET " +
                                 "DiscountApplied        =   @DiscountApplied, " +
                                 "DiscountType           =   @DiscountType " +
                             "WHERE BranchTransferID = @BranchTransferID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@DiscountApplied", DiscountApplied);
+                cmd.Parameters.AddWithValue("@DiscountType", DiscountType.ToString("d"));
+                cmd.Parameters.AddWithValue("@BranchTransferID", BranchTransferID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
-                prmDiscountApplied.Value = DiscountApplied;
-                cmd.Parameters.Add(prmDiscountApplied);
-
-                MySqlParameter prmDiscountType = new MySqlParameter("@DiscountType",MySqlDbType.Int16);
-                prmDiscountType.Value = Convert.ToInt16(DiscountType.ToString("d"));
-                cmd.Parameters.Add(prmDiscountType);
-
-                MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);
-                prmBranchTransferID.Value = BranchTransferID;
-                cmd.Parameters.Add(prmBranchTransferID);
-
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -296,27 +205,19 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblBranchTransfer SET " +
                                 "DiscountApplied        =   @DiscountApplied, " +
                                 "DiscountType           =   @DiscountType " +
                             "WHERE BranchTransferID = @BranchTransferID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@DiscountApplied", DiscountApplied);
+                cmd.Parameters.AddWithValue("@DiscountType", DiscountType.ToString("d"));
+                cmd.Parameters.AddWithValue("@BranchTransferID", BranchTransferID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmDiscountApplied = new MySqlParameter("@DiscountApplied",MySqlDbType.Decimal);
-                prmDiscountApplied.Value = DiscountApplied;
-                cmd.Parameters.Add(prmDiscountApplied);
-
-                MySqlParameter prmDiscountType = new MySqlParameter("@DiscountType",MySqlDbType.Int16);
-                prmDiscountType.Value = Convert.ToInt16(DiscountType.ToString("d"));
-                cmd.Parameters.Add(prmDiscountType);
-
-                MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);
-                prmBranchTransferID.Value = BranchTransferID;
-                cmd.Parameters.Add(prmBranchTransferID);
-
                 base.ExecuteNonQuery(cmd);
             }
 
@@ -329,25 +230,19 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblBranchTransfer SET " +
                                 "Freight           =   @Freight " +
                             "WHERE BranchTransferID = @BranchTransferID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@Freight", Freight);
+                cmd.Parameters.AddWithValue("@BranchTransferID", BranchTransferID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmFreight = new MySqlParameter("@Freight",MySqlDbType.Decimal);
-                prmFreight.Value = Freight;
-                cmd.Parameters.Add(prmFreight);
-
-                MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);
-                prmBranchTransferID.Value = BranchTransferID;
-                cmd.Parameters.Add(prmBranchTransferID);
-
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -357,25 +252,19 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblBranchTransfer SET " +
                                 "Deposit           =   @Deposit " +
                             "WHERE BranchTransferID = @BranchTransferID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@Deposit", Deposit);
+                cmd.Parameters.AddWithValue("@BranchTransferID", BranchTransferID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmDeposit = new MySqlParameter("@Deposit",MySqlDbType.Decimal);
-                prmDeposit.Value = Deposit;
-                cmd.Parameters.Add(prmDeposit);
-
-                MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);
-                prmBranchTransferID.Value = BranchTransferID;
-                cmd.Parameters.Add(prmBranchTransferID);
-
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -386,32 +275,21 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"UPDATE tblBranchTransfer SET " + 
 								"ReceivedBy			    =	@ReceivedBy, " +
 								"DeliveryDate			=	@DeliveryDate, " +
 								"Status				    =	@Status " +
 							"WHERE BranchTransferID = @BranchTransferID;";
 				  
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmReceivedBy = new MySqlParameter("@ReceivedBy",MySqlDbType.String);
-				prmReceivedBy.Value = ReceivedBy;
-				cmd.Parameters.Add(prmReceivedBy);
+                cmd.Parameters.AddWithValue("@ReceivedBy", ReceivedBy);
+                cmd.Parameters.AddWithValue("@DeliveryDate", DeliveryDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@Status", BranchTransferStatus.Posted.ToString("d"));
+                cmd.Parameters.AddWithValue("@BranchTransferID", BranchTransferID);
 
-				MySqlParameter prmDeliveryDate = new MySqlParameter("@DeliveryDate",MySqlDbType.DateTime);
-				prmDeliveryDate.Value = DeliveryDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmDeliveryDate);
-
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);
-				prmStatus.Value = BranchTransferStatus.Posted.ToString("d");
-				cmd.Parameters.Add(prmStatus);
-
-				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);						
-				prmBranchTransferID.Value = BranchTransferID;
-				cmd.Parameters.Add(prmBranchTransferID);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 				/*******************************************
@@ -435,7 +313,6 @@ namespace AceSoft.RetailPlus.Data
 				 * ****************************************/
                 UpdateRID(BranchTransferID);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -482,7 +359,6 @@ namespace AceSoft.RetailPlus.Data
                 //myReader.Close();
 
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -508,7 +384,6 @@ namespace AceSoft.RetailPlus.Data
                 //base.ExecuteNonQuery(cmd);
 
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -588,6 +463,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"UPDATE tblBranchTransfer SET " + 
 								"CancelledDate			=	@CancelledDate, " +
 								"CancelledRemarks		=	@CancelledRemarks, " +
@@ -595,30 +473,13 @@ namespace AceSoft.RetailPlus.Data
 								"Status				    =	@Status " +
 							"WHERE BranchTransferID = @BranchTransferID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-				
-				MySqlParameter prmCancelledDate = new MySqlParameter("@CancelledDate",MySqlDbType.DateTime);
-				prmCancelledDate.Value = CancelledDate.ToString("yyyy-MM-dd HH:mm:ss");
-				cmd.Parameters.Add(prmCancelledDate);
+                cmd.Parameters.AddWithValue("@CancelledDate", CancelledDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@CancelledRemarks", Remarks);
+                cmd.Parameters.AddWithValue("@CancelledByID", CancelledByID);
+                cmd.Parameters.AddWithValue("@Status", BranchTransferStatus.Cancelled.ToString("d"));
+                cmd.Parameters.AddWithValue("@BranchTransferID", BranchTransferID);
 
-				MySqlParameter prmCancelledRemarks = new MySqlParameter("@CancelledRemarks",MySqlDbType.String);
-				prmCancelledRemarks.Value = Remarks;
-				cmd.Parameters.Add(prmCancelledRemarks);
-
-				MySqlParameter prmCancelledByID = new MySqlParameter("@CancelledByID",MySqlDbType.Int64);						
-				prmCancelledByID.Value = CancelledByID;
-				cmd.Parameters.Add(prmCancelledByID);
-
-				MySqlParameter prmStatus = new MySqlParameter("@Status",MySqlDbType.Int16);
-				prmStatus.Value = BranchTransferStatus.Cancelled.ToString("d");
-				cmd.Parameters.Add(prmStatus);
-
-				MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);						
-				prmBranchTransferID.Value = BranchTransferID;
-				cmd.Parameters.Add(prmBranchTransferID);
-
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 				/*******************************************
@@ -644,21 +505,18 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "UPDATE tblBranchTransfer SET PaymentStatus = @PaymentStatus WHERE BranchTransferID IN (" + IDs + ");";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "UPDATE tblBranchTransfer SET PaymentStatus = @PaymentStatus WHERE BranchTransferID IN (" + IDs + ");";
+
+                cmd.Parameters.AddWithValue("@PaymentStatus", paymentStatus.ToString("d"));
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmPaymentStatus = new MySqlParameter("@PaymentStatus",MySqlDbType.Int16);
-                prmPaymentStatus.Value = paymentStatus.ToString("d");
-                cmd.Parameters.Add(prmPaymentStatus);
-
                 base.ExecuteNonQuery(cmd);
 
                 return true;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -668,33 +526,24 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblBranchTransfer SET " +
                                 "PaidAmount     = PaidAmount + @PaidAmount, " +
                                 "UnpaidAmount   = UnpaidAmount - @PaidAmount, " +
                                 "PaymentStatus  = @PaymentStatus " +
                              "WHERE BranchTransferID = @BranchTransferID;";
+                
+                cmd.Parameters.AddWithValue("@PaidAmount", PaidAmount);
+                cmd.Parameters.AddWithValue("@PaymentStatus", paymentStatus.ToString("d"));
+                cmd.Parameters.AddWithValue("@BranchTransferID", BranchTransferID);
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmPaidAmount = new MySqlParameter("@PaidAmount",MySqlDbType.Decimal);
-                prmPaidAmount.Value = PaidAmount;
-                cmd.Parameters.Add(prmPaidAmount);
-
-                MySqlParameter prmPaymentStatus = new MySqlParameter("@PaymentStatus",MySqlDbType.Int16);
-                prmPaymentStatus.Value = paymentStatus.ToString("d");
-                cmd.Parameters.Add(prmPaymentStatus);
-
-                MySqlParameter prmBranchTransferID = new MySqlParameter("@BranchTransferID",MySqlDbType.Int64);
-                prmBranchTransferID.Value = BranchTransferID;
-                cmd.Parameters.Add(prmBranchTransferID);
-
                 base.ExecuteNonQuery(cmd);
 
                 return true;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -709,17 +558,17 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL=	"DELETE FROM tblBranchTransfer WHERE BranchTransferID IN (" + IDs + ");";
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
+				
 				cmd.CommandText = SQL;
-
 				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -848,6 +697,9 @@ namespace AceSoft.RetailPlus.Data
 
         public System.Data.DataTable ListAsDataTable(BranchTransferStatus branchtransferstatus, string SortField, SortOption SortOrder)
         {
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+
             if (SortField == string.Empty || SortField == null) SortField = "BranchTransferID";
 
             string SQL = SQLSelect() + "WHERE Status = @Status ";
@@ -859,12 +711,9 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
             cmd.Parameters.AddWithValue("@Status", branchtransferstatus.ToString("d"));
 
+            cmd.CommandText = SQL;
             string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
 

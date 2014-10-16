@@ -131,7 +131,7 @@ namespace AceSoft.RetailPlus
 
         public const string ERROR = "ERROR";
 
-        public const string SWIPE_REWARD_CARD = "SWIPE REWARD or CREDIT CARD:";
+        public const string SWIPE_REWARD_CARD = "SWIPE REWARD:"; // SWIPE REWARD or CREDIT CARD:
 
         public const int C_RESTOPLUS_MAX_SUB_GROUP = 7;
         public const int C_RESTOPLUS_MAX_PRODUCTS = 20;
@@ -159,6 +159,7 @@ namespace AceSoft.RetailPlus
 
         public const string SYS_CONFIG_BACKEND_VARIATION_TYPE = "BACKEND_VARIATION_TYPE";
         public const string SYS_CONFIG_BACKEND_VARIATION_TYPE_EXPIRATION_LOTNO = "EXPIRATION;LOTNO";
+        public const string SYS_CONFIG_BE_COMPANY_CODE = "BECompanyCode";
         public const string SYS_CONFIG_COMPANY_CODE = "CompanyCode";
         public const string SYS_CONFIG_COMPANY_NAME = "CompanyName";
         public const string SYS_CONFIG_CURRENCY = "Currency";
@@ -166,6 +167,7 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_VERSION_FTP_IPADDRESS = "VersionFTPIPAddress";
         public const string SYS_CONFIG_CHECK_OUT_BILL_HEADER_LABEL = "CheckOutBillHeaderLabel";
         public const string SYS_CONFIG_CHARGE_SLIP_HEADER_LABEL = "ChargeSlipHeaderLabel";
+        public const string SYS_CONFIG_CREDIT_VERIFICATION_SLIP_HEADER_LABEL = "CreditVerificationSlipHeaderLabel";
         public const string SYS_CONFIG_WILL_PRINT_CREDITPAYMENT_HEADER = "WillPrintCreditPaymentHeader";
         public const string SYS_CONFIG_WILL_WRITE_SYSTEM_LOG = "WillWriteSystemLog";
         public const string SYS_CONFIG_WILL_DEDUCT_TF_IN_XREAD = "WillDeductTFInXRead";

@@ -118,7 +118,7 @@ namespace AceSoft.RetailPlus.Credits._Customers
                 lnkContactName.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(chkList.Value, Session.SessionID);
 
                 Label lblCreditType = (Label)e.Item.FindControl("lblCreditType");
-                lblCreditType.Text = Enum.Parse(typeof(CreditType), dr["CreditType"].ToString()).ToString();
+                lblCreditType.Text = dr["CardTypeCode"].ToString().ToString();
 
                 Label lblCreditCardNo = (Label)e.Item.FindControl("lblCreditCardNo");
                 lblCreditCardNo.Text = dr["CreditCardNo"].ToString();
@@ -185,17 +185,17 @@ namespace AceSoft.RetailPlus.Credits._Customers
             {
                 cboCreditCardStatus.Items.Add(new ListItem(selection.ToString("G"), selection.ToString("d")));
             }
-            cboCreditCardStatus.Items.Insert(0, new ListItem(Constants.ALL, Constants.ALL));
-            cboCreditCardStatus.SelectedIndex = 0;
+            cboCreditCardStatus.SelectedIndex = cboCreditCardStatus.Items.IndexOf(cboCreditCardStatus.Items.FindByValue(CreditCardStatus.All.ToString("d")));
 
+            Data.CardType clsCardType = new Data.CardType();
             cboCreditType.Items.Clear();
-            foreach (CreditType selection in Enum.GetValues(typeof(CreditType)))
-            {
-                cboCreditType.Items.Add(new ListItem(selection.ToString("G"), selection.ToString("d")));
-            }
-            cboCreditType.Items.Insert(0, new ListItem(Constants.ALL, Constants.ALL));
+            cboCreditType.DataTextField = "CardTypeCode";
+            cboCreditType.DataValueField = "CardTypeID";
+            cboCreditType.DataSource = clsCardType.ListAsDataTable(new CardTypeDetails(CreditCardTypes.Internal, false)).DefaultView;
+            cboCreditType.DataBind();
             cboCreditType.SelectedIndex = 0;
-            
+            clsCardType.CommitAndDispose();
+
         }
 		private void ManageSecurity()
 		{
@@ -289,13 +289,11 @@ namespace AceSoft.RetailPlus.Credits._Customers
 
             string strSearch = txtSearch.Text.Trim();
 
-            Int16 intCreditType = (cboCreditType.SelectedItem.Value == Constants.ALL) ? Int16.Parse("-1") : Int16.Parse(cboCreditType.SelectedItem.Value);
-
             DateTime dteExpiryDateFrom = DateTime.TryParse(txtExpiryDateFrom.Text, out dteExpiryDateFrom) ? dteExpiryDateFrom : DateTime.MinValue;
             DateTime dteExpiryDateTo = DateTime.TryParse(txtExpiryDateTo.Text, out dteExpiryDateTo) ? dteExpiryDateTo : DateTime.MinValue;
-            Int16 intCreditCardStatus = (cboCreditCardStatus.SelectedItem.Value == Constants.ALL) ? Int16.Parse("-1") : Int16.Parse(cboCreditCardStatus.SelectedItem.Value);
+            CreditCardStatus enumCreditCardStatus = (CreditCardStatus)Enum.Parse(typeof(CreditCardStatus), cboCreditCardStatus.SelectedItem.Value);
 
-            PageData.DataSource = clsContact.CustomersWithCredits(clsContactColumns, 0, System.Data.SqlClient.SortOrder.Ascending, 0, strSearch, dteExpiryDateFrom, dteExpiryDateTo, intCreditCardStatus, intCreditType, SortField, sortoption).DefaultView;
+            PageData.DataSource = clsContact.CustomersWithCredits(clsContactColumns, 0, strSearch, dteExpiryDateFrom, dteExpiryDateTo, enumCreditCardStatus, Int32.Parse(cboCreditType.SelectedItem.Value), SortField, sortoption).DefaultView;
 
 			clsContact.CommitAndDispose();
 

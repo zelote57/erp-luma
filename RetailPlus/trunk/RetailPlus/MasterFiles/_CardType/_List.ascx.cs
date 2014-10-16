@@ -188,14 +188,16 @@ namespace AceSoft.RetailPlus.MasterFiles._CardType
 			if (Request.QueryString["sortoption"]!=null)
 			{	sortoption = (SortOption) Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);	}
 
-			if (Request.QueryString["Search"]==null)
-			{	PageData.DataSource = clsDataClass.DataReaderToDataTable(clsCardType.List(SortField, sortoption)).DefaultView;	}
-			else
-			{						
-				string SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);
-				PageData.DataSource = clsDataClass.DataReaderToDataTable(clsCardType.Search(SearchKey, SortField, sortoption)).DefaultView;
-			}
+            Data.CardTypeDetails SearchKeys = new CardTypeDetails(CreditCardTypes.External);
+            SearchKeys.CreditCardType = CreditCardTypes.External;
 
+            if (Request.QueryString["Search"] != null)
+            {
+                SearchKeys.CardTypeCode = Common.Decrypt((string)Request.QueryString["search"], Session.SessionID);
+                SearchKeys.CardTypeName = Common.Decrypt((string)Request.QueryString["search"], Session.SessionID);
+            }
+
+            PageData.DataSource = clsCardType.ListAsDataTable(SearchKeys, SortField, sortoption).DefaultView;
 			clsCardType.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;

@@ -169,7 +169,7 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
 		{
 			PO clsPO = new PO();
 			clsPO.GetConnection();
-			lblPONo.Text = Constants.PURCHASE_ORDER_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsPO.LastTransactionNo();
+			lblPONo.Text = Constants.PURCHASE_ORDER_CODE + CompanyDetails.BECompanyCode + DateTime.Now.Year.ToString() + clsPO.LastTransactionNo();
 
 			PODetails clsDetails = new PODetails();
 

@@ -896,9 +896,18 @@ ALTER TABLE tblInventory ADD `ProductGroupID` BIGINT(20) UNSIGNED NOT NULL DEFAU
 ALTER TABLE tblInventory ADD `ProductGroupCode` VARCHAR(20);
 ALTER TABLE tblInventory ADD `ProductGroupName` VARCHAR(50);
 
-/*********************************  v_4.0.1.0.sql END  *******************************************************/ 
-
 -- 10Oct2013 Added for automatic getting of customer code as membership no of GLA. Applicable also for auto generated code.
 ALTER TABLE tblERPConfig ADD LastCustomerCode VARCHAR(15) NOT NULL DEFAULT '0000000001';
 
+/*********************************  v_4.0.1.0.sql END  *******************************************************/ 
 
+/*********************************  v_4.0.1.1.sql START  *******************************************************/ 
+
+UPDATE tblERPConfig SET DBVersion = 'v_4.0.1.1';
+
+ALTER TABLE tblERPConfig ADD LastCreditCardNo      VARCHAR(20) NOT NULL DEFAULT '1000000000001';
+ALTER TABLE tblERPConfig ADD LastGroupCreditCardNo VARCHAR(20) NOT NULL DEFAULT '2000000000001';
+
+ALTER TABLE tblContactCreditCardInfo MODIFY CreditCardNo VARCHAR(20);
+
+/*********************************  v_4.0.1.1.sql END  *******************************************************/ 

@@ -147,7 +147,7 @@ namespace AceSoft.RetailPlus.Inventory._TransferIn
 		{
 			TransferIn clsTransferIn = new TransferIn();
 			clsTransferIn.GetConnection();
-			lblTransferInNo.Text = Constants.TRANSFER_IN_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsTransferIn.LastTransactionNo();
+			lblTransferInNo.Text = Constants.TRANSFER_IN_CODE + CompanyDetails.BECompanyCode + DateTime.Now.Year.ToString() + clsTransferIn.LastTransactionNo();
 
 			TransferInDetails clsDetails = new TransferInDetails();
 

@@ -355,7 +355,7 @@ namespace AceSoft.RetailPlus.Inventory
 
                 if (clsERPConfigDetails.PostingDateFrom <= DeliveryDate && clsERPConfigDetails.PostingDateTo >= DeliveryDate)
                 {
-                    string strReferenceNo = Constants.CLOSE_INVENTORY_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsERPConfig.get_LastClosingNo();
+                    string strReferenceNo = Constants.CLOSE_INVENTORY_CODE + CompanyDetails.BECompanyCode + DateTime.Now.Year.ToString() + clsERPConfig.get_LastClosingNo();
 
                     AccessUserDetails clsAccessUserDetails = (AccessUserDetails)Session["AccessUserDetails"];
 

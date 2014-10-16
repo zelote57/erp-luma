@@ -148,6 +148,7 @@ namespace AceSoft.RetailPlus
 
             Session.Add(Constants.SYS_CONFIG_BACKEND_VARIATION_TYPE, clsSysConfigDetails.BACKEND_VARIATION_TYPE);
 
+            CompanyDetails.BECompanyCode = string.IsNullOrEmpty(clsSysConfigDetails.BECompanyCode) ? CompanyDetails.BECompanyCode : clsSysConfigDetails.BECompanyCode;
             CompanyDetails.CompanyCode = string.IsNullOrEmpty(clsSysConfigDetails.CompanyCode) ? CompanyDetails.CompanyCode : clsSysConfigDetails.CompanyCode;
             CompanyDetails.CompanyName = string.IsNullOrEmpty(clsSysConfigDetails.CompanyName) ? CompanyDetails.CompanyName : clsSysConfigDetails.CompanyName;
             CompanyDetails.Currency = string.IsNullOrEmpty(clsSysConfigDetails.Currency) ? CompanyDetails.Currency : clsSysConfigDetails.Currency;

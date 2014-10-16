@@ -47,18 +47,6 @@ namespace AceSoft.RetailPlus.Credits._Customers
 
         #region Web Control Methods
 
-        protected void imgSave_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            SaveRecord();
-            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
-        }
-        protected void cmdSave_Click(object sender, System.EventArgs e)
-        {
-            SaveRecord();
-            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
-        }
         protected void imgSaveBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             SaveRecord();
@@ -106,6 +94,21 @@ namespace AceSoft.RetailPlus.Credits._Customers
             cboPosition.DataBind();
             cboPosition.SelectedIndex = 0;
 
+            cboCreditCardStatus.Items.Clear();
+            foreach (CreditCardStatus selection in Enum.GetValues(typeof(CreditCardStatus)))
+            {
+                cboCreditCardStatus.Items.Add(new ListItem(selection.ToString("G"), selection.ToString("d")));
+            }
+            cboCreditCardStatus.SelectedIndex = cboCreditCardStatus.Items.IndexOf(cboCreditCardStatus.Items.FindByValue(CreditCardStatus.All.ToString("d")));
+
+            Data.CardType clsCardType = new Data.CardType(clsContactGroup.Connection, clsContactGroup.Transaction);
+            cboCreditCardType.Items.Clear();
+            cboCreditCardType.DataTextField = "CardTypeName";
+            cboCreditCardType.DataValueField = "CardTypeID";
+            cboCreditCardType.DataSource = clsCardType.ListAsDataTable(new CardTypeDetails(CreditCardTypes.Internal)).DefaultView;
+            cboCreditCardType.DataBind();
+            cboCreditCardType.SelectedIndex = 0;
+
             clsContactGroup.CommitAndDispose();
         }
         private void LoadRecord()
@@ -127,15 +130,21 @@ namespace AceSoft.RetailPlus.Credits._Customers
             txtTelephoneNo.Text = clsDetails.TelephoneNo;
             txtRemarks.Text = clsDetails.Remarks;
             txtDebit.Text = clsDetails.Debit.ToString("###0.#0");
-            txtCredit.Text = clsDetails.Credit.ToString("###0.#0");
             chkIsCreditAllowed.Checked = clsDetails.IsCreditAllowed;
-            //if (clsDetails.IsCreditAllowed == 0)
-            //    chkIsCreditAllowed.Checked = false;
-            //else
-            //    chkIsCreditAllowed.Checked = true;
-            txtCreditLimit.Text = clsDetails.CreditLimit.ToString("###0.#0");
             cboDepartment.SelectedIndex = cboDepartment.Items.IndexOf(cboDepartment.Items.FindByValue(clsDetails.DepartmentID.ToString()));
             cboPosition.SelectedIndex = cboPosition.Items.IndexOf(cboPosition.Items.FindByValue(clsDetails.PositionID.ToString()));
+
+            txtCreditCardNo.Text = clsDetails.CreditDetails.CreditCardNo;
+            cboCreditCardType.SelectedIndex = cboCreditCardType.Items.IndexOf(cboCreditCardType.Items.FindByValue(clsDetails.CreditDetails.CardTypeDetails.CardTypeID.ToString()));
+            txtCreditAwardDate.Text = clsDetails.CreditDetails.CreditAwardDate.ToString("yyyy-MMM-dd");
+            txtExpiryDate.Text = clsDetails.CreditDetails.ExpiryDate.ToString("yyyy-MMM-dd");
+            cboCreditCardStatus.SelectedIndex = cboCreditCardStatus.Items.IndexOf(cboCreditCardStatus.Items.FindByValue(clsDetails.CreditDetails.CreditCardStatus.ToString("d")));
+            lblCreditCardActive.Text = clsDetails.CreditDetails.CreditActive ? "Active" : "InActive (Hold/Suspended)";
+            txtCreditLimit.Text = clsDetails.CreditLimit.ToString("###0.#0");
+            txtCredit.Text = clsDetails.Credit.ToString("###0.#0");
+            txtPaidAmount.Text = "0.00";
+            txtCurrentBalance.Text = (clsDetails.CreditLimit - clsDetails.Credit).ToString("###0.#0");
+            
         }
         private void SaveRecord()
         {
@@ -155,10 +164,6 @@ namespace AceSoft.RetailPlus.Credits._Customers
             clsDetails.Debit = Convert.ToDecimal(txtDebit.Text);
             clsDetails.Credit = Convert.ToDecimal(txtCredit.Text);
             clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
-            //if (chkIsCreditAllowed.Checked == false)
-            //    clsDetails.IsCreditAllowed = 0;
-            //else
-            //    clsDetails.IsCreditAllowed = 1;
             clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
             clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
             clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);

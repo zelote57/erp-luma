@@ -35,6 +35,11 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label lblBalanceAmount;
         private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
         private KeyBoardHook.KeyboardNoControl keyboardNoControl1;
+        private TextBox txtScan;
+        private Label label6;
+
+        Data.ContactDetails mclsGuarantorDetails; 
+        Data.CardTypeDetails mclsCardTypeDetails;
 
         #region public Properties
 
@@ -61,9 +66,6 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         private Data.CreditCardPaymentDetails mDetails = new Data.CreditCardPaymentDetails();
-        private TextBox txtScan;
-        private Label label6;
-    
         public Data.CreditCardPaymentDetails Details
         {
             get
@@ -71,9 +73,30 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         private Data.TerminalDetails mclsTerminalDetails;
+        private Panel panCharge;
+        private Label label7;
+        private TextBox txtCreditCardCharge;
+        private Label lblPlus;
+        private Label label9;
+        private Label label10;
+    
         public Data.TerminalDetails TerminalDetails
         {
             set { mclsTerminalDetails = value; }
+        }
+
+        private ArrayList marrCreditCardPaymentDetails = new ArrayList();
+        public ArrayList arrCreditCardPaymentDetails
+        {
+            set { marrCreditCardPaymentDetails = value; }
+        }
+
+        public bool IsRefund { get; set; }
+
+        private Data.ContactDetails mclsCreditorDetails;
+        public Data.ContactDetails CreditorDetails
+        {
+            get { return mclsCreditorDetails; }
         }
 
         #endregion
@@ -110,29 +133,34 @@ namespace AceSoft.RetailPlus.Client.UI
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.lblHeader = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtScan = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.lblBalanceAmount = new System.Windows.Forms.Label();
-            this.cboCardType = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtCardHolder = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtCardNo = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtValidityDates = new System.Windows.Forms.TextBox();
             this.lblRemarks = new System.Windows.Forms.Label();
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.lblCreditCard = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtScan = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.txtAmount = new System.Windows.Forms.TextBox();
+            this.cboCardType = new System.Windows.Forms.ComboBox();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
-            this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
-            this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
-            this.label6 = new System.Windows.Forms.Label();
+            this.panCharge = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtCreditCardCharge = new System.Windows.Forms.TextBox();
+            this.lblPlus = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.panCharge.SuspendLayout();
             this.SuspendLayout();
             // 
             // imgIcon
@@ -160,23 +188,24 @@ namespace AceSoft.RetailPlus.Client.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.txtScan);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.lblBalanceAmount);
-            this.groupBox1.Controls.Add(this.cboCardType);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.txtCardHolder);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txtCardNo);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtValidityDates);
             this.groupBox1.Controls.Add(this.lblRemarks);
             this.groupBox1.Controls.Add(this.txtRemarks);
             this.groupBox1.Controls.Add(this.lblCreditCard);
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtAmount);
+            this.groupBox1.Controls.Add(this.cboCardType);
+            this.groupBox1.Controls.Add(this.txtScan);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.panCharge);
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Blue;
             this.groupBox1.Location = new System.Drawing.Point(9, 67);
@@ -186,28 +215,13 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scan the card or Enter the required information below";
             // 
-            // txtScan
-            // 
-            this.txtScan.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtScan.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtScan.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.txtScan.Location = new System.Drawing.Point(203, 18);
-            this.txtScan.MaxLength = 0;
-            this.txtScan.Name = "txtScan";
-            this.txtScan.Size = new System.Drawing.Size(424, 30);
-            this.txtScan.TabIndex = 94;
-            this.txtScan.Text = "put the cursor here to scan";
-            this.txtScan.GotFocus += new System.EventHandler(this.txtScan_GotFocus);
-            this.txtScan.LostFocus += new System.EventHandler(this.txtScan_LostFocus);
-            this.txtScan.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtScan_KeyPress);
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Font = new System.Drawing.Font("Tahoma", 12F);
             this.label8.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label8.Location = new System.Drawing.Point(801, 17);
+            this.label8.Location = new System.Drawing.Point(802, 17);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(201, 19);
             this.label8.TabIndex = 92;
@@ -218,22 +232,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBalanceAmount.BackColor = System.Drawing.Color.Transparent;
             this.lblBalanceAmount.Font = new System.Drawing.Font("Tahoma", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.lblBalanceAmount.ForeColor = System.Drawing.Color.Red;
-            this.lblBalanceAmount.Location = new System.Drawing.Point(611, 10);
+            this.lblBalanceAmount.Location = new System.Drawing.Point(631, 10);
             this.lblBalanceAmount.Name = "lblBalanceAmount";
-            this.lblBalanceAmount.Size = new System.Drawing.Size(184, 30);
+            this.lblBalanceAmount.Size = new System.Drawing.Size(164, 30);
             this.lblBalanceAmount.TabIndex = 93;
             this.lblBalanceAmount.Text = "0.00";
             this.lblBalanceAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // cboCardType
-            // 
-            this.cboCardType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboCardType.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cboCardType.Location = new System.Drawing.Point(203, 87);
-            this.cboCardType.Name = "cboCardType";
-            this.cboCardType.Size = new System.Drawing.Size(200, 31);
-            this.cboCardType.TabIndex = 1;
-            this.cboCardType.GotFocus += new System.EventHandler(this.cboCardType_GotFocus);
             // 
             // label5
             // 
@@ -241,7 +245,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label5.BackColor = System.Drawing.Color.White;
             this.label5.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label5.Location = new System.Drawing.Point(67, 124);
+            this.label5.Location = new System.Drawing.Point(67, 163);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(76, 13);
             this.label5.TabIndex = 91;
@@ -251,11 +255,11 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtCardHolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCardHolder.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCardHolder.Location = new System.Drawing.Point(203, 121);
+            this.txtCardHolder.Location = new System.Drawing.Point(203, 154);
             this.txtCardHolder.MaxLength = 0;
             this.txtCardHolder.Name = "txtCardHolder";
-            this.txtCardHolder.Size = new System.Drawing.Size(424, 30);
-            this.txtCardHolder.TabIndex = 3;
+            this.txtCardHolder.Size = new System.Drawing.Size(585, 30);
+            this.txtCardHolder.TabIndex = 4;
             this.txtCardHolder.GotFocus += new System.EventHandler(this.txtCardHolder_GotFocus);
             // 
             // label4
@@ -263,7 +267,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label4.Location = new System.Drawing.Point(410, 90);
+            this.label4.Location = new System.Drawing.Point(67, 130);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 89;
@@ -273,11 +277,12 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtCardNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCardNo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCardNo.Location = new System.Drawing.Point(467, 87);
+            this.txtCardNo.Location = new System.Drawing.Point(203, 121);
             this.txtCardNo.MaxLength = 0;
             this.txtCardNo.Name = "txtCardNo";
-            this.txtCardNo.Size = new System.Drawing.Size(160, 30);
-            this.txtCardNo.TabIndex = 2;
+            this.txtCardNo.Size = new System.Drawing.Size(211, 30);
+            this.txtCardNo.TabIndex = 3;
+            this.txtCardNo.TextChanged += new System.EventHandler(this.txtCardNo_TextChanged);
             this.txtCardNo.GotFocus += new System.EventHandler(this.txtCardNo_GotFocus);
             // 
             // label2
@@ -285,30 +290,18 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label2.Location = new System.Drawing.Point(404, 163);
+            this.label2.Location = new System.Drawing.Point(423, 138);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 13);
             this.label2.TabIndex = 86;
             this.label2.Text = "(Format: mmyy)";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.White;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label3.Location = new System.Drawing.Point(67, 90);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 13);
-            this.label3.TabIndex = 23;
-            this.label3.Text = "Card Type:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label1.Location = new System.Drawing.Point(67, 158);
+            this.label1.Location = new System.Drawing.Point(415, 124);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(97, 13);
             this.label1.TabIndex = 19;
@@ -318,11 +311,11 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.txtValidityDates.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtValidityDates.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtValidityDates.Location = new System.Drawing.Point(203, 155);
+            this.txtValidityDates.Location = new System.Drawing.Point(513, 123);
             this.txtValidityDates.MaxLength = 4;
             this.txtValidityDates.Name = "txtValidityDates";
-            this.txtValidityDates.Size = new System.Drawing.Size(200, 30);
-            this.txtValidityDates.TabIndex = 4;
+            this.txtValidityDates.Size = new System.Drawing.Size(108, 30);
+            this.txtValidityDates.TabIndex = 5;
             this.txtValidityDates.GotFocus += new System.EventHandler(this.txtValidityDates_GotFocus);
             this.txtValidityDates.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidityDates_KeyPress);
             // 
@@ -346,7 +339,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtRemarks.Multiline = true;
             this.txtRemarks.Name = "txtRemarks";
             this.txtRemarks.Size = new System.Drawing.Size(585, 41);
-            this.txtRemarks.TabIndex = 5;
+            this.txtRemarks.TabIndex = 6;
             this.txtRemarks.GotFocus += new System.EventHandler(this.txtRemarks_GotFocus);
             // 
             // lblCreditCard
@@ -354,25 +347,74 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCreditCard.AutoSize = true;
             this.lblCreditCard.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCreditCard.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblCreditCard.Location = new System.Drawing.Point(67, 55);
+            this.lblCreditCard.Location = new System.Drawing.Point(67, 29);
             this.lblCreditCard.Name = "lblCreditCard";
             this.lblCreditCard.Size = new System.Drawing.Size(119, 13);
             this.lblCreditCard.TabIndex = 15;
             this.lblCreditCard.Text = "Card Amount (PHP):";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label6.Location = new System.Drawing.Point(67, 59);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(130, 16);
+            this.label6.TabIndex = 95;
+            this.label6.Text = "S C A N   H E R E . . ";
+            // 
+            // txtScan
+            // 
+            this.txtScan.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtScan.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtScan.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.txtScan.Location = new System.Drawing.Point(203, 52);
+            this.txtScan.MaxLength = 0;
+            this.txtScan.Name = "txtScan";
+            this.txtScan.Size = new System.Drawing.Size(418, 30);
+            this.txtScan.TabIndex = 2;
+            this.txtScan.Text = "put the cursor here to scan credit card";
+            this.txtScan.GotFocus += new System.EventHandler(this.txtScan_GotFocus);
+            this.txtScan.LostFocus += new System.EventHandler(this.txtScan_LostFocus);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.White;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label3.Location = new System.Drawing.Point(67, 95);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(67, 13);
+            this.label3.TabIndex = 23;
+            this.label3.Text = "Card Type:";
+            // 
             // txtAmount
             // 
             this.txtAmount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtAmount.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAmount.Location = new System.Drawing.Point(203, 52);
+            this.txtAmount.Location = new System.Drawing.Point(203, 20);
             this.txtAmount.MaxLength = 16;
             this.txtAmount.Name = "txtAmount";
-            this.txtAmount.Size = new System.Drawing.Size(200, 30);
+            this.txtAmount.Size = new System.Drawing.Size(211, 30);
             this.txtAmount.TabIndex = 0;
             this.txtAmount.Text = "0.00";
             this.txtAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtAmount.TextChanged += new System.EventHandler(this.txtAmount_TextChanged);
             this.txtAmount.GotFocus += new System.EventHandler(this.txtAmount_GotFocus);
             this.txtAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
+            // 
+            // cboCardType
+            // 
+            this.cboCardType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboCardType.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboCardType.Location = new System.Drawing.Point(203, 86);
+            this.cboCardType.Name = "cboCardType";
+            this.cboCardType.Size = new System.Drawing.Size(211, 31);
+            this.cboCardType.TabIndex = 1;
+            this.cboCardType.SelectedIndexChanged += new System.EventHandler(this.cboCardType_SelectedIndexChanged);
+            this.cboCardType.GotFocus += new System.EventHandler(this.cboCardType_GotFocus);
             // 
             // cmdCancel
             // 
@@ -404,40 +446,75 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
-            // keyboardSearchControl1
+            // panCharge
             // 
-            this.keyboardSearchControl1.BackColor = System.Drawing.Color.White;
-            this.keyboardSearchControl1.Location = new System.Drawing.Point(91, 310);
-            this.keyboardSearchControl1.Name = "keyboardSearchControl1";
-            this.keyboardSearchControl1.Size = new System.Drawing.Size(799, 134);
-            this.keyboardSearchControl1.TabIndex = 91;
-            this.keyboardSearchControl1.TabStop = false;
-            this.keyboardSearchControl1.Tag = "";
-            this.keyboardSearchControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardSearchControl1_UserKeyPressed);
+            this.panCharge.Controls.Add(this.label7);
+            this.panCharge.Controls.Add(this.txtCreditCardCharge);
+            this.panCharge.Controls.Add(this.lblPlus);
+            this.panCharge.Controls.Add(this.label9);
+            this.panCharge.Controls.Add(this.label10);
+            this.panCharge.Location = new System.Drawing.Point(425, 18);
+            this.panCharge.Name = "panCharge";
+            this.panCharge.Size = new System.Drawing.Size(205, 38);
+            this.panCharge.TabIndex = 109;
             // 
-            // keyboardNoControl1
+            // label7
             // 
-            this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
-            this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Up;
-            this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
-            this.keyboardNoControl1.Location = new System.Drawing.Point(412, 310);
-            this.keyboardNoControl1.Name = "keyboardNoControl1";
-            this.keyboardNoControl1.Size = new System.Drawing.Size(202, 176);
-            this.keyboardNoControl1.TabIndex = 92;
-            this.keyboardNoControl1.TabStop = false;
-            this.keyboardNoControl1.Visible = false;
-            this.keyboardNoControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardNoControl1_UserKeyPressed);
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.LightSlateGray;
+            this.label7.Location = new System.Drawing.Point(36, 4);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(42, 26);
+            this.label7.TabIndex = 111;
+            this.label7.Text = "Credit\r\nCharge";
             // 
-            // label6
+            // txtCreditCardCharge
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label6.Location = new System.Drawing.Point(67, 26);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(130, 16);
-            this.label6.TabIndex = 95;
-            this.label6.Text = "S C A N   H E R E . . ";
+            this.txtCreditCardCharge.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCreditCardCharge.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCreditCardCharge.Location = new System.Drawing.Point(88, 3);
+            this.txtCreditCardCharge.MaxLength = 16;
+            this.txtCreditCardCharge.Name = "txtCreditCardCharge";
+            this.txtCreditCardCharge.ReadOnly = true;
+            this.txtCreditCardCharge.Size = new System.Drawing.Size(108, 30);
+            this.txtCreditCardCharge.TabIndex = 110;
+            this.txtCreditCardCharge.Text = "0.00";
+            this.txtCreditCardCharge.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // lblPlus
+            // 
+            this.lblPlus.AutoSize = true;
+            this.lblPlus.BackColor = System.Drawing.Color.White;
+            this.lblPlus.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPlus.ForeColor = System.Drawing.Color.MediumBlue;
+            this.lblPlus.Location = new System.Drawing.Point(4, 11);
+            this.lblPlus.Name = "lblPlus";
+            this.lblPlus.Size = new System.Drawing.Size(16, 13);
+            this.lblPlus.TabIndex = 109;
+            this.lblPlus.Text = "+";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.LightSlateGray;
+            this.label9.Location = new System.Drawing.Point(21, 5);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(22, 25);
+            this.label9.TabIndex = 112;
+            this.label9.Text = "{";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.LightSlateGray;
+            this.label10.Location = new System.Drawing.Point(70, 5);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(22, 25);
+            this.label10.TabIndex = 113;
+            this.label10.Text = "}";
             // 
             // CreditCardPaymentWnd
             // 
@@ -445,8 +522,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
-            this.Controls.Add(this.keyboardSearchControl1);
-            this.Controls.Add(this.keyboardNoControl1);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
             this.Controls.Add(this.groupBox1);
@@ -465,6 +540,8 @@ namespace AceSoft.RetailPlus.Client.UI
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.panCharge.ResumeLayout(false);
+            this.panCharge.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -514,8 +591,42 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-            keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
-            keyboardSearchControl1.Visible = false;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
+                this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
+
+                // 
+                // keyboardSearchControl1
+                // 
+                this.keyboardSearchControl1.BackColor = System.Drawing.Color.White;
+                this.keyboardSearchControl1.Location = new System.Drawing.Point(91, 310);
+                this.keyboardSearchControl1.Name = "keyboardSearchControl1";
+                this.keyboardSearchControl1.Size = new System.Drawing.Size(799, 134);
+                this.keyboardSearchControl1.TabIndex = 91;
+                this.keyboardSearchControl1.TabStop = false;
+                this.keyboardSearchControl1.Tag = "";
+                this.keyboardSearchControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardSearchControl1_UserKeyPressed);
+                // 
+                // keyboardNoControl1
+                // 
+                this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
+                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Up;
+                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
+                this.keyboardNoControl1.Location = new System.Drawing.Point(412, 310);
+                this.keyboardNoControl1.Name = "keyboardNoControl1";
+                this.keyboardNoControl1.Size = new System.Drawing.Size(202, 176);
+                this.keyboardNoControl1.TabIndex = 92;
+                this.keyboardNoControl1.TabStop = false;
+                this.keyboardNoControl1.Visible = false;
+                this.keyboardNoControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardNoControl1_UserKeyPressed);
+
+                this.Controls.Add(this.keyboardSearchControl1);
+                this.Controls.Add(this.keyboardNoControl1);
+            
+                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = false;
+            }
 
             LoadOptions();
         }
@@ -528,8 +639,11 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
-            keyboardSearchControl1.Visible = false;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = false;
+            }
         }
 
         private void txtAmount_KeyPress(object sender, KeyPressEventArgs e)
@@ -548,32 +662,24 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = null;
 
-            keyboardNoControl1.Visible = false;
-            keyboardSearchControl1.Visible = false;
-
-            txtScan.Text = "";
-        }
-
-        private void txtScan_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Convert.ToInt32(e.KeyChar) == Convert.ToInt32(Keys.Enter))
+            if (mclsTerminalDetails.WithRestaurantFeatures)
             {
-                if (!string.IsNullOrEmpty(txtScan.Text))
-                {
-                    AssignCreditCardInfo();
-                }
+                keyboardNoControl1.Visible = false;
+                keyboardSearchControl1.Visible = false;
             }
+            txtScan.Text = "";
         }
 
         private void txtScan_LostFocus(object sender, System.EventArgs e)
         {
             if (string.IsNullOrEmpty(txtScan.Text))
             {
-                txtScan.Text = "put the cursor here to scan";
+                txtScan.Text = "put the cursor here to scan credit card";
             }
-            else if (txtScan.Text != "put the cursor here to scan")
+            else if (txtScan.Text != "put the cursor here to scan credit card")
             {
-                AssignCreditCardInfo();
+                setScannedCreditCardInfo();
+                txtCardNo_TextChanged(null, null);
             }
         }
 
@@ -617,40 +723,55 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
-            keyboardSearchControl1.Visible = false;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = false;
+            }
         }
 
         private void cboCardType_GotFocus(object sender, EventArgs e)
         {
             txtSelectedTextBox = null;
 
-            keyboardNoControl1.Visible = false;
-            keyboardSearchControl1.Visible = false;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                keyboardNoControl1.Visible = false;
+                keyboardSearchControl1.Visible = false;
+            }
         }
 
         private void txtCardHolder_GotFocus(object sender, EventArgs e)
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            keyboardNoControl1.Visible = false;
-            keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                keyboardNoControl1.Visible = false;
+                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            }
         }
 
         private void txtValidityDates_GotFocus(object sender, EventArgs e)
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
-            keyboardSearchControl1.Visible = false;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = false;
+            }
         }
 
         private void txtRemarks_GotFocus(object sender, EventArgs e)
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            keyboardNoControl1.Visible = false;
-            keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            if (mclsTerminalDetails.WithRestaurantFeatures)
+            {
+                keyboardNoControl1.Visible = false;
+                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            }
         }
 
         private void cmdCancel_Click(object sender, EventArgs e)
@@ -681,16 +802,15 @@ namespace AceSoft.RetailPlus.Client.UI
 
             cboCardType.Items.Clear();
             Data.CardType clsCardType = new Data.CardType();
-            foreach (System.Data.DataRow dr in clsCardType.DataList("CardTypeID", SortOption.Ascending).Rows)
+            foreach (System.Data.DataRow dr in clsCardType.ListAsDataTable(new Data.CardTypeDetails(CreditCardTypes.Both), "CardTypeName", SortOption.Ascending).Rows)
             {
                 cboCardType.Items.Add(dr["CardTypeName"]);
             }
             clsCardType.CommitAndDispose();
 
-            if (cboCardType.Items.Count > 0)
-                cboCardType.SelectedIndex = 0;
+            if (cboCardType.Items.Count > 0) cboCardType.SelectedIndex = 0;
 
-            txtScan.Text = "put the cursor here to scan";
+            txtScan.Text = "put the cursor here to scan credit card";
             txtScan.Focus();
         }
         private bool isValuesAssigned()
@@ -703,22 +823,15 @@ namespace AceSoft.RetailPlus.Client.UI
             catch
             {
                 txtAmount.Focus();
-                MessageBox.Show("Sorry you have entered an invalid amount for credit card payment." +
-                    "Please type a valid credit amount.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Sorry you have entered an invalid amount for credit card payment. Please type a valid credit amount.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-            if (!string.IsNullOrEmpty(txtScan.Text))
-            {
-                AssignCreditCardInfo();
-            }
-
             if (string.IsNullOrEmpty(cboCardType.Text))
             {
                 cboCardType.Focus();
                 MessageBox.Show("Please select a valid Card Type.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-
             if (txtCardNo.Text == null || txtCardNo.Text == "")
             {
                 txtCardNo.Focus();
@@ -732,15 +845,14 @@ namespace AceSoft.RetailPlus.Client.UI
                 return false;
             }
             DateTime ValidityDate = DateTime.MinValue;
-            if (txtValidityDates.Text == null || txtValidityDates.Text == "")
+            if (string.IsNullOrEmpty(txtValidityDates.Text))
             {
                 txtValidityDates.Focus();
                 MessageBox.Show("Please type a valid Validity Date.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-            else if (txtValidityDates.Text != null && txtValidityDates.Text != "")
+            else if (!string.IsNullOrEmpty(txtValidityDates.Text))
             {
-
                 try
                 {
                     string Month = txtValidityDates.Text.Substring(0, 2);
@@ -761,54 +873,257 @@ namespace AceSoft.RetailPlus.Client.UI
                     return false;
                 }
             }
+            // make sure that only 1 INTERNAL CREDIT CARD can be use per transaction
+            if (mclsCardTypeDetails.CreditCardType == CreditCardTypes.Internal)
+            {
+                foreach (Data.CreditCardPaymentDetails clsCreditCardPaymentDetails in marrCreditCardPaymentDetails)
+                {
+                    if (clsCreditCardPaymentDetails.CardTypeDetails.CreditCardType == CreditCardTypes.Internal)
+                    {
+                        MessageBox.Show("Sorry an INTERNAL CREDIT CARD has only been use to pay. Please use another credit card or another mode of payment (e.g. cash).", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
+                }
+            }
 
+            decimal decAdditionalCreditCharge = 0;
+            if (mclsCreditorDetails.ContactID != 0)
+            {
+                mdecAmount += decimal.Parse(txtCreditCardCharge.Text);
 
-            Data.CardType clsCardType = new Data.CardType();
-            Data.CardTypeDetails cardtypedetails = clsCardType.Details(cboCardType.Text);
-            clsCardType.CommitAndDispose();
+                decimal mdecAllowedCredit = mclsCreditorDetails.CreditLimit - mclsCreditorDetails.Credit;
+                if (mdecAmount > mdecAllowedCredit)
+                {
+                    txtAmount.Focus();
+                    MessageBox.Show("Amount must be less than the credit limit (" + mdecAllowedCredit.ToString("#,##0.#0") + "). Please enter a lower amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                if (mdecAmount <= 0)
+                {
+                    txtAmount.Focus();
+                    MessageBox.Show("Amount must be greater than zero. Please enter a higher amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                if (!mclsCreditorDetails.CreditDetails.CreditActive)
+                {
+                    txtScan.Focus();
+                    MessageBox.Show("Sorry the credit card status is " + mclsCreditorDetails.CreditDetails.CreditCardStatus.ToString("G") + ". Please enter an active credit card no.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                if (mclsCardTypeDetails.WithGuarantor)
+                {
+                    Data.Contacts clsContacts = new Data.Contacts();
+                    mclsGuarantorDetails = clsContacts.Details(mclsCreditorDetails.CreditDetails.GuarantorID);
+                    clsContacts.CommitAndDispose();
+
+                    if (!mclsGuarantorDetails.CreditDetails.CreditActive)
+                    {
+                        txtScan.Focus();
+                        MessageBox.Show("Sorry the Guarantor's credit card status is " + mclsGuarantorDetails.CreditDetails.CreditCardStatus.ToString("G") + ". Please enter an active credit card no.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
+                }
+                if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
+                {
+                    if (mclsTerminalDetails.GroupChargeType.InPercent)
+                        decAdditionalCreditCharge = mdecBalanceAmount * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
+                    else
+                        decAdditionalCreditCharge = mdecBalanceAmount + mclsTerminalDetails.GroupChargeType.ChargeAmount;
+                }
+                else if (!mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.PersonalChargeType.ChargeTypeID != 0)
+                {
+                    if (mclsTerminalDetails.PersonalChargeType.InPercent)
+                        decAdditionalCreditCharge = mdecBalanceAmount * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
+                    else
+                        decAdditionalCreditCharge = mdecBalanceAmount + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
+                }
+                if (mdecAmount > mdecBalanceAmount + decAdditionalCreditCharge)
+                {
+                    txtAmount.Focus();
+                    MessageBox.Show("Amount must be less than the balance amount (" + mdecBalanceAmount.ToString("#,##0.#0") + "). Please enter a lower or equal amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
+            if (mclsCreditorDetails.ContactID == 0 && mclsCardTypeDetails.CreditCardType == CreditCardTypes.Internal)
+            {
+                MessageBox.Show("Please enter a valid card no for " + cboCardType.Text + ".", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
 
             mDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
             mDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
             mDetails.TransactionID = mclsSalesTransactionDetails.TransactionID;
             mDetails.TransactionNo = mclsSalesTransactionDetails.TransactionNo;
+            mDetails.TransactionDate = mclsSalesTransactionDetails.TransactionDate;
+            mDetails.CashierName = mclsSalesTransactionDetails.CashierName;
+
             mDetails.Amount = mdecAmount;
-            mDetails.CardTypeID = cardtypedetails.CardTypeID;
-            mDetails.CardTypeCode = cardtypedetails.CardTypeCode;
-            mDetails.CardTypeName = cardtypedetails.CardTypeName;
+            mDetails.AdditionalCharge = decAdditionalCreditCharge;
+
+            mDetails.CardTypeID = mclsCardTypeDetails.CardTypeID;
+            mDetails.CardTypeCode = mclsCardTypeDetails.CardTypeCode;
+            mDetails.CardTypeName = mclsCardTypeDetails.CardTypeName;
             mDetails.CardNo = txtCardNo.Text;
             mDetails.CardHolder = txtCardHolder.Text;
+            
             mDetails.ValidityDates = ValidityDate.ToString("MMddyy");
             mDetails.Remarks = txtRemarks.Text;
+            mDetails.CardTypeDetails = mclsCardTypeDetails;
+            mDetails.CreditorDetails = mclsCreditorDetails;
+            mDetails.IsRefund = IsRefund;
 
             return true;
         }
 
-        private void AssignCreditCardInfo()
+        private void setScannedCreditCardInfo()
         {
-            string[] strCareditInfo = txtScan.Text.Split('|');
+            string[] strCareditInfo = txtScan.Text.Split(',');
 
-            if (strCareditInfo.Length >= 1) 
+            if (strCareditInfo.Length == 1) //internal credit card
             {
-                if (!cboCardType.Items.Contains(strCareditInfo[0]))
-                {
-                    Data.CardType clsCardType = new Data.CardType();
-                    clsCardType.Insert(new Data.CardTypeDetails
-                    {
-                        CardTypeID = 0,
-                        CardTypeCode = strCareditInfo[0],
-                        CardTypeName = strCareditInfo[0]
-                    });
-                    clsCardType.CommitAndDispose();
-                    cboCardType.Items.Add(strCareditInfo[0]);
-                }
-                cboCardType.Text = strCareditInfo[0];
-            };
-            if (strCareditInfo.Length >= 2) txtCardNo.Text = strCareditInfo[1];
-            if (strCareditInfo.Length >= 3) txtCardHolder.Text = strCareditInfo[2];
-            if (strCareditInfo.Length >= 4) txtValidityDates.Text = strCareditInfo[3];
+                txtCardNo.Text = strCareditInfo[0];
+            }
+            else
+            {
+                if (strCareditInfo.Length >= 1) txtCardHolder.Text = strCareditInfo[0];
+                if (strCareditInfo.Length >= 2) txtCardNo.Text = strCareditInfo[1];
+                if (strCareditInfo.Length >= 3) txtValidityDates.Text = strCareditInfo[2];
+            }
         }
+        
 
         #endregion
+
+        private void cboCardType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Data.CardType clsCardType = new Data.CardType();
+            mclsCardTypeDetails = clsCardType.Details(cboCardType.Text);
+            clsCardType.CommitAndDispose();
+        }
+
+        private void txtCardNo_TextChanged(object sender, EventArgs e)
+        {
+            mclsCreditorDetails = new Data.ContactDetails();
+            if (!string.IsNullOrEmpty(txtCardNo.Text))
+            {
+                Data.Contacts clsContacts = new Data.Contacts();
+                mclsCreditorDetails = clsContacts.DetailsByCreditCardNo(txtCardNo.Text);
+
+                if (mclsCreditorDetails.ContactID == 0)
+                {
+                    mclsCreditorDetails = clsContacts.DetailsByCreditCardNo(txtCardNo.Text.Remove(txtCardNo.Text.Length - 1));
+                }
+                clsContacts.CommitAndDispose();
+            }
+
+            //this means that this uses an internal credit card
+            setCreditor();
+
+            if (mclsCreditorDetails.ContactID != 0)
+                setCreditCardChargeAmount(); 
+            else
+                unsetCreditCardCharge();
+        }
+
+        private bool setCreditor()
+        {
+            if (string.IsNullOrEmpty(txtCardNo.Text))
+            {
+                mclsCreditorDetails = new Data.ContactDetails();
+            }
+            if (!string.IsNullOrEmpty(txtCardNo.Text))
+            {
+                string strContactCardNo = txtCardNo.Text;
+
+                Data.Contacts clsContacts = new Data.Contacts();
+                mclsCreditorDetails = clsContacts.DetailsByCreditCardNo(strContactCardNo);
+
+                if (mclsCreditorDetails.ContactID == 0)
+                {
+                    strContactCardNo = strContactCardNo.Remove(strContactCardNo.Length - 1);
+                    mclsCreditorDetails = clsContacts.DetailsByCreditCardNo(strContactCardNo);
+                }
+                clsContacts.CommitAndDispose();
+
+                if(mclsCreditorDetails.ContactID != 0)
+                {
+                    cboCardType.SelectedText = mclsCreditorDetails.CreditDetails.CardTypeDetails.CardTypeName;
+                    cboCardType.Text = mclsCreditorDetails.CreditDetails.CardTypeDetails.CardTypeName;
+
+                    cboCardType_SelectedIndexChanged(null, null);
+
+                    txtCardHolder.Text = mclsCreditorDetails.ContactName;
+                    if (mclsCreditorDetails.CreditDetails.ExpiryDate == Constants.C_DATE_MIN_VALUE)
+                        txtValidityDates.Text = "";
+                    else
+                        txtValidityDates.Text = mclsCreditorDetails.CreditDetails.ExpiryDate.ToString("MMyy");
+                }
+            }
+            return true;
+        }
+        private void setCreditCardChargeAmount()
+        {
+            if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID == 0)
+            {
+                unsetCreditCardCharge();
+                cboCardType.Enabled = false;
+                txtValidityDates.Enabled = false;
+                txtCardHolder.Enabled = false;
+            }
+            else if (!mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.PersonalChargeType.ChargeTypeID == 0)
+            {
+                unsetCreditCardCharge();
+                cboCardType.Enabled = false;
+                txtValidityDates.Enabled = false;
+                txtCardHolder.Enabled = false;
+            }
+            else
+            {
+                decimal decBalance = decimal.Parse(txtAmount.Text);
+                decimal decAdditionalCreditCharge = 0;
+                if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
+                {
+                    if (mclsTerminalDetails.GroupChargeType.InPercent)
+                        decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
+                    else
+                        decAdditionalCreditCharge = decBalance + mclsTerminalDetails.GroupChargeType.ChargeAmount;
+                }
+                else if (!mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.PersonalChargeType.ChargeTypeID != 0)
+                {
+                    if (mclsTerminalDetails.PersonalChargeType.InPercent)
+                        decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
+                    else
+                        decAdditionalCreditCharge = decBalance + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
+                }
+                txtCreditCardCharge.Text = decAdditionalCreditCharge.ToString("#,##0.#0");
+                lblBalanceAmount.Text = (decBalance + decAdditionalCreditCharge).ToString("#,##0.#0");
+
+                cboCardType.Enabled = false;
+                txtValidityDates.Enabled = false;
+                txtCardHolder.Enabled = false;
+                panCharge.Visible = true;
+            }
+        }
+        private void unsetCreditCardCharge()
+        {
+            if (decimal.Parse(txtAmount.Text) > mdecBalanceAmount)
+                txtAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
+
+            lblBalanceAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
+
+            cboCardType.Enabled = true;
+            panCharge.Visible = false;
+            txtValidityDates.Enabled = true;
+            txtCardHolder.Enabled = true;
+        }
+
+        private void txtAmount_TextChanged(object sender, EventArgs e)
+        {
+            if (mclsCreditorDetails.ContactID != 0)
+                setCreditCardChargeAmount();
+            else
+                unsetCreditCardCharge();
+        }
 
     }
 }

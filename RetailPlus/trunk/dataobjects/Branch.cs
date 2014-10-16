@@ -243,7 +243,7 @@ namespace AceSoft.RetailPlus.Data
                     cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
                 }
 
-                SQL += "ORDER BY " + SortField + " ";
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "BranchCode") + " ";
                 SQL += SortOrder == SortOption.Ascending ? "ASC " : "DESC ";
                 SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
 

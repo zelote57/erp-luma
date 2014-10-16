@@ -178,25 +178,23 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'CreditPurcEndDateToProcess'";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
 
-                System.Data.DataTable dt = new System.Data.DataTable("Billing");
+                string SQL = "SELECT CreditPurcEndDateToProcess FROM tblCardTypes WHERE CardTypeCode = 'HP Card'";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
                 DateTime dteRetValue = DateTime.MaxValue;
-
                 foreach(System.Data.DataRow dr in dt.Rows)
                 {
-                    dteRetValue = DateTime.Parse(dr["ConfigValue"].ToString());
+                    dteRetValue = DateTime.Parse(dr["CreditPurcEndDateToProcess"].ToString());
                 }
 
                 return dteRetValue;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -207,25 +205,23 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'BillingDate'";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
 
-                System.Data.DataTable dt = new System.Data.DataTable("Billing");
+                string SQL = "SELECT BillingDate FROM tblCardTypes WHERE CardTypeCode = 'HP Card'";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 
-                DateTime dteRetValue = DateTime.MinValue;
-
+                DateTime dteRetValue = Constants.C_DATE_MIN_VALUE;
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    dteRetValue = DateTime.Parse(dr["ConfigValue"].ToString());
+                    dteRetValue = DateTime.Parse(dr["BillingDate"].ToString());
                 }
 
                 return dteRetValue;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -272,26 +268,23 @@ namespace AceSoft.RetailPlus.Data
 
         #region Streams
 
-        public System.Data.DataTable ListAsDataTable(Int64 ContactID = 0, string SortField = "ContactName", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        public System.Data.DataTable ListAsDataTable(Int64 ContactID = 0, string SortField = "ContactName", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
         {
-            string SQL = SQLSelect();
-            
-            if (ContactID !=0 ) 
-                SQL += "WHERE tblContacts.ContactID = @ContactID ";
-
-            SQL += "ORDER BY " + SortField;
-
-            if (SortOrder == System.Data.SqlClient.SortOrder.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
             MySqlCommand cmd = new MySqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
 
-            System.Data.DataTable dt = new System.Data.DataTable("CreditBillHeaders");
+            string SQL = SQLSelect();
+            
+            if (ContactID !=0 ) SQL += "WHERE tblContacts.ContactID = @ContactID ";
+            
+            SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "ContactName") + " ";
+            SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+            SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+            cmd.CommandText = SQL;
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
+
 
             return dt;
         }
@@ -384,16 +377,14 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procProcessCreditBills();";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procProcessCreditBills(0);";
+
                 cmd.CommandText = SQL;
-
                 base.ExecuteNonQuery(cmd);
-
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);

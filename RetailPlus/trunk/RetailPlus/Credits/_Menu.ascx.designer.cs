@@ -22,6 +22,15 @@ namespace AceSoft.RetailPlus.Credits {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuInventory;
         
         /// <summary>
+        /// lnkCardTypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkCardTypes;
+        
+        /// <summary>
         /// lnkCustomers control.
         /// </summary>
         /// <remarks>
@@ -29,6 +38,15 @@ namespace AceSoft.RetailPlus.Credits {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkCustomers;
+        
+        /// <summary>
+        /// lnkGuarantors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkGuarantors;
         
         /// <summary>
         /// lnkBillingReport control.

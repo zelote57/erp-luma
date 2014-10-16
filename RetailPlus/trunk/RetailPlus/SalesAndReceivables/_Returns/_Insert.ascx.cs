@@ -149,7 +149,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._Returns
         {
             SOReturns clsSOReturns = new SOReturns();
             clsSOReturns.GetConnection();
-            lblReturnNo.Text = Constants.SALES_RETURN_CODE + CompanyDetails.CompanyCode + DateTime.Now.Year.ToString() + clsSOReturns.LastTransactionNo();
+            lblReturnNo.Text = Constants.SALES_RETURN_CODE + CompanyDetails.BECompanyCode + DateTime.Now.Year.ToString() + clsSOReturns.LastTransactionNo();
 
             SOReturnDetails clsDetails = new SOReturnDetails();
 

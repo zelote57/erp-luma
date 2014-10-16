@@ -265,7 +265,9 @@ namespace AceSoft.RetailPlus
         SummarizedDailySalesWithTF = 149,
         PaidOutDisburseROC = 150,
         ManagementReports = 151,
-        AnalyticsReports = 152
+        AnalyticsReports = 152,
+
+        InternalCreditCardSetup = 153
     }
 
     /// <summary>

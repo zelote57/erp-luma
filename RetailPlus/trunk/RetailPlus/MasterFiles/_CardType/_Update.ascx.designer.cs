@@ -85,6 +85,69 @@ namespace AceSoft.RetailPlus.MasterFiles._CardType {
         protected global::System.Web.UI.WebControls.Label lblCardTypeID;
         
         /// <summary>
+        /// lblCreditFinanceCharge control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCreditFinanceCharge;
+        
+        /// <summary>
+        /// lblCreditLatePenaltyCharge control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCreditLatePenaltyCharge;
+        
+        /// <summary>
+        /// lblCreditMinimumAmountDue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCreditMinimumAmountDue;
+        
+        /// <summary>
+        /// lblCreditMinimumPercentageDue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCreditMinimumPercentageDue;
+        
+        /// <summary>
+        /// lblBIRPermitNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblBIRPermitNo;
+        
+        /// <summary>
+        /// chkWithGuarantor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkWithGuarantor;
+        
+        /// <summary>
+        /// lblCreatedOn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCreatedOn;
+        
+        /// <summary>
         /// ValidationSummary2 control.
         /// </summary>
         /// <remarks>

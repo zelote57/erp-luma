@@ -20,7 +20,7 @@ namespace AceSoft.RetailPlus.Data
 	{
 		public Int64 CustomerID;
         public Int64 GuarantorID;
-        public CreditType CreditType;
+        public CardTypeDetails CardTypeDetails;
         public string CreditCardNo;
         public string EmbossedCardNo;
         public DateTime CreditAwardDate;
@@ -70,38 +70,28 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try  
 			{
-                string SQL = "CALL procContactCreditModify(@lngCustomerID, @lngGuarantorID, @intCreditType, @strCreditCardNo, @dteCreditAwardDate, @intCreditCardStatus, @dteExpiryDate, @intCreditActive, @decCreditLimit);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procContactCreditModify(@CustomerID, @GuarantorID, @CreditCardTypeID, @CreditCardNo, @CreditAwardDate, @CreditCardStatus, @ExpiryDate, @CreditActive, @CreditLimit);";
+
+                cmd.Parameters.AddWithValue("@CustomerID", Details.CustomerID);
+                cmd.Parameters.AddWithValue("@GuarantorID", Details.GuarantorID);
+                cmd.Parameters.AddWithValue("@CreditCardTypeID", Convert.ToInt16(Details.CardTypeDetails.CardTypeID));
+                cmd.Parameters.AddWithValue("@CreditCardNo", Details.CreditCardNo);
+                cmd.Parameters.AddWithValue("@CreditAwardDate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@CreditCardStatus", Details.CreditCardStatus.ToString("d"));
+                cmd.Parameters.AddWithValue("@ExpiryDate", Details.ExpiryDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("@CreditActive", Convert.ToInt16(Details.CreditActive));
+                cmd.Parameters.AddWithValue("@CreditLimit", Details.CreditLimit);
+
                 cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@lngCustomerID", Details.CustomerID);
-                cmd.Parameters.AddWithValue("@lngGuarantorID", Details.GuarantorID);
-                cmd.Parameters.AddWithValue("@intCreditType", Convert.ToInt16(Details.CreditType));
-                cmd.Parameters.AddWithValue("@strCreditCardNo", Details.CreditCardNo);
-                cmd.Parameters.AddWithValue("@dteCreditAwardDate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@intCreditCardStatus", Details.CreditCardStatus.ToString("d"));
-                cmd.Parameters.AddWithValue("@dteExpiryDate", Details.ExpiryDate.ToString("yyyy-MM-dd"));
-                cmd.Parameters.AddWithValue("@intCreditActive", Convert.ToInt16(Details.CreditActive));
-                cmd.Parameters.AddWithValue("@decCreditLimit", Details.CreditLimit);
-
 				bool bolRetValue = false;
                 if (base.ExecuteNonQuery(cmd) > 0) bolRetValue = true;
                 return bolRetValue;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -111,18 +101,8 @@ namespace AceSoft.RetailPlus.Data
 			{
                 return Insert(Details);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -131,17 +111,16 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procSaveContactCreditCardInfo(@CustomerID, @GuarantorID, @CreditType, @CreditCardNo, @CreditAwardDate, " +
-                                                    "@TotalPurchases, @CreditPaid, @CreditCardStatus, @ExpiryDate, @EmbossedCardNo, " +
-                                                    "@LastBillingDate, @CreatedOn, @LastModified);";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
 
+                string SQL = "CALL procSaveContactCreditCardInfo(@CustomerID, @GuarantorID, @CreditCardTypeID, @CreditCardNo, @CreditAwardDate, " +
+                                                    "@TotalPurchases, @CreditPaid, @CreditCardStatus, @ExpiryDate, @EmbossedCardNo, " +
+                                                    "@LastBillingDate, @CreatedOn, @LastModified);";
+                
                 cmd.Parameters.AddWithValue("CustomerID", Details.CustomerID);
                 cmd.Parameters.AddWithValue("GuarantorID", Details.GuarantorID);
-                cmd.Parameters.AddWithValue("CreditType", Details.CreditType.ToString("d"));
+                cmd.Parameters.AddWithValue("CreditCardTypeID", Details.CardTypeDetails.CardTypeID);
                 cmd.Parameters.AddWithValue("CreditCardNo", Details.CreditCardNo);
                 cmd.Parameters.AddWithValue("CreditAwardDate", Details.CreditAwardDate);
                 cmd.Parameters.AddWithValue("TotalPurchases", Details.TotalPurchases);
@@ -153,9 +132,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
+                cmd.CommandText = SQL;
                 return base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -170,32 +149,18 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
-				string SQL=	"DELETE FROM tblContacts WHERE ContactID IN (" + IDs + ");";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
+				string SQL=	"DELETE FROM tblContacts WHERE ContactID IN (" + IDs + ");";
+
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
 				return true;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -208,7 +173,7 @@ namespace AceSoft.RetailPlus.Data
             string stSQL = "SELECT " +
                                 "CustomerID, " +
                                 "GuarantorID, " +
-                                "CreditType, " +
+                                "CreditCardTypeID, " +
                                 "CreditCardNo, " +
                                 "CreditAwardDate, " +
                                 "TotalPurchases, " +
@@ -221,55 +186,25 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Details
 
-		public ContactCreditCardInfoDetails Details(long ContactID)
+		public ContactCreditCardInfoDetails Details(Int64 ContactID)
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL=	SQLSelect() + "WHERE CustomerID = @ContactID;";
-				  
-				
-	 			
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
 
-				cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
 
-				MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-				
-				ContactCreditCardInfoDetails Details = new ContactCreditCardInfoDetails();
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				while (myReader.Read()) 
-				{
-					Details.CustomerID = myReader.GetInt64("CustomerID");
-                    Details.GuarantorID = myReader.GetInt64("GuarantorID");
-                    Details.CreditType = (CreditType)Enum.Parse(typeof(CreditType), myReader.GetString("CreditType"));
-                    Details.CreditCardNo = "" + myReader["CreditCardNo"].ToString();
-                    Details.CreditAwardDate = myReader.GetDateTime("CreditAwardDate");
-                    Details.TotalPurchases = myReader.GetDecimal("TotalPurchases");
-                    Details.CreditPaid = myReader.GetDecimal("CreditPaid");
-                    Details.CreditCardStatus = (CreditCardStatus)Enum.Parse(typeof(CreditCardStatus), myReader.GetString("CreditCardStatus"));
-                    Details.ExpiryDate = myReader.GetDateTime("ExpiryDate");
-				}
-
-				myReader.Close();
-
-				return Details;
+                return setDetails(dt);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -277,55 +212,43 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                string SQL = SQLSelect() + "WHERE CreditCardNo = @CreditCardNo;";
-
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
+
+                string SQL = SQLSelect() + "WHERE CreditCardNo = @CreditCardNo;";
 
                 cmd.Parameters.AddWithValue("@CreditCardNo", CreditCardNo);
 
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-                ContactCreditCardInfoDetails Details = new ContactCreditCardInfoDetails();
-
-                while (myReader.Read())
-                {
-                    Details.CustomerID = myReader.GetInt64("CustomerID");
-                    Details.GuarantorID = myReader.GetInt64("GuarantorID");
-                    Details.CreditType = (CreditType)Enum.Parse(typeof(CreditType), myReader.GetString("CreditType"));
-                    Details.CreditCardNo = "" + myReader["CreditCardNo"].ToString();
-                    Details.CreditAwardDate = myReader.GetDateTime("CreditAwardDate");
-                    Details.TotalPurchases = myReader.GetDecimal("TotalPurchases");
-                    Details.CreditPaid = myReader.GetDecimal("CreditPaid");
-                    Details.CreditCardStatus = (CreditCardStatus)Enum.Parse(typeof(CreditCardStatus), myReader.GetString("CreditCardStatus"));
-                    Details.ExpiryDate = myReader.GetDateTime("ExpiryDate");
-                }
-
-                myReader.Close();
-
-                return Details;
+                return setDetails(dt);
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
+        private ContactCreditCardInfoDetails setDetails(System.Data.DataTable dt)
+        {
+            ContactCreditCardInfoDetails Details = new ContactCreditCardInfoDetails();
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                Details.CustomerID = Int64.Parse(dr["CustomerID"].ToString());
+                Details.GuarantorID = Int64.Parse(dr["GuarantorID"].ToString());
+                Details.CardTypeDetails = new CardType(base.Connection, base.Transaction).Details(Int16.Parse(dr["CreditCardTypeID"].ToString()));
+                Details.CreditCardNo = "" + dr["CreditCardNo"].ToString();
+                Details.CreditAwardDate = DateTime.Parse(dr["CreditAwardDate"].ToString());
+                Details.TotalPurchases = decimal.Parse(dr["TotalPurchases"].ToString());
+                Details.CreditPaid = decimal.Parse(dr["CreditPaid"].ToString());
+                Details.CreditCardStatus = (CreditCardStatus)Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString());
+                Details.ExpiryDate = DateTime.Parse(dr["ExpiryDate"].ToString());
+            }
+
+            return Details;
+        }
 		#endregion
 
 		#region Streams
@@ -334,36 +257,21 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
 				string SQL = SQLSelect() + "WHERE 1=1 ORDER BY " + SortField; 
 
 				if (SortOrder == SortOption.Ascending)
 					SQL += " ASC";
 				else
 					SQL += " DESC";
-
 				
-
-				MySqlCommand cmd = new MySqlCommand();
-				
-				
-				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-				
-				
 				return base.ExecuteReader(cmd);			
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
@@ -414,6 +322,9 @@ namespace AceSoft.RetailPlus.Data
 
         public DataTable ListAsDataTable(string SortField, SortOption SortOrder)
         {
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+
             string SQL = SQLSelect() + "WHERE ORDER BY " + SortField;
 
             if (SortOrder == SortOption.Ascending)
@@ -421,17 +332,9 @@ namespace AceSoft.RetailPlus.Data
             else
                 SQL += " DESC";
 
-            
-
-            MySqlCommand cmd = new MySqlCommand();
-            
-            
-            cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
-
             System.Data.DataTable dt = new System.Data.DataTable("tblContactCredits");
             base.MySqlDataAdapterFill(cmd, dt);
-            
 
             return dt;
         }
@@ -552,11 +455,7 @@ namespace AceSoft.RetailPlus.Data
             {
                 string SQL = "CALL procContactCreditsMovementInsert(@lngCustomerID, @dteCreditDate, @decCreditPointsBefore, @decCreditPointsAdjustment, @decCreditPointsAfter, @dteCreditExpiryDate, @strCreditReason, @strTerminalNo, @strCashierName, @strTransactionNo);";
 
-                
-
                 MySqlCommand cmd = new MySqlCommand();
-                
-                
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
@@ -573,18 +472,8 @@ namespace AceSoft.RetailPlus.Data
 
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
-                
-                
-                {
-                    
-                    
-                    
-                    
-                }
-
                 throw base.ThrowException(ex);
             }
         }

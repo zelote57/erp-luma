@@ -568,17 +568,15 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			if (Convert.ToDecimal(lblBalanceSelected.Text) > 0)
 			{
-                PaymentsWnd payment = new PaymentsWnd();
                 Data.SalesTransactionDetails clsSalesTransactionDetails = new Data.SalesTransactionDetails();
                 clsSalesTransactionDetails.SubTotal = Convert.ToDecimal(lblBalanceSelected.Text);
 
-                payment.SalesTransactionDetails = clsSalesTransactionDetails;
-                //payment.TransactionNo = string.Empty; //will get from the transction nos.
+                PaymentsWnd payment = new PaymentsWnd();
+                payment.TerminalDetails = mclsTerminalDetails;
                 payment.CustomerDetails = mclsCustomerDetails;
-                //payment.Discount = Convert.ToDecimal(0);
-                //payment.SubTotal = mclsCustomerDetails.Credit;
+                payment.SalesTransactionDetails = clsSalesTransactionDetails;
+                payment.CreditCardSwiped = false;
                 payment.IsRefund = false;
-
                 payment.ShowDialog(this);
 
                 paymentResult = payment.Result;

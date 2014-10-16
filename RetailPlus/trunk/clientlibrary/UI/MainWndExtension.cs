@@ -580,6 +580,56 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         public void SavePayments(ArrayList arrCashPaymentDetails, ArrayList arrChequePaymentDetails, ArrayList arrCreditCardPaymentDetails, ArrayList arrCreditPaymentDetails, ArrayList arrDebitPaymentDetails)
         {
+            //need to remove this eventually
+            mclsSalesTransactionDetails.PaymentDetails = AssignArrayListPayments(arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, arrCreditPaymentDetails, arrDebitPaymentDetails);
+
+            if (mboIsRefund)
+            {
+                // Lemu 2011-06-09 : Added saving of debit payments as deposit if refund. Requested by Frank.
+                Data.Deposits clsDeposit = new Data.Deposits(mConnection, mTransaction);
+                mConnection = clsDeposit.Connection; mTransaction = clsDeposit.Transaction;
+
+                Data.DepositDetails clsDepositDetails = new Data.DepositDetails();
+                foreach (Data.DebitPaymentDetails clsDebitPaymentDetails in mclsSalesTransactionDetails.PaymentDetails.arrDebitPaymentDetails)
+                {
+                    clsDepositDetails = new Data.DepositDetails();
+                    clsDepositDetails.Amount = clsDebitPaymentDetails.Amount;
+                    clsDepositDetails.PaymentType = PaymentTypes.Debit;
+                    clsDepositDetails.DateCreated = mclsSalesTransactionDetails.TransactionDate;
+                    clsDepositDetails.BranchDetails = new Data.BranchDetails
+                    {
+                        BranchID = mclsTerminalDetails.BranchID
+                    };
+                    clsDepositDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+                    clsDepositDetails.CashierID = mclsSalesTransactionDetails.CashierID;
+                    clsDepositDetails.ContactID = mclsSalesTransactionDetails.CustomerID;
+                    clsDepositDetails.ContactName = mclsSalesTransactionDetails.CustomerName;
+                    clsDepositDetails.Remarks = "Added during refund of transaction #: " + mclsSalesTransactionDetails.TransactionNo;
+
+                    clsDeposit.Insert(clsDepositDetails);
+                    Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
+                    mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
+
+                    clsContact.AddDebit(clsDepositDetails.ContactID, clsDepositDetails.Amount);
+                }
+                clsDeposit.CommitAndDispose();
+
+                InsertAuditLog(AccessTypes.Deposit, "Deposit: type='" + clsDepositDetails.PaymentType.ToString("G") + "' amount='" + clsDepositDetails.Amount.ToString(",##0.#0") + "'" + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+
+                // Remove Debit Payments so that it wont be saved in the debit payment table
+                mclsSalesTransactionDetails.PaymentDetails.arrDebitPaymentDetails = new Data.DebitPaymentDetails[0];
+            }
+
+            Data.Payment clsPayment = new Data.Payment(mConnection, mTransaction);
+            mConnection = clsPayment.Connection; mTransaction = clsPayment.Transaction;
+
+            clsPayment.Insert(mclsSalesTransactionDetails.PaymentDetails);
+
+            // CreditCardPaymentDetails : Inhouse
+        }
+
+        public Data.PaymentDetails AssignArrayListPayments(ArrayList arrCashPaymentDetails, ArrayList arrChequePaymentDetails, ArrayList arrCreditCardPaymentDetails, ArrayList arrCreditPaymentDetails, ArrayList arrDebitPaymentDetails)
+        {
             Data.CashPaymentDetails[] CashPaymentDetails = new Data.CashPaymentDetails[0];
             if (arrCashPaymentDetails.Count > 0)
             {
@@ -614,55 +664,16 @@ namespace AceSoft.RetailPlus.Client.UI
                 DebitPaymentDetails = new Data.DebitPaymentDetails[arrDebitPaymentDetails.Count];
                 arrDebitPaymentDetails.CopyTo(DebitPaymentDetails);
             }
-            if (mboIsRefund)
-            {
-                // Lemu 2011-06-09 : Added saving of debit payments as deposit if refund. Requested by Frank.
-                Data.Deposits clsDeposit = new Data.Deposits(mConnection, mTransaction);
-                mConnection = clsDeposit.Connection; mTransaction = clsDeposit.Transaction;
-
-                Data.DepositDetails clsDepositDetails = new Data.DepositDetails();
-                foreach (Data.DebitPaymentDetails clsDebitPaymentDetails in DebitPaymentDetails)
-                {
-                    clsDepositDetails = new Data.DepositDetails();
-                    clsDepositDetails.Amount = clsDebitPaymentDetails.Amount;
-                    clsDepositDetails.PaymentType = PaymentTypes.Debit;
-                    clsDepositDetails.DateCreated = mclsSalesTransactionDetails.TransactionDate;
-                    clsDepositDetails.BranchDetails = new Data.BranchDetails
-                    {
-                        BranchID = mclsTerminalDetails.BranchID
-                    };
-                    clsDepositDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
-                    clsDepositDetails.CashierID = mclsSalesTransactionDetails.CashierID;
-                    clsDepositDetails.ContactID = mclsSalesTransactionDetails.CustomerID;
-                    clsDepositDetails.ContactName = mclsSalesTransactionDetails.CustomerName;
-                    clsDepositDetails.Remarks = "Added during refund of transaction #: " + mclsSalesTransactionDetails.TransactionNo;
-
-                    clsDeposit.Insert(clsDepositDetails);
-                    Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
-                    mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
-
-                    clsContact.AddDebit(clsDepositDetails.ContactID, clsDepositDetails.Amount);
-                }
-                clsDeposit.CommitAndDispose();
-
-                InsertAuditLog(AccessTypes.Deposit, "Deposit: type='" + clsDepositDetails.PaymentType.ToString("G") + "' amount='" + clsDepositDetails.Amount.ToString(",##0.#0") + "'" + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
-
-                // Remove Debit Payments so that it wont be saved in the debit payment table
-                DebitPaymentDetails = new Data.DebitPaymentDetails[0];
-            }
 
             Data.PaymentDetails Details = new Data.PaymentDetails();
             Details.TransactionID = mclsSalesTransactionDetails.TransactionID;
             Details.arrCashPaymentDetails = CashPaymentDetails;
             Details.arrChequePaymentDetails = ChequePaymentDetails;
-            Details.arrCardPaymentDetails = CreditCardPaymentDetails;
+            Details.arrCreditCardPaymentDetails = CreditCardPaymentDetails;
             Details.arrCreditPaymentDetails = CreditPaymentDetails;
             Details.arrDebitPaymentDetails = DebitPaymentDetails;
 
-            Data.Payment clsPayment = new Data.Payment(mConnection, mTransaction);
-            mConnection = clsPayment.Connection; mTransaction = clsPayment.Transaction;
-
-            clsPayment.Insert(Details);
+            return Details;
         }
 
         public void AddToReprintedTransaction(string strTransactionNo, string pstrTerminalNo)
@@ -728,6 +739,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 case PaymentTypes.Debit: { intNoOfDebitTransactions = 1; break; }
                 case PaymentTypes.RewardPoints: { intNoOfRewardPointsPayment = 1; break; }
                 case PaymentTypes.Combination: { intNoOfCombinationPaymentTransactions = 1; break; }
+                default: { intNoOfCashTransactions = 1; break; }
             }
             
 
@@ -926,6 +938,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 case PaymentTypes.Debit: { intNoOfDebitTransactions = 1; break; }
                 case PaymentTypes.RewardPoints: { intNoOfRewardPointsPayment = 1; break; }
                 case PaymentTypes.Combination: { intNoOfCombinationPaymentTransactions = 1; break; }
+                default: { intNoOfCashTransactions = 1; break; }
             }
 
             Data.CashierReportDetails clsCashierReportDetails = new Data.CashierReportDetails();
@@ -1327,14 +1340,6 @@ namespace AceSoft.RetailPlus.Client.UI
             else if (stReceiptFormat == ReceiptFieldFormats.RewardsPermitNo)
             {
                 stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
-            }
-            else if (stReceiptFormat == ReceiptFieldFormats.InHouseIndividualCreditPermitNo)
-            {
-                stRetValue = mclsTerminalDetails.InHouseIndividualCreditPermitNo;
-            }
-            else if (stReceiptFormat == ReceiptFieldFormats.InHouseGroupCreditPermitNo)
-            {
-                stRetValue = mclsTerminalDetails.InHouseGroupCreditPermitNo;
             }
             else
             {
@@ -3058,6 +3063,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 if (string.IsNullOrEmpty(mstrBeginningTransactionNo))
                 {
                     Data.TerminalReport clsTerminalReport = new Data.TerminalReport(mConnection, mTransaction);
+                    mConnection = clsTerminalReport.Connection; mTransaction = clsTerminalReport.Transaction;
                     mstrBeginningTransactionNo = clsTerminalReport.Details(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo).BeginningTransactionNo;
                     clsTerminalReport.CommitAndDispose();
                 }
@@ -3403,11 +3409,40 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             Cursor.Current = Cursors.Default;
         }
+
+        /// <summary>
+        /// This is to print the Internal Credit Card used for payment
+        /// </summary>
+        /// <param name="clsChargeSlipType"></param>
         public void PrintChargeSlip(ChargeSlipType clsChargeSlipType)
         {
             try
             {
-                if (mclsSalesTransactionDetails.CreditPayment != 0)
+                decimal decInternalCreditCardPayment = 0;
+                Data.ContactDetails clsCreditorDetails = new Data.ContactDetails();
+                Data.ContactDetails clsGuarantorDetails = new Data.ContactDetails();
+                Data.CardTypeDetails clsCreditCardTypeDetails = new Data.CardTypeDetails();
+
+                foreach (Data.CreditCardPaymentDetails clsCreditCardPaymentDetails in mclsSalesTransactionDetails.PaymentDetails.arrCreditCardPaymentDetails)
+                {
+                    if (clsCreditCardPaymentDetails.CardTypeDetails.CreditCardType == CreditCardTypes.Internal)
+                    {
+                        decInternalCreditCardPayment += clsCreditCardPaymentDetails.Amount;
+                        clsCreditCardTypeDetails = clsCreditCardPaymentDetails.CardTypeDetails;
+                        clsCreditorDetails = clsCreditCardPaymentDetails.CreditorDetails;
+
+                        Data.Contacts clsContacts = new Data.Contacts(mConnection, mTransaction);
+                        mConnection = clsContacts.Connection; mTransaction = clsContacts.Transaction;
+
+                        if (clsCreditCardTypeDetails.WithGuarantor && clsCreditorDetails.CreditDetails.GuarantorID != 0)
+                        {
+                            clsGuarantorDetails = new Data.Contacts(mConnection, mTransaction).Details(clsCreditorDetails.CreditDetails.GuarantorID);
+                        }
+                        clsContacts.CommitAndDispose();
+                    }
+                }
+
+                if (decInternalCreditCardPayment != 0)
                 {
                     PrintingPreference oldCONFIG_AutoPrint = mclsTerminalDetails.AutoPrint;
                     mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
@@ -3420,43 +3455,32 @@ namespace AceSoft.RetailPlus.Client.UI
                         msbToPrint.Append(CenterString(Constants.C_FE_NOT_VALID_AS_RECEIPT, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                     }
 
-                    if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID && mclsContactDetails.CreditDetails.GuarantorID != 0)
-                    { if (GetReceiptFormatParameter(ReceiptFieldFormats.InHouseGroupCreditPermitNo, false, DateTime.MinValue) != string.Empty) msbToPrint.Append(CenterString("BIR Permit No." + GetReceiptFormatParameter(ReceiptFieldFormats.InHouseGroupCreditPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine); }
-                    else
-                    { if (GetReceiptFormatParameter(ReceiptFieldFormats.InHouseIndividualCreditPermitNo, false, DateTime.MinValue) != string.Empty) msbToPrint.Append(CenterString("BIR Permit No." + GetReceiptFormatParameter(ReceiptFieldFormats.InHouseIndividualCreditPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine); }
+                    // print the BIR Permit No
+                    if (!string.IsNullOrEmpty(clsCreditCardTypeDetails.BIRPermitNo)) msbToPrint.Append(CenterString("BIR Permit No." + GetReceiptFormatParameter(clsCreditCardTypeDetails.BIRPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
 
                     msbToPrint.Append(Environment.NewLine);
                     msbToPrint.Append(Environment.NewLine);
-                    msbToPrint.Append("Transaction Date".PadRight(15) + ":" + mclsSalesTransactionDetails.TransactionDate.ToString("yyyy-MM-dd").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
-                    msbToPrint.Append("Transaction #".PadRight(15) + ":" + mclsSalesTransactionDetails.TransactionNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
-                    if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID && mclsContactDetails.CreditDetails.GuarantorID != 0)
+                    msbToPrint.Append("Trans. Date".PadRight(15) + ":" + mclsSalesTransactionDetails.TransactionDate.ToString("yyyy-MM-dd").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                    msbToPrint.Append("OR #".PadRight(15) + ":" + mclsSalesTransactionDetails.ORNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                    
+                    // print the guarantor if with guarantor
+                    if (clsCreditCardTypeDetails.WithGuarantor)
                     {
-                        Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
-                        mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
-
-                        Data.ContactDetails clsGuarantorContactDetails = clsContact.Details(mclsContactDetails.CreditDetails.GuarantorID);
-                        clsContact.CommitAndDispose();
-                        msbToPrint.Append(CenterString(clsGuarantorContactDetails.ContactCode, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                        msbToPrint.Append(CenterString(clsGuarantorDetails.ContactCode, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                         msbToPrint.Append("-".PadLeft(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
                         msbToPrint.Append(CenterString("Guarantor", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                     }
                     msbToPrint.Append(Environment.NewLine);
 
-                    Receipt clsReceipt = new Receipt(mConnection, mTransaction);
-                    ReceiptDetails clsReceiptDetails;
-                    if (mclsContactDetails.CreditDetails.GuarantorID != mclsContactDetails.ContactID && mclsContactDetails.CreditDetails.GuarantorID != 0)
-                    { clsReceiptDetails = clsReceipt.Details(ReportFormatModule.GroupCreditChargeHeader); }
-                    else
-                    { clsReceiptDetails = clsReceipt.Details(ReportFormatModule.IndividualCreditChargeHeader); }
-                    clsReceipt.CommitAndDispose();
-
-                    if (clsReceiptDetails.Value == null || clsReceiptDetails.Value == string.Empty)
+                    // print the charge slip header
+                    if (string.IsNullOrEmpty(clsCreditCardTypeDetails.CardTypeName))
                     { msbToPrint.Append(CenterString("CHARGE SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine); }
-                    else { msbToPrint.Append(CenterString(clsReceiptDetails.Value, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine); }
+                    else { msbToPrint.Append(CenterString(clsCreditCardTypeDetails.CardTypeName + " CHARGE SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine); }
 
-                    //msbToPrint.Append(CenterString("CHARGE SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                    
+                    // print the amount and agreement
                     msbToPrint.Append(Environment.NewLine);
-                    msbToPrint.Append("Amount of Purchase".PadRight(15) + ":" + mclsSalesTransactionDetails.CreditPayment.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                    msbToPrint.Append("Amount of Purchase".PadRight(15) + ":" + decInternalCreditCardPayment.ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                     msbToPrint.Append(Environment.NewLine);
                     if (mclsTerminalDetails.IncludeCreditChargeAgreement)
                     {
@@ -3548,7 +3572,65 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             Cursor.Current = Cursors.Default;
         }
-        
+        public void PrintCreditVerificationSlip(Data.ContactDetails CreditorDetails)
+        {
+            // this should comes before earning of points otherwise this will be wrong.
+            try
+            {
+                if (CreditorDetails.ContactID != 0)
+                {
+                    PrintingPreference oldCONFIG_AutoPrint = mclsTerminalDetails.AutoPrint;
+                    mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
+
+                    PrintReportHeaderSection(false, DateTime.MinValue);
+                    if (!string.IsNullOrEmpty(mclsSysConfigDetails.CreditVerificationSlipHeaderLabel))
+                    {
+                        msbToPrint.Append(CenterString(mclsSysConfigDetails.CreditVerificationSlipHeaderLabel.Replace("{CardTypeCode}", CreditorDetails.CreditDetails.CardTypeDetails.CardTypeCode).Replace("{CardTypeName}", CreditorDetails.CreditDetails.CardTypeDetails.CardTypeName), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                    }
+
+                    // print the BIR Permit No
+                    if (!string.IsNullOrEmpty(CreditorDetails.CreditDetails.CardTypeDetails.BIRPermitNo)) msbToPrint.Append(CenterString("BIR Permit No." + GetReceiptFormatParameter(CreditorDetails.CreditDetails.CardTypeDetails.BIRPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+
+                    msbToPrint.Append(Environment.NewLine);
+                    msbToPrint.Append(CenterString("V E R I F I C A T I O N   S L I P", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                    msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+                    msbToPrint.Append("Validty Date".PadRight(15) + ":" + DateTime.Now.ToString("yyyy-MMM-dd").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                    msbToPrint.Append("Credit Card No".PadRight(15) + ":" + CreditorDetails.CreditDetails.CreditCardNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                    msbToPrint.Append("Name".PadRight(15) + ":" + CreditorDetails.ContactName.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                    msbToPrint.Append(Environment.NewLine);
+                    msbToPrint.Append("AvailableCredit".PadRight(15) + ":" + (CreditorDetails.CreditLimit - CreditorDetails.Credit).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                    msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+
+                    msbToPrint.Append(Environment.NewLine);
+                    msbToPrint.Append(Environment.NewLine);
+                    msbToPrint.Append(Environment.NewLine);
+                    msbToPrint.Append("-".PadLeft(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+                    msbToPrint.Append(CenterString("Verified By:" + mclsSalesTransactionDetails.CashierName, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                    msbToPrint.Append(Environment.NewLine);
+                    msbToPrint.Append(Environment.NewLine);
+                    msbToPrint.Append("-".PadLeft(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+                    msbToPrint.Append("Grocery" + Environment.NewLine);
+                    msbToPrint.Append(Environment.NewLine);
+                    msbToPrint.Append("-".PadLeft(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+                    msbToPrint.Append("Department Store" + Environment.NewLine);
+                    msbToPrint.Append(Environment.NewLine);
+                    msbToPrint.Append("-".PadLeft(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
+                    msbToPrint.Append("Appliance Center" + Environment.NewLine);
+                    msbToPrint.Append(Environment.NewLine);
+
+                    PrintPageAndReportFooterSection(false, DateTime.MinValue);
+
+                    mclsTerminalDetails.AutoPrint = oldCONFIG_AutoPrint;
+
+                    InsertAuditLog(AccessTypes.PrintTransactionHeader, "Print Credit VerificationSlip: TerminalNo=" + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                InsertErrorLogToFile(ex, "ERROR!!! Printing Rewards Redeemption Slip. Err Description: ");
+            }
+            Cursor.Current = Cursors.Default;
+        }
 
         #endregion
 

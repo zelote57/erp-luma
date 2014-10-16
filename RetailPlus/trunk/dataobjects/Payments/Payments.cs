@@ -28,7 +28,7 @@ namespace AceSoft.RetailPlus.Data
 		public Int64 TransactionID;
 		public CashPaymentDetails[] arrCashPaymentDetails;
 		public ChequePaymentDetails[] arrChequePaymentDetails;
-		public CreditCardPaymentDetails[] arrCardPaymentDetails;
+		public CreditCardPaymentDetails[] arrCreditCardPaymentDetails;
 		public CreditPaymentDetails[] arrCreditPaymentDetails;
 		public DebitPaymentDetails[] arrDebitPaymentDetails;
 	}
@@ -72,7 +72,7 @@ namespace AceSoft.RetailPlus.Data
 				{
                     new ChequePayments(base.Connection, base.Transaction).Insert(chequepaymentdet);
 				}
-				foreach (CreditCardPaymentDetails cardpaymentdet in Details.arrCardPaymentDetails)
+				foreach (CreditCardPaymentDetails cardpaymentdet in Details.arrCreditCardPaymentDetails)
 				{
                     new CreditCardPayments(base.Connection, base.Transaction).Insert(cardpaymentdet);
 				}
@@ -210,7 +210,7 @@ namespace AceSoft.RetailPlus.Data
 				Details.TransactionID = TransactionID;
                 Details.arrCashPaymentDetails = new CashPayments(base.Connection, base.Transaction).Details(BranchID, TerminalNo, TransactionID);
                 Details.arrChequePaymentDetails = new ChequePayments(base.Connection, base.Transaction).Details(BranchID, TerminalNo, TransactionID);
-                Details.arrCardPaymentDetails = new CreditCardPayments(base.Connection, base.Transaction).Details(BranchID, TerminalNo, TransactionID);
+                Details.arrCreditCardPaymentDetails = new CreditCardPayments(base.Connection, base.Transaction).Details(BranchID, TerminalNo, TransactionID);
                 Details.arrCreditPaymentDetails = new CreditPayments(base.Connection, base.Transaction).Details(BranchID, TerminalNo, TransactionID);
                 Details.arrDebitPaymentDetails = arrDebitPaymentDetails(TransactionID); 
 

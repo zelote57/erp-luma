@@ -504,51 +504,41 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 dgvItems.Columns["TransactionNo"].Visible = true;
                 dgvItems.Columns["TransactionDate"].Visible = true;
-                dgvItems.Columns["Discount"].Visible = true;
+                dgvItems.Columns["CreditReason"].Visible = true;
                 dgvItems.Columns["SubTotal"].Visible = true;
-                dgvItems.Columns["Discount"].Visible = true;
-                dgvItems.Columns["AmountPaid"].Visible = true;
                 dgvItems.Columns["Credit"].Visible = true;
                 dgvItems.Columns["CreditPaid"].Visible = true;
                 dgvItems.Columns["Balance"].Visible = true;
 
                 dgvItems.Columns["TransactionNo"].Width = 120;
                 dgvItems.Columns["TransactionDate"].Width = 120;
-                int iWidth = (dgvItems.Width - dgvItems.Columns["TransactionNo"].Width - dgvItems.Columns["TransactionDate"].Width) / 6;
+                dgvItems.Columns["CreditReason"].Width = 240;
+                int iWidth = (dgvItems.Width - dgvItems.Columns["TransactionNo"].Width - dgvItems.Columns["TransactionDate"].Width - dgvItems.Columns["CreditReason"].Width) / 4;
                 dgvItems.Columns["SubTotal"].Width = iWidth;
-                dgvItems.Columns["Discount"].Width = iWidth;
-                dgvItems.Columns["AmountPaid"].Width = iWidth;
                 dgvItems.Columns["Credit"].Width = iWidth;
                 dgvItems.Columns["CreditPaid"].Width = iWidth;
                 dgvItems.Columns["Balance"].Width = iWidth;
 
                 dgvItems.Columns["TransactionNo"].HeaderText = "Trans. No";
                 dgvItems.Columns["TransactionDate"].HeaderText = "Trans. Date";
-                dgvItems.Columns["SubTotal"].HeaderText = "SubTotal";
-                dgvItems.Columns["Discount"].HeaderText = "Discount";
-                dgvItems.Columns["AmountPaid"].HeaderText = "Amt. Paid";
+                dgvItems.Columns["CreditReason"].HeaderText = "Description";
+                dgvItems.Columns["SubTotal"].HeaderText = "Subtotal";
                 dgvItems.Columns["Credit"].HeaderText = "Credit";
                 dgvItems.Columns["CreditPaid"].HeaderText = "Credit Paid";
                 dgvItems.Columns["Balance"].HeaderText = "Balance";
 
                 dgvItems.Columns["SubTotal"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvItems.Columns["Discount"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvItems.Columns["AmountPaid"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["Credit"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["CreditPaid"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["Balance"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dgvItems.Columns["SubTotal"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvItems.Columns["Discount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvItems.Columns["AmountPaid"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["Credit"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["CreditPaid"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["Balance"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dgvItems.Columns["TransactionDate"].DefaultCellStyle.Format = "yyyy-MM-dd hh:mm tt";
                 dgvItems.Columns["SubTotal"].DefaultCellStyle.Format = "#,##0.#0";
-                dgvItems.Columns["Discount"].DefaultCellStyle.Format = "#,##0.#0";
-                dgvItems.Columns["AmountPaid"].DefaultCellStyle.Format = "#,##0.#0";
                 dgvItems.Columns["Credit"].DefaultCellStyle.Format = "#,##0.#0";
                 dgvItems.Columns["CreditPaid"].DefaultCellStyle.Format = "#,##0.#0";
                 dgvItems.Columns["Balance"].DefaultCellStyle.Format = "#,##0.#0";

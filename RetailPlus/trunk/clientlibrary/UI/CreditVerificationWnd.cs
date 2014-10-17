@@ -680,7 +680,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     txtCreditCardStatus.Text += mContactDetails.CreditDetails.CreditActive ? " (Active) " : " (InActive) ";
                     txtCreditLimit.Text = mContactDetails.CreditLimit.ToString("#,##0.#0");
                     txtCredit.Text = mContactDetails.Credit.ToString("#,##0.#0");
-                    txtCreditLimit.Text = (mContactDetails.CreditLimit - mContactDetails.Credit).ToString("#,##0.#0");
+                    txtAvailableCredit.Text = (mContactDetails.CreditLimit - mContactDetails.Credit).ToString("#,##0.#0");
 
                     LoadPurchases();
                     lblBalance.Text = mContactDetails.Credit.ToString("#,##0.#0");
@@ -770,6 +770,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 dgvItems.Columns["TransactionNo"].Visible = true;
                 dgvItems.Columns["TransactionDate"].Visible = true;
                 dgvItems.Columns["CreditReason"].Visible = true;
+                dgvItems.Columns["SubTotal"].Visible = true;
                 dgvItems.Columns["Credit"].Visible = true;
                 dgvItems.Columns["CreditPaid"].Visible = true;
                 dgvItems.Columns["Balance"].Visible = true;
@@ -777,7 +778,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 dgvItems.Columns["TransactionNo"].Width = 120;
                 dgvItems.Columns["TransactionDate"].Width = 120;
                 dgvItems.Columns["CreditReason"].Width = 240;
-                int iWidth = (dgvItems.Width - dgvItems.Columns["TransactionNo"].Width - dgvItems.Columns["TransactionDate"].Width - dgvItems.Columns["CreditReason"].Width) / 3;
+                int iWidth = (dgvItems.Width - dgvItems.Columns["TransactionNo"].Width - dgvItems.Columns["TransactionDate"].Width - dgvItems.Columns["CreditReason"].Width) / 4;
+                dgvItems.Columns["SubTotal"].Width = iWidth;
                 dgvItems.Columns["Credit"].Width = iWidth;
                 dgvItems.Columns["CreditPaid"].Width = iWidth;
                 dgvItems.Columns["Balance"].Width = iWidth;
@@ -785,19 +787,23 @@ namespace AceSoft.RetailPlus.Client.UI
                 dgvItems.Columns["TransactionNo"].HeaderText = "Trans. No";
                 dgvItems.Columns["TransactionDate"].HeaderText = "Trans. Date";
                 dgvItems.Columns["CreditReason"].HeaderText = "Description";
+                dgvItems.Columns["SubTotal"].HeaderText = "Subtotal";
                 dgvItems.Columns["Credit"].HeaderText = "Credit";
                 dgvItems.Columns["CreditPaid"].HeaderText = "Credit Paid";
                 dgvItems.Columns["Balance"].HeaderText = "Balance";
 
+                dgvItems.Columns["SubTotal"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["Credit"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["CreditPaid"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["Balance"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
 
+                dgvItems.Columns["SubTotal"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["Credit"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["CreditPaid"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["Balance"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dgvItems.Columns["TransactionDate"].DefaultCellStyle.Format = "yyyy-MM-dd hh:mm tt";
+                dgvItems.Columns["SubTotal"].DefaultCellStyle.Format = "#,##0.#0";
                 dgvItems.Columns["Credit"].DefaultCellStyle.Format = "#,##0.#0";
                 dgvItems.Columns["CreditPaid"].DefaultCellStyle.Format = "#,##0.#0";
                 dgvItems.Columns["Balance"].DefaultCellStyle.Format = "#,##0.#0";

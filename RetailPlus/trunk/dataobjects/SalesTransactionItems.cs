@@ -753,6 +753,9 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "SELECT " +
                                 "TransactionItemsID, " +
                                 "TransactionID, " +
@@ -804,22 +807,11 @@ namespace AceSoft.RetailPlus.Data
                 else
                     SQL += " DESC";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
+                cmd.Parameters.AddWithValue("@TransactionDate", TransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@TransactionItemStatus", TransactionItemStatus.Trash.ToString("d"));
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);
-                prmTransactionID.Value = TransactionID;
-                cmd.Parameters.Add(prmTransactionID);
-
-                MySqlParameter prmTransactionDate = new MySqlParameter("@TransactionDate",MySqlDbType.DateTime);
-                prmTransactionDate.Value = TransactionDate.ToString("yyyy-MM-dd HH:mm:ss");
-                cmd.Parameters.Add(prmTransactionDate);
-
-                MySqlParameter prmTransactionItemStatus = new MySqlParameter("@TransactionItemStatus",MySqlDbType.Int16);
-                prmTransactionItemStatus.Value = TransactionItemStatus.Trash.ToString("d");
-                cmd.Parameters.Add(prmTransactionItemStatus);
-
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 

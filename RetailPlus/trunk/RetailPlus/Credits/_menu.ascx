@@ -62,6 +62,30 @@
 										<td class="Ms-pvnavtopc1"></td>
 										<td class="Ms-pvnavtopr1"><img src="/RetailPlus/_layouts/images/trans.gif" alt="" /></td>
 									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkCreditorsPurchases" runat="server" title="Print creditor's purchases report">
+													 Creditor's Purchases</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkCreditorsPayments" runat="server" title="Print creditor's payments report">
+													 Creditor's Payments</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
+                                    <tr>
+										<td class="Ms-pvnavmidl1"></td>
+										<td class="Ms-pvtbbutton">
+											<asp:HyperLink id="lnkGuarantorsLedger" runat="server" title="Print Guarantor's Ledger Summary report">
+													 Guarantor's Ledger Summary</asp:HyperLink>
+										</td>
+										<td class="Ms-pvnavmidr1"></td>
+									</tr>
 									<tr>
 										<td class="Ms-pvnavmidl1"></td>
 										<td class="Ms-pvtbbutton">

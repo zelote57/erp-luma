@@ -268,7 +268,7 @@
                                 <td class="ms-formspacer">
                                     <img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
-                                    <asp:textbox id="txtPageSize" accessKey="E" runat="server" CssClass="ms-short" MaxLength="5" BorderStyle="Groove"></asp:textbox>
+                                    <asp:textbox id="txtPageSize" accessKey="E" runat="server" CssClass="ms-short-numeric" MaxLength="5" BorderStyle="Groove" Text="10"></asp:textbox>
 									<asp:RequiredFieldValidator id="Requiredfieldvalidator6" CssClass="ms-error" runat="server" ControlToValidate="txtPageSize" Display="Dynamic" ErrorMessage="'Page Size' must not be left blank."></asp:RequiredFieldValidator>
 									<asp:RegularExpressionValidator id="RegularExpressionValidator6" CssClass="ms-error" runat="server" ControlToValidate="txtPageSize" Display="Dynamic" ErrorMessage="'Page Size' must be in number, max of 3 decimal places." ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
 									

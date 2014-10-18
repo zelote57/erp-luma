@@ -37,8 +37,12 @@ namespace AceSoft.RetailPlus.Data
         public decimal Prev2MoCurrentDueAmount;
 
         public DateTime CreditCutOffDate;
+        public DateTime CreditPaymentDueDate;
         public DateTime BillingDate;
-
+        public DateTime CreditPurcStartDateToProcess;
+        public DateTime CreditPurcEndDateToProcess;
+        public string BillingFile;
+        
         public Data.ContactDetails CustomerDetails;
     }
 
@@ -72,33 +76,25 @@ namespace AceSoft.RetailPlus.Data
 
         #region Insert and Update
 
-        public void SetBillinAsPrinted(long ContactID, DateTime BillingDate, string BillingFile)
+        public Int32 SetBillingAsPrinted(long ContactID, DateTime BillingDate, string BillingFile)
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblCreditBillHeader SET " +
                                 "IsBillPrinted = 1, BillingFile = @BillingFile " +
                             "WHERE ContactID = @ContactID AND BillingDate = @BillingDate;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                
+                cmd.Parameters.AddWithValue("BillingFile", BillingFile);
+                cmd.Parameters.AddWithValue("ContactID", ContactID);
+                cmd.Parameters.AddWithValue("BillingDate", BillingDate.ToString("yyyy-MM-dd"));
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmBillingFile = new MySqlParameter("@BillingFile", MySqlDbType.String);
-                prmBillingFile.Value = BillingFile;
-                cmd.Parameters.Add(prmBillingFile);
-
-                MySqlParameter prmContactID = new MySqlParameter("@ContactID", MySqlDbType.Int64);
-                prmContactID.Value = ContactID;
-                cmd.Parameters.Add(prmContactID);
-
-                MySqlParameter prmBillingDate = new MySqlParameter("@BillingDate", MySqlDbType.Date);
-                prmBillingDate.Value = BillingDate.ToString("yyyy-MM-dd");
-                cmd.Parameters.Add(prmBillingDate);
-
-                base.ExecuteNonQuery(cmd);
+                return base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -114,10 +110,11 @@ namespace AceSoft.RetailPlus.Data
 
         private string SQLSelect()
         {
-            string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,ContactID ,CreditLimit ,RunningCreditAmt ,CurrMonthCreditAmt ,CurrMonthAmountPaid ,TotalBillCharges ,CurrentDueAmount ,MinimumAmountDue ,Prev1MoCurrentDueAmount ,Prev1MoMinimumAmountDue ,Prev1MoCurrMonthAmountPaid ,Prev2MoCurrentDueAmount ,CBL.BillingDate ,CreditCutOffDate " +
+            string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,ContactID ,CreditLimit ,RunningCreditAmt ,CurrMonthCreditAmt ,CurrMonthAmountPaid ,TotalBillCharges ,CurrentDueAmount ,MinimumAmountDue " +
+                                  ",Prev1MoCurrentDueAmount ,Prev1MoMinimumAmountDue ,Prev1MoCurrMonthAmountPaid ,Prev2MoCurrentDueAmount ,CBL.BillingDate ,CreditCutOffDate ,CreditPaymentDueDate " +
+                                  ",CreditPurcStartDateToProcess ,CreditPurcEndDateToProcess, BillingFile " +
                             "FROM tblCreditBillHeader CBH " +
-                            "INNER JOIN tblCreditBills CBL ON CBH.CreditBillID = CBL.CreditBillID " +
-                            "WHERE IsBillPrinted = 0 AND CBL.BillingDate = (SELECT MAX(BillingDate) FROM tblCreditBills) ";
+                            "INNER JOIN tblCreditBills CBL ON CBH.CreditBillID = CBL.CreditBillID ";
 
             return stSQL;
         }
@@ -128,14 +125,20 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = SQLSelect() + "WHERE tblContacts.ContactID = @CustomerID;";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect();
+                SQL += "WHERE IsBillPrinted = 0 AND CBL.BillingDate = (SELECT MAX(BillingDate) FROM tblCreditBills) ";
+                SQL += "AND tblContacts.ContactID = @CustomerID;";
+
+                if (CustomerID != 0)
+                {
+                    SQL += "AND tblContacts.ContactID = @ContactID ";
+                    cmd.Parameters.AddWithValue("ContactID", CustomerID);
+                }
+
                 cmd.CommandText = SQL;
-
-                cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
-
                 MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
 
                 BillingDetails Details = new BillingDetails();
@@ -157,7 +160,11 @@ namespace AceSoft.RetailPlus.Data
                     Details.Prev2MoCurrentDueAmount = myReader.GetDecimal("Prev2MoCurrentDueAmount");
 
                     Details.CreditCutOffDate = myReader.GetDateTime("CreditCutOffDate");
+                    Details.CreditPaymentDueDate = myReader.GetDateTime("CreditPaymentDueDate");
                     Details.BillingDate = myReader.GetDateTime("BillingDate");
+                    Details.CreditPurcStartDateToProcess = myReader.GetDateTime("CreditPurcStartDateToProcess");
+                    Details.CreditPurcEndDateToProcess = myReader.GetDateTime("CreditPurcEndDateToProcess");
+                    Details.BillingFile = myReader.GetString("BillingFile");
 
                     Customer clsCustomer = new Customer(base.Connection, base.Transaction);
                     Details.CustomerDetails = clsCustomer.Details(Details.ContactID);
@@ -167,7 +174,6 @@ namespace AceSoft.RetailPlus.Data
 
                 return Details;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -249,15 +255,25 @@ namespace AceSoft.RetailPlus.Data
                 Details.Prev1MoCurrMonthAmountPaid = Convert.ToDecimal(dr["Prev1MoCurrMonthAmountPaid"]);
                 Details.Prev2MoCurrentDueAmount = Convert.ToDecimal(dr["Prev2MoCurrentDueAmount"]);
 
-                Details.CreditCutOffDate = Convert.ToDateTime(dr["CreditCutOffDate"]);
-                Details.BillingDate = Convert.ToDateTime(dr["BillingDate"]);
+                Details.CreditCutOffDate = DateTime.Parse(dr["CreditCutOffDate"].ToString());
+                Details.CreditPaymentDueDate = DateTime.Parse(dr["CreditPaymentDueDate"].ToString());
+                Details.BillingDate = DateTime.Parse(dr["BillingDate"].ToString());
+
+                Details.CreditPurcStartDateToProcess = DateTime.Parse(dr["CreditPurcStartDateToProcess"].ToString());
+                Details.CreditPurcEndDateToProcess = DateTime.Parse(dr["CreditPurcEndDateToProcess"].ToString());
+
+                // need an override to eliminate reporting issue
+                // '0001-01-01' is not accepted by Crystal
+                Details.CreditPurcStartDateToProcess = Details.CreditPurcStartDateToProcess == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreditPurcStartDateToProcess;
+                Details.CreditPurcEndDateToProcess = Details.CreditPurcEndDateToProcess == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreditPurcEndDateToProcess;
+
+                Details.BillingFile = dr["BillingFile"].ToString();
 
                 Customer clsCustomer = new Customer(base.Connection, base.Transaction);
                 Details.CustomerDetails = clsCustomer.Details(Details.ContactID);
 
                 return Details;
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -268,107 +284,132 @@ namespace AceSoft.RetailPlus.Data
 
         #region Streams
 
-        public System.Data.DataTable ListAsDataTable(Int64 ContactID = 0, string SortField = "ContactName", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        public System.Data.DataTable ListAsDataTable(Int64 ContactID = 0, DateTime? BillingDate = null, string SortField = "CreditBillHeaderID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
         {
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-
-            string SQL = SQLSelect();
-            
-            if (ContactID !=0 ) SQL += "WHERE tblContacts.ContactID = @ContactID ";
-            
-            SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "ContactName") + " ";
-            SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
-            SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
-
-            cmd.CommandText = SQL;
-            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-            base.MySqlDataAdapterFill(cmd, dt);
-
-
-            return dt;
-        }
-
-        public System.Data.DataTable ListDetailsAsDataTable(Int64 CreditBillHeaderID = 0, string SortField = "TransactionDate", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
-        {
-            string SQL = "SELECT CreditBillHeaderID ,TransactionDate ,Description ,Amount FROM tblCreditBillDetail ";
-
-            if (CreditBillHeaderID != 0)
-                SQL += "WHERE CreditBillHeaderID = @CreditBillHeaderID ";
-
-            SQL += "ORDER BY " + SortField;
-
-            if (SortOrder == System.Data.SqlClient.SortOrder.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            cmd.Parameters.AddWithValue("@CreditBillHeaderID", CreditBillHeaderID);
-
-            System.Data.DataTable dt = new System.Data.DataTable("CreditBillDetails");
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
-        }
-
-        public System.Data.DataTable ListBillingDateAsDataTable(Int64 CustomerID, string SortField = "BillingDate", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Descending)
-        {
-            string SQL = "SELECT DISTINCT DATE_FORMAT(BillingDate, '%Y-%m-%d') BillingDate, BillingFile FROM tblCreditBillHeader ";
-
-            if (CustomerID != 0)
-                SQL += "WHERE ContactID = @CustomerID ";
-
-            SQL += "ORDER BY " + SortField;
-
-            if (SortOrder == System.Data.SqlClient.SortOrder.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
-
-            System.Data.DataTable dt = new System.Data.DataTable("tblBillings");
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            return dt;
-        }
-
-        public List<BillingDetails> List(Int64 ContactID = 0, string SortField = "ContactID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
-        {
-            string SQL = SQLSelect();
-
-            if (ContactID != 0)
-                SQL += "AND ContactID = @ContactID ";
-
-            SQL += "ORDER BY " + SortField;
-
-            if (SortOrder == System.Data.SqlClient.SortOrder.Ascending)
-                SQL += " ASC";
-            else
-                SQL += " DESC";
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = SQL;
-
-            System.Data.DataTable dt = new System.Data.DataTable("Billings");
-            base.MySqlDataAdapterFill(cmd, dt);
-
-            List<BillingDetails> lstRetValue = new List<BillingDetails>();
-            foreach (DataRow dr in dt.Rows)
+            try
             {
-                lstRetValue.Add(setDetails(dr));
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + "";
+                SQL += "WHERE IsBillPrinted = 0 ";
+
+                if (ContactID != 0)
+                {
+                    SQL += "AND tblContacts.ContactID = @ContactID ";
+                    cmd.Parameters.AddWithValue("ContactID", ContactID);
+                }
+                if (BillingDate.GetValueOrDefault(Constants.C_DATE_MIN_VALUE) == Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND CBL.BillingDate = (SELECT MAX(BillingDate) FROM tblCreditBills) ";
+                }
+                else
+                {
+                    SQL += "AND CBL.BillingDate = @BillingDate ";
+                    cmd.Parameters.AddWithValue("BillingDate", BillingDate.GetValueOrDefault(Constants.C_DATE_MIN_VALUE));
+                }
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "CreditBillHeaderID") + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
             }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public System.Data.DataTable ListDetailsAsDataTable(Int64 CreditBillHeaderID = 0, string SortField = "TransactionDate", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT CreditBillHeaderID ,TransactionDate ,Description ,Amount FROM tblCreditBillDetail WHERE 1=1 ";
+
+                if (CreditBillHeaderID != 0)
+                {
+                    SQL += "AND CreditBillHeaderID = @CreditBillHeaderID ";
+                    cmd.Parameters.AddWithValue("CreditBillHeaderID", CreditBillHeaderID);
+                }
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "TransactionDate") + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public System.Data.DataTable ListBillingDateAsDataTable(Int64 CustomerID, DateTime? BillingDate = null, string SortField = "BillingDate", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Descending, Int32 limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT DISTINCT DATE_FORMAT(BillingDate, '%Y-%m-%d') BillingDate, BillingFile FROM tblCreditBillHeader WHERE 1=1 ";
+
+                if (CustomerID != 0)
+                {
+                    SQL += "AND ContactID = @CustomerID ";
+                    cmd.Parameters.AddWithValue("CustomerID", CustomerID);
+                }
+                if (BillingDate.GetValueOrDefault(Constants.C_DATE_MIN_VALUE) != Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND BillingDate = @BillingDate ";
+                    cmd.Parameters.AddWithValue("BillingDate", BillingDate);
+                }
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "BillingDate") + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public List<BillingDetails> List(Int64 ContactID = 0, DateTime? BillingDate = null, string SortField = "ContactID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                System.Data.DataTable dt = ListAsDataTable(ContactID, BillingDate, SortField, SortOrder, limit);
+
+                List<BillingDetails> lstRetValue = new List<BillingDetails>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    lstRetValue.Add(setDetails(dr));
+                }
             
-            return lstRetValue;
+                return lstRetValue;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
         }
 
         #endregion
@@ -391,20 +432,18 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public void CloseCurrentBill()
+        public Int32 CloseCurrentBill()
         {
             try
             {
-                string SQL = "CALL procProcessCreditBillsClose();";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procProcessCreditBillsClose();";
+
                 cmd.CommandText = SQL;
-
-                base.ExecuteNonQuery(cmd);
-
+                return base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);

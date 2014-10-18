@@ -49,10 +49,21 @@ namespace AceSoft.RetailPlus.Reports
                 if (cboBranch.Items.Count == 0) cboBranch.Items.Add(new ListItem(Constants.ALL, Constants.ZERO_STRING));
                 cboBranch.SelectedIndex = 0;
                 
-                if (Request.QueryString["task"].ToString().ToLower() == "transaction" && Request.QueryString["tranno"].ToString() != null)
+                if (Request.QueryString["task"] != null && Request.QueryString["tranno"] != null)
                 {
-                    txtTransactionNo.Text = Request.QueryString["tranno"].ToString();
-                    GenerateHTML();
+                    if (Request.QueryString["task"].ToString().ToLower() == "transaction")
+                    {
+                        txtTransactionNo.Text = Request.QueryString["tranno"].ToString();
+                        if (Request.QueryString["termno"] != null)
+                        {
+                            txtTerminalNo.Text = Request.QueryString["termno"].ToString();
+                        }
+                        if (Request.QueryString["branchid"] != null)
+                        {
+                            cboBranch.SelectedIndex = cboBranch.Items.IndexOf(cboBranch.Items.FindByValue(Request.QueryString["branchid"].ToString()));
+                        }
+                        GenerateHTML();
+                    }
                 }
             }
             catch { }

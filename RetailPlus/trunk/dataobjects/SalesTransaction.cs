@@ -1178,7 +1178,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
 
 				string SQL = "SELECT " +
-									   "a.TransactionID, " +
+									   "a.TerminalNo, " +
+                                       "a.BranchID, " +
+                                       "a.TransactionID, " +
 									   "a.TransactionNo, " +
 									   "a.PaxNo, " +
 									   "a.CustomerID, " +
@@ -1198,7 +1200,7 @@ namespace AceSoft.RetailPlus.Data
                                        "b.CreditReason " +
 								   "FROM  tblTransactions a " +
 								   "INNER JOIN tblCreditPayment b ON a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND a.TransactionNo = b.TransactionNo " +
-								   "WHERE a.CustomerID = @ContactID " +
+                                   "WHERE b.Amount - b.AmountPaid <> 0 AND a.CustomerID = @ContactID " +
 								   "AND b.ContactID = @ContactID " +
 								   "AND b.Amount >= b.AmountPaid";
 
@@ -1206,7 +1208,7 @@ namespace AceSoft.RetailPlus.Data
 				// ORDER BY TransactionNo ASC
 				// SO that FIFO during payment will be applied
 				// FIFO - first in first out
-				SQL = "SELECT TransactionID, " +
+				SQL = "SELECT TerminalNo, BranchID, TransactionID, " +
 							"TransactionNo, " +
 							"PaxNo, " +
 							"CustomerID, " +

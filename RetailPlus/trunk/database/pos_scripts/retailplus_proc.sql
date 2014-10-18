@@ -6567,8 +6567,25 @@ BEGIN
 														AND prd.BaseUnitID = pkg.UnitID
 						');
 	END IF;
+
+	-- put the exempted products
+	IF  IFNULL(BarCode,'') = 'CREDIT PAYMENT' OR 
+		IFNULL(BarCode,'') = 'ADVNTGE CARD - MEMBERSHIP FEE' OR 
+		IFNULL(BarCode,'') = 'ADVNTGE CARD - RENEWAL FEE' OR 
+		IFNULL(BarCode,'') = 'ADVNTGE CARD - REPLACEMENT FEE' OR 
+		IFNULL(BarCode,'') = 'CREDIT CARD - MEMBERSHIP FEE' OR 
+		IFNULL(BarCode,'') = 'CREDIT CARD - RENEWAL FEE' OR 
+		IFNULL(BarCode,'') = 'CREDIT CARD - REPLACEMENT FEE' OR 
+		IFNULL(BarCode,'') = 'SUPER CARD - MEMBERSHIP FEE' OR 
+		IFNULL(BarCode,'') = 'SUPER CARD - RENEWAL FEE' OR 
+		IFNULL(BarCode,'') = 'SUPER CARD - REPLACEMENT FEE' THEN
+		SET @SQL = CONCAT(@SQL, ' WHERE 1=1 ');	
+	ELSE
+		SET @SQL = CONCAT(@SQL, ' WHERE deleted=0 ');	
+	END IF;
+
 	SET @SQL = CONCAT(@SQL, '
-							  WHERE deleted=0 ',SQLWhere,' ORDER BY Quantity ASC LIMIT 1) prd
+							  ',SQLWhere,' ORDER BY Quantity ASC LIMIT 1) prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
@@ -6807,8 +6824,25 @@ BEGIN
 														AND prd.BaseUnitID = pkg.UnitID
 						');
 	END IF;
+
+	-- put the exempted products
+	IF  IFNULL(BarCode,'') = 'CREDIT PAYMENT' OR 
+		IFNULL(BarCode,'') = 'ADVNTGE CARD - MEMBERSHIP FEE' OR 
+		IFNULL(BarCode,'') = 'ADVNTGE CARD - RENEWAL FEE' OR 
+		IFNULL(BarCode,'') = 'ADVNTGE CARD - REPLACEMENT FEE' OR 
+		IFNULL(BarCode,'') = 'CREDIT CARD - MEMBERSHIP FEE' OR 
+		IFNULL(BarCode,'') = 'CREDIT CARD - RENEWAL FEE' OR 
+		IFNULL(BarCode,'') = 'CREDIT CARD - REPLACEMENT FEE' OR 
+		IFNULL(BarCode,'') = 'SUPER CARD - MEMBERSHIP FEE' OR 
+		IFNULL(BarCode,'') = 'SUPER CARD - RENEWAL FEE' OR 
+		IFNULL(BarCode,'') = 'SUPER CARD - REPLACEMENT FEE' THEN
+		SET @SQL = CONCAT(@SQL, ' WHERE 1=1 ');	
+	ELSE
+		SET @SQL = CONCAT(@SQL, ' WHERE deleted=0 ');	
+	END IF;
+
 	SET @SQL = CONCAT(@SQL, '
-							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
+							  ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
 						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
 						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
@@ -9013,7 +9047,7 @@ delimiter ;
 
 	CALL procTransactionsSelect(1, '01', 0, '', '2014-09-20', '2014-10-2', 6, 4, 0, 0, 0, '', 0, '', '', 1, 0, '', '', 10);
 	
-	CALL procTransactionsSelect(1, '01', 0, '00000000930395', '1900-01-01', '1900-01-01', 6, 4, 0, 0, 0, '', 0, '', '', 0, 0, '', '', 10);
+	CALL procTransactionsSelect(1, '00', 0, '00000000052336', '1900-01-01', '1900-01-01', 6, 4, 0, 0, '', '', 0, '', '', 0, 0, '', '', 10);
 
 **************************************************************/
 delimiter GO
@@ -9329,6 +9363,7 @@ BEGIN
 	PREPARE stmt FROM @SQL;
 	EXECUTE stmt;
 	DEALLOCATE PREPARE stmt;
+
 	
 END;
 GO

@@ -259,6 +259,13 @@
       <DependentUpon>_menu.ascx</DependentUpon>
     </Compile>
     <Content Include="App_Code\AssemblyInfo.cs" />
+    <Compile Include="Credits\_Customers\_details.ascx.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Customers\_details.ascx.designer.cs">
+      <DependentUpon>_details.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Credits\_Guarantors\Default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -266,11 +273,11 @@
     <Compile Include="Credits\_Guarantors\Default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Credits\_Guarantors\_Details.ascx.cs">
+    <Compile Include="Credits\_Guarantors\_details.ascx.cs">
       <DependentUpon>_details.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Credits\_Guarantors\_Details.ascx.designer.cs">
+    <Compile Include="Credits\_Guarantors\_details.ascx.designer.cs">
       <DependentUpon>_details.ascx</DependentUpon>
     </Compile>
     <Compile Include="Credits\_Guarantors\_Insert.ascx.cs">
@@ -286,13 +293,6 @@
     </Compile>
     <Compile Include="Credits\_Guarantors\_list.ascx.designer.cs">
       <DependentUpon>_list.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Credits\_Guarantors\_Update.ascx.cs">
-      <DependentUpon>_update.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Credits\_Guarantors\_Update.ascx.designer.cs">
-      <DependentUpon>_update.ascx</DependentUpon>
     </Compile>
     <Compile Include="Credits\Default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
@@ -343,13 +343,6 @@
     <Compile Include="Credits\_Customers\Default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Credits\_Customers\_Details.ascx.cs">
-      <DependentUpon>_details.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Credits\_Customers\_Details.ascx.designer.cs">
-      <DependentUpon>_details.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Credits\_Customers\_Insert.ascx.cs">
       <DependentUpon>_insert.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -377,6 +370,13 @@
     </Compile>
     <Compile Include="Credits\_default.ascx.designer.cs">
       <DependentUpon>_default.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Guarantors\_Update.ascx.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Guarantors\_Update.ascx.designer.cs">
+      <DependentUpon>_update.ascx</DependentUpon>
     </Compile>
     <Compile Include="Credits\_Menu.ascx.cs">
       <DependentUpon>_menu.ascx</DependentUpon>
@@ -3537,11 +3537,11 @@
     <None Include="iisreset.cmd" />
     <None Include="MasterFiles\_Product\_Variations\_easyinsert.ascx.cs.exclude" />
     <None Include="MasterFiles\_Product\_Variations\_easyinsert.ascx.exclude" />
+    <Content Include="Credits\_Customers\_details.ascx" />
     <Content Include="Credits\_Guarantors\default.aspx" />
     <Content Include="Credits\_Guarantors\_details.ascx" />
     <Content Include="Credits\_Guarantors\_insert.ascx" />
     <Content Include="Credits\_Guarantors\_list.ascx" />
-    <Content Include="Credits\_Guarantors\_update.ascx" />
     <Content Include="Credits\default.aspx" />
     <Content Include="Credits\_CardType\default.aspx" />
     <Content Include="Credits\_CardType\_details.ascx" />
@@ -3549,11 +3549,11 @@
     <Content Include="Credits\_CardType\_list.ascx" />
     <Content Include="Credits\_CardType\_update.ascx" />
     <Content Include="Credits\_Customers\default.aspx" />
-    <Content Include="Credits\_Customers\_details.ascx" />
     <Content Include="Credits\_Customers\_insert.ascx" />
     <Content Include="Credits\_Customers\_list.ascx" />
     <Content Include="Credits\_Customers\_update.ascx" />
     <Content Include="Credits\_default.ascx" />
+    <Content Include="Credits\_Guarantors\_update.ascx" />
     <Content Include="Credits\_menu.ascx" />
     <Content Include="Home\default.aspx" />
     <Content Include="Home\GLA\default.aspx" />

@@ -58,7 +58,7 @@ INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, Pu
 DELETE FROM tblProductPackage WHERE PackageID = 5;
 DELETE FROM tblProducts WHERE ProductID = 5;
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted) VALUES (5, 'CREDIT CARD - MEMBERSHIP FEE','CREDIT CARD - MEMBERSHIP FEE',1,1,2,1);
-INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 5, 'CREDIT CARD - MEMBERSHIP FEE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'CREDIT CARD - MEMBERSHIP FEE';
+INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 5, 'CREDIT CARD - MEMBERSHIP FEE', ProductID, BaseUnitID, 300, 0, 1 FROM tblProducts WHERE ProductCode = 'CREDIT CARD - MEMBERSHIP FEE';
 
 DELETE FROM tblProductPackage WHERE PackageID = 6;
 DELETE FROM tblProducts WHERE ProductID = 6;
@@ -89,6 +89,17 @@ DELETE FROM tblContactRewards WHERE CustomerID = 1;
 INSERT INTO tblContactRewards (CustomerID, RewardCardNo, RewardActive, RewardCardStatus, RewardAwardDate, ExpiryDate, BirthDate) 
 							VALUES(1, '', 1, 0, NOW(), DATE_ADD(NOW(), INTERVAL 200 YEAR), NOW());
 
+-- make sure that this is only 1
+INSERT INTO tblProducts( ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted) VALUES ('CCI LATE PAYMENT CHARGE','CCI LATE PAYMENT CHARGE',1,1,2,1);
+INSERT INTO tblProductPackage (Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 'CCI LATE PAYMENT CHARGE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'CCI LATE PAYMENT CHARGE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'CCI LATE PAYMENT CHARGE';
+SELECT * FROM tblProducts WHERE ProductCode = 'CCI LATE PAYMENT CHARGE';
+
+-- make sure that this is only 1
+INSERT INTO tblProducts( ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted) VALUES ('CCI FINANCE CHARGE','CCI FINANCE CHARGE',1,1,2,1);
+INSERT INTO tblProductPackage (Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 'CCI FINANCE CHARGE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'CCI FINANCE CHARGE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'CCI FINANCE CHARGE';
+SELECT * FROM tblProducts WHERE ProductCode = 'CCI FINANCE CHARGE';
 
 /*!40000 ALTER TABLE `tblProducts` ENABLE KEYS */;
 SET FOREIGN_KEY_CHECKS = 1;

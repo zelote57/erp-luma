@@ -4159,7 +4159,7 @@ ALTER TABLE sysAccessTypes DROP Category;
 *********************************/
 
 ALTER TABLE sysAccessTypes ADD SequenceNo INT NOT NULL DEFAULT 0; 
-ALTER TABLE sysAccessTypes ADD Category VARCHAR(50) NOT NULL DEFAULT 'System Configurations'; 
+ALTER TABLE sysAccessTypes ADD Category VARCHAR(50) NOT NULL DEFAULT '01: System Configurations'; 
 
 UPDATE sysAccessTypes SET SequenceNo = 1, Category = '01: System Configurations' WHERE TypeID = 1;
 UPDATE sysAccessTypes SET SequenceNo = 2, Category = '01: System Configurations' WHERE TypeID = 43;
@@ -4209,18 +4209,18 @@ UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Sales And Re
 UPDATE sysAccessTypes SET SequenceNo = 2, Category = '07: Backend - Sales And Receivables' WHERE TypeID = 109;
 UPDATE sysAccessTypes SET SequenceNo = 3, Category = '07: Backend - Sales And Receivables' WHERE TypeID = 108;
 UPDATE sysAccessTypes SET SequenceNo = 4, Category = '07: Backend - Sales And Receivables' WHERE TypeID = 110;
-UPDATE sysAccessTypes SET SequenceNo = 1, Category = '08: Backend - Inventory' WHERE TypeID = 21;
-UPDATE sysAccessTypes SET SequenceNo = 2, Category = '08: Backend - Inventory' WHERE TypeID = 22;
-UPDATE sysAccessTypes SET SequenceNo = 3, Category = '08: Backend - Inventory' WHERE TypeID = 23;
-UPDATE sysAccessTypes SET SequenceNo = 4, Category = '08: Backend - Inventory' WHERE TypeID = 89;
-UPDATE sysAccessTypes SET SequenceNo = 5, Category = '08: Backend - Inventory' WHERE TypeID = 90;
-UPDATE sysAccessTypes SET SequenceNo = 6, Category = '08: Backend - Inventory' WHERE TypeID = 112;
-UPDATE sysAccessTypes SET SequenceNo = 7, Category = '08: Backend - Inventory' WHERE TypeID = 113;
-UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Inventory' WHERE TypeID = 114;
-UPDATE sysAccessTypes SET SequenceNo = 9, Category = '08: Backend - Inventory' WHERE TypeID = 115;
-UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Inventory' WHERE TypeID = 116;
-UPDATE sysAccessTypes SET SequenceNo = 11, Category = '08: Backend - Inventory' WHERE TypeID = 117;
-UPDATE sysAccessTypes SET SequenceNo = 12, Category = '08: Backend - Inventory' WHERE TypeID = 118;
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '09: Backend - Inventory' WHERE TypeID = 21;
+UPDATE sysAccessTypes SET SequenceNo = 2, Category = '09: Backend - Inventory' WHERE TypeID = 22;
+UPDATE sysAccessTypes SET SequenceNo = 3, Category = '09: Backend - Inventory' WHERE TypeID = 23;
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '09: Backend - Inventory' WHERE TypeID = 89;
+UPDATE sysAccessTypes SET SequenceNo = 5, Category = '09: Backend - Inventory' WHERE TypeID = 90;
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '09: Backend - Inventory' WHERE TypeID = 112;
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '09: Backend - Inventory' WHERE TypeID = 113;
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '09: Backend - Inventory' WHERE TypeID = 114;
+UPDATE sysAccessTypes SET SequenceNo = 9, Category = '09: Backend - Inventory' WHERE TypeID = 115;
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '09: Backend - Inventory' WHERE TypeID = 116;
+UPDATE sysAccessTypes SET SequenceNo = 11, Category = '09: Backend - Inventory' WHERE TypeID = 117;
+UPDATE sysAccessTypes SET SequenceNo = 12, Category = '09: Backend - Inventory' WHERE TypeID = 118;
 UPDATE sysAccessTypes SET SequenceNo = 1, Category = '09: Backend - General Ledger' WHERE TypeID = 99;
 UPDATE sysAccessTypes SET SequenceNo = 2, Category = '09: Backend - General Ledger' WHERE TypeID = 100;
 UPDATE sysAccessTypes SET SequenceNo = 3, Category = '09: Backend - General Ledger' WHERE TypeID = 101;
@@ -4229,17 +4229,17 @@ UPDATE sysAccessTypes SET SequenceNo = 5, Category = '09: Backend - General Ledg
 UPDATE sysAccessTypes SET SequenceNo = 6, Category = '09: Backend - General Ledger' WHERE TypeID = 98;
 UPDATE sysAccessTypes SET SequenceNo = 7, Category = '09: Backend - General Ledger' WHERE TypeID = 96;
 UPDATE sysAccessTypes SET SequenceNo = 8, Category = '09: Backend - General Ledger' WHERE TypeID = 95;
-UPDATE sysAccessTypes SET SequenceNo = 1, Category = '10: Backend - Inventory Reports' WHERE TypeID = 25;
-UPDATE sysAccessTypes SET SequenceNo = 2, Category = '10: Backend - Inventory Reports' WHERE TypeID = 26;
-UPDATE sysAccessTypes SET SequenceNo = 3, Category = '10: Backend - Inventory Reports' WHERE TypeID = 27;
-UPDATE sysAccessTypes SET SequenceNo = 4, Category = '10: Backend - Inventory Reports' WHERE TypeID = 28;
-UPDATE sysAccessTypes SET SequenceNo = 5, Category = '10: Backend - Inventory Reports' WHERE TypeID = 29;
-UPDATE sysAccessTypes SET SequenceNo = 6, Category = '10: Backend - Inventory Reports' WHERE TypeID = 34;
-UPDATE sysAccessTypes SET SequenceNo = 7, Category = '10: Backend - Inventory Reports' WHERE TypeID = 35;
-UPDATE sysAccessTypes SET SequenceNo = 8, Category = '10: Backend - Inventory Reports' WHERE TypeID = 121;
-UPDATE sysAccessTypes SET SequenceNo = 9, Category = '10: Backend - Inventory Reports' WHERE TypeID = 38;
-UPDATE sysAccessTypes SET SequenceNo = 10, Category = '10: Backend - Inventory Reports' WHERE TypeID = 39;
-UPDATE sysAccessTypes SET SequenceNo = 11, Category = '10: Backend - Inventory Reports' WHERE TypeID = 40;
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '11: Backend - Inventory Reports' WHERE TypeID = 25;
+UPDATE sysAccessTypes SET SequenceNo = 2, Category = '11: Backend - Inventory Reports' WHERE TypeID = 26;
+UPDATE sysAccessTypes SET SequenceNo = 3, Category = '11: Backend - Inventory Reports' WHERE TypeID = 27;
+UPDATE sysAccessTypes SET SequenceNo = 4, Category = '11: Backend - Inventory Reports' WHERE TypeID = 28;
+UPDATE sysAccessTypes SET SequenceNo = 5, Category = '11: Backend - Inventory Reports' WHERE TypeID = 29;
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '11: Backend - Inventory Reports' WHERE TypeID = 34;
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '11: Backend - Inventory Reports' WHERE TypeID = 35;
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '11: Backend - Inventory Reports' WHERE TypeID = 121;
+UPDATE sysAccessTypes SET SequenceNo = 9, Category = '11: Backend - Inventory Reports' WHERE TypeID = 38;
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '11: Backend - Inventory Reports' WHERE TypeID = 39;
+UPDATE sysAccessTypes SET SequenceNo = 11, Category = '11: Backend - Inventory Reports' WHERE TypeID = 40;
 UPDATE sysAccessTypes SET SequenceNo = 1, Category = '11: Backend - Sales Reports' WHERE TypeID = 41;
 UPDATE sysAccessTypes SET SequenceNo = 2, Category = '11: Backend - Sales Reports' WHERE TypeID = 30;
 UPDATE sysAccessTypes SET SequenceNo = 3, Category = '11: Backend - Sales Reports' WHERE TypeID = 36;
@@ -4894,7 +4894,7 @@ UPDATE tblTerminal SET DBVersion = '3.0.3.4';
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (139, 'Inventory Analyst');
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 139, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 139, 1, 1);
-UPDATE sysAccessTypes SET SequenceNo = 6, Category = '08: Backend - Inventory' WHERE TypeID = 139;
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '09: Backend - Inventory' WHERE TypeID = 139;
 
 ALTER TABLE tblProducts ADD RIDMinThreshold DECIMAL(18,3) DEFAULT 0;
 ALTER TABLE tblProducts ADD RIDMaxThreshold DECIMAL(18,3) DEFAULT 0;
@@ -4964,35 +4964,35 @@ DELETE FROM sysAccessTypes WHERE TypeID = 140;
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (140, 'Reward Points Setup');
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 140, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 140, 1, 1);
-UPDATE sysAccessTypes SET SequenceNo = 6, Category = '7: Backend - MasterFiles' WHERE TypeID = 140;
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '08: Backend - Customer Rewards' WHERE TypeID = 140;
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 141; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 141;
 DELETE FROM sysAccessTypes WHERE TypeID = 141;
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (141, 'Reward Cards Issuance');
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 141, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 141, 1, 1);
-UPDATE sysAccessTypes SET SequenceNo = 7, Category = '7: Backend - MasterFiles' WHERE TypeID = 141;
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '08: Backend - Customer Rewards' WHERE TypeID = 141;
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 142; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 142;
 DELETE FROM sysAccessTypes WHERE TypeID = 142;
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (142, 'Reward Cards Change');
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 142, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 142, 1, 1);
-UPDATE sysAccessTypes SET SequenceNo = 7, Category = '7: Backend - MasterFiles' WHERE TypeID = 142;
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '08: Backend - Customer Rewards' WHERE TypeID = 142;
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 143; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 143; 
 DELETE FROM sysAccessTypes WHERE TypeID = 143;
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (143, 'Reward Points Redeemption');
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 143, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 143, 1, 1);
-UPDATE sysAccessTypes SET SequenceNo = 8, Category = '7: Backend - MasterFiles' WHERE TypeID = 143;
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Customer Rewards' WHERE TypeID = 143;
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 144; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 144;
 DELETE FROM sysAccessTypes WHERE TypeID = 144;
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (144, 'Reward Items Setup');
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 144, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 144, 1, 1);
-UPDATE sysAccessTypes SET SequenceNo = 8, Category = '7: Backend - MasterFiles' WHERE TypeID = 144;
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Customer Rewards' WHERE TypeID = 144;
 
 
 -- For ClosingInventory
@@ -5103,20 +5103,6 @@ DROP TABLE IF EXISTS tblContactCreditCardMovement;
 -- INDEX `IX_tblContactCreditCardMovement1`(`CreditDate`),
 -- INDEX `IX_tblContactCreditCardMovement2`(`CustomerID`, `CreditDate`)
 -- );
-
-DELETE FROM sysAccessRights WHERE TranTypeID = 145; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 145;
-DELETE FROM sysAccessTypes WHERE TypeID = 145;
-INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (145, 'Credit Card Issuance');
-INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 145, 1, 1);
-INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 145, 1, 1);
-UPDATE sysAccessTypes SET SequenceNo = 8, Category = '11: Backend - MasterFiles' WHERE TypeID = 145;
-
-DELETE FROM sysAccessRights WHERE TranTypeID = 146; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 146;
-DELETE FROM sysAccessTypes WHERE TypeID = 146;
-INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (146, 'Credit Card Replacement');
-INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 146, 1, 1);
-INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 146, 1, 1);
-UPDATE sysAccessTypes SET SequenceNo = 9, Category = '11: Backend - MasterFiles' WHERE TypeID = 146;
 
 ALTER TABLE tblTerminal ADD AutoGenerateRewardCardNo TINYINT (1) NOT NULL DEFAULT 1;
 ALTER TABLE tblTerminal ADD EnableRewardPointsAsPayment TINYINT (1) NOT NULL DEFAULT 1;
@@ -6561,19 +6547,9 @@ CREATE TABLE `tblTransactionItemsBackup` (
 
 UPDATE tblTerminal SET DBVersion = '4.0.1.0';
 
-DELETE FROM sysAccessRights WHERE TranTypeID = 147; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 147;
-DELETE FROM sysAccessTypes WHERE TypeID = 147;
-INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (147, 'Customer Management Feature');
-INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 147, 1, 1);
-INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 147, 1, 1);
-UPDATE sysAccessTypes SET SequenceNo = 10, Category = '11: Backend - MasterFiles' WHERE TypeID = 147;
-
 ALTER TABLE sysConfig ADD Category VARCHAR(100);
 
 ALTER TABLE tblContactGroup MODIFY ContactGroupCode VARCHAR(10);
-
-
-
 
 
 /*****************************
@@ -8392,8 +8368,18 @@ ALTER TABLE tblContactCreditCardInfo ADD `CreditCardTypeID` INT(10) NOT NULL DEF
 
 UPDATE tblContactCreditCardInfo SET CreditCardTypeID = (SELECT IFNULL(CardTypeID,0) FROM tblCardTypes WHERE CardTypeCode = 'HP SUPERCARD');
 
-
-
+-- categorized the access for cleanup
+UPDATE sysAccessTypes SET Category = '01: System Configurations' WHERE Category = 'System Configurations';
+UPDATE sysAccessTypes SET Category = '05: Backend - MasterFiles - Products' WHERE Category = '05: Backend - MasterFiles - Product';
+UPDATE sysAccessTypes SET Category = '07: Backend - Credits' WHERE Category = '11: Backend - MasterFiles';
+UPDATE sysAccessTypes SET Category = '11: Backend - Inventory Reports' WHERE Category = '10: Backend - Inventory Reports';
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Customer Rewards' WHERE TypeID = 147;
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 153;
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '08: Backend - Customer Rewards' WHERE TypeID = 140;
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '08: Backend - Customer Rewards' WHERE TypeID = 141;
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Customer Rewards' WHERE TypeID = 142;
+UPDATE sysAccessTypes SET SequenceNo = 9, Category = '08: Backend - Customer Rewards' WHERE TypeID = 143;
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Customer Rewards' WHERE TypeID = 144;
 
 -- Notes: Please red
 -- run the retailplus_proc.sql

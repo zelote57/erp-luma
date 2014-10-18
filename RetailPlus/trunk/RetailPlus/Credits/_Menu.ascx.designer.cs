@@ -49,6 +49,33 @@ namespace AceSoft.RetailPlus.Credits {
         protected global::System.Web.UI.WebControls.HyperLink lnkGuarantors;
         
         /// <summary>
+        /// lnkCreditorsPurchases control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkCreditorsPurchases;
+        
+        /// <summary>
+        /// lnkCreditorsPayments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkCreditorsPayments;
+        
+        /// <summary>
+        /// lnkGuarantorsLedger control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkGuarantorsLedger;
+        
+        /// <summary>
         /// lnkBillingReport control.
         /// </summary>
         /// <remarks>

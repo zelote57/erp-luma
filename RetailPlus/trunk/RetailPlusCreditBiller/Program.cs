@@ -66,6 +66,7 @@ namespace AceSoft.RetailPlus.Monitor
 			clsEvent.AddEventLn(ProcessToWrite);
 			Console.WriteLine(ConsoleMonitor() + ProcessToWrite);
 		}
+
 		private static string ConsoleMonitor()
 		{
 			return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ": ";
@@ -81,6 +82,8 @@ namespace AceSoft.RetailPlus.Monitor
 
             // check billingdate
             DateTime dteBillingDate = clsBilling.getBillingDate();
+            List<Data.BillingDetails> lstBillingDetails;
+
             if (dteBillingDate == Constants.C_DATE_MIN_VALUE)
             {
                 clsBilling.CommitAndDispose();
@@ -89,8 +92,11 @@ namespace AceSoft.RetailPlus.Monitor
             }
             else if (dteBillingDate >= DateTime.Now)
             {
+                WriteProcessToMonitor("Will not process credit bill. Next processing date must be after BillingDate: [" + dteBillingDate.ToString("dd-MMM-yyyy") + "]. System will only process after billing date. Printing unprinted OR's instead. ");
+
+                lstBillingDetails = clsBilling.List(BillingDate: dteBillingDate, SortField: "CurrentDueAmount", SortOrder: System.Data.SqlClient.SortOrder.Descending);
                 clsBilling.CommitAndDispose();
-                WriteProcessToMonitor("Will not process credit bill. Next processing date must be after BillingDate: [" + dteBillingDate.ToString("dd-MMM-yyyy") + "]. System will only process after billing date. ");
+                PrintORs(lstBillingDetails);
                 return;
             }
 
@@ -98,21 +104,35 @@ namespace AceSoft.RetailPlus.Monitor
             DateTime dteCreditPurcEndDateToProcess = clsBilling.getCreditPurcEndDateToProcess();
             if (dteCreditPurcEndDateToProcess >= DateTime.Now)
             {
+                WriteProcessToMonitor("Will not process credit bill. CreditPurcEndDateToProcess: " + dteCreditPurcEndDateToProcess.ToString("dd-MMM-yyyy") + " is lower than current date. . Printing unprinted OR's instead. ");
+
+                lstBillingDetails = clsBilling.List(BillingDate: dteBillingDate, SortField: "CurrentDueAmount", SortOrder: System.Data.SqlClient.SortOrder.Descending);
                 clsBilling.CommitAndDispose();
-                WriteProcessToMonitor("Will not process credit bill. CreditPurcEndDateToProcess: " + dteCreditPurcEndDateToProcess.ToString("dd-MMM-yyyy") + " is lower than current date. ");
+                PrintORs(lstBillingDetails);
                 return;
             }
             WriteProcessToMonitor("Processing credit bill for BillingDate: [" + dteBillingDate.ToString("dd-MMM-yyyy") + "]. ");
 			clsBilling.ProcessCurrentBill();
-            
-			List<Data.BillingDetails> lstBillingDetails = clsBilling.List();
-			clsBilling.CommitAndDispose();
 
-			foreach (Data.BillingDetails clsBillingDetails in lstBillingDetails)
-			{
-				WriteProcessToMonitor("Processing credit of " + clsBillingDetails.CustomerDetails.ContactName + "...");
+            // print SOA first before closing the billing date to make sure all are printed
+            lstBillingDetails = clsBilling.List(BillingDate: dteBillingDate, SortField: "CurrentDueAmount", SortOrder: System.Data.SqlClient.SortOrder.Descending);
+            clsBilling.CommitAndDispose();
 
-                if (clsBillingDetails.CurrentDueAmount > 0)
+            PrintORs(lstBillingDetails);
+
+            WriteProcessToMonitor("Closing current billing date...");
+            clsBilling.CloseCurrentBill();
+            clsBilling.CommitAndDispose();
+
+            WriteProcessToMonitor("Done.");
+		}
+
+        private static void PrintORs(List<Data.BillingDetails> lstBillingDetails)
+        {
+            foreach (Data.BillingDetails clsBillingDetails in lstBillingDetails)
+            {
+                WriteProcessToMonitor("Printing SOA of " + clsBillingDetails.CustomerDetails.ContactName + "...");
+                if (string.IsNullOrEmpty(clsBillingDetails.BillingFile))
                 {
                     WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] CrediLimit                : " + clsBillingDetails.CrediLimit.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
                     WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Credit                    : " + clsBillingDetails.CurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
@@ -127,27 +147,18 @@ namespace AceSoft.RetailPlus.Monitor
                     if (strOR != "")
                     {
                         WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Bill createad @ " + strOR);
-                        clsBilling = new Data.Billing();
-                        clsBilling.SetBillinAsPrinted(clsBillingDetails.ContactID, clsBillingDetails.BillingDate, strOR);
+                        Data.Billing clsBilling = new Data.Billing();
+                        clsBilling.SetBillingAsPrinted(clsBillingDetails.ContactID, clsBillingDetails.BillingDate, strOR);
                         clsBilling.CommitAndDispose();
                     }
                     WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Done.");
                 }
-                else 
+                else
                 {
-                    WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Done. Did not print receipt coz CurrentDueAmount is zero.");
+                    WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Done. did not print SOA, already printed @ " + clsBillingDetails.BillingFile);
                 }
-				
-			}
-
-            WriteProcessToMonitor("Closing current billing date...");
-
-            clsBilling = new Data.Billing();
-            clsBilling.CloseCurrentBill();
-            clsBilling.CommitAndDispose();
-
-            WriteProcessToMonitor("Done.");
-		}
+            }
+        }
 
 		protected static string PrintCreditBill(Data.BillingDetails clsBillingDetails)
 		{
@@ -190,7 +201,7 @@ namespace AceSoft.RetailPlus.Monitor
 
 			paramField = rpt.DataDefinition.ParameterFields["PaymentDueDate"];
 			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-            discreteParam.Value = clsBillingDetails.CreditCutOffDate;
+            discreteParam.Value = clsBillingDetails.CreditPaymentDueDate;
 			currentValues = new CrystalDecisions.Shared.ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
@@ -255,6 +266,19 @@ namespace AceSoft.RetailPlus.Monitor
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
+            paramField = rpt.DataDefinition.ParameterFields["CreditPurcStartDateToProcess"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CreditPurcStartDateToProcess;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["CreditPurcEndDateToProcess"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CreditPurcEndDateToProcess;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
 			string strRetValue = "";
 			try

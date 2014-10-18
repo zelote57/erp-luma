@@ -268,6 +268,9 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+				
 				string SQL=	"UPDATE tblContacts SET " + 
 					            "ContactCode	=	@ContactCode, " +
 					            "ContactName	=	@ContactName, " +
@@ -286,10 +289,7 @@ namespace AceSoft.RetailPlus.Data
                                 "PositionID     =   @PositionID " +
 					        "WHERE ContactID = @ContactID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                
 				
                 cmd.Parameters.AddWithValue("@ContactCode", Details.ContactCode);
                 cmd.Parameters.AddWithValue("@ContactName", Details.ContactName);
@@ -308,6 +308,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@PositionID", Details.PositionID);
                 cmd.Parameters.AddWithValue("@ContactID", Details.ContactID);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 
                 //Sep 15, 2013 Include the sepecific details if there's any

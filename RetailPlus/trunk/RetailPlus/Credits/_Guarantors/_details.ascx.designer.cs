@@ -7,46 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus.Credits._Customers {
+namespace AceSoft.RetailPlus.Credits._Guarantors {
     
     
-    public partial class @__Update {
+    public partial class @__Details {
         
         /// <summary>
-        /// imgSaveBack control.
+        /// imgBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgSaveBack;
+        protected global::System.Web.UI.WebControls.ImageButton imgBack;
         
         /// <summary>
-        /// cmdSaveBack control.
+        /// cmdBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSaveBack;
-        
-        /// <summary>
-        /// imgCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgCancel;
-        
-        /// <summary>
-        /// cmdCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdCancel;
+        protected global::System.Web.UI.WebControls.LinkButton cmdBack;
         
         /// <summary>
         /// cboBillingDate control.

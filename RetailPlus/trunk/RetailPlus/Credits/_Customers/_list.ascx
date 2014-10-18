@@ -157,6 +157,7 @@
 							<col width="10">
 							<col width="10">
 							<col width="10">
+                            <col width="10">
 							<col width="10%">
 							<col width="18%">
 							<col width="8%">
@@ -175,6 +176,7 @@
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TH>
 						    <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px"></TH>
+                            <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByContactCode" runat="server">Customer Code</asp:hyperlink></TH>
 							<TH class="ms-vh2" style="padding-bottom: 4px">
@@ -206,6 +208,7 @@
 						<colgroup>
 							<col width="10">
 							<col width="10">
+                            <col width="10">
 							<col width="10">
 							<col width="10%">
 							<col width="18%">
@@ -230,6 +233,9 @@
 							<td class="ms-vb2">
 							    <asp:imagebutton id="imgItemEdit" CommandName="imgItemEdit" accessKey="U" tabIndex="1" height="16" width="16" border="0" tooltip="Update this Contact" ImageUrl="../../_layouts/images/edit.gif" runat="server" CssClass="ms-toolbar" ></asp:imagebutton>
 						    </td>
+                            <td class="ms-vb2">
+                                <asp:imagebutton id="imgPrintBilling" CommandName="imgPrintBilling" accessKey="P" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/print.gif" alt="Print selected billing report" border="0" width="16" height="16"></asp:imagebutton>&nbsp;
+                            </td>
 							<td class="ms-vb-user">
 								<asp:HyperLink ID="lnkContactCode" Runat="server" Target="_blank"></asp:HyperLink>
 							</td>

@@ -27,6 +27,23 @@
 							</tr>
 						</table>
 					</td>
+                    <td class="ms-separator">|</td>
+					<td class="ms-toolbar">
+						<table cellspacing="0" cellpadding="1" border="0">
+							<tr>
+								<td class="ms-toolbar" nowrap="nowrap">&nbsp;Select billing date of report to print :</td>
+								<td nowrap="nowrap"><asp:dropdownlist id="cboBillingDate" CssClass="ms-short" runat="server"></asp:dropdownlist>&nbsp;</td>
+							</tr>
+						</table>
+					</td>
+                    <td class="ms-toolbar">
+						<table cellspacing="0" cellpadding="1" border="0">
+							<tr>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgPrintBilling" title="Print current selected billing report" accessKey="I" tabIndex="5" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/print.gif" alt="Print selected billing report" border="0" width="16" height="16" OnClick="imgPrintBilling_Click"></asp:imagebutton></td>
+								<td nowrap="nowrap"><asp:linkbutton id="cmdPrintBilling" title="Print current selected billing report" accessKey="I" tabIndex="6" CssClass="ms-toolbar" runat="server" onclick="cmdPrintBilling_Click">Print Billing</asp:linkbutton></td>
+							</tr>
+						</table>
+					</td>
 					<td width="99%" class="ms-toolbar" id="align02" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
 					</td>
 				</tr>
@@ -239,6 +256,91 @@
                         </table>
 					</td>
 				</tr>
+                <tr>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+				</tr>
+                <tr>
+					<td class="ms-descriptiontext" style="padding-bottom: 2px; PADDING-TOP: 8px" colspan="3"><b>Purchases & Charges</b>&nbsp;[<asp:Label id="lblLastBillingDate" runat="server"></asp:Label>]</td>
+				</tr>
+                <tr>
+                    <td colspan="3" class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top">
+                        <asp:datalist id="lstPurchases" runat="server" CellPadding="0" ShowFooter="False" Width="100%" OnItemDataBound="lstPurchases_ItemDataBound" AlternatingItemStyle-CssClass="ms-alternating">
+				            <HeaderTemplate>
+					            <table width="100%" cellpadding="0" cellspacing="0" border="0" id="tblHeaderTemplate">
+						            <colgroup>
+                                        <col width="10">
+                                        <col width="12%">
+							            <col width="13%">
+							            <col width="45%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+							            <col width="1%">
+						            </colgroup>
+						            <tr>
+							            <TH class="ms-vh2" style="padding-bottom: 4px">
+								            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TH>
+							            <TH class="ms-vh2" style="padding-bottom: 4px">
+								            <asp:hyperlink id="SortByTransactionNo" runat="server">Trans. No</asp:hyperlink></TH>
+							            <TH class="ms-vh2" style="padding-bottom: 4px">
+								            <asp:hyperlink id="SortByTransactionDate" runat="server">Trans. Date</asp:hyperlink></TH>
+							            <TH class="ms-vh2" style="padding-bottom: 4px">
+								            <asp:hyperlink id="SortByCreditReason" runat="server">Description</asp:hyperlink></TH>
+                                        <TH class="ms-vh2" style="padding-bottom: 4px" align="right">
+								            <asp:hyperlink id="SortByCredit" runat="server">Credit</asp:hyperlink></TH>
+                                        <TH class="ms-vh2" style="padding-bottom: 4px" align="right">
+								            <asp:hyperlink id="SortByCreditPaid" runat="server">Credit Paid</asp:hyperlink></TH>
+                                        <TH class="ms-vh2" style="padding-bottom: 4px" align="right">
+								            <asp:hyperlink id="SortByBalance" runat="server">Balance</asp:hyperlink></TH>
+                                        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
+						            </tr>
+					            </table>
+				            </HeaderTemplate>
+				            <ItemTemplate>
+					            <table id="tblItemTemplate" cellspacing="0" cellpadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
+						            <colgroup>
+							            <col width="10">
+                                        <col width="12%">
+							            <col width="13%">
+							            <col width="45%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+							            <col width="1%">
+						            </colgroup>
+						            <tr>
+							            <td class="ms-vb-user">
+								            <input type="checkbox" id="chkList" runat="server" name="chkList" visible="false" />
+                                            <img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" />
+							            </td>
+							            <td class="ms-vb-user">
+								            <asp:HyperLink ID="lnkTransactionNo" Runat="server" Target="_blank"></asp:HyperLink>
+							            </td>
+							            <td class="ms-vb-user">
+								            <asp:Label ID="lblTransactionDate" Runat="server"></asp:Label>
+							            </td>
+                                        <td class="ms-vb-user">
+								            <asp:Label ID="lblCreditReason" Runat="server"></asp:Label>
+							            </td>
+							            <td class="ms-vb-user" align="right">
+								            <asp:Label ID="lblCredit" Runat="server"></asp:Label>
+							            </td>
+                                        <td class="ms-vb-user" align="right">
+								            <asp:Label ID="lblCreditPaid" Runat="server"></asp:Label>
+							            </td>
+                                        <td class="ms-vb-user" align="right">
+								            <asp:Label ID="lblBalance" Runat="server"></asp:Label>
+							            </td>
+							            <td class="ms-vb2">
+								            <A class="DropDown" id="anchorDown" href="" runat="server">
+									            <asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show" Visible="false"></asp:Image></A>
+							            </td>
+						            </tr>
+					            </table>
+				            </ItemTemplate>
+			            </asp:datalist>
+                    </td>
+                </tr>
 				<tr>
 					<td class="ms-sectionline" colspan="3" height="2"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>

@@ -7,8 +7,8 @@ namespace AceSoft.RetailPlus.Credits._Customers
 	using System.Web.UI.WebControls;
 	using System.Web.UI.HtmlControls;
 	using AceSoft.RetailPlus.Data;
-	
-	public partial  class __Update : System.Web.UI.UserControl
+
+    public partial class __Details : System.Web.UI.UserControl
 	{
 
         #region Web Control Methods
@@ -47,15 +47,12 @@ namespace AceSoft.RetailPlus.Credits._Customers
 
         #region Web Control Methods
 
-        protected void imgSaveBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        protected void imgBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            SaveRecord();
             Response.Redirect(lblReferrer.Text);
         }
-        
-        protected void cmdSaveBack_Click(object sender, System.EventArgs e)
+        protected void cmdBack_Click(object sender, System.EventArgs e)
         {
-            SaveRecord();
             Response.Redirect(lblReferrer.Text);
         }
         
@@ -204,34 +201,9 @@ namespace AceSoft.RetailPlus.Credits._Customers
             txtPaidAmount.Text = "0.00";
             txtCurrentBalance.Text = (clsDetails.CreditLimit - clsDetails.Credit).ToString("###0.#0");
             lblLastBillingDate.Text = "Last Billing Date:" + clsDetails.CreditDetails.LastBillingDate.ToString("yyyy-MMM-dd");
+
             LoadPurchases(clsDetails.ContactID);
             
-        }
-        private void SaveRecord()
-        {
-            Contacts clsContact = new Contacts();
-            ContactDetails clsDetails = new ContactDetails();
-
-            clsDetails.ContactID = Convert.ToInt32(lblContactID.Text);
-            clsDetails.ContactCode = txtContactCode.Text;
-            clsDetails.ContactName = txtContactName.Text;
-            clsDetails.ContactGroupID = Convert.ToInt32(cboGroup.SelectedItem.Value);
-            clsDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), cboModeOfTerms.SelectedItem.Value);
-            clsDetails.Terms = Convert.ToInt32(txtTerms.Text);
-            clsDetails.Address = txtAddress.Text;
-            clsDetails.BusinessName = txtBusinessName.Text;
-            clsDetails.TelephoneNo = txtTelephoneNo.Text;
-            clsDetails.Remarks = txtRemarks.Text;
-            clsDetails.Debit = Convert.ToDecimal(txtDebit.Text);
-            clsDetails.Credit = Convert.ToDecimal(txtCredit.Text);
-            clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
-            clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
-            clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
-            clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
-
-            clsContact.Update(clsDetails);
-
-            clsContact.CommitAndDispose();
         }
         private void LoadPurchases(Int64 CreditorID)
         {

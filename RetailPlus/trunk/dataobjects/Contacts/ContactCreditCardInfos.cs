@@ -179,7 +179,11 @@ namespace AceSoft.RetailPlus.Data
                                 "TotalPurchases, " +
                                 "CreditPaid, " +
                                 "CreditCardStatus, " +
-                                "ExpiryDate " +
+                                "ExpiryDate, " +
+                                "EmbossedCardNo, " +
+                                "LastBillingDate, " +
+                                "CreatedOn, " +
+                                "LastModified " +
                             "FROM tblContactCreditCardInfo ";
             return stSQL;
         }
@@ -244,7 +248,11 @@ namespace AceSoft.RetailPlus.Data
                 Details.TotalPurchases = decimal.Parse(dr["TotalPurchases"].ToString());
                 Details.CreditPaid = decimal.Parse(dr["CreditPaid"].ToString());
                 Details.CreditCardStatus = (CreditCardStatus)Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString());
+                Details.EmbossedCardNo = "" + dr["EmbossedCardNo"].ToString();
                 Details.ExpiryDate = DateTime.Parse(dr["ExpiryDate"].ToString());
+                Details.LastBillingDate = DateTime.Parse(dr["LastBillingDate"].ToString());
+                Details.CreatedOn = DateTime.Parse(dr["CreatedOn"].ToString());
+                Details.LastModified = DateTime.Parse(dr["LastModified"].ToString());
             }
 
             return Details;

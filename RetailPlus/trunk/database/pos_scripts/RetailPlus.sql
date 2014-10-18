@@ -8365,6 +8365,36 @@ ALTER TABLE tblCreditPayment ADD CreditCardTypeID INT(10) NOT NULL DEFAULT 0;
 
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CreditVerificationSlipHeaderLabel',  'FE',								'{CardTypeName}');
 
+ALTER TABLE tblCardTypes ADD `CreditFinanceCharge` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCardTypes ADD `CreditLatePenaltyCharge` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCardTypes ADD `CreditMinimumAmountDue` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCardTypes ADD `CreditMinimumPercentageDue` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCardTypes ADD `CreditFinanceCharge15th` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCardTypes ADD `CreditLatePenaltyCharge15th` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCardTypes ADD `CreditMinimumAmountDue15th` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCardTypes ADD `CreditMinimumPercentageDue15th` DECIMAL(18,3) NOT NULL DEFAULT 0;
+ALTER TABLE tblCardTypes ADD `CreditCardType` TINYINT(2) NOT NULL DEFAULT 0 COMMENT '-- 0 means external -- 1 means internal';
+ALTER TABLE tblCardTypes ADD `WithGuarantor` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '-- 0 means not needed -- 1 means needed';
+ALTER TABLE tblCardTypes ADD `BIRPermitNo` VARCHAR(60) COMMENT 'Use for printing in the receipt.';
+
+ALTER TABLE tblCardTypes ADD `CreditPurcStartDateToProcess` DATE NOT NULL DEFAULT '1900-01-01';
+ALTER TABLE tblCardTypes ADD `CreditPurcEndDateToProcess` DATE NOT NULL DEFAULT '1900-01-01';
+ALTER TABLE tblCardTypes ADD `CreditCutOffDate` DATE NOT NULL DEFAULT '1900-01-01';
+ALTER TABLE tblCardTypes ADD `BillingDate` DATE NOT NULL DEFAULT '1900-01-01';
+ALTER TABLE tblCardTypes ADD `CreditUseLastDayCutOffDate` INT(2) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblCreditPayment DROP `GuarantorID`;
+ALTER TABLE tblCreditPayment DROP `CreditType`;
+ALTER TABLE tblCreditPayment DROP `CreditExpiryDate`;
+
+ALTER TABLE tblContactCreditCardInfo DROP `CreditType`;
+ALTER TABLE tblContactCreditCardInfo ADD `CreditCardTypeID` INT(10) NOT NULL DEFAULT 0;
+
+UPDATE tblContactCreditCardInfo SET CreditCardTypeID = (SELECT IFNULL(CardTypeID,0) FROM tblCardTypes WHERE CardTypeCode = 'HP SUPERCARD');
+
+
+
+
 -- Notes: Please red
 -- run the retailplus_proc.sql
 -- run this to fixed the previous reports.

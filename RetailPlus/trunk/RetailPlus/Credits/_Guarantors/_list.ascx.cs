@@ -222,6 +222,7 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                 DataRowView dr = (DataRowView)e.Item.DataItem;
                 ImageButton imgItemDelete = (ImageButton)e.Item.FindControl("imgItemDelete");
                 ImageButton imgItemEdit = (ImageButton)e.Item.FindControl("imgItemEdit");
+                ImageButton imgPrintBilling = (ImageButton)e.Item.FindControl("imgPrintBilling");
 
                 HtmlInputCheckBox chkList = (HtmlInputCheckBox)e.Item.FindControl("chkList");
                 chkList.Value = dr["ContactID"].ToString();
@@ -230,12 +231,24 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                     chkList.Attributes.Add("disabled", "false");
                     imgItemDelete.Enabled = false; imgItemDelete.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                     imgItemEdit.Enabled = false; imgItemEdit.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    imgPrintBilling.Enabled = false; ; imgPrintBilling.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                 }
                 else
                 {
                     imgItemDelete.Enabled = cmdDelete.Visible; if (!imgItemDelete.Enabled) imgItemDelete.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                     imgItemEdit.Enabled = cmdEdit.Visible; if (!imgItemEdit.Enabled) imgItemEdit.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                     if (imgItemDelete.Enabled) imgItemDelete.Attributes.Add("onClick", "return confirm_item_delete();");
+
+                    if (DateTime.Parse(dr["LastBillingDate"].ToString()) != DateTime.MinValue && DateTime.Parse(dr["LastBillingDate"].ToString()) != Constants.C_DATE_MIN_VALUE)
+                    {
+                        imgPrintBilling.Enabled = imgPrintBilling.Visible; if (!imgPrintBilling.Enabled) imgPrintBilling.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/print.gif";
+                        imgPrintBilling.ToolTip = DateTime.Parse(dr["LastBillingDate"].ToString()).ToString("yyyy-MMM-dd");
+                    }
+                    else
+                    {
+                        imgItemEdit.Enabled = false; imgItemEdit.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                        imgPrintBilling.Enabled = false; ; imgPrintBilling.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    }
                 }
 
                 HyperLink lnkContactName = (HyperLink)e.Item.FindControl("lnkContactName");
@@ -291,6 +304,28 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                 case "imgItemEdit":
                     stParam = "?task=" + Common.Encrypt("edit", Session.SessionID) + "&id=" + Common.Encrypt(chkList.Value, Session.SessionID);
                     Response.Redirect("Default.aspx" + stParam);
+                    break;
+
+                case "imgPrintBilling":
+                    ImageButton imgPrintBilling = (ImageButton)e.Item.FindControl("imgPrintBilling");
+                    if (DateTime.Parse(imgPrintBilling.ToolTip) != DateTime.MinValue && DateTime.Parse(imgPrintBilling.ToolTip) != Constants.C_DATE_MIN_VALUE)
+                    {
+                        Billing clsBilling = new Billing();
+                        System.Data.DataTable dt = clsBilling.ListBillingDateAsDataTable(long.Parse(chkList.Value), DateTime.Parse(imgPrintBilling.ToolTip));
+                        clsBilling.CommitAndDispose();
+
+                        if (dt.Rows.Count > 0)
+                        {
+                            string newWindowUrl = Constants.ROOT_DIRECTORY + "/billings/" + dt.Rows[0]["BillingFile"].ToString();
+                            string javaScript = "window.open('" + newWindowUrl + "','_blank');";
+                            System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.lstItem, this.lstItem.GetType(), "openwindow", javaScript, true);
+                        }
+                    }
+                    else
+                    {
+                        string javaScript = "window.alert('Sorry there is no billing file to print.');";
+                        System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.lstItem, this.lstItem.GetType(), "openwindow", javaScript, true);
+                    }
                     break;
             }
         }

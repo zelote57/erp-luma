@@ -78,6 +78,28 @@ CREATE TABLE tblCreditBillDetail (
 	UNIQUE `PK_tblCreditBillDetail`(`CreditBillDetailID`)
 );
 
+DELETE FROM sysAccessRights WHERE TranTypeID = 145; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 145;
+DELETE FROM sysAccessTypes WHERE TypeID = 145;
+INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (145, 'Credit Card Issuance');
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 145, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 145, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '07: Backend - Credits' WHERE TypeID = 145;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 146; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 146;
+DELETE FROM sysAccessTypes WHERE TypeID = 146;
+INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (146, 'Credit Card Replacement');
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 146, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 146, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 9, Category = '07: Backend - Credits' WHERE TypeID = 146;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 147; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 147;
+DELETE FROM sysAccessTypes WHERE TypeID = 147;
+INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (147, 'Customer Management Feature');
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 147, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 147, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Customer Rewards' WHERE TypeID = 147;
+
+
 DELETE FROM sysAccessRights WHERE TranTypeID = 153; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 153;
 DELETE FROM sysAccessTypes WHERE TypeID = 153;
 INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (153, 'Internal Credit Card Setup', 1);
@@ -85,6 +107,71 @@ INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VA
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 153, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 1, Category = '01: System Configurations' WHERE TypeID = 153;
 
+DELETE FROM sysAccessRights WHERE TranTypeID = 153; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 153;
+DELETE FROM sysAccessTypes WHERE TypeID = 153;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (153, 'Internal Credit Card Setup', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 153, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 153, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 153;
 
-INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('IndividualCardTypeCode',		'HP CARD');
-INSERT INTO sysCreditConfig (ConfigName, ConfigValue) VALUES ('GroupCardTypeCode',		    'HP SUPERCARD');
+DELETE FROM sysAccessRights WHERE TranTypeID = 154; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 154;
+DELETE FROM sysAccessTypes WHERE TypeID = 154;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (154, 'Creditors Without Guarantor Setup', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 154, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 154, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 154;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 155; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 155;
+DELETE FROM sysAccessTypes WHERE TypeID = 155;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (155, 'Creditors Without Guarantor Purchases', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 155, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 155, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 155;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 156; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 156;
+DELETE FROM sysAccessTypes WHERE TypeID = 156;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (156, 'Creditors Without Guarantor Payments', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 156, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 156, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 156;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 161; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 161;
+DELETE FROM sysAccessTypes WHERE TypeID = 161;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (161, 'Creditors With Guarantor Setup', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 161, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 161, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 161;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 162; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 162;
+DELETE FROM sysAccessTypes WHERE TypeID = 162;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (162, 'Creditors With Guarantor Purchases', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 162, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 162, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 162;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 163; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 163;
+DELETE FROM sysAccessTypes WHERE TypeID = 163;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (163, 'Creditors With Guarantor Payments', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 163, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 163, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 163;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 164; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 164;
+DELETE FROM sysAccessTypes WHERE TypeID = 164;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (164, 'Guarantor''s Ledger Summary', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 164, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 164, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 164;
+
+
+TRUNCATE TABLE sysCreditConfig;
+INSERT INTO sysCreditConfig (ConfigName, ConfigValue, Remarks) VALUES ('IndividualCardTypeCode',	'HP CREDIT CARD',			'Individual Credit Card Name for HP');
+INSERT INTO sysCreditConfig (ConfigName, ConfigValue, Remarks) VALUES ('GroupCardTypeCode',		    'HP SUPER CARD',			'Major Credit Card Name for HP');
+
+ALTER TABLE tblCreditBillDetail ADD TerminalNoRefID VARCHAR(30);
+ALTER TABLE tblCreditBillDetail ADD BranchIDRefID INT(4);
+
+
+
+-- disable all credits access
+-- UPDATE sysAccessTypes SET enabled = 0 WHERE Category = '07: Backend - Credits';

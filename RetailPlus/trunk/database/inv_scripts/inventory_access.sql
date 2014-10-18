@@ -37,8 +37,8 @@ INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (112, 'Transfer In');
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (113, 'Transfer Out');
 /*!40000 ALTER TABLE `sysAccessTypes` ENABLE KEYS */; 
 
-UPDATE sysAccessTypes SET SequenceNo = 6, Category = '08: Backend - Inventory' WHERE TypeID = 112;
-UPDATE sysAccessTypes SET SequenceNo = 7, Category = '08: Backend - Inventory' WHERE TypeID = 113;
+UPDATE sysAccessTypes SET SequenceNo = 6, Category = '09: Backend - Inventory' WHERE TypeID = 112;
+UPDATE sysAccessTypes SET SequenceNo = 7, Category = '09: Backend - Inventory' WHERE TypeID = 113;
 
 /*****************************
 **	Added on Feb 21, 2008 for ERP
@@ -48,8 +48,8 @@ INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (114, 'InvAdjustment');
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (115, 'CloseInventory');
 /*!40000 ALTER TABLE `sysAccessTypes` ENABLE KEYS */; 
 
-UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Inventory' WHERE TypeID = 114;
-UPDATE sysAccessTypes SET SequenceNo = 9, Category = '08: Backend - Inventory' WHERE TypeID = 115;
+UPDATE sysAccessTypes SET SequenceNo = 8, Category = '09: Backend - Inventory' WHERE TypeID = 114;
+UPDATE sysAccessTypes SET SequenceNo = 9, Category = '09: Backend - Inventory' WHERE TypeID = 115;
 
 /*****************************
 **	Added on Feb 26, 2008 for Branch Inventory Count Sync
@@ -60,9 +60,9 @@ INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (117, 'Import Inventory Cou
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (118, 'Synchronize Inventory Count');
 /*!40000 ALTER TABLE `sysAccessTypes` ENABLE KEYS */; 
 
-UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Inventory' WHERE TypeID = 116;
-UPDATE sysAccessTypes SET SequenceNo = 11, Category = '08: Backend - Inventory' WHERE TypeID = 117;
-UPDATE sysAccessTypes SET SequenceNo = 12, Category = '08: Backend - Inventory' WHERE TypeID = 118;
+UPDATE sysAccessTypes SET SequenceNo = 10, Category = '09: Backend - Inventory' WHERE TypeID = 116;
+UPDATE sysAccessTypes SET SequenceNo = 11, Category = '09: Backend - Inventory' WHERE TypeID = 117;
+UPDATE sysAccessTypes SET SequenceNo = 12, Category = '09: Backend - Inventory' WHERE TypeID = 118;
 
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 93, 1, 1);
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 94, 1, 1);
@@ -252,7 +252,7 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 
 **	Lemuel E. Aceron
 *****************************/
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (119, 'Banks');
-UPDATE sysAccessTypes SET SequenceNo = 13, Category = '08: Backend - Inventory' WHERE TypeID = 119;
+UPDATE sysAccessTypes SET SequenceNo = 13, Category = '09: Backend - Inventory' WHERE TypeID = 119;
 
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 119, 1, 1);
 
@@ -264,7 +264,7 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 
 *****************************/
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (120, 'PackUnpackTransaction');
 
-UPDATE sysAccessTypes SET SequenceNo = 14, Category = '08: Backend - Inventory' WHERE TypeID = 120;
+UPDATE sysAccessTypes SET SequenceNo = 14, Category = '09: Backend - Inventory' WHERE TypeID = 120;
 
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 120, 1, 1);
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (2, 120, 1, 1);
@@ -280,7 +280,7 @@ INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (2, 
 *****************************/
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (133, '');
 
-UPDATE sysAccessTypes SET SequenceNo = 14, Category = '05: Backend - MasterFiles - Product' WHERE TypeID = 133;
+UPDATE sysAccessTypes SET SequenceNo = 14, Category = '05: Backend - MasterFiles - Products' WHERE TypeID = 133;
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 133, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 133, 1, 1);
 

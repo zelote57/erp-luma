@@ -171,9 +171,9 @@ INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MRS', 'MRS');
 INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MS', 'MS');
 INSERT INTO tblSalutations (SalutationCode, SalutationName)VALUES('MSGR', 'MSGR');
 
-DELETE FROM sysAccessRights WHERE TranTypeID IN (SELECT TypeID FROM sysAccessTypes WHERE Category = '05: Backend - MasterFiles - Product');
-DELETE FROM sysAccessGroupRights WHERE TranTypeID IN (SELECT TypeID FROM sysAccessTypes WHERE Category = '05: Backend - MasterFiles - Product');
-DELETE FROM sysAccessTypes WHERE Category = '05: Backend - MasterFiles - Product';
+DELETE FROM sysAccessRights WHERE TranTypeID IN (SELECT TypeID FROM sysAccessTypes WHERE Category = '05: Backend - MasterFiles - Products');
+DELETE FROM sysAccessGroupRights WHERE TranTypeID IN (SELECT TypeID FROM sysAccessTypes WHERE Category = '05: Backend - MasterFiles - Products');
+DELETE FROM sysAccessTypes WHERE Category = '05: Backend - MasterFiles - Products';
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 145; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 145;
 DELETE FROM sysAccessTypes WHERE TypeID = 145;

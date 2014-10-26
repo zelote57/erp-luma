@@ -26,10 +26,17 @@ namespace AceSoft.RetailPlus.Data
         public decimal CreditLatePenaltyCharge15th;
         public decimal CreditMinimumAmountDue15th;
         public decimal CreditMinimumPercentageDue15th;
+        public DateTime CreditPurcStartDateToProcess;
+        public DateTime CreditPurcEndDateToProcess;
+        /// <summary>
+        /// Payment Due Date
+        /// </summary>
+        public DateTime CreditCutOffDate;
+
         public CreditCardTypes CreditCardType;
         public bool WithGuarantor;
-        public string BIRPermitNo;
-
+        
+        public DateTime BillingDate;
         public DateTime CreatedOn;
         public DateTime LastModified;
 
@@ -48,9 +55,12 @@ namespace AceSoft.RetailPlus.Data
             this.CreditLatePenaltyCharge15th = 0;
             this.CreditMinimumAmountDue15th = 0;
             this.CreditMinimumPercentageDue15th = 0;
+            this.CreditPurcStartDateToProcess = Constants.C_DATE_MIN_VALUE;
+            this.CreditPurcEndDateToProcess = Constants.C_DATE_MIN_VALUE;
+            this.CreditCutOffDate = Constants.C_DATE_MIN_VALUE;
             this.CreditCardType = CreditCardType;
             this.WithGuarantor = false;
-            this.BIRPermitNo = string.Empty;
+            this.BillingDate = Constants.C_DATE_MIN_VALUE;
             this.CreatedOn = DateTime.Now;
             this.LastModified = DateTime.Now;
 
@@ -70,9 +80,12 @@ namespace AceSoft.RetailPlus.Data
             this.CreditLatePenaltyCharge15th = 0;
             this.CreditMinimumAmountDue15th = 0;
             this.CreditMinimumPercentageDue15th = 0;
+            this.CreditPurcStartDateToProcess = Constants.C_DATE_MIN_VALUE;
+            this.CreditPurcEndDateToProcess = Constants.C_DATE_MIN_VALUE;
+            this.CreditCutOffDate = Constants.C_DATE_MIN_VALUE;
             this.CreditCardType = CreditCardType;
             this.WithGuarantor = WithGuarantor;
-            this.BIRPermitNo = string.Empty;
+            this.BillingDate = Constants.C_DATE_MIN_VALUE;
             this.CreatedOn = DateTime.Now;
             this.LastModified = DateTime.Now;
 
@@ -142,7 +155,7 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = "CALL procSaveCardType(@CardTypeID, @CardTypeCode, @CardTypeName, @CreditFinanceCharge, @CreditLatePenaltyCharge, @CreditMinimumAmountDue, @CreditMinimumPercentageDue, " +
                                                    "@CreditFinanceCharge15th, @CreditLatePenaltyCharge15th, @CreditMinimumAmountDue15th, @CreditMinimumPercentageDue15th, " +
-                                                   "@CreditCardType, @WithGuarantor, @BIRPermitNo, @CreatedOn, @LastModified);";
+                                                   "@CreditCardType, @WithGuarantor, @BillingDate, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("CardTypeID", Details.CardTypeID);
                 cmd.Parameters.AddWithValue("CardTypeCode", Details.CardTypeCode);
@@ -157,7 +170,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreditMinimumPercentageDue15th", Details.CreditMinimumPercentageDue15th);
                 cmd.Parameters.AddWithValue("CreditCardType", Details.CreditCardType);
                 cmd.Parameters.AddWithValue("WithGuarantor", Details.WithGuarantor);
-                cmd.Parameters.AddWithValue("BIRPermitNo", Details.BIRPermitNo);
+                cmd.Parameters.AddWithValue("BillingDate", Details.BillingDate == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.BillingDate);
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
@@ -212,9 +225,13 @@ namespace AceSoft.RetailPlus.Data
                                 "CreditLatePenaltyCharge15th, " +
                                 "CreditMinimumAmountDue15th, " +
                                 "CreditMinimumPercentageDue15th, " +
+                                "CreditPurcStartDateToProcess, " +
+                                "CreditPurcEndDateToProcess," +
+                                "CreditCutOffDate," +
                                 "CreditCardType, " +
                                 "WithGuarantor, " +
-                                "BIRPermitNo, " +
+                                "CreditUseLastDayCutOffDate, " +
+                                "BillingDate, " +
                                 "CreatedOn, " +
                                 "LastModified " +
                             "FROM tblCardTypes ";
@@ -286,9 +303,14 @@ namespace AceSoft.RetailPlus.Data
                 Details.CreditLatePenaltyCharge15th = decimal.Parse(dr["CreditLatePenaltyCharge15th"].ToString());
                 Details.CreditMinimumAmountDue15th = decimal.Parse(dr["CreditMinimumAmountDue15th"].ToString());
                 Details.CreditMinimumPercentageDue15th = decimal.Parse(dr["CreditMinimumPercentageDue15th"].ToString());
+                Details.CreditPurcStartDateToProcess = DateTime.Parse(dr["CreditPurcStartDateToProcess"].ToString());
+                Details.CreditPurcEndDateToProcess = DateTime.Parse(dr["CreditPurcEndDateToProcess"].ToString());
+                Details.CreditCutOffDate = DateTime.Parse(dr["CreditCutOffDate"].ToString());
                 Details.CreditCardType = (CreditCardTypes)Enum.Parse(typeof(CreditCardTypes), dr["CreditCardType"].ToString());
                 Details.WithGuarantor = bool.Parse(dr["WithGuarantor"].ToString());
-                Details.BIRPermitNo = dr["BIRPermitNo"].ToString();
+                Details.BillingDate = DateTime.Parse(dr["BillingDate"].ToString());
+                Details.CreatedOn = DateTime.Parse(dr["CreatedOn"].ToString());
+                Details.LastModified = DateTime.Parse(dr["LastModified"].ToString());
             }
 
             return Details;

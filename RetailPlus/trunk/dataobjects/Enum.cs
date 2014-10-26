@@ -442,7 +442,15 @@ namespace AceSoft.RetailPlus
     public enum ChargeSlipType
     {
         Original,
-        Guarantor
+        Guarantor,
+        Customer
+    }
+
+    public enum CreditType
+    {
+        Group,
+        Individual,
+        Both
     }
 
     public enum ProductSearchType
@@ -464,7 +472,14 @@ namespace AceSoft.RetailPlus
 
     public enum CreditReason
     {
-        InHouseCredit,
-        InHouseCreditCard
+        /// <summary>
+        /// This is the code for InHouseCredit
+        /// </summary>
+        IHC,
+
+        /// <summary>
+        /// This is the code for InHouseCreditCard
+        /// </summary>
+        IHCC // InHouseCreditCard
     }
 }

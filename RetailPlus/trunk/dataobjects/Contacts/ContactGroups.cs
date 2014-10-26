@@ -9,7 +9,8 @@ namespace AceSoft.RetailPlus.Data
 		CUSTOMER = 1,
 		SUPPLIER = 2,
 		BOTH = 3,
-        AGENT = 4
+        AGENT = 4,
+        TABLES = 5
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,

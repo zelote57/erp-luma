@@ -4581,7 +4581,7 @@ INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VA
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 134, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 5, Category = '11: Backend - Sales Reports' WHERE TypeID = 134;
 
-ALTER TABLE tblTerminal ADD `WillPrintGrandTotal` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1;
+ALTER TABLE tblTerminal ADD `WillPrintGrandTotal` TINYINT(1) NOT NULL DEFAULT 1;
 
 INSERT INTO sysAccessTypes (TypeID, TypeName) VALUES (135, 'Position');
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 135, 1, 1);
@@ -4925,7 +4925,7 @@ DELETE FROM tblContactRewards WHERE CustomerID = 1;
 INSERT INTO tblContactRewards VALUES(1, '', 1, 0, NOW());
 
 ALTER TABLE tblTerminal ADD ShowCustomerSelection TINYINT (1) NOT NULL DEFAULT 1;
-update tblTerminal set ShowCustomerSelection = 0;
+UPDATE tblTerminal SET ShowCustomerSelection = 0;
 
 ALTER TABLE tblTerminal ADD EnableRewardPoints TINYINT (1) NOT NULL DEFAULT 1;
 ALTER TABLE tblTerminal ADD RewardPointsMinimum DECIMAL(18,3) DEFAULT 0;
@@ -6185,7 +6185,7 @@ INSERT INTO tblReceipt(Module, Text, Value, Orientation) VALUES ('IndividualCred
 --		GroupCreditChargeHeader:		HP CREDIT CHARGE SLIP
 --		IndividualCreditChargeHeader:	SUPER CREDIT CHARGE SLIP
 
-ALTER TABLE tblTerminal ADD `IncludeCreditChargeAgreement` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal ADD `IncludeCreditChargeAgreement` TINYINT(1) NOT NULL DEFAULT 0;
 -- If HP the value should be 1 which will include the following
 --		I hereby agree  to pay the total  amount
 --		stated herein including any charges  due
@@ -6196,8 +6196,8 @@ ALTER TABLE tblTerminal ADD `IncludeCreditChargeAgreement` TINYINT(1) UNSIGNED N
 -- Added May 14, 2013. 
 --	0  means product can be sold and not lock for closing inventory
 --	1  means product can be sold and lock for closing inventory
-ALTER TABLE tblProductGroup ADD `isLock` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
-ALTER TABLE tblContacts ADD `isLock` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE tblProductGroup ADD `isLock` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE tblContacts ADD `isLock` TINYINT(1) NOT NULL DEFAULT 0;
 
 
 DROP TABLE IF EXISTS deleted_tblProducts;
@@ -6495,7 +6495,7 @@ CREATE TABLE `tblTransactionItemsBackup` (
   `SellingPrice` decimal(18,3) NOT NULL DEFAULT '0.00',
   `Discount` decimal(18,3) NOT NULL DEFAULT '0.00',
   `ItemDiscount` decimal(18,3) NOT NULL DEFAULT '0.00',
-  `ItemDiscountType` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `ItemDiscountType` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
   `Amount` decimal(18,3) NOT NULL DEFAULT '0.00',
   `VAT` decimal(18,3) NOT NULL DEFAULT '0.00',
   `VatableAmount` decimal(18,3) NOT NULL DEFAULT '0.00',
@@ -6515,12 +6515,12 @@ CREATE TABLE `tblTransactionItemsBackup` (
   `PromoQuantity` decimal(18,3) NOT NULL DEFAULT '0.00',
   `PromoValue` decimal(18,3) NOT NULL DEFAULT '0.00',
   `PromoInPercent` tinyint(1) NOT NULL DEFAULT '0',
-  `PromoType` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `PromoType` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
   `PromoApplied` decimal(18,3) NOT NULL DEFAULT '0.00',
   `PurchasePrice` decimal(18,3) NOT NULL DEFAULT '0.00',
   `PurchaseAmount` decimal(18,3) NOT NULL DEFAULT '0.00',
   `IncludeInSubtotalDiscount` tinyint(1) NOT NULL DEFAULT '1',
-  `OrderSlipPrinter` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `OrderSlipPrinter` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
   `orderslipprinted` tinyint(1) NOT NULL DEFAULT '0',
   `PercentageCommision` decimal(18,3) NOT NULL DEFAULT '0.00',
   `Commision` decimal(18,3) NOT NULL DEFAULT '0.00',
@@ -6631,7 +6631,7 @@ CREATE TABLE `tblContactsAudit` (
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   `DepartmentID` int(10) unsigned NOT NULL DEFAULT '1',
   `PositionID` int(10) unsigned NOT NULL DEFAULT '1',
-  `isLock` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `isLock` tinyint(1) NOT NULL DEFAULT '0',
   `AuditDateCreated` DATETIME NOT NULL DEFAULT '1900-01-01',
   KEY `IX_tblcontactsAudit` (`ContactID`,`ContactCode`,`ContactName`),
   KEY `IX1_tblcontactsAudit` (`ContactGroupID`)
@@ -6641,7 +6641,7 @@ CREATE TABLE `tblContactsAudit` (
 
 UPDATE tblTerminal SET DBVersion = '4.0.1.1';
 
-ALTER TABLE tblTransactions ADD `isConsignment` tinyint(1) unsigned NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactions ADD `isConsignment` TINYINT(1) NOT NULL DEFAULT 0;
 
 ALTER TABLE tblProductInventory ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
 ALTER TABLE tblProductInventoryAudit ADD ReservedQuantity DECIMAL(18,3) NOT NULL DEFAULT '0.000';
@@ -6744,7 +6744,7 @@ INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('VersionFTPIPA
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('CheckOutBillHeaderLabel','FE',								'-/- CHECK-OUT BILL -/-');
 INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('ChargeSlipHeaderLabel',  'FE',								'');
 
-ALTER TABLE tblTerminal ADD `IncludeTermsAndConditions` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE tblTerminal ADD `IncludeTermsAndConditions` TINYINT(1) NOT NULL DEFAULT 0;
 
 /*******
 UPDATE sysConfig set ConfigValue = '' where ConfigName = 'CompanyCode';
@@ -8183,7 +8183,7 @@ ALTER TABLE tblCashierReportHistory ADD `IsProcessed` TINYINT(1) NOT NULL DEFAUL
 ALTER TABLE tblCashierReport ADD `ItemSold` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCashierReportHistory ADD `ItemSold` DECIMAL(18,3) NOT NULL DEFAULT 0;
 
-ALTER TABLE tblProductSubGroup ADD `isLock` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE tblProductSubGroup ADD `isLock` TINYINT(1) NOT NULL DEFAULT 0;
 
 ALTER TABLE tblCashierReport ADD `BeginningTransactionNo` VARCHAR(30) NOT NULL;
 ALTER TABLE tblCashierReport ADD `BeginningORNo` VARCHAR(30) NOT NULL;
@@ -8349,9 +8349,8 @@ ALTER TABLE tblCardTypes ADD `CreditFinanceCharge15th` DECIMAL(18,3) NOT NULL DE
 ALTER TABLE tblCardTypes ADD `CreditLatePenaltyCharge15th` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCardTypes ADD `CreditMinimumAmountDue15th` DECIMAL(18,3) NOT NULL DEFAULT 0;
 ALTER TABLE tblCardTypes ADD `CreditMinimumPercentageDue15th` DECIMAL(18,3) NOT NULL DEFAULT 0;
-ALTER TABLE tblCardTypes ADD `CreditCardType` TINYINT(2) NOT NULL DEFAULT 0 COMMENT '-- 0 means external -- 1 means internal';
+ALTER TABLE tblCardTypes ADD `CreditCardType` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '-- 0 means external -- 1 means internal';
 ALTER TABLE tblCardTypes ADD `WithGuarantor` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '-- 0 means not needed -- 1 means needed';
-ALTER TABLE tblCardTypes ADD `BIRPermitNo` VARCHAR(60) COMMENT 'Use for printing in the receipt.';
 
 ALTER TABLE tblCardTypes ADD `CreditPurcStartDateToProcess` DATE NOT NULL DEFAULT '1900-01-01';
 ALTER TABLE tblCardTypes ADD `CreditPurcEndDateToProcess` DATE NOT NULL DEFAULT '1900-01-01';
@@ -8380,6 +8379,14 @@ UPDATE sysAccessTypes SET SequenceNo = 7, Category = '08: Backend - Customer Rew
 UPDATE sysAccessTypes SET SequenceNo = 8, Category = '08: Backend - Customer Rewards' WHERE TypeID = 142;
 UPDATE sysAccessTypes SET SequenceNo = 9, Category = '08: Backend - Customer Rewards' WHERE TypeID = 143;
 UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Customer Rewards' WHERE TypeID = 144;
+
+ALTER TABLE tblTerminal ADD `WillPrintVoidItem` TINYINT (1) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblContactCreditCardInfo DROP `CreditBeginningBalance` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Beginning Balance for Creditors w/ Guarantor';
+
+ALTER TABLE tblTerminal MODIFY `IncludeCreditChargeAgreement` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Print Guarantor''s copy of chargeslip';
+
+ALTER TABLE tblTerminal MODIFY `ShowCustomerSelection` TINYINT (1) NOT NULL DEFAULT 0 COMMENT 'Show customer selection or use swipe. If swipe, uses ContactAddDetWnd instead of ContactAddWnd. If Swipe credit will be disabled, only inhousecreditcard is enabled. ';
 
 -- Notes: Please red
 -- run the retailplus_proc.sql

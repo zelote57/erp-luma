@@ -39,6 +39,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			get {	return mDetails;	}
 		}
 
+        public Data.ContactGroupCategory ContactGroupCategory { get; set; }
+
 		#region Constructors and Destructors
 
 		public TableSelectWnd()
@@ -302,7 +304,13 @@ namespace AceSoft.RetailPlus.Client.UI
 				ContactColumns clsSearchColumns = new ContactColumns();
 
 				Contacts clsContact = new Contacts();
-				System.Data.DataTable dtContact = clsContact.Customers(clsContactColumns, lngSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, 0, false, string.Empty, SequenceSortOrder);
+
+                System.Data.DataTable dtContact;
+
+                if (ContactGroupCategory == Data.ContactGroupCategory.TABLES)
+				    dtContact = clsContact.Tables(clsContactColumns, lngSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, 0, false, string.Empty, SequenceSortOrder);
+                else
+                    dtContact = clsContact.Customers(clsContactColumns, lngSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, 0, false, string.Empty, SequenceSortOrder);
 
 				int iRow = 0;
 				int iCol = 0;

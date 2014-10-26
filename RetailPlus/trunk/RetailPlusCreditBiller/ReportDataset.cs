@@ -1,13 +1,21 @@
-﻿namespace AceSoft.RetailPlus.CreditBiller {
-    
-    
-    public partial class ReportDataset {
-        partial class CreditBillDetailDataTable
-        {
-        }
-    
-        partial class CreditBillHeaderDataTable
-        {
-        }
-    }
+﻿namespace AceSoft.RetailPlus.CreditBiller
+{
+}
+namespace AceSoft.RetailPlus.CreditBiller
+{
+}
+namespace AceSoft.RetailPlus.CreditBiller
+{
+}
+namespace AceSoft.RetailPlus.CreditBiller
+{
+}
+namespace AceSoft.RetailPlus.CreditBiller
+{
+}
+namespace AceSoft.RetailPlus.CreditBiller
+{
+}
+namespace AceSoft.RetailPlus.CreditBiller
+{
 }

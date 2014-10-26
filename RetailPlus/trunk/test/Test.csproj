@@ -164,6 +164,7 @@
     <Compile Include="Class3.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="rgen.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="Sync.cs" />
     <Compile Include="KeyGen.cs">

@@ -1497,9 +1497,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label64.AutoSize = true;
             this.label64.Location = new System.Drawing.Point(656, 133);
             this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(145, 13);
+            this.label64.Size = new System.Drawing.Size(344, 13);
             this.label64.TabIndex = 132;
-            this.label64.Text = "Reactivate LOST Credit Card";
+            this.label64.Text = "Credit Card Reactivation / Change Credit Limit / Change Credit Card #";
             // 
             // label1
             // 

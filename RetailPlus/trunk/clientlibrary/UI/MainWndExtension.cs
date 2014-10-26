@@ -3455,9 +3455,6 @@ namespace AceSoft.RetailPlus.Client.UI
                         msbToPrint.Append(CenterString(Constants.C_FE_NOT_VALID_AS_RECEIPT, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                     }
 
-                    // print the BIR Permit No
-                    if (!string.IsNullOrEmpty(clsCreditCardTypeDetails.BIRPermitNo)) msbToPrint.Append(CenterString("BIR Permit No." + GetReceiptFormatParameter(clsCreditCardTypeDetails.BIRPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
-
                     msbToPrint.Append(Environment.NewLine);
                     msbToPrint.Append(Environment.NewLine);
                     msbToPrint.Append("Trans. Date".PadRight(15) + ":" + mclsSalesTransactionDetails.TransactionDate.ToString("yyyy-MM-dd").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
@@ -3502,6 +3499,9 @@ namespace AceSoft.RetailPlus.Client.UI
                     msbToPrint.Append(Environment.NewLine);
                     switch (clsChargeSlipType)
                     {
+                        case ChargeSlipType.Customer:
+                            msbToPrint.Append(CenterString("Customer's Copy", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                            break;
                         case ChargeSlipType.Original:
                             msbToPrint.Append(CenterString("Original Copy", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                             break;
@@ -3587,9 +3587,6 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         msbToPrint.Append(CenterString(mclsSysConfigDetails.CreditVerificationSlipHeaderLabel.Replace("{CardTypeCode}", CreditorDetails.CreditDetails.CardTypeDetails.CardTypeCode).Replace("{CardTypeName}", CreditorDetails.CreditDetails.CardTypeDetails.CardTypeName), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                     }
-
-                    // print the BIR Permit No
-                    if (!string.IsNullOrEmpty(CreditorDetails.CreditDetails.CardTypeDetails.BIRPermitNo)) msbToPrint.Append(CenterString("BIR Permit No." + GetReceiptFormatParameter(CreditorDetails.CreditDetails.CardTypeDetails.BIRPermitNo, false, DateTime.MinValue), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
 
                     msbToPrint.Append(Environment.NewLine);
                     msbToPrint.Append(CenterString("V E R I F I C A T I O N   S L I P", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);

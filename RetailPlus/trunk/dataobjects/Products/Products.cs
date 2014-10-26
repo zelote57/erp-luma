@@ -382,6 +382,18 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public void CREATE_SUPER_CARD_MEMBERSHIP_FEE_BARCODE_PRODUCT()
+        {
+            try
+            {
+                CreateDefaultProduct(DEFAULT_SUPER_CARD_MEMBERSHIP_FEE_BARCODE);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public void CREATE_CREDIT_CARD_RENEWAL_FEE_BARCODE_PRODUCT()
         {
             try
@@ -394,11 +406,35 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public void CREATE_SUPER_CARD_RENEWAL_FEE_BARCODE_PRODUCT()
+        {
+            try
+            {
+                CreateDefaultProduct(DEFAULT_SUPER_CARD_RENEWAL_FEE_BARCODE);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public void CREATE_CREDIT_CARD_REPLACEMENT_FEE_BARCODE_PRODUCT()
         {
             try
             {
                 CreateDefaultProduct(DEFAULT_CREDIT_CARD_REPLACEMENT_FEE_BARCODE);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void CREATE_SUPER_CARD_REPLACEMENT_FEE_BARCODE_PRODUCT()
+        {
+            try
+            {
+                CreateDefaultProduct(DEFAULT_SUPER_CARD_REPLACEMENT_FEE_BARCODE);
             }
             catch (Exception ex)
             {

@@ -36,12 +36,17 @@ namespace AceSoft.RetailPlus.Data
         public decimal Prev1MoCurrMonthAmountPaid;
         public decimal Prev2MoCurrentDueAmount;
 
+        public decimal CurrentPurchaseAmt;
+        public decimal BeginningBalance;
+        public decimal EndingBalance;
+
         public DateTime CreditCutOffDate;
         public DateTime CreditPaymentDueDate;
         public DateTime BillingDate;
         public DateTime CreditPurcStartDateToProcess;
         public DateTime CreditPurcEndDateToProcess;
         public string BillingFile;
+        public bool isBillPrinted;
         
         public Data.ContactDetails CustomerDetails;
     }
@@ -76,7 +81,7 @@ namespace AceSoft.RetailPlus.Data
 
         #region Insert and Update
 
-        public Int32 SetBillingAsPrinted(long ContactID, DateTime BillingDate, string BillingFile)
+        public Int32 SetBillingAsPrinted(CreditType CreditType, Int64 ContactIDorGuarantorID, DateTime BillingDate, string BillingFile)
         {
             try
             {
@@ -87,9 +92,14 @@ namespace AceSoft.RetailPlus.Data
                                 "IsBillPrinted = 1, BillingFile = @BillingFile " +
                             "WHERE ContactID = @ContactID AND BillingDate = @BillingDate;";
 
+                // do an override if group
+                if (CreditType == RetailPlus.CreditType.Group)
+                    SQL = "UPDATE tblCreditBillHeader SET " +
+                                "IsBillPrinted = 1, BillingFile = @BillingFile " +
+                            "WHERE GuarantorID = @ContactID AND BillingDate = @BillingDate;";
                 
                 cmd.Parameters.AddWithValue("BillingFile", BillingFile);
-                cmd.Parameters.AddWithValue("ContactID", ContactID);
+                cmd.Parameters.AddWithValue("ContactID", ContactIDorGuarantorID);
                 cmd.Parameters.AddWithValue("BillingDate", BillingDate.ToString("yyyy-MM-dd"));
 
                 cmd.CommandText = SQL;
@@ -110,11 +120,15 @@ namespace AceSoft.RetailPlus.Data
 
         private string SQLSelect()
         {
-            string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,ContactID ,CreditLimit ,RunningCreditAmt ,CurrMonthCreditAmt ,CurrMonthAmountPaid ,TotalBillCharges ,CurrentDueAmount ,MinimumAmountDue " +
-                                  ",Prev1MoCurrentDueAmount ,Prev1MoMinimumAmountDue ,Prev1MoCurrMonthAmountPaid ,Prev2MoCurrentDueAmount ,CBL.BillingDate ,CreditCutOffDate ,CreditPaymentDueDate " +
-                                  ",CreditPurcStartDateToProcess ,CreditPurcEndDateToProcess, BillingFile " +
+            string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,CBH.GuarantorID ,CBH.ContactID ,CBH.CreditLimit ,CBH.RunningCreditAmt ,CBH.CurrMonthCreditAmt ,CBH.CurrMonthAmountPaid ,CBH.TotalBillCharges ,CBH.CurrentDueAmount ,CBH.MinimumAmountDue " +
+                                  ",CBH.Prev1MoCurrentDueAmount ,CBH.Prev1MoMinimumAmountDue ,CBH.Prev1MoCurrMonthAmountPaid ,CBH.Prev2MoCurrentDueAmount ,CBH.CurrentPurchaseAmt ,CBH.BeginningBalance ,CBH.EndingBalance " +
+                                  ",CBL.BillingDate ,CreditCutOffDate ,CreditPaymentDueDate " +
+                                  ",CreditPurcStartDateToProcess ,CreditPurcEndDateToProcess, BillingFile, IsBillPrinted " +
+                                  ",CUS.ContactName ,CUS.CreditLimit ,CCI.CreditCardNo " +
                             "FROM tblCreditBillHeader CBH " +
-                            "INNER JOIN tblCreditBills CBL ON CBH.CreditBillID = CBL.CreditBillID ";
+                            "INNER JOIN tblCreditBills CBL ON CBH.CreditBillID = CBL.CreditBillID " +
+                            "INNER JOIN tblContacts CUS ON CUS.ContactID = CBH.ContactID " +
+                            "INNER JOIN tblContactCreditCardInfo CCI ON CUS.ContactID = CCI.CustomerID ";
 
             return stSQL;
         }
@@ -139,38 +153,40 @@ namespace AceSoft.RetailPlus.Data
                 }
 
                 cmd.CommandText = SQL;
-                MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
                 BillingDetails Details = new BillingDetails();
-
-                while (myReader.Read())
+                foreach (System.Data.DataRow dr in dt.Rows)
                 {
-                    Details.ContactID = myReader.GetInt64("ContactID");
-                    Details.CrediLimit = myReader.GetDecimal("CreditLimit");
-                    Details.RunningCreditAmt = myReader.GetDecimal("RunningCreditAmt");
-                    Details.CurrMonthCreditAmt = myReader.GetDecimal("CurrMonthCreditAmt");
-                    Details.CurrMonthAmountPaid = myReader.GetDecimal("CurrMonthAmountPaid");
-                    Details.TotalBillCharges = myReader.GetDecimal("TotalBillCharges");
-                    Details.CurrentDueAmount = myReader.GetDecimal("CurrentDueAmount");
-                    Details.MinimumAmountDue = myReader.GetDecimal("MinimumAmountDue");
+                    Details.ContactID = Int64.Parse(dr["ContactID"].ToString());
+                    Details.CrediLimit = decimal.Parse(dr["CreditLimit"].ToString());
+                    Details.RunningCreditAmt = decimal.Parse(dr["RunningCreditAmt"].ToString());
+                    Details.CurrMonthCreditAmt = decimal.Parse(dr["CurrMonthCreditAmt"].ToString());
+                    Details.CurrMonthAmountPaid = decimal.Parse(dr["CurrMonthAmountPaid"].ToString());
+                    Details.TotalBillCharges = decimal.Parse(dr["TotalBillCharges"].ToString());
+                    Details.CurrentDueAmount = decimal.Parse(dr["CurrentDueAmount"].ToString());
+                    Details.MinimumAmountDue = decimal.Parse(dr["MinimumAmountDue"].ToString());
 
-                    Details.Prev1MoCurrentDueAmount = myReader.GetDecimal("Prev1MoCurrentDueAmount");
-                    Details.Prev1MoMinimumAmountDue = myReader.GetDecimal("Prev1MoMinimumAmountDue");
-                    Details.Prev1MoCurrMonthAmountPaid = myReader.GetDecimal("Prev1MoCurrMonthAmountPaid");
-                    Details.Prev2MoCurrentDueAmount = myReader.GetDecimal("Prev2MoCurrentDueAmount");
+                    Details.Prev1MoCurrentDueAmount = decimal.Parse(dr["Prev1MoCurrentDueAmount"].ToString());
+                    Details.Prev1MoMinimumAmountDue = decimal.Parse(dr["Prev1MoMinimumAmountDue"].ToString());
+                    Details.Prev1MoCurrMonthAmountPaid = decimal.Parse(dr["Prev1MoCurrMonthAmountPaid"].ToString());
+                    Details.Prev2MoCurrentDueAmount = decimal.Parse(dr["Prev2MoCurrentDueAmount"].ToString());
+                    Details.CurrentPurchaseAmt = decimal.Parse(dr["CurrentPurchaseAmt"].ToString());
+                    Details.BeginningBalance = decimal.Parse(dr["BeginningBalance"].ToString());
+                    Details.EndingBalance = decimal.Parse(dr["EndingBalance"].ToString());
 
-                    Details.CreditCutOffDate = myReader.GetDateTime("CreditCutOffDate");
-                    Details.CreditPaymentDueDate = myReader.GetDateTime("CreditPaymentDueDate");
-                    Details.BillingDate = myReader.GetDateTime("BillingDate");
-                    Details.CreditPurcStartDateToProcess = myReader.GetDateTime("CreditPurcStartDateToProcess");
-                    Details.CreditPurcEndDateToProcess = myReader.GetDateTime("CreditPurcEndDateToProcess");
-                    Details.BillingFile = myReader.GetString("BillingFile");
+                    Details.CreditCutOffDate = DateTime.Parse(dr["CreditCutOffDate"].ToString());
+                    Details.CreditPaymentDueDate = DateTime.Parse(dr["CreditPaymentDueDate"].ToString());
+                    Details.BillingDate = DateTime.Parse(dr["BillingDate"].ToString());
+                    Details.CreditPurcStartDateToProcess = DateTime.Parse(dr["CreditPurcStartDateToProcess"].ToString());
+                    Details.CreditPurcEndDateToProcess = DateTime.Parse(dr["CreditPurcEndDateToProcess"].ToString());
+                    Details.BillingFile = dr["BillingFile"].ToString();
+                    Details.isBillPrinted = bool.Parse(dr["isBillPrinted"].ToString());
 
                     Customer clsCustomer = new Customer(base.Connection, base.Transaction);
                     Details.CustomerDetails = clsCustomer.Details(Details.ContactID);
                 }
-
-                myReader.Close();
 
                 return Details;
             }
@@ -180,59 +196,99 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public DateTime getCreditPurcEndDateToProcess()
-        {
-            try
-            {
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+        //public DateTime getCreditPurcEndDateToProcess(CreditType CreditType)
+        //{
+        //    try
+        //    {
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "SELECT CreditPurcEndDateToProcess FROM tblCardTypes WHERE CardTypeCode = 'HP Card'";
+        //        string SQL = "SELECT CreditPurcEndDateToProcess FROM tblCardTypes WHERE CardTypeCode = (SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'IndividualCardTypeCode') ";
 
-                cmd.CommandText = SQL;
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
+        //        // do an override
+        //        if (CreditType == RetailPlus.CreditType.Group)
+        //            SQL = "SELECT CreditPurcEndDateToProcess FROM tblCardTypes WHERE CardTypeCode = (SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'GroupCardTypeCode') ";
 
-                DateTime dteRetValue = DateTime.MaxValue;
-                foreach(System.Data.DataRow dr in dt.Rows)
-                {
-                    dteRetValue = DateTime.Parse(dr["CreditPurcEndDateToProcess"].ToString());
-                }
+        //        cmd.CommandText = SQL;
+        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //        base.MySqlDataAdapterFill(cmd, dt);
 
-                return dteRetValue;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
+        //        DateTime dteRetValue = DateTime.MaxValue;
+        //        foreach(System.Data.DataRow dr in dt.Rows)
+        //        {
+        //            dteRetValue = DateTime.Parse(dr["CreditPurcEndDateToProcess"].ToString());
+        //        }
 
-        public DateTime getBillingDate()
-        {
-            try
-            {
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+        //        return dteRetValue;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 
-                string SQL = "SELECT BillingDate FROM tblCardTypes WHERE CardTypeCode = 'HP Card'";
+        //public DateTime getBillingDate(CreditType CreditType)
+        //{
+        //    try
+        //    {
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = SQL;
-                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                base.MySqlDataAdapterFill(cmd, dt);
+        //        string SQL = "SELECT BillingDate FROM tblCardTypes WHERE CardTypeCode = (SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'IndividualCardTypeCode') ";
 
-                DateTime dteRetValue = Constants.C_DATE_MIN_VALUE;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    dteRetValue = DateTime.Parse(dr["BillingDate"].ToString());
-                }
+        //        // do an override if group
+        //        if (CreditType == RetailPlus.CreditType.Group)
+        //            SQL = "SELECT BillingDate FROM tblCardTypes WHERE CardTypeCode = (SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'GroupCardTypeCode') ";
 
-                return dteRetValue;
-            }
-            catch (Exception ex)
-            {
-                throw base.ThrowException(ex);
-            }
-        }
+        //        cmd.CommandText = SQL;
+        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //        base.MySqlDataAdapterFill(cmd, dt);
+
+        //        DateTime dteRetValue = Constants.C_DATE_MIN_VALUE;
+        //        foreach (System.Data.DataRow dr in dt.Rows)
+        //        {
+        //            dteRetValue = DateTime.Parse(dr["BillingDate"].ToString());
+        //        }
+
+        //        return dteRetValue;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
+
+        //public CardTypeDetails getCreditCardTypeInfo(CreditType CreditType)
+        //{
+        //    try
+        //    {
+        //        MySqlCommand cmd = new MySqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+
+        //        string SQL = "SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'IndividualCardTypeCode' ";
+
+        //        // do an override if group
+        //        if (CreditType == RetailPlus.CreditType.Group)
+        //            SQL = "SELECT ConfigValue FROM sysCreditConfig WHERE ConfigName = 'GroupCardTypeCode' ";
+
+        //        cmd.CommandText = SQL;
+        //        string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+        //        base.MySqlDataAdapterFill(cmd, dt);
+
+        //        string strCardTypeCode = string.Empty;
+        //        foreach (System.Data.DataRow dr in dt.Rows)
+        //        {
+        //            strCardTypeCode = dr["ConfigValue"].ToString();
+        //            return new CardType(base.Connection, base.Transaction).Details(strCardTypeCode);
+        //        }
+
+        //        return new CardTypeDetails();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw base.ThrowException(ex);
+        //    }
+        //}
 
         private BillingDetails setDetails(System.Data.DataRow dr)
         {
@@ -254,6 +310,9 @@ namespace AceSoft.RetailPlus.Data
                 Details.Prev1MoMinimumAmountDue = Convert.ToDecimal(dr["Prev1MoMinimumAmountDue"]);
                 Details.Prev1MoCurrMonthAmountPaid = Convert.ToDecimal(dr["Prev1MoCurrMonthAmountPaid"]);
                 Details.Prev2MoCurrentDueAmount = Convert.ToDecimal(dr["Prev2MoCurrentDueAmount"]);
+                Details.CurrentPurchaseAmt = decimal.Parse(dr["CurrentPurchaseAmt"].ToString());
+                Details.BeginningBalance = decimal.Parse(dr["BeginningBalance"].ToString());
+                Details.EndingBalance = decimal.Parse(dr["EndingBalance"].ToString());
 
                 Details.CreditCutOffDate = DateTime.Parse(dr["CreditCutOffDate"].ToString());
                 Details.CreditPaymentDueDate = DateTime.Parse(dr["CreditPaymentDueDate"].ToString());
@@ -268,6 +327,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.CreditPurcEndDateToProcess = Details.CreditPurcEndDateToProcess == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreditPurcEndDateToProcess;
 
                 Details.BillingFile = dr["BillingFile"].ToString();
+                Details.isBillPrinted = bool.Parse(dr["isBillPrinted"].ToString());
 
                 Customer clsCustomer = new Customer(base.Connection, base.Transaction);
                 Details.CustomerDetails = clsCustomer.Details(Details.ContactID);
@@ -284,7 +344,7 @@ namespace AceSoft.RetailPlus.Data
 
         #region Streams
 
-        public System.Data.DataTable ListAsDataTable(Int64 ContactID = 0, DateTime? BillingDate = null, string SortField = "CreditBillHeaderID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        public System.Data.DataTable ListAsDataTable(Int64 GuarantorID = 0, Int64 ContactID = 0, Int16 CreditCardTypeID = 0, CreditType CreditType = CreditType.Both, DateTime? BillingDate = null, string SortField = "CreditBillHeaderID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
         {
             try
             {
@@ -294,10 +354,25 @@ namespace AceSoft.RetailPlus.Data
                 string SQL = SQLSelect() + "";
                 SQL += "WHERE IsBillPrinted = 0 ";
 
+                if (GuarantorID != 0)
+                {
+                    SQL += "AND CBH.GuarantorID = @GuarantorID ";
+                    cmd.Parameters.AddWithValue("GuarantorID", GuarantorID);
+                }
                 if (ContactID != 0)
                 {
-                    SQL += "AND tblContacts.ContactID = @ContactID ";
+                    SQL += "AND CBH.ContactID = @ContactID ";
                     cmd.Parameters.AddWithValue("ContactID", ContactID);
+                }
+                if (CreditType == CreditType.Group)
+                { SQL += "AND CBH.GuarantorID <> 0 "; }
+                else if (CreditType == CreditType.Individual)
+                { SQL += "AND CBH.GuarantorID = 0 "; }
+
+                if (CreditCardTypeID != 0)
+                {
+                    SQL += "AND CBL.CreditCardTypeID = @CreditCardTypeID ";
+                    cmd.Parameters.AddWithValue("CreditCardTypeID", CreditCardTypeID);
                 }
                 if (BillingDate.GetValueOrDefault(Constants.C_DATE_MIN_VALUE) == Constants.C_DATE_MIN_VALUE)
                 {
@@ -392,11 +467,11 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public List<BillingDetails> List(Int64 ContactID = 0, DateTime? BillingDate = null, string SortField = "ContactID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        public List<BillingDetails> List(Int64 GuarantorID = 0, Int64 ContactID = 0, Int16 CreditCardTypeID = 0, CreditType CreditType = CreditType.Both, DateTime? BillingDate = null, string SortField = "ContactID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
         {
             try
             {
-                System.Data.DataTable dt = ListAsDataTable(ContactID, BillingDate, SortField, SortOrder, limit);
+                System.Data.DataTable dt = ListAsDataTable(GuarantorID, ContactID, CreditCardTypeID, CreditType, BillingDate, SortField, SortOrder, limit);
 
                 List<BillingDetails> lstRetValue = new List<BillingDetails>();
                 foreach (DataRow dr in dt.Rows)
@@ -414,15 +489,21 @@ namespace AceSoft.RetailPlus.Data
 
         #endregion
 
-        public void ProcessCurrentBill()
+        public void ProcessCurrentBill(CreditType CreditType, string CardTypeCode)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procProcessCreditBills(0);";
+                string SQL = "CALL procProcessCreditBills(0, @CardTypeCode);";
 
+                if (CreditType == RetailPlus.CreditType.Group)
+                    SQL = "CALL procProcessCreditBillsWG(0, @CardTypeCode);";
+
+                cmd.Parameters.AddWithValue("CardTypeCode", CardTypeCode);
+
+                // overried if group
                 cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
             }
@@ -432,14 +513,20 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public Int32 CloseCurrentBill()
+        public Int32 CloseCurrentBill(CreditType CreditType, string CardTypeCode)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procProcessCreditBillsClose();";
+                string SQL = "CALL procProcessCreditBillsClose(@CardTypeCode);";
+
+                // overried if group
+                if (CreditType == RetailPlus.CreditType.Group)
+                    SQL = "CALL procProcessCreditBillsWGClose(@CardTypeCode);";
+
+                cmd.Parameters.AddWithValue("CardTypeCode", CardTypeCode);
 
                 cmd.CommandText = SQL;
                 return base.ExecuteNonQuery(cmd);

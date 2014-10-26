@@ -97,6 +97,7 @@ namespace AceSoft.RetailPlus.Data
         public bool IsParkingTerminal;
 
         public bool WillPrintChargeSlip;
+        public bool WillPrintVoidItem;
 
         // [04/29/2013] Include to know whether to print agreement or not
         public bool IncludeTermsAndConditions;
@@ -487,7 +488,7 @@ namespace AceSoft.RetailPlus.Data
                                 "@IsFineDining, " +
                                 //"@InHouseIndividualCreditPermitNo, @InHouseGroupCreditPermitNo, @IsFineDining, " +
                                 "@PersonalChargeTypeID, @GroupChargeTypeID, @BranchID, @ProductSearchType, " +
-                                "@IncludeCreditChargeAgreement, @IsParkingTerminal, @WillPrintChargeSlip, " +
+                                "@IncludeCreditChargeAgreement, @IsParkingTerminal, @WillPrintChargeSlip, @WillPrintVoidItem, " +
                                 "@IncludeTermsAndConditions, @PWDDiscountCode, @DefaultTransactionChargeCode, @DineInChargeCode, " +
                                 "@TakeOutChargeCode, @DeliveryChargeCode, @CreatedOn, @LastModified);";
 
@@ -563,6 +564,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("IncludeCreditChargeAgreement", Details.IncludeCreditChargeAgreement);
                 cmd.Parameters.AddWithValue("IsParkingTerminal", Details.IsParkingTerminal);
                 cmd.Parameters.AddWithValue("WillPrintChargeSlip", Details.WillPrintChargeSlip);
+                cmd.Parameters.AddWithValue("WillPrintVoidItem", Details.WillPrintVoidItem);
                 cmd.Parameters.AddWithValue("IncludeTermsAndConditions", Details.IncludeTermsAndConditions);
                 cmd.Parameters.AddWithValue("PWDDiscountCode", Details.PWDDiscountCode);
                 cmd.Parameters.AddWithValue("DefaultTransactionChargeCode", Details.DefaultTransactionChargeCode);
@@ -684,6 +686,7 @@ namespace AceSoft.RetailPlus.Data
                             "IncludeTermsAndConditions, " +
                             "IsParkingTerminal, " +
                             "WillPrintChargeSlip, " +
+                            "WillPrintVoidItem, " +
                             "DefaultTransactionChargeCode, " +
                             "DineInChargeCode, " +
                             "TakeOutChargeCode, " +
@@ -909,6 +912,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.IsParkingTerminal = bool.Parse(dr["IsParkingTerminal"].ToString());
 
                 Details.WillPrintChargeSlip = bool.Parse(dr["WillPrintChargeSlip"].ToString());
+                Details.WillPrintVoidItem = bool.Parse(dr["WillPrintVoidItem"].ToString());
 
                 // Added Oct 20, 2013
                 Details.IncludeTermsAndConditions = bool.Parse(dr["IncludeTermsAndConditions"].ToString());

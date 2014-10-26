@@ -689,6 +689,7 @@ create procedure procSaveTerminal(
 	IN boIncludeCreditChargeAgreement tinyint(1),
 	IN boIsParkingTerminal tinyint(1),
 	IN boWillPrintChargeSlip tinyint(1),
+	IN boWillPrintVoidItem tinyint(1),
 	IN boIncludeTermsAndConditions tinyint(1),
 	IN strPWDDiscountCode varchar(100),
 	IN strDefaultTransactionChargeCode varchar(60),
@@ -777,6 +778,7 @@ BEGIN
 			IncludeCreditChargeAgreement		= boIncludeCreditChargeAgreement,
 			IsParkingTerminal					= boIsParkingTerminal,
 			WillPrintChargeSlip					= boWillPrintChargeSlip,
+			WillPrintVoidItem					= boWillPrintVoidItem,
 			IncludeTermsAndConditions			= boIncludeTermsAndConditions,
 			PWDDiscountCode						= strPWDDiscountCode,
 			DefaultTransactionChargeCode		= strDefaultTransactionChargeCode,
@@ -803,7 +805,7 @@ BEGIN
 								RewardPointsPaymentValue, RewardPointsPaymentCashEquivalent, RewardsPermitNo,
 								IsFineDining,
 								PersonalChargeTypeID, GroupChargeTypeID, BranchID, ProductSearchType,
-								IncludeCreditChargeAgreement, IsParkingTerminal, WillPrintChargeSlip,
+								IncludeCreditChargeAgreement, IsParkingTerminal, WillPrintChargeSlip, WillPrintVoidItem,
 								IncludeTermsAndConditions,PWDDiscountCode, DefaultTransactionChargeCode, 
 								DineInChargeCode, TakeOutChargeCode, DeliveryChargeCode, CreatedOn, LastModified)
 			VALUES(intTerminalID, strTerminalNo, strTerminalCode, strTerminalName, intStatus, dteDateCreated,
@@ -823,7 +825,7 @@ BEGIN
 								decRewardPointsPaymentValue, decRewardPointsPaymentCashEquivalent, strRewardsPermitNo,
 								boIsFineDining,
 								intPersonalChargeTypeID, intGroupChargeTypeID, intBranchID, intProductSearchType,
-								boIncludeCreditChargeAgreement, boIsParkingTerminal, boWillPrintChargeSlip,
+								boIncludeCreditChargeAgreement, boIsParkingTerminal, boWillPrintChargeSlip, boWillPrintVoidItem,
 								boIncludeTermsAndConditions, strPWDDiscountCode, strDefaultTransactionChargeCode, 
 								strDineInChargeCode, strTakeOutChargeCode, strDeliveryChargeCode, dteCreatedOn, dteLastModified);
 	END IF;
@@ -1104,7 +1106,7 @@ create procedure procSaveCardType(
 	IN decCreditMinimumPercentageDue15th DECIMAL(18,3),
 	IN intCreditCardType TINYINT(2),
 	IN intWithGuarantor TINYINT(1),
-	IN strBIRPermitNo VARCHAR(60),
+	IN dteBillingDate DATETIME,
 	IN dteCreatedOn DATETIME,
 	IN dteLastModified DATETIME
 	)
@@ -1128,20 +1130,19 @@ BEGIN
 			CreditLatePenaltyCharge15th	= decCreditLatePenaltyCharge15th,
 			CreditMinimumAmountDue15th	= decCreditMinimumAmountDue15th,
 			CreditMinimumPercentageDue15th	= decCreditMinimumPercentageDue15th,
-
 			WithGuarantor			= intWithGuarantor,
-			BIRPermitNo				= strBIRPermitNo,
+			BillingDate				= dteBillingDate,
 			LastModified			= dteLastModified
 		WHERE CardTypeID			= intCardTypeID;
 	ELSE
 		INSERT INTO tblCardTypes(CardTypeID, CardTypeCode, CardTypeName, 
 								 CreditFinanceCharge, CreditLatePenaltyCharge, CreditMinimumAmountDue, CreditMinimumPercentageDue,
 								 CreditFinanceCharge15th, CreditLatePenaltyCharge15th, CreditMinimumAmountDue15th, CreditMinimumPercentageDue15th,
-								 CreditCardType, WithGuarantor, BIRPermitNo, CreatedOn, LastModified)
+								 CreditCardType, WithGuarantor, BillingDate, CreatedOn, LastModified)
 			VALUES(intCardTypeID, strCardTypeCode, strCardTypeName, 
 								 decCreditFinanceCharge, decCreditLatePenaltyCharge, decCreditMinimumAmountDue, decCreditMinimumPercentageDue,
 								 decCreditFinanceCharge15th, decCreditLatePenaltyCharge15th, decCreditMinimumAmountDue15th, decCreditMinimumPercentageDue15th,
-								 intCreditCardType, intWithGuarantor, strBIRPermitNo, dteCreatedOn, dteLastModified);
+								 intCreditCardType, intWithGuarantor, dteBillingDate, dteCreatedOn, dteLastModified);
 	END IF;
 				
 END;

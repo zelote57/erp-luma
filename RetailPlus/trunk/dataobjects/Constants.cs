@@ -111,6 +111,8 @@ namespace AceSoft.RetailPlus
         public const string STOCK_TYPE_TRANSFER_TO_BRANCH_ID = "5";
         public const string STOCK_TYPE_TRANSFER_FROM_BRANCH_ID = "6";
         public const string ROOT_DIRECTORY = "/RetailPlus";
+        public const string ROOT_DIRECTORY_BILLING_WoutG = "/RetailPlus/temp/billings/woutg";
+        public const string ROOT_DIRECTORY_BILLING_WithG = "/RetailPlus/temp/billings/withg";
         public const string PURCHASE_ORDER_CODE = "PO-";
         public const string PURCHASE_RETURN_CODE = "PORET-";
         public const string PURCHASE_DEBITMEMO_CODE = "PODEB-";
@@ -209,5 +211,8 @@ namespace AceSoft.RetailPlus
 
         public const string TRUSTFUND_UPDATE_REASON_XREAD = "XREAD";
         public const string TRUSTFUND_UPDATE_REASON_ALT_DEL = "ALT+DEL";
+
+        public const Int16 C_DEF_COUNTRY_ID = 1;
+        public const string C_DEF_COUNTRY_CODE = "Philippines";
     }
 }

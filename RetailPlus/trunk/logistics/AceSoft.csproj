@@ -147,6 +147,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="OSInformation.cs" />
+    <Compile Include="PdfPrinter.cs" />
     <Compile Include="RawPrinterHelper.cs">
       <SubType>Code</SubType>
     </Compile>

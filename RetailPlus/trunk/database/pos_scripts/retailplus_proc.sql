@@ -8114,11 +8114,11 @@ BEGIN
 							,LocalTax = ',decNewLocalTax,' ');
 
 	IF lngProductID <> 0 THEN
-		SET @SQL = CONCAT(@SQL, 'WHERE ProductID = ',lngProductID,' ');
+		SET @SQL = CONCAT(@SQL, 'WHERE ProductID > 10 AND ProductID = ',lngProductID,' ');
 	ELSEIF lngProductSubGroupID <> 0 THEN
-		SET @SQL = CONCAT(@SQL, 'WHERE ProductID IN (SELECT DISTINCT ProductID FROM tblProducts WHERE ProductSubGroupID = ',lngProductSubGroupID,') ');
+		SET @SQL = CONCAT(@SQL, 'WHERE ProductID > 10 AND ProductID IN (SELECT DISTINCT ProductID FROM tblProducts WHERE ProductSubGroupID = ',lngProductSubGroupID,') ');
 	ELSEIF lngProductGroupID <> 0 THEN
-		SET @SQL = CONCAT(@SQL, 'WHERE ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID IN (SELECT DISTINCT(ProductSubGroupID) FROM tblProductSubGroup WHERE ProductGroupID = ',lngProductGroupID,')) ');
+		SET @SQL = CONCAT(@SQL, 'WHERE ProductID > 10 AND ProductID IN (SELECT DISTINCT(ProductID) FROM tblProducts WHERE ProductSubGroupID IN (SELECT DISTINCT(ProductSubGroupID) FROM tblProductSubGroup WHERE ProductGroupID = ',lngProductGroupID,')) ');
 	END IF;
 	
 	PREPARE cmd FROM @SQL;
@@ -8175,6 +8175,18 @@ BEGIN
 		DEALLOCATE PREPARE cmd;
 
 	END IF;	
+
+	-- always run this anytime an update is done to reset tax for all products
+	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'CREDIT PAYMENT');
+	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - MEMBERSHIP FEE');
+	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - RENEWAL FEE');
+	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - REPLACEMENT FEE');
+	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'CREDIT CARD - MEMBERSHIP FEE');
+	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'CREDIT CARD - RENEWAL FEE');
+	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'CREDIT CARD - REPLACEMENT FEE');
+	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'SUPER CARD - MEMBERSHIP FEE');
+	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'SUPER CARD - RENEWAL FEE');
+	UPDATE tblProductPackage SET VAT = 0, EVAT = 0, LocalTax = 0 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'SUPER CARD - REPLACEMENT FEE');
 
 	CALL procsysAuditInsert(NOW(), strCreatedBy, 'UPDATE VAT', 'localhost', CONCAT('ProductID:',lngProductID,' ProductSubGroupID:',lngProductSubGroupID,' ProductGroupID:',lngProductGroupID,' VAT:',decNewVAT,' EVAT:',decNewEVAT,' LocalTax:',decNewLocalTax));
 
@@ -9851,3 +9863,37 @@ END;
 GO
 delimiter ;
 
+
+
+/*********************************
+	procContactChangeCreditCardType
+	Lemuel E. Aceron
+	CALL procContactChangeCreditCardType();
+	
+	October 26, 2014 - create this procedure
+*********************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procContactChangeCreditCardType
+GO
+
+create procedure procContactChangeCreditCardType(
+	IN intContactID BIGINT(20),
+	IN intCreditCardTypeID INT(10),
+	IN strUpdatedBy varchar(150))
+BEGIN
+
+	DECLARE intOldCreditCardTypeID INT(1) DEFAULT 0;
+
+	SET intOldCreditCardTypeID = (SELECT CreditCardTypeID FROM tblContactCreditCardInfo WHERE CustomerID = intContactID LIMIT 1);
+
+	-- update the contact only
+	UPDATE tblContactCreditCardInfo SET CreditCardTypeID = intCreditCardTypeID WHERE CustomerID = intContactID AND GuarantorID = 0;
+	
+	-- update all contact with the same guarantor
+	UPDATE tblContactCreditCardInfo SET CreditCardTypeID = intCreditCardTypeID WHERE GuarantorID = intContactID;
+		
+	CALL procsysAuditInsert(NOW(), strUpdatedBy, 'CONTACT CREDITCARD INFO', 'localhost', CONCAT('CreditCardTypeID of customer/guarantor: ',intContactID,' was overwritten from ',intOldCreditCardTypeID,' to ',intCreditCardTypeID,' due to backend update.'));
+
+END;
+GO
+delimiter ;

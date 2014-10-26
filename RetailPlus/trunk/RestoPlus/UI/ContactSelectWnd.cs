@@ -25,30 +25,33 @@ namespace AceSoft.RetailPlus.Client.UI
 		private Label lblAddNewCustomer;
 		private System.ComponentModel.Container components = null;
 
-		private DialogResult dialog;
-		private Data.ContactDetails mDetails;
-		
-		private ContactGroupCategory mContactGroupCategory;
+        #region Public Properties
 
-        private bool mboHasCreditOnly;
-		public bool HasCreditOnly
-		{
-			set {	mboHasCreditOnly = value;	}
-		}
-		public DialogResult Result
-		{
-			get {	return dialog;	}
-		}
-		public ContactDetails Details
-		{
-			get {	return mDetails;	}
-		}
-		public ContactGroupCategory ContactGroupCategory
-		{
-			set { mContactGroupCategory = value; }
-		}
+        public Data.TerminalDetails TerminalDetails { get; set; }
+
+        public bool HasCreditOnly { get; set; }
+
+        private DialogResult dialog;
+        public DialogResult Result
+        {
+            get { return dialog; }
+        }
+
+        private Data.ContactDetails mDetails;
+        public ContactDetails Details
+        {
+            get { return mDetails; }
+        }
+
+        private ContactGroupCategory mContactGroupCategory;
+        public ContactGroupCategory ContactGroupCategory
+        {
+            set { mContactGroupCategory = value; }
+        }
 
         public string Header { get; set; }
+
+        #endregion
 
 		#region Constructors and Destructors
 
@@ -474,9 +477,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				if (mContactGroupCategory == ContactGroupCategory.AGENT)
 					dt = clsContact.AgentsAsDataTable(searchkey, 100, "ContactName", SortOption.Ascending); 
 				else
-                    dt = clsContact.CustomersDataTable(searchkey, 100, mboHasCreditOnly, "ContactName", SortOption.Ascending);
-
-					//dt = clsContact.CustomersDataTable(searchkey, 100, mboHasCreditOnly, "ContactName", SortOption.Ascending);
+                    dt = clsContact.CustomersDataTable(searchkey, 100, HasCreditOnly, "ContactName", SortOption.Ascending);
 
 				clsContact.CommitAndDispose();
 
@@ -494,20 +495,38 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void ContactAdd()
 		{
-			ContactAddWnd addwnd = new ContactAddWnd();
-			addwnd.Caption = "Quickly add new customer.";
-			addwnd.ShowDialog(this);
-			DialogResult addresult = addwnd.Result;
-			Data.ContactDetails details = addwnd.ContactDetails;
-			addwnd.Close();
-			addwnd.Dispose();
+            if (!TerminalDetails.ShowCustomerSelection)
+            {
+                ContactAddDetWnd addwnd = new ContactAddDetWnd();
+                addwnd.Caption = "Quickly add new customer.";
+                addwnd.ShowDialog(this);
+                DialogResult addresult = addwnd.Result;
+                Data.ContactDetails details = addwnd.ContactDetails;
+                addwnd.Close();
+                addwnd.Dispose();
 
-			if (addresult == DialogResult.OK)
-			{
-				txtSearch.Text = details.ContactCode;
-				LoadContactData();
-			}
+                if (addresult == DialogResult.OK)
+                {
+                    txtSearch.Text = details.ContactCode;
+                    LoadContactData();
+                }
+            }
+            else
+            {
+                ContactAddWnd addwnd = new ContactAddWnd();
+                addwnd.Caption = "Quickly add new customer.";
+                addwnd.ShowDialog(this);
+                DialogResult addresult = addwnd.Result;
+                Data.ContactDetails details = addwnd.ContactDetails;
+                addwnd.Close();
+                addwnd.Dispose();
 
+                if (addresult == DialogResult.OK)
+                {
+                    txtSearch.Text = details.ContactCode;
+                    LoadContactData();
+                }
+            }
 		}
 
 		#endregion

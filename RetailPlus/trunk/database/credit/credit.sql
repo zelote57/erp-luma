@@ -1,5 +1,7 @@
 ﻿
-ALTER TABLE tblContactCreditCardInfo ADD LastBillingDate DATE NOT NULL DEFAULT '0001-01-1';
+ALTER TABLE tblContactCreditCardInfo ADD LastBillingDate DATE NOT NULL DEFAULT '1900-01-01';
+ALTER TABLE tblContactCreditCardInfo MODIFY LastBillingDate DATE NOT NULL DEFAULT '1900-01-01';
+UPDATE tblContactCreditCardInfo SET LastBillingDate = '1900-01-01' WHERE LastBillingDate = '0001-01-01';
 
 DROP TABLE IF EXISTS sysCreditConfig;
 CREATE TABLE sysCreditConfig (
@@ -22,10 +24,23 @@ CREATE TABLE tblCreditBills (
 	`BillingDate` DATE NOT NULL,
 	`CreditCutOffDate` DATE NOT NULL,
 	`CreditPaymentDueDate` DATE NOT NULL,
+
+	`CreditCardTypeID` INT(10) NOT NULL DEFAULT 0,
+	`CardTypeCode` VARCHAR(30) NOT NULL,
+	`CreditCardType` TINYINT(1) NOT NULL DEFAULT 0,
+	`WithGuarantor` TINYINT(1) NOT NULL DEFAULT 0,
+	`CreditUseLastDayCutOffDate` TINYINT(1) NOT NULL DEFAULT 0,
+
 	`CreditFinanceCharge` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`CreditMinimumPercentageDue` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`CreditMinimumAmountDue` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`CreditLatePenaltyCharge` DECIMAL(10,3) NOT NULL DEFAULT 0,
+
+	`CreditFinanceCharge15th` DECIMAL(10,3) NOT NULL DEFAULT 0,
+	`CreditMinimumPercentageDue15th` DECIMAL(10,3) NOT NULL DEFAULT 0,
+	`CreditMinimumAmountDue15th` DECIMAL(10,3) NOT NULL DEFAULT 0,
+	`CreditLatePenaltyCharge15th` DECIMAL(10,3) NOT NULL DEFAULT 0,
+
 	`CreatedOn` DATETIME NOT NULL,
 	`CreatedByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CreatedByName` VARCHAR(100),
@@ -42,19 +57,23 @@ CREATE TABLE tblCreditBillHeader (
 	`CreditBillHeaderID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`CreditBillID` BIGINT NOT NULL DEFAULT 0 REFERENCES tblCreditBills(`CreditBillID`),
 	`ContactID` BIGINT NOT NULL DEFAULT 0,
+	`GuarantorID` BIGINT NOT NULL DEFAULT 0,
 	`CreditLimit` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`RunningCreditAmt` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`CurrMonthCreditAmt` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`CurrMonthAmountPaid` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`BillingDate` DATE NOT NULL,
 	`BillingFile` VARCHAR(120),
-	`TotalBillCharges` DECIMAL(10,3) NOT NULL DEFAULT 0,
+	`TotalBillCharges` DECIMAL(10,3) NOT NULL DEFAULT 0 COMMENT 'Penalty for W/Guarantor',
 	`CurrentDueAmount` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`MinimumAmountDue` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`Prev1MoCurrentDueAmount` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`Prev1MoMinimumAmountDue` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`Prev1MoCurrMonthAmountPaid` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`Prev2MoCurrentDueAmount` DECIMAL(10,3) NOT NULL DEFAULT 0,
+	`CurrentPurchaseAmt` DECIMAL(10,3) NOT NULL DEFAULT 0,
+	`BeginningBalance` DECIMAL(10,3) NOT NULL DEFAULT 0,
+	`EndingBalance` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`CreatedOn` DATETIME NOT NULL,
 	`CreatedByID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`CreatedByName` VARCHAR(100) NOT NULL,
@@ -73,6 +92,8 @@ CREATE TABLE tblCreditBillDetail (
 	`Amount` DECIMAL(10,3) NOT NULL DEFAULT 0,
 	`TransactionTypeID` TINYINT(1) NOT NULL DEFAULT 0,
 	`TransactionRefID` BIGINT(20) NOT NULL DEFAULT 0,
+	`TerminalNoRefID` VARCHAR(30),
+	`BranchIDRefID` INT(4) NOT NULL DEFAULT 0,
 	PRIMARY KEY (CreditBillDetailID),
 	INDEX `IX_tblCreditBillDetail`(`CreditBillDetailID`),
 	UNIQUE `PK_tblCreditBillDetail`(`CreditBillDetailID`)
@@ -163,15 +184,18 @@ INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VA
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 164, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 164;
 
+DELETE FROM sysAccessRights WHERE TranTypeID = 168; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 168;
+DELETE FROM sysAccessTypes WHERE TypeID = 168;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (168, 'Credit Card Renewal', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 168, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 168, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 168;
 
 TRUNCATE TABLE sysCreditConfig;
 INSERT INTO sysCreditConfig (ConfigName, ConfigValue, Remarks) VALUES ('IndividualCardTypeCode',	'HP CREDIT CARD',			'Individual Credit Card Name for HP');
-INSERT INTO sysCreditConfig (ConfigName, ConfigValue, Remarks) VALUES ('GroupCardTypeCode',		    'HP SUPER CARD',			'Major Credit Card Name for HP');
-
-ALTER TABLE tblCreditBillDetail ADD TerminalNoRefID VARCHAR(30);
-ALTER TABLE tblCreditBillDetail ADD BranchIDRefID INT(4);
-
 
 
 -- disable all credits access
--- UPDATE sysAccessTypes SET enabled = 0 WHERE Category = '07: Backend - Credits';
+-- UPDATE sysAccessTypes SET enabled = 1 WHERE Category = '07: Backend - Credits';
+
+-- setup a RetailPlusBilling printername to automatically print all the invoices.

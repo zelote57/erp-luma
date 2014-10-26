@@ -139,7 +139,8 @@ namespace AceSoft.RetailPlus.Data
                     clsCreditPaymentDetails.Amount = Details.Amount;
                     clsCreditPaymentDetails.CustomerDetails = Details.CreditorDetails;
                     clsCreditPaymentDetails.Remarks = Details.Remarks;
-                    clsCreditPaymentDetails.CreditReason = CreditReason.InHouseCreditCard.ToString("G") + " pos @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString();
+                    clsCreditPaymentDetails.CreditReason = CreditReason.IHCC.ToString("G") + "[" + Details.CardTypeDetails.CardTypeCode + "] pos @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString();
+
                     clsCreditPaymentDetails.CreditCardPaymentID = Details.CreditCardPaymentID;
                     clsCreditPaymentDetails.CreditCardTypeID = Details.CardTypeDetails.CardTypeID;
 

@@ -171,6 +171,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(332, 27);
             this.txtUserName.TabIndex = 0;
+            this.txtUserName.TextChanged += new System.EventHandler(this.txtUserName_TextChanged);
             this.txtUserName.GotFocus += new System.EventHandler(this.txtUserName_GotFocus);
             // 
             // imgIcon
@@ -246,7 +247,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1022, 766);
+            this.ClientSize = new System.Drawing.Size(1022, 764);
             this.ControlBox = false;
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
@@ -262,8 +263,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Name = "LogInWnd";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Load += new System.EventHandler(this.LogInWnd_Load);
             this.Activated += new System.EventHandler(this.LogInWnd_Activated);
+            this.Load += new System.EventHandler(this.LogInWnd_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LogInWnd_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -312,6 +313,7 @@ namespace AceSoft.RetailPlus.Client.UI
             string strPassword = txtPassword.Text;
 
             if (strUserName == string.Empty) { txtUserName.Focus(); return 0; }
+            else if (strPassword == string.Empty && strUserName.Length == 16) { }
             else if (strPassword == string.Empty && !strUserName.Contains("|")) { txtPassword.Focus(); return 0; }
 
             string strName = string.Empty;
@@ -323,6 +325,11 @@ namespace AceSoft.RetailPlus.Client.UI
                     string[] strSplit = strUserName.Split('|');
                     strPassword = strSplit[1].ToString();
                     strUserName = strSplit[0].ToString();
+                }
+                else if (strUserName.Length == 16) // this is the defined no of burnt card no
+                {
+                    strPassword = strUserName.Remove(0,10);
+                    strUserName = strUserName.Remove(10, 6);
                 }
             }
 
@@ -441,6 +448,22 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             dialog = DialogResult.Cancel;
             this.Hide();
+        }
+
+        private void txtUserName_TextChanged(object sender, EventArgs e)
+        {
+            // this is to handle the 10digits username in Magnetic Card
+            // and the 4digits password
+            if (txtUserName.Text.Length > 10 || txtUserName.Text.Contains("|"))
+            {
+                txtUserName.PasswordChar = 'l';
+                txtUserName.Font = new Font("Wingdings", 12, FontStyle.Bold);
+            }
+            else
+            {
+                txtUserName.PasswordChar = '\0';
+                txtUserName.Font = new Font("Tahoma", 12, FontStyle.Bold);
+            }
         }
 
     }

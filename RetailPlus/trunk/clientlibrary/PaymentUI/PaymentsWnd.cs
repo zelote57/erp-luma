@@ -961,9 +961,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 mdecAllowedCredit = mclsCustomerDetails.CreditLimit - mclsCustomerDetails.Credit;
                 mdecAllowedDebit = mclsCustomerDetails.Debit;
 
-                cmdF4.Visible = mclsCustomerDetails.IsCreditAllowed ? mdecAllowedCredit > 0 : false;
-                lblCredit.Visible = mclsCustomerDetails.IsCreditAllowed ? mdecAllowedCredit > 0 : false;
-                grpDebit.Visible = mboIsRefund ? false : (mclsCustomerDetails.IsCreditAllowed ? mdecAllowedDebit > 0 : false);
+                // 26Oct2014 : include !mclsTerminalDetails.ShowCustomerSelection 
+                //             to check if inhouse credit card will be use instead of credit only.
+                cmdF4.Visible = !mclsTerminalDetails.ShowCustomerSelection ? false : mclsCustomerDetails.IsCreditAllowed ? mdecAllowedCredit > 0 : false;
+                lblCredit.Visible = !mclsTerminalDetails.ShowCustomerSelection ? false : mclsCustomerDetails.IsCreditAllowed ? mdecAllowedCredit > 0 : false;
+                grpDebit.Visible = !mclsTerminalDetails.ShowCustomerSelection ? false : mboIsRefund ? false : (mclsCustomerDetails.IsCreditAllowed ? mdecAllowedDebit > 0 : false);
 
                 lblCredit.Text = mclsSalesTransactionDetails.isConsignment ? "CONSIGNMENT" : "IN-HOUSE CREDIT";
 

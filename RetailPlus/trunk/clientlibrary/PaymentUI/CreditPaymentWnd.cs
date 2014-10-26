@@ -566,7 +566,7 @@ namespace AceSoft.RetailPlus.Client.UI
             mDetails.Remarks = txtRemarks.Text;
             // set this to check if the transaction will be added or deducted in the credit of customer
             mDetails.IsRefund = mboIsRefund;
-            mDetails.CreditReason = CreditReason.InHouseCredit.ToString("G") + " pos @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString();
+            mDetails.CreditReason = CreditReason.IHC.ToString("G") + " pos @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString();
 
             return true;
         }

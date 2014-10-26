@@ -145,19 +145,19 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblRemarks = new System.Windows.Forms.Label();
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.lblCreditCard = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtScan = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.cboCardType = new System.Windows.Forms.ComboBox();
-            this.cmdCancel = new System.Windows.Forms.Button();
-            this.cmdEnter = new System.Windows.Forms.Button();
+            this.txtScan = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.panCharge = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.txtCreditCardCharge = new System.Windows.Forms.TextBox();
             this.lblPlus = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.cmdCancel = new System.Windows.Forms.Button();
+            this.cmdEnter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panCharge.SuspendLayout();
@@ -182,7 +182,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblHeader.Location = new System.Drawing.Point(67, 22);
             this.lblHeader.Name = "lblHeader";
             this.lblHeader.Size = new System.Drawing.Size(161, 13);
-            this.lblHeader.TabIndex = 8;
+            this.lblHeader.TabIndex = 81;
             this.lblHeader.Text = "Tender Credit Card Amount";
             // 
             // groupBox1
@@ -259,7 +259,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCardHolder.MaxLength = 0;
             this.txtCardHolder.Name = "txtCardHolder";
             this.txtCardHolder.Size = new System.Drawing.Size(585, 30);
-            this.txtCardHolder.TabIndex = 4;
+            this.txtCardHolder.TabIndex = 5;
             this.txtCardHolder.GotFocus += new System.EventHandler(this.txtCardHolder_GotFocus);
             // 
             // label4
@@ -315,7 +315,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtValidityDates.MaxLength = 4;
             this.txtValidityDates.Name = "txtValidityDates";
             this.txtValidityDates.Size = new System.Drawing.Size(108, 30);
-            this.txtValidityDates.TabIndex = 5;
+            this.txtValidityDates.TabIndex = 4;
             this.txtValidityDates.GotFocus += new System.EventHandler(this.txtValidityDates_GotFocus);
             this.txtValidityDates.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtValidityDates_KeyPress);
             // 
@@ -353,31 +353,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCreditCard.TabIndex = 15;
             this.lblCreditCard.Text = "Card Amount (PHP):";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label6.Location = new System.Drawing.Point(67, 59);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(130, 16);
-            this.label6.TabIndex = 95;
-            this.label6.Text = "S C A N   H E R E . . ";
-            // 
-            // txtScan
-            // 
-            this.txtScan.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtScan.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtScan.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.txtScan.Location = new System.Drawing.Point(203, 52);
-            this.txtScan.MaxLength = 0;
-            this.txtScan.Name = "txtScan";
-            this.txtScan.Size = new System.Drawing.Size(418, 30);
-            this.txtScan.TabIndex = 2;
-            this.txtScan.Text = "put the cursor here to scan credit card";
-            this.txtScan.GotFocus += new System.EventHandler(this.txtScan_GotFocus);
-            this.txtScan.LostFocus += new System.EventHandler(this.txtScan_LostFocus);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -412,39 +387,35 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cboCardType.Location = new System.Drawing.Point(203, 86);
             this.cboCardType.Name = "cboCardType";
             this.cboCardType.Size = new System.Drawing.Size(211, 31);
-            this.cboCardType.TabIndex = 1;
+            this.cboCardType.TabIndex = 2;
             this.cboCardType.SelectedIndexChanged += new System.EventHandler(this.cboCardType_SelectedIndexChanged);
             this.cboCardType.GotFocus += new System.EventHandler(this.cboCardType_GotFocus);
             // 
-            // cmdCancel
+            // txtScan
             // 
-            this.cmdCancel.AutoSize = true;
-            this.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmdCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdCancel.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdCancel.ForeColor = System.Drawing.Color.White;
-            this.cmdCancel.Location = new System.Drawing.Point(765, 618);
-            this.cmdCancel.Name = "cmdCancel";
-            this.cmdCancel.Size = new System.Drawing.Size(106, 83);
-            this.cmdCancel.TabIndex = 7;
-            this.cmdCancel.Text = "CANCEL";
-            this.cmdCancel.UseVisualStyleBackColor = true;
-            this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
+            this.txtScan.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtScan.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtScan.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.txtScan.Location = new System.Drawing.Point(203, 52);
+            this.txtScan.MaxLength = 0;
+            this.txtScan.Name = "txtScan";
+            this.txtScan.Size = new System.Drawing.Size(418, 30);
+            this.txtScan.TabIndex = 1;
+            this.txtScan.Text = "put the cursor here to scan credit card";
+            this.txtScan.TextChanged += new System.EventHandler(this.txtScan_TextChanged);
+            this.txtScan.GotFocus += new System.EventHandler(this.txtScan_GotFocus);
+            this.txtScan.LostFocus += new System.EventHandler(this.txtScan_LostFocus);
             // 
-            // cmdEnter
+            // label6
             // 
-            this.cmdEnter.AutoSize = true;
-            this.cmdEnter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmdEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdEnter.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdEnter.ForeColor = System.Drawing.Color.White;
-            this.cmdEnter.Location = new System.Drawing.Point(877, 618);
-            this.cmdEnter.Name = "cmdEnter";
-            this.cmdEnter.Size = new System.Drawing.Size(106, 83);
-            this.cmdEnter.TabIndex = 6;
-            this.cmdEnter.Text = "ENTER";
-            this.cmdEnter.UseVisualStyleBackColor = true;
-            this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label6.Location = new System.Drawing.Point(67, 59);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(130, 16);
+            this.label6.TabIndex = 95;
+            this.label6.Text = "S C A N   H E R E . . ";
             // 
             // panCharge
             // 
@@ -516,11 +487,41 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label10.TabIndex = 113;
             this.label10.Text = "}";
             // 
+            // cmdCancel
+            // 
+            this.cmdCancel.AutoSize = true;
+            this.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmdCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdCancel.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdCancel.ForeColor = System.Drawing.Color.White;
+            this.cmdCancel.Location = new System.Drawing.Point(765, 618);
+            this.cmdCancel.Name = "cmdCancel";
+            this.cmdCancel.Size = new System.Drawing.Size(106, 83);
+            this.cmdCancel.TabIndex = 8;
+            this.cmdCancel.Text = "CANCEL";
+            this.cmdCancel.UseVisualStyleBackColor = true;
+            this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
+            // 
+            // cmdEnter
+            // 
+            this.cmdEnter.AutoSize = true;
+            this.cmdEnter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmdEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdEnter.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdEnter.ForeColor = System.Drawing.Color.White;
+            this.cmdEnter.Location = new System.Drawing.Point(877, 618);
+            this.cmdEnter.Name = "cmdEnter";
+            this.cmdEnter.Size = new System.Drawing.Size(106, 83);
+            this.cmdEnter.TabIndex = 7;
+            this.cmdEnter.Text = "ENTER";
+            this.cmdEnter.UseVisualStyleBackColor = true;
+            this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
+            // 
             // CreditCardPaymentWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1022, 766);
+            this.ClientSize = new System.Drawing.Size(1022, 764);
             this.ControlBox = false;
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
@@ -676,7 +677,16 @@ namespace AceSoft.RetailPlus.Client.UI
             {
                 txtScan.Text = "put the cursor here to scan credit card";
             }
-            else if (txtScan.Text != "put the cursor here to scan credit card")
+            //else if (txtScan.Text != "put the cursor here to scan credit card")
+            //{
+            //    setScannedCreditCardInfo();
+            //    txtCardNo_TextChanged(null, null);
+            //}
+        }
+
+        private void txtScan_TextChanged(object sender, EventArgs e)
+        {
+            if (txtScan.Text != "put the cursor here to scan credit card")
             {
                 setScannedCreditCardInfo();
                 txtCardNo_TextChanged(null, null);
@@ -811,7 +821,7 @@ namespace AceSoft.RetailPlus.Client.UI
             if (cboCardType.Items.Count > 0) cboCardType.SelectedIndex = 0;
 
             txtScan.Text = "put the cursor here to scan credit card";
-            txtScan.Focus();
+            txtAmount.Focus();
         }
         private bool isValuesAssigned()
         {

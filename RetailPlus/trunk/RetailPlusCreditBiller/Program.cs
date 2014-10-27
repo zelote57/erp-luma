@@ -191,7 +191,16 @@ namespace AceSoft.RetailPlus.Monitor
                         WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Prev1MoCurrentDueAmount   : " + clsBillingDetails.Prev1MoCurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
                         WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Prev2MoCurrentDueAmount   : " + clsBillingDetails.Prev2MoCurrentDueAmount.ToString(Constants.C_FE_DEFAULT_DECIMAL_FORMAT));
 
-                        string strOR = PrintCreditBill(clsBillingDetails);
+                        string strOR = "";
+                        string CreditBillerPrinter = "Normal";
+                        if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinter"] != null)
+                            CreditBillerPrinter = System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinter"].ToString();
+
+                        if (CreditBillerPrinter.ToUpper() != "LX")
+                            strOR = PrintCreditBill(clsBillingDetails);
+                        else
+                            strOR = PrintCreditBillLX(clsBillingDetails);
+
                         if (strOR != "")
                         {
                             WriteProcessToMonitor("[" + clsBillingDetails.CustomerDetails.ContactName + "] Bill createad @ " + strOR);
@@ -363,14 +372,25 @@ namespace AceSoft.RetailPlus.Monitor
 
             try
             {
-                if (isPrinterOnline("RetailPlusBilling"))
+                bool boCreditBillerWillPrintORs = false;
+                if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerWillPrintORs"] != null)
+                    boCreditBillerWillPrintORs = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["CreditBillerWillPrintORs"].ToString());
+
+                if (boCreditBillerWillPrintORs)
                 {
-                    rpt.PrintOptions.PrinterName = "RetailPlusBilling";
-                    rpt.PrintToPrinter(1, false, 0, 0);
-                }
-                else
-                {
-                    WriteProcessToMonitor("will not print sales invoice. 'RetailPlusBilling' printer is offline.");
+                    string strCreditBillerPrinterName = "";
+                    if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"] != null)
+                        strCreditBillerPrinterName = System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"].ToString();
+
+                    if (isPrinterOnline(strCreditBillerPrinterName))
+                    {
+                        rpt.PrintOptions.PrinterName = strCreditBillerPrinterName;
+                        rpt.PrintToPrinter(1, false, 0, 0);
+                    }
+                    else
+                    {
+                        WriteProcessToMonitor("will not print sales invoice. '" + strCreditBillerPrinterName + "' printer is offline.");
+                    }
                 }
             }
             catch{ }
@@ -380,6 +400,181 @@ namespace AceSoft.RetailPlus.Monitor
 			
 			return strRetValue;
 		}
+        protected static string PrintCreditBillLX(Data.BillingDetails clsBillingDetails)
+        {
+            Data.Billing clsBilling = new Data.Billing(mConnection, mTransaction);
+            mConnection = clsBilling.Connection; mTransaction = clsBilling.Transaction;
+            System.Data.DataTable dt = clsBilling.ListDetailsAsDataTable(clsBillingDetails.CreditBillHeaderID);
+            clsBilling.CommitAndDispose();
+
+            CreditBiller.CRSReports.BillingLX rpt = new CreditBiller.CRSReports.BillingLX();
+            CreditBiller.ReportDataset rptds = new CreditBiller.ReportDataset();
+
+            System.Data.DataRow drNew;
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                drNew = rptds.CreditBillDetail.NewRow();
+
+                foreach (System.Data.DataColumn dc in rptds.CreditBillDetail.Columns)
+                    drNew[dc] = dr[dc.ColumnName];
+
+                rptds.CreditBillDetail.Rows.Add(drNew);
+            }
+
+            rpt.SetDataSource(rptds);
+
+            CrystalDecisions.CrystalReports.Engine.ParameterFieldDefinition paramField;
+            CrystalDecisions.Shared.ParameterValues currentValues;
+            CrystalDecisions.Shared.ParameterDiscreteValue discreteParam;
+
+            paramField = rpt.DataDefinition.ParameterFields["CompanyName"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = CompanyDetails.CompanyName;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["BillingDate"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.BillingDate;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["PaymentDueDate"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CreditPaymentDueDate;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["CompanyAddress"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = CompanyDetails.Address1 +
+                                    Environment.NewLine + CompanyDetails.Address2 + ", " + CompanyDetails.City + " " + CompanyDetails.Country +
+                                    Environment.NewLine + "Tel #: " + CompanyDetails.OfficePhone + " Fax #:" + CompanyDetails.FaxPhone +
+                                    Environment.NewLine + "TIN : " + CompanyDetails.TIN + "      VAT Reg.";
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+
+            paramField = rpt.DataDefinition.ParameterFields["ContactName"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CustomerDetails.ContactName;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["ContactAddress"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CustomerDetails.Address;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["CreditCardNo"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CustomerDetails.CreditDetails.CreditCardNo;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["CreditLimit"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CrediLimit;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["CurrentDueAmount"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CurrentDueAmount;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["MinimumAmountDue"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.MinimumAmountDue;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["PrevMoCurrentDueAmount"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.Prev1MoCurrentDueAmount + clsBillingDetails.Prev2MoCurrentDueAmount;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["CreditPurcStartDateToProcess"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CreditPurcStartDateToProcess;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["CreditPurcEndDateToProcess"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CreditPurcEndDateToProcess;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            string strRetValue = "";
+            try
+            {
+                string logsdir = System.Configuration.ConfigurationManager.AppSettings["billingdir"].ToString();
+
+                logsdir += logsdir.EndsWith("/") ? "" : "/";
+                if (!Directory.Exists(logsdir + "woutg"))
+                {
+                    Directory.CreateDirectory(logsdir + "woutg");
+                }
+                string logFile = logsdir + "woutg/OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".pdf";
+
+                if (File.Exists(logFile))
+                {
+                    MoveCreditBillToNextFile(logFile, 1);
+                }
+
+                rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile);
+
+                strRetValue = "OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".pdf";
+            }
+            catch { }
+
+            try
+            {
+                bool boCreditBillerWillPrintORs = false;
+                if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerWillPrintORs"] != null)
+                    boCreditBillerWillPrintORs = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["CreditBillerWillPrintORs"].ToString());
+
+                if (boCreditBillerWillPrintORs)
+                {
+                    string strCreditBillerPrinterName = "";
+                    if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"] != null)
+                        strCreditBillerPrinterName = System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"].ToString();
+
+                    if (isPrinterOnline(strCreditBillerPrinterName))
+                    {
+                        rpt.PrintOptions.PrinterName = strCreditBillerPrinterName;
+                        rpt.PrintToPrinter(1, false, 0, 0);
+                    }
+                    else
+                    {
+                        WriteProcessToMonitor("will not print sales invoice. '" + strCreditBillerPrinterName + "' printer is offline.");
+                    }
+                }
+            }
+            catch { }
+
+            rpt.Close();
+            rpt.Dispose();
+
+            return strRetValue;
+        }
 
         private static void MoveCreditBillToNextFile(string logFile, Int32 iCtr)
         {
@@ -514,7 +709,16 @@ namespace AceSoft.RetailPlus.Monitor
                             WriteProcessToMonitor("[" + clsGuarantorDetails.ContactName + "] NoOfCreditors             : " + dtCreditors.Rows.Count.ToString("#,##0"));
                             WriteProcessToMonitor("[" + clsGuarantorDetails.ContactName + "] Credit Status             : " + clsGuarantorDetails.CreditDetails.CreditCardStatus.ToString("G") + " (" + (clsGuarantorDetails.CreditDetails.CreditActive ? "Active" : "InActive") + ")");
 
-                            string strOR = PrintCreditBillWG(clsGuarantorDetails, dtCreditors, clsCreditCardTypeInfo);
+                            string strOR = "";
+                            string CreditBillerPrinter = "Normal";
+                            if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinter"] != null)
+                                CreditBillerPrinter = System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinter"].ToString();
+
+                            if (CreditBillerPrinter.ToUpper() != "LX")
+                                strOR = PrintCreditBillWG(clsGuarantorDetails, dtCreditors, clsCreditCardTypeInfo);
+                            else
+                                strOR = PrintCreditBillWGLX(clsGuarantorDetails, dtCreditors, clsCreditCardTypeInfo);
+
                             if (strOR != "")
                             {
                                 WriteProcessToMonitor("[" + clsGuarantorDetails.ContactName + "] Bill createad @ " + strOR);
@@ -647,14 +851,160 @@ namespace AceSoft.RetailPlus.Monitor
 
             try
             {
-                if (isPrinterOnline("RetailPlusBilling"))
+                bool boCreditBillerWillPrintORs = false;
+                if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerWillPrintORs"] != null)
+                    boCreditBillerWillPrintORs = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["CreditBillerWillPrintORs"].ToString());
+
+                if (boCreditBillerWillPrintORs)
                 {
-                    rpt.PrintOptions.PrinterName = "RetailPlusBilling";
-                    rpt.PrintToPrinter(1, false, 0, 0);
+                    string strCreditBillerPrinterName = "";
+                    if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"] != null)
+                        strCreditBillerPrinterName = System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"].ToString();
+
+                    if (isPrinterOnline(strCreditBillerPrinterName))
+                    {
+                        rpt.PrintOptions.PrinterName = strCreditBillerPrinterName;
+                        rpt.PrintToPrinter(1, false, 0, 0);
+                    }
+                    else
+                    {
+                        WriteProcessToMonitor("will not print sales invoice. '" + strCreditBillerPrinterName + "' printer is offline.");
+                    }
                 }
-                else
+            }
+            catch { }
+
+            rpt.Close();
+            rpt.Dispose();
+
+            return strRetValue;
+        }
+        protected static string PrintCreditBillWGLX(Data.ContactDetails clsGuarantorDetails, System.Data.DataTable dtCreditors, Data.CardTypeDetails clsCreditCardTypeInfo)
+        {
+            CreditBiller.CRSReports.BillingWGuarantorLX rpt = new CreditBiller.CRSReports.BillingWGuarantorLX();
+            CreditBiller.ReportDataset rptds = new CreditBiller.ReportDataset();
+
+            System.Data.DataRow drNew;
+            foreach (System.Data.DataRow dr in dtCreditors.Rows)
+            {
+                drNew = rptds.CreditBillHeader.NewRow();
+
+                foreach (System.Data.DataColumn dc in rptds.CreditBillHeader.Columns)
+                    drNew[dc] = dr[dc.ColumnName];
+
+                rptds.CreditBillHeader.Rows.Add(drNew);
+            }
+
+            rpt.SetDataSource(rptds);
+
+            CrystalDecisions.CrystalReports.Engine.ParameterFieldDefinition paramField;
+            CrystalDecisions.Shared.ParameterValues currentValues;
+            CrystalDecisions.Shared.ParameterDiscreteValue discreteParam;
+
+            paramField = rpt.DataDefinition.ParameterFields["CompanyName"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = CompanyDetails.CompanyName;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["BillingDate"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsCreditCardTypeInfo.BillingDate;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["PaymentDueDate"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsCreditCardTypeInfo.CreditCutOffDate;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["CompanyAddress"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = CompanyDetails.Address1 +
+                                    Environment.NewLine + CompanyDetails.Address2 + ", " + CompanyDetails.City + " " + CompanyDetails.Country +
+                                    Environment.NewLine + "Tel #: " + CompanyDetails.OfficePhone + " Fax #:" + CompanyDetails.FaxPhone +
+                                    Environment.NewLine + "TIN : " + CompanyDetails.TIN + "      VAT Reg.";
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+
+            paramField = rpt.DataDefinition.ParameterFields["ContactName"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsGuarantorDetails.ContactName;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["ContactAddress"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsGuarantorDetails.Address;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["CreditPurcStartDateToProcess"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsCreditCardTypeInfo.CreditPurcStartDateToProcess;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["CreditPurcEndDateToProcess"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsCreditCardTypeInfo.CreditPurcEndDateToProcess;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            string strRetValue = "";
+            try
+            {
+                string logsdir = System.Configuration.ConfigurationManager.AppSettings["billingdir"].ToString();
+
+                logsdir += logsdir.EndsWith("/") ? "" : "/";
+                if (!Directory.Exists(logsdir + "withg"))
                 {
-                    WriteProcessToMonitor("will not print sales invoice. 'RetailPlusBilling' printer is offline.");
+                    Directory.CreateDirectory(logsdir + "withg");
+                }
+                string logFile = logsdir + "withg/OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".pdf";
+
+                if (File.Exists(logFile))
+                {
+                    MoveCreditBillToNextFile(logFile, 1);
+                }
+
+                rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile);
+
+                strRetValue = "OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".pdf";
+            }
+            catch { }
+
+            try
+            {
+                bool boCreditBillerWillPrintORs = false;
+                if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerWillPrintORs"] != null)
+                    boCreditBillerWillPrintORs = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["CreditBillerWillPrintORs"].ToString());
+
+                if (boCreditBillerWillPrintORs)
+                {
+                    string strCreditBillerPrinterName = "";
+                    if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"] != null)
+                        strCreditBillerPrinterName = System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"].ToString();
+
+                    if (isPrinterOnline(strCreditBillerPrinterName))
+                    {
+                        rpt.PrintOptions.PrinterName = strCreditBillerPrinterName;
+                        rpt.PrintToPrinter(1, false, 0, 0);
+                    }
+                    else
+                    {
+                        WriteProcessToMonitor("will not print sales invoice. '" + strCreditBillerPrinterName + "' printer is offline.");
+                    }
                 }
             }
             catch { }

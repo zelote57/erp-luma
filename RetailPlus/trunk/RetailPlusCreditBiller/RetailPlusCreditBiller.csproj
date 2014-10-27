@@ -85,6 +85,18 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="CRSReports\BillingLX.cs">
+      <DependentUpon>BillingLX.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CRSReports\BillingWGuarantorLX.cs">
+      <DependentUpon>BillingWGuarantorLX.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportDataset.cs">
@@ -147,6 +159,14 @@
     <EmbeddedResource Include="CRSReports\BillingWGuarantor.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BillingWGuarantor.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\BillingLX.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BillingLX.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\BillingWGuarantorLX.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BillingWGuarantorLX.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -63,9 +63,9 @@ BEGIN
 			UPDATE tblCardTypes SET BillingDate						= '2014-10-10' WHERE CreditCardType=1 AND WithGuarantor=0;
 			UPDATE tblContactCreditCardInfo SET LastBillingDate		= '2014-09-10' WHERE GuarantorID = 0;
 
-			DELETE FROM tblCreditBillDetail WHERE CreditBillHeaderID IN (SELECT CreditBillHeaderID FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE CreditCardTypeID = (SELECT CardTypeID FROM tblCardTypes WHERE CardTypeCode IN (SELECT CardTypeCode FROM tblCardTypes WHERE CreditCardType=1 AND WithGuarantor=0))));
-			DELETE FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE CreditCardTypeID = (SELECT CardTypeID FROM tblCardTypes WHERE CardTypeCode IN (SELECT CardTypeCode FROM tblCardTypes WHERE CreditCardType=1 AND WithGuarantor=0)));
-			DELETE FROM tblCreditBills WHERE CreditCardTypeID = (SELECT CardTypeID FROM tblCardTypes WHERE CardTypeCode IN (SELECT CardTypeCode FROM tblCardTypes WHERE CreditCardType=1 AND WithGuarantor=0));
+			DELETE FROM tblCreditBillDetail WHERE CreditBillHeaderID IN (SELECT CreditBillHeaderID FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE CreditCardTypeID IN (SELECT CardTypeID FROM tblCardTypes WHERE CardTypeCode IN (SELECT CardTypeCode FROM tblCardTypes WHERE CreditCardType=1 AND WithGuarantor=0))));
+			DELETE FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE CreditCardTypeID IN (SELECT CardTypeID FROM tblCardTypes WHERE CardTypeCode IN (SELECT CardTypeCode FROM tblCardTypes WHERE CreditCardType=1 AND WithGuarantor=0)));
+			DELETE FROM tblCreditBills WHERE CreditCardTypeID IN (SELECT CardTypeID FROM tblCardTypes WHERE CardTypeCode IN (SELECT CardTypeCode FROM tblCardTypes WHERE CreditCardType=1 AND WithGuarantor=0));
 			DELETE FROM tblCreditPayment WHERE CashierName = 'SysCWoutGBiller-LPC' OR CashierName = 'SysCWoutGBiller-FC';
 			DELETE FROM tblTransactions WHERE TransactionID IN (SELECT DISTINCT TransactionID FROM tblTransactionItems WHERE ProductCode = 'CCI LATE PAYMENT CHARGE' OR ProductCode = 'CCI FINANCE CHARGE');
 			DELETE FROM tblTransactionItems WHERE ProductCode = 'CCI LATE PAYMENT CHARGE' OR ProductCode = 'CCI FINANCE CHARGE';

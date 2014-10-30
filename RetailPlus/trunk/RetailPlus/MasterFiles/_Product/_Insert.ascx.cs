@@ -295,7 +295,35 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 			return 0;
 		}
 
+        private string CreateBarCode()
+        {
+            string strRetValue = "";
+
+            Data.ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup();
+            string strProductCode = clsProductSubGroup.getBarCodeCounter(Int64.Parse(cboProductSubGroup.SelectedItem.Value)).ToString().PadLeft(13 - (cboProductSubGroup.SelectedItem.Value.Length + 2), '0');
+            clsProductSubGroup.CommitAndDispose();
+
+            BarcodeHelper ean13 = new BarcodeHelper("99", cboProductSubGroup.SelectedItem.Value, strProductCode);
+            strRetValue = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+
+            return strRetValue;
+        }
 
 		#endregion
+
+        protected void imgCreateBarCode1_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode.Text = CreateBarCode();
+        }
+
+        protected void imgCreateBarCode2_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode2.Text = CreateBarCode();
+        }
+
+        protected void imgCreateBarCode3_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode3.Text = CreateBarCode();
+        }
 	}
 }

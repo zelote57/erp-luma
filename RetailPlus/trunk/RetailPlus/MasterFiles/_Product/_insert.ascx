@@ -77,21 +77,28 @@
                                             <label>Barcode (Tertiary)</label></td>
                                     </tr>
                                     <tr>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtBarcode" runat="server" AccessKey="B" BorderStyle="Groove" CssClass="ms-short-required" MaxLength="25"></asp:TextBox>
+                                            &nbsp<asp:imagebutton id="imgCreateBarCode1" ToolTip="Generate EAN13 in-house barcode" 
+                                                accessKey="S" CssClass="ms-toolbar" runat="server" 
+                                                ImageUrl="../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" 
+                                                width="16" height="16" onclick="imgCreateBarCode1_Click" 
+                                                CausesValidation="False"></asp:imagebutton>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtBarcode" CssClass="ms-error" Display="Dynamic" ErrorMessage="'Barcode' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtBarcode2" runat="server" AccessKey="B" BorderStyle="Groove" CssClass="ms-short" MaxLength="25"></asp:TextBox>
+                                            &nbsp<asp:imagebutton id="imgCreateBarCode2" ToolTip="Generate EAN13 in-house barcode" accessKey="S" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" width="16" height="16" onclick="imgCreateBarCode2_Click" CausesValidation="False"></asp:imagebutton>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtBarcode3" runat="server" AccessKey="B" BorderStyle="Groove" CssClass="ms-short" MaxLength="25"></asp:TextBox>
+                                            &nbsp<asp:imagebutton id="imgCreateBarCode3" ToolTip="Generate EAN13 in-house barcode" accessKey="S" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" width="16" height="16" onclick="imgCreateBarCode3_Click" CausesValidation="False"></asp:imagebutton>
                                         </td>
                                     </tr>
                                     <tr>
@@ -105,12 +112,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtProductCode" runat="server" AccessKey="P" BorderStyle="Groove" CssClass="ms-short-required" MaxLength="30"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtProductCode" CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Code' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
                                         </td>
-                                        <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                        <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols" colspan="6">
                                             <asp:TextBox ID="txtProductDesc" runat="server" AccessKey="S" BorderStyle="Groove" CssClass="ms-longer-required" MaxLength="50"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtProductDesc" CssClass="ms-error" Display="Dynamic" ErrorMessage="'Product Description' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
@@ -132,7 +139,7 @@
                                     </tr>
                                     <tr>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:DropDownList ID="cboSupplier" runat="server" CssClass="ms-short-required">
                                             </asp:DropDownList>
@@ -141,7 +148,7 @@
                                                 ForeColor=" "></asp:RequiredFieldValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:DropDownList ID="cboProductGroup" runat="server" AutoPostBack="True" CssClass="ms-short-required"
                                                 OnSelectedIndexChanged="cboProductGroup_SelectedIndexChanged">
@@ -151,7 +158,7 @@
                                                 ForeColor=" "></asp:RequiredFieldValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:DropDownList ID="cboProductSubGroup" runat="server" AutoPostBack="True" CssClass="ms-short-required"
                                                 OnSelectedIndexChanged="cboProductSubGroup_SelectedIndexChanged">
@@ -161,7 +168,7 @@
                                                 ForeColor=" "></asp:RequiredFieldValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:CheckBox ID="chkWillPrintProductComposition" runat="server" Checked="True" Text="print composition" />
                                         </td>
@@ -185,7 +192,7 @@
                                     </tr>
                                     <tr>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtPurchasePrice" runat="server" AccessKey="P" BorderStyle="Groove"
                                                 CssClass="ms-short-numeric-required" MaxLength="20" onkeypress="AllNum()" onkeyup="InsertComputeMargin()">0.00</asp:TextBox>
@@ -197,7 +204,7 @@
                                                 ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtMargin" runat="server" AccessKey="P" BorderStyle="Groove" CssClass="ms-short-numeric-required"
                                                 MaxLength="5" onkeypress="AllNum()" onkeyup="InsertComputeMargin()" Width="55px">0</asp:TextBox>% /
@@ -211,7 +218,7 @@
                                                 ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtWSPriceMarkUp" runat="server" AccessKey="P" BorderStyle="Groove" CssClass="ms-short-numeric-required"
                                                 MaxLength="5" onkeypress="AllNum()" onkeyup="InsertComputeMargin()" Width="55px">0</asp:TextBox>% /
@@ -225,7 +232,7 @@
                                                 ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtPercentageCommision" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short-numeric-required"
                                                 MaxLength="5" onkeypress="AllNum()" Width="55px">0</asp:TextBox>% / 
@@ -248,7 +255,7 @@
                                     </tr>
                                     <tr>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtVAT" runat="server" AccessKey="D" BorderStyle="Groove" CssClass="ms-short-numeric-required"
                                                 MaxLength="20" onkeypress="AllNum()">0</asp:TextBox>%
@@ -260,7 +267,7 @@
                                                 ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtEVAT" runat="server" AccessKey="D" BorderStyle="Groove" CssClass="ms-short-numeric-required"
                                                 MaxLength="20" onkeypress="AllNum()">0</asp:TextBox>%
@@ -272,7 +279,7 @@
                                                 ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtLocalTax" runat="server" AccessKey="D" BorderStyle="Groove" CssClass="ms-short-numeric-required" Width=110
                                                 MaxLength="20" onkeypress="AllNum()">0</asp:TextBox>%
@@ -284,7 +291,7 @@
                                                 ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:CheckBox ID="chkIncludeInSubtotalDiscount" runat="server" Checked="True" Text="include in subtotal discount." />
                                         </td>
@@ -309,7 +316,7 @@
                                     </tr>
                                     <tr>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:DropDownList ID="cboProductUnit" runat="server" CssClass="ms-short-required">
                                             </asp:DropDownList>
@@ -318,7 +325,7 @@
                                                 ForeColor=" "></asp:RequiredFieldValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtQuantity" runat="server" AccessKey="Q" BorderStyle="Groove" CssClass="ms-short-disabled"
                                                 MaxLength="20" onkeypress="AllNum()" ReadOnly="True">0</asp:TextBox>
@@ -330,7 +337,7 @@
                                                 ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtMinThreshold" runat="server" AccessKey="P" BorderStyle="Groove"
                                                 CssClass="ms-short-numeric-required" MaxLength="20" onkeypress="AllNum()">0</asp:TextBox>
@@ -342,7 +349,7 @@
                                                 ValidationExpression="^\s*-?([\d\,]+(\.\d{1,3})?|\.\d{1,3})\s*$" ></asp:RegularExpressionValidator>
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtMaxThreshold" runat="server" AccessKey="D" BorderStyle="Groove"
                                                 CssClass="ms-short-numeric-required" MaxLength="20" onkeypress="AllNum()">0</asp:TextBox>
@@ -366,17 +373,17 @@
                                     </tr>
                                     <tr>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:CheckBox ID="chkVariations" runat="server" Text="Check this box if you like to inherit the variations from selected subgroup." />
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols" colspan="3">
                                             <asp:CheckBox ID="chkVariationsMatrix" runat="server" Text="Check this box if you like to inherit the variations and price matrix from selected subgroup." />
                                         </td>
                                         <td class="ms-formspacer">
-                                            <img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                            <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:CheckBox ID="chkUnitMatrix" runat="server" Text="Check this box if you like to inherit the unit matrix from selected subgroup." />
                                         </td>
@@ -407,16 +414,16 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:TextBox ID="txtRID" runat="server"  AccessKey="P" BorderStyle="Groove"
                                                 CssClass="ms-short-numeric-required" MaxLength="20" onkeypress="AllNum()">0</asp:TextBox>
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     
                                 </td>
-                                <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
                                 </td>
                             </tr>

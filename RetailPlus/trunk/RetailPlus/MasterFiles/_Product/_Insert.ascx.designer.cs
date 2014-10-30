@@ -103,6 +103,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         protected global::System.Web.UI.WebControls.TextBox txtBarcode;
         
         /// <summary>
+        /// imgCreateBarCode1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgCreateBarCode1;
+        
+        /// <summary>
         /// RequiredFieldValidator2 control.
         /// </summary>
         /// <remarks>
@@ -121,6 +130,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         protected global::System.Web.UI.WebControls.TextBox txtBarcode2;
         
         /// <summary>
+        /// imgCreateBarCode2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgCreateBarCode2;
+        
+        /// <summary>
         /// txtBarcode3 control.
         /// </summary>
         /// <remarks>
@@ -128,6 +146,15 @@ namespace AceSoft.RetailPlus.MasterFiles._Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBarcode3;
+        
+        /// <summary>
+        /// imgCreateBarCode3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgCreateBarCode3;
         
         /// <summary>
         /// txtProductCode control.

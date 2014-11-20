@@ -81,9 +81,9 @@
 					BatchCounter						=  1,
 					NoOfReprintedTransaction			=  0,
 					TotalReprintedTransaction			=  0, 
-					DateLastInitialized					=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y-%m-%d 00:00:01'),
-					CreatedOn							=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y-%m-%d 00:00:01'),
-					LastModified						=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y-%m-%d 00:00:01');
+					DateLastInitialized					=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 DAY), '%Y-%m-%d 00:00:01'),
+					CreatedOn							=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 DAY), '%Y-%m-%d 00:00:01'),
+					LastModified						=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 DAY), '%Y-%m-%d 00:00:01');
 
 UPDATE tblCashierReport SET 
 			NetSales							=  0, 
@@ -157,8 +157,8 @@ UPDATE tblCashierReport SET
 			PromotionalItems					=  0,
 			CreditSalesTax						=  0,
 			CashCount							=  0 ,
-			CreatedOn							=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y-%m-%d 00:00:01'),
-			LastModified						=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y-%m-%d 00:00:01');
+			CreatedOn							=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 DAY), '%Y-%m-%d 00:00:01'),
+			LastModified						=  DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 DAY), '%Y-%m-%d 00:00:01');
 
 TRUNCATE TABLE tblTerminalReportHistory;
 TRUNCATE TABLE tblCashierReportHistory;

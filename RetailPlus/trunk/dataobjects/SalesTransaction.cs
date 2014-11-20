@@ -35,6 +35,7 @@ namespace AceSoft.RetailPlus.Data
 		public DateTime DateSuspended;
 		public DateTime DateResumed;
 		public TransactionStatus TransactionStatus;
+        public decimal GrossSales;
 		public decimal SubTotal;
         public decimal NetSales;
 		public decimal Discount;
@@ -68,6 +69,9 @@ namespace AceSoft.RetailPlus.Data
 		public Int64 WaiterID;
 		public string WaiterName;
 		public decimal ItemsDiscount;
+        public decimal SNRItemsDiscount;
+        public decimal PWDItemsDiscount;
+        public decimal OtherItemsDiscount;
 		public decimal Charge;
 		public decimal ChargeAmount;
 		public string ChargeCode;
@@ -154,6 +158,7 @@ namespace AceSoft.RetailPlus.Data
 		public bool DateResumed;
 		public bool TransactionStatus;
 		public bool TransactionStatusName;
+        public bool GrossSales;
 		public bool SubTotal;
         public bool NetSales;
 		public bool Discount;
@@ -259,6 +264,7 @@ namespace AceSoft.RetailPlus.Data
 		public const string DateResumed = "DateResumed";
 		public const string TransactionStatus = "TransactionStatus";
 		public const string TransactionStatusName = "TransactionStatusName";
+        public const string GrossSales = "GrossSales";
 		public const string SubTotal = "SubTotal";
         public const string NetSales = "NetSales";
 		public const string Discount = "Discount";
@@ -293,6 +299,9 @@ namespace AceSoft.RetailPlus.Data
 		public const string WaiterID = "WaiterID";
 		public const string WaiterName = "WaiterName";
 		public const string ItemsDiscount = "ItemsDiscount";
+        public const string SNRItemsDiscount = "SNRItemsDiscount";
+        public const string PWDItemsDiscount = "PWDItemsDiscount";
+        public const string OtherItemsDiscount = "OtherItemsDiscount";
 		public const string Charge = "Charge";
 		public const string ChargeAmount = "ChargeAmount";
 		public const string ChargeCode = "ChargeCode";
@@ -499,9 +508,13 @@ namespace AceSoft.RetailPlus.Data
 																			"WHEN 9 THEN 'Released' " +
 																			"WHEN 10 THEN 'OrderSlip' " +
 																		"END 'TransactionStatusName'" + ", ";
+            if (clsSalesTransactionsColumns.SubTotal) stSQL += "" + SalesTransactionsColumnNames.GrossSales + ", ";
 			if (clsSalesTransactionsColumns.SubTotal) stSQL += "" + SalesTransactionsColumnNames.SubTotal + ", ";
             if (clsSalesTransactionsColumns.SubTotal) stSQL += "" + SalesTransactionsColumnNames.NetSales + ", ";
 			if (clsSalesTransactionsColumns.ItemsDiscount) stSQL += "" + SalesTransactionsColumnNames.ItemsDiscount + ", ";
+            if (clsSalesTransactionsColumns.ItemsDiscount) stSQL += "" + SalesTransactionsColumnNames.SNRItemsDiscount + ", ";
+            if (clsSalesTransactionsColumns.ItemsDiscount) stSQL += "" + SalesTransactionsColumnNames.PWDItemsDiscount + ", ";
+            if (clsSalesTransactionsColumns.ItemsDiscount) stSQL += "" + SalesTransactionsColumnNames.OtherItemsDiscount + ", ";
 			if (clsSalesTransactionsColumns.Discount) stSQL += "" + SalesTransactionsColumnNames.Discount + ", ";
             if (clsSalesTransactionsColumns.Discount) stSQL += "" + SalesTransactionsColumnNames.SNRDiscount + ", ";
             if (clsSalesTransactionsColumns.Discount) stSQL += "" + SalesTransactionsColumnNames.PWDDiscount + ", ";
@@ -580,9 +593,13 @@ namespace AceSoft.RetailPlus.Data
                 Details.DateSuspended = DateTime.Parse(dr["DateSuspended"].ToString());
                 Details.DateResumed = DateTime.Parse(dr["DateResumed"].ToString());
                 Details.TransactionStatus = (TransactionStatus)Enum.Parse(typeof(TransactionStatus), dr["TransactionStatus"].ToString());
+                Details.GrossSales = decimal.Parse(dr["GrossSales"].ToString());
                 Details.SubTotal = decimal.Parse(dr["SubTotal"].ToString());
                 Details.NetSales = decimal.Parse(dr["NetSales"].ToString());
                 Details.ItemsDiscount = decimal.Parse(dr["ItemsDiscount"].ToString());
+                Details.SNRItemsDiscount = decimal.Parse(dr["SNRItemsDiscount"].ToString());
+                Details.PWDItemsDiscount = decimal.Parse(dr["PWDItemsDiscount"].ToString());
+                Details.OtherItemsDiscount = decimal.Parse(dr["OtherItemsDiscount"].ToString());
                 Details.Discount = decimal.Parse(dr["Discount"].ToString());
 
                 // Sep 14, 2014 Separate the discounts for VAT computation
@@ -1170,7 +1187,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-		public System.Data.DataTable ListForPaymentDataTable(Int64 ContactID)
+        public System.Data.DataTable ListForPaymentDataTable(Int64 ContactID, string SortField = "TransactionNo", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
 		{
 			try
             {
@@ -1180,15 +1197,20 @@ namespace AceSoft.RetailPlus.Data
 				string SQL = "SELECT " +
 									   "a.TerminalNo, " +
                                        "a.BranchID, " +
+                                       "b.CreditPaymentID, " +
                                        "a.TransactionID, " +
 									   "a.TransactionNo, " +
 									   "a.PaxNo, " +
 									   "a.CustomerID, " +
 									   "a.CustomerName, " +
 									   "a.TransactionDate, " +
+                                       "a.GrossSales, " +
                                        "a.SubTotal + a.CreditChargeAmount AS SubTotal, " +
                                        "a.NetSales, " +
 									   "a.ItemsDiscount, " +
+                                       "a.SNRItemsDiscount, " +
+                                       "a.PWDItemsDiscount, " +
+                                       "a.OtherItemsDiscount, " +
 									   "a.Discount, " +
                                        "a.SNRDiscount, " +
                                        "a.PWDDiscount, " +
@@ -1202,22 +1224,26 @@ namespace AceSoft.RetailPlus.Data
 								   "INNER JOIN tblCreditPayment b ON a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND a.TransactionNo = b.TransactionNo " +
                                    "WHERE b.Amount - b.AmountPaid <> 0 AND a.CustomerID = @ContactID " +
 								   "AND b.ContactID = @ContactID " +
-								   "AND b.Amount >= b.AmountPaid";
+								   "AND b.Amount <> b.AmountPaid";
 
 				// Added Jan 18, 2009
 				// ORDER BY TransactionNo ASC
 				// SO that FIFO during payment will be applied
 				// FIFO - first in first out
-				SQL = "SELECT TerminalNo, BranchID, TransactionID, " +
+                SQL = "SELECT TerminalNo, BranchID, CreditPaymentID, TransactionID, " +
 							"TransactionNo, " +
 							"PaxNo, " +
 							"CustomerID, " +
 							"CustomerName, " +
 							"TransactionDate, " +
                             "CreditReason, " +
-							"SubTotal, " +
+							"GrossSales, " +
+                            "SubTotal, " +
                             "NetSales, " +
 							"ItemsDiscount, " +
+                            "SNRItemsDiscount, " +
+                            "PWDItemsDiscount, " +
+                            "OtherItemsDiscount, " +
 							"Discount, " +
                             "SNRDiscount, " +
                             "PWDDiscount, " +
@@ -1226,8 +1252,12 @@ namespace AceSoft.RetailPlus.Data
 							"Credit, " +
 							"CreditPaid, " +
 							"Balance " +
-						"FROM (" + SQL + ") AS tblCreditPayment ORDER BY TransactionNo ASC ";
-				
+						"FROM (" + SQL + ") AS tblCreditPayment ";
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "TransactionNo") + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
 
                 cmd.CommandText = SQL;
@@ -1575,7 +1605,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-        public void UpdateSubTotal(Int64 TransactionID, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, ChargeTypes ChargeType)
+        public void UpdateSubTotal(Int64 TransactionID, decimal ItemSold, decimal QuantitySold, decimal GrossSales, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, ChargeTypes ChargeType)
 		{
             // Sep 4, 2014 : Added VATableAmount, NonVATableAmount, VATExempt as per requirement of BIR
             try
@@ -1587,9 +1617,13 @@ namespace AceSoft.RetailPlus.Data
 							    "TransactionStatus	=	@TransactionStatus, " +
                                 "ItemSold		    =	@ItemSold, " +
                                 "QuantitySold	    =	@QuantitySold, " +
+                                "GrossSales		    =	@GrossSales, " +
                                 "SubTotal			=	@SubTotal, " +
                                 "NetSales			=	@NetSales, " +
 							    "ItemsDiscount		=	@ItemsDiscount, " +
+                                "SNRItemsDiscount	=	@SNRItemsDiscount, " +
+                                "PWDItemsDiscount	=	@PWDItemsDiscount, " +
+                                "OtherItemsDiscount =	@OtherItemsDiscount, " +
 							    "Discount			=	@Discount, " +
                                 "SNRDiscount		=	@SNRDiscount, " +
                                 "PWDDiscount		=	@PWDDiscount, " +
@@ -1617,9 +1651,13 @@ namespace AceSoft.RetailPlus.Data
 
                 cmd.Parameters.AddWithValue("@ItemSold", ItemSold);
                 cmd.Parameters.AddWithValue("@QuantitySold", QuantitySold);
+                cmd.Parameters.AddWithValue("@GrossSales", GrossSales);
                 cmd.Parameters.AddWithValue("@SubTotal", SubTotal);
                 cmd.Parameters.AddWithValue("@NetSales", NetSales);
                 cmd.Parameters.AddWithValue("@ItemsDiscount", ItemsDiscount);
+                cmd.Parameters.AddWithValue("@SNRItemsDiscount", SNRItemsDiscount);
+                cmd.Parameters.AddWithValue("@PWDItemsDiscount", PWDItemsDiscount);
+                cmd.Parameters.AddWithValue("@OtherItemsDiscount", OtherItemsDiscount);
                 cmd.Parameters.AddWithValue("@Discount", Discount);
                 cmd.Parameters.AddWithValue("@SNRDiscount", SNRDiscount);
                 cmd.Parameters.AddWithValue("@PWDDiscount", PWDDiscount);
@@ -1652,12 +1690,13 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
 		}
-		public void Suspend(Int64 TransactionID, decimal SubTotal, decimal NetSales)
+		public void Suspend(Int64 TransactionID, decimal GrossSales, decimal SubTotal, decimal NetSales)
 		{
 			try
 			{
 				string SQL = "UPDATE tblTransactions SET " +
 								"TransactionStatus	=	@TransactionStatus, " +
+                                "GrossSales		    =	@GrossSales, " +
 								"SubTotal			=	@SubTotal, " +
                                 "NetSales			=	@NetSales, " +
 								"DateSuspended		=	NOW() " +
@@ -1667,6 +1706,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
+                cmd.Parameters.AddWithValue("@GrossSales", GrossSales);
                 cmd.Parameters.AddWithValue("@SubTotal", SubTotal);
                 cmd.Parameters.AddWithValue("@NetSales", NetSales);
                 cmd.Parameters.AddWithValue("@TransactionStatus", TransactionStatus.Suspended.ToString("d"));
@@ -1679,7 +1719,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public void Suspend(Int64 TransactionID, decimal SubTotal, decimal NetSales, ContactDetails details)
+		public void Suspend(Int64 TransactionID, decimal GrossSales, decimal SubTotal, decimal NetSales, ContactDetails details)
 		{
 			try
 			{
@@ -1688,7 +1728,8 @@ namespace AceSoft.RetailPlus.Data
 								"CustomerName		=	@CustomerName, " +
                                 "CustomerGroupName	=	@CustomerGroupName, " +
 								"TransactionStatus	=	@TransactionStatus, " +
-								"SubTotal			=	@SubTotal, " +
+                                "GrossSales		    =	@GrossSales, " +
+                                "SubTotal			=	@SubTotal, " +
                                 "NetSales			=	@NetSales, " +
 								"DateSuspended		=	NOW() " +
 							"WHERE TransactionID		=	@TransactionID;";
@@ -1700,6 +1741,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@CustomerID", details.ContactID);
                 cmd.Parameters.AddWithValue("@CustomerName", details.ContactName);
                 cmd.Parameters.AddWithValue("@CustomerGroupName", details.ContactGroupName);
+                cmd.Parameters.AddWithValue("@GrossSales", GrossSales);
                 cmd.Parameters.AddWithValue("@SubTotal", SubTotal);
                 cmd.Parameters.AddWithValue("@NetSales", NetSales);
                 cmd.Parameters.AddWithValue("@TransactionStatus", TransactionStatus.Suspended.ToString("d"));
@@ -1741,7 +1783,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-        public void Close(Int64 TransactionID, string ORNo, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, decimal BalanceAmount, decimal ChangeAmount, PaymentTypes PaymentType, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, Int64 CashierID, string CashierName, TransactionStatus TransactionStatus = TransactionStatus.Closed)
+        public void Close(Int64 TransactionID, string ORNo, decimal ItemSold, decimal QuantitySold, decimal GrossSales, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, decimal BalanceAmount, decimal ChangeAmount, PaymentTypes PaymentType, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, Int64 CashierID, string CashierName, TransactionStatus TransactionStatus = TransactionStatus.Closed)
 		{
             // Sep4, 2014 : Added VATableAmount, NonVATableAmount, VATExempt as per requirement of BIR
 			try
@@ -1754,9 +1796,13 @@ namespace AceSoft.RetailPlus.Data
 								"TransactionStatus	=	@TransactionStatus, " +
                                 "ItemSold		    =	@ItemSold, " +
                                 "QuantitySold	    =	@QuantitySold, " +
-								"SubTotal			=	@SubTotal, " +
+                                "GrossSales		    =	@GrossSales, " +
+                                "SubTotal			=	@SubTotal, " +
                                 "NetSales			=	@NetSales, " +
 								"ItemsDiscount		=	@ItemsDiscount, " +
+                                "SNRItemsDiscount	=	@SNRItemsDiscount, " +
+                                "PWDItemsDiscount	=	@PWDItemsDiscount, " +
+                                "OtherItemsDiscount	=	@OtherItemsDiscount, " +
 								"Discount			=	@Discount, " +
                                 "SNRDiscount		=	@SNRDiscount, " +
                                 "PWDDiscount		=	@PWDDiscount, " +
@@ -1799,9 +1845,13 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("TransactionStatus", TransactionStatus.ToString("d"));
                 cmd.Parameters.AddWithValue("ItemSold", ItemSold);
                 cmd.Parameters.AddWithValue("QuantitySold", QuantitySold);
+                cmd.Parameters.AddWithValue("GrossSales", GrossSales);
                 cmd.Parameters.AddWithValue("SubTotal", SubTotal);
                 cmd.Parameters.AddWithValue("NetSales", NetSales);
                 cmd.Parameters.AddWithValue("ItemsDiscount", ItemsDiscount);
+                cmd.Parameters.AddWithValue("SNRItemsDiscount", SNRItemsDiscount);
+                cmd.Parameters.AddWithValue("PWDItemsDiscount", PWDItemsDiscount);
+                cmd.Parameters.AddWithValue("OtherItemsDiscount", OtherItemsDiscount);
                 cmd.Parameters.AddWithValue("Discount", Discount);
                 cmd.Parameters.AddWithValue("SNRDiscount", SNRDiscount);
                 cmd.Parameters.AddWithValue("PWDDiscount", PWDDiscount);
@@ -1876,7 +1926,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-        public void Void(Int64 TransactionID, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal Charge, Int64 CashierID, string CashierName)
+        public void Void(Int64 TransactionID, decimal ItemSold, decimal QuantitySold, decimal GrossSales, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal Charge, Int64 CashierID, string CashierName)
 		{
 			try
 			{
@@ -1887,9 +1937,13 @@ namespace AceSoft.RetailPlus.Data
 								"TransactionStatus	=	@TransactionStatus, " +
                                 "ItemSold		    =	@ItemSold, " +
                                 "QuantitySold	    =	@QuantitySold, " +
+                                "GrossSales		    =	@GrossSales, " +
 								"SubTotal			=	@SubTotal, " +
                                 "NetSales			=	@NetSales, " +
 								"ItemsDiscount		=	@ItemsDiscount, " +
+                                "SNRItemsDiscount	=	@SNRItemsDiscount, " +
+                                "PWDItemsDiscount	=	@PWDItemsDiscount, " +
+                                "OtherItemsDiscount	=	@OtherItemsDiscount, " +
 								"Discount			=	@Discount, " +
                                 "SNRDiscount		=	@SNRDiscount, " +
                                 "PWDDiscount		=	@PWDDiscount, " +
@@ -1911,9 +1965,13 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("TransactionStatus", TransactionStatus.Void.ToString("d"));
                 cmd.Parameters.AddWithValue("ItemSold", ItemSold);
                 cmd.Parameters.AddWithValue("QuantitySold", QuantitySold);
+                cmd.Parameters.AddWithValue("GrossSales", GrossSales);
                 cmd.Parameters.AddWithValue("SubTotal", SubTotal);
                 cmd.Parameters.AddWithValue("NetSales", NetSales);
                 cmd.Parameters.AddWithValue("ItemsDiscount", ItemsDiscount);
+                cmd.Parameters.AddWithValue("SNRItemsDiscount", SNRItemsDiscount);
+                cmd.Parameters.AddWithValue("PWDItemsDiscount", PWDItemsDiscount);
+                cmd.Parameters.AddWithValue("OtherItemsDiscount", OtherItemsDiscount);
                 cmd.Parameters.AddWithValue("Discount", Discount);
                 cmd.Parameters.AddWithValue("SNRDiscount", SNRDiscount);
                 cmd.Parameters.AddWithValue("PWDDiscount", PWDDiscount);
@@ -1942,7 +2000,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-        public void Refund(Int64 TransactionID, string ORNo, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, decimal BalanceAmount, decimal ChangeAmount, PaymentTypes PaymentType, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, Int64 CashierID, string CashierName)
+        public void Refund(Int64 TransactionID, string ORNo, decimal ItemSold, decimal QuantitySold, decimal GrossSales, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, decimal BalanceAmount, decimal ChangeAmount, PaymentTypes PaymentType, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, Int64 CashierID, string CashierName)
 		{
 			try
 			{
@@ -1954,9 +2012,13 @@ namespace AceSoft.RetailPlus.Data
 								"TransactionStatus	=	@TransactionStatus, " +
                                 "ItemSold		    =	@ItemSold, " +
                                 "QuantitySold	    =	@QuantitySold, " +
-								"SubTotal			=	@SubTotal, " +
+                                "GrossSales		    =	@GrossSales, " +
+                                "SubTotal			=	@SubTotal, " +
                                 "NetSales			=	@NetSales, " +
 								"ItemsDiscount		=	@ItemsDiscount, " +
+                                "SNRItemsDiscount	=	@SNRItemsDiscount, " +
+                                "PWDItemsDiscount	=	@PWDItemsDiscount, " +
+                                "OtherItemsDiscount	=	@OtherItemsDiscount, " +
 								"Discount			=	@Discount, " +
                                 "SNRDiscount		=	@SNRDiscount, " +
                                 "PWDDiscount		=	@PWDDiscount, " +
@@ -1997,9 +2059,13 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("TransactionStatus", TransactionStatus.Refund.ToString("d"));
                 cmd.Parameters.AddWithValue("ItemSold", ItemSold);
                 cmd.Parameters.AddWithValue("QuantitySold", QuantitySold);
+                cmd.Parameters.AddWithValue("GrossSales", GrossSales);
                 cmd.Parameters.AddWithValue("SubTotal", SubTotal);
                 cmd.Parameters.AddWithValue("NetSales", NetSales);
                 cmd.Parameters.AddWithValue("ItemsDiscount", ItemsDiscount);
+                cmd.Parameters.AddWithValue("SNRItemsDiscount", SNRItemsDiscount);
+                cmd.Parameters.AddWithValue("PWDItemsDiscount", PWDItemsDiscount);
+                cmd.Parameters.AddWithValue("OtherItemsDiscount", OtherItemsDiscount);
                 cmd.Parameters.AddWithValue("Discount", Discount);
                 cmd.Parameters.AddWithValue("SNRDiscount", SNRDiscount);
                 cmd.Parameters.AddWithValue("PWDDiscount", PWDDiscount);
@@ -2215,7 +2281,7 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try
 			{
-                UpdateSubTotal(SalesTransactionDetails.TransactionID, SalesTransactionDetails.ItemSold, SalesTransactionDetails.QuantitySold, SalesTransactionDetails.SubTotal, SalesTransactionDetails.NetSales, SalesTransactionDetails.ItemsDiscount, SalesTransactionDetails.Discount, SalesTransactionDetails.SNRDiscount, SalesTransactionDetails.PWDDiscount, SalesTransactionDetails.OtherDiscount, SalesTransactionDetails.TransDiscount, SalesTransactionDetails.TransDiscountType, SalesTransactionDetails.VAT, SalesTransactionDetails.VATableAmount, SalesTransactionDetails.NonVATableAmount, SalesTransactionDetails.VATExempt, SalesTransactionDetails.EVAT, SalesTransactionDetails.EVATableAmount, SalesTransactionDetails.NonEVATableAmount, SalesTransactionDetails.LocalTax, SalesTransactionDetails.DiscountCode, SalesTransactionDetails.DiscountRemarks, SalesTransactionDetails.Charge, SalesTransactionDetails.ChargeAmount, SalesTransactionDetails.ChargeCode, SalesTransactionDetails.ChargeRemarks, SalesTransactionDetails.ChargeType);
+                UpdateSubTotal(SalesTransactionDetails.TransactionID, SalesTransactionDetails.ItemSold, SalesTransactionDetails.QuantitySold, SalesTransactionDetails.GrossSales, SalesTransactionDetails.SubTotal, SalesTransactionDetails.NetSales, SalesTransactionDetails.ItemsDiscount, SalesTransactionDetails.SNRItemsDiscount, SalesTransactionDetails.PWDItemsDiscount, SalesTransactionDetails.OtherItemsDiscount, SalesTransactionDetails.Discount, SalesTransactionDetails.SNRDiscount, SalesTransactionDetails.PWDDiscount, SalesTransactionDetails.OtherDiscount, SalesTransactionDetails.TransDiscount, SalesTransactionDetails.TransDiscountType, SalesTransactionDetails.VAT, SalesTransactionDetails.VATableAmount, SalesTransactionDetails.NonVATableAmount, SalesTransactionDetails.VATExempt, SalesTransactionDetails.EVAT, SalesTransactionDetails.EVATableAmount, SalesTransactionDetails.NonEVATableAmount, SalesTransactionDetails.LocalTax, SalesTransactionDetails.DiscountCode, SalesTransactionDetails.DiscountRemarks, SalesTransactionDetails.Charge, SalesTransactionDetails.ChargeAmount, SalesTransactionDetails.ChargeCode, SalesTransactionDetails.ChargeRemarks, SalesTransactionDetails.ChargeType);
 
 				SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems(base.Connection, base.Transaction);
 				Int64 TransactionItemID = clsSalesTransactionItems.Insert(SalesTransItemDetails);
@@ -2229,11 +2295,11 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-        public Int64 AddItem(Int64 TransactionID, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, ChargeTypes ChargeType, SalesTransactionItemDetails SalesTransItemDetails)
+        public Int64 AddItem(Int64 TransactionID, decimal ItemSold, decimal QuantitySold, decimal GrossSales, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, ChargeTypes ChargeType, SalesTransactionItemDetails SalesTransItemDetails)
 		{
 			try
 			{
-                UpdateSubTotal(TransactionID, ItemSold, QuantitySold, SubTotal, NetSales, ItemsDiscount, Discount, SNRDiscount, PWDDiscount, OtherDiscount, TransDiscount, TransDiscountType, VAT, VATableAmount, NonVATableAmount, VATExempt, EVAT, EVATableAmount, NonEVATableAmount, LocalTax, DiscountCode, DiscountRemarks, Charge, ChargeAmount, ChargeCode, ChargeRemarks, ChargeType);
+                UpdateSubTotal(TransactionID, ItemSold, QuantitySold, GrossSales, SubTotal, NetSales, ItemsDiscount, SNRItemsDiscount, PWDItemsDiscount, OtherItemsDiscount, Discount, SNRDiscount, PWDDiscount, OtherDiscount, TransDiscount, TransDiscountType, VAT, VATableAmount, NonVATableAmount, VATExempt, EVAT, EVATableAmount, NonEVATableAmount, LocalTax, DiscountCode, DiscountRemarks, Charge, ChargeAmount, ChargeCode, ChargeRemarks, ChargeType);
 
 				SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems(base.Connection, base.Transaction);
 				Int64 TransactionItemID = clsSalesTransactionItems.Insert(SalesTransItemDetails);
@@ -2490,9 +2556,9 @@ namespace AceSoft.RetailPlus.Data
 			SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems(base.Connection, base.Transaction);
 			clsSalesTransactionItems.Void(TransactionItemID);
 		}
-        public void UpdateItem(Int64 TransactionID, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, ChargeTypes ChargeType,SalesTransactionItemDetails SalesTransItemDetails)
+        public void UpdateItem(Int64 TransactionID, decimal ItemSold, decimal QuantitySold, decimal GrossSales, decimal SubTotal, decimal NetSales, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Discount, decimal SNRDiscount, decimal PWDDiscount, decimal OtherDiscount, decimal TransDiscount, DiscountTypes TransDiscountType, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, string DiscountCode, string DiscountRemarks, decimal Charge, decimal ChargeAmount, string ChargeCode, string ChargeRemarks, ChargeTypes ChargeType, SalesTransactionItemDetails SalesTransItemDetails)
 		{
-            UpdateSubTotal(TransactionID, ItemSold, QuantitySold, SubTotal, NetSales, ItemsDiscount, Discount, SNRDiscount, PWDDiscount, OtherDiscount, TransDiscount, TransDiscountType, VAT, VATableAmount, NonVATableAmount, VATExempt, EVAT, EVATableAmount, NonEVATableAmount, LocalTax, DiscountCode, DiscountRemarks, Charge, ChargeAmount, ChargeCode, ChargeRemarks, ChargeType);
+            UpdateSubTotal(TransactionID, ItemSold, QuantitySold, GrossSales, SubTotal, NetSales, ItemsDiscount, SNRItemsDiscount, PWDItemsDiscount, OtherItemsDiscount, Discount, SNRDiscount, PWDDiscount, OtherDiscount, TransDiscount, TransDiscountType, VAT, VATableAmount, NonVATableAmount, VATExempt, EVAT, EVATableAmount, NonEVATableAmount, LocalTax, DiscountCode, DiscountRemarks, Charge, ChargeAmount, ChargeCode, ChargeRemarks, ChargeType);
 
             SalesTransactionItems clsSalesTransactionItems = new SalesTransactionItems(base.Connection, base.Transaction);
 			clsSalesTransactionItems.Update(SalesTransItemDetails);

@@ -55,6 +55,7 @@ namespace AceSoft.RetailPlus.Data
 
         public PromoTypes PromoType; //34
         public bool IncludeInSubtotalDiscount;
+        public bool IsCreditChargeExcluded;
         public OrderSlipPrinter OrderSlipPrinter;
         public bool OrderSlipPrinted;
         public decimal PercentageCommision;
@@ -64,6 +65,10 @@ namespace AceSoft.RetailPlus.Data
         public decimal ScannedAmt;
 
         public int PaxNo;
+        public decimal GrossSales;
+        public decimal VatableAmount;
+        public decimal NonVatableAmount; 
+        public decimal VATExempt; 
     }
 
     public struct SalesTransactionItemColumns
@@ -107,6 +112,7 @@ namespace AceSoft.RetailPlus.Data
 
         public bool PromoType; //34
         public bool IncludeInSubtotalDiscount;
+        public bool IsCreditChargeExcluded;
         public bool OrderSlipPrinter;
         public bool OrderSlipPrinted;
         public bool PercentageCommision;
@@ -133,6 +139,7 @@ namespace AceSoft.RetailPlus.Data
         public const string Price = "Price";
         public const string Discount = "Discount";
         public const string ItemDiscount = "ItemDiscount";
+        public const string GrossSales = "GrossSales";
         public const string Amount = "Amount";
         public const string VAT = "VAT";
         public const string EVAT = "EVAT";
@@ -159,6 +166,7 @@ namespace AceSoft.RetailPlus.Data
         
         public const string PromoType = "PromoType";
         public const string IncludeInSubtotalDiscount = "IncludeInSubtotalDiscount";
+        public const string IsCreditChargeExcluded = "IsCreditChargeExcluded";
         public const string OrderSlipPrinter = "OrderSlipPrinter";
         public const string OrderSlipPrinted = "OrderSlipPrinted";
         public const string PercentageCommision = "PercentageCommision";
@@ -217,9 +225,12 @@ namespace AceSoft.RetailPlus.Data
                                 "Discount, " +
                                 "ItemDiscount, " +
                                 "ItemDiscountType, " +
+                                "GrossSales, " +
                                 "Amount, " +
                                 "VAT, " +
                                 "VatableAmount, " +
+                                "NonVatableAmount, " +
+                                "VATExempt, " +
                                 "EVAT, " +
                                 "LocalTax, " +
                                 "VariationsMatrixID, " +
@@ -240,10 +251,11 @@ namespace AceSoft.RetailPlus.Data
                                 "PurchasePrice," +
                                 "PurchaseAmount," +
                                 "IncludeInSubtotalDiscount," +
+                                "IsCreditChargeExcluded," +
                                 "OrderSlipPrinter," +
                                 "OrderSlipPrinted," +
                                 "PercentageCommision," +
-                                "Commision" +
+                                "Commision, PaxNo" +
                             ")VALUES(" +
                                 "@TransactionID, " +
                                 "@ProductID, " +
@@ -258,9 +270,12 @@ namespace AceSoft.RetailPlus.Data
                                 "@Discount, " +
                                 "@ItemDiscount, " +
                                 "@ItemDiscType, " +
+                                "@GrossSales, " +
                                 "@Amount, " +
                                 "@VAT, " +
-                                "@Amount/(1+(@VAT/100)), " +
+                                "@VatableAmount, " +
+                                "@NonVatableAmount, " +
+                                "@VATExempt, " +
                                 "@EVAT, " +
                                 "@LocalTax, " +
                                 "@VariationsMatrixID, " +
@@ -281,10 +296,11 @@ namespace AceSoft.RetailPlus.Data
                                 "@PurchasePrice," +
                                 "@PurchaseAmount," +
                                 "@IncludeInSubtotalDiscount," +
+                                "@IsCreditChargeExcluded," +
                                 "@OrderSlipPrinter," +
                                 "@OrderSlipPrinted," +
                                 "@PercentageCommision," +
-                                "@Commision);";
+                                "@Commision, @PaxNo);";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -302,8 +318,12 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@Discount", Details.Discount);
                 cmd.Parameters.AddWithValue("@ItemDiscount", Details.ItemDiscount);
                 cmd.Parameters.AddWithValue("@ItemDiscType", Convert.ToInt16(Details.ItemDiscountType.ToString("d")));
+                cmd.Parameters.AddWithValue("@GrossSales", Details.GrossSales);
                 cmd.Parameters.AddWithValue("@Amount", Details.Amount);
                 cmd.Parameters.AddWithValue("@VAT", Details.VAT);
+                cmd.Parameters.AddWithValue("@VatableAmount", Details.VatableAmount); //GrossSales/(1+(@VAT/100))
+                cmd.Parameters.AddWithValue("@NonVatableAmount", Details.NonVatableAmount);
+                cmd.Parameters.AddWithValue("@VATExempt", Details.VATExempt);
                 cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
                 cmd.Parameters.AddWithValue("@LocalTax", Details.LocalTax);
                 cmd.Parameters.AddWithValue("@VariationsMatrixID", Details.VariationsMatrixID);
@@ -327,10 +347,12 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
                 cmd.Parameters.AddWithValue("@PurchaseAmount", Details.PurchaseAmount);
                 cmd.Parameters.AddWithValue("@IncludeInSubtotalDiscount", Details.IncludeInSubtotalDiscount);
+                cmd.Parameters.AddWithValue("@IsCreditChargeExcluded", Details.IsCreditChargeExcluded);
                 cmd.Parameters.AddWithValue("@OrderSlipPrinter", Convert.ToInt16(Details.OrderSlipPrinter));
                 cmd.Parameters.AddWithValue("@OrderSlipPrinted", Convert.ToInt16(Details.OrderSlipPrinted));
                 cmd.Parameters.AddWithValue("@PercentageCommision", Details.PercentageCommision);
                 cmd.Parameters.AddWithValue("@Commision", Details.Commision);
+                cmd.Parameters.AddWithValue("@PaxNo", Details.PaxNo);
 
                 base.ExecuteNonQuery(cmd);
 
@@ -339,14 +361,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.Clear();
                 cmd.CommandText = SQL;
 
-                System.Data.DataTable dt = new System.Data.DataTable("LAST_INSERT_ID");
-                base.MySqlDataAdapterFill(cmd, dt);
-
-                Int64 iID = 0;
-                foreach (System.Data.DataRow dr in dt.Rows)
-                {
-                    iID = Int64.Parse(dr[0].ToString());
-                }
+                Int64 iID = Int64.Parse(base.getLAST_INSERT_ID(this));
 
                 return iID;
             }
@@ -373,15 +388,18 @@ namespace AceSoft.RetailPlus.Data
                                 "Discount					=	@Discount, " +
                                 "ItemDiscount				=	@ItemDiscount, " +
                                 "ItemDiscountType			=	@ItemDiscType, " +
+                                "GrossSales					=	@GrossSales, " +
                                 "Amount						=	@Amount, " +
                                 "VAT						=	@VAT, " +
-                                "VatableAmount				=	@Amount/(1+(@VAT/100)), " +
+                                "VatableAmount				=	@VatableAmount, " + //GrossSales/(1+(@VAT/100))
+                                "NonVatableAmount			=	@NonVatableAmount, " +
+                                "VATExempt			        =	@VATExempt, " +
                                 "EVAT						=	@EVAT, " +
                                 "LocalTax					=	@LocalTax, " +
                                 "VariationsMatrixID			=	@VariationsMatrixID,  " +
                                 "MatrixDescription			=	@MatrixDescription, " +
                                 "ProductGroup				=	@ProductGroup, " +
-                                "ProductSubGroup			=	@ProductSubGroup,  " +
+                                "ProductSubGroup			=	@ProductSubGroup,  " +  
                                 "TransactionItemStatus		=	@TransactionItemStatus, " +
                                 "DiscountCode				=	@DiscCode,  " +
                                 "DiscountRemarks			=	@DiscRemarks, " +
@@ -396,6 +414,7 @@ namespace AceSoft.RetailPlus.Data
                                 "PurchasePrice				=	@PurchasePrice, " +
                                 "PurchaseAmount				=	@PurchaseAmount, " +
                                 "IncludeInSubtotalDiscount	=	@IncludeInSubtotalDiscount, " +
+                                "IsCreditChargeExcluded	    =	@IsCreditChargeExcluded, " +
                                 "OrderSlipPrinter           =   @OrderSlipPrinter, " +
                                 "PercentageCommision        =   @PercentageCommision, " +
                                 "Commision                  =   @Commision " +
@@ -417,8 +436,12 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@Discount", Details.Discount);
                 cmd.Parameters.AddWithValue("@ItemDiscount", Details.ItemDiscount);
                 cmd.Parameters.AddWithValue("@ItemDiscType", Convert.ToInt16(Details.ItemDiscountType.ToString("d")));
+                cmd.Parameters.AddWithValue("@GrossSales", Details.GrossSales);
                 cmd.Parameters.AddWithValue("@Amount", Details.Amount);
                 cmd.Parameters.AddWithValue("@VAT", Details.VAT);
+                cmd.Parameters.AddWithValue("@VatableAmount", Details.VatableAmount); // GrossSales/(1+(@VAT/100))
+                cmd.Parameters.AddWithValue("@NonVatableAmount", Details.NonVatableAmount);
+                cmd.Parameters.AddWithValue("@VATExempt", Details.VATExempt);
                 cmd.Parameters.AddWithValue("@EVAT", Details.EVAT);
                 cmd.Parameters.AddWithValue("@LocalTax", Details.LocalTax);
                 cmd.Parameters.AddWithValue("@VariationsMatrixID", Details.VariationsMatrixID);
@@ -442,6 +465,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
                 cmd.Parameters.AddWithValue("@PurchaseAmount", Details.PurchaseAmount);
                 cmd.Parameters.AddWithValue("@IncludeInSubtotalDiscount", Details.IncludeInSubtotalDiscount);
+                cmd.Parameters.AddWithValue("@IsCreditChargeExcluded", Details.IsCreditChargeExcluded);
                 cmd.Parameters.AddWithValue("@OrderSlipPrinter", Convert.ToInt16(Details.OrderSlipPrinter.ToString("d")));
                 cmd.Parameters.AddWithValue("@OrderSlipPrinted", Convert.ToInt16(Details.OrderSlipPrinted));
                 cmd.Parameters.AddWithValue("@PercentageCommision", Details.PercentageCommision);
@@ -539,6 +563,9 @@ namespace AceSoft.RetailPlus.Data
                     itemDetails.ItemDiscountType = (DiscountTypes)Enum.Parse(typeof(DiscountTypes), dr["ItemDiscountType"].ToString());
                     itemDetails.Amount = decimal.Parse(dr["Amount"].ToString());
                     itemDetails.VAT = decimal.Parse(dr["VAT"].ToString());
+                    itemDetails.VatableAmount = decimal.Parse(dr["VatableAmount"].ToString());
+                    itemDetails.NonVatableAmount = decimal.Parse(dr["NonVatableAmount"].ToString());
+                    itemDetails.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
                     itemDetails.EVAT = decimal.Parse(dr["EVAT"].ToString());
                     itemDetails.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
                     itemDetails.VariationsMatrixID = Int64.Parse(dr["VariationsMatrixID"].ToString());
@@ -560,6 +587,7 @@ namespace AceSoft.RetailPlus.Data
                     itemDetails.PurchasePrice = decimal.Parse(dr["PurchasePrice"].ToString());
                     itemDetails.PurchaseAmount = decimal.Parse(dr["PurchaseAmount"].ToString());
                     itemDetails.IncludeInSubtotalDiscount = bool.Parse(dr["IncludeInSubtotalDiscount"].ToString());
+                    itemDetails.IsCreditChargeExcluded = bool.Parse(dr["IsCreditChargeExcluded"].ToString());
                     itemDetails.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
                     itemDetails.OrderSlipPrinted = Convert.ToBoolean(dr["OrderSlipPrinted"]);
                     itemDetails.PercentageCommision = decimal.Parse(dr["PercentageCommision"].ToString());
@@ -773,6 +801,9 @@ namespace AceSoft.RetailPlus.Data
                                 "ItemDiscountType, " +
                                 "Amount, " +
                                 "VAT, " +
+                                "VATableAmount, " +
+                                "NonVATableAmount, " +
+                                "VATExempt, " +
                                 "EVAT, " +
                                 "LocalTax, " +
                                 "VariationsMatrixID, " +
@@ -794,6 +825,7 @@ namespace AceSoft.RetailPlus.Data
                                 "PurchasePrice, " +
                                 "PurchaseAmount, " +
                                 "IncludeInSubtotalDiscount, " +
+                                "IsCreditChargeExcluded, " +
                                 "OrderSlipPrinter, " +
                                 "OrderSlipPrinted, " +
                                 "PercentageCommision, " +
@@ -844,6 +876,9 @@ namespace AceSoft.RetailPlus.Data
                                 "ItemDiscountType, " +
                                 "Amount, " +
                                 "VAT, " +
+                                "VATableAmount, " +
+                                "NonVATableAmount, " +
+                                "VATExempt, " +
                                 "EVAT, " +
                                 "LocalTax, " +
                                 "VariationsMatrixID, " +
@@ -864,6 +899,7 @@ namespace AceSoft.RetailPlus.Data
                                 "PurchasePrice, " +
                                 "PurchaseAmount, " +
                                 "IncludeInSubtotalDiscount, " +
+                                "IsCreditChargeExcluded, " +
                                 "OrderSlipPrinter, " +
                                 "OrderSlipPrinted, " +
                                 "PercentageCommision, " +

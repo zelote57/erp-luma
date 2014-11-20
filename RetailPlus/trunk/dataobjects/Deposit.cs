@@ -15,6 +15,7 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct DepositDetails
 	{
+        public BranchDetails BranchDetails; 
         public string TerminalNo;
         public Int64 SyncID;
 		public Int64 DepositID;
@@ -30,7 +31,6 @@ namespace AceSoft.RetailPlus.Data
         public DateTime StartTransactionDate;
         public DateTime EndTransactionDate;
 
-        public BranchDetails BranchDetails; 
         public DateTime CreatedOn;
         public DateTime LastModified;
 	}

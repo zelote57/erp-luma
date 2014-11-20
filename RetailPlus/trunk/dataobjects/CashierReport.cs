@@ -78,6 +78,9 @@ namespace AceSoft.RetailPlus.Data
 		public decimal VoidSales;
 		public decimal RefundSales;
 		public decimal ItemsDiscount;
+        public decimal SNRItemsDiscount;
+        public decimal PWDItemsDiscount;
+        public decimal OtherItemsDiscount;
 		public decimal SubTotalDiscount;
 		public Int32   NoOfCashTransactions;
 		public Int32   NoOfChequeTransactions;
@@ -212,6 +215,9 @@ namespace AceSoft.RetailPlus.Data
 								"VoidSales, " +
 								"RefundSales, " +
 								"ItemsDiscount, " +
+                                "SNRItemsDiscount, " +
+                                "PWDItemsDiscount, " +
+                                "OtherItemsDiscount, " +
 								"SubTotalDiscount, " +
 								"NoOfCashTransactions, " +
 								"NoOfChequeTransactions, " +
@@ -307,6 +313,9 @@ namespace AceSoft.RetailPlus.Data
                 Details.VoidSales = decimal.Parse(dr["VoidSales"].ToString());
                 Details.RefundSales = decimal.Parse(dr["RefundSales"].ToString());
                 Details.ItemsDiscount = decimal.Parse(dr["ItemsDiscount"].ToString());
+                Details.SNRItemsDiscount = decimal.Parse(dr["SNRItemsDiscount"].ToString());
+                Details.PWDItemsDiscount = decimal.Parse(dr["PWDItemsDiscount"].ToString());
+                Details.OtherItemsDiscount = decimal.Parse(dr["OtherItemsDiscount"].ToString());
                 Details.SubTotalDiscount = decimal.Parse(dr["SubTotalDiscount"].ToString());
                 Details.NoOfCashTransactions = Int32.Parse(dr["NoOfCashTransactions"].ToString());
                 Details.NoOfChequeTransactions = Int32.Parse(dr["NoOfChequeTransactions"].ToString());
@@ -446,6 +455,9 @@ namespace AceSoft.RetailPlus.Data
                                     "@VoidSales, " +
                                     "@RefundSales, " +
                                     "@ItemsDiscount, " +
+                                    "@SNRItemsDiscount, " +
+                                    "@PWDItemsDiscount, " +
+                                    "@OtherItemsDiscount, " +
                                     "@SubTotalDiscount, " +
                                     "@NoOfCashTransactions, " +
                                     "@NoOfChequeTransactions, " +
@@ -502,6 +514,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("VoidSales", Details.VoidSales);
                 cmd.Parameters.AddWithValue("RefundSales", Details.RefundSales);
                 cmd.Parameters.AddWithValue("ItemsDiscount", Details.ItemsDiscount);
+                cmd.Parameters.AddWithValue("SNRItemsDiscount", Details.SNRItemsDiscount);
+                cmd.Parameters.AddWithValue("PWDItemsDiscount", Details.PWDItemsDiscount);
+                cmd.Parameters.AddWithValue("OtherItemsDiscount", Details.OtherItemsDiscount);
                 cmd.Parameters.AddWithValue("SubTotalDiscount", Details.SubTotalDiscount);
                 cmd.Parameters.AddWithValue("NoOfCashTransactions", Details.NoOfCashTransactions);
                 cmd.Parameters.AddWithValue("NoOfChequeTransactions", Details.NoOfChequeTransactions);
@@ -803,7 +818,7 @@ namespace AceSoft.RetailPlus.Data
                                         "@CreditSales, @CreditPayment, @CashInDrawer, @TotalDisburse, @CashDisburse, @ChequeDisburse," +
                                         "@CreditCardDisburse, @TotalWithhold, @CashWithhold, @ChequeWithhold, @CreditCardWithhold," +
                                         "@TotalPaidOut, @CashPaidOut, @ChequePaidOut, @CreditCardPaidOut, @BeginningBalance," +
-                                        "@VoidSales, @RefundSales, @ItemsDiscount, @SubtotalDiscount, @NoOfCashTransactions," +
+                                        "@VoidSales, @RefundSales, @ItemsDiscount, @SNRItemsDiscount, @PWDItemsDiscount, @OtherItemsDiscount, @SubtotalDiscount, @NoOfCashTransactions," +
                                         "@NoOfChequeTransactions, @NoOfCreditCardTransactions, @NoOfCreditTransactions, " +
                                         "@NoOfCombinationPaymentTransactions, @NoOfCreditPaymentTransactions, @NoOfClosedTransactions," +
                                         "@NoOfRefundTransactions, @NoOfVoidTransactions, @NoOfTotalTransactions, @CashCount, " +
@@ -857,6 +872,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("VoidSales", Details.VoidSales);
                 cmd.Parameters.AddWithValue("RefundSales", Details.RefundSales);
                 cmd.Parameters.AddWithValue("ItemsDiscount", Details.ItemsDiscount);
+                cmd.Parameters.AddWithValue("SNRItemsDiscount", Details.SNRItemsDiscount);
+                cmd.Parameters.AddWithValue("PWDItemsDiscount", Details.PWDItemsDiscount);
+                cmd.Parameters.AddWithValue("OtherItemsDiscount", Details.OtherItemsDiscount);
                 cmd.Parameters.AddWithValue("SubtotalDiscount", Details.SubTotalDiscount);
                 cmd.Parameters.AddWithValue("NoOfCashTransactions", Details.NoOfCashTransactions);
                 cmd.Parameters.AddWithValue("NoOfChequeTransactions", Details.NoOfChequeTransactions);

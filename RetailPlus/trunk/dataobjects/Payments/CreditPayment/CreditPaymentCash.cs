@@ -14,39 +14,31 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public struct CreditPaymentDetails
+	public struct CreditPaymentCashDetails
 	{
         public BranchDetails BranchDetails;
         public string TerminalNo;
         public Int64 SyncID;
-        public Int64 CreditPaymentID;
+        public Int64 CreditPaymentCashID;
+        
 		public Int64 TransactionID;
+        public Int64 CreditPaymentID;
+        public Int32 CPRefBranchID; // tblCreditPayment.BranchID
+        public string CPRefTerminalNo; // tblCreditPayment.TerminalNo
         public string TransactionNo;
-        public bool IsRefund;
-        public DateTime TransactionDate;
-        public string CashierName;
-        public decimal Amount;
-        public ContactDetails CustomerDetails;
-        public string Remarks;
-        public decimal CreditBefore;
-        public decimal CreditAfter;
-        public string CreditReason;
-        public decimal AmountPaidCuttOffMonth;
-
-        /// <summary>
-        /// reference id if payment is from in-house credit card
-        /// </summary>
-        public Int64 CreditCardPaymentID;
-        public Int16 CreditCardTypeID;
+		public decimal Amount;
+		public string Remarks;
 
         public DateTime CreatedOn;
         public DateTime LastModified;
 
         /// <summary>
-        /// for searching only for Credits with and without Guarantor's
+        /// for searching only. Link to tblCreditPayment
         /// </summary>
-        public DateTime PurchaseDateFrom;
-        public DateTime PurchaseDateTo;
+        public Int64 ContactID;
+        public Int16 CreditCardTypeID;
+        public DateTime PaymentDateFrom;
+        public DateTime PaymentDateTo;
         public string GuarantorLastnameFrom;
         public string GuarantorLastnameTo;
 	}
@@ -59,16 +51,16 @@ namespace AceSoft.RetailPlus.Data
 		 "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
 		 "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
 		 "FF52834EAFB5A7A1FDFD5851A3")]
-	public class CreditPayments : POSConnection
+	public class CreditPaymentCash : POSConnection
     {
 		#region Constructors and Destructors
 
-		public CreditPayments()
+		public CreditPaymentCash()
             : base(null, null)
         {
         }
 
-        public CreditPayments(MySqlConnection Connection, MySqlTransaction Transaction) 
+        public CreditPaymentCash(MySqlConnection Connection, MySqlTransaction Transaction) 
             : base(Connection, Transaction)
 		{
 
@@ -78,7 +70,7 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Insert and Update
 
-		public Int64 Insert(CreditPaymentDetails Details)
+		public Int64 Insert(CreditPaymentCashDetails Details)
 		{
 			try  
 			{
@@ -92,46 +84,37 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public Int32 Save(CreditPaymentDetails Details)
+        public Int32 Save(CreditPaymentCashDetails Details)
         {
             try
             {
-                // [04/03/2012] Added creditcard information as requested by HP
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procCreditPaymentInsert(@BranchID, @TerminalNo, @TransactionID, @CustomerID, @CreditCardPaymentID, @CreditCardTypeID, @CurrentCredit, @Amount, @TransactionDate, @TransactionNo, @CashierName, @Remarks, @CreditReason, @CreatedOn, @LastModified);";
+                string SQL = "CALL procSaveCreditPaymentCash(@BranchID, @TerminalNo, @SyncID, @CreditPaymentCashID, @CreditPaymentID, @CPRefBranchID, @CPRefTerminalNo, @TransactionID, @Amount, @Remarks, @TransactionNo, @CreatedOn, @LastModified);";
 
-                cmd.Parameters.AddWithValue("@BranchID", Details.BranchDetails.BranchID);
-                cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
-                cmd.Parameters.AddWithValue("@TransactionID", Details.TransactionID);
-                cmd.Parameters.AddWithValue("@CustomerID", Details.CustomerDetails.ContactID);
-                cmd.Parameters.AddWithValue("@CreditCardPaymentID", Details.CreditCardPaymentID);
-                cmd.Parameters.AddWithValue("@CreditCardTypeID", Details.CreditCardTypeID);
-                cmd.Parameters.AddWithValue("@CurrentCredit", Details.CustomerDetails.Credit);
-                cmd.Parameters.AddWithValue("@Amount", Details.IsRefund ? -(Details.Amount) : Details.Amount);
-                cmd.Parameters.AddWithValue("@TransactionDate", Details.TransactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@TransactionNo", Details.TransactionNo);
-                cmd.Parameters.AddWithValue("@CashierName", Details.CashierName);
-                cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
-                cmd.Parameters.AddWithValue("@CreditReason", Details.CreditReason);
-                cmd.Parameters.AddWithValue("@CreatedOn", Details.CreatedOn);
-                cmd.Parameters.AddWithValue("@LastModified", Details.LastModified);
+                cmd.Parameters.AddWithValue("BranchID", Details.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", Details.TerminalNo);
+                cmd.Parameters.AddWithValue("SyncID", Details.SyncID);
+                cmd.Parameters.AddWithValue("CreditPaymentCashID", Details.CreditPaymentCashID);
+                cmd.Parameters.AddWithValue("CreditPaymentID", Details.CreditPaymentID);
+                cmd.Parameters.AddWithValue("CPRefBranchID", Details.CPRefBranchID);
+                cmd.Parameters.AddWithValue("CPRefTerminalNo", Details.CPRefTerminalNo);
+                cmd.Parameters.AddWithValue("TransactionID", Details.TransactionID);
+                cmd.Parameters.AddWithValue("Amount", Details.Amount);
+                cmd.Parameters.AddWithValue("Remarks", Details.Remarks);
+                cmd.Parameters.AddWithValue("TransactionNo", Details.TransactionNo);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
                 cmd.CommandText = SQL;
-                base.ExecuteNonQuery(cmd);
-
-                //add credit to masterfile
-                Contacts clsContact = new Contacts(base.Connection, base.Transaction);
-                clsContact.AddCredit(Details.CustomerDetails.ContactID, Details.IsRefund ? -(Details.Amount) : Details.Amount);
-                
-                return 0;
+                return base.ExecuteNonQuery(cmd);
             }
+
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
-            }	
+            }
         }
 		
 		#endregion
@@ -145,7 +128,7 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "DELETE FROM tblCreditPayment WHERE PaymentID IN (" + IDs + ");";
+                string SQL = "DELETE FROM tblCreditPaymentCash WHERE PaymentID IN (" + IDs + ");";
 	 			
 				cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
@@ -163,10 +146,8 @@ namespace AceSoft.RetailPlus.Data
 
         private string SQLSelect()
         {
-            string stSQL = "SELECT BranchID, TerminalNo, SyncID, CreditPaymentID, TransactionID, ContactID, CreditCardPaymentID, CreditCardTypeID, Amount, Remarks, AmountPaid, TransactionNo, " +
-                                  "CreditDate, CreditBefore, CreditAfter, CreditReason, TerminalNo, CashierName, " +
-                                  "AmountPaidCuttOffMonth, CreatedOn, LastModified " +
-                            "FROM tblCreditPayment ";
+            string stSQL = "SELECT BranchID, TerminalNo,SyncID, CreditPaymentCashID, TransactionID, Amount, Remarks, TransactionNo, CreatedOn, LastModified " +
+                            "FROM tblCreditPaymentCash ";
 
             return stSQL;
         }
@@ -180,7 +161,7 @@ namespace AceSoft.RetailPlus.Data
         /// <param name="TerminalNo"></param>
         /// <param name="SyncID">Same also as the TransactionID</param>
         /// <returns></returns>
-        public CreditPaymentDetails[] Details(Int32 BranchID, string TerminalNo, Int64 TransactionID)
+        public CreditPaymentCashDetails[] Details(Int32 BranchID, string TerminalNo, Int64 TransactionID)
         {
             try
             {
@@ -203,42 +184,33 @@ namespace AceSoft.RetailPlus.Data
                     items.Add(setDetails(dr));
                 }
 
-                CreditPaymentDetails[] arrCashDetails = new CreditPaymentDetails[0];
+                CreditPaymentCashDetails[] arrCashDetails = new CreditPaymentCashDetails[0];
 
                 if (items != null)
                 {
-                    arrCashDetails = new CreditPaymentDetails[items.Count];
+                    arrCashDetails = new CreditPaymentCashDetails[items.Count];
                     items.CopyTo(arrCashDetails);
                 }
 
                 return arrCashDetails;
             }
+
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
             }
         }
 
-        public CreditPaymentDetails setDetails(System.Data.DataRow dr)
+        public CreditPaymentCashDetails setDetails(System.Data.DataRow dr)
         {
-            Data.CreditPaymentDetails Details = new Data.CreditPaymentDetails();
+            Data.CreditPaymentCashDetails Details = new Data.CreditPaymentCashDetails();
 
             Details.BranchDetails = new Branch(base.Connection, base.Transaction).Details(Int32.Parse(dr["BranchID"].ToString()));
             Details.TerminalNo = dr["TerminalNo"].ToString();
             Details.SyncID = Int64.Parse(dr["SyncID"].ToString());
-            Details.CreditPaymentID = Int64.Parse(dr["CreditPaymentID"].ToString());
+            Details.CreditPaymentCashID = Int64.Parse(dr["CreditPaymentCashID"].ToString());
             Details.TransactionID = Int64.Parse(dr["TransactionID"].ToString());
-            Details.CreditPaymentID = Int64.Parse(dr["CreditPaymentID"].ToString());
-            Details.CustomerDetails = new Contacts(base.Connection, base.Transaction).Details(Int64.Parse(dr["ContactID"].ToString()));
-            Details.Amount = decimal.Parse(dr["AmountPaid"].ToString());
-            Details.TransactionNo = dr["TransactionNo"].ToString();
-            Details.TransactionDate = DateTime.Parse(dr["CreditDate"].ToString());
-            Details.CreditBefore = decimal.Parse(dr["CreditBefore"].ToString());
-            Details.CreditAfter = decimal.Parse(dr["CreditAfter"].ToString());
-            Details.CreditReason = dr["CreditReason"].ToString();
-            Details.CashierName = dr["CashierName"].ToString();
-            Details.AmountPaidCuttOffMonth = decimal.Parse(dr["AmountPaidCuttOffMonth"].ToString());
-
+            Details.Amount = decimal.Parse(dr["Amount"].ToString());
             Details.Remarks = dr["Remarks"].ToString();
             Details.TransactionNo = dr["TransactionNo"].ToString();
 
@@ -251,7 +223,6 @@ namespace AceSoft.RetailPlus.Data
 		#endregion
 		
 		#region Streams
-
 
 		#endregion
 	}

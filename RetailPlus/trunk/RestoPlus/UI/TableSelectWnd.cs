@@ -288,14 +288,18 @@ namespace AceSoft.RetailPlus.Client.UI
 			try
 			{
 				tblLayout.Controls.Clear();
-				long lngSequenceNoStart = 0;
+				Int64 intSequenceNoStart = 0;
 
 				if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
-					try { lngSequenceNoStart = long.Parse(cmdTableLeft.Tag.ToString()); }
+					try { intSequenceNoStart = long.Parse(cmdTableLeft.Tag.ToString()); }
 					catch { }
 				else
-					try { lngSequenceNoStart = long.Parse(cmdTableRight.Tag.ToString()); }
+					try { intSequenceNoStart = long.Parse(cmdTableRight.Tag.ToString()); }
 					catch { }
+
+                // Sep 24, 2014 put an override if cmdSubGroupLeft.Tag = 0
+                // always do an asceding coz its already the end.
+                if (intSequenceNoStart == 0) SequenceSortOrder = System.Data.SqlClient.SortOrder.Ascending;
 
 				ContactColumns clsContactColumns = new ContactColumns();
 				clsContactColumns.ContactCode = true;
@@ -308,9 +312,17 @@ namespace AceSoft.RetailPlus.Client.UI
                 System.Data.DataTable dtContact;
 
                 if (ContactGroupCategory == Data.ContactGroupCategory.TABLES)
-				    dtContact = clsContact.Tables(clsContactColumns, lngSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, 0, false, string.Empty, SequenceSortOrder);
+				    dtContact = clsContact.Tables(clsContactColumns, intSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, 0, false, "ContactCode", SequenceSortOrder);
                 else
-                    dtContact = clsContact.Customers(clsContactColumns, lngSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, 0, false, string.Empty, SequenceSortOrder);
+                    dtContact = clsContact.Customers(clsContactColumns, intSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, 0, false, "ContactCode", SequenceSortOrder);
+
+                // re-order the products by sequence no
+                if (dtContact.Rows.Count > 0)
+                {
+                    System.Data.DataView dv = dtContact.DefaultView;
+                    dv.Sort = "ContactCode";
+                    dtContact = dv.ToTable();
+                }
 
 				int iRow = 0;
 				int iCol = 0;
@@ -401,10 +413,22 @@ namespace AceSoft.RetailPlus.Client.UI
 					if (stTransactionNo != string.Empty)
 					{
 						clsSalesTransactionDetails = clsSalesTransactions.Details(stTransactionNo, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
-						cmdTable.Text = dr[Data.ContactColumnNames.ContactCode].ToString();
-						
+                        cmdTable.Text = dr[Data.ContactColumnNames.ContactCode].ToString();
+
 						decimal decAmountDue = Convert.ToDecimal(clsSalesTransactionDetails.SubTotal + clsSalesTransactionDetails.Charge - clsSalesTransactionDetails.Discount);
 						cmdTable.Text += Environment.NewLine + Environment.NewLine + "Amount Due:" + decAmountDue.ToString("#,###.#0");
+
+                        Label lblNoOfPax = new System.Windows.Forms.Label();
+                        lblNoOfPax.AutoSize = true;
+                        lblNoOfPax.BackColor = System.Drawing.Color.Transparent;
+                        lblNoOfPax.Font = new System.Drawing.Font("Tahoma", 7.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                        lblNoOfPax.ForeColor = System.Drawing.Color.White;
+                        lblNoOfPax.Location = new System.Drawing.Point(210, 75);
+                        lblNoOfPax.Name = "lblNoOfPax" + iCtr.ToString();
+                        lblNoOfPax.TabIndex = 1;
+                        lblNoOfPax.Text = "";
+                        lblNoOfPax.Text = clsSalesTransactionDetails.PaxNo.ToString() + "Pax";
+                        cmdTable.Controls.Add(lblNoOfPax);
 
                         if (mboShowAvailableTableOnly)
 						{
@@ -422,7 +446,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
                     
 					tblLayout.Controls.Add(cmdTable, iCol, iRow);
-
+                    
 					iCol++; iCtr++;
 				}
 				clsContact.CommitAndDispose();

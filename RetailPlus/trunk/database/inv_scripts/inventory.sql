@@ -315,8 +315,8 @@ CREATE TABLE tblERPConfig (
 );
 
 INSERT INTO tblERPConfig (LastPONo, LastPOReturnNo, LastDebitMemoNo, LastSONo, LastSOReturnNo, LastCreditMemoNo, LastTransferInNo, LastTransferOutNo, LastInvAdjustmentNo, LastClosingNo, PostingDateFrom, PostingDateTo) VALUES ('0000000001', '0000000001', '0000000001', '0000000001', '0000000001', '0000000001', '0000000001', '0000000001', '0000000001', '0000000001', '2007-08-01 12:00:00', '2020-08-31 12:00:00');
-ALTER TABLE tblERPConfig ADD LastCreditCardNo VARCHAR(11) NOT NULL DEFAULT '00000001';
-ALTER TABLE tblERPConfig ADD LastRewardCardNo VARCHAR(11) NOT NULL DEFAULT '00000001';
+--ALTER TABLE tblERPConfig ADD LastCreditCardNo VARCHAR(11) NOT NULL DEFAULT '00000001';
+ALTER TABLE tblERPConfig ADD LastRewardCardNo VARCHAR(8) NOT NULL DEFAULT '00000001'; -- MUST BE ALWAYS 8Digits
 
 -- alter table tblERPConfig add `LastDebitMemoNo` VARCHAR(10) NOT NULL;
 -- update tblERPConfig set `LastDebitMemoNo` = '0000000001';
@@ -897,7 +897,7 @@ ALTER TABLE tblInventory ADD `ProductGroupCode` VARCHAR(20);
 ALTER TABLE tblInventory ADD `ProductGroupName` VARCHAR(50);
 
 -- 10Oct2013 Added for automatic getting of customer code as membership no of GLA. Applicable also for auto generated code.
-ALTER TABLE tblERPConfig ADD LastCustomerCode VARCHAR(15) NOT NULL DEFAULT '0000000001';
+ALTER TABLE tblERPConfig ADD LastCustomerCode VARCHAR(8) NOT NULL DEFAULT '00000001';
 
 /*********************************  v_4.0.1.0.sql END  *******************************************************/ 
 
@@ -905,9 +905,23 @@ ALTER TABLE tblERPConfig ADD LastCustomerCode VARCHAR(15) NOT NULL DEFAULT '0000
 
 UPDATE tblERPConfig SET DBVersion = 'v_4.0.1.1';
 
-ALTER TABLE tblERPConfig ADD LastCreditCardNo      VARCHAR(20) NOT NULL DEFAULT '1000000000001';
-ALTER TABLE tblERPConfig ADD LastGroupCreditCardNo VARCHAR(20) NOT NULL DEFAULT '2000000000001';
+-- this must be 10digits only. the last digit will be the ean-13 checksum
+-- countrycode + manufacturingcode + cardno
+
+ALTER TABLE tblERPConfig ADD LastCreditCardNo      VARCHAR(8) NOT NULL DEFAULT '00000001';
+ALTER TABLE tblERPConfig ADD LastGroupCreditCardNo VARCHAR(8) NOT NULL DEFAULT '00000001';
 
 ALTER TABLE tblContactCreditCardInfo MODIFY CreditCardNo VARCHAR(20);
+
+-- do a check of the running number then change the values '00000001' before updating. 
+ UPDATE tblERPConfig SET LastRewardCardNo = '00000001';
+ UPDATE tblERPConfig SET LastCreditCardNo = '00000001';
+ UPDATE tblERPConfig SET LastGroupCreditCardNo = '00000001';
+ UPDATE tblERPConfig SET LastCustomerCode = '00000001';
+
+ALTER TABLE tblERPConfig MODIFY LastRewardCardNo VARCHAR(8) NOT NULL DEFAULT '00000001';
+ALTER TABLE tblERPConfig MODIFY LastCreditCardNo VARCHAR(8) NOT NULL DEFAULT '00000001';
+ALTER TABLE tblERPConfig MODIFY LastGroupCreditCardNo VARCHAR(8) NOT NULL DEFAULT '00000001';
+ALTER TABLE tblERPConfig MODIFY LastCustomerCode VARCHAR(8) NOT NULL DEFAULT '00000001';
 
 /*********************************  v_4.0.1.1.sql END  *******************************************************/ 

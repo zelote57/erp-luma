@@ -15,10 +15,10 @@ GO
 CREATE EVENT eventExpireContactRewardCard
     ON SCHEDULE
 		EVERY 1 DAY
-		STARTS '2012-08-24 23:50:00'
+		STARTS '2012-08-24 8:30:00'
     DO 
 	BEGIN
-		CALL procContactRewardExpire();
+		CALL sysContactRewardExpire();
 	END;
 GO
 delimiter ;
@@ -35,10 +35,10 @@ GO
 CREATE EVENT eventExpireCustomerCreditCard
     ON SCHEDULE
 		EVERY 1 DAY
-		STARTS '2012-08-24 23:50:00'
+		STARTS '2012-08-24 8:30:00'
     DO 
 	BEGIN
-		CALL procContactCreditCardExpire();
+		CALL sysContactCreditCardExpire();
 	END;
 GO
 delimiter ;
@@ -55,7 +55,7 @@ GO
 CREATE EVENT eventProductInventorySnapshot
     ON SCHEDULE
 		EVERY 1 DAY
-		STARTS '2013-08-24 23:50:00'
+		STARTS '2013-08-24 8:30:00'
     DO 
 	BEGIN
 		CALL sysProductInventorySnapshot();
@@ -66,20 +66,21 @@ delimiter ;
 
 
 /********************************************
-	eventUpdatetblInventorySG
-	-- Update the Closing Inventory group details and/or supplier details.
+	eventHoldCustomerCreditWithG
+	-- Suspend all customers credit withG without payment after 3days
+	-- schedule every 3 and 18 of the month
 ********************************************/
 delimiter GO
-DROP EVENT IF EXISTS eventUpdatetblInventorySG
+DROP EVENT IF EXISTS eventHoldCustomerCreditWithG
 GO
 
-CREATE EVENT eventUpdatetblInventorySG
+CREATE EVENT eventHoldCustomerCreditWithG
     ON SCHEDULE
 		EVERY 1 DAY
-		STARTS '2012-08-24 23:50:00'
+		STARTS '2012-08-24 8:30:00'
     DO 
 	BEGIN
-		CALL sysUpdatetblInventorySG();
+		CALL sysHoldCustomerCreditWithG();
 	END;
 GO
 delimiter ;

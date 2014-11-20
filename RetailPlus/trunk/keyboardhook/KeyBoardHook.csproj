@@ -115,6 +115,12 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="KeyboardNoControlOld.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyboardNoControlOld.Designer.cs">
+      <DependentUpon>KeyboardNoControlOld.cs</DependentUpon>
+    </Compile>
     <Compile Include="Keyboard.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -139,6 +145,15 @@
     <Compile Include="KeyboardSearchControl.Designer.cs">
       <DependentUpon>KeyboardSearchControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CtrlButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NoControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NoControl.Designer.cs">
+      <DependentUpon>NoControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -149,6 +164,10 @@
     <None Include="AceSoft.RetailPlus.snk" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="KeyboardNoControlOld.resx">
+      <DependentUpon>KeyboardNoControlOld.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Keyboard.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Keyboard.cs</DependentUpon>
@@ -160,6 +179,9 @@
     <EmbeddedResource Include="KeyboardSearchControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>KeyboardSearchControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NoControl.resx">
+      <DependentUpon>NoControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>

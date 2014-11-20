@@ -40,6 +40,7 @@ namespace AceSoft.RetailPlus.Data
 		public decimal Price;
 		public decimal PurchasePrice;
 		public bool IncludeInSubtotalDiscount;
+        public bool IsCreditChargeExcluded;
 		public decimal VAT;
 		public decimal EVAT;
 		public decimal LocalTax;
@@ -146,6 +147,7 @@ namespace AceSoft.RetailPlus.Data
 		public bool Price;
 		public bool PurchasePrice;
 		public bool IncludeInSubtotalDiscount;
+        public bool IsCreditChargeExcluded;
 		public bool VAT;
 		public bool EVAT;
 		public bool LocalTax;
@@ -211,6 +213,7 @@ namespace AceSoft.RetailPlus.Data
 		public const string Price = "Price";
 		public const string PurchasePrice = "PurchasePrice";
 		public const string IncludeInSubtotalDiscount = "IncludeInSubtotalDiscount";
+        public const string IsCreditChargeExcluded = "IsCreditChargeExcluded";
 		public const string VAT = "VAT";
 		public const string EVAT = "EVAT";
 		public const string LocalTax = "LocalTax";
@@ -250,6 +253,17 @@ namespace AceSoft.RetailPlus.Data
 		public const string SequenceNo = "SequenceNo";
 	}
 
+    public struct ProductAddOnFilters
+    {
+        public string ProductCodeFrom;
+        public string ProductCodeTo;
+        public string ProductSubGroupNameFrom;
+        public string ProductSubGroupNameTo;
+        public string ProductGroupNameFrom;
+        public string ProductGroupNameTo;
+        public string SupplierNameFrom;
+        public string SupplierNameTo;
+    }
 	public enum PRODUCT_INVENTORY_MOVEMENT
 	{
 		ADD_PURCHASE,
@@ -462,6 +476,7 @@ namespace AceSoft.RetailPlus.Data
                 clsDetails.PurchasePrice = 1;
                 clsDetails.PercentageCommision = 0;
                 clsDetails.IncludeInSubtotalDiscount = true;
+                clsDetails.IsCreditChargeExcluded = false;
                 clsDetails.Quantity = 9999999999;
                 clsDetails.VAT = 0;
                 clsDetails.EVAT = 0;
@@ -1484,7 +1499,7 @@ namespace AceSoft.RetailPlus.Data
             try
             {
                 string SQL = "CALL procSaveProduct(@ProductID, @ProductCode, @ProductDesc, @ProductSubGroupID," +
-                                                "@BaseUnitID, @DateCreated, @Deleted, @IncludeInSubtotalDiscount," +
+                                                "@BaseUnitID, @DateCreated, @Deleted, @IncludeInSubtotalDiscount, @IsCreditChargeExcluded" +
                                                 "@MinThreshold, @MaxThreshold, @SupplierID, @ChartOfAccountIDPurchase," +
                                                 "@ChartOfAccountIDTaxPurchase, @ChartOfAccountIDSold, @ChartOfAccountIDTaxSold," +
                                                 "@ChartOfAccountIDInventory, @IsItemSold, @WillPrintProductComposition," +
@@ -1506,6 +1521,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("DateCreated", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("Deleted", Details.Deleted);
                 cmd.Parameters.AddWithValue("IncludeInSubtotalDiscount", Details.IncludeInSubtotalDiscount);
+                cmd.Parameters.AddWithValue("IsCreditChargeExcluded", Details.IsCreditChargeExcluded);
                 cmd.Parameters.AddWithValue("MinThreshold", Details.MinThreshold);
                 cmd.Parameters.AddWithValue("MaxThreshold", Details.MaxThreshold);
                 cmd.Parameters.AddWithValue("SupplierID", Details.SupplierID);
@@ -2150,6 +2166,7 @@ namespace AceSoft.RetailPlus.Data
                                     "pkg.PurchasePrice, " +
                                     "a.PercentageCommision, " +
                                     "a.IncludeInSubtotalDiscount, " +
+                                    "a.IsCreditChargeExcluded, " +
                                     "pkg.VAT, " +
                                     "pkg.EVAT, " +
                                     "pkg.LocalTax, " +
@@ -2225,6 +2242,7 @@ namespace AceSoft.RetailPlus.Data
                                     "pkg.PurchasePrice, " +
                                     "a.PercentageCommision, " +
                                     "a.IncludeInSubtotalDiscount, " +
+                                    "a.IsCreditChargeExcluded, " + 
                                     "pkg.VAT, " +
                                     "pkg.EVAT, " +
                                     "pkg.LocalTax, " +
@@ -2293,6 +2311,7 @@ namespace AceSoft.RetailPlus.Data
                                     "a.PurchasePrice, " +
                                     "a.PercentageCommision, " +
                                     "a.IncludeInSubtotalDiscount, " +
+                                    "a.IsCreditChargeExcluded, " + 
                                     "a.VAT, " +
                                     "a.EVAT, " +
                                     "a.LocalTax, " +
@@ -2317,6 +2336,7 @@ namespace AceSoft.RetailPlus.Data
                                     "prd.DateCreated, " +
                                     "prd.PercentageCommision, " +
                                     "prd.IncludeInSubtotalDiscount, " +
+                                    "prd.IsCreditChargeExcluded, " +
                                     "prd.SupplierID, " +
                                     "prd.RewardPoints, " +
                                     "prd.MinThreshold, " +
@@ -2397,6 +2417,7 @@ namespace AceSoft.RetailPlus.Data
 
 			if (clsProductColumns.PercentageCommision) stSQL += "tblProducts." + ProductColumnNames.PercentageCommision + ", ";
 			if (clsProductColumns.IncludeInSubtotalDiscount) stSQL += "tblProducts." + ProductColumnNames.IncludeInSubtotalDiscount + ", ";
+            if (clsProductColumns.IsCreditChargeExcluded) stSQL += "tblProducts." + ProductColumnNames.IsCreditChargeExcluded + ", ";
 			if (clsProductColumns.VAT) stSQL += "tblProductPackage." + ProductColumnNames.VAT + ", ";
             if (clsProductColumns.EVAT) stSQL += "tblProductPackage." + ProductColumnNames.EVAT + ", ";
             if (clsProductColumns.LocalTax) stSQL += "tblProductPackage." + ProductColumnNames.LocalTax + ", ";
@@ -2859,6 +2880,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.PurchasePrice = Decimal.Parse(dr["PurchasePrice"].ToString());
                     Details.PercentageCommision = Decimal.Parse(dr["PercentageCommision"].ToString());
                     Details.IncludeInSubtotalDiscount = Boolean.Parse(dr["IncludeInSubtotalDiscount"].ToString());
+                    Details.IsCreditChargeExcluded = Boolean.Parse(dr["IsCreditChargeExcluded"].ToString());
                     Details.VAT = Decimal.Parse(dr["VAT"].ToString());
                     Details.EVAT = Decimal.Parse(dr["EVAT"].ToString());
                     Details.LocalTax = Decimal.Parse(dr["LocalTax"].ToString());
@@ -3000,7 +3022,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-		public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder, int Limit, bool isQuantityGreaterThanZERO)
+		public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder, int limit, bool isQuantityGreaterThanZERO)
 		{
 			try
 			{
@@ -3019,8 +3041,8 @@ namespace AceSoft.RetailPlus.Data
 						SQL += "DESC ";
 				}
 
-				if (Limit != 0)
-					SQL += "LIMIT " + Limit + " ";
+				if (limit != 0)
+					SQL += "LIMIT " + limit + " ";
 
 
 				MySqlCommand cmd = new MySqlCommand();
@@ -3039,7 +3061,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public System.Data.DataTable ListAsDataTableActiveInactive(ProductListFilterType clsProductListFilterType, string SortField, SortOption SortOrder, int Limit, bool isQuantityGreaterThanZERO)
+		public System.Data.DataTable ListAsDataTableActiveInactive(ProductListFilterType clsProductListFilterType, string SortField, SortOption SortOrder, int limit, bool isQuantityGreaterThanZERO)
 		{
 			try
 			{
@@ -3061,8 +3083,8 @@ namespace AceSoft.RetailPlus.Data
 						SQL += "DESC ";
 				}
 
-				if (Limit != 0)
-					SQL += "LIMIT " + Limit + " ";
+				if (limit != 0)
+					SQL += "LIMIT " + limit + " ";
 
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
@@ -3225,7 +3247,7 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}		
 
-		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder, Int32 Limit, bool isQuantityGreaterThanZERO)
+		public MySqlDataReader Search(string SearchKey, string SortField, SortOption SortOrder, Int32 limit, bool isQuantityGreaterThanZERO)
 		{
 			try
 			{
@@ -3248,8 +3270,8 @@ namespace AceSoft.RetailPlus.Data
 						SQL += "DESC ";
 				}
 
-				if (Limit != 0)
-					SQL += "LIMIT " + Limit + " ";
+				if (limit != 0)
+					SQL += "LIMIT " + limit + " ";
 
 				
 
@@ -3362,11 +3384,11 @@ namespace AceSoft.RetailPlus.Data
 		}		
 		
 
-		public System.Data.DataTable SearchDataTable(string SearchKey, string SortField, SortOption SortOrder, Int32 Limit, bool isQuantityGreaterThanZERO)
+		public System.Data.DataTable SearchDataTable(string SearchKey, string SortField, SortOption SortOrder, Int32 limit, bool isQuantityGreaterThanZERO)
 		{
 			try
 			{
-				System.Data.DataTable dt = SearchDataTable(ProductListFilterType.ShowActiveOnly, SearchKey, Constants.ZERO, Constants.ZERO, string.Empty, Constants.ZERO, string.Empty, Limit, isQuantityGreaterThanZERO, false, SortField, SortOrder);
+				System.Data.DataTable dt = SearchDataTable(ProductListFilterType.ShowActiveOnly, SearchKey, Constants.ZERO, Constants.ZERO, string.Empty, Constants.ZERO, string.Empty, limit, isQuantityGreaterThanZERO, false, SortField, SortOrder);
 
 				return dt;
 			}
@@ -3375,11 +3397,11 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-		public System.Data.DataTable SearchDataTableActiveInactive(ProductListFilterType clsProductListFilterType, string SearchKey, string SortField, SortOption SortOrder, Int32 Limit, bool isQuantityGreaterThanZERO)
+		public System.Data.DataTable SearchDataTableActiveInactive(ProductListFilterType clsProductListFilterType, string SearchKey, string SortField, SortOption SortOrder, Int32 limit, bool isQuantityGreaterThanZERO)
 		{
 			try
 			{
-				System.Data.DataTable dt = SearchDataTable(clsProductListFilterType, SearchKey, Constants.ZERO, Constants.ZERO, string.Empty, Constants.ZERO, string.Empty, Limit, isQuantityGreaterThanZERO, false, SortField, SortOrder);
+				System.Data.DataTable dt = SearchDataTable(clsProductListFilterType, SearchKey, Constants.ZERO, Constants.ZERO, string.Empty, Constants.ZERO, string.Empty, limit, isQuantityGreaterThanZERO, false, SortField, SortOrder);
 
 				return dt;
 			}
@@ -3388,11 +3410,11 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public System.Data.DataTable SearchSaleableDataTable(string SearchKey, string SortField, SortOption SortOrder, Int32 Limit, bool isQuantityGreaterThanZERO)
+		public System.Data.DataTable SearchSaleableDataTable(string SearchKey, string SortField, SortOption SortOrder, Int32 limit, bool isQuantityGreaterThanZERO)
 		{
 			try
 			{
-				System.Data.DataTable dt = SearchDataTable(ProductListFilterType.ShowActiveOnly, SearchKey, Constants.ZERO, Constants.ZERO, string.Empty, Constants.ZERO, string.Empty, Limit, isQuantityGreaterThanZERO, true, SortField, SortOrder);
+				System.Data.DataTable dt = SearchDataTable(ProductListFilterType.ShowActiveOnly, SearchKey, Constants.ZERO, Constants.ZERO, string.Empty, Constants.ZERO, string.Empty, limit, isQuantityGreaterThanZERO, true, SortField, SortOrder);
 
 				return dt;
 			}
@@ -3401,7 +3423,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public System.Data.DataTable SearchSaleableDataTableByGroup(string ProductGroupCode, string SearchKey, string SortField, SortOption SortOrder, Int32 Limit, bool isQuantityGreaterThanZERO)
+		public System.Data.DataTable SearchSaleableDataTableByGroup(string ProductGroupCode, string SearchKey, string SortField, SortOption SortOrder, Int32 limit, bool isQuantityGreaterThanZERO)
 		{
 			try
 			{
@@ -3434,8 +3456,8 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC ";
 
-				if (Limit != 0)
-					SQL += "LIMIT " + Limit + " ";
+				if (limit != 0)
+					SQL += "LIMIT " + limit + " ";
 
 				
 
@@ -3473,7 +3495,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public System.Data.DataTable SearchDataTable(ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 Limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
+		public System.Data.DataTable SearchDataTable(ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
 		{
 			try
 			{
@@ -3519,8 +3541,8 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC ";
 
-				if (Limit != 0)
-					SQL += "LIMIT " + Limit + " ";
+				if (limit != 0)
+					SQL += "LIMIT " + limit + " ";
 
 				
 
@@ -3555,7 +3577,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public System.Data.DataTable SearchDataTableSimple(ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 Limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
+		public System.Data.DataTable SearchDataTableSimple(ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
 		{
 			try
 			{
@@ -3599,8 +3621,8 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC ";
 
-				if (Limit != 0)
-					SQL += "LIMIT " + Limit + " ";
+				if (limit != 0)
+					SQL += "LIMIT " + limit + " ";
 
 				
 
@@ -3635,7 +3657,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public System.Data.DataTable SearchDataTableSimple(int BranchID, ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 Limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
+		public System.Data.DataTable SearchDataTableSimple(int BranchID, ProductListFilterType clsProductListFilterType, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
 		{
 			try
 			{
@@ -3665,8 +3687,8 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += " DESC ";
 
-				if (Limit != 0)
-					SQL += "LIMIT " + Limit + " ";
+				if (limit != 0)
+					SQL += "LIMIT " + limit + " ";
 
 				
 
@@ -3701,7 +3723,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
-		public System.Data.DataTable ProductIDandCodeDataTable(ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive, string SearchKey="", long SupplierID = 0, long ProductGroupID = 0, string ProductGroupName = "", long ProductSubGroupID=0, string ProductSubGroupName="", Int32 Limit=100, bool isQuantityGreaterThanZERO=false, bool CheckIItemisSold=true, string SortField="ProductCode", SortOption SortOrder=SortOption.Ascending)
+		public System.Data.DataTable ProductIDandCodeDataTable(ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive, string SearchKey="", long SupplierID = 0, long ProductGroupID = 0, string ProductGroupName = "", long ProductSubGroupID=0, string ProductSubGroupName="", Int32 limit=100, bool isQuantityGreaterThanZERO=false, bool CheckIItemisSold=true, string SortField="ProductCode", SortOption SortOrder=SortOption.Ascending)
 		{
 			try
 			{
@@ -3717,7 +3739,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
                 cmd.Parameters.AddWithValue("@ShowActiveAndInactive", clsProductListFilterType.ToString("d"));
                 cmd.Parameters.AddWithValue("@isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
-                cmd.Parameters.AddWithValue("@lngLimit", Limit);
+                cmd.Parameters.AddWithValue("@lngLimit", limit);
                 cmd.Parameters.AddWithValue("@SortField", SortField);
                 switch (SortOrder)
                 {
@@ -3847,26 +3869,13 @@ namespace AceSoft.RetailPlus.Data
 
 				SQL += "ORDER BY a.Quantity ASC";
 
-				
-
-				
 				string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
 				base.MySqlDataAdapterFill(SQL, dt);
-				
 
 				return dt;
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}
 		}		
@@ -3921,37 +3930,43 @@ namespace AceSoft.RetailPlus.Data
 			}
 			catch (Exception ex)
 			{
-				
-				
-				{
-					
-					
-					
-					
-				}
-
 				throw base.ThrowException(ex);
 			}	
 		}
 
-        private System.Data.DataTable ListAsDataTable(int BranchID = 0, string BarCode = "", string ProductCode = "", Int64 SupplierID = 0, ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive,
-                bool isQuantityGreaterThanZERO = false, Int32 Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending)
+        private System.Data.DataTable ListAsDataTable(Int32 BranchID = 0, string BarCode = "", string ProductCode = "", Int64 SupplierID = 0, ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive,
+                bool isQuantityGreaterThanZERO = false, ProductAddOnFilters ProductAddOnFilters = new ProductAddOnFilters(), Int32 limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending)
         {
-            string SQL = "CALL procProductSelect(@BranchID, @BarCode, @ProductCode, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, @lngLimit, @SortField, @SortOrder)";
+            // 26Oct2014 - additional filters ProductCodeFrom, ProductSubGroupNameFrom, ProductGroupNameFrom, SupplierNameFrom
+            string SQL = "CALL procProductSelect(@BranchID, @BarCode, @ProductCode, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, " +
+                                                "@ProductCodeFrom, @ProductCodeTo, @ProductSubGroupNameFrom, @ProductSubGroupNameTo, " +
+                                                "@ProductGroupNameFrom, @ProductGroupNameTo, @SupplierNameFrom, @SupplierNameTo, " +
+                                                "@limit, @SortField, @SortOrder)";
+
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = SQL;
 
-            cmd.Parameters.AddWithValue("@BranchID", BranchID);
-            cmd.Parameters.AddWithValue("@BarCode", BarCode);
-            cmd.Parameters.AddWithValue("@ProductCode", ProductCode);
-            cmd.Parameters.AddWithValue("@SupplierID", SupplierID);
-            cmd.Parameters.AddWithValue("@ShowActiveAndInactive", clsProductListFilterType.ToString("d"));
-            cmd.Parameters.AddWithValue("@isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
-            cmd.Parameters.AddWithValue("@lngLimit", Limit);
-            cmd.Parameters.AddWithValue("@SortField", SortField);
-            cmd.Parameters.AddWithValue("@SortOrder", SortOrder == SortOption.Ascending ? "ASC" : "DESC");
+            cmd.Parameters.AddWithValue("BranchID", BranchID);
+            cmd.Parameters.AddWithValue("BarCode", BarCode);
+            cmd.Parameters.AddWithValue("ProductCode", ProductCode);
+            cmd.Parameters.AddWithValue("SupplierID", SupplierID);
+            cmd.Parameters.AddWithValue("ShowActiveAndInactive", clsProductListFilterType.ToString("d"));
+            cmd.Parameters.AddWithValue("isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
+
+            cmd.Parameters.AddWithValue("ProductCodeFrom", ProductAddOnFilters.ProductCodeFrom);
+            cmd.Parameters.AddWithValue("ProductCodeTo", ProductAddOnFilters.ProductCodeTo);
+            cmd.Parameters.AddWithValue("ProductSubGroupNameFrom", ProductAddOnFilters.ProductSubGroupNameFrom);
+            cmd.Parameters.AddWithValue("ProductSubGroupNameTo", ProductAddOnFilters.ProductSubGroupNameTo);
+            cmd.Parameters.AddWithValue("ProductGroupNameFrom", ProductAddOnFilters.ProductGroupNameFrom);
+            cmd.Parameters.AddWithValue("ProductGroupNameTo", ProductAddOnFilters.ProductGroupNameTo);
+            cmd.Parameters.AddWithValue("SupplierNameFrom", ProductAddOnFilters.SupplierNameFrom);
+            cmd.Parameters.AddWithValue("SupplierNameTo", ProductAddOnFilters.SupplierNameTo);
+
+            cmd.Parameters.AddWithValue("limit", limit);
+            cmd.Parameters.AddWithValue("SortField", SortField);
+            cmd.Parameters.AddWithValue("SortOrder", SortOrder == SortOption.Ascending ? "ASC" : "DESC");
 
             string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
             base.MySqlDataAdapterFill(cmd, dt);
@@ -3959,13 +3974,13 @@ namespace AceSoft.RetailPlus.Data
             return dt;
         }
 
-        public System.Data.DataTable ListAsDataTable(int BranchID = 0, ProductDetails clsSearchKeys = new ProductDetails(), ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive,
-                    long SequenceNoStart = 0, System.Data.SqlClient.SortOrder SequenceSortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 Limit = 0, bool isQuantityGreaterThanZERO = false, string SortField = "ProductCode", SortOption SortOrder = SortOption.Ascending)
+        public System.Data.DataTable ListAsDataTable(Int32 BranchID = 0, ProductDetails clsSearchKeys = new ProductDetails(), ProductAddOnFilters ProductAddOnFilters = new ProductAddOnFilters(), ProductListFilterType clsProductListFilterType = ProductListFilterType.ShowActiveAndInactive,
+                    long SequenceNoStart = 0, System.Data.SqlClient.SortOrder SequenceSortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0, bool isQuantityGreaterThanZERO = false, string SortField = "ProductCode", SortOption SortOrder = SortOption.Ascending)
 		{
 			try
 			{
                 System.Data.DataTable dt = ListAsDataTable(BranchID, clsSearchKeys.BarCode, clsSearchKeys.ProductCode, clsSearchKeys.SupplierID, clsProductListFilterType, 
-                                                            isQuantityGreaterThanZERO, Limit, SortField, SortOrder);
+                                                            isQuantityGreaterThanZERO, ProductAddOnFilters, limit, SortField, SortOrder);
                 return dt;
 			}
 			catch (Exception ex)
@@ -3975,8 +3990,8 @@ namespace AceSoft.RetailPlus.Data
 		}
 
         public System.Data.DataTable ListAsDataTable(ProductColumns clsProductColumns, int BranchID, ProductListFilterType clsProductListFilterType,
-            long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder,
-            ProductColumns SearchColumns, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 Limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
+            Int64 SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder,
+            ProductColumns SearchColumns, string SearchKey, Int64 SupplierID, Int64 ProductGroupID, string ProductGroupName, Int64 ProductSubGroupID, string ProductSubGroupName, Int32 limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder)
         {
             try
             {
@@ -4050,8 +4065,8 @@ namespace AceSoft.RetailPlus.Data
                         SQL += "DESC ";
                 }
 
-                if (Limit != 0)
-                    SQL += "LIMIT " + Limit + " ";
+                if (limit != 0)
+                    SQL += "LIMIT " + limit + " ";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -4074,7 +4089,7 @@ namespace AceSoft.RetailPlus.Data
 
 		public System.Data.DataTable ListAsDataTable(ProductColumns clsProductColumns, int BranchID, ProductListFilterType clsProductListFilterType,
 			long SequenceNoStart, System.Data.SqlClient.SortOrder SequenceSortOrder,
-			ProductColumns SearchColumns, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 Limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder, string GroupBy)
+			ProductColumns SearchColumns, string SearchKey, long SupplierID, long ProductGroupID, string ProductGroupName, long ProductSubGroupID, string ProductSubGroupName, Int32 limit, bool isQuantityGreaterThanZERO, bool CheckIItemisSold, string SortField, SortOption SortOrder, string GroupBy)
 		{
 			try
 			{
@@ -4148,8 +4163,8 @@ namespace AceSoft.RetailPlus.Data
 				else
 					SQL += "DESC ";
 
-				if (Limit != 0)
-					SQL += "LIMIT " + Limit + " ";
+				if (limit != 0)
+					SQL += "LIMIT " + limit + " ";
 
 				
 
@@ -4185,7 +4200,7 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-        public System.Data.DataTable ListAsDataTableFE(int BranchID, string BarCode, ProductListFilterType clsProductListFilterType, Int32 Limit, bool isQuantityGreaterThanZERO, string SortField = "ProductCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
+        public System.Data.DataTable ListAsDataTableFE(int BranchID, string BarCode, ProductListFilterType clsProductListFilterType, Int32 limit, bool isQuantityGreaterThanZERO, string SortField = "ProductCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending)
         {
             try
             {
@@ -4204,6 +4219,7 @@ namespace AceSoft.RetailPlus.Data
                                     "prd.DateCreated, " +
                                     "prd.PercentageCommision, " +
                                     "prd.IncludeInSubtotalDiscount, " +
+                                    "prd.IsCreditChargeExcluded, " +
                                     "prd.SupplierID, " +
                                     "prd.RewardPoints, " +
                                     "prd.MinThreshold, " +
@@ -4226,7 +4242,7 @@ namespace AceSoft.RetailPlus.Data
                                     "SUM(IFNULL(inv.ActualQuantity,0)) ActualQuantity, " +
                                     "IFNULL(mtrx.Description,'') MatrixDescription ";
 
-                SQL += "        FROM (SELECT prd.ProductID, prd.ProductCode, prd.ProductDesc, prd.ProductSubGroupID, prd.BaseUnitID, prd.DateCreated, prd.PercentageCommision, prd.IncludeInSubtotalDiscount " +
+                SQL += "        FROM (SELECT prd.ProductID, prd.ProductCode, prd.ProductDesc, prd.ProductSubGroupID, prd.BaseUnitID, prd.DateCreated, prd.PercentageCommision, prd.IncludeInSubtotalDiscount, prd.IsCreditChargeExcluded " +
                        "                ,prd.SupplierID, prd.RewardPoints, prd.MinThreshold, prd.MaxThreshold " +
                        "                ,pkg.PackageID, pkg.MatrixID ,pkg.BarCode1, pkg.BarCode2, pkg.BarCode3, pkg.BarCode4, pkg.Price, pkg.WSPrice, pkg.PurchasePrice, pkg.VAT, pkg.EVAT, pkg.LocalTax " +
                        "              FROM tblProducts prd INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID AND prd.BaseUnitID = pkg.UnitID AND pkg.Quantity = 1 " +
@@ -4244,7 +4260,7 @@ namespace AceSoft.RetailPlus.Data
                     SQL += "AND inv.Quantity > 0 ";
                 }
 
-                SQL += "              LIMIT " + Limit + ") prd ";
+                SQL += "              LIMIT " + limit + ") prd ";
                 
                 SQL += "     LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND prd.MatrixID = mtrx.MatrixID ";
                 if (BranchID == 0)
@@ -4268,6 +4284,7 @@ namespace AceSoft.RetailPlus.Data
                                 "prd.DateCreated, " +
                                 "prd.PercentageCommision, " +
                                 "prd.IncludeInSubtotalDiscount, " +
+                                "prd.IsCreditChargeExcluded, " +
                                 "prd.SupplierID, " +
                                 "prd.RewardPoints, " +
                                 "prd.MinThreshold, " +
@@ -4296,7 +4313,7 @@ namespace AceSoft.RetailPlus.Data
                         SQL += "DESC ";
                 }
 
-                if (Limit != 0) SQL += "LIMIT " + Limit + " ";
+                if (limit != 0) SQL += "LIMIT " + limit + " ";
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;

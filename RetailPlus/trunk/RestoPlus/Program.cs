@@ -634,6 +634,7 @@ namespace AceSoft.RetailPlus.Client
                                 }
                             }
                         }
+                        if (!string.IsNullOrEmpty(strVersion)) break;
                     }
                 }
                 if (xmlReader != null) xmlReader.Close();

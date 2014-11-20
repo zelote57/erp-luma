@@ -96,6 +96,42 @@ namespace AceSoft
 
             return boRetValue;
         }
+        public bool PrintTagPrice(string strProductCode, string strBarcode, string strPrice)
+        {
+            bool boRetValue = false;
+
+            if (strBarcode.Length < 13) strBarcode.PadLeft(13, '0');
+
+            // 28.50 downward and kain
+            // 28.00 upward and kain
+            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "msg", "alert('Hello TSCLIB.DLL')", true);
+            //TSCLIB_DLL.about();                                                                 //Show the DLL version
+            TSCLIB_DLL.openport("RetailPlusTagPricePrinter");                                           //Open specified printer driver
+            TSCLIB_DLL.setup("300", "28.375", "4", "8", "0", "0", "0");                           //Setup the media size and sensor type info
+            TSCLIB_DLL.clearbuffer();                                                           //Clear image buffer
+
+            TSCLIB_DLL.windowsfont(50, 25, 38, 0, 2, 0, "ARIAL", strProductCode);  //Draw Product Code
+            TSCLIB_DLL.windowsfont(60, 55, 25, 0, 0, 0, "ARIAL NARROW", DateTime.Now.ToString("yyyyMMdd"));  //Draw Print Date
+            TSCLIB_DLL.barcode("60", "77", "128", "98", "1", "0", "2", "2", strBarcode); //Drawing barcode
+
+            int iPriceFontHeight = 138;
+            if (strPrice.Length <= 6)
+            { iPriceFontHeight = 140; }
+            else { iPriceFontHeight = 90; }
+            TSCLIB_DLL.windowsfont(348, 57, iPriceFontHeight, 0, 2, 0, "ARIAL NARROW", strPrice);  //Draw Price
+
+            //TSCLIB_DLL.printerfont("100", "250", "3", "0", "1", "1", "Print Font Test");        //Drawing printer font
+            //TSCLIB_DLL.windowsfont(100, 300, 24, 0, 0, 0, "ARIAL", "Windows Arial Font Test");  //Draw windows font
+            ////TSCLIB_DLL.downloadpcx("C:\\ASP.NET_in_VCsharp_2008\\ASP.NET_in_VCsharp_2008\\UL.PCX", "UL.PCX");                                         //Download PCX file into printer
+            //TSCLIB_DLL.downloadpcx("UL.PCX", "UL.PCX");                                         //Download PCX file into printer
+            //TSCLIB_DLL.sendcommand("PUTPCX 100,400,\"UL.PCX\"");                                //Drawing PCX graphic
+            TSCLIB_DLL.printlabel("1", "1");                                                    //Print labels
+            TSCLIB_DLL.closeport();
+
+            boRetValue = true;
+
+            return boRetValue;
+        }
         public bool PrintUserAccess(string UserFullName, string strBarcode)
         {
             bool boRetValue = false;

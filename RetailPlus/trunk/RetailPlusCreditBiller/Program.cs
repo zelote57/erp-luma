@@ -12,6 +12,7 @@ namespace AceSoft.RetailPlus.Monitor
 	class MainModule
 	{
         private static MySql.Data.MySqlClient.MySqlConnection mConnection; private static MySql.Data.MySqlClient.MySqlTransaction mTransaction;
+        private static Int32 iTmrCtr = 0;
 
 		#region Application Main
 
@@ -20,6 +21,7 @@ namespace AceSoft.RetailPlus.Monitor
 		{
             WriteProcessToMonitor("Starting RetailPlus Credit Biller tool...");
             WriteProcessToMonitor("   ok");
+
         back:
 
 			try
@@ -76,9 +78,22 @@ namespace AceSoft.RetailPlus.Monitor
                     ProcessCreditBillWG(dr["CardTypeName"].ToString());
                 }
 
-                WriteProcessToMonitor("Waiting for next process...");
+                Int32 intProcessWaitInMins = 1;
+                if (System.Configuration.ConfigurationManager.AppSettings["ProcessWaitInMins"] != null)
+                    intProcessWaitInMins = Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings["ProcessWaitInMins"].ToString(), out intProcessWaitInMins) ? intProcessWaitInMins : 1;
 
-				System.Threading.Thread.Sleep(20000);
+                WriteProcessToMonitor("Waiting " + intProcessWaitInMins.ToString("#,##0") + "Mins for next process...");
+
+                // Create a Timer object that knows to call our TimerCallback
+                // method once every 2000 milliseconds.
+                iTmrCtr = 0;
+                System.Threading.Timer t = new System.Threading.Timer(TimerCallback, null, 0, 2000);
+
+                System.Threading.Thread.Sleep(60000 * intProcessWaitInMins);
+
+                t.Dispose(); // Cancel the timer now
+                Console.WriteLine();
+
 				goto back;
 			exit:
 				WriteProcessToMonitor("Sytem terminated.");
@@ -89,6 +104,20 @@ namespace AceSoft.RetailPlus.Monitor
                 goto back;
 			}
 		}
+
+        private static void TimerCallback(Object o)
+        {
+            // Display the date/time when this method got called.
+            if (iTmrCtr <= 150)
+            { Console.Write("."); }
+            else
+            { Console.WriteLine("."); iTmrCtr++; }
+
+            System.Threading.Thread.Sleep(1000); // Simulates other work (1 second)
+
+            // Force a garbage collection to occur for this demo.
+            GC.Collect();
+        }
 
 		#endregion
 
@@ -125,22 +154,30 @@ namespace AceSoft.RetailPlus.Monitor
                 }
                 else if (clsCreditCardTypeInfo.BillingDate >= DateTime.Now)
                 {
-                    WriteProcessToMonitor("Will not process credit bill. Next processing date must be after BillingDate: [" + clsCreditCardTypeInfo.BillingDate.ToString("dd-MMM-yyyy") + "]. System will only process after billing date. Printing unprinted OR's instead. ");
+                    WriteProcessToMonitor("Will not process credit bill. Next processing date must be after BillingDate: [" + clsCreditCardTypeInfo.BillingDate.ToString("dd-MMM-yyyy") + "]. System will only process after billing date.");
+                    WriteProcessToMonitor("Printing unprinted OR's instead. ");
 
-                    lstBillingDetails = clsBilling.List(BillingDate: clsCreditCardTypeInfo.BillingDate, SortField: "CurrentDueAmount", SortOrder: System.Data.SqlClient.SortOrder.Descending);
+                    foreach (Data.CardTypeDetails clsCardTypeDetails in clsBilling.ListUnPrintedCreditCardTypes(CreditType.Individual))
+                    {
+                        lstBillingDetails = clsBilling.List(BillingDate: clsCardTypeDetails.BillingDate, SortField: "CurrentDueAmount", SortOrder: System.Data.SqlClient.SortOrder.Descending);
+                        PrintORs(lstBillingDetails);
+                    }
                     clsLocalDB.CommitAndDispose();
-                    PrintORs(lstBillingDetails);
                     return;
                 }
 
                 // Check PurchaseEndDate if lower than today then do not execute.
                 if (clsCreditCardTypeInfo.CreditPurcEndDateToProcess >= DateTime.Now)
                 {
-                    WriteProcessToMonitor("Will not process credit bill. CreditPurcEndDateToProcess: " + clsCreditCardTypeInfo.CreditPurcEndDateToProcess.ToString("dd-MMM-yyyy") + " is lower than current date. . Printing unprinted OR's instead. ");
+                    WriteProcessToMonitor("Will not process credit bill. CreditPurcEndDateToProcess: " + clsCreditCardTypeInfo.CreditPurcEndDateToProcess.ToString("dd-MMM-yyyy") + " should be lower than current date.");
+                    WriteProcessToMonitor("Printing unprinted OR's instead. ");
 
-                    lstBillingDetails = clsBilling.List(BillingDate: clsCreditCardTypeInfo.BillingDate, SortField: "CurrentDueAmount", SortOrder: System.Data.SqlClient.SortOrder.Descending);
+                    foreach (Data.CardTypeDetails clsCardTypeDetails in clsBilling.ListUnPrintedCreditCardTypes(CreditType.Individual))
+                    {
+                        lstBillingDetails = clsBilling.List(BillingDate: clsCardTypeDetails.BillingDate, SortField: "CurrentDueAmount", SortOrder: System.Data.SqlClient.SortOrder.Descending);
+                        PrintORs(lstBillingDetails);
+                    }
                     clsLocalDB.CommitAndDispose();
-                    PrintORs(lstBillingDetails);
                     return;
                 }
                 WriteProcessToMonitor("Processing credit bill for BillingDate: [" + clsCreditCardTypeInfo.BillingDate.ToString("dd-MMM-yyyy") + "]. ");
@@ -283,13 +320,19 @@ namespace AceSoft.RetailPlus.Monitor
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
 
-
 			paramField = rpt.DataDefinition.ParameterFields["ContactName"];
 			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
 			discreteParam.Value = clsBillingDetails.CustomerDetails.ContactName;
 			currentValues = new CrystalDecisions.Shared.ParameterValues();
 			currentValues.Add(discreteParam);
 			paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["ContactCode"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CustomerDetails.ContactCode;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
 			paramField = rpt.DataDefinition.ParameterFields["ContactAddress"];
 			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
@@ -357,16 +400,16 @@ namespace AceSoft.RetailPlus.Monitor
                 {
                     Directory.CreateDirectory(logsdir + "woutg");
                 }
-                string logFile = logsdir + "woutg/OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".pdf";
+                string logFile = logsdir + "woutg/OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".doc";
 
                 if (File.Exists(logFile))
                 {
                     MoveCreditBillToNextFile(logFile, 1);
                 }
 
-				rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile);
+				rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
 
-                strRetValue = "OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".pdf";
+                strRetValue = "OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".doc";
 			}
 			catch { }
 
@@ -382,8 +425,22 @@ namespace AceSoft.RetailPlus.Monitor
                     if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"] != null)
                         strCreditBillerPrinterName = System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"].ToString();
 
-                    if (isPrinterOnline(strCreditBillerPrinterName))
+                    System.Drawing.Printing.PrintDocument printDoc = new System.Drawing.Printing.PrintDocument();
+                    int i;
+                    int rawKind = 0;
+
+                    for (i = 0; i < printDoc.PrinterSettings.PaperSizes.Count; i++)
                     {
+                        if (printDoc.PrinterSettings.PaperSizes[i].PaperName == "RetailPlusLXHalfSize")
+                        {
+                            rawKind = (int)PrinterHelper.GetField(printDoc.PrinterSettings.PaperSizes[i], "kind");
+                            break;
+                        }
+                    }
+
+                    if (PrinterHelper.isPrinterOnline(strCreditBillerPrinterName))
+                    {
+                        rpt.PrintOptions.PaperSize = (CrystalDecisions.Shared.PaperSize)rawKind;
                         rpt.PrintOptions.PrinterName = strCreditBillerPrinterName;
                         rpt.PrintToPrinter(1, false, 0, 0);
                     }
@@ -466,6 +523,13 @@ namespace AceSoft.RetailPlus.Monitor
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
 
+            paramField = rpt.DataDefinition.ParameterFields["ContactCode"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CustomerDetails.ContactCode;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
             paramField = rpt.DataDefinition.ParameterFields["ContactAddress"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
             discreteParam.Value = clsBillingDetails.CustomerDetails.Address;
@@ -532,16 +596,22 @@ namespace AceSoft.RetailPlus.Monitor
                 {
                     Directory.CreateDirectory(logsdir + "woutg");
                 }
-                string logFile = logsdir + "woutg/OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".pdf";
+                string logFile = logsdir + "woutg/OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".doc";
 
                 if (File.Exists(logFile))
                 {
                     MoveCreditBillToNextFile(logFile, 1);
                 }
 
-                rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile);
+                bool boPrintToPDF = false;
+                if (System.Configuration.ConfigurationManager.AppSettings["PrintToPDF"] != null)
+                    boPrintToPDF = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["PrintToPDF"].ToString());
 
-                strRetValue = "OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".pdf";
+                if (boPrintToPDF) rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile.Replace(".doc", ".pdf"));
+
+                rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
+
+                strRetValue = "OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".doc";
             }
             catch { }
 
@@ -557,8 +627,22 @@ namespace AceSoft.RetailPlus.Monitor
                     if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"] != null)
                         strCreditBillerPrinterName = System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"].ToString();
 
-                    if (isPrinterOnline(strCreditBillerPrinterName))
+                    System.Drawing.Printing.PrintDocument printDoc = new System.Drawing.Printing.PrintDocument();
+                    int i;
+                    int rawKind = 0;
+
+                    for (i = 0; i < printDoc.PrinterSettings.PaperSizes.Count; i++)
                     {
+                        if (printDoc.PrinterSettings.PaperSizes[i].PaperName == "RetailPlusLXHalfSize")
+                        {
+                            rawKind = (int)PrinterHelper.GetField(printDoc.PrinterSettings.PaperSizes[i], "kind");
+                            break;
+                        }
+                    }
+
+                    if (PrinterHelper.isPrinterOnline(strCreditBillerPrinterName))
+                    {
+                        rpt.PrintOptions.PaperSize = (CrystalDecisions.Shared.PaperSize)rawKind;
                         rpt.PrintOptions.PrinterName = strCreditBillerPrinterName;
                         rpt.PrintToPrinter(1, false, 0, 0);
                     }
@@ -630,28 +714,35 @@ namespace AceSoft.RetailPlus.Monitor
                 }
                 else if (clsCreditCardTypeInfo.BillingDate >= DateTime.Now)
                 {
-                    WriteProcessToMonitor("Will not process group credit bill. Next processing date must be after BillingDate: [" + clsCreditCardTypeInfo.BillingDate.ToString("dd-MMM-yyyy") + "]. System will only process after billing date. Printing unprinted OR's instead. ");
+                    WriteProcessToMonitor("Will not process group credit bill. Next processing date must be after BillingDate: [" + clsCreditCardTypeInfo.BillingDate.ToString("dd-MMM-yyyy") + "]. System will only process after billing date.");
+                    WriteProcessToMonitor("Printing unprinted OR's instead. ");
 
                     clsContacts = new Data.Contacts(mConnection, mTransaction);
                     mConnection = clsContacts.Connection; mTransaction = clsContacts.Transaction;
-
-                    dtGuarantors = clsContacts.Guarantors(clsContactColumns, CreditCardTypeID: clsCreditCardTypeInfo.CardTypeID);
+                    foreach (Data.CardTypeDetails clsCardTypeDetails in clsBilling.ListUnPrintedCreditCardTypes(CreditType.Group))
+                    {
+                        dtGuarantors = clsContacts.Guarantors(clsContactColumns, CreditCardTypeID: clsCardTypeDetails.CardTypeID);
+                        PrintORsWG(dtGuarantors, clsCardTypeDetails);
+                    }
                     clsLocalDB.CommitAndDispose();
-                    PrintORsWG(dtGuarantors, clsCreditCardTypeInfo);
                     return;
                 }
 
                 // Check PurchaseEndDate if lower than today then do not execute.
                 if (clsCreditCardTypeInfo.CreditPurcEndDateToProcess >= DateTime.Now)
                 {
-                    WriteProcessToMonitor("Will not process group credit bill. CreditPurcEndDateToProcess: " + clsCreditCardTypeInfo.CreditPurcEndDateToProcess.ToString("dd-MMM-yyyy") + " is lower than current date. . Printing unprinted OR's instead. ");
+                    WriteProcessToMonitor("Will not process group credit bill. CreditPurcEndDateToProcess: " + clsCreditCardTypeInfo.CreditPurcEndDateToProcess.ToString("dd-MMM-yyyy") + " should be lower than current date.");
+                    WriteProcessToMonitor("Printing unprinted OR's instead. ");
 
                     clsContacts = new Data.Contacts(mConnection, mTransaction);
                     mConnection = clsContacts.Connection; mTransaction = clsContacts.Transaction;
-
-                    dtGuarantors = clsContacts.Guarantors(clsContactColumns, CreditCardTypeID: clsCreditCardTypeInfo.CardTypeID);
+                    foreach (Data.CardTypeDetails clsCardTypeDetails in clsBilling.ListUnPrintedCreditCardTypes(CreditType.Group))
+                    {
+                        dtGuarantors = clsContacts.Guarantors(clsContactColumns, CreditCardTypeID: clsCardTypeDetails.CardTypeID);
+                        PrintORsWG(dtGuarantors, clsCardTypeDetails);
+                    }
                     clsLocalDB.CommitAndDispose();
-                    PrintORsWG(dtGuarantors, clsCreditCardTypeInfo);
+
                     return;
                 }
                 WriteProcessToMonitor("Processing group credit bill for BillingDate: [" + clsCreditCardTypeInfo.BillingDate.ToString("dd-MMM-yyyy") + "]. ");
@@ -805,6 +896,13 @@ namespace AceSoft.RetailPlus.Monitor
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
 
+            paramField = rpt.DataDefinition.ParameterFields["ContactCode"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsGuarantorDetails.ContactCode;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
             paramField = rpt.DataDefinition.ParameterFields["ContactAddress"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
             discreteParam.Value = clsGuarantorDetails.Address;
@@ -836,16 +934,16 @@ namespace AceSoft.RetailPlus.Monitor
                 {
                     Directory.CreateDirectory(logsdir + "withg");
                 }
-                string logFile = logsdir + "withg/OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".pdf";
+                string logFile = logsdir + "withg/OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".doc";
 
                 if (File.Exists(logFile))
                 {
                     MoveCreditBillToNextFile(logFile, 1);
                 }
 
-                rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile);
+                rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
 
-                strRetValue = "OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".pdf";
+                strRetValue = "OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".doc";
             }
             catch { }
 
@@ -861,7 +959,7 @@ namespace AceSoft.RetailPlus.Monitor
                     if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"] != null)
                         strCreditBillerPrinterName = System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"].ToString();
 
-                    if (isPrinterOnline(strCreditBillerPrinterName))
+                    if (PrinterHelper.isPrinterOnline(strCreditBillerPrinterName))
                     {
                         rpt.PrintOptions.PrinterName = strCreditBillerPrinterName;
                         rpt.PrintToPrinter(1, false, 0, 0);
@@ -907,7 +1005,7 @@ namespace AceSoft.RetailPlus.Monitor
             currentValues = new CrystalDecisions.Shared.ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
-
+            
             paramField = rpt.DataDefinition.ParameterFields["BillingDate"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
             discreteParam.Value = clsCreditCardTypeInfo.BillingDate;
@@ -932,10 +1030,16 @@ namespace AceSoft.RetailPlus.Monitor
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
 
-
             paramField = rpt.DataDefinition.ParameterFields["ContactName"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
             discreteParam.Value = clsGuarantorDetails.ContactName;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
+
+            paramField = rpt.DataDefinition.ParameterFields["ContactCode"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsGuarantorDetails.ContactCode;
             currentValues = new CrystalDecisions.Shared.ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
@@ -971,16 +1075,22 @@ namespace AceSoft.RetailPlus.Monitor
                 {
                     Directory.CreateDirectory(logsdir + "withg");
                 }
-                string logFile = logsdir + "withg/OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".pdf";
+                string logFile = logsdir + "withg/OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".doc";
 
                 if (File.Exists(logFile))
                 {
                     MoveCreditBillToNextFile(logFile, 1);
                 }
 
-                rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile);
+                bool boPrintToPDF = false;
+                if (System.Configuration.ConfigurationManager.AppSettings["PrintToPDF"] != null)
+                    boPrintToPDF = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["PrintToPDF"].ToString());
 
-                strRetValue = "OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".pdf";
+                if (boPrintToPDF) rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile.Replace(".doc", ".pdf"));
+
+                rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
+                
+                strRetValue = "OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".doc";
             }
             catch { }
 
@@ -996,7 +1106,7 @@ namespace AceSoft.RetailPlus.Monitor
                     if (System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"] != null)
                         strCreditBillerPrinterName = System.Configuration.ConfigurationManager.AppSettings["CreditBillerPrinterName"].ToString();
 
-                    if (isPrinterOnline(strCreditBillerPrinterName))
+                    if (PrinterHelper.isPrinterOnline(strCreditBillerPrinterName))
                     {
                         rpt.PrintOptions.PrinterName = strCreditBillerPrinterName;
                         rpt.PrintToPrinter(1, false, 0, 0);
@@ -1044,47 +1154,7 @@ namespace AceSoft.RetailPlus.Monitor
             return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ": ";
         }
 
-        public static void PrintProps(ManagementObject o, string prop)
-        {
-            try { Console.WriteLine(prop + "|" + o[prop]); }
-            catch (Exception e) { Console.Write(e.ToString()); }
-        }
-        public static bool isPrinterOnline(string objPrinterName)
-        {
-            bool boretValue = false;
-            try
-            {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Printer");
-
-                foreach (ManagementObject printer in searcher.Get())
-                {
-                    string printerName = printer["Name"].ToString().ToLower();
-
-                    if (printerName == objPrinterName.ToLower())
-                    {
-                        boretValue = true;
-                        break;
-                    }
-                    //Console.WriteLine("Printer".PadRight(15) + ":" + printerName);
-
-                    //PrintProps(printer, "Caption");
-                    //PrintProps(printer, "ExtendedPrinterStatus");
-                    //PrintProps(printer, "Availability");
-                    //PrintProps(printer, "Default");
-                    //PrintProps(printer, "DetectedErrorState");
-                    //PrintProps(printer, "ExtendedDetectedErrorState");
-                    //PrintProps(printer, "ExtendedPrinterStatus");
-                    //PrintProps(printer, "LastErrorCode");
-                    //PrintProps(printer, "PrinterState");
-                    //PrintProps(printer, "PrinterStatus");
-                    //PrintProps(printer, "Status");
-                    //PrintProps(printer, "WorkOffline");
-                    //PrintProps(printer, "Local");
-                }
-            }
-            catch { }
-            return boretValue;
-        }
+        
 
         #endregion
 

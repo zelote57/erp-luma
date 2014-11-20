@@ -428,15 +428,19 @@ namespace AceSoft.RetailPlus.Client.UI
             //if (!string.IsNullOrEmpty(strReportHeader3)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportHeader3), mclsTerminalDetails.MaxReceiptWidth));
             //if (!string.IsNullOrEmpty(strReportHeader4)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportHeader4), mclsTerminalDetails.MaxReceiptWidth));
 
-            dt.Rows.Add("Beginning OR No.", ":", mclsDetails.BeginningORNo);
+            if (Int64.Parse(mclsDetails.BeginningORNo) == 0)
+                dt.Rows.Add("Beginning OR No.", ":", mclsDetails.BeginningORNo.Remove(mclsDetails.BeginningORNo.Length - 1) + "1");
+            else
+                dt.Rows.Add("Beginning OR No.", ":", mclsDetails.BeginningORNo);
+
             dt.Rows.Add("Ending OR No.", ":", mclsDetails.EndingORNo);
             dt.Rows.Add("", "", "");
             dt.Rows.Add("Gross Sales", ":", ((mclsDetails.GrossSales + mclsDetails.TotalCharge) * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
             dt.Rows.Add("(-) Service Charge", ":", mclsDetails.TotalCharge.ToString("#,##0.#0"));
             dt.Rows.Add("",":","------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
             dt.Rows.Add("Total Amount", ":", (mclsDetails.GrossSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
-            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", (mclsDetails.VATExempt * (mclsTerminalDetails.VAT / 100) * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
-            dt.Rows.Add("(-) Subtotal Discount", ":", mclsDetails.SubTotalDiscount.ToString("#,##0.#0"));
+            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", (mclsDetails.VATExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT / 100) * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
+            dt.Rows.Add("(-) Discount", ":", (mclsDetails.SubTotalDiscount + mclsDetails.ItemsDiscount).ToString("#,##0.#0"));
             dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
             dt.Rows.Add("Net Sales", ":", (mclsDetails.NetSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
             

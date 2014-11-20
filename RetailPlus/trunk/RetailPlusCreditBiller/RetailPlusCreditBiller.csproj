@@ -73,10 +73,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CRSReports\Billing.cs">
+    <Compile Include="CRSReports\BillingLX.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Billing.rpt</DependentUpon>
+      <DependentUpon>BillingLX.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CRSReports\BillingWGuarantor.cs">
@@ -85,14 +85,14 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="CRSReports\BillingLX.cs">
-      <DependentUpon>BillingLX.rpt</DependentUpon>
+    <Compile Include="CRSReports\BillingWGuarantorLX.cs">
+      <DependentUpon>BillingWGuarantorLX.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="CRSReports\BillingWGuarantorLX.cs">
-      <DependentUpon>BillingWGuarantorLX.rpt</DependentUpon>
+    <Compile Include="CRSReports\Billing.cs">
+      <DependentUpon>Billing.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -152,21 +152,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CRSReports\Billing.rpt">
+    <EmbeddedResource Include="CRSReports\BillingLX.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>Billing.cs</LastGenOutput>
+      <LastGenOutput>BillingLX.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="CRSReports\BillingWGuarantor.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BillingWGuarantor.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="CRSReports\BillingLX.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>BillingLX.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="CRSReports\BillingWGuarantorLX.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BillingWGuarantorLX.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRSReports\Billing.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Billing.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

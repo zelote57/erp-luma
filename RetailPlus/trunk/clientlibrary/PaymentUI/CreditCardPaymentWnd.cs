@@ -79,7 +79,10 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label lblPlus;
         private Label label9;
         private Label label10;
-    
+
+        private bool mboIsCreditChargeExcluded;
+        public bool IsCreditChargeExcluded { set {mboIsCreditChargeExcluded = value;} }
+
         public Data.TerminalDetails TerminalDetails
         {
             set { mclsTerminalDetails = value; }
@@ -97,6 +100,7 @@ namespace AceSoft.RetailPlus.Client.UI
         public Data.ContactDetails CreditorDetails
         {
             get { return mclsCreditorDetails; }
+            set { mclsCreditorDetails = value; }
         }
 
         #endregion
@@ -616,7 +620,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
                 this.keyboardNoControl1.Location = new System.Drawing.Point(412, 310);
                 this.keyboardNoControl1.Name = "keyboardNoControl1";
-                this.keyboardNoControl1.Size = new System.Drawing.Size(202, 176);
+                this.keyboardNoControl1.Size = new System.Drawing.Size(208, 172);
                 this.keyboardNoControl1.TabIndex = 92;
                 this.keyboardNoControl1.TabStop = false;
                 this.keyboardNoControl1.Visible = false;
@@ -821,6 +825,13 @@ namespace AceSoft.RetailPlus.Client.UI
             if (cboCardType.Items.Count > 0) cboCardType.SelectedIndex = 0;
 
             txtScan.Text = "put the cursor here to scan credit card";
+
+            if (!string.IsNullOrEmpty(mclsCreditorDetails.CreditDetails.CreditCardNo) && mclsCreditorDetails.IsCreditAllowed)
+            {
+                txtScan.Text = mclsCreditorDetails.CreditDetails.CreditCardNo;
+                txtScan_TextChanged(null, null);
+            }
+
             txtAmount.Focus();
         }
         private bool isValuesAssigned()
@@ -933,7 +944,10 @@ namespace AceSoft.RetailPlus.Client.UI
                         return false;
                     }
                 }
-                if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
+
+                if (mboIsCreditChargeExcluded) // exclude if it's an special item
+                { decAdditionalCreditCharge = 0; }
+                else if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
                 {
                     if (mclsTerminalDetails.GroupChargeType.InPercent)
                         decAdditionalCreditCharge = mdecBalanceAmount * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
@@ -1073,7 +1087,14 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         private void setCreditCardChargeAmount()
         {
-            if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID == 0)
+            if (mboIsCreditChargeExcluded)  // exclude if the ProductCode is exempted in charging
+            {
+                unsetCreditCardCharge();
+                cboCardType.Enabled = false;
+                txtValidityDates.Enabled = false;
+                txtCardHolder.Enabled = false;
+            }
+            else if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID == 0)
             {
                 unsetCreditCardCharge();
                 cboCardType.Enabled = false;
@@ -1091,7 +1112,10 @@ namespace AceSoft.RetailPlus.Client.UI
             {
                 decimal decBalance = decimal.Parse(txtAmount.Text);
                 decimal decAdditionalCreditCharge = 0;
-                if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
+
+                if (mboIsCreditChargeExcluded) // exclude if it's an special item
+                { decAdditionalCreditCharge = 0; }
+                else if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
                 {
                     if (mclsTerminalDetails.GroupChargeType.InPercent)
                         decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);

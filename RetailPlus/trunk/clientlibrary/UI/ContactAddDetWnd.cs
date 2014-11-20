@@ -46,6 +46,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private TextBox txtLastName;
         private TextBox txtMiddleName;
         private ComboBox cboSalutation;
+        private KeyBoardHook.KeyboardSearchControl keyboardSearchControl1;
 		private string mstCaption;
 
 		public DialogResult Result
@@ -107,6 +108,20 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblHeader = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cboSalutation = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.txtRemarks = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtTelephoneNo = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtBusinessName = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtBirthDate = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtLastName = new System.Windows.Forms.TextBox();
+            this.txtMiddleName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtMobileNo = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -117,20 +132,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtContactCode = new System.Windows.Forms.TextBox();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
-            this.txtMiddleName = new System.Windows.Forms.TextBox();
-            this.txtLastName = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.txtBirthDate = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txtBusinessName = new System.Windows.Forms.TextBox();
-            this.txtTelephoneNo = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.txtRemarks = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.cboSalutation = new System.Windows.Forms.ComboBox();
+            this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -191,6 +193,155 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Contact Details";
             // 
+            // cboSalutation
+            // 
+            this.cboSalutation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSalutation.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboSalutation.Location = new System.Drawing.Point(114, 102);
+            this.cboSalutation.Name = "cboSalutation";
+            this.cboSalutation.Size = new System.Drawing.Size(80, 31);
+            this.cboSalutation.TabIndex = 1;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label16.Location = new System.Drawing.Point(71, 263);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(58, 13);
+            this.label16.TabIndex = 22;
+            this.label16.Text = "Remarks";
+            // 
+            // txtRemarks
+            // 
+            this.txtRemarks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtRemarks.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRemarks.Location = new System.Drawing.Point(114, 281);
+            this.txtRemarks.MaxLength = 150;
+            this.txtRemarks.Multiline = true;
+            this.txtRemarks.Name = "txtRemarks";
+            this.txtRemarks.Size = new System.Drawing.Size(839, 33);
+            this.txtRemarks.TabIndex = 10;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label15.Location = new System.Drawing.Point(695, 206);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(83, 13);
+            this.label15.TabIndex = 20;
+            this.label15.Text = "TelePhone No";
+            // 
+            // txtTelephoneNo
+            // 
+            this.txtTelephoneNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTelephoneNo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTelephoneNo.Location = new System.Drawing.Point(698, 224);
+            this.txtTelephoneNo.MaxLength = 75;
+            this.txtTelephoneNo.Name = "txtTelephoneNo";
+            this.txtTelephoneNo.Size = new System.Drawing.Size(255, 30);
+            this.txtTelephoneNo.TabIndex = 8;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label14.Location = new System.Drawing.Point(71, 144);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(88, 13);
+            this.label14.TabIndex = 18;
+            this.label14.Text = "BusinessName";
+            // 
+            // txtBusinessName
+            // 
+            this.txtBusinessName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtBusinessName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBusinessName.Location = new System.Drawing.Point(114, 162);
+            this.txtBusinessName.MaxLength = 75;
+            this.txtBusinessName.Name = "txtBusinessName";
+            this.txtBusinessName.Size = new System.Drawing.Size(313, 30);
+            this.txtBusinessName.TabIndex = 5;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.Transparent;
+            this.label13.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.Red;
+            this.label13.Location = new System.Drawing.Point(500, 144);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(81, 13);
+            this.label13.TabIndex = 16;
+            this.label13.Text = "YYYY-MM-DD";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label12.Location = new System.Drawing.Point(432, 144);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(157, 13);
+            this.label12.TabIndex = 13;
+            this.label12.Text = "Birth Date ( YYYY-MM-DD )";
+            // 
+            // txtBirthDate
+            // 
+            this.txtBirthDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtBirthDate.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBirthDate.Location = new System.Drawing.Point(435, 162);
+            this.txtBirthDate.MaxLength = 10;
+            this.txtBirthDate.Name = "txtBirthDate";
+            this.txtBirthDate.Size = new System.Drawing.Size(257, 30);
+            this.txtBirthDate.TabIndex = 6;
+            this.txtBirthDate.Text = "1900-01-01";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label11.Location = new System.Drawing.Point(695, 84);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(66, 13);
+            this.label11.TabIndex = 11;
+            this.label11.Text = "Last Name";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label10.Location = new System.Drawing.Point(432, 84);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(79, 13);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "Middle Name";
+            // 
+            // txtLastName
+            // 
+            this.txtLastName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtLastName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLastName.Location = new System.Drawing.Point(696, 103);
+            this.txtLastName.MaxLength = 85;
+            this.txtLastName.Name = "txtLastName";
+            this.txtLastName.Size = new System.Drawing.Size(257, 30);
+            this.txtLastName.TabIndex = 4;
+            // 
+            // txtMiddleName
+            // 
+            this.txtMiddleName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtMiddleName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMiddleName.Location = new System.Drawing.Point(433, 103);
+            this.txtMiddleName.MaxLength = 85;
+            this.txtMiddleName.Name = "txtMiddleName";
+            this.txtMiddleName.Size = new System.Drawing.Size(257, 30);
+            this.txtMiddleName.TabIndex = 3;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -209,7 +360,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtMobileNo.Location = new System.Drawing.Point(698, 162);
             this.txtMobileNo.MaxLength = 75;
             this.txtMobileNo.Name = "txtMobileNo";
-            this.txtMobileNo.Size = new System.Drawing.Size(128, 30);
+            this.txtMobileNo.Size = new System.Drawing.Size(255, 30);
             this.txtMobileNo.TabIndex = 7;
             this.txtMobileNo.GotFocus += new System.EventHandler(this.txtTelNo_GotFocus);
             // 
@@ -220,9 +371,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2.ForeColor = System.Drawing.Color.MediumBlue;
             this.label2.Location = new System.Drawing.Point(71, 84);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(222, 13);
+            this.label2.Size = new System.Drawing.Size(137, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "First Name / Middle Name / Last Name";
+            this.label2.Text = "Salutation / First Name";
             // 
             // txtFirstName
             // 
@@ -254,7 +405,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtAddress.MaxLength = 150;
             this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(839, 33);
+            this.txtAddress.Size = new System.Drawing.Size(578, 30);
             this.txtAddress.TabIndex = 9;
             this.txtAddress.GotFocus += new System.EventHandler(this.txtAddress_GotFocus);
             // 
@@ -310,154 +461,16 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
-            // txtMiddleName
+            // keyboardSearchControl1
             // 
-            this.txtMiddleName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtMiddleName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMiddleName.Location = new System.Drawing.Point(433, 103);
-            this.txtMiddleName.MaxLength = 85;
-            this.txtMiddleName.Name = "txtMiddleName";
-            this.txtMiddleName.Size = new System.Drawing.Size(257, 30);
-            this.txtMiddleName.TabIndex = 3;
-            // 
-            // txtLastName
-            // 
-            this.txtLastName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtLastName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLastName.Location = new System.Drawing.Point(696, 103);
-            this.txtLastName.MaxLength = 85;
-            this.txtLastName.Name = "txtLastName";
-            this.txtLastName.Size = new System.Drawing.Size(257, 30);
-            this.txtLastName.TabIndex = 4;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label10.Location = new System.Drawing.Point(432, 84);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(79, 13);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "Middle Name";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label11.Location = new System.Drawing.Point(695, 84);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(66, 13);
-            this.label11.TabIndex = 11;
-            this.label11.Text = "Last Name";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label12.Location = new System.Drawing.Point(432, 144);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(157, 13);
-            this.label12.TabIndex = 13;
-            this.label12.Text = "Birth Date ( YYYY-MM-DD )";
-            // 
-            // txtBirthDate
-            // 
-            this.txtBirthDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtBirthDate.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBirthDate.Location = new System.Drawing.Point(435, 162);
-            this.txtBirthDate.MaxLength = 10;
-            this.txtBirthDate.Name = "txtBirthDate";
-            this.txtBirthDate.Size = new System.Drawing.Size(257, 30);
-            this.txtBirthDate.TabIndex = 6;
-            this.txtBirthDate.Text = "1900-01-01";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.BackColor = System.Drawing.Color.Transparent;
-            this.label13.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.Color.Red;
-            this.label13.Location = new System.Drawing.Point(500, 144);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(81, 13);
-            this.label13.TabIndex = 16;
-            this.label13.Text = "YYYY-MM-DD";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label14.Location = new System.Drawing.Point(71, 144);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(88, 13);
-            this.label14.TabIndex = 18;
-            this.label14.Text = "BusinessName";
-            // 
-            // txtBusinessName
-            // 
-            this.txtBusinessName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtBusinessName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBusinessName.Location = new System.Drawing.Point(114, 162);
-            this.txtBusinessName.MaxLength = 75;
-            this.txtBusinessName.Name = "txtBusinessName";
-            this.txtBusinessName.Size = new System.Drawing.Size(313, 30);
-            this.txtBusinessName.TabIndex = 5;
-            // 
-            // txtTelephoneNo
-            // 
-            this.txtTelephoneNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTelephoneNo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTelephoneNo.Location = new System.Drawing.Point(827, 162);
-            this.txtTelephoneNo.MaxLength = 75;
-            this.txtTelephoneNo.Name = "txtTelephoneNo";
-            this.txtTelephoneNo.Size = new System.Drawing.Size(128, 30);
-            this.txtTelephoneNo.TabIndex = 8;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label15.Location = new System.Drawing.Point(824, 144);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(83, 13);
-            this.label15.TabIndex = 20;
-            this.label15.Text = "TelePhone No";
-            // 
-            // txtRemarks
-            // 
-            this.txtRemarks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtRemarks.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRemarks.Location = new System.Drawing.Point(114, 284);
-            this.txtRemarks.MaxLength = 150;
-            this.txtRemarks.Multiline = true;
-            this.txtRemarks.Name = "txtRemarks";
-            this.txtRemarks.Size = new System.Drawing.Size(839, 33);
-            this.txtRemarks.TabIndex = 10;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label16.Location = new System.Drawing.Point(71, 260);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(58, 13);
-            this.label16.TabIndex = 22;
-            this.label16.Text = "Remarks";
-            // 
-            // cboSalutation
-            // 
-            this.cboSalutation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSalutation.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cboSalutation.Location = new System.Drawing.Point(114, 102);
-            this.cboSalutation.Name = "cboSalutation";
-            this.cboSalutation.Size = new System.Drawing.Size(80, 31);
-            this.cboSalutation.TabIndex = 1;
+            this.keyboardSearchControl1.BackColor = System.Drawing.Color.White;
+            this.keyboardSearchControl1.Location = new System.Drawing.Point(112, 422);
+            this.keyboardSearchControl1.Name = "keyboardSearchControl1";
+            this.keyboardSearchControl1.Size = new System.Drawing.Size(799, 134);
+            this.keyboardSearchControl1.TabIndex = 14;
+            this.keyboardSearchControl1.TabStop = false;
+            this.keyboardSearchControl1.Tag = "";
+            this.keyboardSearchControl1.Visible = false;
             // 
             // ContactAddDetWnd
             // 
@@ -465,6 +478,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.keyboardSearchControl1);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
             this.Controls.Add(this.groupBox1);
@@ -679,13 +693,22 @@ namespace AceSoft.RetailPlus.Client.UI
                 //txtCurrentBalance.Text = (mContactDetails.CreditLimit - mContactDetails.Credit).ToString("###0.#0");
                 //lblLastBillingDate.Text = "Last Billing Date:" + mContactDetails.CreditDetails.LastBillingDate.ToString("yyyy-MMM-dd");
 
-                cboSalutation.SelectedValue = mContactDetails.AdditionalDetails.Salutation;
-                txtFirstName.Text = mContactDetails.AdditionalDetails.FirstName;
-                txtMiddleName.Text = mContactDetails.AdditionalDetails.MiddleName;
-                txtLastName.Text = mContactDetails.AdditionalDetails.LastName;
-                txtBirthDate.Text = mContactDetails.AdditionalDetails.BirthDate.ToString("yyyy-MM-dd");
-                txtMobileNo.Text = mContactDetails.AdditionalDetails.MobileNo;
-
+                if (!string.IsNullOrEmpty(mContactDetails.AdditionalDetails.Salutation))
+                {
+                    cboSalutation.SelectedValue = mContactDetails.AdditionalDetails.Salutation;
+                    txtFirstName.Text = mContactDetails.AdditionalDetails.FirstName;
+                    txtMiddleName.Text = mContactDetails.AdditionalDetails.MiddleName;
+                    txtLastName.Text = mContactDetails.AdditionalDetails.LastName;
+                    txtBirthDate.Text = mContactDetails.AdditionalDetails.BirthDate.ToString("yyyy-MM-dd");
+                    txtMobileNo.Text = mContactDetails.AdditionalDetails.MobileNo;
+                }
+            }
+            else
+            {
+                Data.ERPConfig clsERPConfig = new Data.ERPConfig();
+                BarcodeHelper ean13 = new BarcodeHelper(BarcodeHelper.CustomerCode_Country_Code, BarcodeHelper.CustomerCode_ManufacturerCode, clsERPConfig.get_LastCustomerCode());
+                txtContactCode.Text = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+                clsERPConfig.CommitAndDispose();
             }
 
             if (mstCaption == "Please enter customer name for deposit.")

@@ -313,7 +313,7 @@ namespace AceSoft.RetailPlus.Client.UI
             string strPassword = txtPassword.Text;
 
             if (strUserName == string.Empty) { txtUserName.Focus(); return 0; }
-            else if (strPassword == string.Empty && strUserName.Length == 16) { }
+            else if (strPassword == string.Empty && strUserName.Length >= 16) { }
             else if (strPassword == string.Empty && !strUserName.Contains("|")) { txtPassword.Focus(); return 0; }
 
             string strName = string.Empty;
@@ -326,10 +326,12 @@ namespace AceSoft.RetailPlus.Client.UI
                     strPassword = strSplit[1].ToString();
                     strUserName = strSplit[0].ToString();
                 }
-                else if (strUserName.Length == 16) // this is the defined no of burnt card no
+                else if (strUserName.Length >= 16) // this is the defined no of burnt card no
                 {
+                    strUserName = strUserName.Replace("%", "").Replace("?", "");
+
                     strPassword = strUserName.Remove(0,10);
-                    strUserName = strUserName.Remove(10, 6);
+                    strUserName = strUserName.Remove(10, strUserName.Length - 10);
                 }
             }
 
@@ -458,6 +460,17 @@ namespace AceSoft.RetailPlus.Client.UI
             {
                 txtUserName.PasswordChar = 'l';
                 txtUserName.Font = new Font("Wingdings", 12, FontStyle.Bold);
+
+                if (txtUserName.Text.IndexOf("?") > -1)
+                {
+                    Int64 id = LoginUser();
+                    if (id != 0)
+                    {
+                        mintUserID = id;
+                        dialog = DialogResult.OK;
+                        this.Hide();
+                    }
+                }
             }
             else
             {

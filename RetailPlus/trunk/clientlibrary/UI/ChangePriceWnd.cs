@@ -340,10 +340,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Default;
             this.keyboardNoControl1.Location = new System.Drawing.Point(457, 356);
             this.keyboardNoControl1.Name = "keyboardNoControl1";
-            this.keyboardNoControl1.Size = new System.Drawing.Size(202, 201);
+            this.keyboardNoControl1.Size = new System.Drawing.Size(208, 172);
             this.keyboardNoControl1.TabIndex = 1;
             this.keyboardNoControl1.TabStop = false;
             this.keyboardNoControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardNoControl1_UserKeyPressed);
+            this.keyboardNoControl1.commandBlank1 = KeyBoardHook.CommandBlank1.Clear;
+            this.keyboardNoControl1.commandBlank2 = KeyBoardHook.CommandBlank2.SelectAll;
             // 
             // cmdCancel
             // 
@@ -502,7 +504,12 @@ namespace AceSoft.RetailPlus.Client.UI
         private void keyboardNoControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
         {
             txtPrice.Focus();
-            SendKeys.Send(e.KeyboardKeyPressed);
+            if (e.KeyboardKeyPressed == "{CLEAR}")
+                txtPrice.Text = "";
+            else if (e.KeyboardKeyPressed == "{SELECTALL}")
+                txtPrice.SelectAll();
+            else
+                SendKeys.Send(e.KeyboardKeyPressed);
         }
 
         private void cmdEnter_Click(object sender, EventArgs e)

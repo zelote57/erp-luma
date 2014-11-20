@@ -563,7 +563,7 @@ namespace AceSoft.RetailPlus.Client
 
                 //string strConstantRemarks = "Please contact your system administrator immediately.";
 
-				try { clsFTP.Connect(strServer, strUserName, strPassword); }
+                try { clsFTP.Connect(strServer, strUserName, strPassword); }
 				catch {
                     //MessageBox.Show("Sorry cannot connect to Version FTP Server: " + strServer + "." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     //return clsVersion; 
@@ -618,6 +618,7 @@ namespace AceSoft.RetailPlus.Client
 								}
 							}
 						}
+                        if (!string.IsNullOrEmpty(strVersion)) break;
 					}
 				}
 				if (xmlReader != null) xmlReader.Close();

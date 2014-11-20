@@ -139,7 +139,11 @@ namespace AceSoft.RetailPlus.Data
                     clsCreditPaymentDetails.Amount = Details.Amount;
                     clsCreditPaymentDetails.CustomerDetails = Details.CreditorDetails;
                     clsCreditPaymentDetails.Remarks = Details.Remarks;
-                    clsCreditPaymentDetails.CreditReason = CreditReason.IHCC.ToString("G") + "[" + Details.CardTypeDetails.CardTypeCode + "] pos @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString();
+
+                    if (!Details.IsRefund)
+                        clsCreditPaymentDetails.CreditReason = CreditReason.IHCC.ToString("G") + " @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString();
+                    else
+                        clsCreditPaymentDetails.CreditReason = CreditReason.IHCC.ToString("G") + " @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString() + " Refund";
 
                     clsCreditPaymentDetails.CreditCardPaymentID = Details.CreditCardPaymentID;
                     clsCreditPaymentDetails.CreditCardTypeID = Details.CardTypeDetails.CardTypeID;

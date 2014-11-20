@@ -133,7 +133,7 @@ namespace AceSoft.RetailPlus
 
         public const string ERROR = "ERROR";
 
-        public const string SWIPE_REWARD_CARD = "SWIPE REWARD:"; // SWIPE REWARD or CREDIT CARD:
+        public const string SWIPE_REWARD_CARD = "SWIPE REWARD or CREDIT CARD:";
 
         public const int C_RESTOPLUS_MAX_SUB_GROUP = 7;
         public const int C_RESTOPLUS_MAX_PRODUCTS = 20;
@@ -178,6 +178,10 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_WILL_ASK_DO_NOT_PRINT_TRANSACTIONDATE = "WillAskDoNotPrintTransactionDate";
         public const string SYS_CONFIG_WILL_SHOW_PRODUCT_TOTAL_QUANTITY_IN_ITEMSELECT = "WillShowProductTotalQuantityInItemSelect";
         public const string SYS_CONFIG_WILL_NOT_PRINT_REPRINT_MESSAGE = "WillNotPrintReprintMessage";
+        public const string SYS_CONFIG_WILL_DEPOSIT_CHANGE_OF_CREDIT_PAYMENT = "WillDepositChangeOfCreditPayment";
+        public const string SYS_CONFIG_CREDIT_PAYMENT_TYPE = "CreditPaymentType";
+        public const string SYS_CONFIG_ALLOW_DEBIT_PAYMENT = "AllowDebitPayment";
+        public const string SYS_CONFIG_ALLOW_REWARD_POINTS_PAYMENT = "AllowRewardPointsPayment";
         public const string SYS_CONFIG_OR_HEADER = "ORHeader";
 
         /// <summary>

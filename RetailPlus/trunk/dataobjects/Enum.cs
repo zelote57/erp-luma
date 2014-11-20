@@ -9,6 +9,13 @@ namespace AceSoft.RetailPlus
         Excel   = 2
     }
 
+    public enum SplitPaymentTypes
+    {
+        Equally,
+        ByItem,
+        ByAmount
+    }
+
     public enum TransactionTypes
     {
         POSNormal = 0,
@@ -436,6 +443,7 @@ namespace AceSoft.RetailPlus
         ManualDeactivated = 7,
         SystemDeactivated = 8,
         ManualActivated = 9,
+        SystemActivated = 10,
         All
     }
 
@@ -481,5 +489,11 @@ namespace AceSoft.RetailPlus
         /// This is the code for InHouseCreditCard
         /// </summary>
         IHCC // InHouseCreditCard
+    }
+
+    public enum CreditPaymentType
+    {
+        Normal,
+        Houseware
     }
 }

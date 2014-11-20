@@ -36,7 +36,7 @@ DELETE FROM tblProductPackage WHERE PackageID = 1 or (ProductID = 1 AND UnitID=1
 DELETE FROM tblProducts WHERE ProductID = 1;  
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES (1, 'CREDIT PAYMENT','CREDIT PAYMENT',1,1,2,1,NOW());
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 1, 'CREDIT PAYMENT', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'CREDIT PAYMENT';
-INSERT INTO tblProductInventory(BranchID, ProductID, Quantity)VALUES(1, 1,999999999);
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'CREDIT PAYMENT';
 UPDATE tblProductInventory SET Quantity = 999999999 WHERE ProductID = (SELECT ProductID FROM tblProducts WHERE ProductCode = 'CREDIT PAYMENT');
 
 
@@ -44,46 +44,55 @@ DELETE FROM tblProductPackage WHERE PackageID = 2;
 DELETE FROM tblProducts WHERE ProductID = 2;
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES (2, 'ADVNTGE CARD - MEMBERSHIP FEE','ADVNTGE CARD - MEMBERSHIP FEE',1,1,2,1,NOW());
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 2, 'ADVNTGE CARD - MEMBERSHIP FEE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - MEMBERSHIP FEE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - MEMBERSHIP FEE';
 
 DELETE FROM tblProductPackage WHERE PackageID = 3;
 DELETE FROM tblProducts WHERE ProductID = 3;
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES (3, 'ADVNTGE CARD - RENEWAL FEE','ADVNTGE CARD - RENEWAL FEE',1,1,2,1,NOW());
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 3, 'ADVNTGE CARD - RENEWAL FEE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - RENEWAL FEE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - RENEWAL FEE';
 
 DELETE FROM tblProductPackage WHERE PackageID = 4;
 DELETE FROM tblProducts WHERE ProductID = 4;
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES (4, 'ADVNTGE CARD - REPLACEMENT FEE','ADVNTGE CARD - REPLACEMENT FEE',1,1,2,1,NOW());
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 4, 'ADVNTGE CARD - REPLACEMENT FEE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - REPLACEMENT FEE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'ADVNTGE CARD - REPLACEMENT FEE';
 
 DELETE FROM tblProductPackage WHERE PackageID = 5;
 DELETE FROM tblProducts WHERE ProductID = 5;
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES (5, 'CREDIT CARD - MEMBERSHIP FEE','CREDIT CARD - MEMBERSHIP FEE',1,1,2,1,NOW());
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 5, 'CREDIT CARD - MEMBERSHIP FEE', ProductID, BaseUnitID, 300, 0, 1 FROM tblProducts WHERE ProductCode = 'CREDIT CARD - MEMBERSHIP FEE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'CREDIT CARD - MEMBERSHIP FEE';
 
 DELETE FROM tblProductPackage WHERE PackageID = 6;
 DELETE FROM tblProducts WHERE ProductID = 6;
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES (6, 'CREDIT CARD - RENEWAL FEE','CREDIT CARD - RENEWAL FEE',1,1,2,1,NOW());
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 6, 'CREDIT CARD - RENEWAL FEE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'CREDIT CARD - RENEWAL FEE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'CREDIT CARD - RENEWAL FEE';
 
 DELETE FROM tblProductPackage WHERE PackageID = 7;
 DELETE FROM tblProducts WHERE ProductID = 7;
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES (7, 'CREDIT CARD - REPLACEMENT FEE','CREDIT CARD - REPLACEMENT FEE',1,1,2,1,NOW());
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 7, 'CREDIT CARD - REPLACEMENT FEE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'CREDIT CARD - REPLACEMENT FEE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'CREDIT CARD - REPLACEMENT FEE';
 
 DELETE FROM tblProductPackage WHERE PackageID = 8;
 DELETE FROM tblProducts WHERE ProductID = 8;
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES (8, 'SUPER CARD - MEMBERSHIP FEE','SUPER CARD - MEMBERSHIP FEE',1,1,2,1,NOW());
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 8, 'SUPER CARD - MEMBERSHIP FEE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'SUPER CARD - MEMBERSHIP FEE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'SUPER CARD - MEMBERSHIP FEE';
 
 DELETE FROM tblProductPackage WHERE PackageID = 9;
 DELETE FROM tblProducts WHERE ProductID = 9;
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES (9, 'SUPER CARD - RENEWAL FEE','SUPER CARD - RENEWAL FEE',1,1,2,1,NOW());
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 9, 'SUPER CARD - RENEWAL FEE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'SUPER CARD - RENEWAL FEE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'SUPER CARD - RENEWAL FEE';
 
 DELETE FROM tblProductPackage WHERE PackageID = 10;
 DELETE FROM tblProducts WHERE ProductID = 10;
 INSERT INTO tblProducts(ProductID, ProductCode, ProductDesc, ProductSubGroupID, BaseUnitID, SupplierID, Deleted, DateCreated) VALUES (10, 'SUPER CARD - REPLACEMENT FEE','SUPER CARD - REPLACEMENT FEE',1,1,2,1,NOW());
 INSERT INTO tblProductPackage (PackageID, Barcode1, ProductID, UnitID, Price, PurchasePrice, Quantity)   SELECT 10, 'SUPER CARD - REPLACEMENT FEE', ProductID, BaseUnitID, 0, 0, 1 FROM tblProducts WHERE ProductCode = 'SUPER CARD - REPLACEMENT FEE';
+INSERT INTO tblProductInventory(BranchID, ProductID, Quantity) SELECT 1, ProductID, 999999999 FROM tblProducts WHERE ProductCode = 'SUPER CARD - REPLACEMENT FEE';
 
 DELETE FROM tblContactRewards WHERE CustomerID = 1;
 INSERT INTO tblContactRewards (CustomerID, RewardCardNo, RewardActive, RewardCardStatus, RewardAwardDate, ExpiryDate, BirthDate) 

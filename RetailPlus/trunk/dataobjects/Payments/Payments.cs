@@ -7,6 +7,8 @@ namespace AceSoft.RetailPlus.Data
 {
 	public struct DebitPaymentDetails
 	{
+        public BranchDetails BranchDetails;
+        public string TerminalNo;
 		public Int64 TransactionID;
         public bool IsRefund;
         public string TransactionNo;
@@ -25,6 +27,8 @@ namespace AceSoft.RetailPlus.Data
 		 "FF52834EAFB5A7A1FDFD5851A3")]
 	public struct PaymentDetails
 	{
+        public Int32 BranchID;
+        public string TerminalNo;
 		public Int64 TransactionID;
 		public CashPaymentDetails[] arrCashPaymentDetails;
 		public ChequePaymentDetails[] arrChequePaymentDetails;
@@ -85,7 +89,6 @@ namespace AceSoft.RetailPlus.Data
                     InsertDebitPayment(debitpaymentdet);
 				}
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
@@ -96,12 +99,14 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procDebitPaymentInsert(@TransactionID, @TransactionNo, @Amount, @ContactID, @Remarks);";
+                string SQL = "CALL procDebitPaymentInsert(@BranchID, @TerminalNo, @TransactionID, @TransactionNo, @Amount, @ContactID, @Remarks);";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
+                cmd.Parameters.AddWithValue("@BranchID", Details.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
                 cmd.Parameters.AddWithValue("@TransactionID", Details.TransactionID);
                 cmd.Parameters.AddWithValue("@TransactionNo", Details.TransactionNo);
                 cmd.Parameters.AddWithValue("@Amount", Details.Amount);
@@ -112,60 +117,60 @@ namespace AceSoft.RetailPlus.Data
 
                 Contacts clsContact = new Contacts(base.Connection, base.Transaction);
                 clsContact.SubtractDebit(Details.CustomerDetails.ContactID, Details.Amount);
-
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
             }
         }
 
-        public void UpdateCredit(long pvtlngContactID, long pvtlngTransactionID, string pvtstrTransactionNo, decimal pvtdecAmountPaid, string pvtstrRemarks)
+        public void UpdateCredit(Int32 BranchID, string TerminalNo, Int64 ContactID, long CreditPaymentID, decimal AmountPaid, string Remarks)
 		{
 			try 
 			{
-                string SQL = "CALL procCreditPaymentUpdateCredit(@TransactionID, @TransactionNo, @Amount, @Remarks);";
+                string SQL = "CALL procCreditPaymentUpdateCredit(@BranchID, @TerminalNo, @CreditPaymentID, @Amount, @Remarks);";
 				  
 				MySqlCommand cmd = new MySqlCommand();
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
-				
-                cmd.Parameters.AddWithValue("@TransactionID", pvtlngTransactionID);
-                cmd.Parameters.AddWithValue("@TransactionNo", pvtstrTransactionNo);
-                cmd.Parameters.AddWithValue("@Amount", pvtdecAmountPaid);
-                cmd.Parameters.AddWithValue("@Remarks", pvtstrRemarks);
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@CreditPaymentID", CreditPaymentID);
+                cmd.Parameters.AddWithValue("@Amount", AmountPaid);
+                cmd.Parameters.AddWithValue("@Remarks", Remarks);
 
 				base.ExecuteNonQuery(cmd);
 
                 Contacts clsContact = new Contacts(base.Connection, base.Transaction);
-                clsContact.SubtractCredit(pvtlngContactID, pvtdecAmountPaid);
+                clsContact.SubtractCredit(ContactID, AmountPaid);
 			}
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);
 			}	
 		}
-        public void UpdateDebit(long pvtlngContactID, long pvtlngTransactionID, string pvtstrTransactionNo, decimal pvtdecAmountPaid, string pvtstrRemarks)
+        public void UpdateDebit(Int32 BranchID, string TerminalNo, Int64 ContactID, Int64 CreditPaymentID, decimal AmountPaid, string Remarks)
 		{
 			try 
 			{
-                string SQL = "CALL procDebitPaymentUpdateDebit(@TransactionID, @TransactionNo, @Amount, @Remarks);";
+                string SQL = "CALL procDebitPaymentUpdateDebit(@BranchID, @TerminalNo, @CreditPaymentID, @Amount, @Remarks);";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = SQL;
 
-                cmd.Parameters.AddWithValue("@TransactionID", pvtlngTransactionID);
-                cmd.Parameters.AddWithValue("@TransactionNo", pvtstrTransactionNo);
-                cmd.Parameters.AddWithValue("@Amount", pvtdecAmountPaid);
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+                cmd.Parameters.AddWithValue("@CreditPaymentID", CreditPaymentID);
+                cmd.Parameters.AddWithValue("@Amount", AmountPaid);
+                cmd.Parameters.AddWithValue("@Remarks", Remarks);
 
 				base.ExecuteNonQuery(cmd);
 
 				Contacts clsContact = new Contacts(base.Connection, base.Transaction);
-                clsContact.SubtractDebit(pvtlngContactID, pvtdecAmountPaid);
+                clsContact.SubtractDebit(ContactID, AmountPaid);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);

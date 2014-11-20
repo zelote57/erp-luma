@@ -475,11 +475,23 @@ namespace AceSoft
                 {
                     try
                     {
-                        main_ipEndPoint = new IPEndPoint(Dns.GetHostByAddress(ServerIP).AddressList[0], Port);
+                        System.Net.IPAddress iphSelected = Dns.GetHostByAddress(ServerIP).AddressList[0];
+                        foreach (System.Net.IPAddress iph in Dns.GetHostByAddress(ServerIP).AddressList)
+                        {
+                            if (iph.ToString() == sServer) iphSelected = iph; break;
+                        }
+
+                        main_ipEndPoint = new IPEndPoint(iphSelected, Port);
                     }
                     catch
                     {
-                        main_ipEndPoint = new IPEndPoint(Dns.GetHostEntry(ServerIP).AddressList[0], Port);
+                        System.Net.IPAddress iphSelected = Dns.GetHostEntry(ServerIP).AddressList[0];
+                        foreach (System.Net.IPAddress iph in Dns.GetHostEntry(ServerIP).AddressList)
+                        {
+                            if (iph.ToString() == sServer) iphSelected = iph; break;
+                        }
+
+                        main_ipEndPoint = new IPEndPoint(iphSelected, Port);
                     }
                 }
                 catch {
@@ -622,8 +634,17 @@ namespace AceSoft
 #if (FTP_DEBUG)
 					Console.WriteLine("Resolving host");
 #endif
+                        System.Net.IPAddress iphSelected = Dns.GetHostEntry(ServerIP).AddressList[0];
+                        foreach (System.Net.IPAddress iph in Dns.GetHostEntry(ServerIP).AddressList)
+                        {
+                            if (iph.ToString() == sServer)
+                            {
+                                iphSelected = iph; // Dns.GetHostEntry(ServerIP).AddressList[0]
+                                break;
+                            }
+                        }
 
-						data_ipEndPoint = new IPEndPoint(Dns.GetHostEntry(ServerIP).AddressList[0], iPort);
+                        data_ipEndPoint = new IPEndPoint(iphSelected, iPort);
 
 
 #if (FTP_DEBUG)
@@ -881,7 +902,11 @@ namespace AceSoft
 					#region Connection
 
 					FTPPlumbing.OpenDataSocket();
-					FTPPlumbing.SendCommand("LIST");
+                    try
+                    {
+                        FTPPlumbing.SendCommand("LIST"); // LIST
+                    }
+                    catch { FTPPlumbing.SendCommand("LS"); }
 
 					//FILIPE MADUREIRA.
 					//Added response 125

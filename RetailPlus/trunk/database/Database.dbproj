@@ -233,6 +233,9 @@
     <NotInBuild Include="pos_scripts\RandomUsers.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
+    <NotInBuild Include="client_update_scripts\hw_plaza_main.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
   </ItemGroup>
   <ItemGroup>
     <BuildContributorArgument Include="OutDir=$(OutDir)" />

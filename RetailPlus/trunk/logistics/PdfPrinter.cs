@@ -36,7 +36,10 @@ namespace AceSoft
                 p.EnableRaisingEvents = true;
 
                 p.Close();
-                KillAdobe("AcroRd32");
+
+                try { KillAdobe("AcroRd32"); }
+                catch { }
+
                 return true;
             }
             catch

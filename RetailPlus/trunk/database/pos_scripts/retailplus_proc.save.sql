@@ -1388,6 +1388,7 @@ create procedure procSaveProductGroup(
 	IN decPrice decimal(18,2),
 	IN decPurchasePrice decimal(18,2),
 	IN boIncludeInSubtotalDiscount tinyint(1),
+	IN boIsCreditChargeExcluded tinyint(1),
 	IN decVAT decimal(18,2),
 	IN decEVAT decimal(18,2),
 	IN decLocalTax decimal(18,2),
@@ -1424,6 +1425,7 @@ BEGIN
 			Price					= decPrice,
 			PurchasePrice			= decPurchasePrice,
 			IncludeInSubtotalDiscount	= boIncludeInSubtotalDiscount,
+			IsCreditChargeExcluded	= boIsCreditChargeExcluded,
 			VAT						= decVAT,
 			EVAT					= decEVAT,
 			LocalTax				= decLocalTax,
@@ -1445,7 +1447,7 @@ BEGIN
 		WHERE ProductGroupID		= intProductGroupID;
 	ELSE
 		INSERT INTO tblProductGroup(ProductGroupID, ProductGroupCode, ProductGroupName, BaseUnitID,
-								Price, PurchasePrice, IncludeInSubtotalDiscount, VAT, EVAT,
+								Price, PurchasePrice, IncludeInSubtotalDiscount, IsCreditChargeExcluded, VAT, EVAT,
 								LocalTax, OrderSlipPrinter, ChartOfAccountIDPurchase, ChartOfAccountIDTaxPurchase,
 								ChartOfAccountIDSold, ChartOfAccountIDTaxSold, ChartOfAccountIDInventory,
 								SequenceNo, isLock, ChartOfAccountIDTransferIn, ChartOfAccountIDTaxTransferIn,
@@ -1453,7 +1455,7 @@ BEGIN
 								ChartOfAccountIDInvAdjustment, ChartOfAccountIDTaxInvAdjustment, 
 								CreatedOn, LastModified)
 			VALUES(intProductGroupID, strProductGroupCode, strProductGroupName, intBaseUnitID,
-								decPrice, decPurchasePrice, boIncludeInSubtotalDiscount, decVAT, decEVAT,
+								decPrice, decPurchasePrice, boIncludeInSubtotalDiscount, boIsCreditChargeExcluded, decVAT, decEVAT,
 								decLocalTax, intOrderSlipPrinter, intChartOfAccountIDPurchase, intChartOfAccountIDTaxPurchase,
 								intChartOfAccountIDSold, intChartOfAccountIDTaxSold, intChartOfAccountIDInventory,
 								intSequenceNo, boisLock, intChartOfAccountIDTransferIn, intChartOfAccountIDTaxTransferIn,
@@ -3122,6 +3124,9 @@ create procedure procSaveCashierReport(
 	IN decVoidSales                          decimal(18,3),
 	IN decRefundSales                        decimal(18,3),
 	IN decItemsDiscount                      decimal(18,3),
+	IN decSNRItemsDiscount                   decimal(18,3),
+	IN decPWDItemsDiscount                   decimal(18,3),
+	IN decOtherItemsDiscount                 decimal(18,3),
 	IN decSubtotalDiscount                   decimal(18,3),
 	IN intNoOfCashTransactions               int(10),
 	IN intNoOfChequeTransactions             int(10),
@@ -3213,6 +3218,9 @@ BEGIN
 			VoidSales							= decVoidSales,
 			RefundSales							= decRefundSales,
 			ItemsDiscount						= decItemsDiscount,
+			SNRItemsDiscount					= decSNRItemsDiscount,
+			PWDItemsDiscount					= decPWDItemsDiscount,
+			OtherItemsDiscount					= decOtherItemsDiscount,
 			SubtotalDiscount					= decSubtotalDiscount,
 			NoOfCashTransactions				= intNoOfCashTransactions,
 			NoOfChequeTransactions				= intNoOfChequeTransactions,
@@ -3262,7 +3270,7 @@ BEGIN
 							CreditSales, CreditPayment, CashInDrawer, TotalDisburse, CashDisburse, ChequeDisburse,
 							CreditCardDisburse, TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold,
 							TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, BeginningBalance,
-							VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount, NoOfCashTransactions,
+							VoidSales, RefundSales, ItemsDiscount, SNRItemsDiscount, PWDItemsDiscount, OtherItemsDiscount, SubtotalDiscount, NoOfCashTransactions,
 							NoOfChequeTransactions, NoOfCreditCardTransactions, NoOfCreditTransactions, 
 							NoOfCombinationPaymentTransactions, NoOfCreditPaymentTransactions, NoOfClosedTransactions,
 							NoOfRefundTransactions, NoOfVoidTransactions, NoOfTotalTransactions, CashCount, 
@@ -3280,7 +3288,7 @@ BEGIN
 							decCreditSales, decCreditPayment, decCashInDrawer, decTotalDisburse, decCashDisburse, decChequeDisburse,
 							decCreditCardDisburse, decTotalWithhold, decCashWithhold, decChequeWithhold, decCreditCardWithhold,
 							decTotalPaidOut, decCashPaidOut, decChequePaidOut, decCreditCardPaidOut, decBeginningBalance,
-							decVoidSales, decRefundSales, decItemsDiscount, decSubtotalDiscount, intNoOfCashTransactions,
+							decVoidSales, decRefundSales, decItemsDiscount, decSNRItemsDiscount, decPWDItemsDiscount, decOtherItemsDiscount, decSubtotalDiscount, intNoOfCashTransactions,
 							intNoOfChequeTransactions, intNoOfCreditCardTransactions, intNoOfCreditTransactions, 
 							intNoOfCombinationPaymentTransactions, intNoOfCreditPaymentTransactions, intNoOfClosedTransactions,
 							intNoOfRefundTransactions, intNoOfVoidTransactions, intNoOfTotalTransactions, decCashCount, 
@@ -3353,6 +3361,9 @@ create procedure procSaveCashierReportHistory(
 	IN decVoidSales                          decimal(18,3),
 	IN decRefundSales                        decimal(18,3),
 	IN decItemsDiscount                      decimal(18,3),
+	IN decSNRItemsDiscount                   decimal(18,3),
+	IN decPWDItemsDiscount                   decimal(18,3),
+	IN decOtherItemsDiscount                 decimal(18,3),
 	IN decSubtotalDiscount                   decimal(18,3),
 	IN intNoOfCashTransactions               int(10),
 	IN intNoOfChequeTransactions             int(10),
@@ -3440,6 +3451,9 @@ BEGIN
 			VoidSales							= decVoidSales,
 			RefundSales							= decRefundSales,
 			ItemsDiscount						= decItemsDiscount,
+			SNRItemsDiscount					= decSNRItemsDiscount,
+			PWDItemsDiscount					= decPWDItemsDiscount,
+			OtherItemsDiscount					= decOtherItemsDiscount,
 			SubtotalDiscount					= decSubtotalDiscount,
 			NoOfCashTransactions				= intNoOfCashTransactions,
 			NoOfChequeTransactions				= intNoOfChequeTransactions,
@@ -3488,7 +3502,7 @@ BEGIN
 							CreditSales, CreditPayment, CashInDrawer, TotalDisburse, CashDisburse, ChequeDisburse,
 							CreditCardDisburse, TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold,
 							TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, BeginningBalance,
-							VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount, NoOfCashTransactions,
+							VoidSales, RefundSales, ItemsDiscount, SNRItemsDiscount, PWDItemsDiscount, OtherItemsDiscount, SubtotalDiscount, NoOfCashTransactions,
 							NoOfChequeTransactions, NoOfCreditCardTransactions, NoOfCreditTransactions, 
 							NoOfCombinationPaymentTransactions, NoOfCreditPaymentTransactions, NoOfClosedTransactions,
 							NoOfRefundTransactions, NoOfVoidTransactions, NoOfTotalTransactions, CashCount, 
@@ -3505,7 +3519,7 @@ BEGIN
 							decCreditSales, decCreditPayment, decCashInDrawer, decTotalDisburse, decCashDisburse, decChequeDisburse,
 							decCreditCardDisburse, decTotalWithhold, decCashWithhold, decChequeWithhold, decCreditCardWithhold,
 							decTotalPaidOut, decCashPaidOut, decChequePaidOut, decCreditCardPaidOut, decBeginningBalance,
-							decVoidSales, decRefundSales, decItemsDiscount, decSubtotalDiscount, intNoOfCashTransactions,
+							decVoidSales, decRefundSales, decItemsDiscount, decSNRItemsDiscount, decPWDItemsDiscount, decOtherItemsDiscount, decSubtotalDiscount, intNoOfCashTransactions,
 							intNoOfChequeTransactions, intNoOfCreditCardTransactions, intNoOfCreditTransactions, 
 							intNoOfCombinationPaymentTransactions, intNoOfCreditPaymentTransactions, intNoOfClosedTransactions,
 							intNoOfRefundTransactions, intNoOfVoidTransactions, intNoOfTotalTransactions, decCashCount, 
@@ -3655,69 +3669,6 @@ END;
 GO
 delimiter ;
 
-
-/********************************************
-	procSaveCashPayment
-	Aug 2, 2014
-
-	CALL procSaveCashPayment(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
-
-	Note: SyncID is the same as the auto_increment ID in the local table.
-	      It is only used to copy local db transactions to master db.
-********************************************/
-
-delimiter GO
-DROP PROCEDURE IF EXISTS procSaveCashPayment
-GO
-
-create procedure procSaveCashPayment(	
-	IN intBranchID     int(4),
-	IN strTerminalNo   varchar(5),
-	IN intSyncID	   bigint(20),
-	IN intCashPaymentID    bigint(20),
-	In decAmount       decimal(18,2),
-	IN intPaymentType  int(10),
-	IN dteDateCreated  datetime,
-	IN intCashierID    bigint(20),
-	IN strRemarks      varchar(255),
-	IN strBranchCode   varchar(30),
-	IN dteCreatedOn DATETIME,
-	IN dteLastModified DATETIME
-	)
-BEGIN
-	
-	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
-	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
-	
-	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
-	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
-
-	IF (intSyncID = 0) THEN SET intSyncID = intCashPaymentID; END IF;
-	IF (strBranchCode = '') THEN  SET strBranchCode = (SELECT BranchCode FROM tblBranch WHERE BranchID = intBranchID LIMIT 1); END IF;
-
-	IF EXISTS(SELECT CashPaymentID FROM tblCashPayment WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
-		UPDATE tblCashPayment SET
-			Amount					= decAmount,
-			PaymentType				= intPaymentType,
-			DateCreated				= dteDateCreated,
-			CashierID				= intCashierID,
-			Remarks					= strRemarks,
-			BranchCode				= strBranchCode,
-			LastModified			= dteLastModified
-		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
-
-	ELSE
-		INSERT INTO tblCashPayment(BranchID, TerminalNo, SyncID, Amount, PaymentType, DateCreated, 
-							CashierID, Remarks, BranchCode, CreatedOn, LastModified)
-			VALUES(intBranchID, strTerminalNo, CashPaymentID, decAmount, intPaymentType, dteDateCreated, 
-							intCashierID, strRemarks, strBranchCode, dteCreatedOn, dteLastModified);
-
-		UPDATE tblCashPayment SET SyncID = CashPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
-	END IF;
-				
-END;
-GO
-delimiter ;
 
 /********************************************
 	procSavePaidOut
@@ -4031,6 +3982,127 @@ BEGIN
 			VALUES(intBranchID, strTerminalNo, intSyncID, intTransactionID, dteTransactionDate, strCashierName, decAmount, decAdditionalCharge, intContactID, intGuarantorID, intCardTypeID, strCardTypeCode, strCardTypeName, strCardNo, strCardHolder, strValidityDates, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
 
 		UPDATE tblCreditCardPayment SET SyncID = CreditCardPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveCreditPaymentCash
+	Oct 28, 2014
+
+	CALL procSaveCreditPaymentCash(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveCreditPaymentCash
+GO
+
+create procedure procSaveCreditPaymentCash(	
+	IN intBranchID      int(4),
+	IN strTerminalNo    varchar(5),
+	IN intSyncID	    bigint(20),
+	IN intCreditPaymentCashID bigint(20),
+	IN intCreditPaymentID	bigint(20),
+	IN intCPRefBranchID      int(4),
+	IN strCPRefTerminalNo    varchar(5),
+	IN intTransactionID bigint(20),
+	IN decAmount        decimal(18,2),
+	IN strRemarks       varchar(255),
+	IN strTransactionNo varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intCreditPaymentCashID; END IF;
+	
+	IF EXISTS(SELECT CreditPaymentCashID FROM tblCreditPaymentCash WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblCreditPaymentCash SET
+			Amount					= decAmount,
+			Remarks					= strRemarks,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblCreditPaymentCash(BranchID, TerminalNo, SyncID, CreditPaymentID, CPRefBranchID, CPRefTerminalNo, TransactionID, Amount, Remarks, TransactionNo, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, CreditPaymentCashID, intCreditPaymentID, intCPRefBranchID, strCPRefTerminalNo, intTransactionID, decAmount, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
+
+		UPDATE tblCreditPaymentCash SET SyncID = CreditPaymentCashID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+
+/********************************************
+	procSaveCreditPaymentCheque
+	Oct 26, 2014
+
+	CALL procSaveCreditPaymentCheque(2,'01',1,0,1,NOW(),7,8,9,10,now(), now());
+
+	Desc: save the cheques use to pay creditpayment [utang]
+	Note: SyncID is the same as the auto_increment ID in the local table.
+	      It is only used to copy local db transactions to master db.
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveCreditPaymentCheque
+GO
+
+create procedure procSaveCreditPaymentCheque(	
+	IN intBranchID      int(4),
+	IN strTerminalNo    varchar(5),
+	IN intSyncID	    bigint(20),
+	IN intCreditPaymentChequeID bigint(20),
+	IN intCreditPaymentID	bigint(20),
+	IN intCPRefBranchID      int(4),
+	IN strCPRefTerminalNo    varchar(5),
+	IN intTransactionID bigint(20),
+	IN strChequeNo		varchar(30),
+	IN decAmount        decimal(18,2),
+	IN dteValidityDate  datetime,
+	IN strRemarks       varchar(255),
+	IN strTransactionNo varchar(30),
+	IN dteCreatedOn DATETIME,
+	IN dteLastModified DATETIME
+	)
+BEGIN
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+	
+	IF (DATE_FORMAT(dteCreatedOn, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN SET dteCreatedOn = NOW(); END IF;
+	IF (DATE_FORMAT(dteLastModified, '%Y-%m-%d') = DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN  SET dteLastModified = NOW(); END IF;
+
+	IF (intSyncID = 0) THEN SET intSyncID = intCreditPaymentChequeID; END IF;
+	
+	IF EXISTS(SELECT CreditPaymentChequeID FROM tblCreditPaymentCheque WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID) THEN 
+		UPDATE tblCreditPaymentCheque SET
+			ChequeNo				= ChequeNo,
+			Amount					= decAmount,
+			ValidityDate			= dteValidityDate,
+			Remarks					= strRemarks,
+			LastModified			= dteLastModified
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = intSyncID;
+
+	ELSE
+		INSERT INTO tblCreditPaymentCheque(BranchID, TerminalNo, SyncID, CreditPaymentID, CPRefBranchID, CPRefTerminalNo, TransactionID, ChequeNo, Amount, ValidityDate, Remarks, TransactionNo, CreatedOn, LastModified)
+			VALUES(intBranchID, strTerminalNo, intSyncID, intCreditPaymentID, intCPRefBranchID, strCPRefTerminalNo, intTransactionID, strChequeNo, decAmount, dteValidityDate, strRemarks, strTransactionNo, dteCreatedOn, dteLastModified);
+
+		UPDATE tblCreditPaymentCheque SET SyncID = CreditPaymentChequeID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
 	END IF;
 				
 END;

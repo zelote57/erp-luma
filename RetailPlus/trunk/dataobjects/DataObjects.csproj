@@ -148,6 +148,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CashierReportHistories.cs" />
+    <Compile Include="SplitPayment.cs" />
     <Compile Include="Payments\CashPayments.cs" />
     <Compile Include="Payments\ChequePayments.cs" />
     <Compile Include="MasterFiles\CalDate.cs" />
@@ -156,6 +157,9 @@
     <Compile Include="Config\SysCreditConfig.cs" />
     <Compile Include="Payments\CreditPayments.cs" />
     <Compile Include="Payments\CreditCardPayments.cs" />
+    <Compile Include="Payments\CreditPayment\CreditPaymentCheque.cs" />
+    <Compile Include="Payments\CreditPayment\CreditPaymentCash.cs" />
+    <Compile Include="Payments\CreditPayment\PaymentCredits.cs" />
     <Compile Include="Products\RewardItems.cs" />
     <Compile Include="Products\Characteristics.cs">
       <SubType>Code</SubType>

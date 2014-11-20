@@ -61,6 +61,12 @@ namespace AceSoft.RetailPlus.Data
         public bool WillShowProductTotalQuantityInItemSelect;
         public bool WillNotPrintReprintMessage;
 
+        public bool WillDepositChangeOfCreditPayment;
+        public CreditPaymentType CreditPaymentType;
+
+        public bool AllowDebitPayment;
+        public bool AllowRewardPointsPayment;
+
         public string ORHeader;
     }
     public class SysConfig : POSConnection
@@ -186,6 +192,50 @@ namespace AceSoft.RetailPlus.Data
             return boRetValue;
         }
 
+        public bool get_WillDepositChangeOfCreditPayment()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_WILL_DEPOSIT_CHANGE_OF_CREDIT_PAYMENT));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public bool get_AllowDebitPayment()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_ALLOW_DEBIT_PAYMENT));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public bool get_AllowRewardPointsPayment()
+        {
+            bool boRetValue = false;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_ALLOW_REWARD_POINTS_PAYMENT));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public CreditPaymentType get_CreditPaymentType()
+        {
+            CreditPaymentType clsCreditPaymentType = CreditPaymentType.Normal;
+            try
+            {
+                clsCreditPaymentType = (CreditPaymentType) Enum.Parse(typeof(CreditPaymentType), get_Sysconfig(Constants.SYS_CONFIG_CREDIT_PAYMENT_TYPE));
+            }
+            catch { }
+            return clsCreditPaymentType;
+        }
+
         public string get_ORHeader()
         {
             string strRetValue = "SALES INVOICE";
@@ -268,6 +318,10 @@ namespace AceSoft.RetailPlus.Data
             clsSysConfigDetails.WillAskDoNotPrintTransactionDate = get_WillAskDoNotPrintTransactionDate();
             clsSysConfigDetails.WillShowProductTotalQuantityInItemSelect = get_WillShowProductTotalQuantityInItemSelect();
             clsSysConfigDetails.WillNotPrintReprintMessage = get_WillNotPrintReprintMessage();
+            clsSysConfigDetails.WillDepositChangeOfCreditPayment = get_WillDepositChangeOfCreditPayment();
+            clsSysConfigDetails.CreditPaymentType = get_CreditPaymentType();
+            clsSysConfigDetails.AllowDebitPayment = get_AllowDebitPayment();
+            clsSysConfigDetails.AllowRewardPointsPayment = get_AllowRewardPointsPayment();
             clsSysConfigDetails.ORHeader = get_ORHeader();
 
             return clsSysConfigDetails;

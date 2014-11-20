@@ -76,6 +76,12 @@ namespace AceSoft.RetailPlus
         public const string ANALYTICS_All_Covers = "All Transactions W/ Covers";
         public const string ANALYTICS_ItemsForPOBasedOnSales = "Items For PO based on Sales";
 
+        public const string CREDITS_Purchases = "Purchases";
+        public const string CREDITS_Payments = "Payments";
+        public const string CREDITS_CurrentBillingReport = "Current Billing Report";
+        public const string CREDITS_BillingHistory = "Billing History";
+        public const string CREDITS_GuarantorLedgerSummary = "Ledger's Summary";
+
         public const string REPORT_SELECTION_SEPARATOR = "---------------------------------------------";
         public const string REPORT_SELECTION = "Select Report Type";
     }

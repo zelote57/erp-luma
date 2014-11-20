@@ -44,6 +44,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        public Data.TerminalDetails TerminalDetails { get; set; }
         public bool IsDiscountEditable
         {
             set
@@ -51,6 +52,15 @@ namespace AceSoft.RetailPlus.Client.UI
                 mbolIsDiscountEditable = value;
             }
         }
+
+        //private bool mDisableVATExempt;
+        //public bool DisableVATExempt
+        //{
+        //    set
+        //    {
+        //        mDisableVATExempt = value;
+        //    }
+        //}
 
 		public DialogResult Result
 		{
@@ -372,7 +382,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
             this.keyboardNoControl1.Location = new System.Drawing.Point(400, 323);
             this.keyboardNoControl1.Name = "keyboardNoControl1";
-            this.keyboardNoControl1.Size = new System.Drawing.Size(202, 176);
+            this.keyboardNoControl1.Size = new System.Drawing.Size(208, 172);
             this.keyboardNoControl1.TabIndex = 1;
             this.keyboardNoControl1.TabStop = false;
             this.keyboardNoControl1.Visible = false;
@@ -513,12 +523,18 @@ namespace AceSoft.RetailPlus.Client.UI
 			
 			lblDescription.Text = "Current Balance to be paid.";
 
-			cboDiscountType.Items.Clear();
-			Data.Discount clsDiscount = new Data.Discount();
-			foreach (System.Data.DataRow dr in clsDiscount.DataList("DiscountCode", SortOption.Ascending).Rows)
-			{
-				cboDiscountType.Items.Add(dr["DiscountCode"]);
-			}
+            //string strTmp = "";
+            cboDiscountType.Items.Clear();
+            Data.Discount clsDiscount = new Data.Discount();
+            foreach (System.Data.DataRow dr in clsDiscount.DataList("DiscountCode", SortOption.Ascending).Rows)
+            {
+                //if (mDisableVATExempt && dr["DiscountCode"].ToString() == TerminalDetails.SeniorCitizenDiscountCode)
+                //    strTmp = "";
+                //else if (mDisableVATExempt && dr["DiscountCode"].ToString() == TerminalDetails.PWDDiscountCode)
+                //    strTmp = "";
+                //else
+                    cboDiscountType.Items.Add(dr["DiscountCode"]);
+            }
 			clsDiscount.CommitAndDispose();
 
 			if (mDiscountCode != null & mDiscountCode != "")

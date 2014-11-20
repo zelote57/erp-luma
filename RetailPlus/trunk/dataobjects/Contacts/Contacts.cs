@@ -703,24 +703,6 @@ namespace AceSoft.RetailPlus.Data
                 else
                 {
                     Details.CreditDetails.CreditActive = checkCreditActive(Details.CreditDetails.CreditCardStatus);
-                    //switch (Details.CreditDetails.CreditCardStatus)
-                    //{
-                    //    case CreditCardStatus.New:
-                    //    case CreditCardStatus.Replaced_Lost:
-                    //    case CreditCardStatus.Replaced_Expired:
-                    //    case CreditCardStatus.ReNew:
-                    //    case CreditCardStatus.Reactivated_Lost:
-                    //    case CreditCardStatus.ManualActivated:
-                    //        Details.CreditDetails.CreditActive = true;
-                    //        break;
-                    //    case CreditCardStatus.Lost:
-                    //    case CreditCardStatus.Expired:
-                    //    case CreditCardStatus.ManualDeactivated:
-                    //    case CreditCardStatus.SystemDeactivated:
-                    //    case CreditCardStatus.All:
-                    //        Details.CreditDetails.CreditActive = false;
-                    //        break;
-                    //}
                 }
 
                 // Oct 12, 2013 : - get additional details
@@ -1405,7 +1387,7 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public DataTable CustomersWithCredits(ContactColumns clsContactColumns, Int64 GuarantorID = 0, string LastNameFrom = "", string LastNameTo = "", string CustomerCode_CreditCardNo = "", DateTime? CreditCardExpiryDateFrom = null, DateTime? CreditCardExpiryDateTo = null, CreditCardStatus CreditCardStatus = CreditCardStatus.All, Int32 CreditCardTypeID = 0, bool ShowCustomersWithOutGuarantorOnly = false, string SortField = "ContactCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        public DataTable CustomersWithCredits(ContactColumns clsContactColumns, Int64 GuarantorID = 0, string LastNameFrom = "", string LastNameTo = "", string CustomerCode_CreditCardNo = "", DateTime? CreditCardExpiryDateFrom = null, DateTime? CreditCardExpiryDateTo = null, CreditCardStatus CreditCardStatus = CreditCardStatus.All, Int32 CreditCardTypeID = 0, bool CheckCustomersGuarantor = false, bool WithGuarantorOnly = false,  string SortField = "ContactCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
         {
             try
             {
@@ -1428,9 +1410,12 @@ namespace AceSoft.RetailPlus.Data
                     cmd.Parameters.AddWithValue("GuarantorID", GuarantorID);
                 }
 
-                if (ShowCustomersWithOutGuarantorOnly)
+                if (CheckCustomersGuarantor)
                 {
-                    SQL += "AND GuarantorID = 0 ";
+                    if (WithGuarantorOnly)
+                        SQL += "AND GuarantorID <> 0 ";
+                    else
+                        SQL += "AND GuarantorID = 0 ";
                 }
                 
                 if (!string.IsNullOrEmpty(CustomerCode_CreditCardNo))
@@ -1610,6 +1595,72 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public System.Data.DataTable CreditPaymentCashAsDataTable(CreditPaymentCashDetails SearchKeys, string SortField = "CPC.CreatedOn", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procContactCreditPaymentSelect(@BranchID, @TerminalNo, @ContactID, @CreditCardTypeID, @PaymentDateFrom, @PaymentDateTo, @GuaLastNameFrom, @GuaLastNameTo, @SortField, @SortOption, @limit);";
+
+                cmd.Parameters.AddWithValue("BranchID", SearchKeys.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", SearchKeys.TerminalNo);
+                cmd.Parameters.AddWithValue("ContactID", SearchKeys.ContactID);
+                cmd.Parameters.AddWithValue("CreditCardTypeID", SearchKeys.CreditCardTypeID);
+                cmd.Parameters.AddWithValue("PaymentDateFrom", SearchKeys.PaymentDateFrom);
+                cmd.Parameters.AddWithValue("PaymentDateTo", SearchKeys.PaymentDateTo);
+                cmd.Parameters.AddWithValue("GuaLastNameFrom", SearchKeys.GuarantorLastnameFrom);
+                cmd.Parameters.AddWithValue("GuaLastNameTo", SearchKeys.GuarantorLastnameTo);
+                cmd.Parameters.AddWithValue("SortField", SortField);
+                cmd.Parameters.AddWithValue("SortOption", SortOrder == SortOption.Ascending ? "ASC" : "DESC");
+                cmd.Parameters.AddWithValue("limit", limit);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public System.Data.DataTable CreditPurchasesAsDataTable(CreditPaymentDetails SearchKeys, string SortField = "CP.CreditDate", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procContactCreditPaymentSelect(@BranchID, @TerminalNo, @ContactID, @CreditCardTypeID, @PurchaseDateFrom, @PurchaseDateTo, @GuaLastNameFrom, @GuaLastNameTo, @SortField, @SortOption, @limit);";
+
+                cmd.Parameters.AddWithValue("BranchID", SearchKeys.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", SearchKeys.TerminalNo);
+                cmd.Parameters.AddWithValue("ContactID", SearchKeys.CustomerDetails.ContactID);
+                cmd.Parameters.AddWithValue("CreditCardTypeID", SearchKeys.CreditCardTypeID);
+                cmd.Parameters.AddWithValue("PurchaseDateFrom", SearchKeys.PurchaseDateFrom);
+                cmd.Parameters.AddWithValue("PurchaseDateTo", SearchKeys.PurchaseDateTo);
+                cmd.Parameters.AddWithValue("GuaLastNameFrom", SearchKeys.GuarantorLastnameFrom);
+                cmd.Parameters.AddWithValue("GuaLastNameTo", SearchKeys.GuarantorLastnameTo);
+                cmd.Parameters.AddWithValue("SortField", SortField);
+                cmd.Parameters.AddWithValue("SortOption", SortOrder == SortOption.Ascending ? "ASC" : "DESC");
+                cmd.Parameters.AddWithValue("limit", limit);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 
 		#region Public Modifiers
@@ -1635,6 +1686,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
+
 		public void AddDebit(long ContactID, decimal Amount)
 		{
 			try 
@@ -1660,15 +1712,15 @@ namespace AceSoft.RetailPlus.Data
 		{
 			try 
 			{
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "CALL procContactSubtractCredit(@ContactID, @Credit);";
 	 			
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
-
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@Credit", Amount);
 
+                cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
 
@@ -1677,6 +1729,7 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
+
         public void SubtractDebit(long ContactID, decimal Amount)
         {
             try
@@ -1721,6 +1774,58 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public void UpdateGuarantor(Int64 ContactID, Int64 GuarantorID, string UpdatedBy)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procContactChangeGuarantor(@ContactID, @GuarantorID, @UpdatedBy);";
+
+                cmd.Parameters.AddWithValue("ContactID", ContactID);
+                cmd.Parameters.AddWithValue("GuarantorID", GuarantorID);
+                cmd.Parameters.AddWithValue("UpdatedBy", UpdatedBy);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Update remarks separately.
+        /// Called after changing the credit limit/status/ in {CTRL + F12}
+        /// </summary>
+        /// <param name="ContactID"></param>
+        /// <param name="GuarantorID"></param>
+        /// <param name="UpdatedBy"></param>
+        public void UpdateRemarks(Int64 ContactID, string Remarks, string UpdatedBy)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procContactUpdateRemarks(@ContactID, @Remarks, @UpdatedBy);";
+
+                cmd.Parameters.AddWithValue("ContactID", ContactID);
+                cmd.Parameters.AddWithValue("Remarks", Remarks);
+                cmd.Parameters.AddWithValue("UpdatedBy", UpdatedBy);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         public static bool checkCreditActive(CreditCardStatus CreditCardStatus)
         {
             bool boRetValue = false;
@@ -1733,6 +1838,7 @@ namespace AceSoft.RetailPlus.Data
                 case CreditCardStatus.ReNew:
                 case CreditCardStatus.Reactivated_Lost:
                 case CreditCardStatus.ManualActivated:
+                case CreditCardStatus.SystemActivated:
                     boRetValue = true;
                     break;
                 case CreditCardStatus.Lost:
@@ -1740,6 +1846,9 @@ namespace AceSoft.RetailPlus.Data
                 case CreditCardStatus.ManualDeactivated:
                 case CreditCardStatus.SystemDeactivated:
                 case CreditCardStatus.All:
+                    boRetValue = false;
+                    break;
+                default:
                     boRetValue = false;
                     break;
             }

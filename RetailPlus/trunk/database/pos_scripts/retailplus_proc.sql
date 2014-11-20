@@ -160,8 +160,8 @@ create procedure procsysAuditInsert(
 	)
 BEGIN
 	
-	INSERT INTO sysAuditTrail(ActivityDate, User, Activity, IPAddress, Remarks)
-					   VALUES(dteActivityDate, strUser, strActivity, strIPAddress, strRemarks);
+	INSERT INTO sysAuditTrail(ActivityDate, User, Activity, IPAddress, Remarks, BranchID, TerminalNo)
+					   VALUES(dteActivityDate, strUser, strActivity, strIPAddress, strRemarks, 0, '00');
 
 END;
 GO
@@ -239,7 +239,7 @@ delimiter ;
 /********************************************
 	procCashierReportSyncTransactionSales
 
-	CALL procCashierReportSyncTransactionSales( 1, '01', '00000000931189', '00000000931193');
+	CALL procCashierReportSyncTransactionSales( 1, '01', '00000000000001', '00000000000001');
 ********************************************/
 
 delimiter GO
@@ -261,6 +261,9 @@ BEGIN
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
 						END) NetSales, 
 					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE GrossSales
+						END) GrossSales, 
+					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Subtotal
 						END) SubTotal, 
 					SUM(CASE TransactionStatus
@@ -269,6 +272,15 @@ BEGIN
 					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
 						END) ItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRItemsDiscount
+						END) SNRItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDItemsDiscount
+						END) PWDItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherItemsDiscount
+						END) OtherItemsDiscount, 
 					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
 						END) SNRDiscount, 
@@ -379,7 +391,7 @@ BEGIN
 		) Trx
 	SET					
 						tblCashierReport.NetSales							=  Trx.NetSales, 
-						tblCashierReport.GrossSales							=  Trx.SubTotal, 
+						tblCashierReport.GrossSales							=  Trx.GrossSales, 
 						tblCashierReport.TotalDiscount						=  Trx.Discount + Trx.ItemsDiscount, 
 						tblCashierReport.SNRDiscount					  	=  Trx.SNRDiscount, 
 						tblCashierReport.PWDDiscount					  	=  Trx.PWDDiscount, 
@@ -419,6 +431,9 @@ BEGIN
 						tblCashierReport.VoidSales							=  Trx.VoidSales, 
 						tblCashierReport.RefundSales						=  Trx.RefundSales, 
 						tblCashierReport.ItemsDiscount						=  Trx.ItemsDiscount, 
+						tblCashierReport.SNRItemsDiscount					=  Trx.SNRItemsDiscount, 
+						tblCashierReport.PWDItemsDiscount					=  Trx.PWDItemsDiscount, 
+						tblCashierReport.OtherItemsDiscount					=  Trx.OtherItemsDiscount, 
 						tblCashierReport.SubTotalDiscount					=  Trx.Discount,
 						tblCashierReport.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
 	WHERE tblCashierReport.BranchID = Trx.BranchID AND tblCashierReport.TerminalNo = Trx.TerminalNo AND tblCashierReport.CashierID = Trx.CashierID
@@ -467,7 +482,10 @@ BEGIN
 								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
 							END) NetSales, 
 						SUM(CASE TransactionStatus
-								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Subtotal
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE GrossSales
+							END) GrossSales, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SubTotal
 							END) SubTotal, 
 						SUM(CASE TransactionStatus
 								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Discount
@@ -475,6 +493,15 @@ BEGIN
 						SUM(CASE TransactionStatus
 								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
 							END) ItemsDiscount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRItemsDiscount
+							END) SNRItemsDiscount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDItemsDiscount
+							END) PWDItemsDiscount, 
+						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherItemsDiscount
+							END) OtherItemsDiscount, 
 						SUM(CASE TransactionStatus
 								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
 							END) SNRDiscount, 
@@ -587,7 +614,7 @@ BEGIN
 							tblTerminalReport.ActualNewGrandTotal				=  tblTerminalReport.ActualOldGrandTotal + Trx.SubTotal,
 							tblTerminalReport.NewGrandTotal						=  tblTerminalReport.OldGrandTotal + Trx.SubTotal,
 							tblTerminalReport.NetSales							=  Trx.NetSales, 
-							tblTerminalReport.GrossSales						=  Trx.SubTotal,
+							tblTerminalReport.GrossSales						=  Trx.GrossSales,
 							tblTerminalReport.TotalDiscount						=  Trx.Discount + Trx.ItemsDiscount, 
 							tblTerminalReport.SNRDiscount					  	=  Trx.SNRDiscount, 
 							tblTerminalReport.PWDDiscount					  	=  Trx.PWDDiscount, 
@@ -627,6 +654,9 @@ BEGIN
 							tblTerminalReport.VoidSales							=  Trx.VoidSales, 
 							tblTerminalReport.RefundSales						=  Trx.RefundSales, 
 							tblTerminalReport.ItemsDiscount						=  Trx.ItemsDiscount, 
+							tblTerminalReport.SNRItemsDiscount					=  Trx.SNRItemsDiscount, 
+							tblTerminalReport.PWDItemsDiscount					=  Trx.PWDItemsDiscount, 
+							tblTerminalReport.OtherItemsDiscount				=  Trx.OtherItemsDiscount, 
 							tblTerminalReport.SubTotalDiscount					=  Trx.Discount,
 
 							tblTerminalReport.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
@@ -688,6 +718,9 @@ create procedure procTerminalReportUpdateTransactionSales(IN intBranchID int(4),
 														IN decVoidSales decimal(18,2),
 														IN decRefundSales decimal(18,2),
 														IN decItemsDiscount decimal(18,2),
+														IN decSNRItemsDiscount decimal(18,2),
+														IN decPWDItemsDiscount decimal(18,2),
+														IN decOtherItemsDiscount decimal(18,2),
 														IN decSubTotalDiscount decimal(18,2),
 														IN intNoOfCashTransactions int(10),
 														IN intNoOfChequeTransactions int(10),
@@ -751,6 +784,9 @@ BEGIN
 					VoidSales							=  VoidSales							+  decVoidSales, 
 					RefundSales							=  RefundSales							+  decRefundSales, 
 					ItemsDiscount						=  ItemsDiscount						+  decItemsDiscount, 
+					SNRItemsDiscount					=  SNRItemsDiscount						+  decSNRItemsDiscount, 
+					PWDItemsDiscount					=  PWDItemsDiscount						+  decPWDItemsDiscount, 
+					OtherItemsDiscount					=  OtherItemsDiscount					+  decOtherItemsDiscount, 
 					SubTotalDiscount					=  SubTotalDiscount						+  decSubTotalDiscount, 
 
 					NoOfCashTransactions				=  NoOfCashTransactions					+  intNoOfCashTransactions, 
@@ -872,6 +908,9 @@ create procedure procCashierReportUpdateTransactionSales(IN intBranchID INT(4), 
 														IN decVoidSales decimal(18,2),
 														IN decRefundSales decimal(18,2),
 														IN decItemsDiscount decimal(18,2),
+														IN decSNRItemsDiscount decimal(18,2),
+														IN decPWDItemsDiscount decimal(18,2),
+														IN decOtherItemsDiscount decimal(18,2),
 														IN decSubTotalDiscount decimal(18,2),
 														IN intNoOfCashTransactions int(10),
 														IN intNoOfChequeTransactions int(10),
@@ -931,6 +970,9 @@ BEGIN
 		VoidSales								=  VoidSales							+  decVoidSales, 
 		RefundSales								=  RefundSales							+  decRefundSales, 
 		ItemsDiscount							=  ItemsDiscount						+  decItemsDiscount, 
+		SNRItemsDiscount						=  SNRItemsDiscount						+  decSNRItemsDiscount, 
+		PWDItemsDiscount						=  PWDItemsDiscount						+  decPWDItemsDiscount, 
+		OtherItemsDiscount						=  OtherItemsDiscount					+  decOtherItemsDiscount, 
 		SubTotalDiscount						=  SubTotalDiscount						+  decSubTotalDiscount, 
 		NoOfCashTransactions					=  NoOfCashTransactions					+  intNoOfCashTransactions, 
 		NoOfChequeTransactions					=  NoOfChequeTransactions				+  intNoOfChequeTransactions, 
@@ -1583,7 +1625,8 @@ BEGIN
 					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
 					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
 					TotalDeposit, CashDeposit, ChequeDeposit, CreditCardDeposit, DebitDeposit,
-					BeginningBalance, VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount,
+					BeginningBalance, VoidSales, RefundSales, SubtotalDiscount,
+					ItemsDiscount, SNRItemsDiscount, PWDItemsDiscount, OtherItemsDiscount,					
 					NoOfCashTransactions, NoOfChequeTransactions, NoOfCreditCardTransactions, 
 					NoOfCreditTransactions, NoOfCombinationPaymentTransactions, 
 					NoOfCreditPaymentTransactions, NoOfDebitPaymentTransactions, 
@@ -1606,7 +1649,8 @@ BEGIN
 					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
 					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
 					TotalDeposit, CashDeposit, ChequeDeposit, CreditCardDeposit, DebitDeposit,
-					BeginningBalance, VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount, 
+					BeginningBalance, VoidSales, RefundSales, SubtotalDiscount, 
+					ItemsDiscount, SNRItemsDiscount, PWDItemsDiscount, OtherItemsDiscount,
 					NoOfCashTransactions, NoOfChequeTransactions, NoOfCreditCardTransactions, 
 					NoOfCreditTransactions, NoOfCombinationPaymentTransactions, 
 					NoOfCreditPaymentTransactions, NoOfDebitPaymentTransactions, 
@@ -1680,8 +1724,11 @@ BEGIN
 					BeginningBalance					=  0, 
 					VoidSales							=  0, 
 					RefundSales							=  0, 
-					ItemsDiscount						=  0, 
 					SubTotalDiscount					=  0, 
+					ItemsDiscount						=  0, 
+					SNRItemsDiscount					=  0, 
+					PWDItemsDiscount					=  0, 
+					OtherItemsDiscount					=  0, 
 					NoOfCashTransactions				=  0, 
 					NoOfChequeTransactions				=  0, 
 					NoOfCreditCardTransactions			=  0, 
@@ -1721,7 +1768,8 @@ BEGIN
 					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
 					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
 					TotalDeposit, CashDeposit, ChequeDeposit, CreditCardDeposit, DebitDeposit, 
-					BeginningBalance, VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount, 
+					BeginningBalance, VoidSales, RefundSales, SubtotalDiscount, 
+					ItemsDiscount, SNRItemsDiscount, PWDItemsDiscount, OtherItemsDiscount, 
 					NoOfCashTransactions, NoOfChequeTransactions, 
 					NoOfCreditCardTransactions, NoOfCreditTransactions, 
 					NoOfCombinationPaymentTransactions, 
@@ -1744,7 +1792,8 @@ BEGIN
 					TotalWithhold, CashWithhold, ChequeWithhold, CreditCardWithhold, 
 					TotalPaidOut, CashPaidOut, ChequePaidOut, CreditCardPaidOut, 
 					TotalDeposit, CashDeposit, ChequeDeposit, CreditCardDeposit, DebitDeposit,
-					BeginningBalance, VoidSales, RefundSales, ItemsDiscount, SubtotalDiscount, 
+					BeginningBalance, VoidSales, RefundSales, SubtotalDiscount, 
+					ItemsDiscount, SNRItemsDiscount, PWDItemsDiscount, OtherItemsDiscount, 
 					NoOfCashTransactions, NoOfChequeTransactions, 
 					NoOfCreditCardTransactions, NoOfCreditTransactions, 
 					NoOfCombinationPaymentTransactions, 
@@ -2726,15 +2775,17 @@ DROP PROCEDURE IF EXISTS procDebitPaymentInsert
 GO
 
 create procedure procDebitPaymentInsert(
-	IN pvtTransactionID BIGINT(20),
-	IN pvtTransactionNo VARCHAR(30),
-	IN pvtAmount DECIMAL(18,3),
-	IN pvtContactID BIGINT,
-	IN pvtRemarks VARCHAR(255))
+	IN intBranchID			  int(4),
+	IN strTerminalNo		  varchar(5),
+	IN intTransactionID BIGINT(20),
+	IN strTransactionNo VARCHAR(30),
+	IN decAmount DECIMAL(18,3),
+	IN intContactID BIGINT,
+	IN strRemarks VARCHAR(255))
 BEGIN
 
-	INSERT INTO tblDebitPayment(TransactionID, TransactionNo, Amount, ContactID, Remarks)
-				VALUES (pvtTransactionID, pvtTransactionNo, pvtAmount, pvtContactID, pvtRemarks);
+	INSERT INTO tblDebitPayment(BranchID, TerminalNo, TransactionID, TransactionNo, Amount, ContactID, Remarks)
+				VALUES (intBranchID, strTerminalNo, intTransactionID, strTransactionNo, decAmount, intContactID, strRemarks);
 		
 END;
 GO
@@ -2792,19 +2843,24 @@ delimiter ;
 	Lemuel E. Aceron
 	CALL procContactSubtractCredit();
 	
-	[09/01/2009] - create this procedure
+	[01Sep2009] - create this procedure
+	[03Nov2014] - include updating of isCreditAllowed = 1 if payment is done
 *********************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procContactSubtractCredit
 GO
 
 create procedure procContactSubtractCredit(
-	IN pvtContactID BIGINT(20),
-	IN pvtCredit DECIMAL(18,3))
+	IN intContactID BIGINT(20),
+	IN decCredit DECIMAL(18,3))
 BEGIN
 
-	UPDATE tblContacts SET Credit =	Credit - pvtCredit WHERE ContactID = pvtContactID;
-		
+	UPDATE tblContacts SET Credit =	Credit - decCredit WHERE ContactID = intContactID;
+	
+	-- [03Nov2014] - include updating of isCreditAllowed = 1 if payment is done
+	UPDATE tblContacts SET IsCreditAllowed = 1 WHERE ContactID = intContactID;
+	UPDATE tblContactCreditCardInfo SET CreditCardStatus = 10 WHERE CustomerID = intContactID;
+
 END;
 GO
 delimiter ;
@@ -2844,8 +2900,9 @@ DROP PROCEDURE IF EXISTS procCreditPaymentUpdateCredit
 GO
 
 create procedure procCreditPaymentUpdateCredit(
-	IN pvtTransactionID BIGINT(20),
-	IN pvtTransactionNo VARCHAR(30),
+	IN intBranchID BIGINT, 
+	IN strTerminalNo VARCHAR(20),
+	IN intCreditPaymentID BIGINT(20),
 	IN pvtAmount DECIMAL(18,3),
 	IN pvtRemarks VARCHAR(255))
 BEGIN
@@ -2854,8 +2911,8 @@ BEGIN
 		AmountPaid = AmountPaid + pvtAmount,
 		AmountPaidCuttOffMonth = AmountPaidCuttOffMonth + pvtAmount,
 		Remarks = CONCAT(Remarks,';',pvtRemarks)
-	WHERE TransactionID = pvtTransactionID 
-		AND TransactionNo = pvtTransactionNo;
+	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+		AND CreditPaymentID = intCreditPaymentID;
 		
 END;
 GO
@@ -2873,8 +2930,9 @@ DROP PROCEDURE IF EXISTS procDebitPaymentUpdateDebit
 GO
 
 create procedure procDebitPaymentUpdateDebit(
-	IN pvtTransactionID BIGINT(20),
-	IN pvtTransactionNo VARCHAR(30),
+	IN intBranchID BIGINT, 
+	IN strTerminalNo VARCHAR(20),
+	IN intCreditPaymentID BIGINT(20),
 	IN pvtAmount DECIMAL(18,3),
 	IN pvtRemarks VARCHAR(255))
 BEGIN
@@ -2882,8 +2940,8 @@ BEGIN
 	UPDATE tblDebitPayment SET 
 		AmountPaid = AmountPaid + pvtAmount,
 		Remarks = CONCAT(Remarks,';',pvtRemarks)
-	WHERE TransactionID = pvtTransactionID 
-		AND TransactionNo = pvtTransactionNo;
+	WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+		AND CreditPaymentID = intCreditPaymentID;
 		
 END;
 GO
@@ -2947,8 +3005,8 @@ BEGIN
 		UnitCode 'ProductUnitCode',
 		0 'Quantity', 0 Amount, 
 		0 PurchaseAmount, 0 Discount,
-		pkg.PurchasePrice,
-		inv.InvQuantity
+		IFNULL(pkg.PurchasePrice, 0) PurchasePrice,
+		IFNULL(inv.InvQuantity,0) InvQuantity
 	FROM tblProducts a 
 		INNER JOIN tblProductSubGroup b ON b.ProductSubGroupID = a.ProductSubGroupID
 		INNER JOIN tblProductGroup c ON c.ProductGroupID = b.ProductGroupID
@@ -3813,7 +3871,7 @@ delimiter ;
 	Jul 26, 2011 : Lemu
 	- create this procedure
 
-	CALL procProductMovementSelect(3924, '', '');
+	CALL procProductMovementSelect(2535, -1, '2014-10-27', '1900-01-01', 0);
 	
 **************************************************************/
 delimiter GO
@@ -3859,11 +3917,13 @@ BEGIN
 		SET @SQL = CONCAT(@SQL,'AND BranchIDTo = ', intBranchID,' ');
 	END IF;
 
-	IF (DATE_FORMAT(dteStartTransactionDate, '%Y%m%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
+	IF (DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d') AND 
+	    DATE_FORMAT(dteStartTransactionDate, '%Y-%m-%d')  <> DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN
 		SET @SQL = CONCAT(@SQL,'AND TransactionDate >= ''', dteStartTransactionDate,''' ');
 	END IF;
 	
-	IF (DATE_FORMAT(dteEndTransactionDate, '%Y%m%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')) THEN
+	IF (DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d')  <> DATE_FORMAT('1900-01-01', '%Y-%m-%d') AND 
+	    DATE_FORMAT(dteEndTransactionDate, '%Y-%m-%d')  <> DATE_FORMAT('0001-01-01', '%Y-%m-%d')) THEN
 		SET @SQL = CONCAT(@SQL,'AND TransactionDate <= ''', dteEndTransactionDate,''' ');
 	END IF;
 	
@@ -4584,46 +4644,6 @@ END;
 GO
 delimiter ;
 
-/**************************************************************
-	procContactRewardExpire
-	Lemuel E. Aceron
-	CALL procContactRewardExpire();
-	
-**************************************************************/
-delimiter GO
-DROP PROCEDURE IF EXISTS procContactRewardExpire
-GO
-
-create procedure procContactRewardExpire()
-BEGIN
-	DECLARE intRewardActive TINYINT(1) DEFAULT 0;
-	DECLARE intRewardCardStatusExpired TINYINT(1) DEFAULT 2;
-	
-	INSERT INTO tblContactRewardsMovement (
-		CustomerID, RewardDate, RewardPointsBefore, RewardPointsAdjustment, RewardPointsAfter,
-		RewardExpiryDate, RewardReason, TerminalNo, CashierName, TransactionNo)
-	SELECT CustomerID, RewardAwardDate, RewardPoints, 0, RewardPoints, 
-		ExpiryDate, 'SYSTEM AUTO EXPIRE', '01', 'SYSTEM', DATE_FORMAT(NOW(), '%Y%m%d%H%i') 
-		FROM tblContactRewards
-		WHERE DATE_FORMAT(ExpiryDate, '%Y-%m-%d') < DATE_FORMAT(NOW(), '%Y-%m-%d')
-			AND DATE_FORMAT(ExpiryDate, '%Y-%m-%d') <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')
-			AND RewardCardStatus <> intRewardCardStatusExpired
-			AND RewardActive <> intRewardActive;
-	
-	UPDATE tblContactRewards SET 
-			RewardActive = intRewardActive,
-			RewardCardStatus = intRewardCardStatusExpired
-		WHERE DATE_FORMAT(ExpiryDate, '%Y-%m-%d') < DATE_FORMAT(NOW(), '%Y-%m-%d')
-			AND DATE_FORMAT(ExpiryDate, '%Y-%m-%d') <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')
-			AND RewardCardStatus <> intRewardCardStatusExpired
-			AND RewardActive <> intRewardActive;
-	
-	/*******************************
-		CALL procContactRewardExpire();
-	*******************************/
-END;
-GO
-delimiter ;
 
 /**************************************************************
 	procContactRewardsMovementInsert
@@ -4962,41 +4982,6 @@ BEGIN
 
 	UPDATE tblContactCreditCardInfo SET TotalPurchases =	TotalPurchases + pvtAmount WHERE CustomerID = pvtContactID;
 		
-END;
-GO
-delimiter ;
-
-/**************************************************************
-	procContactCreditCardExpire
-	Lemuel E. Aceron
-	CALL procContactCreditCardExpire();
-	
-**************************************************************/
-delimiter GO
-DROP PROCEDURE IF EXISTS procContactCreditCardExpire
-GO
-
-create procedure procContactCreditCardExpire()
-BEGIN
-	DECLARE intCreditInActive TINYINT(1) DEFAULT 0;
-	DECLARE intCreditCardStatusExpired TINYINT(1) DEFAULT 2;
-	
-	UPDATE tblContacts SET
-		IsCreditAllowed = intCreditInActive
-	WHERE ContactID IN (SELECT DISTINCT(CustomerID) FROM tblContactCreditCardInfo 
-													WHERE DATE_FORMAT(ExpiryDate, '%Y-%m-%d') < DATE_FORMAT(NOW(), '%Y-%m-%d')
-													AND DATE_FORMAT(ExpiryDate, '%Y-%m-%d') <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')
-													AND CreditCardStatus <> intCreditCardStatusExpired);
-	
-	UPDATE tblContactCreditCardInfo SET 
-			CreditCardStatus = intCreditCardStatusExpired
-		WHERE DATE_FORMAT(ExpiryDate, '%Y-%m-%d') < DATE_FORMAT(NOW(), '%Y-%m-%d')
-			AND DATE_FORMAT(ExpiryDate, '%Y-%m-%d') <> DATE_FORMAT('1900-01-01', '%Y-%m-%d')
-			AND CreditCardStatus <> intCreditCardStatusExpired;
-	
-	/*******************************
-		CALL procContactCreditCardExpire();
-	*******************************/
 END;
 GO
 delimiter ;
@@ -5718,6 +5703,7 @@ BEGIN
 							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
+							,prd.IsCreditChargeExcluded
 							,prd.VAT
 							,prd.EVAT
 							,prd.LocalTax
@@ -5827,6 +5813,7 @@ BEGIN
                             ,prd.PurchasePrice
                             ,prd.PercentageCommision
                             ,prd.IncludeInSubtotalDiscount
+							,prd.IsCreditChargeExcluded
                             ,prd.VAT
                             ,prd.EVAT
                             ,prd.LocalTax
@@ -5991,6 +5978,7 @@ BEGIN
 							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
+							,prd.IsCreditChargeExcluded
 							,prd.VAT
 							,prd.EVAT
 							,prd.LocalTax
@@ -6100,6 +6088,7 @@ BEGIN
                             ,prd.PurchasePrice
                             ,prd.PercentageCommision
                             ,prd.IncludeInSubtotalDiscount
+							,prd.IsCreditChargeExcluded
                             ,prd.VAT
                             ,prd.EVAT
                             ,prd.LocalTax
@@ -6167,6 +6156,14 @@ create procedure procProductSelect(
 			 IN SupplierID bigint,
 			 IN ShowActiveAndInactive INT(1),
 			 IN isQuantityGreaterThanZERO TINYINT(1),
+			 IN ProductCodeFrom varchar(30),
+			 IN ProductCodeTo varchar(30),
+			 IN ProductSubGroupNameFrom varchar(30),
+			 IN ProductSubGroupNameTo varchar(30),
+			 IN ProductGroupNameFrom varchar(30),
+			 IN ProductGroupNameTo varchar(30),
+			 IN SupplierNameFrom varchar(30),
+			 IN SupplierNameTo varchar(30),
 			 IN lngLimit int,
 			 IN SortField varchar(60),
 			 IN SortOrder varchar(4))
@@ -6200,6 +6197,42 @@ BEGIN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.Active = ',ShowActiveAndInactive,' ');
 	END IF;
 
+	-- additional filter for backend filtering
+	IF IFNULL(ProductCodeFrom,'') <> '' AND IFNULL(ProductCodeTo,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode >= ''',ProductCodeFrom,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode <= ''',ProductCodeTo,''' ');
+	ELSEIF IFNULL(ProductCodeFrom,'') <> '' AND IFNULL(ProductCodeTo,'') = '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode LIKE ''',ProductCodeFrom,'%'' ');
+	ELSEIF IFNULL(ProductCodeFrom,'') = '' AND IFNULL(ProductCodeTo,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode LIKE ''',ProductCodeTo,'%'' ');
+	END IF;
+
+	IF IFNULL(ProductSubGroupNameFrom,'') <> '' AND IFNULL(ProductSubGroupNameTo,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prdsg.ProductSubGroupName >= ''',ProductSubGroupNameFrom,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prdsg.ProductSubGroupName <= ''',ProductSubGroupNameTo,''' ');
+	ELSEIF IFNULL(ProductSubGroupNameFrom,'') <> '' AND IFNULL(ProductSubGroupNameTo,'') = '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prdsg.ProductSubGroupName LIKE ''',ProductSubGroupNameFrom,'%'' ');
+	ELSEIF IFNULL(ProductSubGroupNameFrom,'') = '' AND IFNULL(ProductSubGroupNameTo,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prdsg.ProductSubGroupName LIKE ''',ProductSubGroupNameTo,'%'' ');
+	END IF;
+
+	IF IFNULL(ProductGroupNameFrom,'') <> '' AND IFNULL(ProductGroupNameTo,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prdg.ProductGroupName >= ''',ProductGroupNameFrom,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prdg.ProductGroupName <= ''',ProductGroupNameTo,''' ');
+	ELSEIF IFNULL(ProductGroupNameFrom,'') <> '' AND IFNULL(ProductGroupNameTo,'') = '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prdg.ProductGroupName LIKE ''',ProductGroupNameFrom,'%'' ');
+	ELSEIF IFNULL(ProductGroupNameFrom,'') = '' AND IFNULL(ProductGroupNameTo,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND prdg.ProductGroupName LIKE ''',ProductGroupNameTo,'%'' ');
+	END IF;
+
+	IF IFNULL(SupplierNameFrom,'') <> '' AND IFNULL(SupplierNameTo,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND supp.ContactName >= ''',SupplierNameFrom,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, 'AND supp.ContactName <= ''',SupplierNameTo,''' ');
+	ELSEIF IFNULL(SupplierNameFrom,'') <> '' AND IFNULL(SupplierNameTo,'') = '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND supp.ContactName LIKE ''',SupplierNameFrom,'%'' ');
+	ELSEIF IFNULL(SupplierNameFrom,'') = '' AND IFNULL(SupplierNameTo,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND supp.ContactName LIKE ''',SupplierNameTo,'%'' ');
+	END IF;
 
 	SET @SQL = CONCAT('	SELECT 
 							 prd.ProductID
@@ -6212,11 +6245,11 @@ BEGIN
 							,prd.ProductDesc
 							
 							,prd.ProductSubGroupID
-							,prdsg.ProductSubGroupCode
-							,prdsg.ProductSubGroupName
-							,prdsg.ProductGroupID
-							,prdg.ProductGroupCode
-							,prdg.ProductGroupName
+							,prd.ProductSubGroupCode
+							,prd.ProductSubGroupName
+							,prd.ProductGroupID
+							,prd.ProductGroupCode
+							,prd.ProductGroupName
 							,prd.BaseUnitID
 							,unt.UnitCode BaseUnitCode
 							,unt.UnitName BaseUnitName
@@ -6226,14 +6259,15 @@ BEGIN
 							,prd.Active
 
 							,prd.SupplierID
-							,supp.ContactCode SupplierCode
-							,supp.ContactName SupplierName
+							,prd.ContactCode SupplierCode
+							,prd.ContactName SupplierName
 
 							,prd.Price
 							,prd.WSPrice
 							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
+							,prd.IsCreditChargeExcluded
 							,prd.VAT
 							,prd.EVAT
 							,prd.LocalTax
@@ -6259,7 +6293,14 @@ BEGIN
 						FROM (SELECT prd.* ,pkg.PackageID, pkg.MatrixID
 									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
 									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
+
+									,prdsg.ProductSubGroupCode ,prdsg.ProductSubGroupName 
+									,prdsg.ProductGroupID ,prdg.ProductGroupCode ,prdg.ProductGroupName
+									,supp.ContactCode ,supp.ContactName
 							  FROM tblProducts prd 
+							  INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
+							  INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
+							  INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID
 														AND pkg.Quantity = 1 ');
 	IF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') = '' THEN
@@ -6269,10 +6310,10 @@ BEGIN
 	END IF;
 	SET @SQL = CONCAT(@SQL, '
 							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
-						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
-						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
+						-- INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
+						-- INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
 						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
-						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
+						-- INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
 						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND prd.MatrixID = inv.MatrixID',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
 						');
 
@@ -6286,11 +6327,11 @@ BEGIN
 							,prd.ProductDesc
 
 							,prd.ProductSubGroupID
-							,prdsg.ProductSubGroupCode
-							,prdsg.ProductSubGroupName
-							,prdsg.ProductGroupID
-							,prdg.ProductGroupCode
-							,prdg.ProductGroupName
+							,prd.ProductSubGroupCode
+							,prd.ProductSubGroupName
+							,prd.ProductGroupID
+							,prd.ProductGroupCode
+							,prd.ProductGroupName
 							,prd.BaseUnitID
 							,unt.UnitCode
 							,unt.UnitName
@@ -6298,14 +6339,15 @@ BEGIN
 							,prd.Active
 
 							,prd.SupplierID
-							,supp.ContactCode
-							,supp.ContactName
+							,prd.ContactCode
+							,prd.ContactName
 
 							,prd.Price
 							,prd.WSPrice
 							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
+							,prd.IsCreditChargeExcluded
 							,prd.VAT
 							,prd.EVAT
 							,prd.LocalTax
@@ -6505,6 +6547,7 @@ BEGIN
 							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
+							,prd.IsCreditChargeExcluded
 							,prd.VAT
 							,prd.EVAT
 							,prd.LocalTax
@@ -6635,6 +6678,7 @@ BEGIN
 						   ,prd.PurchasePrice
 						   ,prd.PercentageCommision
 						   ,prd.IncludeInSubtotalDiscount
+						   ,prd.IsCreditChargeExcluded
 						   ,prd.VAT
 						   ,prd.EVAT
 						   ,prd.LocalTax
@@ -6777,6 +6821,7 @@ BEGIN
 							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
+							,prd.IsCreditChargeExcluded
 							,prd.VAT
 							,prd.EVAT
 							,prd.LocalTax
@@ -6838,7 +6883,7 @@ BEGIN
 		IFNULL(BarCode,'') = 'SUPER CARD - REPLACEMENT FEE' THEN
 		SET @SQL = CONCAT(@SQL, ' WHERE 1=1 ');	
 	ELSE
-		SET @SQL = CONCAT(@SQL, ' WHERE deleted=0 ');	
+		SET @SQL = CONCAT(@SQL, ' WHERE prd.deleted=0 ');	
 	END IF;
 
 	SET @SQL = CONCAT(@SQL, '
@@ -6891,6 +6936,7 @@ BEGIN
 							,prd.PurchasePrice
 							,prd.PercentageCommision
 							,prd.IncludeInSubtotalDiscount
+							,prd.IsCreditChargeExcluded
 							,prd.VAT
 							,prd.EVAT
 							,prd.LocalTax
@@ -8870,8 +8916,11 @@ BEGIN
 							BeginningBalance, 
 							VoidSales, 
 							RefundSales, 
-							ItemsDiscount, 
 							SubTotalDiscount, 
+							ItemsDiscount, 
+							SNRItemsDiscount, 
+							PWDItemsDiscount, 
+							OtherItemsDiscount, 
 							NoOfCashTransactions, 
 							NoOfChequeTransactions, 
 							NoOfCreditCardTransactions, 
@@ -8979,8 +9028,11 @@ BEGIN
 						BeginningBalance, 
 						VoidSales - (VoidSales * TrustFund/100) VoidSales, 
 						RefundSales - (RefundSales * TrustFund/100) RefundSales, 
-						ItemsDiscount - (ItemsDiscount * TrustFund/100) ItemsDiscount, 
 						SubTotalDiscount - (SubTotalDiscount * TrustFund/100) SubTotalDiscount, 
+						ItemsDiscount - (ItemsDiscount * TrustFund/100) ItemsDiscount, 
+						SNRItemsDiscount - (SNRItemsDiscount * TrustFund/100) SNRItemsDiscount, 
+						PWDItemsDiscount - (PWDItemsDiscount * TrustFund/100) PWDItemsDiscount, 
+						OtherItemsDiscount - (OtherItemsDiscount * TrustFund/100) OtherItemsDiscount, 
 						NoOfCashTransactions, 
 						NoOfChequeTransactions, 
 						NoOfCreditCardTransactions, 
@@ -9126,6 +9178,7 @@ BEGIN
                                 WHEN 10 THEN ''OrderSlip''
 								WHEN 11 THEN ''ParkingTicket''
                             END TransactionStatusName,
+							trx.GrossSales,
 							trx.SubTotal,
 							trx.Discount,
 							trx.TransDiscount,
@@ -9149,6 +9202,9 @@ BEGIN
 							trx.DiscountRemarks,
 							trx.DebitPayment,
 							trx.ItemsDiscount,
+							trx.SNRItemsDiscount,
+							trx.PWDItemsDiscount,
+							trx.OtherItemsDiscount,
 							trx.Charge,
 							trx.ChargeAmount,
 							trx.ChargeCode,
@@ -9223,6 +9279,7 @@ BEGIN
                                 WHEN 10 THEN ''OrderSlip''
 								WHEN 11 THEN ''ParkingTicket''
                             END TransactionStatusName,
+							trx.GrossSales - (trx.GrossSales * IFNULL(trh.TrustFund, 0)/100) GrossSales,
 							trx.SubTotal - (trx.SubTotal * IFNULL(trh.TrustFund, 0)/100) SubTotal,
 							trx.Discount - (trx.Discount * IFNULL(trh.TrustFund, 0)/100) Discount,
 							trx.TransDiscount,
@@ -9246,6 +9303,9 @@ BEGIN
 							trx.DiscountRemarks,
 							trx.DebitPayment,
 							trx.ItemsDiscount - (trx.ItemsDiscount * IFNULL(trh.TrustFund, 0)/100) ItemsDiscount,
+							trx.SNRItemsDiscount - (trx.SNRItemsDiscount * IFNULL(trh.TrustFund, 0)/100) SNRItemsDiscount,
+							trx.PWDItemsDiscount - (trx.PWDItemsDiscount * IFNULL(trh.TrustFund, 0)/100) PWDItemsDiscount,
+							trx.OtherItemsDiscount - (trx.OtherItemsDiscount * IFNULL(trh.TrustFund, 0)/100) OtherItemsDiscount,
 							trx.Charge - (trx.Charge * IFNULL(trh.TrustFund, 0)/100) Charge,
 							trx.ChargeAmount - (trx.ChargeAmount * IFNULL(trh.TrustFund, 0)/100) ChargeAmount,
 							trx.ChargeCode,
@@ -9407,7 +9467,10 @@ BEGIN
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
 						END) NetSales, 
 					SUM(CASE TransactionStatus
-							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Subtotal
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE GrossSales
+						END) GrossSales, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SubTotal
 						END) SubTotal, 
 					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Discount
@@ -9415,6 +9478,15 @@ BEGIN
 					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
 						END) ItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRItemsDiscount
+						END) SNRItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDItemsDiscount
+						END) PWDItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherItemsDiscount
+						END) OtherItemsDiscount, 
 					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
 						END) SNRDiscount, 
@@ -9525,7 +9597,7 @@ BEGIN
 		) Trx
 	SET					
 						tblCashierReportHistory.NetSales						=  Trx.NetSales, 
-						tblCashierReportHistory.GrossSales						=  Trx.SubTotal, 
+						tblCashierReportHistory.GrossSales						=  Trx.GrossSales, 
 						tblCashierReportHistory.TotalDiscount					=  Trx.Discount + Trx.ItemsDiscount, 
 						tblCashierReportHistory.SNRDiscount					  	=  Trx.SNRDiscount, 
 						tblCashierReportHistory.PWDDiscount					  	=  Trx.PWDDiscount, 
@@ -9565,6 +9637,9 @@ BEGIN
 						tblCashierReportHistory.VoidSales						=  Trx.VoidSales, 
 						tblCashierReportHistory.RefundSales						=  Trx.RefundSales, 
 						tblCashierReportHistory.ItemsDiscount					=  Trx.ItemsDiscount, 
+						tblCashierReportHistory.SNRItemsDiscount				=  Trx.SNRItemsDiscount, 
+						tblCashierReportHistory.PWDItemsDiscount				=  Trx.PWDItemsDiscount, 
+						tblCashierReportHistory.OtherItemsDiscount				=  Trx.OtherItemsDiscount, 
 						tblCashierReportHistory.SubTotalDiscount				=  Trx.Discount,
 						tblCashierReportHistory.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
 	WHERE tblCashierReportHistory.BranchID = Trx.BranchID AND tblCashierReportHistory.TerminalNo = Trx.BranchID AND tblCashierReportHistory.CashierID = Trx.CashierID
@@ -9641,6 +9716,9 @@ BEGIN
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
 						END) NetSales, 
 					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE GrossSales
+						END) GrossSales, 
+					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE Subtotal
 						END) SubTotal, 
 					SUM(CASE TransactionStatus
@@ -9649,6 +9727,15 @@ BEGIN
 					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ItemsDiscount
 						END) ItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRItemsDiscount
+						END) SNRItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE PWDItemsDiscount
+						END) PWDItemsDiscount, 
+					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE OtherItemsDiscount
+						END) OtherItemsDiscount, 
 					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE SNRDiscount
 						END) SNRDiscount, 
@@ -9761,7 +9848,7 @@ BEGIN
 				-- tblTerminalReportHistory.ActualNewGrandTotal				=  Trx.SubTotal + tblTerminalReportHistory.OldGrandTotal,
 				-- tblTerminalReportHistory.NewGrandTotal						=  Trx.SubTotal + tblTerminalReportHistory.OldGrandTotal,
 				tblTerminalReportHistory.NetSales							=  Trx.NetSales, 
-				tblTerminalReportHistory.GrossSales							=  Trx.SubTotal, 
+				tblTerminalReportHistory.GrossSales							=  Trx.GrossSales, 
 				tblTerminalReportHistory.TotalDiscount						=  Trx.Discount + Trx.ItemsDiscount, 
 				tblTerminalReportHistory.SNRDiscount					  	=  Trx.SNRDiscount, 
 				tblTerminalReportHistory.PWDDiscount					  	=  Trx.PWDDiscount, 
@@ -9801,6 +9888,9 @@ BEGIN
 				tblTerminalReportHistory.VoidSales							=  Trx.VoidSales, 
 				tblTerminalReportHistory.RefundSales						=  Trx.RefundSales, 
 				tblTerminalReportHistory.ItemsDiscount						=  Trx.ItemsDiscount, 
+				tblTerminalReportHistory.SNRItemsDiscount					=  Trx.SNRItemsDiscount, 
+				tblTerminalReportHistory.PWDItemsDiscount					=  Trx.PWDItemsDiscount, 
+				tblTerminalReportHistory.OtherItemsDiscount					=  Trx.OtherItemsDiscount, 
 				tblTerminalReportHistory.SubTotalDiscount					=  Trx.Discount,
 
 				tblTerminalReportHistory.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
@@ -9893,6 +9983,33 @@ BEGIN
 	UPDATE tblContactCreditCardInfo SET CreditCardTypeID = intCreditCardTypeID WHERE GuarantorID = intContactID;
 		
 	CALL procsysAuditInsert(NOW(), strUpdatedBy, 'CONTACT CREDITCARD INFO', 'localhost', CONCAT('CreditCardTypeID of customer/guarantor: ',intContactID,' was overwritten from ',intOldCreditCardTypeID,' to ',intCreditCardTypeID,' due to backend update.'));
+
+END;
+GO
+delimiter ;
+
+
+/*********************************
+	procgetProductSubGroupBarCodeCounter
+	Lemuel E. Aceron
+	
+	Oct 28, 2014 - create this procedure
+
+	CALL procgetProductSubGroupBarCodeCounter(1);
+
+*********************************/
+DROP PROCEDURE IF EXISTS procgetProductSubGroupBarCodeCounter;
+delimiter GO
+
+CREATE PROCEDURE procgetProductSubGroupBarCodeCounter(IN intProductSubGroupID BIGINT(20))
+BEGIN
+	DECLARE intBarCodeCounter BIGINT DEFAULT 0;
+
+	SET intBarcodeCounter = (SELECT IFNULL(BarcodeCounter,0) + 1 AS BarcodeCounter FROM tblProductSubGroup WHERE ProductSubGroupID = intProductSubGroupID);
+
+	UPDATE tblProductSubGroup SET BarCodeCounter = intBarcodeCounter WHERE ProductSubGroupID = intProductSubGroupID;
+
+	SELECT intBarcodeCounter AS BarCodeCounter;
 
 END;
 GO

@@ -8,13 +8,13 @@ using System.Windows.Forms;
 
 namespace AceSoft.KeyBoardHook
 {
-    [Category("Command Blank 1"), Description("Type of command blank 1")]
-    public enum CommandBlank1 { Up, Plus, Default, Clear };
+    //[Category("Command Blank 1"), Description("Type of command blank 1")]
+    //public enum CommandBlank1 { Up, Plus, Default };
 
-    [Category("Command Blank 2"), Description("Type of command blank 2")]
-    public enum CommandBlank2 { Down, Minus, Default, SelectAll };
+    //[Category("Command Blank 2"), Description("Type of command blank 2")]
+    //public enum CommandBlank2 { Down, Minus, Default };
 
-    public partial class KeyboardNoControl : UserControl
+    public partial class KeyboardNoControlOld : UserControl
     {
         //private string mstrBlank1;
         //private string mstrBlank2;
@@ -32,8 +32,6 @@ namespace AceSoft.KeyBoardHook
                 pvtCommandBlank1 = value;
                 if (pvtCommandBlank1 == CommandBlank1.Default)
                     cmdBlank1.Text = "";
-                else if (pvtCommandBlank1 == CommandBlank1.Clear)
-                    cmdBlank1.Text = "clear";
                 else
                     cmdBlank1.Text = pvtCommandBlank1.ToString();
             }
@@ -50,14 +48,12 @@ namespace AceSoft.KeyBoardHook
                 pvtCommandBlank2 = value;
                 if (pvtCommandBlank2 == CommandBlank2.Default)
                     cmdBlank2.Text = "";
-                else if (pvtCommandBlank2 == CommandBlank2.SelectAll)
-                    cmdBlank2.Text = "sel. all";
                 else
                     cmdBlank2.Text = pvtCommandBlank2.ToString();
             }
         }
 
-        public KeyboardNoControl()
+        public KeyboardNoControlOld()
         {
             InitializeComponent();
         }
@@ -147,20 +143,16 @@ namespace AceSoft.KeyBoardHook
         {
             if (cmdBlank1.Text == CommandBlank1.Up.ToString())
                 SetPressButton("{UP}");
-            else if (cmdBlank1.Text == "+")
+            else if (cmdBlank1.Text == CommandBlank1.Plus.ToString())
                 SetPressButton("+");
-            else if (cmdBlank1.Text == "clear")
-                SetPressButton("{CLEAR}");
         }
 
         private void cmdBlank2_Click(object sender, EventArgs e)
         {
             if (cmdBlank2.Text == CommandBlank2.Down.ToString())
                 SetPressButton("{DOWN}");
-            else if (cmdBlank2.Text == "-")
+            else if (cmdBlank2.Text == CommandBlank2.Minus.ToString())
                 SetPressButton("-");
-            else if (cmdBlank2.Text == "sel. all")
-                SetPressButton("{SELECTALL}");
         }
     }
 }

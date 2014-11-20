@@ -107,6 +107,7 @@
       <Name>System.Data</Name>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
@@ -119,6 +120,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BarcodeHelper.cs" />
     <Compile Include="BarcodePrinter.cs" />
     <Compile Include="ClearConsole.cs">
       <SubType>Code</SubType>
@@ -127,6 +129,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CommunicationManager.cs" />
+    <Compile Include="PrinterHelper.cs" />
     <Compile Include="Cryptor.cs">
       <SubType>Code</SubType>
     </Compile>

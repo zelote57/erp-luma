@@ -42,6 +42,8 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdCancel;
         private Button cmdF11;
         private Label label5;
+        private Label label2;
+        private Button cmdF12;
 		private DialogResult dialog;
 
 		#region Public Get/Set Properties
@@ -126,6 +128,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label1 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cmdF12 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -164,6 +168,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.groupBox1.Controls.Add(this.cmdF3);
             this.groupBox1.Controls.Add(this.cmdF2);
             this.groupBox1.Controls.Add(this.cmdF1);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.cmdF12);
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Blue;
             this.groupBox1.Location = new System.Drawing.Point(9, 67);
@@ -180,7 +186,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdF11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmdF11.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdF11.ForeColor = System.Drawing.Color.White;
-            this.cmdF11.Location = new System.Drawing.Point(553, 339);
+            this.cmdF11.Location = new System.Drawing.Point(98, 339);
             this.cmdF11.Name = "cmdF11";
             this.cmdF11.Size = new System.Drawing.Size(78, 62);
             this.cmdF11.TabIndex = 88;
@@ -193,7 +199,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.Blue;
-            this.label5.Location = new System.Drawing.Point(697, 365);
+            this.label5.Location = new System.Drawing.Point(223, 365);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 89;
@@ -488,6 +494,31 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Blue;
+            this.label2.Location = new System.Drawing.Point(697, 365);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(131, 13);
+            this.label2.TabIndex = 91;
+            this.label2.Text = "Apply Transaction Charge";
+            // 
+            // cmdF12
+            // 
+            this.cmdF12.AutoSize = true;
+            this.cmdF12.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmdF12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdF12.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdF12.ForeColor = System.Drawing.Color.White;
+            this.cmdF12.Location = new System.Drawing.Point(577, 339);
+            this.cmdF12.Name = "cmdF12";
+            this.cmdF12.Size = new System.Drawing.Size(78, 62);
+            this.cmdF12.TabIndex = 90;
+            this.cmdF12.Text = "F12";
+            this.cmdF12.UseVisualStyleBackColor = true;
+            this.cmdF12.Click += new System.EventHandler(this.cmdF12_Click);
+            // 
             // OtherCommandsWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -688,6 +719,10 @@ namespace AceSoft.RetailPlus.Client.UI
             AssignValues(Keys.F11);
         }
 
+        private void cmdF12_Click(object sender, EventArgs e)
+        {
+            AssignValues(Keys.F11);
+        }
 
 	}
 }

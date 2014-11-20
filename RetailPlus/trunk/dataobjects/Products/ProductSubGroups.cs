@@ -712,6 +712,30 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public Int64 getBarCodeCounter(Int64 ProductSubGroupID)
+        {
+            Int64 intRetValue = 0;
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+
+            string SQL = "CALL procgetProductSubGroupBarCodeCounter(@ProductSubGroupID);";
+
+            cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+
+            cmd.CommandText = SQL;
+            string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+            base.MySqlDataAdapterFill(cmd, dt);
+
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                intRetValue = Int64.Parse(dr["BarCodeCounter"].ToString());
+            }
+
+            return intRetValue;
+ 
+        }
+
 		#endregion
 
 		#region Streams

@@ -579,50 +579,22 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                MySqlCommand cmd = new MySqlCommand();
+                // note the parameter name must be the same as paramter in the proc.
+                // this is more efficient then the call.
+                // need to adjust all proc like this
 
-                string SQL = "procProductMovementSelect"; //  "procProductMovementSelect(@lngProductID, @dteStartTransactionDate, @dteEndTransactionDate);";
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                string SQL = "procProductMovementSelect";
 
                 cmd.Parameters.AddWithValue("@lngProductID", ProductID);
                 cmd.Parameters.AddWithValue("@lngMatrixID", MatrixID);
                 cmd.Parameters.AddWithValue("@dteStartTransactionDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@dteEndTransactionDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@intBranchID", intBranchID);
-
-                //SQL = "SELECT " +
-                //        "ProductID, " +
-                //        "ProductCode, " +
-                //        "ProductDescription, " +
-                //        "MatrixID, " +
-                //        "MatrixDescription,  " +
-                //        "QuantityFrom, " +
-                //        "Quantity, " +
-                //        "QuantityTo, " +
-                //        "matrixQuantity, " +
-                //        "UnitCode, " +
-                //        "Remarks, " +
-                //        "TransactionDate, " +
-                //        "TransactionNo, " +
-                //        "CreatedBy " +
-                //    "FROM tblProductMovement " +
-                //    "WHERE QuantityMovementType = 0 ";
-
-                //if (ProductID != 0)
-                //{ SQL += "AND ProductID = @lngProductID "; cmd.Parameters.AddWithValue("@lngProductID", ProductID); }
-
-                //if (StartDate != DateTime.MinValue)
-                //{ SQL += "AND TransactionDate >= @dteStartTransactionDate "; cmd.Parameters.AddWithValue("@dteStartTransactionDate", StartDate.ToString("yyyy-MM-dd HH:mm:ss")); }
-
-                //if (StartDate != DateTime.MinValue)
-                //{ SQL += "AND TransactionDate <= @dteEndTransactionDate "; cmd.Parameters.AddWithValue("@dteEndTransactionDate", EndDate.ToString("yyyy-MM-dd HH:mm:ss")); }
-
-                //SQL += "ORDER BY TransactionDate DESC ";
-
-                cmd.Connection = GetConnection();
                 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.CommandText = SQL;
-
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
                 base.MySqlDataAdapterFill(cmd, dt);
 

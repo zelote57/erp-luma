@@ -49,6 +49,7 @@ namespace AceSoft.RetailPlus.Data
         public bool isBillPrinted;
         
         public Data.ContactDetails CustomerDetails;
+        public Data.CardTypeDetails CardTypeDetails;
     }
 
     #endregion
@@ -122,13 +123,53 @@ namespace AceSoft.RetailPlus.Data
         {
             string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,CBH.GuarantorID ,CBH.ContactID ,CBH.CreditLimit ,CBH.RunningCreditAmt ,CBH.CurrMonthCreditAmt ,CBH.CurrMonthAmountPaid ,CBH.TotalBillCharges ,CBH.CurrentDueAmount ,CBH.MinimumAmountDue " +
                                   ",CBH.Prev1MoCurrentDueAmount ,CBH.Prev1MoMinimumAmountDue ,CBH.Prev1MoCurrMonthAmountPaid ,CBH.Prev2MoCurrentDueAmount ,CBH.CurrentPurchaseAmt ,CBH.BeginningBalance ,CBH.EndingBalance " +
-                                  ",CBL.BillingDate ,CreditCutOffDate ,CreditPaymentDueDate " +
-                                  ",CreditPurcStartDateToProcess ,CreditPurcEndDateToProcess, BillingFile, IsBillPrinted " +
+                                  ",CreditPaymentDueDate " +
+                                  ",BillingFile, IsBillPrinted " +
                                   ",CUS.ContactName ,CUS.CreditLimit ,CCI.CreditCardNo " +
+                                  ",CBL.CreditCardTypeID, CBL.CreditFinanceCharge " +
+                                  ",CBL.CreditLatePenaltyCharge " +
+                                    ",CBL.CreditMinimumAmountDue " +
+                                    ",CBL.CreditMinimumPercentageDue " +
+                                    ",CBL.CreditFinanceCharge15th " +
+                                    ",CBL.CreditLatePenaltyCharge15th " +
+                                    ",CBL.CreditMinimumAmountDue15th " +
+                                    ",CBL.CreditMinimumPercentageDue15th " +
+                                    ",CBL.CreditPurcStartDateToProcess " +
+                                    ",CBL.CreditPurcEndDateToProcess" +
+                                    ",CBL.CreditCutOffDate" +
+                                    ",CBL.CreditCardType " +
+                                    ",CBL.WithGuarantor " +
+                                    ",CBL.CreditUseLastDayCutOffDate, CBL.BillingDate " +
+                                    ",CTY.CardTypeCode ,CTY.CardTypeName " +
                             "FROM tblCreditBillHeader CBH " +
                             "INNER JOIN tblCreditBills CBL ON CBH.CreditBillID = CBL.CreditBillID " +
+                            "INNER JOIN tblCardTypes CTY ON CTY.CardTypeID = CBL.CreditCardTypeID " +
                             "INNER JOIN tblContacts CUS ON CUS.ContactID = CBH.ContactID " +
                             "INNER JOIN tblContactCreditCardInfo CCI ON CUS.ContactID = CCI.CustomerID ";
+
+            return stSQL;
+        }
+
+        private string SQLSelectCreditCardTypes()
+        {
+            string stSQL = "SELECT DISTINCT CBL.CreditCardTypeID, CBL.CreditFinanceCharge " +
+                                    ",CBL.CreditLatePenaltyCharge " +
+                                    ",CBL.CreditMinimumAmountDue " +
+                                    ",CBL.CreditMinimumPercentageDue " +
+                                    ",CBL.CreditFinanceCharge15th " +
+                                    ",CBL.CreditLatePenaltyCharge15th " +
+                                    ",CBL.CreditMinimumAmountDue15th " +
+                                    ",CBL.CreditMinimumPercentageDue15th " +
+                                    ",CBL.CreditPurcStartDateToProcess " +
+                                    ",CBL.CreditPurcEndDateToProcess " +
+                                    ",CBL.CreditCutOffDate " +
+                                    ",CBL.CreditCardType " +
+                                    ",CBL.WithGuarantor " +
+                                    ",CBL.CreditUseLastDayCutOffDate, CBL.BillingDate  " +
+                                    ",CTY.CardTypeCode ,CTY.CardTypeName " +
+                            "FROM tblCreditBills CBL " +
+                            "INNER JOIN tblCreditBillHeader CBH ON CBH.CreditBillID = CBL.CreditBillID " +
+                            "INNER JOIN tblCardTypes CTY ON CTY.CardTypeID = CBL.CreditCardTypeID ";
 
             return stSQL;
         }
@@ -183,6 +224,28 @@ namespace AceSoft.RetailPlus.Data
                     Details.CreditPurcEndDateToProcess = DateTime.Parse(dr["CreditPurcEndDateToProcess"].ToString());
                     Details.BillingFile = dr["BillingFile"].ToString();
                     Details.isBillPrinted = bool.Parse(dr["isBillPrinted"].ToString());
+
+                    Details.CardTypeDetails = new Data.CardTypeDetails()
+                    {
+                        CardTypeID = Int16.Parse(dr["CreditCardTypeID"].ToString()),
+                        CardTypeCode = dr["CardTypeCode"].ToString(),
+                        CardTypeName = dr["CardTypeName"].ToString(),
+                        CreditFinanceCharge = decimal.Parse(dr["CreditFinanceCharge"].ToString()),
+                        CreditLatePenaltyCharge = decimal.Parse(dr["CreditLatePenaltyCharge"].ToString()),
+                        CreditMinimumAmountDue = decimal.Parse(dr["CreditMinimumAmountDue"].ToString()),
+                        CreditMinimumPercentageDue = decimal.Parse(dr["CreditMinimumPercentageDue"].ToString()),
+                        CreditFinanceCharge15th = decimal.Parse(dr["CreditFinanceCharge15th"].ToString()),
+                        CreditLatePenaltyCharge15th = decimal.Parse(dr["CreditLatePenaltyCharge15th"].ToString()),
+                        CreditMinimumAmountDue15th = decimal.Parse(dr["CreditMinimumAmountDue15th"].ToString()),
+                        CreditMinimumPercentageDue15th = decimal.Parse(dr["CreditMinimumPercentageDue15th"].ToString()),
+                        CreditPurcStartDateToProcess = DateTime.Parse(dr["CreditPurcStartDateToProcess"].ToString()),
+                        CreditPurcEndDateToProcess = DateTime.Parse(dr["CreditPurcEndDateToProcess"].ToString()),
+                        CreditCutOffDate = DateTime.Parse(dr["CreditCutOffDate"].ToString()),
+                        CreditCardType = (CreditCardTypes)Enum.Parse(typeof(CreditCardTypes), dr["CreditCardType"].ToString()),
+                        WithGuarantor = bool.Parse(dr["WithGuarantor"].ToString()),
+                        BillingDate = DateTime.Parse(dr["BillingDate"].ToString())
+                    };
+
 
                     Customer clsCustomer = new Customer(base.Connection, base.Transaction);
                     Details.CustomerDetails = clsCustomer.Details(Details.ContactID);
@@ -479,6 +542,61 @@ namespace AceSoft.RetailPlus.Data
                     lstRetValue.Add(setDetails(dr));
                 }
             
+                return lstRetValue;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public List<CardTypeDetails> ListUnPrintedCreditCardTypes(CreditType CreditType = CreditType.Both, string SortField = "CardTypeCode", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelectCreditCardTypes() + "";
+                SQL += "WHERE CBH.IsBillPrinted = 0 ";
+
+                if (CreditType == CreditType.Group)
+                { SQL += "AND CBH.GuarantorID <> 0 "; }
+                else if (CreditType == CreditType.Individual)
+                { SQL += "AND CBH.GuarantorID = 0 "; }
+
+                SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "CardTypeCode") + " ";
+                SQL += SortOrder == System.Data.SqlClient.SortOrder.Ascending ? "ASC " : "DESC ";
+                SQL += limit == 0 ? "" : "LIMIT " + limit.ToString() + " ";
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                List<CardTypeDetails> lstRetValue = new List<CardTypeDetails>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    lstRetValue.Add(new Data.CardTypeDetails() {
+                        CardTypeID = Int16.Parse(dr["CreditCardTypeID"].ToString()),
+                        CardTypeCode = dr["CardTypeCode"].ToString(),
+                        CardTypeName = dr["CardTypeName"].ToString(),
+                        CreditFinanceCharge = decimal.Parse(dr["CreditFinanceCharge"].ToString()),
+                        CreditLatePenaltyCharge = decimal.Parse(dr["CreditLatePenaltyCharge"].ToString()),
+                        CreditMinimumAmountDue = decimal.Parse(dr["CreditMinimumAmountDue"].ToString()),
+                        CreditMinimumPercentageDue = decimal.Parse(dr["CreditMinimumPercentageDue"].ToString()),
+                        CreditFinanceCharge15th = decimal.Parse(dr["CreditFinanceCharge15th"].ToString()),
+                        CreditLatePenaltyCharge15th = decimal.Parse(dr["CreditLatePenaltyCharge15th"].ToString()),
+                        CreditMinimumAmountDue15th = decimal.Parse(dr["CreditMinimumAmountDue15th"].ToString()),
+                        CreditMinimumPercentageDue15th = decimal.Parse(dr["CreditMinimumPercentageDue15th"].ToString()),
+                        CreditPurcStartDateToProcess = DateTime.Parse(dr["CreditPurcStartDateToProcess"].ToString()),
+                        CreditPurcEndDateToProcess = DateTime.Parse(dr["CreditPurcEndDateToProcess"].ToString()),
+                        CreditCutOffDate = DateTime.Parse(dr["CreditCutOffDate"].ToString()),
+                        CreditCardType = (CreditCardTypes)Enum.Parse(typeof(CreditCardTypes), dr["CreditCardType"].ToString()),
+                        WithGuarantor = bool.Parse(dr["WithGuarantor"].ToString()),
+                        BillingDate = DateTime.Parse(dr["BillingDate"].ToString())
+                    });
+                }
+
                 return lstRetValue;
             }
             catch (Exception ex)

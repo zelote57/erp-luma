@@ -42,6 +42,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        public Data.TerminalDetails TerminalDetails { get; set; }
         public bool IsDiscountEditable
         {
             set
@@ -49,6 +50,15 @@ namespace AceSoft.RetailPlus.Client.UI
                 mbolIsDiscountEditable = value;
             }
         }
+
+        //private bool mDisableVATExempt;
+        //public bool DisableVATExempt
+        //{
+        //    set
+        //    {
+        //        mDisableVATExempt = value;
+        //    }
+        //}
 
         public DialogResult Result
         {
@@ -470,15 +480,21 @@ namespace AceSoft.RetailPlus.Client.UI
 
             lblDescription.Text = "Current Balance to be paid.";
 
+            //string strTmp = "";
             cboDiscountType.Items.Clear();
             Data.Discount clsDiscount = new Data.Discount();
             foreach (System.Data.DataRow dr in clsDiscount.DataList("DiscountCode", SortOption.Ascending).Rows)
             {
-                cboDiscountType.Items.Add(dr["DiscountCode"]);
+                //if (mDisableVATExempt && dr["DiscountCode"].ToString().ToLower() == TerminalDetails.SeniorCitizenDiscountCode.ToLower())
+                //    strTmp = "";
+                //else if (mDisableVATExempt && dr["DiscountCode"].ToString().ToLower() == TerminalDetails.PWDDiscountCode.ToLower())
+                //    strTmp = "";
+                //else
+                    cboDiscountType.Items.Add(dr["DiscountCode"]);
             }
             clsDiscount.CommitAndDispose();
 
-            if (mDiscountCode != null & mDiscountCode != "")
+            if (!string.IsNullOrEmpty(mDiscountCode))
                 cboDiscountType.SelectedIndex = cboDiscountType.Items.IndexOf(mDiscountCode);
             else
             {

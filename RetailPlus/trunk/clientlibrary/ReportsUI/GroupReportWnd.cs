@@ -14,34 +14,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.PictureBox imgIcon;
         private System.Windows.Forms.Label lblDescription;
         private System.Windows.Forms.Label lblReportDesc;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Panel panReport;
-        private System.Windows.Forms.Label lblPanelTop;
-        private System.Windows.Forms.Label lblReportFooter3;
-        private System.Windows.Forms.Label lblReportFooter2;
-        private System.Windows.Forms.Label lblReportFooter1;
-        private System.Windows.Forms.Label lblPanelBot;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label lblReceiptDesc;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label lblReportHeader4;
-        private System.Windows.Forms.Label lblReportHeader3;
-        private System.Windows.Forms.Label lblReportHeader2;
-        private System.Windows.Forms.Label lblReportHeader1;
-        private System.Windows.Forms.Label lblCompany;
-        private System.Windows.Forms.DataGrid dgGroupReport;
-        private System.Windows.Forms.DataGridTableStyle dgStyle;
-        private System.Windows.Forms.DataGridTextBoxColumn GROUPNAME;
-        private System.Windows.Forms.DataGridTextBoxColumn TRAN;
-        private System.Windows.Forms.DataGridTextBoxColumn AMOUNT;
-        private System.Windows.Forms.DataGridTextBoxColumn PERCENTAGE;
-        private System.Windows.Forms.Label lblTotalTran;
-        private System.Windows.Forms.Label lblTotalAmount;
-        private System.Windows.Forms.Label lblTotalPercentage;
         private System.ComponentModel.Container components = null;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label lblGrandTotal;
-        private System.Windows.Forms.Label label6;
         
         private Button cmdCancel;
         private Button cmdEnter;
@@ -71,7 +44,13 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         private Data.TerminalReportDetails mTerminalReportDetails;
-        public Data.TerminalReportDetails TerminalReportDetail
+        private GroupBox groupBox1;
+        private Panel panel1;
+        private DataGridView dgvItems;
+        private Label lblReceiptDesc;
+        private Label lblCompany;
+    
+        public Data.TerminalReportDetails TerminalReportDetails
         {
             set { mTerminalReportDetails = value; }
         }
@@ -112,42 +91,23 @@ namespace AceSoft.RetailPlus.Client.UI
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.lblDescription = new System.Windows.Forms.Label();
             this.lblReportDesc = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.panReport = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lblGrandTotal = new System.Windows.Forms.Label();
-            this.lblTotalTran = new System.Windows.Forms.Label();
-            this.lblTotalAmount = new System.Windows.Forms.Label();
-            this.lblTotalPercentage = new System.Windows.Forms.Label();
-            this.dgGroupReport = new System.Windows.Forms.DataGrid();
-            this.dgStyle = new System.Windows.Forms.DataGridTableStyle();
-            this.GROUPNAME = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.TRAN = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.AMOUNT = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.PERCENTAGE = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.lblPanelTop = new System.Windows.Forms.Label();
-            this.lblReportFooter3 = new System.Windows.Forms.Label();
-            this.lblReportFooter2 = new System.Windows.Forms.Label();
-            this.lblReportFooter1 = new System.Windows.Forms.Label();
-            this.lblPanelBot = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lblReceiptDesc = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.lblReportHeader4 = new System.Windows.Forms.Label();
-            this.lblReportHeader3 = new System.Windows.Forms.Label();
-            this.lblReportHeader2 = new System.Windows.Forms.Label();
-            this.lblReportHeader1 = new System.Windows.Forms.Label();
-            this.lblCompany = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.dgvItems = new System.Windows.Forms.DataGridView();
+            this.lblReceiptDesc = new System.Windows.Forms.Label();
+            this.lblCompany = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
-            this.panReport.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgGroupReport)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             this.SuspendLayout();
             // 
             // imgIcon
@@ -184,318 +144,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblReportDesc.TabIndex = 89;
             this.lblReportDesc.Text = "Department Report Window.";
             // 
-            // groupBox1
-            // 
-            this.groupBox1.BackColor = System.Drawing.Color.White;
-            this.groupBox1.Controls.Add(this.panReport);
-            this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.ForeColor = System.Drawing.Color.Blue;
-            this.groupBox1.Location = new System.Drawing.Point(9, 67);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1005, 533);
-            this.groupBox1.TabIndex = 88;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Dept. Report Details";
-            // 
-            // panReport
-            // 
-            this.panReport.AutoScroll = true;
-            this.panReport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panReport.Controls.Add(this.label6);
-            this.panReport.Controls.Add(this.label4);
-            this.panReport.Controls.Add(this.lblGrandTotal);
-            this.panReport.Controls.Add(this.lblTotalTran);
-            this.panReport.Controls.Add(this.lblTotalAmount);
-            this.panReport.Controls.Add(this.lblTotalPercentage);
-            this.panReport.Controls.Add(this.dgGroupReport);
-            this.panReport.Controls.Add(this.lblPanelTop);
-            this.panReport.Controls.Add(this.lblReportFooter3);
-            this.panReport.Controls.Add(this.lblReportFooter2);
-            this.panReport.Controls.Add(this.lblReportFooter1);
-            this.panReport.Controls.Add(this.lblPanelBot);
-            this.panReport.Controls.Add(this.label2);
-            this.panReport.Controls.Add(this.lblReceiptDesc);
-            this.panReport.Controls.Add(this.label23);
-            this.panReport.Controls.Add(this.lblReportHeader4);
-            this.panReport.Controls.Add(this.lblReportHeader3);
-            this.panReport.Controls.Add(this.lblReportHeader2);
-            this.panReport.Controls.Add(this.lblReportHeader1);
-            this.panReport.Controls.Add(this.lblCompany);
-            this.panReport.Location = new System.Drawing.Point(210, 9);
-            this.panReport.Name = "panReport";
-            this.panReport.Size = new System.Drawing.Size(385, 515);
-            this.panReport.TabIndex = 107;
-            // 
-            // label6
-            // 
-            this.label6.BackColor = System.Drawing.Color.DarkGray;
-            this.label6.Location = new System.Drawing.Point(288, 373);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(64, 15);
-            this.label6.TabIndex = 255;
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label4
-            // 
-            this.label4.BackColor = System.Drawing.Color.DarkGray;
-            this.label4.Location = new System.Drawing.Point(24, 373);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(104, 15);
-            this.label4.TabIndex = 252;
-            this.label4.Text = "Grand Total";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblGrandTotal
-            // 
-            this.lblGrandTotal.BackColor = System.Drawing.Color.DarkGray;
-            this.lblGrandTotal.Location = new System.Drawing.Point(125, 373);
-            this.lblGrandTotal.Name = "lblGrandTotal";
-            this.lblGrandTotal.Size = new System.Drawing.Size(162, 15);
-            this.lblGrandTotal.TabIndex = 251;
-            this.lblGrandTotal.Text = "0.00";
-            this.lblGrandTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblTotalTran
-            // 
-            this.lblTotalTran.BackColor = System.Drawing.Color.DarkGray;
-            this.lblTotalTran.Location = new System.Drawing.Point(24, 355);
-            this.lblTotalTran.Name = "lblTotalTran";
-            this.lblTotalTran.Size = new System.Drawing.Size(134, 15);
-            this.lblTotalTran.TabIndex = 242;
-            this.lblTotalTran.Text = "0";
-            this.lblTotalTran.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblTotalAmount
-            // 
-            this.lblTotalAmount.BackColor = System.Drawing.Color.DarkGray;
-            this.lblTotalAmount.Location = new System.Drawing.Point(159, 355);
-            this.lblTotalAmount.Name = "lblTotalAmount";
-            this.lblTotalAmount.Size = new System.Drawing.Size(128, 15);
-            this.lblTotalAmount.TabIndex = 241;
-            this.lblTotalAmount.Text = "0.00";
-            this.lblTotalAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblTotalPercentage
-            // 
-            this.lblTotalPercentage.BackColor = System.Drawing.Color.DarkGray;
-            this.lblTotalPercentage.Location = new System.Drawing.Point(288, 355);
-            this.lblTotalPercentage.Name = "lblTotalPercentage";
-            this.lblTotalPercentage.Size = new System.Drawing.Size(64, 15);
-            this.lblTotalPercentage.TabIndex = 240;
-            this.lblTotalPercentage.Text = "0.00";
-            this.lblTotalPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // dgGroupReport
-            // 
-            this.dgGroupReport.AlternatingBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgGroupReport.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgGroupReport.BackColor = System.Drawing.Color.White;
-            this.dgGroupReport.BackgroundColor = System.Drawing.Color.White;
-            this.dgGroupReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgGroupReport.CaptionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgGroupReport.CaptionForeColor = System.Drawing.Color.Blue;
-            this.dgGroupReport.CaptionVisible = false;
-            this.dgGroupReport.DataMember = "";
-            this.dgGroupReport.Enabled = false;
-            this.dgGroupReport.FlatMode = true;
-            this.dgGroupReport.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgGroupReport.HeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-            this.dgGroupReport.HeaderFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgGroupReport.HeaderForeColor = System.Drawing.Color.White;
-            this.dgGroupReport.Location = new System.Drawing.Point(26, 139);
-            this.dgGroupReport.Name = "dgGroupReport";
-            this.dgGroupReport.ReadOnly = true;
-            this.dgGroupReport.RowHeadersVisible = false;
-            this.dgGroupReport.RowHeaderWidth = 5;
-            this.dgGroupReport.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            this.dgGroupReport.SelectionForeColor = System.Drawing.Color.White;
-            this.dgGroupReport.Size = new System.Drawing.Size(659, 834);
-            this.dgGroupReport.TabIndex = 239;
-            this.dgGroupReport.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
-            this.dgStyle});
-            this.dgGroupReport.TabStop = false;
-            // 
-            // dgStyle
-            // 
-            this.dgStyle.AlternatingBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgStyle.ColumnHeadersVisible = false;
-            this.dgStyle.DataGrid = this.dgGroupReport;
-            this.dgStyle.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
-            this.GROUPNAME,
-            this.TRAN,
-            this.AMOUNT,
-            this.PERCENTAGE});
-            this.dgStyle.HeaderBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-            this.dgStyle.HeaderFont = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgStyle.HeaderForeColor = System.Drawing.Color.White;
-            this.dgStyle.MappingName = "tblGroupReport";
-            this.dgStyle.RowHeadersVisible = false;
-            this.dgStyle.RowHeaderWidth = 5;
-            this.dgStyle.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            this.dgStyle.SelectionForeColor = System.Drawing.Color.White;
-            // 
-            // GROUPNAME
-            // 
-            this.GROUPNAME.Format = "";
-            this.GROUPNAME.FormatInfo = null;
-            this.GROUPNAME.HeaderText = "GROUPNAME";
-            this.GROUPNAME.MappingName = "ProductGroup";
-            this.GROUPNAME.ReadOnly = true;
-            this.GROUPNAME.Width = 50;
-            // 
-            // TRAN
-            // 
-            this.TRAN.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.TRAN.Format = "#,##0.#0";
-            this.TRAN.FormatInfo = null;
-            this.TRAN.HeaderText = "QTY";
-            this.TRAN.MappingName = "TranCount";
-            this.TRAN.ReadOnly = true;
-            this.TRAN.Width = 30;
-            // 
-            // AMOUNT
-            // 
-            this.AMOUNT.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.AMOUNT.Format = "#,##0.#0";
-            this.AMOUNT.FormatInfo = null;
-            this.AMOUNT.HeaderText = "AMOUNT";
-            this.AMOUNT.MappingName = "Amount";
-            this.AMOUNT.ReadOnly = true;
-            this.AMOUNT.Width = 70;
-            // 
-            // PERCENTAGE
-            // 
-            this.PERCENTAGE.Alignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.PERCENTAGE.Format = "#,##0.#0";
-            this.PERCENTAGE.FormatInfo = null;
-            this.PERCENTAGE.HeaderText = "PERCENTAGE";
-            this.PERCENTAGE.MappingName = "Percentage";
-            this.PERCENTAGE.ReadOnly = true;
-            this.PERCENTAGE.Width = 85;
-            // 
-            // lblPanelTop
-            // 
-            this.lblPanelTop.Location = new System.Drawing.Point(24, -8);
-            this.lblPanelTop.Name = "lblPanelTop";
-            this.lblPanelTop.Size = new System.Drawing.Size(331, 15);
-            this.lblPanelTop.TabIndex = 238;
-            this.lblPanelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblReportFooter3
-            // 
-            this.lblReportFooter3.Location = new System.Drawing.Point(26, 481);
-            this.lblReportFooter3.Name = "lblReportFooter3";
-            this.lblReportFooter3.Size = new System.Drawing.Size(331, 15);
-            this.lblReportFooter3.TabIndex = 227;
-            this.lblReportFooter3.Text = "ReportFooter3";
-            this.lblReportFooter3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblReportFooter2
-            // 
-            this.lblReportFooter2.Location = new System.Drawing.Point(26, 465);
-            this.lblReportFooter2.Name = "lblReportFooter2";
-            this.lblReportFooter2.Size = new System.Drawing.Size(331, 15);
-            this.lblReportFooter2.TabIndex = 226;
-            this.lblReportFooter2.Text = "ReportFooter1";
-            this.lblReportFooter2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblReportFooter1
-            // 
-            this.lblReportFooter1.Location = new System.Drawing.Point(26, 449);
-            this.lblReportFooter1.Name = "lblReportFooter1";
-            this.lblReportFooter1.Size = new System.Drawing.Size(331, 15);
-            this.lblReportFooter1.TabIndex = 225;
-            this.lblReportFooter1.Text = "ReportFooter1";
-            this.lblReportFooter1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblPanelBot
-            // 
-            this.lblPanelBot.Location = new System.Drawing.Point(26, 505);
-            this.lblPanelBot.Name = "lblPanelBot";
-            this.lblPanelBot.Size = new System.Drawing.Size(331, 15);
-            this.lblPanelBot.TabIndex = 168;
-            this.lblPanelBot.Text = "-/-";
-            this.lblPanelBot.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label2.Location = new System.Drawing.Point(291, 12);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(331, 5);
-            this.label2.TabIndex = 129;
-            this.label2.Text = "----------------------------------------------------------------------------";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblReceiptDesc
-            // 
-            this.lblReceiptDesc.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblReceiptDesc.Location = new System.Drawing.Point(26, 115);
-            this.lblReceiptDesc.Name = "lblReceiptDesc";
-            this.lblReceiptDesc.Size = new System.Drawing.Size(331, 15);
-            this.lblReceiptDesc.TabIndex = 122;
-            this.lblReceiptDesc.Text = "DEPT. REPORT";
-            this.lblReceiptDesc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label23
-            // 
-            this.label23.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label23.Location = new System.Drawing.Point(26, 107);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(331, 5);
-            this.label23.TabIndex = 121;
-            this.label23.Text = "----------------------------------------------------------------------------";
-            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblReportHeader4
-            // 
-            this.lblReportHeader4.Location = new System.Drawing.Point(26, 88);
-            this.lblReportHeader4.Name = "lblReportHeader4";
-            this.lblReportHeader4.Size = new System.Drawing.Size(331, 15);
-            this.lblReportHeader4.TabIndex = 117;
-            this.lblReportHeader4.Text = "ReportHeader4";
-            this.lblReportHeader4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // lblReportHeader3
-            // 
-            this.lblReportHeader3.ForeColor = System.Drawing.Color.Blue;
-            this.lblReportHeader3.Location = new System.Drawing.Point(26, 72);
-            this.lblReportHeader3.Name = "lblReportHeader3";
-            this.lblReportHeader3.Size = new System.Drawing.Size(331, 15);
-            this.lblReportHeader3.TabIndex = 116;
-            this.lblReportHeader3.Text = "ReportHeader3";
-            this.lblReportHeader3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // lblReportHeader2
-            // 
-            this.lblReportHeader2.Location = new System.Drawing.Point(26, 56);
-            this.lblReportHeader2.Name = "lblReportHeader2";
-            this.lblReportHeader2.Size = new System.Drawing.Size(331, 15);
-            this.lblReportHeader2.TabIndex = 115;
-            this.lblReportHeader2.Text = "ReportHeader2";
-            this.lblReportHeader2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // lblReportHeader1
-            // 
-            this.lblReportHeader1.Location = new System.Drawing.Point(26, 40);
-            this.lblReportHeader1.Name = "lblReportHeader1";
-            this.lblReportHeader1.Size = new System.Drawing.Size(331, 15);
-            this.lblReportHeader1.TabIndex = 114;
-            this.lblReportHeader1.Text = "ReportHeader1";
-            this.lblReportHeader1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // lblCompany
-            // 
-            this.lblCompany.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCompany.Location = new System.Drawing.Point(26, 16);
-            this.lblCompany.Name = "lblCompany";
-            this.lblCompany.Size = new System.Drawing.Size(331, 15);
-            this.lblCompany.TabIndex = 113;
-            this.lblCompany.Text = "AceSoft RetailPlus ™";
-            this.lblCompany.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // cmdCancel
             // 
             this.cmdCancel.AutoSize = true;
@@ -526,17 +174,104 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.White;
+            this.groupBox1.Controls.Add(this.panel1);
+            this.groupBox1.Controls.Add(this.lblReceiptDesc);
+            this.groupBox1.Controls.Add(this.lblCompany);
+            this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.ForeColor = System.Drawing.Color.Blue;
+            this.groupBox1.Location = new System.Drawing.Point(9, 67);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1005, 533);
+            this.groupBox1.TabIndex = 91;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Dept. (Group) Report Details";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dgvItems);
+            this.panel1.Location = new System.Drawing.Point(311, 64);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(388, 463);
+            this.panel1.TabIndex = 124;
+            // 
+            // dgvItems
+            // 
+            this.dgvItems.AllowUserToAddRows = false;
+            this.dgvItems.AllowUserToDeleteRows = false;
+            this.dgvItems.AllowUserToResizeColumns = false;
+            this.dgvItems.AllowUserToResizeRows = false;
+            this.dgvItems.BackgroundColor = System.Drawing.Color.White;
+            this.dgvItems.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvItems.CausesValidation = false;
+            this.dgvItems.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvItems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.dgvItems.ColumnHeadersHeight = 24;
+            this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvItems.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvItems.GridColor = System.Drawing.Color.White;
+            this.dgvItems.Location = new System.Drawing.Point(0, 0);
+            this.dgvItems.Name = "dgvItems";
+            this.dgvItems.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            this.dgvItems.RowHeadersVisible = false;
+            this.dgvItems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle9;
+            this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvItems.Size = new System.Drawing.Size(388, 463);
+            this.dgvItems.TabIndex = 124;
+            // 
+            // lblReceiptDesc
+            // 
+            this.lblReceiptDesc.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblReceiptDesc.Location = new System.Drawing.Point(308, 36);
+            this.lblReceiptDesc.Name = "lblReceiptDesc";
+            this.lblReceiptDesc.Size = new System.Drawing.Size(388, 22);
+            this.lblReceiptDesc.TabIndex = 122;
+            this.lblReceiptDesc.Text = "Group Report";
+            this.lblReceiptDesc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCompany
+            // 
+            this.lblCompany.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCompany.Location = new System.Drawing.Point(308, 17);
+            this.lblCompany.Name = "lblCompany";
+            this.lblCompany.Size = new System.Drawing.Size(388, 19);
+            this.lblCompany.TabIndex = 113;
+            this.lblCompany.Text = "AceSoft RetailPlus ™";
+            this.lblCompany.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // GroupReportWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
             this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.lblReportDesc);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.imgIcon);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -550,8 +285,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Resize += new System.EventHandler(this.GroupReportWnd_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            this.panReport.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgGroupReport)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -562,9 +297,6 @@ namespace AceSoft.RetailPlus.Client.UI
         #region Windows Form Methods
         private void GroupReportWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            System.Data.DataTable dt;
-            int index;
-
             switch (e.KeyData)
             {
                 case Keys.Escape:
@@ -575,29 +307,6 @@ namespace AceSoft.RetailPlus.Client.UI
                 case Keys.Enter:
                     dialog = DialogResult.OK;
                     this.Hide();
-                    break;
-
-                case Keys.Up:
-                    dt = (System.Data.DataTable)dgGroupReport.DataSource;
-                    if (dgGroupReport.CurrentRowIndex > 0)
-                    {
-                        index = dgGroupReport.CurrentRowIndex;
-                        dgGroupReport.CurrentRowIndex -= 1;
-                        dgGroupReport.Select(dgGroupReport.CurrentRowIndex);
-                        dgGroupReport.UnSelect(index);
-                    }
-                    break;
-
-                case Keys.Down:
-                    dt = (System.Data.DataTable)dgGroupReport.DataSource;
-                    if (dgGroupReport.CurrentRowIndex < dt.Rows.Count - 1)
-                    {
-                        index = dgGroupReport.CurrentRowIndex;
-
-                        dgGroupReport.CurrentRowIndex += 1;
-                        dgGroupReport.Select(dgGroupReport.CurrentRowIndex);
-                        dgGroupReport.UnSelect(index);
-                    }
                     break;
             }
         }
@@ -617,12 +326,14 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
+            lblCompany.Text = CompanyDetails.CompanyName;
+
             PopulateGroupReport();
         }
 
         private void GroupReportWnd_Resize(object sender, System.EventArgs e)
         {
-            SetGridItemsWidth();
+
         }
 
         #endregion
@@ -644,65 +355,90 @@ namespace AceSoft.RetailPlus.Client.UI
         #endregion
 
         #region Private Methods
-        private void SetGridItemsWidth()
-        {
-            dgStyle.GridColumnStyles["ProductGroup"].Width = 90;
-            dgStyle.GridColumnStyles["TranCount"].Width = 50;
-            dgStyle.GridColumnStyles["Amount"].Width = dgGroupReport.Width - 220;
-            dgStyle.GridColumnStyles["Percentage"].Width = 85;
-            dgGroupReport.Height = 213;
-            dgGroupReport.Width = 326;
-        }
 
         private void PopulateGroupReport()
         {
-            lblCompany.Text = CompanyDetails.CompanyCode;
-
             Receipt clsReceipt = new Receipt();
+            
+            // disabled the trustfund
+            mTerminalReportDetails.TrustFund = 0;
 
-            lblReportHeader1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader1").Value);
-            lblReportHeader2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader2").Value);
-            lblReportHeader3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader3").Value);
-            lblReportHeader4.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportHeader4").Value);
+            mclsTerminalDetails.MaxReceiptWidth = 94;
 
-            this.dgStyle.MappingName = mdtGroupReport.TableName;
-            dgGroupReport.DataSource = mdtGroupReport;
+            System.Data.DataTable dt = new System.Data.DataTable("tblGroupReport");
+            dt.Columns.Add("Module");
+            dt.Columns.Add("Separator");
+            dt.Columns.Add("Value");
+            dt.Columns.Add("Prcntg");
+
             decimal TotalTranCount = 0;
             decimal TotalAmount = 0;
             try
             {
                 foreach (System.Data.DataRow dr in mdtGroupReport.Rows)
                 {
-                    TotalTranCount += Convert.ToDecimal(dr["TranCount"]);
-                    TotalAmount += Convert.ToDecimal(dr["Amount"]);
+                    string ProductGroup = dr["ProductGroup"].ToString();
+                    string TranCount = Convert.ToDecimal(dr["TranCount"].ToString()).ToString("#,##0");
+                    string Amount = Convert.ToDecimal(dr["Amount"].ToString()).ToString("#,##0.#0");
+                    string Percentage = dr["Percentage"].ToString();
+
+                    TotalTranCount += decimal.Parse(Math.Round(Convert.ToDecimal(TranCount) * ((100 - mTerminalReportDetails.TrustFund) / 100), 2).ToString());
+                    TotalAmount += decimal.Parse(Math.Round(Convert.ToDecimal(Amount) * ((100 - mTerminalReportDetails.TrustFund) / 100), 2).ToString());
+                    dt.Rows.Add(ProductGroup, TranCount, Amount, Percentage);
                 }
-                dgGroupReport.Select(0);
             }
             catch { }
-            lblTotalTran.Text = TotalTranCount.ToString("#,##0");
-            lblTotalAmount.Text = TotalAmount.ToString("#,##0.#0");
-            if (TotalTranCount > 0)
-                lblTotalPercentage.Text = "100%";
-            else
-                lblTotalPercentage.Text = "0%";
+            dt.Rows.Add("Total", TotalTranCount.ToString("#,##0.#0"), "", TotalAmount.ToString("#,##0.#0"));
+            dt.Rows.Add("(+) Items Disc/VatE", ":", "", ((mTerminalReportDetails.GrossSales - TotalAmount) * ((100 - mTerminalReportDetails.TrustFund) / 100)).ToString("#,##0.#0"));
+            dt.Rows.Add("-----------------------------------", "--", "----------", "----------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 80, '-'));
+            dt.Rows.Add("Gross Sales", ":", "", ((mTerminalReportDetails.GrossSales + mTerminalReportDetails.TotalCharge) * ((100 - mTerminalReportDetails.TrustFund) / 100)).ToString("#,##0.#0"));
+            dt.Rows.Add("(-) Service Charge", ":", "", mTerminalReportDetails.TotalCharge.ToString("#,##0.#0"));
+            dt.Rows.Add("-----------------------------------", "--", "----------", "----------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 80, '-'));
+            dt.Rows.Add("Total Amount", ":", "", (mTerminalReportDetails.GrossSales * ((100 - mTerminalReportDetails.TrustFund) / 100)).ToString("#,##0.#0"));
+            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", "", (mTerminalReportDetails.VATExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT / 100) * ((100 - mTerminalReportDetails.TrustFund) / 100)).ToString("#,##0.#0"));
+            dt.Rows.Add("(-) Discount", ":", "", (mTerminalReportDetails.SubTotalDiscount + mTerminalReportDetails.ItemsDiscount).ToString("#,##0.#0"));
+            dt.Rows.Add("-----------------------------------", "--", "----------", "----------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 80, '-'));
+            dt.Rows.Add("Net Sales", ":", "", (mTerminalReportDetails.NetSales * ((100 - mTerminalReportDetails.TrustFund) / 100)).ToString("#,##0.#0"));
 
-            //lblDiscount.Text = mTerminalReportDetails.SubTotalDiscount.ToString("#,##0.#0");
-            //lblCharge.Text = mTerminalReportDetails.TotalCharge.ToString("#,##0.#0");
-            //lblVAT.Text = mTerminalReportDetails.VAT.ToString("#,##0.#0");
-
-            //lblVATName.Visible = !mclsTerminalDetails.IsVATInclusive;
-            //lblVAT.Visible = !mclsTerminalDetails.IsVATInclusive;
-            //lblVATSpacer.Visible = !mclsTerminalDetails.IsVATInclusive;
-
-            //decimal GrandTotal = mTerminalReportDetails.NetSales + mTerminalReportDetails.TotalDiscount + mTerminalReportDetails.TotalCharge + (mTerminalReportDetails.VATExempt * mclsTerminalDetails.VAT/100);
-            lblGrandTotal.Text = mTerminalReportDetails.GrossSales.ToString("#,##0.#0");
-            //lblGrandTotal.Tag = GrandTotal.ToString("#,##0.#0");
-
-            lblReportFooter1.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter1").Value);
-            lblReportFooter2.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter2").Value);
-            lblReportFooter3.Text = GetReceiptFormatParameter(clsReceipt.Details("ReportFooter3").Value);
+            string strReportFooter1 = clsReceipt.Details("ReportFooter1").Value;
+            string strReportFooter2 = clsReceipt.Details("ReportFooter2").Value;
+            string strReportFooter3 = clsReceipt.Details("ReportFooter3").Value;
+            if (!string.IsNullOrEmpty(strReportFooter1)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportFooter1), mclsTerminalDetails.MaxReceiptWidth));
+            if (!string.IsNullOrEmpty(strReportFooter2)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportFooter2), mclsTerminalDetails.MaxReceiptWidth));
+            if (!string.IsNullOrEmpty(strReportFooter3)) dt.Rows.Add(CenterString(GetReceiptFormatParameter(strReportFooter3), mclsTerminalDetails.MaxReceiptWidth));
 
             clsReceipt.CommitAndDispose();
+
+            dgvItems.MultiSelect = true;
+            dgvItems.AutoGenerateColumns = true;
+            dgvItems.AutoSize = true;
+            dgvItems.ScrollBars = ScrollBars.Vertical;
+            dgvItems.DataSource = dt.TableName;
+            dgvItems.DataSource = dt;
+
+            //dgvItems.Columns["ReportValue"].Visible = true;
+            //dgvItems.Columns["ReportValue"].HeaderText = "";
+            //dgvItems.Columns["ReportValue"].Width = 388;
+
+            dgvItems.Columns["Module"].Visible = true;
+            dgvItems.Columns["Separator"].Visible = true;
+            dgvItems.Columns["Value"].Visible = true;
+            dgvItems.Columns["Prcntg"].Visible = true;
+
+            dgvItems.Columns["Module"].HeaderText = "Group";
+            dgvItems.Columns["Separator"].HeaderText = "Qty";
+            dgvItems.Columns["Value"].HeaderText = "Amount";
+            dgvItems.Columns["Prcntg"].HeaderText = "Prcntg.";
+
+            dgvItems.Columns["Module"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvItems.Columns["Separator"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvItems.Columns["Value"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgvItems.Columns["Prcntg"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvItems.Columns["Module"].Width = 200;
+            dgvItems.Columns["Separator"].Width = 40;
+            dgvItems.Columns["Value"].Width = (dgvItems.Width - 220 - 40) / 2;
+            dgvItems.Columns["Prcntg"].Width = (dgvItems.Width - 220 - 40) / 2;
 
         }
         private string GetReceiptFormatParameter(string stReceiptFormat)
@@ -752,6 +488,27 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (stRetValue == null) stRetValue = "";
 
+            return stRetValue;
+        }
+        private string CenterString(string Value, int TotalLengthOfCenter)
+        {
+            string stRetValue = Value;
+            Int32 lenvalue = Value.Length;
+
+            if (lenvalue <= TotalLengthOfCenter)
+            {
+                Int32 padding = (int)(TotalLengthOfCenter - lenvalue) / 2;
+
+                for (int i = 0; i < padding; i++)
+                { stRetValue = " " + stRetValue + " "; }
+
+                if (((TotalLengthOfCenter - lenvalue) % 2) != 0)
+                    stRetValue += " ";
+            }
+            else
+            {
+                stRetValue = Value.Substring(0, TotalLengthOfCenter);
+            }
             return stRetValue;
         }
 

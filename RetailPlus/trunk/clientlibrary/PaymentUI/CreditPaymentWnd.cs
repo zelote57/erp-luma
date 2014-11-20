@@ -408,7 +408,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
                 this.keyboardNoControl1.Location = new System.Drawing.Point(412, 310);
                 this.keyboardNoControl1.Name = "keyboardNoControl1";
-                this.keyboardNoControl1.Size = new System.Drawing.Size(202, 176);
+                this.keyboardNoControl1.Size = new System.Drawing.Size(208, 172);
                 this.keyboardNoControl1.TabIndex = 90;
                 this.keyboardNoControl1.TabStop = false;
                 this.keyboardNoControl1.Visible = false;
@@ -566,7 +566,7 @@ namespace AceSoft.RetailPlus.Client.UI
             mDetails.Remarks = txtRemarks.Text;
             // set this to check if the transaction will be added or deducted in the credit of customer
             mDetails.IsRefund = mboIsRefund;
-            mDetails.CreditReason = CreditReason.IHC.ToString("G") + " pos @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString();
+            mDetails.CreditReason = CreditReason.IHC.ToString("G") + " @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString();
 
             return true;
         }

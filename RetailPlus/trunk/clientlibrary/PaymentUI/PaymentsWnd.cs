@@ -73,6 +73,9 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdF6;
         private bool mboCreditCardSwiped = false;
 
+        private bool mboIsCreditChargeExcluded;
+        public bool IsCreditChargeExcluded { set { mboIsCreditChargeExcluded = value; } }
+
         public bool CreditCardSwiped
         {
             get { return mboCreditCardSwiped; }
@@ -88,6 +91,14 @@ namespace AceSoft.RetailPlus.Client.UI
             get { return mclsTerminalDetails; }
             set { mclsTerminalDetails = value; }
         }
+
+        private Data.SysConfigDetails mclsSysConfigDetails;
+        public Data.SysConfigDetails SysConfigDetails
+        {
+            get { return mclsSysConfigDetails; }
+            set { mclsSysConfigDetails = value; }
+        }
+
 		public decimal AllowedCredit
 		{
 			get {	return mdecAllowedCredit;	}
@@ -348,6 +359,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblCredit.Size = new System.Drawing.Size(168, 23);
             this.lblCredit.TabIndex = 73;
             this.lblCredit.Text = "IN-HOUSE CREDIT";
+            this.lblCredit.Visible = false;
             // 
             // lblCheque
             // 
@@ -392,6 +404,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdF4.TabIndex = 5;
             this.cmdF4.Text = "F4";
             this.cmdF4.UseVisualStyleBackColor = true;
+            this.cmdF4.Visible = false;
             this.cmdF4.Click += new System.EventHandler(this.cmdF4_Click);
             // 
             // cmdF3
@@ -958,18 +971,20 @@ namespace AceSoft.RetailPlus.Client.UI
             
             if (mclsSalesTransactionDetails.TransactionID != 0)
             {
+                
                 mdecAllowedCredit = mclsCustomerDetails.CreditLimit - mclsCustomerDetails.Credit;
                 mdecAllowedDebit = mclsCustomerDetails.Debit;
 
-                // 26Oct2014 : include !mclsTerminalDetails.ShowCustomerSelection 
-                //             to check if inhouse credit card will be use instead of credit only.
-                cmdF4.Visible = !mclsTerminalDetails.ShowCustomerSelection ? false : mclsCustomerDetails.IsCreditAllowed ? mdecAllowedCredit > 0 : false;
-                lblCredit.Visible = !mclsTerminalDetails.ShowCustomerSelection ? false : mclsCustomerDetails.IsCreditAllowed ? mdecAllowedCredit > 0 : false;
-                grpDebit.Visible = !mclsTerminalDetails.ShowCustomerSelection ? false : mboIsRefund ? false : (mclsCustomerDetails.IsCreditAllowed ? mdecAllowedDebit > 0 : false);
-
+                cmdF4.Visible = mclsCustomerDetails.IsCreditAllowed ? mdecAllowedCredit > 0 : false;
+                lblCredit.Visible = mclsCustomerDetails.IsCreditAllowed ? mdecAllowedCredit > 0 : false;
                 lblCredit.Text = mclsSalesTransactionDetails.isConsignment ? "CONSIGNMENT" : "IN-HOUSE CREDIT";
+                
+                if (mclsSysConfigDetails.AllowDebitPayment)
+                {
+                    grpDebit.Visible = mboIsRefund ? false : (mclsCustomerDetails.IsCreditAllowed ? mdecAllowedDebit > 0 : false);
+                }
 
-                if (mclsTerminalDetails.RewardPointsDetails.EnableRewardPointsAsPayment == true)
+                if (mclsSysConfigDetails.AllowRewardPointsPayment && mclsTerminalDetails.RewardPointsDetails.EnableRewardPointsAsPayment)
                 {
                     if (!mboIsRefund && mclsCustomerDetails.RewardDetails.RewardPoints != 0 && mclsCustomerDetails.ContactID != Constants.C_RETAILPLUS_CUSTOMERID)
                     {
@@ -986,6 +1001,21 @@ namespace AceSoft.RetailPlus.Client.UI
                 lblSubTotalName.Text = "REFUND";
                 lblAmountPaidName.Text = "REFUNDED AMT";
                 lblChangeName.Text = "OVER";
+            }
+
+            if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.CreditPayment)
+            {
+                cmdF3.Visible = false;
+                lblCreditCard.Visible = false;
+                cmdF4.Visible = false;
+                lblCredit.Visible = false;
+                grpDebit.Visible = false;
+                grpRewardCard.Visible = false;
+
+                if (mclsSysConfigDetails.WillDepositChangeOfCreditPayment)
+                {
+                    lblChangeName.Text = "Deposit";
+                }
             }
 
 			lblCash.Tag = "0.00";
@@ -1041,11 +1071,12 @@ namespace AceSoft.RetailPlus.Client.UI
 					break;
 
 				case Keys.F3:
-                    ShowCreditCardPaymentWindow();
+                    ShowCreditCardPaymentWindow("f3");
 					break;
 
 				case Keys.F4:
-                    if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible) ShowCreditPaymentWindow();
+                    if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsTerminalDetails.ShowCustomerSelection) ShowCreditPaymentWindow();
+                    else if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware) ShowCreditCardPaymentWindow("f4");
 					break;
 
 				case Keys.F5:
@@ -1111,11 +1142,12 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         private void cmdF3_Click(object sender, EventArgs e)
         {
-            ShowCreditCardPaymentWindow();
+            ShowCreditCardPaymentWindow("f3");
         }
         private void cmdF4_Click(object sender, EventArgs e)
         {
-            ShowCreditPaymentWindow();
+            if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Normal) ShowCreditPaymentWindow();
+            else if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware) ShowCreditCardPaymentWindow("f4");
         }
         private void cmdF5_Click(object sender, EventArgs e)
         {
@@ -1213,11 +1245,13 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			
 		}
-		private void ShowCreditCardPaymentWindow()
+		private void ShowCreditCardPaymentWindow(string sender = "f3")
 		{
             CreditCardPaymentWnd clsCreditCardPaymentWnd = new CreditCardPaymentWnd();
+            clsCreditCardPaymentWnd.IsCreditChargeExcluded = mboIsCreditChargeExcluded;
             clsCreditCardPaymentWnd.TerminalDetails = mclsTerminalDetails;
             clsCreditCardPaymentWnd.SalesTransactionDetails = mclsSalesTransactionDetails;
+            if (sender == "f4") clsCreditCardPaymentWnd.CreditorDetails = mclsCustomerDetails;
             clsCreditCardPaymentWnd.arrCreditCardPaymentDetails = marrCreditCardPaymentDetails;
             clsCreditCardPaymentWnd.IsRefund = mboIsRefund;
             clsCreditCardPaymentWnd.BalanceAmount = Convert.ToDecimal(lblBalance.Text);

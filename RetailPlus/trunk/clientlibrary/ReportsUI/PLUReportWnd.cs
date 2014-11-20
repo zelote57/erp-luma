@@ -243,6 +243,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label4.TabIndex = 248;
             this.label4.Text = "Grand Total";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label4.Visible = false;
             // 
             // lblGrandTotal
             // 
@@ -253,6 +254,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblGrandTotal.TabIndex = 247;
             this.lblGrandTotal.Text = "0.00";
             this.lblGrandTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblGrandTotal.Visible = false;
             // 
             // lblEndDate
             // 

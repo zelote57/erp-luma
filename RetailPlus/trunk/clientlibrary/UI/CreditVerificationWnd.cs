@@ -46,6 +46,10 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label lblBalance;
         private Label lblAddNewCustomer;
         private Label label6;
+        private Label label8;
+        private TextBox txtRemarks;
+        private Label label9;
+        private TextBox txtMobileNo;
 		private string mstCaption;
 
 		public DialogResult Result
@@ -109,6 +113,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblHeader = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.grpContactDetails = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtRemarks = new System.Windows.Forms.TextBox();
             this.txtCreditCardStatus = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -133,6 +139,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2 = new System.Windows.Forms.Label();
             this.lblAddNewCustomer = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtMobileNo = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.grpContactDetails.SuspendLayout();
             this.grpPurchases.SuspendLayout();
@@ -164,6 +172,10 @@ namespace AceSoft.RetailPlus.Client.UI
             // grpContactDetails
             // 
             this.grpContactDetails.BackColor = System.Drawing.Color.White;
+            this.grpContactDetails.Controls.Add(this.label9);
+            this.grpContactDetails.Controls.Add(this.txtMobileNo);
+            this.grpContactDetails.Controls.Add(this.label8);
+            this.grpContactDetails.Controls.Add(this.txtRemarks);
             this.grpContactDetails.Controls.Add(this.txtCreditCardStatus);
             this.grpContactDetails.Controls.Add(this.label10);
             this.grpContactDetails.Controls.Add(this.label3);
@@ -182,18 +194,42 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpContactDetails.ForeColor = System.Drawing.Color.Blue;
             this.grpContactDetails.Location = new System.Drawing.Point(9, 113);
             this.grpContactDetails.Name = "grpContactDetails";
-            this.grpContactDetails.Size = new System.Drawing.Size(1008, 182);
+            this.grpContactDetails.Size = new System.Drawing.Size(1008, 208);
             this.grpContactDetails.TabIndex = 0;
             this.grpContactDetails.TabStop = false;
             this.grpContactDetails.Text = "Creditor Details";
             this.grpContactDetails.Visible = false;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label8.Location = new System.Drawing.Point(71, 88);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(58, 13);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "Remarks";
+            // 
+            // txtRemarks
+            // 
+            this.txtRemarks.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.txtRemarks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtRemarks.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRemarks.Location = new System.Drawing.Point(174, 88);
+            this.txtRemarks.MaxLength = 150;
+            this.txtRemarks.Multiline = true;
+            this.txtRemarks.Name = "txtRemarks";
+            this.txtRemarks.ReadOnly = true;
+            this.txtRemarks.Size = new System.Drawing.Size(726, 39);
+            this.txtRemarks.TabIndex = 12;
             // 
             // txtCreditCardStatus
             // 
             this.txtCreditCardStatus.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtCreditCardStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCreditCardStatus.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCreditCardStatus.Location = new System.Drawing.Point(174, 96);
+            this.txtCreditCardStatus.Location = new System.Drawing.Point(174, 133);
             this.txtCreditCardStatus.MaxLength = 25;
             this.txtCreditCardStatus.Name = "txtCreditCardStatus";
             this.txtCreditCardStatus.ReadOnly = true;
@@ -206,7 +242,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label10.BackColor = System.Drawing.SystemColors.Window;
             this.label10.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label10.Location = new System.Drawing.Point(71, 96);
+            this.label10.Location = new System.Drawing.Point(71, 133);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(81, 13);
             this.label10.TabIndex = 10;
@@ -217,7 +253,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label3.Location = new System.Drawing.Point(627, 17);
+            this.label3.Location = new System.Drawing.Point(627, 50);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(86, 13);
             this.label3.TabIndex = 7;
@@ -228,7 +264,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtTelNo.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtTelNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTelNo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTelNo.Location = new System.Drawing.Point(731, 15);
+            this.txtTelNo.Location = new System.Drawing.Point(731, 48);
             this.txtTelNo.MaxLength = 75;
             this.txtTelNo.Name = "txtTelNo";
             this.txtTelNo.ReadOnly = true;
@@ -240,7 +276,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label1.Location = new System.Drawing.Point(73, 51);
+            this.label1.Location = new System.Drawing.Point(71, 51);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 13);
             this.label1.TabIndex = 6;
@@ -256,7 +292,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.ReadOnly = true;
-            this.txtAddress.Size = new System.Drawing.Size(726, 39);
+            this.txtAddress.Size = new System.Drawing.Size(439, 30);
             this.txtAddress.TabIndex = 3;
             // 
             // lblCaption
@@ -288,7 +324,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label5.BackColor = System.Drawing.SystemColors.Window;
             this.label5.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label5.Location = new System.Drawing.Point(73, 132);
+            this.label5.Location = new System.Drawing.Point(71, 169);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(69, 13);
             this.label5.TabIndex = 5;
@@ -299,7 +335,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtAvailableCredit.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtAvailableCredit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtAvailableCredit.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAvailableCredit.Location = new System.Drawing.Point(731, 132);
+            this.txtAvailableCredit.Location = new System.Drawing.Point(731, 169);
             this.txtAvailableCredit.MaxLength = 75;
             this.txtAvailableCredit.Name = "txtAvailableCredit";
             this.txtAvailableCredit.ReadOnly = true;
@@ -313,7 +349,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label7.Location = new System.Drawing.Point(627, 132);
+            this.label7.Location = new System.Drawing.Point(627, 169);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(99, 13);
             this.label7.TabIndex = 9;
@@ -324,7 +360,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCreditLimit.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtCreditLimit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCreditLimit.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCreditLimit.Location = new System.Drawing.Point(174, 132);
+            this.txtCreditLimit.Location = new System.Drawing.Point(174, 169);
             this.txtCreditLimit.MaxLength = 75;
             this.txtCreditLimit.Name = "txtCreditLimit";
             this.txtCreditLimit.ReadOnly = true;
@@ -338,7 +374,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label4.Location = new System.Drawing.Point(356, 132);
+            this.label4.Location = new System.Drawing.Point(356, 169);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(87, 13);
             this.label4.TabIndex = 7;
@@ -349,7 +385,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCredit.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtCredit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCredit.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCredit.Location = new System.Drawing.Point(444, 132);
+            this.txtCredit.Location = new System.Drawing.Point(444, 169);
             this.txtCredit.MaxLength = 75;
             this.txtCredit.Name = "txtCredit";
             this.txtCredit.ReadOnly = true;
@@ -396,9 +432,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpPurchases.Controls.Add(this.dgvItems);
             this.grpPurchases.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpPurchases.ForeColor = System.Drawing.Color.Blue;
-            this.grpPurchases.Location = new System.Drawing.Point(7, 301);
+            this.grpPurchases.Location = new System.Drawing.Point(7, 327);
             this.grpPurchases.Name = "grpPurchases";
-            this.grpPurchases.Size = new System.Drawing.Size(1010, 301);
+            this.grpPurchases.Size = new System.Drawing.Size(1010, 275);
             this.grpPurchases.TabIndex = 13;
             this.grpPurchases.TabStop = false;
             this.grpPurchases.Text = "Current Purchases";
@@ -409,7 +445,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBalanceName.AutoSize = true;
             this.lblBalanceName.BackColor = System.Drawing.Color.Transparent;
             this.lblBalanceName.Font = new System.Drawing.Font("Arial Narrow", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBalanceName.Location = new System.Drawing.Point(441, 263);
+            this.lblBalanceName.Location = new System.Drawing.Point(441, 241);
             this.lblBalanceName.Name = "lblBalanceName";
             this.lblBalanceName.Size = new System.Drawing.Size(255, 29);
             this.lblBalanceName.TabIndex = 88;
@@ -421,7 +457,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBalance.BackColor = System.Drawing.Color.Transparent;
             this.lblBalance.Font = new System.Drawing.Font("Arial Narrow", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBalance.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblBalance.Location = new System.Drawing.Point(733, 265);
+            this.lblBalance.Location = new System.Drawing.Point(733, 243);
             this.lblBalance.Name = "lblBalance";
             this.lblBalance.Size = new System.Drawing.Size(269, 25);
             this.lblBalance.TabIndex = 89;
@@ -468,7 +504,7 @@ namespace AceSoft.RetailPlus.Client.UI
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.RoyalBlue;
             this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvItems.Size = new System.Drawing.Size(996, 238);
+            this.dgvItems.Size = new System.Drawing.Size(996, 220);
             this.dgvItems.TabIndex = 57;
             // 
             // txtScan
@@ -518,6 +554,29 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label6.Size = new System.Drawing.Size(41, 13);
             this.label6.TabIndex = 99;
             this.label6.Text = "[Enter]";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label9.Location = new System.Drawing.Point(627, 17);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(64, 13);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "Mobile no.";
+            // 
+            // txtMobileNo
+            // 
+            this.txtMobileNo.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.txtMobileNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtMobileNo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMobileNo.Location = new System.Drawing.Point(731, 15);
+            this.txtMobileNo.MaxLength = 75;
+            this.txtMobileNo.Name = "txtMobileNo";
+            this.txtMobileNo.ReadOnly = true;
+            this.txtMobileNo.Size = new System.Drawing.Size(169, 30);
+            this.txtMobileNo.TabIndex = 14;
             // 
             // CreditVerificationWnd
             // 
@@ -673,6 +732,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     grpPurchases.Visible = true;
 
                     txtCustomerName.Text = mContactDetails.ContactName;
+                    txtMobileNo.Text = mContactDetails.AdditionalDetails.MobileNo;
                     txtTelNo.Text = mContactDetails.TelephoneNo;
                     txtAddress.Text = mContactDetails.Address;
 

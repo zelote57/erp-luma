@@ -234,21 +234,6 @@
     <Compile Include="UI\ChargeWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ContactAddWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ContactSelectWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ContactRewardWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ContactCreditWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ContactCreditTypeSelectWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\ReportsWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -286,9 +271,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\SplashWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\TransactionNoWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\TransactionReturnItemSelectWnd.cs">
@@ -575,26 +557,6 @@
       <DependentUpon>ChargeWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContactAddWnd.resx">
-      <DependentUpon>ContactAddWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContactSelectWnd.resx">
-      <DependentUpon>ContactSelectWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContactRewardWnd.resx">
-      <DependentUpon>ContactRewardWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContactCreditWnd.resx">
-      <DependentUpon>ContactCreditWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContactCreditTypeSelectWnd.resx">
-      <DependentUpon>ContactCreditTypeSelectWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\ReportsWnd.resx">
       <DependentUpon>ReportsWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -641,10 +603,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SplashWnd.resx">
       <DependentUpon>SplashWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\TransactionNoWnd.resx">
-      <DependentUpon>TransactionNoWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TransactionReturnItemSelectWnd.resx">

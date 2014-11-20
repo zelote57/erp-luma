@@ -128,6 +128,18 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mclsTerminalDetails = value; }
         }
 
+        private Data.SysConfigDetails mclsSysConfigDetails;
+        public Data.SysConfigDetails SysConfigDetails
+        {
+            set { mclsSysConfigDetails = value; }
+        }
+
+        private DataGridViewSelectedRowCollection mdgvItemsSelectedRows;
+        public DataGridViewSelectedRowCollection dgvItemsSelectedRows
+        {
+            get { return mdgvItemsSelectedRows; }
+        }
+
 		#region Constructors and Destuctors
 
 		public CreditsItemizeWnd()
@@ -404,6 +416,16 @@ namespace AceSoft.RetailPlus.Client.UI
 			lblBalance.Text = mclsCustomerDetails.Credit.ToString("#,##0.#0");
 			LoadOptions();
 			LoadData();
+
+            if (!mclsTerminalDetails.ShowCustomerSelection)
+            {
+                // sort this so that the least amount will be on top
+                // for HP
+                dgvItems.Sort(dgvItems.Columns["Balance"], ListSortDirection.Descending);
+                dgvItems.SelectAll();
+                dgvItems_RowStateChanged(null, null);
+                dgvItems.Enabled = false;
+            }
 		}
 		private void CreditsItemizeWnd_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -488,7 +510,12 @@ namespace AceSoft.RetailPlus.Client.UI
 			try
 			{
 				Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
-				System.Data.DataTable dt = clsTransactions.ListForPaymentDataTable(mclsCustomerDetails.ContactID);
+				System.Data.DataTable dt;
+                
+                if (mclsTerminalDetails.ShowCustomerSelection)
+                    dt = clsTransactions.ListForPaymentDataTable(mclsCustomerDetails.ContactID);
+                else
+                    dt = clsTransactions.ListForPaymentDataTable(mclsCustomerDetails.ContactID, "Balance, TransactionID", System.Data.SqlClient.SortOrder.Descending);
 
 				clsTransactions.CommitAndDispose();
 
@@ -560,9 +587,11 @@ namespace AceSoft.RetailPlus.Client.UI
 			{
                 Data.SalesTransactionDetails clsSalesTransactionDetails = new Data.SalesTransactionDetails();
                 clsSalesTransactionDetails.SubTotal = Convert.ToDecimal(lblBalanceSelected.Text);
+                clsSalesTransactionDetails.TransactionStatus = TransactionStatus.CreditPayment;
 
                 PaymentsWnd payment = new PaymentsWnd();
                 payment.TerminalDetails = mclsTerminalDetails;
+                payment.SysConfigDetails = mclsSysConfigDetails;
                 payment.CustomerDetails = mclsCustomerDetails;
                 payment.SalesTransactionDetails = clsSalesTransactionDetails;
                 payment.CreditCardSwiped = false;
@@ -588,8 +617,13 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 if (paymentResult == DialogResult.OK)
                 {
-                    SavePayments(mdecAmountPaid, mdecCashPayment, mdecChequePayment, mdecCreditCardPayment, mdecDebitPayment,
-                        marrCashPaymentDetails, marrChequePaymentDetails, marrCreditCardPaymentDetails, marrDebitPaymentDetails);
+                    // Nov 2, 2014 do not save do the saving in MainWnd
+                    // get the selected Transactions to be paid instead
+
+                    //SavePayments(mdecAmountPaid, mdecCashPayment, mdecChequePayment, mdecCreditCardPayment, mdecDebitPayment,
+                    //    marrCashPaymentDetails, marrChequePaymentDetails, marrCreditCardPaymentDetails, marrDebitPaymentDetails);
+
+                    mdgvItemsSelectedRows = dgvItems.SelectedRows;
                 }
 			}
 			return paymentResult;
@@ -599,271 +633,322 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		#region Save Payments
 
-		private void SavePayments(decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal DebitPayment, ArrayList arrCashPaymentDetails, ArrayList arrChequePaymentDetails, ArrayList arrCreditCardPaymentDetails, ArrayList arrDebitPaymentDetails)
-		{
-			Data.Payment clsPayment = new Data.Payment();
+        //private void SavePayments(decimal AmountPaid, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal DebitPayment, ArrayList arrCashPaymentDetails, ArrayList arrChequePaymentDetails, ArrayList arrCreditCardPaymentDetails, ArrayList arrDebitPaymentDetails)
+        //{
+        //    Data.Payment clsPayment = new Data.Payment();
 
-			if (CashPayment > 0)
-				SaveCashPayment(clsPayment, arrCashPaymentDetails);
+        //    if (CashPayment > 0)
+        //        SaveCashPayment(clsPayment, arrCashPaymentDetails);
 			
-			if (ChequePayment > 0)
-				SaveChequePayment(clsPayment, arrChequePaymentDetails);
+        //    if (ChequePayment > 0)
+        //        SaveChequePayment(clsPayment, arrChequePaymentDetails);
 
-			if (CreditCardPayment > 0)
-				SaveCreditCardPayment(clsPayment, arrCreditCardPaymentDetails);
+        //    if (CreditCardPayment > 0)
+        //        SaveCreditCardPayment(clsPayment, arrCreditCardPaymentDetails);
 
-			if (DebitPayment > 0)
-				SaveDebitPayment(clsPayment, arrDebitPaymentDetails);
+        //    if (DebitPayment > 0)
+        //        SaveDebitPayment(clsPayment, arrDebitPaymentDetails);
 
-			clsPayment.CommitAndDispose();
-		}
-		private void SaveCashPayment(Data.Payment clsPayment, ArrayList pvtarrCashPaymentDetails)
-		{
-			Data.CashPaymentDetails[] CashPaymentDetails = new Data.CashPaymentDetails[0];
-			if (pvtarrCashPaymentDetails != null)
-			{
-				CashPaymentDetails = new Data.CashPaymentDetails[pvtarrCashPaymentDetails.Count];
-				pvtarrCashPaymentDetails.CopyTo(CashPaymentDetails);
-			}
-			foreach (Data.CashPaymentDetails det in CashPaymentDetails)
-			{
-				string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + "  PAYMENTTYPE:Cash DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
-				if (det.Remarks != null) strRemarks += Environment.NewLine + det.Remarks;
+        //    clsPayment.CommitAndDispose();
+        //}
+        //private void SaveCashPayment(Data.Payment clsPayment, ArrayList pvtarrCashPaymentDetails)
+        //{
+        //    Data.CashPaymentDetails[] CashPaymentDetails = new Data.CashPaymentDetails[0];
+        //    if (pvtarrCashPaymentDetails != null)
+        //    {
+        //        CashPaymentDetails = new Data.CashPaymentDetails[pvtarrCashPaymentDetails.Count];
+        //        pvtarrCashPaymentDetails.CopyTo(CashPaymentDetails);
+        //    }
+        //    foreach (Data.CashPaymentDetails det in CashPaymentDetails)
+        //    {
+        //        string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + "  PAYMENTTYPE:Cash DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
+        //        if (!string.IsNullOrEmpty(det.Remarks)) strRemarks += Environment.NewLine + det.Remarks;
 
-				decimal decRemainingAmountPaid = det.Amount;
+        //        decimal decRemainingAmountPaid = det.Amount;
+                
+        //        foreach (DataGridViewRow dr in dgvItems.SelectedRows)
+        //        {
 
-                foreach (DataGridViewRow dr in dgvItems.SelectedRows)
-                {
-                    Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
-                    string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
-                    decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
+        //            Int64 intCreditPaymentID = Convert.ToInt64(dr.Cells["CreditPaymentID"].Value.ToString());
+        //            Int32 intCPRefBranchID = Convert.ToInt32(dr.Cells["BranchID"].Value.ToString());
+        //            string strCPRefTerminalNo = dr.Cells["TerminalNo"].Value.ToString();
+        //            Int64 intTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
+        //            string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
+        //            decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
 
-                    if (decRemainingAmountPaid >= decBalance)
-                    {
-                        InsertCashPayment(clsPayment, lngTransactionID, strTransactionNo, decBalance, strRemarks);
+        //            if (decRemainingAmountPaid >= decBalance)
+        //            {
+        //                InsertCashPayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, intCreditPaymentID, intTransactionID, strTransactionNo, decBalance, strRemarks);
 
-                        dr.Cells["CreditPaid"].Value = decBalance;
-                        dr.Cells["Balance"].Value = 0;
+        //                dr.Cells["CreditPaid"].Value = decBalance;
+        //                dr.Cells["Balance"].Value = 0;
 
-                        decRemainingAmountPaid -= decBalance;
-                    }
-                    else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
-                    {
-                        InsertCashPayment(clsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, strRemarks);
+        //                decRemainingAmountPaid -= decBalance;
+        //            }
+        //            else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
+        //            {
+        //                InsertCashPayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, intCreditPaymentID, intTransactionID, strTransactionNo, decRemainingAmountPaid, strRemarks);
 
-                        //dgvItems.Select(itemIndex);
-                        dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
-                        dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
-                        decRemainingAmountPaid = 0;
-                        break;
-                    }
-                }
-			}
-		}
-		private void InsertCashPayment(Data.Payment clsPayment, Int64 intTransactionID, string strTransactionNo, decimal decAmount, string strRemarks)
-		{
-			Data.CashPaymentDetails Details = new Data.CashPaymentDetails();
-            Details.BranchDetails = mclsTerminalDetails.BranchDetails;
-            Details.TerminalNo = mclsTerminalDetails.TerminalNo;
-			Details.TransactionID = intTransactionID;
-			Details.TransactionNo = strTransactionNo;
-			Details.Amount = decAmount;
-			Details.Remarks = strRemarks;
+        //                //dgvItems.Select(itemIndex);
+        //                dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
+        //                dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
+        //                decRemainingAmountPaid = 0;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
+        //private void InsertCashPayment(Data.Payment clsPayment, Int32 BranchID, string TerminalNo, Int64 intCreditPaymentID, Int64 intTransactionID, string strTransactionNo, decimal decAmount, string strRemarks)
+        //{
+        //    // 26Oct2014 do not save the cash payment coz it will duplicate the payment
+        //    // need to move the updatecredit in the mainwnd and insert a log for creditpayment
 
-            new Data.CashPayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
-			clsPayment.UpdateCredit(mclsCustomerDetails.ContactID, intTransactionID, strTransactionNo, decAmount, strRemarks);
-		}
-		private void SaveChequePayment(Data.Payment clsPayment, ArrayList pvtarrChequePaymentDetails)
-		{
-			Data.ChequePaymentDetails[] ChequePaymentDetails = new Data.ChequePaymentDetails[0];
-			if (pvtarrChequePaymentDetails != null)
-			{
-				ChequePaymentDetails = new Data.ChequePaymentDetails[pvtarrChequePaymentDetails.Count];
-				pvtarrChequePaymentDetails.CopyTo(ChequePaymentDetails);
-			}
-			foreach (Data.ChequePaymentDetails det in ChequePaymentDetails)
-			{
-				string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + "  PAYMENTTYPE:Cheque DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
-				if (det.Remarks != null) strRemarks += Environment.NewLine + det.Remarks;
+        //    //Data.CashPaymentDetails Details = new Data.CashPaymentDetails();
+        //    //Details.BranchDetails = mclsTerminalDetails.BranchDetails;
+        //    //Details.TerminalNo = mclsTerminalDetails.TerminalNo;
+        //    //Details.TransactionID = intTransactionID;
+        //    //Details.TransactionNo = strTransactionNo;
+        //    //Details.Amount = decAmount;
+        //    //Details.Remarks = strRemarks;
 
-				decimal decRemainingAmountPaid = det.Amount;
+        //    //new Data.CashPayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
+
+        //    // insert creditpayment cash as log
+        //    Data.CreditPaymentCashDetails clsCreditPaymentCashDetails = new Data.CreditPaymentCashDetails();
+        //    clsCreditPaymentCashDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
+        //    clsCreditPaymentCashDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+        //    clsCreditPaymentCashDetails.CreditPaymentID = intCreditPaymentID;
+        //    clsCreditPaymentCashDetails.TransactionID = intTransactionID;
+        //    clsCreditPaymentCashDetails.TransactionNo = strTransactionNo;
+        //    clsCreditPaymentCashDetails.Amount = decAmount;
+        //    clsCreditPaymentCashDetails.Remarks = strRemarks;
+        //    clsCreditPaymentCashDetails.CreatedOn = DateTime.Now;
+        //    clsCreditPaymentCashDetails.LastModified = DateTime.Now;
+        //    new Data.CreditPaymentCash(clsPayment.Connection, clsPayment.Transaction).Insert(clsCreditPaymentCashDetails);
+
+        //    clsPayment.UpdateCredit(BranchID, TerminalNo, mclsCustomerDetails.ContactID, intCreditPaymentID, decAmount, strRemarks);
+        //}
+        //private void SaveChequePayment(Data.Payment clsPayment, ArrayList pvtarrChequePaymentDetails)
+        //{
+        //    Data.ChequePaymentDetails[] ChequePaymentDetails = new Data.ChequePaymentDetails[0];
+        //    if (pvtarrChequePaymentDetails != null)
+        //    {
+        //        ChequePaymentDetails = new Data.ChequePaymentDetails[pvtarrChequePaymentDetails.Count];
+        //        pvtarrChequePaymentDetails.CopyTo(ChequePaymentDetails);
+        //    }
+        //    foreach (Data.ChequePaymentDetails det in ChequePaymentDetails)
+        //    {
+        //        string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + "  PAYMENTTYPE:Cheque DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
+        //        if (det.Remarks != null) strRemarks += Environment.NewLine + det.Remarks;
+
+        //        decimal decRemainingAmountPaid = det.Amount;
 				
-				foreach(DataGridViewRow dr in dgvItems.SelectedRows) 
-				{
-					Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
-					string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
-					decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
+        //        foreach(DataGridViewRow dr in dgvItems.SelectedRows) 
+        //        {
+        //            Int32 intCPRefBranchID = Convert.ToInt32(dr.Cells["BranchID"].Value.ToString());
+        //            string strCPRefTerminalNo = dr.Cells["TerminalNo"].Value.ToString();
+        //            Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
+        //            string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
+        //            decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
 
-					if (decRemainingAmountPaid >= decBalance)
-					{
-						InsertChequePayment(clsPayment, lngTransactionID, strTransactionNo, det.ChequeNo, decBalance, det.ValidityDate, strRemarks);
+        //            if (decRemainingAmountPaid >= decBalance)
+        //            {
+        //                InsertChequePayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, lngTransactionID, strTransactionNo, det.ChequeNo, decBalance, det.ValidityDate, strRemarks);
 
-						dr.Cells["CreditPaid"].Value = decBalance;
-						dr.Cells["Balance"].Value = 0;
+        //                dr.Cells["CreditPaid"].Value = decBalance;
+        //                dr.Cells["Balance"].Value = 0;
 
-						decRemainingAmountPaid -= decBalance;
-					}
-					else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
-					{
-						InsertChequePayment(clsPayment, lngTransactionID, strTransactionNo, det.ChequeNo, decRemainingAmountPaid, det.ValidityDate, strRemarks);
+        //                decRemainingAmountPaid -= decBalance;
+        //            }
+        //            else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
+        //            {
+        //                InsertChequePayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, lngTransactionID, strTransactionNo, det.ChequeNo, decRemainingAmountPaid, det.ValidityDate, strRemarks);
 
-                        //dgItems.Select(itemIndex);
-						dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
-						dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
-						decRemainingAmountPaid =0;
-						break;
-					}
-				}
-			}
-		}
-		private void InsertChequePayment(Data.Payment clsPayment, Int64 intTransactionID, string strTransactionNo, string strChequeNo, decimal decAmount, DateTime dteValidityDate, string strRemarks)
-		{
-			Data.ChequePaymentDetails Details = new Data.ChequePaymentDetails();
-            Details.BranchDetails = mclsTerminalDetails.BranchDetails;
-            Details.TerminalNo = mclsTerminalDetails.TerminalNo;
-			Details.TransactionID = intTransactionID;
-			Details.TransactionNo = strTransactionNo;
-			Details.ChequeNo = strChequeNo;
-			Details.Amount = decAmount;
-			Details.ValidityDate = dteValidityDate;
-			Details.Remarks = strRemarks;
+        //                //dgItems.Select(itemIndex);
+        //                dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
+        //                dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
+        //                decRemainingAmountPaid =0;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
+        //private void InsertChequePayment(Data.Payment clsPayment, Int32 BranchID, string TerminalNo, Int64 intCreditPaymentID, Int64 intTransactionID, string strTransactionNo, string strChequeNo, decimal decAmount, DateTime dteValidityDate, string strRemarks)
+        //{
+        //    // 26Oct2014 do not save the cash payment coz it will duplicate the payment
+        //    // need to move the updatecredit in the mainwnd and insert a log for creditpayment
 
-            new Data.ChequePayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
-			clsPayment.UpdateCredit(mclsCustomerDetails.ContactID, intTransactionID, strTransactionNo, decAmount, strRemarks);
-		}
-		private void SaveCreditCardPayment(Data.Payment clsPayment, ArrayList pvtarrCreditCardPaymentDetails)
-		{
-			Data.CreditCardPaymentDetails[] CreditCardPaymentDetails = new Data.CreditCardPaymentDetails[0];
-			if (pvtarrCreditCardPaymentDetails != null)
-			{
-				CreditCardPaymentDetails = new Data.CreditCardPaymentDetails[pvtarrCreditCardPaymentDetails.Count];
-				pvtarrCreditCardPaymentDetails.CopyTo(CreditCardPaymentDetails);
-			}
-			foreach (Data.CreditCardPaymentDetails det in CreditCardPaymentDetails)
-			{
-				string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + " PAYMENTTYPE:CreditCard DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
-				if (det.Remarks != null) strRemarks += Environment.NewLine + det.Remarks;
+        //    //Data.ChequePaymentDetails Details = new Data.ChequePaymentDetails();
+        //    //Details.BranchDetails = mclsTerminalDetails.BranchDetails;
+        //    //Details.TerminalNo = mclsTerminalDetails.TerminalNo;
+        //    //Details.TransactionID = intTransactionID;
+        //    //Details.TransactionNo = strTransactionNo;
+        //    //Details.ChequeNo = strChequeNo;
+        //    //Details.Amount = decAmount;
+        //    //Details.ValidityDate = dteValidityDate;
+        //    //Details.Remarks = strRemarks;
 
-				decimal decRemainingAmountPaid = det.Amount;
+        //    //new Data.ChequePayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
+
+        //    // insert creditpayment cheque as log
+        //    Data.CreditPaymentChequeDetails clsCreditPaymentChequeDetails = new Data.CreditPaymentChequeDetails();
+        //    clsCreditPaymentChequeDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
+        //    clsCreditPaymentChequeDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+        //    clsCreditPaymentChequeDetails.TransactionID = intTransactionID;
+        //    clsCreditPaymentChequeDetails.TransactionNo = strTransactionNo;
+        //    clsCreditPaymentChequeDetails.ChequeNo = strChequeNo;
+        //    clsCreditPaymentChequeDetails.Amount = decAmount;
+        //    clsCreditPaymentChequeDetails.ValidityDate = dteValidityDate;
+        //    clsCreditPaymentChequeDetails.Remarks = strRemarks;
+        //    clsCreditPaymentChequeDetails.CreatedOn = DateTime.Now;
+        //    clsCreditPaymentChequeDetails.LastModified = DateTime.Now;
+
+        //    new Data.CreditPaymentCheque(clsPayment.Connection, clsPayment.Transaction).Insert(clsCreditPaymentChequeDetails);
+
+        //    clsPayment.UpdateCredit(BranchID, TerminalNo, mclsCustomerDetails.ContactID, intCreditPaymentID, decAmount, strRemarks);
+        //}
+        //private void SaveCreditCardPayment(Data.Payment clsPayment, ArrayList pvtarrCreditCardPaymentDetails)
+        //{
+        //    Data.CreditCardPaymentDetails[] CreditCardPaymentDetails = new Data.CreditCardPaymentDetails[0];
+        //    if (pvtarrCreditCardPaymentDetails != null)
+        //    {
+        //        CreditCardPaymentDetails = new Data.CreditCardPaymentDetails[pvtarrCreditCardPaymentDetails.Count];
+        //        pvtarrCreditCardPaymentDetails.CopyTo(CreditCardPaymentDetails);
+        //    }
+        //    foreach (Data.CreditCardPaymentDetails det in CreditCardPaymentDetails)
+        //    {
+        //        string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + " PAYMENTTYPE:CreditCard DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
+        //        if (det.Remarks != null) strRemarks += Environment.NewLine + det.Remarks;
+
+        //        decimal decRemainingAmountPaid = det.Amount;
 				
-				foreach(DataGridViewRow dr in dgvItems.SelectedRows) 
-				{
-					Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
-					string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
-					decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
+        //        foreach(DataGridViewRow dr in dgvItems.SelectedRows) 
+        //        {
+        //            Int32 intCPRefBranchID = Convert.ToInt32(dr.Cells["BranchID"].Value.ToString());
+        //            string strCPRefTerminalNo = dr.Cells["TerminalNo"].Value.ToString();
+        //            Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
+        //            string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
+        //            decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
 
-					if (decRemainingAmountPaid >= decBalance)
-					{
-						InsertCreditCardPayment(clsPayment, lngTransactionID, strTransactionNo, decBalance, det.CardTypeID, det.CardNo, det.CardHolder, det.ValidityDates, strRemarks);
+        //            if (decRemainingAmountPaid >= decBalance)
+        //            {
+        //                InsertCreditCardPayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, lngTransactionID, strTransactionNo, decBalance, det.CardTypeID, det.CardNo, det.CardHolder, det.ValidityDates, strRemarks);
 
-                        //dgItems.Select(itemIndex);
-						dr.Cells["CreditPaid"].Value = decBalance;
-						dr.Cells["Balance"].Value = 0;
+        //                //dgItems.Select(itemIndex);
+        //                dr.Cells["CreditPaid"].Value = decBalance;
+        //                dr.Cells["Balance"].Value = 0;
 
-						decRemainingAmountPaid -= decBalance;
-					}
-					else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
-					{
-						InsertCreditCardPayment(clsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, det.CardTypeID, det.CardNo, det.CardHolder, det.ValidityDates, strRemarks);
+        //                decRemainingAmountPaid -= decBalance;
+        //            }
+        //            else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
+        //            {
+        //                InsertCreditCardPayment(clsPayment, intCPRefBranchID, strCPRefTerminalNo, lngTransactionID, strTransactionNo, decRemainingAmountPaid, det.CardTypeID, det.CardNo, det.CardHolder, det.ValidityDates, strRemarks);
 
-                        //dgItems.Select(itemIndex);
-						dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
-						dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
-						decRemainingAmountPaid =0;
-						break;
-					}
-				}
-			}
-		}
-		private void InsertCreditCardPayment(Data.Payment clsPayment, Int64 intTransactionID, string strTransactionNo,  decimal decAmount, Int16 intCardTypeID, string strCardNo, string strCardHolder, string strValidityDates, string strRemarks)
-		{
-			Data.CardType clsCardType = new Data.CardType(clsPayment.Connection, clsPayment.Transaction);
-			Data.CardTypeDetails clsCardTypeDetails = clsCardType.Details(intCardTypeID);
+        //                //dgItems.Select(itemIndex);
+        //                dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
+        //                dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
+        //                decRemainingAmountPaid =0;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
+        //private void InsertCreditCardPayment(Data.Payment clsPayment, Int32 BranchID, string TerminalNo, Int64 intCreditPaymentID, Int64 intTransactionID, string strTransactionNo, decimal decAmount, Int16 intCardTypeID, string strCardNo, string strCardHolder, string strValidityDates, string strRemarks)
+        //{
+        //    // 26Oct2014 do not save the cash payment coz it will duplicate the payment
+        //    // need to move the updatecredit in the mainwnd and insert a log for creditpayment
 
-			Data.CreditCardPaymentDetails Details = new Data.CreditCardPaymentDetails();
-            Details.BranchDetails = mclsTerminalDetails.BranchDetails;
-            Details.TerminalNo = mclsTerminalDetails.TerminalNo;
-			Details.TransactionID = intTransactionID;
-			Details.TransactionNo = strTransactionNo;
-			Details.Amount = decAmount;
-			Details.CardTypeID = intCardTypeID;
-			Details.CardNo = strCardNo;
-			Details.CardTypeCode = clsCardTypeDetails.CardTypeCode;
-			Details.CardTypeName = clsCardTypeDetails.CardTypeName;
-			Details.CardHolder = strCardHolder;
-			Details.ValidityDates = strValidityDates;
-			Details.Remarks = strRemarks;
+        //    //Data.CardType clsCardType = new Data.CardType(clsPayment.Connection, clsPayment.Transaction);
+        //    //Data.CardTypeDetails clsCardTypeDetails = clsCardType.Details(intCardTypeID);
 
-            new Data.CreditCardPayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
-			clsPayment.UpdateCredit(mclsCustomerDetails.ContactID, intTransactionID, strTransactionNo, decAmount, strRemarks);
-		}
-		private void SaveDebitPayment(Data.Payment clsPayment, ArrayList pvtarrDebitPaymentDetails)
-		{
-			int itemIndex = 0;
+        //    //Data.CreditCardPaymentDetails Details = new Data.CreditCardPaymentDetails();
+        //    //Details.BranchDetails = mclsTerminalDetails.BranchDetails;
+        //    //Details.TerminalNo = mclsTerminalDetails.TerminalNo;
+        //    //Details.TransactionID = intTransactionID;
+        //    //Details.TransactionNo = strTransactionNo;
+        //    //Details.Amount = decAmount;
+        //    //Details.CardTypeID = intCardTypeID;
+        //    //Details.CardNo = strCardNo;
+        //    //Details.CardTypeCode = clsCardTypeDetails.CardTypeCode;
+        //    //Details.CardTypeName = clsCardTypeDetails.CardTypeName;
+        //    //Details.CardHolder = strCardHolder;
+        //    //Details.ValidityDates = strValidityDates;
+        //    //Details.Remarks = strRemarks;
 
-			Data.DebitPaymentDetails[] DebitPaymentDetails = new Data.DebitPaymentDetails[0];
-			if (pvtarrDebitPaymentDetails != null)
-			{
-				DebitPaymentDetails = new Data.DebitPaymentDetails[pvtarrDebitPaymentDetails.Count];
-				pvtarrDebitPaymentDetails.CopyTo(DebitPaymentDetails);
-			}
-			foreach (Data.DebitPaymentDetails det in DebitPaymentDetails)
-			{
-				string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + " PAYMENTTYPE:Debit DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
-				if (det.Remarks != null) strRemarks += Environment.NewLine + det.Remarks;
+        //    //new Data.CreditCardPayments(clsPayment.Connection, clsPayment.Transaction).Insert(Details);
+        //    clsPayment.UpdateCredit(BranchID, TerminalNo, mclsCustomerDetails.ContactID, intCreditPaymentID, decAmount, strRemarks);
+        //}
+        //private void SaveDebitPayment(Data.Payment clsPayment, ArrayList pvtarrDebitPaymentDetails)
+        //{
+        //    int itemIndex = 0;
 
-				decimal decRemainingAmountPaid = det.Amount;
+        //    Data.DebitPaymentDetails[] DebitPaymentDetails = new Data.DebitPaymentDetails[0];
+        //    if (pvtarrDebitPaymentDetails != null)
+        //    {
+        //        DebitPaymentDetails = new Data.DebitPaymentDetails[pvtarrDebitPaymentDetails.Count];
+        //        pvtarrDebitPaymentDetails.CopyTo(DebitPaymentDetails);
+        //    }
+        //    foreach (Data.DebitPaymentDetails det in DebitPaymentDetails)
+        //    {
+        //        string strRemarks = "PAID BY:" + mclsCustomerDetails.ContactName + " PAYMENTTYPE:Debit DATE:" + DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt");
+        //        if (det.Remarks != null) strRemarks += Environment.NewLine + det.Remarks;
 
-                foreach (DataGridViewRow dr in dgvItems.SelectedRows)
-                {
-                    Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
-                    string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
-                    decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
+        //        decimal decRemainingAmountPaid = det.Amount;
 
-					if (decRemainingAmountPaid >= decBalance)
-					{
-						InsertDebitPayment(clsPayment, lngTransactionID, strTransactionNo, decBalance, strRemarks);
+        //        foreach (DataGridViewRow dr in dgvItems.SelectedRows)
+        //        {
+        //            Int64 intCreditPaymentID = Convert.ToInt64(dr.Cells["CreditPaymentID"].Value.ToString());
+        //            Int64 lngTransactionID = Convert.ToInt64(dr.Cells["TransactionID"].Value.ToString());
+        //            string strTransactionNo = dr.Cells["TransactionNo"].Value.ToString();
+        //            decimal decBalance = Convert.ToDecimal(dr.Cells["Balance"].Value.ToString());
 
-                        //dgItems.Select(itemIndex);
-						dr.Cells["CreditPaid"].Value = decBalance;
-						dr.Cells["Balance"].Value = 0;
+        //            if (decRemainingAmountPaid >= decBalance)
+        //            {
+        //                InsertDebitPayment(clsPayment,  CreditPaymentID, lngTransactionID, strTransactionNo, decBalance, strRemarks);
 
-						decRemainingAmountPaid -= decBalance;
-					}
-					else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
-					{
-						InsertDebitPayment(clsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, strRemarks);
+        //                //dgItems.Select(itemIndex);
+        //                dr.Cells["CreditPaid"].Value = decBalance;
+        //                dr.Cells["Balance"].Value = 0;
 
-                        //dgItems.Select(itemIndex);
-						dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
-						dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
-						decRemainingAmountPaid =0;
-						break;
-					}
-					itemIndex++;
-				}
+        //                decRemainingAmountPaid -= decBalance;
+        //            }
+        //            else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
+        //            {
+        //                InsertDebitPayment(clsPayment, lngTransactionID, strTransactionNo, decRemainingAmountPaid, strRemarks);
 
-                //this.dgStyle.MappingName = dt.TableName;
-                //dgItems.DataSource = dt;
-                //if (dt.Rows.Count > 0)
-                //{
-                //    dgItems.Select(0);
-                //    dgItems.CurrentRowIndex=0;
-                //}
-			}
-		}
-		private void InsertDebitPayment(Data.Payment clsPayment, Int64 intTransactionID, string strTransactionNo, decimal decAmount, string strRemarks)
-		{
-			Data.DebitPaymentDetails Details = new Data.DebitPaymentDetails();
-			Details.TransactionID = intTransactionID;
-			Details.TransactionNo = strTransactionNo;
-			Details.Amount = decAmount;
-			Details.CustomerDetails = mclsCustomerDetails;
-			Details.Remarks = strRemarks;
+        //                //dgItems.Select(itemIndex);
+        //                dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
+        //                dr.Cells["Balance"].Value = decBalance - decRemainingAmountPaid;
+        //                decRemainingAmountPaid =0;
+        //                break;
+        //            }
+        //            itemIndex++;
+        //        }
 
-			clsPayment.InsertDebitPayment(Details);
-			clsPayment.UpdateDebit(mclsCustomerDetails.ContactID, intTransactionID, strTransactionNo, decAmount, strRemarks);
-		}
+        //        //this.dgStyle.MappingName = dt.TableName;
+        //        //dgItems.DataSource = dt;
+        //        //if (dt.Rows.Count > 0)
+        //        //{
+        //        //    dgItems.Select(0);
+        //        //    dgItems.CurrentRowIndex=0;
+        //        //}
+        //    }
+        //}
+        //private void InsertDebitPayment(Data.Payment clsPayment, Int32 BranchID, string TerminalNo, Int64 intCreditPaymentID, Int64 intTransactionID, string strTransactionNo, decimal decAmount, string strRemarks)
+        //{
+        //    // 26Oct2014 do not save the cash payment coz it will duplicate the payment
+        //    // need to move the updatecredit in the mainwnd and insert a log for creditpayment
+
+        //    //Data.DebitPaymentDetails Details = new Data.DebitPaymentDetails();
+        //    //Details.TransactionID = intTransactionID;
+        //    //Details.TransactionNo = strTransactionNo;
+        //    //Details.Amount = decAmount;
+        //    //Details.CustomerDetails = mclsCustomerDetails;
+        //    //Details.Remarks = strRemarks;
+
+        //    //clsPayment.InsertDebitPayment(Details);
+        //    clsPayment.UpdateDebit(BranchID, TerminalNo, mclsCustomerDetails.ContactID, intCreditPaymentID, decAmount, strRemarks);
+        //}
 		
 		#endregion
 

@@ -389,7 +389,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
                 this.keyboardNoControl1.Location = new System.Drawing.Point(412, 310);
                 this.keyboardNoControl1.Name = "keyboardNoControl1";
-                this.keyboardNoControl1.Size = new System.Drawing.Size(202, 176);
+                this.keyboardNoControl1.Size = new System.Drawing.Size(208, 172);
                 this.keyboardNoControl1.TabIndex = 88;
                 this.keyboardNoControl1.TabStop = false;
                 this.keyboardNoControl1.Visible = false;

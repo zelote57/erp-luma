@@ -131,6 +131,7 @@
 							<col>
 							<col>
 							<col>
+                            <col>
 							<col>
 							<col width="15%">
 							<col width="15%">
@@ -153,6 +154,9 @@
 						    <td class="ms-vb2">
 							    <asp:imagebutton id="imgItemAccessRights" CommandName="imgItemAccessRights" accessKey="A" tabIndex="1" height="16" width="16" border="0" tooltip="Update access right of this group" ImageUrl="../../../_layouts/images/tabsec.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
 						    </td>
+                            <td class="ms-vb2">
+							    <asp:imagebutton id="imgResetPassword" CommandName="imgResetPassword" accessKey="R" tabIndex="1" height="16" width="16" border="0" tooltip="Reset password" ImageUrl="../../../_layouts/images/resetp.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
+						    </td>
 						    <td class="ms-vb2">
 							    <asp:imagebutton id="imgReloadAccessRights" CommandName="imgReloadAccessRights" accessKey="R" tabIndex="1" height="16" width="16" border="0" tooltip="Reload access rights from group" ImageUrl="../../../_layouts/images/newuser.gif" runat="server" CssClass="ms-toolbar"></asp:imagebutton>
 						    </td>
@@ -163,7 +167,7 @@
 								&nbsp;<asp:Label id="lblUserName" Runat="server"></asp:Label>
 							<td class="ms-vb-user">
 								<asp:Label id="lblPassword" Runat="server"></asp:Label>
-								<asp:Label id="lblPasswordReadable" Runat="server" Visible=false></asp:Label>
+								<asp:Label id="lblPasswordReadable" Runat="server" Visible="false"></asp:Label>
 							<td class="ms-vb-user">
 								<asp:HyperLink id="lnkName" Runat="server"></asp:HyperLink></td>
 							<td class="ms-vb2">
@@ -178,7 +182,7 @@
 						</tr>
 						<tr>
 							<td class="ms-vh2" height="1"><img height="5" alt="" src="../../../_layouts/images/blank.gif" width="1"></td>
-							<td colspan="10" height="1">
+							<td colspan="11" height="1">
 								<DIV class="ACECollapsed" id="divExpCollAsst" runat="server" border="0">
 									<asp:panel id="panCard" runat="server" Width="100%" Height="100%" CssClass="ms-authoringcontrols">
 										<table id="tblPanCard" cellspacing="0" cellpadding="0" width="100%" border="0">

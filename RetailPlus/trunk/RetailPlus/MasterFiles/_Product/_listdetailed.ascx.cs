@@ -392,7 +392,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 		{
 			UpdateProductPrice();
 		}
-		
+        protected void cmdSearch_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            LoadList();
+        }
+
 		#endregion
 
 		#region Private Methods
@@ -514,8 +518,20 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsSearchKeys.BarCode3 = SearchKey;
             clsSearchKeys.ProductCode = SearchKey;
 
+            ProductAddOnFilters clsProductAddOnFilters = new ProductAddOnFilters();
+            clsProductAddOnFilters.BarcodeFrom = txtBarcodeFrom.Text;
+            clsProductAddOnFilters.BarcodeTo = txtBarcodeTo.Text;
+            clsProductAddOnFilters.ProductCodeFrom = txtProductCodeFrom.Text;
+            clsProductAddOnFilters.ProductCodeTo = txtProductCodeTo.Text;
+            clsProductAddOnFilters.ProductSubGroupNameFrom = txtProductSubGroupNameFrom.Text;
+            clsProductAddOnFilters.ProductSubGroupNameTo = txtProductSubGroupNameTo.Text;
+            clsProductAddOnFilters.ProductGroupNameFrom = txtProductGroupnameFrom.Text;
+            clsProductAddOnFilters.ProductGroupNameTo = txtProductGroupNameTo.Text;
+            clsProductAddOnFilters.SupplierNameFrom = txtSupplierNameFrom.Text;
+            clsProductAddOnFilters.SupplierNameTo = txtSupplierNameTo.Text;
+
             Products clsProduct = new Products();
-            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, clsProductListFilterType: clsProductListFilterType, Limit: 100, SortField: SortField, SortOrder: SortOption.Ascending);
+            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, ProductAddOnFilters: clsProductAddOnFilters, clsProductListFilterType: clsProductListFilterType, limit: 100, SortField: SortField, SortOrder: SortOption.Ascending);
             clsProduct.CommitAndDispose();
 
             PageData.DataSource = dt.DefaultView;
@@ -717,17 +733,5 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 		#endregion
 
-        protected void rdoShowAll_CheckedChanged(object sender, EventArgs e)
-        {
-            LoadList();
-        }
-        protected void rdoShowActiveOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            LoadList();
-        }
-        protected void rdoShowInactiveOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            LoadList();
-        }
-}
+    }
 }

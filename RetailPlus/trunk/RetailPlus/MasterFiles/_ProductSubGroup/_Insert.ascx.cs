@@ -197,5 +197,5 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 		}
 
 		#endregion
-}
+    }
 }

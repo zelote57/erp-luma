@@ -154,7 +154,7 @@ namespace AceSoft.RetailPlus.Inventory
             ProductDetails clsSearchKeys = new ProductDetails();
             clsSearchKeys.ProductCode = txtProductCode.Text;
 
-            cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100).DefaultView;
+            cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, limit: 100).DefaultView;
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
 

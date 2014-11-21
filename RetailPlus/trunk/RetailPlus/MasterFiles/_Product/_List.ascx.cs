@@ -314,7 +314,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsSearchKeys.ProductCode = SearchKey;
 
             Products clsProduct = new Products();
-            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100, SortField: SortField, SortOrder: SortOption.Ascending);
+            System.Data.DataTable dt = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, limit: 100, SortField: SortField, SortOrder: SortOption.Ascending);
             clsProduct.CommitAndDispose();
 
             PageData.DataSource = dt.DefaultView;

@@ -140,6 +140,12 @@ namespace RetailPlus.Datasets {
         
         private BranchTransferItemsDataTable tableBranchTransferItems;
         
+        private ContactCreditPaymentCashDataTable tableContactCreditPaymentCash;
+        
+        private ContactCreditPurchasesDataTable tableContactCreditPurchases;
+        
+        private CreditBillHeaderDataTable tableCreditBillHeader;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -341,6 +347,15 @@ namespace RetailPlus.Datasets {
                 }
                 if ((ds.Tables["BranchTransferItems"] != null)) {
                     base.Tables.Add(new BranchTransferItemsDataTable(ds.Tables["BranchTransferItems"]));
+                }
+                if ((ds.Tables["ContactCreditPaymentCash"] != null)) {
+                    base.Tables.Add(new ContactCreditPaymentCashDataTable(ds.Tables["ContactCreditPaymentCash"]));
+                }
+                if ((ds.Tables["ContactCreditPurchases"] != null)) {
+                    base.Tables.Add(new ContactCreditPurchasesDataTable(ds.Tables["ContactCreditPurchases"]));
+                }
+                if ((ds.Tables["CreditBillHeader"] != null)) {
+                    base.Tables.Add(new CreditBillHeaderDataTable(ds.Tables["CreditBillHeader"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -942,6 +957,36 @@ namespace RetailPlus.Datasets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public ContactCreditPaymentCashDataTable ContactCreditPaymentCash {
+            get {
+                return this.tableContactCreditPaymentCash;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public ContactCreditPurchasesDataTable ContactCreditPurchases {
+            get {
+                return this.tableContactCreditPurchases;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public CreditBillHeaderDataTable CreditBillHeader {
+            get {
+                return this.tableCreditBillHeader;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.BrowsableAttribute(true)]
         [global::System.ComponentModel.DesignerSerializationVisibilityAttribute(global::System.ComponentModel.DesignerSerializationVisibility.Visible)]
         public override global::System.Data.SchemaSerializationMode SchemaSerializationMode {
@@ -1180,6 +1225,15 @@ namespace RetailPlus.Datasets {
                 }
                 if ((ds.Tables["BranchTransferItems"] != null)) {
                     base.Tables.Add(new BranchTransferItemsDataTable(ds.Tables["BranchTransferItems"]));
+                }
+                if ((ds.Tables["ContactCreditPaymentCash"] != null)) {
+                    base.Tables.Add(new ContactCreditPaymentCashDataTable(ds.Tables["ContactCreditPaymentCash"]));
+                }
+                if ((ds.Tables["ContactCreditPurchases"] != null)) {
+                    base.Tables.Add(new ContactCreditPurchasesDataTable(ds.Tables["ContactCreditPurchases"]));
+                }
+                if ((ds.Tables["CreditBillHeader"] != null)) {
+                    base.Tables.Add(new CreditBillHeaderDataTable(ds.Tables["CreditBillHeader"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -1562,6 +1616,24 @@ namespace RetailPlus.Datasets {
                     this.tableBranchTransferItems.InitVars();
                 }
             }
+            this.tableContactCreditPaymentCash = ((ContactCreditPaymentCashDataTable)(base.Tables["ContactCreditPaymentCash"]));
+            if ((initTable == true)) {
+                if ((this.tableContactCreditPaymentCash != null)) {
+                    this.tableContactCreditPaymentCash.InitVars();
+                }
+            }
+            this.tableContactCreditPurchases = ((ContactCreditPurchasesDataTable)(base.Tables["ContactCreditPurchases"]));
+            if ((initTable == true)) {
+                if ((this.tableContactCreditPurchases != null)) {
+                    this.tableContactCreditPurchases.InitVars();
+                }
+            }
+            this.tableCreditBillHeader = ((CreditBillHeaderDataTable)(base.Tables["CreditBillHeader"]));
+            if ((initTable == true)) {
+                if ((this.tableCreditBillHeader != null)) {
+                    this.tableCreditBillHeader.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1688,6 +1760,12 @@ namespace RetailPlus.Datasets {
             base.Tables.Add(this.tableBranchTransfer);
             this.tableBranchTransferItems = new BranchTransferItemsDataTable();
             base.Tables.Add(this.tableBranchTransferItems);
+            this.tableContactCreditPaymentCash = new ContactCreditPaymentCashDataTable();
+            base.Tables.Add(this.tableContactCreditPaymentCash);
+            this.tableContactCreditPurchases = new ContactCreditPurchasesDataTable();
+            base.Tables.Add(this.tableContactCreditPurchases);
+            this.tableCreditBillHeader = new CreditBillHeaderDataTable();
+            base.Tables.Add(this.tableCreditBillHeader);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2040,6 +2118,24 @@ namespace RetailPlus.Datasets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        private bool ShouldSerializeContactCreditPaymentCash() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        private bool ShouldSerializeContactCreditPurchases() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        private bool ShouldSerializeCreditBillHeader() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void SchemaChanged(object sender, global::System.ComponentModel.CollectionChangeEventArgs e) {
             if ((e.Action == global::System.ComponentModel.CollectionChangeAction.Remove)) {
                 this.InitVars();
@@ -2266,6 +2362,15 @@ namespace RetailPlus.Datasets {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public delegate void BranchTransferItemsRowChangeEventHandler(object sender, BranchTransferItemsRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public delegate void ContactCreditPaymentCashRowChangeEventHandler(object sender, ContactCreditPaymentCashRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public delegate void ContactCreditPurchasesRowChangeEventHandler(object sender, ContactCreditPurchasesRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public delegate void CreditBillHeaderRowChangeEventHandler(object sender, CreditBillHeaderRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -29861,6 +29966,1479 @@ namespace RetailPlus.Datasets {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class ContactCreditPaymentCashDataTable : global::System.Data.TypedTableBase<ContactCreditPaymentCashRow> {
+            
+            private global::System.Data.DataColumn columnBranchID;
+            
+            private global::System.Data.DataColumn columnTerminalNo;
+            
+            private global::System.Data.DataColumn columnTransactionID;
+            
+            private global::System.Data.DataColumn columnCreditReasonID;
+            
+            private global::System.Data.DataColumn columnCreditReason;
+            
+            private global::System.Data.DataColumn columnLatePenaltyAmount;
+            
+            private global::System.Data.DataColumn columnFinanceChargeAmount;
+            
+            private global::System.Data.DataColumn columnPrincipalAmount;
+            
+            private global::System.Data.DataColumn columnAmount;
+            
+            private global::System.Data.DataColumn columnRemarks;
+            
+            private global::System.Data.DataColumn columnTransactionNo;
+            
+            private global::System.Data.DataColumn columnCPRefTransactionNo;
+            
+            private global::System.Data.DataColumn columnCPRefTerminalNo;
+            
+            private global::System.Data.DataColumn columnCPRefBranchID;
+            
+            private global::System.Data.DataColumn columnCreditCardNo;
+            
+            private global::System.Data.DataColumn columnContactName;
+            
+            private global::System.Data.DataColumn columnGuarantorCreditCardNo;
+            
+            private global::System.Data.DataColumn columnGuarantorName;
+            
+            private global::System.Data.DataColumn columnTransactionDate;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPaymentCashDataTable() {
+                this.TableName = "ContactCreditPaymentCash";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal ContactCreditPaymentCashDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected ContactCreditPaymentCashDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BranchIDColumn {
+                get {
+                    return this.columnBranchID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TerminalNoColumn {
+                get {
+                    return this.columnTerminalNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TransactionIDColumn {
+                get {
+                    return this.columnTransactionID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CreditReasonIDColumn {
+                get {
+                    return this.columnCreditReasonID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CreditReasonColumn {
+                get {
+                    return this.columnCreditReason;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn LatePenaltyAmountColumn {
+                get {
+                    return this.columnLatePenaltyAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn FinanceChargeAmountColumn {
+                get {
+                    return this.columnFinanceChargeAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PrincipalAmountColumn {
+                get {
+                    return this.columnPrincipalAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AmountColumn {
+                get {
+                    return this.columnAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RemarksColumn {
+                get {
+                    return this.columnRemarks;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TransactionNoColumn {
+                get {
+                    return this.columnTransactionNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CPRefTransactionNoColumn {
+                get {
+                    return this.columnCPRefTransactionNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CPRefTerminalNoColumn {
+                get {
+                    return this.columnCPRefTerminalNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CPRefBranchIDColumn {
+                get {
+                    return this.columnCPRefBranchID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CreditCardNoColumn {
+                get {
+                    return this.columnCreditCardNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ContactNameColumn {
+                get {
+                    return this.columnContactName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GuarantorCreditCardNoColumn {
+                get {
+                    return this.columnGuarantorCreditCardNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GuarantorNameColumn {
+                get {
+                    return this.columnGuarantorName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TransactionDateColumn {
+                get {
+                    return this.columnTransactionDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPaymentCashRow this[int index] {
+                get {
+                    return ((ContactCreditPaymentCashRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event ContactCreditPaymentCashRowChangeEventHandler ContactCreditPaymentCashRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event ContactCreditPaymentCashRowChangeEventHandler ContactCreditPaymentCashRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event ContactCreditPaymentCashRowChangeEventHandler ContactCreditPaymentCashRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event ContactCreditPaymentCashRowChangeEventHandler ContactCreditPaymentCashRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void AddContactCreditPaymentCashRow(ContactCreditPaymentCashRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPaymentCashRow AddContactCreditPaymentCashRow(
+                        int BranchID, 
+                        string TerminalNo, 
+                        long TransactionID, 
+                        short CreditReasonID, 
+                        string CreditReason, 
+                        decimal LatePenaltyAmount, 
+                        decimal FinanceChargeAmount, 
+                        decimal PrincipalAmount, 
+                        decimal Amount, 
+                        string Remarks, 
+                        string TransactionNo, 
+                        string CPRefTransactionNo, 
+                        string CPRefTerminalNo, 
+                        string CPRefBranchID, 
+                        string CreditCardNo, 
+                        string ContactName, 
+                        string GuarantorCreditCardNo, 
+                        string GuarantorName, 
+                        System.DateTime TransactionDate) {
+                ContactCreditPaymentCashRow rowContactCreditPaymentCashRow = ((ContactCreditPaymentCashRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        BranchID,
+                        TerminalNo,
+                        TransactionID,
+                        CreditReasonID,
+                        CreditReason,
+                        LatePenaltyAmount,
+                        FinanceChargeAmount,
+                        PrincipalAmount,
+                        Amount,
+                        Remarks,
+                        TransactionNo,
+                        CPRefTransactionNo,
+                        CPRefTerminalNo,
+                        CPRefBranchID,
+                        CreditCardNo,
+                        ContactName,
+                        GuarantorCreditCardNo,
+                        GuarantorName,
+                        TransactionDate};
+                rowContactCreditPaymentCashRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowContactCreditPaymentCashRow);
+                return rowContactCreditPaymentCashRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                ContactCreditPaymentCashDataTable cln = ((ContactCreditPaymentCashDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new ContactCreditPaymentCashDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal void InitVars() {
+                this.columnBranchID = base.Columns["BranchID"];
+                this.columnTerminalNo = base.Columns["TerminalNo"];
+                this.columnTransactionID = base.Columns["TransactionID"];
+                this.columnCreditReasonID = base.Columns["CreditReasonID"];
+                this.columnCreditReason = base.Columns["CreditReason"];
+                this.columnLatePenaltyAmount = base.Columns["LatePenaltyAmount"];
+                this.columnFinanceChargeAmount = base.Columns["FinanceChargeAmount"];
+                this.columnPrincipalAmount = base.Columns["PrincipalAmount"];
+                this.columnAmount = base.Columns["Amount"];
+                this.columnRemarks = base.Columns["Remarks"];
+                this.columnTransactionNo = base.Columns["TransactionNo"];
+                this.columnCPRefTransactionNo = base.Columns["CPRefTransactionNo"];
+                this.columnCPRefTerminalNo = base.Columns["CPRefTerminalNo"];
+                this.columnCPRefBranchID = base.Columns["CPRefBranchID"];
+                this.columnCreditCardNo = base.Columns["CreditCardNo"];
+                this.columnContactName = base.Columns["ContactName"];
+                this.columnGuarantorCreditCardNo = base.Columns["GuarantorCreditCardNo"];
+                this.columnGuarantorName = base.Columns["GuarantorName"];
+                this.columnTransactionDate = base.Columns["TransactionDate"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            private void InitClass() {
+                this.columnBranchID = new global::System.Data.DataColumn("BranchID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchID);
+                this.columnTerminalNo = new global::System.Data.DataColumn("TerminalNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTerminalNo);
+                this.columnTransactionID = new global::System.Data.DataColumn("TransactionID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransactionID);
+                this.columnCreditReasonID = new global::System.Data.DataColumn("CreditReasonID", typeof(short), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreditReasonID);
+                this.columnCreditReason = new global::System.Data.DataColumn("CreditReason", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreditReason);
+                this.columnLatePenaltyAmount = new global::System.Data.DataColumn("LatePenaltyAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLatePenaltyAmount);
+                this.columnFinanceChargeAmount = new global::System.Data.DataColumn("FinanceChargeAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFinanceChargeAmount);
+                this.columnPrincipalAmount = new global::System.Data.DataColumn("PrincipalAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrincipalAmount);
+                this.columnAmount = new global::System.Data.DataColumn("Amount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAmount);
+                this.columnRemarks = new global::System.Data.DataColumn("Remarks", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRemarks);
+                this.columnTransactionNo = new global::System.Data.DataColumn("TransactionNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransactionNo);
+                this.columnCPRefTransactionNo = new global::System.Data.DataColumn("CPRefTransactionNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCPRefTransactionNo);
+                this.columnCPRefTerminalNo = new global::System.Data.DataColumn("CPRefTerminalNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCPRefTerminalNo);
+                this.columnCPRefBranchID = new global::System.Data.DataColumn("CPRefBranchID", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCPRefBranchID);
+                this.columnCreditCardNo = new global::System.Data.DataColumn("CreditCardNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreditCardNo);
+                this.columnContactName = new global::System.Data.DataColumn("ContactName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnContactName);
+                this.columnGuarantorCreditCardNo = new global::System.Data.DataColumn("GuarantorCreditCardNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGuarantorCreditCardNo);
+                this.columnGuarantorName = new global::System.Data.DataColumn("GuarantorName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGuarantorName);
+                this.columnTransactionDate = new global::System.Data.DataColumn("TransactionDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransactionDate);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPaymentCashRow NewContactCreditPaymentCashRow() {
+                return ((ContactCreditPaymentCashRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new ContactCreditPaymentCashRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(ContactCreditPaymentCashRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.ContactCreditPaymentCashRowChanged != null)) {
+                    this.ContactCreditPaymentCashRowChanged(this, new ContactCreditPaymentCashRowChangeEvent(((ContactCreditPaymentCashRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.ContactCreditPaymentCashRowChanging != null)) {
+                    this.ContactCreditPaymentCashRowChanging(this, new ContactCreditPaymentCashRowChangeEvent(((ContactCreditPaymentCashRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.ContactCreditPaymentCashRowDeleted != null)) {
+                    this.ContactCreditPaymentCashRowDeleted(this, new ContactCreditPaymentCashRowChangeEvent(((ContactCreditPaymentCashRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.ContactCreditPaymentCashRowDeleting != null)) {
+                    this.ContactCreditPaymentCashRowDeleting(this, new ContactCreditPaymentCashRowChangeEvent(((ContactCreditPaymentCashRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void RemoveContactCreditPaymentCashRow(ContactCreditPaymentCashRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ReportDataset ds = new ReportDataset();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "ContactCreditPaymentCashDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class ContactCreditPurchasesDataTable : global::System.Data.TypedTableBase<ContactCreditPurchasesRow> {
+            
+            private global::System.Data.DataColumn columnBranchID;
+            
+            private global::System.Data.DataColumn columnTerminalNo;
+            
+            private global::System.Data.DataColumn columnTransactionID;
+            
+            private global::System.Data.DataColumn columnCreditReasonID;
+            
+            private global::System.Data.DataColumn columnCreditReason;
+            
+            private global::System.Data.DataColumn columnAmount;
+            
+            private global::System.Data.DataColumn columnRemarks;
+            
+            private global::System.Data.DataColumn columnTransactionNo;
+            
+            private global::System.Data.DataColumn columnCreditCardNo;
+            
+            private global::System.Data.DataColumn columnContactName;
+            
+            private global::System.Data.DataColumn columnGuarantorCreditCardNo;
+            
+            private global::System.Data.DataColumn columnGuarantorName;
+            
+            private global::System.Data.DataColumn columnTransactionDate;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPurchasesDataTable() {
+                this.TableName = "ContactCreditPurchases";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal ContactCreditPurchasesDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected ContactCreditPurchasesDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BranchIDColumn {
+                get {
+                    return this.columnBranchID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TerminalNoColumn {
+                get {
+                    return this.columnTerminalNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TransactionIDColumn {
+                get {
+                    return this.columnTransactionID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CreditReasonIDColumn {
+                get {
+                    return this.columnCreditReasonID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CreditReasonColumn {
+                get {
+                    return this.columnCreditReason;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AmountColumn {
+                get {
+                    return this.columnAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RemarksColumn {
+                get {
+                    return this.columnRemarks;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TransactionNoColumn {
+                get {
+                    return this.columnTransactionNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CreditCardNoColumn {
+                get {
+                    return this.columnCreditCardNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ContactNameColumn {
+                get {
+                    return this.columnContactName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GuarantorCreditCardNoColumn {
+                get {
+                    return this.columnGuarantorCreditCardNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GuarantorNameColumn {
+                get {
+                    return this.columnGuarantorName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TransactionDateColumn {
+                get {
+                    return this.columnTransactionDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPurchasesRow this[int index] {
+                get {
+                    return ((ContactCreditPurchasesRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event ContactCreditPurchasesRowChangeEventHandler ContactCreditPurchasesRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event ContactCreditPurchasesRowChangeEventHandler ContactCreditPurchasesRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event ContactCreditPurchasesRowChangeEventHandler ContactCreditPurchasesRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event ContactCreditPurchasesRowChangeEventHandler ContactCreditPurchasesRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void AddContactCreditPurchasesRow(ContactCreditPurchasesRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPurchasesRow AddContactCreditPurchasesRow(int BranchID, string TerminalNo, long TransactionID, short CreditReasonID, string CreditReason, decimal Amount, string Remarks, string TransactionNo, string CreditCardNo, string ContactName, string GuarantorCreditCardNo, string GuarantorName, System.DateTime TransactionDate) {
+                ContactCreditPurchasesRow rowContactCreditPurchasesRow = ((ContactCreditPurchasesRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        BranchID,
+                        TerminalNo,
+                        TransactionID,
+                        CreditReasonID,
+                        CreditReason,
+                        Amount,
+                        Remarks,
+                        TransactionNo,
+                        CreditCardNo,
+                        ContactName,
+                        GuarantorCreditCardNo,
+                        GuarantorName,
+                        TransactionDate};
+                rowContactCreditPurchasesRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowContactCreditPurchasesRow);
+                return rowContactCreditPurchasesRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                ContactCreditPurchasesDataTable cln = ((ContactCreditPurchasesDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new ContactCreditPurchasesDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal void InitVars() {
+                this.columnBranchID = base.Columns["BranchID"];
+                this.columnTerminalNo = base.Columns["TerminalNo"];
+                this.columnTransactionID = base.Columns["TransactionID"];
+                this.columnCreditReasonID = base.Columns["CreditReasonID"];
+                this.columnCreditReason = base.Columns["CreditReason"];
+                this.columnAmount = base.Columns["Amount"];
+                this.columnRemarks = base.Columns["Remarks"];
+                this.columnTransactionNo = base.Columns["TransactionNo"];
+                this.columnCreditCardNo = base.Columns["CreditCardNo"];
+                this.columnContactName = base.Columns["ContactName"];
+                this.columnGuarantorCreditCardNo = base.Columns["GuarantorCreditCardNo"];
+                this.columnGuarantorName = base.Columns["GuarantorName"];
+                this.columnTransactionDate = base.Columns["TransactionDate"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            private void InitClass() {
+                this.columnBranchID = new global::System.Data.DataColumn("BranchID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchID);
+                this.columnTerminalNo = new global::System.Data.DataColumn("TerminalNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTerminalNo);
+                this.columnTransactionID = new global::System.Data.DataColumn("TransactionID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransactionID);
+                this.columnCreditReasonID = new global::System.Data.DataColumn("CreditReasonID", typeof(short), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreditReasonID);
+                this.columnCreditReason = new global::System.Data.DataColumn("CreditReason", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreditReason);
+                this.columnAmount = new global::System.Data.DataColumn("Amount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAmount);
+                this.columnRemarks = new global::System.Data.DataColumn("Remarks", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRemarks);
+                this.columnTransactionNo = new global::System.Data.DataColumn("TransactionNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransactionNo);
+                this.columnCreditCardNo = new global::System.Data.DataColumn("CreditCardNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreditCardNo);
+                this.columnContactName = new global::System.Data.DataColumn("ContactName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnContactName);
+                this.columnGuarantorCreditCardNo = new global::System.Data.DataColumn("GuarantorCreditCardNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGuarantorCreditCardNo);
+                this.columnGuarantorName = new global::System.Data.DataColumn("GuarantorName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGuarantorName);
+                this.columnTransactionDate = new global::System.Data.DataColumn("TransactionDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransactionDate);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPurchasesRow NewContactCreditPurchasesRow() {
+                return ((ContactCreditPurchasesRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new ContactCreditPurchasesRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(ContactCreditPurchasesRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.ContactCreditPurchasesRowChanged != null)) {
+                    this.ContactCreditPurchasesRowChanged(this, new ContactCreditPurchasesRowChangeEvent(((ContactCreditPurchasesRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.ContactCreditPurchasesRowChanging != null)) {
+                    this.ContactCreditPurchasesRowChanging(this, new ContactCreditPurchasesRowChangeEvent(((ContactCreditPurchasesRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.ContactCreditPurchasesRowDeleted != null)) {
+                    this.ContactCreditPurchasesRowDeleted(this, new ContactCreditPurchasesRowChangeEvent(((ContactCreditPurchasesRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.ContactCreditPurchasesRowDeleting != null)) {
+                    this.ContactCreditPurchasesRowDeleting(this, new ContactCreditPurchasesRowChangeEvent(((ContactCreditPurchasesRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void RemoveContactCreditPurchasesRow(ContactCreditPurchasesRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ReportDataset ds = new ReportDataset();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "ContactCreditPurchasesDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class CreditBillHeaderDataTable : global::System.Data.TypedTableBase<CreditBillHeaderRow> {
+            
+            private global::System.Data.DataColumn columnCreditBillHeaderID;
+            
+            private global::System.Data.DataColumn columnGuarantorID;
+            
+            private global::System.Data.DataColumn columnGuarantorName;
+            
+            private global::System.Data.DataColumn columnCreditCardNo;
+            
+            private global::System.Data.DataColumn columnContactName;
+            
+            private global::System.Data.DataColumn columnCreditLimit;
+            
+            private global::System.Data.DataColumn columnRunningCreditAmt;
+            
+            private global::System.Data.DataColumn columnCurrMonthCreditAmt;
+            
+            private global::System.Data.DataColumn columnCurrMonthAmountPaid;
+            
+            private global::System.Data.DataColumn columnTotalBillCharges;
+            
+            private global::System.Data.DataColumn columnCurrentDueAmount;
+            
+            private global::System.Data.DataColumn columnMinimumAmountDue;
+            
+            private global::System.Data.DataColumn columnPrev1MoCurrentDueAmount;
+            
+            private global::System.Data.DataColumn columnPrev1MoMinimumAmountDue;
+            
+            private global::System.Data.DataColumn columnPrev1MoCurrMonthAmountPaid;
+            
+            private global::System.Data.DataColumn columnPrev2MoCurrentDueAmount;
+            
+            private global::System.Data.DataColumn columnCurrentPurchaseAmt;
+            
+            private global::System.Data.DataColumn columnBeginningBalance;
+            
+            private global::System.Data.DataColumn columnEndingBalance;
+            
+            private global::System.Data.DataColumn columnBillingDate;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public CreditBillHeaderDataTable() {
+                this.TableName = "CreditBillHeader";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal CreditBillHeaderDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected CreditBillHeaderDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CreditBillHeaderIDColumn {
+                get {
+                    return this.columnCreditBillHeaderID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GuarantorIDColumn {
+                get {
+                    return this.columnGuarantorID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GuarantorNameColumn {
+                get {
+                    return this.columnGuarantorName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CreditCardNoColumn {
+                get {
+                    return this.columnCreditCardNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ContactNameColumn {
+                get {
+                    return this.columnContactName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CreditLimitColumn {
+                get {
+                    return this.columnCreditLimit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RunningCreditAmtColumn {
+                get {
+                    return this.columnRunningCreditAmt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CurrMonthCreditAmtColumn {
+                get {
+                    return this.columnCurrMonthCreditAmt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CurrMonthAmountPaidColumn {
+                get {
+                    return this.columnCurrMonthAmountPaid;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TotalBillChargesColumn {
+                get {
+                    return this.columnTotalBillCharges;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CurrentDueAmountColumn {
+                get {
+                    return this.columnCurrentDueAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MinimumAmountDueColumn {
+                get {
+                    return this.columnMinimumAmountDue;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Prev1MoCurrentDueAmountColumn {
+                get {
+                    return this.columnPrev1MoCurrentDueAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Prev1MoMinimumAmountDueColumn {
+                get {
+                    return this.columnPrev1MoMinimumAmountDue;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Prev1MoCurrMonthAmountPaidColumn {
+                get {
+                    return this.columnPrev1MoCurrMonthAmountPaid;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Prev2MoCurrentDueAmountColumn {
+                get {
+                    return this.columnPrev2MoCurrentDueAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CurrentPurchaseAmtColumn {
+                get {
+                    return this.columnCurrentPurchaseAmt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BeginningBalanceColumn {
+                get {
+                    return this.columnBeginningBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EndingBalanceColumn {
+                get {
+                    return this.columnEndingBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BillingDateColumn {
+                get {
+                    return this.columnBillingDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public CreditBillHeaderRow this[int index] {
+                get {
+                    return ((CreditBillHeaderRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event CreditBillHeaderRowChangeEventHandler CreditBillHeaderRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event CreditBillHeaderRowChangeEventHandler CreditBillHeaderRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event CreditBillHeaderRowChangeEventHandler CreditBillHeaderRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event CreditBillHeaderRowChangeEventHandler CreditBillHeaderRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void AddCreditBillHeaderRow(CreditBillHeaderRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public CreditBillHeaderRow AddCreditBillHeaderRow(
+                        long CreditBillHeaderID, 
+                        long GuarantorID, 
+                        string GuarantorName, 
+                        string CreditCardNo, 
+                        string ContactName, 
+                        decimal CreditLimit, 
+                        decimal RunningCreditAmt, 
+                        decimal CurrMonthCreditAmt, 
+                        decimal CurrMonthAmountPaid, 
+                        decimal TotalBillCharges, 
+                        decimal CurrentDueAmount, 
+                        decimal MinimumAmountDue, 
+                        decimal Prev1MoCurrentDueAmount, 
+                        decimal Prev1MoMinimumAmountDue, 
+                        decimal Prev1MoCurrMonthAmountPaid, 
+                        decimal Prev2MoCurrentDueAmount, 
+                        decimal CurrentPurchaseAmt, 
+                        decimal BeginningBalance, 
+                        decimal EndingBalance, 
+                        System.DateTime BillingDate) {
+                CreditBillHeaderRow rowCreditBillHeaderRow = ((CreditBillHeaderRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        CreditBillHeaderID,
+                        GuarantorID,
+                        GuarantorName,
+                        CreditCardNo,
+                        ContactName,
+                        CreditLimit,
+                        RunningCreditAmt,
+                        CurrMonthCreditAmt,
+                        CurrMonthAmountPaid,
+                        TotalBillCharges,
+                        CurrentDueAmount,
+                        MinimumAmountDue,
+                        Prev1MoCurrentDueAmount,
+                        Prev1MoMinimumAmountDue,
+                        Prev1MoCurrMonthAmountPaid,
+                        Prev2MoCurrentDueAmount,
+                        CurrentPurchaseAmt,
+                        BeginningBalance,
+                        EndingBalance,
+                        BillingDate};
+                rowCreditBillHeaderRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowCreditBillHeaderRow);
+                return rowCreditBillHeaderRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                CreditBillHeaderDataTable cln = ((CreditBillHeaderDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new CreditBillHeaderDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal void InitVars() {
+                this.columnCreditBillHeaderID = base.Columns["CreditBillHeaderID"];
+                this.columnGuarantorID = base.Columns["GuarantorID"];
+                this.columnGuarantorName = base.Columns["GuarantorName"];
+                this.columnCreditCardNo = base.Columns["CreditCardNo"];
+                this.columnContactName = base.Columns["ContactName"];
+                this.columnCreditLimit = base.Columns["CreditLimit"];
+                this.columnRunningCreditAmt = base.Columns["RunningCreditAmt"];
+                this.columnCurrMonthCreditAmt = base.Columns["CurrMonthCreditAmt"];
+                this.columnCurrMonthAmountPaid = base.Columns["CurrMonthAmountPaid"];
+                this.columnTotalBillCharges = base.Columns["TotalBillCharges"];
+                this.columnCurrentDueAmount = base.Columns["CurrentDueAmount"];
+                this.columnMinimumAmountDue = base.Columns["MinimumAmountDue"];
+                this.columnPrev1MoCurrentDueAmount = base.Columns["Prev1MoCurrentDueAmount"];
+                this.columnPrev1MoMinimumAmountDue = base.Columns["Prev1MoMinimumAmountDue"];
+                this.columnPrev1MoCurrMonthAmountPaid = base.Columns["Prev1MoCurrMonthAmountPaid"];
+                this.columnPrev2MoCurrentDueAmount = base.Columns["Prev2MoCurrentDueAmount"];
+                this.columnCurrentPurchaseAmt = base.Columns["CurrentPurchaseAmt"];
+                this.columnBeginningBalance = base.Columns["BeginningBalance"];
+                this.columnEndingBalance = base.Columns["EndingBalance"];
+                this.columnBillingDate = base.Columns["BillingDate"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            private void InitClass() {
+                this.columnCreditBillHeaderID = new global::System.Data.DataColumn("CreditBillHeaderID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreditBillHeaderID);
+                this.columnGuarantorID = new global::System.Data.DataColumn("GuarantorID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGuarantorID);
+                this.columnGuarantorName = new global::System.Data.DataColumn("GuarantorName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGuarantorName);
+                this.columnCreditCardNo = new global::System.Data.DataColumn("CreditCardNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreditCardNo);
+                this.columnContactName = new global::System.Data.DataColumn("ContactName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnContactName);
+                this.columnCreditLimit = new global::System.Data.DataColumn("CreditLimit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreditLimit);
+                this.columnRunningCreditAmt = new global::System.Data.DataColumn("RunningCreditAmt", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRunningCreditAmt);
+                this.columnCurrMonthCreditAmt = new global::System.Data.DataColumn("CurrMonthCreditAmt", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrMonthCreditAmt);
+                this.columnCurrMonthAmountPaid = new global::System.Data.DataColumn("CurrMonthAmountPaid", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrMonthAmountPaid);
+                this.columnTotalBillCharges = new global::System.Data.DataColumn("TotalBillCharges", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalBillCharges);
+                this.columnCurrentDueAmount = new global::System.Data.DataColumn("CurrentDueAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentDueAmount);
+                this.columnMinimumAmountDue = new global::System.Data.DataColumn("MinimumAmountDue", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMinimumAmountDue);
+                this.columnPrev1MoCurrentDueAmount = new global::System.Data.DataColumn("Prev1MoCurrentDueAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrev1MoCurrentDueAmount);
+                this.columnPrev1MoMinimumAmountDue = new global::System.Data.DataColumn("Prev1MoMinimumAmountDue", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrev1MoMinimumAmountDue);
+                this.columnPrev1MoCurrMonthAmountPaid = new global::System.Data.DataColumn("Prev1MoCurrMonthAmountPaid", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrev1MoCurrMonthAmountPaid);
+                this.columnPrev2MoCurrentDueAmount = new global::System.Data.DataColumn("Prev2MoCurrentDueAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrev2MoCurrentDueAmount);
+                this.columnCurrentPurchaseAmt = new global::System.Data.DataColumn("CurrentPurchaseAmt", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentPurchaseAmt);
+                this.columnBeginningBalance = new global::System.Data.DataColumn("BeginningBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBeginningBalance);
+                this.columnEndingBalance = new global::System.Data.DataColumn("EndingBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEndingBalance);
+                this.columnBillingDate = new global::System.Data.DataColumn("BillingDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBillingDate);
+                this.columnCreditLimit.DefaultValue = ((decimal)(0m));
+                this.columnCurrMonthCreditAmt.DefaultValue = ((decimal)(0m));
+                this.columnCurrMonthAmountPaid.DefaultValue = ((decimal)(0m));
+                this.columnTotalBillCharges.DefaultValue = ((decimal)(0m));
+                this.columnCurrentDueAmount.DefaultValue = ((decimal)(0m));
+                this.columnMinimumAmountDue.DefaultValue = ((decimal)(0m));
+                this.columnPrev1MoCurrentDueAmount.DefaultValue = ((decimal)(0m));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public CreditBillHeaderRow NewCreditBillHeaderRow() {
+                return ((CreditBillHeaderRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new CreditBillHeaderRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(CreditBillHeaderRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.CreditBillHeaderRowChanged != null)) {
+                    this.CreditBillHeaderRowChanged(this, new CreditBillHeaderRowChangeEvent(((CreditBillHeaderRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.CreditBillHeaderRowChanging != null)) {
+                    this.CreditBillHeaderRowChanging(this, new CreditBillHeaderRowChangeEvent(((CreditBillHeaderRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.CreditBillHeaderRowDeleted != null)) {
+                    this.CreditBillHeaderRowDeleted(this, new CreditBillHeaderRowChangeEvent(((CreditBillHeaderRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.CreditBillHeaderRowDeleting != null)) {
+                    this.CreditBillHeaderRowDeleting(this, new CreditBillHeaderRowChangeEvent(((CreditBillHeaderRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void RemoveCreditBillHeaderRow(CreditBillHeaderRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ReportDataset ds = new ReportDataset();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "CreditBillHeaderDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class ContactsRow : global::System.Data.DataRow {
@@ -43413,6 +44991,1533 @@ namespace RetailPlus.Datasets {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class ContactCreditPaymentCashRow : global::System.Data.DataRow {
+            
+            private ContactCreditPaymentCashDataTable tableContactCreditPaymentCash;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal ContactCreditPaymentCashRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableContactCreditPaymentCash = ((ContactCreditPaymentCashDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int BranchID {
+                get {
+                    try {
+                        return ((int)(this[this.tableContactCreditPaymentCash.BranchIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchID\' in table \'ContactCreditPaymentCash\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.BranchIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TerminalNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.TerminalNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TerminalNo\' in table \'ContactCreditPaymentCash\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.TerminalNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public long TransactionID {
+                get {
+                    try {
+                        return ((long)(this[this.tableContactCreditPaymentCash.TransactionIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransactionID\' in table \'ContactCreditPaymentCash\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.TransactionIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public short CreditReasonID {
+                get {
+                    try {
+                        return ((short)(this[this.tableContactCreditPaymentCash.CreditReasonIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CreditReasonID\' in table \'ContactCreditPaymentCash\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.CreditReasonIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CreditReason {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.CreditReasonColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CreditReason\' in table \'ContactCreditPaymentCash\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.CreditReasonColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal LatePenaltyAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableContactCreditPaymentCash.LatePenaltyAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LatePenaltyAmount\' in table \'ContactCreditPaymentCash\' is D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.LatePenaltyAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal FinanceChargeAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableContactCreditPaymentCash.FinanceChargeAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FinanceChargeAmount\' in table \'ContactCreditPaymentCash\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.FinanceChargeAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal PrincipalAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableContactCreditPaymentCash.PrincipalAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PrincipalAmount\' in table \'ContactCreditPaymentCash\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.PrincipalAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Amount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableContactCreditPaymentCash.AmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Amount\' in table \'ContactCreditPaymentCash\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.AmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Remarks {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.RemarksColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Remarks\' in table \'ContactCreditPaymentCash\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.RemarksColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TransactionNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.TransactionNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransactionNo\' in table \'ContactCreditPaymentCash\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.TransactionNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CPRefTransactionNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.CPRefTransactionNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CPRefTransactionNo\' in table \'ContactCreditPaymentCash\' is " +
+                                "DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.CPRefTransactionNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CPRefTerminalNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.CPRefTerminalNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CPRefTerminalNo\' in table \'ContactCreditPaymentCash\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.CPRefTerminalNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CPRefBranchID {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.CPRefBranchIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CPRefBranchID\' in table \'ContactCreditPaymentCash\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.CPRefBranchIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CreditCardNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.CreditCardNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CreditCardNo\' in table \'ContactCreditPaymentCash\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.CreditCardNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ContactName {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.ContactNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ContactName\' in table \'ContactCreditPaymentCash\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.ContactNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string GuarantorCreditCardNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.GuarantorCreditCardNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GuarantorCreditCardNo\' in table \'ContactCreditPaymentCash\' " +
+                                "is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.GuarantorCreditCardNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string GuarantorName {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.GuarantorNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GuarantorName\' in table \'ContactCreditPaymentCash\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.GuarantorNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime TransactionDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableContactCreditPaymentCash.TransactionDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransactionDate\' in table \'ContactCreditPaymentCash\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.TransactionDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBranchIDNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.BranchIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBranchIDNull() {
+                this[this.tableContactCreditPaymentCash.BranchIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTerminalNoNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.TerminalNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTerminalNoNull() {
+                this[this.tableContactCreditPaymentCash.TerminalNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTransactionIDNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.TransactionIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTransactionIDNull() {
+                this[this.tableContactCreditPaymentCash.TransactionIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCreditReasonIDNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.CreditReasonIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCreditReasonIDNull() {
+                this[this.tableContactCreditPaymentCash.CreditReasonIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCreditReasonNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.CreditReasonColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCreditReasonNull() {
+                this[this.tableContactCreditPaymentCash.CreditReasonColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsLatePenaltyAmountNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.LatePenaltyAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetLatePenaltyAmountNull() {
+                this[this.tableContactCreditPaymentCash.LatePenaltyAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsFinanceChargeAmountNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.FinanceChargeAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetFinanceChargeAmountNull() {
+                this[this.tableContactCreditPaymentCash.FinanceChargeAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPrincipalAmountNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.PrincipalAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPrincipalAmountNull() {
+                this[this.tableContactCreditPaymentCash.PrincipalAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAmountNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.AmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAmountNull() {
+                this[this.tableContactCreditPaymentCash.AmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRemarksNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.RemarksColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRemarksNull() {
+                this[this.tableContactCreditPaymentCash.RemarksColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTransactionNoNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.TransactionNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTransactionNoNull() {
+                this[this.tableContactCreditPaymentCash.TransactionNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCPRefTransactionNoNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.CPRefTransactionNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCPRefTransactionNoNull() {
+                this[this.tableContactCreditPaymentCash.CPRefTransactionNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCPRefTerminalNoNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.CPRefTerminalNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCPRefTerminalNoNull() {
+                this[this.tableContactCreditPaymentCash.CPRefTerminalNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCPRefBranchIDNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.CPRefBranchIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCPRefBranchIDNull() {
+                this[this.tableContactCreditPaymentCash.CPRefBranchIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCreditCardNoNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.CreditCardNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCreditCardNoNull() {
+                this[this.tableContactCreditPaymentCash.CreditCardNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsContactNameNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.ContactNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetContactNameNull() {
+                this[this.tableContactCreditPaymentCash.ContactNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGuarantorCreditCardNoNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.GuarantorCreditCardNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGuarantorCreditCardNoNull() {
+                this[this.tableContactCreditPaymentCash.GuarantorCreditCardNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGuarantorNameNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.GuarantorNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGuarantorNameNull() {
+                this[this.tableContactCreditPaymentCash.GuarantorNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTransactionDateNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.TransactionDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTransactionDateNull() {
+                this[this.tableContactCreditPaymentCash.TransactionDateColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class ContactCreditPurchasesRow : global::System.Data.DataRow {
+            
+            private ContactCreditPurchasesDataTable tableContactCreditPurchases;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal ContactCreditPurchasesRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableContactCreditPurchases = ((ContactCreditPurchasesDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int BranchID {
+                get {
+                    try {
+                        return ((int)(this[this.tableContactCreditPurchases.BranchIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchID\' in table \'ContactCreditPurchases\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.BranchIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TerminalNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPurchases.TerminalNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TerminalNo\' in table \'ContactCreditPurchases\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.TerminalNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public long TransactionID {
+                get {
+                    try {
+                        return ((long)(this[this.tableContactCreditPurchases.TransactionIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransactionID\' in table \'ContactCreditPurchases\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.TransactionIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public short CreditReasonID {
+                get {
+                    try {
+                        return ((short)(this[this.tableContactCreditPurchases.CreditReasonIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CreditReasonID\' in table \'ContactCreditPurchases\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.CreditReasonIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CreditReason {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPurchases.CreditReasonColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CreditReason\' in table \'ContactCreditPurchases\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.CreditReasonColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Amount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableContactCreditPurchases.AmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Amount\' in table \'ContactCreditPurchases\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.AmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Remarks {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPurchases.RemarksColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Remarks\' in table \'ContactCreditPurchases\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.RemarksColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TransactionNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPurchases.TransactionNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransactionNo\' in table \'ContactCreditPurchases\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.TransactionNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CreditCardNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPurchases.CreditCardNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CreditCardNo\' in table \'ContactCreditPurchases\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.CreditCardNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ContactName {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPurchases.ContactNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ContactName\' in table \'ContactCreditPurchases\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.ContactNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string GuarantorCreditCardNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPurchases.GuarantorCreditCardNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GuarantorCreditCardNo\' in table \'ContactCreditPurchases\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.GuarantorCreditCardNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string GuarantorName {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPurchases.GuarantorNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GuarantorName\' in table \'ContactCreditPurchases\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.GuarantorNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime TransactionDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableContactCreditPurchases.TransactionDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransactionDate\' in table \'ContactCreditPurchases\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.TransactionDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBranchIDNull() {
+                return this.IsNull(this.tableContactCreditPurchases.BranchIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBranchIDNull() {
+                this[this.tableContactCreditPurchases.BranchIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTerminalNoNull() {
+                return this.IsNull(this.tableContactCreditPurchases.TerminalNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTerminalNoNull() {
+                this[this.tableContactCreditPurchases.TerminalNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTransactionIDNull() {
+                return this.IsNull(this.tableContactCreditPurchases.TransactionIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTransactionIDNull() {
+                this[this.tableContactCreditPurchases.TransactionIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCreditReasonIDNull() {
+                return this.IsNull(this.tableContactCreditPurchases.CreditReasonIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCreditReasonIDNull() {
+                this[this.tableContactCreditPurchases.CreditReasonIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCreditReasonNull() {
+                return this.IsNull(this.tableContactCreditPurchases.CreditReasonColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCreditReasonNull() {
+                this[this.tableContactCreditPurchases.CreditReasonColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAmountNull() {
+                return this.IsNull(this.tableContactCreditPurchases.AmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAmountNull() {
+                this[this.tableContactCreditPurchases.AmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRemarksNull() {
+                return this.IsNull(this.tableContactCreditPurchases.RemarksColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRemarksNull() {
+                this[this.tableContactCreditPurchases.RemarksColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTransactionNoNull() {
+                return this.IsNull(this.tableContactCreditPurchases.TransactionNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTransactionNoNull() {
+                this[this.tableContactCreditPurchases.TransactionNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCreditCardNoNull() {
+                return this.IsNull(this.tableContactCreditPurchases.CreditCardNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCreditCardNoNull() {
+                this[this.tableContactCreditPurchases.CreditCardNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsContactNameNull() {
+                return this.IsNull(this.tableContactCreditPurchases.ContactNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetContactNameNull() {
+                this[this.tableContactCreditPurchases.ContactNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGuarantorCreditCardNoNull() {
+                return this.IsNull(this.tableContactCreditPurchases.GuarantorCreditCardNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGuarantorCreditCardNoNull() {
+                this[this.tableContactCreditPurchases.GuarantorCreditCardNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGuarantorNameNull() {
+                return this.IsNull(this.tableContactCreditPurchases.GuarantorNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGuarantorNameNull() {
+                this[this.tableContactCreditPurchases.GuarantorNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTransactionDateNull() {
+                return this.IsNull(this.tableContactCreditPurchases.TransactionDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTransactionDateNull() {
+                this[this.tableContactCreditPurchases.TransactionDateColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class CreditBillHeaderRow : global::System.Data.DataRow {
+            
+            private CreditBillHeaderDataTable tableCreditBillHeader;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal CreditBillHeaderRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableCreditBillHeader = ((CreditBillHeaderDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public long CreditBillHeaderID {
+                get {
+                    try {
+                        return ((long)(this[this.tableCreditBillHeader.CreditBillHeaderIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CreditBillHeaderID\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.CreditBillHeaderIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public long GuarantorID {
+                get {
+                    try {
+                        return ((long)(this[this.tableCreditBillHeader.GuarantorIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GuarantorID\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.GuarantorIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string GuarantorName {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditBillHeader.GuarantorNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GuarantorName\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.GuarantorNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CreditCardNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditBillHeader.CreditCardNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CreditCardNo\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.CreditCardNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ContactName {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditBillHeader.ContactNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ContactName\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.ContactNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal CreditLimit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.CreditLimitColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CreditLimit\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.CreditLimitColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal RunningCreditAmt {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.RunningCreditAmtColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RunningCreditAmt\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.RunningCreditAmtColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal CurrMonthCreditAmt {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.CurrMonthCreditAmtColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrMonthCreditAmt\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.CurrMonthCreditAmtColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal CurrMonthAmountPaid {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.CurrMonthAmountPaidColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrMonthAmountPaid\' in table \'CreditBillHeader\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.CurrMonthAmountPaidColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal TotalBillCharges {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.TotalBillChargesColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalBillCharges\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.TotalBillChargesColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal CurrentDueAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.CurrentDueAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentDueAmount\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.CurrentDueAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal MinimumAmountDue {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.MinimumAmountDueColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MinimumAmountDue\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.MinimumAmountDueColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Prev1MoCurrentDueAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.Prev1MoCurrentDueAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Prev1MoCurrentDueAmount\' in table \'CreditBillHeader\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.Prev1MoCurrentDueAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Prev1MoMinimumAmountDue {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.Prev1MoMinimumAmountDueColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Prev1MoMinimumAmountDue\' in table \'CreditBillHeader\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.Prev1MoMinimumAmountDueColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Prev1MoCurrMonthAmountPaid {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.Prev1MoCurrMonthAmountPaidColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Prev1MoCurrMonthAmountPaid\' in table \'CreditBillHeader\' is " +
+                                "DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.Prev1MoCurrMonthAmountPaidColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Prev2MoCurrentDueAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.Prev2MoCurrentDueAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Prev2MoCurrentDueAmount\' in table \'CreditBillHeader\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.Prev2MoCurrentDueAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal CurrentPurchaseAmt {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.CurrentPurchaseAmtColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentPurchaseAmt\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.CurrentPurchaseAmtColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal BeginningBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.BeginningBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BeginningBalance\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.BeginningBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal EndingBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCreditBillHeader.EndingBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EndingBalance\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.EndingBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime BillingDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableCreditBillHeader.BillingDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BillingDate\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.BillingDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCreditBillHeaderIDNull() {
+                return this.IsNull(this.tableCreditBillHeader.CreditBillHeaderIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCreditBillHeaderIDNull() {
+                this[this.tableCreditBillHeader.CreditBillHeaderIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGuarantorIDNull() {
+                return this.IsNull(this.tableCreditBillHeader.GuarantorIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGuarantorIDNull() {
+                this[this.tableCreditBillHeader.GuarantorIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGuarantorNameNull() {
+                return this.IsNull(this.tableCreditBillHeader.GuarantorNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGuarantorNameNull() {
+                this[this.tableCreditBillHeader.GuarantorNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCreditCardNoNull() {
+                return this.IsNull(this.tableCreditBillHeader.CreditCardNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCreditCardNoNull() {
+                this[this.tableCreditBillHeader.CreditCardNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsContactNameNull() {
+                return this.IsNull(this.tableCreditBillHeader.ContactNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetContactNameNull() {
+                this[this.tableCreditBillHeader.ContactNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCreditLimitNull() {
+                return this.IsNull(this.tableCreditBillHeader.CreditLimitColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCreditLimitNull() {
+                this[this.tableCreditBillHeader.CreditLimitColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRunningCreditAmtNull() {
+                return this.IsNull(this.tableCreditBillHeader.RunningCreditAmtColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRunningCreditAmtNull() {
+                this[this.tableCreditBillHeader.RunningCreditAmtColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCurrMonthCreditAmtNull() {
+                return this.IsNull(this.tableCreditBillHeader.CurrMonthCreditAmtColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCurrMonthCreditAmtNull() {
+                this[this.tableCreditBillHeader.CurrMonthCreditAmtColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCurrMonthAmountPaidNull() {
+                return this.IsNull(this.tableCreditBillHeader.CurrMonthAmountPaidColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCurrMonthAmountPaidNull() {
+                this[this.tableCreditBillHeader.CurrMonthAmountPaidColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTotalBillChargesNull() {
+                return this.IsNull(this.tableCreditBillHeader.TotalBillChargesColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTotalBillChargesNull() {
+                this[this.tableCreditBillHeader.TotalBillChargesColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCurrentDueAmountNull() {
+                return this.IsNull(this.tableCreditBillHeader.CurrentDueAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCurrentDueAmountNull() {
+                this[this.tableCreditBillHeader.CurrentDueAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMinimumAmountDueNull() {
+                return this.IsNull(this.tableCreditBillHeader.MinimumAmountDueColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMinimumAmountDueNull() {
+                this[this.tableCreditBillHeader.MinimumAmountDueColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPrev1MoCurrentDueAmountNull() {
+                return this.IsNull(this.tableCreditBillHeader.Prev1MoCurrentDueAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPrev1MoCurrentDueAmountNull() {
+                this[this.tableCreditBillHeader.Prev1MoCurrentDueAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPrev1MoMinimumAmountDueNull() {
+                return this.IsNull(this.tableCreditBillHeader.Prev1MoMinimumAmountDueColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPrev1MoMinimumAmountDueNull() {
+                this[this.tableCreditBillHeader.Prev1MoMinimumAmountDueColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPrev1MoCurrMonthAmountPaidNull() {
+                return this.IsNull(this.tableCreditBillHeader.Prev1MoCurrMonthAmountPaidColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPrev1MoCurrMonthAmountPaidNull() {
+                this[this.tableCreditBillHeader.Prev1MoCurrMonthAmountPaidColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPrev2MoCurrentDueAmountNull() {
+                return this.IsNull(this.tableCreditBillHeader.Prev2MoCurrentDueAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPrev2MoCurrentDueAmountNull() {
+                this[this.tableCreditBillHeader.Prev2MoCurrentDueAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCurrentPurchaseAmtNull() {
+                return this.IsNull(this.tableCreditBillHeader.CurrentPurchaseAmtColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCurrentPurchaseAmtNull() {
+                this[this.tableCreditBillHeader.CurrentPurchaseAmtColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBeginningBalanceNull() {
+                return this.IsNull(this.tableCreditBillHeader.BeginningBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBeginningBalanceNull() {
+                this[this.tableCreditBillHeader.BeginningBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEndingBalanceNull() {
+                return this.IsNull(this.tableCreditBillHeader.EndingBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEndingBalanceNull() {
+                this[this.tableCreditBillHeader.EndingBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBillingDateNull() {
+                return this.IsNull(this.tableCreditBillHeader.BillingDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBillingDateNull() {
+                this[this.tableCreditBillHeader.BillingDateColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -45370,6 +48475,108 @@ namespace RetailPlus.Datasets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public BranchTransferItemsRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public class ContactCreditPaymentCashRowChangeEvent : global::System.EventArgs {
+            
+            private ContactCreditPaymentCashRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPaymentCashRowChangeEvent(ContactCreditPaymentCashRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPaymentCashRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public class ContactCreditPurchasesRowChangeEvent : global::System.EventArgs {
+            
+            private ContactCreditPurchasesRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPurchasesRowChangeEvent(ContactCreditPurchasesRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public ContactCreditPurchasesRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public class CreditBillHeaderRowChangeEvent : global::System.EventArgs {
+            
+            private CreditBillHeaderRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public CreditBillHeaderRowChangeEvent(CreditBillHeaderRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public CreditBillHeaderRow Row {
                 get {
                     return this.eventRow;
                 }

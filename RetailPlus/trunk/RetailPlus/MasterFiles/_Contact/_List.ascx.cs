@@ -193,7 +193,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Contact
 		private void LoadList()
 		{	
 			Contacts clsContact = new Contacts();
-
+            
 			string SortField = "ContactCode";
 			if (Request.QueryString["sortfield"]!=null)
 			{	SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID);	}

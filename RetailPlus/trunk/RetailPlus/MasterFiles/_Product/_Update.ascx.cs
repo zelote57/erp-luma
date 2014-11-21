@@ -121,7 +121,22 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             cboProductSubGroup.SelectedIndex = cboProductSubGroup.Items.Count - 1;
             clsProductSubGroup.CommitAndDispose();
 		}
-		
+
+        protected void imgCreateBarCode1_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode.Text = CreateBarCode();
+        }
+
+        protected void imgCreateBarCode2_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode2.Text = CreateBarCode();
+        }
+
+        protected void imgCreateBarCode3_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode3.Text = CreateBarCode();
+        }
+
 		#endregion
 
 		#region Private Methods
@@ -293,6 +308,20 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 			clsProduct.CommitAndDispose();
 		}
+
+        private string CreateBarCode()
+        {
+            string strRetValue = "";
+
+            Data.ProductSubGroup clsProductSubGroup = new Data.ProductSubGroup();
+            string strProductCode = clsProductSubGroup.getBarCodeCounter(Int64.Parse(cboProductSubGroup.SelectedItem.Value)).ToString().PadLeft(13 - (cboProductSubGroup.SelectedItem.Value.Length + 2), '0');
+            clsProductSubGroup.CommitAndDispose();
+
+            BarcodeHelper ean13 = new BarcodeHelper("99", cboProductSubGroup.SelectedItem.Value, strProductCode);
+            strRetValue = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+
+            return strRetValue;
+        }
 
 		#endregion
 	}

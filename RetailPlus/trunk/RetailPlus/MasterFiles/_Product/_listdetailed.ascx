@@ -9,10 +9,10 @@
 </script> 
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" src="../../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img alt="" height="10" src="../../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
-		<td><img height="1" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img alt="" height="1" src="../../_layouts/images/blank.gif" width="10"/></td>
 		<td>
 			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
@@ -75,38 +75,157 @@
 				</tr>
 			</table>
 		</td>
-		<td><img height="1" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img alt="" height="1" src="../../_layouts/images/blank.gif" width="10"/></td>
 	</tr>
-	<tr>
-		<td><img height="1" src="../../_layouts/images/blank.gif" width="10"></td>
-		<td>
-			<table cellspacing="0" cellpadding="0" width="100%" border="0">
-				<colgroup>
-					<col width="1">
-					<col width="25%">
-					<col width="25%">
-					<col width="50%">
-				</colgroup>
+    <tr>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
+		<td class="ms-authoringcontrols">
+		    <table class="ms-authoringcontrols" style="MARGIN-BOTTOM: 5px" cellspacing="0" cellpadding="0" border="0" width="100%">
 				<tr>
-					<th class="ms-vh2">
-						<img height="10" src="../../_layouts/images/blank.gif" width="1"></th>
-					<th class="ms-vh2">
-						<img height="5" src="../../_layouts/images/blank.gif" width="1"></th>
-					<th class="ms-vh2">
-						<img height="5" src="../../_layouts/images/blank.gif" width="1"></th>
-					<th class="ms-vh2">
-						<img height="5" src="../../_layouts/images/blank.gif" width="1"></th></tr>
-				<tr>
-					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; padding-bottom: 0px; PADDING-TOP: 0px" colspan="4">
-					    <input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" /><label for="idSelectAll"><B>Select All</B></label>
-					    <asp:RadioButton ID="rdoShowAll" GroupName="FilterProductList" runat="server" Text="Show both active and inactive products " OnCheckedChanged="rdoShowAll_CheckedChanged" AutoPostBack="True" />
-                        <asp:RadioButton ID="rdoShowActiveOnly" GroupName="FilterProductList" runat="server" Text="Show active products only " AutoPostBack="True" OnCheckedChanged="rdoShowActiveOnly_CheckedChanged" Checked="True" />
-                        <asp:RadioButton ID="rdoShowInactiveOnly" GroupName="FilterProductList" runat="server" Text="Show inactive products only " AutoPostBack="True" OnCheckedChanged="rdoShowInactiveOnly_CheckedChanged"/>
-                        <asp:TextBox id="txtLimit" onkeypress="AllNum()" runat="server" CssClass="ms-short" Width=50 MaxLength="5" BorderStyle="Groove">100</asp:TextBox>-Show Item(0=All Items)
+					<td style="padding-bottom:2px" nowrap="nowrap" colspan="6">
+						<asp:RadioButton ID="rdoShowAll" GroupName="FilterProductList" runat="server" Text="Show both active and inactive products "/>
+                        <asp:RadioButton ID="rdoShowActiveOnly" GroupName="FilterProductList" runat="server" Text="Show active products only " Checked="True"/>
+                        <asp:RadioButton ID="rdoShowInactiveOnly" GroupName="FilterProductList" runat="server" Text="Show inactive products only "/>&nbsp;
+					</td>
+                    <td nowrap="nowrap">
+						<asp:TextBox id="txtLimit" onkeypress="AllNum()" runat="server" CssClass="ms-short-numeric" Width="50" MaxLength="5" BorderStyle="Groove">100</asp:TextBox>-Show Item(0=All Items)
+					</td>
+					<td width="99%" id="align05" nowrap="nowrap" align="left">&nbsp;
+					</td>
+				</tr>
+                <tr>
+					<td style="padding-bottom:2px" nowrap="nowrap">
+						&nbsp;<label>Suplier Name From</label>&nbsp;
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">
+						<asp:TextBox id="txtSupplierNameFrom" accessKey="S" CssClass="ms-short" runat="server" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+					<td style="padding-bottom:2px" nowrap="nowrap">
+						<label>Suplier Name To</label>
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">
+						<asp:TextBox id="txtSupplierNameTo" accessKey="S" CssClass="ms-short" runat="server" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td width="99%" id="Td4" nowrap="nowrap" align="left">&nbsp;
 					</td>
 				</tr>
 				<tr>
-					<td colspan="4" height="5"><img height="1" src="../../_layouts/images/blank.gif" width="10"></td>
+					<td style="padding-bottom:2px" nowrap="nowrap">
+						&nbsp;<label>P. Group Name From</label>&nbsp;
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">
+						<asp:TextBox id="txtProductGroupnameFrom" accessKey="S" CssClass="ms-short" runat="server" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+					<td style="padding-bottom:2px" nowrap="nowrap">
+						<label>P. Group Name To</label>
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">
+						<asp:TextBox id="txtProductGroupNameTo" accessKey="S" CssClass="ms-short" runat="server" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td width="99%" id="Td1" nowrap="nowrap" align="left">&nbsp;
+					</td>
+				</tr>
+                <tr>
+					<td style="padding-bottom:2px" nowrap="nowrap">
+						&nbsp;<label>SubGroup Name From</label>&nbsp;
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">
+						<asp:TextBox id="txtProductSubGroupNameFrom" accessKey="S" CssClass="ms-short" runat="server" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+					<td style="padding-bottom:2px" nowrap="nowrap">
+						<label>SubGroup Name To</label>
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">
+						<asp:TextBox id="txtProductSubGroupNameTo" accessKey="S" CssClass="ms-short" runat="server" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td width="99%" id="Td3" nowrap="nowrap" align="left">&nbsp;
+					</td>
+				</tr>
+                <tr>
+					<td style="padding-bottom:2px" nowrap="nowrap">
+						&nbsp;<label>Barcode From</label>&nbsp;
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">
+						<asp:TextBox id="txtBarcodeFrom" accessKey="S" CssClass="ms-short" runat="server" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+					<td style="padding-bottom:2px" nowrap="nowrap">
+						<label>Barcode To</label>
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">
+						<asp:TextBox id="txtBarcodeTo" accessKey="E" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="30"></asp:TextBox>
+                    </td>
+					<td width="99%" id="Td5" nowrap="nowrap" align="left">&nbsp;
+					</td>
+				</tr>
+                <tr>
+					<td style="padding-bottom:2px" nowrap="nowrap">
+						&nbsp;<label>Product Code From</label>&nbsp;
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">
+						<asp:TextBox id="txtProductCodeFrom" accessKey="S" CssClass="ms-short" runat="server" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+					<td style="padding-bottom:2px" nowrap="nowrap">
+						<label>Product Code To</label>
+					</td>
+					<td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">
+						<asp:TextBox id="txtProductCodeTo" accessKey="E" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="30"></asp:TextBox>
+					</td>
+					<td width="99%" id="Td2" nowrap="nowrap" align="left">&nbsp;
+                        <asp:ImageButton accessKey="s" style="CURSOR: hand" id="cmdSearch" ImageUrl="../../_layouts/images/icongo01.gif" border="0" ToolTip="Execute search" runat="server" causesvalidation="false" onclick="cmdSearch_Click"></asp:ImageButton>
+					</td>
+				</tr>
+                
+			</table>
+		</td>
+	</tr>
+	<tr>
+	    <td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
+		<td class="ms-sectionline" height="2" style="MARGIN-BOTTOM: 5px"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+		<td><img height="1" alt="" src="../../_layouts/images/blank.gif" width="10" /></td>
+	</tr>
+	<tr>
+		<td><img alt="" height="1" src="../../_layouts/images/blank.gif" width="10"/></td>
+		<td>
+			<table cellspacing="0" cellpadding="0" width="100%" border="0">
+				<colgroup>
+					<col width="1"/>
+					<col width="25%"/>
+					<col width="25%"/>
+					<col width="50%"/>
+				</colgroup>
+				<tr>
+					<th class="ms-vh2">
+						<img alt="" height="10" src="../../_layouts/images/blank.gif" width="1"/></th>
+					<th class="ms-vh2">
+						<img alt="" height="5" src="../../_layouts/images/blank.gif" width="1"/></th>
+					<th class="ms-vh2">
+						<img alt="" height="5" src="../../_layouts/images/blank.gif" width="1"/></th>
+					<th class="ms-vh2">
+						<img alt="" height="5" src="../../_layouts/images/blank.gif" width="1"/></th>
+                </tr>
+				<tr>
+					<td class="ms-vb2" style="PADDING-RIGHT: 15px; BORDER-TOP: 0px; padding-bottom: 0px; PADDING-TOP: 0px"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" />
+					</td>
+					<td class="ms-vb2" style="BORDER-TOP: 0px"><label for="idSelectAll"><b>Select All</b></label></td>
+					<td class="ms-vb2" style="BORDER-TOP: 0px" colspan="2"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1" /></td>
+				</tr>
+				<tr>
+					<td colspan="4" height="5"><img alt="" height="1" src="../../_layouts/images/blank.gif" width="10"/></td>
 				</tr>
 			</table>
 			<%--<asp:UpdatePanel ID="UpdatePanel3" runat="server" >
@@ -158,7 +277,7 @@
 				        </HeaderTemplate>
 				        <ItemTemplate>
 					        <table id="tblItemTemplate" cellspacing="0" cellpadding="0" width="100%" border="0" onmouseover="this.bgColor='#FFE303'" onmouseout="this.bgColor='transparent'">
-						        <COLGROUP>
+						        <colgroup>
 							        <col width="10">
 							        <col width="1">
 							        <col width="1">
@@ -170,7 +289,7 @@
 							        <col width="22%">
 							        <col width="10%">
 							        <col width="1">
-						        </COLGROUP>
+						        </colgroup>
 						        <tr>
 							        <td class="ms-vb-user">
 								        <input id="chkList" type="checkbox" name="chkList" runat="server" /></td>
@@ -370,10 +489,10 @@
 									        </asp:panel>
 									     </DIV>
 							        </td>
-							        <td class="ms-vh2" height="1"><img height="5" src="../../_layouts/images/blank.gif" width="1"></td>
+							        <td class="ms-vh2" height="1"><img alt="" height="5" src="../../_layouts/images/blank.gif" width="1"/></td>
 						        </tr>
 						        <tr>
-							        <td class="ms-vh2" height="1"><img height="5" src="../../_layouts/images/blank.gif" width="1"></td>
+							        <td class="ms-vh2" height="1"><img alt="" height="5" src="../../_layouts/images/blank.gif" width="1"/></td>
 							        <td colspan="9" height="1">
 								        <DIV class="ACECollapsed" id="div1" runat="server" border="0">
 									        <asp:panel id="Panel1" runat="server" Width="100%" Height="100%" CssClass="ms-authoringcontrols">
@@ -387,7 +506,7 @@
 										        </table>
 									        </asp:panel></DIV>
 							        </td>
-							        <td class="ms-vh2" height="1"><img height="5" src="../../_layouts/images/blank.gif" width="1"></td>
+							        <td class="ms-vh2" height="1"><img alt="" height="5" src="../../_layouts/images/blank.gif" width="1"/></td>
 						        </tr>
 					        </table>
 				        </ItemTemplate>
@@ -399,11 +518,11 @@
                 </Triggers>
 			</asp:UpdatePanel>--%>
 			</td>
-		<td><img height="1" src="../../_layouts/images/blank.gif" width="10"></td>
+		<td><img alt="" height="1" src="../../_layouts/images/blank.gif" width="10"/></td>
 	</tr>
 	<tr>
 		<td colspan="3">
-		    <img height="10" src="../../_layouts/images/blank.gif" width="1">
+		    <img alt="" height="10" src="../../_layouts/images/blank.gif" width="1"/>
 		    <asp:Label id="lblVariationsAccess" runat="server" Visible=false text="0" />
 		    <asp:Label id="lblUnitMatrixAccess" runat="server" Visible=false text="0" />
 		    <asp:Label id="lblProductPackageAccess" runat="server" Visible=false text="0" />

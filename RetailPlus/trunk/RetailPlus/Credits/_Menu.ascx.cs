@@ -18,12 +18,20 @@ namespace AceSoft.RetailPlus.Credits
 				ManageSecurity();
 
                 lnkCardTypes.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_CardType/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
-                lnkCustomers.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Customers/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
-                lnkGuarantors.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Guarantors/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
                 
-                lnkBillingReport.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Customers/Default.aspx?task=" + Common.Encrypt("listwithcredits", Session.SessionID);
-                lnkBillingHistory.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/Default.aspx?task=" + Common.Encrypt("print", Session.SessionID);
+                lnkCreditorsWithoutGuarantors.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Customers/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
+                lnkCreditorsWithoutGurantorPurchases.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Customers/Default.aspx?task=" + Common.Encrypt("reports", Session.SessionID) + "&reporttype=" + Common.Encrypt("purchases", Session.SessionID);
+                lnkCreditorsWithoutGuarantorPayments.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Customers/Default.aspx?task=" + Common.Encrypt("reports", Session.SessionID) + "&reporttype=" + Common.Encrypt("payments", Session.SessionID);
+                lnkCreditorsLedgerSummary.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Customers/Default.aspx?task=" + Common.Encrypt("reports", Session.SessionID) + "&reporttype=" + Common.Encrypt("ledger", Session.SessionID);
 
+                lnkCreditorsWithGuarantors.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Guarantors/Default.aspx?task=" + Common.Encrypt("list", Session.SessionID);
+                lnkCreditorsWithGurantorPurchases.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Guarantors/Default.aspx?task=" + Common.Encrypt("reports", Session.SessionID) + "&reporttype=" + Common.Encrypt("purchases", Session.SessionID);
+                lnkCreditorsWithGuarantorPayments.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Guarantors/Default.aspx?task=" + Common.Encrypt("reports", Session.SessionID) + "&reporttype=" + Common.Encrypt("payments", Session.SessionID);
+                lnkGuarantorsLedger.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Guarantors/Default.aspx?task=" + Common.Encrypt("reports", Session.SessionID) + "&reporttype=" + Common.Encrypt("ledger", Session.SessionID);
+
+                lnkChangeCreditType.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Customers/Default.aspx?task=" + Common.Encrypt("changecardtype", Session.SessionID) + "&id=" + Common.Encrypt("0", Session.SessionID);
+                lnkChangeCreditTypeWG.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Guarantors/Default.aspx?task=" + Common.Encrypt("changecardtype", Session.SessionID) + "&id=" + Common.Encrypt("0", Session.SessionID);
+                lnkChangeGuarantor.NavigateUrl = Constants.ROOT_DIRECTORY + "/Credits/_Guarantors/Default.aspx?task=" + Common.Encrypt("changeguarantor", Session.SessionID) + "&id=" + Common.Encrypt("0", Session.SessionID);
             }
 		}
 
@@ -36,11 +44,30 @@ namespace AceSoft.RetailPlus.Credits
             clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.InternalCreditCardSetup);
             lnkCardTypes.Visible = clsDetails.Read;
 
-            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CreditCardIssuance);
-            lnkCustomers.Visible = clsDetails.Read;
-            lnkGuarantors.Visible = clsDetails.Read;
-            lnkBillingReport.Visible = clsDetails.Read;
-            lnkBillingHistory.Visible = clsDetails.Read;
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CreditorsWithoutGuarantor);
+            lnkCreditorsWithoutGuarantors.Visible = clsDetails.Read;
+            lnkChangeCreditType.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CreditorsWithoutGuarantorPurchases);
+            lnkCreditorsWithoutGurantorPurchases.Visible = clsDetails.Read;
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CreditorsWithoutGuarantorPayments);
+            lnkCreditorsWithoutGuarantorPayments.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CreditorsLedgerSummary);
+            lnkGuarantorsLedger.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CreditorsWithGuarantor);
+            lnkCreditorsWithGuarantors.Visible = clsDetails.Read;
+            lnkChangeCreditTypeWG.Visible = clsDetails.Read;
+            lnkChangeCreditType.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CreditorsWithGuarantorPurchases);
+            lnkCreditorsWithGurantorPurchases.Visible = clsDetails.Read;
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.CreditorsWithGuarantorPayments);
+            lnkCreditorsWithGuarantorPayments.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.GuarantorsLedgerSummary);
+            lnkGuarantorsLedger.Visible = clsDetails.Read;
 
 			clsAccessRights.CommitAndDispose();
 		}

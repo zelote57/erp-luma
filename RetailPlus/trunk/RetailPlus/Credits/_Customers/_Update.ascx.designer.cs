@@ -184,6 +184,60 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator2;
         
         /// <summary>
+        /// cboSalutation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboSalutation;
+        
+        /// <summary>
+        /// txtFirstName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFirstName;
+        
+        /// <summary>
+        /// Requiredfieldvalidator5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator5;
+        
+        /// <summary>
+        /// txtMiddleName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMiddleName;
+        
+        /// <summary>
+        /// txtLastName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtLastName;
+        
+        /// <summary>
+        /// Requiredfieldvalidator6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator6;
+        
+        /// <summary>
         /// cboDepartment control.
         /// </summary>
         /// <remarks>
@@ -193,13 +247,13 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         protected global::System.Web.UI.WebControls.DropDownList cboDepartment;
         
         /// <summary>
-        /// Requiredfieldvalidator3 control.
+        /// txtBirthDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator3;
+        protected global::System.Web.UI.WebControls.TextBox txtBirthDate;
         
         /// <summary>
         /// cboPosition control.
@@ -211,15 +265,6 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         protected global::System.Web.UI.WebControls.DropDownList cboPosition;
         
         /// <summary>
-        /// Requiredfieldvalidator4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator4;
-        
-        /// <summary>
         /// txtBusinessName control.
         /// </summary>
         /// <remarks>
@@ -227,6 +272,15 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBusinessName;
+        
+        /// <summary>
+        /// txtMobileNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMobileNo;
         
         /// <summary>
         /// txtTelephoneNo control.

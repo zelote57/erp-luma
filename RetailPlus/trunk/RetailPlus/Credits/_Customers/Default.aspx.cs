@@ -52,7 +52,17 @@ namespace AceSoft.RetailPlus.Credits._Customers
                         stHeading = "Credits Members List";
                         SearchIndex = SearchCategoryID.NotApplicable;
                         ctrlList.Visible = true;
-                        break;	
+                        break;
+                    case "changecardtype":
+                        stHeading = "Change Card Type of Creditor";
+                        SearchIndex = SearchCategoryID.NotApplicable;
+                        ctrlChangeCardType.Visible = true;
+                        break;
+                    case "reports":
+                        stHeading = "Creditor's Reports";
+                        SearchIndex = SearchCategoryID.NotApplicable;
+                        ctrlReports.Visible = true;
+                        break; 
 					default:	
 						break;
 				}

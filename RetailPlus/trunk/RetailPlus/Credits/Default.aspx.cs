@@ -40,21 +40,21 @@ namespace AceSoft.RetailPlus.Credits
                 {
                     ctrlDefault.Visible = false;
 				    string task = Common.Decrypt(Request.QueryString["task"].ToString(), Session.SessionID);
-				    switch (task)
-				    {
-                        //case ReportTypes.RewardsHistory:
-                        //    stHeading = "Rewards History";
-                        //    SearchIndex = SearchCategoryID.NotApplicable;
-                        //    ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
-                        //    break;
-                        //case ReportTypes.RewardsSummary:
-                        //    stHeading = "Rewards Summary";
-                        //    SearchIndex = SearchCategoryID.NotApplicable;
-                        //    ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
-                        //    break;
-                        //default:
-                        //    break;
-				    }
+                    //switch (task)
+                    //{
+                    //    //case ReportTypes.RewardsHistory:
+                    //    //    stHeading = "Rewards History";
+                    //    //    SearchIndex = SearchCategoryID.NotApplicable;
+                    //    //    ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
+                    //    //    break;
+                    //    //case ReportTypes.RewardsSummary:
+                    //    //    stHeading = "Rewards Summary";
+                    //    //    SearchIndex = SearchCategoryID.NotApplicable;
+                    //    //    ctrlReports.Visible = true; ctrlProcessing.Visible = false;  ctrlProcessing.Dispose();
+                    //    //    break;
+                    //    //default:
+                    //    //    break;
+                    //}
                 }
 			}
 

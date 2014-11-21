@@ -27,11 +27,11 @@
 							</tr>
 						</table>
 					</td>
-                    <td class="ms-separator">|</td>
+                    <td class="ms-separator"><asp:Label id="lblBillingSeparator" runat="server">|</asp:Label></td>
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
-								<td class="ms-toolbar" nowrap="nowrap">&nbsp;Select billing date of report to print :</td>
+								<td class="ms-toolbar" nowrap="nowrap"><asp:Label id="labelBilling" runat="server">&nbsp;Select billing date of report to print :</asp:Label></td>
 								<td nowrap="nowrap"><asp:dropdownlist id="cboBillingDate" CssClass="ms-short" runat="server"></asp:dropdownlist>&nbsp;</td>
 							</tr>
 						</table>
@@ -100,7 +100,7 @@
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
-                                    <asp:textbox id="txtContactName" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
+                                    <asp:textbox id="txtContactName" accessKey="G" CssClass="ms-short-disabled" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
                                     <asp:requiredfieldvalidator id="Requiredfieldvalidator2" CssClass="ms-error" runat="server" ControlToValidate="txtContactName" Display="Dynamic" ErrorMessage="'Contact name.' must not be left blank." ForeColor=" "></asp:requiredfieldvalidator>
                                 </td>
                             </tr>
@@ -110,29 +110,57 @@
                             </tr>
                             <tr>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    <label>Department<font color="red">*</font></label></td>
+                                    <label>First Name<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    <label>Position<font color="red">*</font></label></td>
+                                    <label>Middle Name<font color="red">*</font></label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Last Name<font color="red">*</font></label></td>
+                            </tr>
+                            <tr>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:dropdownlist id="cboSalutation" CssClass="ms-short" runat="server" style="width:auto"></asp:dropdownlist>
+                                    <asp:textbox id="txtFirstName" accessKey="C" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="85"></asp:textbox>
+									<asp:requiredfieldvalidator id="Requiredfieldvalidator5" runat="server" CssClass="ms-error" ErrorMessage="'First name.' must not be left blank." Display="Dynamic" ControlToValidate="txtFirstName" ForeColor=" "></asp:requiredfieldvalidator>
+                                </td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:textbox id="txtMiddleName" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="85" style="min-width: 190px"></asp:textbox>
+                                </td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols" colspan="3">
+                                    <asp:textbox id="txtLastName" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="85"></asp:textbox>
+                                    <asp:requiredfieldvalidator id="Requiredfieldvalidator6" CssClass="ms-error" runat="server" ControlToValidate="txtLastName" Display="Dynamic" ErrorMessage="'Last name.' must not be left blank." ForeColor=" "></asp:requiredfieldvalidator>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ms-formspacer" height="20">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Birth Date<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Business Name<font color="red">*</font></label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Mobile No<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Telephone No<font color="red">*</font></label></td>
                             </tr>
                             <tr>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:dropdownlist id="cboDepartment" CssClass="ms-short" runat="server"></asp:dropdownlist>
-									<asp:requiredfieldvalidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'Department.' must not be left blank." Display="Dynamic" ControlToValidate="cboDepartment" ForeColor=" "></asp:requiredfieldvalidator>
+                                    <asp:dropdownlist id="cboDepartment" CssClass="ms-short" runat="server" Visible="false"></asp:dropdownlist>
+									<asp:TextBox id="txtBirthDate" runat="server" accesskey="B" CssClass="ms-short" MaxLength="10" BorderStyle="Groove" ondblclick="ontime(this)" ToolTip="Double Click to Select Date From Calendar"></asp:TextBox>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:dropdownlist id="cboPosition" CssClass="ms-short" runat="server">
-									</asp:dropdownlist>
-									<asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'Position.' must not be left blank." Display="Dynamic" ControlToValidate="cboPosition" ForeColor=" "></asp:requiredfieldvalidator>
-                                </td>
-                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-                                <td class="ms-authoringcontrols">
+                                    <asp:dropdownlist id="cboPosition" CssClass="ms-short" runat="server" Visible="false"></asp:dropdownlist>
                                     <asp:textbox id="txtBusinessName" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
+                                </td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:textbox id="txtMobileNo" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
@@ -278,21 +306,21 @@
 							            <col width="1%">
 						            </colgroup>
 						            <tr>
-							            <TH class="ms-vh2" style="padding-bottom: 4px">
-								            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TH>
-							            <TH class="ms-vh2" style="padding-bottom: 4px">
-								            <asp:hyperlink id="SortByTransactionNo" runat="server">Trans. No</asp:hyperlink></TH>
-							            <TH class="ms-vh2" style="padding-bottom: 4px">
-								            <asp:hyperlink id="SortByTransactionDate" runat="server">Trans. Date</asp:hyperlink></TH>
-							            <TH class="ms-vh2" style="padding-bottom: 4px">
-								            <asp:hyperlink id="SortByCreditReason" runat="server">Description</asp:hyperlink></TH>
-                                        <TH class="ms-vh2" style="padding-bottom: 4px" align="right">
-								            <asp:hyperlink id="SortByCredit" runat="server">Credit</asp:hyperlink></TH>
-                                        <TH class="ms-vh2" style="padding-bottom: 4px" align="right">
-								            <asp:hyperlink id="SortByCreditPaid" runat="server">Credit Paid</asp:hyperlink></TH>
-                                        <TH class="ms-vh2" style="padding-bottom: 4px" align="right">
-								            <asp:hyperlink id="SortByBalance" runat="server">Balance</asp:hyperlink></TH>
-                                        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
+							            <th class="ms-vh2" style="padding-bottom: 4px">
+								            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+							            <th class="ms-vh2" style="padding-bottom: 4px">
+								            <asp:hyperlink id="SortByTransactionNo" runat="server">Trans. No</asp:hyperlink></th>
+							            <th class="ms-vh2" style="padding-bottom: 4px">
+								            <asp:hyperlink id="SortByTransactionDate" runat="server">Trans. Date</asp:hyperlink></th>
+							            <th class="ms-vh2" style="padding-bottom: 4px">
+								            <asp:hyperlink id="SortByCreditReason" runat="server">Description</asp:hyperlink></th>
+                                        <th class="ms-vh2" style="padding-bottom: 4px" align="right">
+								            <asp:hyperlink id="SortByCredit" runat="server">Credit</asp:hyperlink></th>
+                                        <th class="ms-vh2" style="padding-bottom: 4px" align="right">
+								            <asp:hyperlink id="SortByCreditPaid" runat="server">Credit Paid</asp:hyperlink></th>
+                                        <th class="ms-vh2" style="padding-bottom: 4px" align="right">
+								            <asp:hyperlink id="SortByBalance" runat="server">Balance</asp:hyperlink></th>
+                                        <th class="ms-vh2" style="padding-bottom: 4px"></th>
 						            </tr>
 					            </table>
 				            </HeaderTemplate>

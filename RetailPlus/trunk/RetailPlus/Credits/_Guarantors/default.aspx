@@ -7,8 +7,11 @@
 <%@ Register TagPrefix="CTRL" TagName="PageHeader" Src="../../_PageHeader.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlList" Src="_List.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlDetails" Src="_Details.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlReports" Src="_Reports.ascx" %>
 <%@ Page language="c#" Inherits="AceSoft.RetailPlus.Credits._Guarantors._Default" Codebehind="Default.aspx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlChangeCardType" Src="_ChangeCardType.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlChangeGuarantor" Src="_ChangeGuarantor.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlInsert" Src="_Insert.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlUpdate" Src="_Update.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlExpiry" Src="../../_Expiry.ascx" %>
@@ -26,6 +29,7 @@
 		<LINK href="../../_layouts/css/ows.css" type="text/css" rel="stylesheet">
 		<LINK href="../../_layouts/css/sps.css" type="text/css" rel="stylesheet">
         <script language="JavaScript" src="../../_Scripts/Calendar.js"></script>
+        <script language="JavaScript" src="../../_Scripts/Credits.js"></script>
 	</HEAD>
 	<body id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
 		<form id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">
@@ -113,7 +117,10 @@
 									<CTRL:ctrlList id="ctrlList" runat="server" Visible="False"></CTRL:ctrlList>
 									<CTRL:ctrlInsert id="ctrlInsert" runat="server" Visible="False"></CTRL:ctrlInsert>
 									<CTRL:ctrlUpdate id="ctrlUpdate" runat="server" Visible="False"></CTRL:ctrlUpdate>
-									<CTRL:ctrlDetails id="ctrlDetails" runat="server" Visible="False"></CTRL:ctrlDetails></td>
+									<CTRL:ctrlDetails id="ctrlDetails" runat="server" Visible="False"></CTRL:ctrlDetails>
+                                    <CTRL:ctrlReports id="ctrlReports" runat="server" Visible="False"></CTRL:ctrlReports>
+                                    <CTRL:ctrlChangeCardType id="ctrlChangeCardType" runat="server" Visible="False"></CTRL:ctrlChangeCardType>
+                                    <CTRL:ctrlChangeGuarantor id="ctrlChangeGuarantor" runat="server" Visible="False"></CTRL:ctrlChangeGuarantor></td>
 							</tr>
 						</table>
 					</td>

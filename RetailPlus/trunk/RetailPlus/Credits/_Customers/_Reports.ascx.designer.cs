@@ -10,88 +10,133 @@
 namespace AceSoft.RetailPlus.Credits._Customers {
     
     
-    public partial class @__List {
+    public partial class @__Reports {
         
         /// <summary>
-        /// idEdit control.
+        /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton idEdit;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
-        /// cmdEdit control.
+        /// imgView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdEdit;
+        protected global::System.Web.UI.WebControls.ImageButton imgView;
         
         /// <summary>
-        /// lblSeparator2 control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSeparator2;
+        protected global::System.Web.UI.WebControls.Label Label2;
         
         /// <summary>
-        /// idPrintBilling control.
+        /// cboReportOptions control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton idPrintBilling;
+        protected global::System.Web.UI.WebControls.DropDownList cboReportOptions;
         
         /// <summary>
-        /// cmdPrintBilling control.
+        /// cboReportType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdPrintBilling;
+        protected global::System.Web.UI.WebControls.DropDownList cboReportType;
         
         /// <summary>
-        /// lblDataCount1 control.
+        /// updPrint control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDataCount1;
+        protected global::System.Web.UI.UpdatePanel updPrint;
         
         /// <summary>
-        /// cboCurrentPage control.
+        /// cmdView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboCurrentPage;
+        protected global::System.Web.UI.WebControls.Button cmdView;
         
         /// <summary>
-        /// lblDataCount control.
+        /// lblSeparator4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDataCount;
+        protected global::System.Web.UI.WebControls.Label lblSeparator4;
         
         /// <summary>
-        /// cboCreditCardStatus control.
+        /// imgBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboCreditCardStatus;
+        protected global::System.Web.UI.WebControls.ImageButton imgBack;
+        
+        /// <summary>
+        /// cmdBack control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdBack;
+        
+        /// <summary>
+        /// lblReferrer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblReferrer;
+        
+        /// <summary>
+        /// lblReportType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblReportType;
+        
+        /// <summary>
+        /// cboBranch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboBranch;
+        
+        /// <summary>
+        /// txtTerminalNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTerminalNo;
         
         /// <summary>
         /// cboCreditType control.
@@ -103,40 +148,13 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         protected global::System.Web.UI.WebControls.DropDownList cboCreditType;
         
         /// <summary>
-        /// txtExpiryDateFrom control.
+        /// divDates control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtExpiryDateFrom;
-        
-        /// <summary>
-        /// txtExpiryDateTo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtExpiryDateTo;
-        
-        /// <summary>
-        /// Label4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label4;
-        
-        /// <summary>
-        /// Label5 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label5;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDates;
         
         /// <summary>
         /// txtLastNameFrom control.
@@ -157,30 +175,93 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         protected global::System.Web.UI.WebControls.TextBox txtLastNameTo;
         
         /// <summary>
-        /// txtSearch control.
+        /// lblTrxStartDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearch;
+        protected global::System.Web.UI.WebControls.Label lblTrxStartDate;
         
         /// <summary>
-        /// cmdSearch control.
+        /// txtTrxStartDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton cmdSearch;
+        protected global::System.Web.UI.WebControls.TextBox txtTrxStartDate;
         
         /// <summary>
-        /// lstItem control.
+        /// lblTrxEndDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataList lstItem;
+        protected global::System.Web.UI.WebControls.Label lblTrxEndDate;
+        
+        /// <summary>
+        /// txtTrxEndDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTrxEndDate;
+        
+        /// <summary>
+        /// Label4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label4;
+        
+        /// <summary>
+        /// Label5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label5;
+        
+        /// <summary>
+        /// divBilingDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBilingDate;
+        
+        /// <summary>
+        /// Label1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label1;
+        
+        /// <summary>
+        /// cboBillingDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboBillingDate;
+        
+        /// <summary>
+        /// CRViewer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CrystalDecisions.Web.CrystalReportViewer CRViewer;
     }
 }

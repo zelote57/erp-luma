@@ -127,7 +127,7 @@ namespace AceSoft.RetailPlus.Credits._Customers
 
             cboGroup.DataTextField = "ContactGroupName";
             cboGroup.DataValueField = "ContactGroupID";
-            cboGroup.DataSource = clsContactGroup.ListAsDataTable().DefaultView;
+            cboGroup.DataSource = clsContactGroup.ListAsDataTable(ContactGroupCategory.CUSTOMER).DefaultView;
             cboGroup.DataBind();
             cboGroup.SelectedIndex = cboGroup.Items.Count - 1;
 
@@ -163,10 +163,18 @@ namespace AceSoft.RetailPlus.Credits._Customers
             Billing clsBilling = new Billing(clsContactGroup.Connection, clsContactGroup.Transaction);
             cboBillingDate.DataTextField = "BillingDate";
             cboBillingDate.DataValueField = "BillingFile";
-            cboBillingDate.DataSource = clsBilling.ListBillingDateAsDataTable(long.Parse(lblContactID.Text)).DefaultView;
+            cboBillingDate.DataSource = clsBilling.ListBillingDateAsDataTable(CreditType.Individual, long.Parse(lblContactID.Text), limit: 10).DefaultView;
             cboBillingDate.DataBind();
             cboBillingDate.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT, Constants.PLEASE_SELECT));
             cboBillingDate.SelectedIndex = 0;
+
+            Salutation clsSalutation = new Salutation(clsContactGroup.Connection, clsContactGroup.Transaction);
+            cboSalutation.DataTextField = "SalutationName";
+            cboSalutation.DataValueField = "SalutationCode";
+            cboSalutation.DataSource = clsSalutation.ListAsDataTable().DefaultView;
+            cboSalutation.DataBind();
+            cboSalutation.SelectedIndex = 0;
+            cboSalutation.SelectedIndex = cboSalutation.Items.IndexOf(cboSalutation.Items.FindByValue("MR"));
 
             clsContactGroup.CommitAndDispose();
         }
@@ -204,17 +212,28 @@ namespace AceSoft.RetailPlus.Credits._Customers
             txtPaidAmount.Text = "0.00";
             txtCurrentBalance.Text = (clsDetails.CreditLimit - clsDetails.Credit).ToString("###0.#0");
             lblLastBillingDate.Text = "Last Billing Date:" + clsDetails.CreditDetails.LastBillingDate.ToString("yyyy-MMM-dd");
+
+            // 26Oct2014 - add the additional information
+            cboSalutation.SelectedIndex = cboSalutation.Items.IndexOf(cboSalutation.Items.FindByValue(clsDetails.AdditionalDetails.Salutation));
+            txtFirstName.Text = clsDetails.AdditionalDetails.FirstName;
+            txtMiddleName.Text = clsDetails.AdditionalDetails.MiddleName;
+            txtLastName.Text = clsDetails.AdditionalDetails.LastName;
+            txtBirthDate.Text = clsDetails.AdditionalDetails.BirthDate.ToString("yyyy-MM-dd");
+            txtMobileNo.Text = clsDetails.AdditionalDetails.MobileNo;
+
             LoadPurchases(clsDetails.ContactID);
             
         }
         private void SaveRecord()
         {
+            Security.AccessUserDetails clsAccessUserDetails = (Security.AccessUserDetails)Session["AccessUserDetails"];
+
             Contacts clsContact = new Contacts();
             ContactDetails clsDetails = new ContactDetails();
 
             clsDetails.ContactID = Convert.ToInt32(lblContactID.Text);
             clsDetails.ContactCode = txtContactCode.Text;
-            clsDetails.ContactName = txtContactName.Text;
+            clsDetails.ContactName = txtLastName.Text + ", " + txtFirstName.Text + " " + txtMiddleName.Text;
             clsDetails.ContactGroupID = Convert.ToInt32(cboGroup.SelectedItem.Value);
             clsDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), cboModeOfTerms.SelectedItem.Value);
             clsDetails.Terms = Convert.ToInt32(txtTerms.Text);
@@ -228,6 +247,33 @@ namespace AceSoft.RetailPlus.Credits._Customers
             clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
             clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
             clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
+
+            ContactAddOnDetails clsAddOnDetails = new ContactAddOnDetails();
+            clsAddOnDetails.ContactID = clsDetails.ContactID;
+            clsAddOnDetails.Salutation = cboSalutation.SelectedItem.Value;
+            clsAddOnDetails.FirstName = txtFirstName.Text;
+            clsAddOnDetails.MiddleName = txtMiddleName.Text;
+            clsAddOnDetails.LastName = txtLastName.Text;
+            clsAddOnDetails.SpouseName = "";
+            DateTime dteBirthDate = Constants.C_DATE_MIN_VALUE;
+            dteBirthDate = DateTime.TryParse(txtBirthDate.Text, out dteBirthDate) ? dteBirthDate : Constants.C_DATE_MIN_VALUE;
+            clsAddOnDetails.BirthDate = dteBirthDate;
+            clsAddOnDetails.SpouseBirthDate = Constants.C_DATE_MIN_VALUE;
+            clsAddOnDetails.AnniversaryDate = Constants.C_DATE_MIN_VALUE;
+            clsAddOnDetails.Address1 = txtAddress.Text;
+            clsAddOnDetails.Address2 = string.Empty;
+            clsAddOnDetails.City = string.Empty;
+            clsAddOnDetails.State = string.Empty;
+            clsAddOnDetails.ZipCode = string.Empty;
+            clsAddOnDetails.CountryID = Constants.C_DEF_COUNTRY_ID;
+            clsAddOnDetails.CountryCode = Constants.C_DEF_COUNTRY_CODE;
+            clsAddOnDetails.BusinessPhoneNo = txtTelephoneNo.Text;
+            clsAddOnDetails.HomePhoneNo = string.Empty;
+            clsAddOnDetails.MobileNo = txtMobileNo.Text;
+            clsAddOnDetails.FaxNo = string.Empty;
+            clsAddOnDetails.EmailAddress = string.Empty;
+
+            clsDetails.AdditionalDetails = clsAddOnDetails;
 
             clsContact.Update(clsDetails);
 
@@ -247,11 +293,11 @@ namespace AceSoft.RetailPlus.Credits._Customers
             string stParam = cboBillingDate.SelectedItem.Value;
             if (stParam != Constants.PLEASE_SELECT)
             {
-                string newWindowUrl = Constants.ROOT_DIRECTORY + "/billings/" + stParam;
+                string newWindowUrl = Constants.ROOT_DIRECTORY_BILLING_WoutG + "/" + stParam;
                 string javaScript = "window.open('" + newWindowUrl + "','_blank');";
                 System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.cmdPrintBilling, this.cmdPrintBilling.GetType(), "openwindow", javaScript, true);
 
-                //Response.Redirect(Constants.ROOT_DIRECTORY + "/billings/" + stParam);
+                //Response.Redirect(Constants.ROOT_DIRECTORY + "/billings/woutg/" + stParam);
             }
         }
 

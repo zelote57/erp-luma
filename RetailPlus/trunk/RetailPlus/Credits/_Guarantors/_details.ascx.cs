@@ -124,7 +124,7 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
 
             cboGroup.DataTextField = "ContactGroupName";
             cboGroup.DataValueField = "ContactGroupID";
-            cboGroup.DataSource = clsContactGroup.ListAsDataTable().DefaultView;
+            cboGroup.DataSource = clsContactGroup.ListAsDataTable(ContactGroupCategory.CUSTOMER).DefaultView;
             cboGroup.DataBind();
             cboGroup.SelectedIndex = cboGroup.Items.Count - 1;
 
@@ -160,12 +160,32 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
             Billing clsBilling = new Billing(clsContactGroup.Connection, clsContactGroup.Transaction);
             cboBillingDate.DataTextField = "BillingDate";
             cboBillingDate.DataValueField = "BillingFile";
-            cboBillingDate.DataSource = clsBilling.ListBillingDateAsDataTable(long.Parse(lblContactID.Text)).DefaultView;
+            cboBillingDate.DataSource = clsBilling.ListBillingDateAsDataTable(CreditType.Group, long.Parse(lblContactID.Text), limit: 10).DefaultView;
             cboBillingDate.DataBind();
             cboBillingDate.Items.Insert(0, new ListItem(Constants.PLEASE_SELECT, Constants.PLEASE_SELECT));
             cboBillingDate.SelectedIndex = 0;
 
+            Salutation clsSalutation = new Salutation(clsContactGroup.Connection, clsContactGroup.Transaction);
+            cboSalutation.DataTextField = "SalutationName";
+            cboSalutation.DataValueField = "SalutationCode";
+            cboSalutation.DataSource = clsSalutation.ListAsDataTable().DefaultView;
+            cboSalutation.DataBind();
+            cboSalutation.SelectedIndex = 0;
+            cboSalutation.SelectedIndex = cboSalutation.Items.IndexOf(cboSalutation.Items.FindByValue("MR"));
+
             clsContactGroup.CommitAndDispose();
+
+            if (Request.QueryString["showbills"] != null)
+            {
+                if (!bool.Parse(Common.Decrypt(Request.QueryString["showbills"].ToString(), Session.SessionID)))
+                {
+                    lblBillingSeparator.Visible = false;
+                    labelBilling.Visible = false;
+                    cboBillingDate.Visible = false;
+                    imgPrintBilling.Visible = false;
+                    cmdPrintBilling.Visible = false;
+                }
+            }
         }
         private void LoadRecord()
         {
@@ -202,6 +222,14 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
             txtCurrentBalance.Text = (clsDetails.CreditLimit - clsDetails.Credit).ToString("###0.#0");
             lblLastBillingDate.Text = "Last Billing Date:" + clsDetails.CreditDetails.LastBillingDate.ToString("yyyy-MMM-dd");
 
+            // 26Oct2014 - add the additional information
+            cboSalutation.SelectedIndex = cboSalutation.Items.IndexOf(cboSalutation.Items.FindByValue(clsDetails.AdditionalDetails.Salutation));
+            txtFirstName.Text = clsDetails.AdditionalDetails.FirstName;
+            txtMiddleName.Text = clsDetails.AdditionalDetails.MiddleName;
+            txtLastName.Text = clsDetails.AdditionalDetails.LastName;
+            txtBirthDate.Text = clsDetails.AdditionalDetails.BirthDate.ToString("yyyy-MM-dd");
+            txtMobileNo.Text = clsDetails.AdditionalDetails.MobileNo;
+
             LoadPurchases(clsDetails.ContactID);
             
         }
@@ -219,11 +247,9 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
             string stParam = cboBillingDate.SelectedItem.Value;
             if (stParam != Constants.PLEASE_SELECT)
             {
-                string newWindowUrl = Constants.ROOT_DIRECTORY + "/billings/" + stParam;
+                string newWindowUrl = Constants.ROOT_DIRECTORY_BILLING_WithG + "/" + stParam;
                 string javaScript = "window.open('" + newWindowUrl + "','_blank');";
                 System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.cmdPrintBilling, this.cmdPrintBilling.GetType(), "openwindow", javaScript, true);
-
-                //Response.Redirect(Constants.ROOT_DIRECTORY + "/billings/" + stParam);
             }
         }
 

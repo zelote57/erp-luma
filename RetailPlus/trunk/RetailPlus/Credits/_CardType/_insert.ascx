@@ -66,8 +66,10 @@
                             <tr>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Card type code<font color="red">*</font></label></td>
-                                <td class="ms-authoringcontrols" colspan="6" style="padding-bottom: 2px">
+                                <td class="ms-authoringcontrols" colspan="4" style="padding-bottom: 2px">
                                     <label>Card type Name<font color="red">*</font></label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>With Guarantor<font color="red">*</font></label></td>
                             </tr>
                             <tr>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -76,30 +78,13 @@
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Card Type Code' must not be left blank." Display="Dynamic" ControlToValidate="txtCardTypeCode"></asp:requiredfieldvalidator>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-                                <td class="ms-authoringcontrols"  colspan=5>
+                                <td class="ms-authoringcontrols"  colspan="3">
                                     <asp:TextBox id="txtCardTypeName" runat="server" accesskey="G" CssClass="ms-long" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Card Type Name' must not be left blank." Display="Dynamic" ControlToValidate="txtCardTypeName"></asp:requiredfieldvalidator>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="ms-formspacer" height="20">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    <label>With Guarantor<font color="red">*</font></label></td>
-                                <td class="ms-authoringcontrols" colspan="6" style="padding-bottom: 2px">
-                                    <label>BIR Permit No<font color="red">*</font></label></td>
-                            </tr>
-                            <tr>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:CheckBox id="chkWithGuarantor" runat="server" Text=" Check if requires Guarantor." Checked="False"></asp:CheckBox>
-                                </td>
-                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-                                <td class="ms-authoringcontrols"  colspan=5>
-                                    <asp:TextBox id="txtBIRPermitNo" runat="server" accesskey="G" CssClass="ms-long" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
-									<asp:requiredfieldvalidator id="Requiredfieldvalidator8" runat="server" CssClass="ms-error" ErrorMessage="'BIR PermitNo' must not be left blank." Display="Dynamic" ControlToValidate="txtBIRPermitNo"></asp:requiredfieldvalidator>
                                 </td>
                             </tr>
                             <tr>

@@ -146,5 +146,23 @@ namespace AceSoft.RetailPlus.Credits._Customers {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AceSoft.RetailPlus.Credits._Customers.@__Details ctrlDetails;
+        
+        /// <summary>
+        /// ctrlReports control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Credits._Customers.@__Reports ctrlReports;
+        
+        /// <summary>
+        /// ctrlChangeCardType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AceSoft.RetailPlus.Credits._Customers.@__ChangeCardType ctrlChangeCardType;
     }
 }

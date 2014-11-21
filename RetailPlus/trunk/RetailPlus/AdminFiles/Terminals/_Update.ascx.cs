@@ -92,10 +92,10 @@ namespace AceSoft.RetailPlus.Security._Terminals
 
 		private void LoadOptions()
 		{
-            foreach(string strTerminalReceiptType in Enum.GetNames(typeof(TerminalReceiptType)))
+            foreach (string strEnum in Enum.GetNames(typeof(TerminalReceiptType)))
             {
-                TerminalReceiptType itemTerminalReceiptType = (TerminalReceiptType)Enum.Parse(typeof(TerminalReceiptType), strTerminalReceiptType);
-                cboReceiptType.Items.Add(new ListItem(strTerminalReceiptType, itemTerminalReceiptType.ToString("d")));
+                TerminalReceiptType itemTerminalReceiptType = (TerminalReceiptType)Enum.Parse(typeof(TerminalReceiptType), strEnum);
+                cboReceiptType.Items.Add(new ListItem(strEnum, itemTerminalReceiptType.ToString("d")));
             }
 			
             Data.Discount clsDiscount = new Data.Discount();

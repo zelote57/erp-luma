@@ -198,6 +198,10 @@ table.ms-form td {
 	font-family: Verdana, sans-serif;
 	width: 165px;
 }
+.ms-numeric
+{
+	text-align: right;
+}
 .ms-short-numeric
 {
 	font-size: 8pt;
@@ -560,7 +564,7 @@ Div.ms-titleareaframe {
     color: black;
     font-weight: bold; 
 }
-.ms-vh,.ms-vh2{
+.ms-vh,.ms-vh2,.ms-vh2-r{
     font-family: verdana; 
     font-size: .68em; 
     color: #808080;
@@ -573,6 +577,11 @@ Div.ms-titleareaframe {
 .ms-vh2{
     padding-left: 4px; 
     padding-right: 0px; 
+}
+.ms-vh2-r{
+    padding-left: 4px; 
+    padding-right: 0px; 
+    text-align: right;
 }
 .ms-vh-icon {
     font-family: verdana; 
@@ -649,11 +658,11 @@ Div.ms-titleareaframe {
     font-weight: normal; 
     width: 0px;
 }
-.ms-vh a,.ms-vh a:visited,.ms-vh2 a,.ms-vh-left a,.ms-vh-right a {
+.ms-vh a,.ms-vh a:visited,.ms-vh2 a,.ms-vh2-r a,.ms-vh-left a,.ms-vh-right a {
     color: #808080;
     text-decoration: none; 
 }
-.ms-vh a:hover, .ms-vh2 a:hover, .ms-vh-left a:hover, .ms-vh-right a:hover {
+.ms-vh a:hover, .ms-vh2 a:hover, .ms-vh2-r a:hover, .ms-vh-left a:hover, .ms-vh-right a:hover {
     text-decoration: underline; 
 }
 .ms-vhImage {
@@ -681,29 +690,29 @@ Div.ms-titleareaframe {
     color: #777777;
     font-weight: bold; 
 }
-.ms-vb, .ms-vb2, .ms-GRFont, .ms-vb-user{
+.ms-vb, .ms-vb2, .ms-GRFont, .ms-vb-user, .ms-vb-user-right{
     font-family: verdana; 
     font-size: .68em; 
     vertical-align: top;
     padding-right:;    
 }
-.ms-vb a, .ms-vb2 a, .ms-GRStatusText a,.ms-vb-user a {
+.ms-vb a, .ms-vb2 a, .ms-GRStatusText a,.ms-vb-user a, .ms-vb-user-right a {
     color: #003399;
     text-decoration: none; 
 }
-.ms-vb a:hover, .ms-vb2 a:hover, .ms-vb-user a:hover {
+.ms-vb a:hover, .ms-vb2 a:hover, .ms-vb-user a:hover, .ms-vb-user-right a:hover {
     color: #ff3300;
     text-decoration: underline; 
 }
-.ms-vb a:visited, .ms-vb2 a:visited, .ms-GRStatusText a:visited, .ms-vb-user a:visited  {
+.ms-vb a:visited, .ms-vb2 a:visited, .ms-GRStatusText a:visited, .ms-vb-user a:visited, .ms-vb-user-right a:visited  {
    color: #000066;
    text-decoration: none; 
 }
-.ms-vb a:visited:hover, .ms-vb2 a:visited:hover, .ms-vb-user a:visited:hover {
+.ms-vb a:visited:hover, .ms-vb2 a:visited:hover, .ms-vb-user a:visited:hover, .ms-vb-user-right a:visited:hover {
     color: #ff3300;
     text-decoration: underline; 
 }
-.ms-vb2, .ms-vb-title, .ms-vb-icon,.ms-vb-user {
+.ms-vb2, .ms-vb-title, .ms-vb-icon, .ms-vb-user, .ms-vb-user-right {
     border-top: 1px solid #e4e4e4;
 }
 .ms-vb-icon {
@@ -713,6 +722,12 @@ Div.ms-titleareaframe {
     padding-left: 4px; 
     padding-right: 0px; 
     padding-bottom: 0px;
+}
+.ms-vb-user-right {
+    padding-top: 2px;
+    padding-left: 0px; 
+    padding-right: 0px; 
+    text-align: right;
 }
 .ms-vb-user {
     padding-top: 2px;

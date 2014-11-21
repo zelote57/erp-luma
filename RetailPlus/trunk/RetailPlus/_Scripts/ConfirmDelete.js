@@ -1,4 +1,6 @@
 
+
+
 function confirm_zeroout_inventory()
 {
 	if (confirm("Are you sure you want to update the quantity of all Products to ZERO (0)?")==true)

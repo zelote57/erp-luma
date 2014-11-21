@@ -178,7 +178,7 @@ namespace AceSoft.RetailPlus.SalesAndReceivables._CreditMemo
             cboProductCode.DataValueField = "ProductID";
 
             string stSearchKey = txtProductCode.Text;
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: stSearchKey, Limit: 100);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: stSearchKey, limit: 100);
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
 

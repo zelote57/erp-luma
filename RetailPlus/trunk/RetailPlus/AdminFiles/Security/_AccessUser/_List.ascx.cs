@@ -114,6 +114,9 @@ namespace AceSoft.RetailPlus.Security._AccessUser
                     if (imgItemDelete.Enabled) imgItemDelete.Attributes.Add("onClick", "return confirm_item_delete();");
                 }
 
+                ImageButton imgResetPassword = (ImageButton)e.Item.FindControl("imgResetPassword");
+                imgResetPassword.Attributes.Add("onClick", "return confirm_reset_password();");
+
                 Label lblUserName = (Label)e.Item.FindControl("lblUserName");
                 lblUserName.Text = dr["UserName"].ToString();
 
@@ -194,6 +197,9 @@ namespace AceSoft.RetailPlus.Security._AccessUser
                 case "imgItemAccessRights":
                     stParam = "?task=" + Common.Encrypt("accessrights", Session.SessionID) + "&id=" + Common.Encrypt(chkList.Value, Session.SessionID);
                     Response.Redirect("Default.aspx" + stParam);
+                    break;
+                case "imgResetPassword":
+                    ResetPassword(long.Parse(chkList.Value));
                     break;
                 case "imgReloadAccessRights":
                     ReloadAccessRights(long.Parse(chkList.Value));
@@ -428,6 +434,32 @@ namespace AceSoft.RetailPlus.Security._AccessUser
 			}
 			return boChkListSingle;
 		}
+
+        private void ResetPassword(Int64 UserID)
+        {
+
+            string plainText = DateTime.Now.ToString("yyyyMMddhhmmss");    // original plaintext
+            //string  cipherText = System.Configuration.ConfigurationManager.AppSettings["RegistrationKey"].ToString();	// encrypted text
+            string passPhrase = CompanyDetails.TIN; // can be any string
+            string initVector = "%@skmelaT3rsh1t!"; // must be 16 bytes
+
+            // Before encrypting data, we will append plain text to a random
+            // salt value, which will be between 4 and 8 bytes long (implicitly
+            // used defaults).
+            AceSoft.Cryptor clsCryptor = new AceSoft.Cryptor(passPhrase, initVector);
+            string strPassword = clsCryptor.Encrypt(plainText);
+            strPassword = strPassword.Length > 8 ? strPassword.Substring(1, 8) : strPassword;
+
+            AccessUser clsAccessUser = new AccessUser();
+            clsAccessUser.UpdatePassword(UserID, strPassword);
+            clsAccessUser.CommitAndDispose();
+
+            string stScript = "<Script>";
+            stScript += "window.alert('Please advise the user of the new password: " + strPassword + "')";
+            stScript += "</Script>";
+            Response.Write(stScript);	
+        }
+
         private void ReloadAccessRights(long pvtUserID)
         {
             AccessUser clsAccessUser = new AccessUser();

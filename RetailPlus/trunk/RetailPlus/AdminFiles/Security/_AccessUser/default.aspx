@@ -27,6 +27,7 @@
 		<LINK href="../../../_layouts/css/menu.css" type="text/css" rel="stylesheet">
 		<LINK href="../../../_layouts/css/ows.css" type="text/css" rel="stylesheet">
 		<LINK href="../../../_layouts/css/sps.css" type="text/css" rel="stylesheet">
+        <script language="JavaScript" src="../../../_Scripts/AdminFiles.js"></script>
 	</HEAD>
 	<body id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
 		<form id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">

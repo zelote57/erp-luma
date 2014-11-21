@@ -1697,10 +1697,39 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
                     else if (Control.ModifierKeys == Keys.Control && Control.ModifierKeys == Keys.Shift)
                     {
+                        Security.AccessRights clsAccessRights; Security.AccessRightsDetails clsDetails;
                         switch (e.KeyCode)
                         {
+                                
+                            case Keys.F2:
+                                clsAccessRights = new Security.AccessRights();
+                                clsDetails = new Security.AccessRightsDetails();
+                                clsDetails = clsAccessRights.Details(mclsSalesTransactionDetails.CashierID, (Int16)AccessTypes.Contacts);
+                                clsAccessRights.CommitAndDispose();
+
+                                if (clsDetails.Write)
+                                {
+                                    ContactAddWnd addwnd = new ContactAddWnd();
+                                    addwnd.Caption = "Quickly add new customer.";
+                                    addwnd.ShowDialog(this);
+                                    DialogResult addresult = addwnd.Result;
+                                    Data.ContactDetails details = addwnd.ContactDetails;
+                                    addwnd.Close();
+                                    addwnd.Dispose();
+
+                                    if (addresult == DialogResult.OK) LoadContact(Data.ContactGroupCategory.CUSTOMER, details);
+                                }
+                                break;
                             case Keys.F6:
                                 UpdateContact();
+                                break;
+                            case Keys.F9:
+                                clsAccessRights = new Security.AccessRights();
+                                clsDetails = new Security.AccessRightsDetails();
+                                clsDetails = clsAccessRights.Details(mclsSalesTransactionDetails.CashierID, (Int16)AccessTypes.ReprintZRead);
+                                clsAccessRights.CommitAndDispose();
+
+                                if (clsDetails.Write) ReprintZRead();
                                 break;
                         }
                     }
@@ -3789,7 +3818,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					break;
 
 				case Keys.F9:
-					ReprintZRead();
+					//21Nov2014 disabled as per Guy move to CTRL+ALT+ENTER
 					break;
 
 				case Keys.F10:

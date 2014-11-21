@@ -6156,6 +6156,8 @@ create procedure procProductSelect(
 			 IN SupplierID bigint,
 			 IN ShowActiveAndInactive INT(1),
 			 IN isQuantityGreaterThanZERO TINYINT(1),
+			 IN BarcodeFrom varchar(30),
+			 IN BarcodeTo varchar(30),
 			 IN ProductCodeFrom varchar(30),
 			 IN ProductCodeTo varchar(30),
 			 IN ProductSubGroupNameFrom varchar(30),
@@ -6198,6 +6200,24 @@ BEGIN
 	END IF;
 
 	-- additional filter for backend filtering
+	IF IFNULL(BarcodeFrom,'') <> '' AND IFNULL(BarcodeTo,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (');
+		SET SQLWhere = CONCAT(SQLWhere, '    (pkg.Barcode1 >= ''',BarcodeFrom,''' AND pkg.Barcode1 <= ''',BarcodeTo,''') ');
+		SET SQLWhere = CONCAT(SQLWhere, ' OR (pkg.Barcode2 >= ''',BarcodeFrom,''' AND pkg.Barcode2 <= ''',BarcodeTo,''') ');
+		SET SQLWhere = CONCAT(SQLWhere, ' OR (pkg.Barcode3 >= ''',BarcodeFrom,''' AND pkg.Barcode3 <= ''',BarcodeTo,''') ');
+		SET SQLWhere = CONCAT(SQLWhere, '    ) ');
+	ELSEIF IFNULL(BarcodeFrom,'') <> '' AND IFNULL(BarcodeTo,'') = '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.Barcode1 LIKE ''',BarcodeFrom,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, ' OR  pkg.Barcode2 LIKE ''',BarcodeFrom,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, ' OR  pkg.Barcode3 LIKE ''',BarcodeFrom,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, '    ) ');
+	ELSEIF IFNULL(BarcodeFrom,'') = '' AND IFNULL(BarcodeTo,'') <> '' THEN
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.Barcode1 LIKE ''',BarcodeTo,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, ' OR  pkg.Barcode2 LIKE ''',BarcodeTo,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, ' OR  pkg.Barcode3 LIKE ''',BarcodeTo,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, '    ) ');
+	END IF;
+
 	IF IFNULL(ProductCodeFrom,'') <> '' AND IFNULL(ProductCodeTo,'') <> '' THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode >= ''',ProductCodeFrom,''' ');
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode <= ''',ProductCodeTo,''' ');

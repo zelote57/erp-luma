@@ -57,6 +57,7 @@ namespace AceSoft.RetailPlus.VersionChecker
             // 
             // tmrDownload
             // 
+            this.tmrDownload.Enabled = true;
             this.tmrDownload.Interval = 1000;
             this.tmrDownload.Tick += new System.EventHandler(this.tmrDownload_Tick);
             // 
@@ -76,7 +77,7 @@ namespace AceSoft.RetailPlus.VersionChecker
             this.Name = "MainWnd";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "  RetailPlus Version Checker";
+            this.Text = "  RetailPlus: Updating POS files from server";
             this.TopMost = true;
             this.UseWaitCursor = true;
             this.Load += new System.EventHandler(this.MainWnd_Load);

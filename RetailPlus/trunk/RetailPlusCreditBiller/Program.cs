@@ -789,7 +789,7 @@ namespace AceSoft.RetailPlus.Monitor
                 foreach (System.Data.DataRow dr in dtGuarantors.Rows)
                 {
                     clsGuarantorDetails = clsContacts.Details(Int64.Parse(dr["ContactID"].ToString()));
-                    dtCreditors = clsBilling.ListAsDataTable(GuarantorID: clsGuarantorDetails.ContactID, CreditCardTypeID: clsCreditCardTypeInfo.CardTypeID, CreditType: CreditType.Group, BillingDate: clsCreditCardTypeInfo.BillingDate, SortField: "ContactName", SortOrder: System.Data.SqlClient.SortOrder.Descending);
+                    dtCreditors = clsBilling.ListAsDataTable(GuarantorID: clsGuarantorDetails.ContactID, CreditCardTypeID: clsCreditCardTypeInfo.CardTypeID, CreditType: CreditType.Group, BillingDate: clsCreditCardTypeInfo.BillingDate, CheckIsBillPrinted: true, IsBillPrinted: false, SortField: "CUS.ContactName", SortOrder: System.Data.SqlClient.SortOrder.Descending);
 
                     if (dtCreditors.Rows.Count > 0)
                     {

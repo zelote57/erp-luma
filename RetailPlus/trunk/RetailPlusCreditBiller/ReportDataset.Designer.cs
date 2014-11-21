@@ -318,6 +318,8 @@ namespace AceSoft.RetailPlus.CreditBiller {
             
             private global::System.Data.DataColumn columnGuarantorID;
             
+            private global::System.Data.DataColumn columnGuarantorName;
+            
             private global::System.Data.DataColumn columnCreditCardNo;
             
             private global::System.Data.DataColumn columnContactName;
@@ -398,6 +400,14 @@ namespace AceSoft.RetailPlus.CreditBiller {
             public global::System.Data.DataColumn GuarantorIDColumn {
                 get {
                     return this.columnGuarantorID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GuarantorNameColumn {
+                get {
+                    return this.columnGuarantorName;
                 }
             }
             
@@ -577,6 +587,7 @@ namespace AceSoft.RetailPlus.CreditBiller {
             public CreditBillHeaderRow AddCreditBillHeaderRow(
                         long CreditBillHeaderID, 
                         long GuarantorID, 
+                        string GuarantorName, 
                         string CreditCardNo, 
                         string ContactName, 
                         decimal CreditLimit, 
@@ -598,6 +609,7 @@ namespace AceSoft.RetailPlus.CreditBiller {
                 object[] columnValuesArray = new object[] {
                         CreditBillHeaderID,
                         GuarantorID,
+                        GuarantorName,
                         CreditCardNo,
                         ContactName,
                         CreditLimit,
@@ -639,6 +651,7 @@ namespace AceSoft.RetailPlus.CreditBiller {
             internal void InitVars() {
                 this.columnCreditBillHeaderID = base.Columns["CreditBillHeaderID"];
                 this.columnGuarantorID = base.Columns["GuarantorID"];
+                this.columnGuarantorName = base.Columns["GuarantorName"];
                 this.columnCreditCardNo = base.Columns["CreditCardNo"];
                 this.columnContactName = base.Columns["ContactName"];
                 this.columnCreditLimit = base.Columns["CreditLimit"];
@@ -665,6 +678,8 @@ namespace AceSoft.RetailPlus.CreditBiller {
                 base.Columns.Add(this.columnCreditBillHeaderID);
                 this.columnGuarantorID = new global::System.Data.DataColumn("GuarantorID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGuarantorID);
+                this.columnGuarantorName = new global::System.Data.DataColumn("GuarantorName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGuarantorName);
                 this.columnCreditCardNo = new global::System.Data.DataColumn("CreditCardNo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCreditCardNo);
                 this.columnContactName = new global::System.Data.DataColumn("ContactName", typeof(string), null, global::System.Data.MappingType.Element);
@@ -1170,6 +1185,22 @@ namespace AceSoft.RetailPlus.CreditBiller {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string GuarantorName {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditBillHeader.GuarantorNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GuarantorName\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.GuarantorNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string CreditCardNo {
                 get {
                     try {
@@ -1467,6 +1498,18 @@ namespace AceSoft.RetailPlus.CreditBiller {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetGuarantorIDNull() {
                 this[this.tableCreditBillHeader.GuarantorIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGuarantorNameNull() {
+                return this.IsNull(this.tableCreditBillHeader.GuarantorNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGuarantorNameNull() {
+                this[this.tableCreditBillHeader.GuarantorNameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

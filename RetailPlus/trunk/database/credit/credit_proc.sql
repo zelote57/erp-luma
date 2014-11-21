@@ -1111,7 +1111,7 @@ delimiter ;
 		2. get transactions list for reports
 		3. get list of suspended transactions
 
-	CALL procContactCreditPaymentSelect(0, '', 0, 0, '1900-01-01', '1900-01-01', '', '', '', 'ASC', 10);
+	CALL procContactCreditPaymentSelect(0, '', 0, 2, 0, '1900-01-01', '1900-01-01', '', '', '', '', '', 'ASC', 10);
 
 **************************************************************/
 delimiter GO
@@ -1122,9 +1122,12 @@ create procedure procContactCreditPaymentSelect(
 									IN intBranchID BIGINT, 
 									IN strTerminalNo VARCHAR(20),
 									IN intContactID BIGINT(20),
+									IN intCreditType INT(2),
 									IN intCreditCardTypeID INT(10),
 									IN dtePaymentDateFrom DATETIME,
 									IN dtePaymentDateTo DATETIME,
+									IN strCreditorLastNameFrom VARCHAR(200), 
+									IN strCreditorLastNameTo VARCHAR(200), 
 									IN strGuaLastNameFrom VARCHAR(200), 
 									IN strGuaLastNameTo VARCHAR(200), 
 									IN strSortField VARCHAR(200), 
@@ -1165,6 +1168,12 @@ BEGIN
 		SET @SQL = CONCAT(@SQL,'AND CP.ContactID = ', intContactID,' ');
 	END IF;
 
+	IF (intCreditType = 0) THEN -- group
+		SET @SQL = CONCAT(@SQL,'AND cci.GuarantorID <> 0 ');
+	ELSEIF (intCreditType = 1) THEN -- individual
+		SET @SQL = CONCAT(@SQL,'AND cci.GuarantorID = 0 ');
+	END IF;
+
 	IF (intCreditCardTypeID <> 0) THEN
 		SET @SQL = CONCAT(@SQL,'AND CP.CreditCardTypeID = ', intCreditCardTypeID,' ');
 	END IF;
@@ -1177,12 +1186,20 @@ BEGIN
 		SET @SQL = CONCAT(@SQL,'AND CPC.CreatedOn <= ''', dtePaymentDateTo,''' ');
 	END IF;
 
+	IF (strCreditorLastNameFrom <> '' AND strCreditorLastNameTo <> '') THEN
+		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName >= ''', strCreditorLastNameFrom,''' AND LastName <= ''', strCreditorLastNameTo,''') ');
+	ELSEIF (strCreditorLastNameFrom <> '') THEN
+		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strCreditorLastNameFrom,'%'') ');
+	ELSEIF (strCreditorLastNameTo <> '') THEN
+		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strCreditorLastNameTo,'%'') ');
+	END IF;
+
 	IF (strGuaLastNameFrom <> '' AND strGuaLastNameTo <> '') THEN
-		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName >= ''', strGuaLastNameFrom,''' AND LastName <= ''', strGuaLastNameTo,''') ');
+		SET @SQL = CONCAT(@SQL,'AND cci.GuarantorID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName >= ''', strGuaLastNameFrom,''' AND LastName <= ''', strGuaLastNameTo,''') ');
 	ELSEIF (strGuaLastNameFrom <> '') THEN
-		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strGuaLastNameFrom,'%'') ');
+		SET @SQL = CONCAT(@SQL,'AND cci.GuarantorID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strGuaLastNameFrom,'%'') ');
 	ELSEIF (strGuaLastNameTo <> '') THEN
-		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strGuaLastNameTo,'%'') ');
+		SET @SQL = CONCAT(@SQL,'AND cci.GuarantorID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strGuaLastNameTo,'%'') ');
 	END IF;
 
 	IF (strSortField = 'CPC.CreatedOn') THEN
@@ -1218,7 +1235,7 @@ delimiter ;
 		2. get transactions list for reports
 		3. get list of suspended transactions
 
-	CALL procContactCreditPurchaseSelect(0, '', 0, 0, '1900-01-01', '1900-01-01', '', '', '', 'ASC', 10);
+	CALL procContactCreditPurchaseSelect(0, '', 0, 0, 1, '1900-01-01', '1900-01-01', '', '', '', '', '', 'ASC', 10);
 
 **************************************************************/
 delimiter GO
@@ -1229,9 +1246,12 @@ create procedure procContactCreditPurchaseSelect(
 									IN intBranchID BIGINT, 
 									IN strTerminalNo VARCHAR(20),
 									IN intContactID BIGINT(20),
+									IN intCreditType INT(2),
 									IN intCreditCardTypeID INT(10),
 									IN dtePurchaseDateFrom DATETIME,
 									IN dtePurchaseDateTo DATETIME,
+									IN strCreditorLastNameFrom VARCHAR(200), 
+									IN strCreditorLastNameTo VARCHAR(200), 
 									IN strGuaLastNameFrom VARCHAR(200), 
 									IN strGuaLastNameTo VARCHAR(200), 
 									IN strSortField VARCHAR(200), 
@@ -1246,7 +1266,7 @@ BEGIN
 							CASE CreditReasonID WHEN 0 THEN CP.Amount ELSE 0 END PrincipalAmount,
 							CP.Amount,
 							CP.Remarks, CP.CreatedOn, CP.LastModified,
-							CP.CreditReason,
+							CP.CreditReasonID, CP.CreditReason,
 							cci.CreditCardNo, cntct.ContactName, 
 							IFNULL(gci.CreditCardNo, '''') GuarantorCreditCardNo, IFNULL(gua.ContactName,'''') GuarantorName
 						FROM tblCreditPayment CP
@@ -1268,6 +1288,12 @@ BEGIN
 		SET @SQL = CONCAT(@SQL,'AND CP.ContactID = ', intContactID,' ');
 	END IF;
 
+	IF (intCreditType = 0) THEN -- group
+		SET @SQL = CONCAT(@SQL,'AND cci.GuarantorID <> 0 ');
+	ELSEIF (intCreditType = 1) THEN -- individual
+		SET @SQL = CONCAT(@SQL,'AND cci.GuarantorID = 0 ');
+	END IF;
+
 	IF (intCreditCardTypeID <> 0) THEN
 		SET @SQL = CONCAT(@SQL,'AND CP.CreditCardTypeID = ', intCreditCardTypeID,' ');
 	END IF;
@@ -1280,12 +1306,20 @@ BEGIN
 		SET @SQL = CONCAT(@SQL,'AND CP.CreditDate <= ''', dtePurchaseDateTo,''' ');
 	END IF;
 
+	IF (strCreditorLastNameFrom <> '' AND strCreditorLastNameTo <> '') THEN
+		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName >= ''', strCreditorLastNameFrom,''' AND LastName <= ''', strCreditorLastNameTo,''') ');
+	ELSEIF (strCreditorLastNameFrom <> '') THEN
+		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strCreditorLastNameFrom,'%'') ');
+	ELSEIF (strCreditorLastNameTo <> '') THEN
+		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strCreditorLastNameTo,'%'') ');
+	END IF;
+
 	IF (strGuaLastNameFrom <> '' AND strGuaLastNameTo <> '') THEN
-		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName >= ''', strGuaLastNameFrom,''' AND LastName <= ''', strGuaLastNameTo,''') ');
+		SET @SQL = CONCAT(@SQL,'AND cci.GuarantorID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName >= ''', strGuaLastNameFrom,''' AND LastName <= ''', strGuaLastNameTo,''') ');
 	ELSEIF (strGuaLastNameFrom <> '') THEN
-		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strGuaLastNameFrom,'%'') ');
+		SET @SQL = CONCAT(@SQL,'AND cci.GuarantorID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strGuaLastNameFrom,'%'') ');
 	ELSEIF (strGuaLastNameTo <> '') THEN
-		SET @SQL = CONCAT(@SQL,'AND CP.ContactID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strGuaLastNameTo,'%'') ');
+		SET @SQL = CONCAT(@SQL,'AND cci.GuarantorID IN (SELECT ContactID FROM tblContactAddOn WHERE LastName LIKE ''', strGuaLastNameTo,'%'') ');
 	END IF;
 
 	IF (strSortField = 'CP.CreditDate') THEN
@@ -1359,7 +1393,7 @@ create procedure procContactUpdateRemarks(
 BEGIN
 
 	-- update the contact with the new guarantor
-	UPDATE tblContacts SET Remarks = strRemarks WHERE CustomerID = intContactID;
+	UPDATE tblContacts SET Remarks = strRemarks WHERE ContactID = intContactID;
 	
 	-- CALL procsysAuditInsert(NOW(), strUpdatedBy, 'CONTACT GUARANTOR', 'localhost', CONCAT('GurantorID of customer: ',intContactID,' was overwritten from ',intOldGuarantorID,' to ',intGuarantorID,' due to backend update.'));
 

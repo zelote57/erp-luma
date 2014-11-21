@@ -2212,6 +2212,44 @@ namespace AceSoft.RetailPlus.Client.UI
 							
 						}
 					}
+                    else if (Control.ModifierKeys == Keys.Control && Control.ModifierKeys == Keys.Shift)
+                    {
+                        Security.AccessRights clsAccessRights; Security.AccessRightsDetails clsDetails;
+                        switch (e.KeyCode)
+                        {
+
+                            case Keys.F2:
+                                clsAccessRights = new Security.AccessRights();
+                                clsDetails = new Security.AccessRightsDetails();
+                                clsDetails = clsAccessRights.Details(mclsSalesTransactionDetails.CashierID, (Int16)AccessTypes.Contacts);
+                                clsAccessRights.CommitAndDispose();
+
+                                if (clsDetails.Write)
+                                {
+                                    ContactAddWnd addwnd = new ContactAddWnd();
+                                    addwnd.Caption = "Quickly add new customer.";
+                                    addwnd.ShowDialog(this);
+                                    DialogResult addresult = addwnd.Result;
+                                    Data.ContactDetails details = addwnd.ContactDetails;
+                                    addwnd.Close();
+                                    addwnd.Dispose();
+
+                                    if (addresult == DialogResult.OK) LoadContact(Data.ContactGroupCategory.CUSTOMER, details);
+                                }
+                                break;
+                            case Keys.F6:
+                                UpdateContact();
+                                break;
+                            case Keys.F9:
+                                clsAccessRights = new Security.AccessRights();
+                                clsDetails = new Security.AccessRightsDetails();
+                                clsDetails = clsAccessRights.Details(mclsSalesTransactionDetails.CashierID, (Int16)AccessTypes.ReprintZRead);
+                                clsAccessRights.CommitAndDispose();
+
+                                if (clsDetails.Write) ReprintZRead();
+                                break;
+                        }
+                    }
 					else
 					{
 						switch (e.KeyData)
@@ -4478,50 +4516,53 @@ namespace AceSoft.RetailPlus.Client.UI
 
 			switch (KeyData)
 			{
-				case Keys.F1:
-					ReprintTransaction();
-					break;
+                case Keys.F1:
+                    ReprintTransaction();
+                    break;
 
-				case Keys.F2:
-					PrintTerminalReport();
+                case Keys.F2:
+                    PrintTerminalReport();
+                    break;
 
-					break;
+                case Keys.F3:
+                    PrintCashiersReport();
+                    break;
 
-				case Keys.F3:
-					PrintCashiersReport();
-					break;
+                case Keys.F4:
+                    PrintTerminalXRead();
+                    break;
 
-				case Keys.F4:
-					PrintTerminalXRead();
-					break;
+                case Keys.F5:
+                    PrintHourly();
+                    break;
 
-				case Keys.F5:
-					PrintHourly();
-					break;
+                case Keys.F6:
+                    PrintGroup();
+                    break;
 
-				case Keys.F6:
-					PrintGroup();
-					break;
+                case Keys.F7:
+                    PrintPLU();
+                    break;
 
-				case Keys.F7:
-					PrintPLU();
-					break;
+                case Keys.F8:
+                    PrintEJournal();
+                    break;
 
-				case Keys.F8:
-					PrintEJournal();
-					break;
+                case Keys.F9:
+                    //21Nov2014 disabled as per Guy move to CTRL+ALT+ENTER
+                    break;
 
-				case Keys.F9:
-					ReprintZRead();
-					break;
+                case Keys.F10:
+                    PrintPLUPerOrderSlipPrinter();
+                    break;
 
-				case Keys.F10:
-					PrintPLUPerOrderSlipPrinter();
-					break;
+                case Keys.F11:
+                    ReprintDeliveryReceipt();
+                    break;
 
-				case Keys.F11:
-					ReprintDeliveryReceipt();
-					break;
+                case Keys.F12:
+                    PrintPLUGroup();
+                    break;
 			}
 		}
 		private void ShowMallForwarder()

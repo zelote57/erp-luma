@@ -267,7 +267,23 @@ namespace AceSoft.RetailPlus
         ManagementReports = 151,
         AnalyticsReports = 152,
 
-        InternalCreditCardSetup = 153
+        InternalCreditCardSetup = 153,
+        CreditorsWithoutGuarantor = 154,
+        CreditorsWithoutGuarantorPurchases = 155,
+        CreditorsWithoutGuarantorPayments = 156,
+        CreditorsWithoutGuarantorReserve1 = 157,
+        CreditorsWithoutGuarantorReserve2 = 158,
+        CreditorsWithoutGuarantorReserve3 = 159,
+        CreditorsLedgerSummary = 160,
+        CreditorsWithGuarantor = 161,
+        CreditorsWithGuarantorPurchases = 162,
+        CreditorsWithGuarantorPayments = 163,
+        GuarantorsLedgerSummary = 164,
+        CreditorsWithGuarantorReserve2 = 165,
+        CreditorsWithGuarantorReserve3 = 166,
+        CreditorsWithGuarantorReserve4 = 167,
+        CreditCardRenewal = 168
+
     }
 
     /// <summary>

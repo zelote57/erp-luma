@@ -668,7 +668,7 @@ namespace AceSoft.RetailPlus.Home.GLA
         {
             DateTime dteRetvalue = Constants.C_DATE_MIN_VALUE;
             int intRetValue = 0;
-            decimal decRetValue = 0;
+            //decimal decRetValue = 0;
             long lngRetValue = 0;
 
             GLADiscountDetails clsDetails = new GLADiscountDetails();
@@ -697,8 +697,8 @@ namespace AceSoft.RetailPlus.Home.GLA
         private GLAEmployeeDetails setEmpDetails(string line, DateTime DateCreated, string CreatedBy, string filename, string BatchID)
         {
             DateTime dteRetvalue = Constants.C_DATE_MIN_VALUE;
-            int intRetValue = 0;
-            decimal decRetValue = 0;
+            //int intRetValue = 0;
+            //decimal decRetValue = 0;
             long lngRetValue = 0;
 
             GLAEmployeeDetails clsDetails = new GLAEmployeeDetails();
@@ -707,7 +707,7 @@ namespace AceSoft.RetailPlus.Home.GLA
             foreach (string col in line.Split(','))
             {
                 dteRetvalue = Constants.C_DATE_MIN_VALUE;
-                intRetValue = 0;
+                //intRetValue = 0;
 
                 switch (iCol)
                 {
@@ -729,8 +729,8 @@ namespace AceSoft.RetailPlus.Home.GLA
         private GLALocationDetails setLocDetails(string line, DateTime DateCreated, string CreatedBy, string filename, string BatchID)
         {
             DateTime dteRetvalue = Constants.C_DATE_MIN_VALUE;
-            int intRetValue = 0;
-            decimal decRetValue = 0;
+            //int intRetValue = 0;
+            //decimal decRetValue = 0;
             long lngRetValue = 0;
 
             GLALocationDetails clsDetails = new GLALocationDetails();
@@ -739,7 +739,7 @@ namespace AceSoft.RetailPlus.Home.GLA
             foreach (string col in line.Split(','))
             {
                 dteRetvalue = Constants.C_DATE_MIN_VALUE;
-                intRetValue = 0;
+                //intRetValue = 0;
 
                 switch (iCol)
                 {
@@ -775,7 +775,7 @@ namespace AceSoft.RetailPlus.Home.GLA
         {
             DateTime dteRetvalue = Constants.C_DATE_MIN_VALUE;
             int intRetValue = 0;
-            decimal decRetValue = 0;
+            //decimal decRetValue = 0;
             long lngRetValue = 0;
 
             GLAItemDetails clsDetails = new GLAItemDetails();
@@ -813,8 +813,8 @@ namespace AceSoft.RetailPlus.Home.GLA
         private GLAServiceChargeDetails setSvcDetails(string line, DateTime DateCreated, string CreatedBy, string filename, string BatchID)
         {
             DateTime dteRetvalue = Constants.C_DATE_MIN_VALUE;
-            int intRetValue = 0;
-            decimal decRetValue = 0;
+            //int intRetValue = 0;
+            //decimal decRetValue = 0;
             long lngRetValue = 0;
 
             GLAServiceChargeDetails clsDetails = new GLAServiceChargeDetails();
@@ -823,7 +823,7 @@ namespace AceSoft.RetailPlus.Home.GLA
             foreach (string col in line.Split(','))
             {
                 dteRetvalue = Constants.C_DATE_MIN_VALUE;
-                intRetValue = 0;
+                //intRetValue = 0;
 
                 switch (iCol)
                 {
@@ -842,8 +842,8 @@ namespace AceSoft.RetailPlus.Home.GLA
         private GLATenderDetails setTenderDetails(string line, DateTime DateCreated, string CreatedBy, string filename, string BatchID)
         {
             DateTime dteRetvalue = Constants.C_DATE_MIN_VALUE;
-            int intRetValue = 0;
-            decimal decRetValue = 0;
+            //int intRetValue = 0;
+            //decimal decRetValue = 0;
             long lngRetValue = 0;
 
             GLATenderDetails clsDetails = new GLATenderDetails();
@@ -852,7 +852,7 @@ namespace AceSoft.RetailPlus.Home.GLA
             foreach (string col in line.Split(','))
             {
                 dteRetvalue = Constants.C_DATE_MIN_VALUE;
-                intRetValue = 0;
+                //intRetValue = 0;
 
                 switch (iCol)
                 {
@@ -923,7 +923,7 @@ namespace AceSoft.RetailPlus.Home.GLA
         {
             DateTime dteRetvalue = Constants.C_DATE_MIN_VALUE;
             int intRetValue = 0;
-            bool boRetValue = false;
+            //bool boRetValue = false;
             decimal decRetValue = 0;
             GLATransactionDetails clsDetails = new GLATransactionDetails();
 

@@ -151,7 +151,22 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 				clsProductSubGroup.CommitAndDispose();	
 			}
 		}
-		
+
+        protected void imgCreateBarCode1_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode.Text = CreateBarCode();
+        }
+
+        protected void imgCreateBarCode2_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode2.Text = CreateBarCode();
+        }
+
+        protected void imgCreateBarCode3_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            txtBarcode3.Text = CreateBarCode();
+        }
+
 		#endregion
 
 		#region Private Methods
@@ -311,19 +326,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
 		#endregion
 
-        protected void imgCreateBarCode1_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            txtBarcode.Text = CreateBarCode();
-        }
-
-        protected void imgCreateBarCode2_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            txtBarcode2.Text = CreateBarCode();
-        }
-
-        protected void imgCreateBarCode3_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            txtBarcode3.Text = CreateBarCode();
-        }
+        
 	}
 }

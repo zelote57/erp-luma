@@ -80,11 +80,7 @@
                                         <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                         <td class="ms-authoringcontrols">
                                             <asp:TextBox ID="txtBarcode" runat="server" AccessKey="B" BorderStyle="Groove" CssClass="ms-short-required" MaxLength="25"></asp:TextBox>
-                                            &nbsp<asp:imagebutton id="imgCreateBarCode1" ToolTip="Generate EAN13 in-house barcode" 
-                                                accessKey="S" CssClass="ms-toolbar" runat="server" 
-                                                ImageUrl="../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" 
-                                                width="16" height="16" onclick="imgCreateBarCode1_Click" 
-                                                CausesValidation="False"></asp:imagebutton>
+                                            &nbsp&nbsp<asp:imagebutton id="imgCreateBarCode1" ToolTip="Generate EAN13 in-house barcode" accessKey="S" CssClass="ms-toolbar" runat="server" ImageUrl="../../_layouts/images/createbarcode.gif" alt="Generate EAN13 in-house barcode" border="0" width="16" height="16" onclick="imgCreateBarCode1_Click" CausesValidation="False"></asp:imagebutton>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtBarcode" CssClass="ms-error" Display="Dynamic" ErrorMessage="'Barcode' must not be left blank." ForeColor=" "></asp:RequiredFieldValidator>
                                         </td>
                                         <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>

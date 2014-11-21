@@ -136,7 +136,8 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactDetailed
             ContactDetails clsDetails = new ContactDetails();
 
             ERPConfig clsERPConfig = new ERPConfig();
-            clsDetails.ContactCode = clsERPConfig.get_LastCustomerCode();
+            BarcodeHelper ean13 = new BarcodeHelper(BarcodeHelper.CustomerCode_Country_Code, BarcodeHelper.CustomerCode_ManufacturerCode, clsERPConfig.get_LastCustomerCode());
+            clsDetails.ContactCode = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
             clsERPConfig.CommitAndDispose();
 
             clsDetails.ContactName = txtLastName.Text + ", " + txtFirstName.Text + " " + txtMiddleName.Text;

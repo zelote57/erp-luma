@@ -3,7 +3,7 @@
 <script language="JavaScript" src="../_Scripts/ComputeMargin.js"></script>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 	<tr>
         <td class="ms-sectionline" colspan="3" height="1">
@@ -64,7 +64,7 @@
         <td class="ms-authoringcontrols" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top" colspan="3">
             <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                 <tr>
-                    <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif"></td>
+                    <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif" /></td>
 	                <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="3">
                         <table class="ms-authoringcontrols" cellspacing="0" cellpadding="0" width="100%" border="0">
                             <tr>
@@ -107,7 +107,7 @@
 		                                            <tr>
 			                                            <td class="ms-vb-user" align="right">
 			                                            </td>
-			                                            <td class="ms-vb-user" nowrap>
+			                                            <td class="ms-vb-user" nowrap="nowrap">
 				                                            Unit
 			                                            </td>
 			                                            <td class="ms-vb-user">
@@ -128,9 +128,9 @@
 			                                            </td>
 		                                            <tr>
 			                                            <td class="ms-vb-user" align="right">
-				                                            <input type="checkbox" id="NA" runat="server" NAME="NA" visible="false">
+				                                            <input type="checkbox" id="NA" runat="server" name="NA" visible="false">
 			                                            </td>
-			                                            <td class="ms-vb-user" nowrap>
+			                                            <td class="ms-vb-user" nowrap="nowrap">
 				                                            <asp:Label ID="lblProductDesc" Runat="server"></asp:Label>
                                                             <asp:Label ID="Label2" Runat="server"> (Total) - </asp:Label>
                                                             <asp:Label ID="lblUnitName" Runat="server"></asp:Label>
@@ -162,13 +162,13 @@
                             </tr>
                         </table>
                     </td>
-	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif" width="10" /></td>
                 </tr>
                 <tr>
 	                <td class="ms-formspacer" colspan="5"></td>
                 </tr>
                 <tr>
-	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif"></td>
+	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif" /></td>
 	                <td class="ms-authoringcontrols" style="padding-bottom: 2px" colspan="3">
 	                    <asp:UpdatePanel ID="UpdatePanel5" runat="server" >
                             <ContentTemplate >
@@ -180,10 +180,10 @@
                             </Triggers> 
                         </asp:UpdatePanel>
 	                </td>
-	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif" width="10" /></td>
                 </tr>
                 <tr>
-	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif"></td>
+	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif" /></td>
 	                <td colspan="3">
 	                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" >
                             <ContentTemplate >
@@ -217,7 +217,7 @@
 					                            <td class="ms-vb-user" align="right">
 						                            <input type="checkbox" id="chkMatrixID" runat="server" NAME="chkMatrixID" visible="false" />
 					                            </td>
-					                            <td class="ms-vb-user" nowrap>
+					                            <td class="ms-vb-user" nowrap="nowrap">
 					                                <asp:Label ID="lblVariationDesc" Runat="server"></asp:Label>
 					                                <asp:Label ID="Label2" Runat="server"> - </asp:Label>
 						                            <asp:Label ID="lblUnitCode" Runat="server"></asp:Label>
@@ -253,7 +253,7 @@
                             </Triggers> 
                         </asp:UpdatePanel>
 	                </td>
-	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif" width="10"></td>
+	                <td class="ms-formspacer"><img alt="" src="../_layouts/images/trans.gif" width="10" /></td>
                 </tr>
                 
                 <tr>
@@ -285,16 +285,16 @@
 							</tr>
 						</table>
 					</td>
-					<td class="ms-toolbar" id="align052" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1">
+					<td class="ms-toolbar" id="align052" nowrap="nowrap" align="right"><img height="1" alt="" src="../../_layouts/images/blank.gif" width="1"/>
 					</td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../_layouts/images/empty.gif"></td>
+		<td colspan="3" class="ms-sectionline" height="2"><img alt="" src="../_layouts/images/empty.gif"/></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"></td>
+		<td colspan="3"><img height="10" alt="" src="../_layouts/images/blank.gif" width="1"/></td>
 	</tr>
 </table>

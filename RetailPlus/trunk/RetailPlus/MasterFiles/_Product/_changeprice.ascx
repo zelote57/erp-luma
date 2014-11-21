@@ -28,16 +28,16 @@
                                             <asp:TextBox ID="txtProductCode" runat="server" AccessKey="C" BorderStyle="Groove" CssClass="ms-short"></asp:TextBox>
                                             <asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Product code' must not be left blank." Display="Dynamic" ControlToValidate="cboProductCode"></asp:requiredfieldvalidator>
                                             <asp:ImageButton ID="cmdProductCode" runat="server" ImageUrl="../../_layouts/images/SPSSearch2.gif" ToolTip="Execute search" CausesValidation="False" Style="cursor: hand" OnClick="cmdProductCode_Click" />
-                                            <asp:ImageButton id="imgProductHistory" runat="server" Visible=false ImageUrl="../../_layouts/images/prodhist.gif" ToolTip="Show product inventory history report" CausesValidation="false" Style="cursor: hand" OnClick="imgProductHistory_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgProductPriceHistory" runat="server" Visible=false ImageUrl="../../_layouts/images/pricehist.gif" ToolTip="Show product price history report" CausesValidation="false" Style="cursor: hand" OnClick="imgProductPriceHistory_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgInventoryAdjustment" runat="server" Visible=false ImageUrl="../../_layouts/images/invadj.gif" ToolTip="Adjust inventory count" CausesValidation="false" Style="cursor: hand" OnClick="imgInventoryAdjustment_Click" ></asp:ImageButton>
-                                            <asp:ImageButton id="imgEditNow" runat="server" Visible=false ImageUrl="../../_layouts/images/edit.gif" ToolTip="Edit this product" CausesValidation="false" Style="cursor: hand" OnClick="imgEditNow_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgProductHistory" runat="server" visible="false" ImageUrl="../../_layouts/images/prodhist.gif" ToolTip="Show product inventory history report" CausesValidation="false" Style="cursor: hand" OnClick="imgProductHistory_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgProductPriceHistory" runat="server" visible="false" ImageUrl="../../_layouts/images/pricehist.gif" ToolTip="Show product price history report" CausesValidation="false" Style="cursor: hand" OnClick="imgProductPriceHistory_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgInventoryAdjustment" runat="server" visible="false" ImageUrl="../../_layouts/images/invadj.gif" ToolTip="Adjust inventory count" CausesValidation="false" Style="cursor: hand" OnClick="imgInventoryAdjustment_Click" ></asp:ImageButton>
+                                            <asp:ImageButton id="imgEditNow" runat="server" visible="false" ImageUrl="../../_layouts/images/edit.gif" ToolTip="Edit this product" CausesValidation="false" Style="cursor: hand" OnClick="imgEditNow_Click" ></asp:ImageButton>
                                         </ContentTemplate>
                                         <Triggers> 
-                                            <asp:AsyncPostBackTrigger ControlID="cboProductCode" EventName="SelectedIndexChanged" />
-                                            <asp:AsyncPostBackTrigger ControlID="cmdProductCode" EventName="Click" />
-                                            <asp:AsyncPostBackTrigger ControlID="imgSaveCopyToAllMatrix" EventName="Click" />
-                                            <asp:AsyncPostBackTrigger ControlID="cmdSaveCopyToAllMatrix" EventName="Click" />
+                                            <asp:AsyncPostBackTrigger ControlID="cboProductCode" Eventname="SelectedIndexChanged" />
+                                            <asp:AsyncPostBackTrigger ControlID="cmdProductCode" Eventname="Click" />
+                                            <asp:AsyncPostBackTrigger ControlID="imgSaveCopyToAllMatrix" Eventname="Click" />
+                                            <asp:AsyncPostBackTrigger ControlID="cmdSaveCopyToAllMatrix" Eventname="Click" />
                                         </Triggers> 
                                     </asp:UpdatePanel>
                                 </td>
@@ -59,10 +59,10 @@
 	                            <asp:hyperlink id="lnkProductPackageAdd" runat="server" ToolTip="Add new Package for this product." Visible="False">+</asp:hyperlink>
 	                        </ContentTemplate>
                             <Triggers> 
-                                <asp:AsyncPostBackTrigger ControlID="cboProductCode" EventName="SelectedIndexChanged" />
-                                <asp:AsyncPostBackTrigger ControlID="cmdProductCode" EventName="Click" />
-                                <asp:AsyncPostBackTrigger ControlID="imgSaveCopyToAllMatrix" EventName="Click" />
-                                <asp:AsyncPostBackTrigger ControlID="cmdSaveCopyToAllMatrix" EventName="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="cboProductCode" Eventname="SelectedIndexChanged" />
+                                <asp:AsyncPostBackTrigger ControlID="cmdProductCode" Eventname="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="imgSaveCopyToAllMatrix" Eventname="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="cmdSaveCopyToAllMatrix" Eventname="Click" />
                             </Triggers> 
                         </asp:UpdatePanel>
 	                </td>
@@ -80,7 +80,6 @@
 					                            <col width="10">
 					                            <col width="10">
 					                            <col width="10">
-					                            <col width="10">
 					                            <col width="12%" align="left">
                                                 <col width="9%" align="left">
                                                 <col width="8%" align="left">
@@ -94,14 +93,9 @@
 					                            <col width="1%">
 				                            </colgroup>
 				                            <tr>
-					                            <TH class="ms-vh2" style="padding-bottom: 4px">
-						                        </TH>
-						                        <TH class="ms-vh2" style="padding-bottom: 4px">
-						                        </TH>
-						                        <TH class="ms-vh2" style="padding-bottom: 4px">
-						                        </TH>
-						                        <TH class="ms-vh2" style="padding-bottom: 4px">
-						                        </TH>
+					                            <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
+						                        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
+						                        <TH class="ms-vh2" style="padding-bottom: 4px"></TH>
                                                 <TH class="ms-vh2" style="padding-bottom: 4px">
 						                            <asp:hyperlink id="SortByProductDesc" runat="server">Description</asp:hyperlink></TH>
 					                            <TH class="ms-vh2" style="padding-bottom: 4px">
@@ -135,7 +129,6 @@
 					                            <col width="10">
 					                            <col width="10">
 					                            <col width="10">
-					                            <col width="10">
 					                            <col width="12%" align="left">
                                                 <col width="9%" align="left">
                                                 <col width="8%" align="left">
@@ -150,20 +143,22 @@
 				                            </colgroup>
 				                            <tr>
 					                            <td class="ms-vb-user" align="right">
-						                            <input type="checkbox" id="chkProductPackageID" runat="server" NAME="chkProductPackageID" visible=false>
-						                            &nbsp;<asp:ImageButton id="cmdDelProductPackage" runat="server" ImageUrl="../../_layouts/images/delitem.gif" height="16" width="16" ToolTip="Delete this Package" CommandName="cmdDelProductPackage" CausesValidation="false"></asp:ImageButton>
+						                            <input type="checkbox" id="chkProductPackageID" runat="server" name="chkProductPackageID" visible="false">
+						                            &nbsp;<asp:ImageButton id="cmdDelProductPackage" runat="server" ImageUrl="../../_layouts/images/delitem.gif" height="16" width="16" ToolTip="Delete this Package" Commandname="cmdDelProductPackage" CausesValidation="false"></asp:ImageButton>
 					                            </td>
 					                            <td class="ms-vb-user" align="right">
-					                                <asp:ImageButton id="cmdPrintShelvesBarCode1" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" CommandName="cmdPrintShelvesBarCode1" CausesValidation="false"></asp:ImageButton></td>
+					                                <asp:ImageButton id="cmdPrintShelvesBarCode1" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" Commandname="cmdPrintShelvesBarCode1" CausesValidation="false"></asp:ImageButton>
+                                                    <asp:ImageButton id="cmdPrintShelvesBarCode2" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" Commandname="cmdPrintShelvesBarCode2" CausesValidation="false"></asp:ImageButton>
+                                                    <asp:ImageButton id="cmdPrintShelvesBarCode3" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" Commandname="cmdPrintShelvesBarCode3" CausesValidation="false"></asp:ImageButton></td>
 					                            <td class="ms-vb-user" align="right">
-					                                <asp:ImageButton id="cmdPrintShelvesBarCode2" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" CommandName="cmdPrintShelvesBarCode2" CausesValidation="false"></asp:ImageButton></td>
-					                            <td class="ms-vb-user" align="right">
-					                                <asp:ImageButton id="cmdPrintShelvesBarCode3" runat="server" ImageUrl="../../_layouts/images/print.gif" height="16" width="16" ToolTip="" CommandName="cmdPrintShelvesBarCode3" CausesValidation="false"></asp:ImageButton></td>
+					                                <asp:ImageButton id="cmdPrintTagPriceBarCode1" runat="server" ImageUrl="../../_layouts/images/printtag.gif" height="16" width="16" ToolTip="" Commandname="cmdPrintTagPriceBarCode1" CausesValidation="false"></asp:ImageButton>
+                                                    <asp:ImageButton id="cmdPrintTagPriceBarCode2" runat="server" ImageUrl="../../_layouts/images/printtag.gif" height="16" width="16" ToolTip="" Commandname="cmdPrintTagPriceBarCode2" CausesValidation="false"></asp:ImageButton>
+                                                    <asp:ImageButton id="cmdPrintTagPriceBarCode3" runat="server" ImageUrl="../../_layouts/images/printtag.gif" height="16" width="16" ToolTip="" Commandname="cmdPrintTagPriceBarCode3" CausesValidation="false"></asp:ImageButton></td>
 					                            <td class="ms-vb-user" nowrap="nowrap">
 						                            <asp:Label ID="lblProductDesc" Runat="server"></asp:Label>
 					                            </td>
                                                 <td class="ms-vb-user" nowrap="nowrap">
-					                                <asp:Label ID="lblProductPackageID" Runat="server" Visible=false></asp:Label>
+					                                <asp:Label ID="lblProductPackageID" Runat="server" Visible="false"></asp:Label>
 						                            <asp:Label ID="lblUnitName" Runat="server"></asp:Label>
 					                            </td>
                                                 <td>
@@ -202,13 +197,13 @@
 			                            </table>
 		                            </ItemTemplate>
 	                            </asp:datalist>
-	                            <asp:Label id="lblPurchasePriceHistory" runat="server" Visible=false CssClass="ms-error"></asp:Label>
+	                            <asp:Label id="lblPurchasePriceHistory" runat="server" visible="false" CssClass="ms-error"></asp:Label>
 	                        </ContentTemplate>
                             <Triggers> 
-                                <asp:AsyncPostBackTrigger ControlID="cboProductCode" EventName="SelectedIndexChanged" />
-                                <asp:AsyncPostBackTrigger ControlID="cmdProductCode" EventName="Click" />
-                                <asp:AsyncPostBackTrigger ControlID="imgSaveCopyToAllMatrix" EventName="Click" />
-                                <asp:AsyncPostBackTrigger ControlID="cmdSaveCopyToAllMatrix" EventName="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="cboProductCode" Eventname="SelectedIndexChanged" />
+                                <asp:AsyncPostBackTrigger ControlID="cmdProductCode" Eventname="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="imgSaveCopyToAllMatrix" Eventname="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="cmdSaveCopyToAllMatrix" Eventname="Click" />
                             </Triggers> 
                         </asp:UpdatePanel>
 	                </td>

@@ -138,7 +138,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             Data.Products clsProduct = new Data.Products();
             cboProductCode.DataTextField = "ProductCode";
             cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100).DefaultView;
+            cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, limit: 100).DefaultView;
             cboProductCode.DataBind();
             clsProduct.CommitAndDispose();
 
@@ -219,6 +219,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 ImageButton cmdPrintShelvesBarCode1 = (ImageButton)e.Item.FindControl("cmdPrintShelvesBarCode1");
                 ImageButton cmdPrintShelvesBarCode2 = (ImageButton)e.Item.FindControl("cmdPrintShelvesBarCode2");
                 ImageButton cmdPrintShelvesBarCode3 = (ImageButton)e.Item.FindControl("cmdPrintShelvesBarCode3");
+
+                ImageButton cmdPrintTagPriceBarCode1 = (ImageButton)e.Item.FindControl("cmdPrintTagPriceBarCode1");
+                ImageButton cmdPrintTagPriceBarCode2 = (ImageButton)e.Item.FindControl("cmdPrintTagPriceBarCode2");
+                ImageButton cmdPrintTagPriceBarCode3 = (ImageButton)e.Item.FindControl("cmdPrintTagPriceBarCode3");
+
                 if (txtQuantity.Text == "1.00" && dr["UnitID"].ToString() == txtProductCode.ToolTip)
                 {
                     cmdDelProductPackage.Enabled = false;
@@ -226,13 +231,27 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     cmdDelProductPackage.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                 }
 
-                //if (txtBarCode1.Text == string.Empty) { cmdPrintShelvesBarCode1.Enabled = false; } else { cmdPrintShelvesBarCode1.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode1.Text; }
-                //if (txtBarCode2.Text == string.Empty) { cmdPrintShelvesBarCode2.Enabled = false; } else { cmdPrintShelvesBarCode2.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode2.Text; }
-                //if (txtBarCode3.Text == string.Empty) { cmdPrintShelvesBarCode3.Enabled = false; } else { cmdPrintShelvesBarCode3.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode3.Text; }
-
-                if (txtBarCode1.Text == string.Empty) { cmdPrintShelvesBarCode1.Enabled = false; cmdPrintShelvesBarCode1.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; } else { cmdPrintShelvesBarCode1.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode1.Text; }
-                if (txtBarCode2.Text == string.Empty) { cmdPrintShelvesBarCode2.Enabled = false; cmdPrintShelvesBarCode2.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; } else { cmdPrintShelvesBarCode2.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode2.Text; }
-                if (txtBarCode3.Text == string.Empty) { cmdPrintShelvesBarCode3.Enabled = false; cmdPrintShelvesBarCode3.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; } else { cmdPrintShelvesBarCode3.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode3.Text; }
+                if (txtBarCode1.Text == string.Empty) {
+                    cmdPrintShelvesBarCode1.Enabled = false; cmdPrintShelvesBarCode1.Visible = false; cmdPrintShelvesBarCode1.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    cmdPrintTagPriceBarCode1.Enabled = false; cmdPrintTagPriceBarCode1.Visible = false; cmdPrintTagPriceBarCode1.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; 
+                } else { 
+                    cmdPrintShelvesBarCode1.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode1.Text;
+                    cmdPrintTagPriceBarCode1.ToolTip = "Print Price Tag using barcode: " + txtBarCode1.Text; 
+                }
+                if (txtBarCode2.Text == string.Empty) {
+                    cmdPrintShelvesBarCode2.Enabled = false; cmdPrintShelvesBarCode2.Visible = false; cmdPrintShelvesBarCode2.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    cmdPrintTagPriceBarCode2.Enabled = false; cmdPrintTagPriceBarCode2.Visible = false; cmdPrintTagPriceBarCode2.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; 
+                } else { 
+                    cmdPrintShelvesBarCode2.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode2.Text;
+                    cmdPrintTagPriceBarCode2.ToolTip = "Print Price Tag using barcode: " + txtBarCode2.Text; 
+                }
+                if (txtBarCode3.Text == string.Empty) {
+                    cmdPrintShelvesBarCode3.Enabled = false; cmdPrintShelvesBarCode3.Visible = false; cmdPrintShelvesBarCode3.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    cmdPrintTagPriceBarCode3.Enabled = false; cmdPrintTagPriceBarCode3.Visible = false; cmdPrintTagPriceBarCode3.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif"; 
+                } else { 
+                    cmdPrintShelvesBarCode3.ToolTip = "Print Shelves Tag using barcode: " + txtBarCode3.Text;
+                    cmdPrintTagPriceBarCode3.ToolTip = "Print Price Tag using barcode: " + txtBarCode3.Text; 
+                }
 
             }
         }
@@ -265,6 +284,18 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 case "cmdPrintShelvesBarCode3":
                     AceSoft.ThermalBarCodePrinter clsThermalBarCodePrinter3 = new ThermalBarCodePrinter();
                     clsThermalBarCodePrinter3.PrintShelvesTag(cboProductCode.SelectedItem.Text, txtBarCode3.Text, Convert.ToDecimal(txtSellingPrice.Text).ToString("#,##0.#0"));
+                    break;
+                case "cmdPrintTagPriceBarCode1":
+                    AceSoft.ThermalBarCodePrinter clsThermalBarCodeTagPrice1 = new ThermalBarCodePrinter();
+                    clsThermalBarCodeTagPrice1.PrintTagPrice(cboProductCode.SelectedItem.Text, txtBarCode1.Text, Convert.ToDecimal(txtSellingPrice.Text).ToString("#,##0.#0"));
+                    break;
+                case "cmdPrintTagPriceBarCode2":
+                    AceSoft.ThermalBarCodePrinter clsThermalBarCodeTagPrice2 = new ThermalBarCodePrinter();
+                    clsThermalBarCodeTagPrice2.PrintTagPrice(cboProductCode.SelectedItem.Text, txtBarCode2.Text, Convert.ToDecimal(txtSellingPrice.Text).ToString("#,##0.#0"));
+                    break;
+                case "cmdPrintTagPriceBarCode3":
+                    AceSoft.ThermalBarCodePrinter clsThermalBarCodeTagPrice3 = new ThermalBarCodePrinter();
+                    clsThermalBarCodeTagPrice3.PrintTagPrice(cboProductCode.SelectedItem.Text, txtBarCode3.Text, Convert.ToDecimal(txtSellingPrice.Text).ToString("#,##0.#0"));
                     break;
             }
         }

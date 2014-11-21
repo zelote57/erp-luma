@@ -79,7 +79,12 @@ namespace AceSoft.RetailPlus.MasterFiles._ContactGroup
 
 		private void LoadOptions()
 		{
-			
+            cboContactGroupCategory.Items.Clear();
+            foreach (string strEnum in Enum.GetNames(typeof(Data.ContactGroupCategory)))
+            {
+                ContactGroupCategory itemContactGroupCategory = (ContactGroupCategory)Enum.Parse(typeof(ContactGroupCategory), strEnum);
+                cboContactGroupCategory.Items.Add(new ListItem(strEnum, itemContactGroupCategory.ToString("d")));
+            }
 		}
 
 		private Int32 SaveRecord()

@@ -259,6 +259,13 @@
       <DependentUpon>_menu.ascx</DependentUpon>
     </Compile>
     <Content Include="App_Code\AssemblyInfo.cs" />
+    <Compile Include="Credits\_Customers\_changecardtype.ascx.cs">
+      <DependentUpon>_changecardtype.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Customers\_changecardtype.ascx.designer.cs">
+      <DependentUpon>_changecardtype.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Credits\_Customers\_details.ascx.cs">
       <DependentUpon>_details.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -266,12 +273,40 @@
     <Compile Include="Credits\_Customers\_details.ascx.designer.cs">
       <DependentUpon>_details.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Credits\_Customers\_Insert.ascx.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Customers\_Insert.ascx.designer.cs">
+      <DependentUpon>_insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Customers\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Customers\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Guarantors\_changeguarantor.ascx.cs">
+      <DependentUpon>_changeguarantor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Guarantors\_changeguarantor.ascx.designer.cs">
+      <DependentUpon>_changeguarantor.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Credits\_Guarantors\Default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Credits\_Guarantors\Default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Guarantors\_changecardtype.ascx.cs">
+      <DependentUpon>_changecardtype.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Guarantors\_changecardtype.ascx.designer.cs">
+      <DependentUpon>_changecardtype.ascx</DependentUpon>
     </Compile>
     <Compile Include="Credits\_Guarantors\_details.ascx.cs">
       <DependentUpon>_details.ascx</DependentUpon>
@@ -343,13 +378,6 @@
     <Compile Include="Credits\_Customers\Default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Credits\_Customers\_Insert.ascx.cs">
-      <DependentUpon>_insert.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Credits\_Customers\_Insert.ascx.designer.cs">
-      <DependentUpon>_insert.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Credits\_Customers\_list.ascx.cs">
       <DependentUpon>_list.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -370,6 +398,13 @@
     </Compile>
     <Compile Include="Credits\_default.ascx.designer.cs">
       <DependentUpon>_default.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Credits\_Guarantors\_Reports.ascx.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Credits\_Guarantors\_Reports.ascx.designer.cs">
+      <DependentUpon>_reports.ascx</DependentUpon>
     </Compile>
     <Compile Include="Credits\_Guarantors\_Update.ascx.cs">
       <DependentUpon>_update.ascx</DependentUpon>
@@ -549,6 +584,42 @@
     </Compile>
     <Compile Include="Reports\_ClosingInventoryCount.cs">
       <DependentUpon>_ClosingInventoryCount.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_credits\withguarantor\creditledger.cs">
+      <DependentUpon>creditledger.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_credits\withguarantor\purchases.cs">
+      <DependentUpon>purchases.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_credits\withguarantor\payments.cs">
+      <DependentUpon>payments.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_credits\woutguarantor\creditledgerwoutg.cs">
+      <DependentUpon>creditledgerwoutg.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_credits\woutguarantor\paymentswoutg.cs">
+      <DependentUpon>paymentswoutg.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\_credits\woutguarantor\purchaseswoutg.cs">
+      <DependentUpon>purchaseswoutg.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -3537,8 +3608,13 @@
     <None Include="iisreset.cmd" />
     <None Include="MasterFiles\_Product\_Variations\_easyinsert.ascx.cs.exclude" />
     <None Include="MasterFiles\_Product\_Variations\_easyinsert.ascx.exclude" />
+    <Content Include="Credits\_Customers\_changecardtype.ascx" />
     <Content Include="Credits\_Customers\_details.ascx" />
+    <Content Include="Credits\_Customers\_insert.ascx" />
+    <Content Include="Credits\_Customers\_reports.ascx" />
+    <Content Include="Credits\_Guarantors\_changeguarantor.ascx" />
     <Content Include="Credits\_Guarantors\default.aspx" />
+    <Content Include="Credits\_Guarantors\_changecardtype.ascx" />
     <Content Include="Credits\_Guarantors\_details.ascx" />
     <Content Include="Credits\_Guarantors\_insert.ascx" />
     <Content Include="Credits\_Guarantors\_list.ascx" />
@@ -3549,10 +3625,10 @@
     <Content Include="Credits\_CardType\_list.ascx" />
     <Content Include="Credits\_CardType\_update.ascx" />
     <Content Include="Credits\_Customers\default.aspx" />
-    <Content Include="Credits\_Customers\_insert.ascx" />
     <Content Include="Credits\_Customers\_list.ascx" />
     <Content Include="Credits\_Customers\_update.ascx" />
     <Content Include="Credits\_default.ascx" />
+    <Content Include="Credits\_Guarantors\_reports.ascx" />
     <Content Include="Credits\_Guarantors\_update.ascx" />
     <Content Include="Credits\_menu.ascx" />
     <Content Include="Home\default.aspx" />
@@ -3566,7 +3642,6 @@
     <Content Include="packages.config" />
     <None Include="Scripts\jquery-2.0.0.min.map" />
     <None Include="vwd.webinfo" />
-    <None Include="_layouts\images\Thumbs.db" />
     <Content Include="MasterFiles\_ContactDetailed\default.aspx" />
     <Content Include="MasterFiles\_ContactDetailed\_details.ascx" />
     <Content Include="MasterFiles\_ContactDetailed\_insert.ascx" />
@@ -3629,9 +3704,16 @@
     <Content Include="Inventory\_BranchTransfer\_update.ascx" />
     <Content Include="MasterFiles\_Product\_changetax.ascx" />
     <Content Include="Test.aspx" />
+    <Content Include="_layouts\images\check.gif" />
+    <Content Include="_layouts\images\check2.gif" />
+    <Content Include="_layouts\images\delitem.gif" />
+    <Content Include="_layouts\images\createbarcode.gif" />
+    <Content Include="_layouts\images\editctype.gif" />
     <Content Include="_layouts\images\headcornerp.gif" />
     <Content Include="_layouts\images\loading.gif" />
+    <Content Include="_layouts\images\printtag.gif" />
     <Content Include="_layouts\images\processing_old.gif" />
+    <Content Include="_layouts\images\resetp.gif" />
     <Content Include="_layouts\images\rtbullet.gif" />
     <Content Include="_layouts\images\vnavicon.gif" />
     <Content Include="_Processing.ascx" />
@@ -3956,8 +4038,6 @@
     <Content Include="_layouts\images\back.GIF" />
     <Content Include="_layouts\images\blank.gif" />
     <Content Include="_layouts\images\cancel.GIF" />
-    <Content Include="_layouts\images\CHECK.GIF" />
-    <Content Include="_layouts\images\Check2.gif" />
     <Content Include="_layouts\images\chprice.gif" />
     <Content Include="_layouts\images\company_logo.gif" />
     <Content Include="_layouts\images\company_logo1.gif" />
@@ -3966,17 +4046,15 @@
     <Content Include="_layouts\images\cornertop.gif" />
     <Content Include="_layouts\images\cornertopRTL.gif" />
     <Content Include="_layouts\images\dbbackup.ico" />
-    <Content Include="_layouts\images\DELITEM.GIF" />
-    <Content Include="_layouts\images\DLMAX.GIF" />
-    <Content Include="_layouts\images\DLMIN.GIF" />
+    <Content Include="_layouts\images\dlmax.gif" />
+    <Content Include="_layouts\images\dlmin .gif" />
     <Content Include="_layouts\images\dot_rule.gif" />
-    <Content Include="_layouts\images\EDIT.GIF" />
+    <Content Include="_layouts\images\edit.gif" />
     <Content Include="_layouts\images\empty.gif" />
     <Content Include="_layouts\images\Error.gif" />
     <Content Include="_layouts\images\genorder.GIF" />
     <Content Include="_layouts\images\home.gif" />
     <Content Include="_layouts\images\icongo01.gif" />
-    <Content Include="_layouts\images\IMPITEM.GIF" />
     <Content Include="_layouts\images\invadj.gif" />
     <Content Include="_layouts\images\inventory.gif" />
     <Content Include="_layouts\images\issuegrn.GIF" />
@@ -4031,6 +4109,8 @@
     <Content Include="_Scripts\ConfirmDelete.js" />
     <Content Include="_Scripts\ComputeMarginTransferOut.js" />
     <Content Include="_Scripts\ComputeMarginBranchTransfer.js" />
+    <Content Include="_Scripts\AdminFiles.js" />
+    <Content Include="_Scripts\Credits.js" />
     <Content Include="_Scripts\Rewards.js" />
     <Content Include="_Scripts\dd_tooltip.js" />
     <Content Include="_Scripts\disablerightclick.js" />
@@ -4084,6 +4164,30 @@
     <EmbeddedResource Include="Reports\_ClosingInventoryCount.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>_ClosingInventoryCount.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_credits\withguarantor\creditledger.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>creditledger.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_credits\withguarantor\purchases.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>purchases.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_credits\withguarantor\payments.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>payments.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_credits\woutguarantor\creditledgerwoutg.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>creditledgerwoutg.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_credits\woutguarantor\paymentswoutg.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>paymentswoutg.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\_credits\woutguarantor\purchaseswoutg.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>purchaseswoutg.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\_customercredit\_CustomerCreditBill.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

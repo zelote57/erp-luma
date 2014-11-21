@@ -53,7 +53,7 @@ namespace AceSoft.RetailPlus.Rewards
 
         private void LoadOptions()
         {
-            LoadMembers();
+            // LoadMembers();
         }
         private void LoadMembers()
         {

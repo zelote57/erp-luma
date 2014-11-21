@@ -194,7 +194,7 @@ namespace AceSoft.RetailPlus.Rewards
 			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, Limit: 100);
+            cboProductCode.DataSource = clsProduct.ListAsDataTable(clsSearchKeys: clsSearchKeys, limit: 100);
 			cboProductCode.DataBind();
 			clsProduct.CommitAndDispose();
 

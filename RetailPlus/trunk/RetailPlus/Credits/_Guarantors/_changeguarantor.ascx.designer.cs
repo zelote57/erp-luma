@@ -7,126 +7,135 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AceSoft.RetailPlus.Credits {
+namespace AceSoft.RetailPlus.Credits._Guarantors {
     
     
-    public partial class @__Menu {
+    public partial class @__ChangeGuarantor {
         
         /// <summary>
-        /// mnuInventory control.
+        /// lblReferrer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuInventory;
+        protected global::System.Web.UI.WebControls.Label lblReferrer;
         
         /// <summary>
-        /// lnkCardTypes control.
+        /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkCardTypes;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
-        /// lnkCreditorsWithoutGuarantors control.
+        /// lblContactID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkCreditorsWithoutGuarantors;
+        protected global::System.Web.UI.WebControls.Label lblContactID;
         
         /// <summary>
-        /// lnkCreditorsWithGuarantors control.
+        /// cboContact control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkCreditorsWithGuarantors;
+        protected global::System.Web.UI.WebControls.DropDownList cboContact;
         
         /// <summary>
-        /// lnkCreditorsWithoutGurantorPurchases control.
+        /// txtSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkCreditorsWithoutGurantorPurchases;
+        protected global::System.Web.UI.WebControls.TextBox txtSearch;
         
         /// <summary>
-        /// lnkCreditorsWithoutGuarantorPayments control.
+        /// cmdContactSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkCreditorsWithoutGuarantorPayments;
+        protected global::System.Web.UI.WebControls.ImageButton cmdContactSearch;
         
         /// <summary>
-        /// lnkCreditorsLedgerSummary control.
+        /// divContactInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkCreditorsLedgerSummary;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContactInfo;
         
         /// <summary>
-        /// lnkCreditorsWithGurantorPurchases control.
+        /// txtGuarantorName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkCreditorsWithGurantorPurchases;
+        protected global::System.Web.UI.WebControls.TextBox txtGuarantorName;
         
         /// <summary>
-        /// lnkCreditorsWithGuarantorPayments control.
+        /// cboGuarantor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkCreditorsWithGuarantorPayments;
+        protected global::System.Web.UI.WebControls.DropDownList cboGuarantor;
         
         /// <summary>
-        /// lnkGuarantorsLedger control.
+        /// updSave control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkGuarantorsLedger;
+        protected global::System.Web.UI.UpdatePanel updSave;
         
         /// <summary>
-        /// lnkChangeCreditType control.
+        /// imgSaveGuarantor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkChangeCreditType;
+        protected global::System.Web.UI.WebControls.ImageButton imgSaveGuarantor;
         
         /// <summary>
-        /// lnkChangeCreditTypeWG control.
+        /// cmdSaveGuarantor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkChangeCreditTypeWG;
+        protected global::System.Web.UI.WebControls.LinkButton cmdSaveGuarantor;
         
         /// <summary>
-        /// lnkChangeGuarantor control.
+        /// imgCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkChangeGuarantor;
+        protected global::System.Web.UI.WebControls.ImageButton imgCancel;
+        
+        /// <summary>
+        /// cmdCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdCancel;
     }
 }

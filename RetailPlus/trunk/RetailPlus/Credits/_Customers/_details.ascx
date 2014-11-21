@@ -80,17 +80,17 @@
                             <tr>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:dropdownlist id="cboGroup" CssClass="ms-short" runat="server" Width="157px"></asp:dropdownlist>
+                                    <asp:dropdownlist id="cboGroup" CssClass="ms-short-disabled" runat="server" Width="157px"></asp:dropdownlist>
 									<asp:RequiredFieldValidator id="RequiredFieldValidator14" runat="server" CssClass="ms-error" ForeColor=" " ControlToValidate="cboGroup" Display="Dynamic" ErrorMessage="'Group' must not be left blank."></asp:RequiredFieldValidator>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:textbox id="txtContactCode" accessKey="C" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="25"></asp:textbox>
+                                    <asp:textbox id="txtContactCode" accessKey="C" CssClass="ms-short-disabled" runat="server" BorderStyle="Groove" MaxLength="25"></asp:textbox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Contact code.' must not be left blank." Display="Dynamic" ControlToValidate="txtContactCode" ForeColor=" "></asp:requiredfieldvalidator>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
-                                    <asp:textbox id="txtContactName" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
+                                    <asp:textbox id="txtContactName" accessKey="G" CssClass="ms-short-disabled" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
                                     <asp:requiredfieldvalidator id="Requiredfieldvalidator2" CssClass="ms-error" runat="server" ControlToValidate="txtContactName" Display="Dynamic" ErrorMessage="'Contact name.' must not be left blank." ForeColor=" "></asp:requiredfieldvalidator>
                                 </td>
                             </tr>
@@ -100,33 +100,61 @@
                             </tr>
                             <tr>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    <label>Department<font color="red">*</font></label></td>
+                                    <label>First Name<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    <label>Position<font color="red">*</font></label></td>
+                                    <label>Middle Name<font color="red">*</font></label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Last Name<font color="red">*</font></label></td>
+                            </tr>
+                            <tr>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:dropdownlist id="cboSalutation" CssClass="ms-short-disabled" runat="server" style="width:auto"></asp:dropdownlist>
+                                    <asp:textbox id="txtFirstName" accessKey="C" CssClass="ms-short-disabled" runat="server" BorderStyle="Groove" MaxLength="85"></asp:textbox>
+									<asp:requiredfieldvalidator id="Requiredfieldvalidator5" runat="server" CssClass="ms-error" ErrorMessage="'First name.' must not be left blank." Display="Dynamic" ControlToValidate="txtFirstName" ForeColor=" "></asp:requiredfieldvalidator>
+                                </td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:textbox id="txtMiddleName" accessKey="G" CssClass="ms-short-disabled" runat="server" BorderStyle="Groove" MaxLength="85" style="min-width: 190px"></asp:textbox>
+                                </td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols" colspan="3">
+                                    <asp:textbox id="txtLastName" accessKey="G" CssClass="ms-short-disabled" runat="server" BorderStyle="Groove" MaxLength="85"></asp:textbox>
+                                    <asp:requiredfieldvalidator id="Requiredfieldvalidator6" CssClass="ms-error" runat="server" ControlToValidate="txtLastName" Display="Dynamic" ErrorMessage="'Last name.' must not be left blank." ForeColor=" "></asp:requiredfieldvalidator>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ms-formspacer" height="20">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Birth Date<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Business Name<font color="red">*</font></label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Mobile No<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Telephone No<font color="red">*</font></label></td>
                             </tr>
                             <tr>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:dropdownlist id="cboDepartment" CssClass="ms-short" runat="server"></asp:dropdownlist>
-									<asp:requiredfieldvalidator id="Requiredfieldvalidator3" runat="server" CssClass="ms-error" ErrorMessage="'Department.' must not be left blank." Display="Dynamic" ControlToValidate="cboDepartment" ForeColor=" "></asp:requiredfieldvalidator>
+                                    <asp:dropdownlist id="cboDepartment" CssClass="ms-short" runat="server" Visible="false"></asp:dropdownlist>
+									<asp:TextBox id="txtBirthDate" runat="server" accesskey="B" CssClass="ms-short-disabled" MaxLength="10" BorderStyle="Groove" ondblclick="ontime(this)" ToolTip="Double Click to Select Date From Calendar"></asp:TextBox>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:dropdownlist id="cboPosition" CssClass="ms-short" runat="server">
-									</asp:dropdownlist>
-									<asp:requiredfieldvalidator id="Requiredfieldvalidator4" runat="server" CssClass="ms-error" ErrorMessage="'Position.' must not be left blank." Display="Dynamic" ControlToValidate="cboPosition" ForeColor=" "></asp:requiredfieldvalidator>
+                                    <asp:dropdownlist id="cboPosition" CssClass="ms-short" runat="server" Visible="false"></asp:dropdownlist>
+                                    <asp:textbox id="txtBusinessName" accessKey="G" CssClass="ms-short-disabled" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:textbox id="txtBusinessName" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
+                                    <asp:textbox id="txtMobileNo" accessKey="G" CssClass="ms-short-disabled" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:textbox id="txtTelephoneNo" accessKey="G" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
+                                    <asp:textbox id="txtTelephoneNo" accessKey="G" CssClass="ms-short-disabled" runat="server" BorderStyle="Groove" MaxLength="75"></asp:textbox>
                                 </td>
                             </tr>
                             <tr>
@@ -143,12 +171,12 @@
                                 <td class="ms-formspacer">
                                     <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
-                                    <asp:TextBox id="txtAddress" runat="server" CssClass="ms-long" MaxLength="120" BorderStyle="Groove" Width="80%"></asp:TextBox>
+                                    <asp:TextBox id="txtAddress" runat="server" CssClass="ms-long-disabled" MaxLength="120" BorderStyle="Groove" Width="80%"></asp:TextBox>
                                 </td>
                                 <td class="ms-formspacer">
                                     <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
-                                    <asp:TextBox id="txtRemarks" runat="server" CssClass="ms-long" MaxLength="120" BorderStyle="Groove" Width="80%"></asp:TextBox>
+                                    <asp:TextBox id="txtRemarks" runat="server" CssClass="ms-long-disabled" MaxLength="120" BorderStyle="Groove" Width="80%"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>

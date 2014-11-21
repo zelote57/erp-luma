@@ -53,6 +53,21 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                         SearchIndex = SearchCategoryID.NotApplicable;
                         ctrlList.Visible = true;
                         break;	
+                    case "changecardtype":
+                        stHeading = "Change Card Type of Guarantor";
+                        SearchIndex = SearchCategoryID.NotApplicable;
+                        ctrlChangeCardType.Visible = true;
+                        break;
+                    case "changeguarantor":
+                        stHeading = "Change Guarantor of Member";
+                        SearchIndex = SearchCategoryID.NotApplicable;
+                        ctrlChangeGuarantor.Visible = true;
+                        break;
+                    case "reports":
+                        stHeading = "Customer's With Guarantor Reports";
+                        SearchIndex = SearchCategoryID.NotApplicable;
+                        ctrlReports.Visible = true;
+                        break;   
 					default:	
 						break;
 				}

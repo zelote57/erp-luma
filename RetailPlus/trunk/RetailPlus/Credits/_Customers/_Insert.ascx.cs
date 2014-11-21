@@ -81,7 +81,7 @@ namespace AceSoft.RetailPlus.Credits._Customers
 
             cboGroup.DataTextField = "ContactGroupName";
             cboGroup.DataValueField = "ContactGroupID";
-            cboGroup.DataSource = clsContactGroup.ListAsDataTable().DefaultView;
+            cboGroup.DataSource = clsContactGroup.ListAsDataTable(ContactGroupCategory.CUSTOMER).DefaultView;
             cboGroup.DataBind();
             cboGroup.SelectedIndex = 0; //cboGroup.Items.Count - 1;
 
@@ -99,6 +99,14 @@ namespace AceSoft.RetailPlus.Credits._Customers
             cboPosition.DataBind();
             cboPosition.SelectedIndex = 0;
 
+            Salutation clsSalutation = new Salutation(clsContactGroup.Connection, clsContactGroup.Transaction);
+            cboSalutation.DataTextField = "SalutationName";
+            cboSalutation.DataValueField = "SalutationCode";
+            cboSalutation.DataSource = clsSalutation.ListAsDataTable().DefaultView;
+            cboSalutation.DataBind();
+            cboSalutation.SelectedIndex = 0;
+            cboSalutation.SelectedIndex = cboSalutation.Items.IndexOf(cboSalutation.Items.FindByValue("MR"));
+
             clsContactGroup.CommitAndDispose();
         }
         private Int64 SaveRecord()
@@ -107,24 +115,47 @@ namespace AceSoft.RetailPlus.Credits._Customers
             ContactDetails clsDetails = new ContactDetails();
 
             clsDetails.ContactCode = txtContactCode.Text;
-            clsDetails.ContactName = txtContactName.Text;
+            clsDetails.ContactName = txtLastName.Text + ", " + txtFirstName.Text + " " + txtMiddleName.Text;
             clsDetails.ContactGroupID = Convert.ToInt32(cboGroup.SelectedItem.Value);
-            clsDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), cboModeOfTerms.SelectedItem.Value);
-            clsDetails.Terms = Convert.ToInt32(txtTerms.Text);
+            clsDetails.ModeOfTerms = ModeOfTerms.Days;
+            clsDetails.Terms = Convert.ToInt32("0");
             clsDetails.Address = txtAddress.Text;
             clsDetails.BusinessName = txtBusinessName.Text;
             clsDetails.TelephoneNo = txtTelephoneNo.Text;
             clsDetails.Remarks = txtRemarks.Text;
-            clsDetails.Debit = Convert.ToDecimal(txtDebit.Text);
-            clsDetails.Credit = Convert.ToDecimal(txtCredit.Text);
-            clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
-            //if (chkIsCreditAllowed.Checked == false)
-            //    clsDetails.IsCreditAllowed = 0;
-            //else
-            //    clsDetails.IsCreditAllowed = 1;
-            clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
+            clsDetails.Debit = Convert.ToDecimal("0");
+            clsDetails.Credit = Convert.ToDecimal("0");
+            clsDetails.IsCreditAllowed = true;
+            clsDetails.CreditLimit = Convert.ToDecimal(0);
             clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
             clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
+
+            ContactAddOnDetails clsAddOnDetails = new ContactAddOnDetails();
+            clsAddOnDetails.ContactID = clsDetails.ContactID;
+            clsAddOnDetails.Salutation = cboSalutation.SelectedItem.Value;
+            clsAddOnDetails.FirstName = txtFirstName.Text;
+            clsAddOnDetails.MiddleName = txtMiddleName.Text;
+            clsAddOnDetails.LastName = txtLastName.Text;
+            clsAddOnDetails.SpouseName = "";
+            DateTime dteBirthDate = Constants.C_DATE_MIN_VALUE;
+            dteBirthDate = DateTime.TryParse(txtBirthDate.Text, out dteBirthDate) ? dteBirthDate : Constants.C_DATE_MIN_VALUE;
+            clsAddOnDetails.BirthDate = dteBirthDate;
+            clsAddOnDetails.SpouseBirthDate = Constants.C_DATE_MIN_VALUE;
+            clsAddOnDetails.AnniversaryDate = Constants.C_DATE_MIN_VALUE;
+            clsAddOnDetails.Address1 = txtAddress.Text;
+            clsAddOnDetails.Address2 = string.Empty;
+            clsAddOnDetails.City = string.Empty;
+            clsAddOnDetails.State = string.Empty;
+            clsAddOnDetails.ZipCode = string.Empty;
+            clsAddOnDetails.CountryID = Constants.C_DEF_COUNTRY_ID;
+            clsAddOnDetails.CountryCode = Constants.C_DEF_COUNTRY_CODE;
+            clsAddOnDetails.BusinessPhoneNo = txtTelephoneNo.Text;
+            clsAddOnDetails.HomePhoneNo = string.Empty;
+            clsAddOnDetails.MobileNo = txtMobileNo.Text;
+            clsAddOnDetails.FaxNo = string.Empty;
+            clsAddOnDetails.EmailAddress = string.Empty;
+
+            clsDetails.AdditionalDetails = clsAddOnDetails;
 
             Contacts clsContact = new Contacts();
             Int64 id = clsContact.Insert(clsDetails);

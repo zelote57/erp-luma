@@ -23,8 +23,8 @@ namespace AceSoft.RetailPlus.Credits._Customers
                 ManageSecurity();
                 LoadOptions();
                 LoadList();
-                cmdDelete.Attributes.Add("onClick", "return confirm_delete();");
-                imgDelete.Attributes.Add("onClick", "return confirm_delete();");
+                cmdPrintBilling.Attributes.Add("onClick", "return confirm_print_billing();");
+                idPrintBilling.Attributes.Add("onClick", "return confirm_print_billing();");
             }
         }
 
@@ -50,26 +50,6 @@ namespace AceSoft.RetailPlus.Credits._Customers
 
         #region Web Control Methods
 
-        protected void imgAdd_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
-        }
-        protected void cmdAdd_Click(object sender, System.EventArgs e)
-        {
-            string stParam = "?task=" + Common.Encrypt("add", Session.SessionID);
-            Response.Redirect("Default.aspx" + stParam);
-        }
-        protected void imgDelete_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            if (Delete())
-                LoadList();
-        }
-        protected void cmdDelete_Click(object sender, System.EventArgs e)
-        {
-            if (Delete())
-                LoadList();
-        }
         protected void idEdit_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             Update();
@@ -77,6 +57,14 @@ namespace AceSoft.RetailPlus.Credits._Customers
         protected void cmdEdit_Click(object sender, System.EventArgs e)
         {
             Update();
+        }
+        protected void idPrintBilling_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            PrintBilling(idPrintBilling);
+        }
+        protected void cmdPrintBilling_Click(object sender, System.EventArgs e)
+        {
+            PrintBilling(cmdPrintBilling);
         }
         protected void cboCurrentPage_SelectedIndexChanged(object sender, System.EventArgs e)
         {
@@ -92,7 +80,6 @@ namespace AceSoft.RetailPlus.Credits._Customers
             else if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 DataRowView dr = (DataRowView)e.Item.DataItem;
-                ImageButton imgItemDelete = (ImageButton)e.Item.FindControl("imgItemDelete");
                 ImageButton imgItemEdit = (ImageButton)e.Item.FindControl("imgItemEdit");
                 ImageButton imgPrintBilling = (ImageButton)e.Item.FindControl("imgPrintBilling");
 
@@ -101,16 +88,12 @@ namespace AceSoft.RetailPlus.Credits._Customers
                 if (chkList.Value == "1" || chkList.Value == "2")
                 {
                     chkList.Attributes.Add("disabled", "false");
-                    imgItemDelete.Enabled = false; imgItemDelete.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                     imgItemEdit.Enabled = false; imgItemEdit.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                     imgPrintBilling.Enabled = false; ; imgPrintBilling.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                 }
                 else
                 {
-                    imgItemDelete.Enabled = cmdDelete.Visible; if (!imgItemDelete.Enabled) imgItemDelete.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                     imgItemEdit.Enabled = cmdEdit.Visible; if (!imgItemEdit.Enabled) imgItemEdit.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
-                    if (imgItemDelete.Enabled) imgItemDelete.Attributes.Add("onClick", "return confirm_item_delete();");
-
                     if (DateTime.Parse(dr["LastBillingDate"].ToString()) != DateTime.MinValue && DateTime.Parse(dr["LastBillingDate"].ToString()) != Constants.C_DATE_MIN_VALUE)
                     {
                         imgPrintBilling.Enabled = imgPrintBilling.Visible; if (!imgPrintBilling.Enabled) imgPrintBilling.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/print.gif";
@@ -118,8 +101,8 @@ namespace AceSoft.RetailPlus.Credits._Customers
                     }
                     else
                     {
-                        imgItemEdit.Enabled = false; imgItemEdit.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                         imgPrintBilling.Enabled = false; ; imgPrintBilling.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                        imgPrintBilling.ToolTip = Constants.C_DATE_MIN_VALUE_STRING;
                     }
                 }
 
@@ -139,6 +122,9 @@ namespace AceSoft.RetailPlus.Credits._Customers
 
                 Label lblCreditCardStatus = (Label)e.Item.FindControl("lblCreditCardStatus");
                 lblCreditCardStatus.Text = Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString()).ToString();
+
+                Label lblCreditActive = (Label)e.Item.FindControl("lblCreditActive");
+                lblCreditActive.Text = Data.Contacts.checkCreditActive((CreditCardStatus)Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString())) ? "Active" : "InActive";
 
                 Label lblExpiryDate = (Label)e.Item.FindControl("lblExpiryDate");
                 lblExpiryDate.Text = Convert.ToDateTime(dr["ExpiryDate"].ToString()).ToString("dd-MMM-yyyy");
@@ -186,12 +172,12 @@ namespace AceSoft.RetailPlus.Credits._Customers
                     if (DateTime.Parse(imgPrintBilling.ToolTip) != DateTime.MinValue && DateTime.Parse(imgPrintBilling.ToolTip) != Constants.C_DATE_MIN_VALUE)
                     {
                         Billing clsBilling = new Billing();
-                        System.Data.DataTable dt = clsBilling.ListBillingDateAsDataTable(long.Parse(chkList.Value), DateTime.Parse(imgPrintBilling.ToolTip));
+                        System.Data.DataTable dt = clsBilling.ListBillingDateAsDataTable(CreditType.Individual, long.Parse(chkList.Value), DateTime.Parse(imgPrintBilling.ToolTip));
                         clsBilling.CommitAndDispose();
 
                         if (dt.Rows.Count > 0)
                         {
-                            string newWindowUrl = Constants.ROOT_DIRECTORY + "/billings/" + dt.Rows[0]["BillingFile"].ToString();
+                            string newWindowUrl = Constants.ROOT_DIRECTORY_BILLING_WoutG + "/" + dt.Rows[0]["BillingFile"].ToString();
                             string javaScript = "window.open('" + newWindowUrl + "','_blank');";
                             System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.lstItem, this.lstItem.GetType(), "openwindow", javaScript, true);
                         }
@@ -201,6 +187,10 @@ namespace AceSoft.RetailPlus.Credits._Customers
                         string javaScript = "window.alert('Sorry there is no billing file to print.');";
                         System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.lstItem, this.lstItem.GetType(), "openwindow", javaScript, true);
                     }
+                    break;
+                case "imgUpdateCardType":
+                    stParam = "?task=" + Common.Encrypt("changecardtype", Session.SessionID) + "&id=" + Common.Encrypt(chkList.Value, Session.SessionID);
+                    Response.Redirect("Default.aspx" + stParam);
                     break;
             }
         }
@@ -229,8 +219,9 @@ namespace AceSoft.RetailPlus.Credits._Customers
             cboCreditType.DataValueField = "CardTypeID";
             cboCreditType.DataSource = clsCardType.ListAsDataTable(new CardTypeDetails(CreditCardTypes.Internal, false)).DefaultView;
             cboCreditType.DataBind();
-            cboCreditType.SelectedIndex = 0;
             clsCardType.CommitAndDispose();
+            cboCreditType.Items.Insert(0, new ListItem(Constants.ALL, Constants.ZERO_STRING));
+            cboCreditType.SelectedIndex = 1;
 
         }
 		private void ManageSecurity()
@@ -239,15 +230,10 @@ namespace AceSoft.RetailPlus.Credits._Customers
 			AccessRights clsAccessRights = new AccessRights(); 
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Contacts); 
-			imgAdd.Visible = clsDetails.Write; 
-			cmdAdd.Visible = clsDetails.Write; 
-			imgDelete.Visible = clsDetails.Write; 
-			cmdDelete.Visible = clsDetails.Write; 
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Contacts);
 			cmdEdit.Visible = clsDetails.Write; 
-			idEdit.Visible = clsDetails.Write; 
-			lblSeparator1.Visible = clsDetails.Write;
-			lblSeparator2.Visible = clsDetails.Write;
+			idEdit.Visible = clsDetails.Write;
+            lblSeparator2.Visible = clsDetails.Write;
 
 			clsAccessRights.CommitAndDispose();
 		}
@@ -329,8 +315,8 @@ namespace AceSoft.RetailPlus.Credits._Customers
             DateTime dteExpiryDateTo = DateTime.TryParse(txtExpiryDateTo.Text, out dteExpiryDateTo) ? dteExpiryDateTo : DateTime.MinValue;
             CreditCardStatus enumCreditCardStatus = (CreditCardStatus)Enum.Parse(typeof(CreditCardStatus), cboCreditCardStatus.SelectedItem.Value);
 
-            PageData.DataSource = clsContact.CustomersWithCredits(clsContactColumns, 0, strSearch, dteExpiryDateFrom, dteExpiryDateTo, enumCreditCardStatus, Int32.Parse(cboCreditType.SelectedItem.Value), SortField, sortoption).DefaultView;
-
+            PageData.DataSource = clsContact.CustomersWithCredits(clsContactColumns, LastNameFrom: txtLastNameFrom.Text, LastNameTo: txtLastNameTo.Text, CustomerCode_CreditCardNo: strSearch, CreditCardExpiryDateFrom: dteExpiryDateFrom, CreditCardExpiryDateTo: dteExpiryDateTo, CreditCardStatus: enumCreditCardStatus, CreditCardTypeID: Int32.Parse(cboCreditType.SelectedItem.Value), CheckCustomersGuarantor: true, SortField: SortField, SortOrder: sortoption).DefaultView;
+            
 			clsContact.CommitAndDispose();
 
 			int iPageSize = Convert.ToInt16(Session["PageSize"]) ;
@@ -362,32 +348,6 @@ namespace AceSoft.RetailPlus.Credits._Customers
 			}
 			lblDataCount.Text = " of " + " " + PageData.PageCount;
 		}
-		private bool Delete()
-		{
-			bool boRetValue = false;
-			string stIDs = "";
-
-			foreach(DataListItem item in lstItem.Items)
-			{
-				HtmlInputCheckBox chkList = (HtmlInputCheckBox) item.FindControl("chkList");
-				if (chkList!=null)
-				{
-					if (chkList.Checked == true)
-					{
-						stIDs += chkList.Value + ",";		
-						boRetValue = true;
-					}
-				}
-			}
-			if (boRetValue)
-			{
-				Contacts clsContact = new Contacts();
-				clsContact.Delete( stIDs.Substring(0,stIDs.Length-1));
-				clsContact.CommitAndDispose();
-			}
-
-			return boRetValue;
-		}
 		private void Update()
 		{
 			if (isChkListSingle() == true)
@@ -407,6 +367,59 @@ namespace AceSoft.RetailPlus.Credits._Customers
 				Response.Write(stScript);	
 			}
 		}
+        private Boolean PrintBilling(System.Web.UI.Control sender)
+        {
+            bool boRetValue = false;
+
+            int iPrintedBills = 0, iBills = 0;
+
+            foreach (DataListItem item in lstItem.Items)
+            {
+                HtmlInputCheckBox chkList = (HtmlInputCheckBox)item.FindControl("chkList");
+
+                if (chkList != null)
+                {
+                    if (chkList.Checked == true)
+                    {
+                        iBills++;
+                        ImageButton imgPrintBilling = (ImageButton)item.FindControl("imgPrintBilling");
+                        if (DateTime.Parse(imgPrintBilling.ToolTip) != DateTime.MinValue && DateTime.Parse(imgPrintBilling.ToolTip) != Constants.C_DATE_MIN_VALUE)
+                        {
+                            Billing clsBilling = new Billing();
+                            System.Data.DataTable dt = clsBilling.ListBillingDateAsDataTable(CreditType.Individual, long.Parse(chkList.Value), DateTime.Parse(imgPrintBilling.ToolTip));
+                            clsBilling.CommitAndDispose();
+
+                            if (dt.Rows.Count > 0)
+                            {
+                                if (dt.Rows[0]["BillingFile"].ToString().IndexOf(".pdf") > -1)
+                                {
+                                    if (PdfHelper.PrintPDFs(Constants.ROOT_DIRECTORY_BILLING_WoutG + "/" + dt.Rows[0]["BillingFile"].ToString()))
+                                        iPrintedBills++;
+                                }
+                                else
+                                {
+                                    if (PrinterHelper.PrintFile(Constants.ROOT_DIRECTORY_BILLING_WoutG + "/" + dt.Rows[0]["BillingFile"].ToString()))
+                                        iPrintedBills++;
+                                }
+                            }
+                        }
+                        boRetValue = true;
+                    }
+                }
+            }
+
+            if (boRetValue)
+            {
+                string javaScript = "window.alert(" + iPrintedBills.ToString() + "/" + iBills.ToString() + " bills has been successfully printed.');";
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(sender, sender.GetType(), "openwindow", javaScript, true);
+            }
+            else
+            {
+                string javaScript = "window.alert('Sorry there was no billing file to print.');";
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(sender, sender.GetType(), "openwindow", javaScript, true);
+            }
+            return boRetValue;
+        }
 		private string GetFirstID()
 		{
 			foreach(DataListItem item in lstItem.Items)

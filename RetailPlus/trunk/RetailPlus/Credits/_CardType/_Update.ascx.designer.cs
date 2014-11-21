@@ -148,24 +148,6 @@ namespace AceSoft.RetailPlus.Credits._CardType {
         protected global::System.Web.UI.WebControls.CheckBox chkWithGuarantor;
         
         /// <summary>
-        /// txtBIRPermitNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBIRPermitNo;
-        
-        /// <summary>
-        /// Requiredfieldvalidator8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator Requiredfieldvalidator8;
-        
-        /// <summary>
         /// txtCreditFinanceCharge control.
         /// </summary>
         /// <remarks>

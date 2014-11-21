@@ -25,6 +25,7 @@
 		<LINK href="../_layouts/css/sps.css" type="text/css" rel="stylesheet">
 		<script language="JavaScript" src="../_Scripts/DocumentScripts.js"></script>
 		<script language="JavaScript" src="../_Scripts/Calendar.js"></script>
+        <script language="JavaScript" src="../../_Scripts/Credits.js"></script>
 	</HEAD>
 	<body id="PageBody" scroll="yes" marginheight="0" marginwidth="0">
 		<form id="frmDefaultID" name="frmDefault" action="default.aspx" method="post" runat="server">
@@ -47,9 +48,9 @@
 									<td>
 										<table style="padding-left: 2px; padding-TOP: 0px" cellspacing="0" cellpadding="0" border="0" width="100%">
 											<tr>
-												<td style="padding-TOP: 2px" nowrap="nowrap" align="center" width="132" height="46"><img id="spsPageTitleIcon" alt="" src="../_layouts/images/inventory.gif">
+												<td style="padding-TOP: 2px" nowrap="nowrap" align="center" width="132" height="46"><img id="spsPageTitleIcon" alt="" src="../_layouts/images/inventory.gif" />
 												</td>
-												<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="15">
+												<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="15" />
 												</td>
 												<td nowrap="nowrap" width="100%">
 													<table cellspacing="0" cellpadding="0">
@@ -80,10 +81,10 @@
 										</table>
 										<table cellpadding="0" cellspacing="0" border="0" width="100%">
 											<tr>
-												<td height="2" colspan="5"><img SRC="../_layouts/images/blank.gif" width="1" height="1" alt=""></td>
+												<td height="2" colspan="5"><img SRC="../_layouts/images/blank.gif" width="1" height="1" alt="" /></td>
 											</tr>
 											<tr>
-												<td class="ms-titlearealine" height="1" colspan="5"><img SRC="../_layouts/images/blank.gif" width="1" height="1" alt=""></td>
+												<td class="ms-titlearealine" height="1" colspan="5"><img SRC="../_layouts/images/blank.gif" width="1" height="1" alt="" /></td>
 											</tr>
 										</table>
 									</td>
@@ -97,14 +98,14 @@
 						<table class="ms-navframe" id="Table7" height="100%" cellspacing="0" cellpadding="0" border="0">
 							<tr valign="top">
 								<td class="ms-navwatermark" id="onetidWatermark" dir="ltr"></td>
-								<td style="padding-RIGHT: 2px" width="126">
-									<img height="1" alt="" src="../_layouts/images/trans.gif" width="126">
+								<td style="padding-RIGHT: 2px" width="170">
+									<img height="1" alt="" src="../_layouts/images/trans.gif" width="170" />
 									<CTRL:ctrlMenu id="ctrlMenu" runat="server"></CTRL:ctrlMenu>&nbsp;
 								</td>
 							</tr>
 						</table>
 					</td>
-					<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="5"></td>
+					<td><img height="1" alt="" src="../_layouts/images/blank.gif" width="5" /></td>
 					<td class="ms-bodyareaframe" valign="top" width="100%"><CTRL:PAGELEVELERROR id="PageLevelError" runat="server"></CTRL:PAGELEVELERROR>
 						<table class="ms-tztable" id="ZoneTable" cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr id="TopRow">

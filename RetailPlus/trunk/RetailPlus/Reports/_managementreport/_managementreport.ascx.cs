@@ -249,7 +249,7 @@ namespace AceSoft.RetailPlus.Reports
 			ReportDataset rptds = new ReportDataset();
 
 			SalesTransactions clsSalesTransactions;
-			SalesTransactionItems clsSalesTransactionItems;
+            //SalesTransactionItems clsSalesTransactionItems;
 
             SalesTransactionsColumns clsSalesTransactionsColumns = new SalesTransactionsColumns();
             #region clsSalesTransactionsColumns

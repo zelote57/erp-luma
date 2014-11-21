@@ -100,7 +100,7 @@ namespace AceSoft.RetailPlus.Reports
 			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: txtProductCode.Text, Limit: 100);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: txtProductCode.Text, limit: 100);
             cboProductCode.DataBind();
 
             Branch clsBranch = new Branch(clsProduct.Connection, clsProduct.Transaction);
@@ -203,33 +203,29 @@ namespace AceSoft.RetailPlus.Reports
 		{
 			ReportDataset rptds = new ReportDataset();
 
-            long lngProductID = long.Parse(cboProductCode.SelectedItem.Value);
-            long lngMatrixID = long.Parse(cboVariation.SelectedItem.Value);
+            Int64 intProductID = 0;
+            if (cboProductCode.Items.Count > 0) intProductID = Int64.Parse(cboProductCode.SelectedItem.Value);
+            Int64 intMatrixID = 0;
+            if (cboVariation.Items.Count > 0) intMatrixID = Int64.Parse(cboVariation.SelectedItem.Value);
 
 			DateTime DateFrom = DateTime.MinValue;
-			try
-			{	DateFrom = Convert.ToDateTime(txtStartDate.Text + " " + txtStartTime.Text);	}
-			catch{}
-			DateTime DateTo = DateTime.MinValue;
-			try
-			{	DateTo = Convert.ToDateTime(txtEndDate.Text + " " + txtEndTime.Text);	}
-			catch{}
-            Int32 Limit = 0;
-            try
-            { Limit = Convert.ToInt32(txtLimit.Text); }
-            catch { }
+            DateFrom = DateTime.TryParse(txtStartDate.Text + " " + txtStartTime.Text, out DateFrom) ? DateFrom : DateTime.MinValue;
 
+			DateTime DateTo = DateTime.MinValue;
+            DateTo = DateTime.TryParse(txtEndDate.Text + " " + txtEndTime.Text, out DateTo) ? DateTo : DateTime.MinValue;
+
+            Int32 intLimit = 0;
+            intLimit = Int32.TryParse(txtLimit.Text, out intLimit) ? intLimit : 0;
+            
             Int32 intBranchID = 0;
-            try
-            { intBranchID = Convert.ToInt32(cboBranch.SelectedItem.Value); }
-            catch { }
+            intBranchID = Int32.TryParse(cboBranch.SelectedItem.Value, out intBranchID) ? intBranchID : 0;
 
             switch (cboReportType.SelectedValue)
             {
                 case ReportTypes.ProductHistoryMovement:
                     #region Product History Movement
                     StockItem clsStockItem = new StockItem();
-                    System.Data.DataTable dtProductHistoryMovement = clsStockItem.ProductMovementReport(lngProductID, lngMatrixID, DateFrom, DateTo, intBranchID);
+                    System.Data.DataTable dtProductHistoryMovement = clsStockItem.ProductMovementReport(intProductID, intMatrixID, DateFrom, DateTo, intBranchID);
                     clsStockItem.CommitAndDispose();
                     foreach (DataRow dr in dtProductHistoryMovement.Rows)
                     {
@@ -246,7 +242,7 @@ namespace AceSoft.RetailPlus.Reports
                     #region Product price history
                     ProductPackagePriceHistory clsProductPackagePriceHistory = new ProductPackagePriceHistory();
                     clsProductPackagePriceHistory.GetConnection();
-                    System.Data.DataTable dtProductList = clsProductPackagePriceHistory.List(DateFrom, DateTo, lngProductID);
+                    System.Data.DataTable dtProductList = clsProductPackagePriceHistory.List(DateFrom, DateTo, intProductID);
                     clsProductPackagePriceHistory.CommitAndDispose();
 
                     foreach (DataRow dr in dtProductList.Rows)
@@ -262,7 +258,7 @@ namespace AceSoft.RetailPlus.Reports
                     #endregion
                 case ReportTypes.ProductHistoryMostSaleable:
 			        SalesTransactionItems clsSalesTransactionItemsMost = new SalesTransactionItems();
-                    System.Data.DataTable dtMostSaleable = clsSalesTransactionItemsMost.MostSalableItems(DateFrom, DateTo, Limit);
+                    System.Data.DataTable dtMostSaleable = clsSalesTransactionItemsMost.MostSalableItems(DateFrom, DateTo, intLimit);
                     clsSalesTransactionItemsMost.CommitAndDispose();
                     foreach (DataRow dr in dtMostSaleable.Rows)
                     {
@@ -276,7 +272,7 @@ namespace AceSoft.RetailPlus.Reports
                     break;
                 case ReportTypes.ProductHistoryLeastSaleable:
                     SalesTransactionItems clsSalesTransactionItemsLeast = new SalesTransactionItems();
-                    System.Data.DataTable dtLeastSaleable = clsSalesTransactionItemsLeast.LeastSalableItems(DateFrom, DateTo, Limit);
+                    System.Data.DataTable dtLeastSaleable = clsSalesTransactionItemsLeast.LeastSalableItems(DateFrom, DateTo, intLimit);
                     clsSalesTransactionItemsLeast.CommitAndDispose();
                     foreach (DataRow dr in dtLeastSaleable.Rows)
                     {
@@ -456,7 +452,7 @@ namespace AceSoft.RetailPlus.Reports
 			Data.Products clsProduct = new Data.Products();
 			cboProductCode.DataTextField = "ProductCode";
 			cboProductCode.DataValueField = "ProductID";
-            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: txtProductCode.Text, Limit: 100);
+            cboProductCode.DataSource = clsProduct.ProductIDandCodeDataTable(SearchKey: txtProductCode.Text, limit: 100);
 			cboProductCode.DataBind();
 			
             clsProduct.CommitAndDispose();
@@ -477,7 +473,7 @@ namespace AceSoft.RetailPlus.Reports
                     imgEditNow.Visible = false;
 
                     cboVariation.Items.Clear();
-                    cboVariation.Items.Insert(0, new ListItem("Main Product", "0"));
+                    cboVariation.Items.Insert(0, new ListItem("No Product", "0"));
                     cboVariation.SelectedIndex = 0;
                 }
                 else
@@ -488,7 +484,7 @@ namespace AceSoft.RetailPlus.Reports
                     imgEditNow.Visible = true;
                     txtProductCode.Text = cboProductCode.SelectedItem.Text;
 
-                    long ProductID = Convert.ToInt64(cboProductCode.SelectedItem.Value);
+                    Int64 ProductID = Int64.Parse(cboProductCode.SelectedItem.Value);
 
                     ProductVariationsMatrix clsProductVariationsMatrix = new ProductVariationsMatrix();
                     cboVariation.DataTextField = "MatrixDescription";

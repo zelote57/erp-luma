@@ -1,8 +1,8 @@
 <%@ Control Language="c#" Inherits="AceSoft.RetailPlus.Reports.__ProductHistoryReport" Codebehind="_ProductHistoryReport.ascx.cs" %>
 <%@ Register Assembly="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304"
     Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
-<link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css"
-    rel="stylesheet" type="text/css" />
+<%--<link href="/aspnet_client/System_Web/2_0_50727/CrystalReportWebFormViewer3/css/default.css" rel="stylesheet" type="text/css" />--%>
+<link href="/aspnet_client/System_Web/2_0_50727/crystalreportviewers13/css/default.css" rel="stylesheet" type="text/css" />
 <asp:UpdatePanel id="UpdatePanel1" runat="server">
 <ContentTemplate>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
@@ -124,7 +124,7 @@
                                 <td class="ms-separator">&nbsp;&nbsp;&nbsp;</td>
                                 <td nowrap="nowrap">
                                     <asp:dropdownlist id="cboVariation" runat="server" CssClass="ms-short"></asp:dropdownlist>
-                                    <asp:TextBox id="txtProductCode" accesskey="C" CssClass="ms-short" runat="server" BorderStyle="Groove"></asp:TextBox>
+                                    <asp:TextBox id="txtProductCode" accesskey="C" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="30"></asp:TextBox>
                                     <asp:ImageButton id="cmdProductCode" title="Search by product code" style="CURSOR: hand" accesskey="P" runat="server" ImageUrl="../../_layouts/images/SPSSearch2.gif" alt="Search by product code" border="0" OnClick="cmdProductCode_Click"></asp:ImageButton>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <asp:ImageButton id="imgProductHistory" runat="server" CausesValidation="false" ImageUrl="../../_layouts/images/prodhist.gif"

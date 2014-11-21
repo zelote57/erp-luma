@@ -8525,6 +8525,21 @@ ALTER TABLE tblCashierReportHistory ADD `PWDItemsDiscount` DECIMAL(18,3) NOT NUL
 ALTER TABLE tblCashierReportHistory ADD `OtherItemsDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Other items discount (not SNR & not PWD)';
 ALTER TABLE tblCashierReportHistory MODIFY `ItemsDiscount` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'SNRItemsDiscount + PWDItemsDiscount + OtherItemsDiscount';
 
+ALTER TABLE tblTransactions ADD PARTITION (
+		PARTITION p2015 VALUES LESS THAN (2015) (
+			SUBPARTITION sJan2015,
+			SUBPARTITION sFeb2015,
+			SUBPARTITION sMar2015,
+			SUBPARTITION sApr2015,
+			SUBPARTITION sMay2015,
+			SUBPARTITION sJun2015,
+			SUBPARTITION sJul2015,
+			SUBPARTITION sAug2015,
+			SUBPARTITION sSep2015,
+			SUBPARTITION sOct2015,
+			SUBPARTITION sNov2015,
+			SUBPARTITION sDec2015) ) ;
+
 -- UPDATE tblTransactions SET 
 --	 SNRItemsDiscount = CASE 
 --						WHEN VATExempt <> 0 THEN VATExempt * 0.20

@@ -234,15 +234,6 @@
     <Compile Include="UI\ChargeWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ReportsWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ItemReleaseWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ItemReleaseWnd.Designer.cs">
-      <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\ForwarderWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -253,9 +244,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\DiscountWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\HelpWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\ItemSelectWnd.cs">
@@ -557,14 +545,6 @@
       <DependentUpon>ChargeWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ReportsWnd.resx">
-      <DependentUpon>ReportsWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemReleaseWnd.resx">
-      <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\ForwarderWnd.resx">
       <DependentUpon>ForwarderWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -579,10 +559,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DiscountWnd.resx">
       <DependentUpon>DiscountWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\HelpWnd.resx">
-      <DependentUpon>HelpWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ItemSelectWnd.resx">

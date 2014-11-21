@@ -47,8 +47,11 @@ namespace AceSoft.RetailPlus.Data
         /// </summary>
         public DateTime PurchaseDateFrom;
         public DateTime PurchaseDateTo;
+        public string CreditorLastnameFrom;
+        public string CreditorLastnameTo;
         public string GuarantorLastnameFrom;
         public string GuarantorLastnameTo;
+        public CreditType CreditType;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,

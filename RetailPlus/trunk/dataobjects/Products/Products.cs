@@ -255,6 +255,8 @@ namespace AceSoft.RetailPlus.Data
 
     public struct ProductAddOnFilters
     {
+        public string BarcodeFrom;
+        public string BarcodeTo;
         public string ProductCodeFrom;
         public string ProductCodeTo;
         public string ProductSubGroupNameFrom;
@@ -3939,6 +3941,7 @@ namespace AceSoft.RetailPlus.Data
         {
             // 26Oct2014 - additional filters ProductCodeFrom, ProductSubGroupNameFrom, ProductGroupNameFrom, SupplierNameFrom
             string SQL = "CALL procProductSelect(@BranchID, @BarCode, @ProductCode, @SupplierID, @ShowActiveAndInactive, @isQuantityGreaterThanZERO, " +
+                                                "@BarcodeFrom, @BarcodeTo, " +    
                                                 "@ProductCodeFrom, @ProductCodeTo, @ProductSubGroupNameFrom, @ProductSubGroupNameTo, " +
                                                 "@ProductGroupNameFrom, @ProductGroupNameTo, @SupplierNameFrom, @SupplierNameTo, " +
                                                 "@limit, @SortField, @SortOrder)";
@@ -3955,6 +3958,8 @@ namespace AceSoft.RetailPlus.Data
             cmd.Parameters.AddWithValue("ShowActiveAndInactive", clsProductListFilterType.ToString("d"));
             cmd.Parameters.AddWithValue("isQuantityGreaterThanZERO", isQuantityGreaterThanZERO);
 
+            cmd.Parameters.AddWithValue("BarcodeFrom", ProductAddOnFilters.BarcodeFrom);
+            cmd.Parameters.AddWithValue("BarcodeTo", ProductAddOnFilters.BarcodeTo);
             cmd.Parameters.AddWithValue("ProductCodeFrom", ProductAddOnFilters.ProductCodeFrom);
             cmd.Parameters.AddWithValue("ProductCodeTo", ProductAddOnFilters.ProductCodeTo);
             cmd.Parameters.AddWithValue("ProductSubGroupNameFrom", ProductAddOnFilters.ProductSubGroupNameFrom);

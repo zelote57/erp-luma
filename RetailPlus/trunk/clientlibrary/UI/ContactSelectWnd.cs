@@ -24,7 +24,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private PictureBox imgIcon;
 		private Label lblAddNewCustomer;
 		private System.ComponentModel.Container components = null;
-        private Label label6;
+        private Label lblF2;
 
         #region Public Properties
 
@@ -97,7 +97,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.DepartmentName = new System.Windows.Forms.DataGridTextBoxColumn();
             this.lblAddNewCustomer = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.lblF2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgContacts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.SuspendLayout();
@@ -296,16 +296,16 @@ namespace AceSoft.RetailPlus.Client.UI
             this.imgIcon.TabStop = false;
             this.imgIcon.Click += new System.EventHandler(this.imgIcon_Click);
             // 
-            // label6
+            // lblF2
             // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(841, 31);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(27, 13);
-            this.label6.TabIndex = 100;
-            this.label6.Text = "[F2]";
+            this.lblF2.AutoSize = true;
+            this.lblF2.BackColor = System.Drawing.Color.Transparent;
+            this.lblF2.ForeColor = System.Drawing.Color.Red;
+            this.lblF2.Location = new System.Drawing.Point(841, 31);
+            this.lblF2.Name = "lblF2";
+            this.lblF2.Size = new System.Drawing.Size(27, 13);
+            this.lblF2.TabIndex = 100;
+            this.lblF2.Text = "[F2]";
             // 
             // ContactSelectWnd
             // 
@@ -313,7 +313,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.lblF2);
             this.Controls.Add(this.lblAddNewCustomer);
             this.Controls.Add(this.dgContacts);
             this.Controls.Add(this.lblHeader);
@@ -387,7 +387,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					}
 					break;
 				case Keys.F2:
-					ContactAdd();
+                    if (mContactGroupCategory != Data.ContactGroupCategory.AGENT) ContactAdd();
 					break;
 			}
 		}
@@ -401,7 +401,12 @@ namespace AceSoft.RetailPlus.Client.UI
 			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ContactSelect.jpg");	}
 			catch{}
 
-            lblHeader.Text = !string.IsNullOrEmpty(Header) ? Header : "Enter customer code/name/in-house credit card no to search.";
+            if (mContactGroupCategory == Data.ContactGroupCategory.AGENT)
+                lblHeader.Text = "Enter agent code / name to search.";
+            else
+                lblHeader.Text = "Enter customer code/name/in-house credit card no to search.";
+
+            lblHeader.Text = !string.IsNullOrEmpty(Header) ? Header : lblHeader.Text;
 
 			LoadOptions();
 			LoadContactData();
@@ -480,8 +485,11 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void LoadOptions()
 		{
-			if (mContactGroupCategory == ContactGroupCategory.AGENT)
-				lblAddNewCustomer.Visible = false;
+            if (mContactGroupCategory == ContactGroupCategory.AGENT)
+            {
+                lblAddNewCustomer.Visible = false;
+                lblF2.Visible = false;
+            }
 
 		}
 		private void LoadContactData()

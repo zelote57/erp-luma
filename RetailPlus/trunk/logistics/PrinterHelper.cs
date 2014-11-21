@@ -61,7 +61,7 @@ namespace AceSoft
         {
             try
             {
-                string printerName = "RetailPlusBilling";
+                //string printerName = "RetailPlusBilling";
 
                 System.Diagnostics.Process p = new System.Diagnostics.Process();
                 p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;

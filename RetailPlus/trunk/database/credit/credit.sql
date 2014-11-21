@@ -156,6 +156,13 @@ INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VA
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 156, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 156;
 
+DELETE FROM sysAccessRights WHERE TranTypeID = 160; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 160;
+DELETE FROM sysAccessTypes WHERE TypeID = 160;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (160, 'Creditors Ledger Summary Report', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 160, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 160, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 160;
+
 DELETE FROM sysAccessRights WHERE TranTypeID = 161; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 161;
 DELETE FROM sysAccessTypes WHERE TypeID = 161;
 INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (161, 'Creditors With Guarantor Setup', 1);
@@ -179,7 +186,7 @@ UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHE
 
 DELETE FROM sysAccessRights WHERE TranTypeID = 164; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 164;
 DELETE FROM sysAccessTypes WHERE TypeID = 164;
-INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (164, 'Guarantor''s Ledger Summary', 1);
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (164, 'Guarantor''s Ledger Summary Report', 1);
 INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 164, 1, 1);
 INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 164, 1, 1);
 UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHERE TypeID = 164;

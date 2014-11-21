@@ -39,8 +39,11 @@ namespace AceSoft.RetailPlus.Data
         public Int16 CreditCardTypeID;
         public DateTime PaymentDateFrom;
         public DateTime PaymentDateTo;
+        public string CreditorLastnameFrom;
+        public string CreditorLastnameTo;
         public string GuarantorLastnameFrom;
         public string GuarantorLastnameTo;
+        public CreditType CreditType;
 	}
 
 	[StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,

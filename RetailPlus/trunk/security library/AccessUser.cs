@@ -176,17 +176,17 @@ namespace AceSoft.RetailPlus.Security
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-				string SQLUser		=	"UPDATE sysAccessUsers SET " + 
-										    "UserName = @UserName," +  
-										    "Password = @Password " + 
-										"WHERE UID = @UID;";
+                //string SQLUser		=	"UPDATE sysAccessUsers SET " + 
+                //                            "UserName = @UserName," +  
+                //                            "Password = @Password " + 
+                //                        "WHERE UID = @UID;";
 				
-                cmd.Parameters.AddWithValue("UserName", Details.UserName);
-                cmd.Parameters.AddWithValue("Password", Details.Password);
-                cmd.Parameters.AddWithValue("UID", Details.UID);
+                //cmd.Parameters.AddWithValue("UserName", Details.UserName);
+                //cmd.Parameters.AddWithValue("Password", Details.Password);
+                //cmd.Parameters.AddWithValue("UID", Details.UID);
 
-				cmd.CommandText = SQLUser;
-                base.ExecuteNonQuery(cmd);
+                //cmd.CommandText = SQLUser;
+                //base.ExecuteNonQuery(cmd);
 
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -234,6 +234,29 @@ namespace AceSoft.RetailPlus.Security
 				throw base.ThrowException(ex);
 			}	
 		}
+
+        public void UpdatePassword(Int64 UID, string Password)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQLUser = "UPDATE sysAccessUsers SET " +
+                                            "Password = @Password " +
+                                        "WHERE UID = @UID;";
+
+                cmd.Parameters.AddWithValue("Password", Password);
+                cmd.Parameters.AddWithValue("UID", UID);
+
+                cmd.CommandText = SQLUser;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
         public Int32 Save(AccessUserDetails Details)
         {

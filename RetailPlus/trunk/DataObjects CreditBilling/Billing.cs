@@ -121,7 +121,8 @@ namespace AceSoft.RetailPlus.Data
 
         private string SQLSelect()
         {
-            string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,CBH.GuarantorID ,CBH.ContactID ,CBH.CreditLimit ,CBH.RunningCreditAmt ,CBH.CurrMonthCreditAmt ,CBH.CurrMonthAmountPaid ,CBH.TotalBillCharges ,CBH.CurrentDueAmount ,CBH.MinimumAmountDue " +
+            string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,CBH.GuarantorID ,IFNULL(GUA.ContactName,'''') AS GuarantorName " +
+                                  ",CBH.ContactID ,CBH.CreditLimit ,CBH.RunningCreditAmt ,CBH.CurrMonthCreditAmt ,CBH.CurrMonthAmountPaid ,CBH.TotalBillCharges ,CBH.CurrentDueAmount ,CBH.MinimumAmountDue " +
                                   ",CBH.Prev1MoCurrentDueAmount ,CBH.Prev1MoMinimumAmountDue ,CBH.Prev1MoCurrMonthAmountPaid ,CBH.Prev2MoCurrentDueAmount ,CBH.CurrentPurchaseAmt ,CBH.BeginningBalance ,CBH.EndingBalance " +
                                   ",CreditPaymentDueDate " +
                                   ",BillingFile, IsBillPrinted " +
@@ -145,7 +146,8 @@ namespace AceSoft.RetailPlus.Data
                             "INNER JOIN tblCreditBills CBL ON CBH.CreditBillID = CBL.CreditBillID " +
                             "INNER JOIN tblCardTypes CTY ON CTY.CardTypeID = CBL.CreditCardTypeID " +
                             "INNER JOIN tblContacts CUS ON CUS.ContactID = CBH.ContactID " +
-                            "INNER JOIN tblContactCreditCardInfo CCI ON CUS.ContactID = CCI.CustomerID ";
+                            "INNER JOIN tblContactCreditCardInfo CCI ON CUS.ContactID = CCI.CustomerID " +
+                            "LEFT OUTER JOIN tblContacts GUA ON GUA.ContactID = CBH.GuarantorID ";
 
             return stSQL;
         }
@@ -407,7 +409,7 @@ namespace AceSoft.RetailPlus.Data
 
         #region Streams
 
-        public System.Data.DataTable ListAsDataTable(Int64 GuarantorID = 0, Int64 ContactID = 0, Int16 CreditCardTypeID = 0, CreditType CreditType = CreditType.Both, DateTime? BillingDate = null, string SortField = "CreditBillHeaderID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        public System.Data.DataTable ListAsDataTable(Int64 GuarantorID = 0, Int64 ContactID = 0, Int16 CreditCardTypeID = 0, CreditType CreditType = CreditType.Both, DateTime? BillingDate = null, bool CheckIsBillPrinted = false, bool IsBillPrinted = false, string SortField = "CreditBillHeaderID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
         {
             try
             {
@@ -415,7 +417,13 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL = SQLSelect() + "";
-                SQL += "WHERE IsBillPrinted = 0 ";
+                SQL += "WHERE 1=1 ";
+
+                if (CheckIsBillPrinted)
+                {
+                    SQL += "AND IsBillPrinted = @IsBillPrinted ";
+                    cmd.Parameters.AddWithValue("IsBillPrinted", IsBillPrinted ? 1 : 0);
+                }
 
                 if (GuarantorID != 0)
                 {
@@ -494,24 +502,35 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public System.Data.DataTable ListBillingDateAsDataTable(Int64 CustomerID, DateTime? BillingDate = null, string SortField = "BillingDate", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Descending, Int32 limit = 0)
+        public System.Data.DataTable ListBillingDateAsDataTable(CreditType CreditType, Int64 CustomerID = 0, DateTime? BillingDate = null, Int16 CreditCardTypeID = 0, string SortField = "BillingDate", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Descending, Int32 limit = 0)
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "SELECT DISTINCT DATE_FORMAT(BillingDate, '%Y-%m-%d') BillingDate, BillingFile FROM tblCreditBillHeader WHERE 1=1 ";
+                string SQL = "SELECT DISTINCT DATE_FORMAT(CBH.BillingDate, '%Y-%m-%d') BillingDate, CBH.BillingFile FROM tblCreditBillHeader CBH " +
+                             "INNER JOIN tblCreditBills CB ON CB.CreditBillID = CBH.CreditBillID WHERE 1=1 ";
+
+                if (CreditType == CreditType.Individual)
+                { SQL += "AND CB.WithGuarantor = 0 "; }
+                if (CreditType == CreditType.Group)
+                { SQL += "AND CB.WithGuarantor <> 0 "; }
 
                 if (CustomerID != 0)
                 {
-                    SQL += "AND ContactID = @CustomerID ";
+                    SQL += "AND CBH.ContactID = @CustomerID ";
                     cmd.Parameters.AddWithValue("CustomerID", CustomerID);
                 }
                 if (BillingDate.GetValueOrDefault(Constants.C_DATE_MIN_VALUE) != Constants.C_DATE_MIN_VALUE)
                 {
-                    SQL += "AND BillingDate = @BillingDate ";
+                    SQL += "AND CBH.BillingDate = @BillingDate ";
                     cmd.Parameters.AddWithValue("BillingDate", BillingDate);
+                }
+                if (CreditCardTypeID != 0)
+                {
+                    SQL += "AND CB.CreditCardTypeID = @CreditCardTypeID ";
+                    cmd.Parameters.AddWithValue("CreditCardTypeID", CreditCardTypeID);
                 }
 
                 SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "BillingDate") + " ";
@@ -530,11 +549,11 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public List<BillingDetails> List(Int64 GuarantorID = 0, Int64 ContactID = 0, Int16 CreditCardTypeID = 0, CreditType CreditType = CreditType.Both, DateTime? BillingDate = null, string SortField = "ContactID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
+        public List<BillingDetails> List(Int64 GuarantorID = 0, Int64 ContactID = 0, Int16 CreditCardTypeID = 0, CreditType CreditType = CreditType.Both, DateTime? BillingDate = null, bool CheckIsBillPrinted = false, bool IsBillPrinted = false, string SortField = "ContactID", System.Data.SqlClient.SortOrder SortOrder = System.Data.SqlClient.SortOrder.Ascending, Int32 limit = 0)
         {
             try
             {
-                System.Data.DataTable dt = ListAsDataTable(GuarantorID, ContactID, CreditCardTypeID, CreditType, BillingDate, SortField, SortOrder, limit);
+                System.Data.DataTable dt = ListAsDataTable(GuarantorID, ContactID, CreditCardTypeID, CreditType, BillingDate, CheckIsBillPrinted, IsBillPrinted, SortField, SortOrder, limit);
 
                 List<BillingDetails> lstRetValue = new List<BillingDetails>();
                 foreach (DataRow dr in dt.Rows)

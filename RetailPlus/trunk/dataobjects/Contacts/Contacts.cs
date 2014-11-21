@@ -1602,14 +1602,18 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procContactCreditPaymentSelect(@BranchID, @TerminalNo, @ContactID, @CreditCardTypeID, @PaymentDateFrom, @PaymentDateTo, @GuaLastNameFrom, @GuaLastNameTo, @SortField, @SortOption, @limit);";
+                string SQL = "CALL procContactCreditPaymentSelect(@BranchID, @TerminalNo, @ContactID, @CreditType, @CreditCardTypeID, @PaymentDateFrom, @PaymentDateTo, " +
+                                                                  "@CreditorLastNameFrom, @CreditorLastnameTo, @GuaLastNameFrom, @GuaLastNameTo, @SortField, @SortOption, @limit);";
 
                 cmd.Parameters.AddWithValue("BranchID", SearchKeys.BranchDetails.BranchID);
                 cmd.Parameters.AddWithValue("TerminalNo", SearchKeys.TerminalNo);
                 cmd.Parameters.AddWithValue("ContactID", SearchKeys.ContactID);
+                cmd.Parameters.AddWithValue("CreditType", SearchKeys.CreditType.ToString("d"));
                 cmd.Parameters.AddWithValue("CreditCardTypeID", SearchKeys.CreditCardTypeID);
                 cmd.Parameters.AddWithValue("PaymentDateFrom", SearchKeys.PaymentDateFrom);
                 cmd.Parameters.AddWithValue("PaymentDateTo", SearchKeys.PaymentDateTo);
+                cmd.Parameters.AddWithValue("CreditorLastNameFrom", SearchKeys.CreditorLastnameFrom);
+                cmd.Parameters.AddWithValue("CreditorLastNameTo", SearchKeys.CreditorLastnameTo);
                 cmd.Parameters.AddWithValue("GuaLastNameFrom", SearchKeys.GuarantorLastnameFrom);
                 cmd.Parameters.AddWithValue("GuaLastNameTo", SearchKeys.GuarantorLastnameTo);
                 cmd.Parameters.AddWithValue("SortField", SortField);
@@ -1635,14 +1639,18 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procContactCreditPaymentSelect(@BranchID, @TerminalNo, @ContactID, @CreditCardTypeID, @PurchaseDateFrom, @PurchaseDateTo, @GuaLastNameFrom, @GuaLastNameTo, @SortField, @SortOption, @limit);";
+                string SQL = "CALL procContactCreditPurchaseSelect(@BranchID, @TerminalNo, @ContactID, @CreditType, @CreditCardTypeID, @PurchaseDateFrom, @PurchaseDateTo, " +
+                                                                  "@CreditorLastNameFrom, @CreditorLastnameTo, @GuaLastNameFrom, @GuaLastNameTo, @SortField, @SortOption, @limit);";
 
                 cmd.Parameters.AddWithValue("BranchID", SearchKeys.BranchDetails.BranchID);
                 cmd.Parameters.AddWithValue("TerminalNo", SearchKeys.TerminalNo);
                 cmd.Parameters.AddWithValue("ContactID", SearchKeys.CustomerDetails.ContactID);
+                cmd.Parameters.AddWithValue("CreditType", SearchKeys.CreditType.ToString("d"));
                 cmd.Parameters.AddWithValue("CreditCardTypeID", SearchKeys.CreditCardTypeID);
                 cmd.Parameters.AddWithValue("PurchaseDateFrom", SearchKeys.PurchaseDateFrom);
                 cmd.Parameters.AddWithValue("PurchaseDateTo", SearchKeys.PurchaseDateTo);
+                cmd.Parameters.AddWithValue("CreditorLastNameFrom", SearchKeys.CreditorLastnameFrom);
+                cmd.Parameters.AddWithValue("CreditorLastNameTo", SearchKeys.CreditorLastnameTo);
                 cmd.Parameters.AddWithValue("GuaLastNameFrom", SearchKeys.GuarantorLastnameFrom);
                 cmd.Parameters.AddWithValue("GuaLastNameTo", SearchKeys.GuarantorLastnameTo);
                 cmd.Parameters.AddWithValue("SortField", SortField);

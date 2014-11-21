@@ -222,11 +222,11 @@ namespace AceSoft.RetailPlus.Client.UI
         //    set { mdecRewardConvertedPayment = value; }
         //}
 
-        private Data.ContactDetails mclsCreditorDetails;
-        public Data.ContactDetails CreditorDetails
-        {
-            get { return mclsCreditorDetails; }
-        }
+        //private Data.ContactDetails mclsCreditorDetails;
+        //public Data.ContactDetails CreditorDetails
+        //{
+        //    get { return mclsCreditorDetails; }
+        //}
 
 		#region Constructors and Destructors
 

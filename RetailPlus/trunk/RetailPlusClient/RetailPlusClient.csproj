@@ -129,6 +129,10 @@
     <Reference Include="System.Management">
       <Name>System.Management</Name>
     </Reference>
+    <Reference Include="System.Net.FtpClient, Version=1.0.5439.14779, Culture=neutral, PublicKeyToken=707f4a972bce71d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\System.Net.FTPClient\bin\Debug\System.Net.FtpClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services">
       <Name>System.Web.Services</Name>

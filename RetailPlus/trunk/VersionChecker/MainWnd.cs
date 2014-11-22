@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.FtpClient;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -14,8 +18,9 @@ namespace AceSoft.RetailPlus.VersionChecker
     public partial class MainWnd : Form
     {
         private System.ComponentModel.BackgroundWorker backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-        private string mstrServer;
         private string mstStatus;
+
+        public string ExecutableSender { get; set; }
 
         public MainWnd()
         {
@@ -72,81 +77,7 @@ namespace AceSoft.RetailPlus.VersionChecker
 
             }
         }
-        private void CopyIndividualFile(BackgroundWorker worker, FTP clsFTP, string strPath, FTP.FileCollection clsFiles)
-        {
-            try
-            {
-                foreach (FTP.File clsFile in clsFiles)
-                {
-                    if (clsFile.FileName.ToLower() != "acesoft.dll" &&
-                            clsFile.FileName.ToLower() != "version.xml" &&
-                            clsFile.FileName.ToLower() != "retailplus.versionchecker.exe" &&
-                            clsFile.FileName.ToLower() != "retailplus.versionchecker.exe.config")
-                    {
-                        try
-                        {
-                            string strLocalFileName = strPath + "\\" + clsFile.FileName;
-                            FileInfo clsFileInfoLocalFile = new System.IO.FileInfo(strLocalFileName);
-                            DateTime dteFileDateLocalFile = clsFileInfoLocalFile.CreationTime;
-                            DateTime dteFileDateRemoteFile = clsFile.FileDate;
 
-                            if (dteFileDateLocalFile != dteFileDateRemoteFile || clsFile.FileSize != clsFileInfoLocalFile.Length)
-                            {
-                                if (File.Exists(strLocalFileName))
-                                    System.IO.File.Delete(strLocalFileName);
-
-                                clsFiles.Download(clsFile.FileName, strLocalFileName);
-                                
-                                while (!clsFTP.Files.DownloadComplete)
-                                {
-                                    mstStatus = "  Downloading " + clsFile.FileName + ": TotalBytes: " + clsFTP.Files.TotalBytes.ToString() + ", : PercentComplete: " + clsFTP.Files.PercentComplete.ToString();
-                                    // Report progress as a percentage of the total task. 
-                                    worker.ReportProgress(clsFTP.Files.PercentComplete);
-                                }
-                                mstStatus = "  " + clsFile.FileName + " download complete: TotalBytes: " + clsFTP.Files.TotalBytes.ToString() + ", : PercentComplete: " + clsFTP.Files.PercentComplete.ToString();
-                            }
-                        }
-                        catch (Exception exAdd)
-                        { throw exAdd; }
-                    }
-                }     
-            }
-            catch (Exception ex)
-            {
- 
-            }
-        }
-        private void CopyDirectory(BackgroundWorker worker, FTP clsFTP, string strPath, FTP.DirectoryCollection clsDirs)
-        {
-            try
-            {
-                foreach (FTP.Directory clsDir in clsDirs)
-                {
-                    if (clsDir.DirectoryName != "." && clsDir.DirectoryName != "..")
-                    {
-                        string strConstantRemarks = "Please contact your system administrator immediately.";
-
-                        mstStatus = "changing directory to " + clsDir.DirectoryName + "...";
-                        worker.ReportProgress(60);
-                        try { clsFTP.ChangeDirectory(clsDir.DirectoryName); }
-                        catch (Exception exCWD) { MessageBox.Show("Sorry cannot navigate to folder: " + clsDirs.GetWorkingDirectory() + "/" + clsDir.DirectoryName + "." + Environment.NewLine + " Details: " + exCWD.Message + "." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); throw exCWD; }
-
-                        string strLocalDirectory = strPath + "\\" + clsDir.DirectoryName;
-                        if (!System.IO.Directory.Exists(strLocalDirectory))
-                            System.IO.Directory.CreateDirectory(strLocalDirectory);
-
-                        mstStatus = "copying files @ directory " + clsDir.DirectoryName + "...";
-                        worker.ReportProgress(70);
-                        CopyIndividualFile(worker, clsFTP, strLocalDirectory, clsFTP.Files);
-                        // CopyDirectory(clsFTP, strLocalDirectory, clsFTP.Directories);
-                    }
-                }
-            }
-            catch (Exception ex) {  }
-        }
-
-        // This event handler is where the actual, 
-        // potentially time-consuming work is done. 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             // Get the BackgroundWorker that raised this event.
@@ -154,10 +85,10 @@ namespace AceSoft.RetailPlus.VersionChecker
 
             try
             {
-                string mstrServer = "127.0.0.1";
+                string strServer = "127.0.0.1";
                 if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"] != null)
                 {
-                    try { mstrServer = System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"].ToString(); }
+                    try { strServer = System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"].ToString(); }
                     catch { }
                 }
 
@@ -172,40 +103,73 @@ namespace AceSoft.RetailPlus.VersionChecker
                 string strPassword = "ftprbspwd";
                 string strFTPDirectory = "retailplusclient";
 
-                FTP clsFTP = new FTP();
-
+                string destinationDirectory = Application.StartupPath;
                 string strConstantRemarks = "Please contact your system administrator immediately.";
 
-                mstStatus = "connecting to ftp server " + mstrServer + "...";
+                mstStatus = "getting ftp server configuration...";
                 worker.ReportProgress(1);
-                try { clsFTP.Connect(mstrServer, strUserName, strPassword); }
-                catch (Exception exConn) { MessageBox.Show("Sorry cannot connect to Version FTP Server: " + mstrServer + "." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); throw exConn; }
 
-                mstStatus = "changing directory to retailplusclient...";
+                FtpClient ftpClient = new FtpClient();
+                ftpClient.Host = strServer;
+                ftpClient.Port = intPort;
+                ftpClient.Credentials = new NetworkCredential(strUserName, strPassword);
+
+                mstStatus = "connecting to ftp server " + strServer + "...";
+                worker.ReportProgress(2);
+
+                //IEnumerable<FtpListItem> lstFtpListItem = ftpClient.GetListing(strFTPDirectory, FtpListOption.Modify | FtpListOption.Size)
+                //        .Where(ftpListItem => string.Equals(Path.GetExtension(ftpListItem.Name), ".dll"));
+
+                IEnumerable<FtpListItem> lstFtpListItem = ftpClient.GetListing(strFTPDirectory, FtpListOption.Modify | FtpListOption.Size);
+
+                mstStatus = "connecting to ftp server " + strServer + "... done.";
                 worker.ReportProgress(5);
-                try { clsFTP.ChangeDirectory(strFTPDirectory); }
-                catch (Exception exCWD) { MessageBox.Show("Sorry cannot navigate to folder: " + strFTPDirectory + "." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); throw exCWD; }
+                System.Threading.Thread.Sleep(10);
 
-                try
+                Int32 iCount =  lstFtpListItem.Count();
+                Int32 iCtr = 1;
+
+                mstStatus = "copying " + iCount.ToString() + " files from retailplusclient...";
+                worker.ReportProgress(10);
+                System.Threading.Thread.Sleep(10);
+
+                // List all files with a .txt extension
+                foreach (FtpListItem ftpListItem in lstFtpListItem)
                 {
-                    // Report progress as a percentage of the total task. 
-                    mstStatus = "copying files @ retailplusclient...";
-                    worker.ReportProgress(10);
-                    CopyIndividualFile(worker, clsFTP, Application.StartupPath, clsFTP.Files);
+                    if (ftpListItem.Name.ToLower() != "version.xml" &&
+                        ftpListItem.Name.ToLower() != "retailplus.versionchecker.exe" &
+                        ftpListItem.Name.ToLower() != "retailplus.versionchecker.exe.config")
+                    {
+                        // Report progress as a percentage of the total task. 
+                        mstStatus = "copying file: " + ftpListItem.Name + " ...";
+                        decimal x = ((decimal.Parse(iCtr.ToString()) / decimal.Parse(iCount.ToString()) * decimal.Parse("100")) - decimal.Parse("1"));
+                        iCtr++;
 
-                    mstStatus = "copying directories @ retailplusclient...";
-                    worker.ReportProgress(50);
-                    CopyDirectory(worker, clsFTP, Application.StartupPath, clsFTP.Directories);
+                        Int32 iProgress = Int32.Parse(Math.Round(x, 0).ToString());
+                        worker.ReportProgress(iProgress >= 90 ? 90 : iProgress);
 
-                    mstStatus = "Done copying all files...";
+                        var destinationPath = string.Format(@"{0}\{1}", destinationDirectory, ftpListItem.Name);
 
-                    worker.ReportProgress(100);
-                    System.Threading.Thread.Sleep(100);
-                    System.Diagnostics.Process.Start("RetailPlus.exe");
-                    Application.Exit();
+                        using (var ftpStream = ftpClient.OpenRead(ftpListItem.FullName))
+                        using (var fileStream = File.Create(destinationPath, (int)ftpStream.Length))
+                        {
+                            var buffer = new byte[8 * 1024];
+                            int count;
+                            while ((count = ftpStream.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                fileStream.Write(buffer, 0, count);
+                            }
+                        }
+                    }
                 }
-                catch (Exception ex) { MessageBox.Show("Sorry cannot copy the due to an error. Details: " + ex.Message + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); throw ex; }
-                clsFTP.Disconnect();
+
+                mstStatus = "Done copying all files...";
+
+                worker.ReportProgress(100);
+                System.Threading.Thread.Sleep(100);
+                System.Diagnostics.Process.Start(ExecutableSender);
+                Application.Exit();
+
             }
             catch (Exception ex)
             {
@@ -240,6 +204,10 @@ namespace AceSoft.RetailPlus.VersionChecker
                 // Finally, handle the case where the operation  
                 // succeeded.
                 lblStatus.Text = "Done";
+
+                System.Threading.Thread.Sleep(100);
+                System.Diagnostics.Process.Start(ExecutableSender);
+                Application.Exit();
             }
         }
 

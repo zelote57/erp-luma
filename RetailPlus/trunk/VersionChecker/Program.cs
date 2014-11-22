@@ -12,11 +12,23 @@ namespace AceSoft.RetailPlus.VersionChecker
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            string steExecutableSender = "RetailPlus.exe";
+
+            if (args.Length > 0)
+            {
+                steExecutableSender = args[0].Trim();
+
+                if (steExecutableSender != "RetailPlus.exe" && steExecutableSender != "RestoPlus.exe")
+                    steExecutableSender = "RetailPlus.exe";
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWnd());
+            MainWnd appmain = new MainWnd();
+            appmain.ExecutableSender = steExecutableSender;
+            Application.Run(appmain);
         }
     }
 }

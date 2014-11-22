@@ -1,6 +1,10 @@
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Management;
+using System.Net;
+using System.Net.FtpClient;
 using System.Windows.Forms;
 using System.Threading;
 using System.Xml;
@@ -152,7 +156,7 @@ namespace AceSoft.RetailPlus.Client
 			if (curVersion.CompareTo(verNewVersion) < 0)
 			{
 				clsEvent.AddEventLn("system will now exit then download the latest version.", true);
-				System.Diagnostics.Process.Start("RetailPlus.VersionChecker.exe");
+                System.Diagnostics.Process.Start("RetailPlus.VersionChecker.exe", "RetailPlus.exe");
 				Application.Exit();
 				return;
 			}
@@ -471,55 +475,8 @@ namespace AceSoft.RetailPlus.Client
 			}
 
 		}
-		//private static string GetHDSerialNo()
-		//{
-		//    string stRetValue = Constants.ERROR;
-		//    try
-		//    {
-		//        OSVersion osVersion = OSInformation.getOSVersion();
-		//        switch (osVersion)
-		//        {
-		//            case OSVersion.Windows95:
-		//            case OSVersion.WindowsMe:
-		//            case OSVersion.Windows98:
-		//            case OSVersion.Windows98SecondEdition:
-		//            case OSVersion.WindowsNT351:
-		//            case OSVersion.WindowsNT4:
-		//            case OSVersion.Windows2000:
-		//            case OSVersion.WindowsXP:
-		//                const string RegCode = "NW5KF-49VU2-CW1VD-EH32P-UFEL2";
-		//                DiskInfo diskInfo = new DiskInfo();
 
-		//                HDiskInfo.GetIdeDiskInfo(0, ref diskInfo, RegCode);
-		//                stRetValue = diskInfo.pSerialNumber;
-		//                break;
-		//            case OSVersion.WindowsVista:
-		//            case OSVersion.Windows7:
-		//                ManagementClass mc = new ManagementClass("Win32_PhysicalMedia");
-		//                ManagementObjectCollection moc = mc.GetInstances();
-		//                foreach (ManagementObject mo in moc)
-		//                {
-		//                    if (mo.ToString().ToUpper().IndexOf("PHYSICALDRIVE0") != -1)
-		//                    {
-		//                        stRetValue = mo["SerialNumber"].ToString().Trim();
-		//                        mo.Dispose();
-		//                        break;
-		//                    }
-		//                    mo.Dispose();
-		//                }
-		//                break;
-		//            case OSVersion.Unknown:
-		//                break;
-		//        }
-				
-		//        return stRetValue;
-		//    }
-		//    catch (Exception ex) 
-		//    {
-		//        return stRetValue + ":" + ex.Message;
-		//    }
-		//}
-		private static Version GetLatestVersion()
+        private static Version GetLatestVersion()
 		{
 			Version clsVersion = new Version("0.0.0.0");
 			try
@@ -559,37 +516,38 @@ namespace AceSoft.RetailPlus.Client
                     catch { }
                 }
 
-				FTP clsFTP = new FTP();
+                string strXMLFile = Application.StartupPath + "\\version.xml";
+                string destinationDirectory = Application.StartupPath;
 
-                //string strConstantRemarks = "Please contact your system administrator immediately.";
+                FtpClient ftpClient = new FtpClient();
+                ftpClient.Host = strServer;
+                ftpClient.Port = intPort;
+                ftpClient.Credentials = new NetworkCredential(strUserName, strPassword);
 
-                try { clsFTP.Connect(strServer, strUserName, strPassword); }
-				catch {
-                    //MessageBox.Show("Sorry cannot connect to Version FTP Server: " + strServer + "." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //return clsVersion; 
+                System.Collections.Generic.IEnumerable<FtpListItem> lstFtpListItem = ftpClient.GetListing(strFTPDirectory, FtpListOption.Modify | FtpListOption.Size);
+
+                // List all files with a .txt extension
+                foreach (FtpListItem ftpListItem in lstFtpListItem)
+                {
+                    if (ftpListItem.Name.ToLower() == "version.xml" ||
+                        ftpListItem.Name.ToLower() == "retailplus.versionchecker.exe" ||
+                        ftpListItem.Name.ToLower() == "retailplus.versionchecker.exe.config")
+                    {
+
+                        var destinationPath = string.Format(@"{0}\{1}", destinationDirectory, ftpListItem.Name);
+
+                        using (var ftpStream = ftpClient.OpenRead(ftpListItem.FullName))
+                        using (var fileStream = File.Create(destinationPath, (int)ftpStream.Length))
+                        {
+                            var buffer = new byte[8 * 1024];
+                            int count;
+                            while ((count = ftpStream.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                fileStream.Write(buffer, 0, count);
+                            }
+                        }
+                    }
                 }
-
-				try { clsFTP.ChangeDirectory(strFTPDirectory); }
-				catch 
-                { 
-                    //MessageBox.Show("Sorry cannot navigate to folder: " + strFTPDirectory + "." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); clsFTP.Disconnect(); 
-                    //return clsVersion; 
-                }
-
-				string strXMLFile = Application.StartupPath + "\\version.xml";
-				try 
-				{
-					if (System.IO.File.Exists(strXMLFile))
-						System.IO.File.Delete(strXMLFile);
-
-					clsFTP.Files.Download("version.xml");
-					while (clsFTP.Files.DownloadComplete == false)
-					{ System.Threading.Thread.Sleep(1000); }
-				}
-				catch { 
-                    // MessageBox.Show("Sorry cannot find the VERSION.XML file which contain the latest version of RetailPlus FE System." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); clsFTP.Disconnect(); return clsVersion; 
-                }
-				clsFTP.Disconnect();
 
 				string strVersion = string.Empty;
 				#region Assign the Version from XML File to strVersion

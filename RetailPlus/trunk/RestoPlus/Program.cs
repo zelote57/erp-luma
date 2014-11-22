@@ -2,6 +2,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Management;
+using System.Net;
+using System.Net.FtpClient;
 using System.Windows.Forms;
 using System.Threading;
 using System.Xml;
@@ -148,89 +150,21 @@ namespace AceSoft.RetailPlus.Client
             clsEvent.AddEventLn(":" + curVersion.ToString());
 
             #region CopySubGroupsImages
+
             // this should be available only for resto
-            try
-            {
-                string strServer = "127.0.0.1";
-                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"] != null)
-                {
-                    try { strServer = System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"].ToString(); }
-                    catch { }
-                }
+            appsplash.lblStatus.Text = "Copying subgroup images from server... ";
+            appsplash.prgBar.Value = 25;
+            getSubGroupImages();
 
-                int intPort = 21;
-                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"] != null)
-                {
-                    try { intPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"]); }
-                    catch { }
-                }
-
-                string strUserName = "ftprbsuser";
-                string strPassword = "ftprbspwd";
-                string strFTPDirectory = "subgroupimages";
-
-                FTP clsFTP = new FTP();
-                try { 
-                    clsFTP.Connect(strServer, strUserName, strPassword);
-
-                    try { 
-                        clsFTP.ChangeDirectory(strFTPDirectory);
-                        try
-                        {
-                            string strPath = Application.StartupPath + @"\images\subgroups";
-
-                            foreach (FTP.File clsFile in clsFTP.Files)
-                            {
-                                try
-                                {
-                                    string strLocalFileName = strPath + @"\" + clsFile.FileName;
-                                    FileInfo clsFileInfoLocalFile = new System.IO.FileInfo(strLocalFileName);
-
-                                    if (!clsFileInfoLocalFile.Exists || clsFile.FileSize != clsFileInfoLocalFile.Length) //clsFileInfoLocalFile.CreationTime != clsFile.FileDate || 
-                                    {
-                                        if (File.Exists(strLocalFileName))
-                                            System.IO.File.Delete(strLocalFileName);
-
-                                        clsFTP.Files.Download(clsFile.FileName, strLocalFileName);
-
-                                        appsplash.lblStatus.Text = "Downloading " + clsFile.FileName + "...";
-                                        while (!clsFTP.Files.DownloadComplete)
-                                        {
-                                            appsplash.prgBar.Value = clsFTP.Files.PercentComplete;
-                                            appsplash.Show();
-                                            appsplash.Refresh();
-                                        }
-                                        
-                                        appsplash.lblStatus.Text = clsFile.FileName + " download complete: TotalBytes: " + clsFTP.Files.TotalBytes.ToString() + ", : PercentComplete: " + clsFTP.Files.PercentComplete.ToString();
-                                    }
-                                }
-                                catch{}
-                            }
-                        }
-                        catch
-                        {
-                            // MessageBox.Show("Sorry cannot find the VERSION.XML file which contain the latest version of RetailPlus FE System." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); clsFTP.Disconnect(); return clsVersion; 
-                        }
-                    }
-                    catch { }
-                    clsFTP.Disconnect();
-                } catch (Exception ex)
-                {
-                    clsEvent.AddEventLn("Cannot copy sub group image files.", true);
-                    clsEvent.AddErrorEventLn(ex);
-                }
-            }
-            catch
-            { }
             #endregion
 
-            Version verNewVersion = GetLatestVersionFromServer();
+            Version verNewVersion = GetLatestVersion();
             clsEvent.AddEventLn("latest version is " + verNewVersion.ToString(), true);
             // compare the versions
             if (curVersion.CompareTo(verNewVersion) < 0)
             {
                 clsEvent.AddEventLn("system will now exit then download the latest version.", true);
-                System.Diagnostics.Process.Start("RetailPlus.VersionChecker.exe");
+                System.Diagnostics.Process.Start("RetailPlus.VersionChecker.exe", "RestoPlus.exe");
                 Application.Exit();
                 return;
             }
@@ -549,8 +483,8 @@ namespace AceSoft.RetailPlus.Client
             }
 
         }
-        
-        private static Version GetLatestVersionFromServer()
+
+        private static Version GetLatestVersion()
         {
             Version clsVersion = new Version("0.0.0.0");
             try
@@ -570,42 +504,58 @@ namespace AceSoft.RetailPlus.Client
                 }
 
                 string strUserName = "ftprbsuser";
-                string strPassword = "ftprbspwd";
-                string strFTPDirectory = "retailplusclient";
-
-                FTP clsFTP = new FTP();
-
-                //string strConstantRemarks = "Please contact your system administrator immediately.";
-
-                try { clsFTP.Connect(strServer, strUserName, strPassword); }
-                catch
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPUserName"] != null)
                 {
-                    //MessageBox.Show("Sorry cannot connect to Version FTP Server: " + strServer + "." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //return clsVersion; 
+                    try { strUserName = System.Configuration.ConfigurationManager.AppSettings["VersionFTPUserName"].ToString(); }
+                    catch { }
                 }
 
-                try { clsFTP.ChangeDirectory(strFTPDirectory); }
-                catch
+                string strPassword = "ftprbspwd";
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPPassword"] != null)
                 {
-                    //MessageBox.Show("Sorry cannot navigate to folder: " + strFTPDirectory + "." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); clsFTP.Disconnect(); 
-                    //return clsVersion; 
+                    try { strPassword = System.Configuration.ConfigurationManager.AppSettings["VersionFTPPassword"].ToString(); }
+                    catch { }
+                }
+
+                string strFTPDirectory = "RetailPlusClient";
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPDirectory"] != null)
+                {
+                    try { strFTPDirectory = System.Configuration.ConfigurationManager.AppSettings["VersionFTPDirectory"].ToString(); }
+                    catch { }
                 }
 
                 string strXMLFile = Application.StartupPath + "\\version.xml";
-                try
-                {
-                    if (System.IO.File.Exists(strXMLFile))
-                        System.IO.File.Delete(strXMLFile);
+                string destinationDirectory = Application.StartupPath;
 
-                    clsFTP.Files.Download("version.xml");
-                    while (clsFTP.Files.DownloadComplete == false)
-                    { System.Threading.Thread.Sleep(1000); }
-                }
-                catch
+                FtpClient ftpClient = new FtpClient();
+                ftpClient.Host = strServer;
+                ftpClient.Port = intPort;
+                ftpClient.Credentials = new NetworkCredential(strUserName, strPassword);
+
+                System.Collections.Generic.IEnumerable<FtpListItem> lstFtpListItem = ftpClient.GetListing(strFTPDirectory, FtpListOption.Modify | FtpListOption.Size);
+
+                // List all files with a .txt extension
+                foreach (FtpListItem ftpListItem in lstFtpListItem)
                 {
-                    // MessageBox.Show("Sorry cannot find the VERSION.XML file which contain the latest version of RetailPlus FE System." + Environment.NewLine + strConstantRemarks, "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Error); clsFTP.Disconnect(); return clsVersion; 
+                    if (ftpListItem.Name.ToLower() == "version.xml" ||
+                        ftpListItem.Name.ToLower() == "retailplus.versionchecker.exe" ||
+                        ftpListItem.Name.ToLower() == "retailplus.versionchecker.exe.config")
+                    {
+
+                        var destinationPath = string.Format(@"{0}\{1}", destinationDirectory, ftpListItem.Name);
+
+                        using (var ftpStream = ftpClient.OpenRead(ftpListItem.FullName))
+                        using (var fileStream = File.Create(destinationPath, (int)ftpStream.Length))
+                        {
+                            var buffer = new byte[8 * 1024];
+                            int count;
+                            while ((count = ftpStream.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                fileStream.Write(buffer, 0, count);
+                            }
+                        }
+                    }
                 }
-                clsFTP.Disconnect();
 
                 string strVersion = string.Empty;
                 #region Assign the Version from XML File to strVersion
@@ -650,8 +600,54 @@ namespace AceSoft.RetailPlus.Client
         }
         private static bool getSubGroupImages()
         {
-            
+            try
+            {
+                string strServer = "127.0.0.1";
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"] != null)
+                {
+                    try { strServer = System.Configuration.ConfigurationManager.AppSettings["VersionFTPIPAddress"].ToString(); }
+                    catch { }
+                }
 
+                int intPort = 21;
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"] != null)
+                {
+                    try { intPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["VersionFTPPort"]); }
+                    catch { }
+                }
+
+                string strUserName = "ftprbsuser";
+                string strPassword = "ftprbspwd";
+                string strFTPDirectory = "subgroupimages";
+
+                string destinationDirectory = Application.StartupPath + @"\images\subgroups";
+
+                FtpClient ftpClient = new FtpClient();
+                ftpClient.Host = strServer;
+                ftpClient.Port = intPort;
+                ftpClient.Credentials = new NetworkCredential(strUserName, strPassword);
+
+                System.Collections.Generic.IEnumerable<FtpListItem> lstFtpListItem = ftpClient.GetListing(strFTPDirectory, FtpListOption.Modify | FtpListOption.Size);
+
+                // List all files with a .txt extension
+                foreach (FtpListItem ftpListItem in lstFtpListItem)
+                {
+                    var destinationPath = string.Format(@"{0}\{1}", destinationDirectory, ftpListItem.Name);
+
+                    using (var ftpStream = ftpClient.OpenRead(ftpListItem.FullName))
+                    using (var fileStream = File.Create(destinationPath, (int)ftpStream.Length))
+                    {
+                        var buffer = new byte[8 * 1024];
+                        int count;
+                        while ((count = ftpStream.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            fileStream.Write(buffer, 0, count);
+                        }
+                    }
+                }
+            }
+            catch
+            { }
             return true;
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Threading;
@@ -3396,7 +3397,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			{
 				clsEvent.AddEvent("[" + lblCashier.Text + "] Selecting customer.");
 
-				DialogResult result; Data.ContactDetails details;
+                DialogResult result; Data.ContactDetails details; bool isMergeTable = false;
 				TableSelectWnd clsTableSelectWnd = new TableSelectWnd();
 				clsTableSelectWnd.TerminalDetails = mclsTerminalDetails;
                 clsTableSelectWnd.ContactGroupCategory = ContactGroupCategory.TABLES;
@@ -3404,11 +3405,61 @@ namespace AceSoft.RetailPlus.Client.UI
 				clsTableSelectWnd.ShowDialog(this);
 				details = clsTableSelectWnd.Details;
 				result = clsTableSelectWnd.Result;
+                isMergeTable = clsTableSelectWnd.isMergeTable;
 				clsTableSelectWnd.Close();
 				clsTableSelectWnd.Dispose();
 
 				if (result == DialogResult.OK)
 				{
+                    if (isMergeTable)
+                    {
+                        List<Data.ContactDetails> lstDetails;
+                        TableMergeWnd clsTableMergeWnd = new TableMergeWnd();
+                        clsTableMergeWnd.TerminalDetails = mclsTerminalDetails;
+                        clsTableMergeWnd.ContactGroupCategory = ContactGroupCategory.TABLES;
+                        clsTableMergeWnd.ShowAvailableTableOnly = true; // inde pwede imerge and table na may laman na
+                        clsTableMergeWnd.MainTableToMerge = details;
+                        clsTableMergeWnd.ShowDialog(this);
+                        //details = clsTableMergeWnd.Details;
+                        result = clsTableMergeWnd.Result;
+                        lstDetails = clsTableMergeWnd.MergeTables;
+                        clsTableMergeWnd.Close();
+                        clsTableMergeWnd.Dispose();
+
+                        if (result == DialogResult.OK)
+                        {
+                            if (lstDetails.Count > 0)
+                            {
+                                // 22Nov2014 : remove the merge tables when closed or void or create a new list
+                                RemoveFromMergeTable(details.ContactCode);
+
+                                Data.MergeTable clsMergeTable = new Data.MergeTable();
+                                Data.MergeTableDetails clsMergeTableDetails;
+
+                                // insert the main table
+                                clsMergeTableDetails = new Data.MergeTableDetails()
+                                {
+                                    MainTableCode = details.ContactCode,
+                                    ChildTableCode = details.ContactCode
+                                };
+                                clsMergeTable.Insert(clsMergeTableDetails);
+
+                                // insert the child tables
+                                for (int x = 0; x < lstDetails.Count; x++)
+                                {
+                                    clsMergeTableDetails = new Data.MergeTableDetails()
+                                    {
+                                        MainTableCode = details.ContactCode,
+                                        ChildTableCode = lstDetails[x].ContactCode
+                                    };
+                                    clsMergeTable.Insert(clsMergeTableDetails);
+
+                                }
+                                clsMergeTable.CommitAndDispose();
+                            }
+                        }
+                        return;
+                    }
 					// Nov 18, 2011 : Lemu - auto suspend if already doing a transaction
 					if (mboIsInTransaction)
 					{
@@ -4131,6 +4182,9 @@ namespace AceSoft.RetailPlus.Client.UI
                     mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
 
                     clsContact.UpdateLastCheckInDate(mclsSalesTransactionDetails.CustomerID, Constants.C_DATE_MIN_VALUE);
+
+                    // 22Nov2014 : remove the merge tables when closed or void
+                    RemoveFromMergeTable(mclsSalesTransactionDetails.CustomerDetails.ContactCode);
 
                     try
                     {
@@ -9716,6 +9770,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 // Sep 24, 2014 put an override if cmdSubGroupLeft.Tag = 0
                 // always do an asceding coz its already the end.
+                if (intSequenceNoStart < Constants.C_RESTOPLUS_MAX_SUB_GROUP) intSequenceNoStart = 0; //reset to 0 if it's 1
                 if (intSequenceNoStart == 0) SequenceSortOrder = System.Data.SqlClient.SortOrder.Ascending;
 
 				ProductSubGroupColumns clsProductSubGroupColumns = new ProductSubGroupColumns();
@@ -9723,7 +9778,7 @@ namespace AceSoft.RetailPlus.Client.UI
 				clsProductSubGroupColumns.SequenceNo = true;
 
 				ProductSubGroup clsProductSubGroup = new ProductSubGroup(mConnection, mTransaction);
-				System.Data.DataTable dtProductSubGroup = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, new ProductSubGroupDetails(), intSequenceNoStart, SequenceSortOrder, Constants.C_RESTOPLUS_MAX_SUB_GROUP + 1, "SequenceNo", SequenceSortOrder);
+                System.Data.DataTable dtProductSubGroup = clsProductSubGroup.ListAsDataTable(clsProductSubGroupColumns, new ProductSubGroupDetails(), intSequenceNoStart, SequenceSortOrder, SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending ? Constants.C_RESTOPLUS_MAX_SUB_GROUP : Constants.C_RESTOPLUS_MAX_SUB_GROUP + 1, "SequenceNo", SequenceSortOrder);
 				clsProductSubGroup.CommitAndDispose();
 
                 // re-order the products by sequence no
@@ -9747,33 +9802,36 @@ namespace AceSoft.RetailPlus.Client.UI
 				{
 					if (iCtr > Constants.C_RESTOPLUS_MAX_SUB_GROUP) break;
 
-					if (iCtr == Constants.C_RESTOPLUS_MAX_SUB_GROUP && dtProductSubGroup.Rows.Count > Constants.C_RESTOPLUS_MAX_SUB_GROUP)
-					{
-						if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
-							try { if (iCtr==1) cmdSubGroupLeft.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString(); }
-							catch { }
-						else
-							try { cmdSubGroupRight.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString(); }
-							catch { }
-					}
-					else if (dtProductSubGroup.Rows.Count > 0 && dtProductSubGroup.Rows.Count <= Constants.C_RESTOPLUS_MAX_SUB_GROUP)
-					{
-						if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
-						{
-                            try { 
-                                if (Int32.Parse(cmdSubGroupRight.Tag.ToString()) < Int32.Parse(dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString())) 
-                                    cmdSubGroupRight.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString(); 
-                            }
-							catch { }
-							cmdSubGroupLeft.Tag = "0".ToString();
-						}
-						else
-						{
-							try { if (iCtr == 1) cmdSubGroupLeft.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString(); }
-							catch { }
-							// cmdSubGroupRight.Tag = cmdSubGroupRight.Tag; // do not reset
-						}
-					}
+                    if (iCtr == 1) cmdSubGroupLeft.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString();
+                    if (iCtr >= 1 && dtProductSubGroup.Rows.Count > Constants.C_RESTOPLUS_MAX_SUB_GROUP) cmdSubGroupRight.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString();
+
+                    //if (iCtr == Constants.C_RESTOPLUS_MAX_SUB_GROUP && dtProductSubGroup.Rows.Count > Constants.C_RESTOPLUS_MAX_SUB_GROUP)
+                    //{
+                    //    if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
+                    //        try { if (iCtr==1) cmdSubGroupLeft.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString(); }
+                    //        catch { }
+                    //    else
+                    //        try { cmdSubGroupRight.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString(); }
+                    //        catch { }
+                    //}
+                    //else if (dtProductSubGroup.Rows.Count > 0 && dtProductSubGroup.Rows.Count <= Constants.C_RESTOPLUS_MAX_SUB_GROUP)
+                    //{
+                    //    if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
+                    //    {
+                    //        try { 
+                    //            if (Int32.Parse(cmdSubGroupRight.Tag.ToString()) < Int32.Parse(dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString())) 
+                    //                cmdSubGroupRight.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString(); 
+                    //        }
+                    //        catch { }
+                    //        cmdSubGroupLeft.Tag = "0".ToString();
+                    //    }
+                    //    else
+                    //    {
+                    //        try { if (iCtr == 1) cmdSubGroupLeft.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString(); }
+                    //        catch { }
+                    //        cmdSubGroupRight.Tag = dr[Data.ProductSubGroupColumnNames.SequenceNo].ToString();
+                    //    }
+                    //}
 
 					SubGroupButton cmdSubGroup = new SubGroupButton();
 

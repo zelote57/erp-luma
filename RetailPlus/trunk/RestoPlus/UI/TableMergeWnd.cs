@@ -1,29 +1,35 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using AceSoft.RetailPlus.Data;
 
 namespace AceSoft.RetailPlus.Client.UI
 {
-	public class TableSelectWnd : System.Windows.Forms.Form
+	public class TableMergeWnd : System.Windows.Forms.Form
 	{
 		private Label label1;
 		private PictureBox imgIcon;
 		private System.ComponentModel.Container components = null;
 
 		private DialogResult dialog;
-		private Data.ContactDetails mDetails;
 		private bool mboShowAvailableTableOnly;
 		private Data.TerminalDetails mclsTerminalDetails;
 		private GroupBox grpItems;
 		private TableLayoutPanel tblLayout;
 		private Button cmdTableRight;
 		private Button cmdCancel;
-        private Button cmdMergeTable;
 		private Button cmdTableLeft;
+        private Button cmdEnter;
 
-        public bool isMergeTable { get; set; }
+        private List<Data.ContactDetails> mlstTables = new List<Data.ContactDetails>();
+        public List<Data.ContactDetails> MergeTables 
+        {
+            get { return mlstTables; }
+        }
+        
+
 		public Data.TerminalDetails TerminalDetails
 		{
 			set { mclsTerminalDetails = value; }
@@ -36,16 +42,13 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
 			get {	return dialog;	}
 		}
-		public ContactDetails Details
-		{
-			get {	return mDetails;	}
-		}
 
         public Data.ContactGroupCategory ContactGroupCategory { get; set; }
+        public Data.ContactDetails MainTableToMerge { get; set; }
 
 		#region Constructors and Destructors
 
-		public TableSelectWnd()
+		public TableMergeWnd()
 		{
 			InitializeComponent();
 		}
@@ -78,7 +81,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdTableRight = new System.Windows.Forms.Button();
             this.cmdTableLeft = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
-            this.cmdMergeTable = new System.Windows.Forms.Button();
+            this.cmdEnter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.grpItems.SuspendLayout();
             this.SuspendLayout();
@@ -118,7 +121,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpItems.Size = new System.Drawing.Size(1007, 545);
             this.grpItems.TabIndex = 53;
             this.grpItems.TabStop = false;
-            this.grpItems.Text = "Select TABLE to dine.";
+            this.grpItems.Text = "Select TABLE\'s to merge.";
             // 
             // tblLayout
             // 
@@ -183,7 +186,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmdCancel.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdCancel.ForeColor = System.Drawing.Color.White;
-            this.cmdCancel.Location = new System.Drawing.Point(877, 618);
+            this.cmdCancel.Location = new System.Drawing.Point(776, 618);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(106, 83);
             this.cmdCancel.TabIndex = 127;
@@ -191,45 +194,43 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
-            // cmdMergeTable
+            // cmdEnter
             // 
-            this.cmdMergeTable.BackColor = System.Drawing.Color.Gold;
-            this.cmdMergeTable.FlatAppearance.BorderColor = System.Drawing.Color.Lime;
-            this.cmdMergeTable.FlatAppearance.BorderSize = 0;
-            this.cmdMergeTable.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
-            this.cmdMergeTable.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Lime;
-            this.cmdMergeTable.Font = new System.Drawing.Font("Arial Rounded MT Bold", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdMergeTable.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.cmdMergeTable.Location = new System.Drawing.Point(690, 26);
-            this.cmdMergeTable.Name = "cmdMergeTable";
-            this.cmdMergeTable.Size = new System.Drawing.Size(164, 28);
-            this.cmdMergeTable.TabIndex = 128;
-            this.cmdMergeTable.Text = "Merge Table";
-            this.cmdMergeTable.UseVisualStyleBackColor = false;
-            this.cmdMergeTable.Click += new System.EventHandler(this.cmdMergeTable_Click);
+            this.cmdEnter.AutoSize = true;
+            this.cmdEnter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmdEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdEnter.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdEnter.ForeColor = System.Drawing.Color.White;
+            this.cmdEnter.Location = new System.Drawing.Point(877, 618);
+            this.cmdEnter.Name = "cmdEnter";
+            this.cmdEnter.Size = new System.Drawing.Size(106, 83);
+            this.cmdEnter.TabIndex = 128;
+            this.cmdEnter.Text = "ENTER";
+            this.cmdEnter.UseVisualStyleBackColor = true;
+            this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
-            // TableSelectWnd
+            // TableMergeWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1026, 764);
             this.ControlBox = false;
-            this.Controls.Add(this.cmdMergeTable);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdTableLeft);
             this.Controls.Add(this.cmdTableRight);
             this.Controls.Add(this.grpItems);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.imgIcon);
+            this.Controls.Add(this.cmdEnter);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.MaximizeBox = false;
-            this.Name = "TableSelectWnd";
+            this.Name = "TableMergeWnd";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Load += new System.EventHandler(this.TableSelectWnd_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TableSelectWnd_KeyDown);
+            this.Load += new System.EventHandler(this.TableMergeWnd_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TableMergeWnd_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.grpItems.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -240,7 +241,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		#region Windows Form Methods
 
-		private void TableSelectWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+		private void TableMergeWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
             //System.Data.DataTable dt;
             //int index;
@@ -254,7 +255,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 		}
 
-		private void TableSelectWnd_Load(object sender, System.EventArgs e)
+		private void TableMergeWnd_Load(object sender, System.EventArgs e)
 		{
 			try
 			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
@@ -265,7 +266,10 @@ namespace AceSoft.RetailPlus.Client.UI
 			try
 			{ this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
 			catch { }
-            
+            try
+            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
+            catch { }
+
 			LoadOptions();
 			LoadContactData(System.Data.SqlClient.SortOrder.Ascending);
 		}
@@ -302,7 +306,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void LoadOptions()
 		{
-
+            grpItems.Text = "Select the tables to merge to table: " + MainTableToMerge.ContactCode;
 		}
 		private void LoadContactData(System.Data.SqlClient.SortOrder SequenceSortOrder)
 		{
@@ -433,7 +437,6 @@ namespace AceSoft.RetailPlus.Client.UI
                         lblLastCheckInDate.Location = new System.Drawing.Point(5, 5);
                         lblLastCheckInDate.Name = "lblLastCheckInDate" + iCtr.ToString();
                         lblLastCheckInDate.TabIndex = 1;
-                        lblLastCheckInDate.Text = "";
                         lblLastCheckInDate.Text = "CheckIn: " + DateTime.Parse(dr[Data.ContactColumnNames.LastCheckInDate].ToString()).ToString("dd-MMM hh:mm tt") + "   [" + iLapse.Hours.ToString("0#") + "hrs " + iLapse.Minutes.ToString("0#") + "mins]";
                         cmdTable.Controls.Add(lblLastCheckInDate);
                     }
@@ -455,7 +458,6 @@ namespace AceSoft.RetailPlus.Client.UI
                         lblNoOfPax.Location = new System.Drawing.Point(210, 75);
                         lblNoOfPax.Name = "lblNoOfPax" + iCtr.ToString();
                         lblNoOfPax.TabIndex = 1;
-                        lblNoOfPax.Text = "";
                         lblNoOfPax.Text = clsSalesTransactionDetails.PaxNo.ToString() + "Pax";
                         cmdTable.Controls.Add(lblNoOfPax);
 
@@ -487,8 +489,27 @@ namespace AceSoft.RetailPlus.Client.UI
                     cmdTable.Controls.Add(lblMerge);
 
                     clsMergeTableDetails = clsMergeTable.Details(dr[Data.ContactColumnNames.ContactCode].ToString());
-                    if (clsMergeTableDetails.ChildTableCode == dr[Data.ContactColumnNames.ContactCode].ToString() &&
-                        clsMergeTableDetails.MainTableCode != dr[Data.ContactColumnNames.ContactCode].ToString())
+
+                    if (MainTableToMerge.ContactCode == dr[Data.ContactColumnNames.ContactCode].ToString())
+                    {
+                        cmdTable.BackColor = System.Drawing.Color.LightGreen;
+                        cmdTable.GradientBottom = System.Drawing.Color.LightGreen;
+                        cmdTable.GradientTop = System.Drawing.Color.DarkGreen;
+                        cmdTable.Enabled = false;
+                        cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Visible = true;
+                        cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Text = "Merged to this table";
+                    }
+                    else if (clsMergeTableDetails.MainTableCode == dr[Data.ContactColumnNames.ContactCode].ToString())
+                    {
+                        cmdTable.BackColor = System.Drawing.Color.DarkGray;
+                        cmdTable.GradientBottom = System.Drawing.Color.DarkGray;
+                        cmdTable.GradientTop = System.Drawing.Color.LightGray;
+                        cmdTable.Enabled = false;
+                        cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Visible = true;
+                        cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Text = "Merged - Main Table";
+                    }
+                    else if (clsMergeTableDetails.ChildTableCode == dr[Data.ContactColumnNames.ContactCode].ToString() &&
+                        MainTableToMerge.ContactCode != clsMergeTableDetails.MainTableCode)
                     {
                         cmdTable.BackColor = System.Drawing.Color.DarkGray;
                         cmdTable.GradientBottom = System.Drawing.Color.DarkGray;
@@ -496,6 +517,15 @@ namespace AceSoft.RetailPlus.Client.UI
                         cmdTable.Enabled = false;
                         cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Visible = true;
                         cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Text = "Merged to " + clsMergeTableDetails.MainTableCode;
+                    }
+                    else if (clsMergeTableDetails.ChildTableCode == dr[Data.ContactColumnNames.ContactCode].ToString() &&
+                        MainTableToMerge.ContactCode == clsMergeTableDetails.MainTableCode)
+                    {
+                        Data.ContactDetails clsContactDetails = clsContact.Details(long.Parse(cmdTable.Tag.ToString()));
+                        mlstTables.Add(clsContactDetails);
+                        cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Visible = true;
+                        cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Text = "Merged to " + clsMergeTableDetails.MainTableCode;
+                        cmdTable.GradientTop = System.Drawing.Color.Orange;
                     }
 
 					tblLayout.Controls.Add(cmdTable, iCol, iRow);
@@ -518,30 +548,37 @@ namespace AceSoft.RetailPlus.Client.UI
 				ProductButton cmdTable = (ProductButton)sender;
 
 				Data.Contacts clsContact = new Contacts();
-				mDetails = clsContact.Details(long.Parse(cmdTable.Tag.ToString()));
+                Data.ContactDetails clsContactDetails = clsContact.Details(long.Parse(cmdTable.Tag.ToString()));
 				clsContact.CommitAndDispose();
 
-				dialog = DialogResult.OK;
-				this.Hide();
+                if (mlstTables.Exists(i => i.ContactID == clsContactDetails.ContactID))
+                {
+                    mlstTables.Remove(clsContactDetails);
+                    cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Visible = false;
+
+                    if (cmdTable.GradientBottom == System.Drawing.Color.DarkRed)
+                        cmdTable.GradientTop = System.Drawing.Color.Red;
+                    else
+                        cmdTable.GradientTop = System.Drawing.Color.LightBlue;
+                    
+                }
+                else
+                {
+                    mlstTables.Add(clsContactDetails);
+                    cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Visible = true;
+                    cmdTable.Controls["lblMerge" + cmdTable.Name.Replace("cmdTable", "")].Text = "Merged to " + MainTableToMerge.ContactCode;
+                    cmdTable.GradientTop = System.Drawing.Color.Orange;
+                }
 			}
 			catch { }
 		}
 
 		#endregion
 
-        private void cmdMergeTable_Click(object sender, EventArgs e)
+        private void cmdEnter_Click(object sender, EventArgs e)
         {
-            if (!isMergeTable)
-            {
-                isMergeTable = true;
-                grpItems.Text = "Select the main table to merge.";
-                cmdMergeTable.Text = "Select Table";
-            }
-            else {
-                isMergeTable = false;
-                grpItems.Text = "Select table to dine.";
-                cmdMergeTable.Text = "Merge Table";
-            }
+            dialog = System.Windows.Forms.DialogResult.OK;
+            this.Hide();
         }
 
 	}

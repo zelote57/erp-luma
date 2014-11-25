@@ -190,7 +190,7 @@
 							<th class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByContactName" runat="server">Guarantor Name</asp:hyperlink></th>
 							<th class="ms-vh2" style="padding-bottom: 4px">
-								<asp:hyperlink id="SortByCreditType" runat="server"></asp:hyperlink></th>
+								<asp:hyperlink id="SortByCreditType" runat="server">Card Type</asp:hyperlink></th>
                             <th class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByCreditCardNo" runat="server"></asp:hyperlink></th>
                             <th class="ms-vh2" style="padding-bottom: 4px">
@@ -251,9 +251,9 @@
 								<asp:HyperLink ID="lnkContactName" Runat="server" Target="_blank"></asp:HyperLink>
 							</td>
                             <td class="ms-vb-user">
-								<asp:Label ID="lblCreditType" Runat="server" Visible="false"></asp:Label>
+								<asp:Label ID="lblCreditType" Runat="server"></asp:Label>
 							</td>
-							<td class="ms-vb-user">
+                            <td class="ms-vb-user">
 								<asp:Label ID="lblCreditCardNo" Runat="server" Visible="false"></asp:Label>
 							</td>
                             <td class="ms-vb-user">
@@ -293,11 +293,10 @@
 							                <col width="10">
                                             <col width="10">
 							                <col width="28%">
-							                <col width="8%">
-                                            <col width="8%">
-                                            <col width="8%">
-                                            <col width="8%">
-                                            <col width="8%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
                                             <col width="8%">
                                             <col width="8%">
                                             <col width="8%">
@@ -310,8 +309,6 @@
 							                <th class="ms-vh2" style="padding-bottom: 4px"></th>
 							                <th class="ms-vh2" style="padding-bottom: 4px">
 								                <asp:hyperlink id="SortByContactName" runat="server">Customer Name</asp:hyperlink></th>
-							                <th class="ms-vh2" style="padding-bottom: 4px">
-								                <asp:hyperlink id="SortByCreditType" runat="server">Credit Type</asp:hyperlink></th>
                                             <th class="ms-vh2" style="padding-bottom: 4px">
 								                <asp:hyperlink id="SortByCreditCardNo" runat="server">Card No</asp:hyperlink></th>
                                             <th class="ms-vh2" style="padding-bottom: 4px">
@@ -338,11 +335,10 @@
 							                <col width="10">
 							                <col width="10">
 							                <col width="28%">
-							                <col width="8%">
-                                            <col width="8%">
-                                            <col width="8%">
-                                            <col width="8%">
-                                            <col width="8%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
                                             <col width="8%">
                                             <col width="8%">
                                             <col width="8%">
@@ -358,9 +354,6 @@
 						                    </td>
                                             <td class="ms-vb-user">
 								                <asp:HyperLink ID="lnkContactName" Runat="server" Target="_blank"></asp:HyperLink>
-							                </td>
-                                            <td class="ms-vb-user">
-								                <asp:Label ID="lblCreditType" Runat="server"></asp:Label>
 							                </td>
 							                <td class="ms-vb-user">
 								                <asp:Label ID="lblCreditCardNo" Runat="server"></asp:Label>

@@ -121,36 +121,36 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                 Label lblCreditType = (Label)e.Item.FindControl("lblCreditType");
                 lblCreditType.Text = dr["CardTypeCode"].ToString().ToString();
 
-                Label lblCreditCardNo = (Label)e.Item.FindControl("lblCreditCardNo");
-                lblCreditCardNo.Text = dr["CreditCardNo"].ToString();
+                //Label lblCreditCardNo = (Label)e.Item.FindControl("lblCreditCardNo");
+                //lblCreditCardNo.Text = dr["CreditCardNo"].ToString();
 
-                Label lblCreditCardStatus = (Label)e.Item.FindControl("lblCreditCardStatus");
-                lblCreditCardStatus.Text = Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString()).ToString();
+                //Label lblCreditCardStatus = (Label)e.Item.FindControl("lblCreditCardStatus");
+                //lblCreditCardStatus.Text = Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString()).ToString();
 
-                Label lblCreditActive = (Label)e.Item.FindControl("lblCreditActive");
-                lblCreditActive.Text = Data.Contacts.checkCreditActive((CreditCardStatus)Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString())) ? "Active" : "InActive";
+                //Label lblCreditActive = (Label)e.Item.FindControl("lblCreditActive");
+                //lblCreditActive.Text = Data.Contacts.checkCreditActive((CreditCardStatus)Enum.Parse(typeof(CreditCardStatus), dr["CreditCardStatus"].ToString())) ? "Active" : "InActive";
 
-                Label lblExpiryDate = (Label)e.Item.FindControl("lblExpiryDate");
-                lblExpiryDate.Text = Convert.ToDateTime(dr["ExpiryDate"].ToString()).ToString("dd-MMM-yyyy");
+                //Label lblExpiryDate = (Label)e.Item.FindControl("lblExpiryDate");
+                //lblExpiryDate.Text = Convert.ToDateTime(dr["ExpiryDate"].ToString()).ToString("dd-MMM-yyyy");
 
-                decimal decCreditLimit = Convert.ToDecimal(dr["CreditLimit"].ToString());
-                decimal decCredit = Convert.ToDecimal(dr["Credit"].ToString());
-                decimal decAvailableCredit = decCreditLimit - decCredit;
+                //decimal decCreditLimit = Convert.ToDecimal(dr["CreditLimit"].ToString());
+                //decimal decCredit = Convert.ToDecimal(dr["Credit"].ToString());
+                //decimal decAvailableCredit = decCreditLimit - decCredit;
 
-                Label lblCreditLimit = (Label)e.Item.FindControl("lblCreditLimit");
-                lblCreditLimit.Text = decCreditLimit.ToString("#,##0.#");
+                //Label lblCreditLimit = (Label)e.Item.FindControl("lblCreditLimit");
+                //lblCreditLimit.Text = decCreditLimit.ToString("#,##0.#");
 
-                Label lblCredit = (Label)e.Item.FindControl("lblCredit");
-                lblCredit.Text = decCredit.ToString("#,##0.#");
+                //Label lblCredit = (Label)e.Item.FindControl("lblCredit");
+                //lblCredit.Text = decCredit.ToString("#,##0.#");
 
-                Label lblAvailableCredit = (Label)e.Item.FindControl("lblAvailableCredit");
-                lblAvailableCredit.Text = decAvailableCredit.ToString("#,##0.#");
+                //Label lblAvailableCredit = (Label)e.Item.FindControl("lblAvailableCredit");
+                //lblAvailableCredit.Text = decAvailableCredit.ToString("#,##0.#");
 
-                Label lblTotalPurchases = (Label)e.Item.FindControl("lblTotalPurchases");
-                lblTotalPurchases.Text = Convert.ToDecimal(dr["TotalPurchases"].ToString()).ToString("#,##0.#");
+                //Label lblTotalPurchases = (Label)e.Item.FindControl("lblTotalPurchases");
+                //lblTotalPurchases.Text = Convert.ToDecimal(dr["TotalPurchases"].ToString()).ToString("#,##0.#");
 
-                Label lblLastBillingDate = (Label)e.Item.FindControl("lblLastBillingDate");
-                lblLastBillingDate.Text = Convert.ToDateTime(dr["LastBillingDate"].ToString()).ToString("dd-MMM-yyyy");
+                //Label lblLastBillingDate = (Label)e.Item.FindControl("lblLastBillingDate");
+                //lblLastBillingDate.Text = Convert.ToDateTime(dr["LastBillingDate"].ToString()).ToString("dd-MMM-yyyy");
 
                 DataClass clsDataClass = new DataClass();
                 ContactColumns clsContactColumns = new ContactColumns();
@@ -249,8 +249,8 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                 lnkContactName.Text = dr["ContactName"].ToString();
                 lnkContactName.NavigateUrl = "Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(chkList.Value, Session.SessionID) + "&showbills=" + Common.Encrypt("false", Session.SessionID);
 
-                Label lblCreditType = (Label)e.Item.FindControl("lblCreditType");
-                lblCreditType.Text = dr["CardTypeCode"].ToString().ToString();
+                //Label lblCreditType = (Label)e.Item.FindControl("lblCrweditType");
+                //lblCreditType.Text = dr["CardTypeCode"].ToString().ToString();
 
                 Label lblCreditCardNo = (Label)e.Item.FindControl("lblCreditCardNo");
                 lblCreditCardNo.Text = dr["CreditCardNo"].ToString();
@@ -423,7 +423,10 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
             DateTime dteExpiryDateTo = DateTime.TryParse(txtExpiryDateTo.Text, out dteExpiryDateTo) ? dteExpiryDateTo : DateTime.MinValue;
             CreditCardStatus clsCreditCardStatus = (CreditCardStatus) Enum.Parse(typeof(CreditCardStatus), cboCreditCardStatus.SelectedItem.Value);
 
-            PageData.DataSource = clsContact.Guarantors(clsContactColumns, txtLastNameFrom.Text, txtLastNameTo.Text, strSearch, dteExpiryDateFrom, dteExpiryDateTo, clsCreditCardStatus, Int32.Parse(cboCreditType.SelectedItem.Value), SortField, sortoption).DefaultView;
+            Int32 limit = 50;
+            limit = Int32.TryParse(Session["PageSize"].ToString(), out limit) ? limit * 2 : 50;
+
+            PageData.DataSource = clsContact.Guarantors(clsContactColumns, txtLastNameFrom.Text, txtLastNameTo.Text, strSearch, dteExpiryDateFrom, dteExpiryDateTo, clsCreditCardStatus, Int32.Parse(cboCreditType.SelectedItem.Value), SortField, sortoption, limit).DefaultView;
 
 			clsContact.CommitAndDispose();
 
@@ -565,5 +568,5 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
 		}
 
 		#endregion
-}
+    }
 }

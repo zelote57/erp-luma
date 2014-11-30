@@ -55,7 +55,6 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label label56;
         private System.Windows.Forms.Label label57;
-        private System.Windows.Forms.Label lblDescription;
         private System.Windows.Forms.Label label58;
         private System.Windows.Forms.Label label59;
         private System.Windows.Forms.Label label60;
@@ -132,10 +131,17 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label65;
         private Label label78;
         private Label label93;
+        private Label label94;
+        private Label label95;
+        private Label label96;
+        private Label label97;
+        private Label lblAddNewCustomer;
         /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.Container components = null;
+
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
         public HelpWnd()
         {
@@ -147,6 +153,21 @@ namespace AceSoft.RetailPlus.Client.UI
             //
             // TODO: Add any constructor code after InitializeComponent call
             //
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Help.jpg"); }
+            catch { }
+            try
+            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
+            catch { }
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         /// <summary>
@@ -173,6 +194,8 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.grpBox1 = new System.Windows.Forms.GroupBox();
+            this.label78 = new System.Windows.Forms.Label();
+            this.label93 = new System.Windows.Forms.Label();
             this.label64 = new System.Windows.Forms.Label();
             this.label65 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
@@ -260,7 +283,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblDescription = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.grpBox2 = new System.Windows.Forms.GroupBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -289,8 +311,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label203 = new System.Windows.Forms.Label();
             this.label204 = new System.Windows.Forms.Label();
             this.label207 = new System.Windows.Forms.Label();
-            this.label78 = new System.Windows.Forms.Label();
-            this.label93 = new System.Windows.Forms.Label();
+            this.label94 = new System.Windows.Forms.Label();
+            this.label95 = new System.Windows.Forms.Label();
+            this.label96 = new System.Windows.Forms.Label();
+            this.label97 = new System.Windows.Forms.Label();
+            this.lblAddNewCustomer = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.grpBox1.SuspendLayout();
             this.grpBox2.SuspendLayout();
@@ -406,6 +431,28 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpBox1.TabIndex = 66;
             this.grpBox1.TabStop = false;
             this.grpBox1.Text = "Help Details";
+            // 
+            // label78
+            // 
+            this.label78.AutoSize = true;
+            this.label78.ForeColor = System.Drawing.Color.Blue;
+            this.label78.Location = new System.Drawing.Point(656, 114);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(257, 13);
+            this.label78.TabIndex = 198;
+            this.label78.Text = "Release items (for transaction w/ Releasing Section)";
+            // 
+            // label93
+            // 
+            this.label93.AutoSize = true;
+            this.label93.BackColor = System.Drawing.Color.Transparent;
+            this.label93.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label93.ForeColor = System.Drawing.Color.Red;
+            this.label93.Location = new System.Drawing.Point(566, 114);
+            this.label93.Name = "label93";
+            this.label93.Size = new System.Drawing.Size(44, 13);
+            this.label93.TabIndex = 197;
+            this.label93.Text = "Ctrl + E";
             // 
             // label64
             // 
@@ -1341,21 +1388,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(67, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(354, 13);
+            this.label1.Size = new System.Drawing.Size(150, 13);
             this.label1.TabIndex = 67;
-            this.label1.Text = "AceSoft RetailPlus ™ Help, press F1 again to toggle next page.";
-            // 
-            // lblDescription
-            // 
-            this.lblDescription.AutoSize = true;
-            this.lblDescription.BackColor = System.Drawing.Color.Transparent;
-            this.lblDescription.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.lblDescription.Location = new System.Drawing.Point(740, 34);
-            this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(176, 13);
-            this.lblDescription.TabIndex = 91;
-            this.lblDescription.Tag = "";
-            this.lblDescription.Text = "Press Esc Key to close this window.";
+            this.label1.Text = "AceSoft RetailPlus ™ Help";
             // 
             // cmdCancel
             // 
@@ -1566,9 +1601,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label122.AutoSize = true;
             this.label122.Location = new System.Drawing.Point(656, 114);
             this.label122.Name = "label122";
-            this.label122.Size = new System.Drawing.Size(134, 13);
+            this.label122.Size = new System.Drawing.Size(173, 13);
             this.label122.TabIndex = 171;
-            this.label122.Text = "Suspend LOST Credit Card";
+            this.label122.Text = "Suspend Credit Card with Remarks";
             // 
             // label123
             // 
@@ -1687,27 +1722,59 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label207.TabIndex = 132;
             this.label207.Text = "Credit Card Reactivation / Change Credit Limit / Change Credit Card #";
             // 
-            // label78
+            // label94
             // 
-            this.label78.AutoSize = true;
-            this.label78.ForeColor = System.Drawing.Color.Blue;
-            this.label78.Location = new System.Drawing.Point(656, 114);
-            this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(257, 13);
-            this.label78.TabIndex = 198;
-            this.label78.Text = "Release items (for transaction w/ Releasing Section)";
+            this.label94.AutoSize = true;
+            this.label94.BackColor = System.Drawing.Color.Transparent;
+            this.label94.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label94.Location = new System.Drawing.Point(836, 29);
+            this.label94.Name = "label94";
+            this.label94.Size = new System.Drawing.Size(154, 13);
+            this.label94.TabIndex = 194;
+            this.label94.Text = " to show other Help commands";
             // 
-            // label93
+            // label95
             // 
-            this.label93.AutoSize = true;
-            this.label93.BackColor = System.Drawing.Color.Transparent;
-            this.label93.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label93.ForeColor = System.Drawing.Color.Red;
-            this.label93.Location = new System.Drawing.Point(566, 114);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(44, 13);
-            this.label93.TabIndex = 197;
-            this.label93.Text = "Ctrl + E";
+            this.label95.AutoSize = true;
+            this.label95.BackColor = System.Drawing.Color.Transparent;
+            this.label95.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label95.Location = new System.Drawing.Point(762, 13);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(33, 13);
+            this.label95.TabIndex = 193;
+            this.label95.Text = "Press";
+            // 
+            // label96
+            // 
+            this.label96.BackColor = System.Drawing.Color.Transparent;
+            this.label96.ForeColor = System.Drawing.Color.Red;
+            this.label96.Location = new System.Drawing.Point(797, 29);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(27, 13);
+            this.label96.TabIndex = 192;
+            this.label96.Text = "[F1]";
+            // 
+            // label97
+            // 
+            this.label97.AutoSize = true;
+            this.label97.BackColor = System.Drawing.Color.Transparent;
+            this.label97.ForeColor = System.Drawing.Color.Red;
+            this.label97.Location = new System.Drawing.Point(796, 13);
+            this.label97.Name = "label97";
+            this.label97.Size = new System.Drawing.Size(31, 13);
+            this.label97.TabIndex = 191;
+            this.label97.Text = "[Esc]";
+            // 
+            // lblAddNewCustomer
+            // 
+            this.lblAddNewCustomer.AutoSize = true;
+            this.lblAddNewCustomer.BackColor = System.Drawing.Color.Transparent;
+            this.lblAddNewCustomer.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblAddNewCustomer.Location = new System.Drawing.Point(836, 13);
+            this.lblAddNewCustomer.Name = "lblAddNewCustomer";
+            this.lblAddNewCustomer.Size = new System.Drawing.Size(102, 13);
+            this.lblAddNewCustomer.TabIndex = 190;
+            this.lblAddNewCustomer.Text = " to hide this window";
             // 
             // HelpWnd
             // 
@@ -1715,8 +1782,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.label94);
+            this.Controls.Add(this.label95);
+            this.Controls.Add(this.label96);
+            this.Controls.Add(this.label97);
+            this.Controls.Add(this.lblAddNewCustomer);
             this.Controls.Add(this.cmdCancel);
-            this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.imgIcon);
             this.Controls.Add(this.grpBox2);
@@ -1742,16 +1813,6 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void HelpWnd_Load(object sender, System.EventArgs e)
         {
-            try
-            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
-            catch { }
-            try
-            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Help.jpg"); }
-            catch { }
-            try
-            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
-            catch { }
-
             grpBox1.Visible = true;
             grpBox2.Visible = false;
         }

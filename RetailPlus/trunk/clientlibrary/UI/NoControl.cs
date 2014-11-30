@@ -15,11 +15,19 @@ namespace AceSoft.RetailPlus.Client.UI
         public decimal NoValue { get; set; }
         public string Caption { get; set; }
 
+        public Data.TerminalDetails TerminalDetails { get; set; }
+
         #region Form Methods
 
         public NoControl()
         {
             InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         #endregion
@@ -72,7 +80,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtNo.Text = "";
             else if (e.KeyboardKeyPressed == "{SELECTALL}")
                 txtNo.SelectAll();
-            else
+            else if (e.KeyboardKeyPressed == "." & txtNo.Text.IndexOf(".") < 0)
+                SendKeys.Send(e.KeyboardKeyPressed);
+            else if (e.KeyboardKeyPressed != ".")
                 SendKeys.Send(e.KeyboardKeyPressed);
         }
 

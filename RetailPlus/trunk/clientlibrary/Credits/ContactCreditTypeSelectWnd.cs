@@ -50,10 +50,19 @@ namespace AceSoft.RetailPlus.Client.UI
         public Data.CardTypeDetails CardTypeDetails { get; set; }
         private Data.ContactDetails mclsGuarantor;
 
+        public Data.TerminalDetails TerminalDetails { get; set; }
+
 		#region Constructors And Desctructors
+
 		public ContactCreditTypeSelectWnd()
 		{
 			InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
 		}
 
 		protected override void Dispose( bool disposing )
@@ -67,6 +76,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			}
 			base.Dispose( disposing );
 		}
+
+        #endregion
 
 		#region Windows Form Designer generated code
 		/// <summary>
@@ -474,7 +485,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		}
 		#endregion
-		#endregion
+		
 
 		#region Windows Form Methods
 

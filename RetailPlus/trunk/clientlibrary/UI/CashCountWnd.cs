@@ -57,12 +57,8 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mclsSalesTransactionDetails = value; }
         }
 
-        private Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            set { mclsTerminalDetails = value; }
-        }
-
+        public Data.TerminalDetails TerminalDetails { get; set; }
+        
         private CashCountDetails[] marrCashCountDetails;
         public CashCountDetails[] Details
         {
@@ -76,6 +72,12 @@ namespace AceSoft.RetailPlus.Client.UI
         public CashCountWnd()
         {
             InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         protected override void Dispose(bool disposing)
@@ -481,7 +483,7 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
             catch { }
 
-            keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
 
             LoadOptions();
             LoadDenominationData();
@@ -594,8 +596,8 @@ namespace AceSoft.RetailPlus.Client.UI
             foreach (System.Data.DataRow dr in dt.Rows)
             {
                 clsDetails = new CashCountDetails();
-                clsDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
-                clsDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+                clsDetails.BranchDetails = TerminalDetails.BranchDetails;
+                clsDetails.TerminalNo = TerminalDetails.TerminalNo;
                 clsDetails.CashierID = mclsSalesTransactionDetails.CashierID;
                 clsDetails.CashierName = mclsSalesTransactionDetails.CashierName;
                 clsDetails.DateCreated = DateTime.Now;
@@ -618,7 +620,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 //Sep 3, 2014 remove saving here and move to M<ainWnd
                 //Terminal clsTerminal = new Terminal(clsCashCount.Connection, clsCashCount.Transaction);
-                //clsTerminal.UpdateIsCashCountInitialized(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierID, true);
+                //clsTerminal.UpdateIsCashCountInitialized(TerminalDetails.BranchDetails.BranchID, TerminalDetails.TerminalNo, mclsSalesTransactionDetails.CashierID, true);
 
                 //clsCashCount.Insert(arrDetails);
                 //clsCashCount.CommitAndDispose();

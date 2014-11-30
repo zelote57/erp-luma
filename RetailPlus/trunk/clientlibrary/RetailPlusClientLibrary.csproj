@@ -98,6 +98,10 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataObjects CreditBilling\DataObjects CreditBilling.csproj">
+      <Project>{FC841185-222E-41F4-9059-D5A28613FA05}</Project>
+      <Name>DataObjects CreditBilling</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataObjects Inventory\DataObjects Inventory.csproj">
       <Project>{98B7F5B1-2F87-4E62-B2BF-926975D02C73}</Project>
       <Name>DataObjects Inventory</Name>
@@ -164,6 +168,16 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Credits\CreditPaymentsWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Credits\CreditSalesWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forwarder\ForwarderWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Models\ProductModel.cs" />
     <Compile Include="PaymentUI\CashPaymentWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,16 +208,17 @@
     <Compile Include="ReportsUI\ReportsWnd.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TaskBarWnd.cs" />
     <Compile Include="UI\CashCountWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ChangeAmountWnd.cs">
+    <Compile Include="ChangeQtyAmtPrice\ChangeAmountWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ChangePriceWnd.cs">
+    <Compile Include="ChangeQtyAmtPrice\ChangePriceWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ChangeQuantityWnd.cs">
+    <Compile Include="ChangeQtyAmtPrice\ChangeQuantityWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\ContactAddDetWnd.cs">
@@ -212,10 +227,10 @@
     <Compile Include="UI\ContactAddWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ContactCreditTypeSelectWnd.cs">
+    <Compile Include="Credits\ContactCreditTypeSelectWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ContactCreditWnd.cs">
+    <Compile Include="Credits\ContactCreditWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\ContactRewardWnd.cs">
@@ -224,10 +239,10 @@
     <Compile Include="UI\ContactSelectWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CreditVerificationWnd.cs">
+    <Compile Include="Credits\CreditVerificationWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CreditsItemizeWnd.cs">
+    <Compile Include="Credits\CreditsItemizeWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="EJournalPrinter.cs" />
@@ -295,6 +310,9 @@
     </Compile>
     <Compile Include="UI\ItemReleaseWnd.Designer.cs">
       <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ItemSelectWnd.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\MainWndExtension.cs">
       <SubType>Form</SubType>
@@ -364,6 +382,9 @@
     <Compile Include="UI\TransactionNoWnd.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\WaiterSelectWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="AceSoft.RetailPlus.snk" />
@@ -410,6 +431,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Credits\CreditPaymentsWnd.resx">
+      <DependentUpon>CreditPaymentsWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Credits\CreditSalesWnd.resx">
+      <DependentUpon>CreditSalesWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forwarder\ForwarderWnd.resx">
+      <DependentUpon>ForwarderWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="PaymentUI\CashPaymentWnd.resx">
       <DependentUpon>CashPaymentWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -454,15 +487,15 @@
       <DependentUpon>CashCountWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ChangeAmountWnd.resx">
+    <EmbeddedResource Include="ChangeQtyAmtPrice\ChangeAmountWnd.resx">
       <DependentUpon>ChangeAmountWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ChangePriceWnd.resx">
+    <EmbeddedResource Include="ChangeQtyAmtPrice\ChangePriceWnd.resx">
       <DependentUpon>ChangePriceWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ChangeQuantityWnd.resx">
+    <EmbeddedResource Include="ChangeQtyAmtPrice\ChangeQuantityWnd.resx">
       <DependentUpon>ChangeQuantityWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -474,11 +507,11 @@
       <DependentUpon>ContactAddWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContactCreditTypeSelectWnd.resx">
+    <EmbeddedResource Include="Credits\ContactCreditTypeSelectWnd.resx">
       <DependentUpon>ContactCreditTypeSelectWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContactCreditWnd.resx">
+    <EmbeddedResource Include="Credits\ContactCreditWnd.resx">
       <DependentUpon>ContactCreditWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -490,11 +523,11 @@
       <DependentUpon>ContactSelectWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CreditVerificationWnd.resx">
+    <EmbeddedResource Include="Credits\CreditVerificationWnd.resx">
       <DependentUpon>CreditVerificationWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CreditsItemizeWnd.resx">
+    <EmbeddedResource Include="Credits\CreditsItemizeWnd.resx">
       <DependentUpon>CreditsItemizeWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -574,6 +607,10 @@
       <DependentUpon>ItemReleaseWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemSelectWnd.resx">
+      <DependentUpon>ItemSelectWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\LogInWnd.resx">
       <DependentUpon>LogInWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -595,6 +632,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TransactionNoWnd.resx">
       <DependentUpon>TransactionNoWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\WaiterSelectWnd.resx">
+      <DependentUpon>WaiterSelectWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

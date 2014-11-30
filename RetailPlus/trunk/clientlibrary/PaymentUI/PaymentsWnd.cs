@@ -42,7 +42,6 @@ namespace AceSoft.RetailPlus.Client.UI
 		private System.ComponentModel.Container components = null;
 
         private Data.ContactDetails mclsCustomerDetails;
-        private Data.TerminalDetails mclsTerminalDetails;
         private Data.SalesTransactionDetails mclsSalesTransactionDetails;
 		private DialogResult dialog;
 		
@@ -86,11 +85,8 @@ namespace AceSoft.RetailPlus.Client.UI
             get { return mclsSalesTransactionDetails; }
             set { mclsSalesTransactionDetails = value; }
         }
-        public Data.TerminalDetails TerminalDetails
-        {
-            get { return mclsTerminalDetails; }
-            set { mclsTerminalDetails = value; }
-        }
+
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
         private Data.SysConfigDetails mclsSysConfigDetails;
         public Data.SysConfigDetails SysConfigDetails
@@ -235,7 +231,37 @@ namespace AceSoft.RetailPlus.Client.UI
 		public PaymentsWnd()
 		{
 			InitializeComponent();
+
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Payments.jpg"); }
+            catch { }
+            try
+            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
+            catch { }
+            try
+            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
+            catch { }
+            try
+            {
+                this.cmdF1.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
+                this.cmdF2.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
+                this.cmdF3.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
+                this.cmdF4.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
+                this.cmdF5.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
+                this.cmdF6.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
+            }
+            catch { }
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
 		}
+
 		protected override void Dispose( bool disposing )
 		{
 			if( disposing )
@@ -938,37 +964,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		#region Windows Form Methods
 
-		private void dgItems_Navigate(object sender, NavigateEventArgs ne)
-		{
-		
-		}
-
 		private void PaymentsWnd_Load(object sender, System.EventArgs e)
 		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Payments.jpg");	}
-			catch{}
-            try
-            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
-            catch { }
-            try
-            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
-            catch { }
-            try
-            {
-                this.cmdF1.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
-                this.cmdF2.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
-                this.cmdF3.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
-                this.cmdF4.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
-                this.cmdF5.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg");
-                this.cmdF6.Image = new Bitmap(Application.StartupPath + "/images/blank_small_dark_yellow.jpg"); 
-            }
-            catch { }
-
-            
             if (mclsSalesTransactionDetails.TransactionID != 0)
             {
                 
@@ -984,7 +981,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     grpDebit.Visible = mboIsRefund ? false : (mclsCustomerDetails.IsCreditAllowed ? mdecAllowedDebit > 0 : false);
                 }
 
-                if (mclsSysConfigDetails.AllowRewardPointsPayment && mclsTerminalDetails.RewardPointsDetails.EnableRewardPointsAsPayment)
+                if (mclsSysConfigDetails.AllowRewardPointsPayment && TerminalDetails.RewardPointsDetails.EnableRewardPointsAsPayment)
                 {
                     if (!mboIsRefund && mclsCustomerDetails.RewardDetails.RewardPoints != 0 && mclsCustomerDetails.ContactID != Constants.C_RETAILPLUS_CUSTOMERID)
                     {
@@ -1040,10 +1037,10 @@ namespace AceSoft.RetailPlus.Client.UI
             }
 
             lblSubTotal.Text = mclsSalesTransactionDetails.SubTotal.ToString("#,##0.#0");
-            if ((mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode) && mclsSalesTransactionDetails.DiscountableAmount !=0)
+            if ((mclsSalesTransactionDetails.DiscountCode == TerminalDetails.SeniorCitizenDiscountCode) && mclsSalesTransactionDetails.DiscountableAmount !=0)
             {
                 // recompute coz VAT is zero
-                lblSubtotalVAT.Text = ((mclsSalesTransactionDetails.DiscountableAmount / (1 + (mclsTerminalDetails.VAT / 100))) * (mclsTerminalDetails.VAT / 100)).ToString("#,##0.#0");
+                lblSubtotalVAT.Text = ((mclsSalesTransactionDetails.DiscountableAmount / (1 + (TerminalDetails.VAT / 100))) * (TerminalDetails.VAT / 100)).ToString("#,##0.#0");
             }
             else
             {
@@ -1075,7 +1072,7 @@ namespace AceSoft.RetailPlus.Client.UI
 					break;
 
 				case Keys.F4:
-                    if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsTerminalDetails.ShowCustomerSelection) ShowCreditPaymentWindow();
+                    if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && TerminalDetails.ShowCustomerSelection) ShowCreditPaymentWindow();
                     else if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware) ShowCreditCardPaymentWindow("f4");
 					break;
 
@@ -1112,6 +1109,11 @@ namespace AceSoft.RetailPlus.Client.UI
 		#endregion
 
         #region Windows Control Methods
+
+        private void dgItems_Navigate(object sender, NavigateEventArgs ne)
+        {
+
+        }
 
         private void cmdEnter_Click(object sender, EventArgs e)
         {
@@ -1194,7 +1196,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private void ShowCashPaymentWindow()
 		{
 			CashPaymentWnd clsCashPaymentwnd = new CashPaymentWnd();
-            clsCashPaymentwnd.TerminalDetails = mclsTerminalDetails;
+            clsCashPaymentwnd.TerminalDetails = TerminalDetails;
 			clsCashPaymentwnd.SalesTransactionDetails = mclsSalesTransactionDetails;
 			clsCashPaymentwnd.BalanceAmount = Convert.ToDecimal(lblBalance.Text);
 			clsCashPaymentwnd.ShowDialog(this);
@@ -1221,7 +1223,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private void ShowChequePaymentWindow()
 		{
             ChequesPaymentWnd clsChequesPaymentWnd = new ChequesPaymentWnd();
-            clsChequesPaymentWnd.TerminalDetails = mclsTerminalDetails;
+            clsChequesPaymentWnd.TerminalDetails = TerminalDetails;
             clsChequesPaymentWnd.SalesTransactionDetails = mclsSalesTransactionDetails;
             clsChequesPaymentWnd.BalanceAmount = Convert.ToDecimal(lblBalance.Text);
             clsChequesPaymentWnd.ShowDialog(this);
@@ -1249,7 +1251,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             CreditCardPaymentWnd clsCreditCardPaymentWnd = new CreditCardPaymentWnd();
             clsCreditCardPaymentWnd.IsCreditChargeExcluded = mboIsCreditChargeExcluded;
-            clsCreditCardPaymentWnd.TerminalDetails = mclsTerminalDetails;
+            clsCreditCardPaymentWnd.TerminalDetails = TerminalDetails;
             clsCreditCardPaymentWnd.SalesTransactionDetails = mclsSalesTransactionDetails;
             if (sender == "f4") clsCreditCardPaymentWnd.CreditorDetails = mclsCustomerDetails;
             clsCreditCardPaymentWnd.arrCreditCardPaymentDetails = marrCreditCardPaymentDetails;
@@ -1287,41 +1289,41 @@ namespace AceSoft.RetailPlus.Client.UI
 			if (mclsCustomerDetails.IsCreditAllowed)
 			{
 				CreditPaymentWnd credit = new CreditPaymentWnd();
-                credit.TerminalDetails = mclsTerminalDetails;
+                credit.TerminalDetails = TerminalDetails;
 				credit.SalesTransactionDetails = mclsSalesTransactionDetails;
                 credit.CustomerDetails = mclsCustomerDetails;
                 credit.AllowedCredit = mdecAllowedCredit;
 
                 decimal decBalance = Convert.ToDecimal(lblBalance.Text);
                 //decimal decAdditionalCreditCharge = 0;
-                //if (mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
+                //if (TerminalDetails.GroupChargeType.ChargeTypeID != 0)
                 //{
-                //    if (mclsTerminalDetails.GroupChargeType.InPercent)
-                //        decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
+                //    if (TerminalDetails.GroupChargeType.InPercent)
+                //        decAdditionalCreditCharge = decBalance * (TerminalDetails.GroupChargeType.ChargeAmount / 100);
                 //    else
-                //        decAdditionalCreditCharge = decBalance + mclsTerminalDetails.GroupChargeType.ChargeAmount;
+                //        decAdditionalCreditCharge = decBalance + TerminalDetails.GroupChargeType.ChargeAmount;
 
                 //    if ((decBalance + decAdditionalCreditCharge) > mdecAllowedCredit)
                 //    {
-                //        if (mclsTerminalDetails.GroupChargeType.InPercent)
-                //            decAdditionalCreditCharge = mdecAllowedCredit * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
+                //        if (TerminalDetails.GroupChargeType.InPercent)
+                //            decAdditionalCreditCharge = mdecAllowedCredit * (TerminalDetails.GroupChargeType.ChargeAmount / 100);
                 //        else
-                //            decAdditionalCreditCharge = mdecAllowedCredit + mclsTerminalDetails.GroupChargeType.ChargeAmount;
+                //            decAdditionalCreditCharge = mdecAllowedCredit + TerminalDetails.GroupChargeType.ChargeAmount;
                 //    }
                 //}
-                //else if (mclsTerminalDetails.PersonalChargeType.ChargeTypeID != 0)
+                //else if (TerminalDetails.PersonalChargeType.ChargeTypeID != 0)
                 //{
-                //    if (mclsTerminalDetails.PersonalChargeType.InPercent)
-                //        decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
+                //    if (TerminalDetails.PersonalChargeType.InPercent)
+                //        decAdditionalCreditCharge = decBalance * (TerminalDetails.PersonalChargeType.ChargeAmount / 100);
                 //    else
-                //        decAdditionalCreditCharge = decBalance + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
+                //        decAdditionalCreditCharge = decBalance + TerminalDetails.PersonalChargeType.ChargeAmount;
 
                 //    if ((decBalance + decAdditionalCreditCharge) > mdecAllowedCredit)
                 //    {
-                //        if (mclsTerminalDetails.PersonalChargeType.InPercent)
-                //            decAdditionalCreditCharge = mdecAllowedCredit * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
+                //        if (TerminalDetails.PersonalChargeType.InPercent)
+                //            decAdditionalCreditCharge = mdecAllowedCredit * (TerminalDetails.PersonalChargeType.ChargeAmount / 100);
                 //        else
-                //            decAdditionalCreditCharge = mdecAllowedCredit + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
+                //            decAdditionalCreditCharge = mdecAllowedCredit + TerminalDetails.PersonalChargeType.ChargeAmount;
                 //    }
                 //}
 
@@ -1336,13 +1338,13 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				if (result == DialogResult.OK)
 				{
-                    //if (mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
+                    //if (TerminalDetails.GroupChargeType.ChargeTypeID != 0)
                     //{
                     //    // update transaction with additional charge
-                    //    if (mclsTerminalDetails.GroupChargeType.InPercent)
-                    //        decAdditionalCreditCharge = creditDetails.Amount * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
+                    //    if (TerminalDetails.GroupChargeType.InPercent)
+                    //        decAdditionalCreditCharge = creditDetails.Amount * (TerminalDetails.GroupChargeType.ChargeAmount / 100);
                     //    else
-                    //        decAdditionalCreditCharge = creditDetails.Amount + mclsTerminalDetails.GroupChargeType.ChargeAmount;
+                    //        decAdditionalCreditCharge = creditDetails.Amount + TerminalDetails.GroupChargeType.ChargeAmount;
 
                     //    lblCharge.Text = Convert.ToDecimal(Convert.ToDecimal(lblCharge.Text) + decAdditionalCreditCharge).ToString("#,##0.#0");
                     //    mclsSalesTransactionDetails.CreditChargeAmount = decAdditionalCreditCharge;
@@ -1408,7 +1410,7 @@ namespace AceSoft.RetailPlus.Client.UI
             clsRewardPointPaymentWnd.BalanceAmount = Convert.ToDecimal(lblBalance.Text);
             clsRewardPointPaymentWnd.IsRefund = mboIsRefund;
             clsRewardPointPaymentWnd.ContactDetails = mclsCustomerDetails;
-            clsRewardPointPaymentWnd.TerminalDetails = mclsTerminalDetails;
+            clsRewardPointPaymentWnd.TerminalDetails = TerminalDetails;
 
             clsRewardPointPaymentWnd.ShowDialog(this);
             DialogResult result = clsRewardPointPaymentWnd.Result;
@@ -1433,7 +1435,7 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 		private void SendStringToTurret(string szString)
 		{
-			RawPrinterHelper.SendStringToPrinter(mclsTerminalDetails.TurretName, "\f" + szString, "RetailPlus Turret Disp: ");
+			RawPrinterHelper.SendStringToPrinter(TerminalDetails.TurretName, "\f" + szString, "RetailPlus Turret Disp: ");
 		}
 
 		#endregion

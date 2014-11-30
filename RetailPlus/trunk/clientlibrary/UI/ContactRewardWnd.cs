@@ -57,14 +57,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			set {	mContactDetails = value;	}
 		}
 
-        private Data.TerminalDetails mTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            get { return mTerminalDetails; }
-            set { mTerminalDetails = value; }
-        }
-
-
+        public Data.TerminalDetails TerminalDetails { get; set; }
+        
 		#region Constructors And Desctructors
 		public ContactRewardWnd()
 		{
@@ -76,6 +70,11 @@ namespace AceSoft.RetailPlus.Client.UI
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
 		}
 
 		/// <summary>
@@ -507,7 +506,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtDOB.Text = clsContactRewardDetails.BirthDate.ToString("yyyy-MM-dd");
                 txtRewardCardExpiryDate.Text = clsContactRewardDetails.ExpiryDate.ToString("yyyy-MM-dd");
             }
-            if (mTerminalDetails.AutoGenerateRewardCardNo == true)
+            if (TerminalDetails.AutoGenerateRewardCardNo == true)
             {
                 if ((mRewardCardStatus == RewardCardStatus.New && clsContactRewardDetails.ContactID == Constants.ZERO) ||
                         mRewardCardStatus == RewardCardStatus.Replaced_Lost)

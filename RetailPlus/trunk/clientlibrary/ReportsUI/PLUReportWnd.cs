@@ -33,7 +33,6 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.Label lblReportHeader1;
         private System.Windows.Forms.Label lblCompany;
         private System.Windows.Forms.PictureBox imgIcon;
-        private System.Windows.Forms.Label lblDescription;
         private System.Windows.Forms.Label lblReportDesc;
         private System.ComponentModel.Container components = null;
 
@@ -75,6 +74,10 @@ namespace AceSoft.RetailPlus.Client.UI
         }
 
         private string mCashierName;
+        private Label lblPress;
+        private Label lblF2;
+        private Label lblAddNewCustomer;
+    
         public string CashierName
         {
             set { mCashierName = value; }
@@ -86,18 +89,12 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mCashierReportDetails = value; }
         }
 
-        private Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            set
-            {
-                mclsTerminalDetails = value;
-            }
-        }
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
         #endregion
 
         #region Constructors and Destructors
+
         public PLUReportWnd()
         {
             //
@@ -108,6 +105,11 @@ namespace AceSoft.RetailPlus.Client.UI
             //
             // TODO: Add any constructor code after InitializeComponent call
             //
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         /// <summary>
@@ -162,10 +164,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblReportHeader1 = new System.Windows.Forms.Label();
             this.lblCompany = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
-            this.lblDescription = new System.Windows.Forms.Label();
             this.lblReportDesc = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
+            this.lblPress = new System.Windows.Forms.Label();
+            this.lblF2 = new System.Windows.Forms.Label();
+            this.lblAddNewCustomer = new System.Windows.Forms.Label();
             TERMINALNO = new System.Windows.Forms.DataGridTextBoxColumn();
             ORDERSLIPPRINTER = new System.Windows.Forms.DataGridTextBoxColumn();
             this.groupBox1.SuspendLayout();
@@ -516,18 +520,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.imgIcon.TabIndex = 91;
             this.imgIcon.TabStop = false;
             // 
-            // lblDescription
-            // 
-            this.lblDescription.AutoSize = true;
-            this.lblDescription.BackColor = System.Drawing.Color.Transparent;
-            this.lblDescription.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.lblDescription.Location = new System.Drawing.Point(762, 41);
-            this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(252, 13);
-            this.lblDescription.TabIndex = 94;
-            this.lblDescription.Tag = "";
-            this.lblDescription.Text = "Press Enter Key to print the current viewed report.";
-            // 
             // lblReportDesc
             // 
             this.lblReportDesc.AutoSize = true;
@@ -570,17 +562,52 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
+            // lblPress
+            // 
+            this.lblPress.AutoSize = true;
+            this.lblPress.BackColor = System.Drawing.Color.Transparent;
+            this.lblPress.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblPress.Location = new System.Drawing.Point(764, 41);
+            this.lblPress.Name = "lblPress";
+            this.lblPress.Size = new System.Drawing.Size(33, 13);
+            this.lblPress.TabIndex = 127;
+            this.lblPress.Text = "Press";
+            // 
+            // lblF2
+            // 
+            this.lblF2.AutoSize = true;
+            this.lblF2.BackColor = System.Drawing.Color.Transparent;
+            this.lblF2.ForeColor = System.Drawing.Color.Red;
+            this.lblF2.Location = new System.Drawing.Point(798, 41);
+            this.lblF2.Name = "lblF2";
+            this.lblF2.Size = new System.Drawing.Size(41, 13);
+            this.lblF2.TabIndex = 126;
+            this.lblF2.Text = "[Enter]";
+            // 
+            // lblAddNewCustomer
+            // 
+            this.lblAddNewCustomer.AutoSize = true;
+            this.lblAddNewCustomer.BackColor = System.Drawing.Color.Transparent;
+            this.lblAddNewCustomer.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblAddNewCustomer.Location = new System.Drawing.Point(838, 41);
+            this.lblAddNewCustomer.Name = "lblAddNewCustomer";
+            this.lblAddNewCustomer.Size = new System.Drawing.Size(176, 13);
+            this.lblAddNewCustomer.TabIndex = 125;
+            this.lblAddNewCustomer.Text = " to print the current viewed report.";
+            // 
             // PLUReportWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.lblPress);
+            this.Controls.Add(this.lblF2);
+            this.Controls.Add(this.lblAddNewCustomer);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.imgIcon);
-            this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.lblReportDesc);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -765,7 +792,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             else if (stReceiptFormat == ReceiptFieldFormats.TerminalNo)
             {
-                stRetValue = mclsTerminalDetails.TerminalNo;
+                stRetValue = TerminalDetails.TerminalNo;
             }
             else if (stReceiptFormat == ReceiptFieldFormats.MachineSerialNo)
             {
@@ -777,7 +804,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             else if (stReceiptFormat == ReceiptFieldFormats.RewardsPermitNo)
             {
-                stRetValue = mclsTerminalDetails.RewardPointsDetails.RewardsPermitNo;
+                stRetValue = TerminalDetails.RewardPointsDetails.RewardsPermitNo;
             }
             else
             {

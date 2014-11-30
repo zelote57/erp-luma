@@ -20,8 +20,21 @@ namespace AceSoft.RetailPlus.Client.UI
         public System.Windows.Forms.Timer tmr;
         public System.Data.DataTable ItemDataTable;
 
+        public MainWndExtension()
+        {
+            this.tmr = new System.Windows.Forms.Timer();
+            this.tmr.Enabled = false;
+
+            miReprintZReadCounter = 0;
+        }
+
         #region Public Variables
 
+        /// <summary>
+        /// To Determine if the ReprintZReadWnd will show.
+        /// If this is >= 2 this needs to show
+        /// </summary>
+        public Int32 miReprintZReadCounter;
         public string mstrBeginningTransactionNo;
         public string mCashierName;
         public MySqlConnection mConnection;
@@ -485,6 +498,9 @@ namespace AceSoft.RetailPlus.Client.UI
             //#endregion
             #endregion
 
+            // 22Nov2014 : remove the merge tables when closed or void
+            RemoveFromMergeTable(mclsSalesTransactionDetails.CustomerDetails.ContactCode);
+
             // commit the transactions here.
             // in case error s encoutered n printing. transaction is already committed.
             clsEvent.AddEventLn("      commiting transaction to database...", true, mclsSysConfigDetails.WillWriteSystemLog);
@@ -628,6 +644,16 @@ namespace AceSoft.RetailPlus.Client.UI
 
             clsEvent.AddEventLn("Done! Transaction no. " + mclsSalesTransactionDetails.TransactionNo + " has been closed. Subtotal: " + mclsSalesTransactionDetails.SubTotal.ToString("#,###.#0") + " Discount: " + mclsSalesTransactionDetails.Discount.ToString("#,###.#0") + " AmountPaid: " + mclsSalesTransactionDetails.AmountPaid.ToString("#,###.#0") + " CashPayment: " + CashPayment.ToString("#,###.#0") + " ChequePayment: " + ChequePayment.ToString("#,###.#0") + " CreditCardPayment: " + CreditCardPayment + " CreditPayment: " + CreditPayment.ToString("#,###.#0") + " DebitPayment: " + DebitPayment.ToString("#,###.#0") + " ChangeAmount: " + ChangeAmount.ToString("#,###.#0"), true);
 
+        }
+
+        public void RemoveFromMergeTable(string MainTableCode)
+        {
+            Data.MergeTable clsMergeTable = new Data.MergeTable(mConnection, mTransaction);
+            mConnection = clsMergeTable.Connection; mTransaction = clsMergeTable.Transaction;
+
+            clsMergeTable.Delete(MainTableCode);
+
+            clsMergeTable.CommitAndDispose();
         }
 
         public void SendStringToTurret(string szString)
@@ -1083,7 +1109,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 else if (mclsSalesTransactionDetails.ChargeType == ChargeTypes.Percentage)
                 {
-                    mclsSalesTransactionDetails.Charge = decSubTotal * (mclsSalesTransactionDetails.ChargeAmount / 100);
+                    mclsSalesTransactionDetails.Charge = (decSubTotal / (1 + (mclsTerminalDetails.VAT / 100)))* (mclsSalesTransactionDetails.ChargeAmount / 100);
                 }
 
                 decimal decSubtotalVAT = 0;
@@ -1199,7 +1225,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             return loginresult;
         }
-        private DialogResult GetWriteAccess(Int64 UID, AccessTypes accesstype)
+        public DialogResult GetWriteAccess(Int64 UID, AccessTypes accesstype)
         {
             DialogResult resRetValue = DialogResult.None;
 
@@ -2687,10 +2713,19 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 if (loginresult == DialogResult.OK)
                 {
-                    PrintReportHeadersSection(false);
+                    PrintReportHeadersSection(false, true);
 
                     msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
                     msbToPrint.Append(CenterString("CREDIT PAYMENT SLIP", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                    if (mclsContactDetails.CreditDetails.CardTypeDetails.WithGuarantor)
+                    {
+                        Data.Contacts clsContacts = new Data.Contacts(mConnection, mTransaction);
+                        mConnection = clsContacts.Connection; mTransaction = clsContacts.Transaction;
+
+                        Data.ContactDetails GuarantorDetails = clsContacts.Details(mclsContactDetails.CreditDetails.GuarantorID);
+                        clsContacts.CommitAndDispose();
+                        msbToPrint.Append(CenterString("(Gua:" + (GuarantorDetails.ContactCode + ":" + GuarantorDetails.ContactName) + ")", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                    }
                     msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
                     msbToPrint.Append("Amount Paid".PadRight(15) + ":" + mclsSalesTransactionDetails.AmountPaid.ToString("#,##0.#0") + Environment.NewLine);
                     msbToPrint.Append("Payment Type".PadRight(15) + ":" + mclsSalesTransactionDetails.PaymentType.ToString("G") + Environment.NewLine);
@@ -3609,9 +3644,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
             clsReceipt.CommitAndDispose();
         }
-        public void PrintReportHeadersSection(bool IsReceipt)
+        public void PrintReportHeadersSection(bool IsReceipt, bool WillUseCompanyCodeForCredit = false)
         {
-            PrintReportHeaderSection(IsReceipt, mdteOverRidingPrintDate);
+            PrintReportHeaderSection(IsReceipt, mdteOverRidingPrintDate, WillUseCompanyCodeForCredit);
             PrintReportPageHeaderSectionChecked(IsReceipt);
             mdteOverRidingPrintDate = DateTime.MinValue;
         }
@@ -3620,7 +3655,7 @@ namespace AceSoft.RetailPlus.Client.UI
             PrintReportHeaderSection(IsReceipt, OverRidingPrintDate);
             PrintReportPageHeaderSectionChecked(IsReceipt);
         }
-        public void PrintReportHeaderSection(bool IsReceipt, DateTime OverRidingPrintDate)
+        public void PrintReportHeaderSection(bool IsReceipt, DateTime OverRidingPrintDate, bool WillUseCompanyCodeForCredit = false)
         {
             //PosExplorer posExplorer = new PosExplorer();
             //DeviceInfo deviceInfo = posExplorer.GetDevice(DeviceType.PosPrinter, mclsTerminalDetails.PrinterName);
@@ -3663,8 +3698,16 @@ namespace AceSoft.RetailPlus.Client.UI
             else
                 mclsFilePrinter.FileName = mclsSalesTransactionDetails.TransactionNo;
 
-            if (mclsTerminalDetails.IsPrinterDotMatrix) msbToPrint.Append(CenterString(CompanyDetails.CompanyCode, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
-            else msbToPrint.Append(RawPrinterHelper.escBoldHWOn + RawPrinterHelper.escAlignCenter + CompanyDetails.CompanyCode + RawPrinterHelper.escAlignDef + RawPrinterHelper.escBoldHWOff + Environment.NewLine);
+            if (WillUseCompanyCodeForCredit && !string.IsNullOrEmpty(CompanyDetails.CompanyCodeForCredit))
+            {
+                if (mclsTerminalDetails.IsPrinterDotMatrix) msbToPrint.Append(CenterString(CompanyDetails.CompanyCodeForCredit, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                else msbToPrint.Append(RawPrinterHelper.escBoldHWOn + RawPrinterHelper.escAlignCenter + CompanyDetails.CompanyCodeForCredit + RawPrinterHelper.escAlignDef + RawPrinterHelper.escBoldHWOff + Environment.NewLine);
+            }
+            else
+            {
+                if (mclsTerminalDetails.IsPrinterDotMatrix) msbToPrint.Append(CenterString(CompanyDetails.CompanyCode, mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                else msbToPrint.Append(RawPrinterHelper.escBoldHWOn + RawPrinterHelper.escAlignCenter + CompanyDetails.CompanyCode + RawPrinterHelper.escAlignDef + RawPrinterHelper.escBoldHWOff + Environment.NewLine);
+            }
 
             // print Report Header
             int iCtr = 0;
@@ -4475,7 +4518,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             Cursor.Current = Cursors.Default;
         }
-        public void PrintCreditVerificationSlip(Data.ContactDetails CreditorDetails)
+        public void PrintCreditVerificationSlip(Data.ContactDetails CreditorDetails, Data.ContactDetails GuarantorDetails)
         {
             // this should comes before earning of points otherwise this will be wrong.
             try
@@ -4485,7 +4528,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     PrintingPreference oldCONFIG_AutoPrint = mclsTerminalDetails.AutoPrint;
                     mclsTerminalDetails.AutoPrint = PrintingPreference.Normal;
 
-                    PrintReportHeaderSection(false, DateTime.MinValue);
+                    PrintReportHeaderSection(false, DateTime.MinValue, true);
                     if (!string.IsNullOrEmpty(mclsSysConfigDetails.CreditVerificationSlipHeaderLabel))
                     {
                         msbToPrint.Append(CenterString(mclsSysConfigDetails.CreditVerificationSlipHeaderLabel.Replace("{CardTypeCode}", CreditorDetails.CreditDetails.CardTypeDetails.CardTypeCode).Replace("{CardTypeName}", CreditorDetails.CreditDetails.CardTypeDetails.CardTypeName), mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
@@ -4493,10 +4536,12 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     msbToPrint.Append(Environment.NewLine);
                     msbToPrint.Append(CenterString("V E R I F I C A T I O N   S L I P", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
+                    if (CreditorDetails.CreditDetails.CardTypeDetails.WithGuarantor) msbToPrint.Append(CenterString("(Gua:" + (GuarantorDetails.ContactCode + ":" + GuarantorDetails.ContactName) + ")", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                     msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
                     msbToPrint.Append("Validty Date".PadRight(15) + ":" + DateTime.Now.ToString("yyyy-MMM-dd").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                     msbToPrint.Append("Credit Card No".PadRight(15) + ":" + CreditorDetails.CreditDetails.CreditCardNo.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                     msbToPrint.Append("Name".PadRight(15) + ":" + CreditorDetails.ContactName.PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
+                    //if (CreditorDetails.ContactID != CreditorDetails.CreditDetails.GuarantorID) msbToPrint.Append("Guarantor".PadRight(15) + ":" + (GuarantorDetails.ContactCode + ":" + GuarantorDetails.ContactName).PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                     msbToPrint.Append(Environment.NewLine);
                     msbToPrint.Append("AvailableCredit".PadRight(15) + ":" + (CreditorDetails.CreditLimit - CreditorDetails.Credit).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 16) + Environment.NewLine);
                     msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
@@ -4541,6 +4586,7 @@ namespace AceSoft.RetailPlus.Client.UI
             mConnection = clsTerminalReport.Connection; mTransaction = clsTerminalReport.Transaction;
 
             Data.TerminalReportDetails Details = clsTerminalReport.Details(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
+            Details.InitializedBy = mclsSalesTransactionDetails.CashierName;
             clsTerminalReport.CommitAndDispose();
 
             //put the trustfund as zero during zread 
@@ -4653,7 +4699,7 @@ namespace AceSoft.RetailPlus.Client.UI
         #endregion
 
         #region ReprintZRead
-        public void ReprintZRead()
+        public void ReprintZRead(bool boWithTF)
         {
             DialogResult result = GetWriteAccess(mclsSalesTransactionDetails.CashierID, AccessTypes.PrintTerminalReport);
 
@@ -4673,57 +4719,63 @@ namespace AceSoft.RetailPlus.Client.UI
             if (result == DialogResult.OK)
             {
                 TerminalHistoryDateWnd clsTerminalHistoryDateWnd = new TerminalHistoryDateWnd();
-                clsTerminalHistoryDateWnd.TerminalNo = mclsTerminalDetails.TerminalNo;
+                clsTerminalHistoryDateWnd.TerminalDetails = mclsTerminalDetails;
+                clsTerminalHistoryDateWnd.WithTF = boWithTF;
                 clsTerminalHistoryDateWnd.ShowDialog(this);
                 DialogResult clsTerminalHistoryDateWndresult = clsTerminalHistoryDateWnd.Result;
                 DateTime dtDateLastInitialized = clsTerminalHistoryDateWnd.DateLastInitialized;
                 clsTerminalHistoryDateWnd.Close();
                 clsTerminalHistoryDateWnd.Dispose();
 
-                Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory(mConnection, mTransaction);
-                mConnection = clsTerminalReportHistory.Connection; mTransaction = clsTerminalReportHistory.Transaction;
-
-                Data.TerminalReportDetails Details = clsTerminalReportHistory.Details(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo, dtDateLastInitialized);
-                //Data.TerminalReportDetails NextDetails = clsTerminalReportHistory.NextDetails(mclsTerminalDetails.TerminalNo, dtDateLastInitialized);
-                clsTerminalReportHistory.CommitAndDispose();
-
-                decimal OldTrustFund = mclsTerminalDetails.TrustFund;
-                mclsTerminalDetails.TrustFund = Details.TrustFund;
-
-                AceSoft.Common.SYSTEMTIME st = new AceSoft.Common.SYSTEMTIME();
-                // set the sytem date to NextDetails DateLastInitialized
-                st = AceSoft.Common.ConvertToSystemTime(Details.DateLastInitialized.AddSeconds(-2).ToUniversalTime());
-                mdtCurrentDateTime = DateTime.Now;
-                tmr.Enabled = true;
-                tmr.Start();
-                AceSoft.Common.SetSystemTime(ref st);
-
-                TerminalReportWnd clsTerminalReportWnd = new TerminalReportWnd();
-                clsTerminalReportWnd.SysConfigDetails = mclsSysConfigDetails;
-                clsTerminalReportWnd.TerminalDetails = mclsTerminalDetails;
-                clsTerminalReportWnd.Details = Details;
-                clsTerminalReportWnd.CashierName = mCashierName;
-                clsTerminalReportWnd.TerminalReportType = TerminalReportType.ZRead;
-                clsTerminalReportWnd.ShowDialog(this);
-                result = clsTerminalReportWnd.Result;
-                clsTerminalReportWnd.Close();
-                clsTerminalReportWnd.Dispose();
-
-                if (result == DialogResult.OK)
+                if (clsTerminalHistoryDateWndresult == System.Windows.Forms.DialogResult.OK)
                 {
-                    //PrintZReadDelegate printzreadDel = new PrintZReadDelegate(PrintZRead);
-                    //printzreadDel.BeginInvoke(Details, null, null);
-                    RePrintZRead(Details);
-                    InsertAuditLog(AccessTypes.ReprintZRead, "Re-Print ZRead report: TerminalNo=" + mclsTerminalDetails.TerminalNo + " DateLastInitialized=" + dtDateLastInitialized.ToString("yyyy-MM-dd hh:mm") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+                    Data.TerminalReportHistory clsTerminalReportHistory = new Data.TerminalReportHistory(mConnection, mTransaction);
+                    mConnection = clsTerminalReportHistory.Connection; mTransaction = clsTerminalReportHistory.Transaction;
+
+                    //always set the WithTrustFund = false when getting, this is determined during the printing
+                    Data.TerminalReportDetails Details = clsTerminalReportHistory.Details(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo, dtDateLastInitialized, false);
+                    //Data.TerminalReportDetails NextDetails = clsTerminalReportHistory.NextDetails(mclsTerminalDetails.TerminalNo, dtDateLastInitialized);
+                    clsTerminalReportHistory.CommitAndDispose();
+
+                    decimal OldTrustFund = mclsTerminalDetails.TrustFund;
+
+                    if (boWithTF) { mclsTerminalDetails.TrustFund = Details.TrustFund; } else { mclsTerminalDetails.TrustFund = 0; Details.TrustFund = 0; }
+
+                    AceSoft.Common.SYSTEMTIME st = new AceSoft.Common.SYSTEMTIME();
+                    // set the sytem date to NextDetails DateLastInitialized
+                    st = AceSoft.Common.ConvertToSystemTime(Details.DateLastInitialized.AddSeconds(-2).ToUniversalTime());
+                    mdtCurrentDateTime = DateTime.Now;
+                    tmr.Enabled = true;
+                    tmr.Start();
+                    AceSoft.Common.SetSystemTime(ref st);
+
+                    TerminalReportWnd clsTerminalReportWnd = new TerminalReportWnd();
+                    clsTerminalReportWnd.SysConfigDetails = mclsSysConfigDetails;
+                    clsTerminalReportWnd.TerminalDetails = mclsTerminalDetails;
+                    clsTerminalReportWnd.Details = Details;
+                    clsTerminalReportWnd.CashierName = mCashierName;
+                    clsTerminalReportWnd.TerminalReportType = TerminalReportType.ZRead;
+                    clsTerminalReportWnd.ShowDialog(this);
+                    result = clsTerminalReportWnd.Result;
+                    clsTerminalReportWnd.Close();
+                    clsTerminalReportWnd.Dispose();
+
+                    if (result == DialogResult.OK)
+                    {
+                        //PrintZReadDelegate printzreadDel = new PrintZReadDelegate(PrintZRead);
+                        //printzreadDel.BeginInvoke(Details, null, null);
+                        RePrintZRead(Details);
+                        InsertAuditLog(AccessTypes.ReprintZRead, "Re-Print ZRead report: TerminalNo=" + mclsTerminalDetails.TerminalNo + " DateLastInitialized=" + dtDateLastInitialized.ToString("yyyy-MM-dd hh:mm") + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+                    }
+
+                    // set the sytem date to NextDetails DateLastInitialized
+                    st = AceSoft.Common.ConvertToSystemTime(mdtCurrentDateTime.ToUniversalTime());
+                    AceSoft.Common.SetSystemTime(ref st);
+                    tmr.Stop();
+                    tmr.Enabled = false;
+
+                    mclsTerminalDetails.TrustFund = OldTrustFund;
                 }
-
-                // set the sytem date to NextDetails DateLastInitialized
-                st = AceSoft.Common.ConvertToSystemTime(mdtCurrentDateTime.ToUniversalTime());
-                AceSoft.Common.SetSystemTime(ref st);
-                tmr.Stop();
-                tmr.Enabled = false;
-
-                mclsTerminalDetails.TrustFund = OldTrustFund;
             }
         }
 
@@ -4741,6 +4793,7 @@ namespace AceSoft.RetailPlus.Client.UI
             clsTerminalReport.UpdateTrustFund(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, 0, mclsSalesTransactionDetails.CashierName, Constants.TRUSTFUND_UPDATE_REASON_XREAD);
 
             Data.TerminalReportDetails Details = clsTerminalReport.Details(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
+            Details.InitializedBy = mclsSalesTransactionDetails.CashierName;
             clsTerminalReport.CommitAndDispose();
 
             DialogResult result = DialogResult.OK;
@@ -4830,6 +4883,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mConnection = clsTerminalReport.Connection; mTransaction = clsTerminalReport.Transaction;
 
                 Data.TerminalReportDetails Details = clsTerminalReport.Details(mclsTerminalDetails.BranchDetails.BranchID, mclsTerminalDetails.TerminalNo);
+                Details.InitializedBy = mclsSalesTransactionDetails.CashierName;
                 clsTerminalReport.CommitAndDispose();
                 
                 // always set to zero for BIR purposes
@@ -5547,8 +5601,10 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (result == DialogResult.OK)
             {
+                Cursor.Current = Cursors.WaitCursor;
                 //PrintEJournalReportDelegate ejournalreportDel = new PrintEJournalReportDelegate(PrintEJournalReport);
                 PrintEJournalReport(salesDetails);
+                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -6512,6 +6568,7 @@ namespace AceSoft.RetailPlus.Client.UI
             try
             {
                 NoControl clsNoControl = new NoControl();
+                clsNoControl.TerminalDetails = mclsTerminalDetails;
                 clsNoControl.Caption = Caption;
                 clsNoControl.NoValue = InitValue;
                 clsNoControl.ShowDialog(owner);

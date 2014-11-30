@@ -72,7 +72,6 @@ namespace AceSoft.RetailPlus.Client.UI
             { return mDetails; }
         }
 
-        private Data.TerminalDetails mclsTerminalDetails;
         private Panel panCharge;
         private Label label7;
         private TextBox txtCreditCardCharge;
@@ -83,10 +82,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private bool mboIsCreditChargeExcluded;
         public bool IsCreditChargeExcluded { set {mboIsCreditChargeExcluded = value;} }
 
-        public Data.TerminalDetails TerminalDetails
-        {
-            set { mclsTerminalDetails = value; }
-        }
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
         private ArrayList marrCreditCardPaymentDetails = new ArrayList();
         public ArrayList arrCreditCardPaymentDetails
@@ -110,6 +106,25 @@ namespace AceSoft.RetailPlus.Client.UI
         public CreditCardPaymentWnd()
         {
             InitializeComponent();
+
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/CreditCardPayment.jpg"); }
+            catch { }
+            try
+            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
+            catch { }
+            try
+            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
+            catch { }
+            
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         protected override void Dispose(bool disposing)
@@ -583,20 +598,7 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         private void CreditCardPaymentWnd_Load(object sender, System.EventArgs e)
         {
-            try
-            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
-            catch { }
-            try
-            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/CreditCardPayment.jpg"); }
-            catch { }
-            try
-            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
-            catch { }
-            try
-            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
-            catch { }
-
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
                 this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
@@ -616,8 +618,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 // keyboardNoControl1
                 // 
                 this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
-                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Up;
-                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
+                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Clear;
+                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.SelectAll;
                 this.keyboardNoControl1.Location = new System.Drawing.Point(412, 310);
                 this.keyboardNoControl1.Name = "keyboardNoControl1";
                 this.keyboardNoControl1.Size = new System.Drawing.Size(208, 172);
@@ -629,7 +631,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.Controls.Add(this.keyboardSearchControl1);
                 this.Controls.Add(this.keyboardNoControl1);
             
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
 
@@ -644,9 +646,9 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
         }
@@ -667,7 +669,7 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = null;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 keyboardNoControl1.Visible = false;
                 keyboardSearchControl1.Visible = false;
@@ -730,16 +732,30 @@ namespace AceSoft.RetailPlus.Client.UI
             else if (txtSelectedTextBox.Name == txtRemarks.Name)
                 txtRemarks.Focus();
 
-            SendKeys.Send(e.KeyboardKeyPressed);
+            if (txtSelectedTextBox == null || 
+                txtSelectedTextBox.Name == txtAmount.Name ||
+                txtSelectedTextBox.Name == txtValidityDates.Name ||
+                txtSelectedTextBox.Name == txtCardNo.Name)
+            {
+                txtSelectedTextBox.Focus();
+                if (e.KeyboardKeyPressed == "{CLEAR}")
+                    txtSelectedTextBox.Text = "";
+                else if (e.KeyboardKeyPressed == "{SELECTALL}")
+                    txtSelectedTextBox.SelectAll();
+                else if (e.KeyboardKeyPressed == "." & txtSelectedTextBox.Text.IndexOf(".") < 0)
+                    SendKeys.Send(e.KeyboardKeyPressed);
+                else if (e.KeyboardKeyPressed != ".")
+                    SendKeys.Send(e.KeyboardKeyPressed);
+            }
         }
 
         private void txtCardNo_GotFocus(object sender, EventArgs e)
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
         }
@@ -748,7 +764,7 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = null;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 keyboardNoControl1.Visible = false;
                 keyboardSearchControl1.Visible = false;
@@ -759,10 +775,10 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 keyboardNoControl1.Visible = false;
-                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = TerminalDetails.WithRestaurantFeatures;
             }
         }
 
@@ -770,9 +786,9 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
         }
@@ -781,10 +797,10 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 keyboardNoControl1.Visible = false;
-                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = TerminalDetails.WithRestaurantFeatures;
             }
         }
 
@@ -824,12 +840,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (cboCardType.Items.Count > 0) cboCardType.SelectedIndex = 0;
 
-            txtScan.Text = "put the cursor here to scan credit card";
-
             if (!string.IsNullOrEmpty(mclsCreditorDetails.CreditDetails.CreditCardNo) && mclsCreditorDetails.IsCreditAllowed)
             {
                 txtScan.Text = mclsCreditorDetails.CreditDetails.CreditCardNo;
-                txtScan_TextChanged(null, null);
+                //txtScan_TextChanged(null, null);
+            }
+            else
+            {
+                txtScan.Text = "put the cursor here to scan credit card";
             }
 
             txtAmount.Focus();
@@ -915,20 +933,20 @@ namespace AceSoft.RetailPlus.Client.UI
                 decimal mdecAllowedCredit = mclsCreditorDetails.CreditLimit - mclsCreditorDetails.Credit;
                 if (mdecAmount > mdecAllowedCredit)
                 {
-                    txtAmount.Focus();
                     MessageBox.Show("Amount must be less than the credit limit (" + mdecAllowedCredit.ToString("#,##0.#0") + "). Please enter a lower amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtAmount.Focus();
                     return false;
                 }
                 if (mdecAmount <= 0)
                 {
-                    txtAmount.Focus();
                     MessageBox.Show("Amount must be greater than zero. Please enter a higher amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtAmount.Focus();
                     return false;
                 }
                 if (!mclsCreditorDetails.CreditDetails.CreditActive)
                 {
-                    txtScan.Focus();
                     MessageBox.Show("Sorry the credit card status is " + mclsCreditorDetails.CreditDetails.CreditCardStatus.ToString("G") + ". Please enter an active credit card no.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtScan.Focus();
                     return false;
                 }
                 if (mclsCardTypeDetails.WithGuarantor)
@@ -939,27 +957,27 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     if (!mclsGuarantorDetails.CreditDetails.CreditActive)
                     {
-                        txtScan.Focus();
                         MessageBox.Show("Sorry the Guarantor's credit card status is " + mclsGuarantorDetails.CreditDetails.CreditCardStatus.ToString("G") + ". Please enter an active credit card no.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtScan.Focus();
                         return false;
                     }
                 }
 
                 if (mboIsCreditChargeExcluded) // exclude if it's an special item
                 { decAdditionalCreditCharge = 0; }
-                else if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
+                else if (mclsCardTypeDetails.WithGuarantor && TerminalDetails.GroupChargeType.ChargeTypeID != 0)
                 {
-                    if (mclsTerminalDetails.GroupChargeType.InPercent)
-                        decAdditionalCreditCharge = mdecBalanceAmount * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
+                    if (TerminalDetails.GroupChargeType.InPercent)
+                        decAdditionalCreditCharge = mdecBalanceAmount * (TerminalDetails.GroupChargeType.ChargeAmount / 100);
                     else
-                        decAdditionalCreditCharge = mdecBalanceAmount + mclsTerminalDetails.GroupChargeType.ChargeAmount;
+                        decAdditionalCreditCharge = mdecBalanceAmount + TerminalDetails.GroupChargeType.ChargeAmount;
                 }
-                else if (!mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.PersonalChargeType.ChargeTypeID != 0)
+                else if (!mclsCardTypeDetails.WithGuarantor && TerminalDetails.PersonalChargeType.ChargeTypeID != 0)
                 {
-                    if (mclsTerminalDetails.PersonalChargeType.InPercent)
-                        decAdditionalCreditCharge = mdecBalanceAmount * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
+                    if (TerminalDetails.PersonalChargeType.InPercent)
+                        decAdditionalCreditCharge = mdecBalanceAmount * (TerminalDetails.PersonalChargeType.ChargeAmount / 100);
                     else
-                        decAdditionalCreditCharge = mdecBalanceAmount + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
+                        decAdditionalCreditCharge = mdecBalanceAmount + TerminalDetails.PersonalChargeType.ChargeAmount;
                 }
                 if (mdecAmount > mdecBalanceAmount + decAdditionalCreditCharge)
                 {
@@ -974,8 +992,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 return false;
             }
 
-            mDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
-            mDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+            mDetails.BranchDetails = TerminalDetails.BranchDetails;
+            mDetails.TerminalNo = TerminalDetails.TerminalNo;
             mDetails.TransactionID = mclsSalesTransactionDetails.TransactionID;
             mDetails.TransactionNo = mclsSalesTransactionDetails.TransactionNo;
             mDetails.TransactionDate = mclsSalesTransactionDetails.TransactionDate;
@@ -1087,21 +1105,28 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         private void setCreditCardChargeAmount()
         {
-            if (mboIsCreditChargeExcluded)  // exclude if the ProductCode is exempted in charging
+            if (mboIsCreditChargeExcluded )  // exclude if the ProductCode is exempted in charging
             {
                 unsetCreditCardCharge();
                 cboCardType.Enabled = false;
                 txtValidityDates.Enabled = false;
                 txtCardHolder.Enabled = false;
             }
-            else if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID == 0)
+            else if (mclsCardTypeDetails.ExemptInTerminalCharge)
             {
                 unsetCreditCardCharge();
                 cboCardType.Enabled = false;
                 txtValidityDates.Enabled = false;
                 txtCardHolder.Enabled = false;
             }
-            else if (!mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.PersonalChargeType.ChargeTypeID == 0)
+            else if (mclsCardTypeDetails.WithGuarantor && TerminalDetails.GroupChargeType.ChargeTypeID == 0)
+            {
+                unsetCreditCardCharge();
+                cboCardType.Enabled = false;
+                txtValidityDates.Enabled = false;
+                txtCardHolder.Enabled = false;
+            }
+            else if (!mclsCardTypeDetails.WithGuarantor && TerminalDetails.PersonalChargeType.ChargeTypeID == 0)
             {
                 unsetCreditCardCharge();
                 cboCardType.Enabled = false;
@@ -1110,24 +1135,27 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             else
             {
-                decimal decBalance = decimal.Parse(txtAmount.Text);
+                decimal decBalance = 0;
+                decBalance = decimal.TryParse(txtAmount.Text, out decBalance) ? decBalance : 0;
                 decimal decAdditionalCreditCharge = 0;
 
                 if (mboIsCreditChargeExcluded) // exclude if it's an special item
                 { decAdditionalCreditCharge = 0; }
-                else if (mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.GroupChargeType.ChargeTypeID != 0)
+                else if (mclsCardTypeDetails.ExemptInTerminalCharge) // exclude if it's an exemption
+                { decAdditionalCreditCharge = 0; }
+                else if (mclsCardTypeDetails.WithGuarantor && TerminalDetails.GroupChargeType.ChargeTypeID != 0)
                 {
-                    if (mclsTerminalDetails.GroupChargeType.InPercent)
-                        decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.GroupChargeType.ChargeAmount / 100);
+                    if (TerminalDetails.GroupChargeType.InPercent)
+                        decAdditionalCreditCharge = decBalance * (TerminalDetails.GroupChargeType.ChargeAmount / 100);
                     else
-                        decAdditionalCreditCharge = decBalance + mclsTerminalDetails.GroupChargeType.ChargeAmount;
+                        decAdditionalCreditCharge = decBalance + TerminalDetails.GroupChargeType.ChargeAmount;
                 }
-                else if (!mclsCardTypeDetails.WithGuarantor && mclsTerminalDetails.PersonalChargeType.ChargeTypeID != 0)
+                else if (!mclsCardTypeDetails.WithGuarantor && TerminalDetails.PersonalChargeType.ChargeTypeID != 0)
                 {
-                    if (mclsTerminalDetails.PersonalChargeType.InPercent)
-                        decAdditionalCreditCharge = decBalance * (mclsTerminalDetails.PersonalChargeType.ChargeAmount / 100);
+                    if (TerminalDetails.PersonalChargeType.InPercent)
+                        decAdditionalCreditCharge = decBalance * (TerminalDetails.PersonalChargeType.ChargeAmount / 100);
                     else
-                        decAdditionalCreditCharge = decBalance + mclsTerminalDetails.PersonalChargeType.ChargeAmount;
+                        decAdditionalCreditCharge = decBalance + TerminalDetails.PersonalChargeType.ChargeAmount;
                 }
                 txtCreditCardCharge.Text = decAdditionalCreditCharge.ToString("#,##0.#0");
                 lblBalanceAmount.Text = (decBalance + decAdditionalCreditCharge).ToString("#,##0.#0");
@@ -1140,15 +1168,19 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         private void unsetCreditCardCharge()
         {
-            if (decimal.Parse(txtAmount.Text) > mdecBalanceAmount)
-                txtAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
+            decimal decAmount = 0;
+            if (decimal.TryParse(txtAmount.Text, out decAmount))
+            {
+                if (decAmount > mdecBalanceAmount)
+                    txtAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
 
-            lblBalanceAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
+                lblBalanceAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
 
-            cboCardType.Enabled = true;
-            panCharge.Visible = false;
-            txtValidityDates.Enabled = true;
-            txtCardHolder.Enabled = true;
+                cboCardType.Enabled = true;
+                panCharge.Visible = false;
+                txtValidityDates.Enabled = true;
+                txtCardHolder.Enabled = true;
+            }
         }
 
         private void txtAmount_TextChanged(object sender, EventArgs e)

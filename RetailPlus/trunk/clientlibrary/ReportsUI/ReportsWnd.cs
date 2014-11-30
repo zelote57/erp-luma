@@ -16,7 +16,6 @@ namespace AceSoft.RetailPlus.Client.UI
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label8;
         private System.ComponentModel.Container components = null;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
@@ -44,6 +43,9 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label5;
         private Button cmdF12;
         private Label label6;
+        private Label lblPress;
+        private Label lblF2;
+        private Label lblAddNewCustomer;
         private DialogResult dialog;
 
         #region Public Get/Set Properties
@@ -67,9 +69,12 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mlCashierID = value; }
         }
 
+        public Data.TerminalDetails TerminalDetails { get; set; }
+
         #endregion
 
         #region Constructors and Destructors
+
         public ReportsWnd()
         {
             //
@@ -80,6 +85,11 @@ namespace AceSoft.RetailPlus.Client.UI
             //
             // TODO: Add any constructor code after InitializeComponent call
             //
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         protected override void Dispose(bool disposing)
@@ -128,8 +138,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdF2 = new System.Windows.Forms.Button();
             this.cmdF1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
+            this.lblPress = new System.Windows.Forms.Label();
+            this.lblF2 = new System.Windows.Forms.Label();
+            this.lblAddNewCustomer = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -314,7 +326,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblPrintPLUReportPerOrderSlipPrinterName.Size = new System.Drawing.Size(187, 13);
             this.lblPrintPLUReportPerOrderSlipPrinterName.TabIndex = 87;
             this.lblPrintPLUReportPerOrderSlipPrinterName.Text = "Print PLU Report per OrderSlip Printer";
-            this.lblPrintPLUReportPerOrderSlipPrinterName.Visible = false;
             // 
             // lblReprintZReadName
             // 
@@ -322,9 +333,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblReprintZReadName.ForeColor = System.Drawing.Color.Blue;
             this.lblReprintZReadName.Location = new System.Drawing.Point(697, 234);
             this.lblReprintZReadName.Name = "lblReprintZReadName";
-            this.lblReprintZReadName.Size = new System.Drawing.Size(99, 13);
+            this.lblReprintZReadName.Size = new System.Drawing.Size(96, 13);
             this.lblReprintZReadName.TabIndex = 85;
-            this.lblReprintZReadName.Text = "Re-print my Report";
+            this.lblReprintZReadName.Text = "Print z-read report";
             this.lblReprintZReadName.Visible = false;
             // 
             // label18
@@ -492,17 +503,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label1.TabIndex = 67;
             this.label1.Text = "Reports Window";
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.Transparent;
-            this.label8.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label8.Location = new System.Drawing.Point(448, 38);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(167, 13);
-            this.label8.TabIndex = 79;
-            this.label8.Text = "Press Key to print desired report.";
-            // 
             // cmdCancel
             // 
             this.cmdCancel.AutoSize = true;
@@ -518,14 +518,49 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
+            // lblPress
+            // 
+            this.lblPress.AutoSize = true;
+            this.lblPress.BackColor = System.Drawing.Color.Transparent;
+            this.lblPress.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblPress.Location = new System.Drawing.Point(764, 41);
+            this.lblPress.Name = "lblPress";
+            this.lblPress.Size = new System.Drawing.Size(33, 13);
+            this.lblPress.TabIndex = 127;
+            this.lblPress.Text = "Press";
+            // 
+            // lblF2
+            // 
+            this.lblF2.AutoSize = true;
+            this.lblF2.BackColor = System.Drawing.Color.Transparent;
+            this.lblF2.ForeColor = System.Drawing.Color.Red;
+            this.lblF2.Location = new System.Drawing.Point(798, 41);
+            this.lblF2.Name = "lblF2";
+            this.lblF2.Size = new System.Drawing.Size(33, 13);
+            this.lblF2.TabIndex = 126;
+            this.lblF2.Text = "[Key]";
+            // 
+            // lblAddNewCustomer
+            // 
+            this.lblAddNewCustomer.AutoSize = true;
+            this.lblAddNewCustomer.BackColor = System.Drawing.Color.Transparent;
+            this.lblAddNewCustomer.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblAddNewCustomer.Location = new System.Drawing.Point(838, 41);
+            this.lblAddNewCustomer.Name = "lblAddNewCustomer";
+            this.lblAddNewCustomer.Size = new System.Drawing.Size(139, 13);
+            this.lblAddNewCustomer.TabIndex = 125;
+            this.lblAddNewCustomer.Text = " to print the desired report.";
+            // 
             // ReportsWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1026, 772);
+            this.ClientSize = new System.Drawing.Size(1026, 764);
             this.ControlBox = false;
+            this.Controls.Add(this.lblPress);
+            this.Controls.Add(this.lblF2);
+            this.Controls.Add(this.lblAddNewCustomer);
             this.Controls.Add(this.cmdCancel);
-            this.Controls.Add(this.label8);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.imgIcon);
@@ -583,47 +618,51 @@ namespace AceSoft.RetailPlus.Client.UI
             switch (e.KeyData)
             {
                 case Keys.F1:
-                    AssignValues(Keys.F1);
+                    if (cmdF1.Visible) AssignValues(Keys.F1);
                     break;
 
                 case Keys.F2:
-                    AssignValues(Keys.F2);
+                    if (cmdF2.Visible) AssignValues(Keys.F2);
                     break;
 
                 case Keys.F3:
-                    AssignValues(Keys.F3);
+                    if (cmdF3.Visible) AssignValues(Keys.F3);
                     break;
 
                 case Keys.F4:
-                    AssignValues(Keys.F4);
+                    if (cmdF4.Visible) AssignValues(Keys.F4);
                     break;
 
                 case Keys.F5:
-                    AssignValues(Keys.F5);
+                    if (cmdF5.Visible) AssignValues(Keys.F5);
                     break;
 
                 case Keys.F6:
-                    AssignValues(Keys.F6);
+                    if (cmdF6.Visible) AssignValues(Keys.F6);
                     break;
 
                 case Keys.F7:
-                    AssignValues(Keys.F7);
+                    if (cmdF7.Visible) AssignValues(Keys.F7);
                     break;
 
                 case Keys.F8:
-                    AssignValues(Keys.F8);
+                    if (cmdF8.Visible) AssignValues(Keys.F8);
                     break;
 
                 case Keys.F9:
-                    //AssignValues(Keys.F9);
+                    if (cmdF9.Visible) AssignValues(Keys.F9);
                     break;
 
                 case Keys.F10:
-                    AssignValues(Keys.F10);
+                    if (cmdF10.Visible) AssignValues(Keys.F10);
                     break;
 
                 case Keys.F11:
-                    AssignValues(Keys.F11);
+                    if (cmdF11.Visible) AssignValues(Keys.F11);
+                    break;
+
+                case Keys.F12:
+                    if (cmdF12.Visible) AssignValues(Keys.F12);
                     break;
 
                 case Keys.Escape:
@@ -639,18 +678,18 @@ namespace AceSoft.RetailPlus.Client.UI
         private void LoadOptions()
         {
             //change to ctrL+ALT+F9
-            //Security.AccessRights clsAccessRights = new Security.AccessRights();
-            //Security.AccessRightsDetails clsDetails = new Security.AccessRightsDetails();
+            Security.AccessRights clsAccessRights = new Security.AccessRights();
+            Security.AccessRightsDetails clsDetails = new Security.AccessRightsDetails();
 
-            //clsDetails = clsAccessRights.Details(mlCashierID, (Int16)AccessTypes.ReprintZRead);
-            //cmdF9.Visible = clsDetails.Read;
-            //lblReprintZReadName.Visible = clsDetails.Read;
+            clsDetails = clsAccessRights.Details(mlCashierID, (Int16)AccessTypes.PrintZRead);
+            cmdF9.Visible = clsDetails.Read;
+            lblReprintZReadName.Visible = clsDetails.Read;
 
-            //clsDetails = clsAccessRights.Details(mlCashierID, (Int16)AccessTypes.ReprintZRead);
-            //cmdF10.Visible = clsDetails.Read;
-            //lblPrintPLUReportPerOrderSlipPrinterName.Visible = clsDetails.Read;
+            clsDetails = clsAccessRights.Details(mlCashierID, (Int16)AccessTypes.PLUReportPerOrderSlipPrinter);
+            cmdF10.Visible = clsDetails.Read;
+            lblPrintPLUReportPerOrderSlipPrinterName.Visible = clsDetails.Read;
 
-            //clsAccessRights.CommitAndDispose();
+            clsAccessRights.CommitAndDispose();
         }
         private void AssignValues(Keys key)
         {
@@ -667,62 +706,62 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void cmdF1_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F1);
+            if (cmdF1.Visible) AssignValues(Keys.F1);
         }
 
         private void cmdF2_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F2);
+            if (cmdF2.Visible) AssignValues(Keys.F2);
         }
 
         private void cmdF3_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F3);
+            if (cmdF3.Visible) AssignValues(Keys.F3);
         }
 
         private void cmdF4_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F4);
+            if (cmdF4.Visible) AssignValues(Keys.F4);
         }
 
         private void cmdF5_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F5);
+            if (cmdF5.Visible) AssignValues(Keys.F5);
         }
 
         private void cmdF6_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F6);
+            if (cmdF6.Visible) AssignValues(Keys.F6);
         }
 
         private void cmdF7_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F7);
+            if (cmdF7.Visible) AssignValues(Keys.F7);
         }
 
         private void cmdF8_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F8);
+            if (cmdF8.Visible) AssignValues(Keys.F8);
         }
 
         private void cmdF9_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F9);
+            if (cmdF9.Visible) AssignValues(Keys.F9);
         }
 
         private void cmdF10_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F10);
+            if (cmdF10.Visible) AssignValues(Keys.F10);
         }
 
         private void cmdF11_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F11);
+            if (cmdF11.Visible) AssignValues(Keys.F11);
         }
 
         private void cmdF12_Click(object sender, EventArgs e)
         {
-            AssignValues(Keys.F12);
+            if (cmdF12.Visible) AssignValues(Keys.F12);
         }
 
 

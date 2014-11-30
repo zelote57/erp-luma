@@ -30,11 +30,19 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        public Data.TerminalDetails TerminalDetails { get; set; }
+
         #endregion
 
         public OrderTypeWnd()
         {
             InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         private void cmdF1_Click(object sender, EventArgs e)

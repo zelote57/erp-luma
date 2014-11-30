@@ -33,7 +33,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private System.ComponentModel.Container components = null;
 
         private Data.ContactDetails mclsCustomerDetails;
-        private Data.TerminalDetails mclsTerminalDetails;
+        
         private Data.SalesTransactionDetails mclsSalesTransactionDetails;
 
 		private DialogResult dialog;
@@ -75,11 +75,8 @@ namespace AceSoft.RetailPlus.Client.UI
             get { return mclsSalesTransactionDetails; }
             set { mclsSalesTransactionDetails = value; }
         }
-        public Data.TerminalDetails TerminalDetails
-        {
-            get { return mclsTerminalDetails; }
-            set { mclsTerminalDetails = value; }
-        }
+
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
         private Data.SysConfigDetails mclsSysConfigDetails;
         public Data.SysConfigDetails SysConfigDetails
@@ -149,6 +146,25 @@ namespace AceSoft.RetailPlus.Client.UI
 		public SplitPaymentItemWnd()
 		{
 			InitializeComponent();
+
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Payments.jpg"); }
+            catch { }
+            try
+            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
+            catch { }
+            try
+            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
+            catch { }
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
 		}
 		protected override void Dispose( bool disposing )
 		{
@@ -807,7 +823,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsSalesTransactionDetails.EVATableAmount = mclsSalesTransactionDetails.EVATableAmount * decSplitPercentage;
 
                 PaymentsWnd payment = new PaymentsWnd();
-                payment.TerminalDetails = mclsTerminalDetails;
+                payment.TerminalDetails = TerminalDetails;
                 payment.SysConfigDetails = mclsSysConfigDetails;
                 payment.CustomerDetails = mclsCustomerDetails;
                 payment.SalesTransactionDetails = clsSalesTransactionDetails;
@@ -912,19 +928,6 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void SplitPaymentItemWnd_Load(object sender, System.EventArgs e)
 		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Payments.jpg");	}
-			catch{}
-            try
-            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
-            catch { }
-            try
-            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
-            catch { }
-                        
             if (mboIsRefund)
             {
                 lblHeader.Text = "Enter payment types to refund.";
@@ -947,10 +950,10 @@ namespace AceSoft.RetailPlus.Client.UI
             }
 
             lblSubTotal.Text = mclsSalesTransactionDetails.SubTotal.ToString("#,##0.#0");
-            if ((mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode) && mclsSalesTransactionDetails.DiscountableAmount !=0)
+            if ((mclsSalesTransactionDetails.DiscountCode == TerminalDetails.SeniorCitizenDiscountCode) && mclsSalesTransactionDetails.DiscountableAmount !=0)
             {
                 // recompute coz VAT is zero
-                lblSubtotalVAT.Text = ((mclsSalesTransactionDetails.DiscountableAmount / (1 + (mclsTerminalDetails.VAT / 100))) * (mclsTerminalDetails.VAT / 100)).ToString("#,##0.#0");
+                lblSubtotalVAT.Text = ((mclsSalesTransactionDetails.DiscountableAmount / (1 + (TerminalDetails.VAT / 100))) * (TerminalDetails.VAT / 100)).ToString("#,##0.#0");
             }
             else
             {
@@ -1093,11 +1096,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     AmountDue -= mclsSalesTransactionDetails.TransDiscount * (DiscountableAmount / mclsSalesTransactionDetails.DiscountableAmount);
                 }
-                else if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode)
+                else if (mclsSalesTransactionDetails.DiscountCode == TerminalDetails.SeniorCitizenDiscountCode)
                 {
-                    AmountDue -= (DiscountableAmount / (1 + (mclsTerminalDetails.VAT / 100))) * (mclsSalesTransactionDetails.TransDiscount / 100);
+                    AmountDue -= (DiscountableAmount / (1 + (TerminalDetails.VAT / 100))) * (mclsSalesTransactionDetails.TransDiscount / 100);
                 }
-                else if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.PWDDiscountCode)
+                else if (mclsSalesTransactionDetails.DiscountCode == TerminalDetails.PWDDiscountCode)
                 {
                     AmountDue -= DiscountableAmount * (mclsSalesTransactionDetails.TransDiscount / 100);
                 }
@@ -1138,7 +1141,7 @@ namespace AceSoft.RetailPlus.Client.UI
         
 		private void SendStringToTurret(string szString)
 		{
-			RawPrinterHelper.SendStringToPrinter(mclsTerminalDetails.TurretName, "\f" + szString, "RetailPlus Turret Disp: ");
+			RawPrinterHelper.SendStringToPrinter(TerminalDetails.TurretName, "\f" + szString, "RetailPlus Turret Disp: ");
 		}
 
         private void MoveItemUp()

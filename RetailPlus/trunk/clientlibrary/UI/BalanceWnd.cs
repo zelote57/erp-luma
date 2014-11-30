@@ -20,19 +20,21 @@ namespace AceSoft.RetailPlus.Client.UI
 
         #region Property Get/Set
 
-        private Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails { set { this.mclsTerminalDetails = value; } }
+        public Data.TerminalDetails TerminalDetails { get; set; }
+
         private DialogResult dialog;
-		public DialogResult Result
+        public DialogResult Result
 		{
 			get {	return dialog;	}
 		}
+
         private Int64 miCashierID;
-		public Int64 CashierID
+        public Int64 CashierID
 		{
 			get {	return miCashierID;	}
 			set {	miCashierID = value;	}
 		}
+
         private decimal mdecAmount;
 		public decimal Amount
 		{
@@ -45,6 +47,12 @@ namespace AceSoft.RetailPlus.Client.UI
         public BalanceWnd()
 		{
 			InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
 		}
 
 		protected override void Dispose( bool disposing )
@@ -73,7 +81,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.lblCurrency = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
-            this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -156,25 +163,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
-            // keyboardNoControl1
-            // 
-            this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
-            this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Default;
-            this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Default;
-            this.keyboardNoControl1.Location = new System.Drawing.Point(400, 334);
-            this.keyboardNoControl1.Name = "keyboardNoControl1";
-            this.keyboardNoControl1.Size = new System.Drawing.Size(200, 180);
-            this.keyboardNoControl1.TabIndex = 8;
-            this.keyboardNoControl1.Visible = false;
-            this.keyboardNoControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardNoControl1_UserKeyPressed);
-            // 
             // BalanceWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1022, 766);
+            this.ClientSize = new System.Drawing.Size(1022, 764);
             this.ControlBox = false;
-            this.Controls.Add(this.keyboardNoControl1);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lblHeader);
@@ -198,6 +192,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		}
 		#endregion
+
 		#endregion
 
 		#region Windows Form Methods
@@ -252,7 +247,27 @@ namespace AceSoft.RetailPlus.Client.UI
             { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
             catch { }
 
-            keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            if (TerminalDetails.WithRestaurantFeatures)
+            {
+                this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
+                // 
+                // keyboardNoControl1
+                // 
+                this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
+                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Clear;
+                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.SelectAll;
+                this.keyboardNoControl1.Location = new System.Drawing.Point(400, 334);
+                this.keyboardNoControl1.Name = "keyboardNoControl1";
+                this.keyboardNoControl1.Size = new System.Drawing.Size(208, 172);
+                this.keyboardNoControl1.TabIndex = 86;
+                this.keyboardNoControl1.TabStop = false;
+                this.keyboardNoControl1.Visible = false;
+                this.keyboardNoControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardNoControl1_UserKeyPressed);
+
+                this.Controls.Add(this.keyboardNoControl1);
+
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
+            }
 		}
 
 		#endregion
@@ -273,7 +288,14 @@ namespace AceSoft.RetailPlus.Client.UI
         private void keyboardNoControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
         {
             txtAmount.Focus();
-            SendKeys.Send(e.KeyboardKeyPressed);
+            if (e.KeyboardKeyPressed == "{CLEAR}")
+                txtAmount.Text = "";
+            else if (e.KeyboardKeyPressed == "{SELECTALL}")
+                txtAmount.SelectAll();
+            else if (e.KeyboardKeyPressed == "." & txtAmount.Text.IndexOf(".") < 0)
+                SendKeys.Send(e.KeyboardKeyPressed);
+            else if (e.KeyboardKeyPressed != ".")
+                SendKeys.Send(e.KeyboardKeyPressed);
         }
 
         private void cmdCancel_Click(object sender, EventArgs e)
@@ -296,8 +318,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			CashierLogsDetails clsLogDetails = new CashierLogsDetails();
 			clsLogDetails.CashierID = miCashierID;
 			clsLogDetails.LoginDate = DateTime.Now;
-            clsLogDetails.BranchID = mclsTerminalDetails.BranchID;
-            clsLogDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+            clsLogDetails.BranchID = TerminalDetails.BranchID;
+            clsLogDetails.TerminalNo = TerminalDetails.TerminalNo;
 			clsLogDetails.IPAddress = System.Net.Dns.GetHostName();
 			clsLogDetails.Status = CashierLogStatus.LoggedIn;
 

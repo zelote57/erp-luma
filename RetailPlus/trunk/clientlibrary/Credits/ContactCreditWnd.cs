@@ -62,6 +62,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			set {	mContactDetails = value;	}
 		}
 
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
 		#region Constructors And Desctructors
 		public ContactCreditWnd()
@@ -74,6 +75,24 @@ namespace AceSoft.RetailPlus.Client.UI
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Balance.jpg"); }
+            catch { }
+            try
+            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
+            catch { }
+            try
+            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
+            catch { }
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
 		}
 
 		/// <summary>
@@ -342,19 +361,6 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void ContactCreditAddWnd_Load(object sender, System.EventArgs e)
 		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Balance.jpg");	}
-			catch{}
-            try
-            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
-            catch { }
-            try
-            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
-            catch { }
-
 			this.lblHeader.Text = mstHeader;
             this.LoadRecord();
             
@@ -438,7 +444,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 if (MessageBox.Show("Are you sure you want to issue a new credit card to " + mContactDetails.ContactName + "?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 { return boRetValue; }
             }
-            else if (mCreditCardStatus == CreditCardStatus.Lost || mCreditCardStatus == CreditCardStatus.Expired)
+            else if (mCreditCardStatus == CreditCardStatus.Lost || mCreditCardStatus == CreditCardStatus.Expired || mCreditCardStatus == RetailPlus.CreditCardStatus.Suspended)
             {
                 if (MessageBox.Show("Are you sure you want to declare card no: " + txtCreditCardNo.Text + " as " + mCreditCardStatus.ToString("G") + "?", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 { return boRetValue; }
@@ -523,7 +529,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsDetails.GuarantorID = Guarantor.ContactID;
                 clsDetails.CardTypeDetails = CardTypeDetails;
             }
-            else if (mCreditCardStatus == CreditCardStatus.Lost || mCreditCardStatus == CreditCardStatus.Expired)
+            else if (mCreditCardStatus == CreditCardStatus.Lost || mCreditCardStatus == CreditCardStatus.Expired || mCreditCardStatus == RetailPlus.CreditCardStatus.Suspended)
             {
                 clsDetails.CreditActive = false;
             }
@@ -580,6 +586,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 case CreditCardStatus.ReNew:
                 case CreditCardStatus.Reactivated_Lost:
                 case CreditCardStatus.ManualDeactivated:
+                case CreditCardStatus.Suspended:
                     txtCreditCardNo.Text = mContactDetails.CreditDetails.CreditCardNo;
                     break;
                 default:
@@ -598,7 +605,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 MessageBox.Show("Credit Card No: " + clsContactCreditDetails.CreditCardNo + " was already issued last " + clsContactCreditDetails.CreditAwardDate.ToString("MMM dd, yyyy") + " to " + mContactDetails.ContactName + "." +
                                 Environment.NewLine + "Please select another customer.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            else if (mCreditCardStatus == CreditCardStatus.Lost || mCreditCardStatus == CreditCardStatus.Expired)
+            else if (mCreditCardStatus == CreditCardStatus.Lost || mCreditCardStatus == CreditCardStatus.Expired || mCreditCardStatus == CreditCardStatus.Suspended)
             {
                 txtCreditCardExpiryDate.Enabled = false; this.Refresh(); txtCreditCardNo.Focus();
             }

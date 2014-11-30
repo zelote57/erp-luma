@@ -58,11 +58,7 @@ namespace AceSoft.RetailPlus.Client.UI
             get { return mDetails; }
         }
 
-        private Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            set { mclsTerminalDetails = value; }
-        }
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
         #endregion
 
@@ -71,6 +67,26 @@ namespace AceSoft.RetailPlus.Client.UI
         public CashPaymentWnd()
 		{
 			InitializeComponent();
+
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/CashPayment.jpg"); }
+            catch { }
+            try
+            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
+            catch { }
+            try
+            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
+            catch { }
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL;
+            
 		}
 
 		protected override void Dispose( bool disposing )
@@ -186,7 +202,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // txtRemarks
             // 
             this.txtRemarks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtRemarks.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRemarks.Font = new System.Drawing.Font("Tahoma", 10.25F, System.Drawing.FontStyle.Bold);
             this.txtRemarks.Location = new System.Drawing.Point(118, 153);
             this.txtRemarks.MaxLength = 255;
             this.txtRemarks.Multiline = true;
@@ -257,7 +273,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1022, 766);
+            this.ClientSize = new System.Drawing.Size(1022, 764);
             this.ControlBox = false;
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
@@ -312,20 +328,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void CashPaymentWnd_Load(object sender, System.EventArgs e)
 		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/CashPayment.jpg");	}
-			catch{}
-            try
-            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
-            catch { }
-            try
-            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
-            catch { }
-
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
                 this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
@@ -333,8 +336,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 // keyboardNoControl1
                 // 
                 this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
-                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Up;
-                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
+                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Clear;
+                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.SelectAll;
                 this.keyboardNoControl1.Location = new System.Drawing.Point(412, 310);
                 this.keyboardNoControl1.Name = "keyboardNoControl1";
                 this.keyboardNoControl1.Size = new System.Drawing.Size(208, 172);
@@ -357,7 +360,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.Controls.Add(this.keyboardSearchControl1);
                 this.Controls.Add(this.keyboardNoControl1);
 
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
             }
 
             lblBalanceAmount.Text = mdecBalanceAmount.ToString("#,##0.#0");
@@ -379,9 +382,9 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTexBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
         }
@@ -396,10 +399,10 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             txtSelectedTexBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 keyboardNoControl1.Visible = false;
-                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = TerminalDetails.WithRestaurantFeatures;
             }
 		}
 
@@ -420,7 +423,14 @@ namespace AceSoft.RetailPlus.Client.UI
             else if (txtSelectedTexBox.Name == txtAmount.Name)
                 txtAmount.Focus();
 
-            SendKeys.Send(e.KeyboardKeyPressed);
+            if (e.KeyboardKeyPressed == "{CLEAR}")
+                txtAmount.Text = "";
+            else if (e.KeyboardKeyPressed == "{SELECTALL}")
+                txtAmount.SelectAll();
+            else if (e.KeyboardKeyPressed == "." & txtAmount.Text.IndexOf(".") < 0)
+                SendKeys.Send(e.KeyboardKeyPressed);
+            else if (e.KeyboardKeyPressed != ".")
+                SendKeys.Send(e.KeyboardKeyPressed);
         }
 
         private void cmdCancel_Click(object sender, EventArgs e)
@@ -466,8 +476,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				return false;
 			}
 
-            mDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
-            mDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+            mDetails.BranchDetails = TerminalDetails.BranchDetails;
+            mDetails.TerminalNo = TerminalDetails.TerminalNo;
 			mDetails.TransactionID = mclsSalesTransactionDetails.TransactionID;
 			mDetails.Amount = Amount;
 			mDetails.Remarks = txtRemarks.Text;

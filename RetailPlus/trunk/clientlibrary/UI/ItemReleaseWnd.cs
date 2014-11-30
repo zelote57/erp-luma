@@ -34,15 +34,17 @@ namespace AceSoft.RetailPlus.Client.UI
             get { return mstrReleaserName; }
         }
 
-        private Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            set { mclsTerminalDetails = value; }
-        }
-
+        public Data.TerminalDetails TerminalDetails { get; set; }
+        
         public ItemReleaseWnd()
         {
             InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         #region Windows Form Methods
@@ -220,7 +222,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 LoadOptions();
                 string strTransactionNo = txtScan.Text.Trim().PadLeft(14, '0');
                 Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
-                mclsSalesTransactionDetails = clsTransactions.Details(strTransactionNo, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
+                mclsSalesTransactionDetails = clsTransactions.Details(strTransactionNo, TerminalDetails.TerminalNo, TerminalDetails.BranchID);
 
                 if (!string.IsNullOrEmpty(mclsSalesTransactionDetails.TransactionNo))
                 {

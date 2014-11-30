@@ -16,7 +16,6 @@ namespace AceSoft.RetailPlus.Client.UI
     {
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.PictureBox imgIcon;
-        private System.Windows.Forms.Label lblDescription;
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -61,17 +60,15 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        private Data.TerminalDetails mclsTerminalDetails;
         private Panel panel1;
         private DataGridView dgvItems;
+
+        public Data.TerminalDetails mclsTerminalDetails;
+        private Label lblPress;
+        private Label lblF2;
+        private Label lblAddNewCustomer;
     
-        public Data.TerminalDetails TerminalDetails
-        {
-            set
-            {
-                mclsTerminalDetails = value;
-            }
-        }
+        public Data.TerminalDetails TerminalDetails { get { return mclsTerminalDetails; } set { mclsTerminalDetails = value; } }
 
         private Reports.TerminalReportType mTerminalReportType;
 
@@ -86,6 +83,7 @@ namespace AceSoft.RetailPlus.Client.UI
         #endregion
 
         #region Constructors and Destructors
+
         public TerminalReportWnd()
         {
             //
@@ -96,6 +94,11 @@ namespace AceSoft.RetailPlus.Client.UI
             //
             // TODO: Add any constructor code after InitializeComponent call
             //
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = mclsTerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         /// <summary>
@@ -130,9 +133,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblReceiptDesc = new System.Windows.Forms.Label();
             this.lblCompany = new System.Windows.Forms.Label();
             this.lblReportDesc = new System.Windows.Forms.Label();
-            this.lblDescription = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
+            this.lblPress = new System.Windows.Forms.Label();
+            this.lblF2 = new System.Windows.Forms.Label();
+            this.lblAddNewCustomer = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -247,18 +252,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblReportDesc.TabIndex = 67;
             this.lblReportDesc.Text = "XRead Report Window.";
             // 
-            // lblDescription
-            // 
-            this.lblDescription.AutoSize = true;
-            this.lblDescription.BackColor = System.Drawing.Color.Transparent;
-            this.lblDescription.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.lblDescription.Location = new System.Drawing.Point(762, 41);
-            this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(252, 13);
-            this.lblDescription.TabIndex = 86;
-            this.lblDescription.Tag = "";
-            this.lblDescription.Text = "Press Enter Key to print the current viewed report.";
-            // 
             // cmdCancel
             // 
             this.cmdCancel.AutoSize = true;
@@ -289,15 +282,50 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdEnter.UseVisualStyleBackColor = true;
             this.cmdEnter.Click += new System.EventHandler(this.cmdEnter_Click);
             // 
+            // lblPress
+            // 
+            this.lblPress.AutoSize = true;
+            this.lblPress.BackColor = System.Drawing.Color.Transparent;
+            this.lblPress.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblPress.Location = new System.Drawing.Point(764, 41);
+            this.lblPress.Name = "lblPress";
+            this.lblPress.Size = new System.Drawing.Size(33, 13);
+            this.lblPress.TabIndex = 127;
+            this.lblPress.Text = "Press";
+            // 
+            // lblF2
+            // 
+            this.lblF2.AutoSize = true;
+            this.lblF2.BackColor = System.Drawing.Color.Transparent;
+            this.lblF2.ForeColor = System.Drawing.Color.Red;
+            this.lblF2.Location = new System.Drawing.Point(798, 41);
+            this.lblF2.Name = "lblF2";
+            this.lblF2.Size = new System.Drawing.Size(41, 13);
+            this.lblF2.TabIndex = 126;
+            this.lblF2.Text = "[Enter]";
+            // 
+            // lblAddNewCustomer
+            // 
+            this.lblAddNewCustomer.AutoSize = true;
+            this.lblAddNewCustomer.BackColor = System.Drawing.Color.Transparent;
+            this.lblAddNewCustomer.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblAddNewCustomer.Location = new System.Drawing.Point(838, 41);
+            this.lblAddNewCustomer.Name = "lblAddNewCustomer";
+            this.lblAddNewCustomer.Size = new System.Drawing.Size(176, 13);
+            this.lblAddNewCustomer.TabIndex = 125;
+            this.lblAddNewCustomer.Text = " to print the current viewed report.";
+            // 
             // TerminalReportWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 764);
             this.ControlBox = false;
+            this.Controls.Add(this.lblPress);
+            this.Controls.Add(this.lblF2);
+            this.Controls.Add(this.lblAddNewCustomer);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdEnter);
-            this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.lblReportDesc);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.imgIcon);

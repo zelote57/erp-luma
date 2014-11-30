@@ -21,10 +21,8 @@ namespace AceSoft.RetailPlus.Client.UI
 		private DataGridTextBoxColumn IsCreditAllowed;
 		private DataGridTextBoxColumn PositionName;
 		private DataGridTextBoxColumn DepartmentName;
-		private PictureBox imgIcon;
-		private Label lblAddNewCustomer;
-		private System.ComponentModel.Container components = null;
-        private Label lblF2;
+        private PictureBox imgIcon;
+        private System.ComponentModel.Container components = null;
 
         #region Public Properties
 
@@ -39,6 +37,12 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 
         private Data.ContactDetails mDetails;
+        private Label lblUpdateCustomer;
+        private Label lblPress;
+        private Label lblF6;
+        private Label lblF2;
+        private Label lblAddNewCustomer;
+    
 		public ContactDetails Details
 		{
 			get {	return mDetails;	}
@@ -50,15 +54,36 @@ namespace AceSoft.RetailPlus.Client.UI
 			set { mContactGroupCategory = value; }
 		}
 
+        public Keys keyCommand { get; set; }
         public string Header { get; set; }
 
+        public bool EnableContactAddUpdate { get; set; }
         #endregion
 
         #region Constructors and Destructors
 
         public ContactSelectWnd()
 		{
-			InitializeComponent();
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
+
+            //
+            // TODO: Add any constructor code after InitializeComponent call
+            //
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ContactSelect.jpg"); }
+            catch { }
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
 		}
 
 		protected override void Dispose( bool disposing )
@@ -95,9 +120,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.IsCreditAllowed = new System.Windows.Forms.DataGridTextBoxColumn();
             this.PositionName = new System.Windows.Forms.DataGridTextBoxColumn();
             this.DepartmentName = new System.Windows.Forms.DataGridTextBoxColumn();
-            this.lblAddNewCustomer = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
+            this.lblUpdateCustomer = new System.Windows.Forms.Label();
+            this.lblPress = new System.Windows.Forms.Label();
+            this.lblF6 = new System.Windows.Forms.Label();
             this.lblF2 = new System.Windows.Forms.Label();
+            this.lblAddNewCustomer = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgContacts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.SuspendLayout();
@@ -273,18 +301,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.DepartmentName.ReadOnly = true;
             this.DepartmentName.Width = 0;
             // 
-            // lblAddNewCustomer
-            // 
-            this.lblAddNewCustomer.AutoSize = true;
-            this.lblAddNewCustomer.BackColor = System.Drawing.Color.Transparent;
-            this.lblAddNewCustomer.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.lblAddNewCustomer.Location = new System.Drawing.Point(772, 31);
-            this.lblAddNewCustomer.Name = "lblAddNewCustomer";
-            this.lblAddNewCustomer.Size = new System.Drawing.Size(204, 13);
-            this.lblAddNewCustomer.TabIndex = 89;
-            this.lblAddNewCustomer.Text = "Click or Press  [F2]  to Add new customer";
-            this.lblAddNewCustomer.Click += new System.EventHandler(this.lblAddNewCustomer_Click);
-            // 
             // imgIcon
             // 
             this.imgIcon.BackColor = System.Drawing.Color.Blue;
@@ -296,16 +312,59 @@ namespace AceSoft.RetailPlus.Client.UI
             this.imgIcon.TabStop = false;
             this.imgIcon.Click += new System.EventHandler(this.imgIcon_Click);
             // 
+            // lblUpdateCustomer
+            // 
+            this.lblUpdateCustomer.AutoSize = true;
+            this.lblUpdateCustomer.BackColor = System.Drawing.Color.Transparent;
+            this.lblUpdateCustomer.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblUpdateCustomer.Location = new System.Drawing.Point(845, 25);
+            this.lblUpdateCustomer.Name = "lblUpdateCustomer";
+            this.lblUpdateCustomer.Size = new System.Drawing.Size(147, 13);
+            this.lblUpdateCustomer.TabIndex = 115;
+            this.lblUpdateCustomer.Text = " to update selected customer";
+            // 
+            // lblPress
+            // 
+            this.lblPress.AutoSize = true;
+            this.lblPress.BackColor = System.Drawing.Color.Transparent;
+            this.lblPress.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblPress.Location = new System.Drawing.Point(771, 9);
+            this.lblPress.Name = "lblPress";
+            this.lblPress.Size = new System.Drawing.Size(33, 13);
+            this.lblPress.TabIndex = 114;
+            this.lblPress.Text = "Press";
+            // 
+            // lblF6
+            // 
+            this.lblF6.BackColor = System.Drawing.Color.Transparent;
+            this.lblF6.ForeColor = System.Drawing.Color.Red;
+            this.lblF6.Location = new System.Drawing.Point(806, 25);
+            this.lblF6.Name = "lblF6";
+            this.lblF6.Size = new System.Drawing.Size(27, 13);
+            this.lblF6.TabIndex = 113;
+            this.lblF6.Text = "[F6]";
+            // 
             // lblF2
             // 
             this.lblF2.AutoSize = true;
             this.lblF2.BackColor = System.Drawing.Color.Transparent;
             this.lblF2.ForeColor = System.Drawing.Color.Red;
-            this.lblF2.Location = new System.Drawing.Point(841, 31);
+            this.lblF2.Location = new System.Drawing.Point(805, 9);
             this.lblF2.Name = "lblF2";
             this.lblF2.Size = new System.Drawing.Size(27, 13);
-            this.lblF2.TabIndex = 100;
+            this.lblF2.TabIndex = 112;
             this.lblF2.Text = "[F2]";
+            // 
+            // lblAddNewCustomer
+            // 
+            this.lblAddNewCustomer.AutoSize = true;
+            this.lblAddNewCustomer.BackColor = System.Drawing.Color.Transparent;
+            this.lblAddNewCustomer.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblAddNewCustomer.Location = new System.Drawing.Point(845, 9);
+            this.lblAddNewCustomer.Name = "lblAddNewCustomer";
+            this.lblAddNewCustomer.Size = new System.Drawing.Size(111, 13);
+            this.lblAddNewCustomer.TabIndex = 111;
+            this.lblAddNewCustomer.Text = " to add new customer";
             // 
             // ContactSelectWnd
             // 
@@ -313,6 +372,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.lblUpdateCustomer);
+            this.Controls.Add(this.lblPress);
+            this.Controls.Add(this.lblF6);
             this.Controls.Add(this.lblF2);
             this.Controls.Add(this.lblAddNewCustomer);
             this.Controls.Add(this.dgContacts);
@@ -341,7 +403,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void ContactSelectWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
-			System.Data.DataTable dt;
+            keyCommand = e.KeyData;
+            System.Data.DataTable dt;
 			int index;
 
 			switch (e.KeyData)
@@ -389,24 +452,39 @@ namespace AceSoft.RetailPlus.Client.UI
 				case Keys.F2:
                     if (mContactGroupCategory != Data.ContactGroupCategory.AGENT) ContactAdd();
 					break;
+
+                case Keys.F6:
+                    if (mContactGroupCategory != Data.ContactGroupCategory.AGENT) ContactUpdate();
+                    break;
 			}
 		}
 
 		private void ContactSelectWnd_Load(object sender, System.EventArgs e)
 		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ContactSelect.jpg");	}
-			catch{}
-
-            if (mContactGroupCategory == Data.ContactGroupCategory.AGENT)
+			if (mContactGroupCategory == Data.ContactGroupCategory.AGENT)
                 lblHeader.Text = "Enter agent code / name to search.";
             else
                 lblHeader.Text = "Enter customer code/name/in-house credit card no to search.";
 
             lblHeader.Text = !string.IsNullOrEmpty(Header) ? Header : lblHeader.Text;
+
+
+            if (mContactGroupCategory == ContactGroupCategory.AGENT)
+            {
+                lblPress.Visible = EnableContactAddUpdate;
+                lblUpdateCustomer.Visible = EnableContactAddUpdate;
+                lblAddNewCustomer.Visible = EnableContactAddUpdate;
+                lblF2.Visible = false;
+                lblF6.Visible = false;
+            }
+            else
+            {
+                lblPress.Visible = EnableContactAddUpdate;
+                lblUpdateCustomer.Visible = EnableContactAddUpdate;
+                lblAddNewCustomer.Visible = EnableContactAddUpdate;
+                lblF2.Visible = EnableContactAddUpdate;
+                lblF6.Visible = EnableContactAddUpdate;
+            }
 
 			LoadOptions();
 			LoadContactData();
@@ -485,11 +563,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void LoadOptions()
 		{
-            if (mContactGroupCategory == ContactGroupCategory.AGENT)
-            {
-                lblAddNewCustomer.Visible = false;
-                lblF2.Visible = false;
-            }
+            
 
 		}
 		private void LoadContactData()
@@ -502,13 +576,21 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				System.Data.DataTable dt;
 				if (mContactGroupCategory == ContactGroupCategory.AGENT)
-					dt = clsContact.AgentsAsDataTable(searchkey, 100, "ContactName", SortOption.Ascending); 
+					dt = clsContact.AgentsAsDataTable(searchkey, 50, "ContactName", SortOption.Ascending); 
 				else
-                    dt = clsContact.CustomersDataTable(searchkey, 100, HasCreditOnly, "ContactName", SortOption.Ascending);
+                    dt = clsContact.CustomersDataTable(searchkey, 50, HasCreditOnly, "ContactName", SortOption.Ascending);
 
                 if (!TerminalDetails.ShowCustomerSelection && dt.Rows.Count == 0)
                 {
                     Data.ContactDetails clsContactDetails = clsContact.DetailsByCreditCardNo(txtSearch.Text);
+
+                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 7) clsContactDetails = clsContact.DetailsByCreditCardNo("888880" + txtSearch.Text);
+                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 7) clsContactDetails = clsContact.DetailsByCreditCardNo("800000" + txtSearch.Text);
+                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.GroupCreditCard_Country_Code + BarcodeHelper.GroupCreditCard_ManufacturerCode + txtSearch.Text);
+                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.CustomerCode_Country_Code + BarcodeHelper.CustomerCode_ManufacturerCode + txtSearch.Text);
+                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.GroupCreditCard_Country_Code + BarcodeHelper.GroupCreditCard_ManufacturerCode_Manual + txtSearch.Text);
+                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.CreditCard_Country_Code + BarcodeHelper.CreditCard_ManufacturerCode + txtSearch.Text);
+
                     if (clsContactDetails.ContactID != 0)
                     {
                         searchkey = clsContactDetails.ContactCode;
@@ -535,39 +617,86 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void ContactAdd()
 		{
+            if (!EnableContactAddUpdate) return;
+
+            Data.ContactDetails details = new Data.ContactDetails();
+            DialogResult addresult = System.Windows.Forms.DialogResult.Cancel;
             if (!TerminalDetails.ShowCustomerSelection)
             {
                 ContactAddDetWnd addwnd = new ContactAddDetWnd();
                 addwnd.Caption = "Quickly add new customer.";
+                addwnd.TerminalDetails = TerminalDetails;
                 addwnd.ShowDialog(this);
-                DialogResult addresult = addwnd.Result;
-                Data.ContactDetails details = addwnd.ContactDetails;
+                addresult = addwnd.Result;
+                details = addwnd.ContactDetails;
                 addwnd.Close();
                 addwnd.Dispose();
-
-                if (addresult == DialogResult.OK)
-                {
-                    txtSearch.Text = details.ContactCode;
-                    LoadContactData();
-                }
             }
             else
             {
 			    ContactAddWnd addwnd = new ContactAddWnd();
 			    addwnd.Caption = "Quickly add new customer.";
+                addwnd.TerminalDetails = TerminalDetails;
 			    addwnd.ShowDialog(this);
-			    DialogResult addresult = addwnd.Result;
-			    Data.ContactDetails details = addwnd.ContactDetails;
+			    addresult = addwnd.Result;
+			    details = addwnd.ContactDetails;
 			    addwnd.Close();
 			    addwnd.Dispose();
-
-			    if (addresult == DialogResult.OK)
-			    {
-				    txtSearch.Text = details.ContactCode;
-				    LoadContactData();
-			    }
+            }
+            if (addresult == DialogResult.OK)
+            {
+                txtSearch.Text = details.ContactCode;
+                LoadContactData();
             }
 		}
+        private void ContactUpdate()
+        {
+            try
+            {
+                if (!EnableContactAddUpdate) return;
+
+                Int64 iContactID = Convert.ToInt64(dgContacts[dgContacts.CurrentRowIndex, 0].ToString());
+
+                if (iContactID != 0 && iContactID != Constants.C_RETAILPLUS_CUSTOMERID)
+                {
+                    Data.Contacts clsContact = new Data.Contacts();
+                    Data.ContactDetails details = clsContact.Details(iContactID);
+                    clsContact.CommitAndDispose();
+
+                    DialogResult addresult = System.Windows.Forms.DialogResult.Cancel;
+                    if (!TerminalDetails.ShowCustomerSelection)
+                    {
+                        ContactAddDetWnd clsContactAddWnd = new ContactAddDetWnd();
+                        clsContactAddWnd.Caption = "Update Customer [" + details.ContactName + "]";
+                        clsContactAddWnd.ContactDetails = details;
+                        clsContactAddWnd.TerminalDetails = TerminalDetails;
+                        clsContactAddWnd.ShowDialog(this);
+                        addresult = clsContactAddWnd.Result;
+                        details = clsContactAddWnd.ContactDetails;
+                        clsContactAddWnd.Close();
+                        clsContactAddWnd.Dispose();
+                    }
+                    else
+                    {
+                        ContactAddWnd clsContactAddWnd = new ContactAddWnd();
+                        clsContactAddWnd.Caption = "Update Customer [" + details.ContactName + "]";
+                        clsContactAddWnd.ContactDetails = details;
+                        clsContactAddWnd.TerminalDetails = TerminalDetails;
+                        clsContactAddWnd.ShowDialog(this);
+                        addresult = clsContactAddWnd.Result;
+                        details = clsContactAddWnd.ContactDetails;
+                        clsContactAddWnd.Close();
+                        clsContactAddWnd.Dispose();
+                    }
+                    if (addresult == DialogResult.OK)
+                    {
+                        txtSearch.Text = details.ContactCode;
+                        LoadContactData();
+                    }
+                }
+            }
+            catch { }
+        }
 
 		#endregion
 

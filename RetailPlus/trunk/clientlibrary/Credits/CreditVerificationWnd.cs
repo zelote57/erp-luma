@@ -19,6 +19,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		private System.ComponentModel.Container components = null;
 
         private Data.ContactDetails mContactDetails;
+        private Data.ContactDetails mGuarantorDetails;
         private DialogResult dialog;
         private GroupBox grpContactDetails;
         private Label label3;
@@ -40,7 +41,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private TextBox txtScan;
         private Label label2;
         private TextBox txtCreditCardStatus;
-        private Label label10;
+        private Label labelCreditStatus;
         private DataGridView dgvItems;
         private Label lblBalanceName;
         private Label lblBalance;
@@ -50,6 +51,15 @@ namespace AceSoft.RetailPlus.Client.UI
         private TextBox txtRemarks;
         private Label label9;
         private TextBox txtMobileNo;
+        private TextBox txtGuarantor;
+        private Label labelGuarantor;
+        private Label label10;
+        private Label label11;
+        private Label label12;
+        private Label label13;
+        private Label label14;
+        private Label label15;
+        private Label label16;
 		private string mstCaption;
 
 		public DialogResult Result
@@ -71,6 +81,14 @@ namespace AceSoft.RetailPlus.Client.UI
 			get {	return mContactDetails;	}
 		}
 
+        public Data.ContactDetails GuarantorDetails
+        {
+            get { return mGuarantorDetails; }
+        }
+
+        public Keys keyCommand { get; set; }
+        public Data.TerminalDetails TerminalDetails { get; set; }
+        public Data.SysConfigDetails SysConfigDetails { get; set; }
 
 		#region Constructors And Desctructors
 		public CreditVerificationWnd()
@@ -83,6 +101,24 @@ namespace AceSoft.RetailPlus.Client.UI
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Balance.jpg"); }
+            catch { }
+            try
+            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
+            catch { }
+            try
+            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
+            catch { }
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
 		}
 
 		/// <summary>
@@ -113,10 +149,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblHeader = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.grpContactDetails = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtMobileNo = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.txtCreditCardStatus = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.labelCreditStatus = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtTelNo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -129,6 +167,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCreditLimit = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtCredit = new System.Windows.Forms.TextBox();
+            this.txtGuarantor = new System.Windows.Forms.TextBox();
+            this.labelGuarantor = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
             this.grpPurchases = new System.Windows.Forms.GroupBox();
@@ -139,8 +179,13 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2 = new System.Windows.Forms.Label();
             this.lblAddNewCustomer = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtMobileNo = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.grpContactDetails.SuspendLayout();
             this.grpPurchases.SuspendLayout();
@@ -177,7 +222,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpContactDetails.Controls.Add(this.label8);
             this.grpContactDetails.Controls.Add(this.txtRemarks);
             this.grpContactDetails.Controls.Add(this.txtCreditCardStatus);
-            this.grpContactDetails.Controls.Add(this.label10);
+            this.grpContactDetails.Controls.Add(this.labelCreditStatus);
             this.grpContactDetails.Controls.Add(this.label3);
             this.grpContactDetails.Controls.Add(this.txtTelNo);
             this.grpContactDetails.Controls.Add(this.label1);
@@ -190,6 +235,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpContactDetails.Controls.Add(this.txtCreditLimit);
             this.grpContactDetails.Controls.Add(this.label4);
             this.grpContactDetails.Controls.Add(this.txtCredit);
+            this.grpContactDetails.Controls.Add(this.txtGuarantor);
+            this.grpContactDetails.Controls.Add(this.labelGuarantor);
             this.grpContactDetails.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpContactDetails.ForeColor = System.Drawing.Color.Blue;
             this.grpContactDetails.Location = new System.Drawing.Point(9, 113);
@@ -199,6 +246,29 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpContactDetails.TabStop = false;
             this.grpContactDetails.Text = "Creditor Details";
             this.grpContactDetails.Visible = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label9.Location = new System.Drawing.Point(627, 17);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(64, 13);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "Mobile no.";
+            // 
+            // txtMobileNo
+            // 
+            this.txtMobileNo.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.txtMobileNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtMobileNo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMobileNo.Location = new System.Drawing.Point(731, 15);
+            this.txtMobileNo.MaxLength = 75;
+            this.txtMobileNo.Name = "txtMobileNo";
+            this.txtMobileNo.ReadOnly = true;
+            this.txtMobileNo.Size = new System.Drawing.Size(169, 30);
+            this.txtMobileNo.TabIndex = 2;
             // 
             // label8
             // 
@@ -222,7 +292,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtRemarks.Name = "txtRemarks";
             this.txtRemarks.ReadOnly = true;
             this.txtRemarks.Size = new System.Drawing.Size(726, 39);
-            this.txtRemarks.TabIndex = 12;
+            this.txtRemarks.TabIndex = 5;
             // 
             // txtCreditCardStatus
             // 
@@ -234,19 +304,19 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCreditCardStatus.Name = "txtCreditCardStatus";
             this.txtCreditCardStatus.ReadOnly = true;
             this.txtCreditCardStatus.Size = new System.Drawing.Size(439, 30);
-            this.txtCreditCardStatus.TabIndex = 11;
+            this.txtCreditCardStatus.TabIndex = 6;
             // 
-            // label10
+            // labelCreditStatus
             // 
-            this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.SystemColors.Window;
-            this.label10.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label10.Location = new System.Drawing.Point(71, 133);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(81, 13);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "Credit Status";
+            this.labelCreditStatus.AutoSize = true;
+            this.labelCreditStatus.BackColor = System.Drawing.SystemColors.Window;
+            this.labelCreditStatus.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCreditStatus.ForeColor = System.Drawing.Color.MediumBlue;
+            this.labelCreditStatus.Location = new System.Drawing.Point(71, 133);
+            this.labelCreditStatus.Name = "labelCreditStatus";
+            this.labelCreditStatus.Size = new System.Drawing.Size(81, 13);
+            this.labelCreditStatus.TabIndex = 10;
+            this.labelCreditStatus.Text = "Credit Status";
             // 
             // label3
             // 
@@ -269,7 +339,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtTelNo.Name = "txtTelNo";
             this.txtTelNo.ReadOnly = true;
             this.txtTelNo.Size = new System.Drawing.Size(169, 30);
-            this.txtTelNo.TabIndex = 2;
+            this.txtTelNo.TabIndex = 4;
             // 
             // label1
             // 
@@ -316,7 +386,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCustomerName.Name = "txtCustomerName";
             this.txtCustomerName.ReadOnly = true;
             this.txtCustomerName.Size = new System.Drawing.Size(439, 30);
-            this.txtCustomerName.TabIndex = 0;
+            this.txtCustomerName.TabIndex = 1;
             // 
             // label5
             // 
@@ -340,7 +410,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtAvailableCredit.Name = "txtAvailableCredit";
             this.txtAvailableCredit.ReadOnly = true;
             this.txtAvailableCredit.Size = new System.Drawing.Size(169, 30);
-            this.txtAvailableCredit.TabIndex = 8;
+            this.txtAvailableCredit.TabIndex = 9;
             this.txtAvailableCredit.Text = "0.00";
             this.txtAvailableCredit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -365,7 +435,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCreditLimit.Name = "txtCreditLimit";
             this.txtCreditLimit.ReadOnly = true;
             this.txtCreditLimit.Size = new System.Drawing.Size(169, 30);
-            this.txtCreditLimit.TabIndex = 1;
+            this.txtCreditLimit.TabIndex = 7;
             this.txtCreditLimit.Text = "0.00";
             this.txtCreditLimit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -390,9 +460,33 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCredit.Name = "txtCredit";
             this.txtCredit.ReadOnly = true;
             this.txtCredit.Size = new System.Drawing.Size(169, 30);
-            this.txtCredit.TabIndex = 2;
+            this.txtCredit.TabIndex = 8;
             this.txtCredit.Text = "0.00";
             this.txtCredit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // txtGuarantor
+            // 
+            this.txtGuarantor.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.txtGuarantor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtGuarantor.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtGuarantor.Location = new System.Drawing.Point(174, 133);
+            this.txtGuarantor.MaxLength = 25;
+            this.txtGuarantor.Name = "txtGuarantor";
+            this.txtGuarantor.ReadOnly = true;
+            this.txtGuarantor.Size = new System.Drawing.Size(439, 30);
+            this.txtGuarantor.TabIndex = 18;
+            // 
+            // labelGuarantor
+            // 
+            this.labelGuarantor.AutoSize = true;
+            this.labelGuarantor.BackColor = System.Drawing.SystemColors.Window;
+            this.labelGuarantor.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelGuarantor.ForeColor = System.Drawing.Color.MediumBlue;
+            this.labelGuarantor.Location = new System.Drawing.Point(71, 133);
+            this.labelGuarantor.Name = "labelGuarantor";
+            this.labelGuarantor.Size = new System.Drawing.Size(65, 13);
+            this.labelGuarantor.TabIndex = 19;
+            this.labelGuarantor.Text = "Guarantor";
             // 
             // cmdCancel
             // 
@@ -437,7 +531,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpPurchases.Size = new System.Drawing.Size(1010, 275);
             this.grpPurchases.TabIndex = 13;
             this.grpPurchases.TabStop = false;
-            this.grpPurchases.Text = "Current Purchases";
+            this.grpPurchases.Text = "Current Un-Paid Purchases";
             this.grpPurchases.Visible = false;
             // 
             // lblBalanceName
@@ -505,18 +599,18 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvItems.Size = new System.Drawing.Size(996, 220);
-            this.dgvItems.TabIndex = 57;
+            this.dgvItems.TabIndex = 10;
             // 
             // txtScan
             // 
             this.txtScan.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtScan.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtScan.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.txtScan.ForeColor = System.Drawing.Color.DarkSlateGray;
             this.txtScan.Location = new System.Drawing.Point(183, 67);
             this.txtScan.MaxLength = 0;
             this.txtScan.Name = "txtScan";
             this.txtScan.Size = new System.Drawing.Size(726, 30);
-            this.txtScan.TabIndex = 96;
+            this.txtScan.TabIndex = 0;
             this.txtScan.Text = "put the cursor here to scan credit card";
             this.txtScan.TextChanged += new System.EventHandler(this.txtScan_TextChanged);
             this.txtScan.GotFocus += new System.EventHandler(this.txtScan_GotFocus);
@@ -537,46 +631,100 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.lblAddNewCustomer.AutoSize = true;
             this.lblAddNewCustomer.BackColor = System.Drawing.Color.Transparent;
-            this.lblAddNewCustomer.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.lblAddNewCustomer.Location = new System.Drawing.Point(737, 22);
+            this.lblAddNewCustomer.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblAddNewCustomer.Location = new System.Drawing.Point(829, 9);
             this.lblAddNewCustomer.Name = "lblAddNewCustomer";
-            this.lblAddNewCustomer.Size = new System.Drawing.Size(225, 13);
+            this.lblAddNewCustomer.Size = new System.Drawing.Size(119, 13);
             this.lblAddNewCustomer.TabIndex = 98;
-            this.lblAddNewCustomer.Text = "Click or Press  [Enter]  to print verification slip";
+            this.lblAddNewCustomer.Text = " to print verification slip";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(807, 22);
+            this.label6.Location = new System.Drawing.Point(790, 9);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(41, 13);
+            this.label6.Size = new System.Drawing.Size(33, 13);
             this.label6.TabIndex = 99;
-            this.label6.Text = "[Enter]";
+            this.label6.Text = "[F12]";
             // 
-            // label9
+            // label10
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label9.Location = new System.Drawing.Point(627, 17);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(64, 13);
-            this.label9.TabIndex = 15;
-            this.label9.Text = "Mobile no.";
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.ForeColor = System.Drawing.Color.Red;
+            this.label10.Location = new System.Drawing.Point(790, 25);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(27, 13);
+            this.label10.TabIndex = 100;
+            this.label10.Text = "[F3]";
             // 
-            // txtMobileNo
+            // label11
             // 
-            this.txtMobileNo.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.txtMobileNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtMobileNo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMobileNo.Location = new System.Drawing.Point(731, 15);
-            this.txtMobileNo.MaxLength = 75;
-            this.txtMobileNo.Name = "txtMobileNo";
-            this.txtMobileNo.ReadOnly = true;
-            this.txtMobileNo.Size = new System.Drawing.Size(169, 30);
-            this.txtMobileNo.TabIndex = 14;
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.ForeColor = System.Drawing.Color.Red;
+            this.label11.Location = new System.Drawing.Point(790, 41);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(27, 13);
+            this.label11.TabIndex = 101;
+            this.label11.Text = "[F4]";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.BackColor = System.Drawing.Color.Transparent;
+            this.label12.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label12.Location = new System.Drawing.Point(579, 9);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(33, 13);
+            this.label12.TabIndex = 102;
+            this.label12.Text = "Press";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.Transparent;
+            this.label13.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label13.Location = new System.Drawing.Point(829, 25);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(100, 13);
+            this.label13.TabIndex = 103;
+            this.label13.Text = " to show purchases";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.BackColor = System.Drawing.Color.Transparent;
+            this.label14.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label14.Location = new System.Drawing.Point(829, 41);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(98, 13);
+            this.label14.TabIndex = 104;
+            this.label14.Text = " to show payments";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.BackColor = System.Drawing.Color.Transparent;
+            this.label15.ForeColor = System.Drawing.Color.Red;
+            this.label15.Location = new System.Drawing.Point(610, 9);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(27, 13);
+            this.label15.TabIndex = 106;
+            this.label15.Text = "[F6]";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.BackColor = System.Drawing.Color.Transparent;
+            this.label16.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label16.Location = new System.Drawing.Point(634, 9);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(142, 13);
+            this.label16.TabIndex = 105;
+            this.label16.Text = " to select customer by name";
             // 
             // CreditVerificationWnd
             // 
@@ -584,6 +732,13 @@ namespace AceSoft.RetailPlus.Client.UI
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 766);
             this.ControlBox = false;
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.lblAddNewCustomer);
             this.Controls.Add(this.txtScan);
@@ -617,8 +772,10 @@ namespace AceSoft.RetailPlus.Client.UI
 		#endregion
 
 		#region Windows Form Methods
+
 		private void CreditVerificationWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
+            keyCommand = e.KeyData;
 			switch (e.KeyData)
 			{
 				case Keys.Escape:
@@ -626,42 +783,74 @@ namespace AceSoft.RetailPlus.Client.UI
 					this.Hide(); 
 					break;
 
-				case Keys.Enter:
-					try
-					{
-						if (SaveRecord() == true)
-						{							
-							dialog = DialogResult.OK; 
-							this.Hide();
-						}
-					}
-					catch (Exception ex)
-					{
-						Event clsEvent = new Event();
-                        clsEvent.AddErrorEventLn(ex);
-						MessageBox.Show("Sorry the customer name is already in the database. Please type another customer name." ,"RetailPlus",MessageBoxButtons.OK, MessageBoxIcon.Warning);
-						return;
-					}
+                case Keys.Enter:
+                    dialog = DialogResult.OK;
+                    this.Hide();
+                    break;
+
+                case Keys.F3:
+                    if (mContactDetails.ContactID == 0) return;
+                    CreditSalesWnd clsCreditSalesWnd = new CreditSalesWnd();
+                    clsCreditSalesWnd.TerminalDetails = TerminalDetails;
+                    clsCreditSalesWnd.SysConfigDetails = SysConfigDetails;
+                    clsCreditSalesWnd.CustomerDetails = mContactDetails;
+                    clsCreditSalesWnd.ShowDialog(this);
+                    clsCreditSalesWnd.Close();
+                    clsCreditSalesWnd.Dispose();
+                    break;
+
+                case Keys.F4:
+                    if (mContactDetails.ContactID == 0) return;
+                    CreditPaymentsWnd clsCreditPaymentsWnd = new CreditPaymentsWnd();
+                    clsCreditPaymentsWnd.TerminalDetails = TerminalDetails;
+                    clsCreditPaymentsWnd.SysConfigDetails = SysConfigDetails;
+                    clsCreditPaymentsWnd.CustomerDetails = mContactDetails;
+                    clsCreditPaymentsWnd.ShowDialog(this);
+                    clsCreditPaymentsWnd.Close();
+                    clsCreditPaymentsWnd.Dispose();
+                    break;
+
+                case Keys.F6:
+                    DialogResult result; Data.ContactDetails details;
+				    ContactSelectWnd clsContactWnd = new ContactSelectWnd();
+                    clsContactWnd.EnableContactAddUpdate = true;
+                    clsContactWnd.TerminalDetails = TerminalDetails;
+				    clsContactWnd.ContactGroupCategory = Data.ContactGroupCategory.CUSTOMER;
+				    clsContactWnd.ShowDialog(this);
+				    details = clsContactWnd.Details;
+				    result = clsContactWnd.Result;
+				    clsContactWnd.Close();
+				    clsContactWnd.Dispose();
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        txtScan.Text = details.CreditDetails.CreditCardNo;
+                        txtScan_TextChanged(null, null);
+                    }
+                    break;
+
+				case Keys.F12:
+                    if (mContactDetails.ContactID == 0)
+                    {
+                        MessageBox.Show("Please select a valid card to print the verification slip.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                    else if (!mContactDetails.CreditDetails.CreditActive)
+                    {
+                        MessageBox.Show("Sorry printing verification slip is not allowed for InActive Credit Cards.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                    else
+                    {
+                        dialog = DialogResult.OK;
+                        this.Hide();
+                    }
 					break;
 			}
 		}
 
 		private void CreditVerificationWnd_Load(object sender, System.EventArgs e)
 		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Balance.jpg");	}
-			catch{}
-            try
-            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
-            catch { }
-            try
-            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
-            catch { }
-
-			this.lblHeader.Text = !string.IsNullOrEmpty(mstCaption) ? mstCaption : CompanyDetails.CompanyCode + " Credit Verification";
+            this.lblHeader.Text = !string.IsNullOrEmpty(mstCaption) ? mstCaption : CompanyDetails.CompanyCode + " Credit Verification";
 
             LoadOptions();
 		}
@@ -672,27 +861,16 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void cmdCancel_Click(object sender, EventArgs e)
         {
+            keyCommand = Keys.Cancel;
             dialog = DialogResult.Cancel;
             this.Hide();
         }
 
         private void cmdEnter_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (SaveRecord() == true)
-                {
-                    dialog = DialogResult.OK;
-                    this.Hide();
-                }
-            }
-            catch (Exception ex)
-            {
-                Event clsEvent = new Event();
-                clsEvent.AddEventLn("ERROR!!! Saving customer details. Err Description: " + ex.Message);
-                MessageBox.Show("Sorry the customer name is already in the database. Please type another customer name.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            keyCommand = Keys.Enter;
+            dialog = DialogResult.OK;
+            this.Hide();
         }
 
         private void txtScan_LostFocus(object sender, System.EventArgs e)
@@ -711,13 +889,26 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             if (!string.IsNullOrEmpty(txtScan.Text))
             {
+                mContactDetails = new Data.ContactDetails();
+                mGuarantorDetails = new Data.ContactDetails();
+
                 Data.Contacts clsContacts = new Data.Contacts();
                 mContactDetails = clsContacts.DetailsByCreditCardNo(txtScan.Text);
 
                 if (mContactDetails.ContactID == 0)
                 {
                     mContactDetails = clsContacts.DetailsByCreditCardNo(txtScan.Text.Remove(txtScan.Text.Length - 1));
+
+                    if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 7) mContactDetails = clsContacts.DetailsByCreditCardNo("888880" + txtScan.Text);
+                    if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 7) mContactDetails = clsContacts.DetailsByCreditCardNo("800000" + txtScan.Text);
+                    if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 9) mContactDetails = clsContacts.DetailsByCreditCardNo("9802" + txtScan.Text);
+                    if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 9) mContactDetails = clsContacts.DetailsByCreditCardNo("9803" + txtScan.Text);
                 }
+                
+                //get the guarantor details if with details
+                if (mContactDetails.ContactID != 0 && mContactDetails.ContactID != mContactDetails.CreditDetails.GuarantorID)
+                    mGuarantorDetails = clsContacts.Details(mContactDetails.CreditDetails.GuarantorID);
+                
                 clsContacts.CommitAndDispose();
 
 
@@ -725,22 +916,45 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     grpContactDetails.Visible = false;
                     grpPurchases.Visible = false;
+                    labelGuarantor.Visible = false;
+                    txtGuarantor.Visible = false;
                 }
                 else
                 {
                     grpContactDetails.Visible = true;
                     grpPurchases.Visible = true;
 
+                    txtScan.Text = mContactDetails.CreditDetails.CreditCardNo;
                     txtCustomerName.Text = mContactDetails.ContactName;
                     txtMobileNo.Text = mContactDetails.AdditionalDetails.MobileNo;
                     txtTelNo.Text = mContactDetails.TelephoneNo;
                     txtAddress.Text = mContactDetails.Address;
-
-                    txtCreditCardStatus.Text = mContactDetails.CreditDetails.CreditCardStatus.ToString("G") + " ";
-                    txtCreditCardStatus.Text += mContactDetails.CreditDetails.CreditActive ? " (Active) " : " (InActive) ";
+                    txtRemarks.Text = mContactDetails.Remarks;
+                    
+                    txtCreditCardStatus.Text = mContactDetails.CreditDetails.CreditActive ? "Active" : "InActive";
+                    txtCreditCardStatus.Text += "(" + mContactDetails.CreditDetails.CreditCardStatus.ToString("G") + ")";
                     txtCreditLimit.Text = mContactDetails.CreditLimit.ToString("#,##0.#0");
                     txtCredit.Text = mContactDetails.Credit.ToString("#,##0.#0");
                     txtAvailableCredit.Text = (mContactDetails.CreditLimit - mContactDetails.Credit).ToString("#,##0.#0");
+
+                    if (mContactDetails.ContactID == mContactDetails.CreditDetails.GuarantorID) //no guarantor
+                    {
+                        labelCreditStatus.Location = new Point(71, 133);
+                        txtCreditCardStatus.Location = new Point(174, 133);
+                        txtCreditCardStatus.Size = new Size(439, 30);
+                        labelGuarantor.Visible = false;
+                        txtGuarantor.Visible = false;
+                    }
+                    else if (mContactDetails.ContactID != mContactDetails.CreditDetails.GuarantorID) //with guarantor
+                    {
+                        labelCreditStatus.Location = new Point(627, 133);
+                        txtCreditCardStatus.Location = new Point(731, 133);
+                        txtCreditCardStatus.Size = new Size(169, 30);
+                        labelGuarantor.Visible = true;
+                        txtGuarantor.Visible = true;
+
+                        txtGuarantor.Text = "[" + (mGuarantorDetails.CreditDetails.CreditActive ? "Active" : "InActive") + "] " + mGuarantorDetails.ContactCode + ":" + mGuarantorDetails.ContactName;
+                    }
 
                     LoadPurchases();
                     lblBalance.Text = mContactDetails.Credit.ToString("#,##0.#0");
@@ -750,7 +964,10 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void txtScan_GotFocus(object sender, System.EventArgs e)
         {
-            txtScan.Text = "";
+            if (txtScan.Text == "put the cursor here to scan credit card")
+                txtScan.Text = "";
+            else
+                txtScan.SelectAll();
         }
 
         #endregion
@@ -759,54 +976,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void LoadOptions()
         {
+            mContactDetails = new Data.ContactDetails();
+            mGuarantorDetails = new Data.ContactDetails();
             txtScan.Focus();
-        }
-
-        private bool SaveRecord()
-        {
-            //Data.ContactDetails clsDetails = new Data.ContactDetails();
-            //clsDetails = mContactDetails;
-
-            //clsDetails.ContactCode = txtCustomerName.Text;
-            //clsDetails.ContactName = txtCustomerName.Text;
-            //clsDetails.Address = txtAddress.Text;
-            //clsDetails.TelephoneNo = txtTelNo.Text;
-
-            //// Jul 22, 2014
-            //clsDetails.Debit = mContactDetails.Debit;
-            //clsDetails.Credit = mContactDetails.Credit;
-            //clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
-            //clsDetails.CreditLimit = decimal.Parse(txtCreditLimit.Text);
-            //clsDetails.Terms = int.Parse(txtTerms.Text);
-            //clsDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), cboTerms.SelectedItem.ToString());
-
-            //Data.Contacts clsContact = new Data.Contacts();
-            //if (mContactDetails.ContactID == 0)
-            //{
-            //    if (mstCaption == "Please enter customer name for deposit.")
-            //    { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
-            //    else if (mstCaption == "Quickly add new customer")
-            //    { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
-            //    else if (mContactDetails.ContactID == 0) // means not edit
-            //    { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
-
-            //    clsDetails.ContactGroupID = Constants.CONTACT_GROUP_CUSTOMER;
-            //    clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
-            //    clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
-            //    clsDetails.ContactID = clsContact.Insert(clsDetails);
-            //}
-            //else
-            //{
-            //    clsDetails.ContactCode = mContactDetails.ContactCode;
-            //    clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
-            //    clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
-            //    clsContact.Update(clsDetails);
-            //}
-            //clsContact.CommitAndDispose();
-
-            //mContactDetails = clsDetails;
-
-            return true;
         }
 
         private void LoadPurchases()
@@ -837,8 +1009,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 dgvItems.Columns["TransactionNo"].Width = 120;
                 dgvItems.Columns["TransactionDate"].Width = 120;
-                dgvItems.Columns["CreditReason"].Width = 240;
+                if (dt.Rows.Count < 8) dgvItems.Columns["CreditReason"].Width = 240; else dgvItems.Columns["CreditReason"].Width = 210;
                 int iWidth = (dgvItems.Width - dgvItems.Columns["TransactionNo"].Width - dgvItems.Columns["TransactionDate"].Width - dgvItems.Columns["CreditReason"].Width) / 4;
+                if (dt.Rows.Count >= 8) iWidth = iWidth - 5;
                 dgvItems.Columns["SubTotal"].Width = iWidth;
                 dgvItems.Columns["Credit"].Width = iWidth;
                 dgvItems.Columns["CreditPaid"].Width = iWidth;

@@ -71,14 +71,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			{	return mDetails;	}
 		}
 
-        private Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            set
-            {
-                mclsTerminalDetails = value;
-            }
-        }
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
 		public DebitPaymentWnd()
 		{
@@ -90,6 +83,25 @@ namespace AceSoft.RetailPlus.Client.UI
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/DebitPayment.jpg"); }
+            catch { }
+            try
+            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
+            catch { }
+            try
+            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
+            catch { }
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
+            
 		}
 
 		#region Windows Form Designer generated code
@@ -352,20 +364,7 @@ namespace AceSoft.RetailPlus.Client.UI
 		}
 		private void DebitPaymentWnd_Load(object sender, System.EventArgs e)
 		{
-			try
-			{	this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg");	}
-			catch{}
-			try
-			{	this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/DebitPayment.jpg");	}
-			catch{}
-            try
-            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
-            catch { }
-            try
-            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
-            catch { }
-
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
                 this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
@@ -398,7 +397,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.Controls.Add(this.keyboardSearchControl1);
                 this.Controls.Add(this.keyboardNoControl1);
 
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
             lblAllowedDebit.Text = mdecAllowedDebit.ToString("#,##0.#0");
@@ -419,9 +418,9 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
         }
@@ -456,9 +455,9 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
         }

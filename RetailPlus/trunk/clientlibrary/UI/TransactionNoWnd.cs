@@ -67,15 +67,8 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        private Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            set
-            {
-                mclsTerminalDetails = value;
-            }
-        }
-
+        public Data.TerminalDetails TerminalDetails { get; set; }
+        
         #endregion
 
         #region Constructors and Destructors
@@ -83,6 +76,12 @@ namespace AceSoft.RetailPlus.Client.UI
         public TransactionNoWnd()
         {
             InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         protected override void Dispose(bool disposing)
@@ -297,7 +296,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
             txtTerminalNo.Text = mstrTerminalNo;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
 
@@ -316,7 +315,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 this.groupBox1.Controls.Add(this.keyboardNoControl1);
 
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
             }
         }
 
@@ -328,9 +327,9 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
             }
         }
 
@@ -338,9 +337,9 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
             }
         }
 

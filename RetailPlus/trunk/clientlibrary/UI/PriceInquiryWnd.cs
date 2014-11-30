@@ -33,16 +33,18 @@ namespace AceSoft.RetailPlus.Client.UI
 			get {	return dialog;	}
 		}
 
-        private Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            set { mclsTerminalDetails = value; }
-        }
-
+        public Data.TerminalDetails TerminalDetails { get; set; }
+        
 		#region Constructors And Desctructors
 		public PriceInquiryWnd()
 		{
 			InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
 		}
 
 		protected override void Dispose( bool disposing )
@@ -294,7 +296,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     {
                         ClearProduct();
                         Data.Products clsProduct = new Data.Products();
-                        Data.ProductDetails clsProductDetails = clsProduct.Details(mclsTerminalDetails.BranchID, txtBarCode.Text.Trim());
+                        Data.ProductDetails clsProductDetails = clsProduct.Details(TerminalDetails.BranchID, txtBarCode.Text.Trim());
                         if (clsProductDetails.ProductID == 0)
                         {
                             string strContactCardNo = txtBarCode.Text.Trim();

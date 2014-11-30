@@ -73,14 +73,40 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        private Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails { set { this.mclsTerminalDetails = value; } }
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
         #endregion
 
+        #region Constructors and Destructors
+
         public LogInWnd()
         {
+            //
+            // Required for Windows Form Designer support
+            //
             InitializeComponent();
+
+            //
+            // TODO: Add any constructor code after InitializeComponent call
+            //
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Login.jpg"); }
+            catch { }
+            try
+            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
+            catch { }
+            try
+            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
+            catch { }
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         protected override void Dispose(bool disposing)
@@ -94,6 +120,8 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             base.Dispose(disposing);
         }
+
+        #endregion
 
         #region Windows Form Designer generated code
         /// <summary>
@@ -274,6 +302,9 @@ namespace AceSoft.RetailPlus.Client.UI
 
         }
         #endregion
+
+        #region Windows Form Methods
+
         private void LogInWnd_Activated(object sender, System.EventArgs e)
         {
             txtUserName.Focus();
@@ -306,117 +337,25 @@ namespace AceSoft.RetailPlus.Client.UI
                     break;
             }
         }
-
-        private Int64 LoginUser()
-        {
-            string strUserName = txtUserName.Text;
-            string strPassword = txtPassword.Text;
-
-            if (strUserName == string.Empty) { txtUserName.Focus(); return 0; }
-            else if (strPassword == string.Empty && strUserName.Length >= 16) { }
-            else if (strPassword == string.Empty && !strUserName.Contains("|")) { txtPassword.Focus(); return 0; }
-
-            string strName = string.Empty;
-            AccessUser clsAccessUser = new AccessUser();
-            if (strPassword == string.Empty)
-            {
-                if (strUserName.Contains("|"))
-                {
-                    string[] strSplit = strUserName.Split('|');
-                    strPassword = strSplit[1].ToString();
-                    strUserName = strSplit[0].ToString();
-                }
-                else if (strUserName.Length >= 16) // this is the defined no of burnt card no
-                {
-                    strUserName = strUserName.Replace("%", "").Replace("?", "");
-
-                    strPassword = strUserName.Remove(0,10);
-                    strUserName = strUserName.Remove(10, strUserName.Length - 10);
-                }
-            }
-
-            Int64 iUID = clsAccessUser.Login(strUserName, strPassword, mAccessType, out strName);
-
-            AuditTrail clsAuditTrail = new AuditTrail(clsAccessUser.Connection, clsAccessUser.Transaction);
-            AuditTrailDetails[] clsAuditTrailDetails = clsAuditTrail.DetailedList(DateTime.Today, DateTime.MinValue, strName, AccessTypes.None, "FE:", 1, "ActivityDate", SortOption.Desscending);
-            clsAccessUser.CommitAndDispose();
-
-            if (mintUserID != 0)
-            {
-                if (iUID != mintUserID)
-                {
-                    switch (iUID)
-                    {
-                        case 0:
-                            Methods.InsertAuditLog(mclsTerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
-                            iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty;
-                            MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
-                            break;
-
-                        default:
-                            Methods.InsertAuditLog(mclsTerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
-                            iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty;
-                            MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
-                            break;
-                    }
-                }
-            }
-            else
-            {
-                if (iUID == 0)
-                {
-                    Methods.InsertAuditLog(mclsTerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
-                    iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty; txtUserName.Focus();
-                    MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
-                }
-            }
-
-            if (iUID != 0 && mintUserID == 0 && clsAuditTrailDetails.Length > 0 && mAccessType == AccessTypes.LoginFE)
-            {
-                if (clsAuditTrailDetails[0].Activity != AccessTypes.LogoutFE.ToString("G"))
-                {
-                    if (clsAuditTrailDetails[0].IPAddress != System.Net.Dns.GetHostName())
-                    {
-                        if (clsAuditTrailDetails[0].ActivityDate >= DateTime.Now.AddMinutes(-10))
-                        {
-                            Methods.InsertAuditLog(mclsTerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + mclsTerminalDetails.TerminalNo + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text + " already logged-in.");
-                            iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty; txtUserName.Focus();
-                            MessageBox.Show("You are still doing transaction at " + clsAuditTrailDetails[0].IPAddress + "." + Environment.NewLine +
-                                            "Please logout from that terminal first or wait for 1 hour(s) for automatic logout.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-                    }
-                }
-            }
-            return iUID;
-        }
-
         private void LogInWnd_Load(object sender, System.EventArgs e)
         {
-            try
-            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
-            catch { }
-            try
-            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/Login.jpg"); }
-            catch { }
-            try
-            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
-            catch { }
-            try
-            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
-            catch { }
+            if (!string.IsNullOrEmpty(mstrHeader)) lblHeader.Text = mstrHeader;
 
-            if (mstrHeader != string.Empty)
-                lblHeader.Text = mstrHeader;
-
-            keyboardcontrol1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+            keyboardcontrol1.Visible = TerminalDetails.WithRestaurantFeatures;
         }
+
+        #endregion
+
+        #region Windows Control Methods
+
         private void txtUserName_GotFocus(object sender, System.EventArgs e)
         {
-            txtSelectedtextBox = (TextBox) sender;
+            txtSelectedtextBox = (TextBox)sender;
         }
+
         private void txtPassword_GotFocus(object sender, System.EventArgs e)
         {
-            txtSelectedtextBox = (TextBox) sender;
+            txtSelectedtextBox = (TextBox)sender;
         }
 
         private void cmdCancel_Click(object sender, EventArgs e)
@@ -478,6 +417,102 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtUserName.Font = new Font("Tahoma", 12, FontStyle.Bold);
             }
         }
+
+        #endregion
+
+        #region private methods
+
+        private Int64 LoginUser()
+        {
+            string strUserName = txtUserName.Text;
+            string strPassword = txtPassword.Text;
+
+            if (strUserName == string.Empty) { txtUserName.Focus(); return 0; }
+            else if (strPassword == string.Empty && strUserName.Length == 13 && strUserName.Contains("800000")) { }
+            else if (strPassword == string.Empty && strUserName.Length >= 16) { }
+            else if (strPassword == string.Empty && !strUserName.Contains("|")) { txtPassword.Focus(); return 0; }
+
+            string strName = string.Empty;
+            AccessUser clsAccessUser = new AccessUser();
+            if (strPassword == string.Empty)
+            {
+                if (strUserName.Contains("|"))
+                {
+                    string[] strSplit = strUserName.Split('|');
+                    strPassword = strSplit[1].ToString();
+                    strUserName = strSplit[0].ToString();
+                }
+                else if (strUserName.Length == 13 & strUserName.Contains("800000")) // this is the defined no of burnt card no
+                {
+                    //strUserName = strUserName.Replace("800000", "");
+                    strUserName = strUserName.Remove(0, 6);
+                    strPassword = strUserName;
+                }
+                else if (strUserName.Length >= 16) // this is the defined no of burnt card no
+                {
+                    strUserName = strUserName.Replace("%", "").Replace("?", "");
+
+                    strPassword = strUserName.Remove(0, 10);
+                    strUserName = strUserName.Remove(10, strUserName.Length - 10);
+                }
+            }
+
+            Int64 iUID = clsAccessUser.Login(strUserName, strPassword, mAccessType, out strName);
+
+            AuditTrail clsAuditTrail = new AuditTrail(clsAccessUser.Connection, clsAccessUser.Transaction);
+            AuditTrailDetails[] clsAuditTrailDetails = clsAuditTrail.DetailedList(DateTime.Today, DateTime.MinValue, strName, AccessTypes.None, "FE:", 1, "ActivityDate", SortOption.Desscending);
+            clsAccessUser.CommitAndDispose();
+
+            if (mintUserID != 0)
+            {
+                if (iUID != mintUserID)
+                {
+                    switch (iUID)
+                    {
+                        case 0:
+                            Methods.InsertAuditLog(TerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + TerminalDetails.TerminalNo + " @ Branch: " + TerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
+                            iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty;
+                            MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
+                            break;
+
+                        default:
+                            Methods.InsertAuditLog(TerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + TerminalDetails.TerminalNo + " @ Branch: " + TerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
+                            iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty;
+                            MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                if (iUID == 0)
+                {
+                    Methods.InsertAuditLog(TerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + TerminalDetails.TerminalNo + " @ Branch: " + TerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
+                    iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty; txtUserName.Focus();
+                    MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
+                }
+            }
+
+            if (iUID != 0 && mintUserID == 0 && clsAuditTrailDetails.Length > 0 && mAccessType == AccessTypes.LoginFE)
+            {
+                if (clsAuditTrailDetails[0].Activity != AccessTypes.LogoutFE.ToString("G"))
+                {
+                    if (clsAuditTrailDetails[0].IPAddress != System.Net.Dns.GetHostName())
+                    {
+                        if (clsAuditTrailDetails[0].ActivityDate >= DateTime.Now.AddMinutes(-10))
+                        {
+                            Methods.InsertAuditLog(TerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + TerminalDetails.TerminalNo + " @ Branch: " + TerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text + " already logged-in.");
+                            iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty; txtUserName.Focus();
+                            MessageBox.Show("You are still doing transaction at " + clsAuditTrailDetails[0].IPAddress + "." + Environment.NewLine +
+                                            "Please logout from that terminal first or wait for 1 hour(s) for automatic logout.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                }
+            }
+            return iUID;
+        }
+
+        #endregion
 
     }
 }

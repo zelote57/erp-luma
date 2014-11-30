@@ -62,12 +62,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			{	return mDetails;	}
 		}
 
-        private Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            set { mclsTerminalDetails = value; }
-        }
-
+        public Data.TerminalDetails TerminalDetails { get; set; }
+        
 		#endregion
 
 		#region Constructors and Destructors
@@ -75,6 +71,25 @@ namespace AceSoft.RetailPlus.Client.UI
 		public ChequesPaymentWnd()
 		{
 			InitializeComponent();
+
+            try
+            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
+            catch { }
+            try
+            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ChequesPayment.jpg"); }
+            catch { }
+            try
+            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
+            catch { }
+            try
+            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
+            catch { }
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL;
 		}
 
 		protected override void Dispose( bool disposing )
@@ -380,20 +395,7 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         private void ChequesPaymentWnd_Load(object sender, System.EventArgs e)
         {
-            try
-            { this.BackgroundImage = new Bitmap(Application.StartupPath + "/images/Background.jpg"); }
-            catch { }
-            try
-            { this.imgIcon.Image = new Bitmap(Application.StartupPath + "/images/ChequesPayment.jpg"); }
-            catch { }
-            try
-            { this.cmdCancel.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_red.jpg"); }
-            catch { }
-            try
-            { this.cmdEnter.Image = new Bitmap(Application.StartupPath + "/images/blank_medium_dark_green.jpg"); }
-            catch { }
-
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 this.keyboardSearchControl1 = new AceSoft.KeyBoardHook.KeyboardSearchControl();
                 this.keyboardNoControl1 = new AceSoft.KeyBoardHook.KeyboardNoControl();
@@ -413,8 +415,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 // keyboardNoControl1
                 // 
                 this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
-                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Up;
-                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Down;
+                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Clear;
+                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.SelectAll;
                 this.keyboardNoControl1.Location = new System.Drawing.Point(412, 310);
                 this.keyboardNoControl1.Name = "keyboardNoControl1";
                 this.keyboardNoControl1.Size = new System.Drawing.Size(208, 172);
@@ -427,7 +429,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 this.Controls.Add(this.keyboardNoControl1);
 
                 keyboardNoControl1.Visible = false;
-                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = TerminalDetails.WithRestaurantFeatures;
             }
 
             lblChequeAmount.Text = "Cheque Amount (" + CompanyDetails.Currency + "):";
@@ -445,19 +447,19 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 keyboardNoControl1.Visible = false;
-                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = TerminalDetails.WithRestaurantFeatures;
             }
 		}
 		private void txtAmount_GotFocus(object sender, System.EventArgs e)
 		{
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
 		}
@@ -470,9 +472,9 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
 		}
@@ -485,10 +487,10 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             txtSelectedTextBox = (TextBox)sender;
 
-            if (mclsTerminalDetails.WithRestaurantFeatures)
+            if (TerminalDetails.WithRestaurantFeatures)
             {
                 keyboardNoControl1.Visible = false;
-                keyboardSearchControl1.Visible = mclsTerminalDetails.WithRestaurantFeatures;
+                keyboardSearchControl1.Visible = TerminalDetails.WithRestaurantFeatures;
             }
 		}
         private void keyboardSearchControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
@@ -508,18 +510,19 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         private void keyboardNoControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
         {
-            if (txtSelectedTextBox == null)
-                txtChequeNo.Focus();
-            if (txtSelectedTextBox.Name == txtChequeNo.Name)
-                txtChequeNo.Focus();
-            else if (txtSelectedTextBox.Name == txtAmount.Name)
-                txtAmount.Focus();
-            else if (txtSelectedTextBox.Name == txtValidityDate.Name)
-                txtValidityDate.Focus();
-            else if (txtSelectedTextBox.Name == txtRemarks.Name)
-                txtRemarks.Focus();
-
-            SendKeys.Send(e.KeyboardKeyPressed);
+            if (txtSelectedTextBox.Name == txtAmount.Name ||
+                txtSelectedTextBox.Name == txtValidityDate.Name)
+            {
+                txtSelectedTextBox.Focus();
+                if (e.KeyboardKeyPressed == "{CLEAR}")
+                    txtSelectedTextBox.Text = "";
+                else if (e.KeyboardKeyPressed == "{SELECTALL}")
+                    txtSelectedTextBox.SelectAll();
+                else if (e.KeyboardKeyPressed == "." & txtSelectedTextBox.Text.IndexOf(".") < 0)
+                    SendKeys.Send(e.KeyboardKeyPressed);
+                else if (e.KeyboardKeyPressed != ".")
+                    SendKeys.Send(e.KeyboardKeyPressed);
+            }
         }
         private void cmdCancel_Click(object sender, EventArgs e)
         {
@@ -597,8 +600,8 @@ namespace AceSoft.RetailPlus.Client.UI
 				}
 			}
 
-            mDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
-            mDetails.TerminalNo = mclsTerminalDetails.TerminalNo;
+            mDetails.BranchDetails = TerminalDetails.BranchDetails;
+            mDetails.TerminalNo = TerminalDetails.TerminalNo;
             mDetails.TransactionID = mclsSalesTransactionDetails.TransactionID;
             mDetails.TransactionNo = mclsSalesTransactionDetails.TransactionNo;
 			mDetails.ChequeNo = txtChequeNo.Text;

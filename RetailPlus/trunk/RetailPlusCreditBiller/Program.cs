@@ -685,6 +685,7 @@ namespace AceSoft.RetailPlus.Monitor
             Console.WriteLine(ConsoleMonitor() + "");
 
             LocalDB clsLocalDB = new LocalDB();
+            clsLocalDB.GetConnection(ConnectionTimeOut: 1800);
             mConnection = clsLocalDB.Connection; mTransaction = clsLocalDB.Transaction;
 
             Data.Billing clsBilling = new Data.Billing(mConnection, mTransaction);

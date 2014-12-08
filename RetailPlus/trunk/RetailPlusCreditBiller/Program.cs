@@ -9,47 +9,47 @@ using AceSoft.RetailPlus.Client;
 
 namespace AceSoft.RetailPlus.Monitor
 {
-	class MainModule
-	{
+    class MainModule
+    {
         private static MySql.Data.MySqlClient.MySqlConnection mConnection; private static MySql.Data.MySqlClient.MySqlTransaction mTransaction;
         private static Int32 iTmrCtr = 0;
 
-		#region Application Main
+        #region Application Main
 
-		[STAThread]
-		static void Main(string[] args)
-		{
+        [STAThread]
+        static void Main(string[] args)
+        {
             WriteProcessToMonitor("Starting RetailPlus Credit Biller tool...");
             WriteProcessToMonitor("   ok");
 
         back:
 
-			try
-			{
-				WriteProcessToMonitor("Checking connections to server.");
-				if (IPAddress.IsOpen(AceSoft.RetailPlus.DBConnection.ServerIP(), DBConnection.DBPort()) == false)
-				{
-					WriteProcessToMonitor("   cannot connect to server please check.");
-					goto exit;
-				}
-				WriteProcessToMonitor("   ok");
-				WriteProcessToMonitor("Checking connections to database.");
-				Data.Database clsDatabase = new Data.Database();
+            try
+            {
+                WriteProcessToMonitor("Checking connections to server.");
+                if (IPAddress.IsOpen(AceSoft.RetailPlus.DBConnection.ServerIP(), DBConnection.DBPort()) == false)
+                {
+                    WriteProcessToMonitor("   cannot connect to server please check.");
+                    goto exit;
+                }
+                WriteProcessToMonitor("   ok");
+                WriteProcessToMonitor("Checking connections to database.");
+                Data.Database clsDatabase = new Data.Database();
                 mConnection = clsDatabase.Connection; mTransaction = clsDatabase.Transaction;
 
-				try
-				{
-					bool boIsDBAlive = clsDatabase.IsAlive();
-					WriteProcessToMonitor("   connected to '" + clsDatabase.Connection.ConnectionString.Split(';')[0].ToString().Replace("Data Source=", "") + "'");
-				}
-				catch (Exception ex)
-				{
-					WriteProcessToMonitor("   ERROR connecting to database. Exception: " + ex.ToString());
+                try
+                {
+                    bool boIsDBAlive = clsDatabase.IsAlive();
+                    WriteProcessToMonitor("   connected to '" + clsDatabase.Connection.ConnectionString.Split(';')[0].ToString().Replace("Data Source=", "") + "'");
+                }
+                catch (Exception ex)
+                {
+                    WriteProcessToMonitor("   ERROR connecting to database. Exception: " + ex.ToString());
                     clsDatabase.CommitAndDispose();
                     return;
-				}
+                }
                 WriteProcessToMonitor("Checking credit billings to process...");
-				WriteProcessToMonitor("   done checking...");
+                WriteProcessToMonitor("   done checking...");
 
                 Data.CardType clsCardType = new Data.CardType(mConnection, mTransaction);
                 mConnection = clsCardType.Connection; mTransaction = clsCardType.Transaction;
@@ -94,16 +94,16 @@ namespace AceSoft.RetailPlus.Monitor
                 t.Dispose(); // Cancel the timer now
                 Console.WriteLine();
 
-				goto back;
-			exit:
-				WriteProcessToMonitor("Sytem terminated.");
-			}
-			catch (Exception ex) 
-			{
-				WriteProcessToMonitor("PLEASE CALL RETAILPLUS IMMEDIATELY... error:" + ex.ToString());
                 goto back;
-			}
-		}
+            exit:
+                WriteProcessToMonitor("Sytem terminated.");
+            }
+            catch (Exception ex)
+            {
+                WriteProcessToMonitor("PLEASE CALL RETAILPLUS IMMEDIATELY... error:" + ex.ToString());
+                goto back;
+            }
+        }
 
         private static void TimerCallback(Object o)
         {
@@ -119,21 +119,21 @@ namespace AceSoft.RetailPlus.Monitor
             GC.Collect();
         }
 
-		#endregion
+        #endregion
 
 
-		#region CreditBills for Creditors W/out Guarantor
+        #region CreditBills for Creditors W/out Guarantor
 
-		private static void ProcessCreditBill(string CardTypeName)
-		{
-			Event clsEvent = new Event();
-			clsEvent.AddEventLn("");
-			Console.WriteLine(ConsoleMonitor() + "");
+        private static void ProcessCreditBill(string CardTypeName)
+        {
+            Event clsEvent = new Event();
+            clsEvent.AddEventLn("");
+            Console.WriteLine(ConsoleMonitor() + "");
 
             LocalDB clsLocalDB = new LocalDB();
             mConnection = clsLocalDB.Connection; mTransaction = clsLocalDB.Transaction;
 
-			Data.Billing clsBilling = new Data.Billing(mConnection, mTransaction);
+            Data.Billing clsBilling = new Data.Billing(mConnection, mTransaction);
             mConnection = clsBilling.Connection; mTransaction = clsBilling.Transaction;
 
             // check billingdate
@@ -205,7 +205,7 @@ namespace AceSoft.RetailPlus.Monitor
             {
                 clsLocalDB.CommitAndDispose();
             }
-		}
+        }
 
         private static void PrintORs(List<Data.BillingDetails> lstBillingDetails)
         {
@@ -262,70 +262,70 @@ namespace AceSoft.RetailPlus.Monitor
             }
         }
 
-		protected static string PrintCreditBill(Data.BillingDetails clsBillingDetails)
-		{
+        protected static string PrintCreditBill(Data.BillingDetails clsBillingDetails)
+        {
             Data.Billing clsBilling = new Data.Billing(mConnection, mTransaction);
             mConnection = clsBilling.Connection; mTransaction = clsBilling.Transaction;
             System.Data.DataTable dt = clsBilling.ListDetailsAsDataTable(clsBillingDetails.CreditBillHeaderID);
             clsBilling.CommitAndDispose();
 
-			CreditBiller.CRSReports.Billing rpt = new CreditBiller.CRSReports.Billing();
-			CreditBiller.ReportDataset rptds = new CreditBiller.ReportDataset();
+            CreditBiller.CRSReports.Billing rpt = new CreditBiller.CRSReports.Billing();
+            CreditBiller.ReportDataset rptds = new CreditBiller.ReportDataset();
 
-			System.Data.DataRow drNew;
-			foreach (System.Data.DataRow dr in dt.Rows )
-			{
-				drNew = rptds.CreditBillDetail.NewRow();
+            System.Data.DataRow drNew;
+            foreach (System.Data.DataRow dr in dt.Rows)
+            {
+                drNew = rptds.CreditBillDetail.NewRow();
 
-				foreach (System.Data.DataColumn dc in rptds.CreditBillDetail.Columns)
-					drNew[dc] = dr[dc.ColumnName];
+                foreach (System.Data.DataColumn dc in rptds.CreditBillDetail.Columns)
+                    drNew[dc] = dr[dc.ColumnName];
 
-				rptds.CreditBillDetail.Rows.Add(drNew);
-			}
+                rptds.CreditBillDetail.Rows.Add(drNew);
+            }
 
-			rpt.SetDataSource(rptds);
+            rpt.SetDataSource(rptds);
 
-			CrystalDecisions.CrystalReports.Engine.ParameterFieldDefinition paramField;
-			CrystalDecisions.Shared.ParameterValues currentValues;
-			CrystalDecisions.Shared.ParameterDiscreteValue discreteParam;
+            CrystalDecisions.CrystalReports.Engine.ParameterFieldDefinition paramField;
+            CrystalDecisions.Shared.ParameterValues currentValues;
+            CrystalDecisions.Shared.ParameterDiscreteValue discreteParam;
 
-			paramField = rpt.DataDefinition.ParameterFields["CompanyName"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-			discreteParam.Value = CompanyDetails.CompanyName;
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            paramField = rpt.DataDefinition.ParameterFields["CompanyName"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = CompanyDetails.CompanyName;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-			paramField = rpt.DataDefinition.ParameterFields["BillingDate"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-			discreteParam.Value = clsBillingDetails.BillingDate;
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            paramField = rpt.DataDefinition.ParameterFields["BillingDate"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.BillingDate;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-			paramField = rpt.DataDefinition.ParameterFields["PaymentDueDate"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            paramField = rpt.DataDefinition.ParameterFields["PaymentDueDate"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
             discreteParam.Value = clsBillingDetails.CreditPaymentDueDate;
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-			paramField = rpt.DataDefinition.ParameterFields["CompanyAddress"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-			discreteParam.Value = CompanyDetails.Address1 +
-									Environment.NewLine + CompanyDetails.Address2 + ", " + CompanyDetails.City + " " + CompanyDetails.Country +
-									Environment.NewLine + "Tel #: " + CompanyDetails.OfficePhone + " Fax #:" + CompanyDetails.FaxPhone +
-									Environment.NewLine + "TIN : " + CompanyDetails.TIN + "      VAT Reg.";
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            paramField = rpt.DataDefinition.ParameterFields["CompanyAddress"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = CompanyDetails.Address1 +
+                                    Environment.NewLine + CompanyDetails.Address2 + ", " + CompanyDetails.City + " " + CompanyDetails.Country +
+                                    Environment.NewLine + "Tel #: " + CompanyDetails.OfficePhone + " Fax #:" + CompanyDetails.FaxPhone +
+                                    Environment.NewLine + "TIN : " + CompanyDetails.TIN + "      VAT Reg.";
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-			paramField = rpt.DataDefinition.ParameterFields["ContactName"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-			discreteParam.Value = clsBillingDetails.CustomerDetails.ContactName;
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            paramField = rpt.DataDefinition.ParameterFields["ContactName"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CustomerDetails.ContactName;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
             paramField = rpt.DataDefinition.ParameterFields["ContactCode"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
@@ -334,47 +334,47 @@ namespace AceSoft.RetailPlus.Monitor
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
 
-			paramField = rpt.DataDefinition.ParameterFields["ContactAddress"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-			discreteParam.Value = clsBillingDetails.CustomerDetails.Address;
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            paramField = rpt.DataDefinition.ParameterFields["ContactAddress"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CustomerDetails.Address;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-			paramField = rpt.DataDefinition.ParameterFields["CreditCardNo"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-			discreteParam.Value = clsBillingDetails.CustomerDetails.CreditDetails.CreditCardNo;
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            paramField = rpt.DataDefinition.ParameterFields["CreditCardNo"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CustomerDetails.CreditDetails.CreditCardNo;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-			paramField = rpt.DataDefinition.ParameterFields["CreditLimit"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-			discreteParam.Value = clsBillingDetails.CrediLimit;
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            paramField = rpt.DataDefinition.ParameterFields["CreditLimit"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CrediLimit;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-			paramField = rpt.DataDefinition.ParameterFields["CurrentDueAmount"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-			discreteParam.Value = clsBillingDetails.CurrentDueAmount;
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            paramField = rpt.DataDefinition.ParameterFields["CurrentDueAmount"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.CurrentDueAmount;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-			paramField = rpt.DataDefinition.ParameterFields["MinimumAmountDue"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-			discreteParam.Value = clsBillingDetails.MinimumAmountDue;
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            paramField = rpt.DataDefinition.ParameterFields["MinimumAmountDue"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            discreteParam.Value = clsBillingDetails.MinimumAmountDue;
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
-			paramField = rpt.DataDefinition.ParameterFields["PrevMoCurrentDueAmount"];
-			discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
+            paramField = rpt.DataDefinition.ParameterFields["PrevMoCurrentDueAmount"];
+            discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
             discreteParam.Value = clsBillingDetails.Prev1MoCurrentDueAmount + clsBillingDetails.Prev2MoCurrentDueAmount;
-			currentValues = new CrystalDecisions.Shared.ParameterValues();
-			currentValues.Add(discreteParam);
-			paramField.ApplyCurrentValues(currentValues);
+            currentValues = new CrystalDecisions.Shared.ParameterValues();
+            currentValues.Add(discreteParam);
+            paramField.ApplyCurrentValues(currentValues);
 
             paramField = rpt.DataDefinition.ParameterFields["CreditPurcStartDateToProcess"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
@@ -390,9 +390,9 @@ namespace AceSoft.RetailPlus.Monitor
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
 
-			string strRetValue = "";
-			try
-			{
+            string strRetValue = "";
+            try
+            {
                 string logsdir = System.Configuration.ConfigurationManager.AppSettings["billingdir"].ToString();
 
                 logsdir += logsdir.EndsWith("/") ? "" : "/";
@@ -407,11 +407,11 @@ namespace AceSoft.RetailPlus.Monitor
                     MoveCreditBillToNextFile(logFile, 1);
                 }
 
-				rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
+                rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
 
                 strRetValue = "OR_" + clsBillingDetails.ContactID.ToString() + clsBillingDetails.BillingDate.ToString("yyyyMMdd") + ".doc";
-			}
-			catch { }
+            }
+            catch { }
 
             try
             {
@@ -450,13 +450,13 @@ namespace AceSoft.RetailPlus.Monitor
                     }
                 }
             }
-            catch{ }
+            catch { }
 
-			rpt.Close();
-			rpt.Dispose();
-			
-			return strRetValue;
-		}
+            rpt.Close();
+            rpt.Dispose();
+
+            return strRetValue;
+        }
         protected static string PrintCreditBillLX(Data.BillingDetails clsBillingDetails)
         {
             Data.Billing clsBilling = new Data.Billing(mConnection, mTransaction);
@@ -664,7 +664,7 @@ namespace AceSoft.RetailPlus.Monitor
         {
             if (File.Exists(logFile + "_" + iCtr.ToString() + ".old"))
             {
-                MoveCreditBillToNextFile(logFile, iCtr + 1 );
+                MoveCreditBillToNextFile(logFile, iCtr + 1);
             }
             else
             {
@@ -672,7 +672,7 @@ namespace AceSoft.RetailPlus.Monitor
             }
         }
 
-		#endregion
+        #endregion
 
         #region CreditBills for Creditors With Guarantor
 
@@ -702,7 +702,7 @@ namespace AceSoft.RetailPlus.Monitor
             // check billingdate
             Data.ContactColumns clsContactColumns = new Data.ContactColumns() { ContactID = true, ContactCode = true, ContactName = true, CreditDetails = true };
             Data.ContactColumns clsSearchColumns = new Data.ContactColumns() { ContactCode = true, ContactName = true };
-            
+
             System.Data.DataTable dtGuarantors;
 
             try
@@ -1006,7 +1006,7 @@ namespace AceSoft.RetailPlus.Monitor
             currentValues = new CrystalDecisions.Shared.ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
-            
+
             paramField = rpt.DataDefinition.ParameterFields["BillingDate"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
             discreteParam.Value = clsCreditCardTypeInfo.BillingDate;
@@ -1090,7 +1090,7 @@ namespace AceSoft.RetailPlus.Monitor
                 if (boPrintToPDF) rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, logFile.Replace(".doc", ".pdf"));
 
                 rpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.WordForWindows, logFile);
-                
+
                 strRetValue = "OR_" + clsGuarantorDetails.ContactID.ToString() + clsCreditCardTypeInfo.BillingDate.ToString("yyyyMMdd") + ".doc";
             }
             catch { }
@@ -1155,7 +1155,7 @@ namespace AceSoft.RetailPlus.Monitor
             return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ": ";
         }
 
-        
+
 
         #endregion
 

@@ -226,6 +226,7 @@ namespace AceSoft.RetailPlus.Client.UI
             get { return mclsCreditorDetails; }
         }
 
+        public string OfflineProductDesc { get; set; }
 		#region Constructors and Destructors
 
 		public PaymentsWnd()
@@ -1002,6 +1003,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.CreditPayment)
             {
+                cmdF2.Visible = false;
+                lblCheque.Visible = false;
                 cmdF3.Visible = false;
                 lblCreditCard.Visible = false;
                 cmdF4.Visible = false;
@@ -1064,15 +1067,15 @@ namespace AceSoft.RetailPlus.Client.UI
 					break;
 
 				case Keys.F2:
-					ShowChequePaymentWindow();
+					if (cmdF2.Visible) ShowChequePaymentWindow();
 					break;
 
 				case Keys.F3:
-                    ShowCreditCardPaymentWindow("f3");
+                    if (cmdF3.Visible) ShowCreditCardPaymentWindow("f3");
 					break;
 
 				case Keys.F4:
-                    if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && TerminalDetails.ShowCustomerSelection) ShowCreditPaymentWindow();
+                    if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Normal) ShowCreditPaymentWindow();
                     else if (mclsCustomerDetails.IsCreditAllowed && cmdF4.Visible && mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware) ShowCreditCardPaymentWindow("f4");
 					break;
 
@@ -1252,6 +1255,7 @@ namespace AceSoft.RetailPlus.Client.UI
             CreditCardPaymentWnd clsCreditCardPaymentWnd = new CreditCardPaymentWnd();
             clsCreditCardPaymentWnd.IsCreditChargeExcluded = mboIsCreditChargeExcluded;
             clsCreditCardPaymentWnd.TerminalDetails = TerminalDetails;
+            clsCreditCardPaymentWnd.OfflineProduct = OfflineProductDesc;
             clsCreditCardPaymentWnd.SalesTransactionDetails = mclsSalesTransactionDetails;
             if (sender == "f4") clsCreditCardPaymentWnd.CreditorDetails = mclsCustomerDetails;
             clsCreditCardPaymentWnd.arrCreditCardPaymentDetails = marrCreditCardPaymentDetails;

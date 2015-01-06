@@ -99,6 +99,8 @@ namespace AceSoft.RetailPlus.Client.UI
             set { mclsCreditorDetails = value; }
         }
 
+        public string OfflineProduct { get; set; }
+
         #endregion
 
         #region Constructors and Destructors
@@ -423,7 +425,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtScan.Text = "put the cursor here to scan credit card";
             this.txtScan.TextChanged += new System.EventHandler(this.txtScan_TextChanged);
             this.txtScan.GotFocus += new System.EventHandler(this.txtScan_GotFocus);
-            this.txtScan.LostFocus += new System.EventHandler(this.txtScan_LostFocus);
             // 
             // label6
             // 
@@ -671,23 +672,10 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (TerminalDetails.WithRestaurantFeatures)
             {
-                keyboardNoControl1.Visible = false;
+                keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
-            txtScan.Text = "";
-        }
-
-        private void txtScan_LostFocus(object sender, System.EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtScan.Text))
-            {
-                txtScan.Text = "put the cursor here to scan credit card";
-            }
-            //else if (txtScan.Text != "put the cursor here to scan credit card")
-            //{
-            //    setScannedCreditCardInfo();
-            //    txtCardNo_TextChanged(null, null);
-            //}
+            txtScan.SelectAll();
         }
 
         private void txtScan_TextChanged(object sender, EventArgs e)
@@ -840,7 +828,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (cboCardType.Items.Count > 0) cboCardType.SelectedIndex = 0;
 
-            if (!string.IsNullOrEmpty(mclsCreditorDetails.CreditDetails.CreditCardNo) && mclsCreditorDetails.IsCreditAllowed)
+            if (!string.IsNullOrEmpty(mclsCreditorDetails.CreditDetails.CreditCardNo) 
+                && mclsCreditorDetails.IsCreditAllowed)
             {
                 txtScan.Text = mclsCreditorDetails.CreditDetails.CreditCardNo;
                 //txtScan_TextChanged(null, null);
@@ -905,11 +894,18 @@ namespace AceSoft.RetailPlus.Client.UI
                     MessageBox.Show("Please type a valid Validity Date. Format must be mmyy", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
-                if (ValidityDate < DateTime.Now)
+
+                if (!IsRefund) // check only if it's not refund
                 {
-                    txtValidityDates.Focus();
-                    MessageBox.Show("Card has been expired, please ask for a valid credit card.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false;
+                    if (!mboIsCreditChargeExcluded) // check only if it's not chargeexcluded or offline trx
+                    {
+                        if (ValidityDate < DateTime.Now)
+                        {
+                            txtValidityDates.Focus();
+                            MessageBox.Show("Card has been expired, please ask for a valid credit card.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return false;
+                        }
+                    }
                 }
             }
             // make sure that only 1 INTERNAL CREDIT CARD can be use per transaction
@@ -931,39 +927,48 @@ namespace AceSoft.RetailPlus.Client.UI
                 mdecAmount += decimal.Parse(txtCreditCardCharge.Text);
 
                 decimal mdecAllowedCredit = mclsCreditorDetails.CreditLimit - mclsCreditorDetails.Credit;
-                if (mdecAmount > mdecAllowedCredit)
+                
+                if (!IsRefund) // check only if it's not refund
                 {
-                    MessageBox.Show("Amount must be less than the credit limit (" + mdecAllowedCredit.ToString("#,##0.#0") + "). Please enter a lower amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtAmount.Focus();
-                    return false;
-                }
-                if (mdecAmount <= 0)
-                {
-                    MessageBox.Show("Amount must be greater than zero. Please enter a higher amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtAmount.Focus();
-                    return false;
-                }
-                if (!mclsCreditorDetails.CreditDetails.CreditActive)
-                {
-                    MessageBox.Show("Sorry the credit card status is " + mclsCreditorDetails.CreditDetails.CreditCardStatus.ToString("G") + ". Please enter an active credit card no.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtScan.Focus();
-                    return false;
-                }
-                if (mclsCardTypeDetails.WithGuarantor)
-                {
-                    Data.Contacts clsContacts = new Data.Contacts();
-                    mclsGuarantorDetails = clsContacts.Details(mclsCreditorDetails.CreditDetails.GuarantorID);
-                    clsContacts.CommitAndDispose();
-
-                    if (!mclsGuarantorDetails.CreditDetails.CreditActive)
+                    if (!mboIsCreditChargeExcluded) // check only if it's not chargeexcluded or offline trx
                     {
-                        MessageBox.Show("Sorry the Guarantor's credit card status is " + mclsGuarantorDetails.CreditDetails.CreditCardStatus.ToString("G") + ". Please enter an active credit card no.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        txtScan.Focus();
-                        return false;
+                        if (mdecAmount > mdecAllowedCredit)
+                        {
+                            MessageBox.Show("Amount must be less than the credit limit (" + mdecAllowedCredit.ToString("#,##0.#0") + "). Please enter a lower amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            txtAmount.Focus();
+                            return false;
+                        }
+                        if (mdecAmount <= 0)
+                        {
+                            MessageBox.Show("Amount must be greater than zero. Please enter a higher amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            txtAmount.Focus();
+                            return false;
+                        }
+                        if (!mclsCreditorDetails.CreditDetails.CreditActive)
+                        {
+                            MessageBox.Show("Sorry the credit card status is " + mclsCreditorDetails.CreditDetails.CreditCardStatus.ToString("G") + ". Please enter an active credit card no.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            txtScan.Focus();
+                            return false;
+                        }
+                        if (mclsCardTypeDetails.WithGuarantor)
+                        {
+                            Data.Contacts clsContacts = new Data.Contacts();
+                            mclsGuarantorDetails = clsContacts.Details(mclsCreditorDetails.CreditDetails.GuarantorID);
+                            clsContacts.CommitAndDispose();
+
+                            if (!mclsGuarantorDetails.CreditDetails.CreditActive)
+                            {
+                                MessageBox.Show("Sorry the Guarantor's credit card status is " + mclsGuarantorDetails.CreditDetails.CreditCardStatus.ToString("G") + ". Please enter an active credit card no.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                txtScan.Focus();
+                                return false;
+                            }
+                        }
                     }
                 }
 
                 if (mboIsCreditChargeExcluded) // exclude if it's an special item
+                { decAdditionalCreditCharge = 0; }
+                else if (mclsCardTypeDetails.ExemptInTerminalCharge) // exclude if it's an exemption
                 { decAdditionalCreditCharge = 0; }
                 else if (mclsCardTypeDetails.WithGuarantor && TerminalDetails.GroupChargeType.ChargeTypeID != 0)
                 {
@@ -979,11 +984,21 @@ namespace AceSoft.RetailPlus.Client.UI
                     else
                         decAdditionalCreditCharge = mdecBalanceAmount + TerminalDetails.PersonalChargeType.ChargeAmount;
                 }
-                if (mdecAmount > mdecBalanceAmount + decAdditionalCreditCharge)
+
+                if (!IsRefund) // check only if it's not refund
                 {
-                    txtAmount.Focus();
-                    MessageBox.Show("Amount must be less than the balance amount (" + mdecBalanceAmount.ToString("#,##0.#0") + "). Please enter a lower or equal amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false;
+                    if (!mboIsCreditChargeExcluded) // check only if it's not chargeexcluded or offline trx
+                    {
+                        if (decAdditionalCreditCharge == 0)
+                        {
+                            if (mdecAmount > mdecBalanceAmount + decAdditionalCreditCharge)
+                            {
+                                txtAmount.Focus();
+                                MessageBox.Show("Amount must be less than the balance amount (" + mdecBalanceAmount.ToString("#,##0.#0") + "). Please enter a lower or equal amount for credit payment.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return false;
+                            }
+                        }
+                    }
                 }
             }
             if (mclsCreditorDetails.ContactID == 0 && mclsCardTypeDetails.CreditCardType == CreditCardTypes.Internal)
@@ -1009,7 +1024,7 @@ namespace AceSoft.RetailPlus.Client.UI
             mDetails.CardHolder = txtCardHolder.Text;
             
             mDetails.ValidityDates = ValidityDate.ToString("MMddyy");
-            mDetails.Remarks = txtRemarks.Text;
+            mDetails.Remarks = (OfflineProduct + " " + txtRemarks.Text).Trim();
             mDetails.CardTypeDetails = mclsCardTypeDetails;
             mDetails.CreditorDetails = mclsCreditorDetails;
             mDetails.IsRefund = IsRefund;
@@ -1046,15 +1061,22 @@ namespace AceSoft.RetailPlus.Client.UI
         private void txtCardNo_TextChanged(object sender, EventArgs e)
         {
             mclsCreditorDetails = new Data.ContactDetails();
-            if (!string.IsNullOrEmpty(txtCardNo.Text))
+            if (!string.IsNullOrEmpty(txtCardNo.Text)
+                && txtScan.Text.Length >= 12
+                && txtScan.Text != mclsCreditorDetails.CreditDetails.CreditCardNo)
             {
                 Data.Contacts clsContacts = new Data.Contacts();
                 mclsCreditorDetails = clsContacts.DetailsByCreditCardNo(txtCardNo.Text);
 
-                if (mclsCreditorDetails.ContactID == 0)
-                {
-                    mclsCreditorDetails = clsContacts.DetailsByCreditCardNo(txtCardNo.Text.Remove(txtCardNo.Text.Length - 1));
-                }
+                //if (mclsCreditorDetails.ContactID == 0)
+                //{
+                //    //mContactDetails = clsContacts.DetailsByCreditCardNo(txtScan.Text.Remove(txtScan.Text.Length - 1));
+
+                //    if (mclsCreditorDetails.ContactID == 0 && txtScan.Text.Length == 7) mclsCreditorDetails = clsContacts.DetailsByCreditCardNo("888880" + txtScan.Text);
+                //    if (mclsCreditorDetails.ContactID == 0 && txtScan.Text.Length == 7) mclsCreditorDetails = clsContacts.DetailsByCreditCardNo("800000" + txtScan.Text);
+                //    if (mclsCreditorDetails.ContactID == 0 && txtScan.Text.Length == 9) mclsCreditorDetails = clsContacts.DetailsByCreditCardNo(BarcodeHelper.GroupCreditCard_Country_Code + BarcodeHelper.GroupCreditCard_ManufacturerCode + txtScan.Text);
+                //    if (mclsCreditorDetails.ContactID == 0 && txtScan.Text.Length == 9) mclsCreditorDetails = clsContacts.DetailsByCreditCardNo(BarcodeHelper.CreditCard_Country_Code + BarcodeHelper.CreditCard_ManufacturerCode + txtScan.Text);
+                //}
                 clsContacts.CommitAndDispose();
             }
 

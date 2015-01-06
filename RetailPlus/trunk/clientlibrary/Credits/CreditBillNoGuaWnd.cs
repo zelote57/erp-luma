@@ -158,6 +158,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdEnter = new System.Windows.Forms.Button();
             this.grpBillingDetails = new System.Windows.Forms.GroupBox();
+            this.cmdLastEqual = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtLastPreviousBalance = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtLastCurrentDueAmount = new System.Windows.Forms.TextBox();
@@ -173,6 +176,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label10 = new System.Windows.Forms.Label();
             this.txtLastPrev2MoCurrentDueAmount = new System.Windows.Forms.TextBox();
             this.grpCurrBilling = new System.Windows.Forms.GroupBox();
+            this.cmdEqual = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtPreviousBalance = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.txtCurrentDueAmount = new System.Windows.Forms.TextBox();
@@ -187,12 +193,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtPrev1MoCurrentDueAmount = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.txtPrev2MoCurrentDueAmount = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.txtPreviousBalance = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.txtLastPreviousBalance = new System.Windows.Forms.TextBox();
-            this.cmdLastEqual = new System.Windows.Forms.Button();
-            this.cmdEqual = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.grpContactDetails.SuspendLayout();
             this.grpBillingDetails.SuspendLayout();
@@ -399,6 +399,42 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpBillingDetails.TabIndex = 13;
             this.grpBillingDetails.TabStop = false;
             this.grpBillingDetails.Text = "Billing Details: Nov 20,2014";
+            // 
+            // cmdLastEqual
+            // 
+            this.cmdLastEqual.Location = new System.Drawing.Point(380, 249);
+            this.cmdLastEqual.Name = "cmdLastEqual";
+            this.cmdLastEqual.Size = new System.Drawing.Size(47, 32);
+            this.cmdLastEqual.TabIndex = 6;
+            this.cmdLastEqual.Text = " = ";
+            this.cmdLastEqual.UseVisualStyleBackColor = true;
+            this.cmdLastEqual.Click += new System.EventHandler(this.cmdLastEqual_Click);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.BackColor = System.Drawing.SystemColors.Window;
+            this.label12.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label12.Location = new System.Drawing.Point(62, 105);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(103, 13);
+            this.label12.TabIndex = 49;
+            this.label12.Text = "Previous Balance";
+            // 
+            // txtLastPreviousBalance
+            // 
+            this.txtLastPreviousBalance.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.txtLastPreviousBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtLastPreviousBalance.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLastPreviousBalance.Location = new System.Drawing.Point(207, 105);
+            this.txtLastPreviousBalance.MaxLength = 75;
+            this.txtLastPreviousBalance.Name = "txtLastPreviousBalance";
+            this.txtLastPreviousBalance.ReadOnly = true;
+            this.txtLastPreviousBalance.Size = new System.Drawing.Size(169, 30);
+            this.txtLastPreviousBalance.TabIndex = 2;
+            this.txtLastPreviousBalance.Text = "0.00";
+            this.txtLastPreviousBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label1
             // 
@@ -609,6 +645,42 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpCurrBilling.TabStop = false;
             this.grpCurrBilling.Text = "Billing Details: Nov 20,2014";
             // 
+            // cmdEqual
+            // 
+            this.cmdEqual.Location = new System.Drawing.Point(370, 247);
+            this.cmdEqual.Name = "cmdEqual";
+            this.cmdEqual.Size = new System.Drawing.Size(47, 32);
+            this.cmdEqual.TabIndex = 36;
+            this.cmdEqual.Text = " = ";
+            this.cmdEqual.UseVisualStyleBackColor = true;
+            this.cmdEqual.Click += new System.EventHandler(this.cmdEqual_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.SystemColors.Window;
+            this.label11.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.MediumBlue;
+            this.label11.Location = new System.Drawing.Point(53, 105);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(103, 13);
+            this.label11.TabIndex = 35;
+            this.label11.Text = "Previous Balance";
+            // 
+            // txtPreviousBalance
+            // 
+            this.txtPreviousBalance.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.txtPreviousBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPreviousBalance.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPreviousBalance.Location = new System.Drawing.Point(198, 105);
+            this.txtPreviousBalance.MaxLength = 75;
+            this.txtPreviousBalance.Name = "txtPreviousBalance";
+            this.txtPreviousBalance.ReadOnly = true;
+            this.txtPreviousBalance.Size = new System.Drawing.Size(169, 30);
+            this.txtPreviousBalance.TabIndex = 10;
+            this.txtPreviousBalance.Text = "0.00";
+            this.txtPreviousBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -788,78 +860,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtPrev2MoCurrentDueAmount.Text = "0.00";
             this.txtPrev2MoCurrentDueAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtPrev2MoCurrentDueAmount.TextChanged += new System.EventHandler(this.txtPrev2MoCurrentDueAmount_TextChanged);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.SystemColors.Window;
-            this.label11.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label11.Location = new System.Drawing.Point(53, 105);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(103, 13);
-            this.label11.TabIndex = 35;
-            this.label11.Text = "Previous Balance";
-            // 
-            // txtPreviousBalance
-            // 
-            this.txtPreviousBalance.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.txtPreviousBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPreviousBalance.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPreviousBalance.Location = new System.Drawing.Point(198, 105);
-            this.txtPreviousBalance.MaxLength = 75;
-            this.txtPreviousBalance.Name = "txtPreviousBalance";
-            this.txtPreviousBalance.ReadOnly = true;
-            this.txtPreviousBalance.Size = new System.Drawing.Size(169, 30);
-            this.txtPreviousBalance.TabIndex = 10;
-            this.txtPreviousBalance.Text = "0.00";
-            this.txtPreviousBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.BackColor = System.Drawing.SystemColors.Window;
-            this.label12.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.ForeColor = System.Drawing.Color.MediumBlue;
-            this.label12.Location = new System.Drawing.Point(62, 105);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(103, 13);
-            this.label12.TabIndex = 49;
-            this.label12.Text = "Previous Balance";
-            // 
-            // txtLastPreviousBalance
-            // 
-            this.txtLastPreviousBalance.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.txtLastPreviousBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtLastPreviousBalance.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLastPreviousBalance.Location = new System.Drawing.Point(207, 105);
-            this.txtLastPreviousBalance.MaxLength = 75;
-            this.txtLastPreviousBalance.Name = "txtLastPreviousBalance";
-            this.txtLastPreviousBalance.ReadOnly = true;
-            this.txtLastPreviousBalance.Size = new System.Drawing.Size(169, 30);
-            this.txtLastPreviousBalance.TabIndex = 2;
-            this.txtLastPreviousBalance.Text = "0.00";
-            this.txtLastPreviousBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // cmdLastEqual
-            // 
-            this.cmdLastEqual.Location = new System.Drawing.Point(380, 249);
-            this.cmdLastEqual.Name = "cmdLastEqual";
-            this.cmdLastEqual.Size = new System.Drawing.Size(47, 32);
-            this.cmdLastEqual.TabIndex = 6;
-            this.cmdLastEqual.Text = " = ";
-            this.cmdLastEqual.UseVisualStyleBackColor = true;
-            this.cmdLastEqual.Click += new System.EventHandler(this.cmdLastEqual_Click);
-            // 
-            // cmdEqual
-            // 
-            this.cmdEqual.Location = new System.Drawing.Point(370, 247);
-            this.cmdEqual.Name = "cmdEqual";
-            this.cmdEqual.Size = new System.Drawing.Size(47, 32);
-            this.cmdEqual.TabIndex = 36;
-            this.cmdEqual.Text = " = ";
-            this.cmdEqual.UseVisualStyleBackColor = true;
-            this.cmdEqual.Click += new System.EventHandler(this.cmdEqual_Click);
             // 
             // CreditBillNoGuaWnd
             // 
@@ -1113,28 +1113,13 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsCreditBillHeaderDetails = new Data.CreditBillHeaderDetails();
                     clsCreditBillHeaderDetails.CreditBillHeaderID = CreditBillHeaderID;
                     clsCreditBillHeaderDetails.BillingDate = CreditorDetails.CreditDetails.Last2BillingDate;
-
-                    decimal.TryParse(txtLastPrev2MoCurrentDueAmount.Text, out decTemp);
-                    clsCreditBillHeaderDetails.Prev2MoCurrentDueAmount = decTemp;
-
-                    decimal.TryParse(txtLastPrev1MoCurrentDueAmount.Text, out decTemp);
-                    clsCreditBillHeaderDetails.Prev1MoCurrentDueAmount = decTemp;
-
-                    decimal.TryParse(txtLastCurrMonthAmountPaid.Text, out decTemp);
-                    clsCreditBillHeaderDetails.CurrMonthAmountPaid = decTemp;
-
-                    decimal.TryParse(txtLastTotalBillCharges.Text, out decTemp);
-                    clsCreditBillHeaderDetails.TotalBillCharges = decTemp;
-
-                    decimal.TryParse(txtLastCurrentPurchaseAmt.Text, out decTemp);
-                    clsCreditBillHeaderDetails.CurrentPurchaseAmt = decTemp;
-
-                    decimal.TryParse(txtLastMinimumAmountDue.Text, out decTemp);
-                    clsCreditBillHeaderDetails.MinimumAmountDue = decTemp;
-
-                    decimal.TryParse(txtLastCurrentDueAmount.Text, out decTemp);
-                    clsCreditBillHeaderDetails.CurrentDueAmount = decTemp;
-
+                    clsCreditBillHeaderDetails.Prev2MoCurrentDueAmount = decimal.TryParse(txtLastPrev2MoCurrentDueAmount.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.Prev1MoCurrentDueAmount = decimal.TryParse(txtLastPrev1MoCurrentDueAmount.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.CurrMonthAmountPaid = decimal.TryParse(txtLastCurrMonthAmountPaid.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.TotalBillCharges = decimal.TryParse(txtLastTotalBillCharges.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.CurrentPurchaseAmt = decimal.TryParse(txtLastCurrentPurchaseAmt.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.MinimumAmountDue = decimal.TryParse(txtLastMinimumAmountDue.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.CurrentDueAmount = decimal.TryParse(txtLastCurrentDueAmount.Text, out decTemp) ? decTemp : 0;
                     // update the previous billing
                     clsCreditBillHeaders.OverWriteBillingNoG(clsCreditBillHeaderDetails);
                     clsCreditBillHeaders.setIsBillPrintedNoG(CreditorDetails.ContactID, CreditorDetails.CreditDetails.Last2BillingDate, false);
@@ -1146,28 +1131,13 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsCreditBillHeaderDetails = new Data.CreditBillHeaderDetails();
                     clsCreditBillHeaderDetails.CreditBillHeaderID = CreditBillHeaderID;
                     clsCreditBillHeaderDetails.BillingDate = CreditorDetails.CreditDetails.LastBillingDate;
-                    
-                    decimal.TryParse(txtPrev2MoCurrentDueAmount.Text, out decTemp);
-                    clsCreditBillHeaderDetails.Prev2MoCurrentDueAmount = decTemp;
-
-                    decimal.TryParse(txtPrev1MoCurrentDueAmount.Text, out decTemp);
-                    clsCreditBillHeaderDetails.Prev1MoCurrentDueAmount = decTemp;
-
-                    decimal.TryParse(txtCurrMonthAmountPaid.Text, out decTemp);
-                    clsCreditBillHeaderDetails.CurrMonthAmountPaid = decTemp;
-
-                    decimal.TryParse(txtTotalBillCharges.Text, out decTemp);
-                    clsCreditBillHeaderDetails.TotalBillCharges = decTemp;
-
-                    decimal.TryParse(txtCurrentPurchaseAmt.Text, out decTemp);
-                    clsCreditBillHeaderDetails.CurrentPurchaseAmt = decTemp;
-
-                    decimal.TryParse(txtMinimumAmountDue.Text, out decTemp);
-                    clsCreditBillHeaderDetails.MinimumAmountDue = decTemp;
-
-                    decimal.TryParse(txtCurrentDueAmount.Text, out decTemp);
-                    clsCreditBillHeaderDetails.CurrentDueAmount = decTemp;
-
+                    clsCreditBillHeaderDetails.Prev2MoCurrentDueAmount = decimal.TryParse(txtPrev2MoCurrentDueAmount.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.Prev1MoCurrentDueAmount = decimal.TryParse(txtPrev1MoCurrentDueAmount.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.CurrMonthAmountPaid = decimal.TryParse(txtCurrMonthAmountPaid.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.TotalBillCharges = decimal.TryParse(txtTotalBillCharges.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.CurrentPurchaseAmt = decimal.TryParse(txtCurrentPurchaseAmt.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.MinimumAmountDue = decimal.TryParse(txtMinimumAmountDue.Text, out decTemp) ? decTemp : 0;
+                    clsCreditBillHeaderDetails.CurrentDueAmount = decimal.TryParse(txtCurrentDueAmount.Text, out decTemp) ? decTemp : 0;
                     // update the previous billing
                     clsCreditBillHeaders.OverWriteBillingNoG(clsCreditBillHeaderDetails);
                     clsCreditBillHeaders.setIsBillPrintedNoG(CreditorDetails.ContactID, CreditorDetails.CreditDetails.Last2BillingDate, false);

@@ -141,7 +141,6 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
             this.groupBox1.Controls.Add(this.label1);
-            
             this.groupBox1.Controls.Add(this.txtTerminalNo);
             this.groupBox1.Controls.Add(this.lblTerminalNo);
             this.groupBox1.Controls.Add(this.txtTransactionNo);
@@ -175,6 +174,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtTerminalNo.TabIndex = 2;
             this.txtTerminalNo.Text = "01";
             this.txtTerminalNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTerminalNo.GotFocus += new System.EventHandler(this.txtTerminalNo_GotFocus);
             // 
             // lblTerminalNo
             // 
@@ -197,6 +197,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtTransactionNo.Size = new System.Drawing.Size(237, 30);
             this.txtTransactionNo.TabIndex = 0;
             this.txtTransactionNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtTransactionNo.GotFocus += new System.EventHandler(this.txtTransactionNo_GotFocus);
             // 
             // cmdCancel
             // 
@@ -217,7 +218,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1022, 766);
+            this.ClientSize = new System.Drawing.Size(1022, 764);
             this.ControlBox = false;
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.groupBox1);
@@ -255,14 +256,24 @@ namespace AceSoft.RetailPlus.Client.UI
                     break;
 
                 case Keys.Enter:
+                    if (string.IsNullOrEmpty(txtTerminalNo.Text))
+                    {
+                        MessageBox.Show("Sorry please enter a valid TerminalNo.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    if (string.IsNullOrEmpty(txtTransactionNo.Text))
+                    {
+                        MessageBox.Show("Sorry please enter a valid TransactionNo.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions();
-                    TransactionStatus status = clsSalesTransactions.Status(txtTransactionNo.Text);
+                    TransactionStatus status = clsSalesTransactions.Status(txtTransactionNo.Text, txtTerminalNo.Text);
                     clsSalesTransactions.CommitAndDispose();
 
                     if (status == TransactionStatus.NotYetApplied)
                     {
-                        MessageBox.Show("Sorry you have entered an invalid Transaction No." +
-                            "Please type a valid Transaction No.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Sorry you have entered an invalid Transaction No. Please type a valid Transaction No.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                     else if (status == TransactionStatus.Closed || status == TransactionStatus.Released || status == TransactionStatus.Refund || status == TransactionStatus.CreditPayment)
@@ -304,13 +315,14 @@ namespace AceSoft.RetailPlus.Client.UI
                 // keyboardNoControl1
                 // 
                 this.keyboardNoControl1.BackColor = System.Drawing.Color.White;
-                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Default;
-                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.Default;
-                this.keyboardNoControl1.Location = new System.Drawing.Point(561, 20);
+                this.keyboardNoControl1.commandBlank1 = AceSoft.KeyBoardHook.CommandBlank1.Clear;
+                this.keyboardNoControl1.commandBlank2 = AceSoft.KeyBoardHook.CommandBlank2.SelectAll;
+                this.keyboardNoControl1.Location = new System.Drawing.Point(571, 68);
                 this.keyboardNoControl1.Name = "keyboardNoControl1";
-                this.keyboardNoControl1.Size = new System.Drawing.Size(199, 202);
-                this.keyboardNoControl1.TabIndex = 1;
+                this.keyboardNoControl1.Size = new System.Drawing.Size(208, 172);
+                this.keyboardNoControl1.TabIndex = 86;
                 this.keyboardNoControl1.TabStop = false;
+                this.keyboardNoControl1.Visible = false;
                 this.keyboardNoControl1.UserKeyPressed += new AceSoft.KeyBoardHook.KeyboardDelegate(this.keyboardNoControl1_UserKeyPressed);
 
                 this.groupBox1.Controls.Add(this.keyboardNoControl1);
@@ -345,14 +357,28 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void keyboardNoControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
         {
+            //if (txtSelectedTextBox == null)
+            //    txtTransactionNo.Focus();
+            //if (txtSelectedTextBox.Name == txtTerminalNo.Name)
+            //    txtTerminalNo.Focus();
+            //else if (txtSelectedTextBox.Name == txtTransactionNo.Name)
+            //    txtTransactionNo.Focus();
+
             if (txtSelectedTextBox == null)
                 txtTransactionNo.Focus();
-            if (txtSelectedTextBox.Name == txtTerminalNo.Name)
+            else if (txtSelectedTextBox.Name == txtTerminalNo.Name)
                 txtTerminalNo.Focus();
             else if (txtSelectedTextBox.Name == txtTransactionNo.Name)
                 txtTransactionNo.Focus();
 
-            SendKeys.Send(e.KeyboardKeyPressed);
+            if (e.KeyboardKeyPressed == "{CLEAR}")
+                txtSelectedTextBox.Text = "";
+            else if (e.KeyboardKeyPressed == "{SELECTALL}")
+                txtSelectedTextBox.SelectAll();
+            else if (e.KeyboardKeyPressed == "." & txtSelectedTextBox.Text.IndexOf(".") < 0)
+                SendKeys.Send(e.KeyboardKeyPressed);
+            else if (e.KeyboardKeyPressed != ".")
+                SendKeys.Send(e.KeyboardKeyPressed);
         }
 
         private void cmdCancel_Click(object sender, EventArgs e)

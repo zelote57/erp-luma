@@ -136,6 +136,10 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label96;
         private Label label97;
         private Label lblAddNewCustomer;
+        private Label label98;
+        private Label label108;
+        private Label label109;
+        private Label label110;
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -194,6 +198,8 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.grpBox1 = new System.Windows.Forms.GroupBox();
+            this.label98 = new System.Windows.Forms.Label();
+            this.label108 = new System.Windows.Forms.Label();
             this.label78 = new System.Windows.Forms.Label();
             this.label93 = new System.Windows.Forms.Label();
             this.label64 = new System.Windows.Forms.Label();
@@ -316,6 +322,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label96 = new System.Windows.Forms.Label();
             this.label97 = new System.Windows.Forms.Label();
             this.lblAddNewCustomer = new System.Windows.Forms.Label();
+            this.label109 = new System.Windows.Forms.Label();
+            this.label110 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.grpBox1.SuspendLayout();
             this.grpBox2.SuspendLayout();
@@ -334,6 +342,10 @@ namespace AceSoft.RetailPlus.Client.UI
             // grpBox1
             // 
             this.grpBox1.BackColor = System.Drawing.Color.White;
+            this.grpBox1.Controls.Add(this.label109);
+            this.grpBox1.Controls.Add(this.label110);
+            this.grpBox1.Controls.Add(this.label98);
+            this.grpBox1.Controls.Add(this.label108);
             this.grpBox1.Controls.Add(this.label78);
             this.grpBox1.Controls.Add(this.label93);
             this.grpBox1.Controls.Add(this.label64);
@@ -431,6 +443,28 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpBox1.TabIndex = 66;
             this.grpBox1.TabStop = false;
             this.grpBox1.Text = "Help Details";
+            // 
+            // label98
+            // 
+            this.label98.AutoSize = true;
+            this.label98.ForeColor = System.Drawing.Color.Blue;
+            this.label98.Location = new System.Drawing.Point(656, 135);
+            this.label98.Name = "label98";
+            this.label98.Size = new System.Drawing.Size(205, 13);
+            this.label98.TabIndex = 200;
+            this.label98.Text = "Reprint receipt (Note: use the Check Ctr)";
+            // 
+            // label108
+            // 
+            this.label108.AutoSize = true;
+            this.label108.BackColor = System.Drawing.Color.Transparent;
+            this.label108.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label108.ForeColor = System.Drawing.Color.Red;
+            this.label108.Location = new System.Drawing.Point(566, 135);
+            this.label108.Name = "label108";
+            this.label108.Size = new System.Drawing.Size(53, 13);
+            this.label108.TabIndex = 199;
+            this.label108.Text = "Ctrl +F12";
             // 
             // label78
             // 
@@ -555,7 +589,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label103
             // 
             this.label103.AutoSize = true;
-            this.label103.Location = new System.Drawing.Point(656, 240);
+            this.label103.Location = new System.Drawing.Point(656, 266);
             this.label103.Name = "label103";
             this.label103.Size = new System.Drawing.Size(170, 13);
             this.label103.TabIndex = 187;
@@ -568,7 +602,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label104.BackColor = System.Drawing.Color.Transparent;
             this.label104.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label104.ForeColor = System.Drawing.Color.Red;
-            this.label104.Location = new System.Drawing.Point(567, 240);
+            this.label104.Location = new System.Drawing.Point(567, 266);
             this.label104.Name = "label104";
             this.label104.Size = new System.Drawing.Size(46, 13);
             this.label104.TabIndex = 186;
@@ -580,7 +614,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Tahoma", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.Gray;
-            this.label6.Location = new System.Drawing.Point(526, 204);
+            this.label6.Location = new System.Drawing.Point(526, 230);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(104, 13);
             this.label6.TabIndex = 172;
@@ -590,7 +624,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.label91.AutoSize = true;
             this.label91.ForeColor = System.Drawing.Color.Blue;
-            this.label91.Location = new System.Drawing.Point(656, 187);
+            this.label91.Location = new System.Drawing.Point(656, 213);
             this.label91.Name = "label91";
             this.label91.Size = new System.Drawing.Size(44, 13);
             this.label91.TabIndex = 165;
@@ -602,7 +636,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label92.BackColor = System.Drawing.Color.Transparent;
             this.label92.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label92.ForeColor = System.Drawing.Color.Red;
-            this.label92.Location = new System.Drawing.Point(567, 187);
+            this.label92.Location = new System.Drawing.Point(567, 213);
             this.label92.Name = "label92";
             this.label92.Size = new System.Drawing.Size(43, 13);
             this.label92.TabIndex = 164;
@@ -611,7 +645,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label89
             // 
             this.label89.AutoSize = true;
-            this.label89.Location = new System.Drawing.Point(208, 394);
+            this.label89.Location = new System.Drawing.Point(208, 420);
             this.label89.Name = "label89";
             this.label89.Size = new System.Drawing.Size(223, 13);
             this.label89.TabIndex = 163;
@@ -623,7 +657,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label90.BackColor = System.Drawing.Color.Transparent;
             this.label90.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label90.ForeColor = System.Drawing.Color.Red;
-            this.label90.Location = new System.Drawing.Point(74, 394);
+            this.label90.Location = new System.Drawing.Point(74, 420);
             this.label90.Name = "label90";
             this.label90.Size = new System.Drawing.Size(19, 13);
             this.label90.TabIndex = 162;
@@ -632,7 +666,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label87
             // 
             this.label87.AutoSize = true;
-            this.label87.Location = new System.Drawing.Point(208, 276);
+            this.label87.Location = new System.Drawing.Point(208, 296);
             this.label87.Name = "label87";
             this.label87.Size = new System.Drawing.Size(52, 13);
             this.label87.TabIndex = 161;
@@ -644,7 +678,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label88.BackColor = System.Drawing.Color.Transparent;
             this.label88.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label88.ForeColor = System.Drawing.Color.Red;
-            this.label88.Location = new System.Drawing.Point(74, 276);
+            this.label88.Location = new System.Drawing.Point(74, 296);
             this.label88.Name = "label88";
             this.label88.Size = new System.Drawing.Size(57, 13);
             this.label88.TabIndex = 160;
@@ -699,7 +733,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label82.AutoSize = true;
             this.label82.Font = new System.Drawing.Font("Tahoma", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label82.ForeColor = System.Drawing.Color.Gray;
-            this.label82.Location = new System.Drawing.Point(526, 152);
+            this.label82.Location = new System.Drawing.Point(526, 178);
             this.label82.Name = "label82";
             this.label82.Size = new System.Drawing.Size(192, 13);
             this.label82.TabIndex = 155;
@@ -721,7 +755,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label77.AutoSize = true;
             this.label77.Font = new System.Drawing.Font("Tahoma", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label77.ForeColor = System.Drawing.Color.Gray;
-            this.label77.Location = new System.Drawing.Point(33, 410);
+            this.label77.Location = new System.Drawing.Point(33, 436);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(121, 13);
             this.label77.TabIndex = 150;
@@ -732,7 +766,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label76.AutoSize = true;
             this.label76.Font = new System.Drawing.Font("Tahoma", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label76.ForeColor = System.Drawing.Color.Gray;
-            this.label76.Location = new System.Drawing.Point(33, 292);
+            this.label76.Location = new System.Drawing.Point(33, 318);
             this.label76.Name = "label76";
             this.label76.Size = new System.Drawing.Size(143, 13);
             this.label76.TabIndex = 149;
@@ -764,7 +798,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.label70.AutoSize = true;
             this.label70.ForeColor = System.Drawing.Color.Blue;
-            this.label70.Location = new System.Drawing.Point(656, 170);
+            this.label70.Location = new System.Drawing.Point(656, 196);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(109, 13);
             this.label70.TabIndex = 146;
@@ -776,7 +810,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label71.BackColor = System.Drawing.Color.Transparent;
             this.label71.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label71.ForeColor = System.Drawing.Color.Red;
-            this.label71.Location = new System.Drawing.Point(567, 170);
+            this.label71.Location = new System.Drawing.Point(567, 196);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(55, 13);
             this.label71.TabIndex = 145;
@@ -785,7 +819,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label72
             // 
             this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(656, 222);
+            this.label72.Location = new System.Drawing.Point(656, 248);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(176, 13);
             this.label72.TabIndex = 144;
@@ -797,7 +831,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label73.BackColor = System.Drawing.Color.Transparent;
             this.label73.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label73.ForeColor = System.Drawing.Color.Red;
-            this.label73.Location = new System.Drawing.Point(567, 222);
+            this.label73.Location = new System.Drawing.Point(567, 248);
             this.label73.Name = "label73";
             this.label73.Size = new System.Drawing.Size(46, 13);
             this.label73.TabIndex = 143;
@@ -891,7 +925,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label62
             // 
             this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(208, 445);
+            this.label62.Location = new System.Drawing.Point(208, 471);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(180, 13);
             this.label62.TabIndex = 130;
@@ -903,7 +937,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label63.BackColor = System.Drawing.Color.Transparent;
             this.label63.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label63.ForeColor = System.Drawing.Color.Red;
-            this.label63.Location = new System.Drawing.Point(74, 445);
+            this.label63.Location = new System.Drawing.Point(74, 471);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(55, 13);
             this.label63.TabIndex = 129;
@@ -957,7 +991,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.label56.AutoSize = true;
             this.label56.ForeColor = System.Drawing.Color.Blue;
-            this.label56.Location = new System.Drawing.Point(208, 358);
+            this.label56.Location = new System.Drawing.Point(208, 384);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(118, 13);
             this.label56.TabIndex = 124;
@@ -969,7 +1003,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label57.BackColor = System.Drawing.Color.Transparent;
             this.label57.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label57.ForeColor = System.Drawing.Color.Red;
-            this.label57.Location = new System.Drawing.Point(74, 358);
+            this.label57.Location = new System.Drawing.Point(74, 384);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(69, 13);
             this.label57.TabIndex = 123;
@@ -979,7 +1013,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.label52.AutoSize = true;
             this.label52.ForeColor = System.Drawing.Color.Blue;
-            this.label52.Location = new System.Drawing.Point(208, 341);
+            this.label52.Location = new System.Drawing.Point(208, 367);
             this.label52.Name = "label52";
             this.label52.Size = new System.Drawing.Size(101, 13);
             this.label52.TabIndex = 120;
@@ -991,7 +1025,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label53.BackColor = System.Drawing.Color.Transparent;
             this.label53.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label53.ForeColor = System.Drawing.Color.Red;
-            this.label53.Location = new System.Drawing.Point(74, 341);
+            this.label53.Location = new System.Drawing.Point(74, 367);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(45, 13);
             this.label53.TabIndex = 119;
@@ -1021,7 +1055,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(208, 222);
+            this.label44.Location = new System.Drawing.Point(208, 241);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(111, 13);
             this.label44.TabIndex = 114;
@@ -1033,7 +1067,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label45.BackColor = System.Drawing.Color.Transparent;
             this.label45.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label45.ForeColor = System.Drawing.Color.Red;
-            this.label45.Location = new System.Drawing.Point(74, 222);
+            this.label45.Location = new System.Drawing.Point(74, 241);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(114, 13);
             this.label45.TabIndex = 113;
@@ -1042,7 +1076,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(208, 240);
+            this.label46.Location = new System.Drawing.Point(208, 260);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(123, 13);
             this.label46.TabIndex = 112;
@@ -1054,7 +1088,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label47.BackColor = System.Drawing.Color.Transparent;
             this.label47.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label47.ForeColor = System.Drawing.Color.Red;
-            this.label47.Location = new System.Drawing.Point(74, 240);
+            this.label47.Location = new System.Drawing.Point(74, 260);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(134, 13);
             this.label47.TabIndex = 111;
@@ -1129,7 +1163,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(208, 427);
+            this.label30.Location = new System.Drawing.Point(208, 453);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(100, 13);
             this.label30.TabIndex = 98;
@@ -1141,7 +1175,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label31.BackColor = System.Drawing.Color.Transparent;
             this.label31.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label31.ForeColor = System.Drawing.Color.Red;
-            this.label31.Location = new System.Drawing.Point(74, 427);
+            this.label31.Location = new System.Drawing.Point(74, 453);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(19, 13);
             this.label31.TabIndex = 97;
@@ -1150,7 +1184,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(208, 376);
+            this.label29.Location = new System.Drawing.Point(208, 402);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(86, 13);
             this.label29.TabIndex = 96;
@@ -1197,7 +1231,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             this.label23.AutoSize = true;
             this.label23.ForeColor = System.Drawing.Color.Blue;
-            this.label23.Location = new System.Drawing.Point(208, 463);
+            this.label23.Location = new System.Drawing.Point(208, 489);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(131, 13);
             this.label23.TabIndex = 91;
@@ -1206,7 +1240,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(208, 324);
+            this.label22.Location = new System.Drawing.Point(208, 350);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(161, 13);
             this.label22.TabIndex = 90;
@@ -1215,7 +1249,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(208, 308);
+            this.label21.Location = new System.Drawing.Point(208, 334);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(147, 13);
             this.label21.TabIndex = 89;
@@ -1224,7 +1258,7 @@ namespace AceSoft.RetailPlus.Client.UI
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(208, 258);
+            this.label17.Location = new System.Drawing.Point(208, 278);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(65, 13);
             this.label17.TabIndex = 85;
@@ -1266,7 +1300,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label14.BackColor = System.Drawing.Color.Transparent;
             this.label14.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.ForeColor = System.Drawing.Color.Red;
-            this.label14.Location = new System.Drawing.Point(74, 376);
+            this.label14.Location = new System.Drawing.Point(74, 402);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(19, 13);
             this.label14.TabIndex = 81;
@@ -1326,7 +1360,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.Red;
-            this.label9.Location = new System.Drawing.Point(74, 463);
+            this.label9.Location = new System.Drawing.Point(74, 489);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(19, 13);
             this.label9.TabIndex = 76;
@@ -1338,7 +1372,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(74, 324);
+            this.label8.Location = new System.Drawing.Point(74, 350);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(19, 13);
             this.label8.TabIndex = 75;
@@ -1350,7 +1384,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(74, 308);
+            this.label7.Location = new System.Drawing.Point(74, 334);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(19, 13);
             this.label7.TabIndex = 74;
@@ -1362,7 +1396,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(74, 258);
+            this.label2.Location = new System.Drawing.Point(74, 278);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(19, 13);
             this.label2.TabIndex = 70;
@@ -1463,9 +1497,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label38.AutoSize = true;
             this.label38.Location = new System.Drawing.Point(192, 110);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(142, 13);
+            this.label38.Size = new System.Drawing.Size(114, 13);
             this.label38.TabIndex = 198;
-            this.label38.Text = "Suspend LOST Reward Card";
+            this.label38.Text = "Suspend Reward Card";
             // 
             // label39
             // 
@@ -1580,9 +1614,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label102.AutoSize = true;
             this.label102.Location = new System.Drawing.Point(192, 128);
             this.label102.Name = "label102";
-            this.label102.Size = new System.Drawing.Size(153, 13);
+            this.label102.Size = new System.Drawing.Size(342, 13);
             this.label102.TabIndex = 191;
-            this.label102.Text = "Reactivate LOST Reward Card";
+            this.label102.Text = "Reward Card Reactivation / Chenge other information w/out payment";
             // 
             // label121
             // 
@@ -1776,11 +1810,33 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblAddNewCustomer.TabIndex = 190;
             this.lblAddNewCustomer.Text = " to hide this window";
             // 
+            // label109
+            // 
+            this.label109.AutoSize = true;
+            this.label109.ForeColor = System.Drawing.Color.Blue;
+            this.label109.Location = new System.Drawing.Point(207, 222);
+            this.label109.Name = "label109";
+            this.label109.Size = new System.Drawing.Size(169, 13);
+            this.label109.TabIndex = 202;
+            this.label109.Text = "Change Product Code/Description";
+            // 
+            // label110
+            // 
+            this.label110.AutoSize = true;
+            this.label110.BackColor = System.Drawing.Color.Transparent;
+            this.label110.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label110.ForeColor = System.Drawing.Color.Red;
+            this.label110.Location = new System.Drawing.Point(73, 222);
+            this.label110.Name = "label110";
+            this.label110.Size = new System.Drawing.Size(50, 13);
+            this.label110.TabIndex = 201;
+            this.label110.Text = "Ctrl + F2";
+            // 
             // HelpWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1022, 766);
+            this.ClientSize = new System.Drawing.Size(1022, 764);
             this.ControlBox = false;
             this.Controls.Add(this.label94);
             this.Controls.Add(this.label95);
@@ -1790,8 +1846,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.imgIcon);
-            this.Controls.Add(this.grpBox2);
             this.Controls.Add(this.grpBox1);
+            this.Controls.Add(this.grpBox2);
             this.Font = new System.Drawing.Font("Tahoma", 8F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.KeyPreview = true;

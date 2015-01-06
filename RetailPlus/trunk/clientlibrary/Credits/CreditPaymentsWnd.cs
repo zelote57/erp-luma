@@ -41,17 +41,17 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label2;
         private Label lblBalanceName;
         private Label lblTotal;
+        private Label label15;
+        private Label label16;
+        private Label label12;
     
         public Data.SysConfigDetails SysConfigDetails
         {
             set { mclsSysConfigDetails = value; }
         }
+        public Int64 CashierID { get; set; }
 
-        private DataGridViewSelectedRowCollection mdgvItemsSelectedRows;
-        public DataGridViewSelectedRowCollection dgvItemsSelectedRows
-        {
-            get { return mdgvItemsSelectedRows; }
-        }
+        private bool mboCreditPaymentReversal;
 
 		#region Constructors and Destuctors
 
@@ -104,6 +104,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label2 = new System.Windows.Forms.Label();
             this.lblBalanceName = new System.Windows.Forms.Label();
             this.lblTotal = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.grpBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
@@ -297,14 +300,50 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblTotal.Text = "0.00";
             this.lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.BackColor = System.Drawing.Color.Transparent;
+            this.label15.ForeColor = System.Drawing.Color.Red;
+            this.label15.Location = new System.Drawing.Point(743, 9);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(30, 13);
+            this.label15.TabIndex = 112;
+            this.label15.Text = "[Del]";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.BackColor = System.Drawing.Color.Transparent;
+            this.label16.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label16.Location = new System.Drawing.Point(768, 9);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(157, 13);
+            this.label16.TabIndex = 111;
+            this.label16.Text = " to cancel the posted payment.";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.BackColor = System.Drawing.Color.Transparent;
+            this.label12.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label12.Location = new System.Drawing.Point(712, 9);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(33, 13);
+            this.label12.TabIndex = 110;
+            this.label12.Text = "Press";
+            // 
             // CreditPaymentsWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1022, 766);
+            this.ClientSize = new System.Drawing.Size(1022, 764);
             this.ControlBox = false;
+            this.Controls.Add(this.label15);
             this.Controls.Add(this.lblBalanceName);
             this.Controls.Add(this.lblTotal);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtTrxEndDate);
@@ -353,6 +392,16 @@ namespace AceSoft.RetailPlus.Client.UI
 			catch { }
 
 			lblHeader.Text = mclsCustomerDetails.ContactName;
+
+            Security.AccessRights clsAccessRights = new Security.AccessRights();
+            Security.AccessRightsDetails clsDetails = new Security.AccessRightsDetails();
+
+            clsDetails = clsAccessRights.Details(CashierID, (Int16)AccessTypes.CreditPaymentReversal);
+            mboCreditPaymentReversal = clsDetails.Write;
+
+            clsAccessRights.CommitAndDispose();
+
+
 			LoadOptions();
 			LoadData();
 		}
@@ -372,6 +421,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 case Keys.Up:
                 case Keys.Down:
                     if (!dgvItems.Focused) dgvItems.Focus();
+                    break;
+
+                case Keys.Back:
+                case Keys.Delete:
+                    DeletePayment();
                     break;
 			}
 		}
@@ -436,7 +490,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 System.Data.DataTable dt = clsContacts.CreditPaymentCashAsDataTable(clsCreditPaymentCashDetails, "trx.CreatedOn");
 				clsContacts.CommitAndDispose();
 
-                dgvItems.MultiSelect = true;
+                System.Data.DataView dv = dt.DefaultView;
+                dv.Sort = "TransactionDate";
+                dt = dv.ToTable();
+
+                dgvItems.MultiSelect = false;
                 dgvItems.AutoGenerateColumns = true;
                 dgvItems.AutoSize = false;
                 dgvItems.DataSource = dt.TableName;
@@ -461,7 +519,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 dgvItems.Columns["TransactionNo"].HeaderText = "Transaction No";
                 dgvItems.Columns["TransactionDate"].HeaderText = "Transaction Date";
                 dgvItems.Columns["CreditReason"].HeaderText = "Description";
-                dgvItems.Columns["Amount"].HeaderText = "Credit";
+                dgvItems.Columns["Amount"].HeaderText = "Amt. Paid";
 
                 dgvItems.Columns["Amount"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvItems.Columns["Amount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -490,6 +548,59 @@ namespace AceSoft.RetailPlus.Client.UI
 				MessageBox.Show(ex.Message,"RetailPlus",MessageBoxButtons.OK,MessageBoxIcon.Error); 
 			}
 		}
+
+        private void DeletePayment()
+        {
+            if (!mboCreditPaymentReversal)
+            {
+                MessageBox.Show("Sorry you are not allowed to reverse payments, please consult your system administrator.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            }
+            else
+            {
+                if (dgvItems.SelectedRows.Count == 1)
+                {
+                    foreach (DataGridViewRow dr in dgvItems.SelectedRows)
+                    {
+                        DateTime TransactionDate = DateTime.Parse(dr.Cells["TransactionDate"].Value.ToString());
+                        if (TransactionDate < mclsCustomerDetails.CreditDetails.LastBillingDate)
+                        {
+                            MessageBox.Show("Sorry you cannot reverse payment's that are already included in billing statement last: " + mclsCustomerDetails.CreditDetails.LastBillingDate.ToString("MMM dd, yyyy"), "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                            break;
+                        }
+                        else
+                        {
+                            decimal AmountPaid = decimal.Parse(dr.Cells["Amount"].Value.ToString());
+
+                            if (MessageBox.Show("Are you sure you want to delete this Payment? " +
+                                        "If you delete this payment, the current credit of " + mclsCustomerDetails.ContactName + " will be: " + Environment.NewLine + "   " + mclsCustomerDetails.Credit.ToString("#,##0.#0") + " + " + AmountPaid.ToString("#,##0.#0") + " = " + (mclsCustomerDetails.Credit + AmountPaid).ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+                            {
+                                Int32 BranchID = Int32.Parse(dr.Cells["BranchID"].Value.ToString());
+                                string TerminalNo = dr.Cells["TerminalNo"].Value.ToString();
+                                string TransactionNo = dr.Cells["TransactionNo"].Value.ToString();
+                                Int64 TransactionID = Int64.Parse(dr.Cells["TransactionID"].Value.ToString());
+
+                                // put the automatic adjustment outside
+
+                                AceSoft.RetailPlus.Client.LocalDB clsLocalConnection = new AceSoft.RetailPlus.Client.LocalDB();
+                                clsLocalConnection.GetConnection();
+
+                                Data.Creditors clsCreditors = new Data.Creditors(clsLocalConnection.Connection, clsLocalConnection.Transaction);
+
+                                clsCreditors.DeleteCreditTransaction(BranchID, TerminalNo, TransactionID);
+
+                                clsCreditors.AutoAdjustCredit(mclsCustomerDetails, mclsCustomerDetails.Credit + AmountPaid);
+
+                                clsLocalConnection.CommitAndDispose();
+
+                                this.Hide();
+                                dialog = System.Windows.Forms.DialogResult.OK;
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
 
 		#endregion
 

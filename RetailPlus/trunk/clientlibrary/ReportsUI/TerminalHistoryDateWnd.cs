@@ -53,7 +53,7 @@ namespace AceSoft.RetailPlus.Client.UI
         }
         public bool WithTF { get; set; }
         public Data.TerminalDetails TerminalDetails { get; set; }
-
+        public Keys keyCommand { get; set; }
         public TerminalHistoryDateWnd()
         {
             //
@@ -350,7 +350,7 @@ namespace AceSoft.RetailPlus.Client.UI
             txtDateTo.Text = DateTime.Now.ToString("yyyy-MM-dd");
             if (!WithTF)
             {
-                txtDateFrom.Text = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                txtDateFrom.Text = DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd");
                 txtDateFrom.Enabled = false;
                 txtDateTo.Enabled = false;
             }
@@ -376,6 +376,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
 
             cboDate.SelectedIndex = 0;
+            keyCommand = Keys.Enter;
         }
         private void TerminalHistoryDateWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
@@ -391,6 +392,27 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 case Keys.Escape:
                     dialog = DialogResult.Cancel;
+                    this.Hide();
+                    break;
+
+                case Keys.F12:
+                    if (cboDate.SelectedText == "No valid date")
+                    {
+                        MessageBox.Show("Sorry, no record is found on your searched date.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                    try
+                    {
+                        mdtDateLastInitialized = Convert.ToDateTime(cboDate.SelectedValue.ToString());
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Sorry, the date you selected is not a valid date." +
+                            "Please check the date you select.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    dialog = System.Windows.Forms.DialogResult.OK;
+                    keyCommand = Keys.F12;
                     this.Hide();
                     break;
 
@@ -411,6 +433,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         return;
                     }
                     dialog = System.Windows.Forms.DialogResult.OK;
+                    keyCommand = Keys.Enter;
                     this.Hide();
                     break;
             }
@@ -474,6 +497,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     "Please check the date you select.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            keyCommand = Keys.Enter;
             dialog = System.Windows.Forms.DialogResult.OK;
             this.Hide();
         }

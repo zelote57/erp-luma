@@ -584,21 +584,22 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     Data.ContactDetails clsContactDetails = clsContact.DetailsByCreditCardNo(txtSearch.Text);
 
-                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 7) clsContactDetails = clsContact.DetailsByCreditCardNo("888880" + txtSearch.Text);
-                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 7) clsContactDetails = clsContact.DetailsByCreditCardNo("800000" + txtSearch.Text);
-                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.GroupCreditCard_Country_Code + BarcodeHelper.GroupCreditCard_ManufacturerCode + txtSearch.Text);
-                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.CustomerCode_Country_Code + BarcodeHelper.CustomerCode_ManufacturerCode + txtSearch.Text);
-                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.GroupCreditCard_Country_Code + BarcodeHelper.GroupCreditCard_ManufacturerCode_Manual + txtSearch.Text);
-                    if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.CreditCard_Country_Code + BarcodeHelper.CreditCard_ManufacturerCode + txtSearch.Text);
+                    //remove this coz it's slow
+                    //if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 7) clsContactDetails = clsContact.DetailsByCreditCardNo("888880" + txtSearch.Text);
+                    //if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 7) clsContactDetails = clsContact.DetailsByCreditCardNo("800000" + txtSearch.Text);
+                    //if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.GroupCreditCard_Country_Code + BarcodeHelper.GroupCreditCard_ManufacturerCode + txtSearch.Text);
+                    //if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.CustomerCode_Country_Code + BarcodeHelper.CustomerCode_ManufacturerCode + txtSearch.Text);
+                    //if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.GroupCreditCard_Country_Code + BarcodeHelper.GroupCreditCard_ManufacturerCode_Manual + txtSearch.Text);
+                    //if (clsContactDetails.ContactID == 0 && txtSearch.Text.Length == 9) clsContactDetails = clsContact.DetailsByCreditCardNo(BarcodeHelper.CreditCard_Country_Code + BarcodeHelper.CreditCard_ManufacturerCode + txtSearch.Text);
 
                     if (clsContactDetails.ContactID != 0)
                     {
                         searchkey = clsContactDetails.ContactCode;
 
                         if (mContactGroupCategory == ContactGroupCategory.AGENT)
-                            dt = clsContact.AgentsAsDataTable(searchkey, 100, "ContactName", SortOption.Ascending);
+                            dt = clsContact.AgentsAsDataTable(searchkey, 50, "ContactName", SortOption.Ascending);
                         else
-                            dt = clsContact.CustomersDataTable(searchkey, 100, HasCreditOnly, "ContactName", SortOption.Ascending);
+                            dt = clsContact.CustomersDataTable(searchkey, 50, HasCreditOnly, "ContactName", SortOption.Ascending);
                     }
                 }
 				clsContact.CommitAndDispose();

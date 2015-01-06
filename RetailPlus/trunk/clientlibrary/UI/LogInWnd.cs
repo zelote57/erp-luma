@@ -26,6 +26,7 @@ namespace AceSoft.RetailPlus.Client.UI
         private Button cmdEnter;
         
         private TextBox txtSelectedtextBox = new TextBox();
+        private bool shiftKeyPressed = false;
 
         #region Property Get/Set
 
@@ -201,6 +202,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtUserName.TabIndex = 0;
             this.txtUserName.TextChanged += new System.EventHandler(this.txtUserName_TextChanged);
             this.txtUserName.GotFocus += new System.EventHandler(this.txtUserName_GotFocus);
+            this.txtUserName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserName_KeyDown);
+            this.txtUserName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUserName_KeyPress);
             // 
             // imgIcon
             // 
@@ -400,24 +403,51 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtUserName.PasswordChar = 'l';
                 txtUserName.Font = new Font("Wingdings", 12, FontStyle.Bold);
 
-                if (txtUserName.Text.IndexOf("?") > -1)
-                {
-                    Int64 id = LoginUser();
-                    if (id != 0)
-                    {
-                        mintUserID = id;
-                        dialog = DialogResult.OK;
-                        this.Hide();
-                    }
-                }
+                //if (txtUserName.Text.IndexOf("?") > -1)
+                //{
+                //    Int64 id = LoginUser();
+                //    if (id != 0)
+                //    {
+                //        mintUserID = id;
+                //        dialog = DialogResult.OK;
+                //        this.Hide();
+                //    }
+                //}
             }
             else
             {
                 txtUserName.PasswordChar = '\0';
                 txtUserName.Font = new Font("Tahoma", 12, FontStyle.Bold);
             }
+            
         }
 
+        private void txtUserName_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            // Check for the flag being set in the KeyDown event.
+            if (e.KeyChar == (char)Keys.ShiftKey)
+            {
+                // Stop the character from being entered into the control since it is non-numerical.
+                e.Handled = true;
+                shiftKeyPressed = false;
+            }
+            else if (shiftKeyPressed) {
+                e.Handled = true;
+                shiftKeyPressed = false;
+            }
+        }
+
+        private void txtUserName_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            switch (e.KeyData)
+            {
+                case Keys.Shift:
+                case Keys.ShiftKey:
+                    shiftKeyPressed = true;
+                    break;
+            }
+
+        }
         #endregion
 
         #region private methods
@@ -472,13 +502,13 @@ namespace AceSoft.RetailPlus.Client.UI
                         case 0:
                             Methods.InsertAuditLog(TerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + TerminalDetails.TerminalNo + " @ Branch: " + TerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
                             iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty;
-                            MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
+                            MessageBox.Show("Sorry you are not allowed to access this transaction or you entered an Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
                             break;
 
                         default:
                             Methods.InsertAuditLog(TerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + TerminalDetails.TerminalNo + " @ Branch: " + TerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
                             iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty;
-                            MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
+                            MessageBox.Show("Sorry you are not allowed to access this transaction or you entered an Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
                             break;
                     }
                 }
@@ -489,7 +519,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     Methods.InsertAuditLog(TerminalDetails, txtUserName.Text, AccessTypes.LoginFE, "System login FAILED at terminal no. " + TerminalDetails.TerminalNo + " @ Branch: " + TerminalDetails.BranchDetails.BranchCode + " using username:" + txtUserName.Text);
                     iUID = 0; txtUserName.Text = string.Empty; txtPassword.Text = string.Empty; txtUserName.Focus();
-                    MessageBox.Show("Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
+                    MessageBox.Show("Sorry you are not allowed to access this transaction or you entered an Invalid user name and/or password.", "RetailPlus", MessageBoxButtons.OK);
                 }
             }
 
@@ -509,6 +539,10 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                 }
             }
+
+            txtUserName.PasswordChar = '\0';
+            txtUserName.Font = new Font("Tahoma", 12, FontStyle.Bold);
+
             return iUID;
         }
 

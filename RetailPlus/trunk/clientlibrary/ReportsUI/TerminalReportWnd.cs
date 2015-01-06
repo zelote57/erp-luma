@@ -471,13 +471,23 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("(-) Discount", ":", (mclsDetails.SubTotalDiscount + mclsDetails.ItemsDiscount).ToString("#,##0.#0"));
             dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
             dt.Rows.Add("Net Sales", ":", (mclsDetails.NetSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
-            
-            dt.Rows.Add("-", "-", "-");
-            dt.Rows.Add("OLD GRAND TOTAL", ":", (mclsDetails.OldGrandTotal).ToString("#,##0.#0"));
-            dt.Rows.Add("This Total Amount", ":", (mclsDetails.GrossSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
-            dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
-            dt.Rows.Add("NEW GRAND TOTAL", ":", (mclsDetails.OldGrandTotal + (mclsDetails.GrossSales * ((100 - mclsDetails.TrustFund) / 100))).ToString("#,##0.#0"));
 
+            if (mclsDetails.TrustFund > 0)
+            {
+                dt.Rows.Add("-", "-", "-");
+                dt.Rows.Add("OLD GRAND TOTAL", ":", (mclsDetails.OldGrandTotal).ToString("#,##0.#0"));
+                dt.Rows.Add("This Total Amount", ":", (mclsDetails.GrossSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
+                dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
+                dt.Rows.Add("NEW GRAND TOTAL", ":", (mclsDetails.NewGrandTotal).ToString("#,##0.#0"));
+            }
+            else 
+            {
+                dt.Rows.Add("-", "-", "-");
+                dt.Rows.Add("OLD GRAND TOTAL", ":", (mclsDetails.ActualOldGrandTotal).ToString("#,##0.#0"));
+                dt.Rows.Add("This Total Amount", ":", (mclsDetails.GrossSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
+                dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
+                dt.Rows.Add("NEW GRAND TOTAL", ":", (mclsDetails.ActualNewGrandTotal).ToString("#,##0.#0"));
+            }
             dt.Rows.Add("Taxables Breakdown", "", "");
             dt.Rows.Add("VAT Exempt", ":", (mclsDetails.VATExempt * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("VAT Zero Rated", ":", (mclsDetails.VATZeroRated * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));

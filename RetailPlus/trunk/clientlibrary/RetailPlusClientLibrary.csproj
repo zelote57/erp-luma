@@ -168,6 +168,15 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ChangeQtyAmtPrice\ChangeProductCodeWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Credits\CreditBillNoGuaWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Credits\CreditBillWGuaWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Credits\CreditPaymentsWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -382,6 +391,9 @@
     <Compile Include="UI\TransactionNoWnd.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\TransactionReturnItemSelectWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\WaiterSelectWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -431,6 +443,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ChangeQtyAmtPrice\ChangeProductCodeWnd.resx">
+      <DependentUpon>ChangeProductCodeWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Credits\CreditBillNoGuaWnd.resx">
+      <DependentUpon>CreditBillNoGuaWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Credits\CreditBillWGuaWnd.resx">
+      <DependentUpon>CreditBillWGuaWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Credits\CreditPaymentsWnd.resx">
       <DependentUpon>CreditPaymentsWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -632,6 +656,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TransactionNoWnd.resx">
       <DependentUpon>TransactionNoWnd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TransactionReturnItemSelectWnd.resx">
+      <DependentUpon>TransactionReturnItemSelectWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\WaiterSelectWnd.resx">

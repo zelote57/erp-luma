@@ -45,7 +45,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 catch { }
                 this.ControlBox = true;
                 this.Text  = Caption;
-                if ((NoValue - decimal.Round(NoValue)) > decimal.Parse("0.001"))
+                if ((decimal.Parse(NoValue.ToString().Substring(NoValue.ToString().IndexOf('.')))) > decimal.Parse("0.01"))
                     txtNo.Text = NoValue.ToString("#,##0.#0");
                 else
                     txtNo.Text = NoValue.ToString("#,##0");

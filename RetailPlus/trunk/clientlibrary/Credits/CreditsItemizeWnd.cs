@@ -291,12 +291,11 @@ namespace AceSoft.RetailPlus.Client.UI
             // 
             // lblBalanceName
             // 
-            this.lblBalanceName.AutoSize = true;
             this.lblBalanceName.BackColor = System.Drawing.Color.Transparent;
             this.lblBalanceName.Font = new System.Drawing.Font("Arial Narrow", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBalanceName.Location = new System.Drawing.Point(446, 475);
+            this.lblBalanceName.Location = new System.Drawing.Point(116, 475);
             this.lblBalanceName.Name = "lblBalanceName";
-            this.lblBalanceName.Size = new System.Drawing.Size(255, 29);
+            this.lblBalanceName.Size = new System.Drawing.Size(585, 29);
             this.lblBalanceName.TabIndex = 86;
             this.lblBalanceName.Text = "TOTAL CREDIT BALANCE";
             this.lblBalanceName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -372,21 +371,20 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblBalanceSelected.BackColor = System.Drawing.Color.Transparent;
             this.lblBalanceSelected.Font = new System.Drawing.Font("Arial Narrow", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBalanceSelected.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblBalanceSelected.Location = new System.Drawing.Point(700, 514);
+            this.lblBalanceSelected.Location = new System.Drawing.Point(707, 514);
             this.lblBalanceSelected.Name = "lblBalanceSelected";
-            this.lblBalanceSelected.Size = new System.Drawing.Size(318, 25);
+            this.lblBalanceSelected.Size = new System.Drawing.Size(311, 25);
             this.lblBalanceSelected.TabIndex = 90;
             this.lblBalanceSelected.Text = "0.00";
             this.lblBalanceSelected.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelAmountDue
             // 
-            this.labelAmountDue.AutoSize = true;
             this.labelAmountDue.BackColor = System.Drawing.Color.Transparent;
             this.labelAmountDue.Font = new System.Drawing.Font("Arial Narrow", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelAmountDue.Location = new System.Drawing.Point(557, 553);
+            this.labelAmountDue.Location = new System.Drawing.Point(116, 553);
             this.labelAmountDue.Name = "labelAmountDue";
-            this.labelAmountDue.Size = new System.Drawing.Size(144, 29);
+            this.labelAmountDue.Size = new System.Drawing.Size(585, 29);
             this.labelAmountDue.TabIndex = 91;
             this.labelAmountDue.Text = "AMOUNT DUE";
             this.labelAmountDue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -397,9 +395,9 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblAmountDue.BackColor = System.Drawing.Color.Transparent;
             this.lblAmountDue.Font = new System.Drawing.Font("Arial Narrow", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAmountDue.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblAmountDue.Location = new System.Drawing.Point(695, 555);
+            this.lblAmountDue.Location = new System.Drawing.Point(705, 555);
             this.lblAmountDue.Name = "lblAmountDue";
-            this.lblAmountDue.Size = new System.Drawing.Size(323, 25);
+            this.lblAmountDue.Size = new System.Drawing.Size(313, 25);
             this.lblAmountDue.TabIndex = 92;
             this.lblAmountDue.Text = "0.00";
             this.lblAmountDue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -547,7 +545,8 @@ namespace AceSoft.RetailPlus.Client.UI
 			LoadOptions();
 			LoadData();
 
-            if (!TerminalDetails.ShowCustomerSelection)
+            //if (!TerminalDetails.ShowCustomerSelection)
+            if (mclsSysConfigDetails.CreditPaymentType == CreditPaymentType.Houseware)
             {
                 // sort this so that the least amount will be on top
                 // for HP
@@ -557,15 +556,38 @@ namespace AceSoft.RetailPlus.Client.UI
                 dgvItems.Enabled = false;
 
                 Data.Billing clsBilling = new Data.Billing();
-                Data.BillingDetails clsBillingDetails = clsBilling.Details(mclsCustomerDetails.ContactID, false);
+                Data.BillingDetails clsBillingDetails = clsBilling.Details(mclsCustomerDetails.ContactID, mclsCustomerDetails.CreditDetails.LastBillingDate, false);
                 clsBilling.CommitAndDispose();
 
                 lblAmountDue.Visible = true;
                 labelAmountDue.Visible = true;
                 lblAmountDue.Text = "0.00";
-                if (mclsCustomerDetails.ContactID != clsBillingDetails.ContactID)
+                if (clsBillingDetails.ContactID !=0)
                 {
-                    lblAmountDue.Text = clsBillingDetails.CurrentDueAmount.ToString("#,##0.#0");
+                    if (mclsCustomerDetails.CreditDetails.CardTypeDetails.WithGuarantor)
+                    {
+                        labelAmountDue.Text = "Amount Due";
+
+                        if (decimal.Parse(lblBalance.Text) < clsBillingDetails.CurrentDueAmount)
+                        {
+                            lblAmountDue.Text = lblBalance.Text;
+                        }
+                        else
+                        {
+                            lblAmountDue.Text = clsBillingDetails.CurrentDueAmount.ToString("#,##0.#0");
+                        }
+                    }
+                    else {
+                        labelAmountDue.Text = "Minimum Amount Due";
+                        if (decimal.Parse(lblBalance.Text) < clsBillingDetails.MinimumAmountDue)
+                        {
+                            lblAmountDue.Text = lblBalance.Text;
+                        }
+                        else
+                        {
+                            lblAmountDue.Text = clsBillingDetails.MinimumAmountDue.ToString("#,##0.#0");
+                        }
+                    }
                 }
             }
 		}

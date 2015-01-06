@@ -60,7 +60,14 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label14;
         private Label label15;
         private Label label16;
+        private Label lblF8;
+        private Label lblF8Desc;
+        private Label lblF8Press;
 		private string mstCaption;
+        private Label lblF7;
+        private Label lblF7Desc;
+        private Label lblF7Press;
+        private bool mboCreditAmountDueAdjustment;
 
 		public DialogResult Result
 		{
@@ -89,6 +96,9 @@ namespace AceSoft.RetailPlus.Client.UI
         public Keys keyCommand { get; set; }
         public Data.TerminalDetails TerminalDetails { get; set; }
         public Data.SysConfigDetails SysConfigDetails { get; set; }
+
+        public Int64 CashierID { get; set; }
+        public string CashierName { get; set; }
 
 		#region Constructors And Desctructors
 		public CreditVerificationWnd()
@@ -143,9 +153,9 @@ namespace AceSoft.RetailPlus.Client.UI
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblHeader = new System.Windows.Forms.Label();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.grpContactDetails = new System.Windows.Forms.GroupBox();
@@ -186,6 +196,12 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.lblF8 = new System.Windows.Forms.Label();
+            this.lblF8Desc = new System.Windows.Forms.Label();
+            this.lblF8Press = new System.Windows.Forms.Label();
+            this.lblF7 = new System.Windows.Forms.Label();
+            this.lblF7Desc = new System.Windows.Forms.Label();
+            this.lblF7Press = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.grpContactDetails.SuspendLayout();
             this.grpPurchases.SuspendLayout();
@@ -221,8 +237,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpContactDetails.Controls.Add(this.txtMobileNo);
             this.grpContactDetails.Controls.Add(this.label8);
             this.grpContactDetails.Controls.Add(this.txtRemarks);
-            this.grpContactDetails.Controls.Add(this.txtCreditCardStatus);
-            this.grpContactDetails.Controls.Add(this.labelCreditStatus);
             this.grpContactDetails.Controls.Add(this.label3);
             this.grpContactDetails.Controls.Add(this.txtTelNo);
             this.grpContactDetails.Controls.Add(this.label1);
@@ -235,6 +249,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpContactDetails.Controls.Add(this.txtCreditLimit);
             this.grpContactDetails.Controls.Add(this.label4);
             this.grpContactDetails.Controls.Add(this.txtCredit);
+            this.grpContactDetails.Controls.Add(this.txtCreditCardStatus);
+            this.grpContactDetails.Controls.Add(this.labelCreditStatus);
             this.grpContactDetails.Controls.Add(this.txtGuarantor);
             this.grpContactDetails.Controls.Add(this.labelGuarantor);
             this.grpContactDetails.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -299,11 +315,11 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtCreditCardStatus.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtCreditCardStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCreditCardStatus.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCreditCardStatus.Location = new System.Drawing.Point(174, 133);
+            this.txtCreditCardStatus.Location = new System.Drawing.Point(731, 133);
             this.txtCreditCardStatus.MaxLength = 25;
             this.txtCreditCardStatus.Name = "txtCreditCardStatus";
             this.txtCreditCardStatus.ReadOnly = true;
-            this.txtCreditCardStatus.Size = new System.Drawing.Size(439, 30);
+            this.txtCreditCardStatus.Size = new System.Drawing.Size(269, 30);
             this.txtCreditCardStatus.TabIndex = 6;
             // 
             // labelCreditStatus
@@ -312,7 +328,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.labelCreditStatus.BackColor = System.Drawing.SystemColors.Window;
             this.labelCreditStatus.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCreditStatus.ForeColor = System.Drawing.Color.MediumBlue;
-            this.labelCreditStatus.Location = new System.Drawing.Point(71, 133);
+            this.labelCreditStatus.Location = new System.Drawing.Point(627, 143);
             this.labelCreditStatus.Name = "labelCreditStatus";
             this.labelCreditStatus.Size = new System.Drawing.Size(81, 13);
             this.labelCreditStatus.TabIndex = 10;
@@ -569,14 +585,14 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgvItems.CausesValidation = false;
             this.dgvItems.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvItems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.dgvItems.ColumnHeadersHeight = 24;
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvItems.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
@@ -584,19 +600,19 @@ namespace AceSoft.RetailPlus.Client.UI
             this.dgvItems.Location = new System.Drawing.Point(6, 20);
             this.dgvItems.Name = "dgvItems";
             this.dgvItems.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dgvItems.RowHeadersVisible = false;
             this.dgvItems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle12;
             this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvItems.Size = new System.Drawing.Size(996, 220);
             this.dgvItems.TabIndex = 10;
@@ -614,7 +630,6 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtScan.Text = "put the cursor here to scan credit card";
             this.txtScan.TextChanged += new System.EventHandler(this.txtScan_TextChanged);
             this.txtScan.GotFocus += new System.EventHandler(this.txtScan_GotFocus);
-            this.txtScan.LostFocus += new System.EventHandler(this.txtScan_LostFocus);
             // 
             // label2
             // 
@@ -726,12 +741,90 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label16.TabIndex = 105;
             this.label16.Text = " to select customer by name";
             // 
+            // lblF8
+            // 
+            this.lblF8.AutoSize = true;
+            this.lblF8.BackColor = System.Drawing.Color.Transparent;
+            this.lblF8.ForeColor = System.Drawing.Color.Red;
+            this.lblF8.Location = new System.Drawing.Point(611, 41);
+            this.lblF8.Name = "lblF8";
+            this.lblF8.Size = new System.Drawing.Size(27, 13);
+            this.lblF8.TabIndex = 109;
+            this.lblF8.Text = "[F8]";
+            this.lblF8.Visible = false;
+            // 
+            // lblF8Desc
+            // 
+            this.lblF8Desc.AutoSize = true;
+            this.lblF8Desc.BackColor = System.Drawing.Color.Transparent;
+            this.lblF8Desc.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblF8Desc.Location = new System.Drawing.Point(635, 41);
+            this.lblF8Desc.Name = "lblF8Desc";
+            this.lblF8Desc.Size = new System.Drawing.Size(121, 13);
+            this.lblF8Desc.TabIndex = 108;
+            this.lblF8Desc.Text = " to adjust current credit";
+            this.lblF8Desc.Visible = false;
+            // 
+            // lblF8Press
+            // 
+            this.lblF8Press.AutoSize = true;
+            this.lblF8Press.BackColor = System.Drawing.Color.Transparent;
+            this.lblF8Press.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblF8Press.Location = new System.Drawing.Point(580, 41);
+            this.lblF8Press.Name = "lblF8Press";
+            this.lblF8Press.Size = new System.Drawing.Size(33, 13);
+            this.lblF8Press.TabIndex = 107;
+            this.lblF8Press.Text = "Press";
+            this.lblF8Press.Visible = false;
+            // 
+            // lblF7
+            // 
+            this.lblF7.AutoSize = true;
+            this.lblF7.BackColor = System.Drawing.Color.Transparent;
+            this.lblF7.ForeColor = System.Drawing.Color.Red;
+            this.lblF7.Location = new System.Drawing.Point(611, 25);
+            this.lblF7.Name = "lblF7";
+            this.lblF7.Size = new System.Drawing.Size(27, 13);
+            this.lblF7.TabIndex = 112;
+            this.lblF7.Text = "[F7]";
+            this.lblF7.Visible = false;
+            // 
+            // lblF7Desc
+            // 
+            this.lblF7Desc.AutoSize = true;
+            this.lblF7Desc.BackColor = System.Drawing.Color.Transparent;
+            this.lblF7Desc.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblF7Desc.Location = new System.Drawing.Point(635, 25);
+            this.lblF7Desc.Name = "lblF7Desc";
+            this.lblF7Desc.Size = new System.Drawing.Size(106, 13);
+            this.lblF7Desc.TabIndex = 111;
+            this.lblF7Desc.Text = " to adjust current bill";
+            this.lblF7Desc.Visible = false;
+            // 
+            // lblF7Press
+            // 
+            this.lblF7Press.AutoSize = true;
+            this.lblF7Press.BackColor = System.Drawing.Color.Transparent;
+            this.lblF7Press.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblF7Press.Location = new System.Drawing.Point(580, 25);
+            this.lblF7Press.Name = "lblF7Press";
+            this.lblF7Press.Size = new System.Drawing.Size(33, 13);
+            this.lblF7Press.TabIndex = 110;
+            this.lblF7Press.Text = "Press";
+            this.lblF7Press.Visible = false;
+            // 
             // CreditVerificationWnd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 14);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1022, 766);
+            this.ClientSize = new System.Drawing.Size(1022, 764);
             this.ControlBox = false;
+            this.Controls.Add(this.lblF7);
+            this.Controls.Add(this.lblF8);
+            this.Controls.Add(this.lblF8Desc);
+            this.Controls.Add(this.lblF7Desc);
+            this.Controls.Add(this.lblF7Press);
+            this.Controls.Add(this.lblF8Press);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label14);
@@ -775,6 +868,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
 		private void CreditVerificationWnd_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
+            DialogResult result; 
             keyCommand = e.KeyData;
 			switch (e.KeyData)
 			{
@@ -805,13 +899,21 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsCreditPaymentsWnd.TerminalDetails = TerminalDetails;
                     clsCreditPaymentsWnd.SysConfigDetails = SysConfigDetails;
                     clsCreditPaymentsWnd.CustomerDetails = mContactDetails;
+                    clsCreditPaymentsWnd.CashierID = CashierID;
                     clsCreditPaymentsWnd.ShowDialog(this);
+                    result = clsCreditPaymentsWnd.Result;
                     clsCreditPaymentsWnd.Close();
                     clsCreditPaymentsWnd.Dispose();
+
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        LoadData();
+                        txtScan.Text = mContactDetails.CreditDetails.CreditCardNo;
+                    }
                     break;
 
                 case Keys.F6:
-                    DialogResult result; Data.ContactDetails details;
+                    Data.ContactDetails details;
 				    ContactSelectWnd clsContactWnd = new ContactSelectWnd();
                     clsContactWnd.EnableContactAddUpdate = true;
                     clsContactWnd.TerminalDetails = TerminalDetails;
@@ -823,18 +925,92 @@ namespace AceSoft.RetailPlus.Client.UI
 				    clsContactWnd.Dispose();
                     if (result == System.Windows.Forms.DialogResult.OK)
                     {
+                        LoadData();
                         txtScan.Text = details.CreditDetails.CreditCardNo;
-                        txtScan_TextChanged(null, null);
                     }
                     break;
 
+                case Keys.F7:
+                    if (mContactDetails.ContactID != 0 && mboCreditAmountDueAdjustment)
+                    {
+                        if (mContactDetails.CreditDetails.CardTypeDetails.WithGuarantor)
+                        {
+                            CreditBillWGuaWnd clsCreditBillWGuaWnd = new CreditBillWGuaWnd();
+                            clsCreditBillWGuaWnd.CreditorDetails = mContactDetails;
+                            clsCreditBillWGuaWnd.GuarantorDetails = mGuarantorDetails;
+                            clsCreditBillWGuaWnd.TerminalDetails = TerminalDetails;
+                            clsCreditBillWGuaWnd.ShowDialog(this);
+                            result = clsCreditBillWGuaWnd.Result;
+                            clsCreditBillWGuaWnd.Close();
+                            clsCreditBillWGuaWnd.Dispose();
+                        }
+                        else 
+                        {
+                            CreditBillNoGuaWnd clsCreditBillNoGuaWnd = new CreditBillNoGuaWnd();
+                            clsCreditBillNoGuaWnd.CreditorDetails = mContactDetails;
+                            clsCreditBillNoGuaWnd.GuarantorDetails = mGuarantorDetails;
+                            clsCreditBillNoGuaWnd.TerminalDetails = TerminalDetails;
+                            clsCreditBillNoGuaWnd.ShowDialog(this);
+                            result = clsCreditBillNoGuaWnd.Result;
+                            clsCreditBillNoGuaWnd.Close();
+                            clsCreditBillNoGuaWnd.Dispose();
+                        }
+                        if (result == System.Windows.Forms.DialogResult.OK)
+                        {
+                            Methods.InsertAuditLog(TerminalDetails, CashierName, AccessTypes.CreditAmountDueAdjustment, "Adjust the billing statement of " + mContactDetails.ContactName + ".");
+
+                            MessageBox.Show("Billing has been adjusted.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            LoadData();
+                            txtScan.Text = mContactDetails.CreditDetails.CreditCardNo;
+                        }
+                    }
+                    break;
+                case Keys.F8:
+                    if (mContactDetails.ContactID != 0 && mboCreditAmountDueAdjustment)
+                    {
+                        NoControl clsNoControl = new NoControl();
+                        clsNoControl.Caption = "Enter new current Credit amount.";
+                        clsNoControl.NoValue = mContactDetails.Credit;
+                        clsNoControl.ShowDialog(this);
+                        result = clsNoControl.Result;
+                        decimal decAmount = clsNoControl.NoValue;
+                        clsNoControl.Close();
+                        clsNoControl.Dispose();
+                        if (result == System.Windows.Forms.DialogResult.OK)
+                        {
+                            if (MessageBox.Show("Are you sure you want adjust the credit balance of " + mContactDetails.ContactName + " from: " + mContactDetails.Credit.ToString("#,##0.#0") + " to " + decAmount.ToString("#,##0.#0"), "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+                            {
+                                AceSoft.RetailPlus.Client.LocalDB clsLocalConnection = new AceSoft.RetailPlus.Client.LocalDB();
+                                clsLocalConnection.GetConnection();
+
+                                Data.Creditors clsCreditors = new Data.Creditors(clsLocalConnection.Connection, clsLocalConnection.Transaction);
+
+                                clsCreditors.AutoAdjustCredit(mContactDetails, decAmount);
+
+                                clsLocalConnection.CommitAndDispose();
+
+                                Methods.InsertAuditLog(TerminalDetails, CashierName, AccessTypes.CreditAmountDueAdjustment, "Adjust the credit balance of " + mContactDetails.ContactName + " from: " + mContactDetails.Credit.ToString("#,##0.#0") + " to " + decAmount.ToString("#,##0.#0"));
+
+                                MessageBox.Show("Current credit has been adjusted.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                LoadData();
+                                txtScan.Text = mContactDetails.CreditDetails.CreditCardNo;
+                            }
+                        }
+                    }
+                    break;
 				case Keys.F12:
                     if (mContactDetails.ContactID == 0)
                     {
                         MessageBox.Show("Please select a valid card to print the verification slip.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
-                    else if (!mContactDetails.CreditDetails.CreditActive)
+                    if (mContactDetails.CreditDetails.CardTypeDetails.WithGuarantor && !mGuarantorDetails.CreditDetails.CreditActive)
+                    {
+                        MessageBox.Show("Sorry printing verification slip is not allowed. Your GUARANTOR credit status InActive.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                    if (!mContactDetails.CreditDetails.CreditActive)
                     {
                         MessageBox.Show("Sorry printing verification slip is not allowed for InActive Credit Cards.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
@@ -851,6 +1027,23 @@ namespace AceSoft.RetailPlus.Client.UI
 		private void CreditVerificationWnd_Load(object sender, System.EventArgs e)
 		{
             this.lblHeader.Text = !string.IsNullOrEmpty(mstCaption) ? mstCaption : CompanyDetails.CompanyCode + " Credit Verification";
+
+            Security.AccessRights clsAccessRights = new Security.AccessRights();
+            Security.AccessRightsDetails clsDetails = new Security.AccessRightsDetails();
+
+            clsDetails = clsAccessRights.Details(CashierID, (Int16)AccessTypes.CreditAmountDueAdjustment);
+
+            lblF7Press.Visible = clsDetails.Write;
+            lblF7.Visible = clsDetails.Write;
+            lblF7Desc.Visible = clsDetails.Write;
+
+            lblF8Press.Visible = clsDetails.Write;
+            lblF8.Visible = clsDetails.Write;
+            lblF8Desc.Visible = clsDetails.Write;
+
+            mboCreditAmountDueAdjustment = clsDetails.Write;
+
+            clsAccessRights.CommitAndDispose();
 
             LoadOptions();
 		}
@@ -873,106 +1066,102 @@ namespace AceSoft.RetailPlus.Client.UI
             this.Hide();
         }
 
-        private void txtScan_LostFocus(object sender, System.EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtScan.Text))
-            {
-                txtScan.Text = "put the cursor here to scan credit card";
-            }
-            else if (txtScan.Text != "put the cursor here to scan credit card" && mContactDetails.ContactID == 0)
-            {
-                txtScan.Text = "put the cursor here to scan credit card";
-            }
-        }
-
         private void txtScan_TextChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtScan.Text))
+            if (!string.IsNullOrEmpty(txtScan.Text) && 
+                txtScan.Text != "put the cursor here to scan credit card" 
+                && txtScan.Text.Length >= 7
+                && txtScan.Text != mContactDetails.CreditDetails.CreditCardNo)
             {
-                mContactDetails = new Data.ContactDetails();
-                mGuarantorDetails = new Data.ContactDetails();
-
-                Data.Contacts clsContacts = new Data.Contacts();
-                mContactDetails = clsContacts.DetailsByCreditCardNo(txtScan.Text);
-
-                if (mContactDetails.ContactID == 0)
-                {
-                    mContactDetails = clsContacts.DetailsByCreditCardNo(txtScan.Text.Remove(txtScan.Text.Length - 1));
-
-                    if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 7) mContactDetails = clsContacts.DetailsByCreditCardNo("888880" + txtScan.Text);
-                    if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 7) mContactDetails = clsContacts.DetailsByCreditCardNo("800000" + txtScan.Text);
-                    if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 9) mContactDetails = clsContacts.DetailsByCreditCardNo("9802" + txtScan.Text);
-                    if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 9) mContactDetails = clsContacts.DetailsByCreditCardNo("9803" + txtScan.Text);
-                }
-                
-                //get the guarantor details if with details
-                if (mContactDetails.ContactID != 0 && mContactDetails.ContactID != mContactDetails.CreditDetails.GuarantorID)
-                    mGuarantorDetails = clsContacts.Details(mContactDetails.CreditDetails.GuarantorID);
-                
-                clsContacts.CommitAndDispose();
-
-
-                if (mContactDetails.ContactID == 0)
-                {
-                    grpContactDetails.Visible = false;
-                    grpPurchases.Visible = false;
-                    labelGuarantor.Visible = false;
-                    txtGuarantor.Visible = false;
-                }
-                else
-                {
-                    grpContactDetails.Visible = true;
-                    grpPurchases.Visible = true;
-
-                    txtScan.Text = mContactDetails.CreditDetails.CreditCardNo;
-                    txtCustomerName.Text = mContactDetails.ContactName;
-                    txtMobileNo.Text = mContactDetails.AdditionalDetails.MobileNo;
-                    txtTelNo.Text = mContactDetails.TelephoneNo;
-                    txtAddress.Text = mContactDetails.Address;
-                    txtRemarks.Text = mContactDetails.Remarks;
-                    
-                    txtCreditCardStatus.Text = mContactDetails.CreditDetails.CreditActive ? "Active" : "InActive";
-                    txtCreditCardStatus.Text += "(" + mContactDetails.CreditDetails.CreditCardStatus.ToString("G") + ")";
-                    txtCreditLimit.Text = mContactDetails.CreditLimit.ToString("#,##0.#0");
-                    txtCredit.Text = mContactDetails.Credit.ToString("#,##0.#0");
-                    txtAvailableCredit.Text = (mContactDetails.CreditLimit - mContactDetails.Credit).ToString("#,##0.#0");
-
-                    if (mContactDetails.ContactID == mContactDetails.CreditDetails.GuarantorID) //no guarantor
-                    {
-                        labelCreditStatus.Location = new Point(71, 133);
-                        txtCreditCardStatus.Location = new Point(174, 133);
-                        txtCreditCardStatus.Size = new Size(439, 30);
-                        labelGuarantor.Visible = false;
-                        txtGuarantor.Visible = false;
-                    }
-                    else if (mContactDetails.ContactID != mContactDetails.CreditDetails.GuarantorID) //with guarantor
-                    {
-                        labelCreditStatus.Location = new Point(627, 133);
-                        txtCreditCardStatus.Location = new Point(731, 133);
-                        txtCreditCardStatus.Size = new Size(169, 30);
-                        labelGuarantor.Visible = true;
-                        txtGuarantor.Visible = true;
-
-                        txtGuarantor.Text = "[" + (mGuarantorDetails.CreditDetails.CreditActive ? "Active" : "InActive") + "] " + mGuarantorDetails.ContactCode + ":" + mGuarantorDetails.ContactName;
-                    }
-
-                    LoadPurchases();
-                    lblBalance.Text = mContactDetails.Credit.ToString("#,##0.#0");
-                }
+                LoadData();
             }
         }
 
         private void txtScan_GotFocus(object sender, System.EventArgs e)
         {
-            if (txtScan.Text == "put the cursor here to scan credit card")
-                txtScan.Text = "";
-            else
-                txtScan.SelectAll();
+            txtScan.SelectAll();
         }
 
         #endregion
 
         #region Private Methods
+
+        private void LoadData()
+        {
+            mContactDetails = new Data.ContactDetails();
+            mGuarantorDetails = new Data.ContactDetails();
+
+            Data.Contacts clsContacts = new Data.Contacts();
+            mContactDetails = clsContacts.DetailsByCreditCardNo(txtScan.Text);
+
+            if (mContactDetails.ContactID == 0)
+            {
+                //mContactDetails = clsContacts.DetailsByCreditCardNo(txtScan.Text.Remove(txtScan.Text.Length - 1));
+
+                if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 7) mContactDetails = clsContacts.DetailsByCreditCardNo("888880" + txtScan.Text);
+                if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 7) mContactDetails = clsContacts.DetailsByCreditCardNo("800000" + txtScan.Text);
+                if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 9) mContactDetails = clsContacts.DetailsByCreditCardNo(BarcodeHelper.GroupCreditCard_Country_Code + BarcodeHelper.GroupCreditCard_ManufacturerCode + txtScan.Text);
+                if (mContactDetails.ContactID == 0 && txtScan.Text.Length == 9) mContactDetails = clsContacts.DetailsByCreditCardNo(BarcodeHelper.CreditCard_Country_Code + BarcodeHelper.CreditCard_ManufacturerCode + txtScan.Text);
+            }
+
+            //get the guarantor details if with details
+            if (mContactDetails.ContactID != 0)
+                if (mContactDetails.ContactID == mContactDetails.CreditDetails.GuarantorID)
+                    mGuarantorDetails = mContactDetails;
+                else if (mGuarantorDetails.ContactID != mContactDetails.CreditDetails.GuarantorID)
+                    mGuarantorDetails = clsContacts.Details(mContactDetails.CreditDetails.GuarantorID);
+
+            clsContacts.CommitAndDispose();
+
+
+            if (mContactDetails.ContactID == 0)
+            {
+                grpContactDetails.Visible = false;
+                grpPurchases.Visible = false;
+                labelGuarantor.Visible = false;
+                txtGuarantor.Visible = false;
+            }
+            else
+            {
+                grpContactDetails.Visible = true;
+                grpPurchases.Visible = true;
+
+                txtScan.Text = mContactDetails.CreditDetails.CreditCardNo;
+                txtCustomerName.Text = mContactDetails.ContactName;
+                txtMobileNo.Text = mContactDetails.AdditionalDetails.MobileNo;
+                txtTelNo.Text = mContactDetails.TelephoneNo;
+                txtAddress.Text = mContactDetails.Address;
+                txtRemarks.Text = mContactDetails.Remarks;
+
+                txtCreditCardStatus.Text = mContactDetails.CreditDetails.CreditActive ? "Active" : "InActive";
+                txtCreditCardStatus.Text += "(" + mContactDetails.CreditDetails.CreditCardStatus.ToString("G") + ")";
+                txtCreditLimit.Text = mContactDetails.CreditLimit.ToString("#,##0.#0");
+                txtCredit.Text = mContactDetails.Credit.ToString("#,##0.#0");
+                txtAvailableCredit.Text = (mContactDetails.CreditLimit - mContactDetails.Credit).ToString("#,##0.#0");
+
+                if (!mContactDetails.CreditDetails.CardTypeDetails.WithGuarantor) //no guarantor
+                {
+                    labelCreditStatus.Location = new Point(71, 133);
+                    txtCreditCardStatus.Location = new Point(174, 133);
+                    txtCreditCardStatus.Size = new Size(439, 30);
+                    labelGuarantor.Visible = false;
+                    txtGuarantor.Visible = false;
+                }
+                else if (mContactDetails.CreditDetails.CardTypeDetails.WithGuarantor) //with guarantor
+                {
+                    labelCreditStatus.Location = new Point(627, 133);
+                    txtCreditCardStatus.Location = new Point(731, 133);
+                    txtCreditCardStatus.Size = new Size(269, 30);
+                    labelGuarantor.Visible = true;
+                    txtGuarantor.Visible = true;
+
+                    txtGuarantor.Text = "[" + (mGuarantorDetails.CreditDetails.CreditActive ? "Active" : "InActive") + "] " + mGuarantorDetails.ContactCode + ":" + mGuarantorDetails.ContactName;
+                }
+
+                LoadPurchases();
+                lblBalance.Text = mContactDetails.Credit.ToString("#,##0.#0");
+            }
+        }
 
         private void LoadOptions()
         {

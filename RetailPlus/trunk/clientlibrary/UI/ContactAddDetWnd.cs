@@ -703,7 +703,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (mContactDetails.ContactID != 0)
             {
-                txtContactCode.Enabled = false;
+                //txtContactCode.Enabled = false;
                 txtContactCode.Text = mContactDetails.ContactCode;
                 txtContactName.Text = mContactDetails.ContactName;
                 txtAddress.Text = mContactDetails.Address;
@@ -756,72 +756,79 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private bool SaveRecord()
         {
-            Data.ContactDetails clsDetails = new Data.ContactDetails();
-            clsDetails = mContactDetails;
-
-            clsDetails.ContactCode = txtContactCode.Text;
-            clsDetails.ContactName = txtContactName.Text;
-            clsDetails.ContactGroupID = Convert.ToInt32(Constants.CONTACT_GROUP_CUSTOMER);
-            clsDetails.ModeOfTerms = ModeOfTerms.Days;
-            clsDetails.Terms = Convert.ToInt32("0");
-            clsDetails.Address = txtAddress.Text;
-            clsDetails.BusinessName = txtBusinessName.Text;
-            clsDetails.TelephoneNo = txtTelephoneNo.Text;
-            clsDetails.Remarks = txtRemarks.Text;
-            //clsDetails.Debit = Convert.ToDecimal("0");
-            //clsDetails.Credit = Convert.ToDecimal(txtCredit.Text);
-            //clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
-            //clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
-            //clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
-            //clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
-
-            Data.ContactAddOnDetails clsAddOnDetails = new Data.ContactAddOnDetails();
-            clsAddOnDetails.ContactID = clsDetails.ContactID;
-            clsAddOnDetails.Salutation = cboSalutation.SelectedValue.ToString();
-            clsAddOnDetails.FirstName = txtFirstName.Text;
-            clsAddOnDetails.MiddleName = txtMiddleName.Text;
-            clsAddOnDetails.LastName = txtLastName.Text;
-            clsAddOnDetails.SpouseName = "";
-            DateTime dteBirthDate = Constants.C_DATE_MIN_VALUE;
-            dteBirthDate = DateTime.TryParse(txtBirthDate.Text, out dteBirthDate) ? dteBirthDate : Constants.C_DATE_MIN_VALUE;
-            clsAddOnDetails.BirthDate = dteBirthDate;
-            clsAddOnDetails.SpouseBirthDate = Constants.C_DATE_MIN_VALUE;
-            clsAddOnDetails.AnniversaryDate = Constants.C_DATE_MIN_VALUE;
-            clsAddOnDetails.Address1 = txtAddress.Text;
-            clsAddOnDetails.Address2 = string.Empty;
-            clsAddOnDetails.City = string.Empty;
-            clsAddOnDetails.State = string.Empty;
-            clsAddOnDetails.ZipCode = string.Empty;
-            clsAddOnDetails.CountryID = Constants.C_DEF_COUNTRY_ID;
-            clsAddOnDetails.CountryCode = Constants.C_DEF_COUNTRY_CODE;
-            clsAddOnDetails.BusinessPhoneNo = txtTelephoneNo.Text;
-            clsAddOnDetails.HomePhoneNo = string.Empty;
-            clsAddOnDetails.MobileNo = txtMobileNo.Text;
-            clsAddOnDetails.FaxNo = string.Empty;
-            clsAddOnDetails.EmailAddress = string.Empty;
-
-            clsDetails.AdditionalDetails = clsAddOnDetails;
-
-            Data.Contacts clsContact = new Data.Contacts();
-            if (mContactDetails.ContactID == 0)
+            if (MessageBox.Show("Please validate the customer information details before proceeding. Are you sure you want to continue?", "RetailPlus ™", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)
             {
-                clsDetails.ContactGroupID = Constants.CONTACT_GROUP_CUSTOMER;
-                clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
-                clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
-                clsDetails.ContactID = clsContact.Insert(clsDetails);
+                return false;
             }
             else
             {
-                clsDetails.ContactCode = mContactDetails.ContactCode;
-                clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
-                clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
-                clsContact.Update(clsDetails);
+                Data.ContactDetails clsDetails = new Data.ContactDetails();
+                clsDetails = mContactDetails;
+
+                clsDetails.ContactCode = txtContactCode.Text;
+                clsDetails.ContactName = txtContactName.Text;
+                clsDetails.ContactGroupID = Convert.ToInt32(Constants.CONTACT_GROUP_CUSTOMER);
+                clsDetails.ModeOfTerms = ModeOfTerms.Days;
+                clsDetails.Terms = Convert.ToInt32("0");
+                clsDetails.Address = txtAddress.Text;
+                clsDetails.BusinessName = txtBusinessName.Text;
+                clsDetails.TelephoneNo = txtTelephoneNo.Text;
+                clsDetails.Remarks = txtRemarks.Text;
+                //clsDetails.Debit = Convert.ToDecimal("0");
+                //clsDetails.Credit = Convert.ToDecimal(txtCredit.Text);
+                //clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
+                //clsDetails.CreditLimit = Convert.ToDecimal(txtCreditLimit.Text);
+                //clsDetails.DepartmentID = Convert.ToInt16(cboDepartment.SelectedItem.Value);
+                //clsDetails.PositionID = Convert.ToInt16(cboPosition.SelectedItem.Value);
+
+                Data.ContactAddOnDetails clsAddOnDetails = new Data.ContactAddOnDetails();
+                clsAddOnDetails.ContactID = clsDetails.ContactID;
+                clsAddOnDetails.Salutation = cboSalutation.SelectedValue.ToString();
+                clsAddOnDetails.FirstName = txtFirstName.Text;
+                clsAddOnDetails.MiddleName = txtMiddleName.Text;
+                clsAddOnDetails.LastName = txtLastName.Text;
+                clsAddOnDetails.SpouseName = "";
+                DateTime dteBirthDate = Constants.C_DATE_MIN_VALUE;
+                dteBirthDate = DateTime.TryParse(txtBirthDate.Text, out dteBirthDate) ? dteBirthDate : Constants.C_DATE_MIN_VALUE;
+                clsAddOnDetails.BirthDate = dteBirthDate;
+                clsAddOnDetails.SpouseBirthDate = Constants.C_DATE_MIN_VALUE;
+                clsAddOnDetails.AnniversaryDate = Constants.C_DATE_MIN_VALUE;
+                clsAddOnDetails.Address1 = txtAddress.Text;
+                clsAddOnDetails.Address2 = string.Empty;
+                clsAddOnDetails.City = string.Empty;
+                clsAddOnDetails.State = string.Empty;
+                clsAddOnDetails.ZipCode = string.Empty;
+                clsAddOnDetails.CountryID = Constants.C_DEF_COUNTRY_ID;
+                clsAddOnDetails.CountryCode = Constants.C_DEF_COUNTRY_CODE;
+                clsAddOnDetails.BusinessPhoneNo = txtTelephoneNo.Text;
+                clsAddOnDetails.HomePhoneNo = string.Empty;
+                clsAddOnDetails.MobileNo = txtMobileNo.Text;
+                clsAddOnDetails.FaxNo = string.Empty;
+                clsAddOnDetails.EmailAddress = string.Empty;
+
+                clsDetails.AdditionalDetails = clsAddOnDetails;
+
+                Data.Contacts clsContact = new Data.Contacts();
+                if (mContactDetails.ContactID == 0)
+                {
+                    clsDetails.ContactGroupID = Constants.CONTACT_GROUP_CUSTOMER;
+                    clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
+                    clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
+                    clsDetails.ContactID = clsContact.Insert(clsDetails);
+                }
+                else
+                {
+                    //clsDetails.ContactCode = mContactDetails.ContactCode;
+                    clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
+                    clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
+                    clsContact.Update(clsDetails);
+                }
+                clsContact.CommitAndDispose();
+
+                mContactDetails = clsDetails;
+
+                return true;
             }
-            clsContact.CommitAndDispose();
-
-            mContactDetails = clsDetails;
-
-            return true;
         }
 
         #endregion

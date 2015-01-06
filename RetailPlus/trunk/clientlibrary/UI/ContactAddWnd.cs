@@ -732,56 +732,63 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private bool SaveRecord()
         {
-            Data.ContactDetails clsDetails = new Data.ContactDetails();
-            clsDetails = mContactDetails;
-
-            clsDetails.ContactCode = txtCustomerName.Text;
-            clsDetails.ContactName = txtCustomerName.Text;
-            clsDetails.Address = txtAddress.Text;
-            clsDetails.BusinessName = txtBusinessName.Text;
-            clsDetails.TelephoneNo = txtTelNo.Text;
-
-            // Jul 22, 2014
-            clsDetails.Debit = mContactDetails.Debit;
-            clsDetails.Credit = mContactDetails.Credit;
-            clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
-            clsDetails.CreditLimit = decimal.Parse(txtCreditLimit.Text);
-            clsDetails.Terms = int.Parse(txtTerms.Text);
-            clsDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), cboTerms.SelectedItem.ToString());
-
-            Data.Contacts clsContact = new Data.Contacts();
-            if (mContactDetails.ContactID == 0)
+            if (MessageBox.Show("Please validate the customer information details before proceeding. Are you sure you want to continue?", "RetailPlus ™", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)
             {
-                if (mstCaption == "Please enter customer name for deposit.")
-                { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
-                else if (mstCaption == "Quickly add new customer")
-                { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
-                else if (mContactDetails.ContactID == 0) // means not edit
-                { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
-
-                clsDetails.ContactGroupID = Constants.CONTACT_GROUP_CUSTOMER;
-                clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
-                clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
-
-                // overwrite the contactcode
-                Data.ERPConfig clsERPConfig = new Data.ERPConfig(clsContact.Connection, clsContact.Transaction);
-                BarcodeHelper ean13 = new BarcodeHelper(BarcodeHelper.CustomerCode_Country_Code, BarcodeHelper.CustomerCode_ManufacturerCode, clsERPConfig.get_LastCustomerCode());
-                clsDetails.ContactCode = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
-
-                clsDetails.ContactID = clsContact.Insert(clsDetails);
+                return false;
             }
             else
             {
-                clsDetails.ContactCode = mContactDetails.ContactCode;
-                clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
-                clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
-                clsContact.Update(clsDetails);
+                Data.ContactDetails clsDetails = new Data.ContactDetails();
+                clsDetails = mContactDetails;
+
+                clsDetails.ContactCode = txtCustomerName.Text;
+                clsDetails.ContactName = txtCustomerName.Text;
+                clsDetails.Address = txtAddress.Text;
+                clsDetails.BusinessName = txtBusinessName.Text;
+                clsDetails.TelephoneNo = txtTelNo.Text;
+
+                // Jul 22, 2014
+                clsDetails.Debit = mContactDetails.Debit;
+                clsDetails.Credit = mContactDetails.Credit;
+                clsDetails.IsCreditAllowed = chkIsCreditAllowed.Checked;
+                clsDetails.CreditLimit = decimal.Parse(txtCreditLimit.Text);
+                clsDetails.Terms = int.Parse(txtTerms.Text);
+                clsDetails.ModeOfTerms = (ModeOfTerms)Enum.Parse(typeof(ModeOfTerms), cboTerms.SelectedItem.ToString());
+
+                Data.Contacts clsContact = new Data.Contacts();
+                if (mContactDetails.ContactID == 0)
+                {
+                    if (mstCaption == "Please enter customer name for deposit.")
+                    { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_DEPOSIT; }
+                    else if (mstCaption == "Quickly add new customer")
+                    { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_QUICKLY_ADDED_FROM_FE; }
+                    else if (mContactDetails.ContactID == 0) // means not edit
+                    { clsDetails.Remarks = Data.Contacts.DEFAULT_REMARKS_FOR_ADDED_FROM_CLIENT; }
+
+                    clsDetails.ContactGroupID = Constants.CONTACT_GROUP_CUSTOMER;
+                    clsDetails.PositionID = Constants.C_RETAILPLUS_AGENT_POSITIONID;
+                    clsDetails.DepartmentID = Constants.C_RETAILPLUS_AGENT_DEPARTMENTID;
+
+                    // overwrite the contactcode
+                    Data.ERPConfig clsERPConfig = new Data.ERPConfig(clsContact.Connection, clsContact.Transaction);
+                    BarcodeHelper ean13 = new BarcodeHelper(BarcodeHelper.CustomerCode_Country_Code, BarcodeHelper.CustomerCode_ManufacturerCode, clsERPConfig.get_LastCustomerCode());
+                    clsDetails.ContactCode = ean13.CountryCode + ean13.ManufacturerCode + ean13.ProductCode + ean13.ChecksumDigit;
+
+                    clsDetails.ContactID = clsContact.Insert(clsDetails);
+                }
+                else
+                {
+                    clsDetails.ContactCode = mContactDetails.ContactCode;
+                    clsDetails.ContactGroupID = mContactDetails.ContactGroupID;
+                    clsDetails.ContactGroupName = mContactDetails.ContactGroupName;
+                    clsContact.Update(clsDetails);
+                }
+                clsContact.CommitAndDispose();
+
+                mContactDetails = clsDetails;
+
+                return true;
             }
-            clsContact.CommitAndDispose();
-
-            mContactDetails = clsDetails;
-
-            return true;
         }
 
         #endregion

@@ -435,6 +435,10 @@ namespace AceSoft.RetailPlus.Client.UI
                 System.Data.DataTable dt = clsContacts.CreditPurchasesAsDataTable(clsCreditPaymentDetails, "CP.CreditDate");
 				clsContacts.CommitAndDispose();
 
+                System.Data.DataView dv = dt.DefaultView;
+                dv.Sort = "TransactionDate";
+                dt = dv.ToTable();
+
                 dgvItems.MultiSelect = true;
                 dgvItems.AutoGenerateColumns = true;
                 dgvItems.AutoSize = false;

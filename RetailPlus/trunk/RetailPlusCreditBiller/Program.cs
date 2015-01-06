@@ -26,6 +26,22 @@ namespace AceSoft.RetailPlus.Monitor
 
             try
             {
+                WriteProcessToMonitor("Checking process start time...");
+                DateTime _CreditBillerProcessStartTime = DateTime.TryParse(DateTime.Now.ToString("yyyy-MM-dd") + " " + System.Configuration.ConfigurationManager.AppSettings["ProcessStartTime"].ToString(), out _CreditBillerProcessStartTime) ? _CreditBillerProcessStartTime : DateTime.MinValue;
+                if (DateTime.Now < _CreditBillerProcessStartTime)
+                {
+                    WriteProcessToMonitor("   cannot process will process next day-starttime:" + _CreditBillerProcessStartTime.ToString("hh:mm tt"));
+                    goto exit;
+                }
+
+                WriteProcessToMonitor("Checking process end time...");
+                DateTime _CreditBillerProcessEndTime = DateTime.TryParse(DateTime.Now.ToString("yyyy-MM-dd") + " " + System.Configuration.ConfigurationManager.AppSettings["ProcessEndTime"].ToString(), out _CreditBillerProcessEndTime) ? _CreditBillerProcessEndTime : DateTime.MinValue;
+                if (DateTime.Now > _CreditBillerProcessEndTime)
+                {
+                    WriteProcessToMonitor("   cannot process will process next day-endtime:" + _CreditBillerProcessEndTime.ToString("hh:mm tt"));
+                    goto exit;
+                }
+
                 WriteProcessToMonitor("Checking connections to server.");
                 if (IPAddress.IsOpen(AceSoft.RetailPlus.DBConnection.ServerIP(), DBConnection.DBPort()) == false)
                 {
@@ -63,6 +79,22 @@ namespace AceSoft.RetailPlus.Monitor
                     ProcessCreditBill(dr["CardTypeName"].ToString());
                 }
 
+                // redo this checking before processing creditbill with Guarantor
+                WriteProcessToMonitor("Checking process start time...");
+                if (DateTime.Now < _CreditBillerProcessStartTime)
+                {
+                    WriteProcessToMonitor("   cannot process will process next day-starttime:" + _CreditBillerProcessStartTime.ToString("hh:mm tt"));
+                    goto exit;
+                }
+
+                WriteProcessToMonitor("Checking process end time...");
+                if (DateTime.Now > _CreditBillerProcessEndTime)
+                {
+                    WriteProcessToMonitor("   cannot process will process next day-endtime:" + _CreditBillerProcessEndTime.ToString("hh:mm tt"));
+                    goto exit;
+                }
+                // end-redo this checking before processing creditbill with Guarantor
+                
                 WriteProcessToMonitor("Checking credit billings with guarantor to process...");
                 WriteProcessToMonitor("   done checking...");
 
@@ -131,6 +163,7 @@ namespace AceSoft.RetailPlus.Monitor
             Console.WriteLine(ConsoleMonitor() + "");
 
             LocalDB clsLocalDB = new LocalDB();
+            clsLocalDB.GetConnection(ConnectionTimeOut: 100000);
             mConnection = clsLocalDB.Connection; mTransaction = clsLocalDB.Transaction;
 
             Data.Billing clsBilling = new Data.Billing(mConnection, mTransaction);
@@ -291,7 +324,7 @@ namespace AceSoft.RetailPlus.Monitor
 
             paramField = rpt.DataDefinition.ParameterFields["CompanyName"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-            discreteParam.Value = CompanyDetails.CompanyName;
+            discreteParam.Value = CompanyDetails.CompanyNameNoG;
             currentValues = new CrystalDecisions.Shared.ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
@@ -486,7 +519,7 @@ namespace AceSoft.RetailPlus.Monitor
 
             paramField = rpt.DataDefinition.ParameterFields["CompanyName"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-            discreteParam.Value = CompanyDetails.CompanyName;
+            discreteParam.Value = CompanyDetails.CompanyNameNoG;
             currentValues = new CrystalDecisions.Shared.ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
@@ -685,7 +718,7 @@ namespace AceSoft.RetailPlus.Monitor
             Console.WriteLine(ConsoleMonitor() + "");
 
             LocalDB clsLocalDB = new LocalDB();
-            clsLocalDB.GetConnection(ConnectionTimeOut: 1800);
+            clsLocalDB.GetConnection(ConnectionTimeOut: 100000);
             mConnection = clsLocalDB.Connection; mTransaction = clsLocalDB.Transaction;
 
             Data.Billing clsBilling = new Data.Billing(mConnection, mTransaction);
@@ -860,7 +893,7 @@ namespace AceSoft.RetailPlus.Monitor
 
             paramField = rpt.DataDefinition.ParameterFields["CompanyName"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-            discreteParam.Value = CompanyDetails.CompanyName;
+            discreteParam.Value = CompanyDetails.CompanyNameWG;
             currentValues = new CrystalDecisions.Shared.ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);
@@ -1002,7 +1035,7 @@ namespace AceSoft.RetailPlus.Monitor
 
             paramField = rpt.DataDefinition.ParameterFields["CompanyName"];
             discreteParam = new CrystalDecisions.Shared.ParameterDiscreteValue();
-            discreteParam.Value = CompanyDetails.CompanyName;
+            discreteParam.Value = CompanyDetails.CompanyNameWG;
             currentValues = new CrystalDecisions.Shared.ParameterValues();
             currentValues.Add(discreteParam);
             paramField.ApplyCurrentValues(currentValues);

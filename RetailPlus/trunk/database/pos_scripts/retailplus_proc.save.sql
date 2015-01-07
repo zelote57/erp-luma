@@ -633,7 +633,7 @@ create procedure procSaveTerminal(
 	IN strTurretName varchar(20),
 	IN strCashDrawerName varchar(20),
 	IN strMachineSerialNo varchar(20),
-	IN strAccreditationNo varchar(20),
+	IN strAccreditationNo varchar(25),
 	IN boItemVoidConfirmation tinyint(1),
 	IN boEnableEVAT tinyint(1),
 	IN strFORM_Behavior varchar(20),
@@ -1106,6 +1106,7 @@ create procedure procSaveCardType(
 	IN decCreditMinimumPercentageDue15th DECIMAL(18,3),
 	IN intCreditCardType TINYINT(2),
 	IN intWithGuarantor TINYINT(1),
+	IN intExemptInTerminalCharge TINYINT(1),
 	IN dteBillingDate DATETIME,
 	IN dteCreatedOn DATETIME,
 	IN dteLastModified DATETIME
@@ -1131,6 +1132,7 @@ BEGIN
 			CreditMinimumAmountDue15th	= decCreditMinimumAmountDue15th,
 			CreditMinimumPercentageDue15th	= decCreditMinimumPercentageDue15th,
 			WithGuarantor			= intWithGuarantor,
+			ExemptInTerminalCharge	= intExemptInTerminalCharge,
 			BillingDate				= dteBillingDate,
 			LastModified			= dteLastModified
 		WHERE CardTypeID			= intCardTypeID;
@@ -1138,11 +1140,11 @@ BEGIN
 		INSERT INTO tblCardTypes(CardTypeID, CardTypeCode, CardTypeName, 
 								 CreditFinanceCharge, CreditLatePenaltyCharge, CreditMinimumAmountDue, CreditMinimumPercentageDue,
 								 CreditFinanceCharge15th, CreditLatePenaltyCharge15th, CreditMinimumAmountDue15th, CreditMinimumPercentageDue15th,
-								 CreditCardType, WithGuarantor, BillingDate, CreatedOn, LastModified)
+								 CreditCardType, WithGuarantor, ExemptInTerminalCharge, BillingDate, CreatedOn, LastModified)
 			VALUES(intCardTypeID, strCardTypeCode, strCardTypeName, 
 								 decCreditFinanceCharge, decCreditLatePenaltyCharge, decCreditMinimumAmountDue, decCreditMinimumPercentageDue,
 								 decCreditFinanceCharge15th, decCreditLatePenaltyCharge15th, decCreditMinimumAmountDue15th, decCreditMinimumPercentageDue15th,
-								 intCreditCardType, intWithGuarantor, dteBillingDate, dteCreatedOn, dteLastModified);
+								 intCreditCardType, intWithGuarantor, intExemptInTerminalCharge, dteBillingDate, dteCreatedOn, dteLastModified);
 	END IF;
 				
 END;
@@ -1388,7 +1390,6 @@ create procedure procSaveProductGroup(
 	IN decPrice decimal(18,2),
 	IN decPurchasePrice decimal(18,2),
 	IN boIncludeInSubtotalDiscount tinyint(1),
-	IN boIsCreditChargeExcluded tinyint(1),
 	IN decVAT decimal(18,2),
 	IN decEVAT decimal(18,2),
 	IN decLocalTax decimal(18,2),
@@ -1425,7 +1426,6 @@ BEGIN
 			Price					= decPrice,
 			PurchasePrice			= decPurchasePrice,
 			IncludeInSubtotalDiscount	= boIncludeInSubtotalDiscount,
-			IsCreditChargeExcluded	= boIsCreditChargeExcluded,
 			VAT						= decVAT,
 			EVAT					= decEVAT,
 			LocalTax				= decLocalTax,
@@ -1447,7 +1447,7 @@ BEGIN
 		WHERE ProductGroupID		= intProductGroupID;
 	ELSE
 		INSERT INTO tblProductGroup(ProductGroupID, ProductGroupCode, ProductGroupName, BaseUnitID,
-								Price, PurchasePrice, IncludeInSubtotalDiscount, IsCreditChargeExcluded, VAT, EVAT,
+								Price, PurchasePrice, IncludeInSubtotalDiscount, VAT, EVAT,
 								LocalTax, OrderSlipPrinter, ChartOfAccountIDPurchase, ChartOfAccountIDTaxPurchase,
 								ChartOfAccountIDSold, ChartOfAccountIDTaxSold, ChartOfAccountIDInventory,
 								SequenceNo, isLock, ChartOfAccountIDTransferIn, ChartOfAccountIDTaxTransferIn,
@@ -1455,7 +1455,7 @@ BEGIN
 								ChartOfAccountIDInvAdjustment, ChartOfAccountIDTaxInvAdjustment, 
 								CreatedOn, LastModified)
 			VALUES(intProductGroupID, strProductGroupCode, strProductGroupName, intBaseUnitID,
-								decPrice, decPurchasePrice, boIncludeInSubtotalDiscount, boIsCreditChargeExcluded, decVAT, decEVAT,
+								decPrice, decPurchasePrice, boIncludeInSubtotalDiscount, decVAT, decEVAT,
 								decLocalTax, intOrderSlipPrinter, intChartOfAccountIDPurchase, intChartOfAccountIDTaxPurchase,
 								intChartOfAccountIDSold, intChartOfAccountIDTaxSold, intChartOfAccountIDInventory,
 								intSequenceNo, boisLock, intChartOfAccountIDTransferIn, intChartOfAccountIDTaxTransferIn,
@@ -2788,6 +2788,7 @@ GO
 
 create procedure procSaveContact(	
 	IN intContactID bigint(20),
+	IN intSequenceNo int(20),
 	IN strContactCode varchar(25),
 	IN strContactName varchar(75),
 	IN intContactGroupID int(10),
@@ -2819,6 +2820,7 @@ BEGIN
 
 	IF EXISTS(SELECT ContactID FROM tblContacts WHERE ContactID = intContactID) THEN 
 		UPDATE tblContacts SET
+			SequenceNo				= intSequenceNo,
 			ContactCode				= strContactCode,
 			ContactName				= strContactName,
 			ContactGroupID			= intContactGroupID,
@@ -2840,11 +2842,11 @@ BEGIN
 			LastModified			= dteLastModified
 		WHERE ContactID				= intContactID;
 	ELSE
-		INSERT INTO tblContacts(ContactID, ContactCode, ContactName, ContactGroupID, ModeOfTerms,
+		INSERT INTO tblContacts(ContactID, SequenceNo, ContactCode, ContactName, ContactGroupID, ModeOfTerms,
 							Terms, Address, BusinessName, TelephoneNo, Remarks, Debit, Credit,
 							CreditLimit, IsCreditAllowed, DateCreated, Deleted, DepartmentID,
 							PositionID, isLock, CreatedOn, LastModified)
-			VALUES(intContactID, strContactCode, strContactName, intContactGroupID, intModeOfTerms,
+			VALUES(intContactID, intSequenceNo, strContactCode, strContactName, intContactGroupID, intModeOfTerms,
 							intTerms, strAddress, strBusinessName, strTelephoneNo, strRemarks, decDebit, decCredit,
 							decCreditLimit, boIsCreditAllowed, dteDateCreated, boDeleted, intDepartmentID,
 							intPositionID, boisLock, dteCreatedOn, dteLastModified);
@@ -4215,3 +4217,4 @@ BEGIN
 END;
 GO
 delimiter ;
+

@@ -236,6 +236,21 @@
     <NotInBuild Include="client_update_scripts\hw_plaza_main.sql">
       <SubType>NotInBuild</SubType>
     </NotInBuild>
+    <NotInBuild Include="client_update_scripts\hw_plaza_main.c.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="client_update_scripts\hw_plaza_main.icc.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="client_update_scripts\hw_plaza_main.adv.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="client_update_scripts\hw_plaza_main.CC.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="client_update_scripts\hw_plaza_main.clear.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
   </ItemGroup>
   <ItemGroup>
     <BuildContributorArgument Include="OutDir=$(OutDir)" />

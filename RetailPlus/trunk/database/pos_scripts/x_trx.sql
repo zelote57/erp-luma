@@ -124,6 +124,8 @@ UPDATE tblTerminalReport SET
 UPDATE tblCashierReport SET 
 			BeginningTransactionNo				=  '00000000000000', 
 			EndingTransactionNo					=  '00000000000001', 
+			BeginningORNo						=  '00000000000000', 
+			EndingORNo							=  '00000000000001',
 			NetSales							=  0, 
 			GrossSales							=  0, 
 			TotalDiscount						=  0,

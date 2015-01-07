@@ -201,6 +201,20 @@ UPDATE sysAccessTypes SET SequenceNo = 1, Category = '07: Backend - Credits' WHE
 TRUNCATE TABLE sysCreditConfig;
 INSERT INTO sysCreditConfig (ConfigName, ConfigValue, Remarks) VALUES ('IndividualCardTypeCode',	'HP CREDIT CARD',			'Individual Credit Card Name for HP');
 
+DELETE FROM sysAccessRights WHERE TranTypeID = 169; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 169;
+DELETE FROM sysAccessTypes WHERE TypeID = 169;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (169, 'Credit Payment Reversal', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 169, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 169, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 13, Category = '07: Backend - Credits' WHERE TypeID = 169;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 170; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 170;
+DELETE FROM sysAccessTypes WHERE TypeID = 170;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (170, 'Credit AmountDue Adjustment', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 170, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 170, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 14, Category = '07: Backend - Credits' WHERE TypeID = 170;
+
 -- disable all credits access
 -- UPDATE sysAccessTypes SET enabled = 1 WHERE Category = '07: Backend - Credits';
 

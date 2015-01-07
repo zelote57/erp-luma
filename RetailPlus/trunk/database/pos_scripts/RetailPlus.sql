@@ -29,6 +29,8 @@ DELETE FROM user WHERE user = '' OR user = null;
 UPDATE user SET password = OLD_PASSWORD('pospwd') WHERE user = 'POSUser';
 FLUSH PRIVILEGES;
 
+UPDATE user SET password = 'pospwd' WHERE user = 'root';
+
 USE pos;
 
 /*****************************
@@ -36,11 +38,11 @@ USE pos;
 *****************************/
 DROP TABLE IF EXISTS tblCountry;
 CREATE TABLE tblCountry (
-`CountryID` TINYINT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-`CountryName` VARCHAR(120) NOT NULL,
-PRIMARY KEY (CountryID),
-INDEX `IX_tblCountry`(`CountryID`, `CountryName`),
-UNIQUE `PK_tblCountry`(`CountryName`)
+	`CountryID` TINYINT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`CountryName` VARCHAR(120) NOT NULL,
+	PRIMARY KEY (CountryID),
+	INDEX `IX_tblCountry`(`CountryID`, `CountryName`),
+	UNIQUE `PK_tblCountry`(`CountryName`)
 );
 
 /*****************************
@@ -8054,8 +8056,8 @@ ALTER TABLE tblTerminalReportHistory ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAU
 /**************GENERATE DISCOUNT**************/
 -- break the TotalDiscount = ItemsDiscount + SNRDiscount (VATExempt * 0.20) + PWDDiscount + OtherDiscount
 /***
-UPDATE tblTerminalReport SET SNRDiscount = VATExempt * 0.20;
-UPDATE tblTerminalReportHistory SET SNRDiscount = VATExempt * 0.20;
+UPDATE tblTerminalReport SET SNRDiscount = VATExempt * 0.05;
+UPDATE tblTerminalReportHistory SET SNRDiscount = VATExempt * 0.05;
 
 UPDATE tblTerminalReport SET OtherDiscount = TotalDiscount - ItemsDiscount - SNRDiscount;
 UPDATE tblTerminalReportHistory SET OtherDiscount = TotalDiscount - ItemsDiscount - SNRDiscount;
@@ -8093,8 +8095,8 @@ ALTER TABLE tblCashierReportHistory ADD `NetSales` DECIMAL(18,3) NOT NULL DEFAUL
 UPDATE tblCashierReport SET VATableAmount = VAT / 0.12;
 UPDATE tblCashierReportHistory SET VATableAmount = VAT / 0.12;
 
-UPDATE tblCashierReport SET SNRDiscount = VATExempt * 0.20;
-UPDATE tblCashierReportHistory SET SNRDiscount = VATExempt * 0.20;
+UPDATE tblCashierReport SET SNRDiscount = VATExempt * 0.05;
+UPDATE tblCashierReportHistory SET SNRDiscount = VATExempt * 0.05;
 
 UPDATE tblCashierReport SET OtherDiscount = TotalDiscount - ItemsDiscount - SNRDiscount;
 UPDATE tblCashierReportHistory SET OtherDiscount = TotalDiscount - ItemsDiscount - SNRDiscount;
@@ -8164,7 +8166,7 @@ WHERE tblTransactions.TransactionID = TrxItems.TransactionID;
 -- 0.20 Pharmaceuticals
 
 UPDATE tblTransactions SET 
-	VATExempt = CASE DiscountCode WHEN 'SNR' THEN Discount / 0.05 ELSE 0 END,
+	VATExempt = CASE DiscountCode WHEN 'SNR' THEN Discount / 0.20 ELSE 0 END,
 	SNRDiscount = CASE DiscountCode WHEN 'SNR' THEN Discount ELSE 0 END,
 	PWDDiscount = CASE DiscountCode WHEN 'PWD' THEN Discount ELSE 0 END,
 	OtherDiscount = CASE DiscountCode WHEN 'SNR' THEN 0 WHEN 'PWD' THEN 0 ELSE Discount END;
@@ -8306,7 +8308,7 @@ CREATE INDEX IX_tblTransactionItems_IXSync ON tblTransactionItems (SyncID);
 -- replacement of 3digits Company Code in BE
 -- this must be a 3 to 5digits Company Code
 DELETE FROM sysConfig WHERE ConfigName = 'BECompanyCode';
-INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('BECompanyCode',			'CompanyDetails',					'AMD');
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('BECompanyCode',			'CompanyDetails',					'ACE');
 
 -- remove the header's. use the credit card name as the header
 DELETE FROM tblReceipt WHERE Module = 'GroupCreditChargeHeader';
@@ -8385,7 +8387,7 @@ UPDATE sysAccessTypes SET SequenceNo = 10, Category = '08: Backend - Customer Re
 
 ALTER TABLE tblTerminal ADD `WillPrintVoidItem` TINYINT (1) NOT NULL DEFAULT 0;
 
-ALTER TABLE tblContactCreditCardInfo DROP `CreditBeginningBalance` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Beginning Balance for Creditors w/ Guarantor';
+ALTER TABLE tblContactCreditCardInfo ADD `CreditBeginningBalance` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Beginning Balance for Creditors w/ Guarantor';
 
 ALTER TABLE tblTerminal MODIFY `IncludeCreditChargeAgreement` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Print Guarantor''s copy of chargeslip';
 
@@ -8495,8 +8497,8 @@ UPDATE tblTransactionItems SET GrossSales = Price * Quantity;
 UPDATE tblTransactions,
 	(SELECT TransactionID,
 		SUM(CASE TransactionItemStatus
-				WHEN 3 THEN GrossSales	-- return
-				WHEN 4 THEN GrossSales	-- refund
+				WHEN 3 THEN -GrossSales	-- return
+				WHEN 4 THEN -GrossSales	-- refund
 				ELSE GrossSales
 			END) AS GrossSales
 	 FROM tblTransactionItems 
@@ -8540,17 +8542,171 @@ ALTER TABLE tblTransactions ADD PARTITION (
 			SUBPARTITION sNov2015,
 			SUBPARTITION sDec2015) ) ;
 
--- UPDATE tblTransactions SET 
---	 SNRItemsDiscount = CASE 
---						WHEN VATExempt <> 0 THEN VATExempt * 0.20
---						ELSE 0
---					   END
---	,PWDItemsDiscount = CASE 
---						WHEN VATExempt <> 0 THEN VATExempt * 0.20
---						ELSE 0
---					   END
---	,NetSales = SubTotal;
--- WHERE 
+/*********************************  v_4.0.1.2.sql END  *******************************************************/ 
+
+/*********************************  v_4.0.1.3.sql START  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.3';
+
+/*****************************
+**	tblMergeTable
+*****************************/
+DROP TABLE IF EXISTS tblMergeTable;
+CREATE TABLE tblMergeTable (
+	`MergeTableID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`MainTableCode` VARCHAR(25) NOT NULL,
+	`ChildTableCode` VARCHAR(25) NOT NULL,
+	PRIMARY KEY (MergeTableID),
+	INDEX `IX_tblMergeTable`(`MergeTableID`),
+	INDEX `IX1_tblMergeTable`(`MainTableCode`)
+);
+
+ALTER TABLE tblTerminal MODIFY AccreditationNo VARCHAR(25) NOT NULL COMMENT 'Current BIR Length = 23';
+
+ALTER TABLE tblCardTypes ADD `ExemptInTerminalCharge` TINYINT(1) NOT NULL DEFAULT 0;
+
+
+/*********************************  v_4.0.1.3.sql END  *******************************************************/ 
+
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.12';
+
+ALTER TABLE tblTransactions ADD RewardsCustomerID BIGINT(20) NOT NULL DEFAULT 0;
+ALTER TABLE tblTransactions ADD RewardsCustomerName VARCHAR(100) NOT NULL DEFAULT 0;
+
+UPDATE tblTransactions SET RewardsCustomerID = CustomerID, RewardsCustomerName=CustomerName  WHERE TransactionDate <= '2014-12-01 23:59';
+
+UPDATE tblTerminalReportHistory SET BeginningTransactionNo = '00000000000000', EndingTransactionNo = '00000000000000' 
+WHERE BeginningTransactionNo = '00000000000001' AND EndingTransactionNo = '00000000000001';
+
+UPDATE tblTerminalReportHistory SET BeginningTransactionNo = '00000000000000', EndingTransactionNo = '00000000000000' 
+WHERE BeginningTransactionNo = '00000000000000' AND EndingTransactionNo = '00000000000001';
+
+/*********************************  v_4.0.1.12.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.14';
+
+DROP TRIGGER IF EXISTS trgr_tblProductInventory_Update;
+DROP TRIGGER IF EXISTS trgr_tblProductInventory_Insert;
+DROP TRIGGER IF EXISTS trgr_tblContacts_Update;
+DROP TRIGGER IF EXISTS trgr_tblContacts_Insert;
+DROP TRIGGER IF EXISTS trgr_tblProducts_Update;
+
+DROP TRIGGER trgtblTransactionsCreatedOn;
+DROP TRIGGER trgtblTransactionItemsCreatedOn;
+
+ALTER TABLE tblTransactions MODIFY `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE tblTransactionItems MODIFY `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE tblTransactionItems ADD `RewardPoints` DECIMAL(18,3) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblProductPackage DROP INDEX `IX_tblProductPackage_Barcode`;
+ALTER TABLE tblProductPackage DROP INDEX `IX3_tblProductPackage`;
+
+CREATE INDEX IX_tblProductPackage_Barcode4 ON tblProductPackage (Barcode4);
+
+ALTER TABLE tblContactCreditCardInfo DROP INDEX `IX_tblContactCreditCardInfo`;
+ALTER TABLE tblContactCreditCardInfo DROP INDEX `IX_tblContactCreditCardInfo1`;
+ALTER TABLE tblContactCreditCardInfo DROP INDEX `IX_tblContactCreditCardInfo2`;
+
+CREATE INDEX IX4_tblTransactions ON tblTransactions (BranchID);
+
+ALTER TABLE tblProductInventory DROP INDEX `IX_tblProductInventory`;
+ALTER TABLE tblProductInventory DROP INDEX `IX_tblProductInventory_PID`;
+ALTER TABLE tblProductInventory DROP INDEX `IX_tblProductInventory_PBID`;
+
+ALTER TABLE tblContactRewards DROP INDEX `IX_tblContactRewards`;
+ALTER TABLE tblContactRewards DROP INDEX `IX_tblContactRewards1`;
+ALTER TABLE tblContactRewards DROP INDEX `IX_tblContactRewards2`;
+
+ALTER TABLE tblContacts DROP INDEX `IX_tblContacts`;
+CREATE INDEX IX_tblContacts ON tblContacts (Contactname);
+
+ALTER TABLE sysAccessUsers DROP INDEX `IX_sysAccessUser`;
+ALTER TABLE sysAccessUserDetails DROP INDEX `IX_sysAccessUserDetails`;
+CREATE INDEX IX_sysAccessUserDetails ON sysAccessUserDetails (Name);
+
+CREATE INDEX IX_tblTerminalReport_BeginningTransactionNo ON tblTerminalReport (BeginningTransactionNo);
+CREATE INDEX IX_tblTerminalReport_EndingTransactionNo ON tblTerminalReport (EndingTransactionNo);
+CREATE INDEX IX_tblTerminalReportHistory_BeginningTransactionNo ON tblTerminalReportHistory (BeginningTransactionNo);
+CREATE INDEX IX_tblTerminalReportHistory_EndingTransactionNo ON tblTerminalReportHistory (EndingTransactionNo);
+CREATE INDEX IX_tblCashierReport_BeginningTransactionNo ON tblCashierReport (BeginningTransactionNo);
+CREATE INDEX IX_tblCashierReport_EndingTransactionNo ON tblCashierReport (EndingTransactionNo);
+CREATE INDEX IX_tblCashierReportHistory_BeginningTransactionNo ON tblCashierReportHistory (BeginningTransactionNo);
+CREATE INDEX IX_tblCashierReportHistory_EndingTransactionNo ON tblCashierReportHistory (EndingTransactionNo);
+
+CREATE INDEX IX_tblTransactions_TerminalNo ON tblTransactions (TerminalNo);
+
+/*********************************  v_4.0.1.14.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.21';
+
+DROP TRIGGER IF EXISTS trgtblCreditPaymentCashCreatedOn;
+ALTER TABLE tblCreditPaymentCash MODIFY `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+DROP TRIGGER trgtblCreditPaymentCreatedOn;
+ALTER TABLE tblCreditPayment MODIFY `LastModified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+-- put the AllowRewardPointsPayment to be use if reward points payment is allowed
+-- selection: true, false
+DELETE FROM sysConfig WHERE ConfigName = 'AllowDiscountGreaterThanAmount';
+INSERT INTO sysConfig (ConfigName, Category, ConfigValue) VALUES ('AllowDiscountGreaterThanAmount',	'FE', 'true');
+
+/*********************************  v_4.0.1.21.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.22';
+
+
+ALTER TABLE tblContactCreditCardInfo ADD Last2BillingDate DATE NOT NULL DEFAULT '1900-01-01';
+
+ALTER TABLE tblContacts ADD SequenceNo INT(10) NOT NULL DEFAULT 0;
+UPDATE tblContacts SET SequenceNo = ContactID;
+
+DELETE FROM sysAccessRights WHERE TranTypeID = 171; DELETE FROM sysAccessGroupRights WHERE TranTypeID = 171;
+DELETE FROM sysAccessTypes WHERE TypeID = 171;
+INSERT INTO sysAccessTypes (TypeID, TypeName, Enabled) VALUES (171, 'Change Order Type (DineIn/Take-Out/Delivery)', 1);
+INSERT INTO sysAccessGroupRights (GroupID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 171, 1, 1);
+INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite) VALUES (1, 171, 1, 1);
+UPDATE sysAccessTypes SET SequenceNo = 23, Category = '14: Frontend - Cashiering' WHERE TypeID = 171;
+
+/*********************************  v_4.0.1.22.sql END  *******************************************************/ 
+
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.23';
+
+
+ALTER TABLE tblTransactions ADD PARTITION (
+		PARTITION p2016 VALUES LESS THAN (2016) (
+			SUBPARTITION sJan2016,
+			SUBPARTITION sFeb2016,
+			SUBPARTITION sMar2016,
+			SUBPARTITION sApr2016,
+			SUBPARTITION sMay2016,
+			SUBPARTITION sJun2016,
+			SUBPARTITION sJul2016,
+			SUBPARTITION sAug2016,
+			SUBPARTITION sSep2016,
+			SUBPARTITION sOct2016,
+			SUBPARTITION sNov2016,
+			SUBPARTITION sDec2016) ) ;
+
+
+ALTER TABLE tblTransactions ADD PARTITION (
+		PARTITION p2017 VALUES LESS THAN (2017) (
+			SUBPARTITION sJan2017,
+			SUBPARTITION sFeb2017,
+			SUBPARTITION sMar2017,
+			SUBPARTITION sApr2017,
+			SUBPARTITION sMay2017,
+			SUBPARTITION sJun2017,
+			SUBPARTITION sJul2017,
+			SUBPARTITION sAug2017,
+			SUBPARTITION sSep2017,
+			SUBPARTITION sOct2017,
+			SUBPARTITION sNov2017,
+			SUBPARTITION sDec2017) ) ;
+
+ALTER TABLE tblTransactions ADD `isZerorated` TINYINT(1) NOT NULL DEFAULT 0;
 
 
 -- Notes: Please read
@@ -8571,3 +8727,4 @@ ALTER TABLE tblTransactions ADD PARTITION (
 -- FLUSH PRIVILEGES;
 
 -- add RetailPlusTagPricePrinter same as RetailPlusBarcodePrinter (TSCLIB)
+

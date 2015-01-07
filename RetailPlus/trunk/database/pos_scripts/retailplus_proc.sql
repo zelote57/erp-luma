@@ -1,7 +1,7 @@
 
 /********************************************
 	trgr_tblContacts_Insert
-********************************************/
+
 delimiter GO
 DROP TRIGGER IF EXISTS trgr_tblContacts_Insert
 GO
@@ -17,6 +17,12 @@ GO
 
 delimiter ;
 
+********************************************/
+
+delimiter GO
+DROP TRIGGER IF EXISTS trgr_tblContacts_Insert
+GO
+delimiter ;
 
 /********************************************
 	trgr_tblContacts_Update
@@ -38,7 +44,9 @@ GO
 delimiter ;
 
 
-
+/********************************************
+	procContactAuditInsert
+********************************************/
 delimiter GO
 DROP PROCEDURE IF EXISTS procContactAuditInsert
 GO
@@ -249,13 +257,13 @@ GO
 create procedure procCashierReportSyncTransactionSales(
 	IN intBranchID int(4), 
 	IN strTerminalNo varchar(10),
-	IN strBeginningTransactionNo varchar(30),
-	IN strEndingTransactionNo varchar(30)
+	IN dteActualZReadDate DATETIME,
+	IN dteNextZReadDate DATETIME
 )
 BEGIN
 	
-	UPDATE tblCashierReport, 
-		(
+	UPDATE tblCashierReport 
+	LEFT JOIN (
 			select BranchID, TerminalNo, CashierID,
 					SUM(CASE TransactionStatus 
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
@@ -386,59 +394,60 @@ BEGIN
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
-						AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i')
 			GROUP BY BranchID, TerminalNo, CashierID
-		) Trx
+		) Trx ON tblCashierReport.BranchID = Trx.BranchID AND tblCashierReport.TerminalNo = Trx.TerminalNo AND tblCashierReport.CashierID = Trx.CashierID
 	SET					
-						tblCashierReport.NetSales							=  Trx.NetSales, 
-						tblCashierReport.GrossSales							=  Trx.GrossSales, 
-						tblCashierReport.TotalDiscount						=  Trx.Discount + Trx.ItemsDiscount, 
-						tblCashierReport.SNRDiscount					  	=  Trx.SNRDiscount, 
-						tblCashierReport.PWDDiscount					  	=  Trx.PWDDiscount, 
-						tblCashierReport.OtherDiscount					  	=  Trx.OtherDiscount,
-						tblCashierReport.TotalCharge						=  Trx.TotalCharge, 
-						tblCashierReport.DailySales							=  Trx.DailySales, 
-						tblCashierReport.ItemSold							=  Trx.ItemSold, 
-						tblCashierReport.QuantitySold						=  Trx.QuantitySold, 
-						tblCashierReport.GroupSales							=  Trx.SubTotal, 
-						tblCashierReport.VATExempt   						=  Trx.VATExempt, 
-						tblCashierReport.NonVATableAmount					=  Trx.NonVATableAmount, 
-						tblCashierReport.VATableAmount						=  Trx.VATableAmount, 
-						tblCashierReport.VAT								=  Trx.VAT, 
-						tblCashierReport.EVATableAmount						=  Trx.EVATableAmount, 
-						tblCashierReport.NonEVATableAmount					=  Trx.NonEVATableAmount, 
-						tblCashierReport.EVAT								=  Trx.EVAT, 
-						tblCashierReport.LocalTax							=  Trx.LocalTax, 
-						tblCashierReport.CashSales							=  Trx.CashSales, 
-						tblCashierReport.ChequeSales						=  Trx.ChequeSales, 
-						tblCashierReport.CreditCardSales					=  Trx.CreditCardSales, 
-						tblCashierReport.CreditSales						=  Trx.CreditSales, 
-						tblCashierReport.DebitPayment						=  Trx.DebitPayment, 
-						tblCashierReport.RefundCash							=  Trx.RefundCashSales, 
-						tblCashierReport.RefundCheque						=  Trx.RefundChequeSales, 
-						tblCashierReport.RefundCreditCard					=  Trx.RefundCreditCardSales, 
-						tblCashierReport.RefundCredit						=  Trx.RefundCreditSales, 
-						tblCashierReport.RefundDebit						=  Trx.RefundDebitPayment, 
-						tblCashierReport.CreditPayment						=  Trx.CreditPayment, 
-						tblCashierReport.CreditPaymentCash					=  Trx.CreditPaymentCash, 
-						tblCashierReport.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
-						tblCashierReport.CreditPaymentCreditCard			=  Trx.CreditPaymentCreditCard, 
-						tblCashierReport.CreditPaymentDebit					=  Trx.CreditPaymentDebit, 
+						tblCashierReport.NetSales							=  IFNULL(Trx.NetSales,0), 
+						tblCashierReport.GrossSales							=  IFNULL(Trx.GrossSales,0), 
+						tblCashierReport.TotalDiscount						=  IFNULL(Trx.Discount,0) + IFNULL(Trx.ItemsDiscount,0), 
+						tblCashierReport.SNRDiscount					  	=  IFNULL(Trx.SNRDiscount,0), 
+						tblCashierReport.PWDDiscount					  	=  IFNULL(Trx.PWDDiscount,0), 
+						tblCashierReport.OtherDiscount					  	=  IFNULL(Trx.OtherDiscount,0),
+						tblCashierReport.TotalCharge						=  IFNULL(Trx.TotalCharge,0), 
+						tblCashierReport.DailySales							=  IFNULL(Trx.DailySales,0), 
+						tblCashierReport.ItemSold							=  IFNULL(Trx.ItemSold,0), 
+						tblCashierReport.QuantitySold						=  IFNULL(Trx.QuantitySold,0), 
+						tblCashierReport.GroupSales							=  IFNULL(Trx.SubTotal,0), 
+						tblCashierReport.VATExempt   						=  IFNULL(Trx.VATExempt,0), 
+						tblCashierReport.NonVATableAmount					=  IFNULL(Trx.NonVATableAmount,0), 
+						tblCashierReport.VATableAmount						=  IFNULL(Trx.VATableAmount,0), 
+						tblCashierReport.VAT								=  IFNULL(Trx.VAT,0), 
+						tblCashierReport.EVATableAmount						=  IFNULL(Trx.EVATableAmount,0), 
+						tblCashierReport.NonEVATableAmount					=  IFNULL(Trx.NonEVATableAmount,0), 
+						tblCashierReport.EVAT								=  IFNULL(Trx.EVAT,0), 
+						tblCashierReport.LocalTax							=  IFNULL(Trx.LocalTax,0), 
+						tblCashierReport.CashSales							=  IFNULL(Trx.CashSales,0), 
+						tblCashierReport.ChequeSales						=  IFNULL(Trx.ChequeSales,0), 
+						tblCashierReport.CreditCardSales					=  IFNULL(Trx.CreditCardSales,0), 
+						tblCashierReport.CreditSales						=  IFNULL(Trx.CreditSales,0), 
+						tblCashierReport.DebitPayment						=  IFNULL(Trx.DebitPayment,0), 
+						tblCashierReport.RefundCash							=  IFNULL(Trx.RefundCashSales,0), 
+						tblCashierReport.RefundCheque						=  IFNULL(Trx.RefundChequeSales,0), 
+						tblCashierReport.RefundCreditCard					=  IFNULL(Trx.RefundCreditCardSales,0), 
+						tblCashierReport.RefundCredit						=  IFNULL(Trx.RefundCreditSales,0), 
+						tblCashierReport.RefundDebit						=  IFNULL(Trx.RefundDebitPayment,0), 
+						tblCashierReport.CreditPayment						=  IFNULL(Trx.CreditPayment,0), 
+						tblCashierReport.CreditPaymentCash					=  IFNULL(Trx.CreditPaymentCash,0), 
+						tblCashierReport.CreditPaymentCheque				=  IFNULL(Trx.CreditPaymentCheque,0), 
+						tblCashierReport.CreditPaymentCreditCard			=  IFNULL(Trx.CreditPaymentCreditCard,0), 
+						tblCashierReport.CreditPaymentDebit					=  IFNULL(Trx.CreditPaymentDebit,0), 
 					
-						tblCashierReport.RewardPointsPayment				=  Trx.RewardPointsPayment,
-						tblCashierReport.RewardConvertedPayment				=  Trx.RewardConvertedPayment,
-						tblCashierReport.CashInDrawer						=  Trx.CashSales - (-Trx.RefundCashSales) + Trx.CreditPaymentCash + tblCashierReport.BeginningBalance + tblCashierReport.TotalWithHold + tblCashierReport.TotalDeposit - tblCashierReport.TotalPaidOut - tblCashierReport.TotalDisburse, 
-						tblCashierReport.VoidSales							=  Trx.VoidSales, 
-						tblCashierReport.RefundSales						=  Trx.RefundSales, 
-						tblCashierReport.ItemsDiscount						=  Trx.ItemsDiscount, 
-						tblCashierReport.SNRItemsDiscount					=  Trx.SNRItemsDiscount, 
-						tblCashierReport.PWDItemsDiscount					=  Trx.PWDItemsDiscount, 
-						tblCashierReport.OtherItemsDiscount					=  Trx.OtherItemsDiscount, 
-						tblCashierReport.SubTotalDiscount					=  Trx.Discount,
+						tblCashierReport.RewardPointsPayment				=  IFNULL(Trx.RewardPointsPayment,0),
+						tblCashierReport.RewardConvertedPayment				=  IFNULL(Trx.RewardConvertedPayment,0),
+						tblCashierReport.CashInDrawer						=  IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + tblCashierReport.BeginningBalance + tblCashierReport.TotalWithHold + tblCashierReport.TotalDeposit - tblCashierReport.TotalPaidOut - tblCashierReport.TotalDisburse, 
+						tblCashierReport.VoidSales							=  IFNULL(Trx.VoidSales,0), 
+						tblCashierReport.RefundSales						=  IFNULL(Trx.RefundSales,0), 
+						tblCashierReport.ItemsDiscount						=  IFNULL(Trx.ItemsDiscount,0), 
+						tblCashierReport.SNRItemsDiscount					=  IFNULL(Trx.SNRItemsDiscount,0), 
+						tblCashierReport.PWDItemsDiscount					=  IFNULL(Trx.PWDItemsDiscount,0), 
+						tblCashierReport.OtherItemsDiscount					=  IFNULL(Trx.OtherItemsDiscount,0), 
+						tblCashierReport.SubTotalDiscount					=  IFNULL(Trx.Discount,0),
 						tblCashierReport.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
-	WHERE tblCashierReport.BranchID = Trx.BranchID AND tblCashierReport.TerminalNo = Trx.TerminalNo AND tblCashierReport.CashierID = Trx.CashierID
-		AND tblCashierReport.BranchID = intBranchID AND tblCashierReport.TerminalNo = strTerminalNo
-		AND tblCashierReport.BeginningTransactionNo = strBeginningTransactionNo;
+	WHERE tblCashierReport.BranchID = intBranchID AND tblCashierReport.TerminalNo = strTerminalNo
+		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
+		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i');
 	
 END;
 GO
@@ -459,24 +468,21 @@ create procedure procTerminalReportSyncTransactionSales(
 	IN strTerminalNo varchar(10)
 )
 BEGIN
-	DECLARE strBeginningTransactionNo, strEndingTransactionNo VARCHAR(30);
+	DECLARE dteActualZReadDate DATETIME DEFAULT NULL;
+	DECLARE dteNextZReadDate DATETIME DEFAULT NULL;
 	DECLARE boIsProcessed TINYINT(1) DEFAULT 0;
 	
 	SET boIsProcessed = (SELECT IsProcessed FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
 
 	IF (boIsProcessed = 0) THEN
 		
-		SET strBeginningTransactionNo = (SELECT BeginningTransactionNo FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
-		SET strEndingTransactionNo = (SELECT CASE 
-												WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
-												ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), '0') 
-											 END EndingTransactionNo  
-									  FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		SET dteActualZReadDate = (SELECT DateLastInitialized FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo);
+		SET dteNextZReadDate = NOW();
 
-		CALL procCashierReportSyncTransactionSales(intBranchID, strTerminalNo, strBeginningTransactionNo, strEndingTransactionNo);
+		CALL procCashierReportSyncTransactionSales(intBranchID, strTerminalNo, dteActualZReadDate, dteNextZReadDate);
 
-		UPDATE tblTerminalReport, 
-			(
+		UPDATE tblTerminalReport
+		LEFT JOIN (
 				select BranchID, TerminalNo, 
 						SUM(CASE TransactionStatus 
 								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
@@ -607,62 +613,62 @@ BEGIN
 				FROM  tblTransactions
 						WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 							AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
-							AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+							AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
+							AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i')
 				GROUP BY BranchID, TerminalNo
-			) Trx
+			) Trx ON tblTerminalReport.BranchID = Trx.BranchID AND tblTerminalReport.TerminalNo = Trx.TerminalNo
 		SET					
-							tblTerminalReport.ActualNewGrandTotal				=  tblTerminalReport.ActualOldGrandTotal + Trx.SubTotal,
-							tblTerminalReport.NewGrandTotal						=  tblTerminalReport.OldGrandTotal + Trx.SubTotal,
-							tblTerminalReport.NetSales							=  Trx.NetSales, 
-							tblTerminalReport.GrossSales						=  Trx.GrossSales,
-							tblTerminalReport.TotalDiscount						=  Trx.Discount + Trx.ItemsDiscount, 
-							tblTerminalReport.SNRDiscount					  	=  Trx.SNRDiscount, 
-							tblTerminalReport.PWDDiscount					  	=  Trx.PWDDiscount, 
-							tblTerminalReport.OtherDiscount					  	=  Trx.OtherDiscount,
-							tblTerminalReport.TotalCharge						=  Trx.TotalCharge, 
-							tblTerminalReport.DailySales						=  Trx.DailySales, 
-							tblTerminalReport.ItemSold							=  Trx.ItemSold, 
-							tblTerminalReport.QuantitySold						=  Trx.QuantitySold, 
-							tblTerminalReport.GroupSales						=  Trx.SubTotal, 
-							tblTerminalReport.VATExempt   						=  Trx.VATExempt, 
-							tblTerminalReport.NonVATableAmount					=  Trx.NonVATableAmount, 
-							tblTerminalReport.VATableAmount						=  Trx.VATableAmount, 
-							tblTerminalReport.VAT								=  Trx.VAT, 
-							tblTerminalReport.EVATableAmount					=  Trx.EVATableAmount, 
-							tblTerminalReport.NonEVATableAmount					=  Trx.NonEVATableAmount, 
-							tblTerminalReport.EVAT								=  Trx.EVAT, 
-							tblTerminalReport.LocalTax							=  Trx.LocalTax, 
-							tblTerminalReport.CashSales							=  Trx.CashSales, 
-							tblTerminalReport.ChequeSales						=  Trx.ChequeSales, 
-							tblTerminalReport.CreditCardSales					=  Trx.CreditCardSales, 
-							tblTerminalReport.CreditSales						=  Trx.CreditSales, 
-							tblTerminalReport.DebitPayment						=  Trx.DebitPayment,
-							tblTerminalReport.RefundCash						=  Trx.RefundCashSales, 
-							tblTerminalReport.RefundCheque						=  Trx.RefundChequeSales, 
-							tblTerminalReport.RefundCreditCard					=  Trx.RefundCreditCardSales, 
-							tblTerminalReport.RefundCredit						=  Trx.RefundCreditSales, 
-							tblTerminalReport.RefundDebit						=  Trx.RefundDebitPayment,
-							tblTerminalReport.CreditPayment						=  Trx.CreditPayment, 
-							tblTerminalReport.CreditPaymentCash					=  Trx.CreditPaymentCash, 
-							tblTerminalReport.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
-							tblTerminalReport.CreditPaymentCreditCard			=  Trx.CreditPaymentCreditCard, 
-							tblTerminalReport.CreditPaymentDebit				=  Trx.CreditPaymentDebit, 
+							tblTerminalReport.ActualNewGrandTotal				=  tblTerminalReport.ActualOldGrandTotal + IFNULL(Trx.GrossSales,0),
+							tblTerminalReport.NewGrandTotal						=  tblTerminalReport.OldGrandTotal + (IFNULL(Trx.GrossSales,0) * ((100-TrustFund)/100)),
+							tblTerminalReport.NetSales							=  IFNULL(Trx.NetSales,0), 
+							tblTerminalReport.GrossSales						=  IFNULL(Trx.GrossSales,0),
+							tblTerminalReport.TotalDiscount						=  IFNULL(Trx.Discount,0) + IFNULL(Trx.ItemsDiscount,0), 
+							tblTerminalReport.SNRDiscount					  	=  IFNULL(Trx.SNRDiscount,0), 
+							tblTerminalReport.PWDDiscount					  	=  IFNULL(Trx.PWDDiscount,0), 
+							tblTerminalReport.OtherDiscount					  	=  IFNULL(Trx.OtherDiscount,0),
+							tblTerminalReport.TotalCharge						=  IFNULL(Trx.TotalCharge,0), 
+							tblTerminalReport.DailySales						=  IFNULL(Trx.DailySales,0), 
+							tblTerminalReport.ItemSold							=  IFNULL(Trx.ItemSold,0), 
+							tblTerminalReport.QuantitySold						=  IFNULL(Trx.QuantitySold,0), 
+							tblTerminalReport.GroupSales						=  IFNULL(Trx.SubTotal,0), 
+							tblTerminalReport.VATExempt   						=  IFNULL(Trx.VATExempt,0), 
+							tblTerminalReport.NonVATableAmount					=  IFNULL(Trx.NonVATableAmount,0), 
+							tblTerminalReport.VATableAmount						=  IFNULL(Trx.VATableAmount,0), 
+							tblTerminalReport.VAT								=  IFNULL(Trx.VAT,0), 
+							tblTerminalReport.EVATableAmount					=  IFNULL(Trx.EVATableAmount,0), 
+							tblTerminalReport.NonEVATableAmount					=  IFNULL(Trx.NonEVATableAmount,0), 
+							tblTerminalReport.EVAT								=  IFNULL(Trx.EVAT,0), 
+							tblTerminalReport.LocalTax							=  IFNULL(Trx.LocalTax,0), 
+							tblTerminalReport.CashSales							=  IFNULL(Trx.CashSales,0), 
+							tblTerminalReport.ChequeSales						=  IFNULL(Trx.ChequeSales,0), 
+							tblTerminalReport.CreditCardSales					=  IFNULL(Trx.CreditCardSales,0), 
+							tblTerminalReport.CreditSales						=  IFNULL(Trx.CreditSales,0), 
+							tblTerminalReport.DebitPayment						=  IFNULL(Trx.DebitPayment,0),
+							tblTerminalReport.RefundCash						=  IFNULL(Trx.RefundCashSales,0), 
+							tblTerminalReport.RefundCheque						=  IFNULL(Trx.RefundChequeSales,0), 
+							tblTerminalReport.RefundCreditCard					=  IFNULL(Trx.RefundCreditCardSales,0), 
+							tblTerminalReport.RefundCredit						=  IFNULL(Trx.RefundCreditSales,0), 
+							tblTerminalReport.RefundDebit						=  IFNULL(Trx.RefundDebitPayment,0),
+							tblTerminalReport.CreditPayment						=  IFNULL(Trx.CreditPayment,0), 
+							tblTerminalReport.CreditPaymentCash					=  IFNULL(Trx.CreditPaymentCash,0), 
+							tblTerminalReport.CreditPaymentCheque				=  IFNULL(Trx.CreditPaymentCheque,0), 
+							tblTerminalReport.CreditPaymentCreditCard			=  IFNULL(Trx.CreditPaymentCreditCard,0), 
+							tblTerminalReport.CreditPaymentDebit				=  IFNULL(Trx.CreditPaymentDebit,0), 
 					
-							tblTerminalReport.RewardPointsPayment				=  Trx.RewardPointsPayment,
-							tblTerminalReport.RewardConvertedPayment			=  Trx.RewardConvertedPayment,
-							tblTerminalReport.CashInDrawer						=  Trx.CashSales - (-Trx.RefundCashSales) + Trx.CreditPaymentCash + tblTerminalReport.BeginningBalance + tblTerminalReport.TotalWithHold + tblTerminalReport.TotalDeposit - tblTerminalReport.TotalPaidOut - tblTerminalReport.TotalDisburse, 
-							tblTerminalReport.VoidSales							=  Trx.VoidSales, 
-							tblTerminalReport.RefundSales						=  Trx.RefundSales, 
-							tblTerminalReport.ItemsDiscount						=  Trx.ItemsDiscount, 
-							tblTerminalReport.SNRItemsDiscount					=  Trx.SNRItemsDiscount, 
-							tblTerminalReport.PWDItemsDiscount					=  Trx.PWDItemsDiscount, 
-							tblTerminalReport.OtherItemsDiscount				=  Trx.OtherItemsDiscount, 
-							tblTerminalReport.SubTotalDiscount					=  Trx.Discount,
+							tblTerminalReport.RewardPointsPayment				=  IFNULL(Trx.RewardPointsPayment,0),
+							tblTerminalReport.RewardConvertedPayment			=  IFNULL(Trx.RewardConvertedPayment,0),
+							tblTerminalReport.CashInDrawer						=  IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + tblTerminalReport.BeginningBalance + tblTerminalReport.TotalWithHold + tblTerminalReport.TotalDeposit - tblTerminalReport.TotalPaidOut - tblTerminalReport.TotalDisburse, 
+							tblTerminalReport.VoidSales							=  IFNULL(Trx.VoidSales,0), 
+							tblTerminalReport.RefundSales						=  IFNULL(Trx.RefundSales,0), 
+							tblTerminalReport.ItemsDiscount						=  IFNULL(Trx.ItemsDiscount,0), 
+							tblTerminalReport.SNRItemsDiscount					=  IFNULL(Trx.SNRItemsDiscount,0), 
+							tblTerminalReport.PWDItemsDiscount					=  IFNULL(Trx.PWDItemsDiscount,0), 
+							tblTerminalReport.OtherItemsDiscount				=  IFNULL(Trx.OtherItemsDiscount,0), 
+							tblTerminalReport.SubTotalDiscount					=  IFNULL(Trx.Discount,0),
 
 							tblTerminalReport.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
-		WHERE tblTerminalReport.BranchID = Trx.BranchID AND tblTerminalReport.TerminalNo = Trx.TerminalNo
-			AND tblTerminalReport.BranchID = intBranchID AND tblTerminalReport.TerminalNo = strTerminalNo
-			AND tblTerminalReport.BeginningTransactionNo = strBeginningTransactionNo;
+		WHERE tblTerminalReport.BranchID = intBranchID AND tblTerminalReport.TerminalNo = strTerminalNo
+			AND DATE_FORMAT(tblTerminalReport.DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i');
 
 		CALL procsysAuditInsert(NOW(), 'RetailPlus Admin', 'RESYNC TERMINAL REPORT', 'localhost', CONCAT('TR has been re-run @ BranchID:', intBranchID, ' TerminalNo:', strTerminalNo,'.'));
 
@@ -1409,6 +1415,32 @@ END;
 GO
 delimiter ;
 
+
+/*********************************
+	procTransactionRewardsContactUpdate
+	Lemuel E. Aceron
+	Dec 1, 2014
+*********************************/
+DROP PROCEDURE IF EXISTS procTransactionRewardsContactUpdate;
+delimiter GO
+
+create procedure procTransactionRewardsContactUpdate(
+		IN intBranchID int(10), 
+		IN strTerminalNo VARCHAR(5), 
+		IN intTransactionID bigint(20), 
+		IN intRewardsCustomerID BIGINT(20), 
+		IN strRewardsCustomerName VARCHAR(100))
+BEGIN
+	
+	UPDATE tblTransactions SET 
+		RewardsCustomerID = intRewardsCustomerID,
+		RewardsCustomerName = strRewardsCustomerName
+	WHERE BranchID=intBranchID AND TerminalNo=strTerminalNo AND TransactionID = intTransactionID;
+
+END;
+GO
+delimiter ;
+
 /*********************************
 	procTransactionContactUpdate
 	Lemuel E. Aceron
@@ -1841,7 +1873,7 @@ create procedure procTerminalUpdate(
 	IN strFORM_Behavior VARCHAR(20),
 	IN strMarqueeMessage VARCHAR(255),
 	IN strMachineSerialNo VARCHAR(20),
-	IN strAccreditationNo VARCHAR(20),
+	IN strAccreditationNo VARCHAR(25),
 	IN decVAT DECIMAL(18,3),
 	IN decEVAT DECIMAL(18,3),
 	IN decLocalTax DECIMAL(18,3),
@@ -1861,6 +1893,8 @@ create procedure procTerminalUpdate(
 	IN bolWithRestaurantFeatures TINYINT(1),
 	IN strSeniorCitizenDiscountCode varchar(5),
 	IN strPWDDiscountCode varchar(5),
+	IN intGroupChargeTypeID INT(10),
+	IN intPersonalChargeTypeID INT(10),
 	IN strDefaultTransactionChargeCode varchar(60),
 	IN strDineInChargeCode varchar(60),
 	IN strTakeOutChargeCode varchar(60),
@@ -1908,6 +1942,8 @@ BEGIN
 				WithRestaurantFeatures	= bolWithRestaurantFeatures,
 				SeniorCitizenDiscountCode = strSeniorCitizenDiscountCode,
 				PWDDiscountCode						= strPWDDiscountCode,
+				GroupChargeTypeID					= intGroupChargeTypeID,
+				PersonalChargeTypeID				= intPersonalChargeTypeID,
 				DefaultTransactionChargeCode		= strDefaultTransactionChargeCode,
 				DineInChargeCode					= strDineInChargeCode,
 				TakeOutChargeCode					= strTakeOutChargeCode,
@@ -5901,16 +5937,16 @@ BEGIN
 	IF ProductID <> 0 THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductID = ',ProductID,' ');
 	ELSEIF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') <> '' THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR prd.ProductCode LIKE ''%',BarCode,'%'') ');
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR prd.ProductCode LIKE ''%',ProductCode,'%'') ');
 	ELSEIF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') <> '' THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'') ');
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 = ''',BarCode,''') ');
 	ELSEIF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') = '' THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode LIKE ''%',ProductCode,'%'' ');
 	END IF;
@@ -6176,17 +6212,17 @@ BEGIN
 	SET ProductCode = REPLACE(ProductCode, '''', '''''');
 
 	IF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') <> '' THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'' ');
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 = ''',BarCode,''' ');
 		SET SQLWhere = CONCAT(SQLWhere, '  OR prd.ProductDesc LIKE ''%',ProductCode,'%'' ');
 		SET SQLWhere = CONCAT(SQLWhere, '  OR prd.ProductCode LIKE ''%',ProductCode,'%'') ');
 	ELSEIF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') <> '' THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'') ');
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 = ''',BarCode,''') ');
 	ELSEIF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') = '' THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode LIKE ''%',ProductCode,'%'' ');
 	END IF;
@@ -6401,7 +6437,7 @@ delimiter ;
 	
 	Desc: This will get the main product list
 
-	CALL procProductCodeSelect(0,'','',0,2,0,0,null,null);
+	CALL procProductCodeSelect(1,'4000003762208','',0,2,0,10,null,null);
 	
 **************************************************************/
 delimiter GO
@@ -6425,16 +6461,16 @@ BEGIN
 	SET ProductCode = REPLACE(ProductCode, '''', '''''');
 
 	IF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') <> '' THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR prd.ProductCode LIKE ''%',BarCode,'%'') ');
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR prd.ProductCode LIKE ''%',ProductCode,'%'') ');
 	ELSEIF IFNULL(ProductCode,'') = '' AND IFNULL(BarCode,'') <> '' THEN
-		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 LIKE ''%',BarCode,'%'' ');
-		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 LIKE ''%',BarCode,'%'') ');
+		SET SQLWhere = CONCAT(SQLWhere, 'AND (pkg.BarCode1 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode2 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode3 = ''',BarCode,''' ');
+		SET SQLWhere = CONCAT(SQLWhere, '  OR pkg.BarCode4 = ''',BarCode,''') ');
 	ELSEIF IFNULL(ProductCode,'') <> '' AND IFNULL(BarCode,'') = '' THEN
 		SET SQLWhere = CONCAT(SQLWhere, 'AND prd.ProductCode LIKE ''%',ProductCode,'%'' ');
 	END IF;
@@ -6452,7 +6488,7 @@ BEGIN
 							,prd.ProductCode
 							-- ,SUM(inv.Quantity) Quantity
 							-- ,SUM(inv.ActualQuantity) ActualQuantity
-						FROM (SELECT prd.*
+						FROM (SELECT prd.ProductID, prd.ProductCode
 								,pkg.MatrixID
 							  FROM tblProducts prd 
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
@@ -6464,14 +6500,14 @@ BEGIN
 	END IF;
 	SET @SQL = CONCAT(@SQL, '
 							  WHERE prd.deleted = 0 ',SQLWhere,' ',IF(lngLimit=0,'',CONCAT('LIMIT ',lngLimit,' ')),') prd
-						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
-						INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
-						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
-						INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
-						LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = prd.MatrixID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
+						-- INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubGroupID = prd.ProductSubGroupID
+						-- INNER JOIN tblProductGroup prdg ON prdg.ProductGroupID = prdsg.ProductGroupID
+						-- INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+						-- INNER JOIN tblContacts supp ON supp.ContactID = prd.SupplierID
+						-- LEFT OUTER JOIN tblProductInventory inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = prd.MatrixID ',IF(BranchID=0,'',Concat('AND inv.BranchID=',BranchID)),' ', IF(isQuantityGreaterThanZERO=0,'','AND inv.Quantity > 0 '),'
 						');
 
-	SET @SQL = CONCAT(@SQL, 'GROUP BY prd.ProductID, prd.ProductCode ');
+	-- SET @SQL = CONCAT(@SQL, 'GROUP BY prd.ProductID, prd.ProductCode ');
 
 	SET @SQL = CONCAT(@SQL, 'ORDER BY ',IF(IFNULL(SortField,'')='','prd.ProductCode',SortField),' ',IFNULL(SortOrder,'ASC'),' ');
 
@@ -6494,7 +6530,7 @@ delimiter ;
 	
 	Desc: This will get the main product list
 
-	CALL procProductMainDetails(1, 57, 168 '','', false);
+	CALL procProductMainDetails(1, 48, 0, '','', false);
 	
 **************************************************************/
 delimiter GO
@@ -7820,6 +7856,25 @@ GO
 delimiter ;
 
 
+/*********************************
+	procTransactionisZeroRatedUpdate
+	Lemuel E. Aceron
+	
+	[01/05/2015]  - create this procedure
+	
+*********************************/
+DROP PROCEDURE IF EXISTS procTransactionisZeroRatedUpdate;
+delimiter GO
+
+create procedure procTransactionisZeroRatedUpdate(IN intTransactionID bigint(20), IN intisZeroRated tinyint(1))
+BEGIN
+
+	UPDATE tblTransactions SET isZeroRated = intisZeroRated WHERE TransactionID = intTransactionID;
+	
+END;
+GO
+delimiter ;
+
 
 /********************************************
 	procProductAddReservedQuantity
@@ -7988,7 +8043,7 @@ create procedure procContactSelect(
 			IN SortOrder varchar(4))
 BEGIN
 	SET @SQL = CONCAT('	SELECT 
-							 cntct.ContactID
+							 cntct.ContactID ,cntct.SequenceNo
 							,cntct.ContactCode ,cntct.ContactName ,cntct.BusinessName
 							,grp.ContactGroupID ,grp.ContactGroupName
 							,ModeOfTerms ,cntct.Terms ,cntct.Address
@@ -8836,7 +8891,7 @@ delimiter ;
 	Jul 26, 2011 : Lemu
 	- create this procedure
 
-	CALL procTerminalReportHistorySelect(1, '', '1900-01-01', '1900-01-01', '1900-01-01', 0, 0, 1);
+	CALL procTerminalReportHistorySelect(1, '22', '2014-12-03', '2014-12-04', '2014-12-03', 0, 1, 0);
 	
 **************************************************************/
 delimiter GO
@@ -8859,18 +8914,29 @@ BEGIN
 		-- this is use for backend reporting only
 		SET @SQL := 'SELECT BranchID, TerminalNo,
 							CASE 
+								WHEN BeginningTransactionNo = 0 THEN LPAD(1, LENGTH(EndingTransactionNo), ''0'')
+								WHEN BeginningTransactionNo = 1 THEN LPAD(1, LENGTH(EndingTransactionNo), ''0'')
 								WHEN BeginningTransactionNo = EndingTransactionNo THEN LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'')
 								ELSE BeginningTransactionNo
 							END BeginningTransactionNo,
-							CASE 
-								WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
+							CASE
+								WHEN EndingTransactionNo = 0 THEN LPAD(1, LENGTH(BeginningTransactionNo), ''0'')
+								WHEN EndingTransactionNo = 1 THEN LPAD(1, LENGTH(BeginningTransactionNo), ''0'')
+								WHEN EndingTransactionNo = 0 THEN LPAD(1, LENGTH(BeginningTransactionNo), ''0'')
 								ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'') 
 							END EndingTransactionNo,
 							CASE 
+								WHEN BeginningORNo = 0 THEN LPAD(1, LENGTH(EndingORNo), ''0'')
+								WHEN BeginningORNo = 1 THEN LPAD(1, LENGTH(EndingORNo), ''0'')
 								WHEN BeginningORNo = EndingORNo THEN LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'')
 								ELSE BeginningORNo
 							END BeginningORNo,
-							LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'') EndingORNo,
+							CASE 
+								WHEN EndingORNo = 0 THEN LPAD(1, LENGTH(BeginningORNo), ''0'')
+								WHEN EndingORNo = 1 THEN LPAD(1, LENGTH(BeginningORNo), ''0'')
+								WHEN BeginningORNo = EndingORNo THEN LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'')
+								ELSE LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'') 
+							END EndingORNo,
 							CASE 
 								WHEN BeginningORNo = EndingORNo THEN 0
 								WHEN BeginningORNo = 0 THEN EndingORNo - 1 - BeginningORNo 
@@ -8890,8 +8956,10 @@ BEGIN
 							ItemSold, 
 							QuantitySold, 
 							GroupSales, 
-							ActualOldGrandTotal OldGrandTotal, 
-							ActualNewGrandTotal NewGrandTotal, 
+							ActualOldGrandTotal, 
+							ActualNewGrandTotal, 
+							OldGrandTotal, 
+							NewGrandTotal, 
 							VATExempt,
 							0 VATZeroRated, 
 							NonVATableAmount, 
@@ -8970,113 +9038,126 @@ BEGIN
 	ELSE
 		-- this is use for backend reporting only
 		SET @SQL := 'SELECT BranchID, TerminalNo, 
-						CASE 
-							WHEN BeginningTransactionNo = EndingTransactionNo THEN LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'')
-							ELSE BeginningTransactionNo
-						END BeginningTransactionNo,
-						CASE 
-							WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
-							ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'') 
-						END EndingTransactionNo,
-						CASE 
-							WHEN BeginningORNo = EndingORNo THEN LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'')
-							ELSE BeginningORNo
-						END BeginningORNo,
-						LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'') EndingORNo,
-						CASE 
-							WHEN BeginningORNo = EndingORNo THEN 0
-							WHEN BeginningORNo = 0 THEN EndingORNo - 1 - BeginningORNo 
-							ELSE EndingORNo - BeginningORNo 
-						END AS NoOfORNo,
-						ZReadCount, 
-						XReadCount, 
-						NetSales - (NetSales * TrustFund/100) NetSales, 
-						GrossSales - (GrossSales * TrustFund/100) GrossSales, 
-						TotalDiscount - (TotalDiscount * TrustFund/100) TotalDiscount, 
-						SNRDiscount - (SNRDiscount * TrustFund/100) SNRDiscount, 
-						PWDDiscount - (PWDDiscount * TrustFund/100) PWDDiscount, 
-						OtherDiscount - (OtherDiscount * TrustFund/100) OtherDiscount, 
-						TotalCharge - (TotalCharge * TrustFund/100) TotalCharge, 
-						TotalCharge - (TotalCharge * TrustFund/100) ServiceCharge, 
-						DailySales - (DailySales * TrustFund/100) DailySales, 
-						ItemSold, 
-						QuantitySold, 
-						GroupSales - (GroupSales * TrustFund/100) GroupSales, 
-						OldGrandTotal,
-						NewGrandTotal,
-						VATExempt - (VATExempt * TrustFund/100) VATExempt, 
-						0 VATZeroRated,
-						NonVATableAmount - (NonVATableAmount * TrustFund/100) NonVATableAmount, 
-						VATableAmount - (VATableAmount * TrustFund/100) VATableAmount, 
-						VAT - (VAT * TrustFund/100) VAT, 
-						EVATableAmount - (EVATableAmount * TrustFund/100) EVATableAmount, 
-						NonEVATableAmount - (NonEVATableAmount * TrustFund/100) NonEVATableAmount, 
-						EVAT - (EVAT * TrustFund/100) EVAT, 
-						LocalTax - (LocalTax * TrustFund/100) LocalTax, 
-						CashSales - (CashSales * TrustFund/100) CashSales, 
-						ChequeSales - (ChequeSales * TrustFund/100) ChequeSales, 
-						CreditCardSales - (CreditCardSales * TrustFund/100) CreditCardSales, 
-						CreditSales - (CreditSales * TrustFund/100) CreditSales, 
-						RefundCash - (RefundCash * TrustFund/100) RefundCash, 
-						RefundCheque - (RefundCheque * TrustFund/100) RefundCheque, 
-						RefundCreditCard - (RefundCreditCard * TrustFund/100) RefundCreditCard, 
-						RefundCredit - (RefundCredit * TrustFund/100) RefundCredit, 
-						RefundDebit - (RefundDebit * TrustFund/100) RefundDebit, 
-						CreditPayment - (CreditPayment * TrustFund/100) CreditPayment, 
-						CreditPaymentCash - (CreditPaymentCash * TrustFund/100) CreditPaymentCash, 
-						CreditPaymentCheque - (CreditPaymentCheque * TrustFund/100) CreditPaymentCheque, 
-						CreditPaymentCreditCard - (CreditPaymentCreditCard * TrustFund/100) CreditPaymentCreditCard, 
-						CreditPaymentDebit - (CreditPaymentDebit * TrustFund/100) CreditPaymentDebit, 
-						DebitPayment - (DebitPayment * TrustFund/100) DebitPayment, 
-						RewardPointsPayment - (RewardPointsPayment * TrustFund/100) RewardPointsPayment, 
-						RewardConvertedPayment - (RewardConvertedPayment * TrustFund/100) RewardConvertedPayment, 
-						CashInDrawer - (CashInDrawer * TrustFund/100) CashInDrawer, 
-						TotalDisburse - (TotalDisburse * TrustFund/100) TotalDisburse, 
-						CashDisburse - (CashDisburse * TrustFund/100) CashDisburse, 
-						ChequeDisburse - (ChequeDisburse * TrustFund/100) ChequeDisburse, 
-						CreditCardDisburse - (CreditCardDisburse * TrustFund/100) CreditCardDisburse, 
-						TotalWithhold - (TotalWithhold * TrustFund/100) TotalWithhold, 
-						CashWithhold - (CashWithhold * TrustFund/100) CashWithhold, 
-						ChequeWithhold - (ChequeWithhold * TrustFund/100) ChequeWithhold, 
-						CreditCardWithhold - (CreditCardWithhold * TrustFund/100) CreditCardWithhold, 
-						TotalPaidOut - (TotalPaidOut * TrustFund/100) TotalPaidOut, 
-						TotalDeposit - (Totaldeposit * TrustFund/100) Totaldeposit, 
-						CashDeposit - (CashDeposit * TrustFund/100) CashDeposit, 
-						ChequeDeposit - (ChequeDeposit * TrustFund/100) ChequeDeposit, 
-						CreditCardDeposit - (CreditCardDeposit * TrustFund/100) CreditCardDeposit, 
-						DebitDeposit - (DebitDeposit * TrustFund/100) DebitDeposit, 
-						BeginningBalance, 
-						VoidSales - (VoidSales * TrustFund/100) VoidSales, 
-						RefundSales - (RefundSales * TrustFund/100) RefundSales, 
-						SubTotalDiscount - (SubTotalDiscount * TrustFund/100) SubTotalDiscount, 
-						ItemsDiscount - (ItemsDiscount * TrustFund/100) ItemsDiscount, 
-						SNRItemsDiscount - (SNRItemsDiscount * TrustFund/100) SNRItemsDiscount, 
-						PWDItemsDiscount - (PWDItemsDiscount * TrustFund/100) PWDItemsDiscount, 
-						OtherItemsDiscount - (OtherItemsDiscount * TrustFund/100) OtherItemsDiscount, 
-						NoOfCashTransactions, 
-						NoOfChequeTransactions, 
-						NoOfCreditCardTransactions, 
-						NoOfCreditTransactions, 
-						NoOfCombinationPaymentTransactions, 
-						NoOfCreditPaymentTransactions, 
-						NoOfDebitPaymentTransactions, 
-						NoOfClosedTransactions, 
-						NoOfRefundTransactions, 
-						NoOfVoidTransactions, 
-						NoOfRewardPointsPayment, 
-						NoOfTotalTransactions, 
-						DateLastInitialized, 
-						DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE tblTerminal.BranchID = tblTerminalReportHistory.BranchID AND tblTerminal.TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), ''%Y-%m-%d'') AS DateLastInitializedToDisplay, 
-						TrustFund, 
-						NoOfDiscountedTransactions, 
-						NegativeAdjustments - (NegativeAdjustments * TrustFund/100) NegativeAdjustments, 
-						NoOfNegativeAdjustmentTransactions, 
-						PromotionalItems - (PromotionalItems * TrustFund/100) PromotionalItems, 
-						CreditSalesTax - (CreditSalesTax * TrustFund/100) CreditSalesTax, 
-						BatchCounter, 
-						NoOfReprintedTransaction, 
-						TotalReprintedTransaction - (TotalReprintedTransaction * TrustFund/100) TotalReprintedTransaction, 
-						InitializedBy 
+							CASE 
+								WHEN BeginningTransactionNo = 0 THEN LPAD(1, LENGTH(EndingTransactionNo), ''0'')
+								WHEN BeginningTransactionNo = 1 THEN LPAD(1, LENGTH(EndingTransactionNo), ''0'')
+								WHEN BeginningTransactionNo = EndingTransactionNo THEN LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'')
+								ELSE BeginningTransactionNo
+							END BeginningTransactionNo,
+							CASE
+								WHEN EndingTransactionNo = 0 THEN LPAD(1, LENGTH(BeginningTransactionNo), ''0'')
+								WHEN EndingTransactionNo = 1 THEN LPAD(1, LENGTH(BeginningTransactionNo), ''0'')
+								WHEN EndingTransactionNo = 0 THEN LPAD(1, LENGTH(BeginningTransactionNo), ''0'')
+								ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), ''0'') 
+							END EndingTransactionNo,
+							CASE 
+								WHEN BeginningORNo = 0 THEN LPAD(1, LENGTH(EndingORNo), ''0'')
+								WHEN BeginningORNo = 1 THEN LPAD(1, LENGTH(EndingORNo), ''0'')
+								WHEN BeginningORNo = EndingORNo THEN LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'')
+								ELSE BeginningORNo
+							END BeginningORNo,
+							CASE 
+								WHEN EndingORNo = 0 THEN LPAD(1, LENGTH(BeginningORNo), ''0'')
+								WHEN EndingORNo = 1 THEN LPAD(1, LENGTH(BeginningORNo), ''0'')
+								WHEN BeginningORNo = EndingORNo THEN LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'')
+								ELSE LPAD(EndingORNo-1, LENGTH(BeginningORNo), ''0'') 
+							END EndingORNo,
+							CASE 
+								WHEN BeginningORNo = EndingORNo THEN 0
+								WHEN BeginningORNo = 0 THEN EndingORNo - 1 - BeginningORNo 
+								ELSE EndingORNo - BeginningORNo 
+							END AS NoOfORNo,
+							ZReadCount, 
+							XReadCount, 
+							NetSales - (NetSales * TrustFund/100) NetSales, 
+							GrossSales - (GrossSales * TrustFund/100) GrossSales, 
+							TotalDiscount - (TotalDiscount * TrustFund/100) TotalDiscount, 
+							SNRDiscount - (SNRDiscount * TrustFund/100) SNRDiscount, 
+							PWDDiscount - (PWDDiscount * TrustFund/100) PWDDiscount, 
+							OtherDiscount - (OtherDiscount * TrustFund/100) OtherDiscount, 
+							TotalCharge - (TotalCharge * TrustFund/100) TotalCharge, 
+							TotalCharge - (TotalCharge * TrustFund/100) ServiceCharge, 
+							DailySales - (DailySales * TrustFund/100) DailySales, 
+							ItemSold, 
+							QuantitySold, 
+							GroupSales - (GroupSales * TrustFund/100) GroupSales, 
+							OldGrandTotal,
+							NewGrandTotal,
+							ActualOldGrandTotal, 
+							ActualNewGrandTotal, 
+							VATExempt - (VATExempt * TrustFund/100) VATExempt, 
+							0 VATZeroRated,
+							NonVATableAmount - (NonVATableAmount * TrustFund/100) NonVATableAmount, 
+							VATableAmount - (VATableAmount * TrustFund/100) VATableAmount, 
+							VAT - (VAT * TrustFund/100) VAT, 
+							EVATableAmount - (EVATableAmount * TrustFund/100) EVATableAmount, 
+							NonEVATableAmount - (NonEVATableAmount * TrustFund/100) NonEVATableAmount, 
+							EVAT - (EVAT * TrustFund/100) EVAT, 
+							LocalTax - (LocalTax * TrustFund/100) LocalTax, 
+							CashSales - (CashSales * TrustFund/100) CashSales, 
+							ChequeSales - (ChequeSales * TrustFund/100) ChequeSales, 
+							CreditCardSales - (CreditCardSales * TrustFund/100) CreditCardSales, 
+							CreditSales - (CreditSales * TrustFund/100) CreditSales, 
+							RefundCash - (RefundCash * TrustFund/100) RefundCash, 
+							RefundCheque - (RefundCheque * TrustFund/100) RefundCheque, 
+							RefundCreditCard - (RefundCreditCard * TrustFund/100) RefundCreditCard, 
+							RefundCredit - (RefundCredit * TrustFund/100) RefundCredit, 
+							RefundDebit - (RefundDebit * TrustFund/100) RefundDebit, 
+							CreditPayment - (CreditPayment * TrustFund/100) CreditPayment, 
+							CreditPaymentCash - (CreditPaymentCash * TrustFund/100) CreditPaymentCash, 
+							CreditPaymentCheque - (CreditPaymentCheque * TrustFund/100) CreditPaymentCheque, 
+							CreditPaymentCreditCard - (CreditPaymentCreditCard * TrustFund/100) CreditPaymentCreditCard, 
+							CreditPaymentDebit - (CreditPaymentDebit * TrustFund/100) CreditPaymentDebit, 
+							DebitPayment - (DebitPayment * TrustFund/100) DebitPayment, 
+							RewardPointsPayment - (RewardPointsPayment * TrustFund/100) RewardPointsPayment, 
+							RewardConvertedPayment - (RewardConvertedPayment * TrustFund/100) RewardConvertedPayment, 
+							CashInDrawer - (CashInDrawer * TrustFund/100) CashInDrawer, 
+							TotalDisburse - (TotalDisburse * TrustFund/100) TotalDisburse, 
+							CashDisburse - (CashDisburse * TrustFund/100) CashDisburse, 
+							ChequeDisburse - (ChequeDisburse * TrustFund/100) ChequeDisburse, 
+							CreditCardDisburse - (CreditCardDisburse * TrustFund/100) CreditCardDisburse, 
+							TotalWithhold - (TotalWithhold * TrustFund/100) TotalWithhold, 
+							CashWithhold - (CashWithhold * TrustFund/100) CashWithhold, 
+							ChequeWithhold - (ChequeWithhold * TrustFund/100) ChequeWithhold, 
+							CreditCardWithhold - (CreditCardWithhold * TrustFund/100) CreditCardWithhold, 
+							TotalPaidOut - (TotalPaidOut * TrustFund/100) TotalPaidOut, 
+							TotalDeposit - (Totaldeposit * TrustFund/100) Totaldeposit, 
+							CashDeposit - (CashDeposit * TrustFund/100) CashDeposit, 
+							ChequeDeposit - (ChequeDeposit * TrustFund/100) ChequeDeposit, 
+							CreditCardDeposit - (CreditCardDeposit * TrustFund/100) CreditCardDeposit, 
+							DebitDeposit - (DebitDeposit * TrustFund/100) DebitDeposit, 
+							BeginningBalance, 
+							VoidSales - (VoidSales * TrustFund/100) VoidSales, 
+							RefundSales - (RefundSales * TrustFund/100) RefundSales, 
+							SubTotalDiscount - (SubTotalDiscount * TrustFund/100) SubTotalDiscount, 
+							ItemsDiscount - (ItemsDiscount * TrustFund/100) ItemsDiscount, 
+							SNRItemsDiscount - (SNRItemsDiscount * TrustFund/100) SNRItemsDiscount, 
+							PWDItemsDiscount - (PWDItemsDiscount * TrustFund/100) PWDItemsDiscount, 
+							OtherItemsDiscount - (OtherItemsDiscount * TrustFund/100) OtherItemsDiscount, 
+							NoOfCashTransactions, 
+							NoOfChequeTransactions, 
+							NoOfCreditCardTransactions, 
+							NoOfCreditTransactions, 
+							NoOfCombinationPaymentTransactions, 
+							NoOfCreditPaymentTransactions, 
+							NoOfDebitPaymentTransactions, 
+							NoOfClosedTransactions, 
+							NoOfRefundTransactions, 
+							NoOfVoidTransactions, 
+							NoOfRewardPointsPayment, 
+							NoOfTotalTransactions, 
+							DateLastInitialized, 
+							DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE tblTerminal.BranchID = tblTerminalReportHistory.BranchID AND tblTerminal.TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), ''%Y-%m-%d'') AS DateLastInitializedToDisplay, 
+							TrustFund, 
+							NoOfDiscountedTransactions, 
+							NegativeAdjustments - (NegativeAdjustments * TrustFund/100) NegativeAdjustments, 
+							NoOfNegativeAdjustmentTransactions, 
+							PromotionalItems - (PromotionalItems * TrustFund/100) PromotionalItems, 
+							CreditSalesTax - (CreditSalesTax * TrustFund/100) CreditSalesTax, 
+							BatchCounter, 
+							NoOfReprintedTransaction, 
+							TotalReprintedTransaction - (TotalReprintedTransaction * TrustFund/100) TotalReprintedTransaction, 
+							InitializedBy 
 					FROM tblTerminalReportHistory
 					WHERE 1 = 1 ';
 	END IF;
@@ -9176,6 +9257,8 @@ BEGIN
 		SET @SQL := 'SELECT trx.BranchID, trx.TerminalNo,
 							trx.TransactionID,
 							trx.TransactionNo,
+							trx.RewardsCustomerID,
+							trx.RewardsCustomerName,
 							trx.CustomerID,
 							trx.CustomerName,
 							trx.CashierID,
@@ -9250,6 +9333,7 @@ BEGIN
 							trx.BranchCode,
 							trx.TransactionType,
 							trx.isConsignment,
+							trx.isZeroRated,
 							trx.DataSource,
 							trx.CustomerGroupName,
 							trx.CreatedOn,
@@ -9277,6 +9361,8 @@ BEGIN
 		SET @SQL := 'SELECT trx.BranchID, trx.TerminalNo,
 							trx.TransactionID,
 							trx.TransactionNo,
+							trx.RewardsCustomerID,
+							trx.RewardsCustomerName,
 							trx.CustomerID,
 							trx.CustomerName,
 							trx.CashierID,
@@ -9351,6 +9437,7 @@ BEGIN
 							trx.BranchCode,
 							trx.TransactionType,
 							trx.isConsignment,
+							trx.isZeroRated,
 							trx.DataSource,
 							trx.CustomerGroupName,
 							trx.CreatedOn,
@@ -9475,13 +9562,13 @@ GO
 create procedure procCashierReportHistorySyncTransactionSales(
 	IN intBranchID int(4), 
 	IN strTerminalNo varchar(10),
-	IN strBeginningTransactionNo varchar(30),
-	IN strEndingTransactionNo varchar(30)
+	IN dteActualZReadDate DATETIME,
+	IN dteNextZReadDate DATETIME
 )
 BEGIN
 	
-	UPDATE tblCashierReportHistory, 
-		(
+	UPDATE tblCashierReportHistory 
+	LEFT JOIN (
 			select BranchID, TerminalNo, CashierID,
 					SUM(CASE TransactionStatus 
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
@@ -9612,59 +9699,60 @@ BEGIN
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
-						AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i')
 			GROUP BY BranchID, TerminalNo, CashierID
-		) Trx
+		) Trx ON tblCashierReportHistory.BranchID = Trx.BranchID AND tblCashierReportHistory.TerminalNo = Trx.BranchID AND tblCashierReportHistory.CashierID = Trx.CashierID
 	SET					
-						tblCashierReportHistory.NetSales						=  Trx.NetSales, 
-						tblCashierReportHistory.GrossSales						=  Trx.GrossSales, 
-						tblCashierReportHistory.TotalDiscount					=  Trx.Discount + Trx.ItemsDiscount, 
-						tblCashierReportHistory.SNRDiscount					  	=  Trx.SNRDiscount, 
-						tblCashierReportHistory.PWDDiscount					  	=  Trx.PWDDiscount, 
-						tblCashierReportHistory.OtherDiscount					=  Trx.OtherDiscount,
-						tblCashierReportHistory.TotalCharge						=  Trx.TotalCharge, 
-						tblCashierReportHistory.DailySales						=  Trx.DailySales, 
-						tblCashierReportHistory.ItemSold						=  Trx.ItemSold, 
-						tblCashierReportHistory.QuantitySold					=  Trx.QuantitySold, 
-						tblCashierReportHistory.GroupSales						=  Trx.SubTotal, 
-						tblCashierReportHistory.VATExempt   					=  Trx.VATExempt, 
-						tblCashierReportHistory.NonVATableAmount				=  Trx.NonVATableAmount, 
-						tblCashierReportHistory.VATableAmount					=  Trx.VATableAmount, 
-						tblCashierReportHistory.VAT								=  Trx.VAT, 
-						tblCashierReportHistory.EVATableAmount					=  Trx.EVATableAmount, 
-						tblCashierReportHistory.NonEVATableAmount				=  Trx.NonEVATableAmount, 
-						tblCashierReportHistory.EVAT							=  Trx.EVAT, 
-						tblCashierReportHistory.LocalTax						=  Trx.LocalTax, 
-						tblCashierReportHistory.CashSales						=  Trx.CashSales, 
-						tblCashierReportHistory.ChequeSales						=  Trx.ChequeSales, 
-						tblCashierReportHistory.CreditCardSales					=  Trx.CreditCardSales, 
-						tblCashierReportHistory.CreditSales						=  Trx.CreditSales, 
-						tblCashierReportHistory.DebitPayment					=  Trx.DebitPayment, 
-						tblCashierReportHistory.RefundCash						=  Trx.RefundCashSales, 
-						tblCashierReportHistory.RefundCheque					=  Trx.RefundChequeSales, 
-						tblCashierReportHistory.RefundCreditCard				=  Trx.RefundCreditCardSales, 
-						tblCashierReportHistory.RefundCredit					=  Trx.RefundCreditSales, 
-						tblCashierReportHistory.RefundDebit						=  Trx.RefundDebitPayment, 
-						tblCashierReportHistory.CreditPayment					=  Trx.CreditPayment, 
-						tblCashierReportHistory.CreditPaymentCash				=  Trx.CreditPaymentCash, 
-						tblCashierReportHistory.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
-						tblCashierReportHistory.CreditPaymentCreditCard			=  Trx.CreditPaymentCreditCard, 
-						tblCashierReportHistory.CreditPaymentDebit				=  Trx.CreditPaymentDebit, 
+						tblCashierReportHistory.NetSales						=  IFNULL(Trx.NetSales,0), 
+						tblCashierReportHistory.GrossSales						=  IFNULL(Trx.GrossSales,0), 
+						tblCashierReportHistory.TotalDiscount					=  IFNULL(Trx.Discount,0) + IFNULL(Trx.ItemsDiscount,0), 
+						tblCashierReportHistory.SNRDiscount					  	=  IFNULL(Trx.SNRDiscount,0), 
+						tblCashierReportHistory.PWDDiscount					  	=  IFNULL(Trx.PWDDiscount,0), 
+						tblCashierReportHistory.OtherDiscount					=  IFNULL(Trx.OtherDiscount,0),
+						tblCashierReportHistory.TotalCharge						=  IFNULL(Trx.TotalCharge,0), 
+						tblCashierReportHistory.DailySales						=  IFNULL(Trx.DailySales,0), 
+						tblCashierReportHistory.ItemSold						=  IFNULL(Trx.ItemSold,0), 
+						tblCashierReportHistory.QuantitySold					=  IFNULL(Trx.QuantitySold,0), 
+						tblCashierReportHistory.GroupSales						=  IFNULL(Trx.SubTotal,0), 
+						tblCashierReportHistory.VATExempt   					=  IFNULL(Trx.VATExempt,0), 
+						tblCashierReportHistory.NonVATableAmount				=  IFNULL(Trx.NonVATableAmount,0), 
+						tblCashierReportHistory.VATableAmount					=  IFNULL(Trx.VATableAmount,0), 
+						tblCashierReportHistory.VAT								=  IFNULL(Trx.VAT,0), 
+						tblCashierReportHistory.EVATableAmount					=  IFNULL(Trx.EVATableAmount,0), 
+						tblCashierReportHistory.NonEVATableAmount				=  IFNULL(Trx.NonEVATableAmount,0), 
+						tblCashierReportHistory.EVAT							=  IFNULL(Trx.EVAT,0), 
+						tblCashierReportHistory.LocalTax						=  IFNULL(Trx.LocalTax,0), 
+						tblCashierReportHistory.CashSales						=  IFNULL(Trx.CashSales,0), 
+						tblCashierReportHistory.ChequeSales						=  IFNULL(Trx.ChequeSales,0), 
+						tblCashierReportHistory.CreditCardSales					=  IFNULL(Trx.CreditCardSales,0), 
+						tblCashierReportHistory.CreditSales						=  IFNULL(Trx.CreditSales,0), 
+						tblCashierReportHistory.DebitPayment					=  IFNULL(Trx.DebitPayment,0), 
+						tblCashierReportHistory.RefundCash						=  IFNULL(Trx.RefundCashSales,0), 
+						tblCashierReportHistory.RefundCheque					=  IFNULL(Trx.RefundChequeSales,0), 
+						tblCashierReportHistory.RefundCreditCard				=  IFNULL(Trx.RefundCreditCardSales,0), 
+						tblCashierReportHistory.RefundCredit					=  IFNULL(Trx.RefundCreditSales,0), 
+						tblCashierReportHistory.RefundDebit						=  IFNULL(Trx.RefundDebitPayment,0), 
+						tblCashierReportHistory.CreditPayment					=  IFNULL(Trx.CreditPayment,0), 
+						tblCashierReportHistory.CreditPaymentCash				=  IFNULL(Trx.CreditPaymentCash,0), 
+						tblCashierReportHistory.CreditPaymentCheque				=  IFNULL(Trx.CreditPaymentCheque,0), 
+						tblCashierReportHistory.CreditPaymentCreditCard			=  IFNULL(Trx.CreditPaymentCreditCard,0), 
+						tblCashierReportHistory.CreditPaymentDebit				=  IFNULL(Trx.CreditPaymentDebit,0), 
 					
-						tblCashierReportHistory.RewardPointsPayment				=  Trx.RewardPointsPayment,
-						tblCashierReportHistory.RewardConvertedPayment			=  Trx.RewardConvertedPayment,
-						tblCashierReportHistory.CashInDrawer					=  Trx.CashSales - (-Trx.RefundCashSales) + Trx.CreditPaymentCash + tblCashierReportHistory.BeginningBalance + tblCashierReportHistory.TotalWithHold + tblCashierReportHistory.TotalDeposit - tblCashierReportHistory.TotalPaidOut - tblCashierReportHistory.TotalDisburse, 
-						tblCashierReportHistory.VoidSales						=  Trx.VoidSales, 
-						tblCashierReportHistory.RefundSales						=  Trx.RefundSales, 
-						tblCashierReportHistory.ItemsDiscount					=  Trx.ItemsDiscount, 
-						tblCashierReportHistory.SNRItemsDiscount				=  Trx.SNRItemsDiscount, 
-						tblCashierReportHistory.PWDItemsDiscount				=  Trx.PWDItemsDiscount, 
-						tblCashierReportHistory.OtherItemsDiscount				=  Trx.OtherItemsDiscount, 
-						tblCashierReportHistory.SubTotalDiscount				=  Trx.Discount,
+						tblCashierReportHistory.RewardPointsPayment				=  IFNULL(Trx.RewardPointsPayment,0),
+						tblCashierReportHistory.RewardConvertedPayment			=  IFNULL(Trx.RewardConvertedPayment,0),
+						tblCashierReportHistory.CashInDrawer					=  IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + tblCashierReportHistory.BeginningBalance + tblCashierReportHistory.TotalWithHold + tblCashierReportHistory.TotalDeposit - tblCashierReportHistory.TotalPaidOut - tblCashierReportHistory.TotalDisburse, 
+						tblCashierReportHistory.VoidSales						=  IFNULL(Trx.VoidSales,0), 
+						tblCashierReportHistory.RefundSales						=  IFNULL(Trx.RefundSales,0), 
+						tblCashierReportHistory.ItemsDiscount					=  IFNULL(Trx.ItemsDiscount,0), 
+						tblCashierReportHistory.SNRItemsDiscount				=  IFNULL(Trx.SNRItemsDiscount,0), 
+						tblCashierReportHistory.PWDItemsDiscount				=  IFNULL(Trx.PWDItemsDiscount,0), 
+						tblCashierReportHistory.OtherItemsDiscount				=  IFNULL(Trx.OtherItemsDiscount,0), 
+						tblCashierReportHistory.SubTotalDiscount				=  IFNULL(Trx.Discount,0),
 						tblCashierReportHistory.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
-	WHERE tblCashierReportHistory.BranchID = Trx.BranchID AND tblCashierReportHistory.TerminalNo = Trx.BranchID AND tblCashierReportHistory.CashierID = Trx.CashierID
-		AND tblCashierReportHistory.BranchID = intBranchID AND tblCashierReportHistory.TerminalNo = strTerminalNo
-		AND tblCashierReportHistory.BeginningTransactionNo = strBeginningTransactionNo;
+	WHERE tblCashierReportHistory.BranchID = intBranchID AND tblCashierReportHistory.TerminalNo = strTerminalNo
+		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
+		AND DATE_FORMAT(LastLoginDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i');
 	
 END;
 GO
@@ -9674,7 +9762,7 @@ delimiter ;
 /********************************************
 	procTerminalReportHistorySyncTransactionSales
 
-	CALL procTerminalReportHistorySyncTransactionSales( 1, '01', '2014-09-20 00:00');
+	CALL procTerminalReportHistorySyncTransactionSales(1, '01', '2014-12-01 00:00');
 
 	-- this must be run when version 4.0.1.1 is updated
 	-- this should be run up to the last zread to correct the grandtotals.
@@ -9690,14 +9778,19 @@ create procedure procTerminalReportHistorySyncTransactionSales(
 	IN dteZReadDateFrom datetime
 )
 BEGIN
-	DECLARE strBeginningTransactionNo, strEndingTransactionNo VARCHAR(30);
-
 	DECLARE intCtr, intCount bigint DEFAULT 0;
 	DECLARE dteActualZReadDate DATETIME DEFAULT NULL;
+	DECLARE dteNextZReadDate DATETIME DEFAULT NULL;
+	DECLARE decSNRPercent DECIMAL(5,2) DEFAULT 0.20;
+	DECLARE strSNRDiscountCode, strPWDDiscountCode VARCHAR(10) DEFAULT 'SNR';
 	
 	DECLARE curActualZReadDate CURSOR FOR SELECT DateLastInitialized FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i'); 
 
 	SELECT COUNT(DateLastInitialized) INTO intCount FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i'); 
+
+	SET strSNRDiscountCode = (IFNULL((SELECT SeniorCitizenDiscountCode FROM tblTerminal WHERE TerminalNo='01' LIMIT 1), 'SNR'));
+	SET strPWDDiscountCode = (IFNULL((SELECT PWDDiscountCode FROM tblTerminal WHERE TerminalNo='01' LIMIT 1), 'PWD'));
+	SET decSNRPercent = (IFNULL((SELECT DiscountPrice FROM tblDiscount WHERE DiscountCode = strSNRDiscountCode), 20) / 100);
 
 	OPEN curActualZReadDate;
 	curActualZReadDate: LOOP
@@ -9706,31 +9799,34 @@ BEGIN
 		
 		FETCH curActualZReadDate INTO dteActualZReadDate;
 
-
-
-		SET strBeginningTransactionNo = (SELECT BeginningTransactionNo FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DateLastInitialized = dteActualZReadDate);
-		SET strEndingTransactionNo = (SELECT CASE 
-												WHEN EndingTransactionNo = 0 THEN EndingTransactionNo
-												ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), '0') 
-												END EndingTransactionNo 
-										FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DateLastInitialized = dteActualZReadDate);
+		SET dteNextZReadDate = (SELECT DateLastInitialized FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DateLastInitialized > dteActualZReadDate ORDER BY DateLastInitialized LIMIT 1);
+		IF (IFNULL(dteNextZReadDate,'') = '') THEN
+			SET dteNextZReadDate = (SELECT DateLastInitialized FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DateLastInitialized > dteActualZReadDate ORDER BY DateLastInitialized LIMIT 1);
+		END IF;
 
 		-- update the vat to make sure everything is correct
 		UPDATE tblTransactions SET
-			VatableAmount = (SubTotal - VATExempt - NonVATableAmount) / 1.12,
-			VAT = (SubTotal - VATExempt - NonVATableAmount) / 1.12 * 0.12,
-			NetSales = SubTotal - (VATExempt * 0.12) - Discount,
-			VATExempt = CASE DiscountCode WHEN 'SNR' THEN Discount / 0.20 ELSE 0 END,
-			SNRDiscount = CASE DiscountCode WHEN 'SNR' THEN Discount ELSE 0 END,
-			PWDDiscount = CASE DiscountCode WHEN 'PWD' THEN Discount ELSE 0 END,
-			OtherDiscount = CASE DiscountCode WHEN 'SNR' THEN 0 WHEN 'PWD' THEN 0 ELSE Discount END
+			VATExempt = CASE DiscountCode WHEN strSNRDiscountCode THEN Discount / decSNRPercent ELSE 0 END,
+			SNRDiscount = CASE DiscountCode WHEN strSNRDiscountCode THEN Discount ELSE 0 END,
+			PWDDiscount = CASE DiscountCode WHEN strPWDDiscountCode THEN Discount ELSE 0 END,
+			OtherDiscount = CASE DiscountCode WHEN strSNRDiscountCode THEN 0 WHEN strPWDDiscountCode THEN 0 ELSE Discount END
 		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
-			AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo;
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i');
 
-		CALL procCashierReportHistorySyncTransactionSales(intBranchID, strTerminalNo, strBeginningTransactionNo, strEndingTransactionNo);
+		UPDATE tblTransactions SET
+			GrossSales = SubTotal + itemsdiscount,
+			VatableAmount = (SubTotal - VATExempt - (VATExempt * 0.12) - NonVATableAmount) / 1.12,
+			VAT = (SubTotal - VATExempt - (VATExempt * 0.12) - NonVATableAmount) / 1.12 * 0.12,
+			NetSales = SubTotal - (VATExempt * 0.12) - Discount
+		WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
+			AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i');
+
+		CALL procCashierReportHistorySyncTransactionSales(intBranchID, strTerminalNo, dteActualZReadDate, dteNextZReadDate);
 			
-		UPDATE tblTerminalReportHistory, 
-		(
+		UPDATE tblTerminalReportHistory
+		LEFT JOIN (
 			select BranchID, TerminalNo, 
 					SUM(CASE TransactionStatus 
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE NetSales
@@ -9861,83 +9957,83 @@ BEGIN
 			FROM  tblTransactions
 					WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
 						AND TransactionStatus NOT IN (0,2) -- remove the open, suspended transactions
-						AND TransactionNo >= strBeginningTransactionNo and TransactionNo <= strEndingTransactionNo
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
+						AND DATE_FORMAT(TransactionDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(dteNextZReadDate, '%Y-%m-%d %H:%i')
 			GROUP BY BranchID, TerminalNo
-		) Trx
+		) Trx ON tblTerminalReportHistory.BranchID = Trx.BranchID AND tblTerminalReportHistory.TerminalNo = Trx.TerminalNo
 		SET					
 				-- tblTerminalReportHistory.ActualNewGrandTotal				=  Trx.SubTotal + tblTerminalReportHistory.OldGrandTotal,
 				-- tblTerminalReportHistory.NewGrandTotal						=  Trx.SubTotal + tblTerminalReportHistory.OldGrandTotal,
-				tblTerminalReportHistory.NetSales							=  Trx.NetSales, 
-				tblTerminalReportHistory.GrossSales							=  Trx.GrossSales, 
-				tblTerminalReportHistory.TotalDiscount						=  Trx.Discount + Trx.ItemsDiscount, 
-				tblTerminalReportHistory.SNRDiscount					  	=  Trx.SNRDiscount, 
-				tblTerminalReportHistory.PWDDiscount					  	=  Trx.PWDDiscount, 
-				tblTerminalReportHistory.OtherDiscount					  	=  Trx.OtherDiscount,
-				tblTerminalReportHistory.TotalCharge						=  Trx.TotalCharge, 
-				tblTerminalReportHistory.DailySales							=  Trx.DailySales, 
-				tblTerminalReportHistory.ItemSold							=  Trx.ItemSold, 
-				tblTerminalReportHistory.QuantitySold						=  Trx.QuantitySold, 
-				tblTerminalReportHistory.GroupSales							=  Trx.SubTotal, 
-				tblTerminalReportHistory.VATExempt   						=  Trx.VATExempt, 
-				tblTerminalReportHistory.NonVATableAmount					=  Trx.NonVATableAmount, 
-				tblTerminalReportHistory.VATableAmount						=  Trx.VATableAmount, 
-				tblTerminalReportHistory.VAT								=  Trx.VAT, 
-				tblTerminalReportHistory.EVATableAmount						=  Trx.EVATableAmount, 
-				tblTerminalReportHistory.NonEVATableAmount					=  Trx.NonEVATableAmount, 
-				tblTerminalReportHistory.EVAT								=  Trx.EVAT, 
-				tblTerminalReportHistory.LocalTax							=  Trx.LocalTax, 
-				tblTerminalReportHistory.CashSales							=  Trx.CashSales, 
-				tblTerminalReportHistory.ChequeSales						=  Trx.ChequeSales, 
-				tblTerminalReportHistory.CreditCardSales					=  Trx.CreditCardSales, 
-				tblTerminalReportHistory.CreditSales						=  Trx.CreditSales, 
-				tblTerminalReportHistory.DebitPayment						=  Trx.DebitPayment, 
-				tblTerminalReportHistory.RefundCash							=  Trx.RefundCashSales, 
-				tblTerminalReportHistory.RefundCheque						=  Trx.RefundChequeSales, 
-				tblTerminalReportHistory.RefundCreditCard					=  Trx.RefundCreditCardSales, 
-				tblTerminalReportHistory.RefundCredit						=  Trx.RefundCreditSales, 
-				tblTerminalReportHistory.RefundDebit						=  Trx.RefundDebitPayment,
-				tblTerminalReportHistory.CreditPayment						=  Trx.CreditPayment, 
-				tblTerminalReportHistory.CreditPaymentCash					=  Trx.CreditPaymentCash, 
-				tblTerminalReportHistory.CreditPaymentCheque				=  Trx.CreditPaymentCheque, 
-				tblTerminalReportHistory.CreditPaymentCreditCard			=  Trx.CreditPaymentCreditCard, 
-				tblTerminalReportHistory.CreditPaymentDebit					=  Trx.CreditPaymentDebit, 
+				tblTerminalReportHistory.NetSales							= IFNULL(Trx.NetSales,0), 
+				tblTerminalReportHistory.GrossSales							= IFNULL(Trx.GrossSales,0), 
+				tblTerminalReportHistory.TotalDiscount						= IFNULL(Trx.Discount,0) + IFNULL(Trx.ItemsDiscount,0), 
+				tblTerminalReportHistory.SNRDiscount					  	= IFNULL(Trx.SNRDiscount,0), 
+				tblTerminalReportHistory.PWDDiscount					  	= IFNULL(Trx.PWDDiscount,0), 
+				tblTerminalReportHistory.OtherDiscount					  	= IFNULL(Trx.OtherDiscount,0),
+				tblTerminalReportHistory.TotalCharge						= IFNULL(Trx.TotalCharge,0), 
+				tblTerminalReportHistory.DailySales							= IFNULL(Trx.DailySales,0), 
+				tblTerminalReportHistory.ItemSold							= IFNULL(Trx.ItemSold,0), 
+				tblTerminalReportHistory.QuantitySold						= IFNULL(Trx.QuantitySold,0), 
+				tblTerminalReportHistory.GroupSales							= IFNULL(Trx.SubTotal,0), 
+				tblTerminalReportHistory.VATExempt   						= IFNULL(Trx.VATExempt,0), 
+				tblTerminalReportHistory.NonVATableAmount					= IFNULL(Trx.NonVATableAmount,0), 
+				tblTerminalReportHistory.VATableAmount						= IFNULL(Trx.VATableAmount,0), 
+				tblTerminalReportHistory.VAT								= IFNULL(Trx.VAT,0), 
+				tblTerminalReportHistory.EVATableAmount						= IFNULL(Trx.EVATableAmount,0), 
+				tblTerminalReportHistory.NonEVATableAmount					= IFNULL(Trx.NonEVATableAmount,0), 
+				tblTerminalReportHistory.EVAT								= IFNULL(Trx.EVAT,0), 
+				tblTerminalReportHistory.LocalTax							= IFNULL(Trx.LocalTax,0), 
+				tblTerminalReportHistory.CashSales							= IFNULL(Trx.CashSales,0), 
+				tblTerminalReportHistory.ChequeSales						= IFNULL(Trx.ChequeSales,0), 
+				tblTerminalReportHistory.CreditCardSales					= IFNULL(Trx.CreditCardSales,0), 
+				tblTerminalReportHistory.CreditSales						= IFNULL(Trx.CreditSales,0), 
+				tblTerminalReportHistory.DebitPayment						= IFNULL(Trx.DebitPayment,0), 
+				tblTerminalReportHistory.RefundCash							= IFNULL(Trx.RefundCashSales,0), 
+				tblTerminalReportHistory.RefundCheque						= IFNULL(Trx.RefundChequeSales,0), 
+				tblTerminalReportHistory.RefundCreditCard					= IFNULL(Trx.RefundCreditCardSales,0), 
+				tblTerminalReportHistory.RefundCredit						= IFNULL(Trx.RefundCreditSales,0), 
+				tblTerminalReportHistory.RefundDebit						= IFNULL(Trx.RefundDebitPayment,0),
+				tblTerminalReportHistory.CreditPayment						= IFNULL(Trx.CreditPayment,0), 
+				tblTerminalReportHistory.CreditPaymentCash					= IFNULL(Trx.CreditPaymentCash,0), 
+				tblTerminalReportHistory.CreditPaymentCheque				= IFNULL(Trx.CreditPaymentCheque,0), 
+				tblTerminalReportHistory.CreditPaymentCreditCard			= IFNULL(Trx.CreditPaymentCreditCard,0), 
+				tblTerminalReportHistory.CreditPaymentDebit					= IFNULL(Trx.CreditPaymentDebit,0), 
 					
-				tblTerminalReportHistory.RewardPointsPayment				=  Trx.RewardPointsPayment,
-				tblTerminalReportHistory.RewardConvertedPayment				=  Trx.RewardConvertedPayment,
-				tblTerminalReportHistory.CashInDrawer						=  Trx.CashSales - (-Trx.RefundCashSales) + Trx.CreditPaymentCash + tblTerminalReportHistory.BeginningBalance + tblTerminalReportHistory.TotalWithHold + tblTerminalReportHistory.TotalDeposit - tblTerminalReportHistory.TotalPaidOut - tblTerminalReportHistory.TotalDisburse, 
-				tblTerminalReportHistory.VoidSales							=  Trx.VoidSales, 
-				tblTerminalReportHistory.RefundSales						=  Trx.RefundSales, 
-				tblTerminalReportHistory.ItemsDiscount						=  Trx.ItemsDiscount, 
-				tblTerminalReportHistory.SNRItemsDiscount					=  Trx.SNRItemsDiscount, 
-				tblTerminalReportHistory.PWDItemsDiscount					=  Trx.PWDItemsDiscount, 
-				tblTerminalReportHistory.OtherItemsDiscount					=  Trx.OtherItemsDiscount, 
-				tblTerminalReportHistory.SubTotalDiscount					=  Trx.Discount,
+				tblTerminalReportHistory.RewardPointsPayment				= IFNULL(Trx.RewardPointsPayment,0),
+				tblTerminalReportHistory.RewardConvertedPayment				= IFNULL(Trx.RewardConvertedPayment,0),
+				tblTerminalReportHistory.CashInDrawer						= IFNULL(Trx.CashSales,0) - (-IFNULL(Trx.RefundCashSales,0)) + IFNULL(Trx.CreditPaymentCash,0) + tblTerminalReportHistory.BeginningBalance + tblTerminalReportHistory.TotalWithHold + tblTerminalReportHistory.TotalDeposit - tblTerminalReportHistory.TotalPaidOut - tblTerminalReportHistory.TotalDisburse, 
+				tblTerminalReportHistory.VoidSales							= IFNULL(Trx.VoidSales,0), 
+				tblTerminalReportHistory.RefundSales						= IFNULL(Trx.RefundSales,0), 
+				tblTerminalReportHistory.ItemsDiscount						= IFNULL(Trx.ItemsDiscount,0), 
+				tblTerminalReportHistory.SNRItemsDiscount					= IFNULL(Trx.SNRItemsDiscount,0), 
+				tblTerminalReportHistory.PWDItemsDiscount					= IFNULL(Trx.PWDItemsDiscount,0), 
+				tblTerminalReportHistory.OtherItemsDiscount					= IFNULL(Trx.OtherItemsDiscount,0), 
+				tblTerminalReportHistory.SubTotalDiscount					= IFNULL(Trx.Discount, 0),
 
 				tblTerminalReportHistory.IsProcessed						=  1	-- this must be set to 0 during salestransaction update
-		WHERE tblTerminalReportHistory.BranchID = Trx.BranchID AND tblTerminalReportHistory.TerminalNo = Trx.TerminalNo
-			AND tblTerminalReportHistory.BranchID = intBranchID AND tblTerminalReportHistory.TerminalNo = strTerminalNo
-			AND tblTerminalReportHistory.BeginningTransactionNo = strBeginningTransactionNo;
+		WHERE tblTerminalReportHistory.BranchID = intBranchID AND tblTerminalReportHistory.TerminalNo = strTerminalNo
+			AND DATE_FORMAT(tblTerminalReportHistory.DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i');
 		
 		UPDATE tblTerminalReportHistory,
-			(SELECT BranchID, TerminalNo, a.DateLastInitialized, a.NewGrandTotal, a.OldGrandTotal, a.GrossSales, a.OldGrandTotal + a.GrossSales,
-				IFNULL((SELECT NewGrandTotal FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized < a.DateLastInitialized ORDER BY b.DateLastInitialized DESC LIMIT 1),0) NewGrandTotalNew,
-				IFNULL((SELECT ActualNewGrandTotal FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized < a.DateLastInitialized ORDER BY b.DateLastInitialized DESC LIMIT 1),0) ActualNewGrandTotalNew,
-				BeginningTransactionNo
-				FROM tblTerminalReportHistory a WHERE a.BeginningTransactionNo = strBeginningTransactionNo
+			(SELECT BranchID, TerminalNo, a.DateLastInitialized, a.NewGrandTotal, a.GrossSales,
+				IFNULL((SELECT NewGrandTotal FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized < DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i') ORDER BY b.DateLastInitialized DESC LIMIT 1),0) OldGrandTotal,
+				IFNULL((SELECT ActualNewGrandTotal FROM tblTerminalReportHistory b WHERE a.BranchID = b.BranchID AND a.TerminalNo = b.TerminalNo AND b.DateLastInitialized < DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i') ORDER BY b.DateLastInitialized DESC LIMIT 1),0) ActualOldGrandTotal
+				FROM tblTerminalReportHistory a 
+				WHERE DATE_FORMAT(a.DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i')
 				) Trx
 		SET
-			tblTerminalReportHistory.OldGrandTotal						= Trx.NewGrandTotalNew,
-			tblTerminalReportHistory.NewGrandTotal						= Trx.NewGrandTotalNew + (tblTerminalReportHistory.GrossSales * ((100-TrustFund)/100)),
+			tblTerminalReportHistory.OldGrandTotal						= Trx.OldGrandTotal,
+			tblTerminalReportHistory.NewGrandTotal						= Trx.OldGrandTotal + (tblTerminalReportHistory.GrossSales * ((100-TrustFund)/100)),
 			
-			tblTerminalReportHistory.ActualOldGrandTotal				= Trx.ActualNewGrandTotalNew,
-			tblTerminalReportHistory.ActualNewGrandTotal				= Trx.ActualNewGrandTotalNew + tblTerminalReportHistory.GrossSales
-		WHERE tblTerminalReportHistory.BranchID = Trx.BranchID AND tblTerminalReportHistory.TerminalNo = Trx.TerminalNo AND tblTerminalReportHistory.BeginningTransactionNo = Trx.BeginningTransactionNo
+			tblTerminalReportHistory.ActualOldGrandTotal				= Trx.ActualOldGrandTotal,
+			tblTerminalReportHistory.ActualNewGrandTotal				= Trx.ActualOldGrandTotal + tblTerminalReportHistory.GrossSales
+		WHERE tblTerminalReportHistory.BranchID = Trx.BranchID AND tblTerminalReportHistory.TerminalNo = Trx.TerminalNo 
+			AND DATE_FORMAT(tblTerminalReportHistory.DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(Trx.DateLastInitialized, '%Y-%m-%d %H:%i')
 			AND tblTerminalReportHistory.BranchID = intBranchID AND tblTerminalReportHistory.TerminalNo = strTerminalNo
-			AND tblTerminalReportHistory.BeginningTransactionNo = strBeginningTransactionNo; 
+			AND DATE_FORMAT(tblTerminalReportHistory.DateLastInitialized, '%Y-%m-%d %H:%i') = DATE_FORMAT(dteActualZReadDate, '%Y-%m-%d %H:%i');
 
-		SET strBeginningTransactionNo = NULL;
-		SET strEndingTransactionNo = NULL;
 		SET dteActualZReadDate = NULL;
+		SET dteNextZReadDate = NULL;
 
 	END LOOP curActualZReadDate;
 	CLOSE curActualZReadDate;
@@ -9960,19 +10056,23 @@ BEGIN
 	SELECT DateLastInitialized, OldGrandTotal, NewGrandTotal, 
 								OldGrandTotal + (GrossSales * ((100-TrustFund)/100)) AS CorrectedNewGrandTotal,
 								ActualOldGrandTotal, ActualNewGrandTotal, 
-								ActualOldGrandTotal + GrossSales AS CorrectedActualNewGrandTotal
-	FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i'); 
+								ActualOldGrandTotal + GrossSales AS CorrectedActualNewGrandTotal,
+								BeginningTransactionNo, EndingTransactionNo
+	FROM tblTerminalReportHistory WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+		AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(dteZReadDateFrom, '%Y-%m-%d %H:%i')
+	ORDER BY DateLastInitialized DESC; 
 
 	SELECT DateLastInitialized, OldGrandTotal, NewGrandTotal, 
 								OldGrandTotal + (GrossSales * ((100-TrustFund)/100)) AS CorrectedNewGrandTotal,
 								ActualOldGrandTotal, ActualNewGrandTotal, 
-								ActualOldGrandTotal + GrossSales AS CorrectedActualNewGrandTotal
-	FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo; 
+								ActualOldGrandTotal + GrossSales AS CorrectedActualNewGrandTotal,
+								BeginningTransactionNo, EndingTransactionNo
+	FROM tblTerminalReport WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo
+	ORDER BY DateLastInitialized DESC; 
 	
 END;
 GO
 delimiter ;
-
 
 
 /*********************************
@@ -10034,3 +10134,52 @@ BEGIN
 END;
 GO
 delimiter ;
+
+/********************************************
+	procSaveMergeTable
+	Nov 22, 2014
+********************************************/
+
+delimiter GO
+DROP PROCEDURE IF EXISTS procSaveMergeTable
+GO
+
+create procedure procSaveMergeTable(
+	IN strMainTableCode VARCHAR(25),
+	IN strChildTableCode VARCHAR(25)
+	)
+BEGIN
+	
+	IF NOT EXISTS(SELECT MergeTableID FROM tblMergeTable WHERE MainTableCode = strMainTableCode AND ChildTableCode = strChildTableCode) THEN 
+		INSERT INTO tblMergeTable(MainTableCode, ChildTableCode)
+			VALUES(strMainTableCode, strChildTableCode);
+	END IF;
+				
+END;
+GO
+delimiter ;
+
+-- remove this for Houseware Plaza	
+delimiter GO
+DROP TRIGGER IF EXISTS trgr_tblProductInventory_Update
+GO
+
+delimiter GO
+DROP TRIGGER IF EXISTS trgr_tblProductInventory_Insert
+GO
+
+delimiter GO
+DROP TRIGGER IF EXISTS trgr_tblContacts_Update
+GO
+
+delimiter GO
+DROP TRIGGER IF EXISTS trgr_tblContacts_Insert
+GO
+
+delimiter GO
+DROP TRIGGER IF EXISTS trgr_tblProducts_Update
+GO
+
+delimiter ;
+
+SHOW ENGINE INNODB STATUS\G

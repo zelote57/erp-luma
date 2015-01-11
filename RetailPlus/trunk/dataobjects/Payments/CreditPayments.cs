@@ -222,6 +222,45 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public CreditPaymentDetails[] Details(Int64 ContactID, DateTime CreditDateFrom, DateTime CreditDateTo)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + "WHERE ContactID = @ContactID AND CreditDate >= @CreditDateFrom AND CreditDate <= @CreditDateTo;";
+
+                cmd.Parameters.AddWithValue("ContactID", ContactID);
+                cmd.Parameters.AddWithValue("TerminalNo", CreditDateFrom);
+                cmd.Parameters.AddWithValue("CreditDateTo", CreditDateTo);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                ArrayList items = new ArrayList();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    items.Add(setDetails(dr));
+                }
+
+                CreditPaymentDetails[] arrItems = new CreditPaymentDetails[0];
+
+                if (items != null)
+                {
+                    arrItems = new CreditPaymentDetails[items.Count];
+                    items.CopyTo(arrItems);
+                }
+
+                return arrItems;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         public CreditPaymentDetails setDetails(System.Data.DataRow dr)
         {
             Data.CreditPaymentDetails Details = new Data.CreditPaymentDetails();

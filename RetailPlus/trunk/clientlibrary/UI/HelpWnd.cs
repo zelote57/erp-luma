@@ -140,6 +140,10 @@ namespace AceSoft.RetailPlus.Client.UI
         private Label label108;
         private Label label109;
         private Label label110;
+        private Label label113;
+        private Label label114;
+        private Label label111;
+        private Label label112;
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -198,6 +202,8 @@ namespace AceSoft.RetailPlus.Client.UI
         {
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.grpBox1 = new System.Windows.Forms.GroupBox();
+            this.label109 = new System.Windows.Forms.Label();
+            this.label110 = new System.Windows.Forms.Label();
             this.label98 = new System.Windows.Forms.Label();
             this.label108 = new System.Windows.Forms.Label();
             this.label78 = new System.Windows.Forms.Label();
@@ -322,8 +328,10 @@ namespace AceSoft.RetailPlus.Client.UI
             this.label96 = new System.Windows.Forms.Label();
             this.label97 = new System.Windows.Forms.Label();
             this.lblAddNewCustomer = new System.Windows.Forms.Label();
-            this.label109 = new System.Windows.Forms.Label();
-            this.label110 = new System.Windows.Forms.Label();
+            this.label111 = new System.Windows.Forms.Label();
+            this.label112 = new System.Windows.Forms.Label();
+            this.label113 = new System.Windows.Forms.Label();
+            this.label114 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.grpBox1.SuspendLayout();
             this.grpBox2.SuspendLayout();
@@ -342,6 +350,10 @@ namespace AceSoft.RetailPlus.Client.UI
             // grpBox1
             // 
             this.grpBox1.BackColor = System.Drawing.Color.White;
+            this.grpBox1.Controls.Add(this.label113);
+            this.grpBox1.Controls.Add(this.label114);
+            this.grpBox1.Controls.Add(this.label111);
+            this.grpBox1.Controls.Add(this.label112);
             this.grpBox1.Controls.Add(this.label109);
             this.grpBox1.Controls.Add(this.label110);
             this.grpBox1.Controls.Add(this.label98);
@@ -443,6 +455,28 @@ namespace AceSoft.RetailPlus.Client.UI
             this.grpBox1.TabIndex = 66;
             this.grpBox1.TabStop = false;
             this.grpBox1.Text = "Help Details";
+            // 
+            // label109
+            // 
+            this.label109.AutoSize = true;
+            this.label109.ForeColor = System.Drawing.Color.Blue;
+            this.label109.Location = new System.Drawing.Point(207, 222);
+            this.label109.Name = "label109";
+            this.label109.Size = new System.Drawing.Size(169, 13);
+            this.label109.TabIndex = 202;
+            this.label109.Text = "Change Product Code/Description";
+            // 
+            // label110
+            // 
+            this.label110.AutoSize = true;
+            this.label110.BackColor = System.Drawing.Color.Transparent;
+            this.label110.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label110.ForeColor = System.Drawing.Color.Red;
+            this.label110.Location = new System.Drawing.Point(73, 222);
+            this.label110.Name = "label110";
+            this.label110.Size = new System.Drawing.Size(50, 13);
+            this.label110.TabIndex = 201;
+            this.label110.Text = "Ctrl + F2";
             // 
             // label98
             // 
@@ -1810,27 +1844,49 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblAddNewCustomer.TabIndex = 190;
             this.lblAddNewCustomer.Text = " to hide this window";
             // 
-            // label109
+            // label111
             // 
-            this.label109.AutoSize = true;
-            this.label109.ForeColor = System.Drawing.Color.Blue;
-            this.label109.Location = new System.Drawing.Point(207, 222);
-            this.label109.Name = "label109";
-            this.label109.Size = new System.Drawing.Size(169, 13);
-            this.label109.TabIndex = 202;
-            this.label109.Text = "Change Product Code/Description";
+            this.label111.AutoSize = true;
+            this.label111.ForeColor = System.Drawing.Color.Blue;
+            this.label111.Location = new System.Drawing.Point(656, 466);
+            this.label111.Name = "label111";
+            this.label111.Size = new System.Drawing.Size(257, 13);
+            this.label111.TabIndex = 204;
+            this.label111.Text = "Tag As ZeroRated Sales (PESA/Export/Ambassador)";
             // 
-            // label110
+            // label112
             // 
-            this.label110.AutoSize = true;
-            this.label110.BackColor = System.Drawing.Color.Transparent;
-            this.label110.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label110.ForeColor = System.Drawing.Color.Red;
-            this.label110.Location = new System.Drawing.Point(73, 222);
-            this.label110.Name = "label110";
-            this.label110.Size = new System.Drawing.Size(50, 13);
-            this.label110.TabIndex = 201;
-            this.label110.Text = "Ctrl + F2";
+            this.label112.AutoSize = true;
+            this.label112.BackColor = System.Drawing.Color.Transparent;
+            this.label112.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label112.ForeColor = System.Drawing.Color.Red;
+            this.label112.Location = new System.Drawing.Point(567, 466);
+            this.label112.Name = "label112";
+            this.label112.Size = new System.Drawing.Size(49, 13);
+            this.label112.TabIndex = 203;
+            this.label112.Text = "Alt + Ins";
+            // 
+            // label113
+            // 
+            this.label113.AutoSize = true;
+            this.label113.ForeColor = System.Drawing.Color.Blue;
+            this.label113.Location = new System.Drawing.Point(657, 489);
+            this.label113.Name = "label113";
+            this.label113.Size = new System.Drawing.Size(266, 13);
+            this.label113.TabIndex = 206;
+            this.label113.Text = "Remove Zero Rated Sales (PESA/Export/Ambassador)";
+            // 
+            // label114
+            // 
+            this.label114.AutoSize = true;
+            this.label114.BackColor = System.Drawing.Color.Transparent;
+            this.label114.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label114.ForeColor = System.Drawing.Color.Red;
+            this.label114.Location = new System.Drawing.Point(568, 489);
+            this.label114.Name = "label114";
+            this.label114.Size = new System.Drawing.Size(49, 13);
+            this.label114.TabIndex = 205;
+            this.label114.Text = "Alt + Del";
             // 
             // HelpWnd
             // 

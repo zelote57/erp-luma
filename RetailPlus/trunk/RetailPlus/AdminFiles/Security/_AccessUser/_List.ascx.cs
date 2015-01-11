@@ -98,7 +98,9 @@ namespace AceSoft.RetailPlus.Security._AccessUser
                 DataRowView dr = (DataRowView)e.Item.DataItem;
                 ImageButton imgItemDelete = (ImageButton)e.Item.FindControl("imgItemDelete");
                 ImageButton imgItemEdit = (ImageButton)e.Item.FindControl("imgItemEdit");
-
+                ImageButton imgItemAccessRights = (ImageButton)e.Item.FindControl("imgItemAccessRights");
+                ImageButton imgResetPassword = (ImageButton)e.Item.FindControl("imgResetPassword");
+                ImageButton imgReloadAccessRights = (ImageButton)e.Item.FindControl("imgReloadAccessRights");
                 HtmlInputCheckBox chkList = (HtmlInputCheckBox)e.Item.FindControl("chkList");
                 chkList.Value = dr["UID"].ToString();
                 if (chkList.Value == "1")
@@ -106,16 +108,25 @@ namespace AceSoft.RetailPlus.Security._AccessUser
                     chkList.Attributes.Add("disabled", "false");
                     imgItemDelete.Enabled = false; imgItemDelete.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                     imgItemEdit.Enabled = false; imgItemEdit.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+
+                    imgItemAccessRights.Enabled = false; imgItemAccessRights.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    imgResetPassword.Enabled = false; imgResetPassword.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    imgReloadAccessRights.Enabled = false; imgReloadAccessRights.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                 }
                 else
                 {
                     imgItemDelete.Enabled = cmdDelete.Visible; if (!imgItemDelete.Enabled) imgItemDelete.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                     imgItemEdit.Enabled = cmdEdit.Visible; if (!imgItemEdit.Enabled) imgItemEdit.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
                     if (imgItemDelete.Enabled) imgItemDelete.Attributes.Add("onClick", "return confirm_item_delete();");
+
+                    imgResetPassword.Attributes.Add("onClick", "return confirm_reset_password();");
                 }
 
-                ImageButton imgResetPassword = (ImageButton)e.Item.FindControl("imgResetPassword");
-                imgResetPassword.Attributes.Add("onClick", "return confirm_reset_password();");
+                if (chkList.Value != "1" && !cmdAccessRightsUpdate.Visible)
+                {
+                    imgItemAccessRights.Enabled = false; imgItemAccessRights.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                    imgReloadAccessRights.Enabled = false; imgReloadAccessRights.ImageUrl = Constants.ROOT_DIRECTORY + "/_layouts/images/blank.gif";
+                }
 
                 Label lblUserName = (Label)e.Item.FindControl("lblUserName");
                 lblUserName.Text = dr["UserName"].ToString();
@@ -140,8 +151,7 @@ namespace AceSoft.RetailPlus.Security._AccessUser
 				lnkGroupName.Text = dr["GroupName"].ToString();
                 lnkGroupName.NavigateUrl = Constants.ROOT_DIRECTORY + "/AdminFiles/Security/_AccessGroup/Default.aspx?task=" + Common.Encrypt("details", Session.SessionID) + "&id=" + Common.Encrypt(dr["GroupID"].ToString(), Session.SessionID);
 
-                ImageButton imgReloadAccessRights = (ImageButton)e.Item.FindControl("imgReloadAccessRights");
-                imgReloadAccessRights.ToolTip = "Reload access rights from " + lnkGroupName.Text + " group to this user.";
+                if (imgReloadAccessRights.Enabled) imgReloadAccessRights.ToolTip = "Reload access rights from " + lnkGroupName.Text + " group to this user.";
 
 				Label lblAddress2 = (Label) e.Item.FindControl("lblAddress2");
 				lblAddress2.Text = dr["Address2"].ToString();
@@ -243,11 +253,12 @@ namespace AceSoft.RetailPlus.Security._AccessUser
 			imgEdit.Visible = clsDetails.Write; 
 			lblSeparator1.Visible = clsDetails.Write;
 			lblSeparator2.Visible = clsDetails.Write;
-			lblSeparator3.Visible = clsDetails.Write; 
+			
 			
 			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.AccessRights); 
 			cmdAccessRightsUpdate.Visible=clsDetails.Write; 
-			imgAccessRightsUpdate.Visible = clsDetails.Write;  
+			imgAccessRightsUpdate.Visible = clsDetails.Write;
+            lblSeparator3.Visible = clsDetails.Write; 
 
 			clsAccessRights.CommitAndDispose();
 		}
@@ -301,7 +312,7 @@ namespace AceSoft.RetailPlus.Security._AccessUser
             string SearchKey = string.Empty;
 			if (Request.QueryString["Search"] != null)
 			{					
-				SearchKey = Common.Decrypt((string)Request.QueryString["search"],Session.SessionID);	
+				SearchKey = Server.UrlDecode(Common.Decrypt((string)Request.QueryString["search"],Session.SessionID));
 			}
             PageData.DataSource = clsAccessUser.ListAsDataTable(AccessGroupTypes.All, SearchKey, 0, 0, SortField, sortoption).DefaultView;
 			clsAccessUser.CommitAndDispose();

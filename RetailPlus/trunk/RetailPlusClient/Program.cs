@@ -273,7 +273,7 @@ namespace AceSoft.RetailPlus.Client
 				 * *****************************/
 				try
 				{
-					if (System.Configuration.ConfigurationManager.AppSettings["MultiInstanceEnabled"].ToLower() == "true")
+                    if (Common.isTerminalMultiInstanceEnabled())
 					{ Application.Run(appmain); }
 					else 
 					{ SingleInstance.Run(appmain); }

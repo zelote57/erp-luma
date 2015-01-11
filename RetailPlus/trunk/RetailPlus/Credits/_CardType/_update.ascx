@@ -68,10 +68,12 @@
                             <tr>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Card type code<font color="red">*</font></label></td>
-                                <td class="ms-authoringcontrols" colspan="4" style="padding-bottom: 2px">
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Card type Name<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>With Guarantor<font color="red">*</font></label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Is Exempted in Terminal Group Charges<font color="red">*</font></label></td>
                             </tr>
                             <tr>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -80,13 +82,17 @@
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="ms-error" ErrorMessage="'Card Type Code' must not be left blank." Display="Dynamic" ControlToValidate="txtCardTypeCode"></asp:requiredfieldvalidator>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
-                                <td class="ms-authoringcontrols"  colspan="3">
+                                <td class="ms-authoringcontrols">
                                     <asp:TextBox id="txtCardTypeName" runat="server" accesskey="G" CssClass="ms-long" MaxLength="30" BorderStyle="Groove"></asp:TextBox>
 									<asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="ms-error" ErrorMessage="'Card Type Name' must not be left blank." Display="Dynamic" ControlToValidate="txtCardTypeName"></asp:requiredfieldvalidator>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
                                     <asp:CheckBox id="chkWithGuarantor" runat="server" Text=" Check if requires Guarantor." Checked="False"></asp:CheckBox>
+                                </td>
+                                <td class="ms-formspacer"><img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:CheckBox id="chkExemptInTerminalCharge" runat="server" Text=" Check if exempted in Terminal Charges (Employee)" Checked="False"></asp:CheckBox>
                                 </td>
                             </tr>
                             <tr>

@@ -2770,85 +2770,6 @@ namespace AceSoft.RetailPlus.Data
 			}
 		}
 
-        //private ProductDetails SetDetails(MySqlDataReader myReader)
-        //{
-        //    try
-        //    {
-        //        ProductDetails Details = new ProductDetails();
-        //        Details.ProductID = 0;
-
-        //        while (myReader.Read())
-        //        {
-        //            Details.ProductID = myReader.GetInt64("ProductID");
-        //            Details.ProductCode = "" + myReader["ProductCode"].ToString();
-        //            Details.BarCode = "" + myReader["BarCode"].ToString();
-        //            Details.BarCode2 = "" + myReader["BarCode2"].ToString();
-        //            Details.BarCode3 = "" + myReader["BarCode3"].ToString();
-        //            Details.ProductDesc = "" + myReader["ProductDesc"].ToString();
-        //            Details.ProductGroupID = myReader.GetInt64("ProductGroupID");
-        //            Details.ProductGroupCode = "" + myReader["ProductGroupCode"].ToString();
-        //            Details.ProductGroupName = "" + myReader["ProductGroupName"].ToString();
-        //            Details.ProductSubGroupID = myReader.GetInt64("ProductSubGroupID");
-        //            Details.ProductSubGroupCode = "" + myReader["ProductSubGroupCode"].ToString();
-        //            Details.ProductSubGroupName = "" + myReader["ProductSubGroupName"].ToString();
-        //            Details.BaseUnitID = myReader.GetInt32("BaseUnitID");
-        //            Details.BaseUnitCode = "" + myReader["UnitCode"].ToString();
-        //            Details.BaseUnitName = "" + myReader["UnitName"].ToString();
-        //            Details.DateCreated = myReader.GetDateTime("DateCreated");
-        //            Details.Deleted = myReader.GetBoolean("Deleted");
-        //            Details.Active = myReader.GetBoolean("Active");
-        //            Details.Price = myReader.GetDecimal("Price");
-        //            Details.WSPrice = myReader.GetDecimal("WSPrice");
-        //            Details.PurchasePrice = myReader.GetDecimal("PurchasePrice");
-        //            Details.PercentageCommision = myReader.GetDecimal("PercentageCommision");
-        //            Details.IncludeInSubtotalDiscount = myReader.GetBoolean("IncludeInSubtotalDiscount");
-        //            Details.VAT = myReader.GetDecimal("VAT");
-        //            Details.EVAT = myReader.GetDecimal("EVAT");
-        //            Details.LocalTax = myReader.GetDecimal("LocalTax");
-        //            Details.Quantity = myReader.GetDecimal("Quantity");
-        //            Details.ConvertedQuantity = "" + myReader["ConvertedQuantity"].ToString();
-        //            Details.ReservedQuantity = myReader.GetDecimal("ReservedQuantity");
-        //            Details.IsLock = myReader.GetBoolean("IsLock");
-        //            Details.MinThreshold = myReader.GetDecimal("MinThreshold");
-        //            Details.MaxThreshold = myReader.GetDecimal("MaxThreshold");
-        //            Details.RID = myReader.GetInt64("RID");
-        //            Details.SupplierID = myReader.GetInt64("SupplierID");
-        //            Details.SupplierCode = "" + myReader["SupplierCode"].ToString();
-        //            Details.SupplierName = "" + myReader["SupplierName"].ToString();
-        //            Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), myReader.GetString("OrderSlipPrinter"));
-
-        //            /*** Added for Financial Information  ***/
-        //            /*** January 12, 2009 ***/
-        //            Details.ChartOfAccountIDPurchase = myReader.GetInt32("ChartOfAccountIDPurchase");
-        //            Details.ChartOfAccountIDSold = myReader.GetInt32("ChartOfAccountIDSold");
-        //            Details.ChartOfAccountIDInventory = myReader.GetInt32("ChartOfAccountIDInventory");
-        //            Details.ChartOfAccountIDTaxPurchase = myReader.GetInt32("ChartOfAccountIDTaxPurchase");
-        //            Details.ChartOfAccountIDTaxSold = myReader.GetInt32("ChartOfAccountIDTaxSold");
-
-        //            Details.IsItemSold = myReader.GetBoolean("IsItemSold");
-        //            Details.WillPrintProductComposition = myReader.GetBoolean("WillPrintProductComposition");
-
-        //            /*** Inventory Tracking ***/
-        //            /*** May 10, 2010 ***/
-        //            Details.QuantityIN = myReader.GetDecimal("QuantityIN");
-        //            Details.QuantityOUT = myReader.GetDecimal("QuantityOUT");
-
-        //            Details.ActualQuantity = myReader.GetDecimal("ActualQuantity");
-
-        //            Details.RewardPoints = myReader.GetDecimal("RewardPoints");
-
-        //            Details.PackageID = myReader.GetInt64("PackageID");
-        //        }
-        //        myReader.Close();
-
-        //        return Details;
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        throw base.ThrowException(ex);
-        //    }
-        //}
         private ProductDetails SetDetails(System.Data.DataTable dt)
         {
             try
@@ -2933,31 +2854,60 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+
+        public Int32 BaseUnitID(Int64 ProductID)
+        {
+            Int32 iRetValue = 0;
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT BaseUnitID FROM tblProducts WHERE ProductID=@ProductID;";
+
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iRetValue = Int32.TryParse(dr["BaseUnitID"].ToString(), out iRetValue) ? iRetValue : 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+            return iRetValue;
+        }
+
 		#endregion
 
 		#region Streams
+        
+        public System.Data.DataTable ProductIDAsDataTable()
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-		public System.Data.DataTable ProductIDAsDataTable()
-		{
-			try
-			{
-				string SQL = "SELECT ProductID FROM tblProducts WHERE Deleted = 0";
+                string SQL = "SELECT ProductID FROM tblProducts WHERE Deleted = 0";
 
-				MySqlCommand cmd = new MySqlCommand();
-				cmd.CommandType = System.Data.CommandType.Text;
-				cmd.CommandText = SQL;
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-				base.MySqlDataAdapterFill(cmd, dt);
-				
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
-				return dt;
-			}
-			catch (Exception ex)
-			{
-				throw base.ThrowException(ex);
-			}
-		}
 		public System.Data.DataTable ListAsDataTable(string SortField, SortOption SortOrder)
 		{
 			try

@@ -534,7 +534,7 @@ namespace AceSoft.RetailPlus._Reports_Format
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.AmountTender, ReceiptFieldFormats.AmountTender));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.Change, ReceiptFieldFormats.Change));
             cboBox.Items.Add(new ListItem(ReceiptFieldFormats.VATExempt, ReceiptFieldFormats.VATExempt));
-            cboBox.Items.Add(new ListItem(ReceiptFieldFormats.VATZeroRated, ReceiptFieldFormats.VATZeroRated));
+            cboBox.Items.Add(new ListItem(ReceiptFieldFormats.ZeroRatedSales, ReceiptFieldFormats.ZeroRatedSales));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.NonVATableAmount, ReceiptFieldFormats.NonVATableAmount));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.VATableAmount, ReceiptFieldFormats.VATableAmount));
 			cboBox.Items.Add(new ListItem(ReceiptFieldFormats.VAT, ReceiptFieldFormats.VAT));
@@ -546,6 +546,7 @@ namespace AceSoft.RetailPlus._Reports_Format
             cboBox.Items.Add(new ListItem(ReceiptFieldFormats.OrderType, ReceiptFieldFormats.OrderType));
             cboBox.Items.Add(new ListItem(ReceiptFieldFormats.CheckOutBillFooter, ReceiptFieldFormats.CheckOutBillFooter));
 
+            cboBox.Items.Add(new ListItem(ReceiptFieldFormats.RewardsCustomerName, ReceiptFieldFormats.RewardsCustomerName));
             cboBox.Items.Add(new ListItem(ReceiptFieldFormats.RewardCardNo, ReceiptFieldFormats.RewardCardNo));
             cboBox.Items.Add(new ListItem(ReceiptFieldFormats.RewardPreviousPoints, ReceiptFieldFormats.RewardPreviousPoints));
             cboBox.Items.Add(new ListItem(ReceiptFieldFormats.RewardEarnedPoints, ReceiptFieldFormats.RewardEarnedPoints));

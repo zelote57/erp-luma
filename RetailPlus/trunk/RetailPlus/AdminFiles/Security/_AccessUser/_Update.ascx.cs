@@ -126,8 +126,8 @@ namespace AceSoft.RetailPlus.Security._AccessUser
 
 			lblUID.Text = clsDetails.UID.ToString();
 			txtUserName.Text = clsDetails.UserName;
-            //txtPassword.Text = clsDetails.Password;
-            //txtConfirm.Text = clsDetails.Password;
+            txtPassword.Text = clsDetails.Password;
+            txtConfirm.Text = clsDetails.Password;
 			txtName.Text = clsDetails.Name;
 
 			cboCountry.SelectedIndex = cboCountry.Items.IndexOf(cboCountry.Items.FindByValue(clsDetails.CountryID.ToString()));
@@ -155,7 +155,7 @@ namespace AceSoft.RetailPlus.Security._AccessUser
 
 			clsDetails.UID = Convert.ToInt32(lblUID.Text);
 			clsDetails.UserName  = txtUserName.Text;
-			//clsDetails.Password  = txtPassword.Text;
+            if (!string.IsNullOrEmpty(txtPassword.Text)) clsDetails.Password  = txtPassword.Text;
 			clsDetails.Name = txtName.Text;
 			clsDetails.CountryID = Convert.ToInt32(cboCountry.SelectedItem.Value); 
 			clsDetails.Address1  = txtAddress1.Text;

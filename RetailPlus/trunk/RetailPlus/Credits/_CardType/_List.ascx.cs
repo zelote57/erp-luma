@@ -115,6 +115,9 @@ namespace AceSoft.RetailPlus.Credits._CardType
 
                 CheckBox chkWithGuarantor = (CheckBox)e.Item.FindControl("chkWithGuarantor");
                 chkWithGuarantor.Checked = bool.Parse(dr["WithGuarantor"].ToString());
+
+                CheckBox chkExemptInTerminalCharge = (CheckBox)e.Item.FindControl("chkExemptInTerminalCharge");
+                chkExemptInTerminalCharge.Checked = bool.Parse(dr["ExemptInTerminalCharge"].ToString());
 			}
 		}
         protected void lstItem_ItemCommand(object sender, DataListCommandEventArgs e)

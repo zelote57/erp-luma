@@ -31,7 +31,8 @@ namespace AceSoft.RetailPlus.Monitor
                 if (DateTime.Now < _CreditBillerProcessStartTime)
                 {
                     WriteProcessToMonitor("   cannot process will process next day-starttime:" + _CreditBillerProcessStartTime.ToString("hh:mm tt"));
-                    goto exit;
+                    Wait();
+                    goto back;
                 }
 
                 WriteProcessToMonitor("Checking process end time...");
@@ -39,13 +40,15 @@ namespace AceSoft.RetailPlus.Monitor
                 if (DateTime.Now > _CreditBillerProcessEndTime)
                 {
                     WriteProcessToMonitor("   cannot process will process next day-endtime:" + _CreditBillerProcessEndTime.ToString("hh:mm tt"));
-                    goto exit;
+                    Wait();
+                    goto back;
                 }
 
                 WriteProcessToMonitor("Checking connections to server.");
                 if (IPAddress.IsOpen(AceSoft.RetailPlus.DBConnection.ServerIP(), DBConnection.DBPort()) == false)
                 {
                     WriteProcessToMonitor("   cannot connect to server please check.");
+                    Wait();
                     goto exit;
                 }
                 WriteProcessToMonitor("   ok");
@@ -110,25 +113,27 @@ namespace AceSoft.RetailPlus.Monitor
                     ProcessCreditBillWG(dr["CardTypeName"].ToString());
                 }
 
-                Int32 intProcessWaitInMins = 1;
-                if (System.Configuration.ConfigurationManager.AppSettings["ProcessWaitInMins"] != null)
-                    intProcessWaitInMins = Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings["ProcessWaitInMins"].ToString(), out intProcessWaitInMins) ? intProcessWaitInMins : 1;
+                //Int32 intProcessWaitInMins = 1;
+                //if (System.Configuration.ConfigurationManager.AppSettings["ProcessWaitInMins"] != null)
+                //    intProcessWaitInMins = Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings["ProcessWaitInMins"].ToString(), out intProcessWaitInMins) ? intProcessWaitInMins : 1;
 
-                WriteProcessToMonitor("Waiting " + intProcessWaitInMins.ToString("#,##0") + "Mins for next process...");
+                //WriteProcessToMonitor("Waiting " + intProcessWaitInMins.ToString("#,##0") + "Mins for next process...");
 
-                // Create a Timer object that knows to call our TimerCallback
-                // method once every 2000 milliseconds.
-                iTmrCtr = 0;
-                System.Threading.Timer t = new System.Threading.Timer(TimerCallback, null, 0, 2000);
+                //// Create a Timer object that knows to call our TimerCallback
+                //// method once every 2000 milliseconds.
+                //iTmrCtr = 0;
+                //System.Threading.Timer t = new System.Threading.Timer(TimerCallback, null, 0, 2000);
 
-                System.Threading.Thread.Sleep(60000 * intProcessWaitInMins);
+                //System.Threading.Thread.Sleep(60000 * intProcessWaitInMins);
 
-                t.Dispose(); // Cancel the timer now
-                Console.WriteLine();
+                //t.Dispose(); // Cancel the timer now
+                //Console.WriteLine();
 
+                Wait();
                 goto back;
             exit:
                 WriteProcessToMonitor("Sytem terminated.");
+                Console.ReadLine();
             }
             catch (Exception ex)
             {
@@ -1157,6 +1162,25 @@ namespace AceSoft.RetailPlus.Monitor
             rpt.Dispose();
 
             return strRetValue;
+        }
+
+        private static void Wait()
+        {
+            Int32 intProcessWaitInMins = 1;
+            if (System.Configuration.ConfigurationManager.AppSettings["ProcessWaitInMins"] != null)
+                intProcessWaitInMins = Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings["ProcessWaitInMins"].ToString(), out intProcessWaitInMins) ? intProcessWaitInMins : 1;
+
+            WriteProcessToMonitor("Waiting " + intProcessWaitInMins.ToString("#,##0") + "Mins for next process...");
+
+            // Create a Timer object that knows to call our TimerCallback
+            // method once every 2000 milliseconds.
+            iTmrCtr = 0;
+            System.Threading.Timer t = new System.Threading.Timer(TimerCallback, null, 0, 2000);
+
+            System.Threading.Thread.Sleep(60000 * intProcessWaitInMins);
+
+            t.Dispose(); // Cancel the timer now
+            Console.WriteLine();
         }
 
         private static void MoveCreditBillToNextFileWG(string logFile, Int32 iCtr)

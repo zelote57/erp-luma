@@ -256,15 +256,15 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsEvent.AddEventLn("      applying ORNo".PadRight(15) + ":" + mclsSalesTransactionDetails.ORNo, true, mclsSysConfigDetails.WillWriteSystemLog);
                 }
 
-                clsSalesTransactions.Refund(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ORNo, -mclsSalesTransactionDetails.ItemSold, -mclsSalesTransactionDetails.QuantitySold, -mclsSalesTransactionDetails.GrossSales, -mclsSalesTransactionDetails.SubTotal, -mclsSalesTransactionDetails.NetSales, -mclsSalesTransactionDetails.ItemsDiscount, -mclsSalesTransactionDetails.SNRItemsDiscount, -mclsSalesTransactionDetails.PWDItemsDiscount, -mclsSalesTransactionDetails.OtherItemsDiscount, -mclsSalesTransactionDetails.Discount, -mclsSalesTransactionDetails.SNRDiscount, -mclsSalesTransactionDetails.PWDDiscount, -mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, -mclsSalesTransactionDetails.VAT, -mclsSalesTransactionDetails.VATableAmount, -mclsSalesTransactionDetails.NonVATableAmount, -mclsSalesTransactionDetails.VATExempt, -mclsSalesTransactionDetails.EVAT, -mclsSalesTransactionDetails.EVATableAmount, -mclsSalesTransactionDetails.NonEVATableAmount, -mclsSalesTransactionDetails.LocalTax, -mclsSalesTransactionDetails.AmountPaid, -CashPayment, -ChequePayment, -CreditCardPayment, -CreditPayment, -DebitPayment, -RewardPointsPayment, -RewardConvertedPayment, -BalanceAmount, -ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, -mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, mclsSalesTransactionDetails.CashierName);
+                clsSalesTransactions.Refund(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.ORNo, -mclsSalesTransactionDetails.ItemSold, -mclsSalesTransactionDetails.QuantitySold, -mclsSalesTransactionDetails.GrossSales, -mclsSalesTransactionDetails.SubTotal, -mclsSalesTransactionDetails.NetSales, -mclsSalesTransactionDetails.ItemsDiscount, -mclsSalesTransactionDetails.SNRItemsDiscount, -mclsSalesTransactionDetails.PWDItemsDiscount, -mclsSalesTransactionDetails.OtherItemsDiscount, -mclsSalesTransactionDetails.Discount, -mclsSalesTransactionDetails.SNRDiscount, -mclsSalesTransactionDetails.PWDDiscount, -mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, -mclsSalesTransactionDetails.VAT, -mclsSalesTransactionDetails.VATableAmount, -mclsSalesTransactionDetails.ZeroRatedSales, - mclsSalesTransactionDetails.NonVATableAmount, -mclsSalesTransactionDetails.VATExempt, -mclsSalesTransactionDetails.EVAT, -mclsSalesTransactionDetails.EVATableAmount, -mclsSalesTransactionDetails.NonEVATableAmount, -mclsSalesTransactionDetails.LocalTax, -mclsSalesTransactionDetails.AmountPaid, -CashPayment, -ChequePayment, -CreditCardPayment, -CreditPayment, -DebitPayment, -RewardPointsPayment, -RewardConvertedPayment, -BalanceAmount, -ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, -mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, mclsSalesTransactionDetails.CashierName);
 
                 //UpdateTerminalReportDelegate updateterminalDel = new UpdateTerminalReportDelegate(UpdateTerminalReport);
                 clsEvent.AddEventLn("[" + mclsSalesTransactionDetails.CashierName + "]      updating refund terminal report...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                UpdateTerminalReport(TransactionStatus.Refund, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                UpdateTerminalReport(TransactionStatus.Refund, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
                 //UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
                 clsEvent.AddEventLn("[" + mclsSalesTransactionDetails.CashierName + "]      updating redunf cashier report...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                UpdateCashierReport(TransactionStatus.Refund, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                UpdateCashierReport(TransactionStatus.Refund, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
                 // Sep 24, 2014 : update back the LastCheckInDate to min date
                 Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
@@ -371,15 +371,15 @@ namespace AceSoft.RetailPlus.Client.UI
 
                 // clsSalesTransactions.UpdateTerminalNo(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.TerminalNo);
                 // remove the above. Include the TerminalNo in clsSalesTransactions.Close below
-                clsSalesTransactions.Close(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.TerminalNo, mclsSalesTransactionDetails.ORNo, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, BalanceAmount, ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, mclsSalesTransactionDetails.CashierName, clsTransactionStatus);
+                clsSalesTransactions.Close(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.TerminalNo, mclsSalesTransactionDetails.ORNo, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.GrossSales, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.NetSales, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.SNRDiscount, mclsSalesTransactionDetails.PWDDiscount, mclsSalesTransactionDetails.OtherDiscount, mclsSalesTransactionDetails.TransDiscount, mclsSalesTransactionDetails.TransDiscountType, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, mclsSalesTransactionDetails.AmountPaid, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, BalanceAmount, ChangeAmount, PaymentType, mclsSalesTransactionDetails.DiscountCode, mclsSalesTransactionDetails.DiscountRemarks, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.ChargeAmount, mclsSalesTransactionDetails.ChargeCode, mclsSalesTransactionDetails.ChargeRemarks, mclsSalesTransactionDetails.CashierID, mclsSalesTransactionDetails.CashierName, clsTransactionStatus);
 
                 //UpdateTerminalReportDelegate updateterminalDel = new UpdateTerminalReportDelegate(UpdateTerminalReport);
                 clsEvent.AddEventLn("      updating terminal report...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                UpdateTerminalReport(clsTransactionStatus, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                UpdateTerminalReport(clsTransactionStatus, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
                 //UpdateCashierReportDelegate updatecashierDel = new UpdateCashierReportDelegate(UpdateCashierReport);
                 clsEvent.AddEventLn("      updating cashier's report...", true, mclsSysConfigDetails.WillWriteSystemLog);
-                UpdateCashierReport(clsTransactionStatus, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
+                UpdateCashierReport(clsTransactionStatus, mclsSalesTransactionDetails.ItemSold, mclsSalesTransactionDetails.QuantitySold, mclsSalesTransactionDetails.SubTotal, mclsSalesTransactionDetails.Discount, mclsSalesTransactionDetails.ItemsDiscount, mclsSalesTransactionDetails.SNRItemsDiscount, mclsSalesTransactionDetails.PWDItemsDiscount, mclsSalesTransactionDetails.OtherItemsDiscount, mclsSalesTransactionDetails.Charge, mclsSalesTransactionDetails.VAT, mclsSalesTransactionDetails.VATableAmount, mclsSalesTransactionDetails.ZeroRatedSales, mclsSalesTransactionDetails.NonVATableAmount, mclsSalesTransactionDetails.VATExempt, mclsSalesTransactionDetails.EVAT, mclsSalesTransactionDetails.EVATableAmount, mclsSalesTransactionDetails.NonEVATableAmount, mclsSalesTransactionDetails.LocalTax, CashPayment, ChequePayment, CreditCardPayment, CreditPayment, DebitPayment, RewardPointsPayment, RewardConvertedPayment, PaymentType);
 
                 // Sep 24, 2014 : update back the LastCheckInDate to min date
                 Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
@@ -872,14 +872,14 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsItemDetails.Amount = clsItemDetails.Amount / (1 + (mclsTerminalDetails.VAT / 100));
                     clsItemDetails.VatableAmount = 0;
                     clsItemDetails.NonVatableAmount = 0;
-                    clsItemDetails.VATExempt = clsItemDetails.GrossSales;
+                    clsItemDetails.VATExempt = clsItemDetails.GrossSales / (1 + (mclsTerminalDetails.VAT / 100));
                 }
                 else if (clsItemDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode && !mclsTerminalDetails.IsVATInclusive)
                 {
                     clsItemDetails.Amount = clsItemDetails.Amount / (1 + (mclsTerminalDetails.VAT / 100));
                     clsItemDetails.VatableAmount = 0;
                     clsItemDetails.NonVatableAmount = 0;
-                    clsItemDetails.VATExempt = clsItemDetails.GrossSales;
+                    clsItemDetails.VATExempt = clsItemDetails.GrossSales / (1 + (mclsTerminalDetails.VAT / 100));
                 }
                 //overwrite the discount if percentage
                 clsItemDetails.Discount = clsItemDetails.Amount * (clsItemDetails.ItemDiscount / 100);
@@ -1002,6 +1002,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 decimal decOtherItemsDiscount = 0;
                 decimal decVAT = 0;
                 decimal decVATableAmount = 0;
+                decimal decZeroRatedSales = 0;
                 decimal decNonVatableAmount = 0;
                 decimal decVatExempt = 0;
                 decimal decEVAT = 0;
@@ -1063,13 +1064,17 @@ namespace AceSoft.RetailPlus.Client.UI
                     // june 8, 2006 added && dr["Quantity"].ToString().IndexOf("RETURN") == -1) again.
                     // june 27, 2007 remove "&& dr["Quantity"].ToString().IndexOf("RETURN") == -1) again
                     // Sep 2, 2010 added to include Senior Citizen Discount 
-                    if (dr["DiscountCode"].ToString() == mclsTerminalDetails.SeniorCitizenDiscountCode)
+                    if (mclsSalesTransactionDetails.isZeroRated)
                     {
-                        decVatExempt += itemQuantity * itemPrice;  //itemTrueAmt + decItemsDiscount;
+                        decZeroRatedSales += decItemAmount;
+                    }
+                    else if (dr["DiscountCode"].ToString() == mclsTerminalDetails.SeniorCitizenDiscountCode)
+                    {
+                        decVatExempt += (itemQuantity * itemPrice) / (1 + (mclsTerminalDetails.VAT / 100));
                     }
                     else if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode && decItemsDiscount == 0)
                     {
-                        decVatExempt += itemQuantity * itemPrice;  //itemTrueAmt / (1 + (mclsTerminalDetails.VAT / 100));
+                        decVatExempt += (itemQuantity * itemPrice) / (1 + (mclsTerminalDetails.VAT / 100));
                     }
                     else if (Convert.ToDecimal(dr["VAT"]) != 0)
                     {
@@ -1233,16 +1238,18 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
 
                 //do an override to less the 
-                if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode)
-                {
-                    mclsSalesTransactionDetails.AmountDue = decSubTotal - decSubtotalVAT - (decVatExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT/100)) - decSubTotalDiscount + mclsSalesTransactionDetails.Charge + mclsSalesTransactionDetails.VAT;
-                    mclsSalesTransactionDetails.NetSales = decSubTotal - (decVatExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT/100)) - decSubTotalDiscount;
-                }
-                else
-                {
-                    mclsSalesTransactionDetails.AmountDue = decSubTotal - decSubtotalVAT - decSubTotalDiscount + mclsSalesTransactionDetails.Charge + mclsSalesTransactionDetails.VAT;
-                    mclsSalesTransactionDetails.NetSales = decSubTotal - decSubTotalDiscount;
-                }
+                //if (mclsSalesTransactionDetails.DiscountCode == mclsTerminalDetails.SeniorCitizenDiscountCode)
+                //{
+                //    mclsSalesTransactionDetails.AmountDue = decSubTotal - decSubtotalVAT - (decVatExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT/100)) - decSubTotalDiscount + mclsSalesTransactionDetails.Charge + mclsSalesTransactionDetails.VAT;
+                //}
+                //else
+                //{
+                //    mclsSalesTransactionDetails.AmountDue = decSubTotal - decSubtotalVAT - decSubTotalDiscount + mclsSalesTransactionDetails.Charge + mclsSalesTransactionDetails.VAT;
+                    
+                //}
+                mclsSalesTransactionDetails.AmountDue = decSubTotal - decSubtotalVAT - (decVatExempt * (mclsTerminalDetails.VAT / 100)) - decSubTotalDiscount + mclsSalesTransactionDetails.Charge + mclsSalesTransactionDetails.VAT;
+                mclsSalesTransactionDetails.NetSales = decSubTotal - (decVatExempt * (mclsTerminalDetails.VAT / 100)) - decSubTotalDiscount;
+
                 mclsSalesTransactionDetails.GrossSales = decGrossSales;
                 mclsSalesTransactionDetails.SubTotal = decSubTotal;
                 mclsSalesTransactionDetails.Discount = decSubTotalDiscount;
@@ -1254,6 +1261,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mclsSalesTransactionDetails.VATExempt = decVatExempt;
                 mclsSalesTransactionDetails.NonVATableAmount = decNonVatableAmount;
                 mclsSalesTransactionDetails.VATableAmount = decVATableAmount;
+                mclsSalesTransactionDetails.ZeroRatedSales = decZeroRatedSales;
                 mclsSalesTransactionDetails.VAT = decVAT;
                 mclsSalesTransactionDetails.EVAT = decEVAT;
                 mclsSalesTransactionDetails.EVATableAmount = decEVATableAmount;
@@ -1631,8 +1639,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
         #region UpdateTerminalReport
 
-        //public delegate void UpdateTerminalReportDelegate(TransactionStatus TransStatus, decimal SubTotal, decimal Discount, decimal Charge, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, PaymentTypes PaymentType);
-        public void UpdateTerminalReport(TransactionStatus TransStatus, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal Discount, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Charge, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, PaymentTypes PaymentType)
+        //public delegate void UpdateTerminalReportDelegate(TransactionStatus TransStatus, decimal SubTotal, decimal Discount, decimal Charge, decimal VAT, decimal VATableAmount, decimal ZeroRatedSales, decimal NonVATableAmount, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, PaymentTypes PaymentType);
+        public void UpdateTerminalReport(TransactionStatus TransStatus, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal Discount, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Charge, decimal VAT, decimal VATableAmount, decimal ZeroRatedSales, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, PaymentTypes PaymentType)
         {
             Int32 intNoOfCashTransactions = 0;
             Int32 intNoOfChequeTransactions = 0;
@@ -1714,6 +1722,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsTerminalReportDetails.TotalCharge = Charge;
                 clsTerminalReportDetails.VAT = VAT;
                 clsTerminalReportDetails.VATableAmount = VATableAmount;
+                clsTerminalReportDetails.ZeroRatedSales = ZeroRatedSales;
                 clsTerminalReportDetails.NonVATableAmount = NonVATableAmount;
                 clsTerminalReportDetails.VATExempt = VATExempt;
                 clsTerminalReportDetails.EVAT = EVAT;
@@ -1772,6 +1781,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsTerminalReportDetails.TotalCharge = -Charge;
                 clsTerminalReportDetails.VAT = -VAT;
                 clsTerminalReportDetails.VATableAmount = -VATableAmount;
+                clsTerminalReportDetails.ZeroRatedSales = -ZeroRatedSales;
                 clsTerminalReportDetails.NonVATableAmount = -NonVATableAmount;
                 clsTerminalReportDetails.VATExempt = -VATExempt;
                 clsTerminalReportDetails.EVAT = -EVAT;
@@ -1829,8 +1839,8 @@ namespace AceSoft.RetailPlus.Client.UI
 
         #region UpdateCashierReport
 
-        //public delegate void UpdateCashierReportDelegate(TransactionStatus TransStatus, decimal SubTotal, decimal Discount, decimal Charge, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal EVAT, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, PaymentTypes PaymentType);
-        public void UpdateCashierReport(TransactionStatus TransStatus, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal Discount, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Charge, decimal VAT, decimal VATableAmount, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, PaymentTypes PaymentType)
+        //public delegate void UpdateCashierReportDelegate(TransactionStatus TransStatus, decimal SubTotal, decimal Discount, decimal Charge, decimal VAT, decimal VATableAmount, decimal ZeroRatedSales, decimal NonVATableAmount, decimal EVAT, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, PaymentTypes PaymentType);
+        public void UpdateCashierReport(TransactionStatus TransStatus, decimal ItemSold, decimal QuantitySold, decimal SubTotal, decimal Discount, decimal ItemsDiscount, decimal SNRItemsDiscount, decimal PWDItemsDiscount, decimal OtherItemsDiscount, decimal Charge, decimal VAT, decimal VATableAmount, decimal ZeroRatedSales, decimal NonVATableAmount, decimal VATExempt, decimal EVAT, decimal EVATableAmount, decimal NonEVATableAmount, decimal LocalTax, decimal CashPayment, decimal ChequePayment, decimal CreditCardPayment, decimal CreditPayment, decimal DebitPayment, decimal RewardPointsPayment, decimal RewardConvertedPayment, PaymentTypes PaymentType)
         {
             Int32 intNoOfCashTransactions = 0;
             Int32 intNoOfChequeTransactions = 0;
@@ -1917,6 +1927,8 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsCashierReportDetails.TotalCharge = Charge;
                 clsCashierReportDetails.VAT = VAT;
                 clsCashierReportDetails.VATableAmount = VATableAmount;
+                clsCashierReportDetails.ZeroRatedSales = ZeroRatedSales;
+
                 clsCashierReportDetails.NonVATableAmount = NonVATableAmount;
                 clsCashierReportDetails.VATExempt = VATExempt;
                 clsCashierReportDetails.EVAT = EVAT;
@@ -1977,6 +1989,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 clsCashierReportDetails.TotalCharge = -Charge;
                 clsCashierReportDetails.VAT = -VAT;
                 clsCashierReportDetails.VATableAmount = -VATableAmount;
+                clsCashierReportDetails.ZeroRatedSales = -ZeroRatedSales;
                 clsCashierReportDetails.NonVATableAmount = -NonVATableAmount;
                 clsCashierReportDetails.VATExempt = -VATExempt;
                 clsCashierReportDetails.EVAT = -EVAT;
@@ -2200,10 +2213,6 @@ namespace AceSoft.RetailPlus.Client.UI
             {
                 stRetValue = mclsSalesTransactionDetails.ChangeAmount.ToString("#,##0.#0");
             }
-            else if (stReceiptFormat == ReceiptFieldFormats.VATZeroRated)
-            {
-                stRetValue = "0.00";
-            }
             else if (stReceiptFormat == ReceiptFieldFormats.NonVATableAmount)
             {
                 stRetValue = mclsSalesTransactionDetails.NonVATableAmount.ToString("#,##0.#0");
@@ -2215,6 +2224,10 @@ namespace AceSoft.RetailPlus.Client.UI
             else if (stReceiptFormat == ReceiptFieldFormats.VATableAmount)
             {
                 stRetValue = mclsSalesTransactionDetails.VATableAmount.ToString("#,##0.#0");
+            }
+            else if (stReceiptFormat == ReceiptFieldFormats.ZeroRatedSales)
+            {
+                stRetValue = mclsSalesTransactionDetails.ZeroRatedSales.ToString("#,##0.#0");
             }
             else if (stReceiptFormat == ReceiptFieldFormats.VAT)
             {
@@ -3235,6 +3248,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     drNew["Discount"] = clsSalesTransactionDetails.Discount;
                     drNew["VAT"] = clsSalesTransactionDetails.VAT;
                     drNew["VATableAmount"] = clsSalesTransactionDetails.VATableAmount;
+                    //drNew["ZeroRatedSales"] = clsSalesTransactionDetails.ZeroRatedSales;
                     drNew["LocalTax"] = clsSalesTransactionDetails.LocalTax;
                     drNew["AmountPaid"] = clsSalesTransactionDetails.AmountPaid;
                     drNew["CashPayment"] = clsSalesTransactionDetails.CashPayment;
@@ -3444,6 +3458,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         drNew["Discount"] = clsSalesTransactionDetails.Discount;
                         drNew["VAT"] = clsSalesTransactionDetails.VAT;
                         drNew["VATableAmount"] = clsSalesTransactionDetails.VATableAmount;
+                        // drNew["ZeroRatedSales"] = clsSalesTransactionDetails.ZeroRatedSales;
                         drNew["LocalTax"] = clsSalesTransactionDetails.LocalTax;
                         drNew["AmountPaid"] = clsSalesTransactionDetails.AmountPaid;
                         drNew["CashPayment"] = clsSalesTransactionDetails.CashPayment;
@@ -3642,6 +3657,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         drNew["Discount"] = clsSalesTransactionDetails.Discount;
                         drNew["VAT"] = clsSalesTransactionDetails.VAT;
                         drNew["VATableAmount"] = clsSalesTransactionDetails.VATableAmount;
+                        //drNew["ZeroRatedSales"] = clsSalesTransactionDetails.ZeroRatedSales;
                         drNew["LocalTax"] = clsSalesTransactionDetails.LocalTax;
                         drNew["AmountPaid"] = clsSalesTransactionDetails.AmountPaid;
                         drNew["CashPayment"] = clsSalesTransactionDetails.CashPayment;
@@ -3860,6 +3876,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         drNew["Discount"] = clsSalesTransactionDetails.Discount;
                         drNew["VAT"] = clsSalesTransactionDetails.VAT;
                         drNew["VATableAmount"] = clsSalesTransactionDetails.VATableAmount;
+                        //drNew["ZeroRatedSales"] = clsSalesTransactionDetails.ZeroRatedSales;
                         drNew["LocalTax"] = clsSalesTransactionDetails.LocalTax;
                         drNew["AmountPaid"] = clsSalesTransactionDetails.AmountPaid;
                         drNew["CashPayment"] = clsSalesTransactionDetails.CashPayment;
@@ -5518,7 +5535,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 msbToPrint.Append("(-) Service Charge".PadRight(21) + ":" + (Details.TotalCharge * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("".PadRight(21) + ":" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22, ' ') + Environment.NewLine);
                 msbToPrint.Append("Total Amount".PadRight(21) + ":" + (Details.GrossSales * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
-                msbToPrint.Append(("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt").PadRight(21) + ":" + (Details.VATExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT / 100) * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
+                msbToPrint.Append(("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt").PadRight(21) + ":" + (Details.VATExempt * (mclsTerminalDetails.VAT / 100) * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("(-) Discount".PadRight(21) + ":" + ((Details.SubTotalDiscount + Details.ItemsDiscount) * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("".PadRight(21) + ":" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22, ' ') + Environment.NewLine);
                 msbToPrint.Append("Net Sales".PadRight(21) + ":" + (Details.NetSales * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
@@ -5548,7 +5565,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 msbToPrint.Append(CenterString("Taxables Breakdown", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                 msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
                 msbToPrint.Append("VAT Exempt".PadRight(21) + ":" + (Details.VATExempt * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
-                msbToPrint.Append("VAT Zero Rated".PadRight(21) + ":" + "0.00".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
+                msbToPrint.Append("VAT Zero Rated".PadRight(21) + ":" + (Details.ZeroRatedSales * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("NonVATable Amount".PadRight(21) + ":" + (Details.NonVATableAmount * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("VATable Amount".PadRight(21) + ":" + (Details.VATableAmount * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("VAT".PadRight(21) + ":" + (Details.VAT * ((100 - Details.TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
@@ -5854,7 +5871,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 msbToPrint.Append((clsTerminalReportDetails.GrossSales - clsTerminalReportDetails.TotalCharge).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21));
                 msbToPrint.Append(Environment.NewLine);
                 msbToPrint.Append(("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt").PadRight(20) + ":");
-                msbToPrint.Append((clsTerminalReportDetails.VATExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21));
+                msbToPrint.Append((clsTerminalReportDetails.VATExempt * (mclsTerminalDetails.VAT / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21));
                 msbToPrint.Append(Environment.NewLine);
                 msbToPrint.Append("(-) Discount".PadRight(20) + ":");
                 msbToPrint.Append((clsTerminalReportDetails.SubTotalDiscount + clsTerminalReportDetails.ItemsDiscount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21));
@@ -6000,7 +6017,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 msbToPrint.Append((clsCashierReportDetails.GrossSales - clsCashierReportDetails.TotalCharge).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21));
                 msbToPrint.Append(Environment.NewLine);
                 msbToPrint.Append(("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt").PadRight(20) + ":");
-                msbToPrint.Append((clsCashierReportDetails.VATExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21));
+                msbToPrint.Append((clsCashierReportDetails.VATExempt * (mclsTerminalDetails.VAT / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21));
                 msbToPrint.Append(Environment.NewLine);
                 msbToPrint.Append("(-) Discount".PadRight(20) + ":");
                 msbToPrint.Append((clsCashierReportDetails.SubTotalDiscount + clsCashierReportDetails.ItemsDiscount).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 21));
@@ -6619,7 +6636,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 msbToPrint.Append("(-) Service Charge".PadRight(21) + ":" + (Details.TotalCharge * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("".PadRight(21) + ":" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22, ' ') + Environment.NewLine);
                 msbToPrint.Append("Total Amount".PadRight(21) + ":" + (Details.GrossSales * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
-                msbToPrint.Append(("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt").PadRight(21) + ":" + (Details.VATExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT / 100) * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
+                msbToPrint.Append(("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt").PadRight(21) + ":" + (Details.VATExempt * (mclsTerminalDetails.VAT / 100) * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("(-) Discount".PadRight(21) + ":" + ((Details.SubTotalDiscount + Details.ItemsDiscount) * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("".PadRight(21) + ":" + "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22, ' ') + Environment.NewLine);
                 msbToPrint.Append("Net Sales".PadRight(21) + ":" + (Details.NetSales * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
@@ -6628,7 +6645,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 msbToPrint.Append(CenterString("Taxables Breakdown", mclsTerminalDetails.MaxReceiptWidth) + Environment.NewLine);
                 msbToPrint.Append("-".PadRight(mclsTerminalDetails.MaxReceiptWidth, '-') + Environment.NewLine);
                 msbToPrint.Append("VAT Exempt".PadRight(21) + ":" + (Details.VATExempt * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
-                msbToPrint.Append("VAT Zero Rated".PadRight(21) + ":" + "0.00".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
+                msbToPrint.Append("VAT Zero Rated".PadRight(21) + ":" + (Details.ZeroRatedSales * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("NonVATable Amount".PadRight(21) + ":" + (Details.NonVATableAmount * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("VATable Amount".PadRight(21) + ":" + (Details.VATableAmount * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);
                 msbToPrint.Append("VAT".PadRight(21) + ":" + (Details.VAT * ((100 - TrustFund) / 100)).ToString("#,##0.#0").PadLeft(mclsTerminalDetails.MaxReceiptWidth - 22) + Environment.NewLine);

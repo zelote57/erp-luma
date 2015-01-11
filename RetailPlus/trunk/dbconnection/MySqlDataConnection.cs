@@ -46,11 +46,11 @@ namespace AceSoft.RetailPlus
             }
         }
 
-        public MySqlConnection GetConnection(string ServerIP = "", string DBPort = "", string DBName = "")
+        public MySqlConnection GetConnection(string ServerIP = "", string DBPort = "", string DBName = "", Int32 ConnectionTimeOut=180, string username= "", string password="")
         {
             if (mConnection == null || mConnection.State != System.Data.ConnectionState.Open)
             {
-                mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString(ServerIP, DBPort, DBName));
+                mConnection = new MySqlConnection(AceSoft.RetailPlus.DBConnection.ConnectionString(ServerIP, DBPort, DBName, ConnectionTimeOut, username, password));
                 mConnection.Open();
 
                 mTransaction = (MySqlTransaction)mConnection.BeginTransaction();

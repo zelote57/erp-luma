@@ -107,5 +107,5 @@ namespace AceSoft.RetailPlus.Security._AccessGroup
 		}
 
 		#endregion
-}
+    }
 }

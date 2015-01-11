@@ -57,14 +57,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        public Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            set
-            {
-                mclsTerminalDetails = value;
-            }
-        }
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
         #endregion
 
@@ -73,6 +66,12 @@ namespace AceSoft.RetailPlus.Client.UI
         public ResumeTransactionWnd()
         {
             InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         protected override void Dispose(bool disposing)
@@ -509,8 +508,8 @@ namespace AceSoft.RetailPlus.Client.UI
             {
                 Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
 
-                Int64 iCashierID = mclsTerminalDetails.ShowOneTerminalSuspendedTransactions ? mCashierID : 0;
-                System.Data.DataTable dt = clsTransactions.ListSuspendedDataTable(mclsTerminalDetails.BranchID, mclsTerminalDetails.TerminalNo, iCashierID, mclsTerminalDetails.ShowOnlyPackedTransactions);
+                Int64 iCashierID = TerminalDetails.ShowOneTerminalSuspendedTransactions ? mCashierID : 0;
+                System.Data.DataTable dt = clsTransactions.ListSuspendedDataTable(TerminalDetails.BranchID, TerminalDetails.TerminalNo, iCashierID, TerminalDetails.ShowOnlyPackedTransactions);
                 clsTransactions.CommitAndDispose();
 
                 this.dgStyle.MappingName = dt.TableName;
@@ -537,7 +536,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mDetails.TransactionNo = dgItems[iRow, 1].ToString();
 
                 Data.SalesTransactions clsTransactions = new Data.SalesTransactions();
-                mDetails = clsTransactions.Details(mDetails.TransactionNo, mclsTerminalDetails.TerminalNo, mclsTerminalDetails.BranchID);
+                mDetails = clsTransactions.Details(mDetails.TransactionNo, TerminalDetails.TerminalNo, TerminalDetails.BranchID);
                 clsTransactions.Resume(mDetails.TransactionID);
 
                 Data.SalesTransactionItems clsItems = new Data.SalesTransactionItems(clsTransactions.Connection, clsTransactions.Transaction);

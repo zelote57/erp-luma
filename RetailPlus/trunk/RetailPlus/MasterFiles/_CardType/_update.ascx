@@ -46,6 +46,7 @@
 			<asp:Label id="lblCreditLatePenaltyCharge" runat="server" Visible="False"></asp:Label>
 			<asp:Label id="lblCreditMinimumAmountDue" runat="server" Visible="False"></asp:Label>
 			<asp:Label id="lblCreditMinimumPercentageDue" runat="server" Visible="False"></asp:Label>
+            <asp:CheckBox id="chkExemptInTerminalCharge" runat="server" Text=" Check if exempted in Terminal Charges (Employee)" Checked="False" Visible="false"></asp:CheckBox>
             <asp:CheckBox id="chkWithGuarantor" runat="server" Text=" Check if requires Guarantor." Checked="False" Visible="false"></asp:CheckBox>
             <asp:Label id="lblCreatedOn" runat="server" Visible="False"></asp:Label>
             

@@ -438,1021 +438,938 @@ namespace AceSoft.RetailPlus.Data
 
 		public bool ApplyPromoValue(Int64 ContactID, Int64 ProductID, Int64 VariationMatrixID, out PromoTypes PromoType, out decimal PromoQuantity, out decimal PromoValue, out bool InPercent, int BranchID = 0)
 		{
-			PromoType = PromoTypes.NotApplicable;
-			PromoQuantity = 0;
-			PromoValue = 0;
-			InPercent = false;
+            PromoType = PromoTypes.NotApplicable;
+            PromoQuantity = 0;
+            PromoValue = 0;
+            InPercent = false;
 
-			bool boHasPromo = false;
+            bool boHasPromo = false;
 
-			Data.Products clsProduct = new Data.Products(base.Connection, base.Transaction);
-            Data.ProductDetails clsProductDetails = clsProduct.Details1(BranchID, ProductID);
+            try
+            {
+                Data.Products clsProduct = new Data.Products(base.Connection, base.Transaction);
+                Data.ProductDetails clsProductDetails = clsProduct.Details1(BranchID, ProductID);
 
-			Int64 ProductSubGroupID = clsProductDetails.ProductSubGroupID;
-			Int64 ProductGroupID = clsProductDetails.ProductGroupID;
+                Int64 ProductSubGroupID = clsProductDetails.ProductSubGroupID;
+                Int64 ProductGroupID = clsProductDetails.ProductGroupID;
 
-			string SQL=	"SELECT " +
-							"PromoID  " +
-						"FROM tblPromo " +
-						"WHERE 1=1 " +
-							"AND Status = 1 " +
-							"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-							"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			MySqlCommand cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			MySqlDataReader myReader = base.ExecuteReader(cmd, System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				boHasPromo = true;
-			}
-			myReader.Close();
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			if (boHasPromo == false)	//return agad if no Promo is affected by date
-				return boHasPromo;
+                string SQL = "SELECT " +
+                                "PromoID  " +
+                            "FROM tblPromo " +
+                            "WHERE 1=1 " +
+                                "AND Status = 1 " +
+                                "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                                "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 
-			MySqlParameter prmContactID = new MySqlParameter("@ContactID",MySqlDbType.Int64);
-			prmContactID.Value = ContactID;
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			MySqlParameter prmProductGroupID = new MySqlParameter("@ProductGroupID",MySqlDbType.Int64);
-			prmProductGroupID.Value = ProductGroupID;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    boHasPromo = true;
+                    break;
+                }
 
-			MySqlParameter prmProductSubGroupID = new MySqlParameter("@ProductSubGroupID",MySqlDbType.Int64);
-			prmProductSubGroupID.Value = ProductSubGroupID;
+                if (boHasPromo == false)	//return agad if no Promo is affected by date
+                    return boHasPromo;
 
-			MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);
-			prmProductID.Value = ProductID;
+                /*******************************Up to Contact, Group, Sub, Prod and VarM ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = @ContactID " +
+                            "AND ProductGroupID = @ProductGroupID " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = @VariationMatrixID " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 
-			MySqlParameter prmVariationMatrixID = new MySqlParameter("@VariationMatrixID",MySqlDbType.Int64);
-			prmVariationMatrixID.Value = VariationMatrixID;
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			/*******************************Up to Contact, Group, Sub, Prod and VarM ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = @ContactID " +
-						"AND ProductGroupID = @ProductGroupID " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = @VariationMatrixID " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmContactID);
-			cmd.Parameters.Add(prmProductGroupID);
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
-			cmd.Parameters.Add(prmVariationMatrixID);
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			/*******************************Up to Contact, Sub, Prod and VariationsMatrix ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = @ContactID " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = @VariationMatrixID " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmContactID);
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
-			cmd.Parameters.Add(prmVariationMatrixID);
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                /*******************************Up to Contact, Sub, Prod and VariationsMatrix ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = @ContactID " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = @VariationMatrixID " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 
-			/*******************************Up to Contact, Prod and VariationsMatrix ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = @ContactID " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = 0 " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = @VariationMatrixID " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmContactID);
-			cmd.Parameters.Add(prmProductID);
-			cmd.Parameters.Add(prmVariationMatrixID);
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
 
-			/*******************************Up to Contact, VariationsMatrix ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = @ContactID " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = 0 " +
-						"AND ProductID = 0 " +
-						"AND VariationMatrixID = @VariationMatrixID " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmContactID);
-			cmd.Parameters.Add(prmVariationMatrixID);
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
 
-			/*******************************Up to Contact, Group, Sub, Prod ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = @ContactID " +
-						"AND ProductGroupID = @ProductGroupID " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmContactID);
-			cmd.Parameters.Add(prmProductGroupID);
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
+                /*******************************Up to Contact, Prod and VariationsMatrix ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = @ContactID " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = 0 " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = @VariationMatrixID " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			/*******************************Up to Contact, Sub, Prod ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = @ContactID " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmContactID);
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			/*******************************Up to Contact, Prod ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = @ContactID " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = 0 " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmContactID);
-			cmd.Parameters.Add(prmProductID);
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                /*******************************Up to Contact, VariationsMatrix ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = @ContactID " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = 0 " +
+                            "AND ProductID = 0 " +
+                            "AND VariationMatrixID = @VariationMatrixID " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 
-			/*******************************Up to Contact, Group, Sub only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = @ContactID " +
-						"AND ProductGroupID = @ProductGroupID " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = 0 " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmContactID);
-			cmd.Parameters.Add(prmProductGroupID);
-			cmd.Parameters.Add(prmProductSubGroupID);
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
 
-			/*******************************Up to Contact, Sub only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = @ContactID " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = 0 " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmContactID);
-			cmd.Parameters.Add(prmProductSubGroupID);
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
 
-			/*******************************Up to Contact only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = @ContactID " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = 0 " +
-						"AND ProductID = 0 " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmContactID);
+                /*******************************Up to Contact, Group, Sub, Prod ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = @ContactID " +
+                            "AND ProductGroupID = @ProductGroupID " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			/*******************************Up to Group, Sub, Prod and VarM ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID = @ProductGroupID " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = @VariationMatrixID " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmProductGroupID);
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
-			cmd.Parameters.Add(prmVariationMatrixID);
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			/*******************************Up to Sub, Prod and VariationMatrix ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID =0 " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = @VariationMatrixID " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
-			cmd.Parameters.Add(prmVariationMatrixID);
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                /*******************************Up to Contact, Sub, Prod ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = @ContactID " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 
-			/*******************************Up to Prod and VariationMatrix ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = 0 " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = @VariationMatrixID " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmProductID);
-			cmd.Parameters.Add(prmVariationMatrixID);
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-			/*******************************Up to VariationsMatrix ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = 0 " +
-						"AND ProductID = 0 " +
-						"AND VariationMatrixID = @VariationMatrixID " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmVariationMatrixID);
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
 
-			/*******************************Up to group, Sub, Prod ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID = @ProductGroupID " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmProductGroupID);
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
+                /*******************************Up to Contact, Prod ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = @ContactID " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = 0 " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			/*******************************Up to Sub, Prod ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			/*******************************Up to group, Sub, Prod and VariationMatrix ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = 0 " +
-						"AND ProductID = @ProductID " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmProductID);
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                /*******************************Up to Contact, Group, Sub only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = @ContactID " +
+                            "AND ProductGroupID = @ProductGroupID " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = 0 " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 
-			/*******************************Up to group, Sub ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID = @ProductGroupID " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = 0 " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmProductGroupID);
-			cmd.Parameters.Add(prmProductSubGroupID);
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
 
-			/*******************************Up to Sub ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = @ProductSubGroupID " +
-						"AND ProductID = 0 " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmProductGroupID);
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
-			cmd.Parameters.Add(prmVariationMatrixID);
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
 
-			/*******************************Up to group ID only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID = @ProductGroupID " +
-						"AND ProductSubGroupID = 0 " +
-						"AND ProductID = 0 " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmProductGroupID);
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
-			cmd.Parameters.Add(prmVariationMatrixID);
+                /*******************************Up to Contact, Sub only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = @ContactID " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = 0 " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-				PromoType = (PromoTypes) Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-			/*******************************Up to all only*****************************/
-			SQL=	"SELECT " +
-						"PromoItemsID, " + 
-						"a.PromoID, " +
-						"PromoTypeID, " +
-						"ProductGroupID, " +
-						"ProductSubGroupID, " +
-						"ProductID,  " +
-						"VariationMatrixID, " +
-						"Quantity,  " +
-						"PromoValue,  " +
-						"InPercent  " +
-					"FROM tblPromoItems a  " +
-					"INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
-					"WHERE ContactID = 0 " +
-						"AND ProductGroupID = 0 " +
-						"AND ProductSubGroupID = 0 " +
-						"AND ProductID = 0 " +
-						"AND VariationMatrixID = 0 " +
-						"AND Status = 1 " +
-						"AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
-						"AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
-				  
-			cmd = new MySqlCommand();
-			
-			
-			cmd.CommandType = System.Data.CommandType.Text;
-			cmd.CommandText = SQL;
-			
-			cmd.Parameters.Add(prmProductGroupID);
-			cmd.Parameters.Add(prmProductSubGroupID);
-			cmd.Parameters.Add(prmProductID);
-			cmd.Parameters.Add(prmVariationMatrixID);
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
 
-			myReader = (MySqlDataReader) cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult);
-			
-			while (myReader.Read())
-			{
-                PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), myReader.GetString("PromoTypeID"));
-				PromoQuantity = myReader.GetDecimal("Quantity");
-				PromoValue = myReader.GetDecimal("PromoValue");
-				InPercent = myReader.GetBoolean("InPercent");
-				myReader.Close();
-				return boHasPromo;
-			}
-			myReader.Close();
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to Contact only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = @ContactID " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = 0 " +
+                            "AND ProductID = 0 " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to Group, Sub, Prod and VarM ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID = @ProductGroupID " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = @VariationMatrixID " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to Sub, Prod and VariationMatrix ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID =0 " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = @VariationMatrixID " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to Prod and VariationMatrix ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = 0 " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = @VariationMatrixID " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to VariationsMatrix ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = 0 " +
+                            "AND ProductID = 0 " +
+                            "AND VariationMatrixID = @VariationMatrixID " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@VariationMatrixID", VariationMatrixID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to group, Sub, Prod ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID = @ProductGroupID " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to Sub, Prod ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to group, Sub, Prod and VariationMatrix ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = 0 " +
+                            "AND ProductID = @ProductID " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to group, Sub ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID = @ProductGroupID " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = 0 " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to Sub ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = @ProductSubGroupID " +
+                            "AND ProductID = 0 " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@ProductSubGroupID", ProductSubGroupID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to group ID only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID = @ProductGroupID " +
+                            "AND ProductSubGroupID = 0 " +
+                            "AND ProductID = 0 " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@ProductGroupID", ProductGroupID);
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+                /*******************************Up to all only*****************************/
+                SQL = "SELECT " +
+                            "PromoItemsID, " +
+                            "a.PromoID, " +
+                            "PromoTypeID, " +
+                            "ProductGroupID, " +
+                            "ProductSubGroupID, " +
+                            "ProductID,  " +
+                            "VariationMatrixID, " +
+                            "Quantity,  " +
+                            "PromoValue,  " +
+                            "InPercent  " +
+                        "FROM tblPromoItems a  " +
+                        "INNER JOIN tblPromo b ON a.PromoID = b.PromoID " +
+                        "WHERE ContactID = 0 " +
+                            "AND ProductGroupID = 0 " +
+                            "AND ProductSubGroupID = 0 " +
+                            "AND ProductID = 0 " +
+                            "AND VariationMatrixID = 0 " +
+                            "AND Status = 1 " +
+                            "AND DATE_FORMAT(StartDate, '%Y-%m-%d %H:%i') <= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') " +
+                            "AND DATE_FORMAT(EndDate, '%Y-%m-%d %H:%i') >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i');";
+
+                cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = SQL;
+                dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    PromoType = (PromoTypes)Enum.Parse(typeof(PromoTypes), dr["PromoTypeID"].ToString());
+                    PromoQuantity = decimal.Parse(dr["Quantity"].ToString());
+                    PromoValue = decimal.Parse(dr["PromoValue"].ToString());
+                    InPercent = bool.Parse(dr["InPercent"].ToString());
+                    return boHasPromo;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                base.ThrowException(ex);
+            }
 			return false;
 		}
 		

@@ -216,7 +216,6 @@
     <None Include="images\psd\yellow_button_dark_small.psd" />
     <None Include="images\psd\yellow_button_dark_tiny.psd" />
     <None Include="RetailPlusClient_TemporaryKey.pfx" />
-    <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -232,13 +231,7 @@
     <Compile Include="SingleInstance.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TaskBarWnd.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="UI\ChargeWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ForwarderWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\DepositWnd.cs">
@@ -248,9 +241,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\DiscountWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ItemSelectWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\MainWnd.cs">
@@ -263,12 +253,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\SplashWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\TransactionReturnItemSelectWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\WaiterSelectWnd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\WithholdWnd.cs">
@@ -549,10 +533,6 @@
       <DependentUpon>ChargeWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ForwarderWnd.resx">
-      <DependentUpon>ForwarderWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\DepositWnd.resx">
       <DependentUpon>DepositWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -563,10 +543,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DiscountWnd.resx">
       <DependentUpon>DiscountWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemSelectWnd.resx">
-      <DependentUpon>ItemSelectWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainWnd.resx">
@@ -583,14 +559,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SplashWnd.resx">
       <DependentUpon>SplashWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\TransactionReturnItemSelectWnd.resx">
-      <DependentUpon>TransactionReturnItemSelectWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\WaiterSelectWnd.resx">
-      <DependentUpon>WaiterSelectWnd.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\WithholdWnd.resx">

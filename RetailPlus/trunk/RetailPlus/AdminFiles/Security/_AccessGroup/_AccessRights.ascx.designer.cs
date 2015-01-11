@@ -13,24 +13,6 @@ namespace AceSoft.RetailPlus.Security._AccessGroup {
     public partial class @__AccessRights {
         
         /// <summary>
-        /// imgSaveBack control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgSaveBack;
-        
-        /// <summary>
-        /// cmdSaveBack control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSaveBack;
-        
-        /// <summary>
         /// imgApply control.
         /// </summary>
         /// <remarks>

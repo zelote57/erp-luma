@@ -8706,8 +8706,26 @@ ALTER TABLE tblTransactions ADD PARTITION (
 			SUBPARTITION sNov2017,
 			SUBPARTITION sDec2017) ) ;
 
-ALTER TABLE tblTransactions ADD `isZerorated` TINYINT(1) NOT NULL DEFAULT 0;
+/*********************************  v_4.0.1.23.sql END  *******************************************************/ 
 
+UPDATE tblTerminal SET DBVersion = '4.0.1.24';
+
+ALTER TABLE tblTransactions ADD `isZeroRated` TINYINT(1) NOT NULL DEFAULT 0;
+
+ALTER TABLE tblTransactions ADD `ZeroRatedSales` DECIMAL(18,3) NOT NULL DEFAULT 0;
+UPDATE tblTransactions SET ZeroRatedSales=SubTotal, VATableAmount=0, VAT=0 WHERE isZeroRated = 1;
+
+ALTER TABLE tblTerminalReport ADD `ZeroRatedSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
+ALTER TABLE tblTerminalReportHistory ADD `ZeroRatedSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
+ALTER TABLE tblCashierReport ADD `ZeroRatedSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
+ALTER TABLE tblCashierReportHistory ADD `ZeroRatedSales` DECIMAL(18,3) NOT NULL DEFAULT 0 COMMENT 'Use for ZeroRated';
+
+ALTER TABLE tblTransactions DROP `ZeroRatedVAT`;
+ALTER TABLE tblTransactionItems DROP `ZeroRatedVAT`;
+ALTER TABLE tblTerminalReport DROP `ZeroRatedVAT`;
+ALTER TABLE tblTerminalReportHistory DROP `ZeroRatedVAT`;
+ALTER TABLE tblCashierReport DROP `ZeroRatedVAT`;
+ALTER TABLE tblCashierReportHistory DROP `ZeroRatedVAT`;
 
 -- Notes: Please read
 -- run the retailplus_proc.sql

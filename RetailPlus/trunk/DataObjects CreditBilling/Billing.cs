@@ -8,6 +8,8 @@ using System.Data;
 namespace AceSoft.RetailPlus.Data
 {
 
+    #region BillingDetails
+
     [StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
          PublicKey = "002400000480000094000000060200000024000" +
          "052534131000400000100010053D785642F9F960B43157E0380" +
@@ -16,9 +18,6 @@ namespace AceSoft.RetailPlus.Data
          "684874612CB9B8DB7A0339400A9C4E68277884B07817363D242" +
          "E3696F9FACDBEA831810AE6DC9EDCA91A7B5DA12FE7BF65D113" +
          "FF52834EAFB5A7A1FDFD5851A3")]
-
-    #region BillingDetails
-
     public struct BillingDetails
     {
         public long CreditBillHeaderID;
@@ -53,7 +52,6 @@ namespace AceSoft.RetailPlus.Data
     }
 
     #endregion
-
 
     [StrongNameIdentityPermissionAttribute(SecurityAction.LinkDemand,
          PublicKey = "002400000480000094000000060200000024000" +
@@ -121,7 +119,7 @@ namespace AceSoft.RetailPlus.Data
 
         private string SQLSelect()
         {
-            string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,CBH.GuarantorID ,IFNULL(GUA.ContactName,'''') AS GuarantorName " +
+            string stSQL = "SELECT CreditBillHeaderID ,CBH.CreditBillID ,CBH.GuarantorID ,IFNULL(GUA.ContactCode,'''') AS GuarantorCode ,IFNULL(GUA.ContactName,'''') AS GuarantorName " +
                                   ",CBH.ContactID ,CBH.CreditLimit ,CBH.RunningCreditAmt ,CBH.CurrMonthCreditAmt ,CBH.CurrMonthAmountPaid ,CBH.TotalBillCharges ,CBH.CurrentDueAmount ,CBH.MinimumAmountDue " +
                                   ",CBH.Prev1MoCurrentDueAmount ,CBH.Prev1MoMinimumAmountDue ,CBH.Prev1MoCurrMonthAmountPaid ,CBH.Prev2MoCurrentDueAmount ,CBH.CurrentPurchaseAmt ,CBH.BeginningBalance ,CBH.EndingBalance " +
                                   ",CreditPaymentDueDate " +
@@ -178,7 +176,7 @@ namespace AceSoft.RetailPlus.Data
 
         #region Details
 
-        public BillingDetails Details(long CustomerID)
+        public BillingDetails Details(Int64 CustomerID, DateTime LastBillingDate, bool CheckIsBillPrinted = false, bool IsBillPrinted = false)
         {
             try
             {
@@ -186,12 +184,22 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL = SQLSelect();
-                SQL += "WHERE IsBillPrinted = 0 AND CBL.BillingDate = (SELECT MAX(BillingDate) FROM tblCreditBills) ";
-                SQL += "AND tblContacts.ContactID = @CustomerID;";
+                SQL += "WHERE 1=1 ";
 
+                SQL += CheckIsBillPrinted ? (IsBillPrinted ? "AND IsBillPrinted = 1 " : "AND IsBillPrinted = 0 ") : "";
+
+                if (LastBillingDate == Constants.C_DATE_MIN_VALUE)
+                {
+                    SQL += "AND CBL.BillingDate = (SELECT MAX(BillingDate) FROM tblCreditBills) ";
+                }
+                else
+                {
+                    SQL += "AND CBL.BillingDate = @BillingDate ";
+                    cmd.Parameters.AddWithValue("BillingDate", LastBillingDate);
+                }
                 if (CustomerID != 0)
                 {
-                    SQL += "AND tblContacts.ContactID = @ContactID ";
+                    SQL += "AND CUS.ContactID = @ContactID ";
                     cmd.Parameters.AddWithValue("ContactID", CustomerID);
                 }
 
@@ -202,6 +210,7 @@ namespace AceSoft.RetailPlus.Data
                 BillingDetails Details = new BillingDetails();
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
+                    Details.CreditBillHeaderID = Int64.Parse(dr["CreditBillHeaderID"].ToString());
                     Details.ContactID = Int64.Parse(dr["ContactID"].ToString());
                     Details.CrediLimit = decimal.Parse(dr["CreditLimit"].ToString());
                     Details.RunningCreditAmt = decimal.Parse(dr["RunningCreditAmt"].ToString());

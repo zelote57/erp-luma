@@ -48,6 +48,12 @@ namespace AceSoft.RetailPlus.Client.UI
 		public TableSelectWnd()
 		{
 			InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = mclsTerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
 		}
 
 		protected override void Dispose( bool disposing )
@@ -309,6 +315,7 @@ namespace AceSoft.RetailPlus.Client.UI
 			try
 			{
 				tblLayout.Controls.Clear();
+
 				Int64 intSequenceNoStart = 0;
 
 				if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
@@ -334,15 +341,15 @@ namespace AceSoft.RetailPlus.Client.UI
                 System.Data.DataTable dtContact;
 
                 if (ContactGroupCategory == Data.ContactGroupCategory.TABLES)
-                    dtContact = clsContact.Tables(clsContactColumns, intSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending ? Constants.C_RESTOPLUS_MAX_TABLES : Constants.C_RESTOPLUS_MAX_TABLES + 1, false, "ContactCode", SequenceSortOrder);
+                    dtContact = clsContact.Tables(clsContactColumns, intSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending ? Constants.C_RESTOPLUS_MAX_TABLES : Constants.C_RESTOPLUS_MAX_TABLES + 1, false, "SequenceNo", SequenceSortOrder);
                 else
-                    dtContact = clsContact.Customers(clsContactColumns, intSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending ? Constants.C_RESTOPLUS_MAX_TABLES : Constants.C_RESTOPLUS_MAX_TABLES + 1, false, "ContactCode", SequenceSortOrder);
+                    dtContact = clsContact.Customers(clsContactColumns, intSequenceNoStart, SequenceSortOrder, clsSearchColumns, string.Empty, SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending ? Constants.C_RESTOPLUS_MAX_TABLES : Constants.C_RESTOPLUS_MAX_TABLES + 1, false, "SequenceNo", SequenceSortOrder);
 
                 // re-order the products by sequence no
                 if (dtContact.Rows.Count > 0)
                 {
                     System.Data.DataView dv = dtContact.DefaultView;
-                    dv.Sort = "ContactCode";
+                    dv.Sort = "SequenceNo";
                     dtContact = dv.ToTable();
                 }
 
@@ -363,40 +370,15 @@ namespace AceSoft.RetailPlus.Client.UI
 
 				foreach (System.Data.DataRow dr in dtContact.Rows)
 				{
-					if (iCol == 5) { iCol = 0; iRow++; }
+                    //if (iCol == 5) { iCol = 0; iRow++; }
 
 					#region Sequence # Counter
                     if (iCtr > Constants.C_RESTOPLUS_MAX_TABLES) break;
 
-                    if (iCtr == 1) cmdTableLeft.Tag = dr[Data.ContactColumnNames.ContactID].ToString();
-                    if (iCtr >= 1 && dtContact.Rows.Count > Constants.C_RESTOPLUS_MAX_TABLES) cmdTableRight.Tag = dr[Data.ContactColumnNames.ContactID].ToString();
-                    //if (iCtr > Constants.C_RESTOPLUS_MAX_TABLES) break;
+                    if (iCtr == 1) cmdTableLeft.Tag = dr[Data.ContactColumnNames.SequenceNo].ToString();
+                    if (iCtr >= 1 && dtContact.Rows.Count > Constants.C_RESTOPLUS_MAX_TABLES) cmdTableRight.Tag = dr[Data.ContactColumnNames.SequenceNo].ToString();
 
-                    //if (iCtr == Constants.C_RESTOPLUS_MAX_TABLES && dtContact.Rows.Count > Constants.C_RESTOPLUS_MAX_TABLES)
-                    //{
-                    //    if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
-                    //        try { if (iCtr == 1) cmdTableLeft.Tag = dr[Data.ContactColumnNames.ContactID].ToString(); }
-                    //        catch { }
-                    //    else
-                    //        try { cmdTableRight.Tag = dr[Data.ContactColumnNames.ContactID].ToString(); }
-                    //        catch { }
-                    //}
-                    //else if (dtContact.Rows.Count > 0 && dtContact.Rows.Count <= Constants.C_RESTOPLUS_MAX_TABLES)
-                    //{
-                    //    if (SequenceSortOrder == System.Data.SqlClient.SortOrder.Descending)
-                    //    {
-                    //        try { if (iCtr == 1) cmdTableRight.Tag = dr[Data.ContactColumnNames.ContactID].ToString(); }
-                    //        catch { }
-                    //        cmdTableLeft.Tag = "0".ToString();
-                    //    }
-                    //    else
-                    //    {
-                    //        try { if (iCtr == 1) cmdTableLeft.Tag = dr[Data.ContactColumnNames.ContactID].ToString(); }
-                    //        catch { }
-                    //        // cmdTableRight.Tag = cmdTableRight.Tag; // do not reset
-                    //    }
-                    //}
-					#endregion
+                    #endregion
 
 					ProductButton cmdTable = new ProductButton();
 

@@ -261,6 +261,15 @@ namespace AceSoft.RetailPlus.Client.UI
 			try
 			{
 				string searchkey = "" + txtSearch.Text;
+
+                if (searchkey.Length >= 16) // this is the defined no of burnt card no
+                {
+                    searchkey = searchkey.Replace("%", "").Replace("?", "");
+
+                    //strPassword = searchkey.Remove(0, 10);
+                    searchkey = searchkey.Remove(10, searchkey.Length - 10);
+                }
+
                 System.Data.DataTable dt = clsAccessUser.Waiters(searchkey, 100, "Name", SortOption.Ascending);
                 clsAccessUser.CommitAndDispose();
 

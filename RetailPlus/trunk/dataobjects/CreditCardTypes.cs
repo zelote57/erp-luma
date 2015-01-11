@@ -35,7 +35,7 @@ namespace AceSoft.RetailPlus.Data
 
         public CreditCardTypes CreditCardType;
         public bool WithGuarantor;
-        
+        public bool ExemptInTerminalCharge;
         public DateTime BillingDate;
         public DateTime CreatedOn;
         public DateTime LastModified;
@@ -60,6 +60,7 @@ namespace AceSoft.RetailPlus.Data
             this.CreditCutOffDate = Constants.C_DATE_MIN_VALUE;
             this.CreditCardType = CreditCardType;
             this.WithGuarantor = false;
+            this.ExemptInTerminalCharge = false;
             this.BillingDate = Constants.C_DATE_MIN_VALUE;
             this.CreatedOn = DateTime.Now;
             this.LastModified = DateTime.Now;
@@ -85,6 +86,7 @@ namespace AceSoft.RetailPlus.Data
             this.CreditCutOffDate = Constants.C_DATE_MIN_VALUE;
             this.CreditCardType = CreditCardType;
             this.WithGuarantor = WithGuarantor;
+            this.ExemptInTerminalCharge = false;
             this.BillingDate = Constants.C_DATE_MIN_VALUE;
             this.CreatedOn = DateTime.Now;
             this.LastModified = DateTime.Now;
@@ -155,7 +157,7 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = "CALL procSaveCardType(@CardTypeID, @CardTypeCode, @CardTypeName, @CreditFinanceCharge, @CreditLatePenaltyCharge, @CreditMinimumAmountDue, @CreditMinimumPercentageDue, " +
                                                    "@CreditFinanceCharge15th, @CreditLatePenaltyCharge15th, @CreditMinimumAmountDue15th, @CreditMinimumPercentageDue15th, " +
-                                                   "@CreditCardType, @WithGuarantor, @BillingDate, @CreatedOn, @LastModified);";
+                                                   "@CreditCardType, @WithGuarantor, @ExemptInTerminalCharge, @BillingDate, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("CardTypeID", Details.CardTypeID);
                 cmd.Parameters.AddWithValue("CardTypeCode", Details.CardTypeCode);
@@ -170,6 +172,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreditMinimumPercentageDue15th", Details.CreditMinimumPercentageDue15th);
                 cmd.Parameters.AddWithValue("CreditCardType", Details.CreditCardType);
                 cmd.Parameters.AddWithValue("WithGuarantor", Details.WithGuarantor);
+                cmd.Parameters.AddWithValue("ExemptInTerminalCharge", Details.ExemptInTerminalCharge);
                 cmd.Parameters.AddWithValue("BillingDate", Details.BillingDate == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.BillingDate);
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
@@ -230,6 +233,7 @@ namespace AceSoft.RetailPlus.Data
                                 "CreditCutOffDate," +
                                 "CreditCardType, " +
                                 "WithGuarantor, " +
+                                "ExemptInTerminalCharge, " +
                                 "CreditUseLastDayCutOffDate, " +
                                 "BillingDate, " +
                                 "CreatedOn, " +
@@ -308,6 +312,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.CreditCutOffDate = DateTime.Parse(dr["CreditCutOffDate"].ToString());
                 Details.CreditCardType = (CreditCardTypes)Enum.Parse(typeof(CreditCardTypes), dr["CreditCardType"].ToString());
                 Details.WithGuarantor = bool.Parse(dr["WithGuarantor"].ToString());
+                Details.ExemptInTerminalCharge = bool.Parse(dr["ExemptInTerminalCharge"].ToString());
                 Details.BillingDate = DateTime.Parse(dr["BillingDate"].ToString());
                 Details.CreatedOn = DateTime.Parse(dr["CreatedOn"].ToString());
                 Details.LastModified = DateTime.Parse(dr["LastModified"].ToString());

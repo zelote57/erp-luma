@@ -394,6 +394,9 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "CALL procSaveProductGroup(@ProductGroupID, @ProductGroupCode, @ProductGroupName, @BaseUnitID," +
                                         "@Price, @PurchasePrice, @IncludeInSubtotalDiscount, @VAT, @EVAT," +
                                         "@LocalTax, @OrderSlipPrinter, @ChartOfAccountIDPurchase, @ChartOfAccountIDTaxPurchase," +
@@ -402,10 +405,6 @@ namespace AceSoft.RetailPlus.Data
                                         "@ChartOfAccountIDTransferOut, @ChartOfAccountIDTaxTransferOut," +
                                         "@ChartOfAccountIDInvAdjustment, @ChartOfAccountIDTaxInvAdjustment," +
                                         "@CreatedOn, @LastModified);";
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("ProductGroupID", Details.ProductGroupID);
                 cmd.Parameters.AddWithValue("ProductGroupCode", Details.ProductGroupCode);
@@ -417,7 +416,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("VAT", Details.VAT);
                 cmd.Parameters.AddWithValue("EVAT", Details.EVAT);
                 cmd.Parameters.AddWithValue("LocalTax", Details.LocalTax);
-                cmd.Parameters.AddWithValue("OrderSlipPrinter", Details.OrderSlipPrinter);
+                cmd.Parameters.AddWithValue("OrderSlipPrinter", Details.OrderSlipPrinter.ToString("d"));
                 cmd.Parameters.AddWithValue("ChartOfAccountIDPurchase", Details.ChartOfAccountIDPurchase);
                 cmd.Parameters.AddWithValue("ChartOfAccountIDTaxPurchase", Details.ChartOfAccountIDTaxPurchase);
                 cmd.Parameters.AddWithValue("ChartOfAccountIDSold", Details.ChartOfAccountIDSold);
@@ -434,9 +433,9 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
+                cmd.CommandText = SQL;
                 return base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);

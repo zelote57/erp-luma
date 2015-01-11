@@ -79,7 +79,7 @@ namespace AceSoft.RetailPlus.Rewards
 
                     txtRewardCardNo.Text = clsContactRewardDetails.RewardCardNo;
 					txtCurrentRewardPoints.Text = clsContactRewardDetails.RewardPoints.ToString();
-					txtRedeemRewardPoints.Enabled = (DateTime.Now > clsContactRewardDetails.ExpiryDate) ? true : false;
+                    //txtRedeemRewardPoints.Enabled = (DateTime.Now > clsContactRewardDetails.ExpiryDate) ? true : false;
 					txtRedeemRewardPoints.Text = (DateTime.Now > clsContactRewardDetails.ExpiryDate) ? "0" : txtRedeemRewardPoints.Text;
                     txtNewRewardPoints.Text = Convert.ToInt32(Convert.ToDecimal(txtCurrentRewardPoints.Text) - Convert.ToDecimal(txtRedeemRewardPoints.Text)).ToString();
 				}
@@ -210,9 +210,15 @@ namespace AceSoft.RetailPlus.Rewards
 
 			if (lngCustomerID != 0)
 			{
-				if (decRedeemRewardPoints < 0 || decRedeemRewardPoints > decCurrentRewardPoints || txtRedeemRewardPoints.Enabled==false)
+                string javaScript;
+
+                // decRedeemRewardPoints < 0 || <-- allow this negative for adjustment
+				if (decRedeemRewardPoints > decCurrentRewardPoints || txtRedeemRewardPoints.Enabled==false)
 				{
 					// Cannot be negative or less than current reward points or expired
+                    javaScript = "window.alert('Sorry the reward points you are claiming is higher than the current points. Please enter again.')";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
+
 					return false;
 				}
 
@@ -231,11 +237,8 @@ namespace AceSoft.RetailPlus.Rewards
                 clsContactReward.CommitAndDispose();
 
 				//PrintRewardsRedemptionSlip();
-				string stScript;
-				stScript = "<Script>";
-				stScript += "window.alert('Reward points has been updated.')";
-				stScript += "</Script>";
-				Response.Write(stScript);
+                javaScript = "window.alert('Reward points has been updated.')";
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updSave, this.updSave.GetType(), "openwindow", javaScript, true);
 
                 txtCurrentRewardPoints.Text = decNewRewardPoints.ToString();
                 txtRedeemRewardPoints.Text = "0";

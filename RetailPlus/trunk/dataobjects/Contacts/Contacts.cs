@@ -19,6 +19,7 @@ namespace AceSoft.RetailPlus.Data
     public struct ContactDetails
 	{
 		public Int64 ContactID;
+        public Int32 SequenceNo;
 		public string ContactCode;
 		public string ContactName;
 		public Int32 ContactGroupID;
@@ -65,6 +66,7 @@ namespace AceSoft.RetailPlus.Data
     public struct ContactColumns
     {
         public bool ContactID;
+        public bool SequenceNo;
         public bool ContactCode;
         public bool ContactName;
         public bool ContactGroupID;
@@ -93,6 +95,7 @@ namespace AceSoft.RetailPlus.Data
     public struct ContactColumnNames
     {
         public const string ContactID = "ContactID";
+        public const string SequenceNo = "SequenceNo";
         public const string ContactCode = "ContactCode";
         public const string ContactName = "ContactName";
         public const string ContactGroupID = "ContactGroupID";
@@ -160,6 +163,7 @@ namespace AceSoft.RetailPlus.Data
 			try  
 			{
 				string SQL="INSERT INTO tblContacts (" +
+                                "SequenceNo, " + 
 					            "ContactCode, " + 
 					            "ContactName, " +
 					            "ContactGroupID, " +
@@ -177,6 +181,7 @@ namespace AceSoft.RetailPlus.Data
                                 "DepartmentID," +
                                 "PositionID" +
 					        ") VALUES (" +
+                                "@SequenceNo, " +
 					            "@ContactCode, " +
 					            "@ContactName, " +
 					            "@ContactGroupID, " +
@@ -200,6 +205,7 @@ namespace AceSoft.RetailPlus.Data
 				cmd.CommandType = System.Data.CommandType.Text;
 				cmd.CommandText = SQL;
 
+                cmd.Parameters.AddWithValue("@SequenceNo", Details.SequenceNo);
                 cmd.Parameters.AddWithValue("@ContactCode", Details.ContactCode);
                 cmd.Parameters.AddWithValue("@ContactName", Details.ContactName);
                 cmd.Parameters.AddWithValue("@ContactGroupID", Details.ContactGroupID);
@@ -271,7 +277,8 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 				
-				string SQL=	"UPDATE tblContacts SET " + 
+				string SQL=	"UPDATE tblContacts SET " +
+                                "SequenceNo	    =	@SequenceNo, " +
 					            "ContactCode	=	@ContactCode, " +
 					            "ContactName	=	@ContactName, " +
 					            "ContactGroupID =	@ContactGroupID, " +
@@ -289,8 +296,8 @@ namespace AceSoft.RetailPlus.Data
                                 "PositionID     =   @PositionID " +
 					        "WHERE ContactID = @ContactID;";
 
-                
-				
+
+                cmd.Parameters.AddWithValue("@SequenceNo", Details.SequenceNo);
                 cmd.Parameters.AddWithValue("@ContactCode", Details.ContactCode);
                 cmd.Parameters.AddWithValue("@ContactName", Details.ContactName);
                 cmd.Parameters.AddWithValue("@ContactGroupID", Details.ContactGroupID);
@@ -382,7 +389,7 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "CALL procSaveContact(@ContactID, @ContactCode, @ContactName, @ContactGroupID, @ModeOfTerms," +
+                string SQL = "CALL procSaveContact(@ContactID, @SequenceNo, @ContactCode, @ContactName, @ContactGroupID, @ModeOfTerms," +
                                             "@Terms, @Address, @BusinessName, @TelephoneNo, @Remarks, @Debit, @Credit," +
                                             "@CreditLimit, @IsCreditAllowed, @DateCreated, @Deleted, @DepartmentID," +
                                             "@PositionID, @isLock, @CreatedOn, @LastModified);";
@@ -392,6 +399,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandText = SQL;
 
                 cmd.Parameters.AddWithValue("ContactID", Details.ContactID);
+                cmd.Parameters.AddWithValue("SequenceNo", Details.SequenceNo);
                 cmd.Parameters.AddWithValue("ContactCode", Details.ContactCode);
                 cmd.Parameters.AddWithValue("ContactName", Details.ContactName);
                 cmd.Parameters.AddWithValue("ContactGroupID", Details.ContactGroupID);
@@ -457,6 +465,7 @@ namespace AceSoft.RetailPlus.Data
         {
             string stSQL = "SELECT " +
                                 "a.ContactID, " +
+                                "SequenceNo, " +
                                 "ContactCode, " +
                                 "ContactName, " +
                                 "a.ContactGroupID, " +
@@ -489,7 +498,8 @@ namespace AceSoft.RetailPlus.Data
         private string SQLSelect(ContactColumns clsContactColumns)
         {
             string stSQL = "SELECT ";
-                                
+
+            if (clsContactColumns.ContactCode) stSQL += "SequenceNo, ";        
             if (clsContactColumns.ContactCode) stSQL+= "ContactCode, ";
             if (clsContactColumns.ContactName) stSQL+= "ContactName, ";
             if (clsContactColumns.ContactGroupID) stSQL+= "tblContacts.ContactGroupID, ";
@@ -664,6 +674,7 @@ namespace AceSoft.RetailPlus.Data
                 foreach(System.Data.DataRow dr in dt.Rows)
                 {
                     Details.ContactID = Int64.Parse(dr["ContactID"].ToString());
+                    Details.SequenceNo = Int32.Parse(dr["SequenceNo"].ToString());
                     Details.ContactCode = "" + dr["ContactCode"].ToString();
                     Details.ContactName = "" + dr["ContactName"].ToString();
                     Details.ContactGroupID = Int32.Parse(dr["ContactGroupID"].ToString());
@@ -1493,11 +1504,11 @@ namespace AceSoft.RetailPlus.Data
 
                 if (CreditCardTypeID == 0)
                 {
-                    SQL += "WHERE ContactID IN (SELECT DISTINCT GuarantorID FROM tblContactCreditCardInfo) ";
+                    SQL += "WHERE tblContacts.ContactID = tblContactCreditCardInfo.GuarantorID ";
                 }
                 else
                 {
-                    SQL += "WHERE ContactID IN (SELECT DISTINCT GuarantorID FROM tblContactCreditCardInfo WHERE CreditCardTypeID = @CreditCardTypeID) ";
+                    SQL += "WHERE tblContacts.ContactID = tblContactCreditCardInfo.GuarantorID AND tblContactCreditCardInfo.CreditCardTypeID = @CreditCardTypeID ";
                     cmd.Parameters.AddWithValue("CreditCardTypeID", CreditCardTypeID);
                 }
                 if (!string.IsNullOrEmpty(CustomerCode_CreditCardNo))
@@ -1555,6 +1566,39 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public DataTable CustomersForBilling(Int16 CreditCardTypeID, long ContactID = 0, string ContactCode = "", string ContactName = "", string ContactGroupCode = "", string CreditCardNo = "", string Name = "", int Deleted = -1, int Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procContactSelectForBilling(@CreditCardTypeID, @ContactID, @ContactCode, @ContactName, @ContactGroupCode, @CreditCardNo, @Name, @Deleted, @Limit, @SortField, @SortOrder)";
+
+                cmd.Parameters.AddWithValue("@CreditCardTypeID", CreditCardTypeID);
+                cmd.Parameters.AddWithValue("@ContactID", ContactID);
+                cmd.Parameters.AddWithValue("@ContactCode", ContactCode);
+                cmd.Parameters.AddWithValue("@ContactName", ContactName);
+                cmd.Parameters.AddWithValue("@ContactGroupCode", ContactGroupCode);
+                cmd.Parameters.AddWithValue("@CreditCardNo", CreditCardNo);
+                cmd.Parameters.AddWithValue("@Name", Name);
+                cmd.Parameters.AddWithValue("@Deleted", Deleted);
+                cmd.Parameters.AddWithValue("@Limit", Limit);
+                cmd.Parameters.AddWithValue("@SortField", SortField);
+                cmd.Parameters.AddWithValue("@SortOrder", SortOrder == SortOption.Ascending ? "ASC" : "DESC");
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         public DataTable ListAsDataTable(ContactGroupCategory groupCategory = ContactGroupCategory.BOTH, long ContactID = 0, string ContactCode = "", string ContactName = "", string ContactGroupCode = "", string RewardCardNo = "", string Name = "", bool hasCreditOnly = false, int intDeleted = -1, int Limit = 0, string SortField = "", SortOption SortOrder = SortOption.Ascending, string BirthDateFrom = Constants.C_DATE_MIN_VALUE_STRING, string BirthDateTo = Constants.C_DATE_MIN_VALUE_STRING, string AnniversaryDateFrom = Constants.C_DATE_MIN_VALUE_STRING, string AnniversaryDateTo = Constants.C_DATE_MIN_VALUE_STRING, int BirthMonth = 0, int AnniversaryMonth = 0)
         {
             try
@@ -1595,7 +1639,44 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public System.Data.DataTable CreditPaymentCashAsDataTable(CreditPaymentCashDetails SearchKeys, string SortField = "CPC.CreatedOn", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        public System.Data.DataTable CreditPaymentCashDetailedAsDataTable(CreditPaymentCashDetails SearchKeys, string SortField = "CPC.CreatedOn", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procContactCreditPaymentSelectDetailed(@BranchID, @TerminalNo, @ContactID, @CreditType, @CreditCardTypeID, @PaymentDateFrom, @PaymentDateTo, " +
+                                                                  "@CreditorLastNameFrom, @CreditorLastnameTo, @GuaLastNameFrom, @GuaLastNameTo, @SortField, @SortOption, @limit);";
+
+                cmd.Parameters.AddWithValue("BranchID", SearchKeys.BranchDetails.BranchID);
+                cmd.Parameters.AddWithValue("TerminalNo", SearchKeys.TerminalNo);
+                cmd.Parameters.AddWithValue("ContactID", SearchKeys.ContactID);
+                cmd.Parameters.AddWithValue("CreditType", SearchKeys.CreditType.ToString("d"));
+                cmd.Parameters.AddWithValue("CreditCardTypeID", SearchKeys.CreditCardTypeID);
+                cmd.Parameters.AddWithValue("PaymentDateFrom", SearchKeys.PaymentDateFrom);
+                cmd.Parameters.AddWithValue("PaymentDateTo", SearchKeys.PaymentDateTo);
+                cmd.Parameters.AddWithValue("CreditorLastNameFrom", SearchKeys.CreditorLastnameFrom);
+                cmd.Parameters.AddWithValue("CreditorLastNameTo", SearchKeys.CreditorLastnameTo);
+                cmd.Parameters.AddWithValue("GuaLastNameFrom", SearchKeys.GuarantorLastnameFrom);
+                cmd.Parameters.AddWithValue("GuaLastNameTo", SearchKeys.GuarantorLastnameTo);
+                cmd.Parameters.AddWithValue("SortField", SortField);
+                cmd.Parameters.AddWithValue("SortOption", SortOrder == SortOption.Ascending ? "ASC" : "DESC");
+                cmd.Parameters.AddWithValue("limit", limit);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public System.Data.DataTable CreditPaymentCashAsDataTable(CreditPaymentCashDetails SearchKeys, string SortField = "trx.CreatedOn", SortOption SortOrder = SortOption.Ascending, Int32 limit = 0)
         {
             try
             {
@@ -1853,7 +1934,38 @@ namespace AceSoft.RetailPlus.Data
                 case CreditCardStatus.Expired:
                 case CreditCardStatus.ManualDeactivated:
                 case CreditCardStatus.SystemDeactivated:
+                case CreditCardStatus.Suspended:
                 case CreditCardStatus.All:
+                    boRetValue = false;
+                    break;
+                default:
+                    boRetValue = false;
+                    break;
+            }
+            return boRetValue;
+        }
+
+        public static bool checkRewardActive(RewardCardStatus RewardCardStatus)
+        {
+            bool boRetValue = false;
+
+            switch (RewardCardStatus)
+            {
+                case RewardCardStatus.New:
+                case RewardCardStatus.Replaced_Lost:
+                case RewardCardStatus.Replaced_Expired:
+                case RewardCardStatus.ReNew:
+                case RewardCardStatus.Reactivated_Lost:
+                case RewardCardStatus.ManualActivated:
+                case RewardCardStatus.SystemActivated:
+                    boRetValue = true;
+                    break;
+                case RewardCardStatus.Lost:
+                case RewardCardStatus.Expired:
+                case RewardCardStatus.ManualDeactivated:
+                case RewardCardStatus.SystemDeactivated:
+                case RewardCardStatus.Suspended:
+                case RewardCardStatus.All:
                     boRetValue = false;
                     break;
                 default:

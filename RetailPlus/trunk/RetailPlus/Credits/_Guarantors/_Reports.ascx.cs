@@ -131,8 +131,6 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
             ReportDocument rpt = getReportDocument();
 
             SetDataSource(rpt);
-            CRViewer.ReportSource = rpt;
-            Session["ReportDocument"] = rpt;
 
             if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
             {
@@ -154,6 +152,11 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                 }
 
                 CRSHelper.GenerateReport(strFileName, rpt, this.updPrint, pvtExportFormatType);
+            }
+            else
+            {
+                CRViewer.ReportSource = rpt;
+                Session["ReportDocument"] = rpt;
             }
         }
 
@@ -229,7 +232,7 @@ namespace AceSoft.RetailPlus.Credits._Guarantors
                     clsCreditPaymentCashDetails.GuarantorLastnameTo = txtLastNameTo.Text;
 
                     clsContacts = new Data.Contacts();
-                    dt = clsContacts.CreditPaymentCashAsDataTable(clsCreditPaymentCashDetails, "cci.CreditCardNo");
+                    dt = clsContacts.CreditPaymentCashDetailedAsDataTable(clsCreditPaymentCashDetails, "cci.CreditCardNo");
                     clsContacts.CommitAndDispose();
 
                     foreach (System.Data.DataRow dr in dt.Rows)

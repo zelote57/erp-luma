@@ -210,7 +210,7 @@
                                 <td class="ms-formspacer">
                                     <img alt=""src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:textbox id="txtAccreditationNo" accessKey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="20" ReadOnly="True"></asp:textbox>
+                                    <asp:textbox id="txtAccreditationNo" accessKey="S" CssClass="ms-short" runat="server" BorderStyle="Groove" MaxLength="25" ReadOnly="True"></asp:textbox>
                                 </td>
                             </tr>
                             <tr>
@@ -361,9 +361,62 @@
                 <tr>
 					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
 				</tr>
+                <tr>
+					<td style="padding-bottom: 5px;" valign="top" colspan="3">
+						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 2: Define Charge Types for In-House Credit
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" class="ms-authoringcontrols ms-formwidth" style="PADDING-RIGHT: 10px; BORDER-TOP: white 1px solid; PADDING-LEFT: 8px; padding-bottom: 20px" valign="top">
+                        <table border="0" cellpadding="0" cellspacing="0" class="ms-authoringcontrols" width="90%">
+                            <tr>
+                                <td class="ms-formspacer" height="20">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Charge Type for Credit w/ guarantor<font color="red">*</font></label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    <label>Charge Type for Credit w/out guarantor<font color="red">*</font></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    </td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
+                                    </label></td>
+                            </tr>
+                            <tr>
+                                <td class="ms-formspacer">
+                                    <img alt=""src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:dropdownlist id="cboGroupChargeType" CssClass="ms-short" runat="server"></asp:dropdownlist>
+                                </td>
+                                <td class="ms-formspacer">
+                                    <img alt=""src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                    <asp:dropdownlist id="cboPersonalChargeType" CssClass="ms-short" runat="server"></asp:dropdownlist>
+                                </td>
+                                <td class="ms-formspacer">
+                                    <img alt=""src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                </td>
+                                <td class="ms-formspacer">
+                                    <img alt="" src="../../_layouts/images/trans.gif" width="10" /></td>
+                                <td class="ms-authoringcontrols">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ms-formspacer">
+                                </td>
+                            </tr>
+                        </table>
+					</td>
+				</tr>
+				<tr>
+					<td class="ms-sectionline" colspan="3" height="1"><img alt="" src="../../_layouts/images/empty.gif" /></td>
+				</tr>
 				<tr>
 					<td style="padding-bottom: 5px;" valign="top" colspan="3">
-						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 2: Define Charge Types for Dine-In, Take-Out and Delivery
+						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 3: Define Charge Types for Dine-In, Take-Out and Delivery
 						</div>
 					</td>
 				</tr>
@@ -418,7 +471,7 @@
 				</tr>
 				<tr>
 					<td style="padding-bottom: 5px;" valign="top" colspan="3">
-						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 3: Define Cut off Time
+						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 4: Define Cut off Time
 						</div>
 					</td>
 				</tr>
@@ -474,7 +527,7 @@
 				</tr>
 				<tr>
 					<td style="padding-bottom: 5px;" valign="top" colspan="3">
-						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 4: Printer, Turret and Cash Drawer Information
+						<div class="ms-sectionheader" style="padding-bottom: 8px">Step 5: Printer, Turret and Cash Drawer Information
 						</div>
 					</td>
 				</tr>

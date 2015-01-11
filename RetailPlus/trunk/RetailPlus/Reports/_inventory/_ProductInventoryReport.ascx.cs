@@ -175,13 +175,16 @@ namespace AceSoft.RetailPlus.Reports
             if (rpt != null)
             {
                 SetDataSource(rpt);
-                CRViewer.ReportSource = rpt;
-                Session["ReportDocument"] = rpt;
 
                 if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
                 {
                     string strFileName = Session["UserName"].ToString() + "_inventory";
                     CRSHelper.GenerateReport(strFileName, rpt, this.updPrint, pvtExportFormatType);
+                }
+                else
+                {
+                    CRViewer.ReportSource = rpt;
+                    Session["ReportDocument"] = rpt;
                 }
             }
         }

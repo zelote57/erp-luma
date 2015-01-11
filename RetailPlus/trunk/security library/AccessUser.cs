@@ -88,76 +88,153 @@ namespace AceSoft.RetailPlus.Security
 		{
 			try 
 			{
+                Int64 iID = 0;
+
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-				string SQLUser = "INSERT INTO sysAccessUsers (UserName, Password, DateCreated, CreatedOn, LastModified) VALUES (@UserName, @Password, @DateCreated, @CreatedOn, @LastModified);";
-				
+                string SQLUser = "SELECT UID FROM sysAccessUsers WHERE UserName=@Username LIMIT 1";
+                cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("UserName", Details.UserName);
-                cmd.Parameters.AddWithValue("Password", Details.Password);
-                Details.DateCreated = DateTime.Now;
-                cmd.Parameters.AddWithValue("DateCreated", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("CreatedOn", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("LastModified", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
 
-				cmd.CommandText = SQLUser;
-				base.ExecuteNonQuery(cmd);
+                cmd.CommandText = SQLUser;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
 
-				Int64 iID = Int64.Parse(base.getLAST_INSERT_ID(this));
+                if (dt.Rows.Count == 0)
+                {
+                    SQLUser = "INSERT INTO sysAccessUsers (UserName, Password, DateCreated, CreatedOn, LastModified) VALUES (@UserName, @Password, @DateCreated, @CreatedOn, @LastModified);";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("UserName", Details.UserName);
+                    cmd.Parameters.AddWithValue("Password", Details.Password);
+                    Details.DateCreated = DateTime.Now;
+                    cmd.Parameters.AddWithValue("DateCreated", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("CreatedOn", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("LastModified", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = SQLUser;
+                    base.ExecuteNonQuery(cmd);
 
-                string SQLDetails = "INSERT INTO sysAccessUserDetails (" +
-                                        "UID," +
-                                        "Name," +
-                                        "Address1," +
-                                        "Address2," +
-                                        "City," +
-                                        "State," +
-                                        "CountryID," +
-                                        "OfficePhone," +
-                                        "DirectPhone," +
-                                        "HomePhone," +
-                                        "FaxPhone," +
-                                        "MobilePhone," +
-                                        "EmailAddress," +
-                                        "GroupID, CreatedOn, LastModified) VALUES ( " +
-                                        "@UID," +
-                                        "@Name," +
-                                        "@Address1," +
-                                        "@Address2," +
-                                        "@City," +
-                                        "@State," +
-                                        "@CountryID," +
-                                        "@OfficePhone," +
-                                        "@DirectPhone," +
-                                        "@HomePhone," +
-                                        "@FaxPhone," +
-                                        "@MobilePhone," +
-                                        "@EmailAddress," +
-                                        "@GroupID, @CreatedOn, @LastModified);";
+                    iID = Int64.Parse(base.getLAST_INSERT_ID(this));
+                }
+                else
+                {
+                    iID = Int64.Parse(dt.Rows[0]["UID"].ToString());
 
+                    SQLUser = "UPDATE sysAccessUsers SET Password=@Password, Deleted=0 WHERE UID=@UID;";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("UID", iID);
+                    cmd.Parameters.AddWithValue("Password", Details.Password);
+
+                    cmd.CommandText = SQLUser;
+                    base.ExecuteNonQuery(cmd);
+                }
+
+                Details.UID = iID;
+
+                SQLUser = "SELECT UID FROM sysAccessUserDetails WHERE UID=@UID LIMIT 1";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("UID", iID);
-                cmd.Parameters.AddWithValue("Name", Details.Name);
-                cmd.Parameters.AddWithValue("Address1", Details.Address1);
-                cmd.Parameters.AddWithValue("Address2", Details.Address2);
-                cmd.Parameters.AddWithValue("City", Details.City);
-                cmd.Parameters.AddWithValue("State", Details.State);
-                cmd.Parameters.AddWithValue("CountryID", Details.CountryID);
-                cmd.Parameters.AddWithValue("OfficePhone", Details.OfficePhone);
-                cmd.Parameters.AddWithValue("DirectPhone", Details.DirectPhone);
-                cmd.Parameters.AddWithValue("HomePhone", Details.HomePhone);
-                cmd.Parameters.AddWithValue("FaxPhone", Details.FaxPhone);
-                cmd.Parameters.AddWithValue("MobilePhone", Details.MobilePhone);
-                cmd.Parameters.AddWithValue("EmailAddress", Details.EmailAddress);
-                cmd.Parameters.AddWithValue("GroupID", Details.GroupID);
-                cmd.Parameters.AddWithValue("CreatedOn", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("LastModified", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
 
-				cmd.CommandText = SQLDetails;
-                base.ExecuteNonQuery(cmd);
+                cmd.CommandText = SQLUser;
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                if (dt.Rows.Count != 0)
+                {
+                    SQLUser = "UPDATE sysAccessUserDetails SET " +
+                                            "Name			=	@Name, " +
+                                            "Address1		=	@Address1, " +
+                                            "Address2		=	@Address2, " +
+                                            "City			=	@City, " +
+                                            "State			=	@State, " +
+                                            "CountryID		=	@CountryID, " +
+                                            "OfficePhone	=	@OfficePhone, " +
+                                            "DirectPhone	=	@DirectPhone, " +
+                                            "HomePhone		=	@HomePhone, " +
+                                            "FaxPhone		=	@FaxPhone, " +
+                                            "MobilePhone	=	@MobilePhone, " +
+                                            "EmailAddress	=	@EmailAddress, " +
+                                            "GroupID		=	@GroupID, " +
+                                            "PageSize		=	@PageSize " +
+                                        "WHERE UID		=	@UID;";
+
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("Name", Details.Name);
+                    cmd.Parameters.AddWithValue("Address1", Details.Address1);
+                    cmd.Parameters.AddWithValue("Address2", Details.Address2);
+                    cmd.Parameters.AddWithValue("City", Details.City);
+                    cmd.Parameters.AddWithValue("State", Details.State);
+                    cmd.Parameters.AddWithValue("CountryID", Details.CountryID);
+                    cmd.Parameters.AddWithValue("OfficePhone", Details.OfficePhone);
+                    cmd.Parameters.AddWithValue("DirectPhone", Details.DirectPhone);
+                    cmd.Parameters.AddWithValue("HomePhone", Details.HomePhone);
+                    cmd.Parameters.AddWithValue("FaxPhone", Details.FaxPhone);
+                    cmd.Parameters.AddWithValue("MobilePhone", Details.MobilePhone);
+                    cmd.Parameters.AddWithValue("EmailAddress", Details.EmailAddress);
+                    cmd.Parameters.AddWithValue("GroupID", Details.GroupID);
+                    if (Details.PageSize == 0) Details.PageSize = 10;
+                    cmd.Parameters.AddWithValue("PageSize", Details.PageSize);
+                    cmd.Parameters.AddWithValue("UID", Details.UID);
+
+                    cmd.CommandText = SQLUser;
+                    base.ExecuteNonQuery(cmd);
+                }
+                else
+                {
+                    cmd = new MySqlCommand();
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    SQLUser = "INSERT INTO sysAccessUserDetails (" +
+                                            "UID," +
+                                            "Name," +
+                                            "Address1," +
+                                            "Address2," +
+                                            "City," +
+                                            "State," +
+                                            "CountryID," +
+                                            "OfficePhone," +
+                                            "DirectPhone," +
+                                            "HomePhone," +
+                                            "FaxPhone," +
+                                            "MobilePhone," +
+                                            "EmailAddress," +
+                                            "GroupID, CreatedOn, LastModified) VALUES ( " +
+                                            "@UID," +
+                                            "@Name," +
+                                            "@Address1," +
+                                            "@Address2," +
+                                            "@City," +
+                                            "@State," +
+                                            "@CountryID," +
+                                            "@OfficePhone," +
+                                            "@DirectPhone," +
+                                            "@HomePhone," +
+                                            "@FaxPhone," +
+                                            "@MobilePhone," +
+                                            "@EmailAddress," +
+                                            "@GroupID, @CreatedOn, @LastModified);";
+
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("UID", iID);
+                    cmd.Parameters.AddWithValue("Name", Details.Name);
+                    cmd.Parameters.AddWithValue("Address1", Details.Address1);
+                    cmd.Parameters.AddWithValue("Address2", Details.Address2);
+                    cmd.Parameters.AddWithValue("City", Details.City);
+                    cmd.Parameters.AddWithValue("State", Details.State);
+                    cmd.Parameters.AddWithValue("CountryID", Details.CountryID);
+                    cmd.Parameters.AddWithValue("OfficePhone", Details.OfficePhone);
+                    cmd.Parameters.AddWithValue("DirectPhone", Details.DirectPhone);
+                    cmd.Parameters.AddWithValue("HomePhone", Details.HomePhone);
+                    cmd.Parameters.AddWithValue("FaxPhone", Details.FaxPhone);
+                    cmd.Parameters.AddWithValue("MobilePhone", Details.MobilePhone);
+                    cmd.Parameters.AddWithValue("EmailAddress", Details.EmailAddress);
+                    cmd.Parameters.AddWithValue("GroupID", Details.GroupID);
+                    cmd.Parameters.AddWithValue("CreatedOn", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("LastModified", Details.DateCreated.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                    cmd.CommandText = SQLUser;
+                    base.ExecuteNonQuery(cmd);
+                }
 
 				InsertAccessRights(iID, Details.GroupID);
 
@@ -176,17 +253,31 @@ namespace AceSoft.RetailPlus.Security
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                //string SQLUser		=	"UPDATE sysAccessUsers SET " + 
-                //                            "UserName = @UserName," +  
-                //                            "Password = @Password " + 
-                //                        "WHERE UID = @UID;";
-				
-                //cmd.Parameters.AddWithValue("UserName", Details.UserName);
-                //cmd.Parameters.AddWithValue("Password", Details.Password);
-                //cmd.Parameters.AddWithValue("UID", Details.UID);
+                string SQLUser = "";
+                if (!string.IsNullOrEmpty(Details.Password))
+                {
+                    SQLUser = "UPDATE sysAccessUsers SET " +
+                                                "UserName = @UserName, " +
+                                                "Password = @Password " +
+                                            "WHERE UID = @UID;";
 
-                //cmd.CommandText = SQLUser;
-                //base.ExecuteNonQuery(cmd);
+                    cmd.Parameters.AddWithValue("Password", Details.Password);
+                    cmd.Parameters.AddWithValue("UserName", Details.UserName);
+                    cmd.Parameters.AddWithValue("UID", Details.UID);
+                }
+                else
+                {
+                    SQLUser = "UPDATE sysAccessUsers SET " +
+                                            "UserName = @UserName " +
+                                        "WHERE UID = @UID;";
+
+                    cmd.Parameters.AddWithValue("UserName", Details.UserName);
+                    cmd.Parameters.AddWithValue("UID", Details.UID);
+                }
+                
+
+                cmd.CommandText = SQLUser;
+                base.ExecuteNonQuery(cmd);
 
                 cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -228,6 +319,8 @@ namespace AceSoft.RetailPlus.Security
 
                 cmd.CommandText = SQLDetails;
                 base.ExecuteNonQuery(cmd);
+
+                InsertAccessRights(Details.UID, Details.GroupID);
 			}
 			catch (Exception ex)
 			{
@@ -487,7 +580,7 @@ namespace AceSoft.RetailPlus.Security
 					SQL += "AND b.GroupID = @GroupID ";
 					cmd.Parameters.AddWithValue("@GroupID", UserGroupID);
 				}
-				if (SearchKey != "" && SearchKey != string.Empty)
+				if (!string.IsNullOrEmpty(SearchKey))
 				{
                     SQL += "AND (UserName LIKE @SearchKey " +
                                 "OR Name LIKE @SearchKey " +
@@ -629,9 +722,18 @@ namespace AceSoft.RetailPlus.Security
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite, CreatedOn, LastModified) " +
+                string SQL = "DELETE FROM sysAccessRights WHERE UID=@UID;";
+                
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@UID", UID);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+
+                SQL = "INSERT INTO sysAccessRights (UID, TranTypeID, AllowRead, AllowWrite, CreatedOn, LastModified) " +
                               "SELECT @UID, TranTypeID, AllowRead, AllowWrite, @CreatedOn, @CreatedOn FROM sysAccessGroupRights WHERE GroupID = @GroupID;";
-				
+
+                cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("UID", UID);
                 cmd.Parameters.AddWithValue("GroupID", GroupID);
                 cmd.Parameters.AddWithValue("CreatedOn", DateTime.Now);

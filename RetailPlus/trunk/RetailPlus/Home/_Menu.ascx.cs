@@ -54,6 +54,8 @@ namespace AceSoft.RetailPlus.Home
 
             clsDetails = clsAccessRights.Details(clsAccessUserDetails.UID, (Int16)AccessTypes.Contacts); 
 			lnkContact.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(clsAccessUserDetails.UID, (Int16)AccessTypes.RewardItemsSetup); 
             lnkRewards.Visible = clsDetails.Read;
 
             clsDetails = clsAccessRights.Details(clsAccessUserDetails.UID, (Int16)AccessTypes.InventoryList); 
@@ -69,7 +71,7 @@ namespace AceSoft.RetailPlus.Home
             clsDetails = clsAccessRights.Details(clsAccessUserDetails.UID, (Int16)AccessTypes.ReportFormat); 
 			lnkReceiptFormatEdit.Visible = clsDetails.Write;
 
-            lnkGLAUploadSales.Visible = true;
+            lnkGLAUploadSales.Visible = false;
 
 			clsAccessRights.CommitAndDispose();
 		}

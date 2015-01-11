@@ -72,7 +72,7 @@
                             <tr>
                                 <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
-                                    <asp:textbox id="txtUserName" accessKey="S" runat="server" CssClass="ms-long" MaxLength="15" BorderStyle="Groove"></asp:textbox>
+                                    <asp:textbox id="txtUserName" accessKey="S" runat="server" CssClass="ms-long-disabled" MaxLength="15" BorderStyle="Groove"></asp:textbox>
 									<asp:RequiredFieldValidator id="RequiredFieldValidator1" CssClass="ms-error" runat="server" ErrorMessage="'User name' must not be left blank." Display="Dynamic" ControlToValidate="txtUserName"></asp:RequiredFieldValidator>
                                 </td>
                                 <td class="ms-formspacer"><img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
@@ -81,7 +81,7 @@
 									<asp:RequiredFieldValidator id="RequiredFieldValidator3" CssClass="ms-error" runat="server" ErrorMessage="'Full Name' must not be left blank." Display="Dynamic" ControlToValidate="txtName"></asp:RequiredFieldValidator>
                                 </td>
                             </tr>
-                            <%--<tr>
+                            <tr>
                                 <td class="ms-formspacer" height="20">
                                 </td>
                             </tr>
@@ -90,13 +90,13 @@
                                     <label>Enter Password<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="4" style="padding-bottom: 2px">
                                     <label>Confirm Password<font color="red">*</font></label></td>
-                            </tr>--%>
-                            <%--<tr>
+                            </tr>
+                            <tr>
                                 <td class="ms-formspacer">
                                     <img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">
                                     <asp:textbox id="txtPassword" accessKey="S" runat="server" CssClass="ms-long" MaxLength="15" BorderStyle="Groove" TextMode="Password"></asp:textbox>
-									<asp:RequiredFieldValidator id="RequiredFieldValidator2" CssClass="ms-error" runat="server" ErrorMessage="'Password' must not be left blank." Display="Dynamic" ControlToValidate="txtPassword"></asp:RequiredFieldValidator>
+                                    <label><font color="red">Do not enter anything if you do not want to change the password.</font></label>
                                 </td>
                                 <td class="ms-formspacer">
                                     <img alt="" src="../../../_layouts/images/trans.gif" width="10" /></td>
@@ -104,7 +104,7 @@
                                     <asp:textbox id="txtConfirm" accessKey="C" runat="server" CssClass="ms-long" MaxLength="15" BorderStyle="Groove" TextMode="Password"></asp:textbox>
 									<asp:CompareValidator id="CompareValidator1" runat="server" CssClass="ms-error" ControlToValidate="txtConfirm" Display="Dynamic" ErrorMessage="'Password' must be equal to the Confirmed password." ControlToCompare="txtPassword"></asp:CompareValidator>
                                 </td>
-                            </tr>--%>
+                            </tr>
                             <tr>
                                 <td class="ms-formspacer" height="20">
                                 </td>

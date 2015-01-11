@@ -80,6 +80,68 @@ namespace AceSoft.RetailPlus.Data
             return stSQL;
         }
 
+        public Int64 Insert(CreditBillDetails Details)
+        {
+            try
+            {
+                Save(Details);
+
+                return Int64.Parse(base.getLAST_INSERT_ID(this));
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }	
+        }
+        public Int32 Save(CreditBillDetails Details)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "INSERT INTO tblCreditBills(CreditPurcStartDateToProcess ,CreditPurcEndDateToProcess ,BillingDate ,CreditCutOffDate, CreditPaymentDueDate " +
+                                            ",CreditFinanceCharge ,CreditMinimumPercentageDue ,CreditMinimumAmountDue ,CreditLatePenaltyCharge " +
+											",CreditFinanceCharge15th ,CreditMinimumPercentageDue15th ,CreditMinimumAmountDue15th ,CreditLatePenaltyCharge15th " +
+											",CreditCardTypeID ,CardTypeCode ,CreditCardType, WithGuarantor ,CreditUseLastDayCutOffDate " +
+											",CreatedOn ,CreatedByID ,CreatedByName)VALUES(";
+                SQL += "@CreditPurcStartDateToProcess ,@CreditPurcEndDateToProcess ,@BillingDate ,@CreditCutOffDate, @CreditPaymentDueDate " +
+                                            ",@CreditFinanceCharge ,@CreditMinimumPercentageDue ,@CreditMinimumAmountDue ,@CreditLatePenaltyCharge " +
+                                            ",@CreditFinanceCharge15th ,@CreditMinimumPercentageDue15th ,@CreditMinimumAmountDue15th ,@CreditLatePenaltyCharge15th " +
+                                            ",@CreditCardTypeID ,@CardTypeCode ,@CreditCardType, @WithGuarantor ,@CreditUseLastDayCutOffDate " +
+                                            ",@CreatedOn ,@CreatedByID ,@CreatedByName)";
+
+                cmd.Parameters.AddWithValue("CreditPurcStartDateToProcess", Details.CreditPurcStartDateToProcess);
+                cmd.Parameters.AddWithValue("CreditPurcEndDateToProcess", Details.CreditPurcEndDateToProcess);
+                cmd.Parameters.AddWithValue("BranchName", Details.BillingDate);
+                cmd.Parameters.AddWithValue("CreditCutOffDate", Details.CreditCutOffDate);
+                cmd.Parameters.AddWithValue("CreditPaymentDueDate", Details.CreditPaymentDueDate);
+                cmd.Parameters.AddWithValue("CreditFinanceCharge", Details.CreditFinanceCharge);
+                cmd.Parameters.AddWithValue("CreditMinimumPercentageDue", Details.CreditMinimumPercentageDue);
+                cmd.Parameters.AddWithValue("CreditMinimumAmountDue", Details.CreditMinimumAmountDue);
+                cmd.Parameters.AddWithValue("CreditLatePenaltyCharge", Details.CreditLatePenaltyCharge);
+                cmd.Parameters.AddWithValue("CreditFinanceCharge15th", Details.CreditFinanceCharge15th);
+                cmd.Parameters.AddWithValue("CreditMinimumPercentageDue15th", Details.CreditMinimumPercentageDue15th);
+                cmd.Parameters.AddWithValue("CreditMinimumAmountDue15th", Details.CreditMinimumAmountDue15th);
+                cmd.Parameters.AddWithValue("CreditLatePenaltyCharge15th", Details.CreditLatePenaltyCharge15th);
+                cmd.Parameters.AddWithValue("CreditCardTypeID", Details.CreditCardTypeID);
+                cmd.Parameters.AddWithValue("CardTypeCode", Details.CardTypeCode);
+                cmd.Parameters.AddWithValue("CreditCardType", Details.CreditCardType);
+                cmd.Parameters.AddWithValue("WithGuarantor", Details.WithGuarantor);
+                cmd.Parameters.AddWithValue("CreditUseLastDayCutOffDate", Details.CreditUseLastDayCutOffDate);
+                cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
+                cmd.Parameters.AddWithValue("CreatedByID", Details.CreatedByID);
+                cmd.Parameters.AddWithValue("CreatedByName", Details.CreatedByName);
+
+                cmd.CommandText = SQL;
+                return base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#region Details
 
 		public CreditBillDetails Details(Int64 CreditBillID)
@@ -192,7 +254,7 @@ namespace AceSoft.RetailPlus.Data
             return Details;
         }
 
-		#endregion
+        #endregion
 
 	}
 }

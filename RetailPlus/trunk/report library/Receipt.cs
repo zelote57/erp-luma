@@ -90,7 +90,7 @@ namespace AceSoft.RetailPlus.Reports
         public static string AmountTender = "{AMOUNT TENDER}";
         public static string Change = "{CHANGE}";
         public static string VATExempt = "{VAT Exempt}";
-        public static string VATZeroRated = "{VAT Zero-Rated}";
+        public static string ZeroRatedSales = "{VAT Zero-Rated}";
         public static string NonVATableAmount = "{NON-VAT AMT}";
         public static string VATableAmount = "{VATABLE AMT}";
         public static string VAT = "{VAT}";
@@ -108,6 +108,7 @@ namespace AceSoft.RetailPlus.Reports
         public static string ChargeCode = "{ChargeCode}";
         public static string ChargeRemarks = "{ChargeRemarks}";
         // 25Oct11 added for RewardPoints
+        public static string RewardsCustomerName = "{RewardsCustomerName}";
         public static string RewardCardNo = "{RewardCardNo}";
         public static string RewardPreviousPoints = "{RewardPreviousPoints}";
         public static string RewardEarnedPoints = "{RewardEarnedPoints}";

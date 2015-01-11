@@ -10,12 +10,13 @@ namespace AceSoft
         
         public static string RewardCard_Country_Code = "98";
         public static string RewardCard_ManufacturerCode = "01";
-        public static string GroupCreditCard_Country_Code = "98";
-        public static string GroupCreditCard_ManufacturerCode = "02";
-        public static string CreditCard_Country_Code = "98";
-        public static string CreditCard_ManufacturerCode = "03";
+        public static string GroupCreditCard_Country_Code = "80";
+        public static string GroupCreditCard_ManufacturerCode = "00";
+        public static string CreditCard_Country_Code = "88";
+        public static string CreditCard_ManufacturerCode = "88";
         public static string CustomerCode_Country_Code = "98";
         public static string CustomerCode_ManufacturerCode = "04";
+        public static string GroupCreditCard_ManufacturerCode_Manual = "05";
 
         private string _sName = "EAN13";
 

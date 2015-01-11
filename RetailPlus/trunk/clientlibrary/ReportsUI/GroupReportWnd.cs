@@ -422,7 +422,7 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("(-) Service Charge", ":", "", mTerminalReportDetails.TotalCharge.ToString("#,##0.#0"));
             dt.Rows.Add("-----------------------------------", "--", "----------", "----------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 80, '-'));
             dt.Rows.Add("Total Amount", ":", "", (mTerminalReportDetails.GrossSales * ((100 - mTerminalReportDetails.TrustFund) / 100)).ToString("#,##0.#0"));
-            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", "", (mTerminalReportDetails.VATExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT / 100) * ((100 - mTerminalReportDetails.TrustFund) / 100)).ToString("#,##0.#0"));
+            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", "", (mTerminalReportDetails.VATExempt * (mclsTerminalDetails.VAT / 100) * ((100 - mTerminalReportDetails.TrustFund) / 100)).ToString("#,##0.#0"));
             dt.Rows.Add("(-) Discount", ":", "", (mTerminalReportDetails.SubTotalDiscount + mTerminalReportDetails.ItemsDiscount).ToString("#,##0.#0"));
             dt.Rows.Add("-----------------------------------", "--", "----------", "----------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 80, '-'));
             dt.Rows.Add("Net Sales", ":", "", (mTerminalReportDetails.NetSales * ((100 - mTerminalReportDetails.TrustFund) / 100)).ToString("#,##0.#0"));

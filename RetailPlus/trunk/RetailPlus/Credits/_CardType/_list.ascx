@@ -100,6 +100,7 @@
                             <col width="10%">
                             <col width="10%">
                             <col width="10">
+                            <col width="10">
 							<col width="1%">
 						</colgroup>
 						<tr>
@@ -121,6 +122,8 @@
 								<asp:hyperlink id="SortByCreditMinimumPercentageDue" runat="server">MinimumPercentageDue</asp:hyperlink></th>
                             <th class="ms-vh2" style="padding-bottom: 4px">
 								<asp:hyperlink id="SortByWithGuarantor" runat="server">WithGuarantor</asp:hyperlink></th>
+                            <th class="ms-vh2" style="padding-bottom: 4px">
+								<asp:hyperlink id="SortByExemptInTerminalCharge" runat="server">ExemptInTerminalCharge</asp:hyperlink></th>
 							<th class="ms-vh2" style="padding-bottom: 4px">
 							</th>
 						</tr>
@@ -138,6 +141,7 @@
                             <col width="10%">
                             <col width="10%">
                             <col width="10%">
+                            <col width="10">
                             <col width="10">
 							<col width="1%">
 						</colgroup>
@@ -171,6 +175,9 @@
 							</td>
                             <td class="ms-vb-user">
 								<asp:CheckBox ID="chkWithGuarantor" Runat="server"></asp:CheckBox>
+							</td>
+                            <td class="ms-vb-user">
+								<asp:CheckBox ID="chkExemptInTerminalCharge" Runat="server"></asp:CheckBox>
 							</td>
 							<td class="ms-vb2">
 								<A class="DropDown" id="anchorDown" href="" runat="server">

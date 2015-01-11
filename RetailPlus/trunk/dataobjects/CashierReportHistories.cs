@@ -55,10 +55,10 @@ namespace AceSoft.RetailPlus.Data
 								"QuantitySold, " +
 								"GroupSales, " +
                                 "VATExempt, " +
-                                "ZeroRatedVAT, " +
                                 "NonVATableAmount, " +
                                 "VAT, " +
                                 "VATableAmount, " +
+                                "ZeroRatedSales, " +
 								"EVAT, " +
 								"LocalTax, " +
 								"CashSales, " +

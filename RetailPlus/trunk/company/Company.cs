@@ -29,6 +29,21 @@ namespace AceSoft.RetailPlus
             set { _BECompanyCode = value; }
         }
 
+        private static string _CompanyCodeForCredit;
+        public static string CompanyCodeForCredit
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_CompanyCodeForCredit))
+                    if (System.Configuration.ConfigurationManager.AppSettings["CompanyCodeForCredit"] != null)
+                        try { _CompanyCodeForCredit = System.Configuration.ConfigurationManager.AppSettings["CompanyCodeForCredit"].ToString(); }
+                        catch { }
+
+                return _CompanyCodeForCredit;
+            }
+            set { _CompanyCodeForCredit = value; }
+        }
+
         private static string _CompanyCode;
         public static string CompanyCode
         {
@@ -50,13 +65,43 @@ namespace AceSoft.RetailPlus
             get
             {
                 if (string.IsNullOrEmpty(_CompanyName))
-                    if (System.Configuration.ConfigurationManager.AppSettings["CompanyCode"] != null)
+                    if (System.Configuration.ConfigurationManager.AppSettings["CompanyName"] != null)
                         try { _CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"].ToString(); }
                         catch { }
 
                 return _CompanyName;
             }
             set { _CompanyName = value; }
+        }
+
+        private static string _CompanyNameNoG;
+        public static string CompanyNameNoG
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_CompanyNameNoG))
+                    if (System.Configuration.ConfigurationManager.AppSettings["CompanyNameNoG"] != null)
+                        try { _CompanyNameNoG = System.Configuration.ConfigurationManager.AppSettings["CompanyNameNoG"].ToString(); }
+                        catch { }
+
+                return _CompanyNameNoG;
+            }
+            set { _CompanyNameNoG = value; }
+        }
+
+        private static string _CompanyNameWG;
+        public static string CompanyNameWG
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_CompanyNameWG))
+                    if (System.Configuration.ConfigurationManager.AppSettings["CompanyNameWG"] != null)
+                        try { _CompanyNameWG = System.Configuration.ConfigurationManager.AppSettings["CompanyNameWG"].ToString(); }
+                        catch { }
+
+                return _CompanyNameWG;
+            }
+            set { _CompanyNameWG = value; }
         }
 
         private static string _Address1;

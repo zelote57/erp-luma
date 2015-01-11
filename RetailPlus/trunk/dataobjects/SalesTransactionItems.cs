@@ -60,6 +60,7 @@ namespace AceSoft.RetailPlus.Data
         public bool OrderSlipPrinted;
         public decimal PercentageCommision;
         public decimal Commision;
+        public decimal RewardPoints;
 
         public decimal ScannedQty;
         public decimal ScannedAmt;
@@ -68,7 +69,7 @@ namespace AceSoft.RetailPlus.Data
         public decimal GrossSales;
         public decimal VatableAmount;
         public decimal NonVatableAmount; 
-        public decimal VATExempt; 
+        public decimal VATExempt;
     }
 
     public struct SalesTransactionItemColumns
@@ -117,7 +118,8 @@ namespace AceSoft.RetailPlus.Data
         public bool OrderSlipPrinted;
         public bool PercentageCommision;
         public bool Commision;
-
+        public bool RewardPoints;
+        
         public bool ScannedQty;
         public bool ScannedAmt;
 
@@ -171,7 +173,8 @@ namespace AceSoft.RetailPlus.Data
         public const string OrderSlipPrinted = "OrderSlipPrinted";
         public const string PercentageCommision = "PercentageCommision";
         public const string Commision = "Commision";
-        
+        public const string RewardPoints = "RewardPoints";
+
         public const string ScannedQty = "ScannedQty";
         public const string ScannedAmt = "ScannedAmt";
         
@@ -255,7 +258,7 @@ namespace AceSoft.RetailPlus.Data
                                 "OrderSlipPrinter," +
                                 "OrderSlipPrinted," +
                                 "PercentageCommision," +
-                                "Commision, PaxNo" +
+                                "Commision, RewardPoints, PaxNo, CreatedOn" +
                             ")VALUES(" +
                                 "@TransactionID, " +
                                 "@ProductID, " +
@@ -300,7 +303,7 @@ namespace AceSoft.RetailPlus.Data
                                 "@OrderSlipPrinter," +
                                 "@OrderSlipPrinted," +
                                 "@PercentageCommision," +
-                                "@Commision, @PaxNo);";
+                                "@Commision, @RewardPoints, @PaxNo, NOW());";
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -352,6 +355,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@OrderSlipPrinted", Convert.ToInt16(Details.OrderSlipPrinted));
                 cmd.Parameters.AddWithValue("@PercentageCommision", Details.PercentageCommision);
                 cmd.Parameters.AddWithValue("@Commision", Details.Commision);
+                cmd.Parameters.AddWithValue("@RewardPoints", Details.RewardPoints);
                 cmd.Parameters.AddWithValue("@PaxNo", Details.PaxNo);
 
                 base.ExecuteNonQuery(cmd);
@@ -417,7 +421,9 @@ namespace AceSoft.RetailPlus.Data
                                 "IsCreditChargeExcluded	    =	@IsCreditChargeExcluded, " +
                                 "OrderSlipPrinter           =   @OrderSlipPrinter, " +
                                 "PercentageCommision        =   @PercentageCommision, " +
-                                "Commision                  =   @Commision " +
+                                "Commision                  =   @Commision, " +
+                                "RewardPoints               =   @RewardPoints, " +
+                                "LastModified		        =	NOW() " +
                             "WHERE TransactionItemsID		=	@TransactionItemsID; ";
 
                 MySqlCommand cmd = new MySqlCommand();
@@ -470,6 +476,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@OrderSlipPrinted", Convert.ToInt16(Details.OrderSlipPrinted));
                 cmd.Parameters.AddWithValue("@PercentageCommision", Details.PercentageCommision);
                 cmd.Parameters.AddWithValue("@Commision", Details.Commision);
+                cmd.Parameters.AddWithValue("@RewardPoints", Details.RewardPoints);
                 cmd.Parameters.AddWithValue("@TransactionItemsID", Details.TransactionItemsID);
 
                 base.ExecuteNonQuery(cmd);
@@ -481,12 +488,13 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public void UpdateOrderSlipPrinted(bool IsOrderSlipPrinted, long TransactionItemsID, DateTime TransactionDate)
+        public void UpdateOrderSlipPrinted(bool IsOrderSlipPrinted, long TransactionItemsID)
         {
             try
             {
                 string SQL = "UPDATE tblTransactionItems SET " +
-                                "OrderSlipPrinted           =   @OrderSlipPrinted " +
+                                "OrderSlipPrinted           =   @OrderSlipPrinted, " +
+                                "LastModified		        =	NOW() " +
                             "WHERE TransactionItemsID		=	@TransactionItemsID; ";
 
                 MySqlCommand cmd = new MySqlCommand();
@@ -498,7 +506,6 @@ namespace AceSoft.RetailPlus.Data
 
                 base.ExecuteNonQuery(cmd);
             }
-
             catch (Exception ex)
             {
                 throw base.ThrowException(ex);
@@ -592,22 +599,26 @@ namespace AceSoft.RetailPlus.Data
                     itemDetails.OrderSlipPrinted = Convert.ToBoolean(dr["OrderSlipPrinted"]);
                     itemDetails.PercentageCommision = decimal.Parse(dr["PercentageCommision"].ToString());
                     itemDetails.Commision = decimal.Parse(dr["Commision"].ToString());
+                    itemDetails.RewardPoints = decimal.Parse(dr["RewardPoints"].ToString());
                     itemDetails.PaxNo = Int32.Parse(dr["PaxNo"].ToString());
 
                     if (itemDetails.TransactionItemStatus == TransactionItemStatus.Return)
                     {
                         itemDetails.Amount = -itemDetails.Amount;
                         itemDetails.Commision = -itemDetails.Commision;
+                        itemDetails.RewardPoints = -itemDetails.RewardPoints;
                     }
                     else if (itemDetails.TransactionItemStatus == TransactionItemStatus.Refund)
                     {
                         itemDetails.Amount = -itemDetails.Amount;
                         itemDetails.Commision = -itemDetails.Commision;
+                        itemDetails.RewardPoints = -itemDetails.RewardPoints;
                     }
                     else if (itemDetails.TransactionItemStatus == TransactionItemStatus.Void)
                     {
                         itemDetails.Amount = 0;
                         itemDetails.Commision = 0;
+                        itemDetails.RewardPoints = 0;
                     }
                     //else
                     //    itemDetails.Amount				= itemDetails.Amount;
@@ -830,6 +841,7 @@ namespace AceSoft.RetailPlus.Data
                                 "OrderSlipPrinted, " +
                                 "PercentageCommision, " +
                                 "Commision, " +
+                                "RewardPoints, " +
                                 "PaxNo " +
                             "FROM tblTransactionItems " +
                             "WHERE TransactionID = @TransactionID AND TransactionItemStatus <> @TransactionItemStatus ORDER BY " + SortField;
@@ -904,6 +916,7 @@ namespace AceSoft.RetailPlus.Data
                                 "OrderSlipPrinted, " +
                                 "PercentageCommision, " +
                                 "Commision, " +
+                                "RewardPoints, " +
                                 "PaxNo " +
                             "FROM tblTransactionItems " +
                             "WHERE TransactionID IN (" + TransactionIDs + ") AND TransactionItemStatus <> @TransactionItemStatusTrash " +
@@ -1239,30 +1252,27 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblTransactionItems SET " +
                                 "Quantity						=	Quantity * -1, " +
                                 "Price							=	Price * -1, " +
                                 "Discount						=	Discount * -1, " +
                                 "Amount							=	Amount * -1, " +
                                 "Commision						=	Commision * -1, " +
+                                "RewardPoints				    =	RewardPoints * -1, " +
                                 "VAT							=	VAT * -1, " +
                                 "EVAT							=	EVAT * -1, " +
                                 "LocalTax						=	LocalTax * -1, " +
-                                "TransactionItemStatus			=	@TransactionItemStatus " +
+                                "TransactionItemStatus			=	@TransactionItemStatus, " +
+                                "LastModified		            =	NOW() " +
                             "WHERE TransactionItemsID		=	@TransactionItemsID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@TransactionItemStatus", TransactionItemStatus.Return.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionItemsID", TransactionItemsID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmTransactionItemStatus = new MySqlParameter("@TransactionItemStatus",MySqlDbType.Int16);
-                prmTransactionItemStatus.Value = TransactionItemStatus.Return.ToString("d");
-                cmd.Parameters.Add(prmTransactionItemStatus);
-
-                MySqlParameter prmTransactionItemsID = new MySqlParameter("@TransactionItemsID",MySqlDbType.Int64);
-                prmTransactionItemsID.Value = TransactionItemsID;
-                cmd.Parameters.Add(prmTransactionItemsID);
-
                 base.ExecuteNonQuery(cmd);
             }
             catch (Exception ex)
@@ -1274,30 +1284,28 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblTransactionItems SET " +
                                 "Quantity						=	Quantity * -1, " +
                                 "Price							=	Price * -1, " +
                                 "Discount						=	Discount * -1, " +
                                 "Amount							=	Amount * -1, " +
                                 "Commision						=	0, " +
+                                "RewardPoints					=	0, " +
                                 "VAT							=	VAT * -1, " +
                                 "EVAT							=	EVAT * -1, " +
                                 "LocalTax						=	LocalTax * -1, " +
-                                "TransactionItemStatus			=	@TransactionItemStatus " +
+                                "TransactionItemStatus			=	@TransactionItemStatus, " +
+                                "OrderSlipPrinted               =   0, " +
+                                "LastModified		            =	NOW() " +
                              "WHERE TransactionItemsID		=	@TransactionItemsID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@TransactionItemStatus", TransactionItemStatus.Void.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionItemsID", TransactionItemsID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmTransactionItemStatus = new MySqlParameter("@TransactionItemStatus",MySqlDbType.Int16);
-                prmTransactionItemStatus.Value = TransactionItemStatus.Void.ToString("d");
-                cmd.Parameters.Add(prmTransactionItemStatus);
-
-                MySqlParameter prmTransactionItemsID = new MySqlParameter("@TransactionItemsID",MySqlDbType.Int64);
-                prmTransactionItemsID.Value = TransactionItemsID;
-                cmd.Parameters.Add(prmTransactionItemsID);
-
                 base.ExecuteNonQuery(cmd);
             }
             catch (Exception ex)
@@ -1309,30 +1317,28 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblTransactionItems SET " +
                                 "Quantity						=	Quantity * -1, " +
                                 "Price							=	Price * -1, " +
                                 "Discount						=	Discount * -1, " +
                                 "Amount							=	Amount * -1, " +
                                 "Commision						=	0, " +
+                                "RewardPoints					=	0, " +
                                 "VAT							=	VAT * -1, " +
                                 "EVAT							=	EVAT * -1, " +
                                 "LocalTax						=	LocalTax * -1, " +
-                                "TransactionItemStatus			=	@TransactionItemStatus " +
+                                "TransactionItemStatus			=	@TransactionItemStatus, " +
+                                "OrderSlipPrinted               =   0, " +
+                                "LastModified		            =	NOW() " +
                             "WHERE TransactionID			=	@TransactionID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@TransactionItemStatus", TransactionItemStatus.Void.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmTransactionItemStatus = new MySqlParameter("@TransactionItemStatus",MySqlDbType.Int16);
-                prmTransactionItemStatus.Value = TransactionItemStatus.Void.ToString("d");
-                cmd.Parameters.Add(prmTransactionItemStatus);
-
-                MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);
-                prmTransactionID.Value = TransactionID;
-                cmd.Parameters.Add(prmTransactionID);
-
                 base.ExecuteNonQuery(cmd);
             }
             catch (Exception ex)
@@ -1344,30 +1350,27 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "UPDATE tblTransactionItems SET " +
                                 "Quantity						=	Quantity * -1, " +
                                 "Price							=	Price * -1, " +
                                 "Discount						=	Discount * -1, " +
                                 "Amount							=	Amount * -1, " +
                                 "Commision						=	Commision * -1, " +
+                                "RewardPoints					=	RewardPoints * -1, " +
                                 "VAT							=	VAT * -1, " +
                                 "EVAT							=	EVAT * -1, " +
                                 "LocalTax						=	LocalTax * -1, " +
-                                "TransactionItemStatus			=	@TransactionItemStatus " +
+                                "TransactionItemStatus			=	@TransactionItemStatus, " +
+                                "LastModified		            =	NOW() " +
                             "WHERE TransactionID			=	@TransactionID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@TransactionItemStatus", TransactionItemStatus.Refund.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmTransactionItemStatus = new MySqlParameter("@TransactionItemStatus",MySqlDbType.Int16);
-                prmTransactionItemStatus.Value = TransactionItemStatus.Refund.ToString("d");
-                cmd.Parameters.Add(prmTransactionItemStatus);
-
-                MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);
-                prmTransactionID.Value = TransactionID;
-                cmd.Parameters.Add(prmTransactionID);
-
                 base.ExecuteNonQuery(cmd);
             }
             catch (Exception ex)
@@ -1379,17 +1382,15 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
                 string SQL = "DELETE FROM tblTransactionItems " +
                             "WHERE TransactionItemsID		=	@TransactionItemsID;";
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Parameters.AddWithValue("@TransactionItemsID", TransactionItemsID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmTransactionItemsID = new MySqlParameter("@TransactionItemsID",MySqlDbType.Int64);
-                prmTransactionItemsID.Value = TransactionItemsID;
-                cmd.Parameters.Add(prmTransactionItemsID);
-
                 base.ExecuteNonQuery(cmd);
             }
             catch (Exception ex)
@@ -1401,22 +1402,18 @@ namespace AceSoft.RetailPlus.Data
         {
             try
             {
-                string SQL = "UPDATE tblTransactionItems SET " +
-                                "TransactionItemStatus			=	@TransactionItemStatus " +
-                            "WHERE TransactionID			=	@TransactionID;";
-
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "UPDATE tblTransactionItems SET " +
+                                "TransactionItemStatus		=	@TransactionItemStatus, " +
+                                "LastModified		        =	NOW() " +
+                            "WHERE TransactionID			=	@TransactionID;";
+
+                cmd.Parameters.AddWithValue("@TransactionItemStatus", TransactionItemStatus.OrderSlip.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
+
                 cmd.CommandText = SQL;
-
-                MySqlParameter prmTransactionItemStatus = new MySqlParameter("@TransactionItemStatus",MySqlDbType.Int16);
-                prmTransactionItemStatus.Value = TransactionItemStatus.OrderSlip.ToString("d");
-                cmd.Parameters.Add(prmTransactionItemStatus);
-
-                MySqlParameter prmTransactionID = new MySqlParameter("@TransactionID",MySqlDbType.Int64);
-                prmTransactionID.Value = TransactionID;
-                cmd.Parameters.Add(prmTransactionID);
-
                 base.ExecuteNonQuery(cmd);
             }
             catch (Exception ex)

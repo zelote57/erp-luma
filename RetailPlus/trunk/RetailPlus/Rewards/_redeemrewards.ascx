@@ -186,14 +186,17 @@
 	        <table class="ms-toolbar" id="TABLE2" cellspacing="0" cellpadding="2" border="0" width="100%">
 				<tr>
 		            <td class="ms-toolbar">
-		                <table cellspacing="0" cellpadding="1" border="0">
-			                <tr>
-				                <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgRedeemRewards" tooltip="Deduct the Reward Points to the selected member" accessKey="S" tabIndex="1" height="16" width="16" border="0" ImageUrl="../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar" OnClick="imgRedeemRewards_Click"></asp:imagebutton>&nbsp;
-								</td>
-								<td nowrap="nowrap"><asp:linkbutton id="cmdRedeemRewards" tooltip="Deduct the Reward Points to the selected member" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" OnClick="cmdRedeemRewards_Click">Redeem Reward Points</asp:linkbutton></td>
-			                </tr>
-			                
-		                </table>
+                        <asp:UpdatePanel ID="updSave" runat="server">
+                            <ContentTemplate>
+		                    <table cellspacing="0" cellpadding="1" border="0">
+			                    <tr>
+				                    <td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgRedeemRewards" tooltip="Deduct the Reward Points to the selected member" accessKey="S" tabIndex="1" height="16" width="16" border="0" ImageUrl="../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar" OnClick="imgRedeemRewards_Click"></asp:imagebutton>&nbsp;
+								    </td>
+								    <td nowrap="nowrap"><asp:linkbutton id="cmdRedeemRewards" tooltip="Deduct the Reward Points to the selected member" accessKey="S" tabIndex="2" runat="server" CssClass="ms-toolbar" OnClick="cmdRedeemRewards_Click">Redeem Reward Points</asp:linkbutton></td>
+			                    </tr>
+		                    </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
 	                </td>
 	                <td class="ms-separator">|</td>
 	                <td class="ms-toolbar">

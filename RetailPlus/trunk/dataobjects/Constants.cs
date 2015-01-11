@@ -154,7 +154,7 @@ namespace AceSoft.RetailPlus
             PreviousMonth = 4,
         }
 
-        public const Int32 C_DEFAULT_MYSQL_PROCESS_TIMEOUT = 90;
+        public const Int32 C_DEFAULT_MYSQL_PROCESS_TIMEOUT = 120;
 
         public static DateTime C_DATE_MIN_VALUE = Convert.ToDateTime("1900-01-01");
         public const string C_DATE_MIN_VALUE_STRING = "1900-01-01";
@@ -182,6 +182,7 @@ namespace AceSoft.RetailPlus
         public const string SYS_CONFIG_CREDIT_PAYMENT_TYPE = "CreditPaymentType";
         public const string SYS_CONFIG_ALLOW_DEBIT_PAYMENT = "AllowDebitPayment";
         public const string SYS_CONFIG_ALLOW_REWARD_POINTS_PAYMENT = "AllowRewardPointsPayment";
+        public const string SYS_CONFIG_ALLOW_DISCOUNT_GREATER_THAN_AMOUNT = "AllowDiscountGreaterThanAmount";
         public const string SYS_CONFIG_OR_HEADER = "ORHeader";
 
         /// <summary>

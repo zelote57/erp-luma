@@ -102,6 +102,7 @@ namespace AceSoft.RetailPlus.MasterFiles._CardType
             lblCreditMinimumAmountDue.Text = clsDetails.CreditMinimumAmountDue.ToString("#,##0.#0");
             lblCreditMinimumPercentageDue.Text = clsDetails.CreditMinimumPercentageDue.ToString("#,##0.#0");
             chkWithGuarantor.Checked = clsDetails.WithGuarantor;
+            chkExemptInTerminalCharge.Checked = clsDetails.ExemptInTerminalCharge;
             lblCreatedOn.Text = clsDetails.CreatedOn.ToString("yyyy-MM-dd hh:mm");
         }
         private void SaveRecord()
@@ -118,6 +119,7 @@ namespace AceSoft.RetailPlus.MasterFiles._CardType
             clsDetails.CreditMinimumAmountDue = decimal.Parse(lblCreditMinimumAmountDue.Text);
             clsDetails.CreditMinimumPercentageDue = decimal.Parse(lblCreditMinimumPercentageDue.Text);
             clsDetails.WithGuarantor = chkWithGuarantor.Checked;
+            clsDetails.ExemptInTerminalCharge = chkExemptInTerminalCharge.Checked;
 
             clsDetails.CreatedOn = DateTime.Parse(lblCreatedOn.Text);
             clsDetails.LastModified = DateTime.Now;

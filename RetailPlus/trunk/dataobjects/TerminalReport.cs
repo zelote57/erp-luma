@@ -43,10 +43,12 @@ namespace AceSoft.RetailPlus.Data
 		public decimal GroupSales;
 		public decimal OldGrandTotal;
 		public decimal NewGrandTotal;
+        public decimal ActualOldGrandTotal;
+        public decimal ActualNewGrandTotal;
         public decimal VATExempt;
-        public decimal VATZeroRated;
         public decimal NonVATableAmount;
         public decimal VATableAmount;
+        public decimal ZeroRatedSales;
 		public decimal VAT;
         public decimal EVATableAmount;
 		public decimal NonEVATableAmount;
@@ -164,10 +166,30 @@ namespace AceSoft.RetailPlus.Data
             string stSQL = "SELECT " +
 					            "BranchID, " +
                                 "TerminalNo, " +
-					            "BeginningTransactionNo, " +
-					            "EndingTransactionNo, " +
-                                "BeginningORNo, " +
-                                "EndingORNo, " +
+                                "    CASE " +
+								"    WHEN BeginningTransactionNo = 0 THEN LPAD(1, LENGTH(EndingTransactionNo), '0') " +
+								"    WHEN BeginningTransactionNo = 1 THEN LPAD(1, LENGTH(EndingTransactionNo), '0') " +
+								"    WHEN BeginningTransactionNo = EndingTransactionNo THEN LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), '0') " +
+								"    ELSE BeginningTransactionNo " +
+							    "END BeginningTransactionNo, " +
+							    "CASE " +
+								"    WHEN EndingTransactionNo = 0 THEN LPAD(1, LENGTH(BeginningTransactionNo), '0') " +
+								"    WHEN EndingTransactionNo = 1 THEN LPAD(1, LENGTH(BeginningTransactionNo), '0') " +
+								"    WHEN EndingTransactionNo = 0 THEN LPAD(1, LENGTH(BeginningTransactionNo), '0') " +
+								"    ELSE LPAD(EndingTransactionNo-1, LENGTH(BeginningTransactionNo), '0') " +
+							    "END EndingTransactionNo, " +
+							    "CASE " +
+								"   WHEN BeginningORNo = 0 THEN LPAD(1, LENGTH(EndingORNo), '0') " +
+								"    WHEN BeginningORNo = 1 THEN LPAD(1, LENGTH(EndingORNo), '0') " +
+								"    WHEN BeginningORNo = EndingORNo THEN LPAD(EndingORNo-1, LENGTH(BeginningORNo), '0') " +
+								"    ELSE BeginningORNo " +
+							    "END BeginningORNo, " +
+							    "CASE " +
+								"    WHEN EndingORNo = 0 THEN LPAD(1, LENGTH(BeginningORNo), '0') " +
+								"    WHEN EndingORNo = 1 THEN LPAD(1, LENGTH(BeginningORNo), '0') " +
+								"    WHEN BeginningORNo = EndingORNo THEN LPAD(EndingORNo-1, LENGTH(BeginningORNo), '0') " +
+								"    ELSE LPAD(EndingORNo-1, LENGTH(BeginningORNo), '0') " +
+							    "END EndingORNo, " +
 					            "ZReadCount, " +
 					            "XReadCount, " +
                                 "NetSales, " + 
@@ -183,9 +205,12 @@ namespace AceSoft.RetailPlus.Data
 					            "GroupSales, " +
 					            "OldGrandTotal, " +
 					            "NewGrandTotal, " +
+                                "ActualOldGrandTotal, " +
+                                "ActualNewGrandTotal, " +
                                 "VATExempt, " +
 					            "NonVATableAmount, " +
                                 "VATableAmount, " +
+                                "ZeroRatedSales, " +
 					            "VAT, " +
 					            "EVATableAmount, " +
 					            "NonEVATableAmount, " +
@@ -253,12 +278,44 @@ namespace AceSoft.RetailPlus.Data
                                 "DebitDeposit, " +
                                 "NoOfReprintedTransaction, " +
                                 "TotalReprintedTransaction, " +
+                                "'' InitializedBy, " +
                                 "TrustFund " +
 					        "FROM tblTerminalReport ";
             return stSQL;
         }
 
 		#region Details
+
+        public string BeginningTransactionNo(Int32 BranchID, string TerminalNo)
+        {
+            string strRetValue = "";
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT BeginningTransactionNo FROM tblTerminalReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo;";
+
+                cmd.Parameters.AddWithValue("@BranchID", BranchID);
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    strRetValue = dr["BeginningTransactionNo"].ToString();
+                    break;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+            return strRetValue;
+        }
+
         public TerminalReportDetails Details(Int32 BranchID, string TerminalNo)
 		{
 			try
@@ -314,9 +371,12 @@ namespace AceSoft.RetailPlus.Data
                 Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
                 Details.OldGrandTotal = decimal.Parse(dr["OldGrandTotal"].ToString());
                 Details.NewGrandTotal = decimal.Parse(dr["NewGrandTotal"].ToString());
+                Details.ActualOldGrandTotal = decimal.Parse(dr["ActualOldGrandTotal"].ToString());
+                Details.ActualNewGrandTotal = decimal.Parse(dr["ActualNewGrandTotal"].ToString());
                 Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
                 Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
                 Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());
+                Details.ZeroRatedSales = decimal.Parse(dr["ZeroRatedSales"].ToString());
                 Details.VAT = decimal.Parse(dr["VAT"].ToString());
                 Details.EVATableAmount = decimal.Parse(dr["EVATableAmount"].ToString());
                 Details.NonEVATableAmount = decimal.Parse(dr["NonEVATableAmount"].ToString());
@@ -384,6 +444,7 @@ namespace AceSoft.RetailPlus.Data
                 Details.DebitDeposit = decimal.Parse(dr["DebitDeposit"].ToString());
                 Details.NoOfReprintedTransaction = Int32.Parse(dr["NoOfReprintedTransaction"].ToString());
                 Details.TotalReprintedTransaction = decimal.Parse(dr["TotalReprintedTransaction"].ToString());
+                Details.InitializedBy = dr["InitializedBy"].ToString();
 
                 Details.TrustFund = decimal.Parse(dr["TrustFund"].ToString());
             }
@@ -420,9 +481,12 @@ namespace AceSoft.RetailPlus.Data
                 Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
                 Details.OldGrandTotal = decimal.Parse(dr["OldGrandTotal"].ToString());
                 Details.NewGrandTotal = decimal.Parse(dr["NewGrandTotal"].ToString());
+                Details.ActualOldGrandTotal = decimal.Parse(dr["ActualOldGrandTotal"].ToString());
+                Details.ActualNewGrandTotal = decimal.Parse(dr["ActualNewGrandTotal"].ToString());
                 Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
                 Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
                 Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());
+                Details.ZeroRatedSales = decimal.Parse(dr["ZeroRatedSales"].ToString());
                 Details.VAT = decimal.Parse(dr["VAT"].ToString());
                 Details.EVATableAmount = decimal.Parse(dr["EVATableAmount"].ToString());
                 Details.NonEVATableAmount = decimal.Parse(dr["NonEVATableAmount"].ToString());
@@ -728,6 +792,7 @@ namespace AceSoft.RetailPlus.Data
                                     "@VATExempt, " +
                                     "@NonVATableAmount, " +
                                     "@VATableAmount, " +
+                                    "@ZeroRatedSales, " +
                                     "@VAT, " +
                                     "@EVATableAmount, " +
                                     "@NonEVATableAmount, " +
@@ -789,6 +854,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@VATExempt", Details.VATExempt);
                 cmd.Parameters.AddWithValue("@NonVATableAmount", Details.NonVATableAmount);
                 cmd.Parameters.AddWithValue("@VATableAmount", Details.VATableAmount);
+                cmd.Parameters.AddWithValue("@ZeroRatedSales", Details.ZeroRatedSales);
                 cmd.Parameters.AddWithValue("@VAT", Details.VAT);
                 cmd.Parameters.AddWithValue("@EVATableAmount", Details.EVATableAmount);
                 cmd.Parameters.AddWithValue("@NonEVATableAmount", Details.NonEVATableAmount);

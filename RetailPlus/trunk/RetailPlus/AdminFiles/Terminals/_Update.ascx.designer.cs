@@ -418,6 +418,24 @@ namespace AceSoft.RetailPlus.Security._Terminals {
         protected global::System.Web.UI.WebControls.CheckBox chkShowCustomerSelection;
         
         /// <summary>
+        /// cboGroupChargeType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboGroupChargeType;
+        
+        /// <summary>
+        /// cboPersonalChargeType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboPersonalChargeType;
+        
+        /// <summary>
         /// cboDefaultTransactionChargeCode control.
         /// </summary>
         /// <remarks>

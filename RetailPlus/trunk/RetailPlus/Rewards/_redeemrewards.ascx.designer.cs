@@ -193,6 +193,15 @@ namespace AceSoft.RetailPlus.Rewards {
         protected global::System.Web.UI.WebControls.TextBox txtRemarks;
         
         /// <summary>
+        /// updSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updSave;
+        
+        /// <summary>
         /// imgRedeemRewards control.
         /// </summary>
         /// <remarks>

@@ -33,12 +33,14 @@ namespace AceSoft.RetailPlus.Rewards
 			AccessRights clsAccessRights = new AccessRights(); 
 			AccessRightsDetails clsDetails = new AccessRightsDetails();
 
-			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.Contacts); 
+			clsDetails = clsAccessRights.Details(UID,(int) AccessTypes.RewardPointsSetup); 
 			lnkMembers.Visible = clsDetails.Read;
             lnkRewardsMovement.Visible = clsDetails.Read;
-            lnkCheckRewardPoints.Visible = clsDetails.Read; 
-            lnkRewardsReddem.Visible = clsDetails.Read;
+            lnkCheckRewardPoints.Visible = clsDetails.Read;
             lnkRewardsSummary.Visible = clsDetails.Read;
+
+            clsDetails = clsAccessRights.Details(UID, (int)AccessTypes.RewardPointsReedemption); 
+            lnkRewardsReddem.Visible = clsDetails.Read;
 
             clsAccessRights.CommitAndDispose();
 		}

@@ -29,6 +29,7 @@ namespace AceSoft.RetailPlus.Data
         public CreditCardStatus CreditCardStatus;
         public DateTime ExpiryDate;
         public DateTime LastBillingDate;
+        public DateTime Last2BillingDate;
         public bool CreditActive;
         public decimal CreditLimit;
 
@@ -116,7 +117,7 @@ namespace AceSoft.RetailPlus.Data
 
                 string SQL = "CALL procSaveContactCreditCardInfo(@CustomerID, @GuarantorID, @CreditCardTypeID, @CreditCardNo, @CreditAwardDate, " +
                                                     "@TotalPurchases, @CreditPaid, @CreditCardStatus, @ExpiryDate, @EmbossedCardNo, " +
-                                                    "@LastBillingDate, @CreatedOn, @LastModified);";
+                                                    "@LastBillingDate, @Last2BillingDate, @CreatedOn, @LastModified);";
                 
                 cmd.Parameters.AddWithValue("CustomerID", Details.CustomerID);
                 cmd.Parameters.AddWithValue("GuarantorID", Details.GuarantorID);
@@ -129,6 +130,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("ExpiryDate", Details.ExpiryDate);
                 cmd.Parameters.AddWithValue("EmbossedCardNo", Details.CreditCardNo);
                 cmd.Parameters.AddWithValue("LastBillingDate", Details.LastBillingDate);
+                cmd.Parameters.AddWithValue("Last2BillingDate", Details.Last2BillingDate);
                 cmd.Parameters.AddWithValue("CreatedOn", Details.CreatedOn == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.CreatedOn);
                 cmd.Parameters.AddWithValue("LastModified", Details.LastModified == DateTime.MinValue ? Constants.C_DATE_MIN_VALUE : Details.LastModified);
 
@@ -182,6 +184,7 @@ namespace AceSoft.RetailPlus.Data
                                 "ExpiryDate, " +
                                 "EmbossedCardNo, " +
                                 "LastBillingDate, " +
+                                "Last2BillingDate, " +
                                 "CreatedOn, " +
                                 "LastModified " +
                             "FROM tblContactCreditCardInfo ";
@@ -251,12 +254,45 @@ namespace AceSoft.RetailPlus.Data
                 Details.EmbossedCardNo = "" + dr["EmbossedCardNo"].ToString();
                 Details.ExpiryDate = DateTime.Parse(dr["ExpiryDate"].ToString());
                 Details.LastBillingDate = DateTime.Parse(dr["LastBillingDate"].ToString());
+                Details.Last2BillingDate = DateTime.Parse(dr["Last2BillingDate"].ToString());
                 Details.CreatedOn = DateTime.Parse(dr["CreatedOn"].ToString());
                 Details.LastModified = DateTime.Parse(dr["LastModified"].ToString());
             }
 
             return Details;
         }
+
+        public DateTime getPreviousBillingDate(Int32 CreditCardTypeID, DateTime BillingDate)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT MAX(BillingDate) BillingDate FROM tblCreditBills WHERE CreditCardTypeID=@CreditCardTypeID AND BillingDate < @BillingDate;";
+
+                cmd.Parameters.AddWithValue("@CreditCardTypeID", CreditCardTypeID);
+                cmd.Parameters.AddWithValue("@BillingDate", BillingDate);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                DateTime dteRetvalue = Constants.C_DATE_MIN_VALUE;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    dteRetvalue = DateTime.TryParse(dr["BillingDate"].ToString(), out dteRetvalue) ? dteRetvalue : Constants.C_DATE_MIN_VALUE;
+                    break;
+                }
+
+                return dteRetvalue;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
 		#endregion
 
 		#region Streams

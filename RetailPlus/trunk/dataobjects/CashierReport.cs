@@ -34,9 +34,9 @@ namespace AceSoft.RetailPlus.Data
 		public decimal QuantitySold;
 		public decimal GroupSales;
         public decimal VATExempt;
-        public decimal VATZeroRated;
         public decimal NonVATableAmount;
         public decimal VATableAmount;
+        public decimal ZeroRatedSales;             
         public decimal VAT;
         public decimal EVATableAmount;
         public decimal NonEVATableAmount;
@@ -174,10 +174,10 @@ namespace AceSoft.RetailPlus.Data
 								"QuantitySold, " +
 								"GroupSales, " +
 								"VATExempt, " +
-                                "ZeroRatedVAT, " +
                                 "NonVATableAmount, " +
                                 "VAT, " +
                                 "VATableAmount, " +
+                                "ZeroRatedSales, " +
 								"EVAT, " +
 								"LocalTax, " +
 								"CashSales, " +
@@ -273,10 +273,10 @@ namespace AceSoft.RetailPlus.Data
                 Details.QuantitySold = decimal.Parse(dr["QuantitySold"].ToString());
                 Details.GroupSales = decimal.Parse(dr["GroupSales"].ToString());
                 Details.VATExempt = decimal.Parse(dr["VATExempt"].ToString());
-                Details.VATZeroRated = decimal.Parse(dr["ZeroRatedVAT"].ToString());
                 Details.NonVATableAmount = decimal.Parse(dr["NonVATableAmount"].ToString());
                 Details.VAT = decimal.Parse(dr["VAT"].ToString());
                 Details.VATableAmount = decimal.Parse(dr["VATableAmount"].ToString());
+                Details.ZeroRatedSales = decimal.Parse(dr["ZeroRatedSales"].ToString());
                 Details.LocalTax = decimal.Parse(dr["LocalTax"].ToString());
                 Details.CashSales = decimal.Parse(dr["CashSales"].ToString());
                 Details.ChequeSales = decimal.Parse(dr["ChequeSales"].ToString());
@@ -434,6 +434,7 @@ namespace AceSoft.RetailPlus.Data
                                     "@VATExempt, " +
                                     "@NonVATableAmount, " +
                                     "@VATableAmount, " +
+                                    "@ZeroRatedSales, " +
                                     "@VAT, " +
                                     "@EVATableAmount, " +
                                     "@NonEVATableAmount, " +
@@ -492,6 +493,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("VATExempt", Details.VATExempt);
                 cmd.Parameters.AddWithValue("NonVATableAmount", Details.NonVATableAmount);
                 cmd.Parameters.AddWithValue("VATableAmount", Details.VATableAmount);
+                cmd.Parameters.AddWithValue("ZeroRatedSales", Details.ZeroRatedSales);
                 cmd.Parameters.AddWithValue("VAT", Details.VAT);
                 cmd.Parameters.AddWithValue("EVATableAmount", Details.EVATableAmount);
                 cmd.Parameters.AddWithValue("NonEVATableAmount", Details.NonEVATableAmount);

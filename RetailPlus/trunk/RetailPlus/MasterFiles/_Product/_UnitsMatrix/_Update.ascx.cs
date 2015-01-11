@@ -141,6 +141,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product._UnitsMatrix
 			ProductUnitsMatrixDetails clsDetails = new ProductUnitsMatrixDetails();
 
 			clsDetails.MatrixID = Convert.ToInt64(lblMatrixID.Text);
+            clsDetails.ProductID = Convert.ToInt64(lblProductID.Text);
 			clsDetails.BaseUnitID = Convert.ToInt16(lblBaseUnitID.Text);
 			clsDetails.BaseUnitValue = Convert.ToDecimal(txtBaseUnitValue.Text);
 			clsDetails.BottomUnitID = Convert.ToInt16(cboBottomUnit.SelectedItem.Value);

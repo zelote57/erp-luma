@@ -320,6 +320,9 @@ BEGIN
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
 						END) VATableAmount, 
 					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ZeroRatedSales
+						END) ZeroRatedSales, 
+					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
 						END) VAT, 
 					SUM(CASE TransactionStatus
@@ -413,6 +416,7 @@ BEGIN
 						tblCashierReport.VATExempt   						=  IFNULL(Trx.VATExempt,0), 
 						tblCashierReport.NonVATableAmount					=  IFNULL(Trx.NonVATableAmount,0), 
 						tblCashierReport.VATableAmount						=  IFNULL(Trx.VATableAmount,0), 
+						tblCashierReport.ZeroRatedSales						=  IFNULL(Trx.ZeroRatedSales,0), 
 						tblCashierReport.VAT								=  IFNULL(Trx.VAT,0), 
 						tblCashierReport.EVATableAmount						=  IFNULL(Trx.EVATableAmount,0), 
 						tblCashierReport.NonEVATableAmount					=  IFNULL(Trx.NonEVATableAmount,0), 
@@ -539,6 +543,9 @@ BEGIN
 								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
 							END) VATableAmount, 
 						SUM(CASE TransactionStatus
+								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ZeroRatedSales
+							END) ZeroRatedSales, 
+						SUM(CASE TransactionStatus
 								WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
 							END) VAT, 
 						SUM(CASE TransactionStatus
@@ -634,6 +641,7 @@ BEGIN
 							tblTerminalReport.VATExempt   						=  IFNULL(Trx.VATExempt,0), 
 							tblTerminalReport.NonVATableAmount					=  IFNULL(Trx.NonVATableAmount,0), 
 							tblTerminalReport.VATableAmount						=  IFNULL(Trx.VATableAmount,0), 
+							tblTerminalReport.ZeroRatedSales					=  IFNULL(Trx.ZeroRatedSales,0), 
 							tblTerminalReport.VAT								=  IFNULL(Trx.VAT,0), 
 							tblTerminalReport.EVATableAmount					=  IFNULL(Trx.EVATableAmount,0), 
 							tblTerminalReport.NonEVATableAmount					=  IFNULL(Trx.NonEVATableAmount,0), 
@@ -703,6 +711,7 @@ create procedure procTerminalReportUpdateTransactionSales(IN intBranchID int(4),
 														IN decVATExempt decimal(18,2),
 														IN decNonVATableAmount decimal(18,2),
 														IN decVATableAmount decimal(18,2),
+														IN decZeroRatedSales decimal(18,2),
 														IN decVAT decimal(18,2),
 														IN decEVATableAmount decimal(18,2),
 														IN decNonEVATableAmount decimal(18,2),
@@ -765,6 +774,7 @@ BEGIN
 					VATExempt							=  VATExempt							+  decVATExempt, 
 					NonVATableAmount					=  NonVATableAmount						+  decNonVATableAmount, 
 					VATableAmount						=  VATableAmount						+  decVATableAmount, 
+					ZeroRatedSales						=  ZeroRatedSales						+  decZeroRatedSales, 
 					VAT									=  VAT									+  decVAT, 
 					EVATableAmount						=  EVATableAmount						+  decEVATableAmount, 
 					NonEVATableAmount					=  NonEVATableAmount					+  decNonEVATableAmount, 
@@ -893,6 +903,7 @@ create procedure procCashierReportUpdateTransactionSales(IN intBranchID INT(4), 
 														IN decVATExempt decimal(18,2),
 														IN decNonVATableAmount decimal(18,2),
 														IN decVATableAmount decimal(18,2),
+														IN decZeroRatedSales decimal(18,2),
 														IN decVAT decimal(18,2),
 														IN decEVATableAmount decimal(18,2),
 														IN decNonEVATableAmount decimal(18,2),
@@ -952,6 +963,7 @@ BEGIN
 		VATExempt								=  VATExempt							+  decVATExempt, 
 		NonVATableAmount						=  NonVATableAmount						+  decNonVATableAmount, 
 		VATableAmount							=  VATableAmount						+  decVATableAmount, 
+		ZeroRatedSales							=  ZeroRatedSales						+  decZeroRatedSales, 
 		VAT										=  VAT									+  decVAT, 
 		EVATableAmount							=  EVATableAmount						+  decEVATableAmount, 
 		NonEVATableAmount						=  NonEVATableAmount					+  decNonEVATableAmount, 
@@ -1648,7 +1660,7 @@ BEGIN
 					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
 					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
 					ItemSold, QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
-					VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
+					VATExempt, NonVATableAmount, VATableAmount, ZeroRatedSales, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
 					ChequeSales, CreditCardSales, CreditSales, CreditPayment, 
 					RefundCash, RefundCheque, RefundCreditCard, RefundCredit, RefundDebit,
 					CreditPaymentCash, CreditPaymentCheque,
@@ -1672,7 +1684,7 @@ BEGIN
 					BranchID, TerminalID, TerminalNo, BeginningTransactionNo, EndingTransactionNo, BeginningORNo, EndingORNo, 
 					ZReadCount, XReadCount, NetSales, GrossSales, TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
 					ItemSold, QuantitySold, GroupSales, OldGrandTotal, NewGrandTotal, ActualOldGrandTotal, ActualNewGrandTotal, 
-					VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
+					VATExempt, NonVATableAmount, VATableAmount, ZeroRatedSales, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, CashSales, 
 					ChequeSales, CreditCardSales, CreditSales, CreditPayment, 
 					RefundCash, RefundCheque, RefundCreditCard, RefundCredit, RefundDebit,
 					CreditPaymentCash, CreditPaymentCheque,
@@ -1713,6 +1725,7 @@ BEGIN
 					VATExempt   						=  0, 
 					NonVATableAmount					=  0, 
 					VATableAmount						=  0, 
+					ZeroRatedSales						=  0,
 					VAT									=  0, 
 					EVATableAmount						=  0, 
 					NonEVATableAmount					=  0, 
@@ -1791,7 +1804,7 @@ BEGIN
 					CashierID, BranchID, TerminalID, TerminalNo, BeginningTransactionNo, BeginningORNo, 
 					EndingTransactionNo, EndingORNo, NetSales, GrossSales, 
 					TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
-					ItemSold, QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
+					ItemSold, QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, ZeroRatedSales, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
 					CashSales, ChequeSales, CreditCardSales, CreditSales, 
 					RefundCash, RefundCheque, RefundCreditCard, RefundCredit, RefundDebit,
 					CreditPayment, CreditPaymentCash, CreditPaymentCheque, CreditPaymentCreditCard, 
@@ -1815,7 +1828,7 @@ BEGIN
 					CashierID, BranchID, TerminalID, TerminalNo, BeginningTransactionNo, BeginningORNo, 
 					strEndingTransactionNo, strEndingORNo, NetSales, GrossSales, 
 					TotalDiscount, SNRDiscount, PWDDiscount, OtherDiscount, TotalCharge, DailySales, 
-					ItemSold, QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
+					ItemSold, QuantitySold, GroupSales, VATExempt, NonVATableAmount, VATableAmount, ZeroRatedSales, VAT, EVATableAmount, NonEVATableAmount, EVAT, LocalTax, 
 					CashSales, ChequeSales, CreditCardSales, CreditSales, 
 					RefundCash, RefundCheque, RefundCreditCard, RefundCredit, RefundDebit,
 					CreditPayment, CreditPaymentCash, CreditPaymentCheque, CreditPaymentCreditCard, 
@@ -8961,9 +8974,9 @@ BEGIN
 							OldGrandTotal, 
 							NewGrandTotal, 
 							VATExempt,
-							0 VATZeroRated, 
 							NonVATableAmount, 
 							VATableAmount, 
+							ZeroRatedSales,
 							VAT, 
 							EVATableAmount, 
 							NonEVATableAmount, 
@@ -9086,9 +9099,9 @@ BEGIN
 							ActualOldGrandTotal, 
 							ActualNewGrandTotal, 
 							VATExempt - (VATExempt * TrustFund/100) VATExempt, 
-							0 VATZeroRated,
 							NonVATableAmount - (NonVATableAmount * TrustFund/100) NonVATableAmount, 
 							VATableAmount - (VATableAmount * TrustFund/100) VATableAmount, 
+							ZeroRatedSales - (ZeroRatedSales * TrustFund/100) ZeroRatedSales, 
 							VAT - (VAT * TrustFund/100) VAT, 
 							EVATableAmount - (EVATableAmount * TrustFund/100) EVATableAmount, 
 							NonEVATableAmount - (NonEVATableAmount * TrustFund/100) NonEVATableAmount, 
@@ -9288,6 +9301,7 @@ BEGIN
 							trx.TransDiscountType,
 							trx.VAT,
 							trx.VatableAmount,
+							trx.ZeroRatedSales,
 							trx.EVAT,
 							trx.EVatableAmount,
 							trx.LocalTax,
@@ -9340,7 +9354,6 @@ BEGIN
 							trx.LastModified,
 							trx.ORNo,
 							trx.SyncID,
-							trx.ZeroRatedVAT,
 							trx.NonVATableAmount,
 							trx.VATExempt,
 							trx.NonEVATableAmount,
@@ -9392,6 +9405,7 @@ BEGIN
 							trx.TransDiscountType,
 							trx.VAT - (trx.VAT * IFNULL(trh.TrustFund, 0)/100) VAT,
 							trx.VatableAmount - (trx.VatableAmount * IFNULL(trh.TrustFund, 0)/100) VatableAmount,
+							trx.ZeroRatedSales - (trx.ZeroRatedSales * IFNULL(trh.TrustFund, 0)/100) ZeroRatedSales,
 							trx.EVAT - (trx.EVAT * IFNULL(trh.TrustFund, 0)/100) EVAT,
 							trx.EVatableAmount - (trx.EVatableAmount * IFNULL(trh.TrustFund, 0)/100) EVatableAmount,
 							trx.LocalTax - (trx.LocalTax * IFNULL(trh.TrustFund, 0)/100) LocalTax,
@@ -9444,7 +9458,6 @@ BEGIN
 							trx.LastModified,
 							trx.ORNo,
 							trx.SyncID,
-							trx.ZeroRatedVAT - (trx.ZeroRatedVAT * IFNULL(trh.TrustFund, 0)/100) ZeroRatedVAT,
 							trx.NonVATableAmount - (trx.NonVATableAmount * IFNULL(trh.TrustFund, 0)/100) NonVATableAmount,
 							trx.VATExempt - (trx.VATExempt * IFNULL(trh.TrustFund, 0)/100) VATExempt,
 							trx.NonEVATableAmount - (trx.NonEVATableAmount * IFNULL(trh.TrustFund, 0)/100) NonEVATableAmount,
@@ -9625,6 +9638,9 @@ BEGIN
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
 						END) VATableAmount, 
 					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ZeroRatedSales
+						END) ZeroRatedSales, 
+					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
 						END) VAT, 
 					SUM(CASE TransactionStatus
@@ -9718,6 +9734,7 @@ BEGIN
 						tblCashierReportHistory.VATExempt   					=  IFNULL(Trx.VATExempt,0), 
 						tblCashierReportHistory.NonVATableAmount				=  IFNULL(Trx.NonVATableAmount,0), 
 						tblCashierReportHistory.VATableAmount					=  IFNULL(Trx.VATableAmount,0), 
+						tblCashierReportHistory.ZeroRatedSales					=  IFNULL(Trx.ZeroRatedSales,0), 
 						tblCashierReportHistory.VAT								=  IFNULL(Trx.VAT,0), 
 						tblCashierReportHistory.EVATableAmount					=  IFNULL(Trx.EVATableAmount,0), 
 						tblCashierReportHistory.NonEVATableAmount				=  IFNULL(Trx.NonEVATableAmount,0), 
@@ -9883,6 +9900,9 @@ BEGIN
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VATableAmount
 						END) VATableAmount, 
 					SUM(CASE TransactionStatus
+							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE ZeroRatedSales
+						END) ZeroRatedSales, 
+					SUM(CASE TransactionStatus
 							WHEN 3 THEN 0 WHEN 7 THEN 0 ELSE VAT
 						END) VAT, 
 					SUM(CASE TransactionStatus
@@ -9978,6 +9998,7 @@ BEGIN
 				tblTerminalReportHistory.VATExempt   						= IFNULL(Trx.VATExempt,0), 
 				tblTerminalReportHistory.NonVATableAmount					= IFNULL(Trx.NonVATableAmount,0), 
 				tblTerminalReportHistory.VATableAmount						= IFNULL(Trx.VATableAmount,0), 
+				tblTerminalReportHistory.ZeroRatedSales						= IFNULL(Trx.ZeroRatedSales,0), 
 				tblTerminalReportHistory.VAT								= IFNULL(Trx.VAT,0), 
 				tblTerminalReportHistory.EVATableAmount						= IFNULL(Trx.EVATableAmount,0), 
 				tblTerminalReportHistory.NonEVATableAmount					= IFNULL(Trx.NonEVATableAmount,0), 

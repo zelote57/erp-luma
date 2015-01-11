@@ -105,12 +105,19 @@ namespace AceSoft.RetailPlus
         //    //return "Data Source=" + DBConnection.DBName() + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + clsPort + ";Extended Properties=";
         //}
 
-        public static string ConnectionString(string ServerIP = null, string Port = null, string DBName = null)
+        public static string ConnectionString(string ServerIP = null, string Port = null, string DBName = null, Int32 ConnectionTimeOut = 180, string username="", string password ="")
         {
-            return "Server=" + (ServerIP == null || ServerIP == "" ? DBConnection.ServerIP() : ServerIP) +
-                ";Port=" + (Port == null || Port == "" ? DBConnection.DBPort().ToString() : Port) +
-                ";Database=" + (DBName == null || DBName == "" ? DBConnection.DBName() : DBName) +
-                    ";Uid=POSUser;Pwd=pospwd; Encrypt = true; Connection Timeout=180";
+            if (string.IsNullOrEmpty(username)) username = "POSUser";
+            if (string.IsNullOrEmpty(password)) password = "pospwd";
+
+            return "Server=" + (string.IsNullOrEmpty(ServerIP) ? DBConnection.ServerIP() : ServerIP) +
+                   ";Port=" + (string.IsNullOrEmpty(Port) ? DBConnection.DBPort().ToString() : Port) +
+                   ";Database=" + (string.IsNullOrEmpty(DBName) ? DBConnection.DBName() : DBName) +
+                   ";Uid=" + (string.IsNullOrEmpty(username) ? "POSUser" : username) +
+                   ";Pwd=" + (string.IsNullOrEmpty(password) ? "pospwd" : password) + 
+                   ";Encrypt = true" +
+                   ";Connection Timeout=" + ConnectionTimeOut.ToString();
+
             //return "Data Source=" + clsDBName + ";Password=pospwd;User ID=POSUser;Location=" + clsServerIP + ";Port=" + clsPort + ";Extended Properties=";
         }
 

@@ -28,34 +28,50 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtUnitCode = new System.Windows.Forms.TextBox();
+            this.cmdBranchSelect = new System.Windows.Forms.Button();
+            this.cmdSave = new System.Windows.Forms.Button();
+            this.txtBarCode = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.lblBalanceAmount = new System.Windows.Forms.Label();
             this.lblProductDesc = new System.Windows.Forms.Label();
-            this.cboBranch = new System.Windows.Forms.ComboBox();
             this.lblDicountTypes = new System.Windows.Forms.Label();
             this.lblCash = new System.Windows.Forms.Label();
-            this.txtAmount = new System.Windows.Forms.TextBox();
+            this.txtQuantity = new System.Windows.Forms.TextBox();
             this.imgIcon = new System.Windows.Forms.PictureBox();
-            this.cmdCancel = new System.Windows.Forms.Button();
             this.lblHeader = new System.Windows.Forms.Label();
-            this.cmdEnter = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.dgvItems = new System.Windows.Forms.DataGridView();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblAddNewCustomer = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.txtUnitCode);
+            this.groupBox1.Controls.Add(this.cmdBranchSelect);
+            this.groupBox1.Controls.Add(this.cmdSave);
+            this.groupBox1.Controls.Add(this.txtBarCode);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.lblBalanceAmount);
             this.groupBox1.Controls.Add(this.lblProductDesc);
-            this.groupBox1.Controls.Add(this.cboBranch);
             this.groupBox1.Controls.Add(this.lblDicountTypes);
             this.groupBox1.Controls.Add(this.lblCash);
-            this.groupBox1.Controls.Add(this.txtAmount);
+            this.groupBox1.Controls.Add(this.txtQuantity);
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Blue;
             this.groupBox1.Location = new System.Drawing.Point(0, 78);
@@ -63,124 +79,55 @@
             this.groupBox1.Size = new System.Drawing.Size(1008, 264);
             this.groupBox1.TabIndex = 83;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Press ENTER key to apply discount.";
+            this.groupBox1.Text = "Press TAB key to change item. Press SAVE  to add the item.";
             // 
-            // lblBalanceAmount
+            // txtUnitCode
             // 
-            this.lblBalanceAmount.BackColor = System.Drawing.Color.Transparent;
-            this.lblBalanceAmount.Font = new System.Drawing.Font("Tahoma", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBalanceAmount.ForeColor = System.Drawing.Color.Red;
-            this.lblBalanceAmount.Location = new System.Drawing.Point(58, 112);
-            this.lblBalanceAmount.Name = "lblBalanceAmount";
-            this.lblBalanceAmount.Size = new System.Drawing.Size(184, 30);
-            this.lblBalanceAmount.TabIndex = 8;
-            this.lblBalanceAmount.Text = "Item Description";
-            this.lblBalanceAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.txtUnitCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtUnitCode.Enabled = false;
+            this.txtUnitCode.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUnitCode.Location = new System.Drawing.Point(804, 55);
+            this.txtUnitCode.MaxLength = 16;
+            this.txtUnitCode.Name = "txtUnitCode";
+            this.txtUnitCode.Size = new System.Drawing.Size(69, 30);
+            this.txtUnitCode.TabIndex = 11;
+            this.txtUnitCode.Text = "PCS";
+            this.txtUnitCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // lblProductDesc
+            // cmdBranchSelect
             // 
-            this.lblProductDesc.BackColor = System.Drawing.Color.Transparent;
-            this.lblProductDesc.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProductDesc.ForeColor = System.Drawing.Color.Black;
-            this.lblProductDesc.Location = new System.Drawing.Point(144, 152);
-            this.lblProductDesc.Name = "lblProductDesc";
-            this.lblProductDesc.Size = new System.Drawing.Size(719, 73);
-            this.lblProductDesc.TabIndex = 9;
-            this.lblProductDesc.Text = "Current Balance to be paid.";
+            this.cmdBranchSelect.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdBranchSelect.Location = new System.Drawing.Point(62, 52);
+            this.cmdBranchSelect.Name = "cmdBranchSelect";
+            this.cmdBranchSelect.Size = new System.Drawing.Size(213, 34);
+            this.cmdBranchSelect.TabIndex = 1;
+            this.cmdBranchSelect.Text = "press to select";
+            this.cmdBranchSelect.UseVisualStyleBackColor = true;
+            this.cmdBranchSelect.Click += new System.EventHandler(this.cmdBranchSelect_Click);
             // 
-            // cboBranch
+            // cmdSave
             // 
-            this.cboBranch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboBranch.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cboBranch.Location = new System.Drawing.Point(47, 54);
-            this.cboBranch.Name = "cboBranch";
-            this.cboBranch.Size = new System.Drawing.Size(200, 31);
-            this.cboBranch.TabIndex = 0;
+            this.cmdSave.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdSave.Location = new System.Drawing.Point(879, 46);
+            this.cmdSave.Name = "cmdSave";
+            this.cmdSave.Size = new System.Drawing.Size(103, 47);
+            this.cmdSave.TabIndex = 4;
+            this.cmdSave.Text = "&Save";
+            this.cmdSave.UseVisualStyleBackColor = true;
+            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
             // 
-            // lblDicountTypes
+            // txtBarCode
             // 
-            this.lblDicountTypes.AutoSize = true;
-            this.lblDicountTypes.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDicountTypes.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblDicountTypes.Location = new System.Drawing.Point(28, 38);
-            this.lblDicountTypes.Name = "lblDicountTypes";
-            this.lblDicountTypes.Size = new System.Drawing.Size(159, 13);
-            this.lblDicountTypes.TabIndex = 3;
-            this.lblDicountTypes.Text = "Select Branch To inventory";
-            // 
-            // lblCash
-            // 
-            this.lblCash.AutoSize = true;
-            this.lblCash.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCash.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblCash.Location = new System.Drawing.Point(403, 38);
-            this.lblCash.Name = "lblCash";
-            this.lblCash.Size = new System.Drawing.Size(114, 13);
-            this.lblCash.TabIndex = 4;
-            this.lblCash.Text = "Scan Item Barcode";
-            // 
-            // txtAmount
-            // 
-            this.txtAmount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtAmount.Enabled = false;
-            this.txtAmount.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAmount.Location = new System.Drawing.Point(626, 54);
-            this.txtAmount.MaxLength = 16;
-            this.txtAmount.Name = "txtAmount";
-            this.txtAmount.Size = new System.Drawing.Size(179, 30);
-            this.txtAmount.TabIndex = 1;
-            this.txtAmount.Text = "0.00";
-            this.txtAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // imgIcon
-            // 
-            this.imgIcon.BackColor = System.Drawing.Color.Blue;
-            this.imgIcon.Location = new System.Drawing.Point(1, 18);
-            this.imgIcon.Name = "imgIcon";
-            this.imgIcon.Size = new System.Drawing.Size(49, 49);
-            this.imgIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.imgIcon.TabIndex = 87;
-            this.imgIcon.TabStop = false;
-            // 
-            // cmdCancel
-            // 
-            this.cmdCancel.AutoSize = true;
-            this.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmdCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdCancel.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdCancel.ForeColor = System.Drawing.Color.White;
-            this.cmdCancel.Location = new System.Drawing.Point(757, 631);
-            this.cmdCancel.Name = "cmdCancel";
-            this.cmdCancel.Size = new System.Drawing.Size(106, 83);
-            this.cmdCancel.TabIndex = 85;
-            this.cmdCancel.Text = "CANCEL";
-            this.cmdCancel.UseVisualStyleBackColor = true;
-            // 
-            // lblHeader
-            // 
-            this.lblHeader.AutoSize = true;
-            this.lblHeader.BackColor = System.Drawing.Color.Transparent;
-            this.lblHeader.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHeader.ForeColor = System.Drawing.Color.White;
-            this.lblHeader.Location = new System.Drawing.Point(59, 35);
-            this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(147, 13);
-            this.lblHeader.TabIndex = 86;
-            this.lblHeader.Text = "Tender Discount Amount";
-            // 
-            // cmdEnter
-            // 
-            this.cmdEnter.AutoSize = true;
-            this.cmdEnter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmdEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdEnter.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdEnter.ForeColor = System.Drawing.Color.White;
-            this.cmdEnter.Location = new System.Drawing.Point(869, 631);
-            this.cmdEnter.Name = "cmdEnter";
-            this.cmdEnter.Size = new System.Drawing.Size(106, 83);
-            this.cmdEnter.TabIndex = 84;
-            this.cmdEnter.Text = "ENTER";
-            this.cmdEnter.UseVisualStyleBackColor = true;
+            this.txtBarCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtBarCode.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBarCode.Location = new System.Drawing.Point(328, 55);
+            this.txtBarCode.MaxLength = 16;
+            this.txtBarCode.Name = "txtBarCode";
+            this.txtBarCode.Size = new System.Drawing.Size(285, 30);
+            this.txtBarCode.TabIndex = 2;
+            this.txtBarCode.Text = "1234567890123";
+            this.txtBarCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBarCode.TextChanged += new System.EventHandler(this.txtBarCode_TextChanged);
             // 
             // label1
             // 
@@ -193,37 +140,244 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "Enter Current Quantity";
             // 
-            // textBox1
+            // lblBalanceAmount
             // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Enabled = false;
-            this.textBox1.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(328, 55);
-            this.textBox1.MaxLength = 16;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(285, 30);
-            this.textBox1.TabIndex = 11;
-            this.textBox1.Text = "1234567890123";
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.lblBalanceAmount.BackColor = System.Drawing.Color.Transparent;
+            this.lblBalanceAmount.Font = new System.Drawing.Font("Tahoma", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBalanceAmount.ForeColor = System.Drawing.Color.Red;
+            this.lblBalanceAmount.Location = new System.Drawing.Point(58, 112);
+            this.lblBalanceAmount.Name = "lblBalanceAmount";
+            this.lblBalanceAmount.Size = new System.Drawing.Size(184, 30);
+            this.lblBalanceAmount.TabIndex = 8;
+            this.lblBalanceAmount.Text = "Item Description :";
+            this.lblBalanceAmount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblProductDesc
+            // 
+            this.lblProductDesc.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.lblProductDesc.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProductDesc.ForeColor = System.Drawing.Color.Black;
+            this.lblProductDesc.Location = new System.Drawing.Point(144, 152);
+            this.lblProductDesc.Name = "lblProductDesc";
+            this.lblProductDesc.Size = new System.Drawing.Size(838, 73);
+            this.lblProductDesc.TabIndex = 9;
+            this.lblProductDesc.Text = "PLEASE  SCAN AN ITEM.";
+            // 
+            // lblDicountTypes
+            // 
+            this.lblDicountTypes.AutoSize = true;
+            this.lblDicountTypes.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDicountTypes.ForeColor = System.Drawing.Color.MediumBlue;
+            this.lblDicountTypes.Location = new System.Drawing.Point(28, 38);
+            this.lblDicountTypes.Name = "lblDicountTypes";
+            this.lblDicountTypes.Size = new System.Drawing.Size(161, 13);
+            this.lblDicountTypes.TabIndex = 3;
+            this.lblDicountTypes.Text = "Select Branch To Inventory";
+            // 
+            // lblCash
+            // 
+            this.lblCash.AutoSize = true;
+            this.lblCash.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCash.ForeColor = System.Drawing.Color.MediumBlue;
+            this.lblCash.Location = new System.Drawing.Point(403, 38);
+            this.lblCash.Name = "lblCash";
+            this.lblCash.Size = new System.Drawing.Size(114, 13);
+            this.lblCash.TabIndex = 4;
+            this.lblCash.Text = "Scan Item Barcode";
+            // 
+            // txtQuantity
+            // 
+            this.txtQuantity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtQuantity.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtQuantity.Location = new System.Drawing.Point(626, 55);
+            this.txtQuantity.MaxLength = 16;
+            this.txtQuantity.Name = "txtQuantity";
+            this.txtQuantity.Size = new System.Drawing.Size(179, 30);
+            this.txtQuantity.TabIndex = 3;
+            this.txtQuantity.Text = "0.00";
+            this.txtQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // imgIcon
+            // 
+            this.imgIcon.BackColor = System.Drawing.Color.Blue;
+            this.imgIcon.Location = new System.Drawing.Point(1, 8);
+            this.imgIcon.Name = "imgIcon";
+            this.imgIcon.Size = new System.Drawing.Size(49, 49);
+            this.imgIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.imgIcon.TabIndex = 87;
+            this.imgIcon.TabStop = false;
+            // 
+            // lblHeader
+            // 
+            this.lblHeader.AutoSize = true;
+            this.lblHeader.BackColor = System.Drawing.Color.Transparent;
+            this.lblHeader.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHeader.ForeColor = System.Drawing.Color.White;
+            this.lblHeader.Location = new System.Drawing.Point(59, 30);
+            this.lblHeader.Name = "lblHeader";
+            this.lblHeader.Size = new System.Drawing.Size(433, 13);
+            this.lblHeader.TabIndex = 86;
+            this.lblHeader.Text = "This collects all inventory count and saves it into a file for database loading.";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dgvItems);
+            this.panel1.Location = new System.Drawing.Point(148, 378);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(834, 292);
+            this.panel1.TabIndex = 125;
+            // 
+            // dgvItems
+            // 
+            this.dgvItems.AllowUserToAddRows = false;
+            this.dgvItems.AllowUserToDeleteRows = false;
+            this.dgvItems.AllowUserToResizeColumns = false;
+            this.dgvItems.AllowUserToResizeRows = false;
+            this.dgvItems.BackgroundColor = System.Drawing.Color.White;
+            this.dgvItems.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvItems.CausesValidation = false;
+            this.dgvItems.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvItems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvItems.ColumnHeadersHeight = 24;
+            this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvItems.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvItems.GridColor = System.Drawing.Color.White;
+            this.dgvItems.Location = new System.Drawing.Point(0, 0);
+            this.dgvItems.Name = "dgvItems";
+            this.dgvItems.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvItems.RowHeadersVisible = false;
+            this.dgvItems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvItems.Size = new System.Drawing.Size(834, 292);
+            this.dgvItems.TabIndex = 124;
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Tahoma", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(58, 345);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(184, 30);
+            this.label2.TabIndex = 126;
+            this.label2.Text = "Scanned Items :";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.BackColor = System.Drawing.Color.Transparent;
+            this.label14.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label14.Location = new System.Drawing.Point(757, 45);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(225, 13);
+            this.label14.TabIndex = 132;
+            this.label14.Text = " to load the branch scanned items in database";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.Transparent;
+            this.label13.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label13.Location = new System.Drawing.Point(757, 29);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(247, 13);
+            this.label13.TabIndex = 131;
+            this.label13.Text = " to zero out the entire branch inventory in database";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.ForeColor = System.Drawing.Color.Red;
+            this.label11.Location = new System.Drawing.Point(718, 45);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(25, 13);
+            this.label11.TabIndex = 130;
+            this.label11.Text = "[F4]";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.ForeColor = System.Drawing.Color.Red;
+            this.label10.Location = new System.Drawing.Point(718, 29);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(25, 13);
+            this.label10.TabIndex = 129;
+            this.label10.Text = "[F3]";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.ForeColor = System.Drawing.Color.Red;
+            this.label6.Location = new System.Drawing.Point(718, 13);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(25, 13);
+            this.label6.TabIndex = 128;
+            this.label6.Text = "[F2]";
+            // 
+            // lblAddNewCustomer
+            // 
+            this.lblAddNewCustomer.AutoSize = true;
+            this.lblAddNewCustomer.BackColor = System.Drawing.Color.Transparent;
+            this.lblAddNewCustomer.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblAddNewCustomer.Location = new System.Drawing.Point(757, 13);
+            this.lblAddNewCustomer.Name = "lblAddNewCustomer";
+            this.lblAddNewCustomer.Size = new System.Drawing.Size(190, 13);
+            this.lblAddNewCustomer.TabIndex = 127;
+            this.lblAddNewCustomer.Text = " to clear the entire branch inventory file";
             // 
             // MainWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1008, 732);
+            this.ClientSize = new System.Drawing.Size(1008, 682);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.lblAddNewCustomer);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.imgIcon);
-            this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.lblHeader);
-            this.Controls.Add(this.cmdEnter);
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "MainWnd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "RetailPlus Inventory Data Colletor";
+            this.Load += new System.EventHandler(this.MainWnd_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Main_KeyDown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -234,15 +388,24 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lblBalanceAmount;
         private System.Windows.Forms.Label lblProductDesc;
-        private System.Windows.Forms.ComboBox cboBranch;
         private System.Windows.Forms.Label lblDicountTypes;
         private System.Windows.Forms.Label lblCash;
-        private System.Windows.Forms.TextBox txtAmount;
+        private System.Windows.Forms.TextBox txtQuantity;
         private System.Windows.Forms.PictureBox imgIcon;
-        private System.Windows.Forms.Button cmdCancel;
         private System.Windows.Forms.Label lblHeader;
-        private System.Windows.Forms.Button cmdEnter;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtBarCode;
+        private System.Windows.Forms.Button cmdSave;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.DataGridView dgvItems;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button cmdBranchSelect;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblAddNewCustomer;
+        private System.Windows.Forms.TextBox txtUnitCode;
     }
 }

@@ -113,96 +113,6 @@ namespace AceSoft.RetailPlus.Data
 
         #endregion
 
-        // Sep 14, 2014 for deletion
-        //private string SQLSelect()
-        //{
-        //    string SQL = "SELECT BranchID, TerminalNo, " +
-        //                        "BeginningTransactionNo, " +
-        //                        "EndingTransactionNo, " +
-        //                        "BeginningORNo, " +
-        //                        "EndingORNo, " +
-        //                        "ZReadCount, " +
-        //                        "XReadCount, " +
-        //                        "NetSales, " +
-        //                        "GrossSales, " +
-        //                        "TotalDiscount, " +
-        //                        "SNRDiscount, " +
-        //                        "PWDDiscount, " +
-        //                        "OtherDiscount, " +
-        //                        "TotalCharge, " +
-        //                        "DailySales, " +
-        //                        "QuantitySold, " +
-        //                        "GroupSales, " +
-        //                        "OldGrandTotal, " +
-        //                        "NewGrandTotal, " +
-        //                        "VATExempt, " +
-        //                        "NonVATableAmount, " +
-        //                        "VATableAmount, " +
-        //                        "VAT, " +
-        //                        "EVATableAmount, " +
-        //                        "NonEVATableAmount, " +
-        //                        "EVAT, " +
-        //                        "LocalTax, " +
-        //                        "CashSales, " +
-        //                        "ChequeSales, " +
-        //                        "CreditCardSales, " +
-        //                        "CreditSales, " +
-        //                        "CreditPayment, " +
-        //                        "CreditPaymentCash, " +
-        //                        "CreditPaymentCheque, " +
-        //                        "CreditPaymentCreditCard, " +
-        //                        "CreditPaymentDebit, " +
-        //                        "DebitPayment, " +
-        //                        "RewardPointsPayment, " +
-        //                        "RewardConvertedPayment, " +
-        //                        "CashInDrawer, " +
-        //                        "TotalDisburse, " +
-        //                        "CashDisburse, " +
-        //                        "ChequeDisburse, " +
-        //                        "CreditCardDisburse, " +
-        //                        "TotalWithhold, " +
-        //                        "CashWithhold, " +
-        //                        "ChequeWithhold, " +
-        //                        "CreditCardWithhold, " +
-        //                        "TotalPaidOut, " +
-        //                        "TotalDeposit, " +
-        //                        "CashDeposit, " +
-        //                        "ChequeDeposit, " +
-        //                        "CreditCardDeposit, " +
-        //                        "BeginningBalance, " +
-        //                        "VoidSales, " +
-        //                        "RefundSales, " +
-        //                        "ItemsDiscount, " +
-        //                        "SubTotalDiscount, " +
-        //                        "NoOfCashTransactions, " +
-        //                        "NoOfChequeTransactions, " +
-        //                        "NoOfCreditCardTransactions, " +
-        //                        "NoOfCreditTransactions, " +
-        //                        "NoOfCombinationPaymentTransactions, " +
-        //                        "NoOfCreditPaymentTransactions, " +
-        //                        "NoOfDebitPaymentTransactions, " +
-        //                        "NoOfClosedTransactions, " +
-        //                        "NoOfRefundTransactions, " +
-        //                        "NoOfVoidTransactions, " +
-        //                        "NoOfRewardPointsPayment, " +
-        //                        "NoOfTotalTransactions, " +
-        //                        "DateLastInitialized, " +
-        //                        "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE tblTerminal.BranchID = tblTerminalReportHistory.BranchID AND tblTerminal.TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
-        //                        "TrustFund, " +
-        //                        "NoOfDiscountedTransactions, " +
-        //                        "NegativeAdjustments, " +
-        //                        "NoOfNegativeAdjustmentTransactions, " +
-        //                        "PromotionalItems, " +
-        //                        "CreditSalesTax, " +
-        //                        "BatchCounter, " +
-        //                        "DebitDeposit, " +
-        //                        "NoOfReprintedTransaction, " +
-        //                        "TotalReprintedTransaction, " +
-        //                        "InitializedBy " +
-        //                    "FROM tblTerminalReportHistory ";
-        //    return SQL;
-        //}
-
 		#region Details
 
         private TerminalReportDetails getDetails(Int32 BranchID, string TerminalNo, DateTime? DateFrom, DateTime? DateTo, DateTime? DateLastInitialized, bool WithTF = false, bool LastInitializationDetails = false, bool NextDetails = false)
@@ -231,11 +141,11 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
-        public TerminalReportDetails Details(Int32 BranchID, string TerminalNo, DateTime DateLastInitialized)
+        public TerminalReportDetails Details(Int32 BranchID, string TerminalNo, DateTime DateLastInitialized, bool WithTF = false)
         {
             try
             {
-                return getDetails(BranchID, TerminalNo, Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, DateLastInitialized, false, true, false);
+                return getDetails(BranchID, TerminalNo, Constants.C_DATE_MIN_VALUE, Constants.C_DATE_MIN_VALUE, DateLastInitialized, WithTF, true, false);
             }
             catch (Exception ex)
             {
@@ -326,89 +236,6 @@ namespace AceSoft.RetailPlus.Data
             {
                 return ListAsDataTable(BranchID, TerminalNo, DateFrom, DateTo, Constants.C_DATE_MIN_VALUE, WithTF, false, false);
 
-                //MySqlCommand cmd = new MySqlCommand();
-                //cmd.CommandType = System.Data.CommandType.Text;
-
-                //string SQL = string.Empty;
-                //if (WithTF)
-                //    #region SQL With TF
-                //    SQL = "SELECT " +
-                //                "QuantitySold, " +
-                //                "NetSales - (NetSales * TrustFund/100) 'NetSales', " +
-                //                "GrossSales - (GrossSales * TrustFund/100) 'GrossSales', " +
-                //                "TotalDiscount - (TotalDiscount * TrustFund/100) 'TotalDiscount', " +
-                //                "SNRDiscount - (SNRDiscount * TrustFund/100) 'SNRDiscount', " +
-                //                "PWDDiscount - (PWDDiscount * TrustFund/100) 'PWDDiscount', " +
-                //                "OtherDiscount - (OtherDiscount * TrustFund/100) 'OtherDiscount', " +
-                //                "TotalCharge - (TotalCharge * TrustFund/100) 'TotalCharge', " +
-                //                "DailySales - (DailySales * TrustFund/100) 'DailySales', " +
-                //                "VAT - (VAT * TrustFund/100) 'VAT', " +
-                //                "VATExempt - (VATExempt * TrustFund/100) 'VATExempt', " +
-                //                "NonVATableAmount - (NonVATableAmount * TrustFund/100) 'NonVATableAmount', " +
-                //                "VATableAmount - (VATableAmount * TrustFund/100) 'VATableAmount', " +
-                //                "LocalTax - (LocalTax * TrustFund/100) 'LocalTax', " +
-                //                "TotalCharge - (TotalCharge * TrustFund/100) AS 'ServiceCharge', " +
-                //                "DateLastInitialized, " +
-                //                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE tblTerminal.BranchID = tblTerminalReportHistory.BranchID AND TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
-                //                "TerminalNo " +
-                //            "FROM  tblTerminalReportHistory " +
-                //            "WHERE 1=1 ";
-                //    #endregion
-                //else
-                //    #region SQL Without TF
-                //    SQL = "SELECT " +
-                //                "QuantitySold, " +
-                //                "NetSales, " +
-                //                "GrossSales, " +
-                //                "TotalDiscount, " +
-                //                "SNRDiscount, " +
-                //                "PWDDiscount, " +
-                //                "OtherDiscount, " +
-                //                "TotalCharge, " +
-                //                "DailySales, " +
-                //                "VAT, " +
-                //                "VATExempt - (VATExempt * TrustFund/100) 'VATExempt', " +
-                //                "NonVATableAmount - (NonVATableAmount * TrustFund/100) 'NonVATableAmount', " +
-                //                "VATableAmount - (VATableAmount * TrustFund/100) 'VATableAmount', " +
-                //                "LocalTax, " +
-                //                "TotalCharge AS 'ServiceCharge', " +
-                //                "(DateLastInitialized) 'DateLastInitialized', " +
-                //                "DATE_FORMAT(IF(HOUR(DateLastInitialized)>(SELECT SUBSTR(EndCutOffTime,1,2) FROM tblTerminal WHERE tblTerminal.BranchID = tblTerminalReportHistory.BranchID AND TerminalNo = tblTerminalReportHistory.TerminalNo), DATE_ADD(DateLastInitialized, INTERVAL 1 DAY), DateLastInitialized), '%Y-%m-%d') AS DateLastInitializedToDisplay, " +
-                //                "TerminalNo " +
-                //            "FROM  tblTerminalReportHistory " + 
-                //            "WHERE 1=1 ";
-                //    #endregion
-
-                //if (BranchID != 0)
-                //{
-                //    SQL += "AND BranchID = @BranchID";
-                //    cmd.Parameters.AddWithValue("@BranchID", BranchID);
-                //}
-
-                //if (TerminalNo != null && TerminalNo != "" && TerminalNo != Constants.ALL)
-                //{
-                //    SQL += "AND TerminalNo = @TerminalNo ";
-                //    cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
-                //}
-
-                //if (DateFrom.GetValueOrDefault() != DateTime.MinValue)
-                //{
-                //    SQL += "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') >= DATE_FORMAT(@DateFrom, '%Y-%m-%d %H:%i') ";
-                //    cmd.Parameters.AddWithValue("@DateFrom", DateFrom.GetValueOrDefault());
-                //}
-                //if (DateTo.GetValueOrDefault() != DateTime.MinValue)
-                //{
-                //    SQL += "AND DATE_FORMAT(DateLastInitialized, '%Y-%m-%d %H:%i') <= DATE_FORMAT(@DateTo, '%Y-%m-%d %H:%i') ";
-                //    cmd.Parameters.AddWithValue("@DateTo", DateTo.GetValueOrDefault());
-                //}
-
-                //SQL += "ORDER BY TerminalNo, DateLastInitialized ";
-
-                //cmd.CommandText = SQL;
-                //string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
-                //base.MySqlDataAdapterFill(cmd, dt);
-
-                //return dt;
             }
             catch (Exception ex)
             {

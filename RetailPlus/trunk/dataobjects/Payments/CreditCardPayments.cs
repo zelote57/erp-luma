@@ -140,17 +140,21 @@ namespace AceSoft.RetailPlus.Data
                     clsCreditPaymentDetails.CustomerDetails = Details.CreditorDetails;
                     clsCreditPaymentDetails.Remarks = Details.Remarks;
 
+                    string additionalRemarks = Details.Remarks;
+                    if (!string.IsNullOrEmpty(Details.Remarks))
+                        additionalRemarks = ";" + (Details.Remarks.Length > 30 ? Details.Remarks.Substring(0, 30) : Details.Remarks);
+
                     if (!Details.IsRefund)
-                        clsCreditPaymentDetails.CreditReason = CreditReason.IHCC.ToString("G") + " @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString();
+                        clsCreditPaymentDetails.CreditReason = CreditReason.IHCC.ToString("G") + " @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString() + additionalRemarks;
                     else
-                        clsCreditPaymentDetails.CreditReason = CreditReason.IHCC.ToString("G") + " @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString() + " Refund";
+                        clsCreditPaymentDetails.CreditReason = CreditReason.IHCC.ToString("G") + " @ Ter#:" + Details.TerminalNo + " Br#:" + Details.BranchDetails.BranchID.ToString() + additionalRemarks + " Refund";
 
                     clsCreditPaymentDetails.CreditCardPaymentID = Details.CreditCardPaymentID;
                     clsCreditPaymentDetails.CreditCardTypeID = Details.CardTypeDetails.CardTypeID;
 
                     new CreditPayments(base.Connection, base.Transaction).Insert(clsCreditPaymentDetails);
 
-                    // no need for this this is already included in teh insert of CreditPayments
+                    // no need for this this is already included in the insert of CreditPayments
                     //Contacts clsContact = new Contacts(base.Connection, base.Transaction);
                     //if (!Details.IsRefund)
                     //    clsContact.AddCredit(Details.CreditorDetails.ContactID, Details.Amount);
@@ -277,6 +281,8 @@ namespace AceSoft.RetailPlus.Data
             Details.LastModified = DateTime.Parse(dr["LastModified"].ToString());
 
             Details.CardTypeDetails = new CardType(base.Connection, base.Transaction).Details(Details.CardTypeID);
+
+            Details.CreditorDetails = new Contacts(base.Connection, base.Transaction).Details(Details.ContactID);
 
             return Details;
         }

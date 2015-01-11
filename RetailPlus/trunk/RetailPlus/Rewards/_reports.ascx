@@ -36,7 +36,7 @@
 						    <table cellpadding="1" cellspacing="0" border="0">
 							    <tr>
 								    <td class="ms-toolbar" nowrap="nowrap">
-									    <asp:DropDownList id="cboReportType" runat="server" AutoPostBack="true" CausesValidation="false" OnSelectedIndexChanged="cboReportType_SelectedIndexChanged">
+									    <asp:DropDownList id="cboReportType" runat="server" AutoPostBack="true" CausesValidation="false">
 										    <asp:ListItem Value="0" Selected="True">Select Report Type</asp:ListItem>
 									    </asp:DropDownList>
 								    </td>
@@ -86,7 +86,7 @@
 									        <label>Filter by Customer</label>
 								        </td>
 								        <td class="ms-separator" style="HEIGHT: 15px">&nbsp;&nbsp;&nbsp;</td>
-								        <td style="HEIGHT: 15px" colspan="3">
+								        <td style="HEIGHT: 15px" colspan="4">
 									        <asp:dropdownlist id="cboContactName" CssClass="ms-long" runat="server"></asp:dropdownlist>
 								        </td>
                                         <td style="padding-bottom:2px; HEIGHT:15px" nowrap="nowrap">

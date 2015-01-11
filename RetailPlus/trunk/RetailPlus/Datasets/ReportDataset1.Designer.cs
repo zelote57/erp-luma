@@ -146,6 +146,8 @@ namespace RetailPlus.Datasets {
         
         private CreditBillHeaderDataTable tableCreditBillHeader;
         
+        private RewardsDataTable tableRewards;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -356,6 +358,9 @@ namespace RetailPlus.Datasets {
                 }
                 if ((ds.Tables["CreditBillHeader"] != null)) {
                     base.Tables.Add(new CreditBillHeaderDataTable(ds.Tables["CreditBillHeader"]));
+                }
+                if ((ds.Tables["Rewards"] != null)) {
+                    base.Tables.Add(new RewardsDataTable(ds.Tables["Rewards"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -987,6 +992,16 @@ namespace RetailPlus.Datasets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public RewardsDataTable Rewards {
+            get {
+                return this.tableRewards;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.BrowsableAttribute(true)]
         [global::System.ComponentModel.DesignerSerializationVisibilityAttribute(global::System.ComponentModel.DesignerSerializationVisibility.Visible)]
         public override global::System.Data.SchemaSerializationMode SchemaSerializationMode {
@@ -1234,6 +1249,9 @@ namespace RetailPlus.Datasets {
                 }
                 if ((ds.Tables["CreditBillHeader"] != null)) {
                     base.Tables.Add(new CreditBillHeaderDataTable(ds.Tables["CreditBillHeader"]));
+                }
+                if ((ds.Tables["Rewards"] != null)) {
+                    base.Tables.Add(new RewardsDataTable(ds.Tables["Rewards"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -1634,6 +1652,12 @@ namespace RetailPlus.Datasets {
                     this.tableCreditBillHeader.InitVars();
                 }
             }
+            this.tableRewards = ((RewardsDataTable)(base.Tables["Rewards"]));
+            if ((initTable == true)) {
+                if ((this.tableRewards != null)) {
+                    this.tableRewards.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1766,6 +1790,8 @@ namespace RetailPlus.Datasets {
             base.Tables.Add(this.tableContactCreditPurchases);
             this.tableCreditBillHeader = new CreditBillHeaderDataTable();
             base.Tables.Add(this.tableCreditBillHeader);
+            this.tableRewards = new RewardsDataTable();
+            base.Tables.Add(this.tableRewards);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2136,6 +2162,12 @@ namespace RetailPlus.Datasets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        private bool ShouldSerializeRewards() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void SchemaChanged(object sender, global::System.ComponentModel.CollectionChangeEventArgs e) {
             if ((e.Action == global::System.ComponentModel.CollectionChangeAction.Remove)) {
                 this.InitVars();
@@ -2371,6 +2403,9 @@ namespace RetailPlus.Datasets {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public delegate void CreditBillHeaderRowChangeEventHandler(object sender, CreditBillHeaderRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public delegate void RewardsRowChangeEventHandler(object sender, RewardsRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -2811,7 +2846,7 @@ namespace RetailPlus.Datasets {
             
             private global::System.Data.DataColumn columnVATExempt;
             
-            private global::System.Data.DataColumn columnZeroRatedVAT;
+            private global::System.Data.DataColumn columnZeroRatedSales;
             
             private global::System.Data.DataColumn columnNonVATableAmount;
             
@@ -3034,9 +3069,9 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ZeroRatedVATColumn {
+            public global::System.Data.DataColumn ZeroRatedSalesColumn {
                 get {
-                    return this.columnZeroRatedVAT;
+                    return this.columnZeroRatedSales;
                 }
             }
             
@@ -3295,7 +3330,7 @@ namespace RetailPlus.Datasets {
                         decimal PWDDiscount, 
                         decimal OtherDiscount, 
                         decimal VATExempt, 
-                        decimal ZeroRatedVAT, 
+                        decimal ZeroRatedSales, 
                         decimal NonVATableAmount, 
                         decimal VatableAmount, 
                         decimal VAT, 
@@ -3340,7 +3375,7 @@ namespace RetailPlus.Datasets {
                         PWDDiscount,
                         OtherDiscount,
                         VATExempt,
-                        ZeroRatedVAT,
+                        ZeroRatedSales,
                         NonVATableAmount,
                         VatableAmount,
                         VAT,
@@ -3405,7 +3440,7 @@ namespace RetailPlus.Datasets {
                 this.columnPWDDiscount = base.Columns["PWDDiscount"];
                 this.columnOtherDiscount = base.Columns["OtherDiscount"];
                 this.columnVATExempt = base.Columns["VATExempt"];
-                this.columnZeroRatedVAT = base.Columns["ZeroRatedVAT"];
+                this.columnZeroRatedSales = base.Columns["ZeroRatedSales"];
                 this.columnNonVATableAmount = base.Columns["NonVATableAmount"];
                 this.columnVatableAmount = base.Columns["VatableAmount"];
                 this.columnVAT = base.Columns["VAT"];
@@ -3470,8 +3505,8 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnOtherDiscount);
                 this.columnVATExempt = new global::System.Data.DataColumn("VATExempt", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVATExempt);
-                this.columnZeroRatedVAT = new global::System.Data.DataColumn("ZeroRatedVAT", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnZeroRatedVAT);
+                this.columnZeroRatedSales = new global::System.Data.DataColumn("ZeroRatedSales", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnZeroRatedSales);
                 this.columnNonVATableAmount = new global::System.Data.DataColumn("NonVATableAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNonVATableAmount);
                 this.columnVatableAmount = new global::System.Data.DataColumn("VatableAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
@@ -10304,7 +10339,7 @@ namespace RetailPlus.Datasets {
             
             private global::System.Data.DataColumn columnVATExempt;
             
-            private global::System.Data.DataColumn columnVATZeroRated;
+            private global::System.Data.DataColumn columnZeroRatedSales;
             
             private global::System.Data.DataColumn columnNonVATableAmount;
             
@@ -10451,9 +10486,9 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn VATZeroRatedColumn {
+            public global::System.Data.DataColumn ZeroRatedSalesColumn {
                 get {
-                    return this.columnVATZeroRated;
+                    return this.columnZeroRatedSales;
                 }
             }
             
@@ -10563,7 +10598,7 @@ namespace RetailPlus.Datasets {
                         decimal NewGrandTotal, 
                         int ZReadCount, 
                         decimal VATExempt, 
-                        decimal VATZeroRated, 
+                        decimal ZeroRatedSales, 
                         decimal NonVATableAmount, 
                         decimal VATableAmount, 
                         decimal VAT, 
@@ -10585,7 +10620,7 @@ namespace RetailPlus.Datasets {
                         NewGrandTotal,
                         ZReadCount,
                         VATExempt,
-                        VATZeroRated,
+                        ZeroRatedSales,
                         NonVATableAmount,
                         VATableAmount,
                         VAT,
@@ -10627,7 +10662,7 @@ namespace RetailPlus.Datasets {
                 this.columnNewGrandTotal = base.Columns["NewGrandTotal"];
                 this.columnZReadCount = base.Columns["ZReadCount"];
                 this.columnVATExempt = base.Columns["VATExempt"];
-                this.columnVATZeroRated = base.Columns["VATZeroRated"];
+                this.columnZeroRatedSales = base.Columns["ZeroRatedSales"];
                 this.columnNonVATableAmount = base.Columns["NonVATableAmount"];
                 this.columnVATableAmount = base.Columns["VATableAmount"];
                 this.columnVAT = base.Columns["VAT"];
@@ -10664,8 +10699,8 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnZReadCount);
                 this.columnVATExempt = new global::System.Data.DataColumn("VATExempt", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVATExempt);
-                this.columnVATZeroRated = new global::System.Data.DataColumn("VATZeroRated", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnVATZeroRated);
+                this.columnZeroRatedSales = new global::System.Data.DataColumn("ZeroRatedSales", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnZeroRatedSales);
                 this.columnNonVATableAmount = new global::System.Data.DataColumn("NonVATableAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNonVATableAmount);
                 this.columnVATableAmount = new global::System.Data.DataColumn("VATableAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
@@ -30006,6 +30041,8 @@ namespace RetailPlus.Datasets {
             
             private global::System.Data.DataColumn columnGuarantorCreditCardNo;
             
+            private global::System.Data.DataColumn columnGuarantorCode;
+            
             private global::System.Data.DataColumn columnGuarantorName;
             
             private global::System.Data.DataColumn columnTransactionDate;
@@ -30181,6 +30218,14 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GuarantorCodeColumn {
+                get {
+                    return this.columnGuarantorCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn GuarantorNameColumn {
                 get {
                     return this.columnGuarantorName;
@@ -30250,6 +30295,7 @@ namespace RetailPlus.Datasets {
                         string CreditCardNo, 
                         string ContactName, 
                         string GuarantorCreditCardNo, 
+                        string GuarantorCode, 
                         string GuarantorName, 
                         System.DateTime TransactionDate) {
                 ContactCreditPaymentCashRow rowContactCreditPaymentCashRow = ((ContactCreditPaymentCashRow)(this.NewRow()));
@@ -30271,6 +30317,7 @@ namespace RetailPlus.Datasets {
                         CreditCardNo,
                         ContactName,
                         GuarantorCreditCardNo,
+                        GuarantorCode,
                         GuarantorName,
                         TransactionDate};
                 rowContactCreditPaymentCashRow.ItemArray = columnValuesArray;
@@ -30312,6 +30359,7 @@ namespace RetailPlus.Datasets {
                 this.columnCreditCardNo = base.Columns["CreditCardNo"];
                 this.columnContactName = base.Columns["ContactName"];
                 this.columnGuarantorCreditCardNo = base.Columns["GuarantorCreditCardNo"];
+                this.columnGuarantorCode = base.Columns["GuarantorCode"];
                 this.columnGuarantorName = base.Columns["GuarantorName"];
                 this.columnTransactionDate = base.Columns["TransactionDate"];
             }
@@ -30353,6 +30401,8 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnContactName);
                 this.columnGuarantorCreditCardNo = new global::System.Data.DataColumn("GuarantorCreditCardNo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGuarantorCreditCardNo);
+                this.columnGuarantorCode = new global::System.Data.DataColumn("GuarantorCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGuarantorCode);
                 this.columnGuarantorName = new global::System.Data.DataColumn("GuarantorName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGuarantorName);
                 this.columnTransactionDate = new global::System.Data.DataColumn("TransactionDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
@@ -30512,6 +30562,8 @@ namespace RetailPlus.Datasets {
             
             private global::System.Data.DataColumn columnGuarantorCreditCardNo;
             
+            private global::System.Data.DataColumn columnGuarantorCode;
+            
             private global::System.Data.DataColumn columnGuarantorName;
             
             private global::System.Data.DataColumn columnTransactionDate;
@@ -30639,6 +30691,14 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GuarantorCodeColumn {
+                get {
+                    return this.columnGuarantorCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn GuarantorNameColumn {
                 get {
                     return this.columnGuarantorName;
@@ -30690,7 +30750,7 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ContactCreditPurchasesRow AddContactCreditPurchasesRow(int BranchID, string TerminalNo, long TransactionID, short CreditReasonID, string CreditReason, decimal Amount, string Remarks, string TransactionNo, string CreditCardNo, string ContactName, string GuarantorCreditCardNo, string GuarantorName, System.DateTime TransactionDate) {
+            public ContactCreditPurchasesRow AddContactCreditPurchasesRow(int BranchID, string TerminalNo, long TransactionID, short CreditReasonID, string CreditReason, decimal Amount, string Remarks, string TransactionNo, string CreditCardNo, string ContactName, string GuarantorCreditCardNo, string GuarantorCode, string GuarantorName, System.DateTime TransactionDate) {
                 ContactCreditPurchasesRow rowContactCreditPurchasesRow = ((ContactCreditPurchasesRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         BranchID,
@@ -30704,6 +30764,7 @@ namespace RetailPlus.Datasets {
                         CreditCardNo,
                         ContactName,
                         GuarantorCreditCardNo,
+                        GuarantorCode,
                         GuarantorName,
                         TransactionDate};
                 rowContactCreditPurchasesRow.ItemArray = columnValuesArray;
@@ -30739,6 +30800,7 @@ namespace RetailPlus.Datasets {
                 this.columnCreditCardNo = base.Columns["CreditCardNo"];
                 this.columnContactName = base.Columns["ContactName"];
                 this.columnGuarantorCreditCardNo = base.Columns["GuarantorCreditCardNo"];
+                this.columnGuarantorCode = base.Columns["GuarantorCode"];
                 this.columnGuarantorName = base.Columns["GuarantorName"];
                 this.columnTransactionDate = base.Columns["TransactionDate"];
             }
@@ -30768,6 +30830,8 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnContactName);
                 this.columnGuarantorCreditCardNo = new global::System.Data.DataColumn("GuarantorCreditCardNo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGuarantorCreditCardNo);
+                this.columnGuarantorCode = new global::System.Data.DataColumn("GuarantorCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGuarantorCode);
                 this.columnGuarantorName = new global::System.Data.DataColumn("GuarantorName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGuarantorName);
                 this.columnTransactionDate = new global::System.Data.DataColumn("TransactionDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
@@ -30909,6 +30973,8 @@ namespace RetailPlus.Datasets {
             
             private global::System.Data.DataColumn columnGuarantorID;
             
+            private global::System.Data.DataColumn columnGuarantorCode;
+            
             private global::System.Data.DataColumn columnGuarantorName;
             
             private global::System.Data.DataColumn columnCreditCardNo;
@@ -30991,6 +31057,14 @@ namespace RetailPlus.Datasets {
             public global::System.Data.DataColumn GuarantorIDColumn {
                 get {
                     return this.columnGuarantorID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GuarantorCodeColumn {
+                get {
+                    return this.columnGuarantorCode;
                 }
             }
             
@@ -31178,6 +31252,7 @@ namespace RetailPlus.Datasets {
             public CreditBillHeaderRow AddCreditBillHeaderRow(
                         long CreditBillHeaderID, 
                         long GuarantorID, 
+                        string GuarantorCode, 
                         string GuarantorName, 
                         string CreditCardNo, 
                         string ContactName, 
@@ -31200,6 +31275,7 @@ namespace RetailPlus.Datasets {
                 object[] columnValuesArray = new object[] {
                         CreditBillHeaderID,
                         GuarantorID,
+                        GuarantorCode,
                         GuarantorName,
                         CreditCardNo,
                         ContactName,
@@ -31242,6 +31318,7 @@ namespace RetailPlus.Datasets {
             internal void InitVars() {
                 this.columnCreditBillHeaderID = base.Columns["CreditBillHeaderID"];
                 this.columnGuarantorID = base.Columns["GuarantorID"];
+                this.columnGuarantorCode = base.Columns["GuarantorCode"];
                 this.columnGuarantorName = base.Columns["GuarantorName"];
                 this.columnCreditCardNo = base.Columns["CreditCardNo"];
                 this.columnContactName = base.Columns["ContactName"];
@@ -31269,6 +31346,8 @@ namespace RetailPlus.Datasets {
                 base.Columns.Add(this.columnCreditBillHeaderID);
                 this.columnGuarantorID = new global::System.Data.DataColumn("GuarantorID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGuarantorID);
+                this.columnGuarantorCode = new global::System.Data.DataColumn("GuarantorCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGuarantorCode);
                 this.columnGuarantorName = new global::System.Data.DataColumn("GuarantorName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGuarantorName);
                 this.columnCreditCardNo = new global::System.Data.DataColumn("CreditCardNo", typeof(string), null, global::System.Data.MappingType.Element);
@@ -31398,6 +31477,351 @@ namespace RetailPlus.Datasets {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "CreditBillHeaderDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class RewardsDataTable : global::System.Data.TypedTableBase<RewardsRow> {
+            
+            private global::System.Data.DataColumn columnContactID;
+            
+            private global::System.Data.DataColumn columnContactCode;
+            
+            private global::System.Data.DataColumn columnContactName;
+            
+            private global::System.Data.DataColumn columnRewardCardNo;
+            
+            private global::System.Data.DataColumn columnRewardPoints;
+            
+            private global::System.Data.DataColumn columnRewardDate;
+            
+            private global::System.Data.DataColumn columnRedeemedPoints;
+            
+            private global::System.Data.DataColumn columnAddedPoints;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public RewardsDataTable() {
+                this.TableName = "Rewards";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal RewardsDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected RewardsDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ContactIDColumn {
+                get {
+                    return this.columnContactID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ContactCodeColumn {
+                get {
+                    return this.columnContactCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ContactNameColumn {
+                get {
+                    return this.columnContactName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RewardCardNoColumn {
+                get {
+                    return this.columnRewardCardNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RewardPointsColumn {
+                get {
+                    return this.columnRewardPoints;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RewardDateColumn {
+                get {
+                    return this.columnRewardDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RedeemedPointsColumn {
+                get {
+                    return this.columnRedeemedPoints;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AddedPointsColumn {
+                get {
+                    return this.columnAddedPoints;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public RewardsRow this[int index] {
+                get {
+                    return ((RewardsRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event RewardsRowChangeEventHandler RewardsRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event RewardsRowChangeEventHandler RewardsRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event RewardsRowChangeEventHandler RewardsRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event RewardsRowChangeEventHandler RewardsRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void AddRewardsRow(RewardsRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public RewardsRow AddRewardsRow(long ContactID, string ContactCode, string ContactName, string RewardCardNo, decimal RewardPoints, System.DateTime RewardDate, decimal RedeemedPoints, decimal AddedPoints) {
+                RewardsRow rowRewardsRow = ((RewardsRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ContactID,
+                        ContactCode,
+                        ContactName,
+                        RewardCardNo,
+                        RewardPoints,
+                        RewardDate,
+                        RedeemedPoints,
+                        AddedPoints};
+                rowRewardsRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowRewardsRow);
+                return rowRewardsRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                RewardsDataTable cln = ((RewardsDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new RewardsDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal void InitVars() {
+                this.columnContactID = base.Columns["ContactID"];
+                this.columnContactCode = base.Columns["ContactCode"];
+                this.columnContactName = base.Columns["ContactName"];
+                this.columnRewardCardNo = base.Columns["RewardCardNo"];
+                this.columnRewardPoints = base.Columns["RewardPoints"];
+                this.columnRewardDate = base.Columns["RewardDate"];
+                this.columnRedeemedPoints = base.Columns["RedeemedPoints"];
+                this.columnAddedPoints = base.Columns["AddedPoints"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            private void InitClass() {
+                this.columnContactID = new global::System.Data.DataColumn("ContactID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnContactID);
+                this.columnContactCode = new global::System.Data.DataColumn("ContactCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnContactCode);
+                this.columnContactName = new global::System.Data.DataColumn("ContactName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnContactName);
+                this.columnRewardCardNo = new global::System.Data.DataColumn("RewardCardNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRewardCardNo);
+                this.columnRewardPoints = new global::System.Data.DataColumn("RewardPoints", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRewardPoints);
+                this.columnRewardDate = new global::System.Data.DataColumn("RewardDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRewardDate);
+                this.columnRedeemedPoints = new global::System.Data.DataColumn("RedeemedPoints", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRedeemedPoints);
+                this.columnAddedPoints = new global::System.Data.DataColumn("AddedPoints", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAddedPoints);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public RewardsRow NewRewardsRow() {
+                return ((RewardsRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new RewardsRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(RewardsRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.RewardsRowChanged != null)) {
+                    this.RewardsRowChanged(this, new RewardsRowChangeEvent(((RewardsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.RewardsRowChanging != null)) {
+                    this.RewardsRowChanging(this, new RewardsRowChangeEvent(((RewardsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.RewardsRowDeleted != null)) {
+                    this.RewardsRowDeleted(this, new RewardsRowChangeEvent(((RewardsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.RewardsRowDeleting != null)) {
+                    this.RewardsRowDeleting(this, new RewardsRowChangeEvent(((RewardsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void RemoveRewardsRow(RewardsRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ReportDataset ds = new ReportDataset();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "RewardsDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -31807,17 +32231,17 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal ZeroRatedVAT {
+            public decimal ZeroRatedSales {
                 get {
                     try {
-                        return ((decimal)(this[this.tableTransactions.ZeroRatedVATColumn]));
+                        return ((decimal)(this[this.tableTransactions.ZeroRatedSalesColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ZeroRatedVAT\' in table \'Transactions\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ZeroRatedSales\' in table \'Transactions\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableTransactions.ZeroRatedVATColumn] = value;
+                    this[this.tableTransactions.ZeroRatedSalesColumn] = value;
                 }
             }
             
@@ -32220,14 +32644,14 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsZeroRatedVATNull() {
-                return this.IsNull(this.tableTransactions.ZeroRatedVATColumn);
+            public bool IsZeroRatedSalesNull() {
+                return this.IsNull(this.tableTransactions.ZeroRatedSalesColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetZeroRatedVATNull() {
-                this[this.tableTransactions.ZeroRatedVATColumn] = global::System.Convert.DBNull;
+            public void SetZeroRatedSalesNull() {
+                this[this.tableTransactions.ZeroRatedSalesColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -35088,17 +35512,17 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal VATZeroRated {
+            public decimal ZeroRatedSales {
                 get {
                     try {
-                        return ((decimal)(this[this.tableSalesReport.VATZeroRatedColumn]));
+                        return ((decimal)(this[this.tableSalesReport.ZeroRatedSalesColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'VATZeroRated\' in table \'SalesReport\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ZeroRatedSales\' in table \'SalesReport\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSalesReport.VATZeroRatedColumn] = value;
+                    this[this.tableSalesReport.ZeroRatedSalesColumn] = value;
                 }
             }
             
@@ -35285,14 +35709,14 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsVATZeroRatedNull() {
-                return this.IsNull(this.tableSalesReport.VATZeroRatedColumn);
+            public bool IsZeroRatedSalesNull() {
+                return this.IsNull(this.tableSalesReport.ZeroRatedSalesColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetVATZeroRatedNull() {
-                this[this.tableSalesReport.VATZeroRatedColumn] = global::System.Convert.DBNull;
+            public void SetZeroRatedSalesNull() {
+                this[this.tableSalesReport.ZeroRatedSalesColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -45291,6 +45715,23 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string GuarantorCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPaymentCash.GuarantorCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GuarantorCode\' in table \'ContactCreditPaymentCash\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPaymentCash.GuarantorCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string GuarantorName {
                 get {
                     try {
@@ -45529,6 +45970,18 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGuarantorCodeNull() {
+                return this.IsNull(this.tableContactCreditPaymentCash.GuarantorCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGuarantorCodeNull() {
+                this[this.tableContactCreditPaymentCash.GuarantorCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsGuarantorNameNull() {
                 return this.IsNull(this.tableContactCreditPaymentCash.GuarantorNameColumn);
             }
@@ -45748,6 +46201,23 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string GuarantorCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableContactCreditPurchases.GuarantorCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GuarantorCode\' in table \'ContactCreditPurchases\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableContactCreditPurchases.GuarantorCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string GuarantorName {
                 get {
                     try {
@@ -45914,6 +46384,18 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGuarantorCodeNull() {
+                return this.IsNull(this.tableContactCreditPurchases.GuarantorCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGuarantorCodeNull() {
+                this[this.tableContactCreditPurchases.GuarantorCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsGuarantorNameNull() {
                 return this.IsNull(this.tableContactCreditPurchases.GuarantorNameColumn);
             }
@@ -45980,6 +46462,22 @@ namespace RetailPlus.Datasets {
                 }
                 set {
                     this[this.tableCreditBillHeader.GuarantorIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string GuarantorCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditBillHeader.GuarantorCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GuarantorCode\' in table \'CreditBillHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditBillHeader.GuarantorCodeColumn] = value;
                 }
             }
             
@@ -46302,6 +46800,18 @@ namespace RetailPlus.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGuarantorCodeNull() {
+                return this.IsNull(this.tableCreditBillHeader.GuarantorCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGuarantorCodeNull() {
+                this[this.tableCreditBillHeader.GuarantorCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsGuarantorNameNull() {
                 return this.IsNull(this.tableCreditBillHeader.GuarantorNameColumn);
             }
@@ -46514,6 +47024,245 @@ namespace RetailPlus.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetBillingDateNull() {
                 this[this.tableCreditBillHeader.BillingDateColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class RewardsRow : global::System.Data.DataRow {
+            
+            private RewardsDataTable tableRewards;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal RewardsRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableRewards = ((RewardsDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public long ContactID {
+                get {
+                    try {
+                        return ((long)(this[this.tableRewards.ContactIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ContactID\' in table \'Rewards\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRewards.ContactIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ContactCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableRewards.ContactCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ContactCode\' in table \'Rewards\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRewards.ContactCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ContactName {
+                get {
+                    try {
+                        return ((string)(this[this.tableRewards.ContactNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ContactName\' in table \'Rewards\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRewards.ContactNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string RewardCardNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableRewards.RewardCardNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RewardCardNo\' in table \'Rewards\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRewards.RewardCardNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal RewardPoints {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableRewards.RewardPointsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RewardPoints\' in table \'Rewards\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRewards.RewardPointsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime RewardDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableRewards.RewardDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RewardDate\' in table \'Rewards\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRewards.RewardDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal RedeemedPoints {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableRewards.RedeemedPointsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RedeemedPoints\' in table \'Rewards\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRewards.RedeemedPointsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal AddedPoints {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableRewards.AddedPointsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AddedPoints\' in table \'Rewards\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRewards.AddedPointsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsContactIDNull() {
+                return this.IsNull(this.tableRewards.ContactIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetContactIDNull() {
+                this[this.tableRewards.ContactIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsContactCodeNull() {
+                return this.IsNull(this.tableRewards.ContactCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetContactCodeNull() {
+                this[this.tableRewards.ContactCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsContactNameNull() {
+                return this.IsNull(this.tableRewards.ContactNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetContactNameNull() {
+                this[this.tableRewards.ContactNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRewardCardNoNull() {
+                return this.IsNull(this.tableRewards.RewardCardNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRewardCardNoNull() {
+                this[this.tableRewards.RewardCardNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRewardPointsNull() {
+                return this.IsNull(this.tableRewards.RewardPointsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRewardPointsNull() {
+                this[this.tableRewards.RewardPointsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRewardDateNull() {
+                return this.IsNull(this.tableRewards.RewardDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRewardDateNull() {
+                this[this.tableRewards.RewardDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRedeemedPointsNull() {
+                return this.IsNull(this.tableRewards.RedeemedPointsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRedeemedPointsNull() {
+                this[this.tableRewards.RedeemedPointsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAddedPointsNull() {
+                return this.IsNull(this.tableRewards.AddedPointsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAddedPointsNull() {
+                this[this.tableRewards.AddedPointsColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -48577,6 +49326,40 @@ namespace RetailPlus.Datasets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public CreditBillHeaderRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public class RewardsRowChangeEvent : global::System.EventArgs {
+            
+            private RewardsRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public RewardsRowChangeEvent(RewardsRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public RewardsRow Row {
                 get {
                     return this.eventRow;
                 }

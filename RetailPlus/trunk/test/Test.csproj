@@ -72,6 +72,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -98,6 +99,10 @@
     <ProjectReference Include="..\DataObjects Accounts\DataObjects Accounts.csproj">
       <Project>{4CBAE4B5-2073-43AB-9EC4-981D2CA31DCC}</Project>
       <Name>DataObjects Accounts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects CreditBilling\DataObjects CreditBilling.csproj">
+      <Project>{FC841185-222E-41F4-9059-D5A28613FA05}</Project>
+      <Name>DataObjects CreditBilling</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataObjects Inventory\DataObjects Inventory.csproj">
       <Project>{98B7F5B1-2F87-4E62-B2BF-926975D02C73}</Project>
@@ -164,6 +169,26 @@
     <Compile Include="Class3.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="credit\credit_payment.cs" />
+    <Compile Include="HP_ADV\FE_DSCcard.cs" />
+    <Compile Include="HP_ADV\FE_DSC.cs" />
+    <Compile Include="HP_CC\CC_B2Scard.cs" />
+    <Compile Include="HP_CC\CC_B2S.cs" />
+    <Compile Include="HP_CC\CC_B4S.cs" />
+    <Compile Include="HP_CC\CC_B3S.cs" />
+    <Compile Include="credit\IC_ICC_credit_indv.cs" />
+    <Compile Include="credit\IC_ICC_credit.cs" />
+    <Compile Include="HP_ICC\IC_IPY.cs" />
+    <Compile Include="HP_ICC\IC_ITN.cs" />
+    <Compile Include="HP_MER\CheckDigit.cs" />
+    <Compile Include="HP_ICC\IC_ICCcard.cs" />
+    <Compile Include="HP_ICC\IC_ICC.cs" />
+    <Compile Include="HP_ICC\IC_GUA_card.cs" />
+    <Compile Include="HP_ICC\IC_GUA.cs" />
+    <Compile Include="HP_MER\CheckDigitCCard.cs" />
+    <Compile Include="HP_MER\CheckDigitAdvCard.cs" />
+    <Compile Include="HP_MER\MPMERPackage.cs" />
+    <Compile Include="TSC.cs" />
     <Compile Include="rgen.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="Sync.cs" />
@@ -195,6 +220,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

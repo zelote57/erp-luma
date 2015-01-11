@@ -55,6 +55,12 @@ namespace AceSoft.RetailPlus
                 exportop.DestinationOptions = dest;
                 exportop.ExportDestinationType = ExportDestinationType.DiskFile;
                 rpt.Export(exportop); //rpt.Close(); rpt.Dispose();
+                // remove the error
+                if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
+                {
+                    // the maximum report processing jobs limit configured by your system administrator has been reached.
+                    rpt.Close(); rpt.Dispose();
+                }
 
                 if (pvtExportFormatType == ExportFormatType.PortableDocFormat)
                 {

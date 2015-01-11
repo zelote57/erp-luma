@@ -476,7 +476,9 @@ namespace AceSoft.RetailPlus.Client.UI
             if (clsContactCreditCardInfoDetails.CustomerID != Constants.ZERO)
             {
                 txtCreditCardNo.Text = clsContactCreditCardInfoDetails.CreditCardNo;
-                txtCreditCardExpiryDate.Text = clsContactCreditCardInfoDetails.ExpiryDate.ToString("yyyy-MM-dd");
+                //remove this override
+                //txtCreditCardExpiryDate.Text = clsContactCreditCardInfoDetails.ExpiryDate.ToString("yyyy-MM-dd");
+
             }
             if (((mCreditCardStatus == CreditCardStatus.New && clsContactCreditCardInfoDetails.CustomerID == Constants.ZERO) ||
                     mCreditCardStatus == CreditCardStatus.Replaced_Lost) && (CardTypeDetails.WithGuarantor))
@@ -562,8 +564,9 @@ namespace AceSoft.RetailPlus.Client.UI
             if ((CardTypeDetails.WithGuarantor) || (Guarantor.ContactID != 0 && Guarantor.ContactID != mContactDetails.ContactID)) lblHeader.Text += " --- Guarantor: " + Guarantor.ContactName + (Guarantor.CreditDetails.ExpiryDate == DateTime.MinValue ? "" : " [Expiry:" + Guarantor.CreditDetails.ExpiryDate.ToString("yyyy-MM-dd") + "]");
 
             txtCreditCardNo.Text = mContactDetails.ContactCode;
-             
-            if ((CardTypeDetails.WithGuarantor) || (Guarantor.ContactID != 0 && Guarantor.ContactID != mContactDetails.ContactID))
+
+            //if ((CardTypeDetails.WithGuarantor) || (Guarantor.ContactID != 0 && Guarantor.ContactID != mContactDetails.ContactID))
+            if (CardTypeDetails.WithGuarantor)
                 if (Guarantor.CreditDetails.ExpiryDate.AddMonths(6) <= DateTime.Now)
                     txtCreditCardExpiryDate.Text = (new DateTime(DateTime.Now.AddYears(2).Year, DateTime.Now.AddYears(2).Month, DateTime.DaysInMonth(DateTime.Now.AddYears(2).Year, DateTime.Now.AddYears(2).Month))).ToString("yyyy-MM-dd");
                 else
@@ -583,10 +586,13 @@ namespace AceSoft.RetailPlus.Client.UI
                 case CreditCardStatus.Expired:
                 case CreditCardStatus.Replaced_Lost:
                 case CreditCardStatus.Replaced_Expired:
-                case CreditCardStatus.ReNew:
                 case CreditCardStatus.Reactivated_Lost:
                 case CreditCardStatus.ManualDeactivated:
                 case CreditCardStatus.Suspended:
+                    txtCreditCardNo.Text = mContactDetails.CreditDetails.CreditCardNo;
+                    txtCreditCardExpiryDate.Text = mContactDetails.CreditDetails.ExpiryDate.ToString("yyyy-MM-dd");
+                    break;
+                case CreditCardStatus.ReNew:
                     txtCreditCardNo.Text = mContactDetails.CreditDetails.CreditCardNo;
                     break;
                 default:

@@ -292,6 +292,8 @@ namespace AceSoft.RetailPlus.Data
                                                     "@WithRestaurantFeatures, " +
                                                     "@SeniorCitizenDiscountCode, " +
                                                     "@PWDDiscountCode, " +
+                                                    "@GroupChargeType, " +
+                                                    "@PersonalChargeType, " +
                                                     "@DefaultTransactionChargeCode, " +
                                                     "@DineInChargeCode, " +
                                                     "@TakeOutChargeCode, " +
@@ -337,6 +339,8 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("WithRestaurantFeatures", Details.WithRestaurantFeatures);
                 cmd.Parameters.AddWithValue("SeniorCitizenDiscountCode", Details.SeniorCitizenDiscountCode);
                 cmd.Parameters.AddWithValue("PWDDiscountCode", Details.PWDDiscountCode);
+                cmd.Parameters.AddWithValue("GroupChargeType", Details.GroupChargeType.ChargeTypeID);
+                cmd.Parameters.AddWithValue("PersonalChargeType", Details.PersonalChargeType.ChargeTypeID);
                 cmd.Parameters.AddWithValue("DefaultTransactionChargeCode", Details.DefaultTransactionChargeCode);
                 cmd.Parameters.AddWithValue("DineInChargeCode", Details.DineInChargeCode);
                 cmd.Parameters.AddWithValue("TakeOutChargeCode", Details.TakeOutChargeCode);

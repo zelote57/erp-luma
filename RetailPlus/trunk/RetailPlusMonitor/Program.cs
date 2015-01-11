@@ -27,6 +27,7 @@ namespace AceSoft.RetailPlus.Monitor
                 }
                 WriteProcessToMonitor("   ok");
                 WriteProcessToMonitor("Checking connections to database.");
+                
                 Data.Database clsDatabase = new Data.Database();
                 try
                 {
@@ -59,6 +60,42 @@ namespace AceSoft.RetailPlus.Monitor
                     }
                 }
                 clsDatabase.CommitAndDispose();
+
+                // audit
+                clsDatabase = new Data.Database();
+                clsDatabase.GetConnection(username: "POSAuditUser", password: "posauditpwd");
+                try
+                {
+                    bool boIsDBAlive = clsDatabase.IsAlive();
+                    WriteProcessToMonitor("   connected to '" + clsDatabase.Connection.ConnectionString.Split(';')[0].ToString().Replace("Data Source=", "") + "'");
+                }
+                catch (Exception ex)
+                {
+                    WriteProcessToMonitor("   ERROR connecting to database. Exception: " + ex.ToString());
+                }
+                WriteProcessToMonitor("Checking Audit timed-out process.");
+                dtProcessList = clsDatabase.getProcessList();
+                foreach (DataRow dr in dtProcessList.Rows)
+                {
+                    int iID = int.Parse(dr["ID"].ToString());
+                    string strHost = dr["Host"].ToString();
+                    string strDB = dr["db"].ToString();
+                    int iTime = int.Parse(dr["Time"].ToString());
+                    string strInfo = dr["Info"].ToString();
+                    if (strInfo.ToUpper() != "SHOW PROCESSLIST" || strDB == "pos")
+                    {
+                        WriteProcessToMonitor("      audit id:" + iID.ToString() + "  host:" + strHost + "  Time:" + iTime.ToString() + "  Info:" + strInfo);
+                        if (iTime > Constants.C_DEFAULT_MYSQL_PROCESS_TIMEOUT && strDB == "pos")
+                        {
+                            WriteProcessToMonitor("          status not ok... killing process id: " + iID.ToString());
+                            clsDatabase.killProcess(iID);
+                            WriteProcessToMonitor("      done.");
+                        }
+                        else { WriteProcessToMonitor("          status ok"); }
+                    }
+                }
+                clsDatabase.CommitAndDispose();
+
                 WriteProcessToMonitor("   done checking...");
 
                 WriteProcessToMonitor("Waiting for next process...");

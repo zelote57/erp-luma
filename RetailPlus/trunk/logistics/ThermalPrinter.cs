@@ -71,18 +71,32 @@ namespace AceSoft
             //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "msg", "alert('Hello TSCLIB.DLL')", true);
             //TSCLIB_DLL.about();                                                                 //Show the DLL version
             TSCLIB_DLL.openport("RetailPlusBarCodePrinter");                                           //Open specified printer driver
-            TSCLIB_DLL.setup("300", "28.375", "4", "8", "0", "0", "0");                           //Setup the media size and sensor type info
+            TSCLIB_DLL.setup("80", "27.30", "4", "10", "0", "0", "0");                           //Setup the media size and sensor type info
             TSCLIB_DLL.clearbuffer();                                                           //Clear image buffer
 
-            TSCLIB_DLL.windowsfont(50, 25, 38, 0, 2, 0, "ARIAL", strProductCode);  //Draw Product Code
+            TSCLIB_DLL.windowsfont(25, 25, 35, 0, 2, 0, "ARIAL", strProductCode);  //Draw Product Code
             TSCLIB_DLL.windowsfont(60, 55, 25, 0, 0, 0, "ARIAL NARROW", DateTime.Now.ToString("yyyyMMdd"));  //Draw Print Date
             TSCLIB_DLL.barcode("60", "77", "128", "98", "1", "0", "2", "2", strBarcode); //Drawing barcode
 
-            int iPriceFontHeight = 138;
+            int iPriceFontHeight = 130;
             if (strPrice.Length <= 6)
-            { iPriceFontHeight = 140; }
-            else { iPriceFontHeight = 90; }
+            { iPriceFontHeight = 120; }
+            else { iPriceFontHeight = 75; }
             TSCLIB_DLL.windowsfont(348, 57, iPriceFontHeight, 0, 2, 0, "ARIAL NARROW", strPrice);  //Draw Price
+
+            //TSCLIB_DLL.openport("RetailPlusBarCodePrinter");                                           //Open specified printer driver
+            //TSCLIB_DLL.setup("300", "28.375", "4", "8", "0", "0", "0");                           //Setup the media size and sensor type info
+            //TSCLIB_DLL.clearbuffer();                                                           //Clear image buffer
+
+            //TSCLIB_DLL.windowsfont(50, 25, 38, 0, 2, 0, "ARIAL", strProductCode);  //Draw Product Code
+            //TSCLIB_DLL.windowsfont(60, 55, 25, 0, 0, 0, "ARIAL NARROW", DateTime.Now.ToString("yyyyMMdd"));  //Draw Print Date
+            //TSCLIB_DLL.barcode("60", "77", "128", "98", "1", "0", "2", "2", strBarcode); //Drawing barcode
+
+            //int iPriceFontHeight = 138;
+            //if (strPrice.Length <= 6)
+            //{ iPriceFontHeight = 140; }
+            //else { iPriceFontHeight = 90; }
+            //TSCLIB_DLL.windowsfont(348, 57, iPriceFontHeight, 0, 2, 0, "ARIAL NARROW", strPrice);  //Draw Price
 
             //TSCLIB_DLL.printerfont("100", "250", "3", "0", "1", "1", "Print Font Test");        //Drawing printer font
             //TSCLIB_DLL.windowsfont(100, 300, 24, 0, 0, 0, "ARIAL", "Windows Arial Font Test");  //Draw windows font
@@ -98,6 +112,12 @@ namespace AceSoft
         }
         public bool PrintTagPrice(string strProductCode, string strBarcode, string strPrice)
         {
+            // note:
+            // set the vertical offset of printer to 2.00 mm in the Printing Preferences, Stock of RetailPlusTagPricePrinter
+            // note: if error is:
+            //       System.BadImageFormatException: An attempt was made to load a program with an incorrect format. (Exception from HRESULT: 0x8007000B)
+            //       just change the target cpu in Properties, target CPU
+
             bool boRetValue = false;
 
             if (strBarcode.Length < 13) strBarcode.PadLeft(13, '0');
@@ -107,18 +127,18 @@ namespace AceSoft
             //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "msg", "alert('Hello TSCLIB.DLL')", true);
             //TSCLIB_DLL.about();                                                                 //Show the DLL version
             TSCLIB_DLL.openport("RetailPlusTagPricePrinter");                                           //Open specified printer driver
-            TSCLIB_DLL.setup("300", "28.375", "4", "8", "0", "0", "0");                           //Setup the media size and sensor type info
+            TSCLIB_DLL.setup("60", "22.35", "4", "10", "0", "0", "0");      //Setup the media size and sensor type info
             TSCLIB_DLL.clearbuffer();                                                           //Clear image buffer
 
-            TSCLIB_DLL.windowsfont(50, 25, 38, 0, 2, 0, "ARIAL", strProductCode);  //Draw Product Code
-            TSCLIB_DLL.windowsfont(60, 55, 25, 0, 0, 0, "ARIAL NARROW", DateTime.Now.ToString("yyyyMMdd"));  //Draw Print Date
-            TSCLIB_DLL.barcode("60", "77", "128", "98", "1", "0", "2", "2", strBarcode); //Drawing barcode
+            
+            TSCLIB_DLL.windowsfont(20, 35, 15, 0, 0, 0, "ARIAL", strProductCode);  //Draw Product Code
+            TSCLIB_DLL.windowsfont(255, 35, 15, 0, 0, 0, "ARIAL", strProductCode);  //Draw Product Code
 
-            int iPriceFontHeight = 138;
-            if (strPrice.Length <= 6)
-            { iPriceFontHeight = 140; }
-            else { iPriceFontHeight = 90; }
-            TSCLIB_DLL.windowsfont(348, 57, iPriceFontHeight, 0, 2, 0, "ARIAL NARROW", strPrice);  //Draw Price
+            TSCLIB_DLL.barcode("40", "58", "128", "50", "1", "0", "1", "3", strBarcode); //Drawing barcode
+            TSCLIB_DLL.barcode("275", "58", "128", "50", "1", "0", "1", "3", strBarcode); //Drawing barcode
+
+            TSCLIB_DLL.windowsfont(60, 130, 30, 0, 2, 0, "ARIAL", "" + strPrice);  //Draw Price ₱
+            TSCLIB_DLL.windowsfont(300, 130, 30, 0, 2, 0, "ARIAL", "" + strPrice);  //Draw Price ₱
 
             //TSCLIB_DLL.printerfont("100", "250", "3", "0", "1", "1", "Print Font Test");        //Drawing printer font
             //TSCLIB_DLL.windowsfont(100, 300, 24, 0, 0, 0, "ARIAL", "Windows Arial Font Test");  //Draw windows font
@@ -139,8 +159,9 @@ namespace AceSoft
             //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "msg", "alert('Hello TSCLIB.DLL')", true);
             //TSCLIB_DLL.about();                                                                 //Show the DLL version
             TSCLIB_DLL.openport("RetailPlusBarCodePrinter");                                           //Open specified printer driver
-            TSCLIB_DLL.setup("300", "28.375", "4", "8", "0", "0", "0");                           //Setup the media size and sensor type info
+            TSCLIB_DLL.setup("80", "27.30", "4", "10", "0", "0", "0");                           //Setup the media size and sensor type info
             TSCLIB_DLL.clearbuffer();                                                           //Clear image buffer
+
 
             TSCLIB_DLL.windowsfont(60, 55, 25, 0, 0, 0, "ARIAL NARROW", DateTime.Now.ToString("yyyyMMdd"));  //Draw Print Date
             TSCLIB_DLL.barcode("60", "77", "128", "98", "0", "0", "2", "2", strBarcode); //Drawing barcode

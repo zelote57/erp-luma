@@ -172,13 +172,16 @@ namespace AceSoft.RetailPlus.Reports
                 task = Common.Decrypt(strUnparsedTask, Session.SessionID);
 
             SetDataSource(rpt, task);
-            CRViewer.ReportSource = rpt;
-            Session["ReportDocument"] = rpt;
 
             if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
             {
                 string strFileName = Session["UserName"].ToString() + "_products";
                 CRSHelper.GenerateReport(strFileName, rpt, this.updPrint, pvtExportFormatType);
+            }
+            else
+            {
+                CRViewer.ReportSource = rpt;
+                Session["ReportDocument"] = rpt;
             }
         }
 

@@ -121,6 +121,15 @@ namespace AceSoft.RetailPlus.MasterFiles._CardType {
         protected global::System.Web.UI.WebControls.Label lblCreditMinimumPercentageDue;
         
         /// <summary>
+        /// chkExemptInTerminalCharge control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkExemptInTerminalCharge;
+        
+        /// <summary>
         /// chkWithGuarantor control.
         /// </summary>
         /// <remarks>

@@ -102,6 +102,7 @@ namespace AceSoft.RetailPlus.Credits._CardType
             clsDetails.CreditMinimumAmountDue15th = decimal.Parse(txtCreditMinimumAmountDue15th.Text);
             clsDetails.CreditMinimumPercentageDue15th = decimal.Parse(txtCreditMinimumPercentageDue15th.Text);
             clsDetails.WithGuarantor = chkWithGuarantor.Checked;
+            clsDetails.ExemptInTerminalCharge = chkExemptInTerminalCharge.Checked;
             clsDetails.CreatedOn = DateTime.Now;
             clsDetails.LastModified = DateTime.Now;
 

@@ -133,5 +133,14 @@ namespace AceSoft
             strRetValue = DateToFormat.Year.ToString() + "-" + DateToFormat.Month.ToString() + "-" + DateToFormat.Day.ToString() + " " + DateToFormat.Hour.ToString() + ":" + DateToFormat.Minute.ToString();
             return strRetValue;
         }
+
+        public static bool isTerminalMultiInstanceEnabled()
+        {
+            bool boMultiInstanceEnabled = true;
+            if (System.Configuration.ConfigurationManager.AppSettings["MultiInstanceEnabled"] != null)
+                boMultiInstanceEnabled = bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["MultiInstanceEnabled"].ToString(), out boMultiInstanceEnabled) ? boMultiInstanceEnabled : true;
+
+            return boMultiInstanceEnabled;
+        }
 	}
 }

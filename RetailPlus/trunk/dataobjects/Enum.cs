@@ -35,7 +35,8 @@ namespace AceSoft.RetailPlus
         DebitPayment        =   8,
         Released            =   9,
         OrderSlip           =   10,
-        ParkingTicket       =   11
+        ParkingTicket       =   11,
+        CancelledCreditPayment = 12,
 	}
 	
 	public enum TransactionItemStatus
@@ -45,7 +46,8 @@ namespace AceSoft.RetailPlus
 		Trash				=	2,
 		Return				=	3,
 		Refund				=	4,
-        OrderSlip           =   5
+        OrderSlip           =   5,
+        CancelledCreditPayment = 6
 	}
 
 	public enum TerminalStatus
@@ -428,6 +430,8 @@ namespace AceSoft.RetailPlus
         ManualDeactivated = 7,
         SystemDeactivated = 8,
         ManualActivated = 9,
+        SystemActivated = 10,
+        Suspended = 11,
         All
     }
 
@@ -444,6 +448,7 @@ namespace AceSoft.RetailPlus
         SystemDeactivated = 8,
         ManualActivated = 9,
         SystemActivated = 10,
+        Suspended = 11,
         All
     }
 

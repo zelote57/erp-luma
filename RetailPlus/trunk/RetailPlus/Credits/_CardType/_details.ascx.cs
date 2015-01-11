@@ -84,6 +84,7 @@ namespace AceSoft.RetailPlus.Credits._CardType
             txtCreditMinimumAmountDue15th.Text = clsDetails.CreditMinimumAmountDue15th.ToString("#,##0.#0");
             txtCreditMinimumPercentageDue15th.Text = clsDetails.CreditMinimumPercentageDue15th.ToString("#,##0.#0");
             chkWithGuarantor.Checked = clsDetails.WithGuarantor;
+            chkExemptInTerminalCharge.Checked = clsDetails.ExemptInTerminalCharge;
             lblCreatedOn.Text = clsDetails.CreatedOn.ToString("yyyy-MM-dd hh:mm");
         }
 

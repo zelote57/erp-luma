@@ -66,6 +66,7 @@ namespace AceSoft.RetailPlus.Data
 
         public bool AllowDebitPayment;
         public bool AllowRewardPointsPayment;
+        public bool AllowDiscountGreaterThanAmount;
 
         public string ORHeader;
     }
@@ -213,13 +214,24 @@ namespace AceSoft.RetailPlus.Data
             catch { }
             return boRetValue;
         }
-
+        
         public bool get_AllowRewardPointsPayment()
         {
             bool boRetValue = false;
             try
             {
                 boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_ALLOW_REWARD_POINTS_PAYMENT));
+            }
+            catch { }
+            return boRetValue;
+        }
+
+        public bool get_AllowDiscountGreaterThanAmount()
+        {
+            bool boRetValue = true;
+            try
+            {
+                boRetValue = bool.Parse(get_Sysconfig(Constants.SYS_CONFIG_ALLOW_DISCOUNT_GREATER_THAN_AMOUNT));
             }
             catch { }
             return boRetValue;
@@ -322,6 +334,7 @@ namespace AceSoft.RetailPlus.Data
             clsSysConfigDetails.CreditPaymentType = get_CreditPaymentType();
             clsSysConfigDetails.AllowDebitPayment = get_AllowDebitPayment();
             clsSysConfigDetails.AllowRewardPointsPayment = get_AllowRewardPointsPayment();
+            clsSysConfigDetails.AllowDiscountGreaterThanAmount= get_AllowDiscountGreaterThanAmount();
             clsSysConfigDetails.ORHeader = get_ORHeader();
 
             return clsSysConfigDetails;

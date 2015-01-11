@@ -78,8 +78,6 @@ namespace AceSoft.RetailPlus.Rewards
 
             txtStartTransactionDate.Text = Common.ToShortDateString(DateTime.Now.AddDays(-1));
             txtEndTransactionDate.Text = Common.ToShortDateString(DateTime.Now);
-
-            cboReportType_SelectedIndexChanged(null, null);
 		}
 
         private ReportDocument getReportDocument()
@@ -108,13 +106,16 @@ namespace AceSoft.RetailPlus.Rewards
             ReportDocument rpt = getReportDocument();
 
             SetDataSource(rpt);
-            CRViewer.ReportSource = rpt;
-            Session["ReportDocument"] = rpt;
 
             if (pvtExportFormatType == ExportFormatType.WordForWindows || pvtExportFormatType == ExportFormatType.Excel || pvtExportFormatType == ExportFormatType.PortableDocFormat)
             {
                 string strFileName = Session["UserName"].ToString() + "_rewards";
                 CRSHelper.GenerateReport(strFileName, rpt, this.updPrint, pvtExportFormatType);
+            }
+            else
+            {
+                CRViewer.ReportSource = rpt;
+                Session["ReportDocument"] = rpt;
             }
         }
 
@@ -175,19 +176,19 @@ namespace AceSoft.RetailPlus.Rewards
                     #endregion
 
                 case ReportTypes.RewardsSummary:
-                    #region RewardsHistory
+                    #region RewardsSummary
                     clsContactReward = new ContactReward();
-                    dt = clsContactReward.RewardsMovement(StartTransactionDate, EndTransactionDate, long.Parse(cboContactName.SelectedItem.Value));
+                    dt = clsContactReward.RewardsSummary(StartTransactionDate, EndTransactionDate, long.Parse(cboContactName.SelectedItem.Value));
                     clsContactReward.CommitAndDispose();
 
                     foreach (DataRow dr in dt.Rows)
                     {
-                        DataRow drNew = rptds.RewardsMovement.NewRow();
+                        DataRow drNew = rptds.Rewards.NewRow();
 
-                        foreach (DataColumn dc in rptds.RewardsMovement.Columns)
+                        foreach (DataColumn dc in rptds.Rewards.Columns)
                             drNew[dc] = dr[dc.ColumnName];
 
-                        rptds.RewardsMovement.Rows.Add(drNew);
+                        rptds.Rewards.Rows.Add(drNew);
                     }
 
                     break;
@@ -201,6 +202,7 @@ namespace AceSoft.RetailPlus.Rewards
 		#endregion
 
 		#region SetParameters
+
 		private void SetParameters (ReportDocument Report)
 		{
 			ParameterFieldDefinition paramField;
@@ -290,16 +292,6 @@ namespace AceSoft.RetailPlus.Rewards
 
         protected void cmdView_Click(object sender, System.EventArgs e)
 		{
-            //if (cboContactName.SelectedItem.Value == "0")
-            //{
-            //    string stScript = "<Script>";
-            //    stScript += "window.alert('Please select customer to view credit records for printing.')";
-            //    stScript += "</Script>";
-            //    Response.Write(stScript);
-            //    return;
-            //}
-            //fraViewer.Visible = true;
-
 			switch (Convert.ToInt16(cboReportOptions.SelectedItem.Value))
 			{
 				case 0:
@@ -334,7 +326,7 @@ namespace AceSoft.RetailPlus.Rewards
             cmdView_Click(null, null);
         }
 
-               protected void imgBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        protected void imgBack_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             Response.Redirect(lblReferrer.Text);
         }
@@ -344,31 +336,6 @@ namespace AceSoft.RetailPlus.Rewards
             Response.Redirect(lblReferrer.Text);
         }
 
-        protected void cboReportType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (cboReportType.SelectedValue)
-            {
-                case ReportTypes.RewardsHistory:
-                    #region RewardsHistory
-                    holderSelectCustomer.Visible = true;
-                    holderTranDate.Visible = true;
-                    break;
-                    #endregion
-
-                case ReportTypes.RewardsSummary:
-                    #region RewardsSummary
-                    holderSelectCustomer.Visible = false;
-                    holderTranDate.Visible = false;
-                    break;
-                    #endregion
-
-                default:
-                    holderSelectCustomer.Visible = false;
-                    holderTranDate.Visible = false;
-                    break;
-
-            }
-        }
 
         #endregion
 

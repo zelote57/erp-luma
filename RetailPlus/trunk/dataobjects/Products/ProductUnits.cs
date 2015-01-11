@@ -386,11 +386,15 @@ namespace AceSoft.RetailPlus.Data
 			try
 			{
 				Products clsProduct = new Products(base.Connection, base.Transaction);
-                Int32 BaseUnitID = clsProduct.Details1(BranchID, ProductID).BaseUnitID;
+                //Int32 BaseUnitID = clsProduct.Details1(BranchID, ProductID).BaseUnitID;
+                Int32 BaseUnitID = clsProduct.BaseUnitID(ProductID);
 				
 				Int32 origUnitIDToConvert = UnitIDToConvert;
 
 				decimal ConvertedUnit = Quantity;
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
                 while (BaseUnitID != UnitIDToConvert)
                 {
@@ -402,24 +406,14 @@ namespace AceSoft.RetailPlus.Data
                                 "WHERE ProductID = @ProductID " +
                                 "AND BottomUnitID = @UnitIDToConvert ";
 
-                    MySqlCommand cmd = new MySqlCommand();
-                    
-                    
-                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                    cmd.Parameters.AddWithValue("@UnitIDToConvert", UnitIDToConvert);
+
                     cmd.CommandText = SQL;
-
-                    MySqlParameter prmProductID = new MySqlParameter("@ProductID",MySqlDbType.Int64);			
-                    prmProductID.Value = ProductID;
-                    cmd.Parameters.Add(prmProductID);
-
-                    MySqlParameter prmUnitIDToConvert = new MySqlParameter("@UnitIDToConvert",MySqlDbType.Int32);
-                    prmUnitIDToConvert.Value = UnitIDToConvert;
-                    cmd.Parameters.Add(prmUnitIDToConvert);
-
                     System.Data.DataTable dt = new System.Data.DataTable("tblProductUnit");
                     base.MySqlDataAdapterFill(cmd, dt);
                     
-
                     int iCtr = 0;
                     foreach(System.Data.DataRow dr in dt.Rows)
                     {
@@ -432,17 +426,8 @@ namespace AceSoft.RetailPlus.Data
 
 				return ConvertedUnit;
 			}
-
 			catch (Exception ex)
 			{
-				
-				
-					
-
-				
-				
-				
-
 				throw base.ThrowException(ex);
 			}	
 		}

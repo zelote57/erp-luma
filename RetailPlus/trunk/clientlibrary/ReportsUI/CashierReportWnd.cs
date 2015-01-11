@@ -454,14 +454,14 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("(-) Service Charge", ":", mclsDetails.TotalCharge.ToString("#,##0.#0"));
             dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
             dt.Rows.Add("Total Amount", ":", mclsDetails.GrossSales.ToString("#,##0.#0"));
-            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", (mclsDetails.VATExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT / 100)).ToString("#,##0.#0"));
+            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", (mclsDetails.VATExempt * (mclsTerminalDetails.VAT / 100)).ToString("#,##0.#0"));
             dt.Rows.Add("(-) Subtotal Discount", ":", mclsDetails.SubTotalDiscount.ToString("#,##0.#0"));
             dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
             dt.Rows.Add("Net Sales", ":", mclsDetails.NetSales.ToString("#,##0.#0"));
 
             dt.Rows.Add("Taxables Breakdown", "", "");
             dt.Rows.Add("VAT Exempt", ":", mclsDetails.VATExempt.ToString("#,##0.00"));
-            dt.Rows.Add("VAT Zero Rated", ":", mclsDetails.VATZeroRated.ToString("#,##0.00"));
+            dt.Rows.Add("VAT Zero Rated", ":", mclsDetails.ZeroRatedSales.ToString("#,##0.00"));
             dt.Rows.Add("NonVATable Amount", ":", mclsDetails.NonVATableAmount.ToString("#,##0.00"));
             dt.Rows.Add("VATable Amount", ":", mclsDetails.VATableAmount.ToString("#,##0.00"));
             dt.Rows.Add(mclsTerminalDetails.VAT.ToString("##") + "% VAT", ":", mclsDetails.VAT.ToString("#,##0.00"));

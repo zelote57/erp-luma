@@ -675,6 +675,54 @@ namespace AceSoft.RetailPlus.Data
             return dt;
         }
 
+        public DataTable RewardsSummary(DateTime StartDate, DateTime EndDate, Int64 CustomerID = Constants.ZERO)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "SELECT " +
+                                "cntct.ContactID, " +
+                                "cntct.ContactCode, " +
+                                "cntct.ContactName, " +
+                                "rwd.RewardCardNo, " +
+                                "rwd.RewardPoints, " +
+                                "rwdm.RewardDate, " +
+                                "SUM(CASE WHEN rwdm.RewardPointsAdjustment < 0 THEN rwdm.RewardPointsAdjustment ELSE 0 END) RedeemedPoints, " +
+                                "SUM(CASE WHEN rwdm.RewardPointsAdjustment > 0 THEN rwdm.RewardPointsAdjustment ELSE 0 END) AddedPoints " +
+                            "FROM tblContactRewardsMovement rwdm " +
+                            "INNER JOIN tblContactRewards rwd ON rwd.CustomerID = rwdm.CustomerID " +
+                            "INNER JOIN tblContacts cntct ON cntct.ContactID = rwd.CustomerID " +
+                            "WHERE RewardDate BETWEEN DATE_FORMAT('" + Common.ToShortDateString(StartDate) + "', '%Y-%m-%d') AND " +
+                            "                         DATE_FORMAT('" + Common.ToShortDateString(EndDate) + "', '%Y-%m-%d') ";
+
+                if (CustomerID != Constants.ZERO)
+                {
+                    SQL += "AND rwdm.CustomerID = @CustomerID ";
+                    cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
+                }
+                SQL += "GROUP BY " +
+                                "cntct.ContactID, " +
+                                "cntct.ContactCode, " +
+                                "cntct.ContactName, " +
+                                "rwd.RewardCardNo, " +
+                                "rwd.RewardPoints, " +
+                                "rwdm.RewardDate ";
+                SQL += "ORDER BY ContactName, RewardDate";
+                
+                cmd.CommandText = SQL;
+                System.Data.DataTable dt = new System.Data.DataTable("tblContactRewards");
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         #endregion
 
     }

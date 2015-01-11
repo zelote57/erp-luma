@@ -9,7 +9,7 @@
 		<td>
 			<table class="ms-toolbar" style="margin-left: 0px" cellpadding="2" cellspacing="0" border="0" width="100%">
 				<tr>
-					<td class="ms-toolbar">
+					<%--<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>
 								<td class="ms-toolbar" nowrap="nowrap"><asp:imagebutton id="imgSaveBack" title="Update Access Rights" accessKey="S" tabIndex="1" height="16" width="16" border="0" alt="Update Access Rights" ImageUrl="../../../_layouts/images/saveitem.gif" runat="server" CssClass="ms-toolbar" OnClick="imgSaveBack_Click"></asp:imagebutton>&nbsp;
@@ -18,7 +18,7 @@
 							</tr>
 						</table>
 					</td>
-					<td class="ms-separator">|</td>
+					<td class="ms-separator">|</td>--%>
 					<td class="ms-toolbar">
 						<table cellspacing="0" cellpadding="1" border="0">
 							<tr>

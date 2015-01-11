@@ -112,6 +112,21 @@ namespace AceSoft.RetailPlus.Security._Terminals
             cboPWDDiscountCode.SelectedIndex = cboDiscountCode.Items.Count - 1;
 
             Data.ChargeType clsChargeType = new Data.ChargeType(clsDiscount.Connection, clsDiscount.Transaction);
+
+            cboGroupChargeType.DataTextField = "ChargeTypeCode";
+            cboGroupChargeType.DataValueField = "ChargeTypeID";
+            cboGroupChargeType.DataSource = clsChargeType.ListAsDataTable().DefaultView;
+            cboGroupChargeType.DataBind();
+            cboGroupChargeType.Items.Insert(0, new ListItem("", "0"));
+            cboGroupChargeType.SelectedIndex = 0;
+
+            cboPersonalChargeType.DataTextField = "ChargeTypeCode";
+            cboPersonalChargeType.DataValueField = "ChargeTypeID";
+            cboPersonalChargeType.DataSource = clsChargeType.ListAsDataTable().DefaultView;
+            cboPersonalChargeType.DataBind();
+            cboPersonalChargeType.Items.Insert(0, new ListItem("", "0"));
+            cboPersonalChargeType.SelectedIndex = 0;
+
             cboDefaultTransactionChargeCode.DataTextField = "ChargeTypeCode";
             cboDefaultTransactionChargeCode.DataValueField = "ChargeTypeCode";
             cboDefaultTransactionChargeCode.DataSource = clsChargeType.ListAsDataTable().DefaultView;
@@ -214,6 +229,9 @@ namespace AceSoft.RetailPlus.Security._Terminals
             // Added Oct 17, 2011
             chkShowCustomerSelection.Checked = clsDetails.ShowCustomerSelection;
 
+            cboGroupChargeType.SelectedIndex = cboGroupChargeType.Items.IndexOf(cboGroupChargeType.Items.FindByValue(clsDetails.GroupChargeType.ChargeTypeID.ToString()));
+            cboPersonalChargeType.SelectedIndex = cboPersonalChargeType.Items.IndexOf(cboPersonalChargeType.Items.FindByValue(clsDetails.PersonalChargeType.ChargeTypeID.ToString()));
+
             // Added Sep 24, 2014
             cboDefaultTransactionChargeCode.SelectedIndex = cboDefaultTransactionChargeCode.Items.IndexOf(cboDefaultTransactionChargeCode.Items.FindByValue(clsDetails.DefaultTransactionChargeCode));
             cboDineInChargeCode.SelectedIndex = cboDineInChargeCode.Items.IndexOf(cboDineInChargeCode.Items.FindByValue(clsDetails.DineInChargeCode));
@@ -286,6 +304,17 @@ namespace AceSoft.RetailPlus.Security._Terminals
 
             // Added Oct 17, 2011
             clsDetails.ShowCustomerSelection = chkShowCustomerSelection.Checked;
+
+            clsDetails.GroupChargeType = new ChargeTypeDetails()
+            {
+                ChargeTypeID = int.Parse(cboGroupChargeType.SelectedItem.Value),
+                ChargeTypeCode = cboGroupChargeType.SelectedItem.Text
+            };
+            clsDetails.PersonalChargeType = new ChargeTypeDetails()
+            {
+                ChargeTypeID = int.Parse(cboPersonalChargeType.SelectedItem.Value),
+                ChargeTypeCode = cboPersonalChargeType.SelectedItem.Text
+            };
 
             // Added Sep 24, 2014
             clsDetails.DefaultTransactionChargeCode = cboDefaultTransactionChargeCode.SelectedItem.Value;

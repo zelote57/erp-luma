@@ -282,8 +282,15 @@ namespace AceSoft.RetailPlus
         CreditorsWithGuarantorReserve2 = 165,
         CreditorsWithGuarantorReserve3 = 166,
         CreditorsWithGuarantorReserve4 = 167,
-        CreditCardRenewal = 168
+        CreditCardRenewal = 168,
+        /******************************
+      * For Additional reporting of salestransaction
+      * Added: Feb 19, 2014 Lemuel E. Aceron
+      *******************************/
+        CreditPaymentReversal = 169,
+        CreditAmountDueAdjustment = 170,
 
+        ChangeOrderType = 171
     }
 
     /// <summary>

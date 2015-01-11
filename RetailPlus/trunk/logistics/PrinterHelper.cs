@@ -6,8 +6,31 @@ using System.Runtime.InteropServices;
 
 namespace AceSoft
 {
+    public enum ExtendedPrinterStatus
+    {
+        Other = 1,
+        Unknown = 2,
+        Idle = 3,
+        Printing = 4,
+        WarmingUp = 5,
+        StoppedPrinting = 6,
+        Offline = 7,
+        Paused = 8,
+        Error = 9,
+        Busy = 10,
+        NotAvailable = 11,
+        Waiting = 12,
+        Processing = 13,
+        Initialization = 14,
+        PowerSave = 15,
+        PendingDeletion = 16,
+        IOActive = 17,
+        ManualFeed = 18
+    }
+
     public class PrinterHelper
     {
+        
         public static object GetField(Object obj, String fieldName)
         {
             System.Reflection.FieldInfo fi = obj.GetType().GetField(fieldName, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);

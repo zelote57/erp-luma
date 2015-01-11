@@ -467,7 +467,7 @@ namespace AceSoft.RetailPlus.Client.UI
             dt.Rows.Add("(-) Service Charge", ":", mclsDetails.TotalCharge.ToString("#,##0.#0"));
             dt.Rows.Add("",":","------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
             dt.Rows.Add("Total Amount", ":", (mclsDetails.GrossSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
-            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", (mclsDetails.VATExempt / (1 + (mclsTerminalDetails.VAT / 100)) * (mclsTerminalDetails.VAT / 100) * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
+            dt.Rows.Add("(-) " + mclsTerminalDetails.VAT.ToString("##") + "% VAT Exempt ", ":", (mclsDetails.VATExempt * (mclsTerminalDetails.VAT / 100) * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
             dt.Rows.Add("(-) Discount", ":", (mclsDetails.SubTotalDiscount + mclsDetails.ItemsDiscount).ToString("#,##0.#0"));
             dt.Rows.Add("", ":", "------------".PadLeft(mclsTerminalDetails.MaxReceiptWidth - 66, '-'));
             dt.Rows.Add("Net Sales", ":", (mclsDetails.NetSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.#0"));
@@ -490,7 +490,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
             dt.Rows.Add("Taxables Breakdown", "", "");
             dt.Rows.Add("VAT Exempt", ":", (mclsDetails.VATExempt * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
-            dt.Rows.Add("VAT Zero Rated", ":", (mclsDetails.VATZeroRated * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
+            dt.Rows.Add("VAT Zero Rated", ":", (mclsDetails.ZeroRatedSales * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("NonVATable Amount", ":", (mclsDetails.NonVATableAmount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add("VATable Amount", ":", (mclsDetails.VATableAmount * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));
             dt.Rows.Add(mclsTerminalDetails.VAT.ToString("##") + "% VAT", ":", (mclsDetails.VAT * ((100 - mclsDetails.TrustFund) / 100)).ToString("#,##0.00"));

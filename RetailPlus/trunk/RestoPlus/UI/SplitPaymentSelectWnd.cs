@@ -30,14 +30,7 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
-        public Data.TerminalDetails mclsTerminalDetails;
-        public Data.TerminalDetails TerminalDetails
-        {
-            set
-            {
-                mclsTerminalDetails = value;
-            }
-        }
+        public Data.TerminalDetails TerminalDetails { get; set; }
 
         #endregion
 
@@ -46,6 +39,12 @@ namespace AceSoft.RetailPlus.Client.UI
         public SplitPaymentSelectWnd()
         {
             InitializeComponent();
+
+            if (Common.isTerminalMultiInstanceEnabled())
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; }
+            else
+            { this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen; }
+            this.ShowInTaskbar = TerminalDetails.FORM_Behavior == FORM_Behavior.NON_MODAL; 
         }
 
         protected override void Dispose(bool disposing)
@@ -259,6 +258,5 @@ namespace AceSoft.RetailPlus.Client.UI
 
         #endregion
 
-        
     }
 }

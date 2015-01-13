@@ -62,6 +62,8 @@
     <Compile Include="BranchWnd.Designer.cs">
       <DependentUpon>BranchWnd.cs</DependentUpon>
     </Compile>
+    <Compile Include="ItemsLoaded.cs" />
+    <Compile Include="ItemsExc.cs" />
     <Compile Include="Items.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="MainWnd.cs">
@@ -96,6 +98,14 @@
     <Content Include="images\Background.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\company\Company Library.csproj">
+      <Project>{810E3EE7-4E46-4DEC-85ED-2AAA53D5C531}</Project>
+      <Name>Company Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects Inventory\DataObjects Inventory.csproj">
+      <Project>{98B7F5B1-2F87-4E62-B2BF-926975D02C73}</Project>
+      <Name>DataObjects Inventory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\dataobjects\DataObjects.csproj">
       <Project>{75D37B92-76F5-4C25-AF1A-394619DE4835}</Project>
       <Name>DataObjects</Name>

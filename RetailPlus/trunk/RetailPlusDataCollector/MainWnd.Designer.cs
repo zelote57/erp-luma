@@ -28,10 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.grpSaveToDB = new System.Windows.Forms.GroupBox();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.prgBar = new System.Windows.Forms.ProgressBar();
+            this.lblCash = new System.Windows.Forms.Label();
             this.txtUnitCode = new System.Windows.Forms.TextBox();
             this.cmdBranchSelect = new System.Windows.Forms.Button();
             this.cmdSave = new System.Windows.Forms.Button();
@@ -40,7 +44,6 @@
             this.lblBalanceAmount = new System.Windows.Forms.Label();
             this.lblProductDesc = new System.Windows.Forms.Label();
             this.lblDicountTypes = new System.Windows.Forms.Label();
-            this.lblCash = new System.Windows.Forms.Label();
             this.txtQuantity = new System.Windows.Forms.TextBox();
             this.imgIcon = new System.Windows.Forms.PictureBox();
             this.lblHeader = new System.Windows.Forms.Label();
@@ -53,7 +56,10 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lblAddNewCustomer = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            this.grpSaveToDB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
@@ -62,6 +68,8 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
+            this.groupBox1.Controls.Add(this.grpSaveToDB);
+            this.groupBox1.Controls.Add(this.lblCash);
             this.groupBox1.Controls.Add(this.txtUnitCode);
             this.groupBox1.Controls.Add(this.cmdBranchSelect);
             this.groupBox1.Controls.Add(this.cmdSave);
@@ -70,7 +78,6 @@
             this.groupBox1.Controls.Add(this.lblBalanceAmount);
             this.groupBox1.Controls.Add(this.lblProductDesc);
             this.groupBox1.Controls.Add(this.lblDicountTypes);
-            this.groupBox1.Controls.Add(this.lblCash);
             this.groupBox1.Controls.Add(this.txtQuantity);
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Blue;
@@ -80,6 +87,45 @@
             this.groupBox1.TabIndex = 83;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Press TAB key to change item. Press SAVE  to add the item.";
+            // 
+            // grpSaveToDB
+            // 
+            this.grpSaveToDB.Controls.Add(this.lblStatus);
+            this.grpSaveToDB.Controls.Add(this.prgBar);
+            this.grpSaveToDB.Location = new System.Drawing.Point(2, 0);
+            this.grpSaveToDB.Name = "grpSaveToDB";
+            this.grpSaveToDB.Size = new System.Drawing.Size(1002, 264);
+            this.grpSaveToDB.TabIndex = 134;
+            this.grpSaveToDB.TabStop = false;
+            this.grpSaveToDB.Visible = false;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(199, 100);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(48, 13);
+            this.lblStatus.TabIndex = 14;
+            this.lblStatus.Text = "lblStatus";
+            // 
+            // prgBar
+            // 
+            this.prgBar.Location = new System.Drawing.Point(233, 121);
+            this.prgBar.Name = "prgBar";
+            this.prgBar.Size = new System.Drawing.Size(499, 21);
+            this.prgBar.TabIndex = 13;
+            this.prgBar.UseWaitCursor = true;
+            // 
+            // lblCash
+            // 
+            this.lblCash.AutoSize = true;
+            this.lblCash.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCash.ForeColor = System.Drawing.Color.MediumBlue;
+            this.lblCash.Location = new System.Drawing.Point(396, 38);
+            this.lblCash.Name = "lblCash";
+            this.lblCash.Size = new System.Drawing.Size(114, 13);
+            this.lblCash.TabIndex = 134;
+            this.lblCash.Text = "Scan Item Barcode";
             // 
             // txtUnitCode
             // 
@@ -128,6 +174,7 @@
             this.txtBarCode.Text = "1234567890123";
             this.txtBarCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBarCode.TextChanged += new System.EventHandler(this.txtBarCode_TextChanged);
+            this.txtBarCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBarCode_KeyDown);
             // 
             // label1
             // 
@@ -174,17 +221,6 @@
             this.lblDicountTypes.TabIndex = 3;
             this.lblDicountTypes.Text = "Select Branch To Inventory";
             // 
-            // lblCash
-            // 
-            this.lblCash.AutoSize = true;
-            this.lblCash.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCash.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblCash.Location = new System.Drawing.Point(403, 38);
-            this.lblCash.Name = "lblCash";
-            this.lblCash.Size = new System.Drawing.Size(114, 13);
-            this.lblCash.TabIndex = 4;
-            this.lblCash.Text = "Scan Item Barcode";
-            // 
             // txtQuantity
             // 
             this.txtQuantity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -196,6 +232,7 @@
             this.txtQuantity.TabIndex = 3;
             this.txtQuantity.Text = "0.00";
             this.txtQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtQuantity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuantity_KeyDown);
             // 
             // imgIcon
             // 
@@ -215,9 +252,9 @@
             this.lblHeader.ForeColor = System.Drawing.Color.White;
             this.lblHeader.Location = new System.Drawing.Point(59, 30);
             this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(433, 13);
+            this.lblHeader.Size = new System.Drawing.Size(188, 13);
             this.lblHeader.TabIndex = 86;
-            this.lblHeader.Text = "This collects all inventory count and saves it into a file for database loading.";
+            this.lblHeader.Text = "This collects all inventory count.";
             // 
             // panel1
             // 
@@ -238,14 +275,14 @@
             this.dgvItems.CausesValidation = false;
             this.dgvItems.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvItems.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(81)))), ((int)(((byte)(153)))));
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.dgvItems.ColumnHeadersHeight = 24;
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvItems.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -254,19 +291,19 @@
             this.dgvItems.Location = new System.Drawing.Point(0, 0);
             this.dgvItems.Name = "dgvItems";
             this.dgvItems.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.dgvItems.RowHeadersVisible = false;
             this.dgvItems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.RoyalBlue;
-            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.RoyalBlue;
+            this.dgvItems.RowsDefaultCellStyle = dataGridViewCellStyle15;
             this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvItems.Size = new System.Drawing.Size(834, 292);
             this.dgvItems.TabIndex = 124;
@@ -288,7 +325,7 @@
             this.label14.AutoSize = true;
             this.label14.BackColor = System.Drawing.Color.Transparent;
             this.label14.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.label14.Location = new System.Drawing.Point(757, 45);
+            this.label14.Location = new System.Drawing.Point(757, 37);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(225, 13);
             this.label14.TabIndex = 132;
@@ -299,7 +336,7 @@
             this.label13.AutoSize = true;
             this.label13.BackColor = System.Drawing.Color.Transparent;
             this.label13.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.label13.Location = new System.Drawing.Point(757, 29);
+            this.label13.Location = new System.Drawing.Point(757, 21);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(247, 13);
             this.label13.TabIndex = 131;
@@ -310,7 +347,7 @@
             this.label11.AutoSize = true;
             this.label11.BackColor = System.Drawing.Color.Transparent;
             this.label11.ForeColor = System.Drawing.Color.Red;
-            this.label11.Location = new System.Drawing.Point(718, 45);
+            this.label11.Location = new System.Drawing.Point(718, 37);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(25, 13);
             this.label11.TabIndex = 130;
@@ -321,7 +358,7 @@
             this.label10.AutoSize = true;
             this.label10.BackColor = System.Drawing.Color.Transparent;
             this.label10.ForeColor = System.Drawing.Color.Red;
-            this.label10.Location = new System.Drawing.Point(718, 29);
+            this.label10.Location = new System.Drawing.Point(718, 21);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(25, 13);
             this.label10.TabIndex = 129;
@@ -332,7 +369,7 @@
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(718, 13);
+            this.label6.Location = new System.Drawing.Point(718, 5);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(25, 13);
             this.label6.TabIndex = 128;
@@ -343,11 +380,33 @@
             this.lblAddNewCustomer.AutoSize = true;
             this.lblAddNewCustomer.BackColor = System.Drawing.Color.Transparent;
             this.lblAddNewCustomer.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.lblAddNewCustomer.Location = new System.Drawing.Point(757, 13);
+            this.lblAddNewCustomer.Location = new System.Drawing.Point(757, 5);
             this.lblAddNewCustomer.Name = "lblAddNewCustomer";
             this.lblAddNewCustomer.Size = new System.Drawing.Size(190, 13);
             this.lblAddNewCustomer.TabIndex = 127;
             this.lblAddNewCustomer.Text = " to clear the entire branch inventory file";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label3.Location = new System.Drawing.Point(380, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(332, 13);
+            this.label3.TabIndex = 134;
+            this.label3.Text = " to zero out the NEGATIVE Quantity of  branch inventory in database";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(341, 9);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(25, 13);
+            this.label4.TabIndex = 133;
+            this.label4.Text = "[F5]";
             // 
             // MainWnd
             // 
@@ -355,6 +414,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1008, 682);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label11);
@@ -375,6 +436,8 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Main_KeyDown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.grpSaveToDB.ResumeLayout(false);
+            this.grpSaveToDB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
@@ -389,7 +452,6 @@
         private System.Windows.Forms.Label lblBalanceAmount;
         private System.Windows.Forms.Label lblProductDesc;
         private System.Windows.Forms.Label lblDicountTypes;
-        private System.Windows.Forms.Label lblCash;
         private System.Windows.Forms.TextBox txtQuantity;
         private System.Windows.Forms.PictureBox imgIcon;
         private System.Windows.Forms.Label lblHeader;
@@ -407,5 +469,11 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblAddNewCustomer;
         private System.Windows.Forms.TextBox txtUnitCode;
+        private System.Windows.Forms.GroupBox grpSaveToDB;
+        private System.Windows.Forms.Label lblStatus;
+        public System.Windows.Forms.ProgressBar prgBar;
+        private System.Windows.Forms.Label lblCash;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }

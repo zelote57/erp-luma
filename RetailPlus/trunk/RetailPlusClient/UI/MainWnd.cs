@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Text;
 using System.Management;
+using System.Xml;
 
 using AceSoft.RetailPlus.Reports;
 using AceSoft.RetailPlus.Security;
@@ -994,7 +995,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.lblTerminalNoName.Size = new System.Drawing.Size(96, 22);
             this.lblTerminalNoName.TabIndex = 66;
             this.lblTerminalNoName.Text = "  Terminal No.:";
-            this.lblTerminalNoName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTerminalNoName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTerminalNo
             // 
@@ -1721,7 +1722,17 @@ namespace AceSoft.RetailPlus.Client.UI
                         Security.AccessRights clsAccessRights; Security.AccessRightsDetails clsDetails;
                         switch (e.KeyCode)
                         {
-                                
+                            case Keys.Enter:
+                                clsAccessRights = new Security.AccessRights();
+                                clsDetails = new Security.AccessRightsDetails();
+                                clsDetails = clsAccessRights.Details(mclsSalesTransactionDetails.CashierID, (Int16)AccessTypes.ReprintZRead);
+                                clsAccessRights.CommitAndDispose();
+
+                                if (clsDetails.Read)
+                                {
+                                    UpdateBranchAndTerminalNo();
+                                }
+                                break;
                             case Keys.F2:
                                 clsAccessRights = new Security.AccessRights();
                                 clsDetails = new Security.AccessRightsDetails();
@@ -2088,6 +2099,7 @@ namespace AceSoft.RetailPlus.Client.UI
                 mConnection = clsTerminal.Connection; mTransaction = clsTerminal.Transaction;
 
 				mclsTerminalDetails = clsTerminal.Details(Constants.TerminalBranchID, CompanyDetails.TerminalNo);
+                lblTerminalNoName.Text = mclsTerminalDetails.BranchDetails.BranchName;
 
 				Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
                 mConnection = clsContact.Connection; mTransaction = clsContact.Transaction;
@@ -5488,6 +5500,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     if (result == DialogResult.OK)
                     {
+                        bool boActivateSuspendedAccount = true;
+
+                        if (!mclsContactDetails.CreditDetails.CreditActive)
+                        {
+                            if (MessageBox.Show("Account is InActive, would you like to re-activate? Remarks: " + Environment.NewLine + mclsContactDetails.Remarks + Environment.NewLine + Environment.NewLine + "Press [yes] to automatically activate or [no] to disregard activation.", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)
+                                boActivateSuspendedAccount = false;
+                        }
+
                         Cursor.Current = Cursors.WaitCursor;
 
                         try
@@ -5546,7 +5566,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             SavePayments(arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, null, arrDebitPaymentDetails);
 
                             // save the details of credit payments
-                            SaveCreditPayments(dgvItemsSelectedRows, arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, null, arrDebitPaymentDetails);
+                            SaveCreditPayments(dgvItemsSelectedRows, arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, null, arrDebitPaymentDetails, boActivateSuspendedAccount);
 
                             //OpenDrawerDelegate opendrawerDel = new OpenDrawerDelegate(OpenDrawer);
                             //Invoke(opendrawerDel);
@@ -6717,6 +6737,50 @@ namespace AceSoft.RetailPlus.Client.UI
 				Cursor.Current = Cursors.Default;
 			}
 		}
+
+        private void UpdateBranchAndTerminalNo()
+        {
+            BranchWnd clsBranchWnd = new BranchWnd();
+            clsBranchWnd.TerminalDetails = mclsTerminalDetails;
+            clsBranchWnd.BranchDetails = mclsTerminalDetails.BranchDetails;
+            clsBranchWnd.ShowDialog(this);
+            DialogResult result = clsBranchWnd.Result;
+            Data.BranchDetails clsBranchDetails = clsBranchWnd.BranchDetails;
+            Data.TerminalDetails clsTerminalDetails = clsBranchWnd.TerminalDetails;
+            clsBranchWnd.Close();
+            clsBranchWnd.Dispose();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+                foreach (XmlElement element in xmlDoc.DocumentElement)
+                {
+                    if (element.Name.Equals("appSettings"))
+                    {
+                        bool boBranchIDFound = false, boTerminalNoFound = false; 
+                        foreach (XmlNode node in element.ChildNodes)
+                        {
+                            if (node.Attributes != null && node.Attributes[0].Value.Equals("BranchID"))
+                            {
+                                node.Attributes[1].Value = clsBranchDetails.BranchID.ToString(); boBranchIDFound =true;
+                            }
+                            else if (node.Attributes != null && node.Attributes[0].Value.Equals("TerminalNo"))
+                            {
+                                node.Attributes[1].Value = clsTerminalDetails.TerminalNo; boTerminalNoFound = true;
+                            }
+                            if (boBranchIDFound && boTerminalNoFound) break;
+                        }
+                    }
+                }
+
+                xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+
+                MessageBox.Show("New configuration has been saved. Please re-start the application, system will now exit.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                Application.Exit();
+            }
+
+        }
 
 		#endregion
 

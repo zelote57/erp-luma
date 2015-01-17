@@ -1365,7 +1365,7 @@ namespace AceSoft.RetailPlus.Client.UI
             return resRetValue;
         }
 
-        public void SaveCreditPayments(DataGridViewSelectedRowCollection dgvItemsSelectedRows, ArrayList arrCashPaymentDetails, ArrayList arrChequePaymentDetails, ArrayList arrCreditCardPaymentDetails, ArrayList arrCreditPaymentDetails, ArrayList arrDebitPaymentDetails)
+        public void SaveCreditPayments(DataGridViewSelectedRowCollection dgvItemsSelectedRows, ArrayList arrCashPaymentDetails, ArrayList arrChequePaymentDetails, ArrayList arrCreditCardPaymentDetails, ArrayList arrCreditPaymentDetails, ArrayList arrDebitPaymentDetails, bool ActivateSuspendedAccount)
         {
             // save the cashpayments
             foreach (Data.CashPaymentDetails det in mclsSalesTransactionDetails.PaymentDetails.arrCashPaymentDetails)
@@ -1385,7 +1385,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     if (decRemainingAmountPaid >= decBalance)
                     {
-                        InsertCreditPaymentCash(intCreditPaymentID, intCPRefBranchID, strCPRefTerminalNo, decBalance, strRemarks);
+                        InsertCreditPaymentCash(intCreditPaymentID, intCPRefBranchID, strCPRefTerminalNo, decBalance, strRemarks, ActivateSuspendedAccount);
 
                         dr.Cells["CreditPaid"].Value = decBalance;
                         dr.Cells["Balance"].Value = 0;
@@ -1393,7 +1393,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     }
                     else if (decRemainingAmountPaid > 0 && decRemainingAmountPaid < decBalance)
                     {
-                        InsertCreditPaymentCash(intCreditPaymentID, intCPRefBranchID, strCPRefTerminalNo, decRemainingAmountPaid, strRemarks);
+                        InsertCreditPaymentCash(intCreditPaymentID, intCPRefBranchID, strCPRefTerminalNo, decRemainingAmountPaid, strRemarks, ActivateSuspendedAccount);
 
                         //dgItems.Select(itemIndex);
                         dr.Cells["CreditPaid"].Value = decRemainingAmountPaid;
@@ -1427,7 +1427,7 @@ namespace AceSoft.RetailPlus.Client.UI
                     clsCreditPayments.CommitAndDispose();
 
                     //insert the payment
-                    InsertCreditPaymentCash(clsCreditPaymentDetails.CreditPaymentID, mclsTerminalDetails.BranchDetails.BranchID, mclsSalesTransactionDetails.TerminalNo, decRemainingAmountPaid, "pay-no purchase: deposit");
+                    InsertCreditPaymentCash(clsCreditPaymentDetails.CreditPaymentID, mclsTerminalDetails.BranchDetails.BranchID, mclsSalesTransactionDetails.TerminalNo, decRemainingAmountPaid, "pay-no purchase: deposit", ActivateSuspendedAccount);
                 }
             }
 
@@ -7129,7 +7129,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
         #endregion
 
-        public void InsertCreditPaymentCash(Int64 intCreditPaymentID, Int32 intCPRefBranchID, string strCPRefTerminalNo, decimal decAmount, string strRemarks)
+        public void InsertCreditPaymentCash(Int64 intCreditPaymentID, Int32 intCPRefBranchID, string strCPRefTerminalNo, decimal decAmount, string strRemarks, bool ActivateSuspendedAccount)
         {
             Data.CreditPaymentCashDetails clsCreditPaymentCashDetails = new Data.CreditPaymentCashDetails();
             clsCreditPaymentCashDetails.BranchDetails = mclsTerminalDetails.BranchDetails;
@@ -7145,7 +7145,7 @@ namespace AceSoft.RetailPlus.Client.UI
             clsCreditPaymentCashDetails.LastModified = mclsSalesTransactionDetails.TransactionDate;
             new Data.CreditPaymentCash(mConnection, mTransaction).Insert(clsCreditPaymentCashDetails);
 
-            new Data.Payment(mConnection, mTransaction).UpdateCredit(intCPRefBranchID, strCPRefTerminalNo, mclsSalesTransactionDetails.CustomerDetails.ContactID, intCreditPaymentID, decAmount, strRemarks);
+            new Data.Payment(mConnection, mTransaction).UpdateCredit(intCPRefBranchID, strCPRefTerminalNo, mclsSalesTransactionDetails.CustomerDetails.ContactID, intCreditPaymentID, decAmount, strRemarks, ActivateSuspendedAccount);
         }
 
         private void InsertCreditPaymentCheque(Int64 intCreditPaymentID, Int32 intCPRefBranchID, string strCPRefTerminalNo, string strChequeNo, decimal decAmount, DateTime dteValidityDate, string strRemarks)

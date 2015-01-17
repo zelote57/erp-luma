@@ -3180,13 +3180,13 @@ namespace AceSoft.RetailPlus.Client.UI
                             mclsSalesTransactionDetails.RewardPreviousPoints = mclsContactDetails.RewardDetails.RewardPoints;
                             mclsSalesTransactionDetails.RewardCurrentPoints = mclsSalesTransactionDetails.RewardPreviousPoints;
 
-                            // check if the current customer for the transaction is the default customer
-                            if (mclsSalesTransactionDetails.CustomerID == Constants.C_RETAILPLUS_CUSTOMERID)
-                            {
-                                mclsSalesTransactionDetails.CustomerID = mclsContactDetails.ContactID;
-                                mclsSalesTransactionDetails.CustomerName = mclsContactDetails.ContactName;
-                                mclsSalesTransactionDetails.CustomerDetails = mclsContactDetails;
-                            }
+                            // no need to check if the current customer for the transaction is the default customer
+                            //if (mclsSalesTransactionDetails.CustomerID == Constants.C_RETAILPLUS_CUSTOMERID)
+                            //{
+                            mclsSalesTransactionDetails.CustomerID = mclsContactDetails.ContactID;
+                            mclsSalesTransactionDetails.CustomerName = mclsContactDetails.ContactName;
+                            mclsSalesTransactionDetails.CustomerDetails = mclsContactDetails;
+                            //}
                         }
                         else
                         {
@@ -6751,33 +6751,12 @@ namespace AceSoft.RetailPlus.Client.UI
             clsBranchWnd.Dispose();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-                foreach (XmlElement element in xmlDoc.DocumentElement)
-                {
-                    if (element.Name.Equals("appSettings"))
-                    {
-                        bool boBranchIDFound = false, boTerminalNoFound = false; 
-                        foreach (XmlNode node in element.ChildNodes)
-                        {
-                            if (node.Attributes != null && node.Attributes[0].Value.Equals("BranchID"))
-                            {
-                                node.Attributes[1].Value = clsBranchDetails.BranchID.ToString(); boBranchIDFound =true;
-                            }
-                            else if (node.Attributes != null && node.Attributes[0].Value.Equals("TerminalNo"))
-                            {
-                                node.Attributes[1].Value = clsTerminalDetails.TerminalNo; boTerminalNoFound = true;
-                            }
-                            if (boBranchIDFound && boTerminalNoFound) break;
-                        }
-                    }
-                }
-
-                xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-
+                CONFIG.SaveConfig(clsTerminalDetails);
                 MessageBox.Show("New configuration has been saved. Please re-start the application, system will now exit.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                try { MarqueeThread.Abort(); }
+                catch { }
                 Application.Exit();
+                Environment.Exit(1);
             }
 
         }

@@ -31,6 +31,7 @@ namespace AceSoft.RetailPlus.Data
         public decimal CreditBefore;
         public decimal CreditAfter;
         public string CreditReason;
+        public Int32 CreditReasonID;
         public decimal AmountPaidCuttOffMonth;
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace AceSoft.RetailPlus.Data
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procCreditPaymentInsert(@BranchID, @TerminalNo, @TransactionID, @CustomerID, @CreditCardPaymentID, @CreditCardTypeID, @CurrentCredit, @Amount, @TransactionDate, @TransactionNo, @CashierName, @Remarks, @CreditReason, @CreatedOn, @LastModified);";
+                string SQL = "CALL procCreditPaymentInsert(@BranchID, @TerminalNo, @TransactionID, @CustomerID, @CreditCardPaymentID, @CreditCardTypeID, @CurrentCredit, @Amount, @TransactionDate, @TransactionNo, @CashierName, @Remarks, @CreditReason, @CreditReasonID, @CreatedOn, @LastModified);";
 
                 cmd.Parameters.AddWithValue("@BranchID", Details.BranchDetails.BranchID);
                 cmd.Parameters.AddWithValue("@TerminalNo", Details.TerminalNo);
@@ -119,6 +120,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("@CashierName", Details.CashierName);
                 cmd.Parameters.AddWithValue("@Remarks", Details.Remarks);
                 cmd.Parameters.AddWithValue("@CreditReason", Details.CreditReason);
+                cmd.Parameters.AddWithValue("@CreditReasonID", Details.CreditReasonID);
                 cmd.Parameters.AddWithValue("@CreatedOn", Details.CreatedOn);
                 cmd.Parameters.AddWithValue("@LastModified", Details.LastModified);
 

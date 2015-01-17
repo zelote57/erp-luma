@@ -46,7 +46,7 @@ namespace AceSoft.RetailPlus.Reports
 		private void LoadOptions()
 		{
             txtStartTransactionDate.Text = DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd");
-            txtEndTransactionDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            txtEndTransactionDate.Text = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
 
             Contacts clsContact = new Contacts();
             cboContact.DataTextField = "ContactName";

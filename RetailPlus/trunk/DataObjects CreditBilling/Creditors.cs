@@ -59,7 +59,8 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
 
-                if (decCredit == 0) return true; // return true
+                // do not return, finish all the necessary adjustments
+                //if (decCredit == 0) return true; // return true
 
                 SQL = "UPDATE tblContacts SET Credit = @Credit WHERE ContactID=@ContactID;";
                 cmd.Parameters.Clear();
@@ -80,7 +81,7 @@ namespace AceSoft.RetailPlus.Data
                 DateTime TransactionDate = new DateTime(2014, 01, 01);
                 DateTime DateClosed = new DateTime(2014, 01, 01);
 
-                SQL = "SELECT * FROM tblCreditPayment WHERE ContactID=@ContactID ORDER BY CreditDate DESC;";
+                SQL = "SELECT * FROM tblCreditPayment WHERE ContactID=@ContactID AND CreditReasonID <> 8 ORDER BY CreditDate DESC;"; //8=deposits
 
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@ContactID", intContactID);

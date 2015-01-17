@@ -919,7 +919,7 @@ FOREIGN KEY (`CashierID`) REFERENCES sysAccessUsers(`UID`) ON DELETE RESTRICT
 /*****************************
 **	tblDisburse
 *****************************/
-DROP TABLE IF EXISTS tblDisburse;
+DROP TABLE IF EXISTS ;
 CREATE TABLE tblDisburse (
 `DisburseID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 `Amount` DECIMAL(18,3) NOT NULL DEFAULT 0,
@@ -8726,6 +8726,13 @@ ALTER TABLE tblTerminalReport DROP `ZeroRatedVAT`;
 ALTER TABLE tblTerminalReportHistory DROP `ZeroRatedVAT`;
 ALTER TABLE tblCashierReport DROP `ZeroRatedVAT`;
 ALTER TABLE tblCashierReportHistory DROP `ZeroRatedVAT`;
+
+/*********************************  v_4.0.1.24.sql END  *******************************************************/ 
+
+UPDATE tblTerminal SET DBVersion = '4.0.1.25';
+UPDATE tblTerminal SET DBVersion = '4.0.1.26'; -- update the BranchWnd.cs CTRL + SHIFT + Enter
+UPDATE tblTerminal SET DBVersion = '4.0.1.27'; -- update the BranchWnd.cs and Program.cs automatic update MachineSerialNo and AccreditationNo in config file
+UPDATE tblTerminal SET DBVersion = '4.0.1.28'; -- update the CreditVerification F8
 
 -- Notes: Please read
 -- run the retailplus_proc.sql

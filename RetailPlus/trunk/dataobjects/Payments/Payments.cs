@@ -124,7 +124,7 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
-        public void UpdateCredit(Int32 BranchID, string TerminalNo, Int64 ContactID, long CreditPaymentID, decimal AmountPaid, string Remarks)
+        public void UpdateCredit(Int32 BranchID, string TerminalNo, Int64 ContactID, long CreditPaymentID, decimal AmountPaid, string Remarks, bool ActivateSuspendedAccount = true)
 		{
 			try 
 			{
@@ -143,7 +143,7 @@ namespace AceSoft.RetailPlus.Data
 				base.ExecuteNonQuery(cmd);
 
                 Contacts clsContact = new Contacts(base.Connection, base.Transaction);
-                clsContact.SubtractCredit(ContactID, AmountPaid);
+                clsContact.SubtractCredit(ContactID, AmountPaid, ActivateSuspendedAccount);
 			}
 			catch (Exception ex)
 			{

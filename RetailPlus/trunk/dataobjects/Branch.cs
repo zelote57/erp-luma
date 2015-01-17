@@ -228,19 +228,25 @@ namespace AceSoft.RetailPlus.Data
 
 		#region Streams
 
-        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "BranchCode", SortOption SortOrder=SortOption.Ascending, Int32 limit = 0)
+        public System.Data.DataTable ListAsDataTable(string SearchKey = "", string SortField = "BranchCode", SortOption SortOrder=SortOption.Ascending, Int32 limit = 0, string TerminalNo = "")
         {
             try
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = SQLSelect() + " ";
+                string SQL = SQLSelect() + "WHERE 1=1 ";
 
                 if (!string.IsNullOrEmpty(SearchKey))
                 {
-                    SQL += "WHERE (BranchCode LIKE @SearchKey or BranchName LIKE @SearchKey) ";
+                    SQL += "AND (BranchCode LIKE @SearchKey or BranchName LIKE @SearchKey) ";
                     cmd.Parameters.AddWithValue("@SearchKey", SearchKey);
+                }
+
+                if (!string.IsNullOrEmpty(TerminalNo))
+                {
+                    SQL += "AND BranchID IN (SELECT DISTINCT BranchID FROM tblTerminal WHERE TerminalNo = @TerminalNo) ";
+                    cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
                 }
 
                 SQL += "ORDER BY " + (!string.IsNullOrEmpty(SortField) ? SortField : "BranchCode") + " ";

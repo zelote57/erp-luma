@@ -1797,22 +1797,22 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}	
 		}
-		public void SubtractCredit(long ContactID, decimal Amount)
+        public void SubtractCredit(long ContactID, decimal Amount, bool ActivateSuspendedAccount = true)
 		{
 			try 
 			{
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                string SQL = "CALL procContactSubtractCredit(@ContactID, @Credit);";
+                string SQL = "CALL procContactSubtractCredit(@ContactID, @Credit, @ActivateSuspendedAccount);";
 	 			
                 cmd.Parameters.AddWithValue("@ContactID", ContactID);
                 cmd.Parameters.AddWithValue("@Credit", Amount);
+                cmd.Parameters.AddWithValue("@ActivateSuspendedAccount", ActivateSuspendedAccount);
 
                 cmd.CommandText = SQL;
 				base.ExecuteNonQuery(cmd);
 			}
-
 			catch (Exception ex)
 			{
 				throw base.ThrowException(ex);

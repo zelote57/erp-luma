@@ -61,8 +61,10 @@ namespace AceSoft.RetailPlus.Data
 		public decimal InvAdjustmentCost;
 		public decimal InvAdjustmentVAT;
 		public decimal ClosingQuantity;
+        public decimal ClosingActualQuantity;
 		public decimal ClosingCost;
 		public decimal ClosingVAT;
+        public decimal PurchasePrice;
 	}
 
 	#endregion
@@ -141,8 +143,10 @@ namespace AceSoft.RetailPlus.Data
 								"InvAdjustmentCost, " +
 								"InvAdjustmentVAT, " +
 								"ClosingQuantity, " +
+                                "ClosingActualQuantity, " +
 								"ClosingCost, " +
-								"ClosingVAT" +
+								"ClosingVAT," +
+                                "PurchasePrice" +
 							") VALUES (" +
                                 "@BranchID, " +
 								"@PostingDateFrom, " +
@@ -186,8 +190,10 @@ namespace AceSoft.RetailPlus.Data
 								"@InvAdjustmentCost, " +
 								"@InvAdjustmentVAT, " +
 								"@ClosingQuantity, " +
+                                "@ClosingActualQuantity, " +
 								"@ClosingCost, " +
-								"@ClosingVAT" +
+								"@ClosingVAT," +
+                                "@PurchasePrice" +
 							");";
 				  
 				MySqlCommand cmd = new MySqlCommand();
@@ -236,8 +242,10 @@ namespace AceSoft.RetailPlus.Data
 				cmd.Parameters.AddWithValue("@InvAdjustmentCost", Details.InvAdjustmentCost);
 				cmd.Parameters.AddWithValue("@InvAdjustmentVAT", Details.InvAdjustmentVAT);
 				cmd.Parameters.AddWithValue("@ClosingQuantity", Details.ClosingQuantity);
+                cmd.Parameters.AddWithValue("@ClosingActualQuantity", Details.ClosingActualQuantity);
 				cmd.Parameters.AddWithValue("@ClosingCost", Details.ClosingCost);
 				cmd.Parameters.AddWithValue("@ClosingVAT", Details.ClosingVAT);
+                cmd.Parameters.AddWithValue("@PurchasePrice", Details.PurchasePrice);
 
 				base.ExecuteNonQuery(cmd);
 

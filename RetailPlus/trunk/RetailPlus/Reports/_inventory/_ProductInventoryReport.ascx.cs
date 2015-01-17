@@ -234,13 +234,14 @@ namespace AceSoft.RetailPlus.Reports
             if (strReportType == ReportTypes.ExpiredInventory)
                 ExpirationDate = txtExpiryDate.Text;
 
+            int isSummary = intBranchID == 0 ? 1 : 0;
             ProductInventories clsProductInventories = new ProductInventories();
             System.Data.DataTable dt;
             if (cboMonth.SelectedItem.Value == DateTime.Now.Month.ToString("0#") && cboYear.SelectedItem.Value == DateTime.Now.Year.ToString())
             {
-                dt = clsProductInventories.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, ExpirationDate: ExpirationDate, ForReorder: ForReorder, OverStock: OverStock);
+                dt = clsProductInventories.ListAsDataTable(BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, isSummary : isSummary, ExpirationDate: ExpirationDate, ForReorder: ForReorder, OverStock: OverStock);
             }else {
-                dt = clsProductInventories.ListAsDataTable(Month: int.Parse(cboMonth.SelectedItem.Value), Year: int.Parse(cboYear.SelectedItem.Value.ToString()), BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, ExpirationDate: ExpirationDate, ForReorder: ForReorder, OverStock: OverStock);
+                dt = clsProductInventories.ListAsDataTable(Month: int.Parse(cboMonth.SelectedItem.Value), Year: int.Parse(cboYear.SelectedItem.Value.ToString()), BranchID: intBranchID, ProductCode: stProductCode, ProductGroupID: lngProductGroupID, ProductSubGroupID: lngProductSubGroupID, SupplierID: lngSupplierID, isSummary: isSummary, ExpirationDate: ExpirationDate, ForReorder: ForReorder, OverStock: OverStock);
             }
             clsProductInventories.CommitAndDispose();
             

@@ -56,6 +56,24 @@ namespace AceSoft.RetailPlus.Monitor
                             clsDatabase.killProcess(iID);
                             WriteProcessToMonitor("      done.");
                         }
+                        else if (iTime > 16 && string.IsNullOrEmpty(strInfo))
+                        {
+                            WriteProcessToMonitor("          status idle... killing process id: " + iID.ToString());
+                            clsDatabase.killProcess(iID);
+                            WriteProcessToMonitor("      done.");
+                        }
+                        else if (strInfo.Contains("INSERT INTO tblTransactions") && iTime >= 8)
+                        {
+                            WriteProcessToMonitor("          status not ok...  flushing table tblTransactions...process id: " + iID.ToString());
+                            clsDatabase.FlushTable("tblTransactions");
+                            WriteProcessToMonitor("      done.");
+                        }
+                        else if (strInfo.Contains("UPDATE tblTerminalReport") && iTime >= 8)
+                        {
+                            WriteProcessToMonitor("          status not ok... flushing table tblTerminalReport...process id: " + iID.ToString());
+                            clsDatabase.FlushTable("tblTerminalReport");
+                            WriteProcessToMonitor("      done.");
+                        }
                         else { WriteProcessToMonitor("          status ok"); }
                     }
                 }

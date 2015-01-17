@@ -2789,6 +2789,7 @@ create procedure procCreditPaymentInsert(
 	IN strCashierName VARCHAR(150),
 	IN strRemarks VARCHAR(255),
 	IN strCreditReason VARCHAR(150),
+	IN intCreditReasonID int(1),
 	IN dteCreatedOn DATETIME,
 	IN dteLastModified DATETIME
 )
@@ -2802,10 +2803,10 @@ BEGIN
 
 	INSERT INTO tblCreditPayment(BranchID, TerminalNo, TransactionID, ContactID, CreditCardPaymentID, CreditCardTypeID,
 								CreditBefore, Amount, CreditAfter, 
-								CreditDate, CashierName, TransactionNo, Remarks, CreditReason, CreatedOn, LastModified)
+								CreditDate, CashierName, TransactionNo, Remarks, CreditReason, CreditReasonID, CreatedOn, LastModified)
 					VALUES (intBranchID, strTerminalNo, intTransactionID, intCustomerID, intCreditCardPaymentID, intCreditCardTypeID,
 								decCurrentCredit, decAmount, decCurrentCredit + decAmount, 
-								dteTransactionDate, strCashierName, strTransactionNo, strRemarks, strCreditReason, dteCreatedOn, dteLastModified);
+								dteTransactionDate, strCashierName, strTransactionNo, strRemarks, strCreditReason, intCreditReasonID, dteCreatedOn, dteLastModified);
 
 	UPDATE tblCreditPayment SET SyncID = CreditPaymentID WHERE BranchID = intBranchID AND TerminalNo = strTerminalNo AND SyncID = 0;
 END;
@@ -2901,15 +2902,16 @@ GO
 
 create procedure procContactSubtractCredit(
 	IN intContactID BIGINT(20),
-	IN decCredit DECIMAL(18,3))
+	IN decCredit DECIMAL(18,3),
+	IN boActivateSuspendedAccount TINYINT(1))
 BEGIN
-
 	UPDATE tblContacts SET Credit =	Credit - decCredit WHERE ContactID = intContactID;
 	
 	-- [03Nov2014] - include updating of isCreditAllowed = 1 if payment is done
-	UPDATE tblContacts SET IsCreditAllowed = 1 WHERE ContactID = intContactID;
-	UPDATE tblContactCreditCardInfo SET CreditCardStatus = 10 WHERE CustomerID = intContactID;
-
+	IF (boActivateSuspendedAccount = 1) THEN
+		UPDATE tblContacts SET IsCreditAllowed = 1 WHERE ContactID = intContactID;
+		UPDATE tblContactCreditCardInfo SET CreditCardStatus = 10 WHERE CustomerID = intContactID;
+	END IF;
 END;
 GO
 delimiter ;
@@ -3143,7 +3145,9 @@ BEGIN
 	UPDATE tblContacts SET Credit = 0;
 
 	UPDATE tblContacts, (SELECT ContactID, SUM(Amount) - SUM(AmountPaid) Credit 
-						 FROM tblCreditPayment GROUP BY ContactID 
+						 FROM tblCreditPayment 
+						 WHERE CreditReasonID <> 8 AND TerminalNo <> '00'
+						 GROUP BY ContactID 
 						) tblCreditPayment
 	SET 
 		tblContacts.Credit = IFNULL(tblCreditPayment.Credit,0)
@@ -6063,7 +6067,7 @@ BEGIN
 							,',IF(isSummary=1,'0','IFNULL(brnch.BranchID,0)'),' AS BranchID
 							,',IF(isSummary=1,'''All''','IFNULL(brnch.BranchCode,''All'')'),' AS BranchCode
 						FROM (SELECT prd.* ,pkg.PackageID, pkg.MatrixID
-									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,pkg.BarCode4
+									,pkg.BarCode1 ,pkg.BarCode2 ,pkg.BarCode3 ,IFNULL(pkg.BarCode4,'''') BarCode4
 									,pkg.Price ,pkg.WSPrice ,pkg.PurchasePrice ,pkg.VAT ,pkg.EVAT ,pkg.LocalTax
 							  FROM tblProducts prd 
 							  INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
@@ -7238,6 +7242,189 @@ GO
 delimiter ;
 
 CALL procUpdatetblInventorySG();
+
+/**************************************************************
+
+	procZeroOutInventory
+	Lemuel E. Aceron
+	Jan 13, 2015
+
+	CALL procZeroOutInventory(1, 1, '2015-01-11', '00010');
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procZeroOutInventory
+GO
+
+create procedure procZeroOutInventory(IN intBranchID INT(4),
+									IN lngUID bigint, 
+									IN dteClosingDate datetime,
+									IN strReferenceNo varchar(30))
+BEGIN
+	DECLARE strRemarks VARCHAR(250) DEFAULT '';
+	
+	-- STEP 1: set the value of stRemarks, see the administrator for the list of constant remarks
+	SET strRemarks = CONCAT('SYSTEM AUTO ADJUSTMENT-ZERO OUT INVENTORY BranchID:', intBranchID);
+
+		-- STEP 2: Insert to product movement history
+		-- CALL procProductMovementInsert(lngProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
+		-- 								decProductQuantity, decProductActualQuantity -decProductQuantity, decProductActualQuantity, decProductActualQuantity, 
+		-- 								strUnitCode, strRemarks, now(), strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0);
+
+		INSERT INTO tblProductMovement (ProductID, ProductCode, ProductDescription,
+									MatrixID, MatrixDescription, 
+									QuantityFrom, Quantity, QuantityTo,
+									MatrixQuantity, UnitCode, Remarks, TransactionDate,
+									TransactionNo, CreatedBy, BranchIDFrom, BranchIDTo, QuantityMovementType)
+		SELECT prd.ProductID, prd.ProductCode, prd.ProductDesc, 
+							IFNULL(mtrx.MatrixID,0) MatrixID, IFNULL(mtrx.Description,'') AS MatrixDescription, 
+							IFNULL(inv.Quantity,0) Quantity, IFNULL(-inv.Quantity,0) Quantity, IFNULL(inv.ActualQuantity,0) ActualQuantity, 
+							IFNULL(inv.ActualQuantity,0) ActualQuantity, unt.UnitCode, strRemarks, now(),
+							strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0
+						FROM tblProducts prd
+						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubgroupID = prd.ProductSubgroupID
+						INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID
+						INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND prd.BaseUnitID = pkg.UnitID
+														AND pkg.Quantity = 1 
+						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
+						INNER JOIN (
+							SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, 0 ActualQuantity FROM tblProductInventory WHERE BranchID=intBranchID GROUP BY ProductID, MatrixID
+						) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
+						WHERE prd.Deleted = 0 AND prd.Active = 1
+						ORDER BY prd.ProductCode, MatrixDescription;
+
+		
+		
+		-- STEP 3: Insert to inventory adjustment
+		
+		-- CALL procInvAdjustmentInsert(lngUID, dteClosingDate, lngProductID, strProductCode, strDescription, lngMatrixID,
+		--										strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductActualQuantity, 
+		--										decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strReferenceNo));
+
+		INSERT INTO tblInvAdjustment(UID, InvAdjustmentDate, ProductID, ProductCode, Description, 
+							VariationMatrixID, MatrixDescription, UnitID, UnitCode, 
+							QuantityBefore, QuantityNow, MinThresholdBefore, MinThresholdNow, 
+							MaxThresholdBefore, MaxThresholdNow, Remarks)
+		SELECT lngUID, dteClosingDate, prd.ProductID, prd.ProductCode, prd.ProductDesc, 
+							IFNULL(mtrx.MatrixID,0) MatrixID, IFNULL(mtrx.Description,'') AS MatrixDescription, prd.BaseUnitID, unt.UnitCode, 
+							IFNULL(inv.Quantity,0) Quantity, 0, prd.MinThreshold, prd.MinThreshold AS MinThresholdNow, 
+							prd.MaxThreshold, prd.MaxThreshold AS MaxThresholdNow, CONCAT(strRemarks, ' ', strReferenceNo)
+								FROM tblProducts prd
+								INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+								INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubgroupID = prd.ProductSubgroupID
+								INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID
+								INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+																AND prd.BaseUnitID = pkg.UnitID
+																AND pkg.Quantity = 1 
+								LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
+								INNER JOIN (
+									SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, 0 ActualQuantity FROM tblProductInventory WHERE BranchID=intBranchID GROUP BY ProductID, MatrixID
+								) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
+								WHERE prd.Deleted = 0 AND prd.Active = 1
+								ORDER BY prd.ProductCode, MatrixDescription;
+
+		-- STEP 4: auto adjust the quantity based on actual quantity
+		UPDATE tblProductInventory SET QuantityIN = 0, QuantityOUT = 0 WHERE BranchID = intBranchID;
+		UPDATE tblProductInventory SET ReservedQuantity = 0 WHERE BranchID = intBranchID;
+		UPDATE tblProductInventory SET Quantity = 0, ActualQuantity = 0 WHERE BranchID = intBranchID;
+		
+END;
+GO
+delimiter ;
+
+/**************************************************************
+
+	procZeroOutNegativeInventory
+	Lemuel E. Aceron
+	Jan 13, 2015
+
+	CALL procZeroOutNegativeInventory(1, 1, '2015-01-11', '00010');
+
+**************************************************************/
+delimiter GO
+DROP PROCEDURE IF EXISTS procZeroOutNegativeInventory
+GO
+
+create procedure procZeroOutNegativeInventory(IN intBranchID INT(4),
+									IN lngUID bigint, 
+									IN dteClosingDate datetime,
+									IN strReferenceNo varchar(30))
+BEGIN
+	DECLARE strRemarks VARCHAR(250) DEFAULT '';
+	
+	-- STEP 1: set the value of stRemarks, see the administrator for the list of constant remarks
+	SET strRemarks = CONCAT('SYSTEM AUTO ADJUSTMENT-ZERO OUT NEG-INVENTORY BranchID:', intBranchID);
+
+		-- STEP 2: Insert to product movement history
+		-- CALL procProductMovementInsert(lngProductID, strProductCode, strDescription, lngMatrixID, strMatrixDescription, 
+		-- 								decProductQuantity, decProductActualQuantity -decProductQuantity, decProductActualQuantity, decProductActualQuantity, 
+		-- 								strUnitCode, strRemarks, now(), strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0);
+
+		INSERT INTO tblProductMovement (ProductID, ProductCode, ProductDescription,
+									MatrixID, MatrixDescription, 
+									QuantityFrom, Quantity, QuantityTo,
+									MatrixQuantity, UnitCode, Remarks, TransactionDate,
+									TransactionNo, CreatedBy, BranchIDFrom, BranchIDTo, QuantityMovementType)
+		SELECT prd.ProductID, prd.ProductCode, prd.ProductDesc, 
+							IFNULL(mtrx.MatrixID,0) MatrixID, IFNULL(mtrx.Description,'') AS MatrixDescription, 
+							IFNULL(inv.Quantity,0) Quantity, IFNULL(-inv.Quantity,0) Quantity, IFNULL(inv.ActualQuantity,0) ActualQuantity, 
+							IFNULL(inv.ActualQuantity,0) ActualQuantity, unt.UnitCode, strRemarks, now(),
+							strReferenceNo, 'SYSTEM', intBranchID, intBranchID, 0
+						FROM tblProducts prd
+						INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+						INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubgroupID = prd.ProductSubgroupID
+						INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID
+						INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+														AND prd.BaseUnitID = pkg.UnitID
+														AND pkg.Quantity = 1 
+						LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
+						INNER JOIN (
+							SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, 0 ActualQuantity FROM tblProductInventory WHERE BranchID=1 GROUP BY ProductID, MatrixID
+						) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
+						WHERE prd.Deleted = 0 AND prd.Active = 1 AND inv.Quantity < 0
+						ORDER BY prd.ProductCode, MatrixDescription;
+
+		
+		
+		-- STEP 3: Insert to inventory adjustment
+		
+		-- CALL procInvAdjustmentInsert(lngUID, dteClosingDate, lngProductID, strProductCode, strDescription, lngMatrixID,
+		--										strMatrixDescription, intUnitID, strUnitCode, decProductQuantity, decProductActualQuantity, 
+		--										decMinThreshold, decMinThreshold, decMaxThreshold, decMaxThreshold, CONCAT(strRemarks, ' ', strReferenceNo));
+
+		INSERT INTO tblInvAdjustment(UID, InvAdjustmentDate, ProductID, ProductCode, Description, 
+							VariationMatrixID, MatrixDescription, UnitID, UnitCode, 
+							QuantityBefore, QuantityNow, MinThresholdBefore, MinThresholdNow, 
+							MaxThresholdBefore, MaxThresholdNow, Remarks)
+		SELECT lngUID, dteClosingDate, prd.ProductID, prd.ProductCode, prd.ProductDesc, 
+							IFNULL(mtrx.MatrixID,0) MatrixID, IFNULL(mtrx.Description,'') AS MatrixDescription, prd.BaseUnitID, unt.UnitCode, 
+							IFNULL(inv.Quantity,0) Quantity, 0, prd.MinThreshold, prd.MinThreshold AS MinThresholdNow, 
+							prd.MaxThreshold, prd.MaxThreshold AS MaxThresholdNow, CONCAT(strRemarks, ' ', strReferenceNo)
+								FROM tblProducts prd
+								INNER JOIN tblUnit unt ON prd.BaseUnitID = unt.UnitID
+								INNER JOIN tblProductSubGroup prdsg ON prdsg.ProductSubgroupID = prd.ProductSubgroupID
+								INNER JOIN tblContacts cntct ON prd.SupplierID = cntct.ContactID
+								INNER JOIN tblProductPackage pkg ON prd.productID = pkg.ProductID 
+																AND prd.BaseUnitID = pkg.UnitID
+																AND pkg.Quantity = 1 
+								LEFT OUTER JOIN tblProductBaseVariationsMatrix mtrx ON mtrx.ProductID = prd.ProductID AND pkg.MatrixID = mtrx.MatrixID
+								INNER JOIN (
+									SELECT ProductID, MatrixID, SUM(Quantity) Quantity, SUM(QuantityIn) QuantityIn, SUM(QuantityOut) QuantityOut, 0 ActualQuantity FROM tblProductInventory WHERE BranchID=intBranchID GROUP BY ProductID, MatrixID
+								) inv ON inv.ProductID = prd.ProductID AND inv.MatrixID = IFNULL(mtrx.MatrixID,0)
+								WHERE prd.Deleted = 0 AND prd.Active = 1 AND inv.Quantity < 0
+								ORDER BY prd.ProductCode, MatrixDescription;
+
+		-- STEP 4: auto adjust the quantity based on actual quantity
+		UPDATE tblProductInventory SET QuantityIN = 0, QuantityOUT = 0 WHERE BranchID = intBranchID AND Quantity < 0;
+		UPDATE tblProductInventory SET ReservedQuantity = 0 WHERE BranchID = intBranchID AND Quantity < 0;
+		UPDATE tblProductInventory SET Quantity = 0, ActualQuantity = 0 WHERE BranchID = intBranchID AND Quantity < 0;
+		
+
+END;
+GO
+delimiter ;
 
 /**************************************************************
 
@@ -10202,5 +10389,8 @@ DROP TRIGGER IF EXISTS trgr_tblProducts_Update
 GO
 
 delimiter ;
+
+GRANT RELOAD ON *.* TO 'POSUser';
+GRANT RELOAD ON *.* TO 'POSAuditUser';
 
 SHOW ENGINE INNODB STATUS\G

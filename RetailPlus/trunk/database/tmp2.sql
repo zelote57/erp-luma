@@ -181,3 +181,4 @@ order by terminalno
 limit 10;
 
 
+

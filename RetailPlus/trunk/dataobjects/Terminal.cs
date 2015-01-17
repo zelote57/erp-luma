@@ -801,6 +801,30 @@ namespace AceSoft.RetailPlus.Data
 			}	
 		}
 
+        public TerminalDetails Details(string TerminalNo)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = SQLSelect() + "WHERE TerminalNo = @TerminalNo;";
+
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                TerminalDetails Details = SetDetails(dt);
+
+                return Details;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
         private TerminalDetails SetDetails(System.Data.DataTable dt)
         {
             int iPersonalChargeTypeID = 0;
@@ -1073,6 +1097,37 @@ namespace AceSoft.RetailPlus.Data
                 }
 
                 return boRetValue;
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public Int32 BranchCount(string TerminalNo)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                Int32 iRetValue = 0;
+
+                string SQL = "SELECT COUNT(BranchID) BranchCount FROM tblTerminal " +
+                               "WHERE TerminalNo = @TerminalNo;";
+
+                cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
+
+                cmd.CommandText = SQL;
+                string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
+                base.MySqlDataAdapterFill(cmd, dt);
+
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    iRetValue = Int32.Parse(dr["BranchCount"].ToString());
+                }
+
+                return iRetValue;
             }
             catch (Exception ex)
             {

@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Text;
 using System.Management;
+using System.Xml;
 
 using AceSoft.RetailPlus.Reports;
 using AceSoft.RetailPlus.Security;
@@ -2242,7 +2243,17 @@ namespace AceSoft.RetailPlus.Client.UI
                         Security.AccessRights clsAccessRights; Security.AccessRightsDetails clsDetails;
                         switch (e.KeyCode)
                         {
+                            case Keys.Enter:
+                                clsAccessRights = new Security.AccessRights();
+                                clsDetails = new Security.AccessRightsDetails();
+                                clsDetails = clsAccessRights.Details(mclsSalesTransactionDetails.CashierID, (Int16)AccessTypes.ReprintZRead);
+                                clsAccessRights.CommitAndDispose();
 
+                                if (clsDetails.Read)
+                                {
+                                    UpdateBranchAndTerminalNo();
+                                }
+                                break;
                             case Keys.F2:
                                 clsAccessRights = new Security.AccessRights();
                                 clsDetails = new Security.AccessRightsDetails();
@@ -3894,13 +3905,13 @@ namespace AceSoft.RetailPlus.Client.UI
                             mclsSalesTransactionDetails.RewardPreviousPoints = mclsContactDetails.RewardDetails.RewardPoints;
                             mclsSalesTransactionDetails.RewardCurrentPoints = mclsSalesTransactionDetails.RewardPreviousPoints;
 
-                            // check if the current customer for the transaction is the default customer
-                            if (mclsSalesTransactionDetails.CustomerID == Constants.C_RETAILPLUS_CUSTOMERID)
-                            {
-                                mclsSalesTransactionDetails.CustomerID = mclsContactDetails.ContactID;
-                                mclsSalesTransactionDetails.CustomerName = mclsContactDetails.ContactName;
-                                mclsSalesTransactionDetails.CustomerDetails = mclsContactDetails;
-                            }
+                            // no need to check if the current customer for the transaction is the default customer
+                            //if (mclsSalesTransactionDetails.CustomerID == Constants.C_RETAILPLUS_CUSTOMERID)
+                            //{
+                            mclsSalesTransactionDetails.CustomerID = mclsContactDetails.ContactID;
+                            mclsSalesTransactionDetails.CustomerName = mclsContactDetails.ContactName;
+                            mclsSalesTransactionDetails.CustomerDetails = mclsContactDetails;
+                            //}
                         }
                         else
                         {
@@ -6874,6 +6885,14 @@ namespace AceSoft.RetailPlus.Client.UI
 
                     if (result == DialogResult.OK)
                     {
+                        bool boActivateSuspendedAccount = true;
+
+                        if (!mclsContactDetails.CreditDetails.CreditActive)
+                        {
+                            if (MessageBox.Show("Account is InActive, would you like to re-activate? Remarks: " + Environment.NewLine + mclsContactDetails.Remarks + Environment.NewLine + Environment.NewLine + "Press [yes] to automatically activate or [no] to disregard activation.", "RetailPlus", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)
+                                boActivateSuspendedAccount = false;
+                        }
+
                         Cursor.Current = Cursors.WaitCursor;
 
                         LocalDB clsLocalDB = new LocalDB(mConnection, mTransaction);
@@ -6930,7 +6949,7 @@ namespace AceSoft.RetailPlus.Client.UI
                             SavePayments(arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, null, arrDebitPaymentDetails);
 
                             // save the details of credit payments
-                            SaveCreditPayments(dgvItemsSelectedRows, arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, null, arrDebitPaymentDetails);
+                            SaveCreditPayments(dgvItemsSelectedRows, arrCashPaymentDetails, arrChequePaymentDetails, arrCreditCardPaymentDetails, null, arrDebitPaymentDetails, boActivateSuspendedAccount);
 
                             //OpenDrawerDelegate opendrawerDel = new OpenDrawerDelegate(OpenDrawer);
                             //Invoke(opendrawerDel);
@@ -8056,6 +8075,29 @@ namespace AceSoft.RetailPlus.Client.UI
                 }
                 Cursor.Current = Cursors.Default;
             }
+        }
+
+        private void UpdateBranchAndTerminalNo()
+        {
+            BranchWnd clsBranchWnd = new BranchWnd();
+            clsBranchWnd.TerminalDetails = mclsTerminalDetails;
+            clsBranchWnd.BranchDetails = mclsTerminalDetails.BranchDetails;
+            clsBranchWnd.ShowDialog(this);
+            DialogResult result = clsBranchWnd.Result;
+            Data.BranchDetails clsBranchDetails = clsBranchWnd.BranchDetails;
+            Data.TerminalDetails clsTerminalDetails = clsBranchWnd.TerminalDetails;
+            clsBranchWnd.Close();
+            clsBranchWnd.Dispose();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                CONFIG.SaveConfig(clsTerminalDetails);
+                MessageBox.Show("New configuration has been saved. Please re-start the application, system will now exit.", "RetailPlus", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                try { MarqueeThread.Abort(); }
+                catch { }
+                Application.Exit();
+                Environment.Exit(1);
+            }
+
         }
 
 		#endregion

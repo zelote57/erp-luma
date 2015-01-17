@@ -56,25 +56,25 @@ BEGIN
 		IF (boDebug = 1) THEN
 			-- source C:\RetailPlus\RetailPlus\database\credit\credit_proc.sql
 			
-			UPDATE tblCardTypes SET CreditPurcStartDateToProcess	= '2014-11-10' WHERE CreditCardType=1 AND WithGuarantor=0;
-			UPDATE tblCardTypes SET CreditPurcEndDateToProcess		= '2014-12-09' WHERE CreditCardType=1 AND WithGuarantor=0;
-			UPDATE tblCardTypes SET CreditCutOffDate				= '2014-11-30' WHERE CreditCardType=1 AND WithGuarantor=0;
-			UPDATE tblCardTypes SET BillingDate						= '2014-12-10' WHERE CreditCardType=1 AND WithGuarantor=0;
-			UPDATE tblContactCreditCardInfo SET LastBillingDate		= '2014-11-10' WHERE GuarantorID = 0;
+			UPDATE tblCardTypes SET CreditPurcStartDateToProcess	= '2014-12-10' WHERE CreditCardType=1 AND WithGuarantor=0;
+			UPDATE tblCardTypes SET CreditPurcEndDateToProcess		= '2015-01-09' WHERE CreditCardType=1 AND WithGuarantor=0;
+			UPDATE tblCardTypes SET CreditCutOffDate				= '2014-12-30' WHERE CreditCardType=1 AND WithGuarantor=0;
+			UPDATE tblCardTypes SET BillingDate						= '2015-01-10' WHERE CreditCardType=1 AND WithGuarantor=0;
+			UPDATE tblContactCreditCardInfo SET LastBillingDate		= '2014-12-10' WHERE GuarantorID = 0;
 
 			CALL procProcessCreditBills(0, 'HP CREDIT CARD');
 			CALL procProcessCreditBillsClose('HP CREDIT CARD');
 			
-			UPDATE tblCardTypes SET BillingDate						= '2015-01-10' WHERE CreditCardType=1 AND WithGuarantor=0;
+			UPDATE tblCardTypes SET BillingDate						= '2015-02-10' WHERE CreditCardType=1 AND WithGuarantor=0;
 			UPDATE tblContactCreditCardInfo SET LastBillingDate		= '2015-01-10' WHERE GuarantorID = 0;
 			
 			UPDATE tblcreditbillheader set isbillprinted = 0 where creditbillid = 56;
-			DELETE FROM tblCreditBillDetail WHERE CreditBillHeaderID IN (SELECT CreditBillHeaderID FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE CreditBillID=49 AND WithGuarantor=0 AND CreatedOn BETWEEN '2014-12-11' AND '2015-01-10'));
-			DELETE FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE CreditBillID=49 AND WithGuarantor=0 AND CreatedOn BETWEEN '2014-12-11' AND '2015-01-10');
-			DELETE FROM tblCreditBills WHERE CreditBillID =49 AND WithGuarantor=0 AND CreatedOn BETWEEN '2014-12-11' AND '2015-01-10';
-			DELETE FROM tblCreditPayment WHERE CashierName = 'SysCWoutGBiller-LPC' OR CashierName = 'SysCWoutGBiller-FC' AND CreditDate BETWEEN '2014-12-11' AND '2015-01-10';
-			DELETE FROM tblTransactions WHERE Transactiondate BETWEEN '2014-12-11' AND '2015-01-10' AND TransactionID IN (SELECT DISTINCT TransactionID FROM tblTransactionItems WHERE ProductCode = 'CCI LATE PAYMENT CHARGE' OR ProductCode = 'CCI FINANCE CHARGE');
-			DELETE FROM tblTransactionItems WHERE ProductCode = 'CCI LATE PAYMENT CHARGE' OR ProductCode = 'CCI FINANCE CHARGE' AND CreatedOn BETWEEN '2014-12-11' AND '2015-01-10';
+			DELETE FROM tblCreditBillDetail WHERE CreditBillHeaderID IN (SELECT CreditBillHeaderID FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE CreditBillID IN (48,56) AND WithGuarantor=0 AND CreatedOn BETWEEN '2014-12-10' AND '2015-01-12'));
+			DELETE FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE CreditBillID IN (48,56) AND WithGuarantor=0 AND CreatedOn BETWEEN '2014-12-11' AND '2015-01-12');
+			DELETE FROM tblCreditBills WHERE CreditBillID IN (48,56) AND WithGuarantor=0 AND CreatedOn BETWEEN '2014-12-11' AND '2015-01-12';
+			DELETE FROM tblCreditPayment WHERE CashierName = 'SysCWoutGBiller-LPC' OR CashierName = 'SysCWoutGBiller-FC' AND CreditDate BETWEEN '2014-12-10' AND '2015-01-12';
+			DELETE FROM tblTransactions WHERE Transactiondate BETWEEN '2014-12-10' AND '2015-01-12' AND TransactionID IN (SELECT DISTINCT TransactionID FROM tblTransactionItems WHERE ProductCode = 'CCI LATE PAYMENT CHARGE' OR ProductCode = 'CCI FINANCE CHARGE');
+			DELETE FROM tblTransactionItems WHERE ProductCode = 'CCI LATE PAYMENT CHARGE' OR ProductCode = 'CCI FINANCE CHARGE' AND CreatedOn BETWEEN '2014-12-10' AND '2015-01-12';
 
 		END IF;
 
@@ -163,6 +163,8 @@ BEGIN
 			WHERE CBH.CreditBillID = lngCreditBillID 
 				AND CONVERT(CreditDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess
 				AND CRP.TerminalNo <> '00'	-- do not include the previous late charges
+				AND TransactionStatus <> 7	-- do not include the creditpayment
+				AND CreditReasonID <> 8		-- do not include deposits
 				-- AND CRP.TransactionID NOT IN (SELECT DISTINCT TransactionRefID FROM tblCreditBillDetail 
 				--														 WHERE TransactionTypeID = 1
 				--															AND CONVERT(CreditDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess)
@@ -263,7 +265,11 @@ BEGIN
 			FROM (
 				SELECT @rownum:=@rownum+1 AS rownum, CBH.*
 				FROM (
-					SELECT CBH.ContactID ,CON.ContactName ,((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditLatePenaltyCharge) LatePaymentChargeAmt
+					SELECT CBH.ContactID ,CON.ContactName 
+						,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
+								Prev1MoMinimumAmountDue * decCreditLatePenaltyCharge
+							  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditLatePenaltyCharge 
+						 END AS LatePaymentChargeAmt
 					FROM tblCreditBillHeader CBH 
 					INNER JOIN tblContacts CON ON CBH.ContactID = CON.ContactID
 					WHERE CBH.CreditBillID = lngCreditBillID AND (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) > 0 AND CurrMonthAmountPaid = 0
@@ -272,8 +278,15 @@ BEGIN
 			-- insert the late payment Charges FOR bills that did not pay for the 1 month.
 			INSERT INTO tblCreditBillDetail(CreditBillHeaderID ,TransactionDate ,Description ,Amount ,TransactionTypeID ,TransactionRefID, TerminalNoRefID, BranchIDRefID)
 			SELECT CreditBillHeaderID ,dteBillingDate 
-					,CONCAT('Late Payment Charge  : (', FORMAT(Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount,2),' * ',decCreditLatePenaltyCharge,')') 'Description'
-					,((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditLatePenaltyCharge) CurrMonthCreditAmt 
+					,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
+							CONCAT('Late Payment Charge: (', FORMAT(Prev1MoMinimumAmountDue,2),' * ',decCreditLatePenaltyCharge,')') 
+						  ELSE 
+							CONCAT('Late Payment Charge: (', FORMAT((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid),2),' * ',decCreditLatePenaltyCharge,')') 
+					 END 'Description'
+					,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
+							Prev1MoMinimumAmountDue * decCreditLatePenaltyCharge
+						  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditLatePenaltyCharge 
+					 END AS CurrMonthCreditAmt 
 					,3 tblCreditPaymentTransactionTypeID ,TRX.TransactionID TransactionRefID, Trx.TerminalNo, Trx.BranchID
 			FROM tblCreditBillHeader CBH
 			INNER JOIN tblTransactions TRX ON CBH.ContactID = TRX.CustomerID 
@@ -291,8 +304,20 @@ BEGIN
 									PromoValue,PromoInPercent,PromoType,PromoApplied,PurchasePrice,PurchaseAmount,
 									IncludeInSubtotalDiscount,OrderSlipPrinter,OrderSlipPrinted,PercentageCommision, Commision, DataSource)
 			SELECT TRX.TransactionID , prd.ProductID, prd.ProductCode, prd.BarCode1, prd.ProductDesc
-										,prd.UnitID, 'PC', 1, (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditLatePenaltyCharge AS Price, (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditLatePenaltyCharge AS SellingPrice
-										,0, 0, 0, (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditFinanceCharge AS Amount, 0, 0, 0, 0
+										,prd.UnitID, 'PC', 1
+										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
+												Prev1MoMinimumAmountDue * decCreditLatePenaltyCharge
+											  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditLatePenaltyCharge 
+										 END AS Price
+										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
+												Prev1MoMinimumAmountDue * decCreditLatePenaltyCharge
+											  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditLatePenaltyCharge 
+										 END AS SellingPrice
+										,0, 0, 0
+										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
+												Prev1MoMinimumAmountDue * decCreditLatePenaltyCharge
+											  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditLatePenaltyCharge 
+										 END AS Amount, 0, 0, 0, 0
 										,0, '', 'System Default', 'System Default', 0
 										,'', '', prd.PackageID, 0, 1, 0
 										,0, 0, 0, 0, 0, 0
@@ -326,10 +351,20 @@ BEGIN
 										TerminalNo, BranchID, CashierName, TransactionNo)
 							SELECT TRX.TransactionID ,CBH.ContactID , CCI.CreditCardTypeID
 										,CON.Credit
-										,(Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditLatePenaltyCharge
-										,CON.Credit + ((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditLatePenaltyCharge)
+										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
+												Prev1MoMinimumAmountDue * decCreditLatePenaltyCharge
+											  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditLatePenaltyCharge 
+										 END AS Amount
+										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
+												CON.Credit + (Prev1MoMinimumAmountDue * decCreditLatePenaltyCharge)
+											  ELSE CON.Credit + ((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditLatePenaltyCharge)
+										 END AS CreditAfter
 										,1 CreditReasonID
-										,CONCAT('Late Payment Charge  : (', FORMAT(Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount,2),' * ',decCreditLatePenaltyCharge,')') AS CreditReason
+										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
+												CONCAT('Late Payment Charge: (', FORMAT(Prev1MoMinimumAmountDue,2),' * ',decCreditLatePenaltyCharge,')') 
+											  ELSE 
+												CONCAT('Late Payment Charge: (', FORMAT((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid),2),' * ',decCreditLatePenaltyCharge,')')
+										 END AS CreditReason
 										,dteBillingDate
 										,'00', 1, CONCAT(strCreatedByName,'-LPC'), TRX.TransactionNo
 							FROM tblCreditBillHeader CBH
@@ -381,10 +416,7 @@ BEGIN
 				SELECT @rownum:=@rownum+1 AS rownum, CBH.*
 				FROM (
 					SELECT CBH.ContactID ,CON.ContactName 
-						,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
-								Prev1MoMinimumAmountDue * decCreditFinanceCharge
-							  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge 
-						 END AS FinanceCharge
+						,((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge) FinanceCharge
 					FROM tblCreditBillHeader CBH
 					INNER JOIN tblContacts CON ON CBH.ContactID = CON.ContactID
 					WHERE CBH.CreditBillID = lngCreditBillID AND (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > 0
@@ -393,15 +425,8 @@ BEGIN
 			-- insert the finance Charges FOR bills that are not paid for 30days and above.
 			INSERT INTO tblCreditBillDetail(CreditBillHeaderID ,TransactionDate ,Description ,Amount ,TransactionTypeID ,TransactionRefID, TerminalNoRefID, BranchIDRefID)
 			SELECT CreditBillHeaderID ,dteBillingDate 
-					,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
-							CONCAT('Finance Charge 30days: (', FORMAT(Prev1MoMinimumAmountDue,2),' * ',decCreditFinanceCharge,')') 
-						  ELSE 
-							CONCAT('Finance Charge 30days: (', FORMAT((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid),2),' * ',decCreditFinanceCharge,')') 
-					 END 'Description'
-					,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
-							Prev1MoMinimumAmountDue * decCreditFinanceCharge
-						  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge 
-					 END AS CurrMonthCreditAmt 
+					,CONCAT('Finance Charge 30days: (', FORMAT((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid),2),' * ',decCreditFinanceCharge,')') 'Description'
+					,((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge) AS CurrMonthCreditAmt 
 					,4 tblCreditPaymentTransactionTypeID ,TRX.TransactionID TransactionRefID, Trx.TerminalNo, Trx.BranchID
 			FROM tblCreditBillHeader CBH
 			INNER JOIN tblTransactions TRX ON CBH.ContactID = TRX.CustomerID 
@@ -420,19 +445,11 @@ BEGIN
 									IncludeInSubtotalDiscount,OrderSlipPrinter,OrderSlipPrinted,PercentageCommision, Commision, DataSource)
 			SELECT TRX.TransactionID , prd.ProductID, prd.ProductCode, prd.BarCode1, prd.ProductDesc
 										,prd.UnitID, 'PC', 1
-										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
-												Prev1MoMinimumAmountDue * decCreditFinanceCharge
-											  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge 
-										 END AS Price
-										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
-												Prev1MoMinimumAmountDue * decCreditFinanceCharge
-											  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge 
-										 END AS SellingPrice
+										,((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge) AS Price
+										,((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge) AS SellingPrice
 										,0, 0, 0
-										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
-												Prev1MoMinimumAmountDue * decCreditFinanceCharge
-											  ELSE (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge 
-										 END AS Amount, 0, 0, 0, 0
+										,((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) * decCreditFinanceCharge) AS Amount
+										,0, 0, 0, 0
 										,0, '', 'System Default', 'System Default', 0
 										,'', '', prd.PackageID, 0, 1, 0
 										,0, 0, 0, 0, 0, 0
@@ -467,11 +484,7 @@ BEGIN
 										,(Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditFinanceCharge
 										,CON.Credit + ((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount) * decCreditFinanceCharge)
 										,2 CreditReasonID
-										,CASE WHEN (Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid) > Prev1MoMinimumAmountDue THEN
-												CONCAT('Finance Charge 30days: (', FORMAT(Prev1MoMinimumAmountDue,2),' * ',decCreditFinanceCharge,')') 
-											  ELSE 
-												CONCAT('Finance Charge 30days: (', FORMAT((Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid),2),' * ',decCreditFinanceCharge,')')
-										 END AS CreditReason
+										,CONCAT('Finance Charge 30days: (', FORMAT(Prev2MoCurrentDueAmount + Prev1MoCurrentDueAmount + CurrMonthAmountPaid,2),' * ',decCreditFinanceCharge,')') AS CreditReason
 										,dteBillingDate
 										,'00', 1, CONCAT(strCreatedByName,'-FC'), TransactionNo 
 							FROM tblCreditBillHeader CBH
@@ -680,12 +693,12 @@ BEGIN
 			UPDATE tblCardTypes SET CreditCutOffDate				= '2015-01-15' WHERE CreditCardType=1 AND WithGuarantor=1;
 			UPDATE tblCardTypes SET BillingDate						= '2015-01-06' WHERE CreditCardType=1 AND WithGuarantor=1;
 			
-			DELETE FROM tblCreditBillDetail WHERE CreditBillHeaderID IN (SELECT CreditBillHeaderID FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE WithGuarantor=1 AND CreditBillID >=50));
-			DELETE FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE WithGuarantor=1 AND CreditBillID >=34);
-			DELETE FROM tblCreditBills WHERE WithGuarantor=1 AND CreditBillID >=50;
-			DELETE FROM tblCreditPayment WHERE CashierName = 'SysCWithGBiller-LPC' OR CashierName = 'SysCWithGBiller-FC' AND CreditDate >= '2014-12-20';
-			DELETE FROM tblTransactionItems WHERE ProductCode = 'GCI LATE PAYMENT CHARGE' OR ProductCode = 'GCI FINANCE CHARGE' AND TransactionID IN (SELECT TransactionID FROM tblTransactions WHERE TerminalNo = '00' AND CreatedByName = 'Credit Bill' AND TransactionDate >= '2014-12-20');
-			DELETE FROM tblTransactions WHERE TerminalNo = '00' AND CreatedByName = 'Credit Bill' AND TransactionDate >= '2014-12-20';
+			DELETE FROM tblCreditBillDetail WHERE CreditBillHeaderID IN (SELECT CreditBillHeaderID FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE WithGuarantor=1 AND CreditBillID >=49));
+			DELETE FROM tblCreditBillHeader WHERE CreditBillID IN (SELECT CreditBillID FROM tblCreditBills WHERE WithGuarantor=1 AND CreditBillID >=49);
+			DELETE FROM tblCreditBills WHERE WithGuarantor=1 AND CreditBillID >=49;
+			DELETE FROM tblCreditPayment WHERE CashierName = 'SysCWithGBiller-LPC' OR CashierName = 'SysCWithGBiller-FC' AND CreditDate >= '2015-01-06';
+			DELETE FROM tblTransactionItems WHERE ProductCode = 'GCI LATE PAYMENT CHARGE' OR ProductCode = 'GCI FINANCE CHARGE' AND TransactionID IN (SELECT TransactionID FROM tblTransactions WHERE TerminalNo = '00' AND CreatedByName = 'Credit Bill' AND TransactionDate >= '2015-01-06');
+			DELETE FROM tblTransactions WHERE TerminalNo = '00' AND CreatedByName = 'Credit Bill' AND TransactionDate >= '2015-01-06';
 
 			-- UPDATE tblContactCreditCardInfo SET LastBillingDate = ''
 			CALL procSyncContactCredit();
@@ -795,6 +808,8 @@ BEGIN
 			WHERE CBH.CreditBillID = lngCreditBillID 
 				AND CONVERT(CreditDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess
 				AND CRP.TerminalNo <> '00'	-- do not include the previous late charges
+				AND TransactionStatus <> 7	-- do not include creditPaymentStatus
+				AND CreditReasonID <> 8		-- do not include deposits
 				-- AND CRP.TransactionID NOT IN (SELECT TransactionRefID FROM tblCreditBillDetail 
 				-- 														 WHERE TransactionTypeID = 1
 				-- 															AND CONVERT(CreditDate, DATE) BETWEEN dteCreditPurcStartDateToProcess AND dteCreditPurcEndDateToProcess)
@@ -1432,7 +1447,7 @@ delimiter ;
 		2. get transactions list for reports
 		3. get list of suspended transactions
 
-	CALL procContactCreditPurchaseSelect(0, '', 0, 0, 1, '1900-01-01', '1900-01-01', '', '', '', '', '', 'ASC', 10);
+	CALL procContactCreditPurchaseSelect(0, '', 7489, 2, 0, '2014-11-18', '2015-01-17', '', '', '', '', '', 'ASC', 10);
 
 **************************************************************/
 delimiter GO
@@ -1472,7 +1487,7 @@ BEGIN
 						INNER JOIN tblContacts cntct ON cntct.ContactID = CP.ContactID
 						LEFT OUTER JOIN tblContactCreditCardInfo gci ON gci.CustomerID = cci.GuarantorID
 						LEFT OUTER JOIN tblContacts gua ON gua.ContactID = cci.GuarantorID
-						WHERE 1=1 ';
+						WHERE CP.CreditReasonID <> 8 '; -- exclude the deposits 
 
 	IF (intBranchID <> 0) THEN
 		SET @SQL = CONCAT(@SQL,'AND CP.BranchID = ', intBranchID,' ');

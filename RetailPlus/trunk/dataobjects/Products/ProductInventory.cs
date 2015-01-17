@@ -232,5 +232,53 @@ namespace AceSoft.RetailPlus.Data
                 throw base.ThrowException(ex);
             }
         }
+
+        public void ZeroOutInventoryByBranch(int intBranchID)
+        {
+            try
+            {
+                string SQL = "CALL procZeroOutInventory(@intBranchID, @lngUID, @dteClosingDate, @strReferenceNo);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@intBranchID", intBranchID);
+                cmd.Parameters.AddWithValue("@lngUID", 1);
+                cmd.Parameters.AddWithValue("@dteClosingDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@strReferenceNo", DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+                base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public void ZeroOutNegativeInventorygByBranch(int intBranchID)
+        {
+            try
+            {
+                string SQL = "CALL procZeroOutNegativeInventory(@intBranchID, @lngUID, @dteClosingDate, @strReferenceNo);";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                cmd.Parameters.AddWithValue("@intBranchID", intBranchID);
+                cmd.Parameters.AddWithValue("@lngUID", 1);
+                cmd.Parameters.AddWithValue("@dteClosingDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@strReferenceNo", DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+                base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
     }
 }

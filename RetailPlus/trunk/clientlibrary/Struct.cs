@@ -1,4 +1,5 @@
 using System;
+using System.Xml;
 
 namespace AceSoft.RetailPlus.Client
 {
@@ -168,6 +169,46 @@ namespace AceSoft.RetailPlus.Client
                 }
                 return bolRetValue;
             }
+        }
+
+        public static void SaveConfig(Data.TerminalDetails clsTerminalDetails)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+
+            bool boBranchIDFound = false, boTerminalNoFound = false;
+            bool boMachineSerialNo = false, boAccreditationNo = false;
+
+            foreach (XmlElement element in xmlDoc.DocumentElement)
+            {
+                if (element.Name.Equals("appSettings"))
+                {
+                    foreach (XmlNode node in element.ChildNodes)
+                    {
+                        if (node.Attributes != null && node.Attributes[0].Value.Equals("BranchID"))
+                        {
+                            node.Attributes[1].Value = clsTerminalDetails.BranchDetails.BranchID.ToString(); boBranchIDFound = true;
+                        }
+                        else if (node.Attributes != null && node.Attributes[0].Value.Equals("TerminalNo"))
+                        {
+                            node.Attributes[1].Value = clsTerminalDetails.TerminalNo; boTerminalNoFound = true;
+                        }
+                        else if (node.Attributes != null && node.Attributes[0].Value.Equals("MachineSerialNo"))
+                        {
+                            node.Attributes[1].Value = clsTerminalDetails.MachineSerialNo; boMachineSerialNo = true;
+                        }
+                        else if (node.Attributes != null && node.Attributes[0].Value.Equals("AccreditationNo"))
+                        {
+                            node.Attributes[1].Value = clsTerminalDetails.AccreditationNo; boAccreditationNo = true;
+                        }
+
+                    }
+                }
+                if (boBranchIDFound && boTerminalNoFound && boMachineSerialNo && boAccreditationNo) break;
+            }
+
+            xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            System.Configuration.ConfigurationManager.RefreshSection("appSettings");
         }
 
 	}

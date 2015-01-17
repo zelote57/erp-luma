@@ -397,7 +397,20 @@ namespace AceSoft.RetailPlus.Client
                 Data.Terminal clsTerminal = new Data.Terminal();
                 Data.TerminalDetails clsDetails = new Data.TerminalDetails();
 
-                bool boIsTerminalExist = clsTerminal.IsExist(Constants.TerminalBranchID, CompanyDetails.TerminalNo, out clsDetails);
+                Int32 iBranchCount = clsTerminal.BranchCount(CompanyDetails.TerminalNo);
+
+                bool boIsTerminalExist = false;
+
+                if (iBranchCount == 1)
+                {
+                    clsDetails = clsTerminal.Details(CompanyDetails.TerminalNo);
+                    boIsTerminalExist = true;
+                    CONFIG.SaveConfig(clsDetails);
+                }
+                else
+                {
+                    boIsTerminalExist = clsTerminal.IsExist(Constants.TerminalBranchID, CompanyDetails.TerminalNo, out clsDetails);
+                }
                 clsTerminal.CommitAndDispose();
 
                 if (!boIsTerminalExist)
@@ -421,18 +434,22 @@ namespace AceSoft.RetailPlus.Client
                     clsEvent.AddEvent("Checking Machine Serial No. [" + CONFIG.MachineSerialNo + "]");
                     if (clsDetails.MachineSerialNo != CONFIG.MachineSerialNo)
                     {
-                        ErrorMessage = "FATAL ERROR Level 1.!!! The Machine Serial No. in the database and configuration file does not match." + Environment.NewLine + "Please consult your system administrator immediately...";
-                        clsEvent.AddEventLn("FATAL ERROR!!! The Machine Serial No. in the database and configuration file does not match. TRACE: Procedure IsTerminalExist returns false.");
-                        return false;
+                        //bypass this
+                        //ErrorMessage = "FATAL ERROR Level 1.!!! The Machine Serial No. in the database and configuration file does not match." +  Environment.NewLine + "Please consult your system administrator immediately...";
+                        //clsEvent.AddEventLn("FATAL ERROR!!! The Machine Serial No. in the database and configuration file does not match. TRACE: Procedure IsTerminalExist returns false.");
+                        //return false;
+                        clsEvent.AddEventLn("BYPASS-FATAL ERROR!!! The Machine Serial No. in the database and configuration file does not match. TRACE: Procedure IsTerminalExist returns false.");
+
                     }
                     clsEvent.AddEventLn("Done!");
 
                     clsEvent.AddEvent("Checking accreditation no. [" + CONFIG.AccreditationNo + "]");
                     if (clsDetails.AccreditationNo != CONFIG.AccreditationNo)
                     {
-                        ErrorMessage = "FATAL ERROR Level 1.!!! The Accreditation No. in the database and configuration file does not match." + Environment.NewLine + "Please consult your system administrator immediately...";
-                        clsEvent.AddEventLn("FATAL ERROR!!! The Accreditation No. in the database and configuration file does not match. TRACE: Procedure IsTerminalExist returns false.");
-                        return false;
+                        //ErrorMessage = "FATAL ERROR Level 1.!!! The Accreditation No. in the database and configuration file does not match." +  Environment.NewLine + "Please consult your system administrator immediately...";
+                        //clsEvent.AddEventLn("FATAL ERROR!!! The Accreditation No. in the database and configuration file does not match. TRACE: Procedure IsTerminalExist returns false.");
+                        //return false;
+                        clsEvent.AddEventLn("BY-PASS FATAL ERROR!!! The Accreditation No. in the database and configuration file does not match. TRACE: Procedure IsTerminalExist returns false.");
                     }
                     clsEvent.AddEventLn("Done!");
                 }

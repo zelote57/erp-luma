@@ -80,6 +80,11 @@ namespace AceSoft.RetailPlus.Security._Terminals
                 Label lblBranchID = (Label)e.Item.FindControl("lblBranchID");
                 lblBranchID.Text = dr["BranchID"].ToString();
 
+                Data.Branch clsBranch = new Branch();
+                Data.BranchDetails clsBranchDetails = clsBranch.Details(Int32.Parse(lblBranchID.Text));
+                clsBranch.CommitAndDispose();
+                lblBranchID.Text = clsBranchDetails.BranchCode;
+
 				HyperLink lnkTerminalCode = (HyperLink) e.Item.FindControl("lnkTerminalCode");
 				lnkTerminalCode.Text = dr["TerminalCode"].ToString();
 

@@ -95,6 +95,52 @@ namespace AceSoft.RetailPlus.Data
             }
         }
 
+        public bool FlushHosts()
+        {
+            try
+            {
+                bool boRetValue = false;
+
+                string SQL = "FLUSH HOSTS;";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+
+                return boRetValue;
+
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public bool FlushTable(string TableName)
+        {
+            try
+            {
+                bool boRetValue = false;
+
+                string SQL = "FLUSH TABLE " + TableName + ";";
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = SQL;
+
+                if (base.ExecuteNonQuery(cmd) > 0) boRetValue = true;
+
+                return boRetValue;
+
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
         public DateTime DateLastInitialized()
         {
             try

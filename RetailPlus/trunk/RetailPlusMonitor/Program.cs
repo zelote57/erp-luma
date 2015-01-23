@@ -17,6 +17,14 @@ namespace AceSoft.RetailPlus.Monitor
             try
             {
                 WriteProcessToMonitor("Starting RetailPlus monitoring tool...");
+
+                // check if it's already running
+                if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
+                {
+                    WriteProcessToMonitor("   already running. not ok");
+                    return;
+                }
+
                 WriteProcessToMonitor("   ok");
             back:
                 WriteProcessToMonitor("Checking connections to server.");

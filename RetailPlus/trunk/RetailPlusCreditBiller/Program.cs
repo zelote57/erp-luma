@@ -20,8 +20,15 @@ namespace AceSoft.RetailPlus.Monitor
         static void Main(string[] args)
         {
             WriteProcessToMonitor("Starting RetailPlus Credit Biller tool...");
-            WriteProcessToMonitor("   ok");
 
+            // check if it's already running
+            if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
+            {
+                WriteProcessToMonitor("   already running. not ok");
+                return;
+            }
+
+            WriteProcessToMonitor("   ok");
         back:
 
             try

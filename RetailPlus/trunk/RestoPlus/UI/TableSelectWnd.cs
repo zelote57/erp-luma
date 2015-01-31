@@ -441,12 +441,18 @@ namespace AceSoft.RetailPlus.Client.UI
                         lblNoOfPax.Text = clsSalesTransactionDetails.PaxNo.ToString() + "Pax";
                         cmdTable.Controls.Add(lblNoOfPax);
 
-                        if (mboShowAvailableTableOnly)
+                        // Jan 31, 2015 : Lemu
+                        // Added disabling of Suspended Transactions. 
+                        // Put the SuspendedOpen Status to in LoadTransaction
+                        if (mboShowAvailableTableOnly || clsSalesTransactionDetails.TransactionStatus == TransactionStatus.SuspendedOpen)
 						{
 							cmdTable.BackColor = System.Drawing.Color.DarkGray;
 							cmdTable.GradientBottom = System.Drawing.Color.DarkGray;
 							cmdTable.GradientTop = System.Drawing.Color.LightGray;
 							cmdTable.Enabled = false;
+
+                            if (clsSalesTransactionDetails.TransactionStatus == TransactionStatus.SuspendedOpen)
+                                cmdTable.Text += Environment.NewLine + "(open in other terminal)";
 						}
 						else
 						{

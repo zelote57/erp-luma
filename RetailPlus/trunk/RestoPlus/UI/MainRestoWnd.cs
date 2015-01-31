@@ -4344,6 +4344,9 @@ namespace AceSoft.RetailPlus.Client.UI
 		{
             if (!SuspendTransactionAndContinue()) return;
 
+            // ShowOneTerminalSuspendedTransactions 
+            // Only same cashier in same terminal can be resume.
+            // if terminalno and cashier is not the same to not allow   
             if (mclsTerminalDetails.ShowOneTerminalSuspendedTransactions)
             {
                 Data.SalesTransactions clsSales = new Data.SalesTransactions(mConnection, mTransaction);
@@ -4379,7 +4382,7 @@ namespace AceSoft.RetailPlus.Client.UI
 
                         mclsSalesTransactionDetails = details;
 
-                        if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Refund)
+                        if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Refund || mclsSalesTransactionDetails.TransactionType == TransactionTypes.POSRefund)
                         {
                             mboIsRefund = true;
                             lblSubtotalName.Text = "SUBTOTAL: REFUND";
@@ -4401,6 +4404,7 @@ namespace AceSoft.RetailPlus.Client.UI
                         mdteOverRidingPrintDate = mclsSalesTransactionDetails.TransactionDate;
 
                         lblTransDiscount.Tag = mclsSalesTransactionDetails.TransDiscountType.ToString("d");
+                        // lblConsignment.Visible = mclsSalesTransactionDetails.isConsignment; not applicable for restaurant
 
                         if (mclsSalesTransactionDetails.ChargeAmount == 0)
                             lblTransCharge.Tag = ChargeTypes.NotApplicable.ToString("d");
@@ -4411,13 +4415,9 @@ namespace AceSoft.RetailPlus.Client.UI
                             clsChargeType.CommitAndDispose();
 
                             if (bolInPercent)
-                            {
                                 lblTransCharge.Tag = ChargeTypes.Percentage.ToString("d");
-                            }
                             else
-                            {
                                 lblTransCharge.Tag = ChargeTypes.FixedValue.ToString("d");
-                            }
                         }
 
                         // Aug 6, 2011 : Lemu
@@ -4427,6 +4427,17 @@ namespace AceSoft.RetailPlus.Client.UI
                         mclsSalesTransactionDetails.CashierName = lblCashier.Text;
 
                         LoadResumedItems(details.TransactionItems, false);
+
+                        // Jan 31, 2015 : Lemu
+                        // put back to SuspendedOpen so that it won't be open somewhere else
+                        if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Suspended)
+                        {
+                            Data.SalesTransactions clsSalesTransactions = new Data.SalesTransactions(mConnection, mTransaction);
+                            mConnection = clsSalesTransactions.Connection; mTransaction = clsSalesTransactions.Transaction;
+                            clsEvent.AddEvent("Putting transaction SuspendedOpen: " + mclsSalesTransactionDetails.TransactionNo);
+                            clsSalesTransactions.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
+                            clsSalesTransactions.CommitAndDispose();
+                        }
 
                         mboIsInTransaction = true;
 
@@ -7228,15 +7239,17 @@ namespace AceSoft.RetailPlus.Client.UI
                 {
                     clsEvent.AddEventLn("Issuing REFUND Transaction!");
                     LoadOptions();
-                    if (!this.CreateTransaction()) return;
+
                     mboIsRefund = true;
+                    if (!this.CreateTransaction()) return;
+                    
                     // Aug 6, 2011 : Lemu
                     // Include items with zero quantity for REFUND
                     mclsTerminalDetails.ShowItemMoreThanZeroQty = false;
 
                     lblSubtotalName.Text = "SUBTOTAL: REFUND";
                     lblOrderType.Visible = false;
-                    InsertAuditLog(AccessTypes.RefundTransaction, "Initialize refund transaction defaults. Tran. #:" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
+                    InsertAuditLog(AccessTypes.RefundTransaction, "Initialize refund transaction defaults. Tran. #".PadRight(15) + ":" + lblTransNo.Text + " @ Branch: " + mclsTerminalDetails.BranchDetails.BranchCode);
                     clsEvent.AddEventLn("Done! Tran. #" + lblTransNo.Text);
                 }
                 catch (Exception ex)
@@ -9636,6 +9649,14 @@ namespace AceSoft.RetailPlus.Client.UI
                     try { mclsSalesTransactionDetails.CashierID = Convert.ToInt64(lblCashier.Tag); }
                     catch { }
                     mclsSalesTransactionDetails.CashierName = lblCashier.Text;
+
+                    // Jan 31, 2015 : Lemu
+                    // put back to SuspendedOpen so that it won't be open somewhere else
+                    if (mclsSalesTransactionDetails.TransactionStatus == TransactionStatus.Suspended)
+                    {
+                        clsEvent.AddEvent("Putting transaction SuspendedOpen: " + stTransactionNo);
+                        clsSalesTransactions.UpdateTransactionToSuspendedOpen(mclsSalesTransactionDetails.TransactionID);
+                    }
                 }
 
                 Data.Contacts clsContact = new Data.Contacts(mConnection, mTransaction);
@@ -9675,7 +9696,17 @@ namespace AceSoft.RetailPlus.Client.UI
                 if (mclsSalesTransactionDetails.ChargeAmount == 0)
                     lblTransCharge.Tag = ChargeTypes.NotApplicable.ToString("d"); //details.TransDiscountType.ToString("d");
                 else
-                    lblTransCharge.Tag = ChargeTypes.Percentage.ToString("d"); //details.TransDiscountType.ToString("d");
+                {
+                    //lblTransCharge.Tag = ChargeTypes.Percentage.ToString("d"); //details.TransDiscountType.ToString("d");
+                    Data.ChargeType clsChargeType = new Data.ChargeType(mConnection, mTransaction);
+                    bool bolInPercent = clsChargeType.Details(mclsSalesTransactionDetails.ChargeCode).InPercent;
+                    clsChargeType.CommitAndDispose();
+
+                    if (bolInPercent)
+                        lblTransCharge.Tag = ChargeTypes.Percentage.ToString("d");
+                    else
+                        lblTransCharge.Tag = ChargeTypes.FixedValue.ToString("d");
+                }
 
                 Data.SalesTransactionItems clsItems = new Data.SalesTransactionItems(mConnection, mTransaction);
                 Data.SalesTransactionItemDetails[] TransactionItems = clsItems.Details(mclsSalesTransactionDetails.TransactionID, mclsSalesTransactionDetails.TransactionDate);

@@ -142,8 +142,7 @@
                                     <label>Expanded Value Added Tax (eVAT)<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Local Tax<font color="red">*</font></label></td>
-                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    <label>Printer for printing orders of this group<font color="red">*</font></label></td>
+                                <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px"></td>
                             </tr>
                             <tr>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
@@ -172,7 +171,6 @@
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    <asp:dropdownlist id="cboOrderSlipPrinter" runat="server" CssClass="ms-long" Width="157px"></asp:dropdownlist>
                                 </td>
                             </tr>
                             <tr>

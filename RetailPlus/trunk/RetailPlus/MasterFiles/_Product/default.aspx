@@ -6,6 +6,7 @@
 <%@ Register TagPrefix="CTRL" TagName="ctrlProcessing" Src="../../_Processing.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlInsert" Src="_Insert.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlDetails" Src="_Details.ascx" %>
+<%@ Register TagPrefix="CTRL" TagName="ctrlChangeOSPrinter" Src="_ChangeOSPrinter.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlChangeTax" Src="_ChangeTax.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlChangeRewardPoints" Src="_ChangeRewardPoints.ascx" %>
 <%@ Register TagPrefix="CTRL" TagName="ctrlAddProductVariation" Src="_AddProductVariation.ascx" %>
@@ -123,6 +124,7 @@
 									<CTRL:ctrlListDetailed id="ctrlListDetailed" runat="server" Visible="False"></CTRL:ctrlListDetailed>
 									<CTRL:ctrlInsert id="ctrlInsert" runat="server" Visible="False"></CTRL:ctrlInsert>
 									<CTRL:ctrlUpdate id="ctrlUpdate" runat="server" Visible="False"></CTRL:ctrlUpdate>
+                                    <CTRL:ctrlChangeOSPrinter id="ctrlChangeOSPrinter" runat="server" Visible="False"></CTRL:ctrlChangeOSPrinter>
 									<CTRL:ctrlChangeTax id="ctrlChangeTax" runat="server" Visible="False"></CTRL:ctrlChangeTax>
 									<CTRL:ctrlAddProductVariation id="ctrlAddProductVariation" runat="server" Visible="False"></CTRL:ctrlAddProductVariation>
                                     <CTRL:ctrlChangeRewardPoints id="ctrlChangeRewardPoints" runat="server" Visible="False"></CTRL:ctrlChangeRewardPoints>

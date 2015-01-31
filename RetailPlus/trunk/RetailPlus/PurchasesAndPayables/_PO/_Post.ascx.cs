@@ -1466,7 +1466,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                 writer.WriteAttributeString("Quantity", clsProductDetails.Quantity.ToString());
                 writer.WriteAttributeString("MinThreshold", clsProductDetails.MinThreshold.ToString());
                 writer.WriteAttributeString("MaxThreshold", clsProductDetails.MaxThreshold.ToString());
-                writer.WriteAttributeString("OrderSlipPrinter", clsProductDetails.OrderSlipPrinter.ToString("d"));
                 writer.WriteAttributeString("ChartOfAccountIDPurchase", clsProductDetails.ChartOfAccountIDPurchase.ToString());
                 writer.WriteAttributeString("ChartOfAccountIDSold", clsProductDetails.ChartOfAccountIDSold.ToString());
                 writer.WriteAttributeString("ChartOfAccountIDInventory", clsProductDetails.ChartOfAccountIDInventory.ToString());
@@ -1741,7 +1740,6 @@ namespace AceSoft.RetailPlus.PurchasesAndPayables._PO
                                         clsProductDetails.Quantity = 0;
                                         clsProductDetails.MinThreshold = Convert.ToDecimal(xmlReader.GetAttribute("MinThreshold"));
                                         clsProductDetails.MaxThreshold = Convert.ToDecimal(xmlReader.GetAttribute("MaxThreshold"));
-                                        clsProductDetails.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), xmlReader.GetAttribute("OrderSlipPrinter"));
                                         clsProductDetails.ChartOfAccountIDPurchase = int.Parse(xmlReader.GetAttribute("ChartOfAccountIDPurchase"));
                                         clsProductDetails.ChartOfAccountIDSold = int.Parse(xmlReader.GetAttribute("ChartOfAccountIDSold"));
                                         clsProductDetails.ChartOfAccountIDInventory = int.Parse(xmlReader.GetAttribute("ChartOfAccountIDInventory"));

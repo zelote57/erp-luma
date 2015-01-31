@@ -545,6 +545,13 @@
     <Compile Include="MasterFiles\_Product\_AddProductVariation.ascx.designer.cs">
       <DependentUpon>_AddProductVariation.ascx</DependentUpon>
     </Compile>
+    <Compile Include="MasterFiles\_Product\_changeosprinter.ascx.cs">
+      <DependentUpon>_changeosprinter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterFiles\_Product\_changeosprinter.ascx.designer.cs">
+      <DependentUpon>_changeosprinter.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Reports\BranchTransferReport.cs">
       <DependentUpon>BranchTransferReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -3639,6 +3646,7 @@
     <Content Include="Inventory\_closeinventoryproduct.ascx" />
     <Content Include="Inventory\_closeinventory.ascx" />
     <Content Include="MasterFiles\_Product\_AddProductVariation.ascx" />
+    <Content Include="MasterFiles\_Product\_changeosprinter.ascx" />
     <Content Include="packages.config" />
     <None Include="Scripts\jquery-2.0.0.min.map" />
     <None Include="vwd.webinfo" />

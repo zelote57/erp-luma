@@ -139,6 +139,9 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 				Label lblPurchasePrice = (Label) e.Item.FindControl("lblPurchasePrice");
 				lblPurchasePrice.Text = Convert.ToDecimal(dr["PurchasePrice"].ToString()).ToString("#,##0.#0");
 
+                Label lblSequenceNo = (Label)e.Item.FindControl("lblSequenceNo");
+                lblSequenceNo.Text = Convert.ToInt32(dr["SequenceNo"].ToString()).ToString("#,##0");
+
 				//For anchor
 				HtmlGenericControl divExpCollAsst = (HtmlGenericControl) e.Item.FindControl("divExpCollAsst");
 
@@ -235,19 +238,21 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
 			HyperLink SortByProductSubGroupName = (HyperLink) e.Item.FindControl("SortByProductSubGroupName");
 			HyperLink SortByBaseUnitName = (HyperLink) e.Item.FindControl("SortByBaseUnitName");
 			HyperLink SortByPrice = (HyperLink) e.Item.FindControl("SortByPrice");
+            HyperLink SortBySequenceNo = (HyperLink)e.Item.FindControl("SortBySequenceNo");
 
 			SortByProductGroupCode.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ProductGroupCode", Session.SessionID);
 			SortByProductSubGroupCode.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ProductSubGroupCode", Session.SessionID);
 			SortByProductSubGroupName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ProductSubGroupName", Session.SessionID);
 			SortByBaseUnitName.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("UnitName", Session.SessionID);
 			SortByPrice.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("Price", Session.SessionID);
+            SortBySequenceNo.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("SequenceNo", Session.SessionID);
 		}
 		private void LoadList()
 		{	
 			ProductSubGroup clsProductSubGroup = new ProductSubGroup();
 			DataClass clsDataClass = new DataClass();
 
-            string SortField = "ProductSubGroupCode";
+            string SortField = "SequenceNo ASC, ProductSubGroupCode";
             if (Request.QueryString["sortfield"] != null)
             { SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID); }
 
@@ -275,6 +280,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
             clsProductSubGroupColumns.BaseUnitName = true;
             clsProductSubGroupColumns.Price = true;
             clsProductSubGroupColumns.PurchasePrice = true;
+            clsProductSubGroupColumns.SequenceNo = true;
             clsProductSubGroupColumns.VAT = true;
             clsProductSubGroupColumns.EVAT = true;
             clsProductSubGroupColumns.LocalTax = true;
@@ -284,7 +290,7 @@ namespace AceSoft.RetailPlus.MasterFiles._ProductSubGroup
             clsSearchKeys.ProductSubGroupName = SearchKey;
 
             ProductSubGroup clsSubGroup = new ProductSubGroup(clsProductSubGroup.Connection, clsProductSubGroup.Transaction);
-            System.Data.DataTable dt = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, 0, System.Data.SqlClient.SortOrder.Ascending, 0, ProductSubGroupColumnNames.ProductSubGroupName, System.Data.SqlClient.SortOrder.Ascending);
+            System.Data.DataTable dt = clsSubGroup.ListAsDataTable(clsProductSubGroupColumns, clsSearchKeys, 0, System.Data.SqlClient.SortOrder.Ascending, 0, SortField, (sortoption == SortOption.Ascending ? System.Data.SqlClient.SortOrder.Ascending : System.Data.SqlClient.SortOrder.Descending));
             clsProductSubGroup.CommitAndDispose();
 
             PageData.DataSource = dt.DefaultView;

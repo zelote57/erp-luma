@@ -55,7 +55,6 @@ namespace AceSoft.RetailPlus.Data
 		public Int64 SupplierID;
 		public string SupplierCode;
 		public string SupplierName;
-		public OrderSlipPrinter OrderSlipPrinter;
 		public int ChartOfAccountIDPurchase;
 		public int ChartOfAccountIDSold;
 		public int ChartOfAccountIDInventory;
@@ -104,6 +103,11 @@ namespace AceSoft.RetailPlus.Data
         public DateTime CreatedOn;
         public DateTime LastModified;
 
+        public bool OrderSlipPrinter1;
+        public bool OrderSlipPrinter2;
+        public bool OrderSlipPrinter3;
+        public bool OrderSlipPrinter4;
+        public bool OrderSlipPrinter5;
 	}
 
     public struct ProductChartOfAccountDetails
@@ -157,7 +161,6 @@ namespace AceSoft.RetailPlus.Data
 		public bool SupplierID;
 		public bool SupplierCode;
 		public bool SupplierName;
-		public bool OrderSlipPrinter;
 		public bool ChartOfAccountIDPurchase;
 		public bool ChartOfAccountIDSold;
 		public bool ChartOfAccountIDInventory;
@@ -223,7 +226,6 @@ namespace AceSoft.RetailPlus.Data
 		public const string SupplierID = "SupplierID";
 		public const string SupplierCode = "SupplierCode";
 		public const string SupplierName = "SupplierName";
-		public const string OrderSlipPrinter = "OrderSlipPrinter";
 		public const string ChartOfAccountIDPurchase = "ChartOfAccountIDPurchase";
 		public const string ChartOfAccountIDSold = "ChartOfAccountIDSold";
 		public const string ChartOfAccountIDInventory = "ChartOfAccountIDInventory";
@@ -765,6 +767,43 @@ namespace AceSoft.RetailPlus.Data
 				throw base.ThrowException(ex);
 			}
 		}
+
+        public void UpdateOrderSlipPrinter(Int64 ProductID, OrderSlipPrinter OrderSlipPrinter, bool isChecked)
+        {
+            // Added August 2, 2009 to monitor if product still has/have variations
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "";
+
+                switch (OrderSlipPrinter)
+                {
+                    case OrderSlipPrinter.RetailPlusOSPrinter1: SQL = "UPDATE tblProducts SET OrderSlipPrinter1 = @isChecked WHERE ProductID=@ProductID;";
+                        break;
+                    case OrderSlipPrinter.RetailPlusOSPrinter2: SQL = "UPDATE tblProducts SET OrderSlipPrinter2 = @isChecked WHERE ProductID=@ProductID;";
+                        break;
+                    case OrderSlipPrinter.RetailPlusOSPrinter3: SQL = "UPDATE tblProducts SET OrderSlipPrinter3 = @isChecked WHERE ProductID=@ProductID;";
+                        break;
+                    case OrderSlipPrinter.RetailPlusOSPrinter4: SQL = "UPDATE tblProducts SET OrderSlipPrinter4 = @isChecked WHERE ProductID=@ProductID;";
+                        break;
+                    case OrderSlipPrinter.RetailPlusOSPrinter5: SQL = "UPDATE tblProducts SET OrderSlipPrinter5 = @isChecked WHERE ProductID=@ProductID;";
+                        break;
+                }
+
+                cmd.Parameters.AddWithValue("@isChecked", isChecked);
+                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
 
         public void UpdateInvDetails(int BranchID, long ProductID, long MatrixID, decimal QuantityNow, decimal MinThresholdNow, decimal MaxThresholdNow, string Remarks, DateTime TransactionDate, string TransactionNo, string AdjustedBy)
 		{
@@ -2150,6 +2189,7 @@ namespace AceSoft.RetailPlus.Data
                                     "pkg.BarCode3, " +
                                     "IFNULL(pkg.BarCode1,pkg.BarCode4) BarCode, " +
                                     "a.ProductDesc, " +
+                                    "a.OrderSlipPrinter1 ,a.OrderSlipPrinter2 ,a.OrderSlipPrinter3 ,a.OrderSlipPrinter4 ,a.OrderSlipPrinter5 ," +
                                     "a.ProductSubGroupID, " +
                                     "b.ProductSubGroupCode, " +
                                     "b.ProductSubGroupName, " +
@@ -2182,7 +2222,6 @@ namespace AceSoft.RetailPlus.Data
                                     "a.SupplierID, " +
                                     "e.ContactCode AS SupplierCode, " +
                                     "e.ContactName AS SupplierName, " +
-                                    "c.OrderSlipPrinter, " +
                                     "a.ChartOfAccountIDPurchase, " +
                                     "a.ChartOfAccountIDSold, " +
                                     "a.ChartOfAccountIDInventory, " +
@@ -2226,6 +2265,7 @@ namespace AceSoft.RetailPlus.Data
 							        "pkg.BarCode2, " +
 							        "pkg.BarCode3, " +
                                     "a.ProductDesc, " +
+                                    "a.OrderSlipPrinter1 ,a.OrderSlipPrinter2 ,a.OrderSlipPrinter3 ,a.OrderSlipPrinter4 ,a.OrderSlipPrinter5 ," +
                                     "a.ProductSubGroupID, " +
                                     "b.ProductSubGroupCode, " +
                                     "b.ProductSubGroupName, " +
@@ -2259,7 +2299,6 @@ namespace AceSoft.RetailPlus.Data
                                     "a.SupplierID, " +
                                     "e.ContactCode AS SupplierCode, " +
                                     "e.ContactName AS SupplierName, " +
-                                    "c.OrderSlipPrinter, " +
                                     "a.ChartOfAccountIDPurchase, " +
                                     "a.ChartOfAccountIDSold, " +
                                     "a.ChartOfAccountIDInventory, " +
@@ -2397,6 +2436,7 @@ namespace AceSoft.RetailPlus.Data
             if (clsProductColumns.BarCode3) stSQL += "tblProductPackage." + ProductColumnNames.BarCode3 + ", ";
 
 			if (clsProductColumns.ProductDesc) stSQL += "tblProducts." + ProductColumnNames.ProductDesc + ", ";
+            if (clsProductColumns.ProductDesc) stSQL += "tblProducts.OrderSlipPrinter1 ,tblProducts.OrderSlipPrinter2 ,tblProducts.OrderSlipPrinter3 ,tblProducts.OrderSlipPrinter4 ,tblProducts.OrderSlipPrinter5, ";
 			if (clsProductColumns.ProductSubGroupID) stSQL += "tblProducts." + ProductColumnNames.ProductSubGroupID + ", ";
 			if (clsProductColumns.ProductSubGroupCode) stSQL += "tblProductSubGroup." + ProductColumnNames.ProductSubGroupCode + ", ";
 			if (clsProductColumns.ProductSubGroupName) stSQL += "tblProductSubGroup." + ProductColumnNames.ProductSubGroupName + ", ";
@@ -2433,7 +2473,6 @@ namespace AceSoft.RetailPlus.Data
 			if (clsProductColumns.SupplierID) stSQL += "tblProducts." + ProductColumnNames.SupplierID + ", ";
 			if (clsProductColumns.SupplierCode) stSQL += "tblContacts.ContactCode AS SupplierCode, ";
 			if (clsProductColumns.SupplierName) stSQL += "tblContacts.ContactName AS SupplierName, ";
-			if (clsProductColumns.OrderSlipPrinter) stSQL += "tblProductGroup." + ProductColumnNames.OrderSlipPrinter + ", ";
 			if (clsProductColumns.ChartOfAccountIDPurchase) stSQL += "tblProducts." + ProductColumnNames.ChartOfAccountIDPurchase + ", ";
 			if (clsProductColumns.ChartOfAccountIDSold) stSQL += "tblProducts." + ProductColumnNames.ChartOfAccountIDSold + ", ";
 			if (clsProductColumns.ChartOfAccountIDInventory) stSQL += "tblProducts." + ProductColumnNames.ChartOfAccountIDInventory + ", ";
@@ -2788,6 +2827,11 @@ namespace AceSoft.RetailPlus.Data
                     Details.BarCode2 = "" + dr["BarCode2"].ToString();
                     Details.BarCode3 = "" + dr["BarCode3"].ToString();
                     Details.ProductDesc = "" + dr["ProductDesc"].ToString();
+                    Details.OrderSlipPrinter1 = bool.Parse(dr["OrderSlipPrinter1"].ToString());
+                    Details.OrderSlipPrinter2 = bool.Parse(dr["OrderSlipPrinter2"].ToString());
+                    Details.OrderSlipPrinter3 = bool.Parse(dr["OrderSlipPrinter3"].ToString());
+                    Details.OrderSlipPrinter4 = bool.Parse(dr["OrderSlipPrinter4"].ToString());
+                    Details.OrderSlipPrinter5 = bool.Parse(dr["OrderSlipPrinter5"].ToString());
                     Details.ProductGroupID = Int64.Parse(dr["ProductGroupID"].ToString());
                     Details.ProductGroupCode = "" + dr["ProductGroupCode"].ToString();
                     Details.ProductGroupName = "" + dr["ProductGroupName"].ToString();
@@ -2819,7 +2863,6 @@ namespace AceSoft.RetailPlus.Data
                     Details.SupplierID = Int64.Parse(dr["SupplierID"].ToString());
                     Details.SupplierCode = dr["SupplierCode"].ToString();
                     Details.SupplierName = dr["SupplierName"].ToString();
-                    Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
 
                     /*** Added for Financial Information  ***/
                     /*** January 12, 2009 ***/

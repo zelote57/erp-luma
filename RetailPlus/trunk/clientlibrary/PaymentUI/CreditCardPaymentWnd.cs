@@ -38,6 +38,9 @@ namespace AceSoft.RetailPlus.Client.UI
         private TextBox txtScan;
         private Label label6;
 
+        private bool shiftKeyPressed = false;
+        private bool enterKeyPressed = false;
+
         Data.ContactDetails mclsGuarantorDetails; 
         Data.CardTypeDetails mclsCardTypeDetails;
 
@@ -425,6 +428,8 @@ namespace AceSoft.RetailPlus.Client.UI
             this.txtScan.Text = "put the cursor here to scan credit card";
             this.txtScan.TextChanged += new System.EventHandler(this.txtScan_TextChanged);
             this.txtScan.GotFocus += new System.EventHandler(this.txtScan_GotFocus);
+            this.txtScan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtScan_KeyDown);
+            this.txtScan.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtScan_KeyPress);
             // 
             // label6
             // 
@@ -557,6 +562,7 @@ namespace AceSoft.RetailPlus.Client.UI
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.CreditCardPaymentWnd_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CreditCardPaymentWnd_KeyPress);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CreditCardPaymentWnd_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.imgIcon)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -570,6 +576,13 @@ namespace AceSoft.RetailPlus.Client.UI
         #endregion
 
         #region Windows Form Methods
+
+        private void CreditCardPaymentWnd_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (TerminalDetails.WithRestaurantFeatures)
+                if (e.KeyChar == (char)Keys.Enter)
+                    e.Handled = true;
+        }
 
         private void CreditCardPaymentWnd_KeyDown(object sender, KeyEventArgs e)
         {
@@ -589,10 +602,15 @@ namespace AceSoft.RetailPlus.Client.UI
                     break;
 
                 case Keys.Enter:
-                    if (isValuesAssigned())
+                    //if (TerminalDetails.WithRestaurantFeatures)
+                    // cancel the enter command
+                    if (!TerminalDetails.WithRestaurantFeatures)
                     {
-                        dialog = DialogResult.OK;
-                        this.Hide();
+                        if (isValuesAssigned())
+                        {
+                            dialog = DialogResult.OK;
+                            this.Hide();
+                        }
                     }
                     break;
             }
@@ -672,10 +690,15 @@ namespace AceSoft.RetailPlus.Client.UI
 
             if (TerminalDetails.WithRestaurantFeatures)
             {
+                txtSelectedTextBox = (TextBox)sender;
+
                 keyboardNoControl1.Visible = TerminalDetails.WithRestaurantFeatures;
                 keyboardSearchControl1.Visible = false;
             }
-            txtScan.SelectAll();
+            if (txtScan.Text == "put the cursor here to scan credit card")
+            {
+                txtScan.Clear();
+            }
         }
 
         private void txtScan_TextChanged(object sender, EventArgs e)
@@ -687,13 +710,57 @@ namespace AceSoft.RetailPlus.Client.UI
             }
         }
 
+        private void txtScan_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            // Check for the flag being set in the KeyDown event.
+            if (e.KeyChar == (char)Keys.ShiftKey)
+            {
+                // Stop the character from being entered into the control since it is non-numerical.
+                e.Handled = true;
+                shiftKeyPressed = false;
+            }
+            else if (e.KeyChar == (char)Keys.Enter)
+            {
+                // Stop the character from being entered into the control since it is non-numerical.
+                e.Handled = true;
+                enterKeyPressed = false;
+            }
+            else if (shiftKeyPressed)
+            {
+                e.Handled = true;
+                shiftKeyPressed = false;
+            }
+            else if (enterKeyPressed)
+            {
+                e.Handled = true;
+                enterKeyPressed = false;
+            }
+        }
+
+        private void txtScan_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            switch (e.KeyData)
+            {
+                case Keys.Shift:
+                case Keys.ShiftKey:
+                    shiftKeyPressed = true;
+                    break;
+                case Keys.Enter:
+                    enterKeyPressed = true;
+                    break;
+            }
+
+        }
+
         private void keyboardSearchControl1_UserKeyPressed(object sender, AceSoft.KeyBoardHook.KeyboardEventArgs e)
         {
             if (txtSelectedTextBox == null)
                 txtAmount.Focus();
             else if (txtSelectedTextBox.Name == txtAmount.Name)
                 txtAmount.Focus();
-            if (txtSelectedTextBox.Name == txtCardNo.Name)
+            else if (txtSelectedTextBox.Name == txtScan.Name)
+                txtScan.Focus();
+            else if (txtSelectedTextBox.Name == txtCardNo.Name)
                 txtCardNo.Focus();
             else if (txtSelectedTextBox.Name == txtCardHolder.Name)
                 txtCardHolder.Focus();
@@ -711,7 +778,9 @@ namespace AceSoft.RetailPlus.Client.UI
                 txtAmount.Focus();
             else if (txtSelectedTextBox.Name == txtAmount.Name)
                 txtAmount.Focus();
-            if (txtSelectedTextBox.Name == txtCardNo.Name)
+            else if (txtSelectedTextBox.Name == txtScan.Name)
+                txtScan.Focus();
+            else if (txtSelectedTextBox.Name == txtCardNo.Name)
                 txtCardNo.Focus();
             else if (txtSelectedTextBox.Name == txtCardHolder.Name)
                 txtCardHolder.Focus();
@@ -720,7 +789,8 @@ namespace AceSoft.RetailPlus.Client.UI
             else if (txtSelectedTextBox.Name == txtRemarks.Name)
                 txtRemarks.Focus();
 
-            if (txtSelectedTextBox == null || 
+            if (txtSelectedTextBox == null ||
+                txtSelectedTextBox.Name == txtScan.Name ||
                 txtSelectedTextBox.Name == txtAmount.Name ||
                 txtSelectedTextBox.Name == txtValidityDates.Name ||
                 txtSelectedTextBox.Name == txtCardNo.Name)
@@ -1034,17 +1104,40 @@ namespace AceSoft.RetailPlus.Client.UI
 
         private void setScannedCreditCardInfo()
         {
-            string[] strCareditInfo = txtScan.Text.Split(',');
+            string stCreditCardInfo = txtScan.Text;
+
+            string[] strCareditInfo = null;
+
+            if (stCreditCardInfo.IndexOf('^') > -1)
+            {
+                if (stCreditCardInfo.IndexOf("?") == -1) return; //handle the end of the line
+
+                stCreditCardInfo = stCreditCardInfo.Replace("%", "").Replace("?", "").Replace("/", "");
+                strCareditInfo = stCreditCardInfo.Split('^');
+            }
+            else if (stCreditCardInfo.IndexOf(',') > -1)
+            {
+                strCareditInfo = stCreditCardInfo.Split(',');
+            }
+
+            if (strCareditInfo == null) return;
 
             if (strCareditInfo.Length == 1) //internal credit card
             {
-                txtCardNo.Text = strCareditInfo[0];
+                txtCardNo.Text = strCareditInfo[0].Trim();
             }
-            else
+            else if (strCareditInfo.Length >= 3) //visa, master, amex, debit card
             {
-                if (strCareditInfo.Length >= 1) txtCardHolder.Text = strCareditInfo[0];
-                if (strCareditInfo.Length >= 2) txtCardNo.Text = strCareditInfo[1];
-                if (strCareditInfo.Length >= 3) txtValidityDates.Text = strCareditInfo[2];
+                if (strCareditInfo.Length >= 1) txtCardNo.Text = strCareditInfo[0].Replace("B", "").Trim();
+                if (strCareditInfo.Length >= 2) txtCardHolder.Text = strCareditInfo[1].Trim();
+                if (strCareditInfo.Length >= 3)
+                {
+                    string[] strValidity = strCareditInfo[2].Trim().Split(';');
+                    if (strValidity.Length >= 1) {
+                        txtValidityDates.Tag = strValidity[0].Trim();
+                        txtValidityDates.Text = strValidity[0].Trim().Substring(2,2) + strValidity[0].Trim().Substring(0,2);
+                    }
+                }
             }
         }
         

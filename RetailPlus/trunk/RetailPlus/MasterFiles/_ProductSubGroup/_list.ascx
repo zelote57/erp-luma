@@ -99,9 +99,10 @@
 							    <col width="2%">
 								<col width="19%">
 								<col width="22%">
-								<col width="19%">
+								<col width="14%">
 								<col width="15%">
-								<col width="15%">
+								<col width="10%">
+                                <col width="10%">
 								<col width="1%">
 							</colgroup>
 							<tr>
@@ -123,6 +124,8 @@
 									<asp:hyperlink id="SortByBaseUnitName" runat="server">Base Unit</asp:hyperlink></TH>
 								<TH class="ms-vh2" style="padding-bottom: 4px">
 									<asp:hyperlink id="SortByPrice" runat="server">Selling Price</asp:hyperlink></TH>
+                                <TH class="ms-vh2" style="padding-bottom: 4px">
+									<asp:hyperlink id="SortBySequenceNo" runat="server">SequenceNo</asp:hyperlink></TH>
 								<TH class="ms-vh2" style="padding-bottom: 4px">
 								</TH>
 							</tr>
@@ -139,9 +142,10 @@
 							    <col width="2%">
 								<col width="20%">
 								<col width="23%">
-								<col width="20%">
 								<col width="15%">
 								<col width="15%">
+								<col width="10%">
+                                <col width="10%">
 								<col width="1%">
 							</colgroup>
 							<tr>
@@ -177,6 +181,9 @@
 								<td class="ms-vb-user">
 									<asp:Label ID="lblPrice" Runat="server"></asp:Label>
 								</td>
+                                <td class="ms-vb-user">
+									<asp:Label ID="lblSequenceNo" Runat="server"></asp:Label>
+								</td>
 								<td class="ms-vb2">
 									<A class="DropDown" id="anchorDown" href="" runat="server">
 										<asp:Image id="divExpCollAsst_img" ImageUrl="../../_layouts/images/DLMAX.gif" runat="server" alt="Show" Visible="true"></asp:Image></A>
@@ -187,7 +194,7 @@
 								<td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 								<td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
 								<td class="ms-vh2" height="1"><img height="5" alt="" src="../../_layouts/images/blank.gif" width="1"></td>
-								<td colspan="5" height="1">
+								<td colspan="6" height="1">
 									<DIV class="ACECollapsed" id="divExpCollAsst" runat="server" border="0">
 										<asp:panel id="panCard" runat="server" Width="100%" Height="100%" CssClass="ms-authoringcontrols">
 											<table id="tblPanCard" cellspacing="0" cellpadding="0" width="100%" border="0">

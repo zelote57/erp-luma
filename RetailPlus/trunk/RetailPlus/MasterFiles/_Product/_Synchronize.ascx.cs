@@ -526,7 +526,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                     writer.WriteAttributeString("IsCreditAllowed", clsContactDetails.IsCreditAllowed.ToString());
                     writer.WriteAttributeString("ContactDateCreated", clsContactDetails.DateCreated.ToString("MM/dd/yyyy HH:mm:ss"));
 
-                    writer.WriteAttributeString("OrderSlipPrinter", clsProductDetails.OrderSlipPrinter.ToString("G"));
                     writer.WriteAttributeString("ChartOfAccountIDPurchase", XmlConvert.ToString(clsProductDetails.ChartOfAccountIDPurchase));
                     writer.WriteAttributeString("ChartOfAccountIDSold", XmlConvert.ToString(clsProductDetails.ChartOfAccountIDSold));
                     writer.WriteAttributeString("ChartOfAccountIDInventory", XmlConvert.ToString(clsProductDetails.ChartOfAccountIDInventory));
@@ -668,7 +667,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                                 clsBranchProductDetails.Quantity = 0;
                                 clsBranchProductDetails.MinThreshold = Convert.ToDecimal(xmlReader.GetAttribute("MinThreshold"));
                                 clsBranchProductDetails.MaxThreshold = Convert.ToDecimal(xmlReader.GetAttribute("MaxThreshold"));
-                                clsBranchProductDetails.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), xmlReader.GetAttribute("OrderSlipPrinter"));
                                 clsBranchProductDetails.ChartOfAccountIDPurchase = int.Parse(xmlReader.GetAttribute("ChartOfAccountIDPurchase"));
                                 clsBranchProductDetails.ChartOfAccountIDSold = int.Parse(xmlReader.GetAttribute("ChartOfAccountIDSold"));
                                 clsBranchProductDetails.ChartOfAccountIDInventory = int.Parse(xmlReader.GetAttribute("ChartOfAccountIDInventory"));
@@ -904,7 +902,6 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                             clsBranchProductDetails.Quantity = 0;
                             clsBranchProductDetails.MinThreshold = Convert.ToDecimal(xmlReader.GetAttribute("MinThreshold"));
                             clsBranchProductDetails.MaxThreshold = Convert.ToDecimal(xmlReader.GetAttribute("MaxThreshold"));
-                            clsBranchProductDetails.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), xmlReader.GetAttribute("OrderSlipPrinter"));
                             clsBranchProductDetails.ChartOfAccountIDPurchase = int.Parse(xmlReader.GetAttribute("ChartOfAccountIDPurchase"));
                             clsBranchProductDetails.ChartOfAccountIDSold = int.Parse(xmlReader.GetAttribute("ChartOfAccountIDSold"));
                             clsBranchProductDetails.ChartOfAccountIDInventory = int.Parse(xmlReader.GetAttribute("ChartOfAccountIDInventory"));

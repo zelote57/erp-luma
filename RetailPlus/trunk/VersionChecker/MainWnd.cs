@@ -10,7 +10,6 @@ using System.Net.FtpClient;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using System.IO;
 using System.Diagnostics;
 
 namespace AceSoft.RetailPlus.VersionChecker

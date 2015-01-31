@@ -373,7 +373,8 @@ namespace AceSoft.RetailPlus
         RetailPlusOSPrinter2 = 1,
         RetailPlusOSPrinter3 = 2,
         RetailPlusOSPrinter4 = 3,
-        RetailPlusOSPrinter5 = 4
+        RetailPlusOSPrinter5 = 4,
+        NotApplicable        = 5
     }
 
     public enum OrderTypes

@@ -204,13 +204,15 @@ namespace AceSoft.RetailPlus.Data
                                 "a.UnitID, " +
                                 "d.UnitCode, " +
                                 "d.UnitName, " +
-                                "f.OrderSlipPrinter " +
+                                "b.OrderSlipPrinter1, " +
+                                "b.OrderSlipPrinter2, " +
+                                "b.OrderSlipPrinter3, " +
+                                "b.OrderSlipPrinter4, " +
+                                "b.OrderSlipPrinter5 " +
                             "FROM tblProductComposition a " +
                             "INNER JOIN tblProducts b ON a.ProductID = b.ProductID " +
                             "LEFT OUTER JOIN tblProductBaseVariationsMatrix c ON a.VariationMatrixID = c.MatrixID " +
-                            "INNER JOIN tblUnit d ON a.UnitID = d.UnitID " +
-                            "INNER JOIN tblProductSubGroup e ON b.ProductSubGroupID = e.ProductSubGroupID " +
-                            "INNER JOIN tblProductGroup f ON e.ProductGroupID = f.ProductGroupID ";
+                            "INNER JOIN tblUnit d ON a.UnitID = d.UnitID ";
 			return SQL;
 		}
 
@@ -263,7 +265,12 @@ namespace AceSoft.RetailPlus.Data
 					long lProductID = Convert.ToInt64(dr["ProductID"]);
                     string stProductCode = dr["ProductCode"].ToString();
 					decimal decQuantity = Convert.ToDecimal(Convert.ToDecimal(dr["Quantity"]) * Quantity);
-                    OrderSlipPrinter locOrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
+
+                    bool boOrderSlipPrinter1 = bool.Parse(dr["OrderSlipPrinter1"].ToString());
+                    bool boOrderSlipPrinter2 = bool.Parse(dr["OrderSlipPrinter2"].ToString());
+                    bool boOrderSlipPrinter3 = bool.Parse(dr["OrderSlipPrinter3"].ToString());
+                    bool boOrderSlipPrinter4 = bool.Parse(dr["OrderSlipPrinter4"].ToString());
+                    bool boOrderSlipPrinter5 = bool.Parse(dr["OrderSlipPrinter5"].ToString());
 
                     clsPLUReportDetails = new PLUReportDetails();
                     clsPLUReportDetails.BranchDetails = new BranchDetails
@@ -275,9 +282,12 @@ namespace AceSoft.RetailPlus.Data
                     clsPLUReportDetails.ProductCode = MainProductCode + "-" + stProductCode;
                     clsPLUReportDetails.Quantity = decQuantity;
                     clsPLUReportDetails.Amount = 0;
-                    clsPLUReportDetails.OrderSlipPrinter = locOrderSlipPrinter;
 
-                    clsPLUReport.Insert(clsPLUReportDetails);
+                    if (boOrderSlipPrinter1) { clsPLUReportDetails.OrderSlipPrinter = OrderSlipPrinter.RetailPlusOSPrinter1; clsPLUReport.Insert(clsPLUReportDetails); }
+                    if (boOrderSlipPrinter2) { clsPLUReportDetails.OrderSlipPrinter = OrderSlipPrinter.RetailPlusOSPrinter2; clsPLUReport.Insert(clsPLUReportDetails); }
+                    if (boOrderSlipPrinter3) { clsPLUReportDetails.OrderSlipPrinter = OrderSlipPrinter.RetailPlusOSPrinter3; clsPLUReport.Insert(clsPLUReportDetails); }
+                    if (boOrderSlipPrinter4) { clsPLUReportDetails.OrderSlipPrinter = OrderSlipPrinter.RetailPlusOSPrinter4; clsPLUReport.Insert(clsPLUReportDetails); }
+                    if (boOrderSlipPrinter5) { clsPLUReportDetails.OrderSlipPrinter = OrderSlipPrinter.RetailPlusOSPrinter5; clsPLUReport.Insert(clsPLUReportDetails); }
 
                     GeneratePLUReport(BranchID, TerminalNo, lProductID, stProductCode, decQuantity);
 

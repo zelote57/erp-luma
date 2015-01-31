@@ -1124,7 +1124,7 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 string SQL = "SELECT " +
-                                    "a.ProductID, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) AS ProductCode, OrderSlipPrinter, ProductGroup, " +
+                                    "a.ProductID, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) AS ProductCode, OrderSlipPrinter1, OrderSlipPrinter2, OrderSlipPrinter3, OrderSlipPrinter4, OrderSlipPrinter5, ProductGroup, " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Quantity, a.Quantity))) 'Quantity', " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Amount, a.Amount))) 'Amount' " +
                                 "FROM tblTransactionItems a " +
@@ -1136,12 +1136,12 @@ namespace AceSoft.RetailPlus.Data
                                         "OR TransactionStatus = @TransactionStatusReprinted " +
                                         "OR TransactionStatus = @TransactionStatusRefund) " +
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo) " +
-                                    "GROUP BY OrderSlipPrinter, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) ORDER BY OrderSlipPrinter, ProductCode ASC, ProductGroup";
+                                    "GROUP BY OrderSlipPrinter1, OrderSlipPrinter2, OrderSlipPrinter3, OrderSlipPrinter4, OrderSlipPrinter5, IFNULL(CONCAT(ProductCode, '-',NULLIF(MatrixDescription,'')), ProductCode) ORDER BY OrderSlipPrinter1, OrderSlipPrinter2, OrderSlipPrinter3, OrderSlipPrinter4, OrderSlipPrinter5, ProductCode ASC, ProductGroup";
 
                 if (isPerGroup)
                 {
                     SQL = "SELECT " +
-                                    "0 AS ProductID, '' AS ProductCode, ProductGroup, OrderSlipPrinter, " +
+                                    "0 AS ProductID, '' AS ProductCode, ProductGroup, OrderSlipPrinter1, OrderSlipPrinter2, OrderSlipPrinter3, OrderSlipPrinter4, OrderSlipPrinter5, " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Quantity, a.Quantity))) 'Quantity', " +
                                     "SUM(IF(TransactionItemStatus = @VoidStatus, 0, IF(TransactionItemStatus = @ReturnStatus, -a.Amount, a.Amount))) 'Amount' " +
                                 "FROM tblTransactionItems a " +
@@ -1153,7 +1153,8 @@ namespace AceSoft.RetailPlus.Data
                                         "OR TransactionStatus = @TransactionStatusReprinted " +
                                         "OR TransactionStatus = @TransactionStatusRefund) " +
                                     "AND TransactionDate >= (SELECT DateLastInitialized FROM tblTerminalReport WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo) " +
-                                    "GROUP BY OrderSlipPrinter, ProductGroup ORDER BY OrderSlipPrinter, ProductGroup ASC ";
+                                    "GROUP BY OrderSlipPrinter1, OrderSlipPrinter2, OrderSlipPrinter3, OrderSlipPrinter4, OrderSlipPrinter5, ProductGroup " +
+                                    "ORDER BY OrderSlipPrinter1, OrderSlipPrinter2, OrderSlipPrinter3, OrderSlipPrinter4, OrderSlipPrinter5, ProductGroup ASC ";
                 }
 
 				cmd.Parameters.AddWithValue("@VoidStatus", (Int16) TransactionItemStatus.Void);
@@ -1199,7 +1200,12 @@ namespace AceSoft.RetailPlus.Data
                     string stProductGroup = dr["ProductGroup"].ToString();
 					decimal decQuantity = Convert.ToDecimal(dr["Quantity"]);
 					decimal decAmount = Convert.ToDecimal(dr["Amount"]);
-                    OrderSlipPrinter locOrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dr["OrderSlipPrinter"].ToString());
+
+                    bool boOrderSlipPrinter1 = bool.Parse(dr["OrderSlipPrinter1"].ToString());
+                    bool boOrderSlipPrinter2 = bool.Parse(dr["OrderSlipPrinter2"].ToString());
+                    bool boOrderSlipPrinter3 = bool.Parse(dr["OrderSlipPrinter3"].ToString());
+                    bool boOrderSlipPrinter4 = bool.Parse(dr["OrderSlipPrinter4"].ToString());
+                    bool boOrderSlipPrinter5 = bool.Parse(dr["OrderSlipPrinter5"].ToString());
 
                     clsPLUReportDetails = new PLUReportDetails();
                     clsPLUReportDetails.BranchDetails = new BranchDetails {
@@ -1211,10 +1217,13 @@ namespace AceSoft.RetailPlus.Data
                     clsPLUReportDetails.ProductGroup = stProductGroup;
                     clsPLUReportDetails.Quantity = decQuantity;
                     clsPLUReportDetails.Amount = decAmount;
-                    clsPLUReportDetails.OrderSlipPrinter = locOrderSlipPrinter;
 
-                    clsPLUReport.Insert(clsPLUReportDetails);
-
+                    if (boOrderSlipPrinter1) { clsPLUReportDetails.OrderSlipPrinter = OrderSlipPrinter.RetailPlusOSPrinter1; clsPLUReport.Insert(clsPLUReportDetails); }
+                    if (boOrderSlipPrinter2) { clsPLUReportDetails.OrderSlipPrinter = OrderSlipPrinter.RetailPlusOSPrinter2; clsPLUReport.Insert(clsPLUReportDetails); }
+                    if (boOrderSlipPrinter3) { clsPLUReportDetails.OrderSlipPrinter = OrderSlipPrinter.RetailPlusOSPrinter3; clsPLUReport.Insert(clsPLUReportDetails); }
+                    if (boOrderSlipPrinter4) { clsPLUReportDetails.OrderSlipPrinter = OrderSlipPrinter.RetailPlusOSPrinter4; clsPLUReport.Insert(clsPLUReportDetails); }
+                    if (boOrderSlipPrinter5) { clsPLUReportDetails.OrderSlipPrinter = OrderSlipPrinter.RetailPlusOSPrinter5; clsPLUReport.Insert(clsPLUReportDetails); }
+                    
                     // generate if per item
                     if (!isPerGroup) clsProductComposition.GeneratePLUReport(BranchID, TerminalNo, lProductID, stProductCode, decQuantity);
 				}		

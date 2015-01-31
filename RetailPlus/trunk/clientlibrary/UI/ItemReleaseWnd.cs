@@ -183,7 +183,11 @@ namespace AceSoft.RetailPlus.Client.UI
             ItemDataTable.Columns.Add("PurchasePrice");
             ItemDataTable.Columns.Add("PurchaseAmount");
             ItemDataTable.Columns.Add("IncludeInSubtotalDiscount");
-            ItemDataTable.Columns.Add("OrderSlipPrinter");
+            ItemDataTable.Columns.Add("OrderSlipPrinter1");
+            ItemDataTable.Columns.Add("OrderSlipPrinter2");
+            ItemDataTable.Columns.Add("OrderSlipPrinter3");
+            ItemDataTable.Columns.Add("OrderSlipPrinter4");
+            ItemDataTable.Columns.Add("OrderSlipPrinter5");
             ItemDataTable.Columns.Add("OrderSlipPrinted");
             ItemDataTable.Columns.Add("PercentageCommision");
             ItemDataTable.Columns.Add("Commision");
@@ -391,10 +395,14 @@ namespace AceSoft.RetailPlus.Client.UI
                 Details.PurchasePrice = Convert.ToDecimal(dgItems[iRow, 32].ToString());
                 Details.PurchaseAmount = Convert.ToDecimal(dgItems[iRow, 33].ToString());
                 Details.IncludeInSubtotalDiscount = Convert.ToBoolean(dgItems[iRow, 34].ToString());
-                Details.OrderSlipPrinter = (OrderSlipPrinter)Enum.Parse(typeof(OrderSlipPrinter), dgItems[iRow, 35].ToString());
-                Details.OrderSlipPrinted = Convert.ToBoolean(dgItems[iRow, 36].ToString());
-                Details.PercentageCommision = Convert.ToDecimal(dgItems[iRow, 37].ToString());
-                Details.Commision = Convert.ToDecimal(dgItems[iRow, 38].ToString());
+                Details.OrderSlipPrinter1 = bool.Parse(dgItems[iRow, 35].ToString());
+                Details.OrderSlipPrinter2 = bool.Parse(dgItems[iRow, 36].ToString());
+                Details.OrderSlipPrinter3 = bool.Parse(dgItems[iRow, 37].ToString());
+                Details.OrderSlipPrinter4 = bool.Parse(dgItems[iRow, 38].ToString());
+                Details.OrderSlipPrinter5 = bool.Parse(dgItems[iRow, 39].ToString());
+                Details.OrderSlipPrinted = Convert.ToBoolean(dgItems[iRow, 40].ToString());
+                Details.PercentageCommision = Convert.ToDecimal(dgItems[iRow, 41].ToString());
+                Details.Commision = Convert.ToDecimal(dgItems[iRow, 42].ToString());
                 
 
                 return Details;
@@ -452,7 +460,11 @@ namespace AceSoft.RetailPlus.Client.UI
                 dr["PurchasePrice"] = Details.PurchasePrice; //32
                 dr["PurchaseAmount"] = Details.PurchaseAmount; //33
                 dr["IncludeInSubtotalDiscount"] = Details.IncludeInSubtotalDiscount; //34
-                dr["OrderSlipPrinter"] = Details.OrderSlipPrinter; //35
+                dr["OrderSlipPrinter1"] = Details.OrderSlipPrinter1; //35
+                dr["OrderSlipPrinter2"] = Details.OrderSlipPrinter2; //35
+                dr["OrderSlipPrinter3"] = Details.OrderSlipPrinter3; //35
+                dr["OrderSlipPrinter4"] = Details.OrderSlipPrinter4; //35
+                dr["OrderSlipPrinter5"] = Details.OrderSlipPrinter5; //35
                 dr["OrderSlipPrinted"] = Details.OrderSlipPrinted.ToString(); //36
                 dr["PercentageCommision"] = Details.PercentageCommision; //37
                 dr["Commision"] = Details.Amount * (Details.PercentageCommision / 100); //38

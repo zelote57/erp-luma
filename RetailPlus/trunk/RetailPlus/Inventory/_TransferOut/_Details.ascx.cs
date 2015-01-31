@@ -388,7 +388,6 @@ namespace AceSoft.RetailPlus.Inventory._TransferOut
                 writer.WriteAttributeString("Quantity", clsProductDetails.Quantity.ToString());
                 writer.WriteAttributeString("MinThreshold", clsProductDetails.MinThreshold.ToString());
                 writer.WriteAttributeString("MaxThreshold", clsProductDetails.MaxThreshold.ToString());
-                writer.WriteAttributeString("OrderSlipPrinter", clsProductDetails.OrderSlipPrinter.ToString("d"));
                 writer.WriteAttributeString("ChartOfAccountIDPurchase", clsProductDetails.ChartOfAccountIDPurchase.ToString());
                 writer.WriteAttributeString("ChartOfAccountIDSold", clsProductDetails.ChartOfAccountIDSold.ToString());
                 writer.WriteAttributeString("ChartOfAccountIDInventory", clsProductDetails.ChartOfAccountIDInventory.ToString());

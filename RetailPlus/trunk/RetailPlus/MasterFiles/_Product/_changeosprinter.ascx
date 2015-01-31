@@ -106,17 +106,19 @@
 							                    <col width="15%">
 							                    <col width="23%">
                                                 <col width="12%">
-							                    <col width="10%" align="center">
                                                 <col width="10%" align="center">
-							                    <col width="10%" align="center">
-							                    <col width="10%" align="center">
-							                    <col width="10%" align="center">
+							                    <col width="8%" align="center">
+                                                <col width="8%" align="center">
+							                    <col width="8%" align="center">
+							                    <col width="8%" align="center">
+							                    <col width="8%" align="center">
 							                    <col width="15">
 						                    </colgroup>
 						                    <tr style="padding-bottom: 4px">
 							                    <th class="ms-vh2"><input id="idSelectAll" onclick="SelectAll();" type="checkbox" name="selectall" visible="false" style="display:none" />&nbsp;&nbsp;</th>
 							                    <th class="ms-vh2"><asp:hyperlink id="SortByProductSubGroupCode" runat="server">Sub Group</asp:hyperlink></th>
 							                    <th class="ms-vh2"><asp:hyperlink id="SortByProductCode" runat="server">Description</asp:hyperlink></th>
+                                                <th class="ms-vh2"><asp:hyperlink id="SortBySequenceNo" runat="server">Sequence No</asp:hyperlink></th>
 							                    <th class="ms-vh2" style="text-align:center">
                                                     <asp:hyperlink id="SortByOrderSlipPrinter1" runat="server">OSPrinter1</asp:hyperlink>
                                                     <br /><asp:CheckBox ID="chkOrderSlipPrinter1All" runat="server" OnCheckedChanged="chkOrderSlipPrinterAll_CheckedChanged" AutoPostBack="true" CausesValidation="false" alt="Check/Uncheck all" />
@@ -151,6 +153,9 @@
 							                    <td class="ms-vb-user">
 								                    &nbsp;&nbsp;<asp:HyperLink id="lnkBarcode" Runat="server" Target="_blank"></asp:HyperLink>
                                                     &nbsp;&nbsp;<asp:HyperLink id="lnkProductCode" Runat="server" Target="_blank"></asp:HyperLink>
+							                    </td>
+                                                <td class="ms-vb-user">
+								                    &nbsp;&nbsp;<asp:HyperLink id="lnkSequenceNo" Runat="server" Target="_blank"></asp:HyperLink>
 							                    </td>
 							                    <td class="ms-vb-user" align="center">
                                                     &nbsp;&nbsp;<asp:CheckBox ID="chkOrderSlipPrinter1" runat="server" OnCheckedChanged="chkOrderSlipPrinter_CheckedChanged" AutoPostBack="true" CausesValidation="false" /></td>

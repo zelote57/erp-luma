@@ -250,6 +250,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             chkWillPrintProductComposition.Checked = clsDetails.WillPrintProductComposition;
 
             txtRID.Text = clsDetails.RID.ToString("###0");
+            txtSequenceNo.Text = clsDetails.SequenceNo.ToString("###0");
 
             cboProductUnit.Enabled = clsDetails.Quantity != 0 ? false : true;
 		}
@@ -298,6 +299,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             clsDetails.UpdatedBy = Convert.ToInt64(Session["UID"].ToString());
             clsDetails.UpdatedOn = DateTime.Now;
             clsDetails.RID = Convert.ToInt64(txtRID.Text);
+            clsDetails.SequenceNo = Convert.ToInt64(txtSequenceNo.Text);
 
 			Products clsProduct = new Products();
 			clsProduct.Update(clsDetails);

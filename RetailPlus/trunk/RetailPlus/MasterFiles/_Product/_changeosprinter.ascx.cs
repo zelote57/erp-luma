@@ -94,7 +94,11 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
 
         protected void lstItem_ItemDataBound(object sender, DataListItemEventArgs e)
 		{
-			if(e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            if (e.Item.ItemType == ListItemType.Header)
+            {
+                LoadSortFieldOptions(e);
+            }
+            else if(e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
 			{
                 mlngItemNo += 1;
 
@@ -120,6 +124,10 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
                 HyperLink lnkProductCode = (HyperLink)e.Item.FindControl("lnkProductCode");
 				lnkProductCode.Text = dr["ProductDesc"].ToString();
                 lnkProductCode.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("det", Session.SessionID) + "&id=" + Common.Encrypt(dr["ProductID"].ToString(), Session.SessionID);
+
+                HyperLink lnkSequenceNo = (HyperLink)e.Item.FindControl("lnkSequenceNo");
+                lnkSequenceNo.Text = dr["SequenceNo"].ToString();
+                lnkSequenceNo.NavigateUrl = Constants.ROOT_DIRECTORY + "/MasterFiles/_Product/Default.aspx?task=" + Common.Encrypt("edit", Session.SessionID) + "&id=" + Common.Encrypt(dr["ProductID"].ToString(), Session.SessionID);
 
                 CheckBox chkOrderSlipPrinter1 = (CheckBox)e.Item.FindControl("chkOrderSlipPrinter1");
                 chkOrderSlipPrinter1.Checked = bool.Parse(dr["OrderSlipPrinter1"].ToString());
@@ -258,9 +266,38 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             //System.Web.UI.ScriptManager.RegisterClientScriptBlock(this.updCloseInventory, this.updCloseInventory.GetType(), "openwindow", javaScript, true);
         }
 
+        private void LoadSortFieldOptions(DataListItemEventArgs e)
+        {
+            string stParam = null;
+
+            SortOption sortoption = SortOption.Ascending;
+            if (Request.QueryString["sortoption"] != null)
+                sortoption = (SortOption)Enum.Parse(typeof(SortOption), Common.Decrypt(Request.QueryString["sortoption"], Session.SessionID), true);
+
+            if (sortoption == SortOption.Ascending)
+                stParam += "?sortoption=" + Common.Encrypt(SortOption.Desscending.ToString("G"), Session.SessionID);
+            else if (sortoption == SortOption.Desscending)
+                stParam += "?sortoption=" + Common.Encrypt(SortOption.Ascending.ToString("G"), Session.SessionID);
+
+            System.Collections.Specialized.NameValueCollection querystrings = Request.QueryString; ;
+            foreach (string querystring in querystrings.AllKeys)
+            {
+                if (querystring.ToLower() != "sortfield" && querystring.ToLower() != "sortoption")
+                    stParam += "&" + querystring + "=" + querystrings[querystring].ToString();
+            }
+
+            HyperLink SortByProductSubGroupCode = (HyperLink)e.Item.FindControl("SortByProductSubGroupCode");
+            HyperLink SortByProductCode = (HyperLink)e.Item.FindControl("SortByProductCode");
+            HyperLink SortBySequenceNo = (HyperLink)e.Item.FindControl("SortBySequenceNo");
+
+            SortByProductSubGroupCode.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ProductSubGroupCode ", Session.SessionID);
+            SortByProductCode.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ProductSubGroupCode ASC, ProductCode ", Session.SessionID);
+            SortBySequenceNo.NavigateUrl = "Default.aspx" + stParam + "&sortfield=" + Common.Encrypt("ProductSubGroupCode ASC, prd.SequenceNo ", Session.SessionID);
+        }
+
         private void LoadList()
         {
-            string SortField = "ProductCode";
+            string SortField = "ProductSubGroupCode ASC, prd.SequenceNo ";
             if (Request.QueryString["sortfield"] != null)
             { SortField = Common.Decrypt(Request.QueryString["sortfield"].ToString(), Session.SessionID); }
 
@@ -271,7 +308,7 @@ namespace AceSoft.RetailPlus.MasterFiles._Product
             Int64 lngProductGroupID = Convert.ToInt64(cboProductGroup.SelectedItem.Value);
 
             ProductInventories clsProductInventories = new ProductInventories();
-            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(cboBranch.SelectedItem.Value), ProductGroupID: lngProductGroupID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: "ProductSubGroupCode ASC, ProductDesc ASC, BarCode1 ", SortOrder: SortOption.Ascending);
+            System.Data.DataTable dt = clsProductInventories.ListAsDataTable(BranchID: int.Parse(cboBranch.SelectedItem.Value), ProductGroupID: lngProductGroupID, clsProductListFilterType: ProductListFilterType.ShowActiveOnly, SortField: SortField, SortOrder: (sortoption == SortOption.Ascending ? SortOption.Ascending : SortOption.Desscending));
 
             clsProductInventories.CommitAndDispose();
 

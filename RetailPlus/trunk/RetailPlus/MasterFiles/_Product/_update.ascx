@@ -402,7 +402,7 @@
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label>Required Inventory Days (RID)<font color="red">*</font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
-                                    <label><font color="red"></font></label></td>
+                                    <label>Sequence No<font color="red"></font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
                                     <label><font color="red"></font></label></td>
                                 <td class="ms-authoringcontrols" colspan="2" style="padding-bottom: 2px">
@@ -416,7 +416,8 @@
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols">
-                                    
+                                    <asp:TextBox ID="txtSequenceNo" runat="server"  AccessKey="P" BorderStyle="Groove"
+                                                CssClass="ms-short-numeric" MaxLength="20" onkeypress="AllNum()">0</asp:TextBox>
                                 </td>
                                 <td class="ms-formspacer"><img src="../../_layouts/images/trans.gif" width="10" /></td>
                                 <td class="ms-authoringcontrols" colspan="3">

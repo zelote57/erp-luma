@@ -6358,6 +6358,7 @@ ALTER TABLE tblProductBaseVariationsMatrix DROP LocalTax;
 -- This will be use to determine if Transaction is Refund
 --		0 POSNormal
 --		1 POSRefund
+--		2 POSOpenSuspended
 ALTER TABLE tblTransactions ADD TransactionType INT(1) NOT NULL DEFAULT 0;
 
 

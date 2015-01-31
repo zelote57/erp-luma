@@ -8076,6 +8076,28 @@ GO
 delimiter ;
 
 
+/*********************************
+	procTransactionSuspendedOpen
+	Lemuel E. Aceron
+	
+	[01/05/2015]  - create this procedure
+	
+*********************************/
+DROP PROCEDURE IF EXISTS procTransactionSuspendedOpen;
+delimiter GO
+
+create procedure procTransactionSuspendedOpen(IN iTransactionID bigint(20))
+BEGIN
+	-- TransactionStatus
+	--		Open = 0
+	--		SuspendedOpen = 2
+	UPDATE tblTransactions SET TransactionStatus = 13 WHERE TransactionID = iTransactionID AND TransactionStatus = 2;
+	
+END;
+GO
+delimiter ;
+
+
 /********************************************
 	procProductAddReservedQuantity
 	
@@ -9452,7 +9474,7 @@ BEGIN
 							IFNULL(chque.ValidityDate,''1900-01-01'') AS ValidityDate
 						FROM tblTransactions trx
 						LEFT OUTER JOIN tblChequePayment chque ON trx.BranchID = trx.BranchID AND trx.TerminalNo = trx.TerminalNo AND trx.TransactionID = chque.TransactionID
-						WHERE trx.TransactionStatus = 2 '; -- 2 = SuspendedTransactionStatus
+						WHERE trx.TransactionStatus = 2 '; -- 2=SuspendedTransactionStatus		13=SuspendedOpenTransactionStatus
 	ELSEIF boWithTF = 0 THEN
 		SET @SQL := 'SELECT trx.BranchID, trx.TerminalNo,
 							trx.TransactionID,

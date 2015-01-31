@@ -664,8 +664,10 @@ namespace AceSoft.RetailPlus.Data
 									"MaxThreshold		= @MaxThreshold, " +
 									"SupplierID			= @SupplierID, " +
 									"IsItemSold			= @IsItemSold, " +
-									"WillPrintProductComposition    =   @WillPrintProductComposition " +
-								"WHERE ProductID	= @ProductID;";
+									"WillPrintProductComposition    =   @WillPrintProductComposition, " +
+                                    "RID                = @RID, " +
+                                    "SequenceNo         = @SequenceNo " +
+								"WHERE ProductID	    = @ProductID;";
 				  
                 cmd.Parameters.AddWithValue("ProductCode", Details.ProductCode);
                 cmd.Parameters.AddWithValue("ProductDesc", Details.ProductDesc);
@@ -678,6 +680,8 @@ namespace AceSoft.RetailPlus.Data
                 cmd.Parameters.AddWithValue("SupplierID", Details.SupplierID);
                 cmd.Parameters.AddWithValue("IsItemSold", Details.IsItemSold);
                 cmd.Parameters.AddWithValue("WillPrintProductComposition", Details.WillPrintProductComposition);
+                cmd.Parameters.AddWithValue("RID", Details.RID);
+                cmd.Parameters.AddWithValue("SequenceNo", Details.SequenceNo);
                 cmd.Parameters.AddWithValue("ProductID", Details.ProductID);
 
                 cmd.CommandText = SQL;
@@ -2860,6 +2864,7 @@ namespace AceSoft.RetailPlus.Data
                     Details.MinThreshold = Decimal.Parse(dr["MinThreshold"].ToString());
                     Details.MaxThreshold = Decimal.Parse(dr["MaxThreshold"].ToString());
                     Details.RID = Int64.Parse(dr["RID"].ToString());
+                    Details.SequenceNo = Int64.Parse(dr["SequenceNo"].ToString());
                     Details.SupplierID = Int64.Parse(dr["SupplierID"].ToString());
                     Details.SupplierCode = dr["SupplierCode"].ToString();
                     Details.SupplierName = dr["SupplierName"].ToString();

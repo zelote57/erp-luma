@@ -6061,6 +6061,8 @@ BEGIN
 							,prd.ChartOfAccountIDTaxPurchase
 							,prd.ChartOfAccountIDTaxSold
 
+							,prd.SequenceNo
+
 							,IFNULL(mtrx.MatrixID,0) MatrixID
 							,CONCAT(prd.ProductDesc, '':'' , IFNULL(mtrx.Description,'''')) AS VariationDesc
 							,IFNULL(mtrx.Description,'''') AS MatrixDescription
@@ -6160,6 +6162,8 @@ BEGIN
                             ,prd.ChartOfAccountIDInventory
                             ,prd.ChartOfAccountIDTaxPurchase
                             ,prd.ChartOfAccountIDTaxSold
+
+							,prd.SequenceNo
 
                             ,mtrx.MatrixID
                             ,mtrx.Description
@@ -6639,6 +6643,7 @@ BEGIN
 							,prd.MinThreshold
 							,prd.MaxThreshold
 							,prd.RID
+							,prd.SequenceNo
 
 							,IFNULL(mtrx.MaxThreshold, prd.MaxThreshold) - SUM(IFNULL(inv.Quantity,0)) ReorderQty
 							,prd.RIDMinThreshold
@@ -6762,6 +6767,7 @@ BEGIN
 						   ,prd.MinThreshold
 						   ,prd.MaxThreshold
 						   ,prd.RID
+						   ,prd.SequenceNo
 
 						   ,prd.MaxThreshold
 						   ,prd.RIDMinThreshold
@@ -6912,6 +6918,7 @@ BEGIN
 							,prd.MinThreshold
 							,prd.MaxThreshold
 							,prd.RID
+							,prd.SequenceNo
 
 							,IFNULL(mtrxMaxThreshold, prd.MaxThreshold) - SUM(IFNULL(inv.Quantity,0)) ReorderQty
 							,prd.RIDMinThreshold
@@ -7020,6 +7027,7 @@ BEGIN
 							,prd.MinThreshold
 							,prd.MaxThreshold
 							,prd.RID
+							,prd.SequenceNo
 
 							,prd.MaxThreshold
 							,prd.RIDMinThreshold

@@ -803,12 +803,13 @@ namespace AceSoft.RetailPlus.Data
                 cmd.CommandType = System.Data.CommandType.Text;
 
 				string SQL = "SELECT DISTINCT(TransactionNo) FROM  tblTransactions " +
-                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo AND CustomerID = @CustomerID AND TransactionStatus = @TransactionStatus LIMIT 1;";
+                             "WHERE BranchID = @BranchID AND TerminalNo = @TerminalNo AND CustomerID = @CustomerID AND (TransactionStatus = @TransactionStatusSuspended OR TransactionStatus = @TransactionStatusSuspendedOpen) LIMIT 1;";
 
                 cmd.Parameters.AddWithValue("@BranchID", BranchID);
                 cmd.Parameters.AddWithValue("@TerminalNo", TerminalNo);
                 cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
-                cmd.Parameters.AddWithValue("@TransactionStatus", TransactionStatus.Suspended.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusSuspended", TransactionStatus.Suspended.ToString("d"));
+                cmd.Parameters.AddWithValue("@TransactionStatusSuspendedOpen", TransactionStatus.SuspendedOpen.ToString("d"));
 
                 cmd.CommandText = SQL;
                 string strDataTableName = "tbl" + this.GetType().FullName.Split(new Char[] { '.' })[this.GetType().FullName.Split(new Char[] { '.' }).Length - 1]; System.Data.DataTable dt = new System.Data.DataTable(strDataTableName);
@@ -1122,6 +1123,26 @@ namespace AceSoft.RetailPlus.Data
 
                 cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
                 cmd.Parameters.AddWithValue("@isZeroRated", isZeroRated);
+
+                cmd.CommandText = SQL;
+                base.ExecuteNonQuery(cmd);
+            }
+            catch (Exception ex)
+            {
+                throw base.ThrowException(ex);
+            }
+        }
+
+        public void UpdateTransactionToSuspendedOpen(Int64 TransactionID)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                string SQL = "CALL procTransactionSuspendedOpen(@TransactionID);";
+
+                cmd.Parameters.AddWithValue("@TransactionID", TransactionID);
 
                 cmd.CommandText = SQL;
                 base.ExecuteNonQuery(cmd);
